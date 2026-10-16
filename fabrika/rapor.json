@@ -1,16 +1,15 @@
 {
- "started": "2026-10-16T15:07:44+00:00",
+ "started": "2026-10-16T16:07:35+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  364,
+  554,
   613902
  ],
  "topic": {
-  "id": "o0002",
+  "id": "y002",
   "series": "Ya Olsaydı?",
-  "q": "Güneş'in yerinde bir kara delik olsaydı ne olurdu?",
-  "oneri": true
+  "q": "Güneş bir anda sönseydi ne olurdu?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
@@ -18,36 +17,33 @@
   "ok": true,
   "fixes": []
  },
+ "warnings": [
+  "çalışan kaynak linki bulunamadı"
+ ],
  "chunks": 0,
  "grounded": true,
- "chars": 491,
- "duration": 34.4,
- "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
+ "chars": 475,
+ "duration": 33.4,
+ "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "8",
-  "videos": "5"
+  "videos": "6"
  },
- "url": "https://youtube.com/shorts/f6WyXXJWASs",
+ "url": "https://youtube.com/shorts/xMYUnZVVITU",
  "recent_status": {
-  "y001": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1078",
-   "reason": null
-  },
   "n001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "196",
+   "views": "212",
    "reason": null
   },
   "o0001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "26",
+   "views": "27",
    "reason": null
   },
   "g001": {
@@ -57,6 +53,12 @@
    "reason": null
   },
   "o0002": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "6",
+   "reason": null
+  },
+  "y002": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -64,12 +66,12 @@
   }
  },
  "credits_after": [
-  483,
+  669,
   613902
  ],
  "log": [
-  "Konu: o0002 Güneş'in yerinde bir kara delik olsaydı ne olurdu? (Ya Olsaydı?)",
+  "Konu: y002 Güneş bir anda sönseydi ne olurdu? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T15:10:19+00:00"
+ "finished": "2026-10-16T16:10:31+00:00"
 }

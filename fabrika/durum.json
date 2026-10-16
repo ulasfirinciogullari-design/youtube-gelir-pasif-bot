@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1078",
+    "views": "1129",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "196",
+    "views": "212",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "26",
+    "views": "27",
     "reason": null
    }
   },
@@ -144,6 +144,36 @@
    "at": 1792163417.4591541,
    "chars": 491,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "6",
+    "reason": null
+   }
+  },
+  {
+   "id": "y002",
+   "video_id": "xMYUnZVVITU",
+   "url": "https://youtube.com/shorts/xMYUnZVVITU",
+   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If the Sun Suddenly Went Out?",
+    "es": "¿Qué pasaría si el Sol se apagara de repente?",
+    "pt": "O que aconteceria se o Sol se apagasse de repente?",
+    "ar": "ماذا لو انطفأت الشمس فجأة؟",
+    "hi": "अगर सूरज अचानक बुझ जाए तो क्या होगा?",
+    "id": "Apa yang Terjadi Jika Matahari Tiba-Tiba Padam?",
+    "fr": "Et si le Soleil s'éteignait d'un coup ?",
+    "de": "Was wäre, wenn die Sonne plötzlich erlischt?",
+    "ru": "Что будет, если Солнце внезапно погаснет?",
+    "az": "Günəş bir anda sönsəydi nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792167029.9306889,
+   "chars": 475,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -156,7 +186,8 @@
   "n001",
   "o0001",
   "g001",
-  "o0002"
+  "o0002",
+  "y002"
  ],
  "extra": [
   {
@@ -213,6 +244,14 @@
    "url": "https://youtube.com/shorts/f6WyXXJWASs",
    "duration": 34.4,
    "chars": 491
+  },
+  {
+   "finished": "2026-10-16T16:10:31+00:00",
+   "mod": "saatlik",
+   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+   "url": "https://youtube.com/shorts/xMYUnZVVITU",
+   "duration": 33.4,
+   "chars": 475
   }
  ],
  "yorumlar": {

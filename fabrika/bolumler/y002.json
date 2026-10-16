@@ -1,0 +1,693 @@
+{
+ "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+ "bar": {
+  "hi": "GÜNEŞ",
+  "rest": "SÖNSE NE OLURDU?"
+ },
+ "summary": "Güneş aniden sönerse Dünya kaç dakikada kararır ve gezegen ne kadar soğur? Işığın kesilmesinden okyanusların donmasına kadar tüm felaket adım adım açıklanıyor.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "Güneş bir anda sönse ne olurdu?",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "☀️",
+    "label": "Güneş Sönerse"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk 8 dakika 20 saniye hiçbir şey fark etmezdik.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "0. DK",
+      "e": "☀️",
+      "label": "Güneş Söner"
+     },
+     {
+      "when": "8,3 DK",
+      "e": "🌍",
+      "label": "Işık Biter"
+     }
+    ],
+    "key": "dakika"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bu kadar mı?",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🤔",
+    "do": "shake",
+    "key": "Bu",
+    "label": "Gerçekten mi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra zifiri karanlık çöker ve yansıyacak ışık kalmadığı için Ay kaybolurdu.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "moon",
+      "size": "m",
+      "at": "c"
+     }
+    ],
+    "do": "vanish",
+    "target": 0,
+    "key": "kaybolurdu",
+    "label": "Ay Kararır"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yalnızca 1 haftada ortalama sıcaklık -18 °C'ye düşerdi.",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "1. Hafta",
+    "from": 15,
+    "to": -18,
+    "unit": "°C",
+    "e": "❄️",
+    "key": "düşerdi"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Resmen donarız!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🥶",
+    "do": "freeze",
+    "key": "donarız",
+    "label": "Aşırı Soğuk"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1 yılın sonundaysa yüzey sıcaklığı yaklaşık -73 °C olurdu.",
+   "v": {
+    "t": "number",
+    "bg": "ice",
+    "e": "🧊",
+    "value": "-73",
+    "unit": "°C",
+    "label": "1 Yıl Sonra",
+    "key": "sıcaklığı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama okyanus tabanındaki mikroplar jeotermal ısıyla milyonlarca yıl yaşayabilirdi.",
+   "v": {
+    "t": "split",
+    "bg": "underwater",
+    "left": {
+     "e": "🌊",
+     "label": "Donmuş Yüzey"
+    },
+    "right": {
+     "e": "🌋",
+     "label": "Sıcak Taban"
+    },
+    "key": "jeotermal"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Güneş'i hiç takmıyorlar!",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🦠",
+    "do": "pulse",
+    "key": "Güneş'i",
+    "label": "Derin Yaşam"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Güneş ışığının Dünya'ya ulaşması yaklaşık 8 dakika 20 saniye sürer.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov"
+  },
+  {
+   "text": "Güneş enerjisi kesildiğinde Dünya yüzeyinin ortalama sıcaklığı 1 hafta içinde yaklaşık -18 °C'ye geriler.",
+   "source": "California Institute of Technology",
+   "url": ""
+  },
+  {
+   "text": "Güneş'siz geçen 1 yılın ardından küresel yüzey sıcaklığı yaklaşık -73 °C seviyesine iner.",
+   "source": "Popular Science",
+   "url": "https://www.popsci.com"
+  },
+  {
+   "text": "Derin deniz tabanındaki hidrotermal bacalar, Güneş ışığı olmaksızın jeotermal enerjiyle ekosistemleri yüz binlerce yıl canlı tutabilir.",
+   "source": "Woods Hole Oceanographic Institution",
+   "url": "https://www.whoi.edu"
+  }
+ ],
+ "tags": [
+  "güneş sönerse",
+  "güneş yok olursa",
+  "dünya donarsa",
+  "uzay",
+  "güneş sistemi",
+  "astronomi",
+  "fizik",
+  "jeotermal enerji",
+  "sun goes out",
+  "earth freezing",
+  "space facts",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#GüneşSönerse",
+  "#Bilim",
+  "#YaOlsaydı"
+ ],
+ "cover": 3,
+ "sources": [],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If the Sun Suddenly Went Out?",
+   "summary": "If the Sun suddenly went out, how many minutes would it take for Earth to go dark, and how cold would the planet get? The entire catastrophe is explained step by step, from the loss of light to freezing oceans.",
+   "facts": [
+    "It takes about 8 minutes and 20 seconds for sunlight to reach Earth.",
+    "Without solar energy, Earth's average surface temperature would drop to about -18 °C within 1 week.",
+    "After 1 year without the Sun, global surface temperatures would plunge to around -73 °C.",
+    "Hydrothermal vents on the deep ocean floor could sustain ecosystems for hundreds of thousands of years using geothermal energy without sunlight."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si el Sol se apagara de repente?",
+   "summary": "Si el Sol se apagara de repente, ¿cuántos minutos tardaría la Tierra en oscurecerse y cuánto se enfriaría el planeta? Toda la catástrofe explicada paso a paso, desde la pérdida de luz hasta la congelación de los océanos.",
+   "facts": [
+    "La luz del Sol tarda unos 8 minutos y 20 segundos en llegar a la Tierra.",
+    "Sin energía solar, la temperatura media de la superficie terrestre caería a unos -18 °C en 1 semana.",
+    "Tras 1 año sin el Sol, la temperatura superficial global descendería a unos -73 °C.",
+    "Los respiraderos hidrotermales del fondo marino profundo podrían mantener ecosistemas durante cientos de miles de años gracias a la energía geotérmica, sin luz solar."
+   ]
+  },
+  "pt": {
+   "title": "O que aconteceria se o Sol se apagasse de repente?",
+   "summary": "Se o Sol se apagasse de repente, em quantos minutos a Terra ficaria no escuro e quanto o planeta esfriaria? Toda a catástrofe explicada passo a passo, do corte de luz ao congelamento dos oceanos.",
+   "facts": [
+    "A luz solar leva cerca de 8 minutos e 20 segundos para chegar à Terra.",
+    "Sem energia solar, a temperatura média da superfície da Terra cairia para cerca de -18 °C em 1 semana.",
+    "Após 1 ano sem o Sol, a temperatura global da superfície cairia para cerca de -73 °C.",
+    "As fontes hidrotermais no fundo do oceano poderiam manter ecossistemas vivos por centenas de milhares de anos com energia geotérmica, sem luz solar."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو انطفأت الشمس فجأة؟",
+   "summary": "إذا انطفأت الشمس فجأة، كم دقيقة تلزم حتى تعم الظلمة الأرض وكم ستنخفض حرارة الكوكب؟ شرح تفصيلي للكارثة خطوة بخطوة بدءاً من انقطاع الضوء حتى تجمد المحيطات.",
+   "facts": [
+    "يستغرق وصول ضوء الشمس إلى الأرض حوالي 8 دقائق و20 ثانية.",
+    "عند انقطاع الطاقة الشمسية، ينخفض متوسط درجة حرارة سطح الأرض إلى حوالي -18 درجة مئوية خلال أسبوع واحد.",
+    "بعد مرور عام واحد دون شمس، تنخفض درجة حرارة سطح الأرض العالمية إلى حوالي -73 درجة مئوية.",
+    "يمكن للفوهات الحرارية المائية في قاع المحيطات العميقة إبقاء الأنظمة البيئية حية لمئات الآلاف من السنين بفضل الطاقة الحرارية الأرضية دون الحاجة لضوء الشمس."
+   ]
+  },
+  "hi": {
+   "title": "अगर सूरज अचानक बुझ जाए तो क्या होगा?",
+   "summary": "यदि सूरज अचानक बुझ जाए, तो पृथ्वी पर अंधेरा छाने में कितने मिनट लगेंगे और ग्रह कितना ठंडा हो जाएगा? रोशनी खत्म होने से लेकर महासागरों के जमने तक की पूरी तबाही सिलसिलेवार समझाई गई है।",
+   "facts": [
+    "सूर्य के प्रकाश को पृथ्वी तक पहुँचने में लगभग 8 मिनट 20 सेकंड का समय लगता है।",
+    "सौर ऊर्जा समाप्त होने पर, 1 सप्ताह के भीतर पृथ्वी की सतह का औसत तापमान लगभग -18 °C तक गिर जाएगा।",
+    "बिना सूरज के 1 वर्ष बीतने के बाद, वैश्विक सतह का तापमान लगभग -73 °C तक नीचे आ जाएगा।",
+    "गहरे समुद्र तल पर मौजूद हाइड्रोथर्मल वेंट बिना सूर्य के प्रकाश के भूतापीय ऊर्जा से सैकड़ों हजारों वर्षों तक पारिस्थितिक तंत्र को जीवित रख सकते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Jika Matahari Tiba-Tiba Padam?",
+   "summary": "Jika Matahari tiba-tiba padam, berapa menit Bumi akan gelap gulita dan seberapa dingin planet ini? Seluruh bencana dijelaskan langkah demi langkah, mulai dari hilangnya cahaya hingga membekunya lautan.",
+   "facts": [
+    "Dibutuhkan waktu sekitar 8 menit 20 detik bagi cahaya Matahari untuk mencapai Bumi.",
+    "Ketika energi matahari terhenti, suhu rata-rata permukaan Bumi akan turun menjadi sekitar -18 °C dalam 1 minggu.",
+    "Setelah 1 tahun tanpa Matahari, suhu permukaan global akan turun drastis hingga sekitar -73 °C.",
+    "Ventilasi hidrotermal di dasar laut dalam dapat menopang ekosistem selama ratusan ribu tahun dengan energi panas bumi tanpa sinar matahari."
+   ]
+  },
+  "fr": {
+   "title": "Et si le Soleil s'éteignait d'un coup ?",
+   "summary": "Si le Soleil s'éteignait soudainement, en combien de minutes la Terre sombrerait-elle dans le noir et à quel point refroidirait-elle ? La catastrophe expliquée pas à pas, de la disparition de la lumière au gel des océans.",
+   "facts": [
+    "La lumière du Soleil met environ 8 minutes et 20 secondes pour atteindre la Terre.",
+    "Sans énergie solaire, la température moyenne à la surface de la Terre chuterait à environ -18 °C en 1 semaine.",
+    "Après 1 an sans Soleil, la température de surface mondiale chuterait à environ -73 °C.",
+    "Les cheminées hydrothermales des abysses peuvent maintenir des écosystèmes en vie pendant des centaines de milliers d'années grâce à l'énergie géothermique, sans aucune lumière solaire."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn die Sonne plötzlich erlischt?",
+   "summary": "Wenn die Sonne plötzlich erlischt: Wie viele Minuten dauert es, bis die Erde dunkel wird, und wie kalt wird der Planet? Die Katastrophe Schritt für Schritt erklärt, vom Lichtausfall bis zum Zufrieren der Ozeane.",
+   "facts": [
+    "Das Sonnenlicht braucht etwa 8 Minuten und 20 Sekunden, um die Erde zu erreichen.",
+    "Ohne Sonnenenergie sinkt die durchschnittliche Oberflächentemperatur der Erde innerhalb von 1 Woche auf etwa -18 °C.",
+    "Nach 1 Jahr ohne Sonne fällt die weltweite Oberflächentemperatur auf rund -73 °C.",
+    "Hydrothermale Quellen in der Tiefsee können Ökosysteme ohne Sonnenlicht durch Geothermie Hunderttausende von Jahren am Leben erhalten."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если Солнце внезапно погаснет?",
+   "summary": "Если Солнце внезапно погаснет, через сколько минут Земля погрузится во тьму и насколько похолодает на планете? Вся катастрофа шаг за шагом: от исчезновения света до замерзания океанов.",
+   "facts": [
+    "Солнечному свету требуется около 8 минут 20 секунд, чтобы достичь Земли.",
+    "При прекращении поступления солнечной энергии средняя температура поверхности Земли за 1 неделю опустится примерно до -18 °C.",
+    "Через 1 год без Солнца глобальная температура поверхности упадет примерно до -73 °C.",
+    "Гидротермальные источники на дне океана могут поддерживать жизнь экосистем сотни тысяч лет за счет геотермальной энергии без солнечного света."
+   ]
+  },
+  "az": {
+   "title": "Günəş bir anda sönsəydi nə olardı?",
+   "summary": "Günəş qəfil sönsə, Yer neçə dəqiqəyə qaranlığa qərq olar və planet nə qədər soyuyar? İşıqsız qalmaqdan okeanların donmasına qədər bütün fəlakət addım-addım izah olunur.",
+   "facts": [
+    "Günəş işığının Yerə çatması təxminən 8 dəqiqə 20 saniyə çəkir.",
+    "Günəş enerjisi kəsildikdə Yerin orta səth temperaturu 1 həftə ərzində təxminən -18 °C-yə düşür.",
+    "Günəşsiz keçən 1 ildən sonra qlobal səth temperaturu təxminən -73 °C səviyyəsinə enir.",
+    "Dərin dəniz dibindəki hidrotermal mənbələr Günəş işığı olmadan geotermal enerji ilə ekosistemləri yüz minlərlə il canlı saxlaya bilər."
+   ]
+  }
+ },
+ "id": "y002",
+ "series": "Ya Olsaydı?",
+ "q": "Güneş bir anda sönseydi ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.207,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 0.35,
+     "t1": 0.663
+    },
+    {
+     "w": "bir",
+     "t0": 0.733,
+     "t1": 0.861
+    },
+    {
+     "w": "anda",
+     "t0": 0.896,
+     "t1": 1.105
+    },
+    {
+     "w": "sönse",
+     "t0": 1.151,
+     "t1": 1.452
+    },
+    {
+     "w": "ne",
+     "t0": 1.5110000000000001,
+     "t1": 1.569
+    },
+    {
+     "w": "olurdu?",
+     "t0": 1.6029999999999998,
+     "t1": 2.207
+    }
+   ]
+  },
+  {
+   "t0": 2.601746031746032,
+   "t1": 5.759746031746031,
+   "words": [
+    {
+     "w": "İlk",
+     "t0": 2.601746031746032,
+     "t1": 2.775746031746032
+    },
+    {
+     "w": "8",
+     "t0": 2.822746031746032,
+     "t1": 3.077746031746032
+    },
+    {
+     "w": "dakika",
+     "t0": 3.112746031746032,
+     "t1": 3.553746031746032
+    },
+    {
+     "w": "20",
+     "t0": 3.692746031746032,
+     "t1": 3.9837460317460316
+    },
+    {
+     "w": "saniye",
+     "t0": 4.029746031746032,
+     "t1": 4.331746031746032
+    },
+    {
+     "w": "hiçbir",
+     "t0": 4.366746031746032,
+     "t1": 4.586746031746032
+    },
+    {
+     "w": "şey",
+     "t0": 4.633746031746032,
+     "t1": 4.737746031746032
+    },
+    {
+     "w": "fark",
+     "t0": 4.772746031746031,
+     "t1": 4.981746031746032
+    },
+    {
+     "w": "etmezdik.",
+     "t0": 5.027746031746032,
+     "t1": 5.759746031746031
+    }
+   ]
+  },
+  {
+   "t0": 6.139746031746032,
+   "t1": 7.068746031746032,
+   "words": [
+    {
+     "w": "Bu",
+     "t0": 6.139746031746032,
+     "t1": 6.290746031746032
+    },
+    {
+     "w": "kadar",
+     "t0": 6.325746031746032,
+     "t1": 6.638746031746032
+    },
+    {
+     "w": "mı?",
+     "t0": 6.696746031746033,
+     "t1": 7.068746031746032
+    }
+   ]
+  },
+  {
+   "t0": 7.458294784580499,
+   "t1": 12.102294784580499,
+   "words": [
+    {
+     "w": "Sonra",
+     "t0": 7.458294784580499,
+     "t1": 7.760294784580498
+    },
+    {
+     "w": "zifiri",
+     "t0": 7.818294784580499,
+     "t1": 8.1202947845805
+    },
+    {
+     "w": "karanlık",
+     "t0": 8.166294784580499,
+     "t1": 8.5722947845805
+    },
+    {
+     "w": "çöker",
+     "t0": 8.619294784580498,
+     "t1": 8.9092947845805
+    },
+    {
+     "w": "ve",
+     "t0": 8.9672947845805,
+     "t1": 9.048294784580499
+    },
+    {
+     "w": "yansıyacak",
+     "t0": 9.083294784580499,
+     "t1": 9.617294784580498
+    },
+    {
+     "w": "ışık",
+     "t0": 9.6752947845805,
+     "t1": 9.8962947845805
+    },
+    {
+     "w": "kalmadığı",
+     "t0": 9.919294784580499,
+     "t1": 10.372294784580498
+    },
+    {
+     "w": "için",
+     "t0": 10.430294784580498,
+     "t1": 10.7322947845805
+    },
+    {
+     "w": "Ay",
+     "t0": 10.987294784580499,
+     "t1": 11.150294784580499
+    },
+    {
+     "w": "kaybolurdu.",
+     "t0": 11.185294784580499,
+     "t1": 12.102294784580499
+    }
+   ]
+  },
+  {
+   "t0": 12.3022947845805,
+   "t1": 15.9242947845805,
+   "words": [
+    {
+     "w": "Yalnızca",
+     "t0": 12.3022947845805,
+     "t1": 12.7202947845805
+    },
+    {
+     "w": "1",
+     "t0": 12.778294784580499,
+     "t1": 12.9062947845805
+    },
+    {
+     "w": "haftada",
+     "t0": 12.9292947845805,
+     "t1": 13.2422947845805
+    },
+    {
+     "w": "ortalama",
+     "t0": 13.2772947845805,
+     "t1": 13.6832947845805
+    },
+    {
+     "w": "sıcaklık",
+     "t0": 13.7182947845805,
+     "t1": 14.1362947845805
+    },
+    {
+     "w": "-18",
+     "t0": 14.2062947845805,
+     "t1": 14.8442947845805
+    },
+    {
+     "w": "°C'ye",
+     "t0": 14.8912947845805,
+     "t1": 15.2162947845805
+    },
+    {
+     "w": "düşerdi.",
+     "t0": 15.2512947845805,
+     "t1": 15.9242947845805
+    }
+   ]
+  },
+  {
+   "t0": 16.30460770975057,
+   "t1": 17.32660770975057,
+   "words": [
+    {
+     "w": "Resmen",
+     "t0": 16.30460770975057,
+     "t1": 16.67660770975057
+    },
+    {
+     "w": "donarız!",
+     "t0": 16.72260770975057,
+     "t1": 17.32660770975057
+    }
+   ]
+  },
+  {
+   "t0": 17.71744217687075,
+   "t1": 22.45444217687075,
+   "words": [
+    {
+     "w": "1",
+     "t0": 17.71744217687075,
+     "t1": 17.90344217687075
+    },
+    {
+     "w": "yılın",
+     "t0": 17.94944217687075,
+     "t1": 18.20544217687075
+    },
+    {
+     "w": "sonundaysa",
+     "t0": 18.40244217687075,
+     "t1": 19.13344217687075
+    },
+    {
+     "w": "yüzey",
+     "t0": 19.43544217687075,
+     "t1": 19.72544217687075
+    },
+    {
+     "w": "sıcaklığı",
+     "t0": 19.77244217687075,
+     "t1": 20.21344217687075
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 20.26044217687075,
+     "t1": 20.689442176870752
+    },
+    {
+     "w": "-73",
+     "t0": 20.75944217687075,
+     "t1": 21.44444217687075
+    },
+    {
+     "w": "°C",
+     "t0": 21.50244217687075,
+     "t1": 21.76944217687075
+    },
+    {
+     "w": "olurdu.",
+     "t0": 21.81544217687075,
+     "t1": 22.45444217687075
+    }
+   ]
+  },
+  {
+   "t0": 22.654442176870752,
+   "t1": 27.15944217687075,
+   "words": [
+    {
+     "w": "Ama",
+     "t0": 22.654442176870752,
+     "t1": 22.840442176870752
+    },
+    {
+     "w": "okyanus",
+     "t0": 22.875442176870752,
+     "t1": 23.23444217687075
+    },
+    {
+     "w": "tabanındaki",
+     "t0": 23.29344217687075,
+     "t1": 23.827442176870754
+    },
+    {
+     "w": "mikroplar",
+     "t0": 23.873442176870753,
+     "t1": 24.326442176870753
+    },
+    {
+     "w": "jeotermal",
+     "t0": 24.396442176870753,
+     "t1": 24.895442176870752
+    },
+    {
+     "w": "ısıyla",
+     "t0": 24.94144217687075,
+     "t1": 25.31344217687075
+    },
+    {
+     "w": "milyonlarca",
+     "t0": 25.510442176870754,
+     "t1": 26.067442176870752
+    },
+    {
+     "w": "yıl",
+     "t0": 26.114442176870753,
+     "t1": 26.242442176870753
+    },
+    {
+     "w": "yaşayabilirdi.",
+     "t0": 26.300442176870753,
+     "t1": 27.15944217687075
+    }
+   ]
+  },
+  {
+   "t0": 27.53944217687075,
+   "t1": 29.02544217687075,
+   "words": [
+    {
+     "w": "Güneş'i",
+     "t0": 27.53944217687075,
+     "t1": 27.91144217687075
+    },
+    {
+     "w": "hiç",
+     "t0": 27.95744217687075,
+     "t1": 28.09644217687075
+    },
+    {
+     "w": "takmıyorlar!",
+     "t0": 28.17844217687075,
+     "t1": 29.02544217687075
+    }
+   ]
+  },
+  {
+   "t0": 29.236562358276647,
+   "t1": 31.790562358276645,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 29.236562358276647,
+     "t1": 29.712562358276646
+    },
+    {
+     "w": "soruyu",
+     "t0": 29.758562358276645,
+     "t1": 30.06056235827665
+    },
+    {
+     "w": "sen",
+     "t0": 30.118562358276648,
+     "t1": 30.33956235827665
+    },
+    {
+     "w": "seç!",
+     "t0": 30.409562358276645,
+     "t1": 30.722562358276647
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 30.827562358276648,
+     "t1": 31.349562358276646
+    },
+    {
+     "w": "yaz.",
+     "t0": 31.384562358276646,
+     "t1": 31.790562358276645
+    }
+   ]
+  }
+ ]
+}
