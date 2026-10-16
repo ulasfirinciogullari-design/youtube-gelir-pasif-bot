@@ -202,7 +202,8 @@ def test_a_published_short_is_found_in_the_artifact_of_the_run_that_uploaded_it(
 
     def get(url, token, raw=False):
         calls.append(url)
-        if url.endswith("per_page=100"):
+        if "/workflows/" in url:
+            assert "created=2026-10-16T10%3A30%3A39Z..2026-10-16T12%3A30%3A39Z" in url
             return {"workflow_runs": runs}
         if url.endswith("/artifacts"):
             run = url.split("/runs/")[1].split("/")[0]

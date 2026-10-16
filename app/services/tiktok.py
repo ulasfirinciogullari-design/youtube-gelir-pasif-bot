@@ -328,8 +328,12 @@ def find_short(upload: dict, out_dir: Path, repo: str, token: str, get=_github) 
     """Downloads the uploaded Short from the artifact of the run that published it: the newest successful Shorts
     run that started before the upload and whose meta has the same topic."""
     uploaded_at = datetime.fromisoformat(upload["uploaded_at"])
-    runs = get(f"{GITHUB_API}/{repo}/actions/workflows/{SHORTS_WORKFLOW}/runs?status=success&per_page=100",
-               token)["workflow_runs"]
+    # Only the runs that started in the window before the upload: a day of hourly Shorts and skipped ticks is
+    # more than one page of runs, a window of MAX_RUN_LEAD fits in one.
+    stamp = lambda t: t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    window = urllib.parse.quote(f"{stamp(uploaded_at - MAX_RUN_LEAD)}..{stamp(uploaded_at)}")
+    runs = get(f"{GITHUB_API}/{repo}/actions/workflows/{SHORTS_WORKFLOW}/runs?status=success&per_page=100"
+               f"&created={window}", token)["workflow_runs"]
     for run in sorted(runs, key=lambda r: r["created_at"], reverse=True):
         started = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
         if started > uploaded_at:
