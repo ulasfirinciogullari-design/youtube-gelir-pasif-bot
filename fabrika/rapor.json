@@ -1,7 +1,11 @@
 {
- "started": "2026-10-16T04:52:26+00:00",
- "mod": "deneme",
- "gate": "deneme",
+ "started": "2026-10-16T05:08:00+00:00",
+ "mod": "zorla",
+ "gate": "zorla",
+ "credits_before": [
+  106778,
+  121782
+ ],
  "topic": {
   "id": "y001",
   "series": "Ya Olsaydı?",
@@ -14,19 +18,38 @@
   "fixes": [
    {
     "line": 7,
-    "why": "Sıvı çekirdek eylemsizlik nedeniyle durmaz. Manyetik alan ise çekirdeğin durmasıyla anında sönmez; gezegenin dönüşü durduğu için Coriolis kaynaklı jeodinamomuz bozulur ve kalkan binlerce yıl içinde zayıflar."
+    "why": "Manyetik alan dönme durunca bir anda yok olmaz (sönmesi binlerce yıl alır) ve yüzeyi ölümcül kozmik radyasyondan koruyan asıl kalkan manyetik alan değil, atmosferin kendisidir."
    }
   ]
  },
  "chunks": 0,
  "grounded": true,
- "chars": 542,
- "duration": 37.4,
- "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu?",
- "deneme": "fabrika/deneme/",
+ "chars": 499,
+ "duration": 34.6,
+ "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "2",
+  "videos": "1"
+ },
+ "url": "https://youtube.com/shorts/8KoJ0-4fHyY",
+ "recent_status": {
+  "y001": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  106888,
+  121782
+ ],
  "log": [
   "Konu: y001 Dünya dönmeyi bıraksaydı ne olurdu? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T04:55:21+00:00"
+ "finished": "2026-10-16T05:10:36+00:00"
 }

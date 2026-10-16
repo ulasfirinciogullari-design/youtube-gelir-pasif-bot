@@ -1,137 +1,142 @@
 {
- "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu?",
+ "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
  "bar": {
-  "hi": "DÜNYA DURSA",
-  "rest": "NE OLURDU?"
+  "hi": "DÜNYA",
+  "rest": "DURURSA NE OLUR?"
  },
- "summary": "Dünya bir anda dönmeyi kesseydi başımıza neler gelirdi hiç düşündünüz mü? Saatte binlerce kilometrelik fırtınalardan altı aylık gecelere, duran bir gezegenin akılalmaz gerçeklerini keşfedin.",
+ "summary": "Dünya aniden dönmeyi kesseydi üzerindeki her şey süpersonik bir hızla savrulurdu. Okyanusların yer değiştirdiği ve bir günün bir yıl sürdüğü bu akılalmaz senaryoyu keşfedin.",
  "lines": [
   {
    "who": "bit",
-   "text": "Dünya bir anda dönmeyi bıraksa ne olur?",
+   "text": "Dünya aniden dönmeyi bıraksa ne olur?",
    "v": {
     "t": "question",
     "bg": "space",
     "e": "🌍",
-    "label": "DÜNYA DURURSA"
+    "label": "Dünya Durursa?"
    }
   },
   {
    "who": "pi",
-   "text": "Ekvatorda saatte 1.670 kilometre hızla doğuya fırlardık.",
+   "text": "Ekvatorda her şey saatte 1.670 kilometre hızla doğuya savrulurdu.",
    "v": {
     "t": "number",
-    "bg": "city",
+    "bg": "space",
     "e": "💨",
     "value": "1.670",
-    "unit": "km/saat",
-    "label": "SAVRULMA HIZI",
+    "unit": "km/h",
+    "label": "Savrulma Hızı",
     "key": "1.670"
    }
   },
   {
    "who": "bit",
-   "text": "Uçarak mı? Bu kadar mı?",
+   "text": "Ciddi misin?",
    "v": {
     "t": "icon",
-    "bg": "sky",
+    "bg": "storm",
     "e": "😱",
     "do": "shake",
-    "key": "kadar",
-    "label": "HER ŞEY UÇUYOR"
+    "key": "Ciddi",
+    "label": "Şok Etkisi"
    }
   },
   {
    "who": "pi",
-   "text": "Atmosfer durmaz, süpersonik rüzgarlar yeryüzündeki her yapıyı dümdüz ederdi.",
+   "text": "Atmosfer durmazdı; binaları yıkan süpersonik kasırgalar kopardı.",
    "v": {
     "t": "icon",
     "bg": "storm",
     "e": "🌪️",
-    "do": "spin",
-    "key": "süpersonik",
-    "label": "DEV FIRTINA"
-   }
-  },
-  {
-   "who": "bit",
-   "text": "Binalar bile mi?",
-   "v": {
-    "t": "icon",
-    "bg": "city",
-    "e": "🏢",
-    "do": "fall",
-    "key": "Binalar",
-    "label": "YIKILAN ŞEHİRLER"
+    "do": "grow",
+    "key": "kasırgalar",
+    "label": "Süpersonik Rüzgar"
    }
   },
   {
    "who": "pi",
-   "text": "Merkezkaç bitince okyanuslar kutuplara çekilir, ekvatorda devasa bir kara kalırdı.",
+   "text": "Sular kutuplara kaçar, ekvatorda tek parça devasa bir kara kalırdı.",
    "v": {
     "t": "split",
     "bg": "ocean",
     "left": {
      "e": "🌊",
-     "label": "ŞİMDİKİ SULAR"
+     "label": "Kutuplarda Su"
     },
     "right": {
-     "e": "🧭",
-     "label": "KUTUP DENİZİ"
+     "e": "🏜️",
+     "label": "Ekvatorda Kara"
     },
-    "key": "okyanuslar"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Üstelik 1 gün 1 yıl sürerdi: tam 6 ay kavurucu gündüz, 6 ay dondurucu gece.",
-   "v": {
-    "t": "timeline",
-    "bg": "space",
-    "steps": [
-     {
-      "when": "6 AY",
-      "e": "☀️",
-      "label": "KAVURUCU GÜN"
-     },
-     {
-      "when": "6 AY",
-      "e": "🥶",
-      "label": "DONMUŞ GECE"
-     }
-    ],
-    "key": "gündüz"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "pi: Gezegenin dönüşü durunca dinamo etkisi çöker, manyetik kalkanımız zamanla yok olurdu.",
-   "v": {
-    "t": "icon",
-    "bg": "space",
-    "e": "🛡️",
-    "do": "vanish",
-    "key": "kalkanımız",
-    "label": "MANYETİK KALKAN"
+    "key": "kutuplara"
    }
   },
   {
    "who": "bit",
-   "text": "İyi ki hızla dönüyoruz!",
+   "text": "Peki ya gece ve gündüz?",
+   "v": {
+    "t": "icons",
+    "bg": "sky",
+    "items": [
+     {
+      "e": "☀️",
+      "label": "Gündüz"
+     },
+     {
+      "e": "🌙",
+      "label": "Gece"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir gün tam 1 yıl sürerdi; 6 ay kavurucu sıcak, 6 ay dondurucu soğuk.",
+   "v": {
+    "t": "compare",
+    "bg": "desert",
+    "a": {
+     "e": "☀️",
+     "label": "6 Ay Gündüz",
+     "value": 6
+    },
+    "b": {
+     "e": "❄️",
+     "label": "6 Ay Gece",
+     "value": 6
+    },
+    "mode": "bar",
+    "key": "6"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Zamanla manyetik alan zayıflar, yüzeye ulaşan zararlı radyasyon artardı.",
    "v": {
     "t": "space",
     "bg": "space",
     "bodies": [
      {
       "b": "earth",
-      "size": "l",
+      "size": "m",
       "at": "c"
      }
     ],
-    "do": "spin",
+    "do": "heat",
     "target": 0,
-    "key": "dönüyoruz",
-    "label": "DÖNEN DÜNYA"
+    "key": "radyasyon",
+    "label": "Kalkan Çöküşü"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Döndüğümüze ilk kez sevindim!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "😮‍💨",
+    "do": "pulse",
+    "key": "sevindim",
+    "label": "Derin Nefes"
    }
   },
   {
@@ -140,42 +145,44 @@
    "v": {
     "t": "outro",
     "bg": "space",
-    "e": "✨"
+    "e": "🚀"
    }
   }
  ],
  "facts": [
   {
-   "text": "Dünya'nın kendi ekseni etrafındaki dönüş hızı ekvator çizgisinde yaklaşık 1.670 km/saat hızındadır.",
+   "text": "Dünya'nın ekvatordaki çizgisel dönüş hızı yaklaşık 1.670 km/h'dir ve ani bir duruşta eylemsizlik her şeyi bu hızla doğuya fırlatır.",
    "source": "NASA",
-   "url": "https://science.nasa.gov/"
+   "url": "https://image.gsfc.nasa.gov/poetry/ask/q1168.html"
   },
   {
-   "text": "Dönüş durduğunda merkezkaç kuvveti yok olacağı için tüm okyanus suları kutuplara toplanır ve ekvator devasa bir kıtaya dönüşür.",
+   "text": "Merkezkaç kuvveti kalktığında okyanus suları kutuplara doğru çekilerek iki kutup denizi oluşturur ve ekvatorda mega bir kıta bırakır.",
    "source": "Esri",
-   "url": "https://www.esri.com/news/arcuser/0610/nospin.html"
+   "url": "https://www.esri.com"
   },
   {
-   "text": "Kendi ekseninde dönmeyen bir Dünya'da Güneş etrafındaki tur nedeniyle 1 tam gün 1 yıla eşitlenir; 6 ay gündüz ve 6 ay gece yaşanır.",
-   "source": "Smithsonian National Air and Space Museum",
-   "url": "https://airandspace.si.edu/"
+   "text": "Dönüşün durması durumunda Güneş etrafındaki tur nedeniyle bir gün bir yıla eşitlenir; 6 ay gündüz ve 6 ay gece yaşanır.",
+   "source": "Space.com",
+   "url": "https://www.space.com/what-would-happen-if-earth-stopped-spinning"
   },
   {
-   "text": "Dönüş hareketi durduğunda sıvı dış çekirdeğin dinamo etkisi kesintiye uğrayarak koruyucu manyetik kalkanın çökmesine yol açabilir.",
-   "source": "ESA",
-   "url": "https://www.esa.int/"
+   "text": "Dünya çekirdeğindeki jeodinamo mekanizması dönüşe bağlı olduğu için dönüşün durması koruyucu manyetik alanı ortadan kaldırabilir.",
+   "source": "Astronomy Magazine",
+   "url": "https://www.astronomy.com"
   }
  ],
  "tags": [
-  "dünya dönmeyi bıraksaydı",
+  "dünya durursa",
   "dünyanın dönüşü",
-  "eylemsizlik",
-  "dünya durursa ne olur",
-  "merkezkaç kuvveti",
-  "astronomi",
   "fizik",
+  "uzay",
+  "eylemsizlik",
+  "atmosfer",
   "manyetik alan",
-  "uzay bilimi",
+  "yerçekimi",
+  "dünya dönmeyi bıraksa",
+  "astronomi",
+  "earth stops spinning",
   "ya olsaydı",
   "bilim",
   "animasyon",
@@ -183,116 +190,113 @@
   "science"
  ],
  "hashtags": [
-  "#dünyanınsırrı",
-  "#bilim",
-  "#yaolsaydı"
+  "#dünyadönüşü",
+  "#yaolsaydı",
+  "#bilim"
  ],
  "cover": 1,
  "sources": [
-  "https://science.howstuffworks.com/science-vs-myth/what-if/what-if-earth-stopped-spinning.htm",
-  "https://science.nasa.gov/",
-  "https://www.esri.com/about/newsroom/arcuser/what-would-happen-if-earth-stopped-spinning?rsource=https%3A%2F%2Fwww.esri.com%2Fnews%2Farcuser%2F0610%2Fnospin.html",
-  "https://airandspace.si.edu/"
+  "https://www.space.com/what-would-happen-if-earth-stopped-spinning"
  ],
  "i18n": {
   "en": {
-   "title": "What If the Earth Stopped Spinning?",
-   "summary": "Have you ever wondered what would happen if the Earth suddenly stopped spinning? From storms raging at thousands of kilometers per hour to six-month nights, discover the unbelievable realities of a halted planet.",
+   "title": "What If the Earth Suddenly Stopped Spinning?",
+   "summary": "If Earth abruptly ceased rotating, everything on its surface would be hurled at supersonic speeds. Discover the mind-bending scenario where oceans shift and a single day lasts an entire year.",
    "facts": [
-    "Earth's rotational speed around its axis is approximately 1,670 km/h at the equator.",
-    "If rotation stopped, the disappearance of centrifugal force would cause oceans to rush to the poles, turning the equator into a massive continent.",
-    "On a non-spinning Earth, due to its orbit around the Sun, 1 full day would equal 1 year, resulting in 6 months of daylight and 6 months of night.",
-    "Stopping the rotation could disrupt the dynamo effect of the liquid outer core, potentially collapsing our protective magnetic shield."
+    "Earth's rotational speed at the equator is about 1,670 km/h, and an abrupt halt would cause inertia to fling everything eastward at this velocity.",
+    "Without centrifugal force, ocean waters would migrate toward the poles, creating two polar oceans and leaving a massive megacontinent at the equator.",
+    "With rotation halted, one day would equal one year due to our orbit around the Sun, resulting in 6 months of daylight followed by 6 months of night.",
+    "Because the geodynamo in Earth's core relies on rotation, stopping could collapse the protective magnetic field."
    ]
   },
   "es": {
-   "title": "¿Qué pasaría si la Tierra dejara de girar?",
-   "summary": "¿Alguna vez te has preguntado qué pasaría si la Tierra dejara de girar de golpe? Desde tormentas de miles de kilómetros por hora hasta noches de seis meses, descubre la increíble realidad de un planeta detenido.",
+   "title": "¿Qué pasaría si la Tierra dejara de girar de golpe?",
+   "summary": "Si la Tierra dejara de rotar repentinamente, todo en su superficie saldría despedido a velocidad supersónica. Descubre este impactante escenario donde los océanos se desplazan y un día dura un año entero.",
    "facts": [
-    "La velocidad de rotación de la Tierra sobre su propio eje es de aproximadamente 1.670 km/h en el ecuador.",
-    "Al detenerse el giro, la desaparición de la fuerza centrífuga desplazaría los océanos hacia los polos, convirtiendo el ecuador en un continente gigante.",
-    "En una Tierra que no rota, debido a su órbita alrededor del Sol, 1 día completo equivaldría a 1 año, con 6 meses de día y 6 meses de noche.",
-    "El cese de la rotación interrumpiría el efecto dinamo del núcleo externo líquido, lo que podría provocar el colapso del escudo magnético protector."
+    "La velocidad lineal de rotación en el ecuador es de unos 1.670 km/h, y una parada repentina lanzaría todo hacia el este a esa velocidad por inercia.",
+    "Al desaparecer la fuerza centrífuga, las aguas oceánicas se desplazarían hacia los polos, creando dos océanos polares y un megacontinente en el ecuador.",
+    "Sin rotación, la traslación alrededor del Sol haría que un día durase un año entero, con 6 meses de luz y 6 meses de noche.",
+    "Dado que el mecanismo de geodinamo del núcleo depende de la rotación, detenerse podría destruir el campo magnético protector."
    ]
   },
   "pt": {
-   "title": "E se a Terra parasse de girar?",
-   "summary": "Já pensou no que aconteceria se a Terra parasse de girar de repente? De tempestades a milhares de quilômetros por hora a noites de seis meses, descubra as realidades impressionantes de um planeta imóvel.",
+   "title": "E se a Terra parasse de girar de repente?",
+   "summary": "Se a Terra parasse subitamente de girar, tudo na superfície seria arremessado a velocidades supersônicas. Descubra esse cenário impressionante onde os oceanos mudam de lugar e um único dia dura um ano inteiro.",
    "facts": [
-    "A velocidade de rotação da Terra em torno de seu próprio eixo é de aproximadamente 1.670 km/h na linha do equador.",
-    "Ao cessar a rotação, a força centrífuga desapareceria e os oceanos migrariam para os polos, transformando o equador em um megacontinente.",
-    "Em uma Terra estática, devido à translação ao redor do Sol, 1 dia inteiro equivaleria a 1 ano, com 6 meses de luz solar e 6 meses de escuridão.",
-    "A parada no giro interromperia o efeito dínamo do núcleo externo líquido, podendo causar o colapso do escudo magnético protetor."
+    "A velocidade linear de rotação no equador é de cerca de 1.670 km/h, e uma parada súbita arremessaria tudo para o leste nessa velocidade devido à inércia.",
+    "Sem a força centrífuga, as águas oceânicas migrariam para os polos, criando dois mares polares e deixando um megacontinente no equador.",
+    "Com o fim da rotação, a órbita ao redor do Sol faria um dia durar um ano, resultando em 6 meses de dia e 6 meses de noite.",
+    "Como o dínamo no núcleo da Terra depende da rotação, uma parada poderia eliminar o campo magnético protetor."
    ]
   },
   "ar": {
-   "title": "ماذا لو توقفت الأرض عن الدوران؟",
-   "summary": "هل تساءلت يوماً عما سيحدث لو توقفت الأرض فجأة عن الدوران؟ من عواصف بسرعة آلاف الكيلومترات في الساعة إلى ليل يدوم ستة أشهر، اكتشف الحقائق المذهلة لكوكب متوقف.",
+   "title": "ماذا لو توقفت الأرض فجأة عن الدوران؟",
+   "summary": "لو توقفت الأرض فجأة عن الدوران، لتطاير كل شيء على سطحها بسرعات تفوق سرعة الصوت. اكتشف هذا السيناريو المذهل حيث تهاجر المحيطات ويستمر اليوم الواحد عاماً كاملاً.",
    "facts": [
-    "تبلغ سرعة دوران الأرض حول محورها حوالي 1670 كم/ساعة عند خط الاستواء.",
-    "عندما يتوقف الدوران، ستختفي قوة الطرد المركزي مما يؤدي إلى تجمع مياه المحيطات عند القطبين وتحول خط الاستواء إلى قارة عملاقة.",
-    "على كوكب لا يدور حول نفسه، فإن دورانه حول الشمس يجعل اليوم الكامل يعادل سنة كاملة؛ 6 أشهر نهار و6 أشهر ليل.",
-    "قد يؤدي توقف الحركة الدورانية إلى تعطيل تأثير الدينامو في اللب الخارجي السائل، مما قد يتسبب في انهيار الدرع المغناطيسي الواقي."
+    "تبلغ سرعة دوران الأرض عند خط الاستواء نحو 1,670 كم/س، والتوقف المفاجئ سيدفع كل شيء شرقاً بهذه السرعة بسبب القصور الذاتي.",
+    "مع زوال قوة الطرد المركزي، ستندفع مياه المحيطات نحو القطبين لتشكل بحرين قطبيين، مخلفة قارة عملاقة عند خط الاستواء.",
+    "في حال توقف الدوران، سيعادل اليوم الواحد سنة كاملة بفعل دوران الأرض حول الشمس، مقسماً إلى 6 أشهر نهاراً و6 أشهر ليلاً.",
+    "نظراً لأن آلية الدينامو الجيولوجي في باطن الأرض تعتمد على الدوران، فإن توقفه قد يؤدي إلى تلاشي المجال المغناطيسي الحامي."
    ]
   },
   "hi": {
-   "title": "क्या होगा अगर पृथ्वी घूमना बंद कर दे?",
-   "summary": "क्या आपने कभी सोचा है कि अगर पृथ्वी अचानक घूमना बंद कर दे तो क्या होगा? हजारों किलोमीटर प्रति घंटे के तूफानों से लेकर छह महीने लंबी रातों तक, एक थमे हुए ग्रह की हैरान करने वाली सच्चाइयों को जानें।",
+   "title": "क्या होगा अगर पृथ्वी अचानक घूमना बंद कर दे?",
+   "summary": "अगर पृथ्वी अचानक घूमना बंद कर दे, तो उसकी सतह की हर चीज़ सुपरसोनिक गति से हवा में उड़ जाएगी। जानिए इस हैरान कर देने वाले मंज़र के बारे में जहाँ महासागर विस्थापित हो जाएँगे और एक दिन पूरे एक साल जितना लंबा होगा।",
    "facts": [
-    "भूमध्य रेखा पर पृथ्वी की अपनी धुरी पर घूमने की गति लगभग 1,670 किमी/घंटा है।",
-    "घूर्णन रुकने पर अपकेंद्रीय बल खत्म हो जाएगा, जिससे महासागर ध्रुवों की ओर खिंच जाएंगे और भूमध्य रेखा एक विशाल महाद्वीप बन जाएगी।",
-    "बिना घूर्णन वाली पृथ्वी पर सूर्य की परिक्रमा के कारण 1 पूरा दिन 1 साल के बराबर होगा; 6 महीने दिन और 6 महीने रात रहेगी।",
-    "घूर्णन रुकने से तरल बाहरी कोर का डायनेमो प्रभाव बाधित हो सकता है, जिससे सुरक्षात्मक चुंबकीय ढाल नष्ट हो सकती है।"
+    "भूमध्य रेखा पर पृथ्वी की घूर्णन गति लगभग 1,670 किमी/घंटा है, और अचानक रुकने पर जड़त्व के कारण हर चीज़ इसी गति से पूर्व की ओर फेंकी जाएगी।",
+    "अपकेंद्री बल खत्म होने से महासागरों का पानी ध्रुवों की ओर खिंच जाएगा, जिससे दो ध्रुवीय समुद्र बनेंगे और भूमध्य रेखा पर एक विशाल महाद्वीप रह जाएगा।",
+    "घूर्णन रुकने की स्थिति में, सूर्य की परिक्रमा के कारण एक दिन एक साल के बराबर हो जाएगा; यानी 6 महीने दिन और 6 महीने रात रहेगी।",
+    "पृथ्वी के कोर का जियोडायनेमो तंत्र घूर्णन पर निर्भर करता है, इसलिए इसका रुकना सुरक्षात्मक चुंबकीय क्षेत्र को खत्म कर सकता है।"
    ]
   },
   "id": {
-   "title": "Apa yang Terjadi jika Bumi Berhenti Berputar?",
-   "summary": "Pernahkah Anda membayangkan apa yang akan terjadi jika Bumi tiba-tiba berhenti berputar? Dari badai berkecepatan ribuan kilometer per jam hingga malam selama enam bulan, temukan kenyataan luar biasa dari planet yang berhenti.",
+   "title": "Apa Jadinya Jika Bumi Tiba-Tiba Berhenti Berputar?",
+   "summary": "Jika Bumi tiba-tiba berhenti berotasi, segala sesuatu di permukaannya akan terlempar dengan kecepatan supersonik. Telusuri skenario luar biasa ini ketika lautan berpindah dan satu hari berlangsung selama satu tahun penuh.",
    "facts": [
-    "Kecepatan rotasi Bumi pada porosnya sekitar 1.670 km/jam di garis khatulistiwa.",
-    "Saat rotasi berhenti, hilangnya gaya sentrifugal akan membuat lautan berkumpul di kutub, mengubah khatulistiwa menjadi benua raksasa.",
-    "Di Bumi yang tidak berotasi, revolusi mengelilingi Matahari akan membuat 1 hari penuh setara dengan 1 tahun; 6 bulan siang dan 6 bulan malam.",
-    "Terhentinya rotasi dapat mengganggu efek dinamo pada inti luar cair, yang berpotensi meruntuhkan perisai magnetik pelindung."
+    "Kecepatan rotasi Bumi di khatulistiwa sekitar 1.670 km/jam, dan penghentian mendadak akan membuat inersia melempar segalanya ke arah timur dengan kecepatan tersebut.",
+    "Saat gaya sentrifugal hilang, air laut akan tertarik ke kutub, membentuk dua samudra kutub dan menyisakan satu megabenua di khatulistiwa.",
+    "Jika rotasi berhenti, orbit mengelilingi Matahari akan membuat satu hari setara dengan satu tahun, memicu 6 bulan siang dan 6 bulan malam.",
+    "Mengingat mekanisme geodinamo di inti Bumi bergantung pada rotasi, berhentinya perputaran dapat melenyapkan medan magnet pelindung."
    ]
   },
   "fr": {
-   "title": "Et si la Terre s'arrêtait de tourner ?",
-   "summary": "Vous êtes-vous déjà demandé ce qui se passerait si la Terre s'arrêtait soudainement de tourner ? D'ouragans à des milliers de kilomètres par heure à des nuits de six mois, découvrez les vérités fascinantes d'une planète figée.",
+   "title": "Et si la Terre s'arrêtait soudainement de tourner ?",
+   "summary": "Si la Terre s'arrêtait brusquement de tourner, tout à sa surface serait projeté à une vitesse supersonique. Découvrez ce scénario saisissant où les océans se déplacent et où un seul jour dure une année entière.",
    "facts": [
-    "La vitesse de rotation de la Terre sur son axe est d'environ 1 670 km/h au niveau de l'équateur.",
-    "À l'arrêt de la rotation, la disparition de la force centrifuge repousserait les océans vers les pôles, transformant l'équateur en un continent gigantesque.",
-    "Sur une Terre sans rotation, en raison de son orbite autour du Soleil, 1 jour complet équivaudrait à 1 an, avec 6 mois de jour et 6 mois de nuit.",
-    "L'arrêt de la rotation perturberait l'effet dynamo du noyau externe liquide, risquant d'anéantir notre bouclier magnétique protecteur."
+    "La vitesse de rotation de la Terre à l'équateur est d'environ 1 670 km/h, et un arrêt soudain projetterait tout vers l'est à cette vitesse sous l'effet de l'inertie.",
+    "Sans force centrifuge, les océans migreraient vers les pôles, formant deux mers polaires et laissant un mégacontinent à l'équateur.",
+    "En cas d'arrêt de la rotation, l'orbite autour du Soleil ferait qu'un jour durerait un an, provoquant 6 mois de jour et 6 mois de nuit.",
+    "Le mécanisme de géodynamo du noyau terrestre dépendant de la rotation, son arrêt pourrait anéantir le bouclier magnétique protecteur."
    ]
   },
   "de": {
-   "title": "Was wäre, wenn die Erde aufhört sich zu drehen?",
-   "summary": "Haben Sie sich je gefragt, was passieren würde, wenn die Erde plötzlich aufhörte sich zu drehen? Von Stürmen mit Tausenden Kilometern pro Stunde bis hin zu sechsmonatigen Nächten – entdecken Sie die unglaublichen Fakten eines stillstehenden Planeten.",
+   "title": "Was wäre, wenn die Erde plötzlich aufhört zu rotieren?",
+   "summary": "Würde die Erde abrupt aufhören sich zu drehen, würde alles auf ihrer Oberfläche mit Überschallgeschwindigkeit weggeschleudert. Erlebe dieses unglaubliche Szenario, in dem Ozeane wandern und ein einziger Tag ein ganzes Jahr dauert.",
    "facts": [
-    "Die Rotationsgeschwindigkeit der Erde um die eigene Achse beträgt am Äquator rund 1.670 km/h.",
-    "Bei einem Stillstand würde die Fliehkraft entfallen, sodass die Ozeane zu den Polen fließen und der Äquator zu einem riesigen Kontinent wird.",
-    "Auf einer stillstehenden Erde entspräche 1 voller Tag durch den Umlauf um die Sonne genau 1 Jahr: 6 Monate Tag und 6 Monate Nacht.",
-    "Das Stoppen der Rotation könnte den Dynamo-Effekt des flüssigen äußeren Kerns unterbrechen und das schützende Magnetfeld zum Zusammenbruch bringen."
+    "Die Rotationsgeschwindigkeit der Erde am Äquator beträgt etwa 1.670 km/h; bei einem abrupten Stopp würde die Trägheit alles mit diesem Tempo nach Osten katapultieren.",
+    "Ohne die Fliehkraft würden die Ozeane zu den Polen strömen, zwei Polarmeere bilden und einen Megakontinent am Äquator hinterlassen.",
+    "Bei einem Stillstand der Rotation würde ein Tag aufgrund der Sonnenumrundung einem Jahr entsprechen: 6 Monate Tag und 6 Monate Nacht.",
+    "Da der Geodynamo-Mechanismus im Erdkern an die Rotation gekoppelt ist, könnte ein Stillstand das schützende Magnetfeld zerstören."
    ]
   },
   "ru": {
-   "title": "Что будет, если Земля перестанет вращаться?",
-   "summary": "Задумывались ли вы, что произойдет, если Земля внезапно перестанет вращаться? От ураганов со скоростью тысячи километров в час до полугодовых ночей — откройте для себя невероятную реальность остановившейся планеты.",
+   "title": "Что, если Земля внезапно перестанет вращаться?",
+   "summary": "Если бы Земля резко остановилась, все на ее поверхности было бы снесено со сверхзвуковой скоростью. Узнайте о невероятном сценарии, в котором океаны меняют русла, а один день длится целый год.",
    "facts": [
-    "Скорость вращения Земли вокруг своей оси на экваторе составляет около 1 670 км/ч.",
-    "При остановке вращения исчезнет центробежная сила, из-за чего океаны уйдут к полюсам, а экватор превратится в гигантский континент.",
-    "Без осевого вращения из-за движения вокруг Солнца 1 полный день станет равен 1 году: 6 месяцев дня и 6 месяцев ночи.",
-    "Остановка вращения нарушит эффект динамо в жидком внешнем ядре, что может привести к коллапсу защитного магнитного щита."
+    "Линейная скорость вращения Земли на экваторе составляет около 1 670 км/ч, и при внезапной остановке инерция отбросит все на восток с этой скоростью.",
+    "При исчезновении центробежной силы воды океанов сместятся к полюсам, образовав два полярных моря и оставив мегаконтинент на экваторе.",
+    "В случае остановки вращения один день станет равен одному году из-за движения вокруг Солнца: 6 месяцев дня и 6 месяцев ночи.",
+    "Поскольку геодинамо в ядре Земли зависит от вращения, его прекращение может уничтожить защитное магнитное поле планеты."
    ]
   },
   "az": {
-   "title": "Yer fırlanmağı dayandırsaydı nə olardı?",
-   "summary": "Yerin qəfil fırlanmağı dayandıracağı təqdirdə başımıza nələrin gələcəyini heç düşünmüsünüz? Saatda minlərlə kilometrlik fırtınalardan altı aylıq gecələrə qədər dayanan bir planetin ağlasığmaz həqiqətlərini kəşf edin.",
+   "title": "Yer birdən-birə fırlanmağı dayandırsaydı nə olardı?",
+   "summary": "Yer qəfil fırlanmağı dayandırsaydı, səthindəki hər şey səsdən sürətli bir sürətlə sovrulardı. Okeanların yer dəyişdiyi və bir günün bir il çəkdiyi bu ağlasığmaz ssenarini kəşf edin.",
    "facts": [
-    "Yerin öz oxu ətrafında fırlanma sürəti ekvator xəttində təxminən 1.670 km/saat təşkil edir.",
-    "Fırlanma dayandıqda mərkəzdənqaçma qüvvəsi yox olacağı üçün bütün okean suları qütblərə toplanar və ekvator nəhəng bir qitəyə çevrilər.",
-    "Öz oxu ətrafında fırlanmayan Yerdə Günəş ətrafındakı dövrə görə 1 tam gün 1 ilə bərabər olar; 6 ay gündüz və 6 ay gecə yaşanar.",
-    "Fırlanma hərəkəti dayandıqda maye xarici nüvənin dinamo effekti pozularaq qoruyucu maqnit qalxanının çökməsinə səbəb ola bilər."
+    "Yerin ekvatordakı xətti fırlanma sürəti təxminən 1.670 km/saatdır və qəfil dayanma zamanı ətalət hər şeyi bu sürətlə şərqə tullayar.",
+    "Mərkəzdənqaçma qüvvəsi aradan qalxdıqda okean suları qütblərə doğru çəkilərək iki qütb dənizi yaradar və ekvatorda nəhəng bir meqaqitə qoyar.",
+    "Fırlanmanın dayanması halında Günəş ətrafındakı dövrə səbəbilə bir gün bir ilə bərabər olar; 6 ay gündüz və 6 ay gecə yaşanar.",
+    "Yer nüvəsindəki geodinamo mexanizmi fırlanmadan asılı olduğu üçün hərəkətin dayanması qoruyucu maqnit sahəsini məhv edə bilər."
    ]
   }
  },
@@ -302,451 +306,421 @@
  "timings": [
   {
    "t0": 0.35,
-   "t1": 2.486,
+   "t1": 2.347,
    "words": [
     {
      "w": "Dünya",
      "t0": 0.35,
-     "t1": 0.6399999999999999
+     "t1": 0.6519999999999999
     },
     {
-     "w": "bir",
-     "t0": 0.698,
-     "t1": 0.8140000000000001
-    },
-    {
-     "w": "anda",
-     "t0": 0.838,
-     "t1": 1.0230000000000001
+     "w": "aniden",
+     "t0": 0.687,
+     "t1": 0.965
     },
     {
      "w": "dönmeyi",
-     "t0": 1.0699999999999998,
-     "t1": 1.4409999999999998
+     "t0": 1.012,
+     "t1": 1.325
     },
     {
      "w": "bıraksa",
-     "t0": 1.487,
-     "t1": 1.87
+     "t0": 1.3719999999999999,
+     "t1": 1.7200000000000002
     },
     {
      "w": "ne",
-     "t0": 1.928,
-     "t1": 2.01
+     "t0": 1.767,
+     "t1": 1.8250000000000002
     },
     {
      "w": "olur?",
-     "t0": 2.045,
-     "t1": 2.486
+     "t0": 1.8599999999999999,
+     "t1": 2.347
     }
    ]
   },
   {
-   "t0": 2.8701814058956914,
-   "t1": 7.142181405895691,
+   "t0": 2.735918367346939,
+   "t1": 7.100918367346939,
    "words": [
     {
      "w": "Ekvatorda",
-     "t0": 2.8701814058956914,
-     "t1": 3.578181405895691
-    },
-    {
-     "w": "saatte",
-     "t0": 3.7411814058956914,
-     "t1": 4.182181405895691
-    },
-    {
-     "w": "1.670",
-     "t0": 4.251181405895691,
-     "t1": 5.110181405895691
-    },
-    {
-     "w": "kilometre",
-     "t0": 5.180181405895691,
-     "t1": 5.621181405895691
-    },
-    {
-     "w": "hızla",
-     "t0": 5.679181405895692,
-     "t1": 5.958181405895692
-    },
-    {
-     "w": "doğuya",
-     "t0": 6.004181405895691,
-     "t1": 6.306181405895691
-    },
-    {
-     "w": "fırlardık.",
-     "t0": 6.3531814058956915,
-     "t1": 7.142181405895691
-    }
-   ]
-  },
-  {
-   "t0": 7.522653061224489,
-   "t1": 9.147653061224489,
-   "words": [
-    {
-     "w": "Uçarak",
-     "t0": 7.522653061224489,
-     "t1": 7.986653061224489
-    },
-    {
-     "w": "mı?",
-     "t0": 8.05665306122449,
-     "t1": 8.172653061224489
-    },
-    {
-     "w": "Bu",
-     "t0": 8.20765306122449,
-     "t1": 8.311653061224488
-    },
-    {
-     "w": "kadar",
-     "t0": 8.358653061224489,
-     "t1": 8.718653061224488
-    },
-    {
-     "w": "mı?",
-     "t0": 8.776653061224488,
-     "t1": 9.147653061224489
-    }
-   ]
-  },
-  {
-   "t0": 9.538390022675735,
-   "t1": 14.089390022675735,
-   "words": [
-    {
-     "w": "Atmosfer",
-     "t0": 9.538390022675735,
-     "t1": 10.142390022675734
-    },
-    {
-     "w": "durmaz,",
-     "t0": 10.211390022675735,
-     "t1": 10.688390022675735
-    },
-    {
-     "w": "süpersonik",
-     "t0": 10.711390022675735,
-     "t1": 11.349390022675735
-    },
-    {
-     "w": "rüzgarlar",
-     "t0": 11.384390022675735,
-     "t1": 11.895390022675734
-    },
-    {
-     "w": "yeryüzündeki",
-     "t0": 11.953390022675734,
-     "t1": 12.568390022675734
+     "t0": 2.735918367346939,
+     "t1": 3.339918367346939
     },
     {
      "w": "her",
-     "t0": 12.626390022675736,
-     "t1": 12.777390022675736
+     "t0": 3.408918367346939,
+     "t1": 3.548918367346939
     },
     {
-     "w": "yapıyı",
-     "t0": 12.835390022675735,
-     "t1": 13.126390022675736
+     "w": "şey",
+     "t0": 3.617918367346939,
+     "t1": 3.791918367346939
     },
     {
-     "w": "dümdüz",
-     "t0": 13.149390022675735,
-     "t1": 13.439390022675735
+     "w": "saatte",
+     "t0": 3.838918367346939,
+     "t1": 4.221918367346939
     },
     {
-     "w": "ederdi.",
-     "t0": 13.497390022675734,
-     "t1": 14.089390022675735
-    }
-   ]
-  },
-  {
-   "t0": 14.469501133786846,
-   "t1": 15.584501133786846,
-   "words": [
-    {
-     "w": "Binalar",
-     "t0": 14.469501133786846,
-     "t1": 14.957501133786845
+     "w": "1.670",
+     "t0": 4.291918367346939,
+     "t1": 5.150918367346939
     },
     {
-     "w": "bile",
-     "t0": 15.015501133786845,
-     "t1": 15.200501133786846
-    },
-    {
-     "w": "mi?",
-     "t0": 15.247501133786846,
-     "t1": 15.584501133786846
-    }
-   ]
-  },
-  {
-   "t0": 15.977800453514737,
-   "t1": 20.854800453514738,
-   "words": [
-    {
-     "w": "Merkezkaç",
-     "t0": 15.977800453514737,
-     "t1": 16.569800453514738
-    },
-    {
-     "w": "bitince",
-     "t0": 16.639800453514738,
-     "t1": 16.999800453514737
-    },
-    {
-     "w": "okyanuslar",
-     "t0": 17.069800453514738,
-     "t1": 17.614800453514736
-    },
-    {
-     "w": "kutuplara",
-     "t0": 17.661800453514736,
-     "t1": 18.067800453514735
-    },
-    {
-     "w": "çekilir,",
-     "t0": 18.114800453514736,
-     "t1": 18.520800453514738
-    },
-    {
-     "w": "ekvatorda",
-     "t0": 18.740800453514737,
-     "t1": 19.309800453514736
-    },
-    {
-     "w": "devasa",
-     "t0": 19.356800453514737,
-     "t1": 19.762800453514735
-    },
-    {
-     "w": "bir",
-     "t0": 19.809800453514736,
-     "t1": 19.93680045351474
-    },
-    {
-     "w": "kara",
-     "t0": 19.98380045351474,
-     "t1": 20.16980045351474
-    },
-    {
-     "w": "kalırdı.",
-     "t0": 20.21580045351474,
-     "t1": 20.854800453514738
-    }
-   ]
-  },
-  {
-   "t0": 21.054800453514737,
-   "t1": 25.884800453514735,
-   "words": [
-    {
-     "w": "Üstelik",
-     "t0": 21.054800453514737,
-     "t1": 21.437800453514736
-    },
-    {
-     "w": "1",
-     "t0": 21.484800453514737,
-     "t1": 21.588800453514736
-    },
-    {
-     "w": "gün",
-     "t0": 21.634800453514735,
-     "t1": 21.739800453514736
-    },
-    {
-     "w": "1",
-     "t0": 21.774800453514736,
-     "t1": 21.87880045351474
-    },
-    {
-     "w": "yıl",
-     "t0": 21.925800453514736,
-     "t1": 22.053800453514736
-    },
-    {
-     "w": "sürerdi:",
-     "t0": 22.08780045351474,
-     "t1": 22.598800453514738
-    },
-    {
-     "w": "tam",
-     "t0": 22.796800453514738,
-     "t1": 22.981800453514737
-    },
-    {
-     "w": "6",
-     "t0": 23.051800453514737,
-     "t1": 23.260800453514737
-    },
-    {
-     "w": "ay",
-     "t0": 23.295800453514737,
-     "t1": 23.365800453514737
-    },
-    {
-     "w": "kavurucu",
-     "t0": 23.411800453514736,
-     "t1": 23.79480045351474
-    },
-    {
-     "w": "gündüz,",
-     "t0": 23.841800453514736,
-     "t1": 24.270800453514738
-    },
-    {
-     "w": "6",
-     "t0": 24.491800453514738,
-     "t1": 24.758800453514738
-    },
-    {
-     "w": "ay",
-     "t0": 24.793800453514738,
-     "t1": 24.862800453514737
-    },
-    {
-     "w": "dondurucu",
-     "t0": 24.909800453514737,
-     "t1": 25.327800453514737
-    },
-    {
-     "w": "gece.",
-     "t0": 25.385800453514737,
-     "t1": 25.884800453514735
-    }
-   ]
-  },
-  {
-   "t0": 26.084800453514738,
-   "t1": 31.61180045351474,
-   "words": [
-    {
-     "w": "pi:",
-     "t0": 26.084800453514738,
-     "t1": 26.397800453514737
-    },
-    {
-     "w": "Gezegenin",
-     "t0": 26.595800453514737,
-     "t1": 27.15280045351474
-    },
-    {
-     "w": "dönüşü",
-     "t0": 27.18780045351474,
-     "t1": 27.50180045351474
-    },
-    {
-     "w": "durunca",
-     "t0": 27.57080045351474,
-     "t1": 27.90780045351474
-    },
-    {
-     "w": "dinamo",
-     "t0": 27.96580045351474,
-     "t1": 28.24480045351474
-    },
-    {
-     "w": "etkisi",
-     "t0": 28.302800453514738,
-     "t1": 28.650800453514737
-    },
-    {
-     "w": "çöker,",
-     "t0": 28.685800453514737,
-     "t1": 29.12680045351474
-    },
-    {
-     "w": "manyetik",
-     "t0": 29.38180045351474,
-     "t1": 29.81180045351474
-    },
-    {
-     "w": "kalkanımız",
-     "t0": 29.857800453514738,
-     "t1": 30.415800453514738
-    },
-    {
-     "w": "zamanla",
-     "t0": 30.438800453514737,
-     "t1": 30.786800453514736
-    },
-    {
-     "w": "yok",
-     "t0": 30.833800453514737,
-     "t1": 30.984800453514737
-    },
-    {
-     "w": "olurdu.",
-     "t0": 31.030800453514736,
-     "t1": 31.61180045351474
-    }
-   ]
-  },
-  {
-   "t0": 31.991800453514738,
-   "t1": 33.338800453514736,
-   "words": [
-    {
-     "w": "İyi",
-     "t0": 31.991800453514738,
-     "t1": 32.13080045351474
-    },
-    {
-     "w": "ki",
-     "t0": 32.18880045351474,
-     "t1": 32.30480045351474
+     "w": "kilometre",
+     "t0": 5.196918367346939,
+     "t1": 5.614918367346939
     },
     {
      "w": "hızla",
-     "t0": 32.36380045351474,
-     "t1": 32.61880045351474
+     "t0": 5.672918367346939,
+     "t1": 5.939918367346939
     },
     {
-     "w": "dönüyoruz!",
-     "t0": 32.67680045351474,
-     "t1": 33.338800453514736
+     "w": "doğuya",
+     "t0": 5.974918367346939,
+     "t1": 6.2309183673469395
+    },
+    {
+     "w": "savrulurdu.",
+     "t0": 6.276918367346939,
+     "t1": 7.100918367346939
     }
    ]
   },
   {
-   "t0": 33.547650793650796,
-   "t1": 35.822650793650794,
+   "t0": 7.481269841269841,
+   "t1": 8.317269841269841,
+   "words": [
+    {
+     "w": "Ciddi",
+     "t0": 7.481269841269841,
+     "t1": 7.79426984126984
+    },
+    {
+     "w": "misin?",
+     "t0": 7.841269841269841,
+     "t1": 8.317269841269841
+    }
+   ]
+  },
+  {
+   "t0": 8.710997732426303,
+   "t1": 12.843997732426303,
+   "words": [
+    {
+     "w": "Atmosfer",
+     "t0": 8.710997732426303,
+     "t1": 9.221997732426303
+    },
+    {
+     "w": "durmazdı;",
+     "t0": 9.279997732426303,
+     "t1": 9.859997732426304
+    },
+    {
+     "w": "binaları",
+     "t0": 10.161997732426304,
+     "t1": 10.695997732426303
+    },
+    {
+     "w": "yıkan",
+     "t0": 10.730997732426303,
+     "t1": 10.985997732426304
+    },
+    {
+     "w": "süpersonik",
+     "t0": 11.043997732426304,
+     "t1": 11.589997732426303
+    },
+    {
+     "w": "kasırgalar",
+     "t0": 11.612997732426305,
+     "t1": 12.111997732426303
+    },
+    {
+     "w": "kopardı.",
+     "t0": 12.158997732426304,
+     "t1": 12.843997732426303
+    }
+   ]
+  },
+  {
+   "t0": 13.044149659863946,
+   "t1": 16.898149659863947,
+   "words": [
+    {
+     "w": "Sular",
+     "t0": 13.044149659863946,
+     "t1": 13.334149659863945
+    },
+    {
+     "w": "kutuplara",
+     "t0": 13.381149659863945,
+     "t1": 13.799149659863946
+    },
+    {
+     "w": "kaçar,",
+     "t0": 13.845149659863946,
+     "t1": 14.263149659863945
+    },
+    {
+     "w": "ekvatorda",
+     "t0": 14.460149659863946,
+     "t1": 14.959149659863947
+    },
+    {
+     "w": "tek",
+     "t0": 15.006149659863945,
+     "t1": 15.157149659863945
+    },
+    {
+     "w": "parça",
+     "t0": 15.215149659863945,
+     "t1": 15.459149659863947
+    },
+    {
+     "w": "devasa",
+     "t0": 15.505149659863946,
+     "t1": 15.853149659863945
+    },
+    {
+     "w": "bir",
+     "t0": 15.900149659863946,
+     "t1": 16.004149659863945
+    },
+    {
+     "w": "kara",
+     "t0": 16.039149659863945,
+     "t1": 16.225149659863945
+    },
+    {
+     "w": "kalırdı.",
+     "t0": 16.271149659863944,
+     "t1": 16.898149659863947
+    }
+   ]
+  },
+  {
+   "t0": 17.278662131519276,
+   "t1": 18.718662131519277,
+   "words": [
+    {
+     "w": "Peki",
+     "t0": 17.278662131519276,
+     "t1": 17.545662131519276
+    },
+    {
+     "w": "ya",
+     "t0": 17.580662131519276,
+     "t1": 17.650662131519276
+    },
+    {
+     "w": "gece",
+     "t0": 17.708662131519276,
+     "t1": 17.917662131519275
+    },
+    {
+     "w": "ve",
+     "t0": 17.963662131519275,
+     "t1": 18.033662131519275
+    },
+    {
+     "w": "gündüz?",
+     "t0": 18.091662131519275,
+     "t1": 18.718662131519277
+    }
+   ]
+  },
+  {
+   "t0": 19.110634920634922,
+   "t1": 23.800634920634923,
+   "words": [
+    {
+     "w": "Bir",
+     "t0": 19.110634920634922,
+     "t1": 19.261634920634922
+    },
+    {
+     "w": "gün",
+     "t0": 19.28463492063492,
+     "t1": 19.447634920634922
+    },
+    {
+     "w": "tam",
+     "t0": 19.56363492063492,
+     "t1": 19.74963492063492
+    },
+    {
+     "w": "1",
+     "t0": 19.81863492063492,
+     "t1": 19.94663492063492
+    },
+    {
+     "w": "yıl",
+     "t0": 19.98163492063492,
+     "t1": 20.07463492063492
+    },
+    {
+     "w": "sürerdi;",
+     "t0": 20.108634920634923,
+     "t1": 20.68863492063492
+    },
+    {
+     "w": "6",
+     "t0": 20.886634920634922,
+     "t1": 21.18863492063492
+    },
+    {
+     "w": "ay",
+     "t0": 21.23463492063492,
+     "t1": 21.28163492063492
+    },
+    {
+     "w": "kavurucu",
+     "t0": 21.33963492063492,
+     "t1": 21.75763492063492
+    },
+    {
+     "w": "sıcak,",
+     "t0": 21.803634920634924,
+     "t1": 22.209634920634922
+    },
+    {
+     "w": "6",
+     "t0": 22.349634920634923,
+     "t1": 22.62763492063492
+    },
+    {
+     "w": "ay",
+     "t0": 22.674634920634922,
+     "t1": 22.74363492063492
+    },
+    {
+     "w": "dondurucu",
+     "t0": 22.790634920634922,
+     "t1": 23.219634920634924
+    },
+    {
+     "w": "soğuk.",
+     "t0": 23.26663492063492,
+     "t1": 23.800634920634923
+    }
+   ]
+  },
+  {
+   "t0": 24.00106575963719,
+   "t1": 28.18106575963719,
+   "words": [
+    {
+     "w": "Zamanla",
+     "t0": 24.00106575963719,
+     "t1": 24.39606575963719
+    },
+    {
+     "w": "manyetik",
+     "t0": 24.442065759637188,
+     "t1": 24.82506575963719
+    },
+    {
+     "w": "alan",
+     "t0": 24.872065759637188,
+     "t1": 25.06906575963719
+    },
+    {
+     "w": "zayıflar,",
+     "t0": 25.116065759637188,
+     "t1": 25.65006575963719
+    },
+    {
+     "w": "yüzeye",
+     "t0": 25.84706575963719,
+     "t1": 26.14906575963719
+    },
+    {
+     "w": "ulaşan",
+     "t0": 26.19606575963719,
+     "t1": 26.52106575963719
+    },
+    {
+     "w": "zararlı",
+     "t0": 26.590065759637188,
+     "t1": 26.95006575963719
+    },
+    {
+     "w": "radyasyon",
+     "t0": 26.997065759637188,
+     "t1": 27.46106575963719
+    },
+    {
+     "w": "artardı.",
+     "t0": 27.50806575963719,
+     "t1": 28.18106575963719
+    }
+   ]
+  },
+  {
+   "t0": 28.561065759637188,
+   "t1": 30.32606575963719,
+   "words": [
+    {
+     "w": "Döndüğümüze",
+     "t0": 28.561065759637188,
+     "t1": 29.165065759637187
+    },
+    {
+     "w": "ilk",
+     "t0": 29.211065759637187,
+     "t1": 29.35006575963719
+    },
+    {
+     "w": "kez",
+     "t0": 29.397065759637186,
+     "t1": 29.59406575963719
+    },
+    {
+     "w": "sevindim!",
+     "t0": 29.62906575963719,
+     "t1": 30.32606575963719
+    }
+   ]
+  },
+  {
+   "t0": 30.538639455782313,
+   "t1": 33.00063945578231,
    "words": [
     {
      "w": "Sıradaki",
-     "t0": 33.547650793650796,
-     "t1": 33.9886507936508
+     "t0": 30.538639455782313,
+     "t1": 30.944639455782312
     },
     {
      "w": "soruyu",
-     "t0": 34.035650793650795,
-     "t1": 34.325650793650794
+     "t0": 30.979639455782312,
+     "t1": 31.24663945578231
     },
     {
      "w": "sen",
-     "t0": 34.383650793650794,
-     "t1": 34.5806507936508
+     "t0": 31.304639455782315,
+     "t1": 31.478639455782314
     },
     {
      "w": "seç!",
-     "t0": 34.6506507936508,
-     "t1": 34.8826507936508
+     "t0": 31.56063945578231,
+     "t1": 31.850639455782314
     },
     {
      "w": "Yorumlara",
-     "t0": 34.90565079365079,
-     "t1": 35.39365079365079
+     "t0": 31.955639455782315,
+     "t1": 32.466639455782314
     },
     {
      "w": "yaz.",
-     "t0": 35.416650793650795,
-     "t1": 35.822650793650794
+     "t0": 32.51263945578231,
+     "t1": 33.00063945578231
     }
    ]
   }
