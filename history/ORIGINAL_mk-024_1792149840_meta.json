@@ -1,0 +1,292 @@
+{
+  "topic_id": "mk-024",
+  "topic": "Penguenler buzların üstünde donmadan nasıl yaşar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
+  "hook_text": "PENGUENLER NASIL DONMUYOR?",
+  "description": "Penguenler buz üstünde nasıl yaşar?\n\nBu penguenler eksi 60 derecede bile donmaz. Vücutlarını saran yoğun ve su geçirmez tüy tabakası ile derilerinin altındaki kalın yağ tabakası onları korur ve yalıtır. Ayrıca, soğuk arttıkça yüzlerce penguen bir araya gelerek birbirlerini ısıtır.\n\nSence penguenler su altında kaç dakika kalabilir: 5 mi 20 mi?\n\n#penguen #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-024",
+  "tags": [
+    "penguen",
+    "penguenler",
+    "buz üstünde yaşam",
+    "penguenler nasıl yaşar",
+    "penguenler donar mı",
+    "penguen soğuk",
+    "penguenler neden üşümez",
+    "penguen yaşamı",
+    "buzul hayvanları",
+    "kutup hayvanları",
+    "hayvanlar alemi",
+    "soğukta hayatta kalma",
+    "kuşlar",
+    "deniz kuşları",
+    "doğa bilgileri",
+    "vahşi yaşam",
+    "hayvanlar",
+    "bilim",
+    "ilginç bilgiler",
+    "penguin",
+    "how penguins live",
+    "kutup",
+    "doğa",
+    "shorts",
+    "belgesel",
+    "merak",
+    "adaptasyon",
+    "soğuk",
+    "bilgi",
+    "zirvenin kanunu",
+    "buz ustunde yasam",
+    "penguenler nasil yasar",
+    "penguen soguk"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How do penguins survive on ice? 🐧",
+      "description": "Ever wondered how these amazing birds endure freezing temperatures? Discover the incredible adaptations that keep penguins warm in the harshest environments. Share your thoughts in the comments!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "es": {
+      "title": "¿Cómo sobreviven los pingüinos en el hielo? 🐧",
+      "description": "¿Te has preguntado cómo estas aves asombrosas soportan temperaturas gélidas? Descubre las increíbles adaptaciones que mantienen a los pingüinos cálidos en los entornos más duros. ¡Deja tu comentario!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "pt": {
+      "title": "Como os pinguins sobrevivem no gelo? 🐧",
+      "description": "Já se perguntou como essas aves incríveis aguentam temperaturas congelantes? Descubra as adaptações espetaculares que mantêm os pinguins aquecidos nos ambientes mais rigorosos. Deixe sua opinião nos comentários!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "de": {
+      "title": "Wie überleben Pinguine auf dem Eis? 🐧",
+      "description": "Hast du dich jemals gefragt, wie diese erstaunlichen Vögel eisige Temperaturen ertragen? Entdecke die unglaublichen Anpassungen, die Pinguine in den härtesten Umgebungen warm halten. Sag uns deine Meinung!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "fr": {
+      "title": "Comment les pingouins survivent-ils sur la glace? 🐧",
+      "description": "Vous êtes-vous déjà demandé comment ces oiseaux incroyables supportent des températures glaciales? Découvrez les adaptations fantastiques qui permettent aux pingouins de rester au chaud dans les environnements les plus rudes. Donnez votre avis!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "it": {
+      "title": "Come fanno i pinguini a vivere sul ghiaccio? 🐧",
+      "description": "Ti sei mai chiesto come questi uccelli straordinari sopportano temperature gelide? Scopri gli incredibili adattamenti che mantengono i pinguini al caldo negli ambienti più ostili. Lascia un commento!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "ru": {
+      "title": "Как пингвины выживают на льду? 🐧",
+      "description": "Вы когда-нибудь задумывались, как эти удивительные птицы выдерживают минусовые температуры? Откройте для себя невероятные приспособления, которые помогают пингвинам оставаться в тепле в самых суровых условиях. Делитесь своим мнением!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "ar": {
+      "title": "كيف تعيش البطاريق على الجليد؟ 🐧",
+      "description": "هل تساءلت يومًا كيف تتحمل هذه الطيور المذهلة درجات الحرارة المتجمدة؟ اكتشف التكيفات المذهلة التي تحافظ على دفء البطاريق في أقسى البيئات. شاركنا رأيك في التعليقات!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "hi": {
+      "title": "पेंग्विन बर्फ पर कैसे जीवित रहते हैं? 🐧",
+      "description": "क्या आपने कभी सोचा है कि ये अद्भुत पक्षी जमा देने वाली ठंड को कैसे सहन करते हैं? उन अविश्वसनीय अनुकूलन को जानें जो पेंग्विन को कठोरतम वातावरण में भी गर्म रखते हैं। अपनी राय बताएं!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "id": {
+      "title": "Bagaimana penguin bertahan hidup di atas es? 🐧",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana burung-burung menakjubkan ini bertahan di suhu beku? Temukan adaptasi luar biasa yang membuat penguin tetap hangat di lingkungan paling keras. Bagikan pendapat Anda!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "ja": {
+      "title": "ペンギンはどうやって氷の上で生きる？ 🐧",
+      "description": "これらの素晴らしい鳥がどのように極寒に耐えるのか、疑問に思ったことはありませんか？最も過酷な環境でペンギンを暖かく保つ驚くべき適応を発見してください。コメントで教えてください！\n\n#shorts\n\nSeri: mk-024"
+    },
+    "ko": {
+      "title": "펭귄은 얼음 위에서 어떻게 살아남을까? 🐧",
+      "description": "이 놀라운 새들이 어떻게 영하의 온도를 견디는지 궁금했던 적이 있나요? 가장 혹독한 환경에서도 펭귄을 따뜻하게 유지하는 놀라운 적응력을 알아보세요. 댓글로 의견을 남겨주세요!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "pl": {
+      "title": "Jak pingwiny przetrwają na lodzie? 🐧",
+      "description": "Zastanawiałeś się kiedyś, jak te niesamowite ptaki znoszą mroźne temperatury? Odkryj niesamowite adaptacje, które utrzymują pingwiny w cieple w najtrudniejszych warunkach. Podziel się opinią!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "nl": {
+      "title": "Hoe overleven pinguïns op het ijs? 🐧",
+      "description": "Heb je je ooit afgevraagd hoe deze geweldige vogels vriestemperaturen doorstaan? Ontdek de ongelooflijke aanpassingen die pinguïns warm houden in de meest barre omgevingen. Deel je mening!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "uk": {
+      "title": "Як пінгвіни виживають на льоду? 🐧",
+      "description": "Чи замислювалися ви, як ці дивовижні птахи витримують морози? Відкрийте для себе неймовірні адаптації, які дозволяють пінгвінам залишатися в теплі в найсуворіших умовах. Поділіться думкою!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "vi": {
+      "title": "Chim cánh cụt sống trên băng thế nào? 🐧",
+      "description": "Bạn có bao giờ tự hỏi làm thế nào những loài chim tuyệt vời này chịu đựng được nhiệt độ đóng băng không? Khám phá những thích nghi đáng kinh ngạc giúp chim cánh cụt giữ ấm trong môi trường khắc nghiệt nhất. Hãy chia sẻ ý kiến của bạn!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "az": {
+      "title": "Pinqvinlər buzda necə yaşayır? 🐧",
+      "description": "Heç düşünmüsünüzmü ki, bu heyrətamiz quşlar donmuş temperaturlara necə dözürlər? Pinqvinləri ən sərt mühitlərdə isti saxlayan inanılmaz uyğunlaşmaları kəşf edin. Fikirlərinizi bölüşün!\n\n#shorts\n\nSeri: mk-024"
+    },
+    "ro": {
+      "title": "Cum supraviețuiesc pinguinii pe gheață? 🐧",
+      "description": "Te-ai întrebat vreodată cum rezistă aceste păsări uimitoare la temperaturi de îngheț? Descoperă adaptările incredibile care mențin pinguinii calzi în cele mai dure medii. Spune-ne părerea ta!\n\n#shorts\n\nSeri: mk-024"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence penguenler su altında kaç dakika kalabilir: 5 mi 20 mi?",
+  "scenes": [
+    {
+      "text": "Bu penguenler eksi 60 derecede bile donmaz.",
+      "visual": "Penguins in an icy and cold environment.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 16,
+          "kare": 1
+        }
+      ],
+      "callout": "EKSİ 60 DERECE"
+    },
+    {
+      "text": "Vücutlarını saran yoğun ve su geçirmez tüy tabakası, onları soğuktan korur.",
+      "visual": "Close-up of penguin feathers.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 1
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 1
+        }
+      ],
+      "callout": "YOĞUN TÜY TABAKASI"
+    },
+    {
+      "text": "Derilerinin altındaki kalın yağ tabakası, onları mükemmel yalıtır.",
+      "visual": "Penguins standing, showing their robust body shape.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 25,
+          "kare": 1
+        },
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 2
+        }
+      ],
+      "callout": "KALIN YAĞ"
+    },
+    {
+      "text": "Soğuk arttıkça, yüzlerce penguen bir araya gelip birbirlerini ısıtır.",
+      "visual": "Large groups of penguins huddling together.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 2
+        }
+      ],
+      "callout": "BİRBİRİNİ ISITIR"
+    },
+    {
+      "text": "Su altında avlanırken de bu koruma sayesinde donmazlar.",
+      "visual": "Penguins swimming underwater.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 27,
+          "kare": 2
+        },
+        {
+          "n": 33,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 14.28,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi yavaş, monoton ve enerjisiz. İzleyicinin ilgisini hızla kaybetmesine neden oluyor.",
+        "fix": "Yapay zeka sesinin hızını %20-30 artırın ve cümleler arası duraklamaları kısaltın. Mümkünse, daha dinamik tonlama seçeneklerini keşfedin."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışı yavaş, sahneler ekranda uzun kalıyor ve geçişler basit. Görsel ritim anlatımla senkronize değil.",
+        "fix": "Her bir görselin ekranda kalma süresini kısaltın (ortalama 1-2 saniye). Anlatıcının her yeni bilgi parçası verdiğinde görseli değiştirerek daha hızlı ve dinamik bir ritim yakalayın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar çok uzun (tüm cümleyi kaplıyor) ve sadece bilgi veriyor. Referans videodaki gibi anahtar kelimelerle görseli desteklemiyor, aksine görseli kapatıyor.",
+        "fix": "Yazıları anahtar kelimelere indirgeyin (örn: 'YOĞUN TÜY', 'KALIN YAĞ', 'BİRBİRİNİ ISITIR'). Bu anahtar kelimeleri ekranda daha kısa süre gösterin ve görselle daha iyi entegre edin. Metinleri daha küçük parçalara bölerek farklı yerlerde veya"
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilgiler liste şeklinde sunuluyor, bir hikaye anlatımı veya merak uyandıran bir akış yok. Kanca yeterince güçlü değil.",
+        "fix": "Giriş cümlesini daha merak uyandırıcı hale getirin (örn: 'Antarktika'nın dondurucu soğuğunda, -60 derecede bile donmayan penguenlerin inanılmaz sırrı ne?'). Bilgileri sunarken 'önce bu, sonra şu, ve en şaşırtıcısı bu' gibi bir akış kullanın"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Kullanılan stok videolar genel ve açıklayıcı animasyonlar veya özel çekimler içermiyor. Örneğin, tüy tabakasının veya yağ tabakasının nasıl çalıştığını gösteren yakın çekim veya animasyonlar eksik.",
+        "fix": "Her bir açıklama için daha spesifik ve görsel olarak açıklayıcı stok videolar arayın (örn: tüylerin yakın çekimi, daha kalabalık ve yakın duran penguen grupları). Ücretsiz stok sitelerinde (Pexels, Pixabay) bulunabilen basit animasyonlu okl"
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve videonun enerjisini yükseltmiyor. Hiç ses efekti kullanılmamış.",
+        "fix": "Daha enerjik, ritmik ve videonun temposuna uygun bir arka plan müziği seçin. Geçişlere veya önemli bilgi noktalarına hafif ses efektleri (örn. 'whoosh', 'pop') ekleyerek videoyu daha dinamik hale getirin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Sarı renkli, kalın font tekdüze ve referans videodaki gibi modern ve çeşitli bir estetiğe sahip değil.",
+        "fix": "Daha modern ve okunaklı bir font kullanın. Anahtar kelimeler için farklı renkler veya vurgu efektleri (gölge, parıltı) deneyin. Yazıların ekranda belirme animasyonlarını daha dinamik hale getirin (örn. hafif bir fade-in veya scale-up)."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Açılış sahnesi bulanık bir görüntü ve üzerine yazılmış metinle başlıyor, bu da profesyonel bir ilk izlenim yaratmıyor.",
+        "fix": "Videonun başında doğrudan net, etkileyici bir penguen görüntüsü veya Antarktika manzarası ile başlayın. İlk soru veya kanca metnini bu net görselin üzerine daha estetik bir şekilde yerleştirin."
+      }
+    ],
+    "strengths": [
+      "Video, penguenlerin soğuktan nasıl korunduğuna dair temel bilgileri net bir şekilde aktarıyor.",
+      "Kullanılan stok videolar konuyla alakalı ve genel olarak iyi kalitede."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
