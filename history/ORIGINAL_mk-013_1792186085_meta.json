@@ -1,0 +1,283 @@
+{
+  "topic_id": "mk-013",
+  "topic": "Uçaklar haritada neden düz değil de kavisli bir rotayla uçar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Uçakların Gizemli Kavisli Rotaları 🤔",
+  "hook_text": "NEDEN KAVİSLİ UÇARLAR?",
+  "description": "Uçaklar haritada neden düz değil de kavisli rotalarla uçar?\n\nÇünkü Dünya küreseldir, düz bir harita değildir. İki nokta arasındaki en kısa mesafe, bir küre üzerinde büyük bir daire yayıdır, bu sayede uçaklar daha az yakıtla, en kısa sürede varır.\n\nSence İstanbul'dan New York'a en kısa rota haritada mı, yoksa bir küre üzerinde mi düz görünür?\n\n#uçak #uçuş #rotalar #coğrafya #shorts #bilim #merak #keşfet\n\nSeri: mk-013",
+  "tags": [
+    "uçak rotası",
+    "uçak neden kavisli uçar",
+    "uçuş rotaları",
+    "kavisli uçuş",
+    "neden kavisli uçar uçaklar",
+    "uçak yolculuğu",
+    "en kısa mesafe uçak",
+    "dünya neden küresel",
+    "küre üzerinde rota",
+    "büyük daire yayı",
+    "uçuş merak",
+    "ilginç bilgiler uçak",
+    "havacılık bilgileri",
+    "bilim",
+    "coğrafya",
+    "merak",
+    "bilgi",
+    "nasıl",
+    "neden",
+    "keşfet",
+    "airplane routes",
+    "curved flight path",
+    "great circle route",
+    "Uçak rotaları",
+    "Uçuş neden kavisli",
+    "Büyük daire rotası",
+    "Dünya küresel",
+    "Havacılık bilimi",
+    "Kısa yolculuk"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Planes Fly in Mysterious Curved Paths? 🤔",
+      "description": "Have you ever wondered why airplanes fly in curved paths instead of straight lines on a map? It's because the Earth is a sphere, not a flat map. The shortest distance between two points on a globe is a great circle arc, saving fuel and time. Do you think the shortest route from Istanbul to New York looks straight on a map or on a globe?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "es": {
+      "title": "¿Por qué los aviones toman rutas curvas misteriosas? 🤔",
+      "description": "¿Alguna vez te has preguntado por qué los aviones vuelan en rutas curvas en lugar de líneas rectas en un mapa? Esto se debe a que la Tierra es esférica, no un mapa plano. La distancia más corta entre dos puntos en un globo es un arco de círculo máximo, lo que ahorra combustible y tiempo. ¿Crees que la ruta más corta de Estambul a Nueva York se ve recta en un mapa o en un globo?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "pt": {
+      "title": "Por que os aviões voam em rotas curvas misteriosas? 🤔",
+      "description": "Já se perguntou por que os aviões voam em caminhos curvos em vez de linhas retas em um mapa? Isso acontece porque a Terra é uma esfera, não um mapa plano. A menor distância entre dois pontos em um globo é um arco de círculo máximo, economizando combustível e tempo. Você acha que a rota mais curta de Istambul a Nova York parece reta em um mapa ou em um globo?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "de": {
+      "title": "Warum fliegen Flugzeuge auf mysteriösen gekrümmten Routen? 🤔",
+      "description": "Hast du dich jemals gefragt, warum Flugzeuge auf Karten gekrümmte statt gerader Routen fliegen? Das liegt daran, dass die Erde eine Kugel ist, keine flache Karte. Der kürzeste Weg zwischen zwei Punkten auf einer Kugel ist ein Großkreisbogen, was Treibstoff und Zeit spart. Glaubst du, die kürzeste Route von Istanbul nach New York sieht auf einer Karte oder auf einem Globus gerade aus?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "fr": {
+      "title": "Pourquoi les avions suivent-ils des routes courbes mystérieuses ? 🤔",
+      "description": "Vous êtes-vous déjà demandé pourquoi les avions volent sur des trajectoires courbes plutôt que droites sur une carte ? C'est parce que la Terre est une sphère, pas une carte plate. La distance la plus courte entre deux points sur un globe est un arc de grand cercle, ce qui économise du carburant et du temps. Pensez-vous que la route la plus courte d'Istanbul à New York semble droite sur une carte ou sur un globe?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "it": {
+      "title": "Perché gli aerei volano su rotte curve misteriose? 🤔",
+      "description": "Ti sei mai chiesto perché gli aerei volano su percorsi curvi invece che su linee rette su una mappa? Questo perché la Terra è una sfera, non una mappa piatta. La distanza più breve tra due punti su un globo è un arco di cerchio massimo, il che consente di risparmiare carburante e tempo. Pensi che la rotta più breve da Istanbul a New York sembri dritta su una mappa o su un globo?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "ru": {
+      "title": "Почему самолеты летают по таинственным изогнутым маршрутам? 🤔",
+      "description": "Вы когда-нибудь задумывались, почему самолеты летают по изогнутым траекториям вместо прямых линий на карте? Это потому, что Земля — это сфера, а не плоская карта. Кратчайшее расстояние между двумя точками на глобусе — это дуга большого круга, что экономит топливо и время. Как вы думаете, кратчайший маршрут из Стамбула в Нью-Йорк выглядит прямым на карте или на глобусе?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "ar": {
+      "title": "لماذا تسلك الطائرات مسارات منحنية غامضة؟ 🤔",
+      "description": "هل تساءلت يومًا لماذا تطير الطائرات في مسارات منحنية بدلاً من الخطوط المستقيمة على الخريطة؟ لأن الأرض كروية وليست خريطة مسطحة. أقصر مسافة بين نقطتين على الكرة الأرضية هي قوس دائرة عظمى، مما يوفر الوقود والوقت. هل تعتقد أن أقصر طريق من إسطنبول إلى نيويورك يبدو مستقيمًا على الخريطة أم على الكرة الأرضية؟\n\n#shorts\n\nSeri: mk-013"
+    },
+    "hi": {
+      "title": "विमान रहस्यमय घुमावदार रास्तों पर क्यों उड़ते हैं? 🤔",
+      "description": "क्या आपने कभी सोचा है कि हवाई जहाज मानचित्र पर सीधी रेखाओं के बजाय घुमावदार रास्तों पर क्यों उड़ते हैं? ऐसा इसलिए है क्योंकि पृथ्वी एक गोला है, न कि एक सपाट नक्शा। एक ग्लोब पर दो बिंदुओं के बीच की सबसे छोटी दूरी एक महान वृत्त चाप होती है, जिससे ईंधन और समय की बचत होती है। क्या आपको लगता है कि इस्तांबुल से न्यूयॉर्क तक का सबसे छोटा रास्ता मानचित्र पर सीधा दिखता है या ग्लोब पर?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "id": {
+      "title": "Mengapa Pesawat Terbang di Jalur Melengkung Misterius? 🤔",
+      "description": "Pernahkah Anda bertanya-tanya mengapa pesawat terbang di jalur melengkung alih-alih garis lurus di peta? Itu karena Bumi adalah bola, bukan peta datar. Jarak terpendek antara dua titik di bola dunia adalah busur lingkaran besar, menghemat bahan bakar dan waktu. Menurut Anda, apakah rute terpendek dari Istanbul ke New York terlihat lurus di peta atau di bola dunia?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "ja": {
+      "title": "飛行機はなぜ謎の湾曲ルートを飛ぶのか？ 🤔",
+      "description": "地図上では飛行機が直線ではなく湾曲したルートを飛ぶのはなぜか、疑問に思ったことはありませんか？それは地球が平面の地図ではなく、球体だからです。地球上の2点間の最短距離は、大円の弧であり、燃料と時間を節約します。イスタンブールからニューヨークへの最短ルートは、地図上で直線に見えると思いますか、それとも地球儀上で直線に見えると思いますか？\n\n#shorts\n\nSeri: mk-013"
+    },
+    "ko": {
+      "title": "비행기는 왜 신비로운 곡선 경로로 비행할까? 🤔",
+      "description": "지도에서 비행기가 직선 대신 곡선 경로로 비행하는 이유가 궁금했던 적이 있나요? 지구는 평평한 지도가 아닌 구형이기 때문입니다. 지구본에서 두 지점 사이의 최단 거리는 대권의 호이며, 이는 연료와 시간을 절약합니다. 이스탄불에서 뉴욕까지의 최단 경로는 지도에서 직선으로 보일까요, 아니면 지구본에서 직선으로 보일까요?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "pl": {
+      "title": "Dlaczego samoloty latają tajemniczymi, zakrzywionymi trasami? 🤔",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego samoloty latają po zakrzywionych, a nie prostych trasach na mapie? Dzieje się tak, ponieważ Ziemia jest kulą, a nie płaską mapą. Najkrótsza odległość między dwoma punktami na globusie to łuk koła wielkiego, co oszczędza paliwo i czas. Czy sądzisz, że najkrótsza trasa z Stambułu do Nowego Jorku wygląda prosto na mapie czy na globusie?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "nl": {
+      "title": "Waarom vliegen vliegtuigen in mysterieuze gebogen routes? 🤔",
+      "description": "Heb je je ooit afgevraagd waarom vliegtuigen in gebogen paden vliegen in plaats van rechte lijnen op een kaart? Dat komt omdat de aarde een bol is, geen platte kaart. De kortste afstand tussen twee punten op een globe is een grootcirkelboog, wat brandstof en tijd bespaart. Denk je dat de kortste route van Istanbul naar New York er recht uitziet op een kaart of op een globe?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "uk": {
+      "title": "Чому літаки літають таємничими вигнутими маршрутами? 🤔",
+      "description": "Чи замислювалися ви, чому літаки літають вигнутими, а не прямими лініями на карті? Це тому, що Земля — сфера, а не плоска карта. Найкоротша відстань між двома точками на глобусі — це дуга великого кола, що економить паливо та час. Як ви думаєте, найкоротший маршрут зі Стамбула до Нью-Йорка виглядає прямим на карті чи на глобусі?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "vi": {
+      "title": "Tại sao máy bay bay theo những đường cong bí ẩn? 🤔",
+      "description": "Bạn có bao giờ tự hỏi tại sao máy bay lại bay theo đường cong thay vì đường thẳng trên bản đồ không? Đó là vì Trái Đất là một hình cầu, không phải bản đồ phẳng. Khoảng cách ngắn nhất giữa hai điểm trên một quả địa cầu là một cung tròn lớn, giúp tiết kiệm nhiên liệu và thời gian. Bạn nghĩ tuyến đường ngắn nhất từ Istanbul đến New York trông thẳng trên bản đồ hay trên quả địa cầu?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "az": {
+      "title": "Təyyarələr niyə sirli əyri marşrutlarla uçur? 🤔",
+      "description": "Heç düşünmüsünüzmü ki, təyyarələr xəritədə düz xətt əvəzinə niyə əyri yollarla uçur? Çünki Yer kürəvidir, düz xəritə deyil. Qlobusda iki nöqtə arasındakı ən qısa məsafə böyük dairə qövsüdür, bu da yanacağa və vaxta qənaət edir. Sizcə, İstanbuldan Nyu-Yorka ən qısa marşrut xəritədəmi, yoxsa qlobusda mı düz görünür?\n\n#shorts\n\nSeri: mk-013"
+    },
+    "ro": {
+      "title": "De ce zboară avioanele pe rute curbate misterioase? 🤔",
+      "description": "Te-ai întrebat vreodată de ce avioanele zboară pe rute curbate în loc de linii drepte pe o hartă? Asta pentru că Pământul este o sferă, nu o hartă plată. Cea mai scurtă distanță între două puncte pe un glob este un arc de cerc mare, economisind combustibil și timp. Crezi că cea mai scurtă rută de la Istanbul la New York arată drept pe o hartă sau pe un glob?\n\n#shorts\n\nSeri: mk-013"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence İstanbul'dan New York'a en kısa rota haritada mı, yoksa bir küre üzerinde mi düz görünür?",
+  "scenes": [
+    {
+      "text": "Haritalarda uçuş rotaları genelde kavisli görünür.",
+      "visual": "A world map with visible curved routes, an abstract globe with lines, and a physical globe.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 1,
+          "kare": 2
+        }
+      ],
+      "callout": "KAVİSLİ ROTALAR"
+    },
+    {
+      "text": "Peki, neden düz bir çizgi yerine yay şeklinde uçarlar?",
+      "visual": "A plane flying in the sky and a plane wing visible over clouds.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Çünkü Dünya küreseldir, düz bir harita değil.",
+      "visual": "Earth seen from space and hands holding a globe.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 34,
+          "kare": 2
+        },
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        }
+      ],
+      "callout": "KÜRESEL DÜNYA"
+    },
+    {
+      "text": "İki nokta arasındaki en kısa mesafe, küre üzerinde büyük bir daire yayıdır.",
+      "visual": "A physical globe rotating, children looking at a globe, and two globes side by side.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 29,
+          "kare": 3
+        },
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 2
+        }
+      ],
+      "callout": "BÜYÜK DAİRE"
+    },
+    {
+      "text": "Bu sayede uçaklar daha az yakıtla, en kısa sürede varır.",
+      "visual": "A plane wing and engine in flight, a plane flying over a city and water, and a plane wing over clouds.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 38,
+          "kare": 2
+        },
+        {
+          "n": 16,
+          "kare": 2
+        },
+        {
+          "n": 39,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 12.4,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 7,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve enerjisiz.",
+        "fix": "Yapay zeka sesinin hızını artırın ve tonlama ayarlarını kullanarak daha dinamik, vurgulu ve enerjik bir okuma elde etmeye çalışın. Kelimelerin ve cümlelerin akışını daha akıcı hale getirin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler genellikle statik veya yavaş hareketli, dinamizm eksik.",
+        "fix": "Pexels/Pixabay'den daha fazla hareketli, dinamik uçak kalkış/iniş/uçuş görüntüleri bulun. Harita veya küre üzerindeki rotaları gösteren animasyonlu stok videolar arayın. Aynı sahnenin farklı açılardan çekilmiş kısa kliplerini kullanarak hız"
+      },
+      {
+        "area": "yazı",
+        "problem": "Metinler sadece bilgi veriyor, görsel açıklamayı güçlendirmiyor ve dinamik grafikler eksik.",
+        "fix": "Metinleri daha hızlı ve vurucu bir şekilde ekrana getirin (referanstaki gibi tek kelimelik vurgular). 'Büyük daire yayı' gibi kritik kavramları açıklarken, küre üzerinde kavisli bir rotayı gösteren basit grafikler veya oklar ekleyin."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve enerjisiz, ses efektleri kullanılmamış.",
+        "fix": "Daha dinamik, ritmik ve videonun enerjisine uygun bir arka plan müziği seçin. Uçak sesi, rüzgar sesi gibi ilgili ses efektlerini uygun yerlerde kullanarak videoya derinlik ve gerçekçilik katın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video genel olarak yavaş bir tempoya sahip, akış kopuk hissediliyor.",
+        "fix": "Görüntüleri daha kısa tutun ve daha hızlı kesimler kullanın. Her bir görselin ekranda kalma süresini azaltın. Ses ve metinle senkronize, daha hızlı bir akış sağlayın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığı görsel olarak yeterince desteklenmiyor.",
+        "fix": "Düz haritada çizilen düz bir çizginin, küre üzerinde aslında kavisli ve daha uzun olduğunu gösteren bir görsel karşılaştırma ekleyin. Bu, iki farklı harita projeksiyonunu yan yana gösteren stok görsellerle veya basit grafiklerle yapılabilir"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Başlangıçtaki harita görüntüsü statik ve konuya doğrudan giriş sağlamıyor.",
+        "fix": "Başlangıçta, dünya haritası üzerinde belirginleşen veya hareket eden kavisli uçuş rotalarını gösteren bir stok video kullanın. Bu, konuya daha doğrudan bir giriş sağlar."
+      }
+    ],
+    "strengths": [
+      "Video kısa ve öz, gereksiz uzatmalar yok.",
+      "Temel bilgiyi net bir şekilde aktarıyor.",
+      "Ekrandaki metinler büyük ve okunabilir."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
