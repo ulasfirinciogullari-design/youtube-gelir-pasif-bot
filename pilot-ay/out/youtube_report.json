@@ -1,3 +1,3 @@
 {
- "error": "Google bağlantısı reddedildi (401): {\n  \"error\": \"unauthorized_client\",\n  \"error_description\": \"Unauthorized\"\n}"
+ "error": "Google bağlantısı reddedildi (401): {\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The provided client secret is invalid.\"\n}"
 }
