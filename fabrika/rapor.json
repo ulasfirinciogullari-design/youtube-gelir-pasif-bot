@@ -1,43 +1,36 @@
 {
- "started": "2026-10-16T13:38:07+00:00",
+ "started": "2026-10-16T15:07:44+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  147,
+  364,
   613902
  ],
  "topic": {
-  "id": "g001",
-  "series": "1 Gün Boyunca",
-  "q": "Kalbin 1 günde kaç kez atar?"
+  "id": "o0002",
+  "series": "Ya Olsaydı?",
+  "q": "Güneş'in yerinde bir kara delik olsaydı ne olurdu?",
+  "oneri": true
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 6,
-    "why": "Kan günde 100.000 km yol katetmez; Dünya'nın çevresini 2,5 kez dolaşabilen mesafe, vücuttaki tüm damarların uç uca eklendiğindeki tahmini toplam uzunluğudur."
-   }
-  ]
+  "ok": true,
+  "fixes": []
  },
- "warnings": [
-  "çalışan kaynak linki bulunamadı"
- ],
  "chunks": 0,
  "grounded": true,
- "chars": 534,
- "duration": 37.5,
- "title": "Kalbin 1 Günde Kaç Kez Atar?",
+ "chars": 491,
+ "duration": 34.4,
+ "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
-  "subscribers": "7",
-  "videos": "4"
+  "subscribers": "8",
+  "videos": "5"
  },
- "url": "https://youtube.com/shorts/53rXVX6QpA0",
+ "url": "https://youtube.com/shorts/f6WyXXJWASs",
  "recent_status": {
   "y001": {
    "upload": "processed",
@@ -48,16 +41,22 @@
   "n001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "140",
+   "views": "196",
    "reason": null
   },
   "o0001": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1",
+   "views": "26",
    "reason": null
   },
   "g001": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "o0002": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -65,12 +64,12 @@
   }
  },
  "credits_after": [
-  276,
+  483,
   613902
  ],
  "log": [
-  "Konu: g001 Kalbin 1 günde kaç kez atar? (1 Gün Boyunca)",
+  "Konu: o0002 Güneş'in yerinde bir kara delik olsaydı ne olurdu? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T13:41:50+00:00"
+ "finished": "2026-10-16T15:10:19+00:00"
 }

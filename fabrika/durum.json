@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "140",
+    "views": "196",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1",
+    "views": "26",
     "reason": null
    }
   },
@@ -114,6 +114,36 @@
    "at": 1792158109.2484956,
    "chars": 534,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0002",
+   "video_id": "f6WyXXJWASs",
+   "url": "https://youtube.com/shorts/f6WyXXJWASs",
+   "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If the Sun Turned Into a Black Hole?",
+    "es": "¿Qué pasaría si el Sol fuera un agujero negro?",
+    "pt": "E se o Sol virasse um buraco negro?",
+    "ar": "ماذا لو تحولت الشمس إلى ثقب أسود؟",
+    "hi": "क्या होगा अगर सूरज ब्लैक होल बन जाए?",
+    "id": "Bagaimana Jika Matahari Menjadi Lubang Hitam?",
+    "fr": "Et si le Soleil devenait un trou noir ?",
+    "de": "Was wäre, wenn die Sonne ein Schwarzes Loch wäre?",
+    "ru": "Что, если Солнце станет черной дырой?",
+    "az": "Günəş qara dəlik olsaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792163417.4591541,
+   "chars": 491,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -125,13 +155,20 @@
   "y001",
   "n001",
   "o0001",
-  "g001"
+  "g001",
+  "o0002"
  ],
  "extra": [
   {
    "id": "o0001",
    "series": "Ya Olsaydı?",
    "q": "Güneş patlasaydı ne olurdu?",
+   "oneri": true
+  },
+  {
+   "id": "o0002",
+   "series": "Ya Olsaydı?",
+   "q": "Güneş'in yerinde bir kara delik olsaydı ne olurdu?",
    "oneri": true
   }
  ],
@@ -168,6 +205,14 @@
    "url": "https://youtube.com/shorts/53rXVX6QpA0",
    "duration": 37.5,
    "chars": 534
+  },
+  {
+   "finished": "2026-10-16T15:10:19+00:00",
+   "mod": "saatlik",
+   "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/f6WyXXJWASs",
+   "duration": 34.4,
+   "chars": 491
   }
  ],
  "yorumlar": {
@@ -186,6 +231,11 @@
     1792143644,
     "r",
     "UgypMdIQNONBpTOwYhx4AaABAg.Ac0dP4SCSRDAc0jpth7RIE"
+   ],
+   "UgzmGQYg_zUuO-J7ZfJ4AaABAg": [
+    1792163225,
+    "r",
+    "UgzmGQYg_zUuO-J7ZfJ4AaABAg.Ac1GrfGmF13Ac1KB4w_bYO"
    ]
   },
   "son": [
@@ -194,6 +244,12 @@
     "video": "yHElVXfvdsw",
     "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
     "reply": "Bize en yakın yıldız Güneş ve süpernova patlaması yapamayacak kadar küçük; zamanı gelince şişip kızıl dev olacak. Bu merak uyandıran soruyu video listemize ekledim.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792163225,
+    "video": "yHElVXfvdsw",
+    "comment": "Eğer Güneş yerine aynı kütlede olan bir kara delik koysaydı ne olur",
+    "reply": "Kütle aynı kaldığı için Dünya içine çekilmez, aynı yörüngede dönmeye devam ederdi ama hızla donardık. Bu konuyu video listemize aldım.\n— Profesör Pi 🔭"
    }
   ]
  }
