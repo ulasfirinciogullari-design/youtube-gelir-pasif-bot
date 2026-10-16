@@ -36,11 +36,12 @@ def reply(rid: str, author: str, text: str, hours_ago: float = 1, now: float = N
 
 
 class FakeYouTube:
-    def __init__(self, threads=(), replies=None, fail=None):
+    def __init__(self, threads=(), replies=None, fail=None, titles=None):
         self.thread_items = list(threads)
         self.reply_items = replies or {}
         self.fail = fail
-        self.posted, self.reads = [], []
+        self.titles = titles or {}
+        self.posted, self.reads, self.looked_up = [], [], []
 
     def channel(self):
         return {"id": CH, "handle": "zirveninkanunu"}
@@ -52,6 +53,10 @@ class FakeYouTube:
     def replies(self, thread_id):
         self.reads.append(thread_id)
         return self.reply_items.get(thread_id, [])
+
+    def videos(self, ids):
+        self.looked_up.append(ids)
+        return {vid: {"title": self.titles[vid], "question": "", "narration": ""} for vid in ids if vid in self.titles}
 
     def reply(self, parent_id, text):
         if self.fail:
@@ -109,6 +114,15 @@ def test_answers_viewer_comments_and_answers_to_the_pinned_question():
     assert state["tracked"]["t2"]["n"] == 3  # with our reply
     assert report["model"] == "fake-flash" and [r["result"] for r in report["items"]] == ["gönderildi"] * 2
     assert [r["reply"] for r in state["recent"]] == ["@mert cevap t2.a", "cevap t1"]
+
+
+def test_older_videos_are_looked_up_for_their_title():
+    yt = FakeYouTube(threads=[thread("t1", "a", "O sahne efsane", video="film1"), thread("t2", "b", "Güzel")],
+                     titles={"film1": "Scarface masa sahnesi"})
+    ask = FakeGemini()
+    go(yt, ask)
+    assert yt.looked_up == [["film1"]]  # v1 is already known from uploads.json
+    assert "- film1: Scarface masa sahnesi" in ask.prompts[0]
 
 
 def test_links_tags_old_and_already_answered_comments_get_no_answer():
@@ -264,6 +278,8 @@ def test_api_calls():
     assert "allThreadsRelatedToChannelId=UCzirve" in calls[-1]["url"] and "maxResults=100" in calls[-1]["url"]
     yt.replies("t1")
     assert "comments?part=snippet&parentId=t1" in calls[-1]["url"]
+    yt.videos(["a", "b"])
+    assert "videos?part=snippet&id=a%2Cb" in calls[-1]["url"]
     assert yt.reply("t1", "Merhaba") == "new-reply"
     assert calls[-1]["body"] == {"snippet": {"parentId": "t1", "textOriginal": "Merhaba"}}
     assert calls[-1]["headers"] == {"Authorization": "Bearer tok"}
