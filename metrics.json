@@ -1,12 +1,22 @@
 [
   {
+    "video_id": "kdEbtK5fwQQ",
+    "topic_id": "mk-033",
+    "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
+    "published_at": "2026-10-16T04:39:13Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "9RAohHZ0ur4",
     "topic_id": "mk-015",
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 420,
-    "likes": 4,
+    "views": 845,
+    "likes": 8,
     "comments": 1
   },
   {
@@ -15,8 +25,8 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 511,
-    "likes": 5,
+    "views": 720,
+    "likes": 8,
     "comments": 1
   },
   {
@@ -25,8 +35,8 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 273,
-    "likes": 1,
+    "views": 426,
+    "likes": 2,
     "comments": 1
   },
   {
@@ -48,7 +58,7 @@
     "views": 997,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 72.64
+    "views_per_hour": 68.64
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -59,7 +69,7 @@
     "views": 1158,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 61.59
+    "views_per_hour": 59.07
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -70,7 +80,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 29.66
+    "views_per_hour": 28.92
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -81,7 +91,7 @@
     "views": 1100,
     "likes": 18,
     "comments": 1,
-    "views_per_hour": 32.95
+    "views_per_hour": 32.18
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -92,7 +102,7 @@
     "views": 1464,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 38.73
+    "views_per_hour": 37.92
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -103,6 +113,6 @@
     "views": 381,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.2
+    "views_per_hour": 7.09
   }
 ]
