@@ -334,12 +334,12 @@
   "voice_id": "teHLF0hAua8Ry47noJ1t",
   "category": "professional",
   "labels": {
+   "descriptive": "wise",
+   "use_case": "narrative_story",
    "age": "middle_aged",
    "accent": "istanbul",
-   "use_case": "narrative_story",
-   "descriptive": "wise",
-   "language": "tr",
-   "gender": "male"
+   "gender": "male",
+   "language": "tr"
   },
   "description": "A confident, warm, and articulate voice with a natural professional tone in English & Turkish. Clear pronunciation and balanced pacing make it ideal for corporate narration, e-learning, product explainers, podcasts, and brand communication.The delivery feels authentic and engaging rather than scripted, helping complex ideas sound simple, credible, and human.Well-suited for audiences who value clarity, trust, and a polished yet approachable presence."
  },
@@ -348,12 +348,12 @@
   "voice_id": "j9K9HnBcmgA6xNWqjlX0",
   "category": "professional",
   "labels": {
-   "age": "old",
-   "accent": "istanbul",
-   "use_case": "narrative_story",
    "descriptive": "deep",
+   "use_case": "narrative_story",
    "language": "tr",
-   "gender": "male"
+   "accent": "istanbul",
+   "gender": "male",
+   "age": "old"
   },
   "description": "This recording is designed for voice cloning, crafted to capture and reproduce every nuance, tone, and emotion of my voice."
  },
@@ -362,12 +362,12 @@
   "voice_id": "ZgndNiUCwSn9oAFrs6rJ",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
-   "age": "middle_aged",
-   "gender": "female",
-   "descriptive": "formal",
    "language": "tr",
-   "use_case": "informative_educational"
+   "use_case": "informative_educational",
+   "descriptive": "formal",
+   "accent": "istanbul",
+   "gender": "female",
+   "age": "middle_aged"
   },
   "description": "Professional female voice in her late 30s, born and raised in Istanbul-Türkiye. Trained for voice-over acting. Ideal for corporate, educational, narrated content and more."
  },
@@ -391,11 +391,11 @@
   "category": "professional",
   "labels": {
    "age": "young",
+   "use_case": "social_media",
+   "language": "tr",
    "accent": "istanbul",
    "gender": "female",
-   "descriptive": "confident",
-   "language": "tr",
-   "use_case": "social_media"
+   "descriptive": "confident"
   },
   "description": "This sound offers listeners a warm and friendly atmosphere. While its fluid and elegant tones leave a sweet melody on the ears, the emotional depth felt in every note attracts the attention of the listeners. This voice, blended with simplicity and sincerity, tells something in every word and attracts people."
  },
@@ -404,12 +404,12 @@
   "voice_id": "I8PntRGWO35zIGM4lnWO",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "age": "middle_aged",
-   "gender": "female",
-   "descriptive": "serious",
+   "use_case": "informative_educational",
    "language": "tr",
-   "use_case": "informative_educational"
+   "accent": "istanbul",
+   "gender": "female",
+   "descriptive": "serious"
   },
   "description": "A professional Turkish female voice with a clear, neutral, and fluent news delivery. Ideal for breaking news, bulletins, economy updates, and current affairs. Maintains clarity and precision even at fast pacing, ensuring a clean and highly understandable broadcast style."
  },
@@ -432,12 +432,12 @@
   "voice_id": "Q5n6GDIjpN0pLOlycRFT",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "age": "young",
    "use_case": "conversational",
    "descriptive": "confident",
-   "language": "tr",
-   "gender": "male"
+   "accent": "istanbul",
+   "gender": "male",
+   "language": "tr"
   },
   "description": "A 25-year-old charismatic Turkish male voice with a clear Istanbul accent. Confident, natural, and expressive tone suitable for narration, ads, content creation, podcasts, and storytelling."
  },
@@ -474,12 +474,12 @@
   "voice_id": "Mcb3pz5eWjKXcBhMLF4v",
   "category": "professional",
   "labels": {
-   "age": "middle_aged",
+   "language": "tr",
+   "use_case": "advertisement",
+   "descriptive": "deep",
    "accent": "standard",
    "gender": "male",
-   "descriptive": "deep",
-   "language": "tr",
-   "use_case": "advertisement"
+   "age": "middle_aged"
   },
   "description": "20+ years of professional voiceover experience. A deep, warm, authoritative, and engaging male voice. Perfect for commercials, corporate videos, audiobooks, e-learning, content, and documentaries."
  },
@@ -488,12 +488,12 @@
   "voice_id": "WtOce4YK0dDSxlVlSdBh",
   "category": "professional",
   "labels": {
-   "age": "middle_aged",
+   "descriptive": "professional",
+   "use_case": "social_media",
+   "language": "tr",
    "accent": "tr-istanbul",
    "gender": "male",
-   "descriptive": "professional",
-   "language": "tr",
-   "use_case": "social_media"
+   "age": "middle_aged"
   },
   "description": "A calm, warm Turkish male voice with intimate, trustworthy delivery, natural pacing, and clear Istanbul diction. Best for social storytelling, premium brand content, wellness, podcasts, heartfelt reels, and conversational experiences."
  }
