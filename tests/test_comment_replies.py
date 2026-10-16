@@ -201,12 +201,13 @@ def test_skips_and_drafts_that_break_the_rules_are_closed_without_posting():
     decisions = {"spam": {"action": "skip", "why": "reklam"},
                  "link": {"action": "reply", "reply": "Detaylar www.site.com adresinde"},
                  "long": {"action": "reply", "reply": "a" * 300},
+                 "memory": {"action": "reply", "reply": "O sahneyi hatırladım, haklısın!"},
                  "silent": {}}
     yt = FakeYouTube(threads=[thread(tid, tid, f"yorum {tid}", hours_ago=i + 1) for i, tid in enumerate(decisions)])
     state, report = go(yt, FakeGemini(lambda c: decisions[c["id"]]))
     assert yt.posted == []
     assert {k: v[2] for k, v in state["done"].items()} == {"spam": "reklam", "link": "kural", "long": "kural",
-                                                          "silent": "karar yok"}
+                                                          "memory": "kural", "silent": "karar yok"}
     assert {r["id"]: r["result"] for r in report["items"]}["link"] == "cevap kurala uymadı, atlandı"
 
 
