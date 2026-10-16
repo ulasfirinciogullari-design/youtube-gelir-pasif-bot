@@ -2,13 +2,14 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # 24 Shorts a day, one every hour around the clock (Ulaş asked for it on 2026-10-15). GitHub delays or drops
+    # Eight Shorts a day, every two hours from 10:00 to 24:00 Turkey time (scripts/slot_gate.py says why: at one
+    # an hour the channel's new Shorts stopped getting views on 2026-10-16). GitHub delays or drops
     # top-of-hour cron events (runs started up to 3.6 h late; on 2026-10-14 the 11:00 and 14:00 UTC
-    # slots never ran), so the workflow ticks at :07 and :37 of each hourly slot and the
+    # slots never ran), so the workflow ticks at :07 and :37 of each slot hour and the
     # "🚦 Sıra Kontrolü" step (scripts/slot_gate.py) lets a tick produce only while its slot is empty,
     # 35 min after the last public upload and under the daily cap. A skipped tick costs a few seconds.
     # Uploads have their own YouTube quota of 100 a day since June 2026.
-    - cron: '7,37 * * * *'
+    - cron: '7,37 7,9,11,13,15,17,19,21 * * *'
   workflow_dispatch:
     inputs:
       privacy:

@@ -15,6 +15,13 @@ slot_heartbeat = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(slot_heartbeat)
 slot_gate = slot_heartbeat.slot_gate
 
+
+# The watch is checked on an hourly schedule so a check at any hour has a slot to fill.
+@pytest.fixture(autouse=True)
+def hourly_slots(monkeypatch):
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", tuple(range(24)))
+
+
 SHORTS = "actions/workflows/viral_shorts_autopilot.yml/runs"
 WATCH = "actions/workflows/slot_heartbeat.yml/runs"
 
