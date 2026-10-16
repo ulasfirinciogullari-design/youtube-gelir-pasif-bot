@@ -1,0 +1,280 @@
+{
+  "topic_id": "mk-016",
+  "topic": "Markette neden hep yanlış kuyruğu seçtiğimizi düşünürüz?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Markette neden hep yanlış kuyruktasın? 🤯",
+  "hook_text": "NEDEN HEP YANLIŞ SIRA?",
+  "description": "Markette neden hep yanlış kuyruğu seçtiğimizi düşünürüz?\n\nMarket kuyruğunda beklerken zamanın akışı bize daha yavaş gelir. Dikkatimiz hıza odaklandığı için, yanımızdaki sıraların daha hızlı ilerlediğini fark ederiz. Kendi sıramızdaki yavaşlamalar daha akılda kalıcı olduğundan, hep yanlış sıradayız hissine kapılırız.\n\nSence bu hissi en çok hangi durumda yaşarsın: markette mi, otobüs durağında mı?\n\n#marketkuyruğu #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-016",
+  "tags": [
+    "market kuyruğu",
+    "yanlış sıra",
+    "kuyruk psikolojisi",
+    "neden hep yanlış sıra",
+    "market psikolojisi",
+    "zaman algısı",
+    "sıra seçimi",
+    "hızlı sıra",
+    "yavaş sıra",
+    "insan davranışı",
+    "merak videosu",
+    "ilginç gerçekler",
+    "günlük hayat",
+    "neden böyle oluyor",
+    "bilimsel açıklama",
+    "kuyrukta beklemek",
+    "psikolojik etki",
+    "algı yanılması",
+    "shorts video",
+    "bilgi",
+    "merak",
+    "psikoloji",
+    "queue psychology",
+    "supermarket queue",
+    "time perception",
+    "market",
+    "kuyruk",
+    "insan",
+    "alışveriş",
+    "beyin",
+    "market kuyrugu",
+    "yanlis sira"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why are you always in the wrong queue at the supermarket? 🤯",
+      "description": "Have you ever wondered why you always seem to pick the slowest line at the grocery store?\n\nWhen waiting in line, our perception of time slows down, making adjacent lines appear faster. Our attention is drawn to rapid movements in other queues, while the delays in our own line become more memorable. This creates the illusion that we're always in the 'wrong' queue.\n\nWhere do you experience this feeling most: at the supermarket or at the bus stop?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "es": {
+      "title": "¿Por qué siempre estás en la cola equivocada del supermercado? 🤯",
+      "description": "¿Alguna vez te has preguntado por qué siempre eliges la fila más lenta en el supermercado?\n\nNuestra percepción del tiempo se ralentiza en la cola, haciendo que las filas adyacentes parezcan avanzar más rápido. Las demoras en nuestra propia fila son más memorables, creando la ilusión de que siempre estamos en la \"equivocada\".\n\n¿Dónde experimentas más esta sensación: en el supermercado o en la parada del autobús?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "pt": {
+      "title": "Por que você está sempre na fila errada do supermercado? 🤯",
+      "description": "Já se perguntou por que parece que você sempre escolhe a fila mais lenta no supermercado?\n\nNossa percepção do tempo desacelera na fila, fazendo com que as filas adjacentes pareçam mais rápidas. Os atrasos na nossa própria fila se tornam mais memoráveis, criando a ilusão de que estamos sempre na fila \"errada\".\n\nOnde você sente mais essa sensação: no supermercado ou no ponto de ônibus?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "de": {
+      "title": "Warum stehst du im Supermarkt immer in der falschen Schlange? 🤯",
+      "description": "Hast du dich je gefragt, warum du im Supermarkt immer die langsamste Schlange erwischst?\n\nUnsere Zeitwahrnehmung verlangsamt sich in der Warteschlange, wodurch benachbarte Schlangen schneller erscheinen. Verzögerungen in unserer eigenen Schlange bleiben uns besser im Gedächtnis, was die Illusion erzeugt, wir stünden immer in der „falschen“ Schlange.\n\nWo erlebst du dieses Gefühl am häufigsten: im Supermarkt oder an der Bushaltestelle?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "fr": {
+      "title": "Pourquoi êtes-vous toujours dans la mauvaise file au supermarché ? 🤯",
+      "description": "Vous êtes-vous déjà demandé pourquoi vous choisissez toujours la file la plus lente au supermarché?\n\nNotre perception du temps ralentit dans la file d'attente, ce qui fait que les files adjacentes semblent avancer plus vite. Les retards dans notre propre file sont plus mémorables, créant l'illusion que nous sommes toujours dans la \"mauvaise\" file.\n\nOù ressentez-vous le plus cette sensation : au supermarché ou à l'arrêt de bus ?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "it": {
+      "title": "Perché sei sempre nella coda sbagliata al supermercato? 🤯",
+      "description": "Ti sei mai chiesto perché sembri scegliere sempre la coda più lenta al supermercato?\n\nLa nostra percezione del tempo rallenta in coda, facendo sembrare le code adiacenti più veloci. I ritardi nella nostra stessa coda diventano più memorabili, creando l'illusione di essere sempre nella coda \"sbagliata\".\n\nDove provi di più questa sensazione: al supermercato o alla fermata dell'autobus?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "ru": {
+      "title": "Почему вы всегда стоите не в той очереди в супермаркете? 🤯",
+      "description": "Вы когда-нибудь задумывались, почему всегда выбираете самую медленную очередь в магазине?\n\nНаше восприятие времени замедляется в очереди, из-за чего соседние очереди кажутся быстрее. Задержки в нашей собственной очереди запоминаются лучше, создавая иллюзию, что мы всегда стоим в «неправильной» очереди.\n\nГде вы чаще всего испытываете это чувство: в супермаркете или на автобусной остановке?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "ar": {
+      "title": "لماذا تقف دائمًا في الطابور الخطأ بالسوبر ماركت؟ 🤯",
+      "description": "هل تساءلت يومًا لماذا تختار دائمًا أبطأ طابور في السوبر ماركت؟\n\nإدراكنا للوقت يتباطأ أثناء الانتظار، مما يجعل الطوابير المجاورة تبدو أسرع. تصبح التأخيرات في طابورنا الخاص أكثر رسوخًا في الذاكرة، مما يخلق وهم أننا دائمًا في الطابور \"الخطأ\".\n\nأين تشعر بهذا الإحساس أكثر: في السوبر ماركت أم في محطة الحافلات؟\n\n#shorts\n\nSeri: mk-016"
+    },
+    "hi": {
+      "title": "आप सुपरमार्केट में हमेशा गलत कतार में क्यों होते हैं? 🤯",
+      "description": "क्या आपने कभी सोचा है कि आप सुपरमार्केट में हमेशा सबसे धीमी कतार क्यों चुनते हैं?\n\nकतार में इंतजार करते समय, समय की हमारी धारणा धीमी हो जाती है, जिससे आस-पास की कतारें तेजी से आगे बढ़ती हुई प्रतीत होती हैं। हमारी अपनी कतार में देरी अधिक यादगार बन जाती है, जिससे यह भ्रम पैदा होता है कि हम हमेशा \"गलत\" कतार में हैं।\n\nआप इस भावना का अनुभव सबसे अधिक कहाँ करते हैं: सुपरमार्केट में या बस स्टॉप पर?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "id": {
+      "title": "Mengapa Anda selalu di antrean yang salah di supermarket? 🤯",
+      "description": "Pernahkah Anda bertanya-tanya mengapa Anda selalu memilih antrean paling lambat di supermarket?\n\nSaat mengantre, persepsi waktu kita melambat, membuat antrean di sebelah kita tampak lebih cepat. Penundaan di antrean kita sendiri menjadi lebih mudah diingat, menciptakan ilusi bahwa kita selalu berada di antrean \"yang salah\".\n\nDi mana Anda paling sering mengalami perasaan ini: di supermarket atau di halte bus?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "ja": {
+      "title": "スーパーでいつも間違った列に並んでしまうのはなぜ？ 🤯",
+      "description": "スーパーでいつも一番遅いレジ列を選んでしまうのはなぜだろうと思ったことはありませんか？\n\n列に並んでいるとき、時間の流れが遅く感じられ、隣の列が早く進んでいるように見えます。自分の列での遅延の方が記憶に残りやすいため、「いつも間違った列にいる」という錯覚が生まれるのです。\n\nこの感覚を最も強く感じるのは、スーパーですか、それともバス停ですか？\n\n#shorts\n\nSeri: mk-016"
+    },
+    "ko": {
+      "title": "왜 마트에서 항상 잘못된 줄에 서게 될까? 🤯",
+      "description": "마트에서 항상 가장 느린 줄을 선택하는 이유가 궁금했던 적이 있나요?\n\n줄을 서서 기다릴 때 시간 인식이 느려져 옆 줄이 더 빠르게 움직이는 것처럼 보입니다. 우리 줄의 지연이 더 기억에 남기 때문에, 우리는 항상 '잘못된' 줄에 서 있다는 착각을 하게 됩니다.\n\n이 느낌을 가장 많이 경험하는 곳은 어디인가요: 마트인가요, 아니면 버스 정류장인가요?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "pl": {
+      "title": "Dlaczego zawsze stoisz w złej kolejce w supermarkecie? 🤯",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego zawsze wybierasz najwolniejszą kolejkę w supermarkecie?\n\nNasze postrzeganie czasu zwalnia w kolejce, co sprawia, że sąsiednie kolejki wydają się szybsze. Opóźnienia w naszej własnej kolejce są bardziej zapamiętywane, tworząc iluzję, że zawsze stoimy w „złej” kolejce.\n\nGdzie najczęściej doświadczasz tego uczucia: w supermarkecie czy na przystanku autobusowym?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "nl": {
+      "title": "Waarom sta je altijd in de verkeerde rij in de supermarkt? 🤯",
+      "description": "Heb je je ooit afgevraagd waarom je altijd de langzaamste rij bij de supermarkt lijkt te kiezen?\n\nOnze tijdsperceptie vertraagt in de rij, waardoor aangrenzende rijen sneller lijken te gaan. Vertragingen in onze eigen rij blijven beter hangen, wat de illusie creëert dat we altijd in de 'verkeerde' rij staan.\n\nWaar ervaar je dit gevoel het meest: in de supermarkt of bij de bushalte?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "uk": {
+      "title": "Чому ви завжди стоїте не в тій черзі в супермаркеті? 🤯",
+      "description": "Чи замислювалися ви, чому завжди обираєте найповільнішу чергу в супермаркеті?\n\nНаше сприйняття часу сповільнюється в черзі, через що сусідні черги здаються швидшими. Затримки в нашій власній черзі запам'ятовуються краще, створюючи ілюзію, що ми завжди стоїмо в «неправильній» черзі.\n\nДе ви найчастіше відчуваєте це почуття: у супермаркеті чи на автобусній зупинці?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "vi": {
+      "title": "Tại sao bạn luôn ở nhầm hàng ở siêu thị? 🤯",
+      "description": "Bạn có bao giờ tự hỏi tại sao mình luôn chọn hàng thanh toán chậm nhất ở siêu thị không?\n\nKhi xếp hàng, nhận thức về thời gian của chúng ta chậm lại, khiến các hàng bên cạnh dường như di chuyển nhanh hơn. Những sự chậm trễ trong hàng của chúng ta lại dễ nhớ hơn, tạo ra ảo giác rằng chúng ta luôn ở hàng \"sai\".\n\nBạn trải nghiệm cảm giác này nhiều nhất ở đâu: siêu thị hay trạm xe buýt?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "az": {
+      "title": "Niyə marketdə həmişə səhv növbədə olursan? 🤯",
+      "description": "Heç düşünmüsənmi ki, niyə marketdə həmişə ən yavaş növbəni seçirsən?\n\nNövbədə gözləyərkən zamanın axışı bizə daha yavaş gəlir, bu da qonşu növbələrin daha sürətli hərəkət etdiyini düşündürür. Öz növbəmizdəki yavaşlamalar daha yadda qalan olur və bu, bizdə həmişə \"səhv\" növbədə olduğumuz hissini yaradır.\n\nBu hissi ən çox harada yaşayırsan: marketdə, yoxsa avtobus dayanacağında?\n\n#shorts\n\nSeri: mk-016"
+    },
+    "ro": {
+      "title": "De ce ești mereu la coada greșită în supermarket? 🤯",
+      "description": "Te-ai întrebat vreodată de ce pare că alegi mereu cea mai lentă coadă la supermarket?\n\nPercepția noastră asupra timpului încetinește la coadă, făcând ca rândurile adiacente să pară mai rapide. Întârzierile din propriul nostru rând devin mai memorabile, creând iluzia că suntem mereu la coada „greșită”.\n\nUnde experimentezi cel mai des acest sentiment: la supermarket sau la stația de autobuz?\n\n#shorts\n\nSeri: mk-016"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bu hissi en çok hangi durumda yaşarsın: markette mi, otobüs durağında mı?",
+  "scenes": [
+    {
+      "text": "Market kuyruğunda beklerken zamanın akışı bize çok daha yavaş gelir.",
+      "visual": "overhead shot of many people in a crowded area, people waiting in a line, people waiting outside a store",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 17,
+          "kare": 1
+        }
+      ],
+      "callout": "ZAMAN YAVAŞLAR"
+    },
+    {
+      "text": "Yanımızdaki sıra hep daha hızlı ilerliyor gibi görünür.",
+      "visual": "person with a shopping cart looking around, person pushing a shopping cart, person in a wide aisle with a cart",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu durum, dikkatimizin hıza odaklanmasından kaynaklanır.",
+      "visual": "smiling cashier at a counter, cashier working on a tablet, cashier working at a cafe counter",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        }
+      ],
+      "callout": "ODAK NOKTASI"
+    },
+    {
+      "text": "Boş zamanımızda etrafı daha çok izler, diğer sıralardaki hızlı hareketleri fark ederiz.",
+      "visual": "man in a queue looking around, people on a train platform waiting, crowded train interior with people looking around",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 34,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Kendi sıramızdaki yavaşlamalar daha akılda kalıcı olur ve işte bu yüzden hep yanlış sıradayız hissederiz.",
+      "visual": "multiple cashier lines in a supermarket, shopping carts moving in an aisle, people with shopping carts in a large supermarket",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        }
+      ],
+      "callout": "YANLIŞ SIRA HİSSİ"
+    }
+  ],
+  "duration_seconds": 16.47,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "AI sesin monoton ve yavaş olması, videonun enerjisini düşürüyor ve profesyonel bir hissiyat vermiyor.",
+        "fix": "AI sesin hızı artırılmalı ve daha dinamik bir ton seçilmeye çalışılmalı. Cümleler arası duraklamalar kısaltılmalı."
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazılar statik, sürekli ekranda kalıyor, görseli kapatıyor ve bilginin akışını yavaşlatıyor. Açıklayıcı grafikler (odaklanma, hız) eksik.",
+        "fix": "Ana başlık (NEDEN HEP YANLIŞ SIRA?) sadece başta kısa süre gösterilmeli. Diğer yazılar anahtar kelimeler halinde, kısa süreli ve animasyonlu (fade in/out, scale up) olarak ekrana gelmeli. Konuyu destekleyici basit oklar, vurgular veya daire"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Geçişler çok temel (sert kesimler), video akışı yavaş ve dinamizm eksik.",
+        "fix": "Video kliplerin süresi kısaltılarak daha hızlı bir tempo yakalanmalı. Geçişlerde hafif zoom in/out veya hızlı kaydırma gibi basit ama dinamik efektler kullanılmalı. Her cümlenin veya ana fikrin yeni bir görselle desteklenmesi sağlanmalı."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bazı görüntüler konuyu doğrudan desteklemiyor (örneğin sokakta yürüyen insanlar) veya tekrar ediyor (market kasaları). 'Zamanın yavaşlaması' veya 'diğer sıranın hızlı ilerlemesi' gibi soyut kavramları görselleştirmede yetersiz kalıyor.",
+        "fix": "Her cümlenin veya ana fikrin görsel olarak en iyi şekilde temsil edildiği, daha spesifik stok videolar seçilmeli. Özellikle 'diğer sıranın hızlı ilerlemesi' hissini veren veya 'boş zaman'da etrafı izlemeyi çağrıştıran daha net görüntüler bu"
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği enerjisiz ve genel. Ses efektleri hiç kullanılmamış.",
+        "fix": "Daha enerjik, ritmik ve videonun temposuna uygun bir arka plan müziği seçilmeli. Geçişleri veya önemli anları vurgulamak için hafif 'whoosh' veya 'pop' gibi ses efektleri eklenebilir."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (ilk cümle) yeterince çarpıcı değil ve videonun ana başlığı sürekli ekranda kalıyor.",
+        "fix": "İlk 2-3 saniyede izleyiciyi hemen yakalayacak, daha merak uyandırıcı bir cümle veya soru ile başlanmalı. Ana başlık (NEDEN HEP YANLIŞ SIRA?) videonun başında kısa bir süre gösterilip sonra kaldırılmalı veya daha küçük bir logo/filigran olar"
+      }
+    ],
+    "strengths": [
+      "Konu günlük hayattan ve izleyiciyle kolayca bağ kurulabilir.",
+      "Bilgi akışı mantıklı ve anlaşılır."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
