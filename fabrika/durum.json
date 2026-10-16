@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "40",
+    "views": "47",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "9",
+    "views": "11",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "8",
+    "views": "10",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "1",
     "reason": null
    }
   },
@@ -294,6 +294,36 @@
    "at": 1792181397.3084002,
    "chars": 538,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "y005",
+   "video_id": "X9ouBiGHD4Q",
+   "url": "https://youtube.com/shorts/X9ouBiGHD4Q",
+   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Humans Never Slept?",
+    "es": "¿Qué pasaría si los humanos nunca durmieran?",
+    "pt": "E se os humanos nunca dormissem?",
+    "ar": "ماذا لو لم ينم البشر أبدًا؟",
+    "hi": "क्या होगा अगर इंसान कभी न सोएं?",
+    "id": "Apa Jadinya Jika Manusia Tidak Pernah Tidur?",
+    "fr": "Et si les humains ne dormaient jamais ?",
+    "de": "Was wäre, wenn Menschen nie schlafen würden?",
+    "ru": "Что если бы люди вообще не спали?",
+    "az": "İnsanlar heç yatmasaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792184986.286665,
+   "chars": 554,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -311,7 +341,8 @@
   "n002",
   "y003",
   "g002",
-  "y004"
+  "y004",
+  "y005"
  ],
  "extra": [
   {
@@ -408,6 +439,14 @@
    "url": "https://youtube.com/shorts/-PC7chCMp_s",
    "duration": 37.3,
    "chars": 538
+  },
+  {
+   "finished": "2026-10-16T21:09:47+00:00",
+   "mod": "saatlik",
+   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/X9ouBiGHD4Q",
+   "duration": 37.1,
+   "chars": 554
   }
  ],
  "yorumlar": {

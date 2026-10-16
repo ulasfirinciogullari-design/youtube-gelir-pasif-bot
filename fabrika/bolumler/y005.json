@@ -1,0 +1,741 @@
+{
+ "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "HİÇ",
+  "rest": "UYUMASAYDIK?"
+ },
+ "summary": "Günde fazladan 8 saat kazanmak kulağa harika gelebilir ama beyniniz buna asla dayanamazdı. Uykusuzluğun vücudumuzda başlattığı yıkıcı zinciri ve biyolojik sınırlarımızı keşfedin.",
+ "lines": [
+  {
+   "who": "bit",
+   "text": "İnsanlar hiç uyumasaydı ne olurdu Pi?",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "😴",
+    "label": "UYKU YOK?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Günde fazladan 8 saat kazanırdın ama aklını hızla kaybederdin.",
+   "v": {
+    "t": "split",
+    "bg": "night",
+    "left": {
+     "e": "⏰",
+     "label": "+8 SAAT"
+    },
+    "right": {
+     "e": "💥",
+     "label": "BEYİN İFLASI"
+    },
+    "key": "kaybederdin"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Nasıl yani, o kadar mı kötü?",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "😨",
+    "do": "shake",
+    "key": "kötü",
+    "label": "KORKUTUCU"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "24 saat uyanık kalmak, reflekslerini yasal alkol sınırının üstünde bozar.",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🥱",
+    "value": "24",
+    "unit": "saat",
+    "label": "UYANIK KALMAK",
+    "key": "24"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Daha ilk günden mi?",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "⚡",
+    "do": "pulse",
+    "key": "günden",
+    "label": "İLK GÜN"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü derin uykuda beyin kanalları %60 genişleyip günün zehirli atıklarını yıkar.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🧠",
+    "value": "%60",
+    "unit": "genişleme",
+    "label": "BEYİN KANALLARI",
+    "key": "%60"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uyumazsan bu çöpler birikir, 3. günde hayaller görmeye başlarsın.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "👻",
+    "do": "float",
+    "key": "hayaller",
+    "label": "HALÜSİNASYON"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "En fazla kaç gün dayanırız?",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "⏱️",
+    "do": "pulse",
+    "key": "dayanırız",
+    "label": "SINIR NE?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Resmi rekor 453 saat, yani 19 gün; aşırı uykusuzluk ölümcül sağlık riskleri taşır.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "24 SAAT",
+      "e": "🥱",
+      "label": "REFLEKS KAYBI"
+     },
+     {
+      "when": "3. GÜN",
+      "e": "👻",
+      "label": "HAYALLER"
+     },
+     {
+      "when": "11. GÜN",
+      "e": "💀",
+      "label": "İFLAS"
+     }
+    ],
+    "key": "11"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "v": {
+    "t": "outro",
+    "bg": "lab",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "24 saat boyunca uykusuz kalmak, refleks ve bilişsel performansta kandaki alkol oranının yüzde 0,10 olmasına denk bir bozulma yaratır.",
+   "source": "CDC / NIOSH",
+   "url": "https://www.cdc.gov/niosh/work-hour-training-for-nurses/longhours/mod3/08.html"
+  },
+  {
+   "text": "Derin uyku sırasında beyin hücreleri arasındaki boşluk yaklaşık %60 oranında genişleyerek glimfatik sistemin toksik atıkları temizlemesine izin verir.",
+   "source": "Science / University of Rochester",
+   "url": "https://www.urmc.rochester.edu/news/story/to-sleep-perchance-to-clean"
+  },
+  {
+   "text": "Tıbbi gözetim altında kaydedilen en uzun uykusuzluk rekoru, 1964 yılında 264 saat yani 11 gün uyanık kalan Randy Gardner'a aittir.",
+   "source": "Guinness World Records",
+   "url": "https://www.guinnessworldrecords.com"
+  }
+ ],
+ "tags": [
+  "uyku",
+  "uykusuzluk",
+  "uykusuz kalmak",
+  "glimfatik sistem",
+  "beyin",
+  "insan vücudu",
+  "randy gardner",
+  "biyoloji",
+  "sağlık",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science",
+  "sleep deprivation"
+ ],
+ "hashtags": [
+  "#uyku",
+  "#bilim",
+  "#yaolsaydı"
+ ],
+ "cover": 8,
+ "sources": [
+  "https://www.urmc.rochester.edu/news/story/to-sleep-perchance-to-clean"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Humans Never Slept?",
+   "summary": "Gaining an extra 8 hours a day might sound great, but your brain could never handle it. Discover the devastating chain reaction sleep deprivation triggers in our bodies and explore our biological limits.",
+   "facts": [
+    "Staying awake for 24 hours creates an impairment in reflexes and cognitive performance equivalent to a 0.10% blood alcohol level.",
+    "During deep sleep, the space between brain cells expands by about 60%, allowing the glymphatic system to clear toxic waste.",
+    "The longest medically monitored record for staying awake belongs to Randy Gardner, who stayed awake for 264 hours, or 11 days, in 1964."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si los humanos nunca durmieran?",
+   "summary": "Ganar 8 horas extra al día puede sonar genial, pero tu cerebro nunca lo soportaría. Descubre la devastadora reacción en cadena que desata la falta de sueño y nuestros límites biológicos.",
+   "facts": [
+    "Pasar 24 horas sin dormir causa un deterioro en los reflejos y el rendimiento cognitivo equivalente a un 0,10% de alcohol en sangre.",
+    "Durante el sueño profundo, el espacio entre las células cerebrales se expande aproximadamente un 60%, permitiendo que el sistema glinfático elimine los residuos tóxicos.",
+    "El récord más largo de falta de sueño bajo supervisión médica pertenece a Randy Gardner, quien permaneció despierto 264 horas, o 11 días, en 1964."
+   ]
+  },
+  "pt": {
+   "title": "E se os humanos nunca dormissem?",
+   "summary": "Ganhar 8 horas extras por dia pode parecer incrível, mas o seu cérebro nunca aguentaria. Descubra a reação em cadeia devastadora que a privação de sono causa e os nossos limites biológicos.",
+   "facts": [
+    "Ficar acordado por 24 horas causa uma deterioração nos reflexos e no desempenho cognitivo equivalente a uma taxa de 0,10% de álcool no sangue.",
+    "Durante o sono profundo, o espaço entre as células cerebrais se expande em cerca de 60%, permitindo que o sistema glinfático elimine resíduos tóxicos.",
+    "O recorde de privação de sono sob supervisão médica mais longo pertence a Randy Gardner, que ficou acordado por 264 horas, ou 11 dias, em 1964."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم ينم البشر أبدًا؟",
+   "summary": "قد يبدو الحصول على 8 ساعات إضافية يوميًا أمرًا رائعًا، لكن عقلك لن يتحمل ذلك أبدًا. اكتشف السلسلة المدمرة التي يطلقها الحرمان من النوم في أجسادنا وحدودنا البيولوجية.",
+   "facts": [
+    "البقاء مستيقظًا لمدة 24 ساعة يسبب تدهورًا في ردود الفعل والأداء الإدراكي يعادل نسبة 0.10% من الكحول في الدم.",
+    "أثناء النوم العميق، تتسع المسافة بين خلايا الدماغ بنحو 60%، مما يسمح للجهاز الجليمفاوي بتنظيف الفضلات السامة.",
+    "أطول رقم قياسي مسجل للحرمان من النوم تحت إشراف طبي يعود إلى راندي غاردنر، الذي بقي مستيقظًا لمدة 264 ساعة، أي 11 يومًا، في عام 1964."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर इंसान कभी न सोएं?",
+   "summary": "दिन में 8 अतिरिक्त घंटे पाना सुनने में शानदार लग सकता है, लेकिन आपका दिमाग इसे कभी सहन नहीं कर पाएगा। जानिए नींद की कमी से शरीर में शुरू होने वाली विनाशकारी प्रक्रिया और हमारी जैविक सीमाओं के बारे में।",
+   "facts": [
+    "24 घंटे जागते रहने से सजगता और संज्ञानात्मक प्रदर्शन में 0.10% रक्त अल्कोहल स्तर के बराबर गिरावट आती है।",
+    "गहरी नींद के दौरान मस्तिष्क की कोशिकाओं के बीच की जगह लगभग 60% तक बढ़ जाती है, जिससे ग्लिम्फैटिक सिस्टम विषाक्त कचरे को साफ कर पाता है।",
+    "चिकित्सीय निगरानी में दर्ज सबसे लंबा अनिद्रा का रिकॉर्ड रैंडी गार्डनर के नाम है, जो 1964 में 264 घंटे यानी 11 दिनों तक जागते रहे थे।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Manusia Tidak Pernah Tidur?",
+   "summary": "Mendapatkan 8 jam tambahan setiap hari terdengar hebat, tetapi otak Anda tidak akan pernah sanggup. Temukan reaksi berantai yang merusak akibat kurang tidur dan batas biologis tubuh kita.",
+   "facts": [
+    "Terjaga selama 24 jam menyebabkan penurunan refleks dan kinerja kognitif yang setara dengan kadar alkohol dalam darah 0,10%.",
+    "Selama tidur nyenyak, ruang antar sel otak melebar sekitar 60%, memungkinkan sistem glimfatik membersihkan limbah beracun.",
+    "Rekor tidak tidur terlama di bawah pengawasan medis dipegang oleh Randy Gardner, yang tetap terjaga selama 264 jam atau 11 hari pada tahun 1964."
+   ]
+  },
+  "fr": {
+   "title": "Et si les humains ne dormaient jamais ?",
+   "summary": "Gagner 8 heures de plus par jour peut sembler génial, mais votre cerveau ne le supporterait jamais. Découvrez la réaction en chaîne destructrice que déclenche le manque de sommeil et nos limites biologiques.",
+   "facts": [
+    "Rester éveillé pendant 24 heures entraîne une dégradation des réflexes et des performances cognitives équivalente à un taux d'alcoolémie de 0,10 %.",
+    "Pendant le sommeil profond, l'espace entre les cellules cérébrales s'élargit d'environ 60 %, permettant au système glymphatique d'éliminer les déchets toxiques.",
+    "Le record de privation de sommeil sous surveillance médicale est détenu par Randy Gardner, qui est resté éveillé pendant 264 heures, soit 11 jours, en 1964."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Menschen nie schlafen würden?",
+   "summary": "8 Stunden mehr am Tag zu gewinnen klingt toll, aber dein Gehirn würde das niemals aushalten. Entdecke die zerstörerische Kettenreaktion, die Schlafmangel im Körper auslöst, und unsere biologischen Grenzen.",
+   "facts": [
+    "24 Stunden ohne Schlaf verursachen eine Beeinträchtigung der Reflexe und der kognitiven Leistung, die einem Blutalkoholspiegel von 0,10 % entspricht.",
+    "Im Tiefschlaf vergrößert sich der Raum zwischen den Gehirnzellen um rund 60 %, sodass das glymphatische System giftige Abfallstoffe abtransportieren kann.",
+    "Der am längsten medizinisch überwachte Wachrekord wird von Randy Gardner gehalten, der 1964 insgesamt 264 Stunden, also 11 Tage lang, wach blieb."
+   ]
+  },
+  "ru": {
+   "title": "Что если бы люди вообще не спали?",
+   "summary": "Получить дополнительные 8 часов в день звучит здорово, но ваш мозг никогда бы этого не выдержал. Узнайте, какую разрушительную цепную реакцию запускает депривация сна и каковы наши биологические пределы.",
+   "facts": [
+    "Бодрствование в течение 24 часов ухудшает реакцию и когнитивные функции так же, как содержание алкоголя в крови на уровне 0,10%.",
+    "Во время глубокого сна пространство между клетками мозга увеличивается примерно на 60%, что позволяет глимфатической системе выводить токсичные отходы.",
+    "Самый долгий рекорд бодрствования под медицинским наблюдением принадлежит Рэнди Гарднеру, который в 1964 году не спал 264 часа, то есть 11 дней."
+   ]
+  },
+  "az": {
+   "title": "İnsanlar heç yatmasaydı nə olardı?",
+   "summary": "Gündə əlavə 8 saat qazanmaq əla səslənə bilər, amma beyniniz buna heç vaxt dözə bilməzdi. Yuxusuzluğun bədənimizdə başlatdığı dağıdıcı zənciri və bioloji sərhədlərimizi kəşf edin.",
+   "facts": [
+    "24 saat boyunca yuxusuz qalmaq, refleks və koqnitiv performansda qandakı spirt nisbətinin 0,10% olmasına bərabər pisləşmə yaradır.",
+    "Dərin yuxu zamanı beyin hüceyrələri arasındakı boşluq təxminən 60% genişlənərək qlimfatik sistemin toksik tullantıları təmizləməsinə imkan verir.",
+    "Tibbi nəzarət altında qeydə alınmış ən uzun yuxusuzluq rekordu, 1964-cü ildə 264 saat, yəni 11 gün oyaq qalan Rendi Qardnerə məxsusdur."
+   ]
+  }
+ },
+ "id": "y005",
+ "series": "Ya Olsaydı?",
+ "q": "İnsanlar hiç uyumasaydı ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 2.579,
+   "words": [
+    {
+     "w": "İnsanlar",
+     "t0": 0.35,
+     "t1": 0.8029999999999999
+    },
+    {
+     "w": "hiç",
+     "t0": 0.838,
+     "t1": 0.942
+    },
+    {
+     "w": "uyumasaydı",
+     "t0": 1.0,
+     "t1": 1.604
+    },
+    {
+     "w": "ne",
+     "t0": 1.662,
+     "t1": 1.7200000000000002
+    },
+    {
+     "w": "olurdu",
+     "t0": 1.7429999999999999,
+     "t1": 2.126
+    },
+    {
+     "w": "Pi?",
+     "t0": 2.184,
+     "t1": 2.579
+    }
+   ]
+  },
+  {
+   "t0": 2.9671655328798185,
+   "t1": 6.636165532879819,
+   "words": [
+    {
+     "w": "Günde",
+     "t0": 2.9671655328798185,
+     "t1": 3.2461655328798185
+    },
+    {
+     "w": "fazladan",
+     "t0": 3.3041655328798187,
+     "t1": 3.6751655328798183
+    },
+    {
+     "w": "8",
+     "t0": 3.7221655328798184,
+     "t1": 3.9891655328798183
+    },
+    {
+     "w": "saat",
+     "t0": 4.035165532879819,
+     "t1": 4.210165532879818
+    },
+    {
+     "w": "kazanırdın",
+     "t0": 4.256165532879819,
+     "t1": 4.732165532879819
+    },
+    {
+     "w": "ama",
+     "t0": 4.767165532879819,
+     "t1": 4.976165532879818
+    },
+    {
+     "w": "aklını",
+     "t0": 5.138165532879818,
+     "t1": 5.498165532879819
+    },
+    {
+     "w": "hızla",
+     "t0": 5.533165532879819,
+     "t1": 5.754165532879819
+    },
+    {
+     "w": "kaybederdin.",
+     "t0": 5.800165532879818,
+     "t1": 6.636165532879819
+    }
+   ]
+  },
+  {
+   "t0": 7.016165532879819,
+   "t1": 8.549165532879819,
+   "words": [
+    {
+     "w": "Nasıl",
+     "t0": 7.016165532879819,
+     "t1": 7.318165532879819
+    },
+    {
+     "w": "yani,",
+     "t0": 7.3411655328798195,
+     "t1": 7.57316553287982
+    },
+    {
+     "w": "o",
+     "t0": 7.63116553287982,
+     "t1": 7.689165532879819
+    },
+    {
+     "w": "kadar",
+     "t0": 7.747165532879819,
+     "t1": 8.03816553287982
+    },
+    {
+     "w": "mı",
+     "t0": 8.07316553287982,
+     "t1": 8.15416553287982
+    },
+    {
+     "w": "kötü?",
+     "t0": 8.18916553287982,
+     "t1": 8.549165532879819
+    }
+   ]
+  },
+  {
+   "t0": 8.93537188208617,
+   "t1": 13.347371882086168,
+   "words": [
+    {
+     "w": "24",
+     "t0": 8.93537188208617,
+     "t1": 9.39937188208617
+    },
+    {
+     "w": "saat",
+     "t0": 9.423371882086169,
+     "t1": 9.62037188208617
+    },
+    {
+     "w": "uyanık",
+     "t0": 9.65537188208617,
+     "t1": 9.98037188208617
+    },
+    {
+     "w": "kalmak,",
+     "t0": 10.003371882086169,
+     "t1": 10.45637188208617
+    },
+    {
+     "w": "reflekslerini",
+     "t0": 10.654371882086169,
+     "t1": 11.315371882086168
+    },
+    {
+     "w": "yasal",
+     "t0": 11.362371882086169,
+     "t1": 11.629371882086168
+    },
+    {
+     "w": "alkol",
+     "t0": 11.687371882086168,
+     "t1": 11.942371882086169
+    },
+    {
+     "w": "sınırının",
+     "t0": 11.98937188208617,
+     "t1": 12.372371882086169
+    },
+    {
+     "w": "üstünde",
+     "t0": 12.41837188208617,
+     "t1": 12.74337188208617
+    },
+    {
+     "w": "bozar.",
+     "t0": 12.79037188208617,
+     "t1": 13.347371882086168
+    }
+   ]
+  },
+  {
+   "t0": 13.72737188208617,
+   "t1": 15.02737188208617,
+   "words": [
+    {
+     "w": "Daha",
+     "t0": 13.72737188208617,
+     "t1": 13.94837188208617
+    },
+    {
+     "w": "ilk",
+     "t0": 14.029371882086169,
+     "t1": 14.180371882086169
+    },
+    {
+     "w": "günden",
+     "t0": 14.215371882086169,
+     "t1": 14.56337188208617
+    },
+    {
+     "w": "mi?",
+     "t0": 14.62137188208617,
+     "t1": 15.02737188208617
+    }
+   ]
+  },
+  {
+   "t0": 15.417190476190477,
+   "t1": 20.34019047619048,
+   "words": [
+    {
+     "w": "Çünkü",
+     "t0": 15.417190476190477,
+     "t1": 15.707190476190476
+    },
+    {
+     "w": "derin",
+     "t0": 15.765190476190478,
+     "t1": 15.951190476190478
+    },
+    {
+     "w": "uykuda",
+     "t0": 16.009190476190476,
+     "t1": 16.404190476190475
+    },
+    {
+     "w": "beyin",
+     "t0": 16.567190476190476,
+     "t1": 16.822190476190478
+    },
+    {
+     "w": "kanalları",
+     "t0": 16.868190476190478,
+     "t1": 17.286190476190477
+    },
+    {
+     "w": "%60",
+     "t0": 17.333190476190477,
+     "t1": 17.948190476190476
+    },
+    {
+     "w": "genişleyip",
+     "t0": 17.995190476190476,
+     "t1": 18.45919047619048
+    },
+    {
+     "w": "günün",
+     "t0": 18.680190476190475,
+     "t1": 18.947190476190478
+    },
+    {
+     "w": "zehirli",
+     "t0": 18.993190476190478,
+     "t1": 19.306190476190476
+    },
+    {
+     "w": "atıklarını",
+     "t0": 19.330190476190477,
+     "t1": 19.794190476190476
+    },
+    {
+     "w": "yıkar.",
+     "t0": 19.817190476190476,
+     "t1": 20.34019047619048
+    }
+   ]
+  },
+  {
+   "t0": 20.540190476190478,
+   "t1": 24.394190476190477,
+   "words": [
+    {
+     "w": "Uyumazsan",
+     "t0": 20.540190476190478,
+     "t1": 21.051190476190477
+    },
+    {
+     "w": "bu",
+     "t0": 21.086190476190477,
+     "t1": 21.155190476190477
+    },
+    {
+     "w": "çöpler",
+     "t0": 21.213190476190476,
+     "t1": 21.49219047619048
+    },
+    {
+     "w": "birikir,",
+     "t0": 21.53819047619048,
+     "t1": 21.96819047619048
+    },
+    {
+     "w": "3.",
+     "t0": 22.037190476190478,
+     "t1": 22.362190476190477
+    },
+    {
+     "w": "günde",
+     "t0": 22.560190476190478,
+     "t1": 22.815190476190477
+    },
+    {
+     "w": "hayaller",
+     "t0": 22.862190476190477,
+     "t1": 23.210190476190476
+    },
+    {
+     "w": "görmeye",
+     "t0": 23.26819047619048,
+     "t1": 23.57019047619048
+    },
+    {
+     "w": "başlarsın.",
+     "t0": 23.60519047619048,
+     "t1": 24.394190476190477
+    }
+   ]
+  },
+  {
+   "t0": 24.774702947845807,
+   "t1": 26.446702947845807,
+   "words": [
+    {
+     "w": "En",
+     "t0": 24.774702947845807,
+     "t1": 24.925702947845807
+    },
+    {
+     "w": "fazla",
+     "t0": 24.983702947845806,
+     "t1": 25.273702947845806
+    },
+    {
+     "w": "kaç",
+     "t0": 25.320702947845806,
+     "t1": 25.54070294784581
+    },
+    {
+     "w": "gün",
+     "t0": 25.59870294784581,
+     "t1": 25.72670294784581
+    },
+    {
+     "w": "dayanırız?",
+     "t0": 25.772702947845808,
+     "t1": 26.446702947845807
+    }
+   ]
+  },
+  {
+   "t0": 26.837945578231295,
+   "t1": 32.8289455782313,
+   "words": [
+    {
+     "w": "Resmi",
+     "t0": 26.837945578231295,
+     "t1": 27.162945578231295
+    },
+    {
+     "w": "rekor",
+     "t0": 27.220945578231294,
+     "t1": 27.522945578231294
+    },
+    {
+     "w": "453",
+     "t0": 27.580945578231294,
+     "t1": 28.323945578231296
+    },
+    {
+     "w": "saat,",
+     "t0": 28.358945578231296,
+     "t1": 28.776945578231295
+    },
+    {
+     "w": "yani",
+     "t0": 28.973945578231294,
+     "t1": 29.217945578231294
+    },
+    {
+     "w": "19",
+     "t0": 29.287945578231295,
+     "t1": 29.705945578231294
+    },
+    {
+     "w": "gün;",
+     "t0": 29.739945578231296,
+     "t1": 29.983945578231296
+    },
+    {
+     "w": "aşırı",
+     "t0": 30.285945578231296,
+     "t1": 30.564945578231296
+    },
+    {
+     "w": "uykusuzluk",
+     "t0": 30.599945578231296,
+     "t1": 31.191945578231294
+    },
+    {
+     "w": "ölümcül",
+     "t0": 31.260945578231293,
+     "t1": 31.597945578231297
+    },
+    {
+     "w": "sağlık",
+     "t0": 31.620945578231296,
+     "t1": 31.922945578231296
+    },
+    {
+     "w": "riskleri",
+     "t0": 31.957945578231296,
+     "t1": 32.28294557823129
+    },
+    {
+     "w": "taşır.",
+     "t0": 32.317945578231296,
+     "t1": 32.8289455782313
+    }
+   ]
+  },
+  {
+   "t0": 33.208945578231294,
+   "t1": 35.43794557823129,
+   "words": [
+    {
+     "w": "Sıradaki",
+     "t0": 33.208945578231294,
+     "t1": 33.649945578231296
+    },
+    {
+     "w": "soruyu",
+     "t0": 33.68494557823129,
+     "t1": 33.91694557823129
+    },
+    {
+     "w": "sen",
+     "t0": 33.97494557823129,
+     "t1": 34.14894557823129
+    },
+    {
+     "w": "seç!",
+     "t0": 34.20694557823129,
+     "t1": 34.49694557823129
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 34.519945578231294,
+     "t1": 34.9849455782313
+    },
+    {
+     "w": "yaz.",
+     "t0": 35.0309455782313,
+     "t1": 35.43794557823129
+    }
+   ]
+  }
+ ]
+}

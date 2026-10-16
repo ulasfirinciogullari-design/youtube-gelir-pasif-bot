@@ -1,52 +1,51 @@
 {
- "started": "2026-10-16T20:07:24+00:00",
+ "started": "2026-10-16T21:06:47+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "credits_before": [
-  1411,
+  1629,
   613902
  ],
  "topic": {
-  "id": "y004",
+  "id": "y005",
   "series": "Ya Olsaydı?",
-  "q": "Bir kara deliğe düşseydin ne olurdu?"
+  "q": "İnsanlar hiç uyumasaydı ne olurdu?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": true,
-  "fixes": []
+  "ok": false,
+  "fixes": [
+   {
+    "line": 8,
+    "why": "En uzun süre uyanık kalma rekoru Randy Gardner'ın 264 saati değil, Guinness tarafından tescillenen Robert McDonald'ın 453 saatlik (yaklaşık 19 gün) rekorudur. Ayrıca 11 günden sonrasının kesin olarak organ yetmezliğinden öldürdüğü iddiası bilimsel olarak yanlıştır."
+   }
+  ]
  },
  "chunks": 0,
  "grounded": true,
- "chars": 538,
- "duration": 37.3,
- "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+ "chars": 554,
+ "duration": 37.1,
+ "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "9",
-  "videos": "10"
+  "videos": "11"
  },
- "url": "https://youtube.com/shorts/-PC7chCMp_s",
+ "url": "https://youtube.com/shorts/X9ouBiGHD4Q",
  "recent_status": {
-  "y002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1",
-   "reason": null
-  },
   "n002": {
    "upload": "processed",
    "privacy": "public",
-   "views": "8",
+   "views": "10",
    "reason": null
   },
   "y003": {
    "upload": "processed",
    "privacy": "public",
-   "views": "0",
+   "views": "1",
    "reason": null
   },
   "g002": {
@@ -56,6 +55,12 @@
    "reason": null
   },
   "y004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "y005": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -63,12 +68,12 @@
   }
  },
  "credits_after": [
-  1542,
+  1764,
   613902
  ],
  "log": [
-  "Konu: y004 Bir kara deliğe düşseydin ne olurdu? (Ya Olsaydı?)",
+  "Konu: y005 İnsanlar hiç uyumasaydı ne olurdu? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T20:09:58+00:00"
+ "finished": "2026-10-16T21:09:47+00:00"
 }
