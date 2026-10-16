@@ -1,0 +1,308 @@
+{
+  "topic_id": "mk-021",
+  "topic": "Karıncalar kilometrelerce yürüyüp yuvalarını nasıl bulur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Karıncalar Evini Nasıl Bulur? 🐜",
+  "hook_text": "KARINCALAR YOLUNU NASIL BULUR?",
+  "description": "Karıncalar evini nasıl bulur?\n\nKarıncalar, yiyecek ararken yere feromon izleri bırakır. Bu kimyasal kokular, diğer karıncalara yolu gösteren bir harita gibidir. Güneşin konumu ve polarize ışık da yön bulmalarına yardımcı olur.\n\nKarıncalar yuvalarını bulmak için sadece feromon mu kullanır, yoksa güneşi de mi takip eder? A) Sadece feromon B) Hem feromon hem güneş\n\n#karınca #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-021",
+  "tags": [
+    "karıncalar",
+    "karınca yuvası",
+    "karınca yön bulma",
+    "karıncalar nasıl yön bulur",
+    "karıncalar evini nasıl bulur",
+    "karınca feromon",
+    "karınca güneş",
+    "karınca polarize ışık",
+    "karınca bilgileri",
+    "karınca dünyası",
+    "hayvanlar",
+    "hayvanlar alemi",
+    "böcekler",
+    "doğa",
+    "bilim",
+    "ilginç bilgiler",
+    "merak",
+    "keşfet",
+    "belgesel",
+    "kısa video",
+    "youtube shorts",
+    "hayvan davranışları",
+    "ants",
+    "ant navigation",
+    "karınca",
+    "navigasyon",
+    "feromon",
+    "yuva",
+    "böcek",
+    "biyoloji",
+    "karincalar",
+    "karinca yuvasi",
+    "karinca yon bulma"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How Do Ants Find Their Way Home? 🐜",
+      "description": "Ever wondered how these tiny ants navigate miles to find their way back to their nest? They leave behind special chemical trails, called pheromones, that act as a map. The sun's position and polarized light also play a crucial role in their incredible navigation skills.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "es": {
+      "title": "¿Cómo Encuentran las Hormigas su Hogar? 🐜",
+      "description": "¿Te has preguntado cómo estas pequeñas hormigas navegan kilómetros para regresar a su nido? Dejan rastros químicos especiales, feromonas, que actúan como un mapa. La posición del sol y la luz polarizada también son clave en su asombrosa orientación.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "pt": {
+      "title": "Como as Formigas Encontram o Caminho de Casa? 🐜",
+      "description": "Já se perguntou como essas pequenas formigas navegam por quilômetros para voltar ao seu ninho? Elas deixam rastros químicos especiais, feromônios, que funcionam como um mapa. A posição do sol e a luz polarizada também são cruciais para sua incrível navegação.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "de": {
+      "title": "Wie finden Ameisen ihren Weg nach Hause? 🐜",
+      "description": "Hast du dich jemals gefragt, wie diese winzigen Ameisen kilometerweit navigieren, um zu ihrem Nest zurückzufinden? Sie hinterlassen spezielle chemische Spuren, Pheromone, die als Karte dienen. Die Position der Sonne und polarisiertes Licht spielen ebenfalls eine entscheidende Rolle bei ihrer erstaunlichen Orientierung.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "fr": {
+      "title": "Comment les fourmis retrouvent-elles leur chemin? 🐜",
+      "description": "Vous êtes-vous déjà demandé comment ces minuscules fourmis parcourent des kilomètres pour retrouver leur nid? Elles laissent des pistes chimiques spéciales, des phéromones, qui agissent comme une carte. La position du soleil et la lumière polarisée jouent également un rôle crucial dans leur incroyable navigation.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "it": {
+      "title": "Come fanno le formiche a ritrovare la strada di casa? 🐜",
+      "description": "Ti sei mai chiesto come queste minuscole formiche percorrano chilometri per tornare al loro nido? Lasciano tracce chimiche speciali, i feromoni, che fungono da mappa. La posizione del sole e la luce polarizzata giocano un ruolo cruciale nella loro incredibile capacità di orientamento.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "ru": {
+      "title": "Как муравьи находят дорогу домой? 🐜",
+      "description": "Вы когда-нибудь задумывались, как эти крошечные муравьи преодолевают километры, чтобы вернуться в свое гнездо? Они оставляют особые химические следы, феромоны, которые служат картой. Положение солнца и поляризованный свет также играют решающую роль в их удивительной навигации.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "ar": {
+      "title": "كيف تجد النملة طريقها إلى المنزل؟ 🐜",
+      "description": "هل تساءلت يومًا كيف تتنقل هذه النملات الصغيرة لمسافات طويلة لتجد طريقها إلى عشها؟ تترك وراءها مسارات كيميائية خاصة، تسمى الفيرومونات، تعمل كخريطة. كما يلعب موقع الشمس والضوء المستقطب دورًا حاسمًا في مهارات الملاحة المذهلة لديها.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "hi": {
+      "title": "चींटियाँ अपना घर कैसे ढूंढती हैं? 🐜",
+      "description": "क्या आपने कभी सोचा है कि ये छोटी चींटियाँ अपने घोंसले में वापस जाने के लिए मीलों तक कैसे रास्ता खोज लेती हैं? वे विशेष रासायनिक निशान, जिन्हें फेरोमोन कहते हैं, छोड़ती हैं जो एक नक्शे की तरह काम करते हैं। सूर्य की स्थिति और ध्रुवीकृत प्रकाश भी उनकी अद्भुत दिशा-निर्धारण क्षमताओं में महत्वपूर्ण भूमिका निभाते हैं।\n\n#shorts\n\nSeri: mk-021"
+    },
+    "id": {
+      "title": "Bagaimana Semut Menemukan Jalan Pulang? 🐜",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana semut kecil ini menavigasi bermil-mil untuk menemukan jalan kembali ke sarangnya? Mereka meninggalkan jejak kimia khusus, feromon, yang berfungsi sebagai peta. Posisi matahari dan cahaya terpolarisasi juga memainkan peran penting dalam kemampuan navigasi mereka yang luar biasa.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "ja": {
+      "title": "アリはどうやって家を見つけるの？ 🐜",
+      "description": "小さなアリが何キロも離れた巣にどうやって戻るのか、不思議に思ったことはありませんか？ 彼らはフェロモンという特殊な化学物質の痕跡を残し、それが地図の役割を果たします。太陽の位置や偏光も、彼らの驚くべきナビゲーション能力に重要な役割を果たしています。\n\n#shorts\n\nSeri: mk-021"
+    },
+    "ko": {
+      "title": "개미는 어떻게 집을 찾아갈까? 🐜",
+      "description": "이 작은 개미들이 수 킬로미터를 이동하여 어떻게 집으로 돌아가는지 궁금했던 적이 있나요? 그들은 페로몬이라는 특별한 화학 흔적을 남겨 지도로 사용합니다. 태양의 위치와 편광도 그들의 놀라운 길 찾기 능력에 중요한 역할을 합니다.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "pl": {
+      "title": "Jak mrówki znajdują drogę do domu? 🐜",
+      "description": "Zastanawiałeś się kiedyś, jak te małe mrówki pokonują kilometry, by wrócić do swojego gniazda? Zostawiają specjalne szlaki chemiczne, zwane feromonami, które działają jak mapa. Położenie słońca i spolaryzowane światło również odgrywają kluczową rolę w ich niesamowitych umiejętnościach nawigacyjnych.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "nl": {
+      "title": "Hoe vinden mieren hun weg naar huis? 🐜",
+      "description": "Heb je je ooit afgevraagd hoe deze kleine mieren kilometers navigeren om hun nest terug te vinden? Ze laten speciale chemische sporen achter, feromonen, die als een kaart dienen. De positie van de zon en gepolariseerd licht spelen ook een cruciale rol in hun ongelooflijke navigatievaardigheden.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "uk": {
+      "title": "Як мурахи знаходять дорогу додому? 🐜",
+      "description": "Ви коли-небудь замислювалися, як ці крихітні мурахи долають кілометри, щоб повернутися до свого гнізда? Вони залишають особливі хімічні сліди, феромони, які слугують картою. Положення сонця та поляризоване світло також відіграють вирішальну роль у їхній дивовижній навігації.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "vi": {
+      "title": "Làm thế nào kiến tìm đường về tổ? 🐜",
+      "description": "Bạn có bao giờ tự hỏi làm thế nào những chú kiến nhỏ bé này đi hàng dặm để tìm đường về tổ của chúng không? Chúng để lại những vệt hóa chất đặc biệt, gọi là pheromone, hoạt động như một bản đồ. Vị trí của mặt trời và ánh sáng phân cực cũng đóng vai trò quan trọng trong khả năng định hướng đáng kinh ngạc của chúng.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "az": {
+      "title": "Qarışqalar evlərini necə tapır? 🐜",
+      "description": "Bu kiçik qarışqaların yuvalarına qayıtmaq üçün kilometrlərlə necə yol getdiyini heç düşünmüsünüzmü? Onlar xüsusi kimyəvi izlər, yəni feromonlar buraxırlar ki, bu da xəritə rolunu oynayır. Günəşin mövqeyi və polyarizə olunmuş işıq da onların inanılmaz naviqasiya bacarıqlarında mühüm rol oynayır.\n\n#shorts\n\nSeri: mk-021"
+    },
+    "ro": {
+      "title": "Cum își găsesc furnicile drumul spre casă? 🐜",
+      "description": "Te-ai întrebat vreodată cum aceste mici furnici navighează kilometri întregi pentru a se întoarce la cuibul lor? Ele lasă în urmă urme chimice speciale, feromoni, care acționează ca o hartă. Poziția soarelui și lumina polarizată joacă, de asemenea, un rol crucial în abilitățile lor incredibile de navigație.\n\n#shorts\n\nSeri: mk-021"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Karıncalar yuvalarını bulmak için sadece feromon mu kullanır, yoksa güneşi de mi takip eder? A) Sadece feromon B) Hem feromon hem güneş",
+  "scenes": [
+    {
+      "text": "Bu minik karıncalar yollarını şaşırmadan kilometrelerce yürür.",
+      "visual": "Close-up of ants walking on the ground in nature.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        }
+      ],
+      "callout": "KİLOMETRELERCE YOL"
+    },
+    {
+      "text": "Peki, bu kadar uzak mesafelerden yuvalarını nasıl bulabiliyorlar?",
+      "visual": "Ants continue walking on various natural surfaces like dry grass and pine needles.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 16,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Karıncalar, yiyecek ararken yere feromon izleri bırakır.",
+      "visual": "Ants walking on rough tree bark, moss, and green leaves.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 38,
+          "kare": 2
+        }
+      ],
+      "callout": "FEROMON İZLERİ"
+    },
+    {
+      "text": "Bu kimyasal kokular, diğer karıncalara yolu gösteren bir harita gibidir.",
+      "visual": "Ants follow a trail on a bamboo branch, a wooden railing, and a plant stem.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 2
+        }
+      ],
+      "callout": "KİMYASAL HARİTA"
+    },
+    {
+      "text": "Güneşin konumu ve polarize ışık da yön bulmalarına yardımcı olur.",
+      "visual": "Ants on the ground with rocks and dry, cracked earth, suggesting an outdoor environment.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 2
+        }
+      ],
+      "callout": "GÜNEŞ IŞIĞI"
+    },
+    {
+      "text": "İşte bu sayede yuvalarına geri dönerler.",
+      "visual": "Ants entering holes in the ground.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 17,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.79,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Bilgiyi görselleştiren grafik ve animasyon eksikliği",
+        "fix": "Feronmon izlerini, güneşin konumunu veya polarize ışığı temsil eden basit oklar, çizgiler veya şekiller gibi ücretsiz stok grafikler kullanın. Anahtar kelimeleri vurgulamak için metin animasyonları ekleyin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitlilik ve dinamizm eksikliği",
+        "fix": "Karıncaların farklı açılardan, farklı zeminlerde (toprak, ot, ağaç kabuğu) veya farklı davranışlarını gösteren daha çeşitli ücretsiz stok videolar arayın. Uzak mesafeyi veya yuva dönüşünü ima eden daha geniş açılı veya hareketli çekimler ku"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesinin monotonluğu ve enerji eksikliği",
+        "fix": "Yapay zeka sesinin hızını, tonunu ve vurgularını ayarlayarak daha doğal ve enerjik bir anlatım elde etmeye çalışın. Cümleleri daha kısa parçalara bölerek yapay zekanın daha iyi telaffuz etmesini sağlayın."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Geçişlerin basit ve dinamik olmaması",
+        "fix": "Daha hızlı kesmeler ve aksiyonla uyumlu basit geçişler (hızlı geçişler, kısa kararmalar) kullanarak videonun akışını hızlandırın ve daha dinamik hale getirin."
+      },
+      {
+        "area": "ses",
+        "problem": "Jenerik ve etkileşimsiz arka plan müziği",
+        "fix": "Bilgi ve keşif temasını destekleyen, daha merak uyandırıcı veya hafif tempolu telifsiz müzikler seçin. Müziğin videonun genel enerjisini artırmasına dikkat edin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kancanın yeterince dikkat çekici olmaması",
+        "fix": "Başlangıç cümlesini daha şaşırtıcı veya iddialı hale getirin. Örneğin, 'Bilim insanlarını bile şaşırtan karınca navigasyonu...' veya 'Karıncalar, kilometrelerce yolu nasıl bir mucizeyle buluyorlar?' gibi ifadeler kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektlerinin eksikliği",
+        "fix": "Karıncaların hareketlerini veya ortamı destekleyecek (örn. hafif cıvıltı, toprak sesi) gibi ücretsiz ses efektleri ekleyerek videoyu daha sürükleyici hale getirin."
+      }
+    ],
+    "strengths": [
+      "Kısa",
+      "Bilgilendirici",
+      "Metinler net ve okunabilir"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
