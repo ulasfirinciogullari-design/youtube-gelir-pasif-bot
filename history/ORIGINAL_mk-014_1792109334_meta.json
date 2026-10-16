@@ -1,0 +1,305 @@
+{
+  "topic_id": "mk-014",
+  "topic": "Kediler neden mırlar, mırlamanın gerçek sebebi ne?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
+  "hook_text": "Mırlamanın Sırrı Ne?",
+  "description": "Kediler neden mırlar?\n\nKediler, mırlamayı kendilerini iyileştirmek için kullanır. Stresli veya yaralı olduklarında bile mırlayabilirler, çünkü vücutlarının ürettiği 25 ile 150 Hertz arasındaki düşük frekanslı titreşimler kemik ve doku onarımına yardımcı olur.\n\nSence kedilerin mırlama frekansı 100 Hz'in altında mı üstünde mi?\n\n#kedi #mırlama #kediler #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-014",
+  "tags": [
+    "kedi",
+    "kediler",
+    "mırlama",
+    "kedi mırlaması",
+    "kediler neden mırlar",
+    "kedi mırlama sırrı",
+    "mırlamanın faydaları",
+    "kediler nasıl iyileşir",
+    "kedi sesi",
+    "hayvan davranışları",
+    "evcil hayvan",
+    "kedi sağlığı",
+    "ilginç kedi bilgileri",
+    "kedi gerçekleri",
+    "bilimsel gerçekler",
+    "doğa bilgileri",
+    "hayvanlar alemi",
+    "kedi titreşimi",
+    "kemik onarımı",
+    "hayvanlar",
+    "bilim",
+    "ilginç bilgiler",
+    "cat",
+    "purring",
+    "cat purr",
+    "Kedi Bilimi",
+    "Evcil Hayvanlar",
+    "Zirvenin Kanunu",
+    "Şaşırtıcı Bilgiler",
+    "shorts",
+    "mirlama"
+  ],
+  "localizations": {
+    "en": {
+      "title": "The Secret of Cat Purring Revealed! 🤫",
+      "description": "Ever wondered why cats purr? It's more than just happiness! Discover how cats use purring, with its low-frequency vibrations between 25 and 150 Hertz, as a unique mechanism to heal themselves, aiding in bone and tissue repair.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "es": {
+      "title": "¡El Secreto del Ronroneo de los Gatos Revelado! 🤫",
+      "description": "¿Sabías que los gatos ronronean para curarse a sí mismos? Aunque a menudo lo asociamos con la felicidad, también lo hacen cuando están estresados o heridos. Sus vibraciones de baja frecuencia, entre 25 y 150 Hertz, ayudan a reparar huesos y tejidos.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "pt": {
+      "title": "O Segredo do Ronronar dos Gatos Revelado! 🤫",
+      "description": "Você já se perguntou por que os gatos ronronam? Não é apenas um sinal de felicidade! Descubra como essas vibrações de baixa frequência, entre 25 e 150 Hertz, são um mecanismo único que os gatos usam para se curar e reparar ossos e tecidos.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "de": {
+      "title": "Das Geheimnis des Schnurrens von Katzen enthüllt! 🤫",
+      "description": "Katzen schnurren nicht nur aus Freude – sie nutzen es auch zur Selbstheilung! Erfahren Sie, wie die einzigartigen, niederfrequenten Vibrationen zwischen 25 und 150 Hertz, die Katzen erzeugen, Knochen- und Gewebereparaturen unterstützen.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "fr": {
+      "title": "Le Secret du Ronronnement des Chats Dévoilé ! 🤫",
+      "description": "Savez-vous pourquoi les chats ronronnent ? Ce n'est pas seulement un signe de bonheur ! Découvrez comment ces vibrations à basse fréquence, de 25 à 150 Hertz, sont un mécanisme unique que les chats utilisent pour se soigner, aidant à la réparation des os et des tissus.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "it": {
+      "title": "Il Segreto del Fusa dei Gatti Rivelato! 🤫",
+      "description": "Ti sei mai chiesto perché i gatti fanno le fusa? Non è solo per felicità! Scopri come le vibrazioni a bassa frequenza, tra 25 e 150 Hertz, sono un meccanismo unico che i gatti usano per curarsi, aiutando la riparazione di ossa e tessuti.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "ru": {
+      "title": "Секрет кошачьего мурлыканья раскрыт! 🤫",
+      "description": "Кошки мурлычут не только от счастья! Узнайте, как эти низкочастотные вибрации, от 25 до 150 Герц, являются уникальным механизмом самоисцеления, помогая восстанавливать кости и ткани.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "ar": {
+      "title": "سر خرير القطط انكشف! 🤫",
+      "description": "هل تساءلت يومًا لماذا تخرخر القطط؟ ليس مجرد سعادة! اكتشف كيف تستخدم القطط هذه الاهتزازات منخفضة التردد، بين 25 و 150 هرتز، كآلية فريدة لشفاء نفسها والمساعدة في إصلاح العظام والأنسجة.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "hi": {
+      "title": "बिल्लियों के गुर्राने का राज़ सामने आया! 🤫",
+      "description": "क्या आप जानते हैं कि बिल्लियाँ गुर्राकर खुद को ठीक करती हैं? यह सिर्फ खुशी का संकेत नहीं है! जानें कि कैसे 25 से 150 हर्ट्ज़ के बीच की कम-फ़्रीक्वेंसी कंपन हड्डियों और ऊतकों की मरम्मत में मदद करती है।\n\n#shorts\n\nSeri: mk-014"
+    },
+    "id": {
+      "title": "Rahasia Mendengkur Kucing Terungkap! 🤫",
+      "description": "Pernahkah Anda bertanya-tanya mengapa kucing mendengkur? Bukan hanya karena bahagia! Temukan bagaimana getaran frekuensi rendah antara 25 dan 150 Hertz ini adalah mekanisme unik yang digunakan kucing untuk menyembuhkan diri, membantu perbaikan tulang dan jaringan.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "ja": {
+      "title": "猫がゴロゴロ鳴く秘密が明らかに！ 🤫",
+      "description": "猫がゴロゴロと鳴くのはなぜだと思いますか？それは単に幸せなだけではありません！25から150ヘルツの低周波振動が、骨や組織の修復を助ける自己治癒のユニークなメカニズムであることを発見してください。\n\n#shorts\n\nSeri: mk-014"
+    },
+    "ko": {
+      "title": "고양이 골골송의 비밀이 밝혀졌다! 🤫",
+      "description": "고양이들은 왜 골골거릴까요? 단순히 행복해서만은 아닙니다! 고양이들이 25에서 150헤르츠 사이의 저주파 진동을 사용하여 뼈와 조직 복구를 돕는 독특한 자가 치유 메커니즘을 어떻게 사용하는지 알아보세요.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "pl": {
+      "title": "Sekret kociego mruczenia ujawniony! 🤫",
+      "description": "Czy wiesz, że koty mruczą, aby się leczyć? To nie tylko oznaka szczęścia! Odkryj, jak wibracje o niskiej częstotliwości, od 25 do 150 Hertz, są unikalnym mechanizmem, którego koty używają do naprawy kości i tkanek.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "nl": {
+      "title": "Het geheim van spinnende katten onthuld! 🤫",
+      "description": "Waarom spinnen katten eigenlijk? Het is meer dan alleen geluk! Ontdek hoe katten deze laagfrequente trillingen, tussen 25 en 150 Hertz, gebruiken als een uniek mechanisme om zichzelf te genezen, ter ondersteuning van bot- en weefselherstel.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "uk": {
+      "title": "Секрет котячого муркотіння розкрито! 🤫",
+      "description": "Коти муркочуть не лише від щастя! Дізнайтеся, як ці низькочастотні вібрації, від 25 до 150 Герц, є унікальним механізмом самозцілення, допомагаючи відновлювати кістки та тканини.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "vi": {
+      "title": "Bí mật tiếng gừ gừ của mèo đã được tiết lộ! 🤫",
+      "description": "Bạn có bao giờ tự hỏi tại sao mèo lại gừ gừ không? Không chỉ là hạnh phúc! Khám phá cách mèo sử dụng những rung động tần số thấp, từ 25 đến 150 Hertz, như một cơ chế độc đáo để tự chữa lành, giúp phục hồi xương và mô.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "az": {
+      "title": "Pişiklərin Mırıldama Sirri Üzə Çıxdı! 🤫",
+      "description": "Pişiklər niyə mırıldayır, heç düşünmüsünüzmü? Bu, sadəcə xoşbəxtlik əlaməti deyil! 25 ilə 150 Hertz arasındakı aşağı tezlikli vibrasiyaların sümüklərin və toxumaların bərpasına necə kömək etdiyini kəşf edin.\n\n#shorts\n\nSeri: mk-014"
+    },
+    "ro": {
+      "title": "Secretul torsului pisicilor a fost dezvăluit! 🤫",
+      "description": "Te-ai întrebat vreodată de ce torc pisicile? Nu este doar un semn de fericire! Descoperă cum vibrațiile de joasă frecvență, între 25 și 150 Hertz, sunt un mecanism unic folosit de pisici pentru a se vindeca, ajutând la repararea oaselor și țesuturilor.\n\n#shorts\n\nSeri: mk-014"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence kedilerin mırlama frekansı 100 Hz'in altında mı üstünde mi?",
+  "scenes": [
+    {
+      "text": "Bu kediler mırlayarak kendilerini iyileştiriyorlar.",
+      "visual": "A calm, relaxed cat lying down.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 2
+        }
+      ],
+      "callout": "KENDİNİ İYİLEŞTİRİR"
+    },
+    {
+      "text": "Genellikle mırlamayı mutlulukla ilişkilendiririz, değil mi?",
+      "visual": "A content cat being petted or looking happy.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 7,
+          "kare": 3
+        },
+        {
+          "n": 36,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Ama asıl şaşırtıcı olan, kedilerin stresliyken veya yaralandıklarında da mırlaması.",
+      "visual": "Cats resting or cuddling, implying vulnerability or need for comfort.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 27,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 2
+        }
+      ],
+      "callout": "STRES VE YARA"
+    },
+    {
+      "text": "Çünkü mırlamak, aslında kendilerini iyileştirmek için kullandıkları eşsiz bir mekanizma.",
+      "visual": "Close-ups of a cat's body or face, suggesting internal processes.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Vücutlarının ürettiği 25 ile 150 Hertz arasındaki düşük frekanslı titreşimler, kemik ve doku onarımına yardımcı olur.",
+      "visual": "A cat showing its full body or head/chest area, where vibrations originate.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        }
+      ],
+      "callout": "25-150 HERTZ"
+    },
+    {
+      "text": "Bir dahaki sefere kediniz mırladığında, sadece mutlu değil, aynı zamanda kendini onarıyor.",
+      "visual": "A content and healthy cat, possibly being petted or in a relaxed posture.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 3
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 21.98,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 14,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük",
+        "fix": "Yapay zeka sesinin hızını artırın (örn. 1.2x-1.3x) ve daha enerjik, merak uyandıran bir ton seçmeye çalışın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Bilimsel bilgilerin görselleştirilmesi eksik",
+        "fix": "Frekans aralığı (25-150 Hz) ve kemik/doku onarımı gibi kavramları temsil eden basit grafikler veya soyut şekiller kullanın (örn. titreşim dalgası, iyileşme simgesi). Bu, bilgiyi daha anlaşılır kılar."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı yavaş ve geçişler basit",
+        "fix": "Klip sürelerini kısaltarak daha hızlı kesmeler kullanın ve geçişlerde hafif, hızlı efektler (örn. hızlı çapraz geçiş) tercih ederek videoya dinamizm katın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler konuyla yeterince uyumlu ve dinamik değil",
+        "fix": "Stok videolarda kedinin stresli veya iyileşme sürecini ima eden daha çeşitli ve dinamik çekimler arayın (örn. farklı açılar, yakın çekimler, hareketli kediler). Konuyu doğrudan görselleştiren görüntüler seçmeye odaklanın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca yeterince merak uyandırıcı değil",
+        "fix": "Videoyu 'Kedilerin mırlaması sadece mutluluk işareti değil, aynı zamanda...' gibi daha şaşırtıcı veya yaygın bir yanılgıyı düzelten, doğrudan bir soru yerine iddialı bir ifadeyle başlatın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği ve ses efektleri yetersiz",
+        "fix": "Daha dinamik ve merak uyandıran bir arka plan müziği seçin. Metin girişleri veya önemli bilgiler için hafif ses efektleri ekleyerek videoyu daha ilgi çekici hale getirin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Metinler ekranı fazla kaplıyor ve animasyonları basit",
+        "fix": "Metinleri daha az yer kaplayacak şekilde konumlandırın ve daha hızlı, akıcı giriş/çıkış animasyonları kullanarak profesyonel bir görünüm sağlayın."
+      }
+    ],
+    "strengths": [
+      "Bilgilendirici içerik sunulmuş",
+      "Net ses kalitesi mevcut",
+      "Video kısa ve öz"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
