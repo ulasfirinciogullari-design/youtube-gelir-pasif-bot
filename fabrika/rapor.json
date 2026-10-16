@@ -1,79 +1,27 @@
 {
- "started": "2026-10-16T21:06:47+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
- "credits_before": [
-  1629,
-  613902
- ],
+ "started": "2026-10-16T21:13:38+00:00",
+ "mod": "deneme",
+ "gate": "deneme",
  "topic": {
-  "id": "y005",
-  "series": "Ya Olsaydı?",
-  "q": "İnsanlar hiç uyumasaydı ne olurdu?"
+  "id": "n003",
+  "series": "Ne Kadar Büyük?",
+  "q": "Bilinen en büyük yıldız ne kadar büyük?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 8,
-    "why": "En uzun süre uyanık kalma rekoru Randy Gardner'ın 264 saati değil, Guinness tarafından tescillenen Robert McDonald'ın 453 saatlik (yaklaşık 19 gün) rekorudur. Ayrıca 11 günden sonrasının kesin olarak organ yetmezliğinden öldürdüğü iddiası bilimsel olarak yanlıştır."
-   }
-  ]
+  "ok": true,
+  "fixes": []
  },
- "chunks": 0,
+ "chunks": 5,
  "grounded": true,
- "chars": 554,
- "duration": 37.1,
- "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "9",
-  "videos": "11"
- },
- "url": "https://youtube.com/shorts/X9ouBiGHD4Q",
- "recent_status": {
-  "n002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "10",
-   "reason": null
-  },
-  "y003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1",
-   "reason": null
-  },
-  "g002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  },
-  "y004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  },
-  "y005": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  1764,
-  613902
- ],
+ "chars": 378,
+ "duration": 24.2,
+ "title": "Bilinen En Büyük Yıldız Ne Kadar Büyük?",
+ "deneme": "fabrika/deneme/",
  "log": [
-  "Konu: y005 İnsanlar hiç uyumasaydı ne olurdu? (Ya Olsaydı?)",
+  "Konu: n003 Bilinen en büyük yıldız ne kadar büyük? (Ne Kadar Büyük?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-16T21:09:47+00:00"
+ "finished": "2026-10-16T21:15:46+00:00"
 }

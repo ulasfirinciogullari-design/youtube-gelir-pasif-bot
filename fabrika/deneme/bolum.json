@@ -1,181 +1,140 @@
 {
- "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu?",
+ "title": "Bilinen En Büyük Yıldız Ne Kadar Büyük?",
  "bar": {
-  "hi": "DÜNYA DURSA",
-  "rest": "NE OLURDU?"
+  "hi": "EN DEV",
+  "rest": "YILDIZ NE KADAR?"
  },
- "summary": "Dünya bir anda dönmeyi kesseydi başımıza neler gelirdi hiç düşündünüz mü? Saatte binlerce kilometrelik fırtınalardan altı aylık gecelere, duran bir gezegenin akılalmaz gerçeklerini keşfedin.",
+ "summary": "Evrende keşfettiğimiz en devasa yıldızın içine milyarlarca Güneş sığabiliyor. Boyutunu duyunca Güneş Sistemimiz size küçücük bir nokta gibi gelecek!",
  "lines": [
   {
-   "who": "bit",
-   "text": "Dünya bir anda dönmeyi bıraksa ne olur?",
-   "v": {
-    "t": "question",
-    "bg": "space",
-    "e": "🌍",
-    "label": "DÜNYA DURURSA"
-   }
-  },
-  {
    "who": "pi",
-   "text": "Ekvatorda saatte 1.670 kilometre hızla doğuya fırlardık.",
-   "v": {
-    "t": "number",
-    "bg": "city",
-    "e": "💨",
-    "value": "1.670",
-    "unit": "km/saat",
-    "label": "SAVRULMA HIZI",
-    "key": "1.670"
-   }
-  },
-  {
-   "who": "bit",
-   "text": "Uçarak mı? Bu kadar mı?",
-   "v": {
-    "t": "icon",
-    "bg": "sky",
-    "e": "😱",
-    "do": "shake",
-    "key": "kadar",
-    "label": "HER ŞEY UÇUYOR"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Atmosfer durmaz, süpersonik rüzgarlar yeryüzündeki her yapıyı dümdüz ederdi.",
-   "v": {
-    "t": "icon",
-    "bg": "storm",
-    "e": "🌪️",
-    "do": "spin",
-    "key": "süpersonik",
-    "label": "DEV FIRTINA"
-   }
-  },
-  {
-   "who": "bit",
-   "text": "Binalar bile mi?",
-   "v": {
-    "t": "icon",
-    "bg": "city",
-    "e": "🏢",
-    "do": "fall",
-    "key": "Binalar",
-    "label": "YIKILAN ŞEHİRLER"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Merkezkaç bitince okyanuslar kutuplara çekilir, ekvatorda devasa bir kara kalırdı.",
-   "v": {
-    "t": "split",
-    "bg": "ocean",
-    "left": {
-     "e": "🌊",
-     "label": "ŞİMDİKİ SULAR"
-    },
-    "right": {
-     "e": "🧭",
-     "label": "KUTUP DENİZİ"
-    },
-    "key": "okyanuslar"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Üstelik 1 gün 1 yıl sürerdi: tam 6 ay kavurucu gündüz, 6 ay dondurucu gece.",
-   "v": {
-    "t": "timeline",
-    "bg": "space",
-    "steps": [
-     {
-      "when": "6 AY",
-      "e": "☀️",
-      "label": "KAVURUCU GÜN"
-     },
-     {
-      "when": "6 AY",
-      "e": "🥶",
-      "label": "DONMUŞ GECE"
-     }
-    ],
-    "key": "gündüz"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "pi: Gezegenin dönüşü durunca dinamo etkisi çöker, manyetik kalkanımız zamanla yok olurdu.",
-   "v": {
-    "t": "icon",
-    "bg": "space",
-    "e": "🛡️",
-    "do": "vanish",
-    "key": "kalkanımız",
-    "label": "MANYETİK KALKAN"
-   }
-  },
-  {
-   "who": "bit",
-   "text": "İyi ki hızla dönüyoruz!",
+   "text": "Güneş'in yerine koysak, Satürn'e kadar her gezegeni yutardı.",
    "v": {
     "t": "space",
     "bg": "space",
     "bodies": [
      {
-      "b": "earth",
-      "size": "l",
+      "b": "star",
+      "size": "xl",
       "at": "c"
+     },
+     {
+      "b": "saturn",
+      "size": "s",
+      "at": "r"
      }
     ],
-    "do": "spin",
+    "do": "grow",
     "target": 0,
-    "key": "dönüyoruz",
-    "label": "DÖNEN DÜNYA"
+    "key": "Satürn'e",
+    "label": "Satürn yörüngesi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Stephenson 2-18'in içine yaklaşık 10 milyar Güneş sığabiliyor.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "sun",
+     "label": "Güneş",
+     "value": 1
+    },
+    "b": {
+     "b": "star",
+     "label": "Stephenson 2-18",
+     "value": 10000000000
+    },
+    "mode": "size",
+    "key": "10 milyar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Işık Güneş'i 14,5 saniyede, bu devi ise tam 9 saatte turluyor.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "9",
+    "unit": "saat",
+    "label": "Işık turu",
+    "key": "saatte"
    }
   },
   {
    "who": "bit",
-   "text": "Sıradaki soruyu sen seç! Yorumlara yaz.",
+   "text": "Yolcu uçağıyla etrafını dönmek 1.200 yıl sürerdi!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "✈️",
+    "do": "spin",
+    "key": "1.200",
+    "label": "1.200 yıl uçuş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Fakat o kadar şişkin ki, yoğunluğu Dünya havasından bile seyrek.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "💨",
+     "label": "Dünya havası"
+    },
+    "right": {
+     "e": "🔴",
+     "label": "Dev yıldız"
+    },
+    "key": "seyrek"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bu devin yanında yaşar mıydın? Yorumlara yaz!",
    "v": {
     "t": "outro",
     "bg": "space",
-    "e": "✨"
+    "e": "🚀"
    }
   }
  ],
  "facts": [
   {
-   "text": "Dünya'nın kendi ekseni etrafındaki dönüş hızı ekvator çizgisinde yaklaşık 1.670 km/saat hızındadır.",
+   "text": "Stephenson 2-18, Güneş'in yaklaşık 2.150 katı yarıçapıyla Güneş Sistemi'nin merkezine konsaydı Satürn'ün yörüngesini dahi içine alırdı.",
+   "source": "The Astronomical Journal",
+   "url": "https://iopscience.iop.org/journal/1538-3881"
+  },
+  {
+   "text": "Stephenson 2-18 yıldızının hacmi, Güneş'in hacminin yaklaşık 10 milyar katıdır.",
    "source": "NASA",
-   "url": "https://science.nasa.gov/"
+   "url": "https://www.nasa.gov"
   },
   {
-   "text": "Dönüş durduğunda merkezkaç kuvveti yok olacağı için tüm okyanus suları kutuplara toplanır ve ekvator devasa bir kıtaya dönüşür.",
-   "source": "Esri",
-   "url": "https://www.esri.com/news/arcuser/0610/nospin.html"
+   "text": "Işığın Güneş etrafında tam bir tur atması yaklaşık 14,5 saniye sürerken, Stephenson 2-18 çevresini dolaşması yaklaşık 9 saat alır.",
+   "source": "Universe Today",
+   "url": "https://www.universetoday.com"
   },
   {
-   "text": "Kendi ekseninde dönmeyen bir Dünya'da Güneş etrafındaki tur nedeniyle 1 tam gün 1 yıla eşitlenir; 6 ay gündüz ve 6 ay gece yaşanır.",
-   "source": "Smithsonian National Air and Space Museum",
-   "url": "https://airandspace.si.edu/"
-  },
-  {
-   "text": "Dönüş hareketi durduğunda sıvı dış çekirdeğin dinamo etkisi kesintiye uğrayarak koruyucu manyetik kalkanın çökmesine yol açabilir.",
-   "source": "ESA",
-   "url": "https://www.esa.int/"
+   "text": "Kırmızı üstdevler son evrelerinde aşırı genişledikleri için ortalama yoğunlukları deniz seviyesindeki Dünya atmosferinden milyonlarca kat daha düşüktür.",
+   "source": "Astronomy & Astrophysics",
+   "url": "https://www.aanda.org"
   }
  ],
  "tags": [
-  "dünya dönmeyi bıraksaydı",
-  "dünyanın dönüşü",
-  "eylemsizlik",
-  "dünya durursa ne olur",
-  "merkezkaç kuvveti",
+  "stephenson 2 18",
+  "en büyük yıldız",
+  "largest star",
+  "uzay",
   "astronomi",
-  "fizik",
-  "manyetik alan",
-  "uzay bilimi",
+  "güneş",
+  "evren",
+  "kızıl üstdev",
+  "ne kadar büyük",
+  "uzay belgeseli",
   "ya olsaydı",
   "bilim",
   "animasyon",
@@ -183,120 +142,119 @@
   "science"
  ],
  "hashtags": [
-  "#dünyanınsırrı",
-  "#bilim",
-  "#yaolsaydı"
+  "#enbüyükyıldız",
+  "#uzay",
+  "#stephenson218"
  ],
  "cover": 1,
  "sources": [
-  "https://science.howstuffworks.com/science-vs-myth/what-if/what-if-earth-stopped-spinning.htm",
-  "https://science.nasa.gov/",
-  "https://www.esri.com/about/newsroom/arcuser/what-would-happen-if-earth-stopped-spinning?rsource=https%3A%2F%2Fwww.esri.com%2Fnews%2Farcuser%2F0610%2Fnospin.html",
-  "https://airandspace.si.edu/"
+  "https://en.wikipedia.org/wiki/Stephenson_2_DFK_1",
+  "https://simple.wikipedia.org/wiki/Stephenson_2-18",
+  "https://iopscience.iop.org/journal/1538-3881"
  ],
  "i18n": {
   "en": {
-   "title": "What If the Earth Stopped Spinning?",
-   "summary": "Have you ever wondered what would happen if the Earth suddenly stopped spinning? From storms raging at thousands of kilometers per hour to six-month nights, discover the unbelievable realities of a halted planet.",
+   "title": "How Big Is the Largest Known Star?",
+   "summary": "Billions of Suns could fit inside the most massive star discovered in the universe. Once you hear its size, our Solar System will feel like a tiny speck!",
    "facts": [
-    "Earth's rotational speed around its axis is approximately 1,670 km/h at the equator.",
-    "If rotation stopped, the disappearance of centrifugal force would cause oceans to rush to the poles, turning the equator into a massive continent.",
-    "On a non-spinning Earth, due to its orbit around the Sun, 1 full day would equal 1 year, resulting in 6 months of daylight and 6 months of night.",
-    "Stopping the rotation could disrupt the dynamo effect of the liquid outer core, potentially collapsing our protective magnetic shield."
+    "With a radius roughly 2,150 times that of the Sun, Stephenson 2-18 would engulf even Saturn's orbit if placed at the center of the Solar System.",
+    "The volume of Stephenson 2-18 is approximately 10 billion times that of the Sun.",
+    "While it takes light about 14.5 seconds to circle the Sun, orbiting Stephenson 2-18 takes roughly 9 hours.",
+    "Because red supergiants expand immensely in their final stages, their average density is millions of times lower than Earth's atmosphere at sea level."
    ]
   },
   "es": {
-   "title": "¿Qué pasaría si la Tierra dejara de girar?",
-   "summary": "¿Alguna vez te has preguntado qué pasaría si la Tierra dejara de girar de golpe? Desde tormentas de miles de kilómetros por hora hasta noches de seis meses, descubre la increíble realidad de un planeta detenido.",
+   "title": "¿Qué tan grande es la estrella más grande conocida?",
+   "summary": "Miles de millones de Soles podrían caber dentro de la estrella más descomunal descubierta en el universo. ¡Al conocer su tamaño, nuestro sistema solar parecerá un diminuto punto!",
    "facts": [
-    "La velocidad de rotación de la Tierra sobre su propio eje es de aproximadamente 1.670 km/h en el ecuador.",
-    "Al detenerse el giro, la desaparición de la fuerza centrífuga desplazaría los océanos hacia los polos, convirtiendo el ecuador en un continente gigante.",
-    "En una Tierra que no rota, debido a su órbita alrededor del Sol, 1 día completo equivaldría a 1 año, con 6 meses de día y 6 meses de noche.",
-    "El cese de la rotación interrumpiría el efecto dinamo del núcleo externo líquido, lo que podría provocar el colapso del escudo magnético protector."
+    "Con un radio unas 2.150 veces mayor que el del Sol, Stephenson 2-18 engulliría incluso la órbita de Saturno si se colocara en el centro del sistema solar.",
+    "El volumen de Stephenson 2-18 es aproximadamente 10.000 millones de veces el del Sol.",
+    "Mientras que la luz tarda unos 14,5 segundos en dar una vuelta completa al Sol, rodear Stephenson 2-18 le toma unas 9 horas.",
+    "Debido a que las supergigantes rojas se expanden enormemente en sus etapas finales, su densidad media es millones de veces menor que la atmósfera terrestre a nivel del mar."
    ]
   },
   "pt": {
-   "title": "E se a Terra parasse de girar?",
-   "summary": "Já pensou no que aconteceria se a Terra parasse de girar de repente? De tempestades a milhares de quilômetros por hora a noites de seis meses, descubra as realidades impressionantes de um planeta imóvel.",
+   "title": "Quão grande é a maior estrela conhecida?",
+   "summary": "Bilhões de Sóis caberiam dentro da estrela mais colossal já descoberta no universo. Ao saber o tamanho dela, nosso Sistema Solar parecerá um ponto minúsculo!",
    "facts": [
-    "A velocidade de rotação da Terra em torno de seu próprio eixo é de aproximadamente 1.670 km/h na linha do equador.",
-    "Ao cessar a rotação, a força centrífuga desapareceria e os oceanos migrariam para os polos, transformando o equador em um megacontinente.",
-    "Em uma Terra estática, devido à translação ao redor do Sol, 1 dia inteiro equivaleria a 1 ano, com 6 meses de luz solar e 6 meses de escuridão.",
-    "A parada no giro interromperia o efeito dínamo do núcleo externo líquido, podendo causar o colapso do escudo magnético protetor."
+    "Com um raio cerca de 2.150 vezes o do Sol, Stephenson 2-18 engoliria até a órbita de Saturno se fosse colocada no centro do Sistema Solar.",
+    "O volume de Stephenson 2-18 é cerca de 10 bilhões de vezes o volume do Sol.",
+    "Enquanto a luz leva cerca de 14,5 segundos para dar uma volta completa no Sol, contornar Stephenson 2-18 leva aproximadamente 9 horas.",
+    "Como as supergigantes vermelhas se expandem imensamente em seus estágios finais, sua densidade média é milhões de vezes menor que a da atmosfera da Terra ao nível do mar."
    ]
   },
   "ar": {
-   "title": "ماذا لو توقفت الأرض عن الدوران؟",
-   "summary": "هل تساءلت يوماً عما سيحدث لو توقفت الأرض فجأة عن الدوران؟ من عواصف بسرعة آلاف الكيلومترات في الساعة إلى ليل يدوم ستة أشهر، اكتشف الحقائق المذهلة لكوكب متوقف.",
+   "title": "ما مدى ضخامة أكبر نجم معروف في الكون؟",
+   "summary": "يمكن لمليارات الشموس أن تتسع داخل أضخم نجم تم اكتشافه في الكون. عندما تسمع عن حجمه، سيبدو نظامنا الشمسي كنقطة بالغة الصغر!",
    "facts": [
-    "تبلغ سرعة دوران الأرض حول محورها حوالي 1670 كم/ساعة عند خط الاستواء.",
-    "عندما يتوقف الدوران، ستختفي قوة الطرد المركزي مما يؤدي إلى تجمع مياه المحيطات عند القطبين وتحول خط الاستواء إلى قارة عملاقة.",
-    "على كوكب لا يدور حول نفسه، فإن دورانه حول الشمس يجعل اليوم الكامل يعادل سنة كاملة؛ 6 أشهر نهار و6 أشهر ليل.",
-    "قد يؤدي توقف الحركة الدورانية إلى تعطيل تأثير الدينامو في اللب الخارجي السائل، مما قد يتسبب في انهيار الدرع المغناطيسي الواقي."
+    "بنصف قطر يعادل حوالي 2150 ضعف نصف قطر الشمس، لو وُضع ستيفنسون 2-18 في مركز النظام الشمسي لابتلع حتى مدار زحل.",
+    "يبلغ حجم النجم ستيفنسون 2-18 حوالي 10 مليارات ضعف حجم الشمس.",
+    "بينما يستغرق الضوء نحو 14.5 ثانية للدوران دورة كاملة حول الشمس، فإنه يستغرق حوالي 9 ساعات للدوران حول ستيفنسون 2-18.",
+    "نظراً لتمدد العمالقة الحمر الفائقة بشكل هائل في مراحلها الأخيرة، فإن متوسط كثافتها أقل بملايين المرات من كثافة الغلاف الجوي للأرض عند مستوى سطح البحر."
    ]
   },
   "hi": {
-   "title": "क्या होगा अगर पृथ्वी घूमना बंद कर दे?",
-   "summary": "क्या आपने कभी सोचा है कि अगर पृथ्वी अचानक घूमना बंद कर दे तो क्या होगा? हजारों किलोमीटर प्रति घंटे के तूफानों से लेकर छह महीने लंबी रातों तक, एक थमे हुए ग्रह की हैरान करने वाली सच्चाइयों को जानें।",
+   "title": "ज्ञात ब्रह्मांड का सबसे बड़ा तारा कितना बड़ा है?",
+   "summary": "ब्रह्मांड में खोजे गए सबसे विशाल तारे के अंदर अरबों सूर्य समा सकते हैं। इसका आकार जानकर हमारा सौरमंडल आपको एक नन्हा सा बिंदु लगेगा!",
    "facts": [
-    "भूमध्य रेखा पर पृथ्वी की अपनी धुरी पर घूमने की गति लगभग 1,670 किमी/घंटा है।",
-    "घूर्णन रुकने पर अपकेंद्रीय बल खत्म हो जाएगा, जिससे महासागर ध्रुवों की ओर खिंच जाएंगे और भूमध्य रेखा एक विशाल महाद्वीप बन जाएगी।",
-    "बिना घूर्णन वाली पृथ्वी पर सूर्य की परिक्रमा के कारण 1 पूरा दिन 1 साल के बराबर होगा; 6 महीने दिन और 6 महीने रात रहेगी।",
-    "घूर्णन रुकने से तरल बाहरी कोर का डायनेमो प्रभाव बाधित हो सकता है, जिससे सुरक्षात्मक चुंबकीय ढाल नष्ट हो सकती है।"
+    "सूर्य से लगभग 2,150 गुना अधिक त्रिज्या वाला स्टीफनसन 2-18 अगर सौरमंडल के केंद्र में रख दिया जाए, तो वह शनि की कक्षा को भी निगल जाएगा।",
+    "स्टीफनसन 2-18 तारे का आयतन सूर्य के आयतन से लगभग 10 अरब गुना अधिक है।",
+    "प्रकाश को सूर्य का एक पूरा चक्कर लगाने में लगभग 14.5 सेकंड लगते हैं, जबकि स्टीफनसन 2-18 का चक्कर लगाने में लगभग 9 घंटे लग जाते हैं।",
+    "लाल महादानव तारे अपने अंतिम चरणों में अत्यधिक फैल जाते हैं, इसलिए उनका औसत घनत्व समुद्र तल पर पृथ्वी के वायुमंडल से लाखों गुना कम होता है।"
    ]
   },
   "id": {
-   "title": "Apa yang Terjadi jika Bumi Berhenti Berputar?",
-   "summary": "Pernahkah Anda membayangkan apa yang akan terjadi jika Bumi tiba-tiba berhenti berputar? Dari badai berkecepatan ribuan kilometer per jam hingga malam selama enam bulan, temukan kenyataan luar biasa dari planet yang berhenti.",
+   "title": "Seberapa Besar Bintang Terbesar yang Diketahui?",
+   "summary": "Miliaran Matahari bisa muat di dalam bintang paling masif yang pernah ditemukan di alam semesta. Saat mendengar ukurannya, Tata Surya kita akan terasa seperti titik kecil!",
    "facts": [
-    "Kecepatan rotasi Bumi pada porosnya sekitar 1.670 km/jam di garis khatulistiwa.",
-    "Saat rotasi berhenti, hilangnya gaya sentrifugal akan membuat lautan berkumpul di kutub, mengubah khatulistiwa menjadi benua raksasa.",
-    "Di Bumi yang tidak berotasi, revolusi mengelilingi Matahari akan membuat 1 hari penuh setara dengan 1 tahun; 6 bulan siang dan 6 bulan malam.",
-    "Terhentinya rotasi dapat mengganggu efek dinamo pada inti luar cair, yang berpotensi meruntuhkan perisai magnetik pelindung."
+    "Dengan radius sekitar 2.150 kali lipat Matahari, Stephenson 2-18 bahkan akan menelan orbit Saturnus jika diletakkan di pusat Tata Surya.",
+    "Volume bintang Stephenson 2-18 sekitar 10 miliar kali lebih besar dari volume Matahari.",
+    "Jika cahaya butuh sekitar 14,5 detik untuk mengelilingi Matahari satu kali putaran penuh, mengelilingi Stephenson 2-18 membutuhkan waktu sekitar 9 jam.",
+    "Karena bintang maharaksasa merah mengembang sangat besar pada fase akhirnya, kepadatan rata-ratanya jutaan kali lebih rendah dibanding atmosfer Bumi di permukaan laut."
    ]
   },
   "fr": {
-   "title": "Et si la Terre s'arrêtait de tourner ?",
-   "summary": "Vous êtes-vous déjà demandé ce qui se passerait si la Terre s'arrêtait soudainement de tourner ? D'ouragans à des milliers de kilomètres par heure à des nuits de six mois, découvrez les vérités fascinantes d'une planète figée.",
+   "title": "Quelle est la taille de la plus grande étoile connue ?",
+   "summary": "Des milliards de Soleils pourraient tenir dans la plus gigantesque étoile découverte dans l'univers. En apprenant sa taille, notre système solaire vous semblera n'être qu'un minuscule point !",
    "facts": [
-    "La vitesse de rotation de la Terre sur son axe est d'environ 1 670 km/h au niveau de l'équateur.",
-    "À l'arrêt de la rotation, la disparition de la force centrifuge repousserait les océans vers les pôles, transformant l'équateur en un continent gigantesque.",
-    "Sur une Terre sans rotation, en raison de son orbite autour du Soleil, 1 jour complet équivaudrait à 1 an, avec 6 mois de jour et 6 mois de nuit.",
-    "L'arrêt de la rotation perturberait l'effet dynamo du noyau externe liquide, risquant d'anéantir notre bouclier magnétique protecteur."
+    "Avec un rayon d'environ 2 150 fois celui du Soleil, Stephenson 2-18 engloutirait même l'orbite de Saturne s'il était placé au centre du système solaire.",
+    "Le volume de l'étoile Stephenson 2-18 équivaut à environ 10 milliards de fois celui du Soleil.",
+    "Alors qu'il faut environ 14,5 secondes à la lumière pour faire le tour du Soleil, contourner Stephenson 2-18 lui prend environ 9 heures.",
+    "Parce que les supergéantes rouges se dilatent démesurément dans leurs phases finales, leur densité moyenne est des millions de fois inférieure à celle de l'atmosphère terrestre au niveau de la mer."
    ]
   },
   "de": {
-   "title": "Was wäre, wenn die Erde aufhört sich zu drehen?",
-   "summary": "Haben Sie sich je gefragt, was passieren würde, wenn die Erde plötzlich aufhörte sich zu drehen? Von Stürmen mit Tausenden Kilometern pro Stunde bis hin zu sechsmonatigen Nächten – entdecken Sie die unglaublichen Fakten eines stillstehenden Planeten.",
+   "title": "Wie groß ist der größte bekannte Stern?",
+   "summary": "Milliarden Sonnen könnten in den gigantischsten im Universum entdeckten Stern passen. Wenn Sie seine Größe erfahren, wird Ihnen unser Sonnensystem wie ein winziger Punkt vorkommen!",
    "facts": [
-    "Die Rotationsgeschwindigkeit der Erde um die eigene Achse beträgt am Äquator rund 1.670 km/h.",
-    "Bei einem Stillstand würde die Fliehkraft entfallen, sodass die Ozeane zu den Polen fließen und der Äquator zu einem riesigen Kontinent wird.",
-    "Auf einer stillstehenden Erde entspräche 1 voller Tag durch den Umlauf um die Sonne genau 1 Jahr: 6 Monate Tag und 6 Monate Nacht.",
-    "Das Stoppen der Rotation könnte den Dynamo-Effekt des flüssigen äußeren Kerns unterbrechen und das schützende Magnetfeld zum Zusammenbruch bringen."
+    "Mit einem Radius, der etwa 2.150-mal so groß wie der der Sonne ist, würde Stephenson 2-18 selbst die Saturnbahn verschlingen, stünde er im Zentrum des Sonnensystems.",
+    "Das Volumen von Stephenson 2-18 entspricht etwa dem 10-Milliardenfachen des Sonnenvolumens.",
+    "Während das Licht rund 14,5 Sekunden für eine komplette Umrundung der Sonne braucht, benötigt es bei Stephenson 2-18 etwa 9 Stunden.",
+    "Da sich Rote Überriesen in ihren Endstadien extrem ausdehnen, ist ihre mittlere Dichte millionenfach geringer als die der Erdatmosphäre auf Meereshöhe."
    ]
   },
   "ru": {
-   "title": "Что будет, если Земля перестанет вращаться?",
-   "summary": "Задумывались ли вы, что произойдет, если Земля внезапно перестанет вращаться? От ураганов со скоростью тысячи километров в час до полугодовых ночей — откройте для себя невероятную реальность остановившейся планеты.",
+   "title": "Насколько велика самая большая известная звезда?",
+   "summary": "Миллиарды Солнц могли бы поместиться внутри самой колоссальной звезды, открытой во Вселенной. Узнав её размеры, вы почувствуете, что наша Солнечная система — лишь крошечная точка!",
    "facts": [
-    "Скорость вращения Земли вокруг своей оси на экваторе составляет около 1 670 км/ч.",
-    "При остановке вращения исчезнет центробежная сила, из-за чего океаны уйдут к полюсам, а экватор превратится в гигантский континент.",
-    "Без осевого вращения из-за движения вокруг Солнца 1 полный день станет равен 1 году: 6 месяцев дня и 6 месяцев ночи.",
-    "Остановка вращения нарушит эффект динамо в жидком внешнем ядре, что может привести к коллапсу защитного магнитного щита."
+    "Имея радиус примерно в 2 150 раз больше солнечного, Стивенсон 2-18 поглотил бы даже орбиту Сатурна, если бы находился в центре Солнечной системы.",
+    "Объём звезды Стивенсон 2-18 примерно в 10 миллиардов раз превышает объём Солнца.",
+    "Если свет совершает полный оборот вокруг Солнца примерно за 14,5 секунды, то на облёт Стивенсон 2-18 у него уходит около 9 часов.",
+    "Поскольку красные сверхгиганты колоссально расширяются на финальных стадиях, их средняя плотность в миллионы раз ниже плотности атмосферы Земли на уровне моря."
    ]
   },
   "az": {
-   "title": "Yer fırlanmağı dayandırsaydı nə olardı?",
-   "summary": "Yerin qəfil fırlanmağı dayandıracağı təqdirdə başımıza nələrin gələcəyini heç düşünmüsünüz? Saatda minlərlə kilometrlik fırtınalardan altı aylıq gecələrə qədər dayanan bir planetin ağlasığmaz həqiqətlərini kəşf edin.",
+   "title": "Məlum olan ən böyük ulduz nə qədər böyükdür?",
+   "summary": "Kainatda kəşf etdiyimiz ən nəhəng ulduzun içinə milyardlarla Günəş sığa bilər. Ölçüsünü eşitdikdə Günəş sistemimiz sizə kiçik bir nöqtə kimi görünəcək!",
    "facts": [
-    "Yerin öz oxu ətrafında fırlanma sürəti ekvator xəttində təxminən 1.670 km/saat təşkil edir.",
-    "Fırlanma dayandıqda mərkəzdənqaçma qüvvəsi yox olacağı üçün bütün okean suları qütblərə toplanar və ekvator nəhəng bir qitəyə çevrilər.",
-    "Öz oxu ətrafında fırlanmayan Yerdə Günəş ətrafındakı dövrə görə 1 tam gün 1 ilə bərabər olar; 6 ay gündüz və 6 ay gecə yaşanar.",
-    "Fırlanma hərəkəti dayandıqda maye xarici nüvənin dinamo effekti pozularaq qoruyucu maqnit qalxanının çökməsinə səbəb ola bilər."
+    "Stephenson 2-18 Günəşdən təxminən 2 150 dəfə böyük radiusu ilə Günəş sisteminin mərkəzinə qoyulsaydı, hətta Saturnun orbitini belə içinə alardı.",
+    "Stephenson 2-18 ulduzunun həcmi Günəşin həcmindən təxminən 10 milyard dəfə böyükdür.",
+    "İşığın Günəş ətrafında tam bir dövrə vurması təxminən 14,5 saniyə çəkdiyi halda, Stephenson 2-18-in ətrafında dövr etməsi təxminən 9 saat çəkir.",
+    "Qırmızı ifratnəhənglər son mərhələlərində həddindən artıq genişləndikləri üçün orta sıxlıqları dəniz səviyyəsindəki Yer atmosferindən milyonlarla dəfə aşağıdır."
    ]
   }
  },
- "id": "y001",
- "series": "Ya Olsaydı?",
- "q": "Dünya dönmeyi bıraksaydı ne olurdu?"
+ "id": "n003",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bilinen en büyük yıldız ne kadar büyük?"
 }
