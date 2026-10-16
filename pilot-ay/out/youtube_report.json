@@ -1,3 +1,44 @@
 {
- "error": "Google bağlantısı reddedildi (401): {\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The provided client secret is invalid.\"\n}"
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "0",
+  "videos": "0"
+ },
+ "channel_now": {
+  "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\" \"what if\" science \"science animation\" space astronomy",
+  "country": "TR",
+  "defaultLanguage": "tr"
+ },
+ "channel_filled": [],
+ "playlists": {
+  "Ya Olsaydı?": "PLdqEnBOYj8wQ",
+  "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
+  "1 Gün Boyunca": "PLcawGSnylmhU"
+ },
+ "episodes": {
+  "ay": {
+   "video_id": "-7OxhWXxc8w",
+   "url": "https://youtube.com/shorts/-7OxhWXxc8w",
+   "privacy": "private",
+   "playlist": "Ya Olsaydı?",
+   "status": {
+    "uploadStatus": "processed",
+    "privacyStatus": "private"
+   },
+   "thumbnail": true,
+   "captions": {
+    "tr": {
+     "id": "AUieDaZYI9S2HV7DzB6-n2ybqHYjSQCFZVTnjyyy9kdp",
+     "hash": "0f3381b0a3427089"
+    },
+    "en": {
+     "id": "AUieDaYsEbrL_Ar7WYHJyJWu6Xn3C9w4uTCl8s5nOUfn",
+     "hash": "de88d555f8b4bd6b"
+    }
+   },
+   "meta": "6a72beff510335ad"
+  }
+ }
 }

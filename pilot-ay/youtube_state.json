@@ -18,8 +18,16 @@
     "privacyStatus": "private"
    },
    "thumbnail": true,
-   "captions": {},
-   "captions_error": "GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]",
+   "captions": {
+    "tr": {
+     "id": "AUieDaZYI9S2HV7DzB6-n2ybqHYjSQCFZVTnjyyy9kdp",
+     "hash": "0f3381b0a3427089"
+    },
+    "en": {
+     "id": "AUieDaYsEbrL_Ar7WYHJyJWu6Xn3C9w4uTCl8s5nOUfn",
+     "hash": "de88d555f8b4bd6b"
+    }
+   },
    "meta": "6a72beff510335ad"
   }
  },
