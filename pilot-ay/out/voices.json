@@ -296,63 +296,175 @@
   "voice_id": "TJcdBnZRSDUZOVN1SNC2",
   "category": "professional",
   "labels": {
-   "accent": "tr-standard",
-   "language": "tr"
+   "language": "tr",
+   "accent": "tr-standard"
   },
   "description": "Private professional clone of the channel owner Ulaş, from his own long Turkish recording. Awaiting owner voice verification and likeness evaluation."
  },
  {
-  "name": "Nisa - Encouraging, Friendly and Soft",
-  "voice_id": "bj1uMlYGikistcXNmFoh",
+  "name": "Alp - Deep & Cinematic Baritone",
+  "voice_id": "HV5rAif1q1ITHdvxqyMw",
   "category": "professional",
   "labels": {
+   "gender": "male",
+   "use_case": "narrative_story",
+   "descriptive": "deep",
    "accent": "standard",
    "language": "tr",
-   "use_case": "entertainment_tv",
-   "gender": "female",
-   "descriptive": "pleasant",
-   "age": "young"
+   "age": "middle_aged"
   },
-  "description": "Young female voice that can be used for Turkish promotions and news messages. It can also be used to read advertising texts."
+  "description": "A professional-grade, deep, dark, middle-aged male baritone voice. Perfectly calibrated for heavy documentaries, corporate narrations, movie trailers, and high-quality audiobooks. Delivers a cold, authoritative tone with flawless phonetics. Built for absolute retention."
  },
  {
   "name": "Burcu - Young and Inviting Storyteller",
   "voice_id": "ZgndNiUCwSn9oAFrs6rJ",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "gender": "female",
-   "language": "tr",
    "use_case": "informative_educational",
    "descriptive": "formal",
+   "accent": "istanbul",
+   "language": "tr",
    "age": "middle_aged"
   },
   "description": "Professional female voice in her late 30s, born and raised in Istanbul-Türkiye. Trained for voice-over acting. Ideal for corporate, educational, narrated content and more."
+ },
+ {
+  "name": "Emin - Epic Historical Narrative",
+  "voice_id": "j9K9HnBcmgA6xNWqjlX0",
+  "category": "professional",
+  "labels": {
+   "language": "tr",
+   "use_case": "narrative_story",
+   "descriptive": "deep",
+   "accent": "istanbul",
+   "gender": "male",
+   "age": "old"
+  },
+  "description": "This recording is designed for voice cloning, crafted to capture and reproduce every nuance, tone, and emotion of my voice."
+ },
+ {
+  "name": "Melek - Dynamic, Energetic and Soft",
+  "voice_id": "xgYIZvUB5h2eFY3HUFNj",
+  "category": "professional",
+  "labels": {
+   "language": "tr",
+   "use_case": "social_media",
+   "descriptive": "confident",
+   "accent": "istanbul",
+   "gender": "female",
+   "age": "young"
+  },
+  "description": "This sound offers listeners a warm and friendly atmosphere. While its fluid and elegant tones leave a sweet melody on the ears, the emotional depth felt in every note attracts the attention of the listeners. This voice, blended with simplicity and sincerity, tells something in every word and attracts people."
+ },
+ {
+  "name": "Amelia - Warm, Friendly and Articulate",
+  "voice_id": "1Iy00CVh3yqYLlZBmEFo",
+  "category": "professional",
+  "labels": {
+   "language": "tr",
+   "use_case": "narrative_story",
+   "descriptive": "casual",
+   "accent": "istanbul",
+   "gender": "female",
+   "age": "middle_aged"
+  },
+  "description": "Warm, friendly, and articulate Turkish voice. Perfect for storytelling, educational videos, and English vocabulary lessons. The tone is clear, confident, and emotionally engaging — designed to help listeners learn and connect effortlessly."
  },
  {
   "name": "Emrullah Tuna - Deep & Full",
   "voice_id": "QftNgZhlSOYKrYbk7WR7",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "gender": "male",
-   "language": "tr",
    "use_case": "narrative_story",
    "descriptive": "calm",
+   "accent": "istanbul",
+   "language": "tr",
    "age": "middle_aged"
   },
   "description": "A deep, deep, and trustworthy Turkish male voice. Ideal for documentaries, commercials, poetry, news,  content, podcasts, and educational videos. "
+ },
+ {
+  "name": "BARAN - Warm, narrative & professional tone ",
+  "voice_id": "teHLF0hAua8Ry47noJ1t",
+  "category": "professional",
+  "labels": {
+   "gender": "male",
+   "use_case": "narrative_story",
+   "descriptive": "wise",
+   "accent": "istanbul",
+   "language": "tr",
+   "age": "middle_aged"
+  },
+  "description": "A confident, warm, and articulate voice with a natural professional tone in English & Turkish. Clear pronunciation and balanced pacing make it ideal for corporate narration, e-learning, product explainers, podcasts, and brand communication.The delivery feels authentic and engaging rather than scripted, helping complex ideas sound simple, credible, and human.Well-suited for audiences who value clarity, trust, and a polished yet approachable presence."
+ },
+ {
+  "name": "Damla - Energetic YouTuber",
+  "voice_id": "A2XgcJ6lQVEFeIaIUyrc",
+  "category": "professional",
+  "labels": {
+   "gender": "female",
+   "use_case": "social_media",
+   "descriptive": "hyped",
+   "accent": "istanbul",
+   "language": "tr",
+   "age": "young"
+  },
+  "description": "High-energy, engaging voice perfect for videos, vlogs, and fast-paced content. Keeps viewers hooked with a dynamic and enthusiastic tone"
+ },
+ {
+  "name": "Nisa - Encouraging, Friendly and Soft",
+  "voice_id": "bj1uMlYGikistcXNmFoh",
+  "category": "professional",
+  "labels": {
+   "language": "tr",
+   "use_case": "entertainment_tv",
+   "descriptive": "pleasant",
+   "accent": "standard",
+   "gender": "female",
+   "age": "young"
+  },
+  "description": "Young female voice that can be used for Turkish promotions and news messages. It can also be used to read advertising texts."
+ },
+ {
+  "name": "OzgurBABAL - Deep Warm Turkish Voice",
+  "voice_id": "Mcb3pz5eWjKXcBhMLF4v",
+  "category": "professional",
+  "labels": {
+   "gender": "male",
+   "use_case": "advertisement",
+   "descriptive": "deep",
+   "accent": "standard",
+   "language": "tr",
+   "age": "middle_aged"
+  },
+  "description": "20+ years of professional voiceover experience. A deep, warm, authoritative, and engaging male voice. Perfect for commercials, corporate videos, audiobooks, e-learning, content, and documentaries."
+ },
+ {
+  "name": "Taner TORUN - Zihne Fısıldayan Adam",
+  "voice_id": "G5sdncpgy3DkDmvKJnFb",
+  "category": "professional",
+  "labels": {
+   "language": "tr",
+   "use_case": "advertisement",
+   "descriptive": "deep",
+   "accent": "istanbul",
+   "gender": "male",
+   "age": "middle_aged"
+  },
+  "description": "The Man Who Whispers to the Mind\nProfessional hypnotic educational Turkish voice — emotional, calm and magnetic.\nDesigned for meditative narration, subconscious programming, and deep learning sessions."
  },
  {
   "name": "Yunus - Charismatic Turkish Male",
   "voice_id": "Q5n6GDIjpN0pLOlycRFT",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "language": "tr",
    "use_case": "conversational",
-   "gender": "male",
    "descriptive": "confident",
+   "accent": "istanbul",
+   "gender": "male",
    "age": "young"
   },
   "description": "A 25-year-old charismatic Turkish male voice with a clear Istanbul accent. Confident, natural, and expressive tone suitable for narration, ads, content creation, podcasts, and storytelling."
@@ -362,138 +474,26 @@
   "voice_id": "I8PntRGWO35zIGM4lnWO",
   "category": "professional",
   "labels": {
-   "accent": "istanbul",
    "language": "tr",
-   "gender": "female",
    "use_case": "informative_educational",
    "descriptive": "serious",
+   "accent": "istanbul",
+   "gender": "female",
    "age": "middle_aged"
   },
   "description": "A professional Turkish female voice with a clear, neutral, and fluent news delivery. Ideal for breaking news, bulletins, economy updates, and current affairs. Maintains clarity and precision even at fast pacing, ensuring a clean and highly understandable broadcast style."
- },
- {
-  "name": "OzgurBABAL - Deep Warm Turkish Voice",
-  "voice_id": "Mcb3pz5eWjKXcBhMLF4v",
-  "category": "professional",
-  "labels": {
-   "use_case": "advertisement",
-   "gender": "male",
-   "accent": "standard",
-   "language": "tr",
-   "descriptive": "deep",
-   "age": "middle_aged"
-  },
-  "description": "20+ years of professional voiceover experience. A deep, warm, authoritative, and engaging male voice. Perfect for commercials, corporate videos, audiobooks, e-learning, content, and documentaries."
- },
- {
-  "name": "Emin - Epic Historical Narrative",
-  "voice_id": "j9K9HnBcmgA6xNWqjlX0",
-  "category": "professional",
-  "labels": {
-   "accent": "istanbul",
-   "language": "tr",
-   "use_case": "narrative_story",
-   "gender": "male",
-   "age": "old",
-   "descriptive": "deep"
-  },
-  "description": "This recording is designed for voice cloning, crafted to capture and reproduce every nuance, tone, and emotion of my voice."
- },
- {
-  "name": "Alp - Deep & Cinematic Baritone",
-  "voice_id": "HV5rAif1q1ITHdvxqyMw",
-  "category": "professional",
-  "labels": {
-   "accent": "standard",
-   "gender": "male",
-   "use_case": "narrative_story",
-   "language": "tr",
-   "descriptive": "deep",
-   "age": "middle_aged"
-  },
-  "description": "A professional-grade, deep, dark, middle-aged male baritone voice. Perfectly calibrated for heavy documentaries, corporate narrations, movie trailers, and high-quality audiobooks. Delivers a cold, authoritative tone with flawless phonetics. Built for absolute retention."
- },
- {
-  "name": "BARAN - Warm, narrative & professional tone ",
-  "voice_id": "teHLF0hAua8Ry47noJ1t",
-  "category": "professional",
-  "labels": {
-   "use_case": "narrative_story",
-   "gender": "male",
-   "language": "tr",
-   "accent": "istanbul",
-   "age": "middle_aged",
-   "descriptive": "wise"
-  },
-  "description": "A confident, warm, and articulate voice with a natural professional tone in English & Turkish. Clear pronunciation and balanced pacing make it ideal for corporate narration, e-learning, product explainers, podcasts, and brand communication.The delivery feels authentic and engaging rather than scripted, helping complex ideas sound simple, credible, and human.Well-suited for audiences who value clarity, trust, and a polished yet approachable presence."
- },
- {
-  "name": "Taner TORUN - Zihne Fısıldayan Adam",
-  "voice_id": "G5sdncpgy3DkDmvKJnFb",
-  "category": "professional",
-  "labels": {
-   "accent": "istanbul",
-   "language": "tr",
-   "gender": "male",
-   "use_case": "advertisement",
-   "age": "middle_aged",
-   "descriptive": "deep"
-  },
-  "description": "The Man Who Whispers to the Mind\nProfessional hypnotic educational Turkish voice — emotional, calm and magnetic.\nDesigned for meditative narration, subconscious programming, and deep learning sessions."
- },
- {
-  "name": "Amelia - Warm, Friendly and Articulate",
-  "voice_id": "1Iy00CVh3yqYLlZBmEFo",
-  "category": "professional",
-  "labels": {
-   "use_case": "narrative_story",
-   "language": "tr",
-   "accent": "istanbul",
-   "gender": "female",
-   "descriptive": "casual",
-   "age": "middle_aged"
-  },
-  "description": "Warm, friendly, and articulate Turkish voice. Perfect for storytelling, educational videos, and English vocabulary lessons. The tone is clear, confident, and emotionally engaging — designed to help listeners learn and connect effortlessly."
- },
- {
-  "name": "Melek - Dynamic, Energetic and Soft",
-  "voice_id": "xgYIZvUB5h2eFY3HUFNj",
-  "category": "professional",
-  "labels": {
-   "use_case": "social_media",
-   "language": "tr",
-   "gender": "female",
-   "accent": "istanbul",
-   "age": "young",
-   "descriptive": "confident"
-  },
-  "description": "This sound offers listeners a warm and friendly atmosphere. While its fluid and elegant tones leave a sweet melody on the ears, the emotional depth felt in every note attracts the attention of the listeners. This voice, blended with simplicity and sincerity, tells something in every word and attracts people."
- },
- {
-  "name": "Damla - Energetic YouTuber",
-  "voice_id": "A2XgcJ6lQVEFeIaIUyrc",
-  "category": "professional",
-  "labels": {
-   "use_case": "social_media",
-   "gender": "female",
-   "language": "tr",
-   "accent": "istanbul",
-   "descriptive": "hyped",
-   "age": "young"
-  },
-  "description": "High-energy, engaging voice perfect for videos, vlogs, and fast-paced content. Keeps viewers hooked with a dynamic and enthusiastic tone"
  },
  {
   "name": "Mustafa Silici - Calm, Warm, Intimate",
   "voice_id": "WtOce4YK0dDSxlVlSdBh",
   "category": "professional",
   "labels": {
-   "accent": "tr-istanbul",
    "language": "tr",
-   "gender": "male",
    "use_case": "social_media",
-   "age": "middle_aged",
-   "descriptive": "professional"
+   "descriptive": "professional",
+   "accent": "tr-istanbul",
+   "gender": "male",
+   "age": "middle_aged"
   },
   "description": "A calm, warm Turkish male voice with intimate, trustworthy delivery, natural pacing, and clear Istanbul diction. Best for social storytelling, premium brand content, wellness, podcasts, heartfelt reels, and conversational experiences."
  }
