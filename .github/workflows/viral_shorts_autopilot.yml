@@ -82,7 +82,7 @@ concurrency:
 
 permissions:
   contents: write  # the channel-data branch keeps metrics, competitor DNA, generated topics and history
-  actions: read  # the slot gate checks this workflow's earlier runs in the same slot
+  actions: write  # the slot gate checks this workflow's earlier runs; the watch step restarts slot_heartbeat.yml
 
 jobs:
   produce_original_short:
@@ -112,6 +112,14 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           EVENT_NAME: ${{ github.event_name }}
         run: python3 scripts/slot_gate.py
+
+      # GitHub drops most cron ticks, so the hourly watch (slot_heartbeat.yml) starts the Shorts. Every run,
+      # skipped ticks included, restarts the watch when no run of it is queued or in progress.
+      - name: 🫀 Nöbeti Kontrol Et
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/slot_heartbeat.py --ensure
 
       - name: 🐍 Python 3.12 Kur
         if: steps.gate.outputs.go == 'true'

@@ -1,0 +1,37 @@
+name: Saatlik Short Nöbeti
+
+# GitHub ran only 5 of the 48 '7,37 * * * *' ticks of the Shorts workflow between 2026-10-15 08:40 and
+# 2026-10-16 08:40 UTC. This job waits on a runner instead: at :25 and :45 of every hour it applies the
+# slot gate to the live channel data and starts the Shorts workflow when the slot is open
+# (scripts/slot_heartbeat.py). After 5 h 40 min it starts its own successor and ends, before the 6 h job
+# limit; the successor waits in the concurrency group until then. The Shorts workflow restarts the watch on
+# every run if the chain ever breaks, and so does the cron below. The repository is public, so the waiting
+# runner costs no Actions minutes. To stop it: Actions > Saatlik Short Nöbeti > ... > Disable workflow.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 */3 * * *'
+
+concurrency:
+  group: slot-heartbeat
+  cancel-in-progress: false
+
+permissions:
+  actions: write  # start the Shorts workflow and the next watch
+  contents: read  # read channel-data/uploads.json
+
+jobs:
+  watch:
+    name: 🫀 Nöbet
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🫀 Slotları Bekle ve Short Başlat
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/slot_heartbeat.py
