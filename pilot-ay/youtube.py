@@ -38,7 +38,9 @@ def token():
         "client_id": env["CLIENT_ID"], "client_secret": env["CLIENT_SECRET"],
         "refresh_token": env["REFRESH_TOKEN"], "grant_type": "refresh_token"})
     if not r.ok:
-        raise SystemExit(f"Google bağlantısı reddedildi ({r.status_code}): {r.text[:300]}")
+        hint = (" Refresh token başka bir istemciyle alınmış: OAuth Playground'da dişliden Ya Olsaydi istemcisinin "
+                "kimliği ve gizli anahtarıyla yeniden alınmalı.") if "unauthorized_client" in r.text else ""
+        raise SystemExit(f"Google bağlantısı reddedildi ({r.status_code}): {r.text[:300]}{hint}")
     return r.json()["access_token"]
 
 
