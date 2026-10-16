@@ -1,0 +1,49 @@
+{
+ "started": "2026-10-16T09:37:55+00:00",
+ "deneme": true,
+ "threads": 3,
+ "new": 3,
+ "quiet": 0,
+ "sent_last_24h": 0,
+ "room": 10,
+ "model": "gemini-3.8-flash",
+ "items": [
+  {
+   "id": "UgypMdIQNONBpTOwYhx4AaABAg",
+   "video": "yHElVXfvdsw",
+   "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
+   "reply": "Harika bir soru, teşekkürler! En yakın yıldızımız Güneş patlasaydı her şey değişirdi; bu fikri hemen listemize ekledim. 🌟\n— Profesör Pi 🔭",
+   "result": "deneme, gönderilmedi",
+   "topic": {
+    "q": "En yakın yıldız patlasaydı ne olurdu?",
+    "series": "Ya Olsaydı?"
+   }
+  },
+  {
+   "id": "Ugw5Q9YzSjxuiZ0ieHV4AaABAg",
+   "video": "-7OxhWXxc8w",
+   "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
+   "reply": "Bu müthiş fikir için teşekkürler! Bize en yakın yıldız olan Güneş'in patlaması ihtimalini hemen soru listemize not ettim. 🚀\n— Profesör Pi 🔭",
+   "result": "deneme, gönderilmedi",
+   "topic": {
+    "q": "En yakın yıldız patlasaydı ne olurdu?",
+    "series": "Ya Olsaydı?"
+   }
+  },
+  {
+   "id": "UgwCCXk6gBQzUw9ndaF4AaABAg",
+   "video": "8KoJ0-4fHyY",
+   "comment": "Peki bize en yakın yıldız partlasaydı nolurdu??",
+   "reply": "Çok ilginç bir soru, çok teşekkürler! Güneş patlasaydı ne olurdu fikrini hemen gelecek konular listemize aldım. 🔭\n— Profesör Pi 🔭",
+   "result": "deneme, gönderilmedi",
+   "topic": {
+    "q": "En yakın yıldız patlasaydı ne olurdu?",
+    "series": "Ya Olsaydı?"
+   }
+  }
+ ],
+ "log": [
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+ ],
+ "finished": "2026-10-16T09:38:19+00:00"
+}
