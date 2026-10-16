@@ -1,0 +1,492 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="emoji.css">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="ortak.js"></script>
+<script src="arkaplan.js"></script>
+<script src="bolum.js"></script>
+<script>
+// YA OLSAYDI? episode engine. bolum.js sets window.EP:
+//   {series, title: {hi, rest}, lines: [{who: 'pi'|'bit', text, v: {t: <visual type>, bg, ...}}]}
+// render.js injects real word timings with setTimings([{t0, t1, words: [{w, t0, t1}]}]).
+const EP = window.EP;
+const BGS = window.BG || {};
+const BODIES = window.BODY || {};
+
+// ---------- timeline ----------
+function buildTimeline() {
+  if (window.TIMINGS) return window.TIMINGS.map((tm, i) => ({ ...EP.lines[i], ...tm }));
+  let t = 0.35; const out = [];
+  EP.lines.forEach((l, i) => {
+    const ws = []; let tt = t;
+    l.text.split(' ').forEach(w => { const d = 0.16 + w.length * 0.052 + (/[.,!?]$/.test(w) ? 0.22 : 0); ws.push({ w, t0: tt, t1: tt + d }); tt += d; });
+    out.push({ ...l, t0: t, t1: tt, words: ws });
+    t = tt + (EP.lines[i + 1] && EP.lines[i + 1].who !== l.who ? 0.38 : 0.2);
+  });
+  return out;
+}
+let TL = buildTimeline();
+const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
+// time of the first word in line L starting with prefix (fallback: a share of the line)
+function wordTime(L, prefix, share = .35) {
+  if (prefix) {
+    const p = norm(prefix);
+    const w = L.words.find(w => norm(w.w).startsWith(p) || (p.length > 3 && norm(w.w).includes(p)));
+    if (w) return w.t0;
+  }
+  return L.t0 + (L.t1 - L.t0) * share;
+}
+window.DURATION = () => TL.at(-1).t1 + 1.6;
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+// ---------- emoji cache: each glyph is rasterised once, then scaled ----------
+const EMO = {};
+const EBASE = 512;
+emoji = function (ch, x, y, size, alpha = 1, rot = 0) {
+  if (!ch || size < 2 || alpha <= 0) return;
+  let c = EMO[ch];
+  if (!c) {
+    c = EMO[ch] = document.createElement('canvas'); c.width = c.height = EBASE + 64;
+    const g = c.getContext('2d');
+    g.font = `${EBASE * .86}px ${EMOJI}`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(ch, c.width / 2, c.height / 2 + EBASE * .04);
+  }
+  const s = size / EBASE;
+  ctx.save(); ctx.globalAlpha *= alpha; ctx.translate(x, y); if (rot) ctx.rotate(rot); ctx.scale(s, s);
+  ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 40 * s; ctx.shadowOffsetY = 20;
+  ctx.drawImage(c, -c.width / 2, -c.height / 2);
+  ctx.restore();
+};
+
+// ---------- pieces ----------
+function bg(name, t) {
+  const f = BGS[name] || BGS.space;
+  if (f) f(t); else { vgrad(C.space1, C.space2); starfield(t); }
+}
+function body(kind, x, y, r, t, opt) {
+  if (r < .5) return;
+  const f = BODIES[kind];
+  if (f) f(x, y, r, t, opt); else { glow(x, y, r * 1.6, 'rgba(255,255,255,.3)', .5); circle(x, y, r, '#c9cde0'); }
+}
+// an item is an emoji ("e") or a drawn celestial body ("b")
+function item(it, x, y, size, t, alpha = 1) {
+  if (!it || size < 1) return;
+  if (it.b && !it.e) { ctx.save(); ctx.globalAlpha *= alpha; body(it.b, x, y, size / 2, t); ctx.restore(); }
+  else emoji(it.e || '❓', x, y, size, alpha);
+}
+function burst(x, y, p, colors = [C.white, C.yellow], n = 26, dist = 260) {
+  if (p <= 0 || p >= 1) return;
+  ctx.strokeStyle = `rgba(255,255,255,${1 - p})`; ctx.lineWidth = 14 * (1 - p);
+  ctx.beginPath(); ctx.arc(x, y, 60 + p * dist, 0, Math.PI * 2); ctx.stroke();
+  for (let i = 0; i < n; i++) {
+    const a = rnd(i) * 6.28, d = eo(p) * (dist * .4 + rnd(i + 3) * dist * .8);
+    ctx.globalAlpha = 1 - p; circle(x + Math.cos(a) * d, y + Math.sin(a) * d, 6 + rnd(i + 5) * 8, colors[i % colors.length]);
+  }
+  ctx.globalAlpha = 1;
+}
+function label(V, L, t, y = 1150, color = C.yellow, fg = C.ink) {
+  if (!V.label) return;
+  const kt = wordTime(L, V.key, .3);
+  pill(V.label.toLocaleUpperCase('tr'), 540, y, 64, color, fg, back(prog(t, kt, kt + .45)));
+}
+// numbers like "3,8", "384.400", "%40", "8 milyar" -> {n, dec, pre, post} for counting up
+function parseNum(s) {
+  const m = String(s).match(/^(\D*?)(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?(.*)$/);
+  if (!m) return null;
+  return { pre: m[1], n: parseFloat(m[2].replace(/\./g, '') + (m[3] ? '.' + m[3] : '')), dec: m[3] ? m[3].length : 0, post: m[4] };
+}
+function fmtNum(n, dec) {
+  const [i, d] = n.toFixed(dec).split('.');
+  return i.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (d ? ',' + d : '');
+}
+function countUp(value, p) {
+  const P = parseNum(value);
+  if (!P || p >= 1) return String(value);
+  return P.pre + fmtNum(P.n * eo(p), P.dec) + P.post;
+}
+
+// ---------- visuals: f(V, L, t, lt) with lt = time since the scene started ----------
+const POS = { c: [540, 760], l: [300, 760], r: [780, 760], t: [540, 470], b: [540, 1060], tl: [270, 500], tr: [810, 500], bl: [270, 1030], br: [810, 1030] };
+const SIZE = { xs: 30, s: 70, m: 140, l: 230, xl: 340 };
+const VIS = {
+  space(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const kt = wordTime(L, V.key, .3);
+    const bodies = (V.bodies && V.bodies.length ? V.bodies : [{ b: 'earth', size: 'l', at: 'c' }]).slice(0, 4);
+    const ti = clamp(V.target | 0, 0, bodies.length - 1);
+    const p = prog(t, kt, kt + .9);
+    bodies.forEach((B, i) => {
+      let [x, y] = POS[B.at] || POS.c; let r = SIZE[B.size] || SIZE.m;
+      const hit = i === ti, d = V.do;
+      let opt = {};
+      if (hit) {
+        if (d === 'vanish' || d === 'explode') { r *= 1 - eo(prog(t, kt, kt + .4)); }
+        if (d === 'grow') r *= 1 + .7 * eio(p);
+        if (d === 'shrink') r *= 1 - .65 * eio(p);
+        if (d === 'shake') { const s = prog(t, kt, kt + .2) * 14; x += Math.sin(t * 60) * s; y += Math.cos(t * 47) * s; }
+        if (d === 'approach' || d === 'recede') {
+          const o = POS[(bodies[i ? 0 : 1] || {}).at] || POS.c;
+          const k = eio(p) * (d === 'approach' ? .55 : -.6);
+          x += (o[0] - x) * k; y += (o[1] - y) * k; r *= d === 'approach' ? 1 + .5 * eio(p) : 1 - .5 * eio(p);
+        }
+        if (d === 'orbit' && i > 0) {
+          const o = POS[bodies[0].at] || POS.c, R = Math.hypot(x - o[0], y - o[1]) || 300, a0 = Math.atan2(y - o[1], x - o[0]);
+          const a = a0 + lt * 1.4; x = o[0] + Math.cos(a) * R; y = o[1] + Math.sin(a) * R * .45;
+        }
+        if (d === 'spin') opt.spin = 4;
+        if (d === 'tilt') opt.tilt = .41 + Math.sin(lt * 2.6) * .55 * eio(p);
+      }
+      body(B.b, x, y, r, t * (opt.spin || 1), opt);
+      if (hit && d === 'heat') { glow(x, y, r * 2.2, 'rgba(255,90,40,.8)', .35 + .25 * Math.sin(t * 6) * p + .2 * p); }
+      if (hit && d === 'freeze' && p > 0) {
+        ctx.globalAlpha = .45 * p; circle(x, y, r, '#bfe9ff'); ctx.globalAlpha = 1;
+        for (let k = 0; k < 8; k++) emoji('❄️', x + Math.cos(k * .8 + t) * r * 1.3, y + Math.sin(k * .8 + t) * r * 1.3, 50 * p);
+      }
+      if (hit && (d === 'vanish' || d === 'explode')) {
+        burst(x, y, prog(t, kt, kt + .9), d === 'explode' ? [C.orange, C.yellow, C.red] : [C.white, C.yellow], d === 'explode' ? 40 : 26, d === 'explode' ? 420 : 260);
+        if (t > kt && t < kt + .12) { ctx.fillStyle = `rgba(255,255,255,${(1 - (t - kt) / .12) * .5})`; ctx.fillRect(0, 0, W, H); }
+      }
+    });
+    label(V, L, t, 1150);
+  },
+  icon(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const kt = wordTime(L, V.key, .3), p = prog(t, kt, kt + .6);
+    let x = 540, y = 720, s = 420, a = 1, rot = 0;
+    s *= back(prog(lt, 0, .45));
+    switch (V.do) {
+      case 'pulse': s *= 1 + .07 * Math.sin(t * 7); break;
+      case 'grow': s *= .7 + .55 * eio(p); break;
+      case 'shrink': s *= 1 - .6 * eio(p); break;
+      case 'shake': x += Math.sin(t * 55) * 16 * (t > kt ? 1 : .2); rot = Math.sin(t * 40) * .06; break;
+      case 'spin': rot = lt * 2.2; break;
+      case 'float': y += Math.sin(t * 2.4) * 26; rot = Math.sin(t * 1.7) * .08; break;
+      case 'vanish': s *= 1 - eo(prog(t, kt, kt + .35)); break;
+      case 'fall': y = lerp(-300, 720, eo(prog(lt, 0, .7))) + (lt > .7 ? Math.abs(Math.sin((lt - .7) * 9)) * -40 * Math.exp(-(lt - .7) * 3) : 0); break;
+      case 'rise': y = lerp(1500, 720, eo(prog(lt, 0, .8))); break;
+      default: s *= 1 + .03 * Math.sin(t * 2.4);
+    }
+    glow(540, 720, 420, 'rgba(255,255,255,.18)', .9);
+    if (V.do === 'multiply' && t > kt) {
+      for (let i = 0; i < 9; i++) {
+        const k = eo(prog(t, kt + i * .05, kt + i * .05 + .5)), ang = i / 9 * 6.28 + .3, R = 330 * k;
+        emoji(V.e, 540 + Math.cos(ang) * R, 720 + Math.sin(ang) * R * .9, 170 * k);
+      }
+      s *= 1 - .35 * eo(p);
+    }
+    if (V.do === 'burn' && t > kt) for (let i = 0; i < 7; i++) { const life = (t * .8 + rnd(i)) % 1; emoji('🔥', 540 + (rnd(i + 4) - .5) * 420, 900 - life * 450, 110 * (1 - life) * eo(p), 1 - life); }
+    if (V.do === 'freeze' && t > kt) { for (let i = 0; i < 8; i++) emoji('❄️', 540 + Math.cos(i * .8 + t) * 300, 720 + Math.sin(i * .8 + t) * 300, 70 * eo(p)); }
+    emoji(V.e, x, y, s, a, rot);
+    if (V.do === 'vanish') burst(540, 720, prog(t, kt, kt + .9));
+    label(V, L, t, 1150);
+  },
+  icons(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const its = (V.items || []).slice(0, 4), n = its.length || 1, dur = L.t1 - L.t0;
+    const spots = n === 2 ? [[300, 740], [780, 740]] : n === 3 ? [[200, 760], [540, 640], [880, 760]] : [[300, 560], [780, 560], [300, 960], [780, 960]];
+    const size = n === 4 ? 220 : n === 3 ? 230 : 300;
+    its.forEach((it, i) => {
+      const at = L.t0 + dur * (.12 + .7 * i / n), k = back(prog(t, at, at + .4));
+      const [x, y] = spots[i];
+      item(it, x, y + Math.sin(t * 2 + i) * 10, size * k, t);
+      if (it.label) pill(it.label.toLocaleUpperCase('tr'), x, y + size * .62 + 40, n === 2 ? 48 : 40, i % 2 ? C.cyan : C.yellow, C.ink, k, n === 3 ? 330 : 470);
+    });
+  },
+  number(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const kt = wordTime(L, V.key || V.value, .25);
+    if (V.e) emoji(V.e, 540, 470 + Math.sin(t * 2.2) * 12, 230 * back(prog(lt, 0, .45)));
+    const k = back(prog(t, kt, kt + .45));
+    if (k > .01) {
+      ctx.save(); ctx.translate(540, 760); ctx.scale(k, k);
+      glow(0, 0, 420, 'rgba(255,210,63,.35)', .8);
+      const val = countUp(V.value, prog(t, kt, kt + .9));
+      ctx.font = `900 230px ${F}`; let w = ctx.measureText(val).width;
+      ctx.font = `900 90px ${F}`; const uw = V.unit ? ctx.measureText(' ' + V.unit).width : 0;
+      let size = 230; if (w + uw > 960) size = Math.floor(230 * (960 - uw) / w);
+      ctx.font = `900 ${size}px ${F}`; w = ctx.measureText(val).width;
+      const x0 = -(w + uw) / 2;
+      text(val, x0, 0, size, C.yellow, 900, 'left', 22);
+      if (V.unit) text(' ' + V.unit, x0 + w, size * .18, 90, C.white, 900, 'left', 14);
+      ctx.restore();
+    }
+    if (V.label) pill(V.label.toLocaleUpperCase('tr'), 540, 1000, 60, C.mag, C.white, back(prog(t, kt + .3, kt + .75)));
+  },
+  compare(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const A = V.a || {}, B = V.b || {};
+    const va = Math.abs(parseFloat(String(A.value).replace(/\./g, '').replace(',', '.'))) || 1, vb = Math.abs(parseFloat(String(B.value).replace(/\./g, '').replace(',', '.'))) || 1;
+    const kt = wordTime(L, V.key, .35), p = eio(prog(t, kt, kt + 1.1));
+    const big = Math.max(va, vb), base = 1100;
+    if (V.mode === 'bar') {
+      [[A, va, 330, C.cyan], [B, vb, 750, C.yellow]].forEach(([it, v, x, col], i) => {
+        const hFull = 620 * v / big, h = i === 0 ? hFull * eo(prog(lt, .1, .8)) : hFull * p;
+        ctx.fillStyle = col; rr(x - 110, base - h, 220, Math.max(h, 1), 26); ctx.fill();
+        item(it, x, base - h - 110, 170, t, h > 2 || i === 0 ? 1 : 0);
+        if (it.label) pill(it.label.toLocaleUpperCase('tr'), x, base + 70, 44, col, C.ink, 1, 400);
+        if (it.value !== undefined && h > 60) text(String(it.value), x, base - h / 2, 64, C.ink, 900);
+      });
+      return;
+    }
+    // size: the small one first, then the big one grows from the small one's size
+    const small = va <= vb ? [A, va] : [B, vb], large = va <= vb ? [B, vb] : [A, va];
+    const D = 560, ds = Math.max(18, D * small[1] / large[1]);
+    const dl = lerp(ds, D, p);
+    const sx = 170, cx = Math.min(1080 - dl / 2 - 40, 600 + D / 2 - dl / 2), floor = 1040;
+    item(large[0], cx, floor - dl / 2, dl, t, p > 0 ? 1 : 0);
+    item(small[0], sx, floor - ds / 2, ds, t);
+    if (ds < 60) { ctx.strokeStyle = C.white; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(sx, floor - ds - 20); ctx.lineTo(sx, floor - ds - 120); ctx.stroke(); }
+    if (small[0].label) pill(small[0].label.toLocaleUpperCase('tr'), sx + 40, ds < 60 ? floor - ds - 170 : floor + 70, 42, C.cyan, C.ink, 1, 360);
+    if (large[0].label) pill(large[0].label.toLocaleUpperCase('tr'), 650, floor + 70, 48, C.yellow, C.ink, back(prog(t, kt + .5, kt + .9)), 560);
+    const ratio = large[1] / small[1];
+    if (ratio >= 1.5) pill('x' + fmtNum(ratio, ratio < 10 ? 1 : 0).replace(/,0$/, ''), 540, 400, 90, C.mag, C.white, back(prog(t, kt + .8, kt + 1.2)));
+  },
+  meter(V, L, t, lt) {
+    bg(V.bg || 'lab', t);
+    const from = +V.from || 0, to = +V.to || 0, kt = wordTime(L, V.key, .25);
+    const p = eio(prog(t, kt, kt + 1.4)), v = lerp(from, to, p);
+    const lo = Math.min(from, to, 0), hi = Math.max(from, to), span = (hi - lo) || 1;
+    const x = 330, y0 = 1080, y1 = 420, frac = (v - lo) / span;
+    const hot = to > from, col = hot ? C.red : '#5ab8ff';
+    ctx.fillStyle = 'rgba(11,15,42,.85)'; rr(x - 70, y1 - 40, 140, y0 - y1 + 80, 70); ctx.fill();
+    circle(x, y0 + 40, 95, 'rgba(11,15,42,.85)');
+    ctx.fillStyle = col; const h = (y0 - y1) * clamp(frac); rr(x - 40, y0 - h, 80, h + 20, 40); ctx.fill();
+    circle(x, y0 + 40, 70, col);
+    if (V.e) emoji(V.e, 760, 520, 200);
+    const sv = (Math.abs(to - from) < 10 && (to % 1 || from % 1)) ? v.toFixed(1).replace('.', ',') : Math.round(v).toString();
+    text(sv + (V.unit ? ' ' + V.unit : ''), 760, 780, 130, hot ? C.yellow : '#bfe9ff', 900, 'center', 18);
+    if (V.label) pill(V.label.toLocaleUpperCase('tr'), 760, 960, 50, col, C.white, back(prog(lt, .1, .5)), 520);
+  },
+  question(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const s = back(prog(lt, 0, .5));
+    if (V.e) emoji(V.e, 400, 760 + Math.sin(t * 2) * 18, 330 * s);
+    text('?', 790, 700, (300 + Math.sin(t * 4) * 14) * s, C.yellow, 900, 'center', 18);
+    label(V, L, t, 1150, C.white, C.ink);
+  },
+  split(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const kt = wordTime(L, V.key, .45);
+    [[V.left, 285, C.cyan, back(prog(lt, 0, .45))], [V.right, 795, C.yellow, back(prog(t, kt, kt + .45))]].forEach(([it, x, col, k]) => {
+      if (!it || k < .01) return;
+      ctx.save(); ctx.translate(x, 740); ctx.scale(k, k);
+      ctx.fillStyle = 'rgba(11,15,42,.55)'; rr(-235, -330, 470, 660, 50); ctx.fill();
+      ctx.strokeStyle = col; ctx.lineWidth = 8; rr(-235, -330, 470, 660, 50); ctx.stroke();
+      ctx.restore();
+      item(it, x, 690, 300 * k, t);
+      if (it.label) pill(it.label.toLocaleUpperCase('tr'), x, 960, 46, col, C.ink, k, 430);
+    });
+    const ka = back(prog(t, kt - .2, kt + .2));
+    if (ka > .01) { ctx.save(); ctx.translate(540, 740); ctx.scale(ka, ka); circle(0, 0, 62, C.mag); text('➜', 4, 2, 70, C.white); ctx.restore(); }
+  },
+  timeline(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    const st = (V.steps || []).slice(0, 4), n = st.length || 1, dur = L.t1 - L.t0;
+    const gap = Math.min(250, 760 / n), y0 = 740 - gap * (n - 1) / 2;
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 10;
+    ctx.beginPath(); ctx.moveTo(150, y0); ctx.lineTo(150, y0 + gap * (n - 1) * eo(prog(lt, 0, dur * .8))); ctx.stroke();
+    st.forEach((s, i) => {
+      const at = L.t0 + dur * (.05 + .75 * i / n), k = back(prog(t, at, at + .4)), y = y0 + i * gap;
+      if (k < .01) return;
+      ctx.save(); ctx.translate(540, y); ctx.scale(k, k); ctx.translate(-540, -y);
+      ctx.fillStyle = 'rgba(11,15,42,.6)'; rr(70, y - gap * .4, 940, gap * .8, 40); ctx.fill();
+      circle(150, y, 20, i % 2 ? C.cyan : C.yellow);
+      emoji(s.e, 300, y, Math.min(170, gap * .7));
+      const when = String(s.when || '').toLocaleUpperCase('tr'), lbl = String(s.label || '').toLocaleUpperCase('tr');
+      ctx.font = `900 46px ${F}`; const ww = Math.min(560, ctx.measureText(when).width + 50);
+      pill(when, 420 + ww / 2, y - 42, 42, i % 2 ? C.cyan : C.yellow, C.ink, 1, 560);
+      ctx.font = `900 62px ${F}`; const w = ctx.measureText(lbl).width, size = w > 560 ? Math.floor(62 * 560 / w) : 62;
+      text(lbl, 400, y + 38, size, C.white, 900, 'left', 12);
+      ctx.restore();
+    });
+  },
+  outro(V, L, t, lt) {
+    bg(V.bg || 'space', t);
+    emoji(V.e || '💬', 540, 700 + Math.sin(t * 2.4) * 16, 300 * back(prog(lt, 0, .5)));
+    pill('SIRADAKİ SORU', 540, 420, 76, C.mag, C.white, back(prog(lt, .1, .6)));
+    pill('SENİN!', 540, 1000, 96, C.yellow, C.ink, back(prog(lt, .4, .9)));
+  }
+};
+
+// ---------- characters (as in the pilot) ----------
+function mouthOpen(t, line, who) {
+  if (!line || line.who !== who || t < line.t0 || t > line.t1) return 0;
+  const w = line.words.find(w => t >= w.t0 && t <= w.t1);
+  if (!w) return 0.1;
+  const p = (t - w.t0) / Math.max(.01, w.t1 - w.t0);
+  return clamp(Math.abs(Math.sin(p * Math.PI * Math.max(1, Math.round(w.w.length / 2.5)))) * .9 + .1);
+}
+function blink(t, seed) { const p = (t + seed) % 3.7; return p < .12 ? 1 - Math.abs(p - .06) / .06 : 0; }
+function drawPi(x, y, s, t, talk, active) {
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 1.8) * 4); ctx.scale(s, s);
+  ctx.fillStyle = C.coat; rr(-125, 95, 250, 320, 90); ctx.fill();
+  ctx.fillStyle = '#4a6cff'; ctx.beginPath(); ctx.moveTo(-40, 100); ctx.lineTo(40, 100); ctx.lineTo(0, 200); ctx.fill();
+  ctx.fillStyle = C.red; ctx.beginPath(); ctx.moveTo(-10, 112); ctx.lineTo(10, 112); ctx.lineTo(15, 185); ctx.lineTo(0, 205); ctx.lineTo(-15, 185); ctx.fill();
+  ctx.strokeStyle = '#cfd5e6'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-40, 100); ctx.lineTo(-20, 330); ctx.moveTo(40, 100); ctx.lineTo(20, 330); ctx.stroke();
+  ctx.fillStyle = '#d7dce9'; rr(60, 190, 46, 40, 8); ctx.fill();
+  [[70, C.red], [84, C.cyan], [98, C.yellow]].forEach(([px, c]) => { ctx.fillStyle = c; rr(px - 4, 172, 8, 26, 3); ctx.fill(); });
+  const ang = active ? -0.9 + Math.sin(t * 3) * .12 : 0.25;
+  ctx.save(); ctx.translate(-105, 150); ctx.rotate(ang);
+  ctx.fillStyle = C.coat; rr(-28, -10, 56, 150, 28); ctx.fill();
+  circle(0, 150, 26, C.skin);
+  ctx.restore();
+  circle(0, 0, 100, C.skin);
+  circle(-98, 10, 20, C.skin); circle(98, 10, 20, C.skin);
+  ctx.fillStyle = '#f1f3f8';
+  [[-100, -40, 42], [-80, -85, 40], [-35, -110, 42], [15, -115, 44], [65, -95, 42], [100, -50, 40], [-118, 5, 30], [118, 5, 30]].forEach(([hx, hy, r]) => { ctx.beginPath(); ctx.arc(hx, hy, r, 0, Math.PI * 2); ctx.fill(); });
+  ctx.fillStyle = C.skin; ctx.beginPath(); ctx.ellipse(0, -55, 70, 40, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#e9ecf4'; ctx.lineWidth = 12; ctx.lineCap = 'round';
+  const br = active ? -6 : 0;
+  ctx.beginPath(); ctx.moveTo(-62, -26 + br); ctx.lineTo(-22, -32 + br); ctx.moveTo(62, -26 + br); ctx.lineTo(22, -32 + br); ctx.stroke();
+  const bl = blink(t, 1.3);
+  [-42, 42].forEach(ex => {
+    circle(ex, 4, 30, 'rgba(255,255,255,.85)');
+    ctx.fillStyle = C.ink; ctx.beginPath(); ctx.ellipse(ex + 3, 6, 9, 11 * (1 - bl) + 1, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#2b2f4a'; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(ex, 4, 30, 0, Math.PI * 2); ctx.stroke();
+  });
+  ctx.beginPath(); ctx.moveTo(-12, 2); ctx.quadraticCurveTo(0, -6, 12, 2); ctx.stroke();
+  ctx.fillStyle = '#eaa985'; ctx.beginPath(); ctx.ellipse(0, 36, 16, 13, 0, 0, Math.PI * 2); ctx.fill();
+  const m = talk;
+  ctx.fillStyle = '#5a1e2a'; ctx.beginPath(); ctx.ellipse(0, 70, 22 + m * 6, 4 + m * 18, 0, 0, Math.PI * 2); ctx.fill();
+  if (m > .3) { ctx.fillStyle = '#ff7b8a'; ctx.beginPath(); ctx.ellipse(0, 70 + m * 10, 12, m * 7, 0, 0, Math.PI * 2); ctx.fill(); }
+  ctx.fillStyle = '#f1f3f8';
+  ctx.beginPath(); ctx.ellipse(-24, 54, 30, 13, -.25, 0, Math.PI * 2); ctx.ellipse(24, 54, 30, 13, .25, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+function drawBit(x, y, s, t, talk, active) {
+  const hy = Math.sin(t * 2.4) * 14;
+  ctx.save(); ctx.translate(x, y + hy); ctx.scale(s, s);
+  glow(0, 250, 120, 'rgba(62,230,255,.9)', .55 + .2 * Math.sin(t * 20));
+  ctx.fillStyle = 'rgba(62,230,255,.85)'; ctx.beginPath(); ctx.moveTo(-30, 205); ctx.quadraticCurveTo(0, 270 + Math.sin(t * 25) * 10, 30, 205); ctx.fill();
+  ctx.fillStyle = '#e9edf7'; rr(-95, 80, 190, 140, 60); ctx.fill();
+  ctx.fillStyle = C.mag; rr(-30, 120, 60, 50, 18); ctx.fill();
+  circle(0, 145, 12 + Math.sin(t * 4) * 2, '#ffd1f5');
+  const wave = active ? Math.sin(t * 8) * .5 : Math.sin(t * 2) * .1;
+  [[-1, -.4 - wave], [1, .4]].forEach(([sd, a]) => { ctx.save(); ctx.translate(sd * 100, 120); ctx.rotate(a * sd); ctx.fillStyle = '#d5dbec'; rr(-16, -10, 32, 80, 16); ctx.fill(); circle(0, 75, 20, C.cyan); ctx.restore(); });
+  ctx.fillStyle = '#e9edf7'; rr(-130, -120, 260, 200, 80); ctx.fill();
+  ctx.fillStyle = '#0b1036'; rr(-105, -95, 210, 150, 60); ctx.fill();
+  ctx.strokeStyle = '#c7cfe4'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(0, -120); ctx.lineTo(0, -175); ctx.stroke();
+  glow(0, -185, 60, 'rgba(255,79,216,.9)', .5 + .3 * Math.sin(t * 5));
+  circle(0, -185, 18, C.mag);
+  const bl = blink(t, 0.4);
+  ctx.fillStyle = C.cyan;
+  const eh = 46 * (1 - bl) + 4;
+  rr(-60, -50 - eh / 2 + 4, 34, eh, 17); ctx.fill(); rr(26, -50 - eh / 2 + 4, 34, eh, 17); ctx.fill();
+  ctx.strokeStyle = C.cyan; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.beginPath();
+  for (let i = 0; i <= 20; i++) { const px = -45 + i * 4.5, py = 18 + Math.sin(i * 1.1 + t * 30) * talk * 16 * Math.sin(i / 20 * Math.PI); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+  if (talk < .05) { ctx.beginPath(); ctx.arc(0, 4, 26, .25 * Math.PI, .75 * Math.PI); }
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(255,79,216,.45)'; ctx.beginPath(); ctx.ellipse(-78, 0, 12, 8, 0, 0, Math.PI * 2); ctx.ellipse(78, 0, 12, 8, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+function characters(t, line) {
+  const piTalk = mouthOpen(t, line, 'pi'), bitTalk = mouthOpen(t, line, 'bit');
+  const piAct = line && line.who === 'pi', bitAct = line && line.who === 'bit';
+  const g = ctx.createLinearGradient(0, 1250, 0, H); g.addColorStop(0, 'rgba(5,7,25,0)'); g.addColorStop(.35, 'rgba(5,7,25,.85)'); g.addColorStop(1, 'rgba(5,7,25,.95)');
+  ctx.fillStyle = g; ctx.fillRect(0, 1250, W, H - 1250);
+  const ps = lerp(.82, .9, piAct ? 1 : 0), bs = lerp(.78, .86, bitAct ? 1 : 0);
+  ctx.globalAlpha = piAct || !line ? 1 : .8; drawPi(230, 1420, ps, t, piTalk, piAct); ctx.globalAlpha = 1;
+  ctx.globalAlpha = bitAct || !line ? 1 : .8; drawBit(850, 1400, bs, t, bitTalk, bitAct); ctx.globalAlpha = 1;
+}
+
+// ---------- overlays ----------
+function titleBar(t) {
+  const s = lerp(.88, 1, back(prog(t, 0, .4)));  // visible from the first frame (it is the feed preview)
+  ctx.save(); ctx.translate(540, 175); ctx.scale(s, s);
+  pill((EP.series || 'YA OLSAYDI?').toLocaleUpperCase('tr'), 0, -78, 34, C.mag, C.white);
+  const hi = (EP.title.hi || '').toLocaleUpperCase('tr'), rest = (EP.title.rest || '').toLocaleUpperCase('tr');
+  let size = 92; ctx.font = `900 ${size}px ${F}`;
+  const sp = hi && rest ? ctx.measureText(' ').width : 0;
+  let w1 = ctx.measureText(hi).width, w2 = ctx.measureText(rest).width;
+  if (w1 + sp + w2 > 1000) {
+    if (Math.max(w1, w2) <= 1000 && hi && rest) {  // two lines
+      const s2 = Math.min(84, Math.floor(92 * 1000 / Math.max(w1, w2)));
+      text(hi, 0, 22, s2, C.yellow, 900, 'center', 16); text(rest, 0, 22 + s2 * 1.02, s2, C.white, 900, 'center', 16);
+      ctx.restore(); return;
+    }
+    size = Math.floor(92 * 1000 / (w1 + sp + w2)); ctx.font = `900 ${size}px ${F}`;
+    w1 = ctx.measureText(hi).width; w2 = ctx.measureText(rest).width;
+  }
+  const x0 = -(w1 + sp + w2) / 2;
+  text(hi, x0, 40, size, C.yellow, 900, 'left', 16);
+  text(rest, x0 + w1 + sp, 40, size, C.white, 900, 'left', 16);
+  ctx.restore();
+}
+function subtitles(t, line) {
+  if (!line || t > line.t1 + .3) return;
+  const words = line.words;
+  let idx = words.findIndex(w => t >= w.t0 && t < w.t1);
+  if (idx < 0) { idx = 0; words.forEach((w, i) => { if (t >= w.t0) idx = i; }); }
+  ctx.font = `900 76px ${F}`;
+  const up = w => w.toLocaleUpperCase('tr');
+  const wd = w => ctx.measureText(up(w)).width;
+  const groups = []; let cur = [];
+  words.forEach((w, i) => { const tw = [...cur, i].reduce((a, j) => a + wd(words[j].w) + 22, -22); if (cur.length && (cur.length >= 3 || tw > 960)) { groups.push(cur); cur = []; } cur.push(i); });
+  groups.push(cur);
+  const grp = groups.find(g => g.includes(idx));
+  let size = 76; const tw = grp.reduce((a, j) => a + wd(words[j].w) + 22, -22); if (tw > 980) size = Math.floor(76 * 980 / tw);
+  ctx.font = `900 ${size}px ${F}`;
+  const ws = grp.map(j => wd(words[j].w)); const total = ws.reduce((a, b) => a + b, 0) + 22 * (grp.length - 1);
+  let x = 540 - total / 2; const y = 1765;
+  const hl = line.who === 'pi' ? C.yellow : C.cyan;
+  const keys = (line.keys || []).map(norm);
+  grp.forEach((j, k) => {
+    const w = words[j].w, active = j === idx;
+    const isKey = /\d/.test(w) || keys.some(p => p && norm(w).startsWith(p));
+    const pop = active ? 1 + .12 * (1 - eo(prog(t, words[j].t0, words[j].t0 + .14))) : 1;
+    ctx.save(); ctx.translate(x + ws[k] / 2, y); ctx.scale(pop, pop);
+    if (active) { ctx.fillStyle = isKey ? C.mag : hl; rr(-ws[k] / 2 - 12, -size * .6, ws[k] + 24, size * 1.2, 18); ctx.fill(); }
+    text(up(w), 0, 3, size, active ? (isKey ? C.white : C.ink) : (isKey ? hl : C.white), 900, 'center', active ? 0 : 12);
+    ctx.restore(); x += ws[k] + 22;
+  });
+}
+function nameTag(t, line) {
+  if (!line || t > line.t1) return;
+  const pi = line.who === 'pi';
+  ctx.globalAlpha = clamp((t - line.t0) * 6);
+  pill(pi ? 'PROF. Pİ' : 'BİT', pi ? 230 : 850, 1640, 30, pi ? C.yellow : C.cyan, C.ink);
+  ctx.globalAlpha = 1;
+}
+
+window.setTimings = tm => { window.TIMINGS = tm; TL = buildTimeline(); };
+window.draw = function (t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1; ctx.shadowColor = 'transparent';
+  let li = TL.findIndex(l => t < l.t1 + 0.2); if (li < 0) li = TL.length - 1;
+  const line = TL[li];
+  // a scene lasts while consecutive lines share the same visual
+  let si = li; while (si > 0 && same(TL[si - 1].v, line.v)) si--;
+  const sceneStart = si === 0 ? 0 : TL[si].t0 - 0.15;
+  const lt = Math.max(0, t - sceneStart);
+  const z = 1 + .05 * (1 - eo(prog(lt, 0, .35)));
+  ctx.save(); ctx.translate(540, 760); ctx.scale(z, z); ctx.translate(-540, -760);
+  const V = line.v || { t: 'question' };
+  (VIS[V.t] || VIS.question)(V, line, t, lt);
+  ctx.restore();
+  ctx.globalAlpha = 1; ctx.shadowColor = 'transparent';
+  if (lt < .14 && si > 0) { ctx.fillStyle = `rgba(255,255,255,${(1 - lt / .14) * .35})`; ctx.fillRect(0, 0, W, H); }
+  characters(t, t >= line.t0 && t <= line.t1 ? line : null);
+  titleBar(t);
+  if (window.COVER) return;
+  nameTag(t, line);
+  subtitles(t, t >= line.t0 - .05 ? line : null);
+};
+// cover image: the scene of line `li` at its key moment, big title, both characters
+window.cover = function (li) {
+  const L = TL[li], V = L.v || {};
+  const kt = Math.min(L.t1 - .05, wordTime(L, V.key || V.value, .35) + 1.3);
+  window.COVER = true; draw(kt); window.COVER = false;
+  return kt;
+};
+window.ready = document.fonts.load(`900 40px ${F}`).then(() => document.fonts.load(`700 40px ${F}`))
+  .then(() => {
+    const em = new Set();
+    JSON.stringify(EP.lines).replace(/"e":"([^"]+)"/g, (_, e) => em.add(JSON.parse(`"${e}"`)));
+    ['💬', '❄️', '🔥', '❓'].forEach(e => em.add(e));
+    return Promise.all([...em].map(e => document.fonts.load(`100px ${EMOJI}`, e)));
+  })
+  .then(() => { draw(0); return true; });
+</script></body></html>

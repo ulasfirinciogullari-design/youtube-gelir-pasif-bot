@@ -1,3 +1,6 @@
 node_modules/
 package.json
 package-lock.json
+fabrika/_is/
+fabrika/motor/bolum.js
+__pycache__/

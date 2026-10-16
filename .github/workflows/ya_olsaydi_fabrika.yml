@@ -1,0 +1,39 @@
+name: YA OLSAYDI fabrika (elle)
+
+# A manual factory run from this branch: push a change to fabrika/tetik.txt whose first word is
+# deneme (video kept in fabrika/deneme/, no upload) or zorla (upload now). The hourly run lives on main
+# (.github/workflows/ya_olsaydi_saatlik.yml) and runs the same fabrika/calistir.sh from this branch.
+on:
+  push:
+    branches: [ya-olsaydi]
+    paths: ['fabrika/tetik.txt']
+
+concurrency:
+  group: ya-olsaydi
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bolum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Bölüm üret
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          YA_YT_CLIENT_ID: ${{ secrets.YA_YT_CLIENT_ID }}
+          YA_YT_CLIENT_SECRET: ${{ secrets.YA_YT_CLIENT_SECRET }}
+          YA_YT_REFRESH_TOKEN: ${{ secrets.YA_YT_REFRESH_TOKEN }}
+          YO_TTS_MODEL: ${{ vars.YO_TTS_MODEL }}
+          YO_GEMINI_MODEL: ${{ vars.YO_GEMINI_MODEL }}
+        run: bash fabrika/calistir.sh "$(head -c 20 fabrika/tetik.txt | awk '{print $1}')"

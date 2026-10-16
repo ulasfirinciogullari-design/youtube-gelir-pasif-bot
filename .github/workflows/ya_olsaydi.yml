@@ -5,6 +5,7 @@ name: YA OLSAYDI pilot
 on:
   push:
     branches: [ya-olsaydi]
+    paths-ignore: ['fabrika/**', '.github/workflows/ya_olsaydi_fabrika.yml', '.github/workflows/ya_olsaydi_saatlik.yml']
   workflow_dispatch:
 
 concurrency:
