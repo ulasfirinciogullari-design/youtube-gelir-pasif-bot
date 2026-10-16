@@ -1,5 +1,15 @@
 [
   {
+    "video_id": "LZUWW_pFBIw",
+    "topic_id": "mk-014",
+    "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
+    "published_at": "2026-10-16T00:12:35Z",
+    "privacy": "public",
+    "views": 0,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "OFWm_FYPo1s",
     "topic_id": "mk-005",
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
@@ -38,7 +48,7 @@
     "views": 1156,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 80.59
+    "views_per_hour": 72.95
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -49,7 +59,7 @@
     "views": 921,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 34.63
+    "views_per_hour": 32.78
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -60,7 +70,7 @@
     "views": 1096,
     "likes": 19,
     "comments": 1,
-    "views_per_hour": 37.89
+    "views_per_hour": 36.02
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -68,10 +78,10 @@
     "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
     "published_at": "2026-10-14T14:46:47Z",
     "privacy": "public",
-    "views": 1457,
+    "views": 1462,
     "likes": 12,
     "comments": 0,
-    "views_per_hour": 43.69
+    "views_per_hour": 41.95
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -82,6 +92,6 @@
     "views": 369,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 7.61
+    "views_per_hour": 7.38
   }
 ]

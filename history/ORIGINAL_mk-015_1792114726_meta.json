@@ -1,0 +1,230 @@
+{
+  "topic_id": "mk-015",
+  "topic": "Flamingolar neden pembedir?",
+  "series": "merak",
+  "script_provider": "gemini",
+  "voice_engine": "elevenlabs x7",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Flamingolar neden bu kadar pembeler? 💖",
+  "hook_text": "FLAMİNGOLAR NEDEN PEMBE?",
+  "description": "Flamingolar neden pembedir?\n\nBu canlılar aslında bembeyaz doğar. Yedikleri yosunlar ve küçük karidesler, beta-karoten adlı pigmentleri içerir. Flamingolar bu pigmentleri sindirerek tüylerine ve derilerine taşır.\n\nSence doğadaki en renkli hayvan hangisi: tavus kuşu mu yoksa bukalemun mu? Yorumlarda buluşalım! 👇\n\n#flamingo #hayvanlar #bilgi #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-015",
+  "tags": [
+    "flamingo",
+    "flamingolar",
+    "flamingo neden pembe",
+    "flamingolar neden pembe",
+    "flamingo rengi",
+    "pembe flamingo",
+    "beta karoten",
+    "karides",
+    "yosun",
+    "hayvan rengi",
+    "hayvanlar neden renkli",
+    "hayvan bilgileri",
+    "ilginç hayvanlar",
+    "vahşi yaşam",
+    "kuşlar",
+    "pembe kuş",
+    "flamingo sırrı",
+    "doğa",
+    "bilim",
+    "merak",
+    "hayvanlar alemi",
+    "flamingo facts",
+    "pink flamingo",
+    "hayvanlar",
+    "shorts",
+    "belgesel",
+    "canlılar",
+    "renkler",
+    "bilgi",
+    "ilginç bilgiler",
+    "ilginc hayvanlar",
+    "vahsi yasam",
+    "kuslar",
+    "pembe kus",
+    "flamingo sirri"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why are flamingos so pink? 💖",
+      "description": "Did you know flamingos are born white? Their vibrant pink comes from what they eat! Foods like algae and small shrimp contain beta-carotene, the same pigment found in carrots. Flamingos digest these pigments, which then color their feathers and skin.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "es": {
+      "title": "¿Por qué los flamencos son tan rosados? 💖",
+      "description": "¿Sabías que los flamencos nacen blancos? Su vibrante color rosa proviene de su dieta. Alimentos como las algas y los pequeños camarones contienen pigmentos de betacaroteno, que son los responsables de su increíble coloración. Cuanto más comen, más intensos se vuelven sus tonos rosados.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "pt": {
+      "title": "Por que os flamingos são tão cor-de-rosa? 💖",
+      "description": "Os flamingos nascem brancos, mas sua cor rosa vibrante vem de sua alimentação! Algas e pequenos camarões, ricos em beta-caroteno, são a chave. Eles digerem esses pigmentos, que então tingem suas penas e pele.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "de": {
+      "title": "Warum sind Flamingos so rosa? 💖",
+      "description": "Flamingos werden tatsächlich weiß geboren. Ihre leuchtend rosa Farbe erhalten sie durch ihre Ernährung, insbesondere durch Algen und kleine Garnelen. Diese enthalten Beta-Carotin-Pigmente, die sie verdauen und die dann ihre Federn und Haut färben.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "fr": {
+      "title": "Pourquoi les flamants roses sont-ils si roses ? 💖",
+      "description": "Les flamants roses naissent en fait blancs. Leur couleur rose éclatante vient de leur alimentation, principalement des algues et des petites crevettes. Ces aliments contiennent des pigments de bêta-carotène, que les flamants digèrent et qui colorent ensuite leurs plumes et leur peau.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "it": {
+      "title": "Perché i fenicotteri sono così rosa? 💖",
+      "description": "I fenicotteri nascono bianchi, ma il loro vibrante colore rosa deriva dalla loro dieta! Alghe e piccoli gamberetti, ricchi di beta-carotene, sono la chiave. Essi digeriscono questi pigmenti che poi tingono le loro piume e la loro pelle.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "ru": {
+      "title": "Почему фламинго такие розовые? 💖",
+      "description": "Фламинго на самом деле рождаются белыми. Их яркий розовый цвет обусловлен пищей, которую они едят, особенно водорослями и мелкими креветками. Эти продукты содержат пигменты бета-каротина, которые они переваривают, и которые затем окрашивают их перья и кожу.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "ar": {
+      "title": "لماذا الفلامنجو بهذا اللون الوردي؟ 💖",
+      "description": "الفلامنجو في الواقع يولدون باللون الأبيض. يأتي لونهم الوردي الزاهي من نظامهم الغذائي، وخاصة الطحالب والروبيان الصغير. تحتوي هذه الأطعمة على أصباغ البيتا كاروتين، التي يهضمونها وتلون ريشهم وجلدهم.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "hi": {
+      "title": "फ्लेमिंगो इतने गुलाबी क्यों होते हैं? 💖",
+      "description": "फ्लेमिंगो वास्तव में सफेद पैदा होते हैं। उनका चमकीला गुलाबी रंग उनके आहार से आता है, खासकर शैवाल और छोटे झींगे से। इनमें बीटा-कैरोटीन पिगमेंट होते हैं, जिन्हें वे पचाते हैं और जो उनके पंखों और त्वचा को रंग देते हैं।\n\n#shorts\n\nSeri: mk-015"
+    },
+    "id": {
+      "title": "Kenapa flamingo begitu pink? 💖",
+      "description": "Flamingo sebenarnya lahir putih. Warna pink cerah mereka berasal dari makanan yang mereka konsumsi, terutama alga dan udang kecil. Makanan ini mengandung pigmen beta-karoten, yang mereka cerna dan kemudian mewarnai bulu serta kulit mereka.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "ja": {
+      "title": "フラミンゴはなぜこんなにピンクなの？ 💖",
+      "description": "フラミンゴは実は真っ白で生まれてきます。彼らの鮮やかなピンク色は、藻類や小エビなどの食べ物から来ています。これらの食べ物にはベータカロテン色素が含まれており、フラミンゴがそれを消化することで羽毛や皮膚がピンクに染まるのです。\n\n#shorts\n\nSeri: mk-015"
+    },
+    "ko": {
+      "title": "플라밍고는 왜 이렇게 분홍색일까요? 💖",
+      "description": "플라밍고는 사실 흰색으로 태어납니다. 그들의 선명한 분홍색은 먹는 음식에서 비롯됩니다. 특히 조류와 작은 새우에는 베타카로틴 색소가 풍부하며, 플라밍고가 이를 소화하여 깃털과 피부를 분홍색으로 물들입니다.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "pl": {
+      "title": "Dlaczego flamingi są tak różowe? 💖",
+      "description": "Flamingi rodzą się białe, ale ich żywy różowy kolor pochodzi z diety! Glony i małe krewetki, bogate w beta-karoten, są kluczem. Trawią te pigmenty, które następnie barwią ich pióra i skórę.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "nl": {
+      "title": "Waarom zijn flamingo's zo roze? 💖",
+      "description": "Flamingo's worden eigenlijk wit geboren. Hun levendige roze kleur komt van hun dieet, met name algen en kleine garnalen. Deze bevatten bèta-caroteenpigmenten, die ze verteren en die vervolgens hun veren en huid kleuren.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "uk": {
+      "title": "Чому фламінго такі рожеві? 💖",
+      "description": "Фламінго насправді народжуються білими. Їхній яскравий рожевий колір походить від їжі, яку вони споживають, особливо водоростей та дрібних креветок. Ці продукти містять пігменти бета-каротину, які вони перетравлюють і які потім забарвлюють їхнє пір'я та шкіру.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "vi": {
+      "title": "Tại sao hồng hạc lại hồng đến vậy? 💖",
+      "description": "Hồng hạc thực ra sinh ra màu trắng. Màu hồng rực rỡ của chúng đến từ chế độ ăn uống, đặc biệt là tảo và tôm nhỏ. Những thực phẩm này chứa sắc tố beta-carotene, mà chúng tiêu hóa và sau đó làm màu lông và da của chúng.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "az": {
+      "title": "Flaminqolar niyə bu qədər çəhrayıdırlar? 💖",
+      "description": "Flaminqolar əslində ağ rəngdə doğulurlar. Onların canlı çəhrayı rəngi isə qidalarından, xüsusilə də yosunlar və kiçik karideslərdən gəlir. Bu qidalar beta-karoten piqmentləri ehtiva edir ki, flaminqolar onları həzm edərək lələklərinə və dərilərinə daşıyırlar.\n\n#shorts\n\nSeri: mk-015"
+    },
+    "ro": {
+      "title": "De ce sunt flamingo atât de roz? 💖",
+      "description": "Flamingo se nasc de fapt albi. Culoarea lor roz vibrant provine din dieta lor, în special din alge și creveți mici. Acestea conțin pigmenți beta-caroten, pe care îi digeră și care apoi le colorează penele și pielea.\n\n#shorts\n\nSeri: mk-015"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence en renkli hayvan hangisi? Yorumlarda buluşalım! 👇",
+  "scenes": [
+    {
+      "text": "Bu flamingolar aslında bembeyaz doğar.",
+      "visual": "A group of white flamingo chicks walking in shallow water, clear sky.",
+      "stock_query": "white flamingo chicks",
+      "source": "stock",
+      "callout": "BEMBEYAZ DOĞAR"
+    },
+    {
+      "text": "Peki, o zaman nasıl oluyor da bu kadar canlı bir pembe renge bürünüyorlar?",
+      "visual": "A flamingo in a feeding position, head down in shallow water, filtering with its beak.",
+      "stock_query": "flamingo feeding",
+      "source": "stock"
+    },
+    {
+      "text": "Sır, yedikleri besinlerde saklı: özellikle de yosunlar ve küçük karidesler.",
+      "visual": "Close-up of a flamingo's beak filtering water, tiny particles visible.",
+      "stock_query": "flamingo filter feeding",
+      "source": "stock"
+    },
+    {
+      "text": "Bu canlılar beta-karoten adlı pigmentleri içeriyor; bu da havuca rengini veren maddeyle aynı!",
+      "visual": "A vibrant pink flamingo standing gracefully in clear water, sun shining on its feathers.",
+      "stock_query": "vibrant pink flamingo",
+      "source": "stock",
+      "callout": "BETA-KAROTEN"
+    },
+    {
+      "text": "Flamingolar bu pigmentleri sindirip tüylerine ve derilerine taşıyor.",
+      "visual": "Close-up of a flamingo's pink feathers, showing intricate detail and vibrant color.",
+      "stock_query": "flamingo feathers close up",
+      "source": "stock"
+    },
+    {
+      "text": "Ne kadar çok yosun ve karides yerlerse, renkleri o kadar koyu pembe oluyor.",
+      "visual": "A flock of flamingos in different shades of pink, some lighter, some darker, actively feeding.",
+      "stock_query": "flock of flamingos feeding varying colors",
+      "source": "stock",
+      "callout": "RENK TONU"
+    },
+    {
+      "text": "İşte bu yüzden, beslenmeleri değiştiğinde rengini kaybedip beyazlaşabiliyorlar.",
+      "visual": "A flamingo with slightly faded or paler pink feathers, standing calmly in water.",
+      "stock_query": "pale pink flamingo",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 22.32,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "",
+  "ai_images": 0,
+  "stock_videos": 14,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve yavaş, enerji eksikliği var.",
+        "fix": "Yapay zeka sesinin hızını artırarak daha dinamik bir tempo yakala. Mümkünse farklı, daha enerjik bir yapay zeka sesi seçeneğini dene."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Geçişler çok temel (sert kesimler), videoya dinamizm katmıyor.",
+        "fix": "Basit ama etkili geçiş efektleri (hızlı zoom, yumuşak kaydırma) kullan. Kurgu hızını artırarak daha akıcı bir tempo yakala."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntülerde çeşitlilik ve dinamizm eksikliği var, çoğu sahne statik.",
+        "fix": "Pexels/Pixabay'den daha fazla hareketli flamingo görüntüsü bul (yürüyen, beslenen, uçan). Farklı açılardan çekilmiş videoları tercih et."
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazılar aniden beliriyor, animasyon yok ve bazen görüntüyü kapatıyor. Bilgiyi destekleyici grafikler eksik.",
+        "fix": "Yazıların ekrana giriş/çıkışına basit animasyonlar ekle (örneğin, yavaşça belirme). Yazı boyutunu ve konumunu optimize ederek görüntüyü daha az kapatmasını sağla. Mümkünse 'beta-karoten' gibi anahtar kavramları temsil eden basit ikonlar vey"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bazı görüntüler (örneğin ördek) anlatılan konuyla tam uyumlu değil veya kalitesi düşük (bulanık).",
+        "fix": "Sadece flamingo ve besinleriyle (yosun, karides) ilgili yüksek kaliteli stok videoları kullan. Konu dışı veya kalitesiz görüntüleri çıkar."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve videonun enerjisini yükseltmiyor. Ses efektleri hiç yok.",
+        "fix": "Daha enerjik ve merak uyandıran bir arka plan müziği seç. Anahtar anlarda (örneğin, 'işte bu yüzden' gibi) hafif ses efektleri (whoosh, ding) ekle."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığı sunumdaki eksiklikler nedeniyle tam hissedilmiyor.",
+        "fix": "Kanca ve ana bilgi noktalarını daha vurgulu hale getir. Örneğin, 'Bembeyaz doğar' kısmını daha çarpıcı bir görselle birleştirerek izleyicinin dikkatini çek."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi sunumu.",
+      "Merak uyandıran bir soruyla başlama."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
