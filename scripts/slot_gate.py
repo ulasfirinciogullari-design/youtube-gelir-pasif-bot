@@ -4,14 +4,18 @@ Slot gate for the scheduled Shorts runs.
 GitHub drops or delays top-of-hour cron events: scheduled runs on main started
 up to 3.6 h late, and on 2026-10-14 the 11:00 and 14:00 UTC slots never ran
 while the 18:00 UTC slot had still not started at 19:00 UTC. The workflow
-therefore ticks at :07 and :37 of each hourly slot, and this script,
+therefore ticks at :07 and :37 of each slot hour, and this script,
 the first step after the channel-data checkout, decides whether a tick should
 actually produce a Short. A dropped or failed run simply leaves its slot open
 and the next tick tries again, so no separate retry loop is needed.
 
 A scheduled tick goes ahead only when all of these hold:
-  - the latest slot (every hour around the clock, 24 a day; Ulaş asked for
-    one Short an hour on 2026-10-15) started at most 1 h ago;
+  - the latest slot (eight a day, every two hours from 10:00 to 24:00 Turkey
+    time) started at most 1 h ago. From 2026-10-15 23:00 UTC the channel
+    published one Short an hour; on 2026-10-16 every Short up to 11:26 UTC
+    got 1,000 to 3,000 views, and the eight from 12:30 UTC on got 0 to 12
+    views after up to 8 hours, with no change to how they were made and no
+    warning in Studio, so Ulaş cut the channel to eight a day;
   - no public or unlisted upload has happened since that slot started;
   - the newest public or unlisted upload is at least 35 min old, so a late run
     does not put two Shorts back to back. Bursts kill reach: in
@@ -48,7 +52,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 DATA_DIR = BASE_DIR / "channel-data"
-SLOTS_UTC = tuple(range(24))  # every hour
+SLOTS_UTC = (7, 9, 11, 13, 15, 17, 19, 21)  # 10:00, 12:00, ... 24:00 in Turkey
 WINDOW = timedelta(hours=1)
 MIN_GAP = timedelta(minutes=35)
 # YouTube's daily quota resets at midnight Pacific time: 07:00 UTC in summer, 08:00 UTC in winter.

@@ -5,12 +5,24 @@ import re
 import sys
 import types
 
+import pytest
+
 import original_factory
 from app.services import channel_memory
 
 _spec = importlib.util.spec_from_file_location("slot_gate", original_factory.BASE_DIR / "scripts" / "slot_gate.py")
 slot_gate = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(slot_gate)
+
+
+# The gate's rules (gap, quota, failed runs) are checked on an hourly schedule so a tick at any hour has a slot;
+# the tests about the schedule itself use the real one.
+REAL_SLOTS = slot_gate.SLOTS_UTC
+
+
+@pytest.fixture(autouse=True)
+def hourly_slots(monkeypatch):
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", tuple(range(24)))
 
 
 def at(hhmm: str, day: int = 14) -> datetime:
@@ -55,25 +67,27 @@ def test_too_soon_after_the_last_public_upload():
     assert slot_gate.decide(at("14:07"), [upload(at("13:14"))], [])[0]
 
 
-def test_a_slot_every_hour_around_the_clock():
-    assert slot_gate.SLOTS_UTC == tuple(range(24))
+def test_eight_slots_every_two_hours_of_the_turkish_day(monkeypatch):
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
+    assert [(h + 3) % 24 for h in slot_gate.SLOTS_UTC] == [10, 12, 14, 16, 18, 20, 22, 0]
     assert slot_gate.slot_start(at("13:37")) == at("13:00")
-    assert slot_gate.slot_start(at("00:20")) == at("00:00")
+    assert slot_gate.slot_start(at("14:20")) == at("13:00")
+    assert slot_gate.slot_start(at("03:00")) == at("21:00", day=13)
 
 
 def test_a_slot_older_than_the_window_is_given_up(monkeypatch):
-    # With a slot every hour no tick is ever outside a window; the check still guards a sparser schedule.
-    monkeypatch.setattr(slot_gate, "SLOTS_UTC", (5, 10, 14, 18))
-    go, reasons = slot_gate.decide(at("17:30"), [upload(at("05:10"))], [])
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
+    go, reasons = slot_gate.decide(at("14:30"), [upload(at("11:10"))], [])
     assert not go
     assert any("pencere dışında" in r for r in reasons)
-    assert slot_gate.slot_start(at("03:00")) == at("18:00", day=13)
 
 
-def test_night_ticks_produce_too():
-    assert slot_gate.slot_start(at("03:07")) == at("03:00")
-    go, reasons = slot_gate.decide(at("03:07"), [upload(at("02:12"))], [])
-    assert go, reasons
+def test_no_short_between_the_slots_or_at_night(monkeypatch):
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
+    for tick in ("14:07", "14:37", "03:07"):
+        go, reasons = slot_gate.decide(at(tick), [upload(at("21:12", day=13))], [])
+        assert not go, (tick, reasons)
+    assert slot_gate.decide(at("15:07"), [upload(at("13:12"))], [])[0]
 
 
 def test_daily_quota_counts_every_privacy_since_the_reset():
@@ -186,7 +200,8 @@ def test_fetch_runs_reads_this_workflows_scheduled_runs_and_their_steps(monkeypa
     assert not slot_gate.decide(at("10:37"), [], runs, run_id="8")[0]
 
 
-def test_workflow_matches_the_gate():
+def test_workflow_matches_the_gate(monkeypatch):
+    monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
     # The lost-record guard matches the produce step by name and the windows assume the cron hours, so a rename
     # or a cron edit must fail here instead of silently switching the guard off.
     workflow = (original_factory.BASE_DIR / ".github" / "workflows" / slot_gate.WORKFLOW_FILE).read_text(encoding="utf-8")
