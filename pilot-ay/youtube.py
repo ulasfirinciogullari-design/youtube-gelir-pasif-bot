@@ -55,7 +55,7 @@ class YT:
                 detail = f"{err.get('message')} [{reason}]"
             except Exception:
                 detail = r.text[:400]
-            raise RuntimeError(f"{method} {path.split('?')[0]} -> {r.status_code}: {detail}")
+            raise RuntimeError(f"{method} {path.split('&')[0]} -> {r.status_code}: {detail}")
         return r.json() if r.content else {}
 
 
@@ -94,32 +94,41 @@ def check_channel(yt, report, state):
     return ch
 
 
+WRITABLE = ("country", "description", "defaultLanguage", "keywords", "trackingAnalyticsAccountId", "unsubscribedTrailer")
+
+
 def fill_channel(yt, ch, state, report):
     """Keep the channel settings we manage in line with youtube.json. A field someone changed in Studio
-    (it no longer holds what we last wrote) is left alone."""
+    (it no longer holds what we last wrote) is left alone. Each step fails on its own, so one refusal
+    does not stop the playlists and episodes."""
     c = CONF["channel"]
-    bs = {k: v for k, v in ch.get("brandingSettings", {}).items() if k in ("channel", "image", "watch")}
-    cur = bs.setdefault("channel", {})
+    changed, problems = [], report.setdefault("warnings", [])
+    cur = {k: v for k, v in ch.get("brandingSettings", {}).get("channel", {}).items() if k in WRITABLE}
     ours = state.setdefault("channel_set", {})
-    changed = []
+    want = {}
     for key, val in (("description", c["description"]["tr"]), ("keywords", keywords(c["keywords"])),
                      ("country", c["country"]), ("defaultLanguage", c["language"])):
         if cur.get(key) and cur.get(key) != ours.get(key):
             continue  # edited in Studio
         if cur.get(key) != val:
-            cur[key] = val
-            changed.append(key)
-        ours[key] = val
-    if not state.get("banner") and not bs.get("image", {}).get("bannerExternalUrl"):
+            want[key] = val
+    bs = {"channel": {**cur, **want}}  # only writable fields: sending back read-only ones is refused
+    if not state.get("banner") and not ch.get("brandingSettings", {}).get("image", {}).get("bannerExternalUrl"):
         img = (HERE / c["banner"]).read_bytes()
         url = yt.call("POST", "channelBanners/insert?uploadType=media", base=UPLOAD,
                       headers={"Content-Type": "image/jpeg"}, data=img)["url"]
-        bs.setdefault("image", {})["bannerExternalUrl"] = url
-        changed.append("banner")
-    if changed:
-        yt.call("PUT", "channels?part=brandingSettings", json={"id": ch["id"], "brandingSettings": bs})
-        log(f"Kanal ayarları güncellendi: {', '.join(changed)}")
-    if "banner" in changed or bs.get("image", {}).get("bannerExternalUrl"):
+        bs["image"] = {"bannerExternalUrl": url}
+        want["banner"] = url
+    if want:
+        try:
+            yt.call("PUT", "channels?part=brandingSettings", json={"id": ch["id"], "brandingSettings": bs})
+            ours.update({k: v for k, v in want.items() if k != "banner"})
+            changed += list(want)
+            log(f"Kanal ayarları güncellendi: {', '.join(want)}")
+        except RuntimeError as e:
+            problems.append(str(e))
+            log(f"Kanal ayarları güncellenemedi: {e}")
+    if want.get("banner") or ch.get("brandingSettings", {}).get("image", {}).get("bannerExternalUrl"):
         state["banner"] = True
     if not state.get("audience") and ch.get("status", {}).get("selfDeclaredMadeForKids") is None:
         try:
@@ -128,15 +137,35 @@ def fill_channel(yt, ch, state, report):
             changed.append("kitle: çocuklara özel değil")
             log("Kitle ayarı: çocuklara özel değil")
         except RuntimeError as e:
+            problems.append(str(e))
             log(f"Kitle ayarı API'den yapılamadı, Studio'dan elle yapılmalı: {e}")
     # channel name and description in every language (needs defaultLanguage, set above)
     loc = {l: {"title": c["title"][l], "description": c["description"][l]} for l in LANGS}
     if state.get("channel_l10n") != digest(loc):
-        yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": loc})
-        state["channel_l10n"] = digest(loc)
-        changed.append(f"çeviriler ({len(loc)} dil)")
-        log(f"Kanal adı ve açıklaması {len(loc)} dile çevrildi")
+        try:
+            yt.call("PUT", "channels?part=localizations", json={"id": ch["id"], "localizations": loc})
+            state["channel_l10n"] = digest(loc)
+            changed.append(f"çeviriler ({len(loc)} dil)")
+            log(f"Kanal adı ve açıklaması {len(loc)} dile çevrildi")
+        except RuntimeError as e:
+            problems.append(str(e))
+            log(f"Kanal çevirileri yüklenemedi: {e}")
+    if not state.get("watermark") and c.get("watermark"):
+        meta = {"timing": {"type": "offsetFromStart", "offsetMs": 0},
+                "position": {"type": "corner", "cornerPosition": "topRight"}}
+        data, ctype = multipart(meta, (HERE / c["watermark"]).read_bytes(), "image/png")
+        try:
+            yt.call("POST", f"watermarks/set?channelId={ch['id']}&uploadType=multipart", base=UPLOAD,
+                    ok=(200, 204), headers={"Content-Type": ctype}, data=data)
+            state["watermark"] = True
+            changed.append("filigran")
+            log("Filigran kondu")
+        except RuntimeError as e:
+            problems.append(str(e))
+            log(f"Filigran konamadı: {e}")
     report["channel_filled"] = changed
+    if not problems:
+        report.pop("warnings")
 
 
 def playlists(yt, state, report):

@@ -66,7 +66,8 @@
   ],
   "country": "TR",
   "language": "tr",
-  "banner": "brand/banner.jpg"
+  "banner": "brand/banner.jpg",
+  "watermark": "brand/filigran.png"
  },
  "labels": {
   "tr": {
