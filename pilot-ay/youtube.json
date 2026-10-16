@@ -263,7 +263,7 @@
    "video": "out/pilot_sesli.mp4",
    "timings": "out/timings.json",
    "thumbnail": "brand/kapak.jpg",
-   "privacy": "private",
+   "privacy": "public",
    "title": {
     "tr": "Ay Bir Anda Yok Olsaydı Ne Olurdu?",
     "en": "What If the Moon Suddenly Disappeared?",
