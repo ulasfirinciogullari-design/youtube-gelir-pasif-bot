@@ -28,6 +28,7 @@ import original_factory as story
 from app.services.channel_memory import record_upload, used_topic_ids
 from app.services.channel_metrics import report_channel
 from app.services.seo_pack import build_seo_pack
+from app.services import tiktok
 from app.services.comedy_dub import (
     ClipUnusable, ScriptError, candidate_clips, download_clip, place_lines, write_comedy_script,
 )
@@ -250,6 +251,8 @@ def main(argv=None) -> int:
         video_id = story.upload(youtube, result, args.privacy)
         record_upload(story.DATA_DIR, video_id, result["meta"]["topic_id"], result["meta"]["title"], "comedy",
                       privacy=args.privacy)
+        if args.privacy == "public":
+            tiktok.share(result, video_id, story.DATA_DIR)
     return 0
 
 

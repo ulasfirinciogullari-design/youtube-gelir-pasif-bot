@@ -133,11 +133,21 @@ def test_login_writes_the_consent_link_then_stores_the_token(tmp_path):
     assert query["redirect_uri"] == [tiktok.REDIRECT_URI] and query["response_type"] == ["code"]
     assert "secret456" not in url
 
+    state = query["state"][0]
     codes = []
-    assert tiktok.login(tmp_path, " c0de ", env=ENV,
-                        exchange=lambda k, s, code, now: codes.append(code) or _token(now),
+
+    def exchange(k, s, code, now):
+        codes.append(code)
+        return _token(now)
+
+    # Only a code that came back from our own link is exchanged.
+    forged = tiktok.sign_state("someone else's secret")
+    for pasted in ("c0de", f"{forged} c0de", f"{state.split('.')[0]}.0000 c0de", f"{state} "):
+        assert tiktok.login(tmp_path, pasted, env=ENV, exchange=exchange, name_of=None) == 1
+    assert codes == []
+    assert tiktok.login(tmp_path, f" {state} c0de*!1 ", env=ENV, exchange=exchange,
                         name_of=lambda access: "Zirvenin Kanunu") == 0
-    assert codes == [" c0de "]
+    assert codes == ["c0de*!1"]
     assert tiktok.load_token(tmp_path, "secret456")["access_token"] == "acc"
     assert json.loads((tmp_path / tiktok.ACCOUNT_FILE).read_text())["display_name"] == "Zirvenin Kanunu"
     assert not (tmp_path / tiktok.LOGIN_FILE).exists()
@@ -148,3 +158,17 @@ def test_the_workflow_hands_tiktok_its_keys_and_a_login_task():
     assert "TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}" in workflow
     assert "- 'tiktok'" in workflow
     assert 'python -m app.services.tiktok login --code "$KOD" --data channel-data' in workflow
+
+
+def test_a_login_without_the_upload_permission_is_refused(tmp_path, capsys):
+    state = tiktok.sign_state(ENV["TIKTOK_CLIENT_SECRET"])
+    token = {**_token(), "scope": "user.info.basic"}
+    assert tiktok.login(tmp_path, f"{state} c0de", env=ENV, exchange=lambda k, s, code, now: token,
+                        name_of=lambda access: "x") == 1
+    assert "video yükleme izni verilmedi" in capsys.readouterr().out
+    assert not (tmp_path / tiktok.TOKEN_FILE).exists() and not (tmp_path / tiktok.ACCOUNT_FILE).exists()
+
+
+def test_comedy_shorts_are_offered_to_tiktok_too():
+    source = (Path(__file__).resolve().parents[1] / "comedy_factory.py").read_text()
+    assert "tiktok.share(result, video_id, story.DATA_DIR)" in source

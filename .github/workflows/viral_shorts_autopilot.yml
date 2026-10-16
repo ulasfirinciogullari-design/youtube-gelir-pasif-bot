@@ -72,7 +72,7 @@ on:
           - 'private'
           - 'delete'
       kod:
-        description: 'Sadece tiktok: TikTok izin sayfasının gösterdiği kod (boş = izin linki üret)'
+        description: 'Sadece tiktok: izin sayfasının gösterdiği metnin tamamı (boş = izin linki üret)'
         required: false
         default: ''
         type: string

@@ -7,14 +7,17 @@ where he can also add a trending sound. TikTok takes at most five pending drafts
 goes out every few hours rather than with every Short.
 
 The login is a one-off: `python -m app.services.tiktok login` writes the consent link to the channel-data branch, and
-running it again with the code TikTok shows after consent stores the token. The branch is public, so the token is
-saved encrypted with a key derived from TIKTOK_CLIENT_SECRET, which only the repository secrets hold.
+running it again with what the callback page shows after consent (the link's state, a space, the code) stores the
+token. The state is signed with TIKTOK_CLIENT_SECRET, so only a code from our own link is accepted, and a login that
+left out video.upload is refused. The branch is public, so the token is saved encrypted with a key derived from the
+same secret, which only the repository secrets hold.
 """
 
 import argparse
 import base64
 from datetime import datetime, timedelta, timezone
 import hashlib
+import hmac
 import json
 import os
 from pathlib import Path
@@ -108,6 +111,16 @@ def _api(path: str, access: str, payload: dict | None = None, method: str = "POS
     if error.get("code", "ok") != "ok":
         raise TikTokError(f"{error.get('code')}: {error.get('message', '')}".strip())
     return data.get("data") or {}
+
+
+def sign_state(secret: str, nonce: str | None = None) -> str:
+    nonce = nonce or secrets.token_urlsafe(12)
+    return f"{nonce}.{hmac.new(secret.encode(), nonce.encode(), hashlib.sha256).hexdigest()[:24]}"
+
+
+def state_is_ours(secret: str, state: str) -> bool:
+    nonce, _, _ = state.partition(".")
+    return bool(nonce) and hmac.compare_digest(sign_state(secret, nonce), state)
 
 
 def login_url(client_key: str, state: str) -> str:
@@ -283,13 +296,20 @@ def login(data_dir: Path, code: str, env=os.environ, exchange=exchange_code, nam
     data_dir.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc)
     if not code.strip():
-        url = login_url(client_key, secrets.token_urlsafe(16))
+        url = login_url(client_key, sign_state(secret))
         (data_dir / LOGIN_FILE).write_text(json.dumps({"url": url, "created_at": now.isoformat(timespec="seconds")},
                                                       indent=2), encoding="utf-8")
         print(f"🔗 TikTok izin linki: {url}")
         return 0
+    state, _, code = code.strip().partition(" ")
+    if not state_is_ours(secret, state) or not code.strip():
+        print("❌ Bu kod bizim izin linkimizden gelmedi; izin sayfasındaki metnin tamamını kopyala")
+        return 1
     try:
         token = exchange(client_key, secret, code, now=now)
+        if "video.upload" not in [s.strip() for s in token.get("scope", "").split(",")]:
+            raise TikTokError(f"video yükleme izni verilmedi (verilen: {token.get('scope', '')}); "
+                              "izin ekranında video yükleme seçeneği açık kalmalı")
         save_token(data_dir, token, secret)
         name = name_of(token["access_token"])
     except (TikTokError, urllib.error.URLError, OSError) as e:
@@ -306,7 +326,7 @@ def login(data_dir: Path, code: str, env=os.environ, exchange=exchange_code, nam
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="TikTok login for the Zirvenin Kanunu drafts")
     parser.add_argument("command", choices=["login"])
-    parser.add_argument("--code", default="", help="TikTok izin sayfasının gösterdiği kod (boş = izin linki üret)")
+    parser.add_argument("--code", default="", help="İzin sayfasının gösterdiği metin (boş = izin linki üret)")
     parser.add_argument("--data", default="channel-data", help="Kanal hafızası klasörü")
     args = parser.parse_args(argv)
     return login(Path(args.data), args.code)
