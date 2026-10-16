@@ -1,5 +1,15 @@
 [
   {
+    "video_id": "1MiQv04V8TE",
+    "topic_id": "mk-020",
+    "title": "Yüksekten Bakınca Neden Atlama İsteği Hissederiz? 😱",
+    "published_at": "2026-10-16T17:27:04Z",
+    "privacy": "public",
+    "views": 3,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "BiGBPujFFtA",
     "topic_id": "mk-039",
     "title": "Telefonun Titremediği Halde Neden Titrediğini Sanırız? 👻",
@@ -25,7 +35,7 @@
     "title": "Karıncalar Evini Nasıl Bulur? 🐜",
     "published_at": "2026-10-16T14:28:01Z",
     "privacy": "public",
-    "views": 3,
+    "views": 5,
     "likes": 0,
     "comments": 1
   },
@@ -55,7 +65,7 @@
     "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
     "published_at": "2026-10-16T11:26:33Z",
     "privacy": "public",
-    "views": 780,
+    "views": 963,
     "likes": 4,
     "comments": 1
   },
@@ -85,7 +95,7 @@
     "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
     "published_at": "2026-10-16T08:26:09Z",
     "privacy": "public",
-    "views": 1254,
+    "views": 1312,
     "likes": 10,
     "comments": 1
   },
@@ -115,9 +125,10 @@
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 2408,
-    "likes": 12,
-    "comments": 1
+    "views": 2639,
+    "likes": 13,
+    "comments": 1,
+    "views_per_hour": 204.63
   },
   {
     "video_id": "kdEbtK5fwQQ",
@@ -125,10 +136,10 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 1732,
+    "views": 1838,
     "likes": 11,
     "comments": 2,
-    "views_per_hour": 136.14
+    "views_per_hour": 134.06
   },
   {
     "video_id": "9RAohHZ0ur4",
@@ -136,10 +147,10 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 1750,
+    "views": 1890,
     "likes": 15,
     "comments": 1,
-    "views_per_hour": 111.78
+    "views_per_hour": 113.55
   },
   {
     "video_id": "LZUWW_pFBIw",
@@ -147,10 +158,10 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 1136,
-    "likes": 17,
+    "views": 1152,
+    "likes": 18,
     "comments": 1,
-    "views_per_hour": 66.18
+    "views_per_hour": 63.46
   },
   {
     "video_id": "OFWm_FYPo1s",
@@ -161,7 +172,7 @@
     "views": 967,
     "likes": 13,
     "comments": 1,
-    "views_per_hour": 53.58
+    "views_per_hour": 50.8
   },
   {
     "video_id": "Q7Fdwf2i1KI",
@@ -172,7 +183,7 @@
     "views": 1029,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 45.42
+    "views_per_hour": 43.52
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -183,7 +194,7 @@
     "views": 1002,
     "likes": 3,
     "comments": 1,
-    "views_per_hour": 37.79
+    "views_per_hour": 36.43
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -194,7 +205,7 @@
     "views": 1173,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 37.13
+    "views_per_hour": 36.0
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -202,10 +213,10 @@
     "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
     "published_at": "2026-10-14T21:32:01Z",
     "privacy": "public",
-    "views": 916,
+    "views": 948,
     "likes": 11,
     "comments": 1,
-    "views_per_hour": 20.89
+    "views_per_hour": 21.15
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -216,7 +227,7 @@
     "views": 1121,
     "likes": 21,
     "comments": 1,
-    "views_per_hour": 24.28
+    "views_per_hour": 23.77
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -227,7 +238,7 @@
     "views": 1542,
     "likes": 13,
     "comments": 0,
-    "views_per_hour": 30.48
+    "views_per_hour": 29.89
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -238,6 +249,6 @@
     "views": 382,
     "likes": 5,
     "comments": 0,
-    "views_per_hour": 5.81
+    "views_per_hour": 5.73
   }
 ]

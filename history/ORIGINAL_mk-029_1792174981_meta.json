@@ -1,0 +1,279 @@
+{
+  "topic_id": "mk-029",
+  "topic": "Kalabalıkta biri yardım isteyince neden çoğu kişi kıpırdamaz?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kalabalıkta Neden Kimse Yardım Etmez? 🤯",
+  "hook_text": "YARDIM ÇIĞLIĞI NEDEN DUYULMAZ?",
+  "description": "Kalabalıkta neden kimse yardım etmez?\n\nBu durum, \"Seyirci Etkisi\" olarak bilinen psikolojik bir olgudur. Sorumluluk kalabalığa yayılır ve herkes başkasının yardım edeceğini düşündüğü için harekete geçme olasılığı önemli ölçüde düşer.\n\nKalabalıkta yardım isteyen birine sence kaç kişi gerçekten yardım eder: 1 mi 10 mu?\n\n#SeyirciEtkisi #Psikoloji #İnsanDavranışı #YardımEtmek #shorts #bilim #merak #keşfet\n\nSeri: mk-029",
+  "tags": [
+    "Seyirci etkisi",
+    "Bystander effect",
+    "Kalabalıkta yardım",
+    "Neden yardım etmezler",
+    "Psikolojik olgu",
+    "Sorumluluk yayılması",
+    "Yardım etmeme",
+    "Sosyal psikoloji",
+    "Yardım isteyince ne olur",
+    "Göz teması kur",
+    "Bir kişiye seslen",
+    "İnsan psikolojisi",
+    "İlginç psikoloji",
+    "Merak psikolojisi",
+    "Psikoloji gerçekleri",
+    "İnsan davranışı",
+    "Sosyal deneyler",
+    "Bilimsel bilgiler",
+    "Merak uyandıran",
+    "Bilgi videoları",
+    "Kısa bilgiler",
+    "Neden insanlar",
+    "Yardımseverlik",
+    "Toplumsal davranış",
+    "psikoloji"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Does No One Help in a Crowd? 🤯",
+      "description": "When someone asks for help in a crowd, why do most people remain still? This phenomenon is known as the \"Bystander Effect.\"\nResponsibility is diffused among the crowd, and everyone assumes someone else will act, significantly reducing the likelihood of intervention. To get help, make eye contact and address one person directly.\nIn your opinion, how many people truly help someone in need in a crowd: 1 or 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "es": {
+      "title": "¿Por qué nadie ayuda en una multitud? 🤯",
+      "description": "Cuando alguien pide ayuda entre la gente, ¿por qué la mayoría no reacciona? Este fenómeno se conoce como el \"Efecto Espectador\".\nLa responsabilidad se difunde entre la multitud y cada uno espera que otro actúe, disminuyendo la probabilidad de intervención. Para recibir ayuda, haz contacto visual y dirígete directamente a una persona.\nEn tu opinión, ¿cuántas personas realmente ayudan a alguien en necesidad en una multitud: 1 o 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "pt": {
+      "title": "Por que ninguém ajuda em uma multidão? 🤯",
+      "description": "Quando alguém pede ajuda no meio da multidão, por que a maioria das pessoas não se move? Este é o conhecido \"Efeito Espectador\".\nA responsabilidade se dilui na multidão e todos esperam que outra pessoa ajude, diminuindo a probabilidade de ação. Para obter ajuda, faça contato visual e dirija-se diretamente a uma pessoa.\nNa sua opinião, quantas pessoas realmente ajudam alguém em necessidade em uma multidão: 1 ou 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "de": {
+      "title": "Warum hilft niemand in einer Menschenmenge? 🤯",
+      "description": "Wenn jemand in einer Menschenmenge um Hilfe bittet, warum bleibt die Mehrheit untätig? Dieses Phänomen ist als \"Zuschauereffekt\" bekannt.\nDie Verantwortung verteilt sich auf die Menge, und jeder erwartet, dass jemand anderes hilft, was die Wahrscheinlichkeit des Eingreifens erheblich senkt. Um Hilfe zu erhalten, stelle Blickkontakt her und sprich eine Person direkt an.\nGlaubst du, wie viele Menschen in einer Menschenmenge wirklich jemandem in Not helfen: 1 oder 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "fr": {
+      "title": "Pourquoi personne n'aide dans une foule? 🤯",
+      "description": "Quand quelqu'un demande de l'aide dans une foule, pourquoi la plupart des gens restent-ils immobiles? Ce phénomène est appelé \"l'effet témoin\".\nLa responsabilité se diffuse dans la foule, et chacun s'attend à ce que quelqu'un d'autre agisse, réduisant considérablement la probabilité d'intervention. Pour obtenir de l'aide, établissez un contact visuel et adressez-vous directement à une personne.\nÀ votre avis, combien de personnes aident réellement quelqu'un en détresse dans une foule: 1 ou 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "it": {
+      "title": "Perché nessuno aiuta in una folla? 🤯",
+      "description": "Quando qualcuno chiede aiuto in mezzo alla gente, perché la maggior parte delle persone rimane immobile? Questo fenomeno è noto come \"Effetto Spettatore\".\nLa responsabilità si diffonde nella folla e ognuno si aspetta che qualcun altro agisca, riducendo significativamente la probabilità di intervento. Per ottenere aiuto, stabilisci un contatto visivo e rivolgiti direttamente a una persona.\nSecondo te, quante persone aiutano davvero qualcuno in difficoltà in una folla: 1 o 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "ru": {
+      "title": "Почему никто не помогает в толпе? 🤯",
+      "description": "Когда кто-то просит о помощи в толпе, почему большинство людей остаются бездействующими? Это явление известно как \"эффект свидетеля\".\nОтветственность распределяется между толпой, и каждый ожидает, что кто-то другой поможет, что значительно снижает вероятность вмешательства. Чтобы получить помощь, установите зрительный контакт и обратитесь к одному человеку напрямую.\nКак вы думаете, сколько людей на самом деле помогают нуждающимся в толпе: 1 или 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "ar": {
+      "title": "لماذا لا يساعد أحد في الزحام؟ 🤯",
+      "description": "عندما يطلب شخص المساعدة في حشد، لماذا لا يتحرك معظم الناس؟ هذه الظاهرة تُعرف بـ \"تأثير المتفرج\".\nتتوزع المسؤولية بين الحشد، ويتوقع الجميع أن يقوم شخص آخر بالمساعدة، مما يقلل بشكل كبير من احتمالية التدخل. للحصول على المساعدة، قم بالتواصل البصري وتحدث مباشرة إلى شخص واحد.\nبرأيك، كم عدد الأشخاص الذين يساعدون بالفعل شخصًا محتاجًا في الزحام: 1 أم 10؟\n\n#shorts\n\nSeri: mk-029"
+    },
+    "hi": {
+      "title": "भीड़ में कोई मदद क्यों नहीं करता? 🤯",
+      "description": "जब कोई भीड़ में मदद मांगता है, तो ज्यादातर लोग क्यों नहीं हिलते? इस घटना को \"बाईस्टैंडर इफ़ेक्ट\" के नाम से जाना जाता है।\nज़िम्मेदारी भीड़ में फैल जाती है, और हर कोई यह मानता है कि कोई और मदद करेगा, जिससे हस्तक्षेप की संभावना काफी कम हो जाती है। मदद पाने के लिए, आँखों का संपर्क बनाएं और सीधे एक व्यक्ति को पुकारें।\nआपकी राय में, भीड़ में ज़रूरतमंद की मदद कितने लोग करते हैं: 1 या 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "id": {
+      "title": "Mengapa Tak Ada yang Membantu di Keramaian? 🤯",
+      "description": "Ketika seseorang meminta bantuan di keramaian, mengapa kebanyakan orang diam saja? Fenomena ini dikenal sebagai \"Efek Bystander\".\nTanggung jawab menyebar di antara keramaian, dan setiap orang berasumsi orang lain akan bertindak, secara signifikan mengurangi kemungkinan intervensi. Untuk mendapatkan bantuan, lakukan kontak mata dan ajak bicara satu orang secara langsung.\nMenurut Anda, berapa banyak orang yang benar-benar membantu seseorang yang membutuhkan di keramaian: 1 atau 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "ja": {
+      "title": "なぜ人混みでは誰も助けないのか？ 🤯",
+      "description": "誰かが人混みで助けを求めたとき、なぜほとんどの人が動かないのでしょうか？これは「傍観者効果」として知られる心理現象です。\n責任が群衆に分散され、誰もが他の誰かが行動するだろうと考えるため、介入の可能性が大幅に低下します。助けを得るには、アイコンタクトを取り、特定の一人に直接声をかけてください。\nあなたの意見では、人混みで困っている人を本当に助けるのは何人だと思いますか：1人か10人か？\n\n#shorts\n\nSeri: mk-029"
+    },
+    "ko": {
+      "title": "왜 군중 속에서는 아무도 돕지 않는가? 🤯",
+      "description": "누군가 군중 속에서 도움을 요청할 때, 왜 대부분의 사람들은 움직이지 않을까요? 이는 \"방관자 효과\"라고 알려진 심리 현상입니다.\n책임감이 군중에게 분산되어, 모든 사람이 다른 사람이 행동할 것이라고 생각하기 때문에 개입 가능성이 현저히 낮아집니다. 도움을 받으려면 눈을 마주치고 한 사람에게 직접 말을 거세요.\n당신의 생각에, 군중 속에서 어려움에 처한 사람을 진정으로 돕는 사람은 몇 명일까요: 1명 아니면 10명?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "pl": {
+      "title": "Dlaczego nikt nie pomaga w tłumie? 🤯",
+      "description": "Gdy ktoś prosi o pomoc w tłumie, dlaczego większość ludzi pozostaje bierna? To zjawisko znane jest jako \"efekt biernego przechodnia\".\nOdpowiedzialność rozprasza się w tłumie, a każdy zakłada, że ktoś inny pomoże, co znacznie zmniejsza prawdopodobieństwo interwencji. Aby uzyskać pomoc, nawiąż kontakt wzrokowy i zwróć się bezpośrednio do jednej osoby.\nTwoim zdaniem, ile osób naprawdę pomaga potrzebującemu w tłumie: 1 czy 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "nl": {
+      "title": "Waarom helpt niemand in een menigte? 🤯",
+      "description": "Wanneer iemand in een menigte om hulp vraagt, waarom blijft de meerderheid dan stil? Dit fenomeen staat bekend als het \"Bystander Effect\".\nDe verantwoordelijkheid wordt verdeeld over de menigte, en iedereen neemt aan dat iemand anders zal ingrijpen, waardoor de kans op actie aanzienlijk afneemt. Om hulp te krijgen, maak oogcontact en spreek één persoon direct aan.\nVolgens jou, hoeveel mensen helpen echt iemand in nood in een menigte: 1 of 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "uk": {
+      "title": "Чому ніхто не допомагає у натовпі? 🤯",
+      "description": "Коли хтось просить про допомогу в натовпі, чому більшість людей залишаються бездіяльними? Це явище відоме як \"ефект свідка\".\nВідповідальність розподіляється між натовпом, і кожен очікує, що хтось інший допоможе, що значно знижує ймовірність втручання. Щоб отримати допомогу, встановіть зоровий контакт і зверніться безпосередньо до однієї людини.\nНа вашу думку, скільки людей насправді допомагають нужденним у натовпі: 1 чи 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "vi": {
+      "title": "Tại sao không ai giúp đỡ trong đám đông? 🤯",
+      "description": "Khi ai đó cầu cứu trong đám đông, tại sao hầu hết mọi người lại đứng yên? Hiện tượng này được gọi là \"Hiệu ứng người ngoài cuộc\".\nTrách nhiệm được phân tán trong đám đông, và mọi người đều cho rằng người khác sẽ hành động, làm giảm đáng kể khả năng can thiệp. Để nhận được sự giúp đỡ, hãy giao tiếp bằng mắt và gọi đích danh một người.\nTheo bạn, có bao nhiêu người thực sự giúp đỡ một người gặp nạn trong đám đông: 1 hay 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "az": {
+      "title": "Kütlədə niyə heç kim kömək etmir? 🤯",
+      "description": "Kimsə izdihamda kömək istəyəndə, niyə əksər insanlar hərəkətsiz qalır? Bu fenomen \"Bystander Effekti\" olaraq bilinir.\nMəsuliyyət izdiham arasında yayılır və hər kəs başqasının kömək edəcəyini düşündüyü üçün müdaxilə ehtimalı əhəmiyyətli dərəcədə azalır. Kömək almaq üçün göz təması qurun və bir nəfərə birbaşa müraciət edin.\nSizcə, izdihamda ehtiyacı olan birinə neçə nəfər həqiqətən kömək edər: 1 yoxsa 10?\n\n#shorts\n\nSeri: mk-029"
+    },
+    "ro": {
+      "title": "De ce nimeni nu ajută într-o mulțime? 🤯",
+      "description": "Când cineva cere ajutor într-o mulțime, de ce majoritatea oamenilor rămân imobili? Acest fenomen este cunoscut sub numele de \"Efectul de Spectator\".\nResponsabilitatea se difuzează în mulțime, iar toată lumea presupune că altcineva va acționa, reducând semnificativ probabilitatea de intervenție. Pentru a primi ajutor, stabilește contact vizual și adresează-te direct unei persoane.\nÎn opinia ta, câți oameni ajută cu adevărat pe cineva aflat în nevoie într-o mulțime: 1 sau 10?\n\n#shorts\n\nSeri: mk-029"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Kalabalıkta yardım isteyen birine sence kaç kişi gerçekten yardım eder: 1 mi 10 mu?",
+  "scenes": [
+    {
+      "text": "Bu kalabalıkta yardıma koşanların sayısı şaşırtıcı derecede az.",
+      "visual": "A very crowded street or public space with many people moving.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 1
+        },
+        {
+          "n": 20,
+          "kare": 3
+        }
+      ],
+      "callout": "AZ SAYIDA YARDIM"
+    },
+    {
+      "text": "Peki, etrafında bu kadar insan varken neden kimse harekete geçmez?",
+      "visual": "People walking in a crowded area, some looking generally forward.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 1
+        },
+        {
+          "n": 14,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu, \"Seyirci Etkisi\" denen psikolojik bir durum. Sorumluluk kalabalığa yayılır.",
+      "visual": "A man covering his face with many fingers pointing at him, implying blame or diffused responsibility, or individuals looking away.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        }
+      ],
+      "callout": "SEYİRCİ ETKİSİ"
+    },
+    {
+      "text": "Herkes başkasının yardım edeceğini düşündüğü için, harekete geçme olasılığı önemli ölçüde düşer.",
+      "visual": "Individuals walking past or ignoring something, emphasizing people going about their business in a crowd.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 3
+        },
+        {
+          "n": 18,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Yardım almak için, göz teması kur ve bir kişiye doğrudan seslen.",
+      "visual": "People making direct eye contact or engaging in a focused interaction, contrasting with a large crowd.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 17,
+          "kare": 1
+        },
+        {
+          "n": 16,
+          "kare": 3
+        }
+      ],
+      "callout": "DOĞRUDAN SESLEN"
+    }
+  ],
+  "duration_seconds": 16.29,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, yapay zeka sesi robotik ve monoton.",
+        "fix": "Yapay zeka sesini daha enerjik, hızlı ve doğal tonlamalı bir seçenekle değiştirin. Cümleler arasında daha doğal duraklamalar ekleyin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Kullanılan stok videolar konuyu doğrudan ve etkili bir şekilde görselleştirmiyor, genel ve tekrarlayıcı.",
+        "fix": "Pexels/Pixabay'de 'yardım bekleyen', 'kalabalıkta düşen', 'yardım eden/etmeyen' gibi anahtar kelimelerle daha spesifik ve hikaye anlatan görüntüler arayın. Konuyu daha net gösteren, dramatik anlar içeren klipler seçin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, animasyonsuz ve görsel hiyerarşiden yoksun.",
+        "fix": "Anahtar kelimeleri farklı renk veya boyutlarla vurgulayın. Yazılara basit giriş/çıkış animasyonları (örneğin, yavaşça belirme, kayarak gelme) ekleyin. Otomatik kurgu aracınız izin veriyorsa, önemli noktaları işaret eden basit oklar veya dai"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Geçişler basit ve kesimler dinamik değil, video akışı yavaş hissettiriyor.",
+        "fix": "Klip geçişlerini hızlandırın. Statik görüntülere hafif yakınlaştırma veya kaydırma hareketleri ekleyerek dinamizm katın. Daha hızlı ve amaca yönelik kesimler kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve konunun atmosferini desteklemiyor, ses efektleri eksik.",
+        "fix": "Konuya uygun, hafif gerilimli veya düşündürücü bir arka plan müziği seçin. Yazıların ekrana gelmesi veya önemli bir vurgu anı için ince ses efektleri (örneğin, hafif bir 'whoosh' veya 'ding') ekleyin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin sunumu doğrudan ve akademik, şaşırtıcılık veya merak uyandırma potansiyeli tam kullanılmamış.",
+        "fix": "Girişi daha dramatik hale getirin. Örneğin, bir yardım çağrısının duyulmadığı bir senaryoyu ima eden bir görselle başlayıp 'Neden kimse harekete geçmiyor?' gibi bir soruyla merak uyandırın. Bilgiyi bir 'problem-çözüm' veya 'gizemi çözme' fo"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel stil (renk paleti, doygunluk) tutarsız.",
+        "fix": "Tüm video boyunca tutarlı bir görsel stil (örneğin, tüm kliplere aynı renk filtresini uygulama, belirli bir renk paletini koruma) kullanın."
+      }
+    ],
+    "strengths": [
+      "Konu seçimi ilgi çekici ve bilgilendirici.",
+      "Video kısa ve öz, ana mesajı net bir şekilde iletiyor.",
+      "Sonundaki çözüm önerisi pratik ve akılda kalıcı."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
