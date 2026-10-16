@@ -27,6 +27,14 @@ MIN_SCENES = 5
 MAX_SCENES = 8
 MIN_WORDS = 55
 MAX_WORDS = 95  # ~40 s of narration; the first real run hit 48.6 s at 125 words
+# Every public merak Short stopped near 1,000 views (2026-10-16): the feed shows a Short to a first group and only
+# goes on when they watch it through. A 15-20 s Short (~3.3 words/s with Alp at speed 1.15) is watched through and
+# replayed more often than the 22-30 s ones were. validate_script keeps MAX_WORDS as the hard limit and
+# MERAK_MIN_WORDS as the floor; going over MERAK_MAX_WORDS or MERAK_MAX_SCENES is only a reason to ask again.
+MERAK_MIN_WORDS = 38
+MERAK_MAX_WORDS = 55
+MERAK_MIN_SCENES = 4
+MERAK_MAX_SCENES = 6
 MAX_SCENE_CHARS = 230
 MAX_HOOK_CHARS = 40
 MAX_CALLOUT_CHARS = 24
@@ -171,7 +179,7 @@ Konu: {topic}
 Görüntü ipucu: {stock_hint}
 Ana özne (İngilizce stok etiketi): {subject}
 
-Bu konu için 25-40 saniyelik bir Shorts senaryosu yaz. Merakı canlı tutan, enerjik ve samimi bir anlatıcı gibi konuş;
+Bu konu için 15-20 saniyelik bir Shorts senaryosu yaz. Merakı canlı tutan, enerjik ve samimi bir anlatıcı gibi konuş;
 cümleler akıcı olsun, ders anlatır gibi değil arkadaşına şaşırtıcı bir şey anlatır gibi.
 
 Anlatım kuralları:
@@ -222,7 +230,8 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         )
     if rules:
         style += "- Rakip kanallardan ayrışmak için bu kurallara da uy:\n" + "".join(f"  - {r}\n" for r in rules[:8])
-    if character and character.get("stock_hint") is not None:
+    merak = _is_merak(character)
+    if merak:
         template = MERAK_PROMPT_TEMPLATE
     else:
         template = CHARACTER_PROMPT_TEMPLATE if character else PROMPT_TEMPLATE
@@ -234,11 +243,27 @@ def build_prompt(topic: str, examples: list[str] | None = None, rules: list[str]
         work=(character or {}).get("work", ""),
         look=(character or {}).get("look") or "karakterin filmdeki/dizideki dönemi, kıyafeti ve mekânları",
         style_examples=style,
-        min_words=MIN_WORDS,
-        max_words=MAX_WORDS,
-        min_scenes=MIN_SCENES,
-        max_scenes=MAX_SCENES,
+        min_words=MERAK_MIN_WORDS + 2 if merak else MIN_WORDS,
+        max_words=MERAK_MAX_WORDS if merak else MAX_WORDS,
+        min_scenes=MERAK_MIN_SCENES if merak else MIN_SCENES,
+        max_scenes=MERAK_MAX_SCENES if merak else MAX_SCENES,
     )
+
+
+def _is_merak(character: dict | None) -> bool:
+    """A merak topic travels as a "character" with a stock hint (the footage-first flow's fallback)."""
+    return bool(character) and character.get("stock_hint") is not None
+
+
+def merak_overrun(script: dict) -> str | None:
+    """Why a valid merak script is still too long for a 15-20 s Short, or None."""
+    scenes = script["scenes"]
+    words = sum(len(scene["text"].split()) for scene in scenes)
+    if words > MERAK_MAX_WORDS:
+        return f"anlatım {words} kelime, en fazla {MERAK_MAX_WORDS} kelime olsun"
+    if len(scenes) > MERAK_MAX_SCENES:
+        return f"{len(scenes)} sahne var, en fazla {MERAK_MAX_SCENES} sahne olsun"
+    return None
 
 
 def _extract_json(raw_text: str) -> dict:
@@ -486,17 +511,30 @@ def validate_script(script: dict, character: dict | None = None, min_words: int 
 def write_script(topic: str, providers=None, attempts_per_provider: int = 2,
                  style_examples: list[str] | None = None, rules: list[str] | None = None,
                  character: dict | None = None) -> tuple[dict, str]:
-    """Returns (validated_script, provider_name). Raises ScriptError if all providers fail."""
+    """Returns (validated_script, provider_name). Raises ScriptError if all providers fail.
+    A merak script over the 15-20 s limits is asked for again; if no attempt fits, the shortest valid one is used."""
     prompt = build_prompt(topic, style_examples, rules, character)
-    errors = []
+    merak = _is_merak(character)
+    limits = {"min_words": MERAK_MIN_WORDS, "min_scenes": MERAK_MIN_SCENES} if merak else {}
+    errors, shortest = [], None
     for name, call in providers or PROVIDERS:
         for attempt in range(1, attempts_per_provider + 1):
             try:
                 raw = call(prompt)
                 if raw is None:
                     break  # provider not configured
-                return validate_script(_extract_json(raw), character), name
+                script = validate_script(_extract_json(raw), character, **limits)
+                overrun = merak_overrun(script) if merak else None
+                if not overrun:
+                    return script, name
+                words = sum(len(scene["text"].split()) for scene in script["scenes"])
+                if shortest is None or words < shortest[0]:
+                    shortest = (words, script, name)
+                raise ScriptError(overrun)
             except (ScriptError, ValueError, KeyError, IndexError, urllib.error.URLError, TimeoutError) as e:
                 errors.append(f"{name}#{attempt}: {e}")
                 print(f"ℹ️ Senaryo denemesi reddedildi ({name} #{attempt}): {e}")
+    if shortest:
+        print(f"ℹ️ Kısa senaryo gelmedi; en kısa deneme ({shortest[0]} kelime) kullanılıyor")
+        return shortest[1], shortest[2]
     raise ScriptError("no provider produced a valid script: " + " | ".join(errors or ["no provider configured"]))
