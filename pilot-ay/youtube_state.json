@@ -18,7 +18,9 @@
     "privacyStatus": "private"
    },
    "thumbnail": true,
-   "captions": {}
+   "captions": {},
+   "captions_error": "GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]",
+   "meta": "6a72beff510335ad"
   }
  },
  "channel_set": {

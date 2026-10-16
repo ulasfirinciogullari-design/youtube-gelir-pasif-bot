@@ -7,15 +7,35 @@
   "videos": "0"
  },
  "warnings": [
-  "PUT channels?part=localizations -> 400: Precondition check failed. [failedPrecondition]"
+  "ad ve açıklama: PUT channels?part=localizations -> 400: Precondition check failed. [failedPrecondition]",
+  "sadece açıklama: PUT channels?part=localizations -> 400: Request contains an invalid argument. [badRequest]",
+  "ay altyazı: GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
  ],
- "channel_filled": [
-  "filigran"
- ],
+ "channel_now": {
+  "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\" \"what if\" science \"science animation\" space astronomy",
+  "country": "TR",
+  "defaultLanguage": "tr"
+ },
+ "channel_filled": [],
  "playlists": {
   "Ya Olsaydı?": "PLdqEnBOYj8wQ",
   "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
   "1 Gün Boyunca": "PLcawGSnylmhU"
  },
- "error": "GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]"
+ "episodes": {
+  "ay": {
+   "video_id": "-7OxhWXxc8w",
+   "url": "https://youtube.com/shorts/-7OxhWXxc8w",
+   "privacy": "private",
+   "playlist": "Ya Olsaydı?",
+   "status": {
+    "uploadStatus": "processed",
+    "privacyStatus": "private"
+   },
+   "thumbnail": true,
+   "captions": {},
+   "captions_error": "GET captions?part=snippet -> 403: Request had insufficient authentication scopes. [insufficientPermissions]",
+   "meta": "6a72beff510335ad"
+  }
+ }
 }
