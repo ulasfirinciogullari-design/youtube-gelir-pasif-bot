@@ -1,7 +1,8 @@
 name: YA OLSAYDI saatlik bölüm
 
 # The Ya Olsaydı? channel, separate from Zirvenin Kanunu: new episodes at its slots (also posted to Instagram as
-# Reels when YA_IG_TOKEN is set), and every tick answers new comments (fabrika/yorum.py, fabrika/instagram.py). Its code and state live on
+# Reels when YA_IG_TOKEN is set). Comments and DMs are answered by the reply watcher (ya_olsaydi_nobet.yml); every
+# tick restarts it if its chain broke. Its code and state live on
 # the ya-olsaydi branch; this file only wakes it up, because GitHub runs scheduled workflows from main only.
 # Two ticks an hour because GitHub delays or drops cron events; fabrika/uret.py --kapi lets one tick per
 # hour produce, so a skipped tick costs a few seconds.
@@ -16,6 +17,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write  # restart the reply watcher (fabrika/nobet.py --sor)
 
 jobs:
   bolum:
@@ -31,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Yorumları cevapla, bölüm üret ve yükle
+      - name: Bölüm üret ve yükle
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
@@ -46,5 +48,6 @@ jobs:
           YO_YORUM_KAPALI: ${{ vars.YO_YORUM_KAPALI }}
           YA_IG_TOKEN: ${{ secrets.YA_IG_TOKEN }}
           YO_IG_KAPALI: ${{ vars.YO_IG_KAPALI }}
+          YO_NOBET_KAPALI: ${{ vars.YO_NOBET_KAPALI }}
           GITHUB_TOKEN: ${{ github.token }}
         run: bash fabrika/calistir.sh saatlik
