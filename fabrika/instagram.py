@@ -369,6 +369,11 @@ def kontrol(state, report):
     d = me(tok, state)
     report["hesap"] = {k: d.get(k) for k in ("username", "account_type", "media_count", "followers_count")}
     report["paylasim_hakki"] = call(tok, "GET", "me/content_publishing_limit", params={"fields": "quota_usage,config"})
+    try:  # empty while "Allow access to messages" is off in the Instagram app
+        convs = call(tok, "GET", "me/conversations", params={"platform": "instagram", "fields": "id,updated_time"})
+        report["dm_konusmalari"] = len(convs.get("data", []))
+    except IGError as e:
+        report["dm_konusmalari"] = f"okunamadı: {e}"[:300]
     # does Instagram fetch a video from where paylas() puts it? A container that is never published shows nowhere
     t = HERE / "deneme"
     if (t / "video.mp4").exists() and (t / "kapak.jpg").exists():
