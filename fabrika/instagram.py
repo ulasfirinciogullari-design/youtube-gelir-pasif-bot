@@ -19,7 +19,6 @@ import hashlib
 import json
 import os
 import re
-import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -189,20 +188,6 @@ def reel(tok, urls, text):
     raise IGError(f"Instagram videoyu işleyemedi: {st.get('status')}")
 
 
-def fit(video, cover, out):
-    """Instagram's feed (4:5) and profile grid (3:4) crop the middle of a 9:16 Reel, which cut off our title and
-    subtitles. Shrink the picture to 75% over a blurred copy of itself so both survive the crops -> (video, cover)."""
-    out.mkdir(exist_ok=True)
-    look = ("split[a][b];[a]scale=270:480,boxblur=20:2,scale=1080:1920,eq=brightness=-0.08[bg];"
-            "[b]scale=810:1440[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,format=yuv420p")
-    v, c = out / "ig_video.mp4", out / "ig_kapak.jpg"
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-filter_complex", f"[0:v]{look}", "-c:v", "libx264",
-                    "-preset", "veryfast", "-crf", "20", "-c:a", "copy", "-movflags", "+faststart", str(v)], check=True)
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(cover), "-filter_complex", f"[0:v]scale=1080:1920,{look}",
-                    "-q:v", "2", str(c)], check=True)
-    return v, c
-
-
 def paylas(ep, video, cover, state):
     """Publish one episode as a Reel -> record for durum.json. Raises IGError when Instagram refuses."""
     report = {}
@@ -213,10 +198,6 @@ def paylas(ep, video, cover, state):
     if ep["id"] in ig.get("posted", {}):
         return {"skipped": "zaten paylaşıldı", **ig["posted"][ep["id"]]}
     me(tok, state)
-    try:
-        video, cover = fit(video, cover, Path(video).parent)
-    except (OSError, subprocess.CalledProcessError) as e:
-        report.setdefault("warnings", []).append(f"Instagram kırpma ayarı yapılamadı, video olduğu gibi gitti: {e}"[:300])
     tag = f"ig-{ep['id']}-{int(time.time())}"
     urls, rel = host({"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}, tag)
     try:
@@ -408,34 +389,19 @@ def kontrol(state, report):
             unhost(rel, tag)
 
 
-def pilot(state, report):
-    """Post the pilot episode (pilot-ay/, made before the factory) as a Reel."""
-    root = HERE.parent / "pilot-ay"
-    x = json.loads((root / "youtube.json").read_text(encoding="utf-8"))["episodes"][0]
-    ep = {"id": x["id"], "title": x["title"]["tr"], "summary": x["summary"]["tr"],
-          "facts": [{"text": f["tr"]} for f in x["facts"]], "hashtags": x["tags"]}
-    old = state.get("instagram", {}).get("posted", {}).pop(ep["id"], None)
-    if old:  # a manual re-post: keep the earlier one on record
-        state["instagram"].setdefault("eski", []).append({"id": ep["id"], **old})
-    report["paylasim"] = paylas(ep, root / x["video"], root / x["thumbnail"], state)
-
-
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--kontrol", action="store_true")
     g.add_argument("--cevap", action="store_true")
     g.add_argument("--deneme", action="store_true")
-    g.add_argument("--pilot", action="store_true")
     a = ap.parse_args()
     state = yorum.load_state()
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "pilot" if a.pilot else "cevap"}
+              "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "cevap"}
     try:
         if a.kontrol:
             kontrol(state, report)
-        elif a.pilot:
-            pilot(state, report)
         else:
             cevap(state, report, a.deneme)
     except (Exception, SystemExit) as e:  # never stop the episode run that follows
@@ -443,15 +409,14 @@ def main():
         print(report["error"], file=sys.stderr)
     if not a.deneme:
         yorum.save_state(state)  # also after an error, so a sent reply is never sent twice
-    if report.get("error") or report.get("items") or report.get("hesap") or report.get("paylasim") or a.deneme:
+    if report.get("error") or report.get("items") or report.get("hesap") or a.deneme:
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     sent = sum(1 for i in report.get("items", []) if i.get("result") == "gönderildi")
     why = report.get("skipped") or report.get("error", "")[:80]
     print(f"Instagram: {report.get('new', 0)} yeni, {sent} cevap" + (f" ({why})" if why else "")
           + (f", hesap @{report['hesap']['username']}" if report.get("hesap") else "")
-          + (f", video testi: {report['video_testi'][:60]}" if report.get("video_testi") else "")
-          + (f", Reel: {report['paylasim'].get('url') or report['paylasim']}" if report.get("paylasim") else ""))
+          + (f", video testi: {report['video_testi'][:60]}" if report.get("video_testi") else ""))
 
 
 if __name__ == "__main__":

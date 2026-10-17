@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: comment replies -> gate -> tools -> episode -> commit the outcome.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igpilot
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igbolum
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -18,10 +18,9 @@ push() {
   done
 }
 
-case "$MOD" in instagram|igdeneme|igpilot)
+case "$MOD" in instagram|igdeneme)
   pip install -q requests cryptography
-  flag="--kontrol"; [ "$MOD" = "igdeneme" ] && flag="--deneme"; [ "$MOD" = "igpilot" ] && flag="--pilot"
-  command -v ffmpeg >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg >/dev/null; }
+  flag="--kontrol"; [ "$MOD" = "igdeneme" ] && flag="--deneme"
   out=$(python3 fabrika/instagram.py $flag | tail -n 1); echo "$out"
   push "$out"; exit 0
 esac
@@ -55,7 +54,11 @@ pip install -q numpy requests cryptography
 [ -f package.json ] || npm init -y >/dev/null
 npm install -q --no-save playwright@1.55.0 && npx playwright install --with-deps chromium >/dev/null
 
-python fabrika/uret.py --mod "$MOD"
+if [ "$MOD" = "igbolum" ]; then  # tetik.txt: "igbolum y001" posts that earlier episode to Instagram
+  python fabrika/uret.py --mod igbolum --bolum "$(awk '{print $2}' fabrika/tetik.txt)"
+else
+  python fabrika/uret.py --mod "$MOD"
+fi
 status=$?
 
 title=$(python3 -c "import json;r=json.load(open('fabrika/rapor.json'));print((r.get('title') or r.get('error') or r.get('skipped') or 'tur')[:60])")

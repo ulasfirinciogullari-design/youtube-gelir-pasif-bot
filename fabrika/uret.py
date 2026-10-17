@@ -4,6 +4,7 @@
   python fabrika/uret.py --mod saatlik     produce and upload public when the hourly slot is free
   python fabrika/uret.py --mod zorla       produce and upload now, whatever the slot
   python fabrika/uret.py --mod deneme      produce, keep video and cover in fabrika/deneme/, do not upload
+  python fabrika/uret.py --mod igbolum --bolum y001   voice and draw an earlier episode again, post it to Instagram only
 
 State: fabrika/durum.json (uploaded episodes, used topics). Outcome of every run: fabrika/rapor.json.
 """
@@ -43,7 +44,7 @@ def save(state):
 
 def gate(state, mod):
     """-> (go, reason). Hourly ticks come twice an hour (GitHub drops some), a slot holds one episode."""
-    if mod in ("zorla", "deneme"):
+    if mod in ("zorla", "deneme", "igbolum"):
         return True, mod
     if os.environ.get("YO_DURDUR"):
         return False, "YO_DURDUR değişkeni açık, üretim durduruldu"
@@ -143,10 +144,12 @@ def fact_check(ep, report):
     return res.get("_chunks", [])
 
 
-def render(ep, timings_path, mix, out_video, out_cover):
+def render(ep, timings_path, mix, out_video, out_cover, layout=None):
+    """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY)."""
     motor = HERE / "motor"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
-        {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"]}, ensure_ascii=False) + ";\n", encoding="utf-8")
+        {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout},
+        ensure_ascii=False) + ";\n", encoding="utf-8")
     subprocess.run(["node", str(motor / "render.js"), str(out_video), str(timings_path), str(mix)], check=True)
     subprocess.run(["node", str(motor / "render.js"), "--cover", str(ep.get("cover", 1)), str(out_cover), str(timings_path)],
                    check=True)
@@ -155,6 +158,34 @@ def render(ep, timings_path, mix, out_video, out_cover):
     if not 14 <= dur <= 60:
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
+
+
+def to_instagram(ep, timings_path, mix, state):
+    import instagram
+    video, cover = WORK / "ig_video.mp4", WORK / "ig_kapak.jpg"
+    render(ep, timings_path, mix, video, cover, layout="ig")
+    return instagram.paylas(ep, video, cover, state)
+
+
+def ig_bolum(state, ep_id, report):
+    """An episode from before Instagram: voice it again (the audio is not kept) and post the Instagram copy."""
+    import ses
+    p = HERE / "bolumler" / f"{ep_id}.json"
+    if not p.exists():
+        raise SystemExit(f"bölüm bulunamadı: {ep_id}")
+    ep = json.loads(p.read_text(encoding="utf-8"))
+    if ep_id in state.get("instagram", {}).get("posted", {}):
+        report["skipped"] = f"{ep_id} Instagram'da zaten var"
+        return None
+    cr = ses.credits()
+    if cr and cr[1] and cr[1] - cr[0] < MIN_CREDITS:
+        report["skipped"] = f"ElevenLabs kredisi az ({cr[1] - cr[0]} kaldı)"
+        return None
+    WORK.mkdir(exist_ok=True)
+    timings, mix, chars = ses.make(ep, WORK)
+    report.update({"title": ep["title"], "chars": chars})
+    report["instagram"] = to_instagram(ep, WORK / "timings.json", mix, state)
+    return ep
 
 
 def load_ystate():
@@ -228,8 +259,7 @@ def produce(state, mod, report):
     report["url"] = rec["url"]
     if os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
         try:  # Instagram is a bonus: a refusal there never fails the YouTube episode
-            import instagram
-            report["instagram"] = instagram.paylas(ep, video, cover, state)
+            report["instagram"] = to_instagram(ep, WORK / "timings.json", mix, state)
         except Exception as e:  # noqa: BLE001
             report.setdefault("warnings", []).append(f"Instagram: {type(e).__name__}: {e}"[:500])
         save(state)
@@ -249,7 +279,8 @@ def produce(state, mod, report):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kapi", action="store_true")
-    ap.add_argument("--mod", default="saatlik", choices=["saatlik", "zorla", "deneme"])
+    ap.add_argument("--mod", default="saatlik", choices=["saatlik", "zorla", "deneme", "igbolum"])
+    ap.add_argument("--bolum", help="igbolum: the episode id, e.g. y001")
     a = ap.parse_args()
     state = load()
     go, why = gate(state, a.mod)
@@ -266,7 +297,7 @@ def main():
     import yazar
     try:
         if go:
-            ep = produce(state, a.mod, report)
+            ep = ig_bolum(state, a.bolum, report) if a.mod == "igbolum" else produce(state, a.mod, report)
             if ep is not None:
                 state["fail_streak"] = 0
     except (Exception, SystemExit) as e:  # the Actions log is hard to reach, so the reason lands in rapor.json

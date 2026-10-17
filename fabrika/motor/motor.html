@@ -29,6 +29,13 @@ function buildTimeline() {
   return out;
 }
 let TL = buildTimeline();
+// Instagram lays its top bar over the first ~8% of a Reel, its caption over the bottom fifth and its buttons over the
+// right edge, and its feed and profile grid crop the middle 4:5 / 3:4. The 'ig' layout (EP.layout, set by uret.py for
+// the Instagram copy) keeps the title and subtitles inside what stays visible everywhere; YouTube keeps the original.
+const LY = EP.layout === 'ig'
+  ? { title: 330, scene: 845, k: .82, band: 1200, pi: [245, 1400], bit: [800, 1380], tag: 0, subs: 1480 }  // no room for name tags
+  : { title: 175, scene: 760, k: 1, band: 1250, pi: [230, 1420], bit: [850, 1400], tag: 1640, subs: 1765 };
+let BGM = null;  // the backdrop always fills the frame, even when the 'ig' layout shrinks the scene
 const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
 // time of the first word in line L starting with prefix (fallback: a share of the line)
 function wordTime(L, prefix, share = .35) {
@@ -64,7 +71,9 @@ emoji = function (ch, x, y, size, alpha = 1, rot = 0) {
 // ---------- pieces ----------
 function bg(name, t) {
   const f = BGS[name] || BGS.space;
+  ctx.save(); if (BGM) ctx.setTransform(BGM);
   if (f) f(t); else { vgrad(C.space1, C.space2); starfield(t); }
+  ctx.restore();
 }
 // fallbacks until arkaplan.js provides a body (earth and moon as in the pilot)
 function fbEarth(x, y, r, t, tilt = 0.41) {
@@ -422,17 +431,17 @@ function drawBit(x, y, s, t, talk, active) {
 function characters(t, line) {
   const piTalk = mouthOpen(t, line, 'pi'), bitTalk = mouthOpen(t, line, 'bit');
   const piAct = line && line.who === 'pi', bitAct = line && line.who === 'bit';
-  const g = ctx.createLinearGradient(0, 1250, 0, H); g.addColorStop(0, 'rgba(5,7,25,0)'); g.addColorStop(.35, 'rgba(5,7,25,.85)'); g.addColorStop(1, 'rgba(5,7,25,.95)');
-  ctx.fillStyle = g; ctx.fillRect(0, 1250, W, H - 1250);
+  const g = ctx.createLinearGradient(0, LY.band, 0, H); g.addColorStop(0, 'rgba(5,7,25,0)'); g.addColorStop(.35, 'rgba(5,7,25,.85)'); g.addColorStop(1, 'rgba(5,7,25,.95)');
+  ctx.fillStyle = g; ctx.fillRect(0, LY.band, W, H - LY.band);
   const ps = lerp(.82, .9, piAct ? 1 : 0), bs = lerp(.78, .86, bitAct ? 1 : 0);
-  ctx.globalAlpha = piAct || !line ? 1 : .8; drawPi(230, 1420, ps, t, piTalk, piAct); ctx.globalAlpha = 1;
-  ctx.globalAlpha = bitAct || !line ? 1 : .8; drawBit(850, 1400, bs, t, bitTalk, bitAct); ctx.globalAlpha = 1;
+  ctx.globalAlpha = piAct || !line ? 1 : .8; drawPi(LY.pi[0], LY.pi[1], ps, t, piTalk, piAct); ctx.globalAlpha = 1;
+  ctx.globalAlpha = bitAct || !line ? 1 : .8; drawBit(LY.bit[0], LY.bit[1], bs, t, bitTalk, bitAct); ctx.globalAlpha = 1;
 }
 
 // ---------- overlays ----------
 function titleBar(t) {
   const s = lerp(.88, 1, back(prog(t, 0, .4)));  // visible from the first frame (it is the feed preview)
-  ctx.save(); ctx.translate(540, 175); ctx.scale(s, s);
+  ctx.save(); ctx.translate(540, LY.title); ctx.scale(s, s);
   pill((EP.series || 'YA OLSAYDI?').toLocaleUpperCase('tr'), 0, -78, 34, C.mag, C.white);
   const hi = (EP.title.hi || '').toLocaleUpperCase('tr'), rest = (EP.title.rest || '').toLocaleUpperCase('tr');
   let size = 92; ctx.font = `900 ${size}px ${F}`;
@@ -467,7 +476,7 @@ function subtitles(t, line) {
   let size = 76; const tw = grp.reduce((a, j) => a + wd(words[j].w) + 22, -22); if (tw > 980) size = Math.floor(76 * 980 / tw);
   ctx.font = `900 ${size}px ${F}`;
   const ws = grp.map(j => wd(words[j].w)); const total = ws.reduce((a, b) => a + b, 0) + 22 * (grp.length - 1);
-  let x = 540 - total / 2; const y = 1765;
+  let x = 540 - total / 2; const y = LY.subs;
   const hl = line.who === 'pi' ? C.yellow : C.cyan;
   const keys = (line.keys || []).map(norm);
   grp.forEach((j, k) => {
@@ -481,10 +490,10 @@ function subtitles(t, line) {
   });
 }
 function nameTag(t, line) {
-  if (!line || t > line.t1) return;
+  if (!line || t > line.t1 || !LY.tag) return;
   const pi = line.who === 'pi';
   ctx.globalAlpha = clamp((t - line.t0) * 6);
-  pill(pi ? 'PROF. Pİ' : 'BİT', pi ? 230 : 850, 1640, 30, pi ? C.yellow : C.cyan, C.ink);
+  pill(pi ? 'PROF. Pİ' : 'BİT', pi ? LY.pi[0] : LY.bit[0], LY.tag, 30, pi ? C.yellow : C.cyan, C.ink);
   ctx.globalAlpha = 1;
 }
 
@@ -499,7 +508,8 @@ window.draw = function (t) {
   const sceneStart = si === 0 ? 0 : TL[si].t0 - 0.15;
   const lt = Math.max(0, t - sceneStart);
   const z = 1 + .05 * (1 - eo(prog(lt, 0, .35)));
-  ctx.save(); ctx.translate(540, 760); ctx.scale(z, z); ctx.translate(-540, -760);
+  ctx.save(); ctx.translate(540, 760); ctx.scale(z, z); ctx.translate(-540, -760); BGM = ctx.getTransform(); ctx.restore();
+  ctx.save(); ctx.translate(540, LY.scene); ctx.scale(z * LY.k, z * LY.k); ctx.translate(-540, -760);
   const V = line.v || { t: 'question' };
   (VIS[V.t] || VIS.question)(V, line, t, lt);
   ctx.restore();
