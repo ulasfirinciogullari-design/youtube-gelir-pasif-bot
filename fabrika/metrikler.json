@@ -1,7 +1,7 @@
 {
- "at": "2026-10-17T21:42:54+00:00",
+ "at": "2026-10-17T22:15:48+00:00",
  "anahtar": {
-  "parmak_izi": "04524b05",
+  "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
  },
  "scopes": [
@@ -12,7 +12,63 @@
   "yt-analytics.readonly"
  ],
  "kanal": [
-  "Zirvenin Kanunu (UCgvESYtYbn2w9R2ExBOF_cw)"
+  "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
- "skipped": "anahtar Ya Olsaydı? kanalına (UCFGTEF-fXFWNOJnunGWyYEg) değil, başka bir kanala bağlı"
+ "videos": {
+  "-7OxhWXxc8w": {
+   "views": 115,
+   "estimatedMinutesWatched": 28,
+   "averageViewDuration": 33,
+   "averageViewPercentage": 82.37,
+   "likes": 4,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "",
+   "sources": {
+    "SHORTS": 103,
+    "YT_CHANNEL": 8,
+    "YT_SEARCH": 2,
+    "YT_OTHER_PAGE": 1,
+    "NOTIFICATION": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "8KoJ0-4fHyY": {
+   "views": 5,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 4,
+   "averageViewPercentage": 13.600000000000001,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 5
+   }
+  },
+  "yHElVXfvdsw": {
+   "views": 1,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 36,
+   "averageViewPercentage": 95.53,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Güneş Gerçekte Ne Kadar Büyük?",
+   "sources": {
+    "YT_SEARCH": 1
+   }
+  }
+ },
+ "days": [
+  {
+   "day": "2026-10-15",
+   "views": 121,
+   "estimatedMinutesWatched": 29,
+   "subscribersGained": 2
+  }
+ ]
 }
