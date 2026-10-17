@@ -1,7 +1,7 @@
 {
- "checked_at": "2026-10-17T21:56:37+00:00",
+ "checked_at": "2026-10-17T22:27:32+00:00",
  "ok": true,
- "scope": "https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/yt-analytics-monetary.readonly https://www.googleapis.com/auth/yt-analytics.readonly",
+ "scope": "https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
  "refresh_token_expires_in": null,
  "expires_at": null,
  "channels": [
@@ -10,5 +10,7 @@
    "title": "Zirvenin Kanunu",
    "handle": "@zirveninkanunu"
   }
- ]
+ ],
+ "uploader_scopes": "{\n  \"error\": \"invalid_scope\",\n  \"error_description\": \"Bad Request\"\n}",
+ "without_readonly": "ok"
 }
