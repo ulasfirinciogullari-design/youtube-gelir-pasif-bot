@@ -1,46 +1,16 @@
 {
- "started": "2026-10-17T06:28:32+00:00",
+ "started": "2026-10-17T09:06:57+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
- "credits_before": [
-  2587,
-  613902
- ],
- "topic": {
-  "id": "n003",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bilinen en büyük yıldız ne kadar büyük?"
- },
- "attempts": 1,
- "model": "gemini-3.8-flash",
- "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 0,
-    "why": "Stephenson 2-18'in boyutları kesin bir ölçüm değil tahmindir; ayrıca hacim oranı yaklaşık 10 milyar kat olsa da küre paketleme boşlukları nedeniyle içine 'tam 10 milyar' Güneş sığamaz."
-   },
-   {
-    "line": 4,
-    "why": "Yıldızın ortalama yoğunluğu yaklaşık 0,000004-0,000007 kg/m³ olup havanın milyonda birinden (~0,0000012 kg/m³) az değil, yaklaşık 200.000-300.000'de biri (yani 100 binde birinden az) kadardır."
-   }
-  ]
- },
- "chunks": 0,
- "grounded": true,
- "chars": 362,
- "duration": 23.9,
- "title": "En Büyük Yıldız Ne Kadar Büyük?",
  "channel": {
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
   "title": "Zirvenin Kanunu",
   "handle": "@zirveninkanunu",
-  "subscribers": "47",
+  "subscribers": "46",
   "videos": "87"
  },
- "log": [
-  "Konu: n003 Bilinen en büyük yıldız ne kadar büyük? (Ne Kadar Büyük?)",
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
- ],
- "finished": "2026-10-17T06:32:35+00:00"
+ "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 262, in main\n    ep = produce(state, a.mod, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 174, in produce\n    yt = yukle.connect(ystate, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/yukle.py\", line 27, in connect\n    Y.check_channel(yt, report, state)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/pilot-ay/youtube.py\", line 100, in check_channel\n    raise SystemExit(f\"Yanlış kanal: anahtar '{title}' kanalına bağlı. Hiçbir şey değiştirilmedi. \"\nSystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.\n",
+ "log": [],
+ "finished": "2026-10-17T09:06:57+00:00"
 }

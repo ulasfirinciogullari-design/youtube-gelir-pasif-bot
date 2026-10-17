@@ -1,24 +1,7 @@
 {
- "started": "2026-10-16T15:06:54+00:00",
+ "started": "2026-10-17T09:06:15+00:00",
  "deneme": false,
- "threads": 4,
- "new": 1,
- "quiet": 0,
- "sent_last_24h": 1,
- "room": 10,
- "model": "gemini-3.8-flash",
- "items": [
-  {
-   "id": "UgzmGQYg_zUuO-J7ZfJ4AaABAg",
-   "video": "yHElVXfvdsw",
-   "comment": "Eğer Güneş yerine aynı kütlede olan bir kara delik koysaydı ne olur",
-   "reply": "Kütle aynı kaldığı için Dünya içine çekilmez, aynı yörüngede dönmeye devam ederdi ama hızla donardık. Bu konuyu video listemize aldım.\n— Profesör Pi 🔭",
-   "topic": "Güneş'in yerinde bir kara delik olsaydı ne olurdu?",
-   "result": "gönderildi"
-  }
- ],
- "log": [
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
- ],
- "finished": "2026-10-16T15:07:04+00:00"
+ "error": "RuntimeError: anahtar başka bir kanala bağlı (UCgvESYtYbn2w9R2ExBOF_cw), cevap gönderilmedi",
+ "log": [],
+ "finished": "2026-10-17T09:06:15+00:00"
 }
