@@ -8,7 +8,8 @@ Shorts. This script runs in the "Saatlik Short Nöbeti" workflow (.github/workfl
 waits on the runner instead: at minute 25 and 45 of every hour it applies the slot gate (scripts/slot_gate.py)
 to the live channel data and starts the Shorts workflow when the slot is open. After RUN_FOR it starts its
 own successor and ends, before GitHub's 6 h job limit. The Shorts workflow calls --ensure on every run, so
-a broken chain restarts with the next cron tick or hand dispatch.
+a broken chain restarts with the next cron tick or hand dispatch. At minute 45 it also starts the comment
+responder (comment_replies.yml), whose own hourly cron GitHub drops just as often.
 
 A check starts a Short only when all of these hold:
   - no run of the Shorts workflow is queued or in progress (a cron tick or a hand dispatch is already on it);
@@ -38,6 +39,8 @@ CHECK_MINUTES = (25, 45)  # the Claude dispatcher fires at :20, so :25 finds its
 RUN_FOR = timedelta(hours=5, minutes=40)
 SHORTS_WORKFLOW = slot_gate.WORKFLOW_FILE
 WATCH_WORKFLOW = "slot_heartbeat.yml"
+COMMENTS_WORKFLOW = "comment_replies.yml"
+COMMENTS_MINUTE = 45
 # Privacy and format follow the repository settings (PUBLISH_PRIVACY, CONTENT_FORMAT) as for a cron tick: the
 # Shorts workflow treats runs whose actor is BOT like scheduled ones and gates them again when they start.
 SHORTS_INPUTS = {"task": "video"}
@@ -169,6 +172,26 @@ def _loop(gh, deadline: datetime, clock, sleep, dry_run: bool, once: bool, log) 
             log("⏸️ Bu kontrolde Short başlatılmıyor")
         if once:
             return
+        if moment.minute == COMMENTS_MINUTE:
+            start_comments(gh, dry_run, log)
+
+
+def start_comments(gh, dry_run: bool = False, log=print) -> bool:
+    """Start the comment responder unless a run of it is queued or in progress. Returns True when it started one."""
+    try:
+        live = _live(_runs(gh, COMMENTS_WORKFLOW, "per_page=5"))
+        if live:
+            log(f"💬 Yorum cevaplayıcı zaten çalışıyor ({live[0].get('id')})")
+            return False
+        if dry_run:
+            log("💬 Yorum cevaplayıcı başlatılırdı (deneme, bir şey başlatılmadı)")
+            return False
+        dispatch(gh, COMMENTS_WORKFLOW)
+        log("💬 Yorum cevaplayıcı başlatıldı")
+        return True
+    except Exception as e:  # the next hour tries again
+        log(f"⚠️ Yorum cevaplayıcı başlatılamadı: {str(e)[:200]}")
+        return False
 
 
 def hand_over(gh, sleep, log=print) -> bool:

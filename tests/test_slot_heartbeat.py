@@ -42,10 +42,11 @@ def run(run_id: int, created: datetime, event: str = "workflow_dispatch", actor:
 
 
 class FakeGitHub:
-    def __init__(self, uploads=None, shorts=None, watches=None, steps=None, fail=None):
+    def __init__(self, uploads=None, shorts=None, watches=None, steps=None, fail=None, comments=None):
         self.uploads = uploads or []
         self.shorts = shorts or []
         self.watches = watches or []
+        self.comments = comments or []
         self.steps = steps or {}
         self.fail = fail or set()
         self.posts = []
@@ -64,6 +65,8 @@ class FakeGitHub:
             return {"workflow_runs": runs}
         if path.startswith(WATCH):
             return {"workflow_runs": self.watches}
+        if path.startswith(f"actions/workflows/{slot_heartbeat.COMMENTS_WORKFLOW}/runs"):
+            return {"workflow_runs": self.comments}
         match = re.fullmatch(r"actions/runs/(\d+)/jobs", path)
         if match:
             produced = self.steps.get(int(match.group(1)), "skipped")
@@ -255,3 +258,24 @@ def test_shorts_workflow_treats_watch_runs_like_cron_ticks():
     assert env["PRIVACY"].startswith("${{ (github.event_name == 'schedule' || " + watch_run + ") && (vars.PUBLISH_PRIVACY")
     assert env["CONTENT_FORMAT"].startswith(f"${{{{ github.actor != '{slot_heartbeat.BOT}' && github.event.inputs.format")
     assert set(slot_heartbeat.SHORTS_INPUTS) == {"task"}
+
+
+def test_watch_starts_the_comment_responder_once_an_hour_at_45():
+    clock = Clock(at("10:20"))
+    gh = FakeGitHub(uploads=[upload(at("09:26"))])
+    slot_heartbeat.watch(gh, clock.now, clock, clock.sleep, log=lambda line: None)
+    comments = [path for path, body in gh.posts if slot_heartbeat.COMMENTS_WORKFLOW in path]
+    assert len(comments) == 6  # 10:45, 11:45, ... 15:45
+    assert gh.posts[-1] == ("actions/workflows/slot_heartbeat.yml/dispatches", {"ref": "main"})
+
+
+def test_comment_responder_is_not_started_twice_or_in_a_dry_run():
+    quiet = lambda line: None  # noqa: E731
+    busy = FakeGitHub(comments=[run(3, at("10:44"), status="in_progress", conclusion=None)])
+    assert not slot_heartbeat.start_comments(busy, log=quiet)
+    idle = FakeGitHub(comments=[run(3, at("09:45"))])
+    assert not slot_heartbeat.start_comments(idle, dry_run=True, log=quiet)
+    assert busy.posts == idle.posts == []
+    assert slot_heartbeat.start_comments(idle, log=quiet)
+    assert idle.posts == [("actions/workflows/comment_replies.yml/dispatches", {"ref": "main"})]
+    assert not slot_heartbeat.start_comments(FakeGitHub(fail={"comment_replies"}), log=quiet)  # never raises
