@@ -1,16 +1,74 @@
 {
- "started": "2026-10-17T19:06:58+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-17T22:17:18+00:00",
+ "mod": "zorla",
+ "gate": "zorla",
  "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu",
-  "handle": "@zirveninkanunu",
-  "subscribers": "46",
-  "videos": "87"
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "9",
+  "videos": "12"
  },
- "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 262, in main\n    ep = produce(state, a.mod, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 174, in produce\n    yt = yukle.connect(ystate, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/yukle.py\", line 27, in connect\n    Y.check_channel(yt, report, state)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/pilot-ay/youtube.py\", line 100, in check_channel\n    raise SystemExit(f\"Yanlış kanal: anahtar '{title}' kanalına bağlı. Hiçbir şey değiştirilmedi. \"\nSystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.\n",
- "log": [],
- "finished": "2026-10-17T19:06:58+00:00"
+ "credits_before": [
+  3149,
+  613902
+ ],
+ "topic": {
+  "id": "n003",
+  "series": "Ne Kadar Büyük?",
+  "q": "Bilinen en büyük yıldız ne kadar büyük?"
+ },
+ "attempts": 1,
+ "model": "gemini-3.8-flash",
+ "fact_check": {
+  "ok": false,
+  "fixes": []
+ },
+ "chunks": 4,
+ "grounded": true,
+ "chars": 364,
+ "duration": 23.6,
+ "title": "En Büyük Yıldız Ne Kadar Büyük?",
+ "url": "https://youtube.com/shorts/oyPgO_oDYlU",
+ "recent_status": {
+  "y003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "3",
+   "reason": null
+  },
+  "g002": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "2",
+   "reason": null
+  },
+  "y004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "89",
+   "reason": null
+  },
+  "y005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "8",
+   "reason": null
+  },
+  "n003": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  3237,
+  613902
+ ],
+ "log": [
+  "Konu: n003 Bilinen en büyük yıldız ne kadar büyük? (Ne Kadar Büyük?)",
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+ ],
+ "finished": "2026-10-17T22:19:30+00:00"
 }

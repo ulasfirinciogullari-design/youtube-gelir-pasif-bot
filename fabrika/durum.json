@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1164",
+    "views": "1252",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "263",
+    "views": "328",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "47",
+    "views": "66",
     "reason": null
    }
   },
@@ -116,7 +116,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2",
+    "views": "4",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "11",
+    "views": "24",
     "reason": null
    }
   },
@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1",
+    "views": "3",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "10",
+    "views": "120",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1",
+    "views": "3",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "2",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "89",
     "reason": null
    }
   },
@@ -324,6 +324,36 @@
    "at": 1792184986.286665,
    "chars": 554,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "8",
+    "reason": null
+   }
+  },
+  {
+   "id": "n003",
+   "video_id": "oyPgO_oDYlU",
+   "url": "https://youtube.com/shorts/oyPgO_oDYlU",
+   "title": "En Büyük Yıldız Ne Kadar Büyük?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Big Is the Largest Star in the Universe?",
+    "es": "¿Qué tan grande es la estrella más grande?",
+    "pt": "Quão grande é a maior estrela do universo?",
+    "ar": "ما هو حجم أكبر نجم في الكون؟",
+    "hi": "ब्रह्मांड का सबसे बड़ा तारा कितना बड़ा है?",
+    "id": "Seberapa Besar Bintang Terbesar di Alam Semesta?",
+    "fr": "Quelle est la taille de la plus grande étoile ?",
+    "de": "Wie groß ist der größte Stern im Universum?",
+    "ru": "Насколько огромна самая большая звезда?",
+    "az": "Ən Böyük Ulduz Nə Qədər Böyükdür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792275569.2721748,
+   "chars": 364,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -342,7 +372,8 @@
   "y003",
   "g002",
   "y004",
-  "y005"
+  "y005",
+  "n003"
  ],
  "extra": [
   {
@@ -358,7 +389,7 @@
    "oneri": true
   }
  ],
- "fail_streak": 3,
+ "fail_streak": 0,
  "runs": [
   {
    "finished": "2026-10-16T05:10:36+00:00",
@@ -491,6 +522,14 @@
    "finished": "2026-10-17T19:06:58+00:00",
    "mod": "saatlik",
    "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
+  },
+  {
+   "finished": "2026-10-17T22:19:30+00:00",
+   "mod": "zorla",
+   "title": "En Büyük Yıldız Ne Kadar Büyük?",
+   "url": "https://youtube.com/shorts/oyPgO_oDYlU",
+   "duration": 23.6,
+   "chars": 364
   }
  ],
  "yorumlar": {
