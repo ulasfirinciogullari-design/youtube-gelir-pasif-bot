@@ -21,6 +21,7 @@ push() {
 case "$MOD" in instagram|igdeneme|igpilot)
   pip install -q requests cryptography
   flag="--kontrol"; [ "$MOD" = "igdeneme" ] && flag="--deneme"; [ "$MOD" = "igpilot" ] && flag="--pilot"
+  command -v ffmpeg >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg >/dev/null; }
   out=$(python3 fabrika/instagram.py $flag | tail -n 1); echo "$out"
   push "$out"; exit 0
 esac

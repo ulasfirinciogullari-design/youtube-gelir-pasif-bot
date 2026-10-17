@@ -19,6 +19,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -112,7 +113,8 @@ def caption(ep):
     facts = [f.get("text", "") for f in ep.get("facts", []) if f.get("text")][:3]
     if facts:
         lines += ["Videodaki bilgiler:"] + [f"• {t}" for t in facts] + [""]
-    lines += ["Sen ne düşünüyorsun? Yorumlara yaz! 👇", "", "YouTube'da da buradayız: @yaolsaydibilim", ""]
+    # no @handle: on Instagram it would link to someone else's account
+    lines += ["Sen ne düşünüyorsun? Yorumlara yaz! 👇", "", "Tüm bölümler YouTube'da: Ya Olsaydı? (link profilde)", ""]
     tags, seen = [], set()
     for t in list(ep.get("hashtags") or []) + TAGS:
         t = "#" + re.sub(r"[^\w]", "", str(t).lstrip("#"))
@@ -187,6 +189,20 @@ def reel(tok, urls, text):
     raise IGError(f"Instagram videoyu işleyemedi: {st.get('status')}")
 
 
+def fit(video, cover, out):
+    """Instagram's feed (4:5) and profile grid (3:4) crop the middle of a 9:16 Reel, which cut off our title and
+    subtitles. Shrink the picture to 75% over a blurred copy of itself so both survive the crops -> (video, cover)."""
+    out.mkdir(exist_ok=True)
+    look = ("split[a][b];[a]scale=270:480,boxblur=20:2,scale=1080:1920,eq=brightness=-0.08[bg];"
+            "[b]scale=810:1440[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,format=yuv420p")
+    v, c = out / "ig_video.mp4", out / "ig_kapak.jpg"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-filter_complex", f"[0:v]{look}", "-c:v", "libx264",
+                    "-preset", "veryfast", "-crf", "20", "-c:a", "copy", "-movflags", "+faststart", str(v)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(cover), "-filter_complex", f"[0:v]scale=1080:1920,{look}",
+                    "-q:v", "2", str(c)], check=True)
+    return v, c
+
+
 def paylas(ep, video, cover, state):
     """Publish one episode as a Reel -> record for durum.json. Raises IGError when Instagram refuses."""
     report = {}
@@ -197,6 +213,10 @@ def paylas(ep, video, cover, state):
     if ep["id"] in ig.get("posted", {}):
         return {"skipped": "zaten paylaşıldı", **ig["posted"][ep["id"]]}
     me(tok, state)
+    try:
+        video, cover = fit(video, cover, Path(video).parent)
+    except (OSError, subprocess.CalledProcessError) as e:
+        report.setdefault("warnings", []).append(f"Instagram kırpma ayarı yapılamadı, video olduğu gibi gitti: {e}"[:300])
     tag = f"ig-{ep['id']}-{int(time.time())}"
     urls, rel = host({"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}, tag)
     try:
@@ -394,6 +414,9 @@ def pilot(state, report):
     x = json.loads((root / "youtube.json").read_text(encoding="utf-8"))["episodes"][0]
     ep = {"id": x["id"], "title": x["title"]["tr"], "summary": x["summary"]["tr"],
           "facts": [{"text": f["tr"]} for f in x["facts"]], "hashtags": x["tags"]}
+    old = state.get("instagram", {}).get("posted", {}).pop(ep["id"], None)
+    if old:  # a manual re-post: keep the earlier one on record
+        state["instagram"].setdefault("eski", []).append({"id": ep["id"], **old})
     report["paylasim"] = paylas(ep, root / x["video"], root / x["thumbnail"], state)
 
 
