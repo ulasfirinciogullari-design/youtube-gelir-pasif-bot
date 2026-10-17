@@ -119,7 +119,7 @@ def caption(ep):
         if len(t) > 2 and t.lower() not in seen:
             seen.add(t.lower())
             tags.append(t)
-    text = "\n".join(lines + [" ".join(tags[:20])])
+    text = "\n".join(lines + [" ".join(tags[:5])])  # Instagram is testing a 5-hashtag cap; more reads as spam
     return text.replace("<", "‹").replace(">", "›")[:2200]
 
 
@@ -383,19 +383,31 @@ def kontrol(state, report):
             unhost(rel, tag)
 
 
+def pilot(state, report):
+    """Post the pilot episode (pilot-ay/, made before the factory) as a Reel."""
+    root = HERE.parent / "pilot-ay"
+    x = json.loads((root / "youtube.json").read_text(encoding="utf-8"))["episodes"][0]
+    ep = {"id": x["id"], "title": x["title"]["tr"], "summary": x["summary"]["tr"],
+          "facts": [{"text": f["tr"]} for f in x["facts"]], "hashtags": x["tags"]}
+    report["paylasim"] = paylas(ep, root / x["video"], root / x["thumbnail"], state)
+
+
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--kontrol", action="store_true")
     g.add_argument("--cevap", action="store_true")
     g.add_argument("--deneme", action="store_true")
+    g.add_argument("--pilot", action="store_true")
     a = ap.parse_args()
     state = yorum.load_state()
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "cevap"}
+              "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "pilot" if a.pilot else "cevap"}
     try:
         if a.kontrol:
             kontrol(state, report)
+        elif a.pilot:
+            pilot(state, report)
         else:
             cevap(state, report, a.deneme)
     except (Exception, SystemExit) as e:  # never stop the episode run that follows
@@ -403,14 +415,15 @@ def main():
         print(report["error"], file=sys.stderr)
     if not a.deneme:
         yorum.save_state(state)  # also after an error, so a sent reply is never sent twice
-    if report.get("error") or report.get("items") or report.get("hesap") or a.deneme:
+    if report.get("error") or report.get("items") or report.get("hesap") or report.get("paylasim") or a.deneme:
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     sent = sum(1 for i in report.get("items", []) if i.get("result") == "gönderildi")
     why = report.get("skipped") or report.get("error", "")[:80]
     print(f"Instagram: {report.get('new', 0)} yeni, {sent} cevap" + (f" ({why})" if why else "")
           + (f", hesap @{report['hesap']['username']}" if report.get("hesap") else "")
-          + (f", video testi: {report['video_testi'][:60]}" if report.get("video_testi") else ""))
+          + (f", video testi: {report['video_testi'][:60]}" if report.get("video_testi") else "")
+          + (f", Reel: {report['paylasim'].get('url') or report['paylasim']}" if report.get("paylasim") else ""))
 
 
 if __name__ == "__main__":

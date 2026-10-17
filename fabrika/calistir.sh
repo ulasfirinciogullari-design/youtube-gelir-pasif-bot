@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: comment replies -> gate -> tools -> episode -> commit the outcome.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igpilot
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -18,9 +18,9 @@ push() {
   done
 }
 
-case "$MOD" in instagram|igdeneme)
+case "$MOD" in instagram|igdeneme|igpilot)
   pip install -q requests cryptography
-  flag="--kontrol"; [ "$MOD" = "igdeneme" ] && flag="--deneme"
+  flag="--kontrol"; [ "$MOD" = "igdeneme" ] && flag="--deneme"; [ "$MOD" = "igpilot" ] && flag="--pilot"
   out=$(python3 fabrika/instagram.py $flag | tail -n 1); echo "$out"
   push "$out"; exit 0
 esac
