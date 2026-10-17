@@ -1,44 +1,10 @@
 {
  "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "9",
-  "videos": "12"
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu",
+  "handle": "@zirveninkanunu",
+  "subscribers": "47",
+  "videos": "87"
  },
- "channel_now": {
-  "keywords": "\"ya olsaydı\" bilim \"bilim animasyonu\" uzay astronomi fizik dünya ay merak \"ilginç bilgiler\" eğitim animasyon \"ne olurdu\" \"türkçe bilim\" \"what if\" science \"science animation\" space astronomy",
-  "country": "TR",
-  "defaultLanguage": "tr"
- },
- "channel_filled": [],
- "playlists": {
-  "Ya Olsaydı?": "PLdqEnBOYj8wQ",
-  "Ne Kadar Büyük?": "PLeHWw6dhPXaw",
-  "1 Gün Boyunca": "PLcawGSnylmhU"
- },
- "episodes": {
-  "ay": {
-   "video_id": "-7OxhWXxc8w",
-   "url": "https://youtube.com/shorts/-7OxhWXxc8w",
-   "privacy": "public",
-   "playlist": "Ya Olsaydı?",
-   "status": {
-    "uploadStatus": "processed",
-    "privacyStatus": "public"
-   },
-   "thumbnail": true,
-   "captions": {
-    "tr": {
-     "id": "AUieDaZYI9S2HV7DzB6-n2ybqHYjSQCFZVTnjyyy9kdp",
-     "hash": "0f3381b0a3427089"
-    },
-    "en": {
-     "id": "AUieDaYsEbrL_Ar7WYHJyJWu6Xn3C9w4uTCl8s5nOUfn",
-     "hash": "de88d555f8b4bd6b"
-    }
-   },
-   "meta": "6a72beff510335ad"
-  }
- }
+ "error": "Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
 }
