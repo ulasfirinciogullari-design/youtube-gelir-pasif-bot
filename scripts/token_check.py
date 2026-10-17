@@ -30,6 +30,18 @@ try:
                        for c in items]
 except urllib.error.HTTPError as e:
     out = {"checked_at": now.isoformat(timespec="seconds"), "ok": False, "error": e.read().decode()[:300]}
+# The uploader (publish_to_youtube.py) asks for these scopes when it refreshes; Google refuses scopes the key lacks.
+asked = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.readonly",
+         "https://www.googleapis.com/auth/youtube.force-ssl"]
+for name, scopes in (("uploader_scopes", asked), ("without_readonly", [asked[0], asked[2]])):
+    try:
+        urllib.request.urlopen("https://oauth2.googleapis.com/token", timeout=30, data=urllib.parse.urlencode(
+            {"client_id": os.environ["YOUTUBE_CLIENT_ID"], "client_secret": os.environ["YOUTUBE_CLIENT_SECRET"],
+             "refresh_token": os.environ["YOUTUBE_REFRESH_TOKEN"], "grant_type": "refresh_token",
+             "scope": " ".join(scopes)}).encode()).read()
+        out[name] = "ok"
+    except urllib.error.HTTPError as e:
+        out[name] = e.read().decode()[:200]
 os.makedirs("channel-data", exist_ok=True)
 with open("channel-data/token_check.json", "w") as f:
     json.dump(out, f, indent=1)
