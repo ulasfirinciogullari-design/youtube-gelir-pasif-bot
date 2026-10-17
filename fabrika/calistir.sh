@@ -33,8 +33,9 @@ case "$MOD" in saatlik|yorum|yorumdeneme)
 esac
 
 if [ "$MOD" = "saatlik" ]; then
-  go=$(python3 fabrika/uret.py --kapi | sed -n 's/^go=//p')
-  if [ "$go" != "true" ]; then echo "Bu tur üretim yok."; push "$out"; exit 0; fi
+  go=$(python3 fabrika/uret.py --kapi 2> fabrika/_kapi.out | sed -n 's/^go=//p')
+  cat fabrika/_kapi.out
+  if [ "$go" != "true" ]; then echo "Bu tur üretim yok."; push "$out; $(head -n 1 fabrika/_kapi.out)"; exit 0; fi
 fi
 
 sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg >/dev/null

@@ -56,8 +56,10 @@ def gate(state, mod):
         return False, "bu saatin bölümü yüklendi"
     if eps and t - eps[-1].get("at", 0) < GAP_MIN * 60:
         return False, f"son yüklemeden bu yana {GAP_MIN} dakika geçmedi"
-    if sum(1 for e in eps if e.get("at", 0) > t - 86400) >= DAILY:
-        return False, f"son 24 saatte {DAILY} bölüm yüklendi"
+    # per UTC day, not the last 24 h: the slots are fixed hours, and a rolling window blocked the first
+    # morning slots of 2026-10-17 because of the previous day's hourly run
+    if sum(1 for e in eps if e.get("at", 0) >= t - t % 86400) >= DAILY:
+        return False, f"bugün {DAILY} bölüm yüklendi"
     if state.get("fail_streak", 0) >= 6 and t - state.get("last_fail", 0) < 3 * 3600:
         return False, "üst üste 6 deneme başarısız oldu, 3 saat bekleniyor"
     return True, "saat boş"
