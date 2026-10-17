@@ -1,20 +1,33 @@
 {
- "title": "Bilinen En Büyük Yıldız Ne Kadar Büyük?",
+ "title": "En Büyük Yıldız Ne Kadar Büyük?",
  "bar": {
-  "hi": "EN DEV",
-  "rest": "YILDIZ NE KADAR?"
+  "hi": "DEV YILDIZ",
+  "rest": " NE KADAR?"
  },
- "summary": "Evrende keşfettiğimiz en devasa yıldızın içine milyarlarca Güneş sığabiliyor. Boyutunu duyunca Güneş Sistemimiz size küçücük bir nokta gibi gelecek!",
+ "summary": "Evrende bilinen en büyük yıldız olan Stephenson 2-18, hayal gücünü zorlayan akılalmaz bir boyuta sahip. İçine milyarlarca Güneş sığdırabilen bu kırmızı süperdevin gerçek ölçeği sizi çok şaşırtacak.",
  "lines": [
   {
    "who": "pi",
-   "text": "Güneş'in yerine koysak, Satürn'e kadar her gezegeni yutardı.",
+   "text": "Stephenson 2-18'in içine yaklaşık 10 milyar Güneş sığabilir.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "☀️",
+    "value": "10.000.000.000",
+    "unit": "Güneş",
+    "label": "Hacim Kapasitesi",
+    "key": "milyar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş'in yerine koysak Satürn'e kadar tüm gezegenleri yutardı.",
    "v": {
     "t": "space",
     "bg": "space",
     "bodies": [
      {
-      "b": "star",
+      "b": "sun",
       "size": "xl",
       "at": "c"
      },
@@ -26,13 +39,13 @@
     ],
     "do": "grow",
     "target": 0,
-    "key": "Satürn'e",
-    "label": "Satürn yörüngesi"
+    "key": "yutardı",
+    "label": "Satürn Yörüngesi"
    }
   },
   {
-   "who": "pi",
-   "text": "Stephenson 2-18'in içine yaklaşık 10 milyar Güneş sığabiliyor.",
+   "who": "bit",
+   "text": "Güneşimiz yanında toz tanesi gibi kaldı!",
    "v": {
     "t": "compare",
     "bg": "space",
@@ -43,214 +56,199 @@
     },
     "b": {
      "b": "star",
-     "label": "Stephenson 2-18",
-     "value": 10000000000
+     "label": "St2-18",
+     "value": 2150
     },
     "mode": "size",
-    "key": "10 milyar"
+    "key": "toz"
    }
   },
   {
    "who": "pi",
-   "text": "Işık Güneş'i 14,5 saniyede, bu devi ise tam 9 saatte turluyor.",
-   "v": {
-    "t": "number",
-    "bg": "space",
-    "e": "⏱️",
-    "value": "9",
-    "unit": "saat",
-    "label": "Işık turu",
-    "key": "saatte"
-   }
-  },
-  {
-   "who": "bit",
-   "text": "Yolcu uçağıyla etrafını dönmek 1.200 yıl sürerdi!",
-   "v": {
-    "t": "icon",
-    "bg": "space",
-    "e": "✈️",
-    "do": "spin",
-    "key": "1.200",
-    "label": "1.200 yıl uçuş"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Fakat o kadar şişkin ki, yoğunluğu Dünya havasından bile seyrek.",
+   "text": "Işık Güneş'i 15 saniyede, bu devi ise ancak 9 saatte turlar.",
    "v": {
     "t": "split",
     "bg": "space",
     "left": {
-     "e": "💨",
-     "label": "Dünya havası"
+     "e": "⚡",
+     "label": "Güneş: 15 sn"
     },
     "right": {
-     "e": "🔴",
-     "label": "Dev yıldız"
+     "e": "⏳",
+     "label": "St2-18: 9 saat"
     },
-    "key": "seyrek"
+    "key": "saatte"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Buna rağmen ortalama yoğunluğu havanın 100 binde birinden bile az.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "💨",
+    "do": "pulse",
+    "key": "yoğunluğu",
+    "label": "Gaz Balonu"
    }
   },
   {
    "who": "bit",
-   "text": "Sen bu devin yanında yaşar mıydın? Yorumlara yaz!",
+   "text": "Böyle bir devin komşusu olmak ister miydin? Yorumlara yaz!",
    "v": {
     "t": "outro",
     "bg": "space",
-    "e": "🚀"
+    "e": "🪐"
    }
   }
  ],
  "facts": [
   {
-   "text": "Stephenson 2-18, Güneş'in yaklaşık 2.150 katı yarıçapıyla Güneş Sistemi'nin merkezine konsaydı Satürn'ün yörüngesini dahi içine alırdı.",
-   "source": "The Astronomical Journal",
-   "url": "https://iopscience.iop.org/journal/1538-3881"
+   "text": "Stephenson 2-18'in yarıçapı Güneş'in yaklaşık 2.150 katıdır ve hacmi içine yaklaşık 10 milyar Güneş alabilir.",
+   "source": "The Astrophysical Journal",
+   "url": "https://iopscience.iop.org/"
   },
   {
-   "text": "Stephenson 2-18 yıldızının hacmi, Güneş'in hacminin yaklaşık 10 milyar katıdır.",
+   "text": "Güneş Sistemi'nin merkezine yerleştirilseydi Merkür, Venüs, Dünya, Mars ve Jüpiter'i yutup Satürn'ün yörüngesine ulaşırdı.",
    "source": "NASA",
-   "url": "https://www.nasa.gov"
+   "url": "https://www.nasa.gov/"
   },
   {
-   "text": "Işığın Güneş etrafında tam bir tur atması yaklaşık 14,5 saniye sürerken, Stephenson 2-18 çevresini dolaşması yaklaşık 9 saat alır.",
-   "source": "Universe Today",
-   "url": "https://www.universetoday.com"
+   "text": "Işığın Güneş etrafında tam bir tur atması 14,6 saniye sürerken, Stephenson 2-18 çevresinde dönmesi yaklaşık 8 saat 45 dakika sürer.",
+   "source": "NASA Jet Propulsion Laboratory",
+   "url": "https://www.jpl.nasa.gov/"
   },
   {
-   "text": "Kırmızı üstdevler son evrelerinde aşırı genişledikleri için ortalama yoğunlukları deniz seviyesindeki Dünya atmosferinden milyonlarca kat daha düşüktür.",
-   "source": "Astronomy & Astrophysics",
-   "url": "https://www.aanda.org"
+   "text": "Trilyonlarca kat büyük hacmine rağmen kütlesi yalnızca 30 ila 50 Güneş kütlesi civarındadır; dış katmanları son derece seyreltik bir gaz bulutudur.",
+   "source": "European Southern Observatory",
+   "url": "https://www.eso.org/"
   }
  ],
  "tags": [
-  "stephenson 2 18",
+  "Stephenson 2-18",
   "en büyük yıldız",
-  "largest star",
-  "uzay",
   "astronomi",
+  "uzay",
   "güneş",
-  "evren",
-  "kızıl üstdev",
-  "ne kadar büyük",
-  "uzay belgeseli",
+  "yıldızlar",
+  "kırmızı süperdev",
+  "evrenin ölçeği",
   "ya olsaydı",
   "bilim",
   "animasyon",
   "what if",
-  "science"
+  "science",
+  "largest star"
  ],
  "hashtags": [
-  "#enbüyükyıldız",
-  "#uzay",
-  "#stephenson218"
+  "#EnBüyükYıldız",
+  "#Uzay",
+  "#Stephenson218"
  ],
  "cover": 1,
  "sources": [
   "https://en.wikipedia.org/wiki/Stephenson_2_DFK_1",
-  "https://simple.wikipedia.org/wiki/Stephenson_2-18",
-  "https://iopscience.iop.org/journal/1538-3881"
+  "https://simple.wikipedia.org/wiki/Stephenson_2-18"
  ],
  "i18n": {
   "en": {
-   "title": "How Big Is the Largest Known Star?",
-   "summary": "Billions of Suns could fit inside the most massive star discovered in the universe. Once you hear its size, our Solar System will feel like a tiny speck!",
+   "title": "How Big Is the Biggest Star in the Universe?",
+   "summary": "Stephenson 2-18, the largest known star in the universe, has a mind-boggling size that defies imagination. The true scale of this red supergiant, capable of holding billions of Suns inside, will shock you.",
    "facts": [
-    "With a radius roughly 2,150 times that of the Sun, Stephenson 2-18 would engulf even Saturn's orbit if placed at the center of the Solar System.",
-    "The volume of Stephenson 2-18 is approximately 10 billion times that of the Sun.",
-    "While it takes light about 14.5 seconds to circle the Sun, orbiting Stephenson 2-18 takes roughly 9 hours.",
-    "Because red supergiants expand immensely in their final stages, their average density is millions of times lower than Earth's atmosphere at sea level."
+    "The radius of Stephenson 2-18 is about 2,150 times that of the Sun, and its volume could hold roughly 10 billion Suns.",
+    "If placed at the center of the Solar System, it would engulf Mercury, Venus, Earth, Mars, and Jupiter, reaching Saturn's orbit.",
+    "While it takes light 14.6 seconds to circle the Sun once, orbiting Stephenson 2-18 would take approximately 8 hours and 45 minutes.",
+    "Despite being trillions of times larger in volume, its mass is only around 30 to 50 solar masses; its outer layers are an extremely tenuous gas cloud."
    ]
   },
   "es": {
-   "title": "¿Qué tan grande es la estrella más grande conocida?",
-   "summary": "Miles de millones de Soles podrían caber dentro de la estrella más descomunal descubierta en el universo. ¡Al conocer su tamaño, nuestro sistema solar parecerá un diminuto punto!",
+   "title": "¿Qué tan grande es la estrella más grande?",
+   "summary": "Stephenson 2-18, la estrella más grande conocida en el universo, posee un tamaño alucinante que desafía la imaginación. La escala real de esta supergigante roja, capaz de albergar miles de millones de Soles en su interior, te sorprenderá.",
    "facts": [
-    "Con un radio unas 2.150 veces mayor que el del Sol, Stephenson 2-18 engulliría incluso la órbita de Saturno si se colocara en el centro del sistema solar.",
-    "El volumen de Stephenson 2-18 es aproximadamente 10.000 millones de veces el del Sol.",
-    "Mientras que la luz tarda unos 14,5 segundos en dar una vuelta completa al Sol, rodear Stephenson 2-18 le toma unas 9 horas.",
-    "Debido a que las supergigantes rojas se expanden enormemente en sus etapas finales, su densidad media es millones de veces menor que la atmósfera terrestre a nivel del mar."
+    "El radio de Stephenson 2-18 es aproximadamente 2.150 veces el del Sol y su volumen puede albergar cerca de 10.000 millones de Soles.",
+    "Si se colocara en el centro del sistema solar, engulliría a Mercurio, Venus, la Tierra, Marte y Júpiter, alcanzando la órbita de Saturno.",
+    "Mientras que la luz tarda 14,6 segundos en dar una vuelta completa al Sol, rodear Stephenson 2-18 le toma unas 8 horas y 45 minutos.",
+    "A pesar de ser billones de veces más grande en volumen, su masa es de solo unas 30 a 50 masas solares; sus capas exteriores son una nube de gas extremadamente difusa."
    ]
   },
   "pt": {
-   "title": "Quão grande é a maior estrela conhecida?",
-   "summary": "Bilhões de Sóis caberiam dentro da estrela mais colossal já descoberta no universo. Ao saber o tamanho dela, nosso Sistema Solar parecerá um ponto minúsculo!",
+   "title": "Quão grande é a maior estrela do universo?",
+   "summary": "Stephenson 2-18, a maior estrela conhecida no universo, tem um tamanho inacreditável que desafia a imaginação. A verdadeira escala desta supergigante vermelha, capaz de abrigar bilhões de Sóis, vai surpreender você.",
    "facts": [
-    "Com um raio cerca de 2.150 vezes o do Sol, Stephenson 2-18 engoliria até a órbita de Saturno se fosse colocada no centro do Sistema Solar.",
-    "O volume de Stephenson 2-18 é cerca de 10 bilhões de vezes o volume do Sol.",
-    "Enquanto a luz leva cerca de 14,5 segundos para dar uma volta completa no Sol, contornar Stephenson 2-18 leva aproximadamente 9 horas.",
-    "Como as supergigantes vermelhas se expandem imensamente em seus estágios finais, sua densidade média é milhões de vezes menor que a da atmosfera da Terra ao nível do mar."
+    "O raio de Stephenson 2-18 é cerca de 2.150 vezes o do Sol, e seu volume pode conter aproximadamente 10 bilhões de Sóis.",
+    "Se fosse colocada no centro do Sistema Solar, engoliria Mercúrio, Vênus, Terra, Marte e Júpiter, alcançando a órbita de Saturno.",
+    "Enquanto a luz leva 14,6 segundos para dar uma volta completa ao redor do Sol, percorrer a Stephenson 2-18 leva cerca de 8 horas e 45 minutos.",
+    "Apesar do volume trilhões de vezes maior, sua massa é de apenas cerca de 30 a 50 massas solares; suas camadas externas são uma nuvem de gás extremamente rarefeita."
    ]
   },
   "ar": {
-   "title": "ما مدى ضخامة أكبر نجم معروف في الكون؟",
-   "summary": "يمكن لمليارات الشموس أن تتسع داخل أضخم نجم تم اكتشافه في الكون. عندما تسمع عن حجمه، سيبدو نظامنا الشمسي كنقطة بالغة الصغر!",
+   "title": "ما مدى ضخامة أكبر نجم في الكون؟",
+   "summary": "يمتلك ستيفنسون 2-18، أكبر نجم معروف في الكون، حجمًا مذهلاً يفوق الخيال. إن المقياس الحقيقي لهذا العملاق الأحمر الفائق، القادر على استيعاب مليارات الشموس بداخله، سيصدمك تمامًا.",
    "facts": [
-    "بنصف قطر يعادل حوالي 2150 ضعف نصف قطر الشمس، لو وُضع ستيفنسون 2-18 في مركز النظام الشمسي لابتلع حتى مدار زحل.",
-    "يبلغ حجم النجم ستيفنسون 2-18 حوالي 10 مليارات ضعف حجم الشمس.",
-    "بينما يستغرق الضوء نحو 14.5 ثانية للدوران دورة كاملة حول الشمس، فإنه يستغرق حوالي 9 ساعات للدوران حول ستيفنسون 2-18.",
-    "نظراً لتمدد العمالقة الحمر الفائقة بشكل هائل في مراحلها الأخيرة، فإن متوسط كثافتها أقل بملايين المرات من كثافة الغلاف الجوي للأرض عند مستوى سطح البحر."
+    "يبلغ نصف قطر ستيفنسون 2-18 حوالي 2150 ضعف نصف قطر الشمس، ويمكن لحجمه أن يستوعب نحو 10 مليارات شمس.",
+    "لو وُضع في مركز المجموعة الشمسية، لابتلع عطارد والزهرة والأرض والمريخ والمشتري، ووصل إلى مدار زحل.",
+    "بينما يستغرق الضوء 14.6 ثانية لإكمال دورة كاملة حول الشمس، يستغرق نحو 8 ساعات و45 دقيقة للدوران حول ستيفنسون 2-18.",
+    "على الرغم من حجمه الأكبر بتريليونات المرات، فإن كتلته تبلغ فقط حوالي 30 إلى 50 كتلة شمسية؛ حيث تشكل طبقاته الخارجية سحابة غازية شديدة التخلخل."
    ]
   },
   "hi": {
-   "title": "ज्ञात ब्रह्मांड का सबसे बड़ा तारा कितना बड़ा है?",
-   "summary": "ब्रह्मांड में खोजे गए सबसे विशाल तारे के अंदर अरबों सूर्य समा सकते हैं। इसका आकार जानकर हमारा सौरमंडल आपको एक नन्हा सा बिंदु लगेगा!",
+   "title": "ब्रह्मांड का सबसे बड़ा तारा कितना विशाल है?",
+   "summary": "ब्रह्मांड का सबसे बड़ा ज्ञात तारा, स्टीफेंसन 2-18, कल्पना से परे अविश्वसनीय आकार का है। अपने भीतर अरबों सूर्यों को समा सकने वाले इस लाल सुपरजायंट का वास्तविक आकार आपको हैरान कर देगा।",
    "facts": [
-    "सूर्य से लगभग 2,150 गुना अधिक त्रिज्या वाला स्टीफनसन 2-18 अगर सौरमंडल के केंद्र में रख दिया जाए, तो वह शनि की कक्षा को भी निगल जाएगा।",
-    "स्टीफनसन 2-18 तारे का आयतन सूर्य के आयतन से लगभग 10 अरब गुना अधिक है।",
-    "प्रकाश को सूर्य का एक पूरा चक्कर लगाने में लगभग 14.5 सेकंड लगते हैं, जबकि स्टीफनसन 2-18 का चक्कर लगाने में लगभग 9 घंटे लग जाते हैं।",
-    "लाल महादानव तारे अपने अंतिम चरणों में अत्यधिक फैल जाते हैं, इसलिए उनका औसत घनत्व समुद्र तल पर पृथ्वी के वायुमंडल से लाखों गुना कम होता है।"
+    "स्टीफेंसन 2-18 की त्रिज्या सूर्य से लगभग 2,150 गुना अधिक है और इसके आयतन में लगभग 10 अरब सूर्य समा सकते हैं।",
+    "यदि इसे सौरमंडल के केंद्र में रखा जाए, तो यह बुध, शुक्र, पृथ्वी, मंगल और बृहस्पति को निगलते हुए शनि की कक्षा तक पहुँच जाएगा।",
+    "प्रकाश को सूर्य का एक पूरा चक्कर लगाने में 14.6 सेकंड लगते हैं, जबकि स्टीफेंसन 2-18 का चक्कर लगाने में लगभग 8 घंटे 45 मिनट का समय लगता है।",
+    "खरबों गुना बड़ा आयतन होने के बावजूद इसका द्रव्यमान केवल 30 से 50 सौर द्रव्यमान के आसपास है; इसकी बाहरी परतें बेहद विरल गैस का बादल हैं।"
    ]
   },
   "id": {
-   "title": "Seberapa Besar Bintang Terbesar yang Diketahui?",
-   "summary": "Miliaran Matahari bisa muat di dalam bintang paling masif yang pernah ditemukan di alam semesta. Saat mendengar ukurannya, Tata Surya kita akan terasa seperti titik kecil!",
+   "title": "Seberapa Besar Bintang Terbesar di Alam Semesta?",
+   "summary": "Stephenson 2-18, bintang terbesar yang diketahui di alam semesta, memiliki ukuran luar biasa yang sulit dibayangkan. Skala sesungguhnya dari bintang super raksasa merah ini, yang mampu menampung miliaran Matahari, akan mengejutkan Anda.",
    "facts": [
-    "Dengan radius sekitar 2.150 kali lipat Matahari, Stephenson 2-18 bahkan akan menelan orbit Saturnus jika diletakkan di pusat Tata Surya.",
-    "Volume bintang Stephenson 2-18 sekitar 10 miliar kali lebih besar dari volume Matahari.",
-    "Jika cahaya butuh sekitar 14,5 detik untuk mengelilingi Matahari satu kali putaran penuh, mengelilingi Stephenson 2-18 membutuhkan waktu sekitar 9 jam.",
-    "Karena bintang maharaksasa merah mengembang sangat besar pada fase akhirnya, kepadatan rata-ratanya jutaan kali lebih rendah dibanding atmosfer Bumi di permukaan laut."
+    "Radius Stephenson 2-18 sekitar 2.150 kali lipat radius Matahari, dan volumenya dapat memuat sekitar 10 miliar Matahari.",
+    "Jika ditempatkan di pusat Tata Surya, ia akan menelan Merkurius, Venus, Bumi, Mars, dan Jupiter, hingga mencapai orbit Saturnus.",
+    "Cahaya membutuhkan 14,6 detik untuk mengelilingi Matahari satu putaran penuh, sedangkan untuk mengelilingi Stephenson 2-18 butuh sekitar 8 jam 45 menit.",
+    "Meski volumenya triliunan kali lebih besar, massanya hanya sekitar 30 hingga 50 massa Matahari; lapisan luarnya hanyalah awan gas yang sangat renggang."
    ]
   },
   "fr": {
-   "title": "Quelle est la taille de la plus grande étoile connue ?",
-   "summary": "Des milliards de Soleils pourraient tenir dans la plus gigantesque étoile découverte dans l'univers. En apprenant sa taille, notre système solaire vous semblera n'être qu'un minuscule point !",
+   "title": "Quelle est la taille de la plus grande étoile ?",
+   "summary": "Stephenson 2-18, la plus grande étoile connue de l'univers, possède une taille vertigineuse qui dépasse l'imagination. L'échelle réelle de cette supergéante rouge, capable d'engloutir des milliards de Soleils, va vous stupéfier.",
    "facts": [
-    "Avec un rayon d'environ 2 150 fois celui du Soleil, Stephenson 2-18 engloutirait même l'orbite de Saturne s'il était placé au centre du système solaire.",
-    "Le volume de l'étoile Stephenson 2-18 équivaut à environ 10 milliards de fois celui du Soleil.",
-    "Alors qu'il faut environ 14,5 secondes à la lumière pour faire le tour du Soleil, contourner Stephenson 2-18 lui prend environ 9 heures.",
-    "Parce que les supergéantes rouges se dilatent démesurément dans leurs phases finales, leur densité moyenne est des millions de fois inférieure à celle de l'atmosphère terrestre au niveau de la mer."
+    "Le rayon de Stephenson 2-18 est environ 2 150 fois supérieur à celui du Soleil, et son volume pourrait contenir environ 10 milliards de Soleils.",
+    "Si elle était placée au centre du système solaire, elle engloutirait Mercure, Vénus, la Terre, Mars et Jupiter, atteignant l'orbite de Saturne.",
+    "Alors qu'il faut 14,6 secondes à la lumière pour faire le tour complet du Soleil, il lui faut environ 8 heures et 45 minutes pour faire le tour de Stephenson 2-18.",
+    "Malgré un volume des billions de fois plus gigantesque, sa masse n'est que d'environ 30 à 50 masses solaires ; ses couches externes forment un nuage de gaz extrêmement ténu."
    ]
   },
   "de": {
-   "title": "Wie groß ist der größte bekannte Stern?",
-   "summary": "Milliarden Sonnen könnten in den gigantischsten im Universum entdeckten Stern passen. Wenn Sie seine Größe erfahren, wird Ihnen unser Sonnensystem wie ein winziger Punkt vorkommen!",
+   "title": "Wie groß ist der größte Stern im Universum?",
+   "summary": "Stephenson 2-18, der größte bekannte Stern des Universums, besitzt eine unfassbare Größe, die jede Vorstellungskraft sprengt. Die wahre Dimension dieses Roten Übergiganten, der Milliarden Sonnen fassen könnte, wird Sie verblüffen.",
    "facts": [
-    "Mit einem Radius, der etwa 2.150-mal so groß wie der der Sonne ist, würde Stephenson 2-18 selbst die Saturnbahn verschlingen, stünde er im Zentrum des Sonnensystems.",
-    "Das Volumen von Stephenson 2-18 entspricht etwa dem 10-Milliardenfachen des Sonnenvolumens.",
-    "Während das Licht rund 14,5 Sekunden für eine komplette Umrundung der Sonne braucht, benötigt es bei Stephenson 2-18 etwa 9 Stunden.",
-    "Da sich Rote Überriesen in ihren Endstadien extrem ausdehnen, ist ihre mittlere Dichte millionenfach geringer als die der Erdatmosphäre auf Meereshöhe."
+    "Der Radius von Stephenson 2-18 ist etwa 2.150-mal so groß wie der der Sonne, und sein Volumen könnte rund 10 Milliarden Sonnen aufnehmen.",
+    "Stünde er im Zentrum unseres Sonnensystems, würde er Merkur, Venus, Erde, Mars und Jupiter verschlingen und bis zur Saturnbahn reichen.",
+    "Während Licht für eine komplette Sonnenumrundung 14,6 Sekunden braucht, dauert eine Umrundung von Stephenson 2-18 etwa 8 Stunden und 45 Minuten.",
+    "Trotz seines billionenfach größeren Volumens beträgt seine Masse nur etwa 30 bis 50 Sonnenmassen; seine äußeren Schichten sind eine extrem dünne Gaswolke."
    ]
   },
   "ru": {
-   "title": "Насколько велика самая большая известная звезда?",
-   "summary": "Миллиарды Солнц могли бы поместиться внутри самой колоссальной звезды, открытой во Вселенной. Узнав её размеры, вы почувствуете, что наша Солнечная система — лишь крошечная точка!",
+   "title": "Насколько велика самая большая звезда?",
+   "summary": "Стивенсон 2-18, крупнейшая известная звезда во Вселенной, обладает невероятными размерами, поражающими воображение. Истинный масштаб этого красного гипергиганта, способного вместить миллиарды Солнц, вас поразит.",
    "facts": [
-    "Имея радиус примерно в 2 150 раз больше солнечного, Стивенсон 2-18 поглотил бы даже орбиту Сатурна, если бы находился в центре Солнечной системы.",
-    "Объём звезды Стивенсон 2-18 примерно в 10 миллиардов раз превышает объём Солнца.",
-    "Если свет совершает полный оборот вокруг Солнца примерно за 14,5 секунды, то на облёт Стивенсон 2-18 у него уходит около 9 часов.",
-    "Поскольку красные сверхгиганты колоссально расширяются на финальных стадиях, их средняя плотность в миллионы раз ниже плотности атмосферы Земли на уровне моря."
+    "Радиус Стивенсон 2-18 примерно в 2 150 раз больше солнечного, а в её объёме могло бы поместиться около 10 миллиардов Солнц.",
+    "Если бы она находилась в центре Солнечной системы, то поглотила бы Меркурий, Венеру, Землю, Марс и Юпитер, достигнув орбиты Сатурна.",
+    "Если свет огибает Солнце за 14,6 секунды, то на один оборот вокруг Стивенсон 2-18 ему требуется около 8 часов 45 минут.",
+    "Несмотря на триллионные масштабы объёма, её масса составляет всего от 30 до 50 масс Солнца; внешние слои представляют собой крайне разреженное газовое облако."
    ]
   },
   "az": {
-   "title": "Məlum olan ən böyük ulduz nə qədər böyükdür?",
-   "summary": "Kainatda kəşf etdiyimiz ən nəhəng ulduzun içinə milyardlarla Günəş sığa bilər. Ölçüsünü eşitdikdə Günəş sistemimiz sizə kiçik bir nöqtə kimi görünəcək!",
+   "title": "Ən böyük ulduz nə qədər böyükdür?",
+   "summary": "Kainatda məlum olan ən böyük ulduz Stephenson 2-18 təxəyyülə sığmayan ağlasığmaz ölçüyə malikdir. İçinə milyardlarla Günəş sığdıra bilən bu qırmızı supernəhəngin həqiqi miqyası sizi heyrətləndirəcək.",
    "facts": [
-    "Stephenson 2-18 Günəşdən təxminən 2 150 dəfə böyük radiusu ilə Günəş sisteminin mərkəzinə qoyulsaydı, hətta Saturnun orbitini belə içinə alardı.",
-    "Stephenson 2-18 ulduzunun həcmi Günəşin həcmindən təxminən 10 milyard dəfə böyükdür.",
-    "İşığın Günəş ətrafında tam bir dövrə vurması təxminən 14,5 saniyə çəkdiyi halda, Stephenson 2-18-in ətrafında dövr etməsi təxminən 9 saat çəkir.",
-    "Qırmızı ifratnəhənglər son mərhələlərində həddindən artıq genişləndikləri üçün orta sıxlıqları dəniz səviyyəsindəki Yer atmosferindən milyonlarla dəfə aşağıdır."
+    "Stephenson 2-18-in radiusu Günəşinkindən təxminən 2.150 dəfə böyükdür və həcminə təxminən 10 milyard Günəş yerləşə bilər.",
+    "Günəş sisteminin mərkəzində yerləşsəydi, Merkuri, Venera, Yer, Mars və Yupiteri udub Saturnun orbitinə qədər çatardı.",
+    "İşığın Günəş ətrafında tam bir dövrə vurması 14,6 saniyə çəkdiyi halda, Stephenson 2-18 ətrafında fırlanması təxminən 8 saat 45 dəqiqə çəkir.",
+    "Trilyonlarla dəfə böyük həcminə baxmayaraq, kütləsi cəmi 30-50 Günəş kütləsi civarındadır; xarici təbəqələri son dərəcə seyrək bir qaz bulududur."
    ]
   }
  },
@@ -260,297 +258,297 @@
  "timings": [
   {
    "t0": 0.35,
-   "t1": 3.508,
-   "words": [
-    {
-     "w": "Güneş'in",
-     "t0": 0.35,
-     "t1": 0.745
-    },
-    {
-     "w": "yerine",
-     "t0": 0.7909999999999999,
-     "t1": 1.047
-    },
-    {
-     "w": "koysak,",
-     "t0": 1.093,
-     "t1": 1.5459999999999998
-    },
-    {
-     "w": "Satürn'e",
-     "t0": 1.581,
-     "t1": 1.9409999999999998
-    },
-    {
-     "w": "kadar",
-     "t0": 1.987,
-     "t1": 2.208
-    },
-    {
-     "w": "her",
-     "t0": 2.266,
-     "t1": 2.37
-    },
-    {
-     "w": "gezegeni",
-     "t0": 2.4170000000000003,
-     "t1": 2.8000000000000003
-    },
-    {
-     "w": "yutardı.",
-     "t0": 2.823,
-     "t1": 3.508
-    }
-   ]
-  },
-  {
-   "t0": 3.708,
-   "t1": 7.656000000000001,
+   "t1": 4.297,
    "words": [
     {
      "w": "Stephenson",
-     "t0": 3.708,
-     "t1": 4.312
+     "t0": 0.35,
+     "t1": 0.977
     },
     {
      "w": "2-18'in",
-     "t0": 4.474,
-     "t1": 5.241
+     "t0": 1.232,
+     "t1": 2.033
     },
     {
      "w": "içine",
-     "t0": 5.287,
-     "t1": 5.543
+     "t0": 2.068,
+     "t1": 2.323
     },
     {
      "w": "yaklaşık",
-     "t0": 5.578,
-     "t1": 5.984
+     "t0": 2.346,
+     "t1": 2.7640000000000002
     },
     {
      "w": "10",
-     "t0": 6.088,
-     "t1": 6.193
+     "t0": 2.869,
+     "t1": 2.95
     },
     {
      "w": "milyar",
-     "t0": 6.216,
-     "t1": 6.506
+     "t0": 3.008,
+     "t1": 3.298
     },
     {
      "w": "Güneş",
-     "t0": 6.564,
-     "t1": 6.773
+     "t0": 3.357,
+     "t1": 3.5660000000000003
     },
     {
-     "w": "sığabiliyor.",
-     "t0": 6.82,
-     "t1": 7.656000000000001
+     "w": "sığabilir.",
+     "t0": 3.612,
+     "t1": 4.297
     }
    ]
   },
   {
-   "t0": 7.856,
-   "t1": 12.314,
+   "t0": 4.497392290249433,
+   "t1": 7.794392290249434,
    "words": [
     {
-     "w": "Işık",
-     "t0": 7.856,
-     "t1": 8.145999999999999
+     "w": "Güneş'in",
+     "t0": 4.497392290249433,
+     "t1": 4.938392290249433
     },
     {
-     "w": "Güneş'i",
-     "t0": 8.181,
-     "t1": 8.587
+     "w": "yerine",
+     "t0": 4.9853922902494325,
+     "t1": 5.240392290249433
     },
     {
-     "w": "14,5",
-     "t0": 8.785,
-     "t1": 9.772
+     "w": "koysak",
+     "t0": 5.298392290249433,
+     "t1": 5.646392290249433
     },
     {
-     "w": "saniyede,",
-     "t0": 9.795,
-     "t1": 10.259
-    },
-    {
-     "w": "bu",
-     "t0": 10.283,
-     "t1": 10.387
-    },
-    {
-     "w": "devi",
-     "t0": 10.434,
-     "t1": 10.619
-    },
-    {
-     "w": "ise",
-     "t0": 10.666,
-     "t1": 10.817
-    },
-    {
-     "w": "tam",
-     "t0": 10.875,
-     "t1": 11.014
-    },
-    {
-     "w": "9",
-     "t0": 11.072,
-     "t1": 11.328
-    },
-    {
-     "w": "saatte",
-     "t0": 11.350999999999999,
-     "t1": 11.629
-    },
-    {
-     "w": "turluyor.",
-     "t0": 11.676,
-     "t1": 12.314
-    }
-   ]
-  },
-  {
-   "t0": 12.694231292517006,
-   "t1": 15.945231292517006,
-   "words": [
-    {
-     "w": "Yolcu",
-     "t0": 12.694231292517006,
-     "t1": 13.066231292517006
-    },
-    {
-     "w": "uçağıyla",
-     "t0": 13.100231292517007,
-     "t1": 13.530231292517007
-    },
-    {
-     "w": "etrafını",
-     "t0": 13.588231292517007,
-     "t1": 14.146231292517006
-    },
-    {
-     "w": "dönmek",
-     "t0": 14.169231292517006,
-     "t1": 14.517231292517007
-    },
-    {
-     "w": "1.200",
-     "t0": 14.575231292517007,
-     "t1": 15.063231292517006
-    },
-    {
-     "w": "yıl",
-     "t0": 15.098231292517006,
-     "t1": 15.237231292517006
-    },
-    {
-     "w": "sürerdi!",
-     "t0": 15.295231292517006,
-     "t1": 15.945231292517006
-    }
-   ]
-  },
-  {
-   "t0": 16.3344126984127,
-   "t1": 19.6314126984127,
-   "words": [
-    {
-     "w": "Fakat",
-     "t0": 16.3344126984127,
-     "t1": 16.6134126984127
-    },
-    {
-     "w": "o",
-     "t0": 16.682412698412698,
-     "t1": 16.7064126984127
+     "w": "Satürn'e",
+     "t0": 5.693392290249433,
+     "t1": 6.029392290249433
     },
     {
      "w": "kadar",
-     "t0": 16.752412698412698,
-     "t1": 16.984412698412697
+     "t0": 6.064392290249433,
+     "t1": 6.2963922902494325
     },
     {
-     "w": "şişkin",
-     "t0": 17.042412698412697,
-     "t1": 17.3444126984127
+     "w": "tüm",
+     "t0": 6.331392290249433,
+     "t1": 6.494392290249433
     },
     {
-     "w": "ki,",
-     "t0": 17.4024126984127,
-     "t1": 17.5304126984127
+     "w": "gezegenleri",
+     "t0": 6.540392290249433,
+     "t1": 7.086392290249433
     },
     {
-     "w": "yoğunluğu",
-     "t0": 17.5534126984127,
-     "t1": 17.9714126984127
-    },
-    {
-     "w": "Dünya",
-     "t0": 18.0174126984127,
-     "t1": 18.284412698412698
-    },
-    {
-     "w": "havasından",
-     "t0": 18.3314126984127,
-     "t1": 18.784412698412698
-    },
-    {
-     "w": "bile",
-     "t0": 18.8184126984127,
-     "t1": 18.981412698412697
-    },
-    {
-     "w": "seyrek.",
-     "t0": 19.0274126984127,
-     "t1": 19.6314126984127
+     "w": "yutardı.",
+     "t0": 7.109392290249433,
+     "t1": 7.794392290249434
     }
    ]
   },
   {
-   "t0": 20.0116462585034,
-   "t1": 22.611646258503402,
+   "t0": 8.174625850340135,
+   "t1": 10.449625850340135,
    "words": [
     {
-     "w": "Sen",
-     "t0": 20.0116462585034,
-     "t1": 20.1856462585034
-    },
-    {
-     "w": "bu",
-     "t0": 20.2326462585034,
-     "t1": 20.3016462585034
-    },
-    {
-     "w": "devin",
-     "t0": 20.3486462585034,
-     "t1": 20.5576462585034
+     "w": "Güneşimiz",
+     "t0": 8.174625850340135,
+     "t1": 8.662625850340135
     },
     {
      "w": "yanında",
-     "t0": 20.5916462585034,
-     "t1": 20.9056462585034
+     "t0": 8.720625850340134,
+     "t1": 8.975625850340135
     },
     {
-     "w": "yaşar",
-     "t0": 20.986646258503402,
-     "t1": 21.2886462585034
+     "w": "toz",
+     "t0": 9.022625850340136,
+     "t1": 9.242625850340135
     },
     {
-     "w": "mıydın?",
-     "t0": 21.3466462585034,
-     "t1": 21.6136462585034
+     "w": "tanesi",
+     "t0": 9.276625850340135,
+     "t1": 9.648625850340135
+    },
+    {
+     "w": "gibi",
+     "t0": 9.683625850340135,
+     "t1": 9.857625850340135
+    },
+    {
+     "w": "kaldı!",
+     "t0": 9.892625850340135,
+     "t1": 10.449625850340135
+    }
+   ]
+  },
+  {
+   "t0": 10.838253968253968,
+   "t1": 14.413253968253969,
+   "words": [
+    {
+     "w": "Işık",
+     "t0": 10.838253968253968,
+     "t1": 11.105253968253967
+    },
+    {
+     "w": "Güneş'i",
+     "t0": 11.128253968253967,
+     "t1": 11.477253968253967
+    },
+    {
+     "w": "15",
+     "t0": 11.546253968253968,
+     "t1": 11.836253968253967
+    },
+    {
+     "w": "saniyede,",
+     "t0": 11.871253968253967,
+     "t1": 12.428253968253967
+    },
+    {
+     "w": "bu",
+     "t0": 12.463253968253968,
+     "t1": 12.567253968253969
+    },
+    {
+     "w": "devi",
+     "t0": 12.614253968253967,
+     "t1": 12.800253968253967
+    },
+    {
+     "w": "ise",
+     "t0": 12.823253968253967,
+     "t1": 12.939253968253968
+    },
+    {
+     "w": "ancak",
+     "t0": 12.974253968253969,
+     "t1": 13.218253968253968
+    },
+    {
+     "w": "9",
+     "t0": 13.264253968253968,
+     "t1": 13.496253968253967
+    },
+    {
+     "w": "saatte",
+     "t0": 13.519253968253967,
+     "t1": 13.786253968253968
+    },
+    {
+     "w": "turlar.",
+     "t0": 13.833253968253967,
+     "t1": 14.413253968253969
+    }
+   ]
+  },
+  {
+   "t0": 14.614126984126983,
+   "t1": 18.376126984126984,
+   "words": [
+    {
+     "w": "Buna",
+     "t0": 14.614126984126983,
+     "t1": 14.869126984126984
+    },
+    {
+     "w": "rağmen",
+     "t0": 14.893126984126983,
+     "t1": 15.160126984126983
+    },
+    {
+     "w": "ortalama",
+     "t0": 15.218126984126982,
+     "t1": 15.601126984126983
+    },
+    {
+     "w": "yoğunluğu",
+     "t0": 15.682126984126983,
+     "t1": 16.158126984126984
+    },
+    {
+     "w": "havanın",
+     "t0": 16.414126984126984,
+     "t1": 16.785126984126983
+    },
+    {
+     "w": "100",
+     "t0": 16.832126984126983,
+     "t1": 16.994126984126982
+    },
+    {
+     "w": "binde",
+     "t0": 17.041126984126983,
+     "t1": 17.250126984126982
+    },
+    {
+     "w": "birinden",
+     "t0": 17.296126984126982,
+     "t1": 17.66812698412698
+    },
+    {
+     "w": "bile",
+     "t0": 17.714126984126985,
+     "t1": 17.888126984126984
+    },
+    {
+     "w": "az.",
+     "t0": 17.923126984126984,
+     "t1": 18.376126984126984
+    }
+   ]
+  },
+  {
+   "t0": 18.756126984126983,
+   "t1": 22.285126984126983,
+   "words": [
+    {
+     "w": "Böyle",
+     "t0": 18.756126984126983,
+     "t1": 19.081126984126982
+    },
+    {
+     "w": "bir",
+     "t0": 19.128126984126983,
+     "t1": 19.22012698412698
+    },
+    {
+     "w": "devin",
+     "t0": 19.25512698412698,
+     "t1": 19.49912698412698
+    },
+    {
+     "w": "komşusu",
+     "t0": 19.55712698412698,
+     "t1": 20.021126984126983
+    },
+    {
+     "w": "olmak",
+     "t0": 20.056126984126983,
+     "t1": 20.335126984126983
+    },
+    {
+     "w": "ister",
+     "t0": 20.393126984126983,
+     "t1": 20.718126984126982
+    },
+    {
+     "w": "miydin?",
+     "t0": 20.788126984126983,
+     "t1": 21.15912698412698
     },
     {
      "w": "Yorumlara",
-     "t0": 21.6366462585034,
-     "t1": 22.1246462585034
+     "t0": 21.21712698412698,
+     "t1": 21.74012698412698
     },
     {
      "w": "yaz!",
-     "t0": 22.1826462585034,
-     "t1": 22.611646258503402
+     "t0": 21.786126984126984,
+     "t1": 22.285126984126983
     }
    ]
   }
