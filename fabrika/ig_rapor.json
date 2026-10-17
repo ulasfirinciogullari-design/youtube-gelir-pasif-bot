@@ -1,0 +1,24 @@
+{
+ "started": "2026-10-17T22:58:55+00:00",
+ "mod": "kontrol",
+ "anahtar_bitis": "2026-12-16T22:49+00:00",
+ "hesap": {
+  "username": "yaolsaydi.bilim",
+  "account_type": "MEDIA_CREATOR",
+  "media_count": 0,
+  "followers_count": 0
+ },
+ "paylasim_hakki": {
+  "data": [
+   {
+    "quota_usage": 0,
+    "config": {
+     "quota_total": 100,
+     "quota_duration": 86400
+    }
+   }
+  ]
+ },
+ "video_testi": "Instagram videoyu aldı ve işledi (paylaşılmadı)",
+ "finished": "2026-10-17T22:59:31+00:00"
+}
