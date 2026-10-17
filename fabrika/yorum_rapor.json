@@ -1,7 +1,7 @@
 {
- "started": "2026-10-17T19:06:17+00:00",
+ "started": "2026-10-17T21:28:17+00:00",
  "deneme": false,
  "error": "RuntimeError: anahtar başka bir kanala bağlı (UCgvESYtYbn2w9R2ExBOF_cw), cevap gönderilmedi",
  "log": [],
- "finished": "2026-10-17T19:06:17+00:00"
+ "finished": "2026-10-17T21:28:17+00:00"
 }
