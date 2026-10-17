@@ -1,74 +1,17 @@
 {
- "started": "2026-10-17T22:17:18+00:00",
- "mod": "zorla",
- "gate": "zorla",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "9",
-  "videos": "12"
+ "started": "2026-10-17T23:31:55+00:00",
+ "mod": "igbolum",
+ "gate": "igbolum",
+ "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+ "chars": 499,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18116209613599555",
+  "url": "https://www.instagram.com/reel/DenTAnpoPqI/",
+  "at": 1792280017.8673108
  },
- "credits_before": [
-  3149,
-  613902
- ],
- "topic": {
-  "id": "n003",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bilinen en büyük yıldız ne kadar büyük?"
- },
- "attempts": 1,
- "model": "gemini-3.8-flash",
- "fact_check": {
-  "ok": false,
-  "fixes": []
- },
- "chunks": 4,
- "grounded": true,
- "chars": 364,
- "duration": 23.6,
- "title": "En Büyük Yıldız Ne Kadar Büyük?",
- "url": "https://youtube.com/shorts/oyPgO_oDYlU",
- "recent_status": {
-  "y003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "3",
-   "reason": null
-  },
-  "g002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "2",
-   "reason": null
-  },
-  "y004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "89",
-   "reason": null
-  },
-  "y005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "8",
-   "reason": null
-  },
-  "n003": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  3237,
-  613902
- ],
  "log": [
-  "Konu: n003 Bilinen en büyük yıldız ne kadar büyük? (Ne Kadar Büyük?)",
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+  "Instagram: https://www.instagram.com/reel/DenTAnpoPqI/"
  ],
- "finished": "2026-10-17T22:19:30+00:00"
+ "finished": "2026-10-17T23:33:37+00:00"
 }
