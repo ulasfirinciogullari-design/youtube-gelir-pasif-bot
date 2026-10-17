@@ -265,8 +265,9 @@ def main():
     except (Exception, SystemExit) as e:  # the Actions log is hard to reach, so the reason lands in rapor.json
         report["error"] = f"{type(e).__name__}: {e}"[:1500]
         report["trace"] = traceback.format_exc()[-3000:]
-        state["fail_streak"] = state.get("fail_streak", 0) + 1
-        state["last_fail"] = now()
+        if not isinstance(e, SystemExit):  # a wrong or missing key costs nothing; once fixed, the next slot should run
+            state["fail_streak"] = state.get("fail_streak", 0) + 1
+            state["last_fail"] = now()
         print(traceback.format_exc(), file=sys.stderr)
     finally:
         report["log"] = yazar.LOG[-60:]
