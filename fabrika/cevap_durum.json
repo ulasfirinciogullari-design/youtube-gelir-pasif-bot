@@ -1,0 +1,54 @@
+{
+ "yorumlar": {
+  "done": {
+   "Ugw5Q9YzSjxuiZ0ieHV4AaABAg": [
+    1792143629,
+    "s",
+    "aynı kişinin aynı yorumu, bir kez cevaplandı"
+   ],
+   "UgwCCXk6gBQzUw9ndaF4AaABAg": [
+    1792143629,
+    "s",
+    "aynı kişinin aynı yorumu, bir kez cevaplandı"
+   ],
+   "UgypMdIQNONBpTOwYhx4AaABAg": [
+    1792143644,
+    "r",
+    "UgypMdIQNONBpTOwYhx4AaABAg.Ac0dP4SCSRDAc0jpth7RIE"
+   ],
+   "UgzmGQYg_zUuO-J7ZfJ4AaABAg": [
+    1792163225,
+    "r",
+    "UgzmGQYg_zUuO-J7ZfJ4AaABAg.Ac1GrfGmF13Ac1KB4w_bYO"
+   ]
+  },
+  "son": [
+   {
+    "at": 1792143644,
+    "video": "yHElVXfvdsw",
+    "comment": "Peki bize en yakın yıldız partlasaydı nolurdu? ???",
+    "reply": "Bize en yakın yıldız Güneş ve süpernova patlaması yapamayacak kadar küçük; zamanı gelince şişip kızıl dev olacak. Bu merak uyandıran soruyu video listemize ekledim.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792163225,
+    "video": "yHElVXfvdsw",
+    "comment": "Eğer Güneş yerine aynı kütlede olan bir kara delik koysaydı ne olur",
+    "reply": "Kütle aynı kaldığı için Dünya içine çekilmez, aynı yörüngede dönmeye devam ederdi ama hızla donardık. Bu konuyu video listemize aldım.\n— Profesör Pi 🔭"
+   }
+  ]
+ },
+ "ig": {
+  "done": {},
+  "son": []
+ },
+ "oneriler": [],
+ "nobet": {
+  "basladi": "2026-10-17T23:57:02+00:00",
+  "run": "39080930799",
+  "tur": 1,
+  "ig_cevap": 0,
+  "yt_cevap": 0,
+  "son_hata": null,
+  "son_tur": "2026-10-17T23:57:04+00:00"
+ }
+}
