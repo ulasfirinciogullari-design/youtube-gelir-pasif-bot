@@ -358,7 +358,7 @@
    "oneri": true
   }
  ],
- "fail_streak": 2,
+ "fail_streak": 3,
  "runs": [
   {
    "finished": "2026-10-16T05:10:36+00:00",
@@ -471,6 +471,11 @@
    "finished": "2026-10-17T09:21:31+00:00",
    "mod": "saatlik",
    "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
+  },
+  {
+   "finished": "2026-10-17T12:07:44+00:00",
+   "mod": "saatlik",
+   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
   }
  ],
  "yorumlar": {
@@ -511,5 +516,5 @@
    }
   ]
  },
- "last_fail": 1792228891.0295444
+ "last_fail": 1792238864.8448575
 }
