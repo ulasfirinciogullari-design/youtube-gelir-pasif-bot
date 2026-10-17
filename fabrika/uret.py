@@ -157,10 +157,21 @@ def render(ep, timings_path, mix, out_video, out_cover):
     return dur
 
 
+def load_ystate():
+    p = HERE.parent / "pilot-ay" / "youtube_state.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
 def produce(state, mod, report):
     import yazar
     import ses
+    yt = ystate = None
     if mod != "deneme":
+        # the key's channel first: on 2026-10-17 a key for Zirvenin Kanunu sat in YA_YT_REFRESH_TOKEN and the
+        # check only came after the voice and render were paid for
+        import yukle
+        ystate = load_ystate()
+        yt = yukle.connect(ystate, report)
         cr = ses.credits()
         if cr and cr[1] and cr[1] - cr[0] < MIN_CREDITS:
             report["skipped"] = f"ElevenLabs kredisi az ({cr[1] - cr[0]} kaldı), Zirvenin Kanunu'na bırakıldı"
@@ -208,9 +219,6 @@ def produce(state, mod, report):
         return ep
 
     import yukle
-    ystate_path = HERE.parent / "pilot-ay" / "youtube_state.json"
-    ystate = json.loads(ystate_path.read_text()) if ystate_path.exists() else {}
-    yt = yukle.connect(ystate, report)
     ystate["fabrika"] = state.get("episodes", [])
     rec = yukle.upload(yt, ep, video, cover, ystate, report, privacy=os.environ.get("YO_GORUNURLUK") or "public")
     rec.update({"at": now(), "chars": chars})
@@ -254,7 +262,7 @@ def main():
             ep = produce(state, a.mod, report)
             if ep is not None:
                 state["fail_streak"] = 0
-    except Exception as e:  # the Actions log is hard to reach, so the reason lands in rapor.json
+    except (Exception, SystemExit) as e:  # the Actions log is hard to reach, so the reason lands in rapor.json
         report["error"] = f"{type(e).__name__}: {e}"[:1500]
         report["trace"] = traceback.format_exc()[-3000:]
         state["fail_streak"] = state.get("fail_streak", 0) + 1

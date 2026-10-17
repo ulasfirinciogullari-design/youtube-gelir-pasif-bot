@@ -72,7 +72,13 @@ def main():
             raise RuntimeError("YA_YT_* anahtarları yok")
         access, out["anahtar"] = key_info()
         out["scopes"] = scopes(access)
-        if "yt-analytics.readonly" not in out["scopes"]:
+        ch = requests.get(f"{Y.API}/channels", params={"part": "snippet", "mine": "true"}, timeout=30,
+                          headers={"Authorization": f"Bearer {access}"}).json().get("items", [])
+        out["kanal"] = [f"{c['snippet']['title']} ({c['id']})" for c in ch]
+        want = json.loads((HERE.parent / "pilot-ay" / "youtube_state.json").read_text()).get("channel_id")
+        if [c["id"] for c in ch] != [want]:
+            out["skipped"] = f"anahtar Ya Olsaydı? kanalına ({want}) değil, başka bir kanala bağlı"
+        elif "yt-analytics.readonly" not in out["scopes"]:
             out["skipped"] = "anahtarda yt-analytics.readonly izni yok, OAuth yeniden yapılmalı"
         else:
             titles = {e["video_id"]: e["title"] for e in json.loads(STATE.read_text()).get("episodes", [])}

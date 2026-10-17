@@ -205,6 +205,9 @@ def run(state, report, dry):
     if not access:
         raise SystemExit("YA_YT_* anahtarları yok")
     yt = Y.YT(access)
+    me = [c["id"] for c in yt.call("GET", "channels?part=id&mine=true").get("items", [])]
+    if me != [channel_id]:  # a reply would go out under that other channel's name
+        raise RuntimeError(f"anahtar başka bir kanala bağlı ({', '.join(me) or 'kanal yok'}), cevap gönderilmedi")
     threads = fetch_threads(yt, channel_id)
     report["threads"] = len(threads)
     fresh, quiet = new_comments(threads, channel_id, done)
