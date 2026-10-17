@@ -33,8 +33,8 @@ let TL = buildTimeline();
 // right edge, and its feed and profile grid crop the middle 4:5 / 3:4. The 'ig' layout (EP.layout, set by uret.py for
 // the Instagram copy) keeps the title and subtitles inside what stays visible everywhere; YouTube keeps the original.
 const LY = EP.layout === 'ig'
-  ? { title: 330, scene: 845, k: .82, band: 1200, pi: [245, 1400], bit: [800, 1380], tag: 0, subs: 1480 }  // no room for name tags
-  : { title: 175, scene: 760, k: 1, band: 1250, pi: [230, 1420], bit: [850, 1400], tag: 1640, subs: 1765 };
+  ? { title: 330, scene: 845, k: .82, band: 1200, pi: [245, 1400], bit: [800, 1380], tag: 0, pill: 0, subs: 1480 }  // no name tags; the series pill falls in the crop
+  : { title: 175, scene: 760, k: 1, band: 1250, pi: [230, 1420], bit: [850, 1400], tag: 1640, pill: 1, subs: 1765 };
 let BGM = null;  // the backdrop always fills the frame, even when the 'ig' layout shrinks the scene
 const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
 // time of the first word in line L starting with prefix (fallback: a share of the line)
@@ -442,7 +442,7 @@ function characters(t, line) {
 function titleBar(t) {
   const s = lerp(.88, 1, back(prog(t, 0, .4)));  // visible from the first frame (it is the feed preview)
   ctx.save(); ctx.translate(540, LY.title); ctx.scale(s, s);
-  pill((EP.series || 'YA OLSAYDI?').toLocaleUpperCase('tr'), 0, -78, 34, C.mag, C.white);
+  if (LY.pill) pill((EP.series || 'YA OLSAYDI?').toLocaleUpperCase('tr'), 0, -78, 34, C.mag, C.white);
   const hi = (EP.title.hi || '').toLocaleUpperCase('tr'), rest = (EP.title.rest || '').toLocaleUpperCase('tr');
   let size = 92; ctx.font = `900 ${size}px ${F}`;
   const sp = hi && rest ? ctx.measureText(' ').width : 0;
