@@ -1,7 +1,7 @@
 name: YA OLSAYDI saatlik bölüm
 
-# The Ya Olsaydı? channel, separate from Zirvenin Kanunu: one new episode an hour, and every tick answers
-# new comments (fabrika/yorum.py). Its code and state live on
+# The Ya Olsaydı? channel, separate from Zirvenin Kanunu: new episodes at its slots (also posted to Instagram as
+# Reels when YA_IG_TOKEN is set), and every tick answers new comments (fabrika/yorum.py, fabrika/instagram.py). Its code and state live on
 # the ya-olsaydi branch; this file only wakes it up, because GitHub runs scheduled workflows from main only.
 # Two ticks an hour because GitHub delays or drops cron events; fabrika/uret.py --kapi lets one tick per
 # hour produce, so a skipped tick costs a few seconds.
@@ -44,4 +44,7 @@ jobs:
           YO_DURDUR: ${{ vars.YO_DURDUR }}
           YO_YORUM_GUNLUK: ${{ vars.YO_YORUM_GUNLUK }}
           YO_YORUM_KAPALI: ${{ vars.YO_YORUM_KAPALI }}
+          YA_IG_TOKEN: ${{ secrets.YA_IG_TOKEN }}
+          YO_IG_KAPALI: ${{ vars.YO_IG_KAPALI }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash fabrika/calistir.sh saatlik
