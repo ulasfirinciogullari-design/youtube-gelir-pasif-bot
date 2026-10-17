@@ -1,5 +1,14 @@
 {
- "checked_at": "2026-10-17T21:45:22+00:00",
- "ok": false,
- "error": "{\n  \"error\": \"invalid_grant\",\n  \"error_description\": \"Token has been expired or revoked.\"\n}"
+ "checked_at": "2026-10-17T21:56:37+00:00",
+ "ok": true,
+ "scope": "https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/yt-analytics-monetary.readonly https://www.googleapis.com/auth/yt-analytics.readonly",
+ "refresh_token_expires_in": null,
+ "expires_at": null,
+ "channels": [
+  {
+   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+   "title": "Zirvenin Kanunu",
+   "handle": "@zirveninkanunu"
+  }
+ ]
 }
