@@ -211,6 +211,19 @@ def test_skips_and_drafts_that_break_the_rules_are_closed_without_posting():
     assert {r["id"]: r["result"] for r in report["items"]}["link"] == "cevap kurala uymadı, atlandı"
 
 
+def test_stock_praise_at_the_start_is_cut_and_praise_alone_is_not_posted():
+    drafts = {"t1": "Bu çok keskin bir gözlem! 🧐 O sahnedeki detayı fark etmen harika. Tyler saatine bakar.",
+              "t2": "Harika soru! 😊",
+              "t3": "Güzel video yorumun için sağ ol ama ahtapotun üç kalbi var.",
+              "t4": "Great question! Octopuses have three hearts."}
+    yt = FakeYouTube(threads=[thread(tid, tid, f"yorum {tid}", hours_ago=i + 1) for i, tid in enumerate(drafts)])
+    state, _ = go(yt, FakeGemini(lambda c: {"action": "reply", "reply": drafts[c["id"]]}))
+    assert yt.posted == [("t1", "Tyler saatine bakar."),
+                         ("t3", "Güzel video yorumun için sağ ol ama ahtapotun üç kalbi var."),
+                         ("t4", "Octopuses have three hearts.")]
+    assert state["done"]["t2"][2] == "kural"
+
+
 def test_a_dry_run_posts_nothing_and_changes_nothing():
     yt = FakeYouTube(threads=[thread("t1", "ayse", "Güzel video"), thread("link", "b", "http://x.co")])
     before = {"done": {"x": [round(NOW) - HOUR, "s", "eski"]}, "tracked": {}}
