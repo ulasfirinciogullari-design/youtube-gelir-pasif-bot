@@ -1,0 +1,48 @@
+name: YA OLSAYDI cevap nöbeti
+
+# Answers Ya Olsaydı?'s Instagram comments and DMs within a minute and its YouTube comments within five
+# (fabrika/nobet.py on the ya-olsaydi branch). One long job: after 5 h 40 min it starts its own successor, which
+# waits in the concurrency group, and ends before the 6 hour limit. The hourly factory tick and the cron below
+# restart it if the chain ever breaks. The repository is public, so the waiting runner costs no Actions minutes.
+# To stop it: repository variable YO_NOBET_KAPALI=1, or Actions > YA OLSAYDI cevap nöbeti > ... > Disable workflow.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */2 * * *'
+
+concurrency:
+  group: ya-olsaydi-nobet
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # commit fabrika/cevap_durum.json and the reply reports
+  actions: write   # start the next watch
+
+jobs:
+  nobet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ya-olsaydi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Yorumları ve mesajları cevapla
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          YA_YT_CLIENT_ID: ${{ secrets.YA_YT_CLIENT_ID }}
+          YA_YT_CLIENT_SECRET: ${{ secrets.YA_YT_CLIENT_SECRET }}
+          YA_YT_REFRESH_TOKEN: ${{ secrets.YA_YT_REFRESH_TOKEN }}
+          YO_GEMINI_MODEL: ${{ vars.YO_GEMINI_MODEL }}
+          YO_YORUM_GUNLUK: ${{ vars.YO_YORUM_GUNLUK }}
+          YO_YORUM_KAPALI: ${{ vars.YO_YORUM_KAPALI }}
+          YA_IG_TOKEN: ${{ secrets.YA_IG_TOKEN }}
+          YO_IG_KAPALI: ${{ vars.YO_IG_KAPALI }}
+          YO_IG_GUNLUK: ${{ vars.YO_IG_GUNLUK }}
+          YO_NOBET_KAPALI: ${{ vars.YO_NOBET_KAPALI }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          pip install -q requests cryptography
+          python fabrika/nobet.py
