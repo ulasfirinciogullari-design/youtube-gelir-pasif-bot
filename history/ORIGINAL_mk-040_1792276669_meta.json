@@ -1,0 +1,270 @@
+{
+  "topic_id": "mk-040",
+  "topic": "Kayıtta kendi sesimizi neden yabancı ve tuhaf buluruz?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kaydedilen Sesiniz Size Neden Tuhaf Gelir? 🎤",
+  "hook_text": "KAYITTA SESİMİZ NEDEN DEĞİŞİR?",
+  "description": "Kayıtta kendi sesimiz bize neden tuhaf gelir?\n\nKendi sesimizi konuşurken hem içten hem de dıştan duyarız. Ses titreşimleri kemiklerimizden beynimize ulaşır; bu, kemik iletimidir. Mikrofonlar ise sesi yalnızca havadan toplar, tıpkı başkalarının duyduğu gibi.\n\nKayıttaki sesiniz, aslında diğerlerinin duyduğu gerçek sesiniz. Peki bu sizi şaşırttı mı? 😲 Evet mi, Hayır mı?\n\n#ses #insansesi #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-040",
+  "tags": [
+    "kendi sesim",
+    "sesim kayıtta neden farklı",
+    "sesim kayıtta tuhaf geliyor",
+    "sesim neden değişik",
+    "sesim neden farklı",
+    "kayıttaki sesim",
+    "gerçek sesim",
+    "ses algısı",
+    "kemik iletimi",
+    "ses titreşimleri",
+    "mikrofon sesi",
+    "işitme",
+    "kendi sesini tanımama",
+    "ses kayıt",
+    "ses kaydı",
+    "bilim",
+    "ilginç bilgiler",
+    "merak",
+    "insan vücudu",
+    "own voice",
+    "voice recording",
+    "bone conduction",
+    "why my voice sounds different",
+    "kayıtlı ses",
+    "ses",
+    "insan sesi",
+    "psikoloji",
+    "ses bilimi",
+    "neden",
+    "ilginç bilgi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Does Your Recorded Voice Sound So Weird to You? 🎤",
+      "description": "Ever wondered why your own voice sounds strange in recordings? It's because you hear your voice through both internal bone conduction and external air vibrations. Microphones only capture the external sound, just like others hear you.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "es": {
+      "title": "¿Por qué tu voz grabada te suena tan extraña? 🎤",
+      "description": "¿Alguna vez te has preguntado por qué tu propia voz suena rara en las grabaciones? Esto se debe a que escuchas tu voz tanto por conducción ósea interna como por vibraciones aéreas externas. Los micrófonos solo captan el sonido externo, tal como lo oyen los demás.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "pt": {
+      "title": "Por que sua voz gravada soa tão estranha para você? 🎤",
+      "description": "Já se perguntou por que sua própria voz parece estranha em gravações? Isso acontece porque você ouve sua voz tanto pela condução óssea interna quanto pelas vibrações aéreas externas. Os microfones captam apenas o som externo, exatamente como os outros o ouvem.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "de": {
+      "title": "Warum klingt deine aufgenommene Stimme so seltsam für dich? 🎤",
+      "description": "Hast du dich jemals gefragt, warum deine eigene Stimme in Aufnahmen so merkwürdig klingt? Das liegt daran, dass du deine Stimme sowohl über Knochenleitung intern als auch über Luftschwingungen extern wahrnimmst. Mikrofone erfassen jedoch nur den externen Schall, genau wie andere dich hören.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "fr": {
+      "title": "Pourquoi votre voix enregistrée vous semble-t-elle si étrange ? 🎤",
+      "description": "Vous êtes-vous déjà demandé pourquoi votre propre voix sonne si bizarre sur les enregistrements ? C'est parce que vous entendez votre voix à la fois par conduction osseuse interne et par vibrations aériennes externes. Les microphones ne captent que le son externe, exactement comme les autres vous entendent.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "it": {
+      "title": "Perché la tua voce registrata ti sembra così strana? 🎤",
+      "description": "Ti sei mai chiesto perché la tua voce suona così diversa nelle registrazioni? Questo accade perché senti la tua voce sia tramite la conduzione ossea interna che tramite le vibrazioni esterne dell'aria. I microfoni, invece, catturano solo il suono esterno, proprio come lo sentono gli altri.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "ru": {
+      "title": "Почему ваш записанный голос кажется вам таким странным? 🎤",
+      "description": "Задумывались ли вы, почему ваш собственный голос на записи звучит так непривычно? Это происходит потому, что вы слышите свой голос как через внутреннюю костную проводимость, так и через внешние воздушные вибрации. Микрофоны же улавливают только внешний звук, точно так же, как вас слышат другие.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "ar": {
+      "title": "لماذا يبدو صوتك المسجل غريباً جداً لك؟ 🎤",
+      "description": "هل تساءلت يوماً لماذا يبدو صوتك غريباً في التسجيلات؟ ذلك لأنك تسمع صوتك عبر التوصيل العظمي الداخلي والاهتزازات الهوائية الخارجية. الميكروفونات تلتقط الصوت الخارجي فقط، تماماً كما يسمعك الآخرون.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "hi": {
+      "title": "रिकॉर्ड की गई आवाज़ आपको इतनी अजीब क्यों लगती है? 🎤",
+      "description": "क्या आपने कभी सोचा है कि रिकॉर्डिंग में आपकी अपनी आवाज़ अजीब क्यों लगती है? ऐसा इसलिए है क्योंकि आप अपनी आवाज़ को आंतरिक अस्थि चालन और बाहरी वायु कंपन दोनों के माध्यम से सुनते हैं। माइक्रोफ़ोन केवल बाहरी ध्वनि को कैप्चर करते हैं, ठीक वैसे ही जैसे दूसरे आपको सुनते हैं।\n\n#shorts\n\nSeri: mk-040"
+    },
+    "id": {
+      "title": "Mengapa Suara Rekaman Anda Terdengar Aneh Bagi Anda? 🎤",
+      "description": "Pernah bertanya-tanya mengapa suara Anda sendiri terdengar aneh dalam rekaman? Itu karena Anda mendengar suara Anda melalui konduksi tulang internal dan getaran udara eksternal. Mikrofon hanya menangkap suara eksternal, persis seperti orang lain mendengar Anda.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "ja": {
+      "title": "録音された自分の声が変に聞こえるのはなぜ？ 🎤",
+      "description": "録音された自分の声がなぜか変に聞こえる、と思ったことはありませんか？それは、私たちは自分の声を骨伝導と空気振動の両方で聞いているからです。マイクは、他の人が聞くのと同じように、空気中の音だけを捉えます。\n\n#shorts\n\nSeri: mk-040"
+    },
+    "ko": {
+      "title": "녹음된 내 목소리가 왜 이렇게 어색하게 들릴까? 🎤",
+      "description": "녹음된 내 목소리가 왜 유독 어색하게 들리는지 궁금한 적 있으신가요? 우리는 목소리를 내부의 뼈 전도와 외부의 공기 진동으로 동시에 듣기 때문입니다. 마이크는 다른 사람들이 듣는 것처럼 외부 소리만 포착합니다.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "pl": {
+      "title": "Dlaczego Twój nagrany głos brzmi dla Ciebie tak dziwnie? 🎤",
+      "description": "Zastanawiałeś się kiedyś, dlaczego Twój własny głos brzmi tak obco na nagraniach? Dzieje się tak, ponieważ słyszysz swój głos zarówno przez wewnętrzne przewodnictwo kostne, jak i zewnętrzne wibracje powietrza. Mikrofony rejestrują tylko dźwięk zewnętrzny, tak jak słyszą Cię inni.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "nl": {
+      "title": "Waarom klinkt je opgenomen stem zo vreemd voor jou? 🎤",
+      "description": "Heb je je ooit afgevraagd waarom je eigen stem zo raar klinkt in opnames? Dat komt omdat je je stem zowel via interne botgeleiding als externe luchttrillingen hoort. Microfoons vangen echter alleen het externe geluid op, precies zoals anderen je horen.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "uk": {
+      "title": "Чому ваш записаний голос звучить для вас так дивно? 🎤",
+      "description": "Ви коли-небудь замислювалися, чому ваш власний голос на записах звучить так дивно? Це тому, що ви чуєте свій голос як через внутрішню кісткову провідність, так і через зовнішні повітряні вібрації. Мікрофони ж вловлюють лише зовнішній звук, так само, як вас чують інші.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "vi": {
+      "title": "Tại sao giọng nói đã ghi âm của bạn lại nghe lạ lùng? 🎤",
+      "description": "Bạn có bao giờ tự hỏi tại sao giọng nói của mình lại nghe lạ lùng trong các bản ghi âm không? Đó là vì bạn nghe giọng nói của mình qua cả dẫn truyền xương bên trong và rung động không khí bên ngoài. Micro chỉ thu âm thanh bên ngoài, giống như cách người khác nghe thấy bạn.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "az": {
+      "title": "Niyə yazılmış səsiniz sizə qəribə gəlir? 🎤",
+      "description": "Heç düşünmüsünüzmü, niyə öz səsiniz qeydlərdə qəribə səslənir? Çünki siz səsinizi həm daxili sümük keçiriciliyi, həm də xarici hava titrəyişləri vasitəsilə eşidirsiniz. Mikrofonlar isə yalnız xarici səsi, başqalarının sizi eşitdiyi kimi qeydə alır.\n\n#shorts\n\nSeri: mk-040"
+    },
+    "ro": {
+      "title": "De ce vocea ta înregistrată sună atât de ciudat pentru tine? 🎤",
+      "description": "Te-ai întrebat vreodată de ce propria ta voce sună ciudat în înregistrări? Acest lucru se întâmplă deoarece îți auzi vocea atât prin conducție osoasă internă, cât și prin vibrații aeriene externe. Microfoanele captează doar sunetul extern, exact așa cum te aud alții.\n\n#shorts\n\nSeri: mk-040"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Kayıttaki sesiniz, aslında diğerlerinin duyduğu gerçek sesiniz. Peki bu sizi şaşırttı mı? 😲 Evet mi, Hayır mı?",
+  "scenes": [
+    {
+      "text": "Kayıtta kendi sesiniz size hep farklı gelir.",
+      "visual": "A person singing or speaking into a microphone.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 1
+        },
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 1
+        }
+      ],
+      "callout": "FARKLI SES"
+    },
+    {
+      "text": "Çünkü kendi sesinizi hem içten hem de dıştan duyarsınız.",
+      "visual": "People speaking into microphones in a studio setting.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 1
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ],
+      "callout": "İÇ VE DIŞ SES"
+    },
+    {
+      "text": "Konuşurken ses titreşimleri kemiklerinizden beyninize ulaşır. Bu, kemik iletimidir.",
+      "visual": "Close-up of a person speaking into a microphone.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 1
+        },
+        {
+          "n": 33,
+          "kare": 2
+        }
+      ],
+      "callout": "KEMİK İLETİMİ"
+    },
+    {
+      "text": "Ama mikrofonlar sesi yalnızca havadan toplar, tıpkı başkalarının duyduğu gibi.",
+      "visual": "Audio waveform on a screen or a mixing board.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 14,
+          "kare": 1
+        },
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        }
+      ],
+      "callout": "HAVA İLETİMİ"
+    },
+    {
+      "text": "Kayıttaki sesiniz, diğerlerinin duyduğu gerçek sesinizdir. İşte bu yüzden!",
+      "visual": "A person editing sound in a studio or a studio control room.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 25,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 1
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 16.55,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Görsel içerik, anlatılan soyut kavramları (kemik/hava iletimi) yeterince görselleştiremiyor ve tekrarlayıcı. Çoğunlukla stüdyoda konuşan insanlar gösteriliyor.",
+        "fix": "Pexels/Pixabay'de ses dalgalarını, titreşimleri, kulak veya beyinle ilgili soyut/metaforik görselleri arayın. Örneğin, ses dalgalarını gösteren grafikler, titreşen nesnelerin yakın çekimleri veya sesin farklı ortamlarda yayılmasını ima eden"
+      },
+      {
+        "area": "ses",
+        "problem": "Anlatıcının yapay zeka sesi referans videodaki kadar enerjik ve hızlı değil; genel ses tasarımı (müzik ve efektler) yetersiz.",
+        "fix": "Yapay zeka sesinin konuşma hızını artırın ve daha dinamik, enerjik bir ton seçmeye çalışın. Videonun temposuna uygun, daha sürükleyici ve heyecan verici telifsiz bir fon müziği kullanın. Metin geçişleri veya önemli anlarda dikkat çekici, an"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kesimler yavaş ve video genel olarak daha az dinamik bir tempoya sahip.",
+        "fix": "Görüntülerin süresini kısaltarak daha hızlı ve keskin geçişler yapın (her klip 1-2 saniye civarında). Otomatik kurgu araçlarında bu ayarlar genellikle mevcuttur. Görsel akışı hızlandırarak izleyicinin dikkatini daha iyi tutun."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar net olsa da, referans videodaki gibi kavramları açıklayıcı basit grafiksel öğeler (oklar, çizgiler) eksik.",
+        "fix": "Metin katmanlarını kullanarak basit oklar veya çizgiler ekleyerek 'kemik iletimi' ve 'hava iletimi' gibi kavramların yönünü veya mekanizmasını görsel olarak belirtin. Örneğin, sesin kemiklerden beyne veya havadan mikrofona nasıl gittiğini g"
+      }
+    ],
+    "strengths": [
+      "Konu seçimi ilgi çekici ve merak uyandırıcı.",
+      "Metinler net ve okunabilir.",
+      "Bilgi akışı mantıklı ve anlaşılır."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
