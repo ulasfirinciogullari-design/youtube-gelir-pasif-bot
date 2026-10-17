@@ -36,6 +36,7 @@ on:
           - 'tiktok'
           - 'durum'
           - 'anahtar'
+          - 'izlenme'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -195,6 +196,10 @@ jobs:
           if [ "$TASK" = "rapor" ]; then
             python channel_tools.py report
             exit 0
+          fi
+          if [ "$TASK" = "izlenme" ]; then
+            python scripts/views_report.py
+            exit $?
           fi
           if [ "$TASK" = "anahtar" ]; then
             python scripts/token_check.py
