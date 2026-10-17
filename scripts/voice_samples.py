@@ -18,7 +18,13 @@ original_factory.mix_levels gives the narration), so loudness does not decide th
 
 The winner's settings go into the repo Variables listed under "repo_variables" in index.json.
 
+--set maliyet answers Ulaş's cost question (2026-10-15, "maliyeti düşürmek ... kalite düşmeden"): at 24 Shorts a day
+Alp needs the ~$99 ElevenLabs Pro plan, so it puts today's Alp next to cheaper narrators, each with its monthly cost:
+Alp on eleven_flash_v2_5 (half the credits), three Gemini voices and Gemini Pro (a few dollars a month,
+app/services/gemini_tts.py) and the free edge-tts voice the Shorts fall back to.
+
   python scripts/voice_samples.py --out channel-data/history/voice_samples
+  python scripts/voice_samples.py --set maliyet --out channel-data/history/voice_samples_maliyet
 """
 
 import argparse
@@ -41,6 +47,7 @@ if str(BASE_DIR) not in sys.path:
 
 import original_factory as factory  # noqa: E402
 from app.services import elevenlabs_engine as eleven  # noqa: E402
+from app.services import gemini_tts  # noqa: E402
 
 API = "https://api.elevenlabs.io/v1"
 SHARED_VOICES_PATH = "/shared-voices?language=tr&page_size=30"
@@ -61,6 +68,16 @@ ENERGETIC_WORDS = ("energetic", "enerjik", "upbeat", "excited", "heyecan", "dyna
 SETTING_VARIABLES = (("model", "ELEVENLABS_MODEL"), ("speed", "ELEVENLABS_SPEED"), ("style", "ELEVENLABS_STYLE"),
                      ("stability", "ELEVENLABS_STABILITY"))
 ACCOUNT_ERRORS = ("quota_exceeded", "invalid_api_key")  # ElevenLabs' detail.status for these refusals
+SAMPLE_SETS = ("karsilastirma", "maliyet")
+# Gemini's prebuilt voices that fit an energetic narrator (Google lists Fenrir as excitable, Puck as upbeat, Charon as
+# informative). Costs at 24 Shorts a day, ~480 characters and ~30 s of speech each (prices of 2026-10-15): Alp
+# ~345k ElevenLabs credits a month; Gemini ~540k audio tokens a month at ~$9-10 (Flash) or ~$20 (Pro) a million.
+GEMINI_VOICES = (("Fenrir", "heyecanlı"), ("Puck", "neşeli"), ("Charon", "bilgilendirici"))
+# Gemini speaks ~2 words a second even when asked for a fast pace, Alp ~3.2 (first cost samples, 2026-10-15); played
+# at their own pace the Gemini voices would lose on speed alone, so they are brought to Alp's pace (atempo keeps the
+# pitch; past ~1.6x it starts to sound processed).
+TARGET_WORDS_PER_SECOND = 3.2
+MAX_SPEED_UP = 1.6
 
 
 class VoiceError(RuntimeError):
@@ -106,6 +123,34 @@ def sample_plan(voice_map: dict | None = None, default_voice_id: str | None = No
     return plan
 
 
+def maliyet_plan(default_voice_id: str | None = None) -> list[dict]:
+    """Today's Alp, then the cheaper narrators, each with its monthly cost at 24 Shorts a day."""
+    alp = {"voice_name": "Alp", "voice_id": default_voice_id or eleven.DEFAULT_TURKISH_VOICE_ID,
+           **production_settings(), "speed": 1.15, "style": 0.6, "stability": 0.35, "tempo": 1.0}
+    other = {"tempo": 1.0, "tags": {}, "stability": None, "style": None, "speed": None,
+             "note": "Üretimde kullanmak için küçük bir kod değişikliği gerekir."}
+    plan = [
+        {"slug": "alp_simdiki", "label": "Alp, Short'lardaki şimdiki ses", **alp,
+         "cost": "~$99/ay (ElevenLabs Pro)"},
+        {"slug": "alp_flash", "label": "Alp, eleven_flash_v2_5 (yarı kredi)", **alp, "model": "eleven_flash_v2_5",
+         "cost": "yaklaşık yarısı (karakter başına 0,5 kredi)"},
+    ]
+    for name, mood in GEMINI_VOICES:
+        plan.append({"slug": f"gemini_{slug(name)}", "label": f"Gemini {name} ({mood})", "engine": "gemini",
+                     "tier": "flash", "voice_name": name, "voice_id": name, "model": None, **other,
+                     "match_pace": True, "cost": "~$5/ay"})
+    name = GEMINI_VOICES[0][0]
+    plan.append({"slug": f"gemini_pro_{slug(name)}", "label": f"Gemini Pro {name} (daha kaliteli model)",
+                 "engine": "gemini", "tier": "pro", "voice_name": name, "voice_id": name, "model": None, **other,
+                 "match_pace": True, "cost": "~$11/ay"})
+    # An all edge-tts Short keeps the series speed-up (original_factory.narration_tempo).
+    plan.append({"slug": "edge_ahmet", "label": "Microsoft Ahmet (kredi bitince devreye giren yedek ses)",
+                 "engine": "edge", "voice_name": "Ahmet", "voice_id": factory.VOICE["name"], "model": "edge-tts",
+                 **other, "tempo": factory.SERIES["merak"]["tempo"], "cost": "ücretsiz",
+                 "note": "Şu an ElevenLabs hata verince Short'lar bu sesle çıkıyor."})
+    return plan
+
+
 def rank_shared(voices: list, exclude: set | frozenset = frozenset()) -> list[dict]:
     """Shared-library voices for the free slots: narration or social-media voices first, energetic ones next, the
     most cloned first within each. Voices that cost more than one credit a character are left out."""
@@ -132,7 +177,10 @@ def rank_shared(voices: list, exclude: set | frozenset = frozenset()) -> list[di
 
 
 def repo_variables(sample: dict) -> dict:
-    """The repo Variables that make the Shorts sound like this sample (empty: today's sound)."""
+    """The repo Variables that make the Shorts sound like this sample (empty: today's sound, or a voice outside
+    ElevenLabs that needs a code change first)."""
+    if sample.get("engine", "elevenlabs") != "elevenlabs":
+        return {}
     base = production_settings()
     variables = {}
     if sample["voice_id"] != eleven.DEFAULT_TURKISH_VOICE_ID:
@@ -198,37 +246,63 @@ def voice_not_found(error: Exception) -> bool:
     return getattr(error, "code", None) == 404 or "voice_not_found" in text or "voice not found" in text
 
 
+def speed_up_to_pace(words: int, seconds: float) -> float:
+    """The atempo that brings a narration of `words` in `seconds` to TARGET_WORDS_PER_SECOND (never slows it)."""
+    if not seconds or not words:
+        return 1.0
+    return round(min(MAX_SPEED_UP, max(1.0, TARGET_WORDS_PER_SECOND * seconds / words)), 3)
+
+
 def make_sample(sample: dict, number: int, out_dir: Path) -> dict:
     """Voices, tightens and levels one sample; its index.json entry. Raises VoiceError when ElevenLabs refuses."""
     scenes = [{"text": f"{sample['tags'][i]} {line}" if i in sample["tags"] else line} for i, line in enumerate(LINES)]
+    engine = sample.get("engine", "elevenlabs")
 
     def voice_line(text: str, out: Path, previous_text: str = "", next_text: str = "") -> Path:
-        # The engine sends previous/next text only to models that read it (not eleven_v3).
-        ok = eleven.synthesize_elevenlabs_speech(
-            text, out, voice_id=sample["voice_id"], model_id=sample["model"], previous_text=previous_text,
-            next_text=next_text, stability=sample["stability"], style=sample["style"], speed=sample["speed"])
+        if engine == "gemini":
+            ok = gemini_tts.synthesize(text, out, voice=sample["voice_name"], model=sample["model"],
+                                       key=gemini_tts.get_api_key())
+            error = gemini_tts.last_error
+        elif engine == "edge":
+            try:
+                factory.synthesize_line(text, out, edge_only=True)
+                ok, error = True, {}
+            except RuntimeError as e:
+                ok, error = False, {"message": str(e)}
+        else:
+            # The engine sends previous/next text only to models that read it (not eleven_v3).
+            ok = eleven.synthesize_elevenlabs_speech(
+                text, out, voice_id=sample["voice_id"], model_id=sample["model"], previous_text=previous_text,
+                next_text=next_text, stability=sample["stability"], style=sample["style"], speed=sample["speed"])
+            error = eleven.last_error
         if not ok or not out.exists() or out.stat().st_size < 1000:
-            raise VoiceError(eleven.last_error.get("code"), eleven.last_error.get("message") or "ses dosyası dönmedi")
+            raise VoiceError(error.get("code"), error.get("message") or "ses dosyası dönmedi")
         return out
 
+    words = sum(len(line.split()) for line in LINES)
     with tempfile.TemporaryDirectory(prefix="voice_sample_") as tmp:
         voice, durations, _ = factory.build_narration(scenes, Path(tmp), synthesize=voice_line, tempo=sample["tempo"])
-        chain, _ = factory.mix_levels(voice, None, sum(durations))
+        speed_up = speed_up_to_pace(words, sum(durations)) if sample.get("match_pace") else 1.0
+        chain, _ = factory.mix_levels(voice, None, sum(durations) / speed_up)
+        if speed_up > 1.0:
+            chain = f"atempo={speed_up},{chain}"
         dest = out_dir / f"{number}_{sample['slug']}.mp3"
         subprocess.run(["ffmpeg", "-y", "-i", str(voice), "-af", chain, "-ac", "1", "-ar", "44100",
                         "-c:a", "libmp3lame", "-b:a", "128k", str(dest)],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     duration = factory._probe_duration(dest)
-    words = sum(len(line.split()) for line in LINES)
     level = factory.loudness(dest)
     return {**({"note": sample["note"]} if sample.get("note") else {}),
+        **({"cost_24_a_day": sample["cost"]} if sample.get("cost") else {}),
         "file": dest.name,
         "label": sample["label"],
+        "engine": engine,
         "voice_name": sample["voice_name"],
         "voice_id": sample["voice_id"],
         "model": sample["model"],
         "settings": {"stability": sample["stability"], "style": sample["style"], "speed": sample["speed"],
-                     "atempo": sample["tempo"], "tags": {str(i + 1): tag for i, tag in sample["tags"].items()}},
+                     "atempo": sample["tempo"], "tags": {str(i + 1): tag for i, tag in sample["tags"].items()},
+                     **({"speed_up_after": speed_up} if speed_up > 1.0 else {})},
         "source": sample.get("source", "ses haritası"),
         "characters": sum(len(scene["text"]) for scene in scenes),
         "duration_seconds": round(duration, 2),
@@ -239,14 +313,17 @@ def make_sample(sample: dict, number: int, out_dir: Path) -> dict:
 
 
 def describe(settings: dict) -> str:
-    parts = [f"stabilite {settings['stability']}", f"stil {settings['style']}"]
+    parts = [f"{name} {settings[field]}" for field, name in (("stability", "stabilite"), ("style", "stil"))
+             if settings.get(field) is not None]
     if settings.get("speed"):
         parts.append(f"hız {settings['speed']}")
     if settings.get("atempo", 1.0) != 1.0:
         parts.append(f"ffmpeg {settings['atempo']}x")
+    if settings.get("speed_up_after"):
+        parts.append(f"sonradan {settings['speed_up_after']}x hızlandırıldı")
     if settings.get("tags"):
         parts.append("etiket " + " ".join(settings["tags"].values()))
-    return ", ".join(parts)
+    return ", ".join(parts) or "-"
 
 
 def try_sample(sample: dict, number: int, out_dir: Path, key: str) -> dict:
@@ -264,15 +341,18 @@ def try_sample(sample: dict, number: int, out_dir: Path, key: str) -> dict:
 
 
 def summary(made: list[dict], skipped: list[dict], out_dir: Path, spent: str) -> str:
+    costs = any(m.get("cost_24_a_day") for m in made)
     rows = [f"| {m['file']} | {m['voice_name']} | {m['model']} | {describe(m['settings'])} | "
-            f"{m['duration_seconds']:.1f} sn | {m['words_per_second']} |" for m in made]
-    lines = [f"\n### Ses örnekleri ({out_dir})\n", "| Dosya | Ses | Model | Ayarlar | Süre | Kelime/sn |",
-             "|---|---|---|---|---|---|", *rows]
+            f"{m['duration_seconds']:.1f} sn | {m['words_per_second']} |"
+            + (f" {m.get('cost_24_a_day', '')} |" if costs else "") for m in made]
+    lines = [f"\n### Ses örnekleri ({out_dir})\n",
+             "| Dosya | Ses | Model | Ayarlar | Süre | Kelime/sn |" + (" Maliyet (günde 24) |" if costs else ""),
+             "|---|---|---|---|---|---|" + ("---|" if costs else ""), *rows]
     if skipped:
         lines += ["", "Atlananlar:"] + [f"- {s['label']}: {s['reason']}" for s in skipped]
     lines += ["", f"Harcanan ElevenLabs kredisi: {spent}",
               "Beğendiğin örneğin ayarlarını index.json içindeki repo_variables alanında yazan repo Variables "
-              "değerleriyle kaydet (boşsa bugünkü ses)."]
+              "değerleriyle kaydet (boşsa bugünkü ses; ElevenLabs dışındaki sesler önce kod değişikliği ister)."]
     return "\n".join(lines) + "\n"
 
 
@@ -280,12 +360,15 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Aynı senaryoyu birkaç ses ve ayarla seslendirip karşılaştırır")
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="Örneklerin yazılacağı klasör")
     parser.add_argument("--max", type=int, default=MAX_SAMPLES,
-                        help=f"En fazla örnek sayısı (en çok {MAX_SAMPLES})")
+                        help=f"En fazla örnek sayısı (en çok {MAX_SAMPLES}; maliyet setinde hepsi)")
+    parser.add_argument("--set", dest="sample_set", choices=SAMPLE_SETS, default=SAMPLE_SETS[0],
+                        help="karsilastirma = Alp ayarları ve diğer ElevenLabs sesleri, maliyet = ucuz anlatıcılar")
     args = parser.parse_args(argv)
+    cost_set = args.sample_set == "maliyet"
     limit = max(1, min(MAX_SAMPLES, args.max))
 
     key = eleven.get_elevenlabs_api_key()
-    if not key:
+    if not key and not cost_set:
         print("❌ ELEVENLABS_API_KEY yok; ses örnekleri üretilemedi.")
         return 1
     if shutil.which("ffmpeg") is None or shutil.which("ffprobe") is None:
@@ -298,9 +381,19 @@ def main(argv=None) -> int:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    before = credits(key)
+    before = credits(key) if key else None
     plan, made, skipped, tried = sample_plan(), [], [], set()
     shared_fetched = False
+    if cost_set:  # a fixed list of narrators, no library voices
+        plan, shared_fetched = maliyet_plan(), True
+        limit = len(plan)
+        gemini_key, models = gemini_tts.get_api_key(), {}
+        for sample in plan:
+            if sample.get("engine") == "gemini" and gemini_key:
+                if sample["tier"] not in models:
+                    models[sample["tier"]] = gemini_tts.resolve_model(gemini_key, sample["tier"])
+                    print(f"ℹ️ Gemini {sample['tier']} ses modeli: {models[sample['tier']] or 'bulunamadı'}")
+                sample["model"] = models[sample["tier"]]
     while len(made) < limit:
         if not plan:
             if shared_fetched:
@@ -310,23 +403,39 @@ def main(argv=None) -> int:
             continue
         sample = plan.pop(0)
         tried.add(sample["voice_id"])
+        engine = sample.get("engine", "elevenlabs")
+        missing = ("ELEVENLABS_API_KEY yok" if engine == "elevenlabs" and not key
+                   else "GEMINI_API_KEY yok" if engine == "gemini" and not gemini_tts.get_api_key()
+                   else f"Gemini'de {sample.get('tier')} ses modeli bulunamadı "
+                        f"({gemini_tts.last_error.get('message') or 'listede yok'})"
+                   if engine == "gemini" and not sample.get("model") else None)
+        if missing:
+            print(f"ℹ️ {sample['label']} atlandı: {missing}")
+            skipped.append({"label": sample["label"], "voice_id": sample["voice_id"], "reason": missing})
+            continue
         print(f"🎙️ {len(made) + 1}. örnek: {sample['label']}", flush=True)
         try:
             made.append(try_sample(sample, len(made) + 1, out_dir, key))
+            if cost_set and gemini_tts.get_api_key():  # proof the voice read the lines and nothing else
+                made[-1]["transcript"] = gemini_tts.transcribe(out_dir / made[-1]["file"], gemini_tts.get_api_key())
         except Exception as e:  # one refused voice never stops the others
             reason = str(e)[:200]
             print(f"ℹ️ {sample['label']} atlandı: {reason}")
             skipped.append({"label": sample["label"], "voice_id": sample["voice_id"], "reason": reason})
-            if account_error(e):
-                print("❌ ElevenLabs kredisi bitmiş veya anahtar geçersiz; kalan sesler denenmedi.")
-                break
+            if engine == "elevenlabs" and account_error(e):
+                print("❌ ElevenLabs kredisi bitmiş veya anahtar geçersiz; kalan ElevenLabs sesleri denenmedi.")
+                if not cost_set:
+                    break
+                skipped += [{"label": s["label"], "voice_id": s["voice_id"], "reason": reason} for s in plan
+                            if s.get("engine", "elevenlabs") == "elevenlabs"]
+                plan = [s for s in plan if s.get("engine", "elevenlabs") != "elevenlabs"]
 
-    after = credits(key)
+    after = credits(key) if key else None
     spent = (f"{after[0] - before[0]} karakter (bu ay kalan: {after[1] - after[0]})" if before and after
              else f"okunamadı (yaklaşık {sum(m['characters'] for m in made)} karakter)")
     print(summary(made, skipped, out_dir, spent))
     if not made:  # the last set and its index stay as they were
-        print("❌ Hiç ses örneği üretilemedi (ElevenLabs anahtarı, kredisi veya bağlantısı kontrol edilmeli).")
+        print("❌ Hiç ses örneği üretilemedi (anahtarlar, kredi veya bağlantı kontrol edilmeli).")
         return 1
     index = {"created": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()), "script": LINES, "samples": made,
              "skipped": skipped}

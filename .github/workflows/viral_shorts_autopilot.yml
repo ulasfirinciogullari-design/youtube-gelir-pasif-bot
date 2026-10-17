@@ -79,7 +79,7 @@ on:
         default: ''
         type: string
       ses:
-        description: 'Sadece deneme: anlatıcı sesi (ElevenLabs voice id; model değiştirmek için sonuna :eleven_v3 gibi ekle; boş = varsayılan)'
+        description: 'Deneme: anlatıcı sesi (ElevenLabs voice id; model değiştirmek için sonuna :eleven_v3 gibi ekle; boş = varsayılan). Sesornek: maliyet = ucuz anlatıcıları karşılaştır'
         required: false
         default: ''
         type: string
@@ -225,8 +225,12 @@ jobs:
             exit $?
           fi
           if [ "$TASK" = "sesornek" ]; then
-            # The backup step commits the samples to the channel-data branch.
-            python scripts/voice_samples.py --out channel-data/history/voice_samples
+            # The backup step commits the samples to the channel-data branch; ses=maliyet compares cheaper narrators.
+            if [ "$SES" = "maliyet" ]; then
+              python scripts/voice_samples.py --set maliyet --out channel-data/history/voice_samples_maliyet
+            else
+              python scripts/voice_samples.py --out channel-data/history/voice_samples
+            fi
             exit $?
           fi
           if [ "$TASK" = "deneme" ]; then
