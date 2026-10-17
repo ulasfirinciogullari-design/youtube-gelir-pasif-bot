@@ -226,6 +226,13 @@ def produce(state, mod, report):
     state.setdefault("used", []).append(topic["id"])
     save(state)  # never lose an uploaded video's id
     report["url"] = rec["url"]
+    if os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
+        try:  # Instagram is a bonus: a refusal there never fails the YouTube episode
+            import instagram
+            report["instagram"] = instagram.paylas(ep, video, cover, state)
+        except Exception as e:  # noqa: BLE001
+            report.setdefault("warnings", []).append(f"Instagram: {type(e).__name__}: {e}"[:500])
+        save(state)
     try:
         st = yukle.status(yt, state["episodes"][-20:])
         for e in state["episodes"]:
