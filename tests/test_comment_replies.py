@@ -215,12 +215,16 @@ def test_stock_praise_at_the_start_is_cut_and_praise_alone_is_not_posted():
     drafts = {"t1": "Bu çok keskin bir gözlem! 🧐 O sahnedeki detayı fark etmen harika. Tyler saatine bakar.",
               "t2": "Harika soru! 😊",
               "t3": "Güzel video yorumun için sağ ol ama ahtapotun üç kalbi var.",
-              "t4": "Great question! Octopuses have three hearts."}
+              "t4": "Great question! Octopuses have three hearts.",
+              "t5": "Great question — cats do dream.",
+              "t6": "Point mutations greatly increase diversity."}
     yt = FakeYouTube(threads=[thread(tid, tid, f"yorum {tid}", hours_ago=i + 1) for i, tid in enumerate(drafts)])
     state, _ = go(yt, FakeGemini(lambda c: {"action": "reply", "reply": drafts[c["id"]]}))
     assert yt.posted == [("t1", "Tyler saatine bakar."),
                          ("t3", "Güzel video yorumun için sağ ol ama ahtapotun üç kalbi var."),
-                         ("t4", "Octopuses have three hearts.")]
+                         ("t4", "Octopuses have three hearts."),
+                         ("t5", "cats do dream."),
+                         ("t6", "Point mutations greatly increase diversity.")]
     assert state["done"]["t2"][2] == "kural"
 
 

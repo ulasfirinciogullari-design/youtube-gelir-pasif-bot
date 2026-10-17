@@ -55,10 +55,12 @@ MENTION = re.compile(r"@([\w.\-]+)\s*")  # YouTube starts a reply to a reply wit
 # The channel has no memories: Gemini wrote "O sahneyi hatırladım!" in the first preview despite the rule.
 MEMORY = re.compile(r"hatırl(ıyorum|adım)|izledim|\bI (remember|watched)\b", re.I)
 # The first live reply opened "Bu çok keskin bir gözlem! 🧐 O sahnedeki detayı fark etmen harika." despite the rule
-# against stock openers, so short praise sentences at the start are cut, and a reply that is only praise is dropped.
-PRAISE = re.compile(r"harika|keskin|güzel|süper|müthiş|mükemmel|great|nice|awesome|love", re.I)
-PRAISED = re.compile(r"gözlem|yorum|soru|tespit|fark et|dikkat|observation|question|point|comment|catch", re.I)
-SENTENCE = re.compile(r"(?<=[.!?])\s+")
+# against stock openers, so short praise at the start ("Great question — ...") is cut up to the next punctuation, and
+# a reply that is only praise is dropped. Turkish stems may take suffixes; English words must match whole.
+PRAISE = re.compile(r"\b(?:harika|keskin|güzel|süper|müthiş|mükemmel)|\b(?:great|nice|awesome|love)\b", re.I)
+PRAISED = re.compile(r"\b(?:gözlem|yorum|soru|tespit|fark\s+et|dikkat)|\b(?:observations?|questions?|points?|comments?"
+                     r"|catch)\b", re.I)
+LEAD = re.compile(r"\s*(.*?)(?:[.!?…,:;]+|\s+[—–-]+)(?:\s+|$)")  # the text up to the first punctuation mark
 
 PROMPT = """You answer YouTube comments for "Zirvenin Kanunu", a Turkish YouTube Shorts channel: 15-20 second
 curiosity videos about animals, the human body, psychology, nature and science (for example "Kedin seni neden
@@ -360,10 +362,9 @@ def judge(batch: list[dict], videos: dict, ask) -> tuple[str, dict]:
 
 def clean_reply(item: dict, mention: str = "") -> str | None:
     """-> the text to post, or None when the draft breaks a rule."""
-    sentences = SENTENCE.split(" ".join(str(item.get("reply") or "").split()))
-    while sentences and len(sentences[0]) <= 45 and PRAISE.search(sentences[0]) and PRAISED.search(sentences[0]):
-        sentences.pop(0)
-    text = " ".join(sentences)
+    text = " ".join(str(item.get("reply") or "").split())
+    while (lead := LEAD.match(text)) and len(lead[1]) <= 45 and PRAISE.search(lead[1]) and PRAISED.search(lead[1]):
+        text = text[lead.end():]
     if (not any(ch.isalpha() for ch in text) or len(text) > MAX_REPLY or LINK.search(text) or MEMORY.search(text)
             or "#" in text):
         return None
