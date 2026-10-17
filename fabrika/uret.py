@@ -35,7 +35,14 @@ def now():
 
 
 def load():
-    return json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"episodes": [], "used": [], "extra": []}
+    state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"episodes": [], "used": [], "extra": []}
+    # viewer topic ideas arrive in the reply watcher's file; from here on they live in durum.json like other topics
+    import cevapdurum
+    state["extra"] = cevapdurum.merge_extra(state.get("extra", []), cevapdurum.own().get("oneriler", []))
+    if cevapdurum.CEVAP.exists():  # reply state moved there on 2026-10-17; drop the stale copies
+        state.pop("yorumlar", None)
+        state.get("instagram", {}).pop("cevaplar", None)
+    return state
 
 
 def save(state):

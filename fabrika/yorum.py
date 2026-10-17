@@ -6,7 +6,8 @@
 Each tick reads the channel's newest comment threads (1 quota unit), lets Gemini write one short reply per
 comment in the commenter's language (with search, so science answers are checked) and posts them (50 units
 each). Spam, links, insults and touchy subjects get no reply. Topic suggestions go to the front of the topic
-queue, which keeps the videos' "Sıradaki soruyu sen seç!" promise. Answered ids live in fabrika/durum.json.
+queue, which keeps the videos' "Sıradaki soruyu sen seç!" promise. Answered ids live in fabrika/cevap_durum.json
+(fabrika/cevapdurum.py). The reply watcher (fabrika/nobet.py) calls run() every 5 minutes.
 """
 import argparse
 import json
@@ -20,13 +21,14 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "pilot-ay"))
+import cevapdurum  # noqa: E402
 import yazar  # noqa: E402
 import youtube as Y  # noqa: E402
 
 STATE = HERE / "durum.json"
 TOPICS = HERE / "konular.json"
 REPORT = HERE / "yorum_rapor.json"
-DAILY = int(os.environ.get("YO_YORUM_GUNLUK") or 30)  # 30 replies = 1,500 of the 10,000 units shared with ZK
+DAILY = int(os.environ.get("YO_YORUM_GUNLUK") or 50)  # 50 replies = 2,500 of the project's 10,000 daily units
 PER_RUN = int(os.environ.get("YO_YORUM_TUR") or 10)
 MAX_AGE_DAYS = 14
 SIGN = {"pi": "— Profesör Pi 🔭", "bit": "— Bit 🤖"}
@@ -284,7 +286,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--deneme", action="store_true")
     a = ap.parse_args()
-    state = load_state()
+    state = cevapdurum.load()
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "deneme": a.deneme}
     try:
         run(state, report, a.deneme)
@@ -292,7 +294,7 @@ def main():
         report["error"] = f"{type(e).__name__}: {e}"[:1000]
         print(report["error"], file=sys.stderr)
     if not a.deneme:
-        save_state(state)  # also after an error, so a posted reply is never posted twice
+        cevapdurum.save(state)  # also after an error, so a posted reply is never posted twice
     if report.get("error") or report.get("items") or a.deneme:
         report["log"] = yazar.LOG[-30:]
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")

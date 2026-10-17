@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Runs one factory tick on GitHub Actions: comment replies -> gate -> tools -> episode -> commit the outcome.
+# Runs one factory tick on GitHub Actions: metrics -> reply watcher check -> gate -> tools -> episode -> commit.
+# Replies run in the reply watcher (fabrika/nobet.py, ya_olsaydi_nobet.yml); the yorum modes answer once by hand.
 # Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igbolum
 set -uo pipefail
 MOD="${1:-saatlik}"
@@ -9,7 +10,7 @@ push() {
   git config user.name "ya-olsaydi-bot"
   git config user.email "ya-olsaydi-bot@users.noreply.github.com"
   git add fabrika/durum.json fabrika/rapor.json fabrika/yorum_rapor.json fabrika/metrikler.json 2>/dev/null || true
-  git add fabrika/ig_rapor.json fabrika/ig_anahtar.enc 2>/dev/null || true
+  git add fabrika/ig_rapor.json fabrika/ig_anahtar.enc fabrika/cevap_durum.json 2>/dev/null || true
   git add fabrika/bolumler fabrika/ses fabrika/deneme 2>/dev/null || true
   git commit -q -m "$1 [skip ci]" || { echo "değişiklik yok"; return 0; }
   for i in 1 2 3; do
@@ -31,17 +32,23 @@ if [ "$MOD" = "metrik" ]; then
   push "$out"; exit 0
 fi
 
-case "$MOD" in saatlik|yorum|yorumdeneme)
+case "$MOD" in yorum|yorumdeneme)
   pip install -q requests cryptography
-  [ "$MOD" = "saatlik" ] && python3 fabrika/metrik.py
-  flag=""; [ "$MOD" = "yorumdeneme" ] && flag="--deneme"
+  flag=""; igflag="--cevap"; [ "$MOD" = "yorumdeneme" ] && flag="--deneme" && igflag="--deneme"
   python3 fabrika/yorum.py $flag | tee fabrika/_yorum.out
   out=$(tail -n 1 fabrika/_yorum.out)
-  if [ -n "${YA_IG_TOKEN:-}" ] && [ "$MOD" != "yorumdeneme" ]; then
-    out="$out; $(python3 fabrika/instagram.py --cevap | tail -n 1)"
+  if [ -n "${YA_IG_TOKEN:-}" ]; then
+    out="$out; $(python3 fabrika/instagram.py $igflag | tail -n 1)"
   fi
-  if [ "$MOD" != "saatlik" ]; then push "$out"; exit 0; fi
+  push "$out"; exit 0
 esac
+
+if [ "$MOD" = "saatlik" ]; then
+  pip install -q requests cryptography
+  python3 fabrika/metrik.py
+  out=$(python3 fabrika/nobet.py --sor | tail -n 1)  # restarts the reply watcher if its chain broke
+  echo "$out"
+fi
 
 if [ "$MOD" = "saatlik" ]; then
   go=$(python3 fabrika/uret.py --kapi 2> fabrika/_kapi.out | sed -n 's/^go=//p')

@@ -1,7 +1,8 @@
 """Ya Olsaydı? on Instagram: every new episode as a Reel, and replies to comments and DMs in character.
 
   python fabrika/instagram.py --kontrol    check the key: account name and type, token age (fabrika/ig_rapor.json)
-  python fabrika/instagram.py --cevap      answer new comments and direct messages (every factory run)
+  python fabrika/instagram.py --cevap      answer new comments and direct messages once (the reply watcher,
+                                           fabrika/nobet.py, calls cevap() every minute)
   python fabrika/instagram.py --deneme     write the replies into fabrika/ig_rapor.json, post nothing
   fabrika/uret.py calls paylas() right after the YouTube upload.
 
@@ -28,14 +29,16 @@ import requests
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import cevapdurum  # noqa: E402
 import yazar  # noqa: E402
 import yorum  # noqa: E402
 
 API = "https://graph.instagram.com/v25.0"
 KEYFILE = HERE / "ig_anahtar.enc"
 REPORT = HERE / "ig_rapor.json"
-DAILY = int(os.environ.get("YO_IG_GUNLUK") or 40)
-PER_RUN = int(os.environ.get("YO_IG_TUR") or 10)
+DAILY = int(os.environ.get("YO_IG_GUNLUK") or 200)
+PER_RUN = int(os.environ.get("YO_IG_TUR") or 20)
+PER_PERSON = int(os.environ.get("YO_IG_KISI") or 10)  # replies per person per 24 h, so one chatter cannot use up the day
 MAX_AGE_DAYS = 14
 DM_WINDOW = 23 * 3600  # Instagram allows an answer within 24 hours of the person's message
 REFRESH_AFTER = 7 * 86400
@@ -44,6 +47,12 @@ PROMPT = yorum.PROMPT.replace(
     'You answer YouTube comments for "Ya Olsaydı?", a Turkish science Shorts channel',
     'You answer Instagram comments and direct messages for "Ya Olsaydı?", a Turkish science Reels account').replace(
     "Comments:", "Comments (\"video\": \"dm\" means a direct message, answer it as a private chat):")
+
+
+# The reply watcher runs cevap() every minute for hours: it sets REFRESH = False (the factory's runs refresh the
+# key, so only one writer touches ig_anahtar.enc) and CACHE = {} so unchanged media and conversations cost no calls.
+REFRESH = True
+CACHE = None
 
 
 class IGError(RuntimeError):
@@ -74,7 +83,7 @@ def token(report):
         except (InvalidToken, ValueError):
             pass  # made from an older secret: the new secret wins
     age = time.time() - tok.get("at", 0)
-    if age > REFRESH_AFTER:
+    if age > REFRESH_AFTER and REFRESH:
         r = requests.get("https://graph.instagram.com/refresh_access_token", timeout=30,
                          params={"grant_type": "ig_refresh_token", "access_token": tok["t"]})
         if r.ok:
@@ -98,7 +107,12 @@ def call(tok, method, path, **kw):
 
 
 def me(tok, state):
-    d = call(tok, "GET", "me", params={"fields": "user_id,username,account_type,media_count,followers_count"})
+    if CACHE is not None and CACHE.get("me"):
+        d = CACHE["me"]
+    else:
+        d = call(tok, "GET", "me", params={"fields": "user_id,username,account_type,media_count,followers_count"})
+        if CACHE is not None:
+            CACHE["me"] = d
     state.setdefault("instagram", {})["user"] = {k: d.get(k) for k in ("user_id", "username", "account_type")}
     return d
 
@@ -217,7 +231,7 @@ def paylas(ep, video, cover, state):
 def videos(state):
     """Instagram media id -> the episode's title and facts, for the reply prompt."""
     by_ep = yorum.videos(state)
-    yt = {e["id"]: e["video_id"] for e in state.get("episodes", [])}
+    yt = {"ay": next(iter(yorum.PILOT)), **{e["id"]: e["video_id"] for e in state.get("episodes", [])}}
     return {r["media_id"]: by_ep.get(yt.get(eid), {"title": "?", "facts": []})
             for eid, r in state.get("instagram", {}).get("posted", {}).items()}
 
@@ -229,19 +243,31 @@ def _ts(s):
         return time.time()
 
 
-def fresh_comments(tok, user, done):
+def _seen(kind, key, mark):
+    """With the watcher's CACHE: True when this media's comment count or this conversation's update time is
+    what we last fully handled."""
+    return CACHE is not None and CACHE.setdefault(kind, {}).get(key) == mark
+
+
+def fresh_comments(tok, user, done, pending):
+    """-> (comments to judge, ids to mark done without a reply); `pending` collects the cache marks to set once
+    every fresh comment of that media is handled."""
     fresh, quiet = [], {}
     limit = time.time() - MAX_AGE_DAYS * 86400
     media = call(tok, "GET", "me/media", params={"fields": "id,timestamp,comments_count", "limit": 25}).get("data", [])
     for m in media:
         if not m.get("comments_count") or _ts(m.get("timestamp")) < limit:
             continue
+        if _seen("media", m["id"], m["comments_count"]):
+            continue
         cs = call(tok, "GET", f"{m['id']}/comments", params={
             "fields": "id,text,username,timestamp,replies{username}", "limit": 50}).get("data", [])
+        ids = []
         for c in cs:
             cid, name = c["id"], c.get("username")
             if cid in done or name == user["username"]:
                 continue
+            ids.append(cid)
             text = " ".join((c.get("text") or "").split())
             if any(r.get("username") == user["username"] for r in (c.get("replies") or {}).get("data", [])):
                 quiet[cid] = "hesap zaten cevaplamış"
@@ -254,24 +280,36 @@ def fresh_comments(tok, user, done):
             else:
                 fresh.append({"id": cid, "kind": "yorum", "video": m["id"], "text": text[:500], "author": name,
                               "at": _ts(c.get("timestamp"))})
+        pending[("media", m["id"])] = (m["comments_count"], ids)
     return fresh, quiet
 
 
-def fresh_dms(tok, user, done):
+def fresh_dms(tok, user, done, pending):
     fresh, quiet = [], {}
     convs = call(tok, "GET", "me/conversations", params={"platform": "instagram", "fields": "id,updated_time",
                                                          "limit": 25}).get("data", [])
+    mine = {str(user.get("user_id")), user["username"]}
     for cv in convs:
+        if _seen("conv", cv["id"], cv.get("updated_time")):
+            continue
         msgs = call(tok, "GET", cv["id"], params={
             "fields": "messages.limit(5){id,message,from,created_time}"}).get("messages", {}).get("data", [])
+        msgs = sorted(reversed(msgs), key=lambda m: _ts(m.get("created_time")))  # oldest first; the API lists newest first
+        pending[("conv", cv["id"])] = (cv.get("updated_time"), [msgs[-1]["id"]] if msgs else [])
         if not msgs:
             continue
-        last = max(msgs, key=lambda m: _ts(m.get("created_time")))
+        last = msgs[-1]
         frm = last.get("from") or {}
         mid = last["id"]
-        if mid in done or frm.get("id") == str(user.get("user_id")) or frm.get("username") == user["username"]:
+        if mid in done or {frm.get("id"), frm.get("username")} & mine:
+            pending[("conv", cv["id"])] = (cv.get("updated_time"), [])
             continue  # answered already, or our own message is the latest
-        text = " ".join((last.get("message") or "").split())
+        tail = []  # everything the person wrote since our last message, so a split question is read whole
+        for m in reversed(msgs):
+            if {(m.get("from") or {}).get("id"), (m.get("from") or {}).get("username")} & mine:
+                break
+            tail.insert(0, " ".join((m.get("message") or "").split()))
+        text = " / ".join(t for t in tail if t)
         if time.time() - _ts(last.get("created_time")) > DM_WINDOW:
             quiet[mid] = "24 saat geçmiş"
         elif not text:
@@ -280,7 +318,7 @@ def fresh_dms(tok, user, done):
             quiet[mid] = "link içeriyor"
         else:
             fresh.append({"id": mid, "kind": "dm", "video": "dm", "to": frm.get("id"), "text": text[:500],
-                          "author": frm.get("username"), "at": _ts(last.get("created_time"))})
+                          "author": frm.get("username") or frm.get("id"), "at": _ts(last.get("created_time"))})
     return fresh, quiet
 
 
@@ -306,22 +344,48 @@ def cevap(state, report, dry):
     box = state.setdefault("instagram", {}).setdefault("cevaplar", {"done": {}, "son": []})
     done = box["done"]
     now = time.time()
-    sent = sum(1 for v in done.values() if v[1] == "r" and now - v[0] < 86400)
+    recent = [v for v in done.values() if v[1] == "r" and now - v[0] < 86400]
+    sent = len(recent)
+    per_person = {}
+    for v in recent:
+        if len(v) > 3:
+            per_person[v[3]] = per_person.get(v[3], 0) + 1
     room = max(0, min(PER_RUN, DAILY - sent))
-    fresh, quiet = fresh_comments(tok, user, done)
+    pending = {}
+    fresh, quiet = fresh_comments(tok, user, done, pending)
     try:
-        f2, q2 = fresh_dms(tok, user, done)
+        f2, q2 = fresh_dms(tok, user, done, pending)
         fresh, quiet = fresh + f2, {**quiet, **q2}
     except IGError as e:  # messaging may need its own permission; comments still go out
-        report.setdefault("warnings", []).append(f"mesajlar okunamadı: {e}")
+        report.setdefault("warnings", []).append(f"mesajlar okunamadı: {e}"[:500])
     if not dry:
         for cid, why in quiet.items():
             done[cid] = [now, "s", why]
     fresh.sort(key=lambda c: (c["kind"] != "dm", -c["at"]))  # DMs first: their window closes
-    report.update({"new": len(fresh), "quiet": len(quiet), "room": room, "sent_last_24h": sent})
-    batch = fresh[:room]
-    if not batch:
-        return
+    batch, later = [], 0
+    for c in fresh:
+        if per_person.get(c["author"], 0) >= PER_PERSON:
+            if not dry:
+                done[c["id"]] = [now, "s", f"kişi başı günlük {PER_PERSON} cevap doldu"]
+            continue
+        if len(batch) >= room:
+            later += 1
+            continue
+        batch.append(c)
+        per_person[c["author"]] = per_person.get(c["author"], 0) + 1
+    report.update({"new": len(fresh), "quiet": len(quiet), "room": room, "sent_last_24h": sent, "later": later})
+    if batch:
+        _answer(state, report, dry, tok, box, batch, now)
+    if not dry and CACHE is not None:  # remember what is fully handled, so the next minute skips it
+        for (kind, key), (mark, ids) in pending.items():
+            if all(i in box["done"] for i in ids):
+                CACHE.setdefault(kind, {})[key] = mark
+    cut = now - 60 * 86400
+    box["done"] = {k: v for k, v in box["done"].items() if v[0] > cut}
+
+
+def _answer(state, report, dry, tok, box, batch, now):
+    done = box["done"]
     planned = yorum.planned_questions(state)
     verdicts = judge(batch, videos(state), planned)
     out = report["items"] = []
@@ -331,7 +395,7 @@ def cevap(state, report, dry):
         out.append(item)
         if v.get("action") != "reply":
             item["result"] = f"atlandı: {v.get('why') or 'karar yok'}"
-            if not dry and v:
+            if not dry:  # no verdict counts too: asking Gemini again every minute would not change it
                 done[c["id"]] = [now, "s", item["result"]]
             continue
         reply = yorum.clean_reply(v)
@@ -341,9 +405,10 @@ def cevap(state, report, dry):
                 done[c["id"]] = [now, "s", item["result"]]
             continue
         item["reply"] = reply
-        topic = None if dry else yorum.add_topic(state, v.get("topic"), planned)
+        topic = None if dry or v.get("planned") else yorum.add_topic(state, v.get("topic"), planned)
         if topic:
             item["topic"] = topic["q"]
+            planned.append(topic["q"])
         if dry:
             item["result"] = "deneme, gönderilmedi"
             continue
@@ -352,14 +417,21 @@ def cevap(state, report, dry):
                 call(tok, "POST", "me/messages", json={"recipient": {"id": c["to"]}, "message": {"text": reply}})
             else:
                 call(tok, "POST", f"{c['id']}/replies", data={"message": reply})
-            done[c["id"]] = [now, "r", reply[:80]]
+            done[c["id"]] = [now, "r", reply[:80], c["author"]]
             item["result"] = "gönderildi"
             box["son"] = (box["son"] + [{"at": now, "kind": c["kind"], "text": c["text"][:120], "reply": reply}])[-40:]
         except IGError as e:
             item["result"] = f"gönderilemedi: {e}"[:300]
+            if rate_limited(e):
+                report["rate_limit"] = True
+                break  # try again after the pause
             done[c["id"]] = [now, "s", "gönderilemedi"]
-    cut = now - 60 * 86400
-    box["done"] = {k: v for k, v in done.items() if v[0] > cut}
+
+
+def rate_limited(e):
+    """Instagram's 'too many calls' answers: HTTP 429 or error codes 4, 17, 32, 613."""
+    t = str(e)
+    return " 429:" in t or bool(re.search(r'"code":\s*(4|17|32|613)\b', t))
 
 
 def kontrol(state, report):
@@ -396,7 +468,8 @@ def main():
     g.add_argument("--cevap", action="store_true")
     g.add_argument("--deneme", action="store_true")
     a = ap.parse_args()
-    state = yorum.load_state()
+    replies = not a.kontrol
+    state = cevapdurum.load() if replies else yorum.load_state()
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "cevap"}
     try:
@@ -407,8 +480,10 @@ def main():
     except (Exception, SystemExit) as e:  # never stop the episode run that follows
         report["error"] = f"{type(e).__name__}: {e}"[:1000]
         print(report["error"], file=sys.stderr)
-    if not a.deneme:
-        yorum.save_state(state)  # also after an error, so a sent reply is never sent twice
+    if replies and not a.deneme:
+        cevapdurum.save(state)  # also after an error, so a sent reply is never sent twice
+    elif not replies:
+        yorum.save_state(state)
     if report.get("error") or report.get("items") or report.get("hesap") or a.deneme:
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
