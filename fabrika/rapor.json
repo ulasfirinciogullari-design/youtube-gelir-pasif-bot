@@ -1,5 +1,5 @@
 {
- "started": "2026-10-17T17:07:07+00:00",
+ "started": "2026-10-17T19:06:58+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "channel": {
@@ -12,5 +12,5 @@
  "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.",
  "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 262, in main\n    ep = produce(state, a.mod, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 174, in produce\n    yt = yukle.connect(ystate, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/yukle.py\", line 27, in connect\n    Y.check_channel(yt, report, state)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/pilot-ay/youtube.py\", line 100, in check_channel\n    raise SystemExit(f\"Yanlış kanal: anahtar '{title}' kanalına bağlı. Hiçbir şey değiştirilmedi. \"\nSystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı.\n",
  "log": [],
- "finished": "2026-10-17T17:07:08+00:00"
+ "finished": "2026-10-17T19:06:58+00:00"
 }
