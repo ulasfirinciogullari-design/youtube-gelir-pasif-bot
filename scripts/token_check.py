@@ -21,6 +21,13 @@ try:
     out = {"checked_at": now.isoformat(timespec="seconds"), "ok": True, "scope": data.get("scope"),
            "refresh_token_expires_in": left,
            "expires_at": (now + timedelta(seconds=int(left))).isoformat(timespec="seconds") if left else None}
+    # Which channel the key belongs to: two keys were made in one Playground session (2026-10-16).
+    req = urllib.request.Request("https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
+                                 headers={"Authorization": f"Bearer {data['access_token']}"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        items = json.loads(r.read()).get("items") or []
+    out["channels"] = [{"id": c["id"], "title": c["snippet"].get("title"), "handle": c["snippet"].get("customUrl")}
+                       for c in items]
 except urllib.error.HTTPError as e:
     out = {"checked_at": now.isoformat(timespec="seconds"), "ok": False, "error": e.read().decode()[:300]}
 os.makedirs("channel-data", exist_ok=True)
