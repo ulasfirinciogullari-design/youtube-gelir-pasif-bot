@@ -160,6 +160,33 @@ def unhost(rel_id, tag):
             log(f"geçici sürüm silinemedi: {e}")
 
 
+def _direct(url):
+    """GitHub answers a release download with a redirect to a short-lived signed link; that link itself."""
+    r = requests.head(url, allow_redirects=False, timeout=30)
+    return r.headers.get("Location") or url
+
+
+def reel(tok, urls, text):
+    """Create a Reels container and wait until Instagram has fetched and processed the video -> container id.
+    If Instagram cannot fetch through GitHub's redirect, try once more with the signed link it points to."""
+    for attempt in (1, 2):
+        u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
+        cid = call(tok, "POST", "me/media", data={
+            "media_type": "REELS", "video_url": u["video.mp4"], "cover_url": u["kapak.jpg"],
+            "caption": text, "share_to_feed": "true"})["id"]
+        for _ in range(40):  # Instagram fetches and processes the video, usually within a minute or two
+            time.sleep(15)
+            st = call(tok, "GET", cid, params={"fields": "status_code,status"})
+            if st.get("status_code") == "FINISHED":
+                return cid
+            if st.get("status_code") in ("ERROR", "EXPIRED"):
+                break
+        else:
+            raise IGError("Instagram videoyu 10 dakikada işlemedi")
+        log(f"Instagram videoyu alamadı ({attempt}. deneme): {st.get('status')}")
+    raise IGError(f"Instagram videoyu işleyemedi: {st.get('status')}")
+
+
 def paylas(ep, video, cover, state):
     """Publish one episode as a Reel -> record for durum.json. Raises IGError when Instagram refuses."""
     report = {}
@@ -173,19 +200,7 @@ def paylas(ep, video, cover, state):
     tag = f"ig-{ep['id']}-{int(time.time())}"
     urls, rel = host({"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}, tag)
     try:
-        c = call(tok, "POST", "me/media", data={
-            "media_type": "REELS", "video_url": urls["video.mp4"], "cover_url": urls["kapak.jpg"],
-            "caption": caption(ep), "share_to_feed": "true"})
-        cid = c["id"]
-        for _ in range(40):  # Instagram fetches and processes the video, usually within a minute or two
-            time.sleep(15)
-            st = call(tok, "GET", cid, params={"fields": "status_code,status"})
-            if st.get("status_code") == "FINISHED":
-                break
-            if st.get("status_code") in ("ERROR", "EXPIRED"):
-                raise IGError(f"Instagram videoyu işleyemedi: {st.get('status')}")
-        else:
-            raise IGError("Instagram videoyu 10 dakikada işlemedi")
+        cid = reel(tok, urls, caption(ep))
         mid = call(tok, "POST", "me/media_publish", data={"creation_id": cid})["id"]
     finally:
         unhost(rel, tag)
@@ -354,6 +369,18 @@ def kontrol(state, report):
     d = me(tok, state)
     report["hesap"] = {k: d.get(k) for k in ("username", "account_type", "media_count", "followers_count")}
     report["paylasim_hakki"] = call(tok, "GET", "me/content_publishing_limit", params={"fields": "quota_usage,config"})
+    # does Instagram fetch a video from where paylas() puts it? A container that is never published shows nowhere
+    t = HERE / "deneme"
+    if (t / "video.mp4").exists() and (t / "kapak.jpg").exists():
+        tag = f"ig-test-{int(time.time())}"
+        urls, rel = host({"video.mp4": (t / "video.mp4", "video/mp4"), "kapak.jpg": (t / "kapak.jpg", "image/jpeg")}, tag)
+        try:
+            reel(tok, urls, "deneme, paylaşılmayacak")
+            report["video_testi"] = "Instagram videoyu aldı ve işledi (paylaşılmadı)"
+        except IGError as e:
+            report["video_testi"] = f"başarısız: {e}"[:500]
+        finally:
+            unhost(rel, tag)
 
 
 def main():
@@ -382,7 +409,8 @@ def main():
     sent = sum(1 for i in report.get("items", []) if i.get("result") == "gönderildi")
     why = report.get("skipped") or report.get("error", "")[:80]
     print(f"Instagram: {report.get('new', 0)} yeni, {sent} cevap" + (f" ({why})" if why else "")
-          + (f", hesap @{report['hesap']['username']}" if report.get("hesap") else ""))
+          + (f", hesap @{report['hesap']['username']}" if report.get("hesap") else "")
+          + (f", video testi: {report['video_testi'][:60]}" if report.get("video_testi") else ""))
 
 
 if __name__ == "__main__":
