@@ -1,0 +1,286 @@
+{
+  "topic_id": "mk-023",
+  "topic": "Pazartesi sabahları neden daha yorgun uyanırız?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Pazartesi Sabahları Neden Daha Yorgun Uyanırız? 😴",
+  "hook_text": "PAZARTESİ SABAHI KABUSU?",
+  "description": "Pazartesi sabahları neden daha yorgun uyanırız?\n\nHafta sonu değişen uyku düzenimiz ve genellikle daha uzun uyumamız, sosyal jet lag yaratır. Vücudumuzun biyolojik saati bu ani değişime adapte olamaz, bu yüzden Pazartesi sabahları daha yorgun uyanırız.\n\nSence hafta sonu uyku düzenini ne kadar değiştiriyorsun: 1 saatten az mı, yoksa 2 saatten fazla mı?\n\n#PazartesiYorgunluğu #SosyalJetLag #UykuDüzeni #HaftaSonuUyku #shorts #bilim #merak #keşfet\n\nSeri: mk-023",
+  "tags": [
+    "Pazartesi yorgunluğu",
+    "neden yorgun uyanırız",
+    "Pazartesi sendromu",
+    "sosyal jet lag",
+    "uyku düzeni",
+    "hafta sonu uyku",
+    "biyolojik saat",
+    "yorgun uyanma",
+    "daha yorgun uyanmak",
+    "Pazartesi sabahı",
+    "uyku alışkanlıkları",
+    "uyku düzenini korumak",
+    "Pazartesi neden zor",
+    "jet lag",
+    "uyku bilim",
+    "insan vücudu",
+    "sağlık",
+    "bilim",
+    "ilginç bilgiler",
+    "merak edilenler",
+    "yaşam tarzı",
+    "bilgi",
+    "monday fatigue",
+    "social jet lag",
+    "sleep schedule",
+    "uykusuzluk",
+    "bilimsel gerçekler",
+    "shorts",
+    "sağlıklı yaşam",
+    "uyku"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do We Wake Up More Tired on Monday Mornings? 😴",
+      "description": "Our sleep schedule shifts on weekends, leading to social jet lag. This makes it harder for our body's biological clock to adapt, causing that Monday morning fatigue. Maintaining a consistent sleep pattern, even on weekends, can help reduce this feeling.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "es": {
+      "title": "¿Por qué nos despertamos más cansados los lunes por la mañana? 😴",
+      "description": "Durante el fin de semana, nuestro horario de sueño cambia, lo que provoca un 'jet lag social'. Nuestro reloj biológico tiene dificultades para adaptarse a este cambio repentino, haciéndonos sentir más agotados al inicio de la semana. Mantener un horario de sueño constante, incluso los sábados y domingos, puede aliviar esta fatiga.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "pt": {
+      "title": "Por que acordamos mais cansados nas manhãs de segunda-feira? 😴",
+      "description": "Nosso padrão de sono muda nos fins de semana, causando um 'jet lag social'. O relógio biológico do nosso corpo não consegue se adaptar a essa mudança repentina, resultando na exaustão das manhãs de segunda-feira. Tentar manter um horário de sono consistente, mesmo nos fins de semana, pode fazer uma grande diferença.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "de": {
+      "title": "Warum wachen wir montags morgens müder auf? 😴",
+      "description": "Am Wochenende verschiebt sich unser Schlafplan, was zu einem 'sozialen Jetlag' führt. Die innere Uhr unseres Körpers kann sich an diese plötzliche Veränderung nicht anpassen, daher fühlen wir uns montags morgens müder. Ein gleichmäßiger Schlaf-Wach-Rhythmus, auch am Wochenende, kann diese Müdigkeit reduzieren.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "fr": {
+      "title": "Pourquoi se réveille-t-on plus fatigué le lundi matin ? 😴",
+      "description": "Notre rythme de sommeil change le week-end, créant un 'décalage horaire social'. Notre horloge biologique a du mal à s'adapter à ce changement soudain, ce qui nous rend plus fatigués le lundi matin. Essayer de maintenir un horaire de sommeil régulier, même le week-end, peut aider à combattre cette fatigue.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "it": {
+      "title": "Perché ci svegliamo più stanchi il lunedì mattina? 😴",
+      "description": "Il nostro orario di sonno cambia durante il fine settimana, creando un 'jet lag sociale'. L'orologio biologico del nostro corpo fatica ad adattarsi a questo cambiamento improvviso, facendoci sentire più stanchi il lunedì. Mantenere una routine di sonno costante, anche nei weekend, può aiutare a ridurre questa sensazione.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "ru": {
+      "title": "Почему мы просыпаемся более уставшими по понедельникам? 😴",
+      "description": "На выходных наш режим сна сбивается, что приводит к 'социальному джетлагу'. Биологические часы нашего организма не успевают адаптироваться к этим резким изменениям. Именно поэтому по утрам в понедельник мы чувствуем себя более разбитыми и уставшими.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "ar": {
+      "title": "لماذا نستيقظ أكثر تعباً صباح يوم الاثنين؟ 😴",
+      "description": "يتغير نظام نومنا في عطلة نهاية الأسبوع، مما يسبب ما يُعرف بـ 'اضطراب الرحلات الجوية الاجتماعي'. لا يستطيع ساعتنا البيولوجية التكيف مع هذا التغيير المفاجئ، وهذا ما يجعلنا نشعر بالإرهاق صباح الاثنين. الحفاظ على جدول نوم ثابت، حتى في عطلات نهاية الأسبوع، يمكن أن يساعد في تقليل هذا الشعور.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "hi": {
+      "title": "सोमवार की सुबह हम ज़्यादा थके हुए क्यों उठते हैं? 😴",
+      "description": "वीकेंड पर हमारी नींद का पैटर्न बदल जाता है, जिससे 'सोशल जेट लैग' होता है। हमारे शरीर की जैविक घड़ी इस अचानक बदलाव के साथ तालमेल बिठाने में संघर्ष करती है, जिससे सोमवार की सुबह थकान महसूस होती है। वीकेंड पर भी एक जैसा सोने का समय बनाए रखने से यह थकान कम हो सकती है।\n\n#shorts\n\nSeri: mk-023"
+    },
+    "id": {
+      "title": "Mengapa kita bangun lebih lelah di Senin pagi? 😴",
+      "description": "Jadwal tidur kita bergeser di akhir pekan, menyebabkan 'jet lag sosial'. Jam biologis tubuh kita kesulitan beradaptasi dengan perubahan mendadak ini, membuat kita merasa lebih lelah pada Senin pagi. Menjaga pola tidur yang konsisten, bahkan di akhir pekan, dapat membantu mengurangi kelelahan ini.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "ja": {
+      "title": "なぜ月曜の朝はもっと疲れて起きるの？ 😴",
+      "description": "週末に睡眠パターンが変わり、「社会的時差ボケ」を引き起こします。私たちの体の生体時計は、この急な変化に適応できず、月曜の朝に疲労感を感じる原因となります。週末も同じ時間に寝起きすることで、この月曜の疲労を軽減できますよ。\n\n#shorts\n\nSeri: mk-023"
+    },
+    "ko": {
+      "title": "월요일 아침에 더 피곤하게 일어나는 이유는? 😴",
+      "description": "주말에는 수면 패턴이 바뀌면서 '사회적 시차증'이 발생합니다. 우리 몸의 생체 시계는 이러한 갑작스러운 변화에 적응하기 어려워 월요일 아침에 더 피곤함을 느끼게 됩니다. 주말에도 일정한 수면 시간을 유지하는 것이 이러한 피로를 줄이는 데 도움이 될 수 있습니다.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "pl": {
+      "title": "Dlaczego budzimy się bardziej zmęczeni w poniedziałki rano? 😴",
+      "description": "W weekendy nasz harmonogram snu ulega zmianie, co prowadzi do 'społecznego jet lagu'. Zegar biologiczny naszego ciała ma trudności z dostosowaniem się do tej nagłej zmiany, co skutkuje poniedziałkowym zmęczeniem. Utrzymanie stałego rytmu snu, nawet w weekendy, może pomóc zmniejszyć to uczucie.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "nl": {
+      "title": "Waarom worden we maandagochtend vermoeider wakker? 😴",
+      "description": "In het weekend verschuift ons slaapschema, wat leidt tot een 'sociale jetlag'. Onze biologische klok heeft moeite zich aan deze plotselinge verandering aan te passen, waardoor we ons maandagochtend vermoeider voelen. Een consistent slaappatroon aanhouden, ook in het weekend, kan deze vermoeidheid verminderen.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "uk": {
+      "title": "Чому ми прокидаємося більш втомленими в понеділок вранці? 😴",
+      "description": "На вихідних наш режим сну змінюється, що призводить до 'соціального джетлагу'. Біологічний годинник нашого тіла не встигає адаптуватися до цих раптових змін, тому ми відчуваємо більшу втому в понеділок. Дотримання стабільного графіка сну, навіть на вихідних, може допомогти зменшити цю втому.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "vi": {
+      "title": "Tại sao chúng ta thức dậy mệt mỏi hơn vào sáng thứ Hai? 😴",
+      "description": "Lịch trình ngủ của chúng ta thay đổi vào cuối tuần, dẫn đến 'jet lag xã hội'. Đồng hồ sinh học của cơ thể khó thích nghi với sự thay đổi đột ngột này, khiến chúng ta cảm thấy mệt mỏi hơn vào sáng thứ Hai. Duy trì một lịch trình ngủ nhất quán, ngay cả vào cuối tuần, có thể giúp giảm bớt cảm giác này.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "az": {
+      "title": "Niyə Bazar ertəsi səhərləri daha yorğun oyanırıq? 😴",
+      "description": "Həftə sonu yuxu rejimimiz dəyişir və bu, 'sosial jet lag' yaradır. Bədənimizin bioloji saatı bu ani dəyişikliyə uyğunlaşa bilmir, buna görə də Bazar ertəsi səhərləri daha yorğun oyanırıq. Həftə sonu da eyni saatda yatıb qalxmaq Bazar ertəsi yorğunluğunu azalda bilər.\n\n#shorts\n\nSeri: mk-023"
+    },
+    "ro": {
+      "title": "De ce ne trezim mai obosiți luni dimineața? 😴",
+      "description": "Programul nostru de somn se modifică în weekend, ducând la un 'jet lag social'. Ceasul biologic al corpului nostru se adaptează cu dificultate la această schimbare bruscă, motiv pentru care ne simțim mai obosiți luni dimineața. Menținerea unui program de somn constant, chiar și în weekend, poate reduce această oboseală.\n\n#shorts\n\nSeri: mk-023"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence hafta sonu uyku düzenini ne kadar değiştiriyorsun: 1 saatten az mı, yoksa 2 saatten fazla mı?",
+  "scenes": [
+    {
+      "text": "Hafta sonu uyku düzenimiz değişir ve genellikle hafta içine göre daha uzun uyuruz.",
+      "visual": "A person sleeping peacefully in bed, eyes closed, covered by blankets.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 19,
+          "kare": 1
+        },
+        {
+          "n": 38,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        }
+      ],
+      "callout": "DEĞİŞEN UYKU DÜZENİ"
+    },
+    {
+      "text": "Pazartesi sabahları uyanmak ise çoğu kişi için işkence gibi.",
+      "visual": "A person struggling to wake up, looking tired or yawning in bed.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 3
+        },
+        {
+          "n": 14,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Bunun nedeni, hafta sonu değişen uyku düzenimizin yarattığı sosyal jet lag.",
+      "visual": "A person using a phone in bed at night, or alarm clocks showing different times.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 18,
+          "kare": 2
+        },
+        {
+          "n": 25,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 3
+        }
+      ],
+      "callout": "SOSYAL JET LAG"
+    },
+    {
+      "text": "Vücudumuzun biyolojik saati, bu ani değişime adapte olamaz.",
+      "visual": "A person tossing and turning restlessly in bed or looking tired and uncomfortable.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 3,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Hafta sonu da aynı saatte yatıp kalkmak, Pazartesi yorgunluğunu azaltır.",
+      "visual": "A person waking up and stretching in bed, appearing refreshed, or an alarm clock showing a consistent time.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 40,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        }
+      ],
+      "callout": "DÜZENLİ UYKU"
+    }
+  ],
+  "duration_seconds": 16.0,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-023_1792351383_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Video klipleri tekrarlayıcı ve 'sosyal jet lag' veya 'biyolojik saat' gibi soyut kavramları görsel olarak yeterince açıklayamıyor. Şaşırtıcı veya benzersiz görüntüler eksik.",
+        "fix": "Daha geniş bir stok video yelpazesi kullanın. 'Sosyal jet lag' için, farklı ortamlarda (iş, toplu taşıma) yorgun görünen insanlar, hızla değişen saatler veya zaman/ritim soyut temsilleri gibi klipleri değerlendirin. Uyku döngüleri, beyin ak"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve çok yavaş, bu da izleyici etkileşimini azaltıyor.",
+        "fix": "Yapay zeka ses hızını %10-20 oranında artırın ve daha doğal bir tonlama bulmak için farklı yapay zeka ses profillerini deneyin. Anlatımın kısa ve öz olmasını ve bir Short videosunun istenen temposuna uygun olmasını sağlayın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki metin statik ve animasyon eksikliği var; kavramları açıklamak için özel grafikler kullanılmıyor.",
+        "fix": "Metni canlandırın (örneğin, hızlı soluklaşmalar, açılır pencereler, hafif hareketler). 'Uyku döngüsü bozukluğu' veya 'biyolojik saat' gibi kavramları görsel olarak temsil etmek için stok kütüphanelerden veya temel düzenleme yazılımlarından "
+      },
+      {
+        "area": "kurgu",
+        "problem": "Tempo çok yavaş, kesmeler yeterince dinamik değil ve bazı geçişler (hayalet efekti gibi) amatörce duruyor.",
+        "fix": "Videoyu dinamik tutmak için kesme sıklığını artırın (ortalama klip başına 1-2 saniye hedefleyin). Çoğunlukla sert kesmeler kullanın. Hayalet efekti gibi dikkat dağıtıcı veya amatörce geçişleri kaldırın. Kesmelerin anlatımla tam olarak zaman"
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilgi ilgi çekici olsa da, görsel olarak şaşırtıcı veya dramatik bir şekilde sunulmuyor. 'Sosyal jet lag' kavramı etkili bir şekilde gösterilmek yerine anlatılıyor.",
+        "fix": "Stok görüntüleri kullanarak 'sosyal jet lag'i görsel olarak temsil etmenin yollarını düşünün. Örneğin, bir tarafında geç uyuyan, diğer tarafında erken uyanmakta zorlanan bir kişiyi gösteren bölünmüş bir ekran veya hafta sonu enerjik görünen"
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektlerinin eksikliği videoyu cansız ve daha az ilgi çekici hale getiriyor.",
+        "fix": "Metin görünümleri, geçişler ve önemli anlar için ince ses efektleri ekleyin (örneğin, metin için hafif bir 'vızıldama', uyanmaktan bahsederken yumuşak bir çalar saat sesi veya vurgu için hafif bir 'tık'). Telifsiz ses efektleri kullanın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği çok sakin ve bir Short videosunun istenen enerjik tonuna katkıda bulunmuyor.",
+        "fix": "Daha neşeli, biraz daha enerjik ama yine de dikkat dağıtıcı olmayan bir arka plan müziği seçin. Video boyunca tutarlı bir enerji seviyesini korumalıdır."
+      }
+    ],
+    "strengths": [
+      "Bilgi açık ve öz",
+      "Konu ilişkilendirilebilir (Pazartesi sabahı sendromu)",
+      "Genel video kalitesi iyi (stok görüntüler)",
+      "Tutarlı marka logosu"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
