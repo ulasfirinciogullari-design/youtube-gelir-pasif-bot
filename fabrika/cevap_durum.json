@@ -65,6 +65,11 @@
     1792343259,
     "r",
     "UgyLxp6knZyB7vUl49N4AaABAg.Ac6gAj2_ze-Ac6gZyQaQvq"
+   ],
+   "UgyvS1jFfdNvNUJ2K694AaABAg": [
+    1792348379,
+    "r",
+    "UgyvS1jFfdNvNUJ2K694AaABAg.Ac6qHakfTrxAc6qKwKY-Ny"
    ]
   },
   "son": [
@@ -121,6 +126,12 @@
     "video": "bqFeef1QL08",
     "comment": "dunyada 10 saniyede yer çekimi yok olsa ne olardı?❤❤❤😊",
     "reply": "Yerçekimi kapandığı an Dünya'nın dönüş hızı yüzünden yüzeydeki her şey saatte 1600 km'ye varan hızla uzaya savrulurdu! Bu konuyu video listemize aldık.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792348379,
+    "video": "bqFeef1QL08",
+    "comment": "peki karbon qazı 5 saniye yok olsaydı ne olurdu?❤❤❤😊😊😊",
+    "reply": "Karbondioksit atmosferin sadece %0,04'ünü oluştursa da fotosentezin ve gezegenimizin sıcaklığının temel taşıdır. Bu ilginç senaryoyu video listemize ekledik!\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -164,14 +175,21 @@
    }
   ]
  },
- "oneriler": [],
+ "oneriler": [
+  {
+   "id": "o0007",
+   "series": "Ya Olsaydı?",
+   "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?",
+   "oneri": true
+  }
+ ],
  "nobet": {
   "basladi": "2026-10-18T17:37:39+00:00",
   "run": "39149669926",
-  "tur": 54,
+  "tur": 56,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-18T18:30:40+00:00"
+  "son_tur": "2026-10-18T18:32:59+00:00"
  }
 }

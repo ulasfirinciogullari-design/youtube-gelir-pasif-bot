@@ -1,24 +1,25 @@
 {
- "started": "2026-10-18T17:07:27+00:00",
+ "started": "2026-10-18T18:32:39+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 13,
+ "threads": 14,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 6,
+ "sent_last_24h": 7,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgyLxp6knZyB7vUl49N4AaABAg",
+   "id": "UgyvS1jFfdNvNUJ2K694AaABAg",
    "video": "bqFeef1QL08",
-   "comment": "dunyada 10 saniyede yer çekimi yok olsa ne olardı?❤❤❤😊",
-   "reply": "Yerçekimi kapandığı an Dünya'nın dönüş hızı yüzünden yüzeydeki her şey saatte 1600 km'ye varan hızla uzaya savrulurdu! Bu konuyu video listemize aldık.\n— Profesör Pi 🔭",
+   "comment": "peki karbon qazı 5 saniye yok olsaydı ne olurdu?❤❤❤😊😊😊",
+   "reply": "Karbondioksit atmosferin sadece %0,04'ünü oluştursa da fotosentezin ve gezegenimizin sıcaklığının temel taşıdır. Bu ilginç senaryoyu video listemize ekledik!\n— Profesör Pi 🔭",
+   "topic": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T17:07:39+00:00"
+ "finished": "2026-10-18T18:32:59+00:00"
 }
