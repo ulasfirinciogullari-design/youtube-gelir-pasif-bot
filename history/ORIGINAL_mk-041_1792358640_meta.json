@@ -1,0 +1,266 @@
+{
+  "topic_id": "mk-041",
+  "topic": "Bazı balıklar karanlıkta neden parlar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x4",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Okyanusun Gizemli Işıkları: Neden Parlıyorlar? ✨",
+  "hook_text": "BALIKLAR NEDEN PARLAR?",
+  "description": "Okyanusun derinliklerindeki balıklar neden parlar?\n\nDerin deniz canlıları, biyolüminesans adı verilen bir yöntemle kendi ışıklarını üretir. Bu canlılar, kimyasal tepkimelerle ürettikleri bu ışığı %90'dan fazla verimlilikle avlanmak ve korunmak için kullanır.\n\nSence biyolüminesans en çok ne için kullanılır: Avlanmak mı korunmak mu?\n\n#biyolüminesans #derindeniz #okyanuscanlıları #merakettim #shorts #bilim #merak #keşfet\n\nSeri: mk-041",
+  "tags": [
+    "biyolüminesans",
+    "derin deniz balıkları",
+    "balıklar neden parlar",
+    "ışık saçan balıklar",
+    "okyanus gizemleri",
+    "deniz canlıları ışık",
+    "biyolüminesans nedir",
+    "derin deniz adaptasyonu",
+    "canlılar nasıl ışık saçar",
+    "kimyasal ışık",
+    "avlanma stratejileri",
+    "korunma mekanizmaları",
+    "bilim",
+    "doğa",
+    "ilginç bilgiler",
+    "merak",
+    "keşfet",
+    "hayvanlar",
+    "okyanus",
+    "deep sea fish",
+    "bioluminescence",
+    "ocean",
+    "science",
+    "parlayanbalıklar",
+    "derindeniz",
+    "keşif",
+    "ışıküretencanlılar",
+    "shorts",
+    "belgesel",
+    "bilgi",
+    "biyoluminesans"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Mysterious Ocean Lights: Why Do They Glow? ✨",
+      "description": "Discover the mesmerizing world of bioluminescence! Deep-sea animals produce their own light with over 90% efficiency. This incredible adaptation helps them hunt and protect themselves in the ocean's dark depths.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "es": {
+      "title": "¿Por qué Brillan las Luces Misteriosas del Océano? ✨",
+      "description": "¡Sumérgete en el fascinante mundo de la bioluminiscencia! Los animales de aguas profundas generan su propia luz con más del 90% de eficiencia, usando esta adaptación única para cazar y protegerse.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "pt": {
+      "title": "Por Que as Luzes Misteriosas do Oceano Brilham? ✨",
+      "description": "Explore o mundo hipnotizante da bioluminescência! Animais das profundezas do mar produzem sua própria luz com mais de 90% de eficiência, uma adaptação crucial para caçar e se proteger.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "de": {
+      "title": "Mysteriöse Lichter des Ozeans: Warum Leuchten Sie? ✨",
+      "description": "Tauche ein in die faszinierende Welt der Biolumineszenz! Tiefseelebewesen erzeugen ihr eigenes Licht mit über 90% Effizienz, um in der Dunkelheit des Ozeans zu jagen und sich zu schützen.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "fr": {
+      "title": "Lumières Mystérieuses de l'Océan: Pourquoi Brillent-elles? ✨",
+      "description": "Plongez dans le monde captivant de la bioluminescence! Les créatures des profondeurs marines produisent leur propre lumière avec plus de 90% d'efficacité pour chasser et se défendre.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "it": {
+      "title": "Le Luci Misteriose dell'Oceano: Perché Brillano? ✨",
+      "description": "Scopri il mondo affascinante della bioluminescenza! Gli animali marini producono la propria luce con oltre il 90% di efficienza, un adattamento vitale per la caccia e la protezione nelle profondità.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "ru": {
+      "title": "Загадочные Огни Океана: Почему Они Светятся? ✨",
+      "description": "Погрузитесь в удивительный мир биолюминесценции! Глубоководные существа производят собственный свет с эффективностью более 90%, используя его для охоты и защиты в темноте океана.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "ar": {
+      "title": "أضواء المحيط الغامضة: لماذا تتوهج؟ ✨",
+      "description": "اكتشف عالم الإضاءة الحيوية المذهل! تنتج كائنات أعماق البحار ضوءها الخاص بكفاءة تزيد عن 90%، وهي استراتيجية حاسمة للصيد والحماية في الظلام.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "hi": {
+      "title": "महासागर की रहस्यमयी रोशनी: ये क्यों चमकती हैं? ✨",
+      "description": "बायोल्यूमिनेसेंस की मंत्रमुग्ध कर देने वाली दुनिया की खोज करें! गहरे समुद्र के जीव 90% से अधिक दक्षता के साथ अपनी रोशनी पैदा करते हैं, जिसका उपयोग वे शिकार करने और खुद को बचाने के लिए करते हैं।\n\n#shorts\n\nSeri: mk-041"
+    },
+    "id": {
+      "title": "Cahaya Misterius Samudra: Mengapa Mereka Bersinar? ✨",
+      "description": "Selami dunia bioluminesensi yang memukau! Makhluk laut dalam menghasilkan cahaya sendiri dengan efisiensi lebih dari 90%, menggunakannya untuk berburu dan melindungi diri di kegelapan samudra.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "ja": {
+      "title": "深海の神秘的な光：なぜ輝くのか？ ✨",
+      "description": "生物発光の魅惑的な世界を発見しよう！深海の生物は90%以上の効率で自ら光を放ち、暗闇の中で獲物を捕らえたり身を守ったりするためにこの適応を利用しています。\n\n#shorts\n\nSeri: mk-041"
+    },
+    "ko": {
+      "title": "심해의 신비로운 빛: 왜 빛날까요? ✨",
+      "description": "생물 발광의 매혹적인 세계를 탐험하세요! 심해 생물들은 90% 이상의 효율로 스스로 빛을 내며, 이를 사냥과 포식자로부터 자신을 보호하는 데 사용합니다.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "pl": {
+      "title": "Tajemnicze Światła Oceanu: Dlaczego Świecą? ✨",
+      "description": "Odkryj fascynujący świat bioluminescencji! Stworzenia głębinowe wytwarzają własne światło z ponad 90% wydajnością, wykorzystując tę adaptację do polowania i obrony.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "nl": {
+      "title": "Mysterieuze Lichten van de Oceaan: Waarom Gloeien Ze? ✨",
+      "description": "Duik in de betoverende wereld van bioluminescentie! Diepzeedieren produceren hun eigen licht met meer dan 90% efficiëntie, een cruciale aanpassing om te jagen en zichzelf te beschermen.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "uk": {
+      "title": "Таємничі Вогні Океану: Чому Вони Світяться? ✨",
+      "description": "Відкрийте для себе захоплюючий світ біолюмінесценції! Глибоководні істоти виробляють власне світло з ефективністю понад 90%, використовуючи його для полювання та захисту.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "vi": {
+      "title": "Ánh Sáng Bí Ẩn Đại Dương: Tại Sao Chúng Phát Sáng? ✨",
+      "description": "Khám phá thế giới phát quang sinh học đầy mê hoặc! Các sinh vật biển sâu tạo ra ánh sáng riêng với hiệu suất hơn 90%, sử dụng sự thích nghi này để săn mồi và tự bảo vệ.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "az": {
+      "title": "Okeanın Sirli İşıqları: Niyə Parıldayırlar? ✨",
+      "description": "Biolüminesansın valehedici dünyasını kəşf edin! Dərin dəniz canlıları 90%-dən çox səmərəliliklə öz işıqlarını istehsal edir və bu uyğunlaşmadan ovlanmaq və qorunmaq üçün istifadə edirlər.\n\n#shorts\n\nSeri: mk-041"
+    },
+    "ro": {
+      "title": "Luminile Misterioase ale Oceanului: De Ce Strălucesc? ✨",
+      "description": "Descoperă lumea fascinantă a bioluminescenței! Creaturile de adâncime își produc propria lumină cu o eficiență de peste 90%, folosind această adaptare pentru vânătoare și protecție.\n\n#shorts\n\nSeri: mk-041"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence biyolüminesans en çok ne için kullanılır: Avlanmak mı korunmak mı?",
+  "scenes": [
+    {
+      "text": "Bu canlılar %90'dan fazla verimlilikle ışık saçar.",
+      "visual": "A bioluminescent red marine organism glowing in darkness.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 1
+        }
+      ],
+      "callout": "YÜKSEK VERİM"
+    },
+    {
+      "text": "Derin deniz canlıları karanlıkta neden kendi ışığını üretir? Buna biyolüminesans denir.",
+      "visual": "Multiple blue glowing jellyfish floating in dark water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 15,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 2
+        }
+      ],
+      "callout": "BİYOLÜMİNESANS"
+    },
+    {
+      "text": "Canlılar kimyasal tepkimelerle ürettikleri bu ışığı avlanmak ve korunmak için kullanır.",
+      "visual": "Fish swimming near blue-lit coral and a creature in a dark underwater cave.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 1
+        },
+        {
+          "n": 9,
+          "kare": 1
+        },
+        {
+          "n": 3,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu eşsiz adaptasyon, derin okyanusun karanlığında birçok canlının hayatta kalma ve etkileşim stratejileri için kritik öneme sahiptir.",
+      "visual": "Various glowing jellyfish, some pink, some orange, some small and numerous, in dark water.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 1
+        },
+        {
+          "n": 7,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 17.21,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-041_1792358640_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve enerjisiz, referans videodaki insan anlatıcının dinamizminden yoksun.",
+        "fix": "Daha doğal tonlamalara ve enerjiye sahip bir yapay zeka sesi seçilmeli, konuşma hızı ve vurgular daha dinamik ayarlanmalı."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (başlangıç) yeterince merak uyandırıcı değil ve bilginin şaşırtıcılığı tam olarak vurgulanmıyor.",
+        "fix": "Başlangıç cümlesi daha çarpıcı hale getirilmeli (örn: 'Okyanusun derinliklerinde, imkansızı başaran canlılar var!') ve biolüminesansın neden bu kadar şaşırtıcı olduğu daha dramatik bir dille anlatılmalı."
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Bilgiyi açıklayıcı görsel grafikler (oklar, vurgular, basit animasyonlar) eksik, referans videodaki kedi dönüşü animasyonu gibi.",
+        "fix": "Mevcut stok videolara basit animasyonlu oklar, daireler veya vurgu efektleri eklenerek kimyasal tepkimeler veya korunma/avlanma stratejileri görsel olarak daha iyi açıklanmalı."
+      },
+      {
+        "area": "kurgu ve geçişler",
+        "problem": "Video akışı daha yavaş ve geçişler basit, referans videodaki hızlı ve dinamik kurgunun gerisinde kalıyor.",
+        "fix": "Klip süreleri kısaltılmalı, daha sık ve hızlı kesmeler kullanılmalı. Anlatıcının ritmine uygun, daha dinamik bir kurgu sağlanmalı."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Başlık 'Balıklar neden parlar?' olmasına rağmen videoda ağırlıklı olarak denizanası görüntüleri kullanılmış, bu da konuyu tam yansıtmıyor.",
+        "fix": "Ya başlık 'Deniz Canlıları Neden Parlar?' olarak değiştirilmeli ya da biolüminesan balıkların daha çeşitli ve açıklayıcı stok görüntüleri bulunup kullanılmalı."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve atmosferik, referans videodaki gibi merak uyandıran veya enerjiyi artıran bir etkisi yok.",
+        "fix": "Daha gizemli, heyecan verici veya ilham verici, telifsiz bir müzik seçilmeli. Müziğin videonun akışına ve anlatılan konuya daha uygun olması sağlanmalı."
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Bazı sahnelerde ekranda çok fazla metin bulunuyor ve bu durum izleyicinin dikkatini dağıtabiliyor.",
+        "fix": "Metinler daha kısa, anahtar kelimelerden oluşan parçalara ayrılmalı. Daha büyük fontlar ve daha kısa gösterim süreleri ile anlatıcıyla senkronize edilmeli."
+      },
+      {
+        "area": "ses",
+        "problem": "Video boyunca herhangi bir ses efekti kullanılmamış, bu da izleyici deneyimini zayıflatıyor.",
+        "fix": "Metin geçişleri için hafif 'vınlama' veya 'parlama' sesleri, su altı ortam sesleri gibi ince efektler eklenerek videonun sürükleyiciliği artırılmalı."
+      }
+    ],
+    "strengths": [
+      "Video, konuyu anlaşılır bir şekilde aktarıyor.",
+      "Görüntü kalitesi genel olarak iyi.",
+      "Metinlerin kontrastı okunabilirliği sağlıyor."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
