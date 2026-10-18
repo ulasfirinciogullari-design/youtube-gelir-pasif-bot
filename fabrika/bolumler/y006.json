@@ -1,0 +1,495 @@
+{
+ "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
+ "bar": {
+  "hi": "TÜM BUZLAR",
+  "rest": "ERİSEYDİ?"
+ },
+ "summary": "Gezegendeki tüm buzulların erimesi deniz seviyelerini tam 70 metre yükseltip kıyıları haritadan silerdi. Üstelik eriyen donmuş topraktan binlerce yıllık antik mikroplar uyanırdı.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Okyanuslar tam 70 metre yükselir, tüm kıyı şehirleri batardı.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "70",
+    "unit": "metre",
+    "label": "DENİZ SEVİYESİ",
+    "key": "70"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "15. kattaki evimiz bile mi?",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🏢",
+    "do": "fall",
+    "key": "evimiz",
+    "label": "SULAR ALTINDA"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dünyadaki tatlı suyun %69'u zamanla tuzlu denizlere karışırdı.",
+   "v": {
+    "t": "compare",
+    "bg": "desert",
+    "a": {
+     "e": "🧊",
+     "label": "BUZULDA",
+     "value": 69
+    },
+    "b": {
+     "e": "💧",
+     "label": "DİĞER",
+     "value": 31
+    },
+    "mode": "bar",
+    "key": "%69"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gezegenin ortalama sıcaklığı 14'ten 27 dereceye fırlardı.",
+   "v": {
+    "t": "meter",
+    "bg": "desert",
+    "label": "SICAKLIK",
+    "from": 14,
+    "to": 27,
+    "unit": "°C",
+    "e": "🌡️",
+    "key": "27"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Olası bir tehlikeyse donmuş topraktan uyanabilecek binlerce yıllık virüsler.",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🦠",
+    "do": "multiply",
+    "key": "virüsler",
+    "label": "ANTİK VİRÜSLER"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Senin evin sular altında kalır mıydı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "🏠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Dünya üzerindeki tüm buzul ve buz tabakaları erirse küresel deniz seviyesi yaklaşık 70 metre yükselir.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/faqs/how-would-sea-level-change-if-all-glaciers-melted"
+  },
+  {
+   "text": "Dünya'daki tatlı su kaynaklarının yaklaşık %69'u buzullarda ve kutup buz örtülerinde donmuş haldedir.",
+   "source": "USGS Water Science School",
+   "url": "https://www.usgs.gov/special-topics/water-science-school/science/glaciers-and-icecaps"
+  },
+  {
+   "text": "Buzların güneşi yansıtma özelliğinin kaybolmasıyla Dünya'nın ortalama sıcaklığı yaklaşık 14 °C'den 26-27 °C'ye çıkabilir.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/magazine/article/rising-seas-ice-melt-new-shoreline-maps"
+  }
+ ],
+ "tags": [
+  "buzullar erirse",
+  "küresel ısınma",
+  "deniz seviyesi",
+  "iklim krizi",
+  "kutup buzulları",
+  "dünya tarihi",
+  "permafrost",
+  "antik virüsler",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#buzullar",
+  "#iklim",
+  "#yaolsaydı"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.usgs.gov/faqs/how-would-sea-level-change-if-all-glaciers-melted",
+  "https://www.nationalgeographic.com/magazine/article/rising-seas-ice-melt-new-shoreline-maps"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If All the Ice on Earth Melted?",
+   "summary": "If all glaciers on the planet melted, sea levels would rise by 70 meters, wiping coastlines off the map. Furthermore, ancient microbes thousands of years old would awaken from thawing permafrost.",
+   "facts": [
+    "If all glaciers and ice sheets on Earth melted, global sea levels would rise by about 70 meters.",
+    "Approximately 69% of Earth's freshwater resources are frozen in glaciers and polar ice caps.",
+    "Losing ice reflectivity could drive Earth's average temperature from about 14 °C up to 26-27 °C."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si todo el hielo de la Tierra se derritiera?",
+   "summary": "El derretimiento de todos los glaciares elevaría el nivel del mar 70 metros y borraría las costas del mapa. Además, microbios milenarios despertarían del permafrost derretido.",
+   "facts": [
+    "Si todos los glaciares y capas de hielo se derritieran, el nivel global del mar subiría unos 70 metros.",
+    "Aproximadamente el 69% del agua dulce del planeta está congelada en glaciares y casquetes polares.",
+    "Sin el reflejo solar del hielo, la temperatura media global podría subir de 14 °C a 26-27 °C."
+   ]
+  },
+  "pt": {
+   "title": "E se todo o gelo da Terra derretesse?",
+   "summary": "O derretimento de todas as geleiras elevaria o nível do mar em 70 metros, apagando litorais do mapa. Além disso, micróbios milenares despertariam do permafrost derretido.",
+   "facts": [
+    "Se todas as geleiras e calotas polares derretessem, o nível do mar subiria cerca de 70 metros.",
+    "Cerca de 69% dos recursos de água doce da Terra estão congelados em geleiras e calotas polares.",
+    "Com a perda do reflexo do gelo, a temperatura média da Terra poderia subir de 14 °C para 26-27 °C."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو ذاب كل الجليد على كوكب الأرض؟",
+   "summary": "ذوبان جميع الأنهار الجليدية سيرفع منسوب مياه البحر 70 متراً ويمحو السواحل من الخريطة. وفضلاً عن ذلك، ستستيقظ ميكروبات قديمة تعود لآلاف السنين من التربة الصقيعية.",
+   "facts": [
+    "إذا ذابت جميع الكتل والصفائح الجليدية على الأرض، سيرتفع مستوى سطح البحر عالمياً بنحو 70 متراً.",
+    "حوالي 69% من موارد المياه العذبة في العالم مجمدة في الأنهار الجليدية والقمم الجليدية القطبية.",
+    "بفقدان انعكاس الجليد لأشعة الشمس، قد يرتفع متوسط درجة حرارة الأرض من حوالي 14 °C إلى 26-27 °C."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर पृथ्वी की सारी बर्फ पिघल जाए?",
+   "summary": "अगर धरती के सारे ग्लेशियर पिघल जाएं, तो समुद्र का स्तर 70 मीटर बढ़ जाएगा और तट नक्शे से मिट जाएंगे। इसके अलावा, पिघलती पर्माफ्रॉस्ट से हजारों साल पुराने प्राचीन रोगाणु जाग उठेंगे।",
+   "facts": [
+    "यदि पृथ्वी के सभी ग्लेशियर और बर्फ की चादरें पिघल जाएं, तो वैश्विक समुद्र स्तर लगभग 70 मीटर बढ़ जाएगा।",
+    "पृथ्वी के लगभग 69% मीठे पानी के स्रोत ग्लेशियरों और ध्रुवीय बर्फ की चादरों में जमे हुए हैं।",
+    "बर्फ के परावर्तन गुण समाप्त होने से पृथ्वी का औसत तापमान लगभग 14 °C से बढ़कर 26-27 °C हो सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Jika Semua Es di Bumi Mencair?",
+   "summary": "Mencairnya semua gletser di planet ini akan menaikkan permukaan laut hingga 70 meter dan melenyapkan pesisir dari peta. Ditambah lagi, mikroba kuno berusia ribuan tahun akan bangkit dari permafrost.",
+   "facts": [
+    "Jika semua gletser dan lapisan es di Bumi mencair, permukaan laut global akan naik sekitar 70 meter.",
+    "Sekitar 69% sumber air tawar di Bumi membeku di gletser dan tudung es kutub.",
+    "Hilangnya kemampuan es memantulkan sinar matahari bisa menaikkan suhu rata-rata Bumi dari 14 °C ke 26-27 °C."
+   ]
+  },
+  "fr": {
+   "title": "Que se passerait-il si toute la glace fondait ?",
+   "summary": "La fonte de tous les glaciers ferait monter le niveau de la mer de 70 mètres, rayant les côtes de la carte. De plus, d'anciens microbes millénaires se réveilleraient du permafrost fondu.",
+   "facts": [
+    "Si tous les glaciers et calottes glaciaires fondaient, le niveau mondial de la mer monterait d'environ 70 mètres.",
+    "Environ 69 % des réserves d'eau douce de la Terre sont gelées dans les glaciers et les calottes polaires.",
+    "Sans la réflectivité de la glace, la température moyenne de la Terre pourrait passer d'environ 14 °C à 26-27 °C."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn alles Eis der Erde schmelzen würde?",
+   "summary": "Das Schmelzen aller Gletscher würde den Meeresspiegel um 70 Meter ansteigen lassen und Küsten von der Karte tilgen. Zudem würden Jahrtausende alte Mikroben aus dem tauenden Permafrost erwachen.",
+   "facts": [
+    "Wenn alle Gletscher und Eisschilde der Erde schmelzen, steigt der globale Meeresspiegel um etwa 70 Meter.",
+    "Etwa 69 % der weltweiten Süßwasserressourcen sind in Gletschern und polaren Eiskappen gefroren.",
+    "Durch den Verlust der Eisreflexion könnte die Durchschnittstemperatur der Erde von 14 °C auf 26-27 °C steigen."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если растает весь лед на Земле?",
+   "summary": "Таяние всех ледников поднимет уровень моря на целых 70 метров и сотрет побережья с карты. Кроме того, из тающей вечной мерзлоты пробудятся древние микробы возрастом в тысячи лет.",
+   "facts": [
+    "Если все ледники и ледяные щиты растают, глобальный уровень моря поднимется примерно на 70 метров.",
+    "Около 69% мировых запасов пресной воды заморожено в ледниках и полярных ледяных шапках.",
+    "С потерей отражающей способности льда средняя температура Земли может вырасти с 14 °C до 26-27 °C."
+   ]
+  },
+  "az": {
+   "title": "Dünyadakı bütün buzlar ərisə, nə baş verərdi?",
+   "summary": "Planetdəki bütün buzlaqların əriməsi dəniz səviyyəsini düz 70 metr qaldıraraq sahilləri xəritədən silərdi. Üstəlik, əriyən donmuş torpaqdan minillik qədim mikroblar oyanardı.",
+   "facts": [
+    "Yer üzündəki bütün buzlaqlar və buz örtükləri ərisə, qlobal dəniz səviyyəsi təxminən 70 metr yüksələr.",
+    "Dünyadakı şirin su ehtiyatlarının təxminən 69%-i buzlaqlarda və qütb buz örtüklərində donmuş vəziyyətdədir.",
+    "Buzun günəşi əks etdirmə xüsusiyyətinin itməsi ilə Yerin orta temperaturu təxminən 14 °C-dən 26-27 °C-yə yüksələ bilər."
+   ]
+  }
+ },
+ "id": "y006",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'daki bütün buzlar erise ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 3.88,
+   "words": [
+    {
+     "w": "Okyanuslar",
+     "t0": 0.35,
+     "t1": 0.861
+    },
+    {
+     "w": "tam",
+     "t0": 0.9189999999999999,
+     "t1": 1.0579999999999998
+    },
+    {
+     "w": "70",
+     "t0": 1.1280000000000001,
+     "t1": 1.3719999999999999
+    },
+    {
+     "w": "metre",
+     "t0": 1.4180000000000001,
+     "t1": 1.6509999999999998
+    },
+    {
+     "w": "yükselir,",
+     "t0": 1.685,
+     "t1": 2.173
+    },
+    {
+     "w": "tüm",
+     "t0": 2.37,
+     "t1": 2.533
+    },
+    {
+     "w": "kıyı",
+     "t0": 2.603,
+     "t1": 2.754
+    },
+    {
+     "w": "şehirleri",
+     "t0": 2.8120000000000003,
+     "t1": 3.206
+    },
+    {
+     "w": "batardı.",
+     "t0": 3.23,
+     "t1": 3.88
+    }
+   ]
+  },
+  {
+   "t0": 4.26,
+   "t1": 6.21,
+   "words": [
+    {
+     "w": "15.",
+     "t0": 4.26,
+     "t1": 4.84
+    },
+    {
+     "w": "kattaki",
+     "t0": 4.945,
+     "t1": 5.316
+    },
+    {
+     "w": "evimiz",
+     "t0": 5.351,
+     "t1": 5.63
+    },
+    {
+     "w": "bile",
+     "t0": 5.688,
+     "t1": 5.8149999999999995
+    },
+    {
+     "w": "mi?",
+     "t0": 5.862,
+     "t1": 6.21
+    }
+   ]
+  },
+  {
+   "t0": 6.604761904761904,
+   "t1": 11.387761904761906,
+   "words": [
+    {
+     "w": "Dünyadaki",
+     "t0": 6.604761904761904,
+     "t1": 7.173761904761904
+    },
+    {
+     "w": "tatlı",
+     "t0": 7.219761904761905,
+     "t1": 7.4987619047619045
+    },
+    {
+     "w": "suyun",
+     "t0": 7.544761904761904,
+     "t1": 7.8577619047619045
+    },
+    {
+     "w": "%69'u",
+     "t0": 8.020761904761905,
+     "t1": 9.181761904761904
+    },
+    {
+     "w": "zamanla",
+     "t0": 9.378761904761905,
+     "t1": 9.796761904761905
+    },
+    {
+     "w": "tuzlu",
+     "t0": 9.854761904761904,
+     "t1": 10.098761904761904
+    },
+    {
+     "w": "denizlere",
+     "t0": 10.145761904761905,
+     "t1": 10.551761904761904
+    },
+    {
+     "w": "karışırdı.",
+     "t0": 10.597761904761905,
+     "t1": 11.387761904761906
+    }
+   ]
+  },
+  {
+   "t0": 11.588072562358278,
+   "t1": 15.814072562358277,
+   "words": [
+    {
+     "w": "Gezegenin",
+     "t0": 11.588072562358278,
+     "t1": 12.122072562358278
+    },
+    {
+     "w": "ortalama",
+     "t0": 12.261072562358278,
+     "t1": 12.726072562358278
+    },
+    {
+     "w": "sıcaklığı",
+     "t0": 12.772072562358277,
+     "t1": 13.353072562358278
+    },
+    {
+     "w": "14'ten",
+     "t0": 13.573072562358277,
+     "t1": 14.142072562358278
+    },
+    {
+     "w": "27",
+     "t0": 14.212072562358278,
+     "t1": 14.642072562358278
+    },
+    {
+     "w": "dereceye",
+     "t0": 14.676072562358279,
+     "t1": 15.036072562358278
+    },
+    {
+     "w": "fırlardı.",
+     "t0": 15.094072562358278,
+     "t1": 15.814072562358277
+    }
+   ]
+  },
+  {
+   "t0": 16.014104308390024,
+   "t1": 20.612104308390023,
+   "words": [
+    {
+     "w": "Olası",
+     "t0": 16.014104308390024,
+     "t1": 16.339104308390024
+    },
+    {
+     "w": "bir",
+     "t0": 16.397104308390023,
+     "t1": 16.502104308390024
+    },
+    {
+     "w": "tehlikeyse",
+     "t0": 16.548104308390023,
+     "t1": 17.268104308390026
+    },
+    {
+     "w": "donmuş",
+     "t0": 17.500104308390025,
+     "t1": 17.884104308390025
+    },
+    {
+     "w": "topraktan",
+     "t0": 17.918104308390024,
+     "t1": 18.406104308390024
+    },
+    {
+     "w": "uyanabilecek",
+     "t0": 18.452104308390023,
+     "t1": 19.056104308390026
+    },
+    {
+     "w": "binlerce",
+     "t0": 19.126104308390026,
+     "t1": 19.602104308390025
+    },
+    {
+     "w": "yıllık",
+     "t0": 19.637104308390025,
+     "t1": 19.892104308390024
+    },
+    {
+     "w": "virüsler.",
+     "t0": 19.938104308390024,
+     "t1": 20.612104308390023
+    }
+   ]
+  },
+  {
+   "t0": 20.992104308390026,
+   "t1": 24.150104308390027,
+   "words": [
+    {
+     "w": "Senin",
+     "t0": 20.992104308390026,
+     "t1": 21.329104308390026
+    },
+    {
+     "w": "evin",
+     "t0": 21.387104308390025,
+     "t1": 21.596104308390025
+    },
+    {
+     "w": "sular",
+     "t0": 21.631104308390025,
+     "t1": 21.863104308390024
+    },
+    {
+     "w": "altında",
+     "t0": 21.921104308390024,
+     "t1": 22.292104308390027
+    },
+    {
+     "w": "kalır",
+     "t0": 22.350104308390026,
+     "t1": 22.606104308390027
+    },
+    {
+     "w": "mıydı?",
+     "t0": 22.675104308390026,
+     "t1": 23.035104308390025
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 23.093104308390025,
+     "t1": 23.627104308390024
+    },
+    {
+     "w": "yaz!",
+     "t0": 23.674104308390024,
+     "t1": 24.150104308390027
+    }
+   ]
+  }
+ ]
+}

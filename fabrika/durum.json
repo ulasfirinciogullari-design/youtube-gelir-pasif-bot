@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1252",
+    "views": "1258",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "328",
+    "views": "329",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "66",
+    "views": "70",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "24",
+    "views": "26",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "120",
+    "views": "122",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2",
+    "views": "1",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "89",
+    "views": "94",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "8",
+    "views": "13",
     "reason": null
    }
   },
@@ -354,7 +354,37 @@
    "at": 1792275569.2721748,
    "chars": 364,
    "status": {
-    "upload": "uploaded",
+    "upload": "processed",
+    "privacy": "public",
+    "views": "253",
+    "reason": null
+   }
+  },
+  {
+   "id": "y006",
+   "video_id": "0iq7G5-5dds",
+   "url": "https://youtube.com/shorts/0iq7G5-5dds",
+   "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If All the Ice on Earth Melted?",
+    "es": "¿Qué pasaría si todo el hielo de la Tierra se derritiera?",
+    "pt": "E se todo o gelo da Terra derretesse?",
+    "ar": "ماذا لو ذاب كل الجليد على كوكب الأرض؟",
+    "hi": "क्या होगा अगर पृथ्वी की सारी बर्फ पिघल जाए?",
+    "id": "Apa yang Terjadi Jika Semua Es di Bumi Mencair?",
+    "fr": "Que se passerait-il si toute la glace fondait ?",
+    "de": "Was wäre, wenn alles Eis der Erde schmelzen würde?",
+    "ru": "Что будет, если растает весь лед на Земле?",
+    "az": "Dünyadakı bütün buzlar ərisə, nə baş verərdi?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792303850.389299,
+   "chars": 369,
+   "status": {
+    "upload": "processed",
     "privacy": "public",
     "views": "0",
     "reason": null
@@ -373,7 +403,8 @@
   "g002",
   "y004",
   "y005",
-  "n003"
+  "n003",
+  "y006"
  ],
  "extra": [
   {
@@ -542,6 +573,14 @@
    "mod": "igbolum",
    "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
    "chars": 499
+  },
+  {
+   "finished": "2026-10-18T06:12:07+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
+   "url": "https://youtube.com/shorts/0iq7G5-5dds",
+   "duration": 25.8,
+   "chars": 369
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -561,6 +600,11 @@
     "media_id": "18037020767850785",
     "url": "https://www.instagram.com/reel/DenWg-9lByU/",
     "at": 1792281850.1613874
+   },
+   "y006": {
+    "media_id": "18118920994910944",
+    "url": "https://www.instagram.com/reel/DeoAmM2k_Qw/",
+    "at": 1792303925.9458148
    }
   },
   "eski": [
