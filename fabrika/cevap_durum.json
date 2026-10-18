@@ -35,6 +35,11 @@
     1792336058,
     "r",
     "Ugy6zFUSm-ycmoy0Ir94AaABAg.Ac6TVDWglivAc6TpxHeKmj"
+   ],
+   "Ugzmp3psy3XR4N9WrXt4AaABAg": [
+    1792337860,
+    "r",
+    "Ugzmp3psy3XR4N9WrXt4AaABAg.Ac6WidFUdtrAc6XGwVjYBN"
    ]
   },
   "son": [
@@ -67,6 +72,12 @@
     "video": "xMYUnZVVITU",
     "comment": "Ayın yerine uranus geçseydi ne olurdu",
     "reply": "Uranüs Dünya'dan 14 kat daha ağır olduğu için aslında Dünya onun uydusu haline gelirdi! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792337860,
+    "video": "bqFeef1QL08",
+    "comment": "Güneş 10 saniye yok olsaydı ne olurdu",
+    "reply": "Güneş'in ışığı ve kütle çekimi bize 8 dakikada ulaştığı için o 10 saniyelik yokluğu ilk başta fark etmezdik bile! Bu merak uyandıran fikri listemize ekledik.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -116,15 +127,21 @@
    "series": "Ya Olsaydı?",
    "q": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0004",
+   "series": "Ya Olsaydı?",
+   "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 212,
+  "tur": 221,
   "ig_cevap": 0,
-  "yt_cevap": 3,
+  "yt_cevap": 4,
   "son_hata": null,
-  "son_tur": "2026-10-18T15:28:29+00:00"
+  "son_tur": "2026-10-18T15:37:40+00:00"
  }
 }

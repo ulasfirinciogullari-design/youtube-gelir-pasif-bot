@@ -1,25 +1,25 @@
 {
- "started": "2026-10-18T15:07:27+00:00",
+ "started": "2026-10-18T15:37:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 7,
+ "threads": 8,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 2,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugy6zFUSm-ycmoy0Ir94AaABAg",
-   "video": "xMYUnZVVITU",
-   "comment": "Ayın yerine uranus geçseydi ne olurdu",
-   "reply": "Uranüs Dünya'dan 14 kat daha ağır olduğu için aslında Dünya onun uydusu haline gelirdi! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭",
-   "topic": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
+   "id": "Ugzmp3psy3XR4N9WrXt4AaABAg",
+   "video": "bqFeef1QL08",
+   "comment": "Güneş 10 saniye yok olsaydı ne olurdu",
+   "reply": "Güneş'in ışığı ve kütle çekimi bize 8 dakikada ulaştığı için o 10 saniyelik yokluğu ilk başta fark etmezdik bile! Bu merak uyandıran fikri listemize ekledik.\n— Profesör Pi 🔭",
+   "topic": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T15:07:38+00:00"
+ "finished": "2026-10-18T15:37:40+00:00"
 }
