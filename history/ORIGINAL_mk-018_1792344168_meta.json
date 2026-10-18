@@ -1,0 +1,223 @@
+{
+  "topic_id": "mk-018",
+  "topic": "Hıçkırık neden olur ve neden kendiliğinden geçer?",
+  "series": "merak",
+  "script_provider": "gemini",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Hıçkırık neden kendi kendine geçer? 🤯",
+  "hook_text": "HIÇKIRIK NEDEN BAŞLAR BİTER?",
+  "description": "Hıçkırık neden kendi kendine geçer?\n\nHıçkırık, diyafram kasının ani, istemsiz spazmları yüzünden boğazımızdaki kapakçık kapanınca meydana gelir. Beynimizdeki özel bir refleks, diyaframı hızlıca durdurur ve bu sayede hıçkırık kendiliğinden geçer.\n\nHıçkırığı geçirmek için nefesinizi mi tutarsınız yoksa su mu içersiniz?\n\n#hıçkırık #sağlık #insanvücudu #meraklıbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-018",
+  "tags": [
+    "hıçkırık",
+    "hıçkırık neden olur",
+    "hıçkırık nasıl geçer",
+    "hıçkırık tedavisi",
+    "hıçkırık durdurma",
+    "diyafram",
+    "istemsiz spazm",
+    "boğaz kapakçığı",
+    "refleks",
+    "beynimizdeki refleks",
+    "ilginç bilgiler",
+    "merak edilenler",
+    "bilim",
+    "sağlık bilgileri",
+    "insan sağlığı",
+    "vücut bilgileri",
+    "sağlık",
+    "insan vücudu",
+    "hiccup",
+    "hiccups",
+    "kısa video",
+    "merak",
+    "genel kültür",
+    "shorts",
+    "neden",
+    "bilgi",
+    "keşfet",
+    "zirvenin kanunu",
+    "hickirik",
+    "hickirik neden olur",
+    "hickirik nasil gecer",
+    "hickirik tedavisi",
+    "hickirik durdurma"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do hiccups stop on their own? 🤯",
+      "description": "Hiccups occur due to sudden, involuntary spasms of the diaphragm muscle, causing the flap in our throat to close. A special reflex in our brain quickly stops the diaphragm, bringing that relaxing silence.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "es": {
+      "title": "¿Por qué los hipos se detienen solos? 🤯",
+      "description": "Los hipos ocurren por espasmos involuntarios del diafragma, cerrando la válvula de nuestra garganta. Un reflejo cerebral detiene el diafragma rápidamente, trayendo consigo el alivio.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "pt": {
+      "title": "Por que o soluço para sozinho? 🤯",
+      "description": "O soluço ocorre devido a espasmos involuntários do diafragma, que fecham a válvula na garganta. Um reflexo especial em nosso cérebro para o diafragma rapidamente, trazendo o silêncio de volta.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "de": {
+      "title": "Warum verschwindet Schluckauf von selbst? 🤯",
+      "description": "Schluckauf entsteht durch plötzliche, unwillkürliche Krämpfe des Zwerchfells, wodurch sich die Klappe im Hals schließt. Ein spezieller Reflex in unserem Gehirn stoppt das Zwerchfell schnell, und so kehrt die Ruhe zurück.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "fr": {
+      "title": "Pourquoi le hoquet s'arrête-t-il tout seul ? 🤯",
+      "description": "Le hoquet est causé par des spasmes involontaires du diaphragme, fermant le clapet dans notre gorge. Un réflexe cérébral spécial arrête rapidement le diaphragme, ramenant le calme.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "it": {
+      "title": "Perché il singhiozzo passa da solo? 🤯",
+      "description": "Il singhiozzo è causato da spasmi involontari del diaframma, che chiudono la valvola nella gola. Un riflesso speciale nel nostro cervello ferma rapidamente il diaframma, riportando la quiete.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "ru": {
+      "title": "Почему икота проходит сама по себе? 🤯",
+      "description": "Икота возникает из-за внезапных, непроизвольных спазмов диафрагмы, закрывающих клапан в нашем горле. Особый рефлекс в мозге быстро останавливает диафрагму, и тишина возвращается.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "ar": {
+      "title": "لماذا تتوقف الفواق من تلقاء نفسها؟ 🤯",
+      "description": "تحدث الفواق بسبب تقلصات لا إرادية مفاجئة في عضلة الحجاب الحاجز، مما يؤدي إلى إغلاق الصمام في حلقنا. يقوم رد فعل خاص في دماغنا بإيقاف الحجاب الحاجز بسرعة، وهكذا يعود الهدوء المريح.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "hi": {
+      "title": "हिचकी अपने आप कैसे बंद हो जाती है? 🤯",
+      "description": "हिचकी डायाफ्राम की अचानक, अनैच्छिक ऐंठन के कारण होती है, जिससे गले में वाल्व बंद हो जाता है। हमारे मस्तिष्क में एक विशेष प्रतिवर्त डायाफ्राम को तेज़ी से रोक देता है, और इस तरह वह राहत भरी शांति लौट आती है।\n\n#shorts\n\nSeri: mk-018"
+    },
+    "id": {
+      "title": "Kenapa cegukan berhenti sendiri? 🤯",
+      "description": "Cegukan terjadi karena kejang diafragma yang tiba-tiba dan tak disengaja, menutup katup di tenggorokan kita. Refleks khusus di otak dengan cepat menghentikan diafragma, dan ketenangan kembali.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "ja": {
+      "title": "なぜしゃっくりは自然に止まるの？ 🤯",
+      "description": "しゃっくりは、横隔膜の突然の不随意なけいれんによって喉の弁が閉じるために起こります。脳内の特別な反射が横隔膜を素早く止め、あの安堵の静けさが戻ってきます。\n\n#shorts\n\nSeri: mk-018"
+    },
+    "ko": {
+      "title": "딸꾹질은 왜 저절로 멈출까요? 🤯",
+      "description": "딸꾹질은 횡격막 근육의 갑작스럽고 비자발적인 경련으로 인해 목구멍의 판막이 닫히면서 발생합니다. 뇌의 특별한 반사가 횡격막을 빠르게 멈추게 하여 편안한 침묵이 돌아옵니다.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "pl": {
+      "title": "Dlaczego czkawka sama przechodzi? 🤯",
+      "description": "Czkawka powstaje w wyniku nagłych, mimowolnych skurczów przepony, które zamykają zastawkę w gardle. Specjalny odruch w naszym mózgu szybko zatrzymuje przeponę, przywracając spokój.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "nl": {
+      "title": "Waarom stopt de hik vanzelf? 🤯",
+      "description": "De hik ontstaat door plotselinge, onvrijwillige spasmen van het middenrif, waardoor het klepje in onze keel sluit. Een speciale reflex in ons brein stopt het middenrif snel, en zo keert de rust terug.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "uk": {
+      "title": "Чому гикавка проходить сама по собі? 🤯",
+      "description": "Гикавка виникає через раптові, мимовільні спазми діафрагми, які закривають клапан у горлі. Особливий рефлекс у нашому мозку швидко зупиняє діафрагму, і ось чому повертається полегшуюча тиша.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "vi": {
+      "title": "Tại sao nấc cụt tự dừng lại? 🤯",
+      "description": "Nấc cụt xảy ra do co thắt đột ngột, không chủ ý của cơ hoành, làm đóng van trong cổ họng. Một phản xạ đặc biệt trong não nhanh chóng dừng cơ hoành, và sự yên tĩnh thoải mái quay trở lại.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "az": {
+      "title": "Hıçqırıq niyə öz-özünə keçir? 🤯",
+      "description": "Hıçqırıq diafraqma əzələsinin qəfil, qeyri-iradi spazmları nəticəsində boğazımızdakı qapaqcıq bağlananda yaranır. Beynimizdəki xüsusi bir refleks diafraqmanı tez dayandırır və sakitlik qayıdır.\n\n#shorts\n\nSeri: mk-018"
+    },
+    "ro": {
+      "title": "De ce trece sughițul de la sine? 🤯",
+      "description": "Sughițul apare din cauza spasmelor bruște, involuntare ale diafragmei, care închid supapa din gât. Un reflex special din creier oprește rapid diafragma, iar liniștea revine.\n\n#shorts\n\nSeri: mk-018"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Siz hıçkırığı geçirmek için hangi yöntemleri deniyorsunuz?",
+  "scenes": [
+    {
+      "text": "Bu basit içecek hıçkırığı anında kesebilir.",
+      "visual": "A close-up of a person taking a sip of water from a glass, water visible.",
+      "stock_query": "person drinking water close up",
+      "source": "stock",
+      "callout": "ANINDA KESİCİ"
+    },
+    {
+      "text": "Herkesin başına gelen o sinir bozucu ses, hıçkırık tam olarak neden olur?",
+      "visual": "A person looking slightly annoyed or surprised, perhaps after a sudden sound, holding their breath slightly.",
+      "stock_query": "person surprised or annoyed",
+      "source": "stock"
+    },
+    {
+      "text": "Aslında diyafram kasının ani, istemsiz spazmları yüzünden boğazımızdaki kapakçık kapanır.",
+      "visual": "A close-up of a person's upper chest or throat area, showing a subtle involuntary movement, or a person taking a sharp, involuntary breath.",
+      "stock_query": "person involuntary breath close up",
+      "source": "stock",
+      "callout": "DİYAFRAM SPAZMI"
+    },
+    {
+      "text": "Beynimizdeki özel bir refleks, diyaframı hızlıca durdurur ve işte bu yüzden...",
+      "visual": "A person's face showing a moment of focused concentration, eyes perhaps looking upwards slightly, then a subtle release of tension.",
+      "stock_query": "person concentrating face",
+      "source": "stock",
+      "callout": "BEYİN REFLEKSİ"
+    },
+    {
+      "text": "...o rahatlatıcı sessizlik geri gelir.",
+      "visual": "A person taking a deep, calm breath, a look of relief or peace on their face, perhaps smiling subtly.",
+      "stock_query": "person feeling relief calm breath",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.42,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-018_1792344168_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka seslendirmesi monoton, enerjisiz ve yavaş. İzleyiciyi sıkıyor ve profesyonellikten uzak duruyor.",
+        "fix": "Daha dinamik, insan benzeri tonlamalara sahip bir yapay zeka sesi seçin veya mevcut sesin hızını ve tonunu ayarlayarak daha enerjik bir anlatım sağlayın. Vurguları daha belirgin hale getirin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca 'basit bir içecek hıçkırığı keser' derken, video hıçkırığın nedenini açıklıyor ve vaat edilen çözümün (içeceğin nasıl kestiği) detayına girmiyor. Bu, izleyicide bir tatminsizlik yaratıyor.",
+        "fix": "Ya kancayı hıçkırığın gizemine odaklayın ('Hıçkırık neden olur ve nasıl durdurulur?') ya da 'basit içecek' kancasını koruyup, içeceğin (örneğin su içmenin) diyafram spazmını nasıl durdurduğunu (beyindeki vagal sinir refleksini tetikleyerek)"
+      },
+      {
+        "area": "yazı",
+        "problem": "Diyafram spazmı veya kapakçığın kapanması gibi karmaşık kavramları açıklamak için görsel yardımcılar (diyagramlar, basit animasyonlar) eksik. Metin statik kalıyor ve görsel olarak desteklenmiyor.",
+        "fix": "Pexels veya Pixabay'den diyafram hareketini, boğazdaki kapakçığı veya beyin refleksini gösteren basit stok animasyonlar veya hareketli grafikler bulun. Metni daha dinamik hale getirin, örneğin kelimelerin vurgulu bir şekilde belirmesini sağ"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Video görüntüleri genellikle genel içme sahnelerinden oluşuyor ve anlatılan spesifik konuları (diyafram spazmı, beyin refleksi) doğrudan veya metaforik olarak yeterince desteklemiyor. Görsel hikaye anlatımı zayıf.",
+        "fix": "Anlatılan konuya daha spesifik ve ilgili stok videolar arayın. Örneğin, hıçkıran birini gösteren yakın çekimler, soyut beyin aktivitesi görselleri veya boğaz/diyaframın basit animasyonları (eğer stokta varsa) kullanın. Görüntü çeşitliliğini"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kesim hızı yavaş ve geçişler basit (düz kesimler veya çözülmeler). Bu, videonun dinamizmini azaltıyor ve amatör bir his veriyor.",
+        "fix": "Kesim hızını artırın, özellikle açıklayıcı bölümlerde. Daha hızlı ve çeşitli geçişler kullanın (örneğin, hızlı kesmeler, hafif kaydırmalar) ve bunları seslendirme ritmine uygun hale getirin."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektleri hiç kullanılmamış. Bu, önemli anları vurgulama veya izleyiciyi daha fazla içine çekme fırsatını kaçırıyor.",
+        "fix": "Hıçkırık sesi gibi konuya uygun, dikkat dağıtmayacak, telifsiz ses efektleri ekleyin. Örneğin, hıçkırıktan bahsederken hafif bir 'hık' sesi veya kapakçık kapanırken ince bir 'klik' sesi."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve videonun enerjisine veya anlatımına aktif olarak katkıda bulunmuyor.",
+        "fix": "Daha dinamik bir aralığa veya daha ilgi çekici bir tempoya sahip telifsiz bir müzik seçin. Müzik, açıklama sırasında biraz yükselmeli ve sonunda hafifçe çözülmeli, ancak asla seslendirmeyi bastırmamalıdır."
+      },
+      {
+        "area": "yazı",
+        "problem": "Metindeki sarı vurgu blokları basit ve videonun genel estetiğiyle tam uyumlu değil.",
+        "fix": "Sarı vurgu yerine daha ince bir vurgu efekti kullanın, videonun renk paletine uygun farklı bir renk tercih edin veya sadece kalın yazı tipi ve boyut değişiklikleriyle vurgu yapın. Metnin her zaman okunabilir olduğundan emin olun."
+      }
+    ],
+    "strengths": [
+      "Konu net.",
+      "Bilgi özlü.",
+      "Anahtar ifadeler için ekran metni kullanımı iyi."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
