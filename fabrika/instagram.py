@@ -458,6 +458,21 @@ def kontrol(state, report):
     try:  # empty while "Allow access to messages" is off in the Instagram app
         convs = call(tok, "GET", "me/conversations", params={"platform": "instagram", "fields": "id,updated_time"})
         report["dm_konusmalari"] = len(convs.get("data", []))
+        # which id does a reply need? Compare the sender id on the messages with the conversation's participants
+        # (ids only as hashes and lengths: this report is public)
+        report["dm_kimlik"] = []
+        for cv in convs.get("data", [])[:3]:
+            cd = call(tok, "GET", cv["id"], params={"fields": "participants,messages.limit(3){from,to,created_time}"})
+            row = {"katilimci": [{"id": _who(x.get("id")), "uzunluk": len(str(x.get("id") or "")),
+                                  "biz": x.get("username") == d.get("username")}
+                                 for x in (cd.get("participants") or {}).get("data", [])],
+                   "mesajlar": []}
+            for m in (cd.get("messages") or {}).get("data", []):
+                f = m.get("from") or {}
+                row["mesajlar"].append({"from": _who(f.get("id")), "uzunluk": len(str(f.get("id") or "")),
+                                        "to": [_who(t.get("id")) for t in (m.get("to") or {}).get("data", [])],
+                                        "zaman": m.get("created_time")})
+            report["dm_kimlik"].append(row)
     except IGError as e:
         report["dm_konusmalari"] = f"okunamadı: {e}"[:300]
     # what the reply watcher sees: Instagram's comment count per Reel against the comments the API hands out
