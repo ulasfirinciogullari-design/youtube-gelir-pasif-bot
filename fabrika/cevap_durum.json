@@ -54,6 +54,12 @@
     1792283239.9320624,
     "s",
     "gönderilemedi"
+   ],
+   "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDY3MjcyNjkyODAzOjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI1OTU1OTQzNTgyNzY0NTY4MzozMzA2MTc5NzY5MTc0MDkzNzI0Njg5NzkwMzA5MDI3MDIwOAZDZD": [
+    1792283659.9384997,
+    "r",
+    "",
+    "4b0bafab5127"
    ]
   },
   "son": [
@@ -62,6 +68,12 @@
     "kind": "yorum",
     "text": "Vay be",
     "reply": "Benim bile devrelerim yandı, o hızda doğuya savrulmayı düşünmek gerçekten baş döndürücü! 🤖\n— Bit 🤖"
+   },
+   {
+    "at": 1792283659.9384997,
+    "kind": "dm",
+    "text": "(özel mesaj)",
+    "reply": "(özel mesaj)"
    }
   ]
  },
@@ -69,10 +81,10 @@
  "nobet": {
   "basladi": "2026-10-18T00:24:19+00:00",
   "run": "39082620687",
-  "tur": 4,
-  "ig_cevap": 1,
+  "tur": 11,
+  "ig_cevap": 2,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-10-18T00:27:26+00:00"
+  "son_tur": "2026-10-18T00:34:33+00:00"
  }
 }

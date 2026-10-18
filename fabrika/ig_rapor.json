@@ -1,24 +1,21 @@
 {
- "started": "2026-10-18T00:31:48+00:00",
- "mod": "dmtest",
+ "started": "2026-10-18T00:34:19+00:00",
+ "mod": "nöbet",
  "anahtar_bitis": "2026-12-16T22:49+00:00",
- "abonelik": {
-  "data": []
- },
- "abone_ol": {
-  "success": true
- },
- "abonelik_sonra": {
-  "data": [
-   {
-    "id": "17920415721242424",
-    "subscribed_fields": [
-     "messages",
-     "comments"
-    ]
-   }
-  ]
- },
- "dm_gonderim": "hata: POST me/messages 403: {\"error\":{\"message\":\"This message is sent outside of allowed window.\",\"type\":\"IGApiException\",\"code\":10,\"error_subcode\":2534022,\"fbtrace_id\":\"AkLRPmCdr4CRZWw5tdl3SQJ\"}}",
- "finished": "2026-10-18T00:31:51+00:00"
+ "new": 1,
+ "quiet": 0,
+ "room": 20,
+ "sent_last_24h": 1,
+ "later": 0,
+ "items": [
+  {
+   "id": "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDY3MjcyNjkyODAzOjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI1OTU1OTQzNTgyNzY0NTY4MzozMzA2MTc5NzY5MTc0MDkzNzI0Njg5NzkwMzA5MDI3MDIwOAZDZD",
+   "kind": "dm",
+   "author": "4b0bafab5127",
+   "text": "(özel mesaj)",
+   "reply": "(özel mesaj)",
+   "result": "gönderildi"
+  }
+ ],
+ "finished": "2026-10-18T00:34:32+00:00"
 }
