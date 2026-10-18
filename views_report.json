@@ -1,21 +1,31 @@
 {
- "checked_at": "2026-10-17T23:58:38+00:00",
+ "checked_at": "2026-10-18T08:50:20+00:00",
  "channel": {
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
   "viewCount": "87982",
   "subscriberCount": "46",
   "hiddenSubscriberCount": false,
-  "videoCount": "88"
+  "videoCount": "89"
  },
  "videos": [
+  {
+   "id": "Ps-3m0_T22s",
+   "published": "2026-10-18T07:26:07Z",
+   "title": "Gökyüzü Neden Mavi, Gün Batımı Turuncu? 🤯",
+   "privacy": "public",
+   "duration": "PT16S",
+   "views": 0,
+   "likes": 0,
+   "comments": 1
+  },
   {
    "id": "A_OVF8W4d2U",
    "published": "2026-10-17T22:40:29Z",
    "title": "Kaydedilen Sesiniz Size Neden Tuhaf Gelir? 🎤",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 0,
-   "likes": 0,
+   "views": 615,
+   "likes": 4,
    "comments": 1
   },
   {
@@ -24,7 +34,7 @@
    "title": "Uçakların Gizemli Kavisli Rotaları 🤔",
    "privacy": "public",
    "duration": "PT13S",
-   "views": 3,
+   "views": 5,
    "likes": 0,
    "comments": 1
   },
@@ -34,7 +44,7 @@
    "title": "Yarım kalan işler aklımızı neden kurcalar? 🤯",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 0,
+   "views": 2,
    "likes": 0,
    "comments": 1
   },
@@ -74,7 +84,7 @@
    "title": "Telefonun Titremediği Halde Neden Titrediğini Sanırız? 👻",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2,
+   "views": 3,
    "likes": 0,
    "comments": 1
   },
@@ -94,7 +104,7 @@
    "title": "Karıncalar Evini Nasıl Bulur? 🐜",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 5,
+   "views": 3,
    "likes": 0,
    "comments": 1
   },
@@ -114,7 +124,7 @@
    "title": "Bukalemunlar Renklerini Nasıl Değiştirir? 🎨",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 19,
+   "views": 20,
    "likes": 0,
    "comments": 1
   },
@@ -124,7 +134,7 @@
    "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1043,
+   "views": 1047,
    "likes": 4,
    "comments": 1
   },
@@ -134,7 +144,7 @@
    "title": "Filler Neden Asla Unutmaz? 🐘",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1393,
+   "views": 1446,
    "likes": 7,
    "comments": 1
   },
@@ -144,7 +154,7 @@
    "title": "Devenin hörgücünde gerçekten ne var? 🤔",
    "privacy": "public",
    "duration": "PT13S",
-   "views": 1167,
+   "views": 1171,
    "likes": 6,
    "comments": 1
   },
@@ -154,7 +164,7 @@
    "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1675,
+   "views": 1760,
    "likes": 10,
    "comments": 1
   },
@@ -164,7 +174,7 @@
    "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1114,
+   "views": 1124,
    "likes": 9,
    "comments": 1
   },
@@ -174,7 +184,7 @@
    "title": "Kolibriler havada nasıl asılı kalır? 😮",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 999,
+   "views": 1003,
    "likes": 10,
    "comments": 1
   },
@@ -184,7 +194,7 @@
    "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 4385,
+   "views": 4557,
    "likes": 17,
    "comments": 1
   },
@@ -194,7 +204,7 @@
    "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2494,
+   "views": 2530,
    "likes": 11,
    "comments": 2
   },
@@ -204,8 +214,8 @@
    "title": "Flamingolar neden bu kadar pembeler? 💖",
    "privacy": "public",
    "duration": "PT23S",
-   "views": 2758,
-   "likes": 18,
+   "views": 2810,
+   "likes": 19,
    "comments": 1
   },
   {
@@ -214,7 +224,7 @@
    "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
    "privacy": "public",
    "duration": "PT22S",
-   "views": 1529,
+   "views": 1621,
    "likes": 24,
    "comments": 1
   },
@@ -264,7 +274,7 @@
    "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
    "privacy": "public",
    "duration": "PT29S",
-   "views": 1076,
+   "views": 1070,
    "likes": 10,
    "comments": 1
   },
@@ -274,7 +284,7 @@
    "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
    "privacy": "public",
    "duration": "PT27S",
-   "views": 1139,
+   "views": 1140,
    "likes": 23,
    "comments": 1
   },
@@ -284,7 +294,7 @@
    "title": "Baykuşlar başlarını neden 270 derece döndürüyor? 🦉 #shorts",
    "privacy": "public",
    "duration": "PT25S",
-   "views": 1685,
+   "views": 1699,
    "likes": 13,
    "comments": 0
   },
@@ -294,7 +304,7 @@
    "title": "Şimşek neden önce, gök gürültüsü sonra gelir? ⚡ #shorts",
    "privacy": "public",
    "duration": "PT32S",
-   "views": 388,
+   "views": 389,
    "likes": 5,
    "comments": 0
   },
@@ -314,7 +324,7 @@
    "title": "Tyler Durden Tüketim Çılgınlığını Tek Cümleyle Bitirdi 👑 #shorts #figh",
    "privacy": "public",
    "duration": "PT23S",
-   "views": 1017,
+   "views": 1018,
    "likes": 13,
    "comments": 1
   },
@@ -334,7 +344,7 @@
    "title": "HEDEF BEN MİYİM TAYFUN?! 😂 (Gelen Yorumlar Çıldırttı) #shorts #kolpaçi",
    "privacy": "public",
    "duration": "PT38S",
-   "views": 1079,
+   "views": 1080,
    "likes": 18,
    "comments": 1
   },
@@ -344,7 +354,7 @@
    "title": "Sipariş Notunu Silmeyi Unutan Adamın Başına Gelenler 😂 (Sonu Felaket)",
    "privacy": "public",
    "duration": "PT42S",
-   "views": 2108,
+   "views": 2110,
    "likes": 22,
    "comments": 0
   },
@@ -354,9 +364,9 @@
    "title": "Tyler Durden Neden Asla Saat Takmaz? (Modern Kölelik ve Zihinsel Özgür",
    "privacy": "public",
    "duration": "PT37S",
-   "views": 2368,
+   "views": 2371,
    "likes": 52,
-   "comments": 1
+   "comments": 2
   },
   {
    "id": "7xTXWFfqaGw",
@@ -364,7 +374,7 @@
    "title": "Thomas Shelby Neden Asla Gözlerini Kırpmaz? (Karanlık Güç Kuralı) #sho",
    "privacy": "public",
    "duration": "PT39S",
-   "views": 1740,
+   "views": 1742,
    "likes": 42,
    "comments": 2
   },
@@ -624,7 +634,7 @@
    "title": "👑 48 Güç Yasası | Machiavelli vs Aurelius: Korku mu Sevgi mi? #shorts",
    "privacy": "public",
    "duration": "PT46S",
-   "views": 990,
+   "views": 991,
    "likes": 14,
    "comments": 1
   },
@@ -900,14 +910,6 @@
   ],
   "rows": [
    [
-    "2026-09-19",
-    0,
-    0,
-    0,
-    0,
-    0
-   ],
-   [
     "2026-09-20",
     0,
     0,
@@ -965,7 +967,7 @@
    ],
    [
     "2026-09-27",
-    251,
+    252,
     25,
     64.8,
     0,
@@ -973,7 +975,7 @@
    ],
    [
     "2026-09-28",
-    77,
+    78,
     8,
     78.87,
     0,
@@ -1061,8 +1063,8 @@
    ],
    [
     "2026-10-09",
-    8491,
-    966,
+    8515,
+    969,
     42.9,
     5,
     91
@@ -1093,8 +1095,8 @@
    ],
    [
     "2026-10-13",
-    11866,
-    1586,
+    11834,
+    1578,
     27.500000000000004,
     7,
     135
