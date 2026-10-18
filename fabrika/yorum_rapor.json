@@ -1,8 +1,8 @@
 {
- "started": "2026-10-18T16:52:27+00:00",
+ "started": "2026-10-18T16:57:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 11,
+ "threads": 12,
  "new": 1,
  "quiet": 0,
  "sent_last_24h": 6,
@@ -10,9 +10,9 @@
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugzuo-SbqukJ-rxPSft4AaABAg",
+   "id": "UgxHAAxxStetDfg4W1t4AaABAg",
    "video": "4GSDZD52uI0",
-   "comment": "6ey",
+   "comment": "I2e5ıdeeıaq6wa7suswe ,лслпшущалг шкгырпкщ",
    "result": "atlandı",
    "why": "gibberish"
   }
@@ -20,5 +20,5 @@
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T16:52:34+00:00"
+ "finished": "2026-10-18T16:57:33+00:00"
 }
