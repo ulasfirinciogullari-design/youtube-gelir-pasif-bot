@@ -6,7 +6,7 @@ into "onuncu000 metrede" before it reached ElevenLabs; Ulaş caught it.
 
 import pytest
 
-from app.services.turkish_phonetics import normalize_turkish_tts_text, number_to_turkish
+from app.services.turkish_phonetics import normalize_turkish_tts_text, number_to_turkish, ordinal_to_turkish
 
 
 @pytest.mark.parametrize("text, spoken", [
@@ -36,6 +36,28 @@ def test_numbers_with_thousand_dots_are_spelled_out(text, spoken):
 ])
 def test_ordinals_and_other_numbers_are_left_whole(text, spoken):
     assert normalize_turkish_tts_text(text) == spoken
+
+
+@pytest.mark.parametrize("text, spoken", [
+    ("15. kattaki evimiz bile mi?", "on beşinci kattaki evimiz bile mi?"),  # Ya Olsaydı? said "on beş katta ki"
+    ("14. yüzyılda", "on dördüncü yüzyılda"),
+    ("Yarışı 7. sırada bitirdi", "Yarışı yedinci sırada bitirdi"),
+    ("10. Yıl Marşı", "onuncu Yıl Marşı"),
+    ("bizde ise sadece 7. Bu da az.", "bizde ise sadece 7. Bu da az."),  # a capital after the dot may start a sentence
+    ("3'üncü kattan", "üçüncü kattan"),
+    ("15'inci sırada", "on beşinci sırada"),
+    ("2'nci kez", "ikinci kez"),
+    ("4'üncüsü geldi", "dördüncüsü geldi"),
+    ("1950'lerde 14'ü", "1950'lerde 14'ü"),  # other suffixes stay for the voice to read
+])
+def test_any_ordinal_before_a_lowercase_word_or_with_a_written_suffix(text, spoken):
+    assert normalize_turkish_tts_text(text) == spoken
+
+
+def test_ordinal_words():
+    assert [ordinal_to_turkish(n) for n in (1, 2, 3, 4, 6, 9, 10, 15, 20, 40, 48, 60, 100, 1000)] == [
+        "birinci", "ikinci", "üçüncü", "dördüncü", "altıncı", "dokuzuncu", "onuncu", "on beşinci", "yirminci",
+        "kırkıncı", "kırk sekizinci", "altmışıncı", "yüzüncü", "bininci"]
 
 
 def test_number_words():

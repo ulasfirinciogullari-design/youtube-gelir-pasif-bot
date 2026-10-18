@@ -14,15 +14,11 @@ NUMBER_WORDS = {
     70: "yetmiş", 80: "seksen", 90: "doksan", 100: "yüz"
 }
 
-ORDINALS = {
-    "1.": "birinci",
-    "2.": "ikinci",
-    "3.": "üçüncü",
-    "4.": "dördüncü",
-    "5.": "beşinci",
-    "10.": "onuncu",
-    "48.": "kırk sekizinci",
-}
+# Before a capitalised word the dot may end a sentence ("bizde ise sadece 7. Bu da..."), so only these numbers are
+# read as ordinals there ("1. Dünya Savaşı"); before a lowercase word every number is ("15. kattaki").
+ORDINALS_BEFORE_CAPITAL = (1, 2, 3, 4, 5, 10, 48)
+ORDINAL_SUFFIX = {"a": "ıncı", "ı": "ıncı", "e": "inci", "i": "inci", "o": "uncu", "u": "uncu", "ö": "üncü", "ü": "üncü"}
+LOWER = "a-zçğıöşü"
 
 
 LARGE_UNITS = ((10**9, "milyar"), (10**6, "milyon"), (1000, "bin"))
@@ -50,6 +46,17 @@ def number_to_turkish(n: int) -> str:
             head = "bin" if value == 1000 and count == 1 else f"{number_to_turkish(count)} {name}"
             return f"{head} {number_to_turkish(rest)}" if rest else head
     return str(n)
+
+
+def ordinal_to_turkish(n: int) -> str:
+    """15 -> "on beşinci", 4 -> "dördüncü", 2 -> "ikinci": the suffix follows the last vowel of the spoken number."""
+    words = number_to_turkish(n)
+    suffix = ORDINAL_SUFFIX[next(ch for ch in reversed(words) if ch in ORDINAL_SUFFIX)]
+    if words[-1] in ORDINAL_SUFFIX:
+        suffix = suffix[1:]
+    elif words.endswith("dört"):
+        words = words[:-1] + "d"
+    return words + suffix
 
 
 def _with_suffix(words: str, suffix: str) -> str:
@@ -90,9 +97,13 @@ def normalize_turkish_tts_text(text: str) -> str:
         lambda m: _with_suffix(number_to_turkish(int(m.group(1).replace(".", ""))), m.group(2) or ""), result)
 
     # 3. Ordinal numbers: a whole number followed by a dot and a word ("1. Dünya Savaşı"), never part of a longer
-    #    number or a sentence-final count ("Baykuşta tam 14.").
-    for ord_num, ord_word in ORDINALS.items():
-        result = re.sub(rf"(?<![\d.,]){re.escape(ord_num)}(?=\s+[^\W\d])", ord_word, result)
+    #    number or a sentence-final count ("Baykuşta tam 14."). Ya Olsaydı? read "15. kattaki" as "on beş katta ki"
+    #    (Ulaş, 2026-10-18), so any number counts before a lowercase word; written suffixes too ("3'üncü").
+    result = re.sub(rf"(?<![\d.,])(\d+)\.(?=\s+[{LOWER}])", lambda m: ordinal_to_turkish(int(m.group(1))), result)
+    result = re.sub(rf"(?<![\d.,])({'|'.join(map(str, ORDINALS_BEFORE_CAPITAL))})\.(?=\s+[^\W\d])",
+                    lambda m: ordinal_to_turkish(int(m.group(1))), result)
+    result = re.sub(rf"(?<![\d.,])(\d+)'[iıuü]?nc[iıuü]([{LOWER}]*)",
+                    lambda m: ordinal_to_turkish(int(m.group(1))) + m.group(2), result)
 
     # 4. Clean up repetitive punctuation that causes robotic pauses
     result = re.sub(r"\.{4,}", "...", result)
