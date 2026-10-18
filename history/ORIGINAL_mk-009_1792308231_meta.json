@@ -1,0 +1,283 @@
+{
+  "topic_id": "mk-009",
+  "topic": "Gökyüzü neden mavi, gün batımı neden turuncu?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Gökyüzü Neden Mavi, Gün Batımı Turuncu? 🤯",
+  "hook_text": "GÖKYÜZÜ NEDEN MAVİ?",
+  "description": "Gökyüzü neden mavi, gün batımı neden turuncu?\n\nGüneş ışığı atmosferde binlerce kez saçılır. Mavi ve mor ışık, kısa dalga boyu sayesinde diğer renklere göre çok daha fazla dağılır. Gün batımında ise ışık daha uzun yol kat eder ve mavi ışık tamamen dağıldığı için gözümüze sadece kırmızı ve turuncu tonlar ulaşır.\n\nSence atmosfer olmasaydı gökyüzü hangi renk görünürdü: Siyah mı Mavi mi?\n\n#Gökyüzü #GünBatımı #Doğa #Işık #shorts #bilim #merak #keşfet\n\nSeri: mk-009",
+  "tags": [
+    "gökyüzü neden mavi",
+    "gün batımı neden turuncu",
+    "ışık saçılması",
+    "rayleigh saçılması",
+    "atmosferik saçılma",
+    "renklerin sırrı",
+    "güneş ışığı",
+    "dalga boyu",
+    "mavi gökyüzü",
+    "turuncu gün batımı",
+    "bilimsel gerçekler",
+    "merak edilenler",
+    "ilginç bilgiler",
+    "fizik",
+    "doğa olayları",
+    "shorts video",
+    "eğitici video",
+    "fen bilgisi",
+    "gökyüzü renkleri",
+    "sky blue",
+    "sunset orange",
+    "light scattering",
+    "atmospheric scattering",
+    "Gökyüzü",
+    "Neden Mavi",
+    "Gün Batımı",
+    "Turuncu",
+    "Bilim",
+    "Işık",
+    "Atmosfer"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why is the Sky Blue and Sunset Orange? 🤯",
+      "description": "Ever wondered why our sky is blue and sunsets glow in fiery oranges? It's all about how sunlight interacts with our atmosphere. Blue light scatters much more than other colors, but at sunset, it's a different story!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "es": {
+      "title": "¿Por qué el cielo es azul y el atardecer naranja? 🤯",
+      "description": "¿Alguna vez te has preguntado por qué el cielo es azul durante el día y los atardeceres son de tonos naranjas y rojos? La clave está en cómo la luz del sol se dispersa en nuestra atmósfera. La luz azul se dispersa miles de veces, pero al atardecer, el viaje es diferente.\n\n#shorts\n\nSeri: mk-009"
+    },
+    "pt": {
+      "title": "Por que o céu é azul e o pôr do sol laranja? 🤯",
+      "description": "Já se perguntou por que o céu é azul e o pôr do sol tem tons de laranja e vermelho? A explicação está em como a luz solar se espalha em nossa atmosfera. A luz azul se dispersa muito mais, mas ao entardecer, a história muda!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "de": {
+      "title": "Warum ist der Himmel blau und der Sonnenuntergang orange? 🤯",
+      "description": "Hast du dich jemals gefragt, warum der Himmel tagsüber blau ist und der Sonnenuntergang in Orange leuchtet? Es liegt an der Streuung des Sonnenlichts in unserer Atmosphäre. Blaues Licht wird viel stärker gestreut, aber bei Sonnenuntergang...\n\n#shorts\n\nSeri: mk-009"
+    },
+    "fr": {
+      "title": "Pourquoi le ciel est bleu et le coucher de soleil orange ? 🤯",
+      "description": "Vous êtes-vous déjà demandé pourquoi le ciel est bleu et les couchers de soleil sont si magnifiques en orange et rouge ? Tout s'explique par la façon dont la lumière du soleil se disperse dans notre atmosphère. La lumière bleue est beaucoup plus diffusée, mais au coucher du soleil, c'est une autre histoire.\n\n#shorts\n\nSeri: mk-009"
+    },
+    "it": {
+      "title": "Perché il cielo è blu e il tramonto arancione? 🤯",
+      "description": "Ti sei mai chiesto perché il cielo è blu e i tramonti sono così intensamente arancioni? La risposta sta nel modo in cui la luce solare interagisce con la nostra atmosfera. La luce blu si disperde migliaia di volte, ma al tramonto, il percorso della luce cambia.\n\n#shorts\n\nSeri: mk-009"
+    },
+    "ru": {
+      "title": "Почему небо голубое, а закат оранжевый? 🤯",
+      "description": "Задумывались ли вы, почему небо днем голубое, а на закате становится оранжевым? Все дело в том, как солнечный свет рассеивается в нашей атмосфере. Синий свет рассеивается гораздо сильнее, но на закате происходит нечто удивительное!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "ar": {
+      "title": "لماذا السماء زرقاء وغروب الشمس برتقالي؟ 🤯",
+      "description": "هل تساءلت يومًا لماذا سماءنا زرقاء وغروب الشمس يتوهج بألوان برتقالية وحمراء؟ السر يكمن في كيفية تفاعل ضوء الشمس مع غلافنا الجوي. الضوء الأزرق يتشتت أكثر بكثير، ولكن عند الغروب، تتغير القصة!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "hi": {
+      "title": "आसमान नीला और सूर्यास्त नारंगी क्यों होता है? 🤯",
+      "description": "क्या आपने कभी सोचा है कि आसमान नीला क्यों दिखता है और सूर्यास्त नारंगी क्यों होता है? यह सब इस बात पर निर्भर करता है कि सूर्य का प्रकाश हमारे वायुमंडल में कैसे बिखरता है। नीली रोशनी बहुत अधिक बिखरती है, लेकिन सूर्यास्त के समय कहानी बदल जाती है!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "id": {
+      "title": "Mengapa Langit Biru dan Matahari Terbenam Oranye? 🤯",
+      "description": "Pernahkah Anda bertanya-tanya mengapa langit kita berwarna biru dan matahari terbenam memancarkan warna oranye yang memukau? Ini semua tentang bagaimana cahaya matahari berinteraksi dengan atmosfer kita. Cahaya biru menyebar jauh lebih banyak, tetapi saat matahari terbenam, ceritanya berbeda!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "ja": {
+      "title": "空はなぜ青く、夕日はなぜオレンジ色なのか？ 🤯",
+      "description": "空が青く、夕日がオレンジ色に見えるのはなぜか、疑問に思ったことはありませんか？太陽の光が地球の大気中でどのように散乱するかによって、この現象は説明されます。青い光は他の色よりもはるかに多く散乱しますが、夕暮れ時にはその状況が変わります！\n\n#shorts\n\nSeri: mk-009"
+    },
+    "ko": {
+      "title": "하늘은 왜 파랗고, 석양은 왜 주황색일까요? 🤯",
+      "description": "왜 하늘은 파랗고 석양은 오렌지색으로 물드는지 궁금한 적 있으신가요? 이 모든 것은 햇빛이 우리 대기와 어떻게 상호작용하는지에 달려있습니다. 파란색 빛은 다른 색보다 훨씬 더 많이 산란되지만, 해가 질 때는 이야기가 달라집니다!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "pl": {
+      "title": "Dlaczego niebo jest niebieskie, a zachód słońca pomarańczowy? 🤯",
+      "description": "Zastanawiałeś się kiedyś, dlaczego niebo jest niebieskie, a zachody słońca mienią się pomarańczem? To wszystko zależy od tego, jak światło słoneczne oddziałuje z naszą atmosferą. Niebieskie światło rozprasza się znacznie bardziej, ale o zachodzie słońca historia jest inna!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "nl": {
+      "title": "Waarom is de lucht blauw en de zonsondergang oranje? 🤯",
+      "description": "Heb je je ooit afgevraagd waarom de lucht blauw is en zonsondergangen oranje kleuren? Het heeft allemaal te maken met hoe zonlicht reageert met onze atmosfeer. Blauw licht verstrooit veel meer, maar bij zonsondergang is het een heel ander verhaal!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "uk": {
+      "title": "Чому небо блакитне, а захід сонця помаранчевий? 🤯",
+      "description": "Чи замислювалися ви, чому небо вдень блакитне, а захід сонця забарвлюється в помаранчеві відтінки? Все залежить від того, як сонячне світло розсіюється в нашій атмосфері. Синє світло розсіюється набагато сильніше, але на заході сонця відбувається щось дивовижне!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "vi": {
+      "title": "Tại sao bầu trời xanh và hoàng hôn cam? 🤯",
+      "description": "Bạn đã bao giờ tự hỏi tại sao bầu trời lại có màu xanh và hoàng hôn lại rực rỡ sắc cam chưa? Tất cả là do cách ánh sáng mặt trời tương tác với bầu khí quyển của chúng ta. Ánh sáng xanh tán xạ nhiều hơn, nhưng vào lúc hoàng hôn, câu chuyện lại khác!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "az": {
+      "title": "Səma niyə mavidir, günəş batımı niyə narıncıdır? 🤯",
+      "description": "Heç düşünmüsünüzmü, niyə səmamız mavidir və günəş batımı alovlu narıncı rənglərdə parlayır? Bütün bunlar günəş işığının atmosferimizlə necə qarşılıqlı əlaqədə olmasından qaynaqlanır. Mavi işıq daha çox səpələnir, lakin gün batımında vəziyyət fərqlidir!\n\n#shorts\n\nSeri: mk-009"
+    },
+    "ro": {
+      "title": "De ce este cerul albastru și apusul portocaliu? 🤯",
+      "description": "Te-ai întrebat vreodată de ce cerul nostru este albastru și apusurile de soare strălucesc în portocaliu? Totul se datorează modului în care lumina soarelui interacționează cu atmosfera noastră. Lumina albastră se împrăștie mult mai mult, dar la apus, povestea este diferită!\n\n#shorts\n\nSeri: mk-009"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence atmosfer olmasaydı gökyüzü hangi renk görünürdü: Siyah mı Mavi mi?",
+  "scenes": [
+    {
+      "text": "Güneş ışığı atmosferde binlerce kez saçılır.",
+      "visual": "Sun shining through blue sky with clouds",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 24,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 1
+        },
+        {
+          "n": 1,
+          "kare": 2
+        }
+      ],
+      "callout": "BİNLERCE KEZ"
+    },
+    {
+      "text": "Bu saçılma, ışığın dalga boyuyla ilgili şaşırtıcı bir durum yaratır.",
+      "visual": "Blue sky over a landscape or ocean",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 1
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Mavi ve mor ışık kısa dalga boyu sayesinde atmosferde diğer renklere göre çok daha fazla dağılır.",
+      "visual": "Clear blue sky with some clouds or mountains",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 1
+        },
+        {
+          "n": 25,
+          "kare": 1
+        }
+      ],
+      "callout": "ÇOK DAHA FAZLA"
+    },
+    {
+      "text": "Gün batımında ışık daha uzun yol kat eder; mavi ışık tamamen dağılır.",
+      "visual": "Sunset with orange and yellow hues over a landscape",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 2
+        }
+      ],
+      "callout": "UZUN YOL"
+    },
+    {
+      "text": "Gözümüze sadece kırmızı ve turuncu tonlar ulaşır.",
+      "visual": "Vibrant red and orange sunset over the sea or horizon",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.14,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcı sesi yavaş ve enerjisiz, yapay zeka tonu belirgin.",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha dinamik, insan benzeri bir ton seçmeye çalışın (varsa). Kelimeler arası duraklamaları azaltın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görseller konuyu doğrudan açıklamak yerine genel atmosferi yansıtıyor, bilimsel kavramları görselleştiren grafik veya animasyon eksikliği var.",
+        "fix": "\"Işığın saçılması\" veya \"dalga boyu\" gibi kavramları açıklayan soyut veya şematik stok videolar (Pexels/Pixabay'de bulunabilir) kullanın. Örneğin, ışık parçacıklarının dağıldığını gösteren animasyonlu grafikler veya farklı dalga boylarını t"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı yavaş, sahneler ekranda uzun kalıyor ve referans videodaki dinamik geçişler eksik.",
+        "fix": "Sahne geçişlerini hızlandırın (her 1-2 saniyede bir yeni görsel), daha keskin kesimler kullanın. Bilgi akışına uygun olarak görselleri daha sık değiştirin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar sadece metin olarak kalıyor, görsel bilgiyi destekleyen grafik veya hareketli elementler (oklar, vurgular, şemalar) kullanılmıyor.",
+        "fix": "Metinleri daha dinamik hale getirin (hızlı giriş/çıkış animasyonları). Anahtar kelimeleri farklı renk veya boyutla vurgulayın. Bilgiyi açıklayan basit grafikler veya semboller ekleyin (örneğin, dalga boyunu gösteren basit bir çizim)."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği yeterince dinamik değil ve videonun enerjisini yükseltmiyor. Ses efektleri hiç kullanılmamış.",
+        "fix": "Daha enerjik, ritmik ve videonun temposuna uygun telifsiz müzikler seçin. Geçişlere veya önemli anlara (örneğin, 'şaşırtıcı bir durum yaratır' gibi yerlere) hafif ses efektleri eklemeyi deneyin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilgi akışı mantıklı olsa da, 'gökyüzü neden mavi' sorusu birçok kişi için temel bir bilgi olduğundan, kanca ve bilginin şaşırtıcılığı referans videoya göre daha düşük.",
+        "fix": "Senaryoyu daha merak uyandırıcı hale getirin. Örneğin, 'Çoğu kişinin bilmediği bir gerçek...' gibi girişlerle bilginin değerini artırın. Bilgiyi daha çarpıcı bir şekilde sunun."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bazı görseller (örneğin sadece bulutlu bir gökyüzü) anlatılan bilginin spesifik detaylarıyla tam olarak örtüşmüyor, daha genel kalıyor.",
+        "fix": "Her cümlenin veya anahtar kelimenin görsel bir karşılığı olmaya çalışın. Örneğin, 'mavi ve mor ışık' denirken mavi/mor tonların baskın olduğu veya ışığın kırılmasını ima eden görseller kullanın."
+      }
+    ],
+    "strengths": [
+      "Video öz ve anlaşılır.",
+      "Verilen bilgi doğru ve bilimsel."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
