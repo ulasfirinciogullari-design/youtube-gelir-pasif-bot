@@ -263,9 +263,10 @@ def invent_merak_topic(used: list[str], best: list[str] | None = None) -> dict:
             **({"kategori": kind} if kind in MERAK_CATEGORIES else {})}
 
 
-# Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". Every public merak Short had stopped near 1,000
-# views, so the next topic comes from the kind that held viewers best: categories are ranked by the median views of
-# their Shorts old enough to judge, and one with fewer than two such Shorts counts as average, so it is still tried.
+# Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". The next topic comes from the kind that held
+# viewers best: categories are ranked by the median share of the Short watched (YouTube Analytics) of their Shorts old
+# enough to judge, and one with fewer than two such Shorts counts as average, so it is still tried. Views are only the
+# fallback: until 2026-10-16 paid promotion gave nearly every Short ~1,000 views whatever it was like (2026-10-18).
 MIN_SHORTS_PER_CATEGORY = 2
 
 
@@ -291,14 +292,22 @@ def judged_merak_videos(metrics: list[dict] | None) -> list[dict]:
             and (_age_hours(str(v.get("published_at", "")), now) or 0) >= MIN_AGE_HOURS_FOR_RANKING]
 
 
-def category_scores(metrics: list[dict] | None, topics: list[dict]) -> dict[str, float]:
+def category_scores(metrics: list[dict] | None, topics: list[dict]) -> tuple[str, dict[str, float]]:
+    """(what was measured, its median per category): the share watched where Analytics has it, else views."""
     kinds = {t["id"]: t.get("kategori") for t in topics}
-    views: dict[str, list[int]] = {}
+    watched: dict[str, list[float]] = {}
+    views: dict[str, list[float]] = {}
     for video in judged_merak_videos(metrics):
         kind = kinds.get(video["topic_id"])
         if kind:
             views.setdefault(kind, []).append(int(video.get("views") or 0))
-    return {kind: statistics.median(v) for kind, v in views.items() if len(v) >= MIN_SHORTS_PER_CATEGORY}
+            if video.get("avg_view_pct") is not None:
+                watched.setdefault(kind, []).append(float(video["avg_view_pct"]))
+    for label, samples in (("izlenme oranı %", watched), ("izlenme", views)):
+        scores = {kind: statistics.median(v) for kind, v in samples.items() if len(v) >= MIN_SHORTS_PER_CATEGORY}
+        if scores:
+            return label, scores
+    return "izlenme", {}
 
 
 def rank_topics(topics: list[dict], scores: dict[str, float]) -> list[dict]:
@@ -400,11 +409,11 @@ def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | N
     generated = load_generated_topics(data_dir)
     topics = load_topics(cfg["topics"]) + [t for t in generated if t["id"].startswith(cfg["prefix"] + "-")]
     if series == "merak" and metrics:
-        scores = category_scores(metrics, topics)
+        label, scores = category_scores(metrics, topics)
         topics = rank_topics(topics, scores)
         if scores and not topic_id:
-            print("📈 Konu türleri, ortanca izlenme: "
-                  + ", ".join(f"{kind} {views:.0f}" for kind, views in sorted(scores.items(), key=lambda kv: -kv[1])))
+            print(f"📈 Konu türleri, ortanca {label}: "
+                  + ", ".join(f"{kind} {score:.0f}" for kind, score in sorted(scores.items(), key=lambda kv: -kv[1])))
         if invent is None:
             invent = functools.partial(invent_merak_topic, best=best_merak_titles(metrics))
     try:
