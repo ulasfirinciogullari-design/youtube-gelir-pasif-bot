@@ -1,25 +1,25 @@
 {
- "started": "2026-10-18T15:37:27+00:00",
+ "started": "2026-10-18T15:42:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 8,
+ "threads": 9,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 3,
+ "sent_last_24h": 4,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugzmp3psy3XR4N9WrXt4AaABAg",
-   "video": "bqFeef1QL08",
-   "comment": "Güneş 10 saniye yok olsaydı ne olurdu",
-   "reply": "Güneş'in ışığı ve kütle çekimi bize 8 dakikada ulaştığı için o 10 saniyelik yokluğu ilk başta fark etmezdik bile! Bu merak uyandıran fikri listemize ekledik.\n— Profesör Pi 🔭",
-   "topic": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
+   "id": "Ugxjp3bH6tnvqeeWo2d4AaABAg",
+   "video": "RLuGUU-xaYE",
+   "comment": "Bizim kalbimiz günde kaç kere atiyodur",
+   "reply": "Sağlıklı bir yetişkinin kalbi günde ortalama 100.000 kez atar. Bu konuyu yeni bir video için listemize aldık bile.\n— Profesör Pi 🔭",
+   "topic": "Kalbin 1 günde kaç kez atar?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T15:37:40+00:00"
+ "finished": "2026-10-18T15:43:01+00:00"
 }

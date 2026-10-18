@@ -40,6 +40,11 @@
     1792337860,
     "r",
     "Ugzmp3psy3XR4N9WrXt4AaABAg.Ac6WidFUdtrAc6XGwVjYBN"
+   ],
+   "Ugxjp3bH6tnvqeeWo2d4AaABAg": [
+    1792338182,
+    "r",
+    "Ugxjp3bH6tnvqeeWo2d4AaABAg.Ac6XfazaoVeAc6Xt7lb6JG"
    ]
   },
   "son": [
@@ -78,6 +83,12 @@
     "video": "bqFeef1QL08",
     "comment": "Güneş 10 saniye yok olsaydı ne olurdu",
     "reply": "Güneş'in ışığı ve kütle çekimi bize 8 dakikada ulaştığı için o 10 saniyelik yokluğu ilk başta fark etmezdik bile! Bu merak uyandıran fikri listemize ekledik.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792338182,
+    "video": "RLuGUU-xaYE",
+    "comment": "Bizim kalbimiz günde kaç kere atiyodur",
+    "reply": "Sağlıklı bir yetişkinin kalbi günde ortalama 100.000 kez atar. Bu konuyu yeni bir video için listemize aldık bile.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -133,15 +144,21 @@
    "series": "Ya Olsaydı?",
    "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0005",
+   "series": "1 Gün Boyunca",
+   "q": "Kalbin 1 günde kaç kez atar?",
+   "oneri": true
   }
  ],
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 221,
+  "tur": 226,
   "ig_cevap": 0,
-  "yt_cevap": 4,
+  "yt_cevap": 5,
   "son_hata": null,
-  "son_tur": "2026-10-18T15:37:40+00:00"
+  "son_tur": "2026-10-18T15:43:01+00:00"
  }
 }
