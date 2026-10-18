@@ -665,6 +665,12 @@
    "url": "https://youtube.com/shorts/pJPCpis147c",
    "duration": 25.3,
    "chars": 373
+  },
+  {
+   "finished": "2026-10-18T13:08:10+00:00",
+   "mod": "igbolum",
+   "title": "En Büyük Yıldız Ne Kadar Büyük?",
+   "chars": 364
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -704,6 +710,11 @@
     "media_id": "17944084650385729",
     "url": "https://www.instagram.com/reel/DeopnMZkb5w/",
     "at": 1792325423.6705956
+   },
+   "n003": {
+    "media_id": "18182217376382494",
+    "url": "https://www.instagram.com/reel/DeowOfvDGk5/",
+    "at": 1792328890.9028757
    }
   },
   "eski": [

@@ -1,81 +1,17 @@
 {
- "started": "2026-10-18T12:06:55+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "9",
-  "videos": "15"
- },
- "credits_before": [
-  5187,
-  613902
- ],
- "topic": {
-  "id": "y007",
-  "series": "Ya Olsaydı?",
-  "q": "Ay'ın yerinde Jüpiter olsaydı ne görürdük?"
- },
- "attempts": 1,
- "model": "gemini-3.8-flash",
- "fact_check": {
-  "ok": true,
-  "fixes": []
- },
- "chunks": 0,
- "grounded": true,
- "chars": 373,
- "duration": 25.3,
- "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/pJPCpis147c",
+ "started": "2026-10-18T13:06:58+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n003",
+ "title": "En Büyük Yıldız Ne Kadar Büyük?",
+ "chars": 364,
  "instagram": {
   "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "17944084650385729",
-  "url": "https://www.instagram.com/reel/DeopnMZkb5w/",
-  "at": 1792325423.6705956
+  "media_id": "18182217376382494",
+  "url": "https://www.instagram.com/reel/DeowOfvDGk5/",
+  "at": 1792328890.9028757
  },
- "recent_status": {
-  "y005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "20",
-   "reason": null
-  },
-  "n003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "460",
-   "reason": null
-  },
-  "y006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "746",
-   "reason": null
-  },
-  "g004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  },
-  "y007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  5278,
-  613902
- ],
  "log": [
-  "Konu: y007 Ay'ın yerinde Jüpiter olsaydı ne görürdük? (Ya Olsaydı?)",
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash",
-  "Instagram: https://www.instagram.com/reel/DeopnMZkb5w/"
+  "Instagram: https://www.instagram.com/reel/DeowOfvDGk5/"
  ],
- "finished": "2026-10-18T12:10:25+00:00"
+ "finished": "2026-10-18T13:08:10+00:00"
 }
