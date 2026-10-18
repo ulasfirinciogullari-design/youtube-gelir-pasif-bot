@@ -92,7 +92,10 @@ def normalize_turkish_tts_text(text: str) -> str:
     result = re.sub(rf"%({GROUPED_DIGITS}(?![.,]?\d)|\d+(?![\d]|[.,]\d))(?:'([a-zA-ZçğıöşüÇĞİÖŞÜ]+))?", replace_percent, result)
 
     # 2. Numbers with thousand dots, before the ordinals: "10.000 metrede" had become "onuncu000 metrede" and was
-    #    read digit by digit (plane Short WADWjFRfYYw, 2026-10-15).
+    #    read digit by digit (plane Short WADWjFRfYYw, 2026-10-15). One with its own ordinal dot goes first
+    #    ("1.000. sırada" -> "bininci sırada").
+    result = re.sub(rf"(?<![\d.,%])({GROUPED_DIGITS})\.(?=\s+[{LOWER}])",
+                    lambda m: ordinal_to_turkish(int(m.group(1).replace(".", ""))), result)
     result = GROUPED_NUMBER_RE.sub(
         lambda m: _with_suffix(number_to_turkish(int(m.group(1).replace(".", ""))), m.group(2) or ""), result)
 
@@ -102,7 +105,7 @@ def normalize_turkish_tts_text(text: str) -> str:
     result = re.sub(rf"(?<![\d.,])(\d+)\.(?=\s+[{LOWER}])", lambda m: ordinal_to_turkish(int(m.group(1))), result)
     result = re.sub(rf"(?<![\d.,])({'|'.join(map(str, ORDINALS_BEFORE_CAPITAL))})\.(?=\s+[^\W\d])",
                     lambda m: ordinal_to_turkish(int(m.group(1))), result)
-    result = re.sub(rf"(?<![\d.,])(\d+)'[iıuü]?nc[iıuü]([{LOWER}]*)",
+    result = re.sub(rf"(?<![\d.,])(\d+)['’][iıuü]?nc[iıuü]([{LOWER}]*)",
                     lambda m: ordinal_to_turkish(int(m.group(1))) + m.group(2), result)
 
     # 4. Clean up repetitive punctuation that causes robotic pauses

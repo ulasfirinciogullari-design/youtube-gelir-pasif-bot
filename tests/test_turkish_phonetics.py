@@ -48,6 +48,8 @@ def test_ordinals_and_other_numbers_are_left_whole(text, spoken):
     ("15'inci sırada", "on beşinci sırada"),
     ("2'nci kez", "ikinci kez"),
     ("4'üncüsü geldi", "dördüncüsü geldi"),
+    ("3’üncü kattan", "üçüncü kattan"),  # the typographic apostrophe Gemini sometimes writes
+    ("1.000. sırada", "bininci sırada"),
     ("1950'lerde 14'ü", "1950'lerde 14'ü"),  # other suffixes stay for the voice to read
 ])
 def test_any_ordinal_before_a_lowercase_word_or_with_a_written_suffix(text, spoken):
