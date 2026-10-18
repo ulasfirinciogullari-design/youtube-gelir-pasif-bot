@@ -1,5 +1,5 @@
 {
- "started": "2026-10-18T09:07:11+00:00",
+ "started": "2026-10-18T12:06:55+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "channel": {
@@ -7,67 +7,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "9",
-  "videos": "14"
+  "videos": "15"
  },
  "credits_before": [
-  4061,
+  5187,
   613902
  ],
  "topic": {
-  "id": "g004",
-  "series": "1 Gün Boyunca",
-  "q": "1 günde kaç kez göz kırparsın?"
+  "id": "y007",
+  "series": "Ya Olsaydı?",
+  "q": "Ay'ın yerinde Jüpiter olsaydı ne görürdük?"
  },
  "attempts": 1,
  "model": "gemini-3.8-flash",
  "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 0,
-    "why": "Göz kırpma sayısı kişiden kişiye değişir, 'tam 19.200' kesinlik hatasıdır; ayrıca 16 saatlik uyanıklıkta dakikada 15-20 kırpış 14.400 ila 19.200 aralığına denk gelir."
-   },
-   {
-    "line": 2,
-    "why": "Onda bir saniye (0,1 saniye) süren kırpışlar günde 19.200 kez tekrarlandığında yaklaşık 32 dakika (ortalama 25-35 dakika) eder; 1,5 saat (90 dakika) matematiksel ve bilimsel olarak yanlıştır."
-   }
-  ]
+  "ok": true,
+  "fixes": []
  },
  "chunks": 0,
  "grounded": true,
- "chars": 408,
- "duration": 25.7,
- "title": "1 Günde Kaç Kez Göz Kırparsın?",
- "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
+ "chars": 373,
+ "duration": 25.3,
+ "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+ "url": "https://youtube.com/shorts/pJPCpis147c",
  "instagram": {
   "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "17983338803899032",
-  "url": "https://www.instagram.com/reel/DeoVJZBEuLe/",
-  "at": 1792314692.9286048
+  "media_id": "17944084650385729",
+  "url": "https://www.instagram.com/reel/DeopnMZkb5w/",
+  "at": 1792325423.6705956
  },
  "recent_status": {
-  "y004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "95",
-   "reason": null
-  },
   "y005": {
    "upload": "processed",
    "privacy": "public",
-   "views": "15",
+   "views": "20",
    "reason": null
   },
   "n003": {
    "upload": "processed",
    "privacy": "public",
-   "views": "370",
+   "views": "460",
    "reason": null
   },
   "y006": {
    "upload": "processed",
    "privacy": "public",
-   "views": "380",
+   "views": "746",
    "reason": null
   },
   "g004": {
@@ -75,16 +60,22 @@
    "privacy": "public",
    "views": "0",
    "reason": null
+  },
+  "y007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
   }
  },
  "credits_after": [
-  4159,
+  5278,
   613902
  ],
  "log": [
-  "Konu: g004 1 günde kaç kez göz kırparsın? (1 Gün Boyunca)",
+  "Konu: y007 Ay'ın yerinde Jüpiter olsaydı ne görürdük? (Ya Olsaydı?)",
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash",
-  "Instagram: https://www.instagram.com/reel/DeoVJZBEuLe/"
+  "Instagram: https://www.instagram.com/reel/DeopnMZkb5w/"
  ],
- "finished": "2026-10-18T09:11:34+00:00"
+ "finished": "2026-10-18T12:10:25+00:00"
 }

@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1259",
+    "views": "1266",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "334",
+    "views": "346",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "70",
+    "views": "71",
     "reason": null
    }
   },
@@ -116,7 +116,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "5",
+    "views": "6",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "26",
+    "views": "32",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "124",
+    "views": "133",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "3",
+    "views": "6",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "95",
+    "views": "98",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "15",
+    "views": "20",
     "reason": null
    }
   },
@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "370",
+    "views": "460",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "380",
+    "views": "746",
     "reason": null
    }
   },
@@ -419,6 +419,36 @@
     "views": "0",
     "reason": null
    }
+  },
+  {
+   "id": "y007",
+   "video_id": "pJPCpis147c",
+   "url": "https://youtube.com/shorts/pJPCpis147c",
+   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Jupiter Replaced the Moon?",
+    "es": "¿Qué Pasaría Si Júpiter Reemplazara a la Luna?",
+    "pt": "E Se Júpiter Substituísse a Lua?",
+    "ar": "ماذا لو حل المشتري محل القمر؟",
+    "hi": "क्या होता अगर चांद की जगह बृहस्पति आ जाता?",
+    "id": "Bagaimana Jika Jupiter Menggantikan Bulan?",
+    "fr": "Et si Jupiter remplaçait la Lune ?",
+    "de": "Was wäre, wenn Jupiter den Mond ersetzen würde?",
+    "ru": "Что если Юпитер заменит Луну?",
+    "az": "Ayın yerində Yupiter olsaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792325354.6390598,
+   "chars": 373,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
   }
  ],
  "used": [
@@ -435,7 +465,8 @@
   "y005",
   "n003",
   "y006",
-  "g004"
+  "g004",
+  "y007"
  ],
  "extra": [
   {
@@ -626,6 +657,14 @@
    "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
    "duration": 25.7,
    "chars": 408
+  },
+  {
+   "finished": "2026-10-18T12:10:25+00:00",
+   "mod": "saatlik",
+   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/pJPCpis147c",
+   "duration": 25.3,
+   "chars": 373
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -660,6 +699,11 @@
     "media_id": "17983338803899032",
     "url": "https://www.instagram.com/reel/DeoVJZBEuLe/",
     "at": 1792314692.9286048
+   },
+   "y007": {
+    "media_id": "17944084650385729",
+    "url": "https://www.instagram.com/reel/DeopnMZkb5w/",
+    "at": 1792325423.6705956
    }
   },
   "eski": [

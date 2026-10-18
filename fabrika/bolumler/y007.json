@@ -1,0 +1,527 @@
+{
+ "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+ "bar": {
+  "hi": "JÜPİTER",
+  "rest": "AY'IN YERİNDE?"
+ },
+ "summary": "Ay'ın yerine aniden dev gezegen Jüpiter yerleşseydi gökyüzü nasıl görünürdü? Devasa manzaradan çok daha ölümcül sonuçlar Dünya'yı bekliyor!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Gökyüzünde Ay'dan 40 kat daha geniş dev bir canavar belirirdi.",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "b": "moon",
+     "label": "Ay",
+     "value": 1
+    },
+    "b": {
+     "b": "jupiter",
+     "label": "Jüpiter",
+     "value": 40
+    },
+    "mode": "size",
+    "key": "geniş"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Geceleri sokak lambasına gerek kalmazdı!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "💡",
+    "do": "pulse",
+    "key": "lambasına",
+    "label": "Sokak Lambası"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama gelgit 25.000 kat güçlenir, kıtaları dev dalgalar yutardı.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "25.000",
+    "unit": "kat",
+    "label": "Gelgit Gücü",
+    "key": "25.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dünya, 318 kat ağır bu devin yeni uydusu haline gelirdi.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "jupiter",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "orbit",
+    "target": 1,
+    "key": "uydusu",
+    "label": "Yeni Yörünge"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "384.400 kilometreyle, volkanik İo'dan bile daha yakın olurduk.",
+   "v": {
+    "t": "split",
+    "bg": "volcano",
+    "left": {
+     "e": "🌋",
+     "label": "İo Uydusu"
+    },
+    "right": {
+     "e": "🌍",
+     "label": "Dünya"
+    },
+    "key": "volkanik"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Böyle bir dünyada yaşar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🪐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Jüpiter Ay mesafesinde olsaydı gökyüzünde yaklaşık 21 derecelik bir açı kaplar, dolunaydan 40 kat daha geniş görünürdü.",
+   "source": "NASA",
+   "url": "https://solarsystem.nasa.gov/planets/jupiter/overview/"
+  },
+  {
+   "text": "Jüpiter'in kütlesi Ay'dan yaklaşık 25.800 kat fazla olduğu için Dünya üzerindeki gelgit çekimi 25.000 kattan fazla güçlenirdi.",
+   "source": "NASA Planetary Fact Sheet",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html"
+  },
+  {
+   "text": "Jüpiter'in en volkanik uydusu İo yaklaşık 421.700 km mesafede dolanırken, Ay'ın Dünya'ya uzaklığı ortalama 384.400 kilometredir.",
+   "source": "NASA Solar System Exploration",
+   "url": "https://solarsystem.nasa.gov/moons/jupiter-moons/io/in-depth/"
+  }
+ ],
+ "tags": [
+  "jüpiter",
+  "ay",
+  "dünya",
+  "uzay",
+  "astronomi",
+  "gelgit",
+  "yerçekimi",
+  "gökyüzü",
+  "gezegenler",
+  "io",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#jüpiter",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/jupiter/",
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Jupiter Replaced the Moon?",
+   "summary": "What would the sky look like if the giant planet Jupiter suddenly replaced the Moon? Far more lethal consequences than a massive view await Earth!",
+   "facts": [
+    "If Jupiter were at the Moon's distance, it would span about 21 degrees in the sky, appearing 40 times wider than a full moon.",
+    "Because Jupiter's mass is about 25,800 times greater than the Moon's, tidal forces on Earth would become over 25,000 times stronger.",
+    "Jupiter's most volcanic moon, Io, orbits at about 421,700 km, while the Moon's average distance to Earth is 384,400 kilometers."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Júpiter Reemplazara a la Luna?",
+   "summary": "¿Cómo se vería el cielo si el planeta gigante Júpiter reemplazara de repente a la Luna? ¡Consecuencias mucho más letales que una vista colosal aguardan a la Tierra!",
+   "facts": [
+    "Si Júpiter estuviera a la distancia de la Luna, abarcaría unos 21 grados en el cielo y se vería 40 veces más ancho que la luna llena.",
+    "Dado que la masa de Júpiter es unas 25.800 veces mayor que la de la Luna, la fuerza de marea sobre la Tierra aumentaría más de 25.000 veces.",
+    "Ío, la luna más volcánica de Júpiter, orbita a unos 421.700 km, mientras que la distancia media de la Luna a la Tierra es de 384.400 kilómetros."
+   ]
+  },
+  "pt": {
+   "title": "E Se Júpiter Substituísse a Lua?",
+   "summary": "Como seria o céu se o planeta gigante Júpiter de repente substituísse a Lua? Consequências muito mais letais do que uma vista colossal aguardam a Terra!",
+   "facts": [
+    "Se Júpiter estivesse à distância da Lua, ocuparia cerca de 21 graus no céu, parecendo 40 vezes mais largo do que a lua cheia.",
+    "Como a massa de Júpiter é cerca de 25.800 vezes maior que a da Lua, a atração das marés sobre a Terra se tornaria mais de 25.000 vezes mais forte.",
+    "Io, a lua mais vulcânica de Júpiter, orbita a cerca de 421.700 km, enquanto a distância média da Lua à Terra é de 384.400 quilômetros."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو حل المشتري محل القمر؟",
+   "summary": "كيف سيبدو شكل السماء إذا حل كوكب المشتري العملاق فجأة محل القمر؟ عواقب أكثر فتكاً بكثير من مجرد مشهد هائل تنتظر الأرض!",
+   "facts": [
+    "لو كان المشتري على مسافة القمر، لشغل زاوية تبلغ نحو 21 درجة في السماء، ولبدا أعرض بـ 40 مرة من البدر.",
+    "نظراً لأن كتلة المشتري تزيد بنحو 25,800 مرة عن كتلة القمر، فإن قوى المد والجزر على الأرض ستصبح أقوى بأكثر من 25,000 مرة.",
+    "يدور قمر المشتري الأكثر بركانية، آيو، على مسافة تقارب 421,700 كم، بينما يبلغ متوسط مسافة القمر عن الأرض 384,400 كيلومتر."
+   ]
+  },
+  "hi": {
+   "title": "क्या होता अगर चांद की जगह बृहस्पति आ जाता?",
+   "summary": "अगर विशालकाय ग्रह बृहस्पति अचानक चंद्रमा की जगह ले लेता तो आसमान कैसा दिखता? इस विशाल दृश्य से कहीं अधिक घातक परिणाम पृथ्वी का इंतजार कर रहे हैं!",
+   "facts": [
+    "यदि बृहस्पति चंद्रमा की दूरी पर होता, तो यह आकाश में लगभग 21 डिग्री का कोण घेरता और पूर्णिमा से 40 गुना चौड़ा दिखाई देता।",
+    "चूंकि बृहस्पति का द्रव्यमान चंद्रमा से लगभग 25,800 गुना अधिक है, इसलिए पृथ्वी पर ज्वारीय खिंचाव 25,000 गुना से अधिक शक्तिशाली हो जाता।",
+    "बृहस्पति का सबसे ज्वालामुखीय चंद्रमा आयो लगभग 421,700 किमी की दूरी पर परिक्रमा करता है, जबकि चंद्रमा की पृथ्वी से औसत दूरी 384,400 किलोमीटर है।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Jupiter Menggantikan Bulan?",
+   "summary": "Bagaimana pemandangan langit jika planet raksasa Jupiter tiba-tiba menggantikan Bulan? Dampak yang jauh lebih mematikan daripada sekadar pemandangan spektakuler menanti Bumi!",
+   "facts": [
+    "Jika Jupiter berada di jarak Bulan, planet itu akan mencakup sudut sekitar 21 derajat di langit, tampak 40 kali lebih lebar dari bulan purnama.",
+    "Karena massa Jupiter sekitar 25.800 kali lebih besar daripada Bulan, gaya pasang surut di Bumi akan meningkat lebih dari 25.000 kali lipat.",
+    "Io, satelit paling vulkanik milik Jupiter, mengorbit pada jarak sekitar 421.700 km, sedangkan jarak rata-rata Bulan ke Bumi adalah 384.400 kilometer."
+   ]
+  },
+  "fr": {
+   "title": "Et si Jupiter remplaçait la Lune ?",
+   "summary": "À quoi ressemblerait le ciel si la planète géante Jupiter remplaçait soudainement la Lune ? Des conséquences bien plus mortelles qu'une vue colossale attendent la Terre !",
+   "facts": [
+    "Si Jupiter était à la distance de la Lune, elle occuperait environ 21 degrés dans le ciel, apparaissant 40 fois plus large que la pleine lune.",
+    "La masse de Jupiter étant environ 25 800 fois supérieure à celle de la Lune, la force de marée sur la Terre deviendrait plus de 25 000 fois plus puissante.",
+    "Io, la lune la plus volcanique de Jupiter, orbite à environ 421 700 km, tandis que la distance moyenne de la Lune à la Terre est de 384 400 kilomètres."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Jupiter den Mond ersetzen würde?",
+   "summary": "Wie würde der Himmel aussehen, wenn der Riesenplanet Jupiter plötzlich den Mond ersetzen würde? Weitaus tödlichere Folgen als ein gigantischer Anblick erwarten die Erde!",
+   "facts": [
+    "Wäre Jupiter in der Entfernung des Mondes, würde er am Himmel etwa 21 Grad einnehmen und 40-mal breiter als der Vollmond erscheinen.",
+    "Da Jupiters Masse etwa 25.800-mal größer als die des Mondes ist, wäre die Gezeitenkraft auf der Erde über 25.000-mal stärker.",
+    "Jupiters vulkanischster Mond Io kreist in einer Entfernung von rund 421.700 km, während der Mond durchschnittlich 384.400 Kilometer von der Erde entfernt ist."
+   ]
+  },
+  "ru": {
+   "title": "Что если Юпитер заменит Луну?",
+   "summary": "Как выглядело бы небо, если бы гигантская планета Юпитер внезапно заняла место Луны? Землю ждут последствия куда более смертоносные, чем просто грандиозный вид!",
+   "facts": [
+    "Если бы Юпитер находился на расстоянии Луны, он занимал бы на небе около 21 градуса и казался бы в 40 раз шире полнолуния.",
+    "Поскольку масса Юпитера примерно в 25 800 раз больше массы Луны, приливные силы на Земле возросли бы более чем в 25 000 раз.",
+    "Самый вулканический спутник Юпитера Ио обращается на расстоянии около 421 700 км, тогда как среднее расстояние от Луны до Земли составляет 384 400 километров."
+   ]
+  },
+  "az": {
+   "title": "Ayın yerində Yupiter olsaydı nə olardı?",
+   "summary": "Ayın yerini qəfildən nəhəng Yupiter planeti tutsaydı, səma necə görünərdi? Nəhəng mənzərədən çox daha ölümcül nəticələr Yeri gözləyir!",
+   "facts": [
+    "Yupiter Ay məsafəsində olsaydı, səmada təxminən 21 dərəcəlik bucaq tutar və bütöv aydan 40 dəfə daha geniş görünərdi.",
+    "Yupiterin kütləsi Aydan təxminən 25 800 dəfə çox olduğu üçün Yer üzərindəki qabarma-çəkilmə cazibəsi 25 000 dəfədən çox güclənərdi.",
+    "Yupiterin ən vulkanik peyki İo təxminən 421 700 km məsafədə dövr etdiyi halda, Ayın Yerə qədər olan orta məsafəsi 384 400 kilometrdir."
+   ]
+  }
+ },
+ "id": "y007",
+ "series": "Ya Olsaydı?",
+ "q": "Ay'ın yerinde Jüpiter olsaydı ne görürdük?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 4.0649999999999995,
+   "words": [
+    {
+     "w": "Gökyüzünde",
+     "t0": 0.35,
+     "t1": 0.872
+    },
+    {
+     "w": "Ay'dan",
+     "t0": 0.942,
+     "t1": 1.221
+    },
+    {
+     "w": "40",
+     "t0": 1.279,
+     "t1": 1.488
+    },
+    {
+     "w": "kat",
+     "t0": 1.5110000000000001,
+     "t1": 1.697
+    },
+    {
+     "w": "daha",
+     "t0": 1.7309999999999999,
+     "t1": 1.952
+    },
+    {
+     "w": "geniş",
+     "t0": 2.173,
+     "t1": 2.463
+    },
+    {
+     "w": "dev",
+     "t0": 2.532,
+     "t1": 2.718
+    },
+    {
+     "w": "bir",
+     "t0": 2.765,
+     "t1": 2.892
+    },
+    {
+     "w": "canavar",
+     "t0": 2.927,
+     "t1": 3.299
+    },
+    {
+     "w": "belirirdi.",
+     "t0": 3.357,
+     "t1": 4.0649999999999995
+    }
+   ]
+  },
+  {
+   "t0": 4.4451927437641725,
+   "t1": 6.8601927437641725,
+   "words": [
+    {
+     "w": "Geceleri",
+     "t0": 4.4451927437641725,
+     "t1": 4.886192743764172
+    },
+    {
+     "w": "sokak",
+     "t0": 4.9211927437641725,
+     "t1": 5.2111927437641725
+    },
+    {
+     "w": "lambasına",
+     "t0": 5.269192743764172,
+     "t1": 5.757192743764173
+    },
+    {
+     "w": "gerek",
+     "t0": 5.8041927437641725,
+     "t1": 6.036192743764173
+    },
+    {
+     "w": "kalmazdı!",
+     "t0": 6.082192743764173,
+     "t1": 6.8601927437641725
+    }
+   ]
+  },
+  {
+   "t0": 7.244807256235828,
+   "t1": 11.610807256235827,
+   "words": [
+    {
+     "w": "Ama",
+     "t0": 7.244807256235828,
+     "t1": 7.4538072562358275
+    },
+    {
+     "w": "gelgit",
+     "t0": 7.511807256235828,
+     "t1": 7.9298072562358275
+    },
+    {
+     "w": "25.000",
+     "t0": 8.126807256235828,
+     "t1": 8.800807256235828
+    },
+    {
+     "w": "kat",
+     "t0": 8.846807256235827,
+     "t1": 8.997807256235827
+    },
+    {
+     "w": "güçlenir,",
+     "t0": 9.044807256235828,
+     "t1": 9.578807256235828
+    },
+    {
+     "w": "kıtaları",
+     "t0": 9.740807256235827,
+     "t1": 10.170807256235829
+    },
+    {
+     "w": "dev",
+     "t0": 10.240807256235827,
+     "t1": 10.425807256235828
+    },
+    {
+     "w": "dalgalar",
+     "t0": 10.483807256235828,
+     "t1": 10.913807256235827
+    },
+    {
+     "w": "yutardı.",
+     "t0": 10.948807256235828,
+     "t1": 11.610807256235827
+    }
+   ]
+  },
+  {
+   "t0": 11.810807256235828,
+   "t1": 16.082807256235828,
+   "words": [
+    {
+     "w": "Dünya,",
+     "t0": 11.810807256235828,
+     "t1": 12.332807256235828
+    },
+    {
+     "w": "318",
+     "t0": 12.495807256235828,
+     "t1": 13.272807256235827
+    },
+    {
+     "w": "kat",
+     "t0": 13.319807256235828,
+     "t1": 13.481807256235827
+    },
+    {
+     "w": "ağır",
+     "t0": 13.539807256235829,
+     "t1": 13.760807256235827
+    },
+    {
+     "w": "bu",
+     "t0": 13.957807256235828,
+     "t1": 14.085807256235828
+    },
+    {
+     "w": "devin",
+     "t0": 14.132807256235829,
+     "t1": 14.352807256235828
+    },
+    {
+     "w": "yeni",
+     "t0": 14.410807256235827,
+     "t1": 14.573807256235828
+    },
+    {
+     "w": "uydusu",
+     "t0": 14.619807256235827,
+     "t1": 14.944807256235828
+    },
+    {
+     "w": "haline",
+     "t0": 14.991807256235827,
+     "t1": 15.351807256235828
+    },
+    {
+     "w": "gelirdi.",
+     "t0": 15.397807256235827,
+     "t1": 16.082807256235828
+    }
+   ]
+  },
+  {
+   "t0": 16.283278911564626,
+   "t1": 20.695278911564625,
+   "words": [
+    {
+     "w": "384.400",
+     "t0": 16.283278911564626,
+     "t1": 17.653278911564627
+    },
+    {
+     "w": "kilometreyle,",
+     "t0": 17.700278911564627,
+     "t1": 18.408278911564626
+    },
+    {
+     "w": "volkanik",
+     "t0": 18.629278911564626,
+     "t1": 19.093278911564624
+    },
+    {
+     "w": "İo'dan",
+     "t0": 19.139278911564624,
+     "t1": 19.406278911564627
+    },
+    {
+     "w": "bile",
+     "t0": 19.453278911564624,
+     "t1": 19.604278911564627
+    },
+    {
+     "w": "daha",
+     "t0": 19.650278911564627,
+     "t1": 19.801278911564626
+    },
+    {
+     "w": "yakın",
+     "t0": 19.836278911564627,
+     "t1": 20.057278911564627
+    },
+    {
+     "w": "olurduk.",
+     "t0": 20.103278911564626,
+     "t1": 20.695278911564625
+    }
+   ]
+  },
+  {
+   "t0": 21.075278911564624,
+   "t1": 23.676278911564623,
+   "words": [
+    {
+     "w": "Böyle",
+     "t0": 21.075278911564624,
+     "t1": 21.307278911564623
+    },
+    {
+     "w": "bir",
+     "t0": 21.354278911564624,
+     "t1": 21.447278911564624
+    },
+    {
+     "w": "dünyada",
+     "t0": 21.470278911564623,
+     "t1": 21.853278911564622
+    },
+    {
+     "w": "yaşar",
+     "t0": 21.911278911564622,
+     "t1": 22.236278911564625
+    },
+    {
+     "w": "mıydın?",
+     "t0": 22.306278911564625,
+     "t1": 22.585278911564625
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 22.619278911564624,
+     "t1": 23.095278911564623
+    },
+    {
+     "w": "yaz!",
+     "t0": 23.142278911564624,
+     "t1": 23.676278911564623
+    }
+   ]
+  }
+ ]
+}
