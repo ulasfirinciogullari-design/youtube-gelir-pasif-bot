@@ -308,8 +308,9 @@ def _github(url: str, token: str, raw: bool = False):
     return body if raw else json.loads(body)
 
 
-def _unpack(archive: bytes, out_dir: Path, topic_id: str) -> tuple[Path, dict] | None:
-    """The Short on this topic and its meta from a publishing run's artifact zip; other files are left out."""
+def _unpack(archive: bytes, out_dir: Path, topic_id: str, extras: tuple[str, ...] = ()) -> tuple[Path, dict] | None:
+    """The Short on this topic and its meta from a publishing run's artifact zip, plus its files with the `extras`
+    suffixes when there are any ("_ig.mp4" puts the Instagram copy next to the video); other files are left out."""
     with zipfile.ZipFile(io.BytesIO(archive)) as z:
         names = {Path(n).name: n for n in z.namelist()}
         metas = [b for b in names if re.fullmatch(r"(ORIGINAL|COMEDY)_[\w-]+_meta\.json", b)]
@@ -319,12 +320,15 @@ def _unpack(archive: bytes, out_dir: Path, topic_id: str) -> tuple[Path, dict] |
             if video not in names or meta.get("topic_id") != topic_id:
                 continue
             out_dir.mkdir(parents=True, exist_ok=True)
-            (out_dir / video).write_bytes(z.read(names[video]))
+            for name in [video] + [base.removesuffix("_meta.json") + suffix for suffix in extras]:
+                if name in names:
+                    (out_dir / name).write_bytes(z.read(names[name]))
             return out_dir / video, meta
     return None
 
 
-def find_short(upload: dict, out_dir: Path, repo: str, token: str, get=_github) -> tuple[Path, dict] | None:
+def find_short(upload: dict, out_dir: Path, repo: str, token: str, get=_github,
+               extras: tuple[str, ...] = ()) -> tuple[Path, dict] | None:
     """Downloads the uploaded Short from the artifact of the run that published it: the newest successful Shorts
     run that started before the upload and whose meta has the same topic."""
     uploaded_at = datetime.fromisoformat(upload["uploaded_at"])
@@ -345,7 +349,7 @@ def find_short(upload: dict, out_dir: Path, repo: str, token: str, get=_github) 
             if artifact["name"] != f"{ARTIFACT_PREFIX}{run['id']}" or artifact.get("expired"):
                 continue
             found = _unpack(get(artifact["archive_download_url"], token, raw=True), Path(out_dir),
-                            upload.get("topic_id", ""))
+                            upload.get("topic_id", ""), extras)
             if found:
                 return found
     return None

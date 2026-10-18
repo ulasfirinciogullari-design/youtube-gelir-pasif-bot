@@ -131,6 +131,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/slot_heartbeat.py --ensure
 
+      # The Instagram watch (zk_instagram_nobet.yml) answers comments and DMs and posts the Reels; every run restarts
+      # it when it is not running, once the ZK_IG_TOKEN secret exists.
+      - name: 📸 Instagram Nöbetini Kontrol Et
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ZK_IG_HAZIR: ${{ secrets.ZK_IG_TOKEN != '' && '1' || '' }}
+          ZK_IG_NOBET_KAPALI: ${{ vars.ZK_IG_NOBET_KAPALI }}
+        run: python3 scripts/instagram_watch.py --ensure
+
       - name: 🐍 Python 3.12 Kur
         if: steps.gate.outputs.go == 'true'
         uses: actions/setup-python@v5
@@ -267,10 +277,16 @@ jobs:
           if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
           git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -qm "Kanal verisi: run ${{ github.run_id }}"
-          # Someone (or a manual seed) may have pushed since this run fetched the branch.
-          git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            pull --rebase -q origin channel-data || true
-          git push origin HEAD:channel-data
+          # Someone (or a manual seed) may have pushed since this run fetched the branch, and the Instagram watch
+          # pushes instagram.json every few minutes (never a file this run writes), so a push that loses the race
+          # pulls again.
+          for attempt in 1 2 3 4; do
+            git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              pull --rebase -q origin channel-data || git rebase --abort 2>/dev/null || true
+            git push origin HEAD:channel-data && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
         if: always() && steps.gate.outputs.go == 'true'

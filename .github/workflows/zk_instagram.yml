@@ -1,0 +1,72 @@
+name: Zirvenin Kanunu Instagram
+
+# One-off Instagram jobs next to the watch (zk_instagram_nobet.yml), all in scripts/instagram_zk.py:
+#   kontrol  account, permissions, DM access and Reel stats -> channel-data/instagram_kontrol.json
+#   reel     post a Reel now: the Short in video_id, or the waiting Short with the most YouTube views
+#   deneme   draft replies to new comments and DMs into channel-data/instagram_preview.json, send nothing
+
+on:
+  workflow_dispatch:
+    inputs:
+      gorev:
+        description: 'kontrol = hesabı ve izinleri kontrol et, reel = şimdi bir Reel paylaş, deneme = cevapları yaz ama gönderme'
+        required: true
+        default: 'kontrol'
+        type: choice
+        options:
+          - 'kontrol'
+          - 'reel'
+          - 'deneme'
+      video_id:
+        description: 'Sadece reel: Instagram''a gidecek YouTube Short id (boş = en çok izlenen, paylaşılmamış Short)'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: zk-instagram-tek
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # the result on channel-data, and the temporary release Instagram fetches a Reel from
+  actions: read    # download the Short's artifact
+
+jobs:
+  run:
+    name: 📸 Instagram ${{ inputs.gorev }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🧠 Kanal Hafızasını Getir
+        run: |
+          git fetch origin channel-data:refs/remotes/origin/channel-data
+          git worktree add -B channel-data channel-data origin/channel-data
+
+      - name: 🐍 Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📸 Çalıştır
+        env:
+          ZK_IG_TOKEN: ${{ secrets.ZK_IG_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          ZK_YORUM_MODEL: ${{ vars.ZK_YORUM_MODEL }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GOREV: ${{ inputs.gorev }}
+          VIDEO_ID: ${{ inputs.video_id }}
+        run: |
+          pip install -q cryptography
+          if [ "$GOREV" = "reel" ]; then
+            set -- --reel ${VIDEO_ID:+"$VIDEO_ID"}
+          else
+            set -- "--$GOREV"
+          fi
+          python scripts/instagram_zk.py "$@" --data channel-data --out output/instagram --yaz
