@@ -1,25 +1,24 @@
 {
- "started": "2026-10-18T16:27:27+00:00",
+ "started": "2026-10-18T16:52:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 10,
+ "threads": 11,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 5,
+ "sent_last_24h": 6,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgzgojEqqmsYhUkkVvh4AaABAg",
-   "video": "pJPCpis147c",
-   "comment": "Jüpiter yok olsaydı yap",
-   "reply": "Jüpiter devasa kütlesiyle Güneş Sistemi'nin koruyucu kalkanı gibidir; o olmasaydı Dünya çok daha fazla asteroit yağmuruna tutulabilirdi. Bu fikri video listemize ekledik!\n— Profesör Pi 🔭",
-   "topic": "Jüpiter yok olsaydı ne olurdu?",
-   "result": "gönderildi"
+   "id": "Ugzuo-SbqukJ-rxPSft4AaABAg",
+   "video": "4GSDZD52uI0",
+   "comment": "6ey",
+   "result": "atlandı",
+   "why": "gibberish"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T16:27:52+00:00"
+ "finished": "2026-10-18T16:52:34+00:00"
 }
