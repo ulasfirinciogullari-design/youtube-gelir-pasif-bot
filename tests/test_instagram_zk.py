@@ -302,3 +302,27 @@ def test_the_watch_is_not_started_before_the_token_exists(monkeypatch):
     monkeypatch.setattr(watch, "github", lambda method, path, body=None: (200, {"workflow_runs": [
         {"status": "in_progress"}]}))
     assert "çalışıyor" in watch.ensure()
+
+
+def test_every_page_of_a_busy_reels_comments_is_read(monkeypatch):
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+0000")
+    pages = {None: {"data": [{"id": f"a{i}", "text": "soru?", "username": f"u{i}", "timestamp": now}
+                             for i in range(50)],
+                    "paging": {"cursors": {"after": "P2"}, "next": "https://graph.instagram.com/next"}},
+             "P2": {"data": [{"id": "b1", "text": "son soru?", "username": "z", "timestamp": now}],
+                    "paging": {"cursors": {"after": "P3"}}}}
+
+    def call(tok, method, path, params=None, **kw):
+        if path == "me/media":
+            return {"data": [{"id": "m1", "timestamp": now, "comments_count": 51}]}
+        return pages[params.get("after")]
+
+    monkeypatch.setattr(ig, "call", call)
+    fresh, quiet = ig.fresh_comments("tok", {"username": "zirveninkanunu"}, {}, {})
+    assert len(fresh) == 51 and fresh[-1]["id"] == "b1"
+
+
+def test_a_one_off_reel_waits_while_the_watch_posts_the_hours_reel(tmp_path, monkeypatch):
+    monkeypatch.setattr(ig, "due_slot", lambda now, state, hours: "2026-10-18T14")
+    monkeypatch.setattr(ig, "publish", lambda *a, **k: pytest.fail("no Reel while the watch posts one"))
+    assert ig.main(["--reel", "--data", str(tmp_path)], env={"ZK_IG_TOKEN": "tok"}) == 1

@@ -61,6 +61,7 @@ MAX_RUN_LEAD = 2 * 3600  # a Short's meta is written at most this long before it
 FIXED_TAGS = ("#bilgi", "#merak", "#bilim", "#ilginçbilgiler", "#keşfet")
 MAX_TAGS = 5  # Instagram is testing a 5-hashtag cap; more reads as spam
 CACHE_TTL = 3600
+COMMENT_PAGES = 10  # pages of 50 comments read from one Reel
 
 # The watch runs cevap() every minute for hours: CACHE = {} there, so unchanged media and conversations cost no calls.
 CACHE = None
@@ -515,8 +516,15 @@ def fresh_comments(tok: str, user: dict, done: dict, pending: dict) -> tuple[lis
         if not m.get("comments_count") or _ts(m.get("timestamp")) < oldest or _seen("media", m["id"],
                                                                                     m["comments_count"]):
             continue
-        comments = call(tok, "GET", f"{m['id']}/comments", params={
-            "fields": "id,text,username,timestamp,replies{username}", "limit": 50}).get("data", [])
+        comments, params = [], {"fields": "id,text,username,timestamp,replies{username}", "limit": 50}
+        for _ in range(COMMENT_PAGES):  # a Reel past 50 comments: the rest are on the next pages
+            page = call(tok, "GET", f"{m['id']}/comments", params=params)
+            comments += page.get("data", [])
+            paging = page.get("paging") or {}
+            after = (paging.get("cursors") or {}).get("after")
+            if not paging.get("next") or not after:
+                break
+            params = {**params, "after": after}
         ids = []
         for c in comments:
             cid, name = c["id"], c.get("username")
@@ -787,6 +795,10 @@ def main(argv=None, env=None) -> int:
             if args.yaz and not push(data, lambda: {name: text}, f"Instagram: {name}"):
                 raise IGError("sonuç channel-data dalına gönderilemedi")
         else:
+            if due_slot(datetime.now(timezone.utc), state, reel_hours(env)):
+                # the watch is posting this hour's Reel and may pick the same Short before either run pushes
+                raise IGError("şu an Reel saati, nöbet bu saatin Reel'ini paylaşıyor; aynı Short iki kez "
+                              "gitmesin diye o Reel kaydedilince tekrar dene")
             uploads = {u["video_id"]: u for u in load_uploads(data)}
             if args.reel:
                 if args.reel not in uploads:
