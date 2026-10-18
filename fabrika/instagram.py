@@ -36,10 +36,10 @@ import yorum  # noqa: E402
 API = "https://graph.instagram.com/v25.0"
 KEYFILE = HERE / "ig_anahtar.enc"
 REPORT = HERE / "ig_rapor.json"
-DAILY = int(os.environ.get("YO_IG_GUNLUK") or 200)
+DAILY = int(os.environ.get("YO_IG_GUNLUK") or 1000)
 PER_RUN = int(os.environ.get("YO_IG_TUR") or 20)
-PER_PERSON = int(os.environ.get("YO_IG_KISI") or 10)  # replies per person per 24 h, so one chatter cannot use up the day
-MAX_AGE_DAYS = 14
+PER_PERSON = int(os.environ.get("YO_IG_KISI") or 20)  # replies per person per 24 h, so one chatter cannot use up the day
+MAX_AGE_DAYS = 60
 DM_WINDOW = 23 * 3600  # Instagram allows an answer within 24 hours of the person's message
 REFRESH_AFTER = 7 * 86400
 TAGS = ["#yaolsaydı", "#bilim", "#bilimsel", "#merak", "#öğren", "#reels", "#keşfet"]
@@ -243,7 +243,7 @@ def _ts(s):
         return time.time()
 
 
-CACHE_TTL = 600
+CACHE_TTL = 3600
 
 
 def _who(name):
@@ -263,7 +263,7 @@ def fresh_comments(tok, user, done, pending):
     every fresh comment of that media is handled."""
     fresh, quiet = [], {}
     limit = time.time() - MAX_AGE_DAYS * 86400
-    media = call(tok, "GET", "me/media", params={"fields": "id,timestamp,comments_count", "limit": 25}).get("data", [])
+    media = call(tok, "GET", "me/media", params={"fields": "id,timestamp,comments_count", "limit": 100}).get("data", [])
     for m in media:
         if not m.get("comments_count") or _ts(m.get("timestamp")) < limit:
             continue
