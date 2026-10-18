@@ -1,0 +1,289 @@
+{
+  "topic_id": "mk-011",
+  "topic": "Soğan doğrarken neden gözlerimiz yaşarır?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Soğan Doğrarken Gözler Neden Yaşarır? 🧅",
+  "hook_text": "SOĞAN NEDEN AĞLATIR?",
+  "description": "Soğan doğrarken gözler neden yaşarır?\n\nSoğan kestiğinizde hücreleri parçalanır ve kükürtlü bileşikler açığa çıkar. Soğan enzimleri bu bileşikleri gözleri yaşartan bir gaza dönüştürür ve gözleriniz bu gazı atmak için anında yaş üretmeye başlar.\n\nSence soğan kendini bu gazla hangi canlıdan korur: böceklerden mi insanlardan mı?\n\n#soğan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-011",
+  "tags": [
+    "soğan",
+    "soğan neden ağlatır",
+    "soğan göz yaşarması",
+    "soğan doğrarken neden",
+    "gözler neden yaşarır",
+    "soğan gazı",
+    "kükürtlü bileşikler",
+    "soğan enzimleri",
+    "soğan savunması",
+    "soğan kimyası",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "neden",
+    "nasıl",
+    "gözyaşı",
+    "soğan kesmek",
+    "soğan doğramak",
+    "sebze",
+    "bilgi",
+    "onion",
+    "why onions make you cry",
+    "onion gas",
+    "science",
+    "shorts",
+    "mutfak",
+    "kimya",
+    "insan vücudu",
+    "ilginç bilgi",
+    "zirvenin kanunu",
+    "sogan",
+    "sogan neden aglatir",
+    "sogan goz yasarmasi",
+    "sogan dograrken neden"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Your Eyes Water When Chopping Onions? 🧅",
+      "description": "Ever wondered why onions make you cry? It's a fascinating defense mechanism! When you cut an onion, its cells release sulfur compounds that enzymes turn into a tear-inducing gas. Your eyes react instantly, producing tears to wash it away.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "es": {
+      "title": "¿Por qué lloramos al cortar cebolla? 🧅",
+      "description": "¿Te has preguntado por qué las cebollas te hacen llorar? Es un mecanismo de defensa fascinante. Al cortar una cebolla, sus células liberan compuestos de azufre que las enzimas transforman en un gas que irrita los ojos, provocando lágrimas al instante.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "pt": {
+      "title": "Por que nossos olhos lacrimejam ao cortar cebola? 🧅",
+      "description": "Já se perguntou por que as cebolas nos fazem chorar? É um mecanismo de defesa incrível! Ao cortar uma cebola, suas células liberam compostos de enxofre que as enzimas transformam em um gás irritante, fazendo seus olhos produzirem lágrimas instantaneamente para lavá-lo.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "de": {
+      "title": "Warum tränen die Augen beim Zwiebelschneiden? 🧅",
+      "description": "Hast du dich jemals gefragt, warum Zwiebeln dich zum Weinen bringen? Es ist ein faszinierender Abwehrmechanismus! Beim Schneiden setzen Zwiebelzellen Schwefelverbindungen frei, die von Enzymen in ein tränenreizendes Gas umgewandelt werden. Deine Augen reagieren sofort mit Tränen, um es auszuspülen.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "fr": {
+      "title": "Pourquoi nos yeux pleurent-ils quand on coupe des oignons? 🧅",
+      "description": "Vous êtes-vous déjà demandé pourquoi les oignons vous font pleurer? C'est un mécanisme de défense fascinant! Lorsque vous coupez un oignon, ses cellules libèrent des composés soufrés que les enzymes transforment en un gaz irritant, provoquant des larmes instantanément pour le rincer.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "it": {
+      "title": "Perché i nostri occhi lacrimano quando tagliamo le cipolle? 🧅",
+      "description": "Ti sei mai chiesto perché le cipolle ti fanno piangere? È un affascinante meccanismo di difesa! Quando tagli una cipolla, le sue cellule rilasciano composti solforati che gli enzimi trasformano in un gas irritante, inducendo i tuoi occhi a produrre lacrime all'istante per lavarlo via.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "ru": {
+      "title": "Почему глаза слезятся, когда режешь лук? 🧅",
+      "description": "Задумывались, почему лук вызывает слезы? Это удивительный защитный механизм! При разрезании лука его клетки выделяют сернистые соединения, которые ферменты превращают в раздражающий газ. Глаза мгновенно начинают вырабатывать слезы, чтобы смыть его.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "ar": {
+      "title": "لماذا تدمع عيوننا عند تقطيع البصل؟ 🧅",
+      "description": "هل تساءلت يومًا لماذا يجعلك البصل تبكي؟ إنها آلية دفاع رائعة! عند تقطيع البصل، تطلق خلاياه مركبات كبريتية تحولها الإنزيمات إلى غاز يسبب الدموع، فتبدأ عيناك بإنتاج الدموع على الفور لغسله.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "hi": {
+      "title": "प्याज काटते समय आँखें क्यों जलती हैं? 🧅",
+      "description": "क्या आपने कभी सोचा है कि प्याज काटते समय आपकी आँखों से आँसू क्यों आते हैं? यह एक दिलचस्प रक्षा तंत्र है! जब आप प्याज काटते हैं, तो उसकी कोशिकाएँ सल्फर यौगिक छोड़ती हैं, जिन्हें एंजाइम आँसू लाने वाली गैस में बदल देते हैं। आपकी आँखें तुरंत इसे धोने के लिए आँसू पैदा करना शुरू कर देती हैं।\n\n#shorts\n\nSeri: mk-011"
+    },
+    "id": {
+      "title": "Mengapa Mata Berair Saat Memotong Bawang? 🧅",
+      "description": "Pernahkah Anda bertanya-tanya mengapa bawang membuat mata Anda berair? Ini adalah mekanisme pertahanan yang menarik! Saat Anda memotong bawang, sel-selnya melepaskan senyawa belerang yang diubah enzim menjadi gas pemicu air mata. Mata Anda langsung bereaksi, menghasilkan air mata untuk membilasnya.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "ja": {
+      "title": "玉ねぎを切ると目が痛くなるのはなぜ？ 🧅",
+      "description": "玉ねぎを切ると目が痛くなるのはなぜか、考えたことはありますか？ 実はこれ、玉ねぎの面白い防御メカニズムなんです。玉ねぎを切ると細胞が壊れ、硫黄化合物が放出されます。これが酵素によって涙を誘発するガスに変わり、目を刺激して涙が止まらなくなるのです。\n\n#shorts\n\nSeri: mk-011"
+    },
+    "ko": {
+      "title": "양파 썰 때 눈물이 나는 이유는? 🧅",
+      "description": "양파를 썰 때 왜 눈물이 나는지 궁금했나요? 이것은 양파의 놀라운 방어 메커니즘입니다! 양파를 자르면 세포가 파괴되고 황 화합물이 방출됩니다. 이 화합물은 효소에 의해 눈물을 유발하는 가스로 변환되어 눈이 즉시 눈물을 생성하여 씻어내게 합니다.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "pl": {
+      "title": "Dlaczego oczy łzawią podczas krojenia cebuli? 🧅",
+      "description": "Zastanawiałeś się kiedyś, dlaczego cebula sprawia, że płaczesz? To fascynujący mechanizm obronny! Kiedy kroisz cebulę, jej komórki uwalniają związki siarki, które enzymy zamieniają w gaz drażniący oczy. Twoje oczy natychmiast reagują, produkując łzy, aby go zmyć.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "nl": {
+      "title": "Waarom tranen je ogen bij het snijden van uien? 🧅",
+      "description": "Heb je je ooit afgevraagd waarom uien je laten huilen? Het is een fascinerend verdedigingsmechanisme! Wanneer je een ui snijdt, laten de cellen zwavelverbindingen vrij die enzymen omzetten in een traanverwekkend gas. Je ogen reageren onmiddellijk door tranen te produceren om het weg te spoelen.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "uk": {
+      "title": "Чому очі сльозяться, коли ріжеш цибулю? 🧅",
+      "description": "Ви коли-небудь замислювалися, чому цибуля змушує вас плакати? Це дивовижний захисний механізм! Коли ви ріжете цибулю, її клітини виділяють сполуки сірки, які ферменти перетворюють на газ, що викликає сльози. Ваші очі миттєво реагують, виробляючи сльози, щоб змити його.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "vi": {
+      "title": "Tại sao mắt lại cay khi cắt hành tây? 🧅",
+      "description": "Bạn có bao giờ tự hỏi tại sao hành tây lại khiến bạn khóc? Đó là một cơ chế phòng thủ hấp dẫn! Khi bạn cắt hành tây, các tế bào của nó giải phóng các hợp chất lưu huỳnh mà enzyme biến thành một loại khí gây chảy nước mắt. Mắt bạn phản ứng ngay lập tức, tiết ra nước mắt để rửa trôi nó.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "az": {
+      "title": "Soğan doğrayarkən gözlər niyə yaşarır? 🧅",
+      "description": "Heç düşünmüsünüzmü ki, soğan niyə sizi ağladır? Bu, maraqlı bir müdafiə mexanizmidir! Soğanı kəsdiyiniz zaman hüceyrələri kükürdlü birləşmələr buraxır və fermentlər bunları gözləri yaşardan qaza çevirir. Gözləriniz dərhal reaksiya verərək onu yumaq üçün yaş istehsal etməyə başlayır.\n\n#shorts\n\nSeri: mk-011"
+    },
+    "ro": {
+      "title": "De ce ne lăcrimează ochii când tăiem ceapa? 🧅",
+      "description": "Te-ai întrebat vreodată de ce ceapa te face să plângi? Este un mecanism de apărare fascinant! Când tai o ceapă, celulele ei eliberează compuși de sulf pe care enzimele îi transformă într-un gaz iritant, iar ochii tăi reacționează instantaneu, producând lacrimi pentru a-l spăla.\n\n#shorts\n\nSeri: mk-011"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence soğan kendini bu gazla hangi canlıdan korur: böceklerden mi insanlardan mı?",
+  "scenes": [
+    {
+      "text": "Soğan, milyonlarca yıl süren evrimsel süreçte bu savunma mekanizmasını geliştirmiştir.",
+      "visual": "Hands cutting a red onion on a wooden board.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 2
+        }
+      ],
+      "callout": "EVRİMSEL SAVUNMA"
+    },
+    {
+      "text": "Soğanı kestiğinizde hücreleri parçalanır, kükürtlü bileşikler açığa çıkar.",
+      "visual": "Close-up of hands slicing an onion, showing its layers.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ],
+      "callout": "KÜKÜRT BİLEŞİKLERİ"
+    },
+    {
+      "text": "Bu kükürtlü bileşikler, soğan enzimleri tarafından gözlerinizi yaşartan bir gaza dönüştürülür.",
+      "visual": "Various close-ups of hands chopping onions, implying a chemical process.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 34,
+          "kare": 2
+        },
+        {
+          "n": 25,
+          "kare": 2
+        }
+      ],
+      "callout": "YAŞARTAN GAZ"
+    },
+    {
+      "text": "Gözleriniz bu gazı yıkayıp atmak için anında yaş üretmeye başlar.",
+      "visual": "Hands cutting a red or white onion, showing the inside.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu gözyaşları, soğanın kendini koruma yöntemidir.",
+      "visual": "Whole red onions on a surface.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        }
+      ],
+      "callout": "KORUMA YÖNTEMİ"
+    }
+  ],
+  "duration_seconds": 17.36,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitliliği çok düşük ve tekrar eden görüntülerle dolu. Konuyla alakasız (marul) görüntüler kullanılmış.",
+        "fix": "Soğan kesme dışında, gözlerin yaşarması, kimyasal reaksiyonları temsil eden soyut animasyonlar veya soğanla ilgili farklı açılardan çekilmiş stok görüntüler (Pexels, Pixabay) kullanarak görsel çeşitliliği artırın. Alakasız görüntüleri çıkar"
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, bazen çok büyük ve görseli kapatıyor. Bilgiyi görsel olarak destekleyen grafik veya animasyon yok.",
+        "fix": "Yazıların ekranda kalma süresini anlatımla senkronize edin ve daha dinamik giriş/çıkış animasyonları kullanın. Metinleri daha küçük ve görseli engellemeyecek şekilde yerleştirin. Basit oklar, daireler veya hareketli arka planlar gibi temel "
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi enerjisiz ve monoton. Videoda ses efekti kullanılmamış.",
+        "fix": "Yapay zeka sesinin hızını ve enerji seviyesini artırarak daha dinamik bir ton yakalamaya çalışın. Soğan kesme, gazın yayılması gibi anlara uygun, dikkat dağıtmayacak hafif ses efektleri ekleyin. Arka plan müziğini daha enerjik ve keşif tema"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kesimler basit ve tekrar eden görüntüler nedeniyle video akışı yavaş kalıyor. Geçişler temel ve dinamizm eksik.",
+        "fix": "Klip sürelerini kısaltarak ve kesim hızını artırarak videonun genel temposunu yükseltin. Otomatik kurgu araçlarının sunduğu hızlı geçiş efektlerini (varsa) kullanarak akışı daha dinamik hale getirin. Her kesimin anlatımla tam olarak senkron"
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (hook) doğrudan olsa da referans video kadar merak uyandırıcı değil. Bilgi akışı kuru ve şaşırtıcılık hissi zayıf.",
+        "fix": "Videonun başlangıcını daha ilgi çekici bir soru veya şaşırtıcı bir bilgiyle güçlendirin (örneğin, 'Gözyaşlarınızın ardındaki gizem ne?'). Bilgiyi sunarken, 'evrimsel savunma' gibi anahtar kavramları daha vurgulu hale getirerek izleyicide me"
+      },
+      {
+        "area": "görüntü",
+        "problem": "Kullanılan stok videoların kalitesi iyi olsa da, konuyu zenginleştirecek veya farklı bir bakış açısı sunacak özel bir çekim veya animasyon içermiyor.",
+        "fix": "Ücretsiz stok video platformlarında (Pexels, Pixabay) 'kimyasal reaksiyon', 'gözyaşı', 'bitki savunması' gibi anahtar kelimelerle daha soyut veya bilimsel görseller arayarak videonun görsel zenginliğini artırın. Doğrudan çekim yapamadığımız"
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazıların fontu ve stili genel olarak okunabilir olsa da, referans videodaki gibi profesyonel bir estetiğe sahip değil.",
+        "fix": "Daha modern ve temiz bir font seçimi yapın. Yazıların rengini ve gölgesini, arka planla kontrastı en iyi sağlayacak şekilde ayarlayın. Yazıların ekranda beliriş ve kayboluş şekillerini çeşitlendirerek daha profesyonel bir his verin."
+      }
+    ],
+    "strengths": [
+      "Konu başlığı net ve merak uyandırıcı.",
+      "Video süresi kısa ve günümüz platformlarına uygun.",
+      "Bilgi akışı mantıklı ve anlaşılır."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
