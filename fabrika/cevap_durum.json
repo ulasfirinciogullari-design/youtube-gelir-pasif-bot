@@ -43,18 +43,31 @@
     1792282948.0192676,
     "s",
     "gönderilemedi"
+   ],
+   "18189526138412908": [
+    1792283060.1521084,
+    "r",
+    "Benim bile devrelerim yandı, o hızda doğuya savrulmayı düşünmek gerçekten baş dö",
+    "dc937b598926"
    ]
   },
-  "son": []
+  "son": [
+   {
+    "at": 1792283060.1521084,
+    "kind": "yorum",
+    "text": "Vay be",
+    "reply": "Benim bile devrelerim yandı, o hızda doğuya savrulmayı düşünmek gerçekten baş döndürücü! 🤖\n— Bit 🤖"
+   }
+  ]
  },
  "oneriler": [],
  "nobet": {
-  "basladi": "2026-10-18T00:16:27+00:00",
-  "run": "39082147103",
-  "tur": 7,
-  "ig_cevap": 0,
+  "basladi": "2026-10-18T00:24:19+00:00",
+  "run": "39082620687",
+  "tur": 1,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-10-18T00:22:39+00:00"
+  "son_tur": "2026-10-18T00:24:30+00:00"
  }
 }
