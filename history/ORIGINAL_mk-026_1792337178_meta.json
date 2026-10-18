@@ -1,0 +1,209 @@
+{
+  "topic_id": "mk-026",
+  "topic": "Müzik dinlerken neden bazen tüylerimiz ürperir?",
+  "series": "merak",
+  "script_provider": "gemini",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Müzik dinlerken neden tüylerimiz ürperir? 🎶",
+  "hook_text": "MÜZİK NEDEN TÜYLERİMİ ÜRPERTİYOR?",
+  "description": "Müzik dinlerken tüylerimiz neden ürperir?\n\nBeyin, müziği bir ödül gibi algıladığı için bu tepkiyi verir. Müzik, dopamin salgılar ve bu da omurilikten kaslara sinyal gönderir.\n\nSeni en çok hangi şarkı ürpertiyor? Yoruma yaz!\n\n#müzik #tüylerürpermesi #insanvücudu #beyin #shorts #bilim #merak #keşfet\n\nSeri: mk-026",
+  "tags": [
+    "müzik tüyler ürpermesi",
+    "tüyler neden ürperir",
+    "müzik dinlerken ürperme",
+    "müzik ve beyin",
+    "dopamin salgısı",
+    "omurilik sinyal",
+    "fiziksel tepki müzik",
+    "şarkı dinlerken heyecan",
+    "ürperme hissi",
+    "müzik etkisi",
+    "insan beyni",
+    "sinir sistemi",
+    "kaslara sinyal",
+    "ödül sistemi beyin",
+    "bilimsel gerçekler",
+    "ilginç bilgiler",
+    "merak edilenler",
+    "insan vücudu",
+    "psikoloji",
+    "nörobilim",
+    "music",
+    "goosebumps",
+    "dopamine",
+    "brain",
+    "müzik",
+    "tüyler ürpermesi",
+    "bilim",
+    "insan psikolojisi",
+    "beyin",
+    "dopamin"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do we get goosebumps when listening to music? 🎶",
+      "description": "Ever wondered why certain melodies give you goosebumps? It's because your brain perceives music as a reward, releasing dopamine. This sends signals from your spinal cord to your muscles, causing that exciting shiver.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "es": {
+      "title": "¿Por qué se nos pone la piel de gallina al escuchar música? 🎶",
+      "description": "¿Alguna vez te has preguntado por qué algunas melodías te erizan la piel? Tu cerebro percibe la música como una recompensa, liberando dopamina. Esto envía señales desde la médula espinal a los músculos, causando ese escalofrío emocionante.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "pt": {
+      "title": "Por que sentimos arrepios ao ouvir música? 🎶",
+      "description": "Já se perguntou por que certas melodias te dão arrepios? É porque seu cérebro percebe a música como uma recompensa, liberando dopamina. Isso envia sinais da medula espinhal para os músculos, causando aquele calafrio emocionante.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "de": {
+      "title": "Warum bekommen wir Gänsehaut beim Musikhören? 🎶",
+      "description": "Hast du dich jemals gefragt, warum bestimmte Melodien dir Gänsehaut bereiten? Dein Gehirn nimmt Musik als Belohnung wahr und setzt Dopamin frei. Dies sendet Signale vom Rückenmark an die Muskeln und verursacht dieses aufregende Kribbeln.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "fr": {
+      "title": "Pourquoi avons-nous la chair de poule en écoutant de la musique ? 🎶",
+      "description": "Vous êtes-vous déjà demandé pourquoi certaines mélodies vous donnent la chair de poule ? C'est parce que votre cerveau perçoit la musique comme une récompense, libérant de la dopamine. Cela envoie des signaux de votre moelle épinière aux muscles, provoquant ce frisson excitant.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "it": {
+      "title": "Perché ci viene la pelle d'oca quando ascoltiamo musica? 🎶",
+      "description": "Ti sei mai chiesto perché alcune melodie ti fanno venire la pelle d'oca? Il tuo cervello percepisce la musica come una ricompensa, rilasciando dopamina. Questo invia segnali dal midollo spinale ai muscoli, causando quel brivido emozionante.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "ru": {
+      "title": "Почему мурашки бегут по коже, когда слушаешь музыку? 🎶",
+      "description": "Задумывались ли вы, почему от некоторых мелодий бегут мурашки? Ваш мозг воспринимает музыку как награду, высвобождая дофамин. Это посылает сигналы от спинного мозга к мышцам, вызывая это захватывающее ощущение.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "ar": {
+      "title": "لماذا تقشعر أبداننا عند الاستماع إلى الموسيقى؟ 🎶",
+      "description": "هل تساءلت يومًا لماذا تسبب بعض الألحان قشعريرة لك؟ دماغك يدرك الموسيقى كمكافأة، ويطلق الدوبامين. هذا يرسل إشارات من الحبل الشوكي إلى العضلات، مما يسبب تلك الرعشة المثيرة.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "hi": {
+      "title": "संगीत सुनते समय हमारे रोंगटे क्यों खड़े हो जाते हैं? 🎶",
+      "description": "क्या आपने कभी सोचा है कि कुछ धुनें आपको रोंगटे क्यों देती हैं? ऐसा इसलिए है क्योंकि आपका मस्तिष्क संगीत को एक इनाम के रूप में मानता है, जिससे डोपामाइन निकलता है। यह रीढ़ की हड्डी से मांसपेशियों तक संकेत भेजता है, जिससे वह रोमांचक सिहरन होती है।\n\n#shorts\n\nSeri: mk-026"
+    },
+    "id": {
+      "title": "Mengapa kita merinding saat mendengarkan musik? 🎶",
+      "description": "Pernahkah Anda bertanya-tanya mengapa melodi tertentu membuat Anda merinding? Itu karena otak Anda menganggap musik sebagai hadiah, melepaskan dopamin. Ini mengirimkan sinyal dari sumsum tulang belakang ke otot, menyebabkan getaran yang menarik itu.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "ja": {
+      "title": "音楽を聴くと鳥肌が立つのはなぜ？ 🎶",
+      "description": "特定のメロディーを聴くと鳥肌が立つのはなぜだろうと思ったことはありませんか？それは脳が音楽を報酬と認識し、ドーパミンを放出するからです。これが脊髄から筋肉に信号を送り、あの興奮するような震えを引き起こします。\n\n#shorts\n\nSeri: mk-026"
+    },
+    "ko": {
+      "title": "음악을 들을 때 왜 소름이 돋을까요? 🎶",
+      "description": "특정 멜로디가 왜 소름 돋게 하는지 궁금해 본 적이 있나요? 뇌가 음악을 보상으로 인식하여 도파민을 분비하기 때문입니다. 이는 척수에서 근육으로 신호를 보내 그 흥분되는 전율을 유발합니다.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "pl": {
+      "title": "Dlaczego dostajemy gęsiej skórki słuchając muzyki? 🎶",
+      "description": "Zastanawiałeś się kiedyś, dlaczego niektóre melodie wywołują u Ciebie gęsią skórkę? Dzieje się tak, ponieważ Twój mózg postrzega muzykę jako nagrodę, uwalniając dopaminę. Wysyła to sygnały z rdzenia kręgowego do mięśni, powodując ten ekscytujący dreszcz.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "nl": {
+      "title": "Waarom krijgen we kippenvel bij het luisteren naar muziek? 🎶",
+      "description": "Heb je je ooit afgevraagd waarom bepaalde melodieën je kippenvel geven? Dat komt omdat je hersenen muziek als een beloning zien, waardoor dopamine vrijkomt. Dit stuurt signalen van je ruggenmerg naar je spieren, wat dat opwindende rillingen veroorzaakt.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "uk": {
+      "title": "Чому мурашки біжать по шкірі, коли слухаєш музику? 🎶",
+      "description": "Чи замислювалися ви, чому деякі мелодії викликають у вас мурашки? Це тому, що ваш мозок сприймає музику як винагороду, вивільняючи дофамін. Це надсилає сигнали від спинного мозку до м'язів, викликаючи це захоплююче тремтіння.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "vi": {
+      "title": "Tại sao chúng ta nổi da gà khi nghe nhạc? 🎶",
+      "description": "Bạn có bao giờ tự hỏi tại sao một số giai điệu lại khiến bạn nổi da gà không? Đó là vì não của bạn coi âm nhạc là một phần thưởng, giải phóng dopamine. Điều này gửi tín hiệu từ tủy sống đến cơ bắp, gây ra cảm giác rùng mình đầy phấn khích đó.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "az": {
+      "title": "Musiqi dinləyəndə niyə tüklərimiz ürpərir? 🎶",
+      "description": "Heç düşünmüsünüzmü, niyə bəzi melodiyalar sizə tüklər qaldırır? Çünki beyniniz musiqini bir mükafat kimi qəbul edir və dopamin ifraz edir. Bu, onurğa beynindən əzələlərə siqnallar göndərərək həyəcanlı titrəməyə səbəb olur.\n\n#shorts\n\nSeri: mk-026"
+    },
+    "ro": {
+      "title": "De ce ni se face pielea de găină când ascultăm muzică? 🎶",
+      "description": "Te-ai întrebat vreodată de ce anumite melodii îți provoacă fiori? Asta pentru că creierul tău percepe muzica ca o recompensă, eliberând dopamină. Aceasta trimite semnale de la măduva spinării către mușchi, provocând acel fior emoționant.\n\n#shorts\n\nSeri: mk-026"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Seni en çok hangi şarkı ürpertiyor? Yoruma yaz!",
+  "scenes": [
+    {
+      "text": "Bir melodiyle tüylerin anında diken diken olur.",
+      "visual": "Close-up of a person's arm or neck with visible goosebumps, while listening to music through headphones, low light.",
+      "stock_query": "person goosebumps music headphones",
+      "source": "stock",
+      "callout": "ANINDA TEPKİ"
+    },
+    {
+      "text": "Peki, bu şaşırtıcı fiziksel tepki neden yaşanır?",
+      "visual": "A person with headphones on, looking thoughtful and slightly surprised, in a warm, inviting setting.",
+      "stock_query": "person thinking music headphones",
+      "source": "stock"
+    },
+    {
+      "text": "Aslında beynin, müziği bir ödül gibi algıladığı içindir.",
+      "visual": "A musician playing an instrument with intense focus and joy, a bright light shining on them, evoking a sense of reward and passion.",
+      "stock_query": "musician playing joy stage lights",
+      "source": "stock",
+      "callout": "BEYİN ÖDÜLÜ"
+    },
+    {
+      "text": "Müzik, dopamin salgılar ve bu da omurilikten kaslara sinyal gönderir.",
+      "visual": "Close-up of a person's face showing intense pleasure and excitement from listening to music, eyes wide, a slight smile.",
+      "stock_query": "person excited music pleasure",
+      "source": "stock",
+      "callout": "DOPAMİN SALGILANIYOR"
+    },
+    {
+      "text": "İşte bu yüzden, o eşsiz şarkı çaldığında vücudun heyecandan ürperir.",
+      "visual": "A large concert crowd with their hands in the air, cheering and singing along, vibrant stage lights and fog.",
+      "stock_query": "concert crowd cheering hands up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 13.48,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, monoton bir yapay zeka sesi kullanılmış.",
+        "fix": "Yapay zeka sesinin hızını artırın (örn. %1.25 veya %1.5). Anahtar kelimelerde (örn. 'ANINDA TEPKİ', 'DİKEN DİKEN OLUR', 'ÖDÜL GİBİ') vurgu ve tonlama eklemeye çalışın (eğer AI aracı izin veriyorsa)."
+      },
+      {
+        "area": "yazı",
+        "problem": "Soyut kavramları (dopamin salgılanması, sinyal gönderme) görselleştiren grafikler veya animasyonlar eksik.",
+        "fix": "Ücretsiz stok grafikler veya basit animasyonlar kullanarak (eğer otomatik kurgu aracı izin veriyorsa) bilginin görselleştirilmesini sağlayın (örn. beyinden çıkan ok, sinyal akışını gösteren çizgiler). Yazıların ekrana gelme animasyonlarını "
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görsel değişim hızı yavaş, bilgi akışına ayak uyduramıyor ve dinamizm eksik.",
+        "fix": "Her yeni bilgi parçasıyla (özellikle anahtar kelimelerle) görseli değiştirin. Ortalama klip süresini kısaltın. Geçişlerde hafif zoom in/out veya hızlı kesmeler kullanın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler genel olarak müzikle ilgili olsa da, 'tüylerin ürpermesi' veya 'beyin ödülü' gibi spesifik kavramları doğrudan ve etkili bir şekilde yansıtmıyor.",
+        "fix": "'Tüylerin ürpermesi' anını daha net gösteren (yakın çekim, yavaş çekim) stok videolar arayın. 'Beyin ödülü' veya 'dopamin' gibi kavramları çağrıştıran daha soyut ama etkili görseller (örn. parlayan bir beyin görüntüsü, enerji akışını göster"
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği yeterince etkileyici değil ve ses efektleri eksik.",
+        "fix": "Daha gerilimli, merak uyandıran veya enerjik bir arka plan müziği seçin. Yazıların ekrana gelmesi veya önemli bir bilginin vurgulanması anında hafif ses efektleri (whoosh, pop) ekleyin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Sunulan bilginin 'şaşırtıcılık' veya 'derinlik' seviyesi referans videoya kıyasla daha düşük kalıyor.",
+        "fix": "Senaryoyu yazarken, bilginin neden şaşırtıcı olduğunu veya ne gibi bir 'gizemi' çözdüğünü daha fazla vurgulayın. Örneğin, 'Bu basit tepkinin arkasında yatan inanılmaz mekanizma...' gibi ifadeler kullanın."
+      }
+    ],
+    "strengths": [
+      "Net ve anlaşılır bir soruyla başlıyor (kanca).",
+      "Bilgi akışı mantıklı ve tutarlı.",
+      "Ekrandaki yazılar okunabilir büyüklükte."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
