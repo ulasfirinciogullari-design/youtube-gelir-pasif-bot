@@ -1,24 +1,24 @@
 {
- "started": "2026-10-18T14:32:27+00:00",
+ "started": "2026-10-18T15:02:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 5,
+ "threads": 6,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgzuMTygOOhUwz2nxON4AaABAg",
-   "video": "pJPCpis147c",
-   "comment": "Yaşayamazdık ki...😔",
-   "reply": "Kesinlikle haklısın, Jüpiter'in devasa gelgit kuvvetleri ve ölümcül radyasyonu Dünya'da yaşamı imkânsız kılardı.\n— Profesör Pi 🔭",
+   "id": "Ugw40g-2w6PGz-y_ypp4AaABAg",
+   "video": "f6WyXXJWASs",
+   "comment": "Ya denizler yok olsaydı",
+   "reply": "Oksijenimizin yarısından fazlasını denizlerdeki mikroskobik canlılar üretir; sular yok olsaydı nefes bile alamazdık. Bu konuyu hemen listemize ekledik.\n— Profesör Pi 🔭",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T14:32:37+00:00"
+ "finished": "2026-10-18T15:02:46+00:00"
 }
