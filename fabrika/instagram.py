@@ -243,6 +243,11 @@ def _ts(s):
         return time.time()
 
 
+def _who(name):
+    """The branch is public: people are kept as a short hash, enough to count replies per person."""
+    return hashlib.sha256(str(name).encode()).hexdigest()[:12]
+
+
 def _seen(kind, key, mark):
     """With the watcher's CACHE: True when this media's comment count or this conversation's update time is
     what we last fully handled."""
@@ -364,7 +369,8 @@ def cevap(state, report, dry):
     fresh.sort(key=lambda c: (c["kind"] != "dm", -c["at"]))  # DMs first: their window closes
     batch, later = [], 0
     for c in fresh:
-        if per_person.get(c["author"], 0) >= PER_PERSON:
+        who = _who(c["author"])
+        if per_person.get(who, 0) >= PER_PERSON:
             if not dry:
                 done[c["id"]] = [now, "s", f"kişi başı günlük {PER_PERSON} cevap doldu"]
             continue
@@ -372,7 +378,7 @@ def cevap(state, report, dry):
             later += 1
             continue
         batch.append(c)
-        per_person[c["author"]] = per_person.get(c["author"], 0) + 1
+        per_person[who] = per_person.get(who, 0) + 1
     report.update({"new": len(fresh), "quiet": len(quiet), "room": room, "sent_last_24h": sent, "later": later})
     if batch:
         _answer(state, report, dry, tok, box, batch, now)
@@ -391,7 +397,9 @@ def _answer(state, report, dry, tok, box, batch, now):
     out = report["items"] = []
     for c in batch:
         v = verdicts.get(c["id"], {})
-        item = {"id": c["id"], "kind": c["kind"], "author": c["author"], "text": c["text"]}
+        # a DM is private and this report lands on the public branch: only comments keep their text
+        item = {"id": c["id"], "kind": c["kind"], "author": _who(c["author"]),
+                "text": c["text"] if c["kind"] != "dm" else "(özel mesaj)"}
         out.append(item)
         if v.get("action") != "reply":
             item["result"] = f"atlandı: {v.get('why') or 'karar yok'}"
@@ -404,7 +412,7 @@ def _answer(state, report, dry, tok, box, batch, now):
             if not dry:
                 done[c["id"]] = [now, "s", item["result"]]
             continue
-        item["reply"] = reply
+        item["reply"] = reply if c["kind"] != "dm" else "(özel mesaj)"  # an answer to a DM says what it asked
         topic = None if dry or v.get("planned") else yorum.add_topic(state, v.get("topic"), planned)
         if topic:
             item["topic"] = topic["q"]
@@ -417,9 +425,10 @@ def _answer(state, report, dry, tok, box, batch, now):
                 call(tok, "POST", "me/messages", json={"recipient": {"id": c["to"]}, "message": {"text": reply}})
             else:
                 call(tok, "POST", f"{c['id']}/replies", data={"message": reply})
-            done[c["id"]] = [now, "r", reply[:80], c["author"]]
+            done[c["id"]] = [now, "r", reply[:80] if c["kind"] != "dm" else "", _who(c["author"])]
             item["result"] = "gönderildi"
-            box["son"] = (box["son"] + [{"at": now, "kind": c["kind"], "text": c["text"][:120], "reply": reply}])[-40:]
+            box["son"] = (box["son"] + [{"at": now, "kind": c["kind"], "text": item["text"][:120],
+                                         "reply": reply if c["kind"] != "dm" else "(özel mesaj)"}])[-40:]
         except IGError as e:
             item["result"] = f"gönderilemedi: {e}"[:300]
             if rate_limited(e):
