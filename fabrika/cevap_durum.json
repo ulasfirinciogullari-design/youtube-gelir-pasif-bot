@@ -20,6 +20,11 @@
     1792163225,
     "r",
     "UgzmGQYg_zUuO-J7ZfJ4AaABAg.Ac1GrfGmF13Ac1KB4w_bYO"
+   ],
+   "UgzuMTygOOhUwz2nxON4AaABAg": [
+    1792333958,
+    "r",
+    "UgzuMTygOOhUwz2nxON4AaABAg.Ac6PjnGfA0jAc6PpZOpGEH"
    ]
   },
   "son": [
@@ -34,6 +39,12 @@
     "video": "yHElVXfvdsw",
     "comment": "Eğer Güneş yerine aynı kütlede olan bir kara delik koysaydı ne olur",
     "reply": "Kütle aynı kaldığı için Dünya içine çekilmez, aynı yörüngede dönmeye devam ederdi ama hızla donardık. Bu konuyu video listemize aldım.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792333958,
+    "video": "pJPCpis147c",
+    "comment": "Yaşayamazdık ki...😔",
+    "reply": "Kesinlikle haklısın, Jüpiter'in devasa gelgit kuvvetleri ve ölümcül radyasyonu Dünya'da yaşamı imkânsız kılardı.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -81,10 +92,10 @@
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 148,
+  "tur": 156,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-18T14:24:29+00:00"
+  "son_tur": "2026-10-18T14:32:37+00:00"
  }
 }
