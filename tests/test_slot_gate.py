@@ -215,7 +215,11 @@ def test_workflow_matches_the_gate(monkeypatch):
     watch = names.index("🫀 Nöbeti Kontrol Et")
     assert watch == gate + 1
     assert "continue-on-error: true" in steps[watch] and "scripts/slot_heartbeat.py --ensure" in steps[watch]
-    for name, block in zip(names[watch + 1:], steps[watch + 1:]):
+    # The Instagram watch restart is the same kind of step.
+    instagram = watch + 1
+    assert names[instagram] == "📸 Instagram Nöbetini Kontrol Et"
+    assert "continue-on-error: true" in steps[instagram] and "scripts/instagram_watch.py --ensure" in steps[instagram]
+    for name, block in zip(names[instagram + 1:], steps[instagram + 1:]):
         assert "if: " in block and "steps.gate.outputs.go == 'true'" in block, name
 
     cron = re.search(r"cron: '([^']+)'", workflow).group(1).split()
