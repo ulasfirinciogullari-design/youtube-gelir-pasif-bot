@@ -9,16 +9,25 @@
   "son": []
  },
  "slots": {
-  "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok"
+  "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok",
+  "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/"
  },
  "nobet": {
   "basladi": "2026-10-18T15:44:16+00:00",
   "run": "39141810621",
-  "tur": 124,
+  "tur": 137,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-10-18T17:47:17+00:00"
+  "son_tur": "2026-10-18T18:01:06+00:00"
  },
- "posted": {}
+ "posted": {
+  "CGjHVJfvL3A": {
+   "media_id": "17989746480063711",
+   "url": "https://www.instagram.com/reel/DepRvq8kSjj/",
+   "at": 1792346467,
+   "title": "Hıçkırık neden kendi kendine geçer? 🤯",
+   "topic_id": "mk-018"
+  }
+ }
 }
