@@ -581,6 +581,12 @@
    "url": "https://youtube.com/shorts/0iq7G5-5dds",
    "duration": 25.8,
    "chars": 369
+  },
+  {
+   "finished": "2026-10-18T08:09:13+00:00",
+   "mod": "igbolum",
+   "title": "Güneş Gerçekte Ne Kadar Büyük?",
+   "chars": 556
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -605,6 +611,11 @@
     "media_id": "18118920994910944",
     "url": "https://www.instagram.com/reel/DeoAmM2k_Qw/",
     "at": 1792303925.9458148
+   },
+   "n001": {
+    "media_id": "18115594412113261",
+    "url": "https://www.instagram.com/reel/DeoOAyfDO3E/",
+    "at": 1792310953.616937
    }
   },
   "eski": [

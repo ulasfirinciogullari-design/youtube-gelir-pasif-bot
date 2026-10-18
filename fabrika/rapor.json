@@ -1,90 +1,17 @@
 {
- "started": "2026-10-18T06:06:53+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "9",
-  "videos": "13"
- },
- "credits_before": [
-  3757,
-  613902
- ],
- "topic": {
-  "id": "y006",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'daki bütün buzlar erise ne olurdu?"
- },
- "attempts": 1,
- "model": "gemini-3.8-flash",
- "fact_check": {
-  "ok": false,
-  "fixes": [
-   {
-    "line": 2,
-    "why": "Dünya'daki tüm buzulların erimesi binlerce yıl (en az 5.000 yıl) sürer; bu süreç 'anında' gerçekleşmez."
-   },
-   {
-    "line": 4,
-    "why": "Buzulların erimesindeki asıl tehlike antik virüsler değil, sera gazı salınımı ve deniz seviyesindeki devasa artıştır; ayrıca permafrost virüslerinin insanlarda salgın yapma riski kesin değil, spekülatiftir."
-   }
-  ]
- },
- "chunks": 0,
- "grounded": true,
- "chars": 369,
- "duration": 25.8,
- "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
- "url": "https://youtube.com/shorts/0iq7G5-5dds",
+ "started": "2026-10-18T08:07:47+00:00",
+ "mod": "igbolum",
+ "gate": "instagram yedek: n001",
+ "title": "Güneş Gerçekte Ne Kadar Büyük?",
+ "chars": 556,
  "instagram": {
   "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18118920994910944",
-  "url": "https://www.instagram.com/reel/DeoAmM2k_Qw/",
-  "at": 1792303925.9458148
+  "media_id": "18115594412113261",
+  "url": "https://www.instagram.com/reel/DeoOAyfDO3E/",
+  "at": 1792310953.616937
  },
- "recent_status": {
-  "g002": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1",
-   "reason": null
-  },
-  "y004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "94",
-   "reason": null
-  },
-  "y005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "13",
-   "reason": null
-  },
-  "n003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "253",
-   "reason": null
-  },
-  "y006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  3847,
-  613902
- ],
  "log": [
-  "Konu: y006 Dünya'daki bütün buzlar erise ne olurdu? (Ya Olsaydı?)",
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash",
-  "Instagram: https://www.instagram.com/reel/DeoAmM2k_Qw/"
+  "Instagram: https://www.instagram.com/reel/DeoOAyfDO3E/"
  ],
- "finished": "2026-10-18T06:12:07+00:00"
+ "finished": "2026-10-18T08:09:13+00:00"
 }
