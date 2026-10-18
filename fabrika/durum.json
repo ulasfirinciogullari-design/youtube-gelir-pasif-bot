@@ -480,6 +480,30 @@
    "series": "Ya Olsaydı?",
    "q": "Güneş'in yerinde bir kara delik olsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0003",
+   "series": "Ya Olsaydı?",
+   "q": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
+   "oneri": true
+  },
+  {
+   "id": "o0004",
+   "series": "Ya Olsaydı?",
+   "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
+   "oneri": true
+  },
+  {
+   "id": "o0005",
+   "series": "1 Gün Boyunca",
+   "q": "Kalbin 1 günde kaç kez atar?",
+   "oneri": true
+  },
+  {
+   "id": "o0006",
+   "series": "Ya Olsaydı?",
+   "q": "Jüpiter yok olsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "fail_streak": 0,
@@ -671,6 +695,12 @@
    "mod": "igbolum",
    "title": "En Büyük Yıldız Ne Kadar Büyük?",
    "chars": 364
+  },
+  {
+   "finished": "2026-10-18T17:09:01+00:00",
+   "mod": "igbolum",
+   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
+   "chars": 574
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -715,6 +745,11 @@
     "media_id": "18182217376382494",
     "url": "https://www.instagram.com/reel/DeowOfvDGk5/",
     "at": 1792328890.9028757
+   },
+   "n002": {
+    "media_id": "18171009394460557",
+    "url": "https://www.instagram.com/reel/DepLvNOiKIx/",
+    "at": 1792343341.0074987
    }
   },
   "eski": [
