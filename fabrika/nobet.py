@@ -161,7 +161,9 @@ class Watch:
             self.mine[cevapdurum.CEVAP] = cevapdurum.dump(state, nobet=dict(self.beat))
             for path, rep in reports.items():
                 self.mine[path] = json.dumps(rep, ensure_ascii=False, indent=1)
-            msg = f"Nöbet: {sent} cevap" if sent else ("Nöbet: hata" if reports else "Nöbet: nabız")
+            failed = any(r.get("error") for r in reports.values())
+            msg = (f"Nöbet: {sent} cevap" if sent else "Nöbet: hata" if failed
+                   else "Nöbet: atlandı (spam/anlamsız)" if reports else "Nöbet: nabız")
             if publish(self.mine, msg):
                 self.mine = {}
             if sent or reports:
