@@ -500,20 +500,56 @@ def kontrol(state, report):
             unhost(rel, tag)
 
 
+def dm_testi(state, report):
+    """Why are DM replies refused? Shows the app's webhook subscription (subscribing when missing), then sends one
+    short greeting to the newest conversation whose last message is the other person's, within the window."""
+    tok = token(report)
+    if not tok:
+        report["skipped"] = "YA_IG_TOKEN yok"
+        return
+    user = me(tok, state)
+    mine = {str(user.get("user_id")), user["username"]}
+    for step, method, kw in (("abonelik", "GET", {}),
+                             ("abone_ol", "POST", {"params": {"subscribed_fields": "messages,comments"}}),
+                             ("abonelik_sonra", "GET", {})):
+        try:
+            report[step] = call(tok, method, "me/subscribed_apps", **kw)
+        except IGError as e:
+            report[step] = f"hata: {e}"[:400]
+    convs = call(tok, "GET", "me/conversations", params={"platform": "instagram", "fields": "id,updated_time"})
+    for cv in convs.get("data", []):
+        msgs = call(tok, "GET", cv["id"], params={"fields": "messages.limit(1){id,from,created_time}"}) \
+            .get("messages", {}).get("data", [])
+        frm = (msgs[0].get("from") or {}) if msgs else {}
+        if not msgs or {frm.get("id"), frm.get("username")} & mine or time.time() - _ts(msgs[0].get("created_time")) > DM_WINDOW:
+            continue
+        try:
+            call(tok, "POST", "me/messages", json={"recipient": {"id": frm.get("id")},
+                                                   "message": {"text": "Merhaba! Mesajın bize ulaştı 🤖\n— Bit 🤖"}})
+            report["dm_gonderim"] = "gönderildi"
+        except IGError as e:
+            report["dm_gonderim"] = f"hata: {e}"[:400]
+        return
+    report["dm_gonderim"] = "24 saat içinde cevap bekleyen mesaj yok"
+
+
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--kontrol", action="store_true")
     g.add_argument("--cevap", action="store_true")
     g.add_argument("--deneme", action="store_true")
+    g.add_argument("--dmtest", action="store_true")
     a = ap.parse_args()
-    replies = not a.kontrol
+    replies = not (a.kontrol or a.dmtest)
     state = cevapdurum.load() if replies else yorum.load_state()
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "mod": "kontrol" if a.kontrol else "deneme" if a.deneme else "cevap"}
+              "mod": "kontrol" if a.kontrol else "dmtest" if a.dmtest else "deneme" if a.deneme else "cevap"}
     try:
         if a.kontrol:
             kontrol(state, report)
+        elif a.dmtest:
+            dm_testi(state, report)
         else:
             cevap(state, report, a.deneme)
     except (Exception, SystemExit) as e:  # never stop the episode run that follows
@@ -523,7 +559,7 @@ def main():
         cevapdurum.save(state)  # also after an error, so a sent reply is never sent twice
     elif not replies:
         yorum.save_state(state)
-    if report.get("error") or report.get("items") or report.get("hesap") or a.deneme:
+    if report.get("error") or report.get("items") or report.get("hesap") or a.deneme or a.dmtest:
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     sent = sum(1 for i in report.get("items", []) if i.get("result") == "gönderildi")
