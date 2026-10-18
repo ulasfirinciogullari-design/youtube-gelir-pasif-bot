@@ -1,0 +1,61 @@
+name: Zirvenin Kanunu Instagram nöbeti
+
+# Answers Zirvenin Kanunu's Instagram comments and DMs within a minute and posts three Reels a day, each the Short
+# with the most YouTube views that is not on Instagram yet (scripts/instagram_watch.py, Ulaş asked on 2026-10-18).
+# One long job: after 5 h 40 min it starts its own successor, which waits in the concurrency group, and ends before
+# the 6 hour limit. Every Shorts run and the cron below restart it if the chain ever breaks. The repository is
+# public, so the waiting runner costs no Actions minutes.
+# Settings > Secrets and variables > Actions > Variables: ZK_IG_SAATLER = Reel hours in UTC (default "10,14,18" =
+# TR 13, 17, 21), ZK_IG_GUNLUK and ZK_IG_KISI = reply caps a day and per person (default 1000 and 20),
+# ZK_IG_KAPALI = 1 stops replies and Reels, ZK_IG_NOBET_KAPALI = 1 stops the watch.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */2 * * *'
+
+concurrency:
+  group: zk-instagram-nobet
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # channel-data/instagram.json, and the temporary release Instagram fetches a Reel from
+  actions: write   # download the Shorts' artifacts, start the next watch
+
+jobs:
+  nobet:
+    name: 📸 Instagram Nöbeti
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🧠 Kanal Hafızasını Getir
+        run: |
+          git fetch origin channel-data:refs/remotes/origin/channel-data
+          git worktree add -B channel-data channel-data origin/channel-data
+
+      - name: 🐍 Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📸 Yorumlara ve Mesajlara Cevap Ver, Reels Paylaş
+        env:
+          ZK_IG_TOKEN: ${{ secrets.ZK_IG_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          ZK_YORUM_MODEL: ${{ vars.ZK_YORUM_MODEL }}
+          ZK_IG_SAATLER: ${{ vars.ZK_IG_SAATLER }}
+          ZK_IG_GUNLUK: ${{ vars.ZK_IG_GUNLUK }}
+          ZK_IG_KISI: ${{ vars.ZK_IG_KISI }}
+          ZK_IG_KAPALI: ${{ vars.ZK_IG_KAPALI }}
+          ZK_IG_NOBET_KAPALI: ${{ vars.ZK_IG_NOBET_KAPALI }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          pip install -q cryptography
+          python scripts/instagram_watch.py --data channel-data --out output/instagram
