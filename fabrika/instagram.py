@@ -341,6 +341,21 @@ def judge(batch, vids, planned):
     return {str(i.get("id")): i for i in items if isinstance(i, dict)}
 
 
+def subscribe(tok, report):
+    """Instagram refuses DM replies ("outside of allowed window") unless the account is subscribed to the app's
+    message events, even within the 24 hours. Checked once per watcher run (every run without the cache)."""
+    if CACHE is not None and CACHE.get("abone"):
+        return
+    try:
+        if not call(tok, "GET", "me/subscribed_apps").get("data"):
+            call(tok, "POST", "me/subscribed_apps", params={"subscribed_fields": "messages,comments"})
+            log("Instagram: hesap mesaj bildirimlerine abone edildi")
+        if CACHE is not None:
+            CACHE["abone"] = True
+    except IGError as e:
+        report.setdefault("warnings", []).append(f"abonelik: {e}"[:300])
+
+
 def cevap(state, report, dry):
     if os.environ.get("YO_IG_KAPALI"):
         report["skipped"] = "YO_IG_KAPALI açık"
@@ -350,6 +365,7 @@ def cevap(state, report, dry):
         report["skipped"] = "YA_IG_TOKEN yok"
         return
     user = me(tok, state)
+    subscribe(tok, report)
     box = state.setdefault("instagram", {}).setdefault("cevaplar", {"done": {}, "son": []})
     done = box["done"]
     now = time.time()
