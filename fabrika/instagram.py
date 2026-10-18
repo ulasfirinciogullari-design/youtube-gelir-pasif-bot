@@ -243,6 +243,9 @@ def _ts(s):
         return time.time()
 
 
+CACHE_TTL = 600
+
+
 def _who(name):
     """The branch is public: people are kept as a short hash, enough to count replies per person."""
     return hashlib.sha256(str(name).encode()).hexdigest()[:12]
@@ -250,8 +253,9 @@ def _who(name):
 
 def _seen(kind, key, mark):
     """With the watcher's CACHE: True when this media's comment count or this conversation's update time is
-    what we last fully handled."""
-    return CACHE is not None and CACHE.setdefault(kind, {}).get(key) == mark
+    what we last fully handled, less than CACHE_TTL ago (Instagram can count a comment before it hands it out)."""
+    hit = CACHE.setdefault(kind, {}).get(key) if CACHE is not None else None
+    return bool(hit) and hit[0] == mark and time.time() - hit[1] < CACHE_TTL
 
 
 def fresh_comments(tok, user, done, pending):
@@ -385,7 +389,7 @@ def cevap(state, report, dry):
     if not dry and CACHE is not None:  # remember what is fully handled, so the next minute skips it
         for (kind, key), (mark, ids) in pending.items():
             if all(i in box["done"] for i in ids):
-                CACHE.setdefault(kind, {})[key] = mark
+                CACHE.setdefault(kind, {})[key] = (mark, time.time())
     cut = now - 60 * 86400
     box["done"] = {k: v for k, v in box["done"].items() if v[0] > cut}
 
