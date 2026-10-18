@@ -1,0 +1,303 @@
+{
+  "topic_id": "mk-027",
+  "topic": "Gördüğümüz rüyaların çoğunu neden hatırlamayız?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Rüyalarını Neden Hatırlamıyorsun? 😴",
+  "hook_text": "RÜYALAR NEDEN UNUTULUR?",
+  "description": "Rüyalarımızı neden hatırlamıyoruz?\n\nHer gece 4-5 farklı rüya görmemize rağmen çoğunu hatırlamayız. Çünkü rüyalar, beynin anıları bilinçli hafızaya kaydetme mekanizması tam aktif değilken oluşur ve bu anılar bilinçli hafızaya kaydedilmez. Uyanır uyanmaz dikkatimiz dağılır ve rüyalar hızla silinir.\n\nSence rüyaların kaçta kaçını hatırlıyoruz: %10'dan az mı, %50'den çok mu?\n\n#rüyalar #beyin #hafıza #uyku #shorts #bilim #merak #keşfet\n\nSeri: mk-027",
+  "tags": [
+    "rüya hatırlama",
+    "rüya unutma",
+    "rüyalar neden hatırlanmaz",
+    "rüyaları neden unuturuz",
+    "rüyaları nasıl hatırlarız",
+    "rüyaları hatırlamak",
+    "rüya görmek",
+    "beyin hafızası",
+    "bilinçli hafıza",
+    "uyku rüya",
+    "merak bilgileri",
+    "ilginç bilgiler",
+    "bilimsel gerçekler",
+    "rüya",
+    "beyin",
+    "hafıza",
+    "uyku",
+    "psikoloji",
+    "bilinçaltı",
+    "dreams",
+    "dream memory",
+    "why forget dreams",
+    "brain memory",
+    "rüyaların sırları",
+    "rüyalar",
+    "REM uykusu",
+    "unutmak",
+    "bilim",
+    "shorts",
+    "merak",
+    "ruya hatirlama",
+    "ruya unutma",
+    "ruyalari neden unuturuz"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Can't You Remember Your Dreams? 😴",
+      "description": "Have you ever wondered why we often forget our dreams?\n\nAlthough we dream 4-5 different dreams every night, most of them fade away quickly. This happens because dreams form when the brain's mechanism for storing memories into conscious recall isn't fully active. As soon as we wake up, our attention shifts, and these memories rapidly disappear.\n\nWhat percentage of our dreams do you think we remember: less than 10% or more than 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "es": {
+      "title": "¿Por qué no recuerdas tus sueños? 😴",
+      "description": "¿Te has preguntado alguna vez por qué olvidamos la mayoría de nuestros sueños?\n\nAunque soñamos 4-5 sueños diferentes cada noche, la mayoría no se recuerdan. Esto ocurre porque los sueños se forman cuando el mecanismo del cerebro para guardar recuerdos en la memoria consciente no está completamente activo. Al despertar, nuestra atención se desvía y los sueños se desvanecen rápidamente.\n\n¿Crees que recordamos menos del 10% o más del 50% de nuestros sueños?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "pt": {
+      "title": "Por que você não se lembra dos seus sonhos? 😴",
+      "description": "Você já se perguntou por que esquecemos a maioria dos nossos sonhos?\n\nMesmo sonhando 4-5 sonhos diferentes todas as noites, a maioria deles não é lembrada. Isso acontece porque os sonhos se formam quando o mecanismo do cérebro para armazenar memórias na consciência não está totalmente ativo. Assim que acordamos, nossa atenção se dispersa e os sonhos desaparecem rapidamente.\n\nVocê acha que lembramos menos de 10% ou mais de 50% dos nossos sonhos?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "de": {
+      "title": "Warum erinnerst du dich nicht an deine Träume? 😴",
+      "description": "Hast du dich jemals gefragt, warum wir die meisten unserer Träume vergessen?\n\nObwohl wir jede Nacht 4-5 verschiedene Träume haben, erinnern wir uns an die meisten nicht. Das liegt daran, dass Träume entstehen, wenn der Mechanismus des Gehirns zur Speicherung von Erinnerungen im bewussten Gedächtnis nicht vollständig aktiv ist. Sobald wir aufwachen, lenkt sich unsere Aufmerksamkeit ab und die Träume verschwinden schnell.\n\nGlaubst du, wir erinnern uns an weniger als 10% oder mehr als 50% unserer Träume?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "fr": {
+      "title": "Pourquoi n'arrivez-vous pas à vous souvenir de vos rêves ? 😴",
+      "description": "Vous êtes-vous déjà demandé pourquoi nous oublions la plupart de nos rêves?\n\nBien que nous fassions 4 à 5 rêves différents chaque nuit, nous ne nous souvenons pas de la plupart d'entre eux. Cela se produit parce que les rêves se forment lorsque le mécanisme du cerveau pour stocker les souvenirs dans la mémoire consciente n'est pas entièrement actif. Dès que nous nous réveillons, notre attention est distraite et les rêves s'effacent rapidement.\n\nSelon vous, de combien de nos rêves nous souvenons-nous : moins de 10% ou plus de 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "it": {
+      "title": "Perché non ricordi i tuoi sogni? 😴",
+      "description": "Ti sei mai chiesto perché dimentichiamo la maggior parte dei nostri sogni?\n\nAnche se facciamo 4-5 sogni diversi ogni notte, la maggior parte non viene ricordata. Questo accade perché i sogni si formano quando il meccanismo del cervello per immagazzinare i ricordi nella memoria cosciente non è completamente attivo. Appena ci svegliamo, la nostra attenzione si distrae e i sogni svaniscono rapidamente.\n\nSecondo te, ricordiamo meno del 10% o più del 50% dei nostri sogni?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "ru": {
+      "title": "Почему вы не помните свои сны? 😴",
+      "description": "Задумывались ли вы когда-нибудь, почему мы часто забываем свои сны?\n\nХотя каждую ночь мы видим 4-5 разных снов, большинство из них не запоминаются. Это происходит потому, что сны формируются, когда механизм мозга для сохранения воспоминаний в сознательной памяти не полностью активен. Как только мы просыпаемся, наше внимание отвлекается, и сны быстро исчезают.\n\nКак вы думаете, сколько процентов своих снов мы помним: менее 10% или более 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "ar": {
+      "title": "لماذا لا تتذكر أحلامك؟ 😴",
+      "description": "هل تساءلت يوماً لماذا ننسى معظم أحلامنا؟\n\nعلى الرغم من أننا نرى 4-5 أحلام مختلفة كل ليلة، إلا أننا لا نتذكر معظمها. يحدث هذا لأن الأحلام تتشكل عندما لا تكون آلية الدماغ لتخزين الذكريات في الذاكرة الواعية نشطة بالكامل. بمجرد أن نستيقظ، يتشتت انتباهنا وتتلاشى الأحلام بسرعة.\n\nبرأيك، كم نسبة أحلامنا التي نتذكرها: أقل من 10% أم أكثر من 50%؟\n\n#shorts\n\nSeri: mk-027"
+    },
+    "hi": {
+      "title": "आप अपने सपनों को क्यों याद नहीं रख पाते? 😴",
+      "description": "क्या आपने कभी सोचा है कि हम अपने ज़्यादातर सपने क्यों भूल जाते हैं?\n\nभले ही हम हर रात 4-5 अलग-अलग सपने देखते हैं, लेकिन उनमें से ज़्यादातर याद नहीं रहते। ऐसा इसलिए होता है क्योंकि सपने तब बनते हैं जब दिमाग की चेतन स्मृति में यादें संग्रहीत करने की प्रक्रिया पूरी तरह से सक्रिय नहीं होती है। जैसे ही हम जागते हैं, हमारा ध्यान भटक जाता है और सपने तेज़ी से मिट जाते हैं।\n\nआपके अनुसार, हम अपने कितने सपनों को याद रखते हैं: 10% से कम या 50% से ज़्यादा?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "id": {
+      "title": "Mengapa Kamu Tidak Mengingat Mimpimu? 😴",
+      "description": "Pernahkah kamu bertanya-tanya mengapa kita sering melupakan mimpi kita?\n\nMeskipun kita bermimpi 4-5 mimpi berbeda setiap malam, sebagian besar tidak kita ingat. Ini terjadi karena mimpi terbentuk saat mekanisme otak untuk menyimpan ingatan ke memori sadar tidak sepenuhnya aktif. Begitu kita bangun, perhatian kita teralih, dan mimpi-mimpi itu cepat menghilang.\n\nMenurutmu, berapa persen mimpi yang kita ingat: kurang dari 10% atau lebih dari 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "ja": {
+      "title": "なぜあなたは夢を覚えていないのですか？ 😴",
+      "description": "なぜ私たちは見た夢のほとんどを忘れてしまうのでしょうか？\n\n私たちは毎晩4〜5種類の夢を見ていますが、そのほとんどを覚えていません。これは、夢が、脳が記憶を意識的な記憶に保存するメカニズムが完全に活動していないときに形成されるためです。目覚めるとすぐに注意が逸れ、夢は急速に消えてしまいます。\n\nあなたは自分の夢の何パーセントを覚えていると思いますか：10％未満ですか、それとも50％以上ですか？\n\n#shorts\n\nSeri: mk-027"
+    },
+    "ko": {
+      "title": "왜 꿈을 기억하지 못할까요? 😴",
+      "description": "우리는 왜 대부분의 꿈을 잊어버리는 걸까요?\n\n매일 밤 4-5가지의 다른 꿈을 꾸지만, 우리는 대부분을 기억하지 못합니다. 이는 뇌가 의식적인 기억에 정보를 저장하는 메커니즘이 완전히 활성화되지 않은 상태에서 꿈이 형성되기 때문입니다. 잠에서 깨자마자 주의가 분산되고 꿈은 빠르게 사라집니다.\n\n당신은 꿈의 몇 퍼센트를 기억한다고 생각하나요: 10% 미만인가요, 아니면 50% 이상인가요?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "pl": {
+      "title": "Dlaczego nie pamiętasz swoich snów? 😴",
+      "description": "Zastanawiałeś się kiedyś, dlaczego często zapominamy nasze sny?\n\nChociaż każdej nocy śnimy 4-5 różnych snów, większości z nich nie pamiętamy. Dzieje się tak, ponieważ sny powstają, gdy mechanizm mózgu do zapisywania wspomnień w świadomej pamięci nie jest w pełni aktywny. Zaraz po przebudzeniu nasza uwaga zostaje rozproszona, a sny szybko znikają.\n\nIle procent naszych snów, Twoim zdaniem, pamiętamy: mniej niż 10% czy więcej niż 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "nl": {
+      "title": "Waarom herinner je je dromen niet? 😴",
+      "description": "Heb je je ooit afgevraagd waarom we de meeste van onze dromen vergeten?\n\nHoewel we elke nacht 4-5 verschillende dromen hebben, herinneren we de meeste niet. Dit komt omdat dromen ontstaan wanneer het mechanisme van de hersenen om herinneringen in het bewuste geheugen op te slaan niet volledig actief is. Zodra we wakker worden, wordt onze aandacht afgeleid en verdwijnen de dromen snel.\n\nDenk je dat we minder dan 10% of meer dan 50% van onze dromen onthouden?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "uk": {
+      "title": "Чому ви не пам'ятаєте свої сни? 😴",
+      "description": "Чи замислювалися ви, чому ми часто забуваємо наші сни?\n\nХоча кожну ніч ми бачимо 4-5 різних снів, більшість з них не пам'ятаємо. Це відбувається тому, що сни формуються, коли механізм мозку для збереження спогадів у свідомій пам'яті не повністю активний. Як тільки ми прокидаємося, наша увага відволікається, і сни швидко зникають.\n\nЯк ви думаєте, скільки відсотків своїх снів ми пам'ятаємо: менше 10% чи більше 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "vi": {
+      "title": "Tại sao bạn không nhớ những giấc mơ của mình? 😴",
+      "description": "Bạn đã bao giờ tự hỏi tại sao chúng ta thường quên những giấc mơ của mình chưa?\n\nMặc dù chúng ta mơ 4-5 giấc mơ khác nhau mỗi đêm, nhưng hầu hết chúng ta không nhớ được. Điều này xảy ra vì giấc mơ hình thành khi cơ chế lưu trữ ký ức vào bộ nhớ có ý thức của não không hoàn toàn hoạt động. Ngay sau khi chúng ta thức dậy, sự chú ý của chúng ta bị phân tán và những giấc mơ nhanh chóng biến mất.\n\nBạn nghĩ chúng ta nhớ được bao nhiêu phần trăm giấc mơ của mình: ít hơn 10% hay hơn 50%?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "az": {
+      "title": "Yuxularınızı niyə xatırlamırsınız? 😴",
+      "description": "Heç düşündünüzmü, niyə yuxularımızın çoxunu unuduruq?\n\nHər gecə 4-5 fərqli yuxu görməyimizə baxmayaraq, çoxunu xatırlamırıq. Çünki yuxular, beynin xatirələri şüurlu yaddaşa yazma mexanizmi tam aktiv olmadığı zaman yaranır. Oyandıqdan dərhal sonra diqqətimiz dağılır və yuxular sürətlə silinir.\n\nSizcə, yuxuların neçə faizini xatırlayırıq: 10%-dən azmı, yoxsa 50%-dən çoxmu?\n\n#shorts\n\nSeri: mk-027"
+    },
+    "ro": {
+      "title": "De ce nu-ți amintești visele? 😴",
+      "description": "Te-ai întrebat vreodată de ce uităm majoritatea viselor noastre?\n\nDeși visăm 4-5 vise diferite în fiecare noapte, nu ne amintim majoritatea lor. Acest lucru se întâmplă deoarece visele se formează atunci când mecanismul creierului de stocare a amintirilor în memoria conștientă nu este pe deplin activ. Imediat ce ne trezim, atenția noastră este distrasă, iar visele dispar rapid.\n\nCrezi că ne amintim mai puțin de 10% sau mai mult de 50% din visele noastre?\n\n#shorts\n\nSeri: mk-027"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence rüyaların kaçta kaçını hatırlıyoruz: %10'dan az mı, %50'den çok mu?",
+  "scenes": [
+    {
+      "text": "Bu insanlar her gece 4-5 farklı rüya görüyor.",
+      "visual": "People sleeping peacefully in their beds.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 15,
+          "kare": 1
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 30,
+          "kare": 2
+        }
+      ],
+      "callout": "4-5 RÜYA"
+    },
+    {
+      "text": "Ama sabah uyandığında çoğunu hatırlamıyorlar.",
+      "visual": "A person waking up, looking confused or with a blank expression.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 3
+        },
+        {
+          "n": 26,
+          "kare": 1
+        },
+        {
+          "n": 4,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Çünkü rüyalar, beynin anıları bilinçli hafızaya kaydetme mekanizması tam aktif değilken oluşur.",
+      "visual": "Close-up of a person sleeping deeply.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 36,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Gördüğümüz bu anılar, bilinçli hafızaya kaydedilmez.",
+      "visual": "A person dropping an object, symbolizing memory loss, followed by a blank stare.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 28,
+          "kare": 2
+        },
+        {
+          "n": 33,
+          "kare": 3
+        }
+      ],
+      "callout": "HAFIZA KAYDI YOK"
+    },
+    {
+      "text": "Uyanır uyanmaz dikkatimiz dağılır ve rüyalar hızla silinir.",
+      "visual": "A person waking up and immediately checking their phone or stretching, getting distracted.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 1
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Rüyalarını anımsamak için, uyanır uyanmaz not al!",
+      "visual": "A person waking up and stretching, becoming alert, ready to take action.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 38,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.72,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki metinler çok uzun ve okuması zor, izleyicinin dikkatini dağıtıyor. Referans videoda metinler kısa ve vurucuydu.",
+        "fix": "Metinleri kısa, anahtar kelimelerle sınırlı tut. Her ekranda en fazla 5-6 kelime kullan. Daha fazla bilgi için anlatıcı sesini kullan ve vurgulanacak kelimeleri farklı renk veya boyutta öne çıkar."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Soyut kavramları (hafıza mekanizması) açıklamak için görsel metaforlar veya basit grafikler eksik. Referans video, karmaşık fiziği animasyonlu grafiklerle açıklıyordu.",
+        "fix": "Pexels/Pixabay'den beyin aktivitesi, sinir hücreleri veya soyut bellek temsilleri gibi daha açıklayıcı stok görseller bulmaya çalış. Otomatik kurgu aracıyla mümkünse, basit şekillerle (oklar, daireler) metinleri destekleyen minimal grafikle"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve enerjisiz, izleyiciyi sıkabilir. Referans videodaki anlatıcı daha dinamik ve ilgi çekiciydi.",
+        "fix": "Yapay zeka sesinin hızını ve tonlamasını daha dinamik hale getirmeye çalış. Vurgulanacak kelimelerde tonu yükselt, önemli yerlerde hafifçe yavaşlat. Farklı AI ses seçeneklerini dene."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu hızı referansa göre daha yavaş, izleyicinin dikkatini sürekli tutmakta zorlanıyor.",
+        "fix": "Kısa ve hızlı kesimler kullan. Her görseli 1-2 saniyeden fazla tutma. Bilgi akışına uygun olarak görselleri daha sık değiştirerek dinamizmi artır."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitlilik az, çoğu sahne uyuyan veya uyanan insanlardan oluşuyor, bu da konuyu daha az ilgi çekici hale getiriyor.",
+        "fix": "Rüyalar, beyin aktivitesi, unutma gibi kavramları temsil eden daha çeşitli stok görseller bul. Örneğin, bulanıklaşan görüntüler, labirentler, boşluk hissi veren görseller kullan."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektleri eksikliği videonun dinamizmini azaltıyor. Referans videoda ince ses efektleri kullanılmıştı.",
+        "fix": "Geçişlere veya önemli bilgi noktalarına uygun, dikkat dağıtmayacak hafif ses efektleri ekle (örn. 'whoosh' geçişlerde, hafif bir 'ding' önemli bir bilgi verildiğinde)."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği yeterince enerjik değil ve konunun gizemini veya önemini vurgulamıyor.",
+        "fix": "Daha merak uyandırıcı, hafif gizemli veya bilimsel bir havaya sahip, ancak yine de enerjik bir fon müziği seç. Müziğin ses seviyesini anlatıcıyı bastırmayacak şekilde ayarla."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığı, uzun metinler ve görsel destek eksikliği nedeniyle tam olarak vurgulanamıyor.",
+        "fix": "Bilgiyi daha çarpıcı hale getirecek, kısa ve öz ifadeler kullan. Özellikle kanca ve sonuç cümlelerini daha akılda kalıcı hale getirerek bilginin etkisini artır."
+      }
+    ],
+    "strengths": [
+      "Başlangıç kancası (soru) ilgi çekici",
+      "Bilgi akışı mantıklı ve anlaşılır",
+      "Genel video süresi kısa ve öz"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
