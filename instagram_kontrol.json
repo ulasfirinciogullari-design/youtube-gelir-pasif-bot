@@ -1,5 +1,6 @@
 {
- "started": "2026-10-18T15:43:36+00:00",
+ "started": "2026-10-18T15:44:53+00:00",
+ "anahtar_bitis": "2026-12-17T15:18",
  "hesap": {
   "username": "zirveninkanunu",
   "account_type": "MEDIA_CREATOR",
@@ -18,9 +19,17 @@
   ]
  },
  "istatistik_izni": "var",
- "abonelik": [],
+ "abonelik": [
+  {
+   "id": "18090339833299871",
+   "subscribed_fields": [
+    "messages",
+    "comments"
+   ]
+  }
+ ],
  "dm_konusmalari": 0,
  "medya": [],
  "bekleyen_short": [],
- "finished": "2026-10-18T15:43:39+00:00"
+ "finished": "2026-10-18T15:44:55+00:00"
 }
