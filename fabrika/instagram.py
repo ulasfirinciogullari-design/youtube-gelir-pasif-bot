@@ -497,14 +497,22 @@ def kontrol(state, report):
     except IGError as e:
         report["dm_konusmalari"] = f"okunamadı: {e}"[:300]
     # what the reply watcher sees: Instagram's comment count per Reel against the comments the API hands out
-    media = call(tok, "GET", "me/media", params={"fields": "id,permalink,comments_count", "limit": 10}).get("data", [])
+    media = call(tok, "GET", "me/media", params={"fields": "id,permalink,comments_count,timestamp", "limit": 25}).get("data", [])
     report["medya"] = []
     for m in media:
-        row = {"link": m.get("permalink"), "yorum_sayisi": m.get("comments_count")}
+        row = {"link": m.get("permalink"), "zaman": m.get("timestamp"), "yorum_sayisi": m.get("comments_count")}
         try:
             row["api_yorum"] = len(call(tok, "GET", f"{m['id']}/comments", params={"fields": "id", "limit": 50}).get("data", []))
         except IGError as e:
             row["api_yorum"] = f"okunamadı: {e}"[:200]
+        # how each Reel did: one metric per call, so a metric Instagram retired does not hide the others
+        row["istatistik"] = {}
+        for metric in ("views", "reach", "saved", "shares", "likes", "ig_reels_avg_watch_time"):
+            try:
+                data = call(tok, "GET", f"{m['id']}/insights", params={"metric": metric}).get("data", [])
+                row["istatistik"][metric] = (data[0].get("values") or [{}])[0].get("value") if data else None
+            except IGError as e:
+                row["istatistik"][metric] = f"okunamadı: {e}"[:120]
         report["medya"].append(row)
     # does Instagram fetch a video from where paylas() puts it? A container that is never published shows nowhere;
     # once a Reel is out, that is proof enough

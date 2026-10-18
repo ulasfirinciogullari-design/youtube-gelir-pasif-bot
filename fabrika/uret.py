@@ -23,11 +23,13 @@ STATE = HERE / "durum.json"
 REPORT = HERE / "rapor.json"
 TOPICS = HERE / "konular.json"
 WORK = HERE / "_is"
-DAILY = int(os.environ.get("YO_GUNLUK") or 6)
-# Turkish prime time (UTC+3): 09, 12, 15, 18, 20, 22. Ulaş cut 24/day to 6/day on 2026-10-16 (views too thin).
-SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "6,9,12,15,17,19").split(",") if h.strip()]
-# Instagram backfill (2026-10-18): episodes from before Instagram go out as Reels one at a time, at hours between the slots
-IG_BACKFILL = [int(h) for h in (os.environ.get("YO_IG_YEDEK") or "8,14").split(",") if h.strip()]
+DAILY = int(os.environ.get("YO_GUNLUK") or 3)
+# YouTube, TR (UTC+3) 13, 17, 21: lunch, after school, prime time. 2026-10-18: Shorts uploaded hours apart got
+# 460-1,266 views, the hourly ones of 10-16 got 1-133, so 3 a day instead of 6; odd TR hours keep clear of
+# Zirvenin Kanunu's even-hour uploads.
+SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "10,14,18").split(",") if h.strip()]
+# Instagram, TR 12 and 20: two Reels a day, each the episode that did best on YouTube and has no Reel yet
+IG_HOURS = [int(h) for h in (os.environ.get("YO_IG_SAATLER") or "9,17").split(",") if h.strip()]
 GAP_MIN = 35
 MIN_CREDITS = 12000
 
@@ -51,11 +53,19 @@ def save(state):
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def ig_backlog(state):
-    """-> the oldest YouTube episode with no Reel yet, or None."""
+def views(e):
+    try:
+        return int((e.get("status") or {}).get("views") or 0)
+    except ValueError:
+        return 0
+
+
+def ig_pick(state):
+    """-> the YouTube episode with no Reel yet that has the most YouTube views (newest on a tie), or None."""
     posted = state.get("instagram", {}).get("posted", {})
-    return next((e["id"] for e in state.get("episodes", [])
-                 if e.get("id") not in posted and (HERE / "bolumler" / f"{e.get('id')}.json").exists()), None)
+    eps = [e for e in state.get("episodes", [])
+           if e.get("id") not in posted and (HERE / "bolumler" / f"{e.get('id')}.json").exists()]
+    return max(reversed(eps), key=views)["id"] if eps else None
 
 
 def gate(state, mod):
@@ -67,15 +77,15 @@ def gate(state, mod):
     eps = state.get("episodes", [])
     t = now()
     hour = t - t % 3600
-    if int(t // 3600 % 24) in IG_BACKFILL and os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
-        nxt = ig_backlog(state)
+    if int(t // 3600 % 24) in IG_HOURS and os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
+        nxt = ig_pick(state)
         if not nxt:
-            return False, "Instagram'a aktarılacak eski bölüm kalmadı"
+            return False, "Instagram'a aktarılacak bölüm kalmadı"
         if any(r.get("at", 0) >= hour for r in state.get("instagram", {}).get("posted", {}).values()):
             return False, "bu saatin Reels'i paylaşıldı"
         if state.get("fail_streak", 0) >= 6 and t - state.get("last_fail", 0) < 3 * 3600:
             return False, "üst üste 6 deneme başarısız oldu, 3 saat bekleniyor"
-        return True, f"instagram yedek: {nxt}"
+        return True, f"instagram: {nxt}"
     if int(t // 3600 % 24) not in SLOTS:
         return False, f"yayın saati değil (UTC {SLOTS})"
     if any(e.get("at", 0) >= hour for e in eps):
@@ -282,7 +292,7 @@ def produce(state, mod, report):
     state.setdefault("used", []).append(topic["id"])
     save(state)  # never lose an uploaded video's id
     report["url"] = rec["url"]
-    if os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
+    if os.environ.get("YO_IG_HEMEN") and os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
         try:  # Instagram is a bonus: a refusal there never fails the YouTube episode
             report["instagram"] = to_instagram(ep, WORK / "timings.json", mix, state)
         except Exception as e:  # noqa: BLE001
@@ -317,7 +327,7 @@ def main():
             with open(out, "a") as f:
                 f.write(f"go={'true' if go else 'false'}\n")
         return
-    if a.mod == "saatlik" and go and why.startswith("instagram yedek: "):
+    if a.mod == "saatlik" and go and why.startswith("instagram: "):
         a.mod, a.bolum = "igbolum", why.split(": ", 1)[1]
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "mod": a.mod, "gate": why}
     sys.path.insert(0, str(HERE))
