@@ -447,9 +447,20 @@ def kontrol(state, report):
         report["dm_konusmalari"] = len(convs.get("data", []))
     except IGError as e:
         report["dm_konusmalari"] = f"okunamadı: {e}"[:300]
-    # does Instagram fetch a video from where paylas() puts it? A container that is never published shows nowhere
+    # what the reply watcher sees: Instagram's comment count per Reel against the comments the API hands out
+    media = call(tok, "GET", "me/media", params={"fields": "id,permalink,comments_count", "limit": 10}).get("data", [])
+    report["medya"] = []
+    for m in media:
+        row = {"link": m.get("permalink"), "yorum_sayisi": m.get("comments_count")}
+        try:
+            row["api_yorum"] = len(call(tok, "GET", f"{m['id']}/comments", params={"fields": "id", "limit": 50}).get("data", []))
+        except IGError as e:
+            row["api_yorum"] = f"okunamadı: {e}"[:200]
+        report["medya"].append(row)
+    # does Instagram fetch a video from where paylas() puts it? A container that is never published shows nowhere;
+    # once a Reel is out, that is proof enough
     t = HERE / "deneme"
-    if (t / "video.mp4").exists() and (t / "kapak.jpg").exists():
+    if not state.get("instagram", {}).get("posted") and (t / "video.mp4").exists() and (t / "kapak.jpg").exists():
         tag = f"ig-test-{int(time.time())}"
         urls, rel = host({"video.mp4": (t / "video.mp4", "video/mp4"), "kapak.jpg": (t / "kapak.jpg", "image/jpeg")}, tag)
         try:
