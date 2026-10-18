@@ -60,6 +60,11 @@
     1792342650,
     "s",
     "gibberish"
+   ],
+   "UgyLxp6knZyB7vUl49N4AaABAg": [
+    1792343259,
+    "r",
+    "UgyLxp6knZyB7vUl49N4AaABAg.Ac6gAj2_ze-Ac6gZyQaQvq"
    ]
   },
   "son": [
@@ -110,6 +115,12 @@
     "video": "pJPCpis147c",
     "comment": "Jüpiter yok olsaydı yap",
     "reply": "Jüpiter devasa kütlesiyle Güneş Sistemi'nin koruyucu kalkanı gibidir; o olmasaydı Dünya çok daha fazla asteroit yağmuruna tutulabilirdi. Bu fikri video listemize ekledik!\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792343259,
+    "video": "bqFeef1QL08",
+    "comment": "dunyada 10 saniyede yer çekimi yok olsa ne olardı?❤❤❤😊",
+    "reply": "Yerçekimi kapandığı an Dünya'nın dönüş hızı yüzünden yüzeydeki her şey saatte 1600 km'ye varan hızla uzaya savrulurdu! Bu konuyu video listemize aldık.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -182,10 +193,10 @@
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 301,
+  "tur": 311,
   "ig_cevap": 0,
-  "yt_cevap": 6,
+  "yt_cevap": 7,
   "son_hata": null,
-  "son_tur": "2026-10-18T16:57:33+00:00"
+  "son_tur": "2026-10-18T17:07:39+00:00"
  }
 }
