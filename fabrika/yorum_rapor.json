@@ -1,25 +1,25 @@
 {
- "started": "2026-10-18T15:42:27+00:00",
+ "started": "2026-10-18T16:27:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 9,
+ "threads": 10,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 4,
+ "sent_last_24h": 5,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugxjp3bH6tnvqeeWo2d4AaABAg",
-   "video": "RLuGUU-xaYE",
-   "comment": "Bizim kalbimiz günde kaç kere atiyodur",
-   "reply": "Sağlıklı bir yetişkinin kalbi günde ortalama 100.000 kez atar. Bu konuyu yeni bir video için listemize aldık bile.\n— Profesör Pi 🔭",
-   "topic": "Kalbin 1 günde kaç kez atar?",
+   "id": "UgzgojEqqmsYhUkkVvh4AaABAg",
+   "video": "pJPCpis147c",
+   "comment": "Jüpiter yok olsaydı yap",
+   "reply": "Jüpiter devasa kütlesiyle Güneş Sistemi'nin koruyucu kalkanı gibidir; o olmasaydı Dünya çok daha fazla asteroit yağmuruna tutulabilirdi. Bu fikri video listemize ekledik!\n— Profesör Pi 🔭",
+   "topic": "Jüpiter yok olsaydı ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T15:43:01+00:00"
+ "finished": "2026-10-18T16:27:52+00:00"
 }

@@ -45,6 +45,11 @@
     1792338182,
     "r",
     "Ugxjp3bH6tnvqeeWo2d4AaABAg.Ac6XfazaoVeAc6Xt7lb6JG"
+   ],
+   "UgzgojEqqmsYhUkkVvh4AaABAg": [
+    1792340872,
+    "r",
+    "UgzgojEqqmsYhUkkVvh4AaABAg.Ac6bZTk48YEAc6c0_-9g_c"
    ]
   },
   "son": [
@@ -89,6 +94,12 @@
     "video": "RLuGUU-xaYE",
     "comment": "Bizim kalbimiz günde kaç kere atiyodur",
     "reply": "Sağlıklı bir yetişkinin kalbi günde ortalama 100.000 kez atar. Bu konuyu yeni bir video için listemize aldık bile.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792340872,
+    "video": "pJPCpis147c",
+    "comment": "Jüpiter yok olsaydı yap",
+    "reply": "Jüpiter devasa kütlesiyle Güneş Sistemi'nin koruyucu kalkanı gibidir; o olmasaydı Dünya çok daha fazla asteroit yağmuruna tutulabilirdi. Bu fikri video listemize ekledik!\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -150,15 +161,21 @@
    "series": "1 Gün Boyunca",
    "q": "Kalbin 1 günde kaç kez atar?",
    "oneri": true
+  },
+  {
+   "id": "o0006",
+   "series": "Ya Olsaydı?",
+   "q": "Jüpiter yok olsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 269,
+  "tur": 271,
   "ig_cevap": 0,
-  "yt_cevap": 5,
+  "yt_cevap": 6,
   "son_hata": null,
-  "son_tur": "2026-10-18T16:25:28+00:00"
+  "son_tur": "2026-10-18T16:27:52+00:00"
  }
 }
