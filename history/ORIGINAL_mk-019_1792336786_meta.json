@@ -1,0 +1,308 @@
+{
+  "topic_id": "mk-019",
+  "topic": "Köpekler konuştuğumuzda neden kafalarını yana eğer?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Köpekler Neden Kafalarını Yana Eğiyor? 🤔",
+  "hook_text": "KAFALARINI NEDEN EĞİYORLAR?",
+  "description": "Köpekler neden kafalarını yana eğer?\n\nKöpekler kulaklarını bağımsız ve geniş bir açıyla hareket ettirerek sesin kaynağını bulurlar. Kafalarını yana eğmeleri sayesinde yüzümüzü ve ağzımızı daha net görür, böylece söylediklerimizi daha iyi anlarlar. Bu onlar için hem işitsel hem de görsel bir ipucu.\n\nSence köpekler bizim gibi sadece işiterek mi anlar, yoksa yüz ifadelerimize de mi bakar: Sadece işiterek mi, Yüz ifadeleri de mi?\n\n#köpek #köpekler #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-019",
+  "tags": [
+    "köpek",
+    "köpekler",
+    "köpek neden kafasını eğer",
+    "köpek kafasını eğme",
+    "köpek davranışı",
+    "köpek iletişimi",
+    "köpekler neden",
+    "köpeklerin sırrı",
+    "köpeklerin işitmesi",
+    "köpeklerin görmesi",
+    "hayvan davranışı",
+    "hayvanlar alemi",
+    "evcil hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "meraklı bilgiler",
+    "hayvan dünyası",
+    "dog",
+    "dogs",
+    "dog behavior",
+    "hayvanlar",
+    "shorts",
+    "neden",
+    "kafa eğme",
+    "köpek davranışları",
+    "psikoloji",
+    "keşfet",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kopek",
+    "kopekler",
+    "kopek neden kafasini eger"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Dogs Tilt Their Heads? 🤔",
+      "description": "Ever noticed your dog tilting its head when you speak? This endearing behavior helps them understand us better. Dogs can move their ears to pinpoint sounds, but tilting their head offers a clearer view of our faces and mouths, combining both auditory and visual cues for better comprehension.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "es": {
+      "title": "¿Por qué los perros inclinan la cabeza? 🤔",
+      "description": "¿Te has preguntado por qué tu perro inclina la cabeza cuando le hablas? Este adorable gesto les ayuda a entendernos mejor. Los perros mueven sus orejas para localizar sonidos, pero al inclinar la cabeza, ven nuestras caras y bocas con mayor claridad, obteniendo pistas tanto auditivas como visuales.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "pt": {
+      "title": "Por que os cães inclinam a cabeça? 🤔",
+      "description": "Já reparou no seu cão inclinar a cabeça quando fala com ele? Este comportamento adorável ajuda-os a nos compreender melhor. Os cães movem as orelhas para localizar sons, mas inclinar a cabeça permite-lhes ver os nossos rostos e bocas mais claramente, usando pistas auditivas e visuais.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "de": {
+      "title": "Warum neigen Hunde ihren Kopf zur Seite? 🤔",
+      "description": "Hast du dich jemals gefragt, warum dein Hund den Kopf neigt, wenn du mit ihm sprichst? Dieses charmante Verhalten hilft ihnen, uns besser zu verstehen. Hunde können ihre Ohren bewegen, um Geräuschquellen zu lokalisieren, aber das Neigen des Kopfes ermöglicht ihnen einen klareren Blick auf unser Gesicht und unseren Mund, was ihnen auditive und visuelle Hinweise liefert.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "fr": {
+      "title": "Pourquoi les chiens penchent-ils la tête? 🤔",
+      "description": "Avez-vous déjà remarqué votre chien pencher la tête quand vous lui parlez? Ce comportement adorable les aide à mieux nous comprendre. Les chiens peuvent bouger leurs oreilles pour localiser les sons, mais pencher la tête leur offre une vue plus claire de nos visages et de nos bouches, combinant ainsi des indices auditifs et visuels.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "it": {
+      "title": "Perché i cani inclinano la testa? 🤔",
+      "description": "Ti sei mai chiesto perché il tuo cane inclina la testa quando gli parli? Questo adorabile comportamento li aiuta a capirci meglio. I cani possono muovere le orecchie per individuare i suoni, ma inclinando la testa ottengono una visione più chiara dei nostri volti e delle nostre bocche, combinando indizi uditivi e visivi.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "ru": {
+      "title": "Почему собаки наклоняют голову? 🤔",
+      "description": "Вы когда-нибудь замечали, как ваша собака наклоняет голову, когда вы с ней разговариваете? Такое милое поведение помогает им лучше нас понимать. Собаки могут двигать ушами, чтобы определить источник звука, но наклон головы позволяет им лучше видеть наши лица и рот, используя как слуховые, так и визуальные подсказки.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "ar": {
+      "title": "لماذا تميل الكلاب رؤوسها؟ 🤔",
+      "description": "هل تساءلت يومًا لماذا تميل كلابك رؤوسها عندما تتحدث معها؟ هذا السلوك المحبب يساعدها على فهمنا بشكل أفضل. تستطيع الكلاب تحريك آذانها لتحديد مصادر الصوت، لكن إمالة الرأس تمنحها رؤية أوضح لوجوهنا وأفواهنا، مما يجمع بين الإشارات السمعية والبصرية.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "hi": {
+      "title": "कुत्ते अपना सिर क्यों झुकाते हैं? 🤔",
+      "description": "क्या आपने कभी सोचा है कि जब आप अपने कुत्ते से बात करते हैं तो वह अपना सिर क्यों झुकाता है? यह प्यारा व्यवहार उन्हें हमें बेहतर समझने में मदद करता है। कुत्ते ध्वनियों का पता लगाने के लिए अपने कान हिला सकते हैं, लेकिन सिर झुकाने से उन्हें हमारे चेहरे और मुंह को अधिक स्पष्ट रूप से देखने में मदद मिलती है, जिससे उन्हें श्रवण और दृश्य दोनों संकेत मिलते हैं।\n\n#shorts\n\nSeri: mk-019"
+    },
+    "id": {
+      "title": "Mengapa Anjing Memiringkan Kepala Mereka? 🤔",
+      "description": "Pernahkah Anda memperhatikan anjing Anda memiringkan kepala saat Anda berbicara? Perilaku menggemaskan ini membantu mereka memahami kita lebih baik. Anjing dapat menggerakkan telinga mereka untuk menemukan sumber suara, tetapi memiringkan kepala memungkinkan mereka melihat wajah dan mulut kita dengan lebih jelas, menggabungkan isyarat pendengaran dan visual.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "ja": {
+      "title": "なぜ犬は首を傾げるの？ 🤔",
+      "description": "あなたが話しかけるとき、犬が首を傾げるのを見たことがありますか？この愛らしい行動は、彼らが私たちをよりよく理解するのに役立ちます。犬は音源を見つけるために耳を動かすことができますが、首を傾げることで私たちの顔や口をよりはっきりと見ることができ、聴覚と視覚の両方の手がかりを得ています。\n\n#shorts\n\nSeri: mk-019"
+    },
+    "ko": {
+      "title": "강아지들은 왜 고개를 갸웃거릴까요? 🤔",
+      "description": "여러분이 말할 때 강아지가 고개를 갸웃거리는 것을 본 적 있나요? 이 사랑스러운 행동은 강아지가 우리를 더 잘 이해하도록 돕습니다. 강아지는 소리의 근원을 찾기 위해 귀를 움직일 수 있지만, 고개를 갸웃거림으로써 우리의 얼굴과 입을 더 명확하게 보고 청각적, 시각적 단서를 모두 얻게 됩니다.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "pl": {
+      "title": "Dlaczego psy przechylają głowę? 🤔",
+      "description": "Czy zauważyłeś, jak Twój pies przechyla głowę, gdy do niego mówisz? To urocze zachowanie pomaga im lepiej nas zrozumieć. Psy potrafią poruszać uszami, aby zlokalizować dźwięki, ale przechylanie głowy pozwala im wyraźniej widzieć nasze twarze i usta, łącząc wskazówki słuchowe i wizualne.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "nl": {
+      "title": "Waarom kantelen honden hun hoofd? 🤔",
+      "description": "Heb je ooit gemerkt dat je hond zijn hoofd kantelt als je tegen hem praat? Dit schattige gedrag helpt ze ons beter te begrijpen. Honden kunnen hun oren bewegen om geluidsbronnen te lokaliseren, maar door hun hoofd te kantelen, zien ze onze gezichten en monden duidelijker, waardoor ze zowel auditieve als visuele signalen opvangen.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "uk": {
+      "title": "Чому собаки нахиляють голову? 🤔",
+      "description": "Ви коли-небудь помічали, як ваш собака нахиляє голову, коли ви з ним розмовляєте? Ця мила поведінка допомагає їм краще нас розуміти. Собаки можуть рухати вухами, щоб визначити джерело звуку, але нахил голови дозволяє їм чіткіше бачити наші обличчя та рот, поєднуючи слухові та візуальні підказки.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "vi": {
+      "title": "Tại sao chó lại nghiêng đầu? 🤔",
+      "description": "Bạn có bao giờ thắc mắc tại sao chú chó của mình lại nghiêng đầu khi bạn nói chuyện với chúng không? Hành vi đáng yêu này giúp chúng hiểu chúng ta tốt hơn. Chó có thể di chuyển tai để xác định nguồn âm thanh, nhưng việc nghiêng đầu giúp chúng nhìn rõ hơn khuôn mặt và miệng của chúng ta, kết hợp cả tín hiệu thính giác và thị giác.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "az": {
+      "title": "İtlər niyə başlarını yana əyir? 🤔",
+      "description": "İtləriniz sizinlə danışarkən niyə başlarını yana əydiyini heç düşünmüsünüzmü? Bu sevimli davranış onların bizi daha yaxşı anlamasına kömək edir. İtlər səslərin mənbəyini tapmaq üçün qulaqlarını hərəkət etdirə bilər, lakin başlarını əymək onlara üzlərimizi və ağızlarımızı daha aydın görməyə imkan verir, beləliklə həm eşitmə, həm də vizual ipuçlarını birləşdirir.\n\n#shorts\n\nSeri: mk-019"
+    },
+    "ro": {
+      "title": "De ce își înclină câinii capul? 🤔",
+      "description": "Te-ai întrebat vreodată de ce câinele tău își înclină capul când îi vorbești? Acest comportament adorabil îi ajută să ne înțeleagă mai bine. Câinii își pot mișca urechile pentru a localiza sunetele, dar înclinarea capului le permite să ne vadă mai clar fețele și gurile, combinând indicii auditive și vizuale.\n\n#shorts\n\nSeri: mk-019"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence köpekler bizim gibi sadece işiterek mi anlar, yoksa yüz ifadelerimize de mi bakar: Sadece işiterek mi, Yüz ifadeleri de mi?",
+  "scenes": [
+    {
+      "text": "Köpekler kulaklarını bağımsız ve geniş bir açıyla hareket ettirebilir.",
+      "visual": "A dog with alert, movable ears.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 15,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ],
+      "callout": "KULAK HAREKETİ"
+    },
+    {
+      "text": "Bu hareket sesin kaynağını bulmalarını sağlar.",
+      "visual": "A dog looking around attentively.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 2
+        },
+        {
+          "n": 31,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Ama asıl şaşırtıcı olan, kafalarını yana eğmeleri.",
+      "visual": "A dog tilting its head.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        }
+      ],
+      "callout": "KAFALARINI EĞERLER"
+    },
+    {
+      "text": "Bu sayede yüzümüzü ve ağzımızı daha net görürler.",
+      "visual": "A dog looking intently at something, as if at a human face.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 26,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Ve böylece söylediklerimizi daha iyi anlarlar.",
+      "visual": "An attentive dog looking at the camera.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        },
+        {
+          "n": 38,
+          "kare": 2
+        }
+      ],
+      "callout": "DAHA İYİ ANLARLAR"
+    },
+    {
+      "text": "Onlar için hem işitsel hem de görsel bir ipucu.",
+      "visual": "A dog tilting its head again.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 21,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        },
+        {
+          "n": 33,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 13.16,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 7,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-019_1792336786_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının sesi yavaş ve enerjisiz, videonun genel ritmini düşürüyor.",
+        "fix": "Yapay zeka sesinin hızını artırın ve daha dinamik, merak uyandıran bir ton seçin. Referans videodaki gibi hızlı ve akıcı bir konuşma temposu hedefleyin."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video akışı yavaş, geçişler basit ve enerjisiz, izleyiciyi sıkabilir.",
+        "fix": "Kısa, hızlı kesimler kullanarak videonun temposunu artırın. Her bir görseli ve bilgi parçasını daha kısa tutarak dinamik bir akış sağlayın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Köpeklerin kafa eğme hareketini veya işitme/görme eylemini dinamik olarak gösteren yeterli görsel yok, çoğu klip statik.",
+        "fix": "Kafa eğme anını yakalayan, kulak hareketlerini vurgulayan veya köpeğin bir sese tepki verdiğini gösteren daha aksiyonlu stok videolar bulun. Gerekirse yavaş çekim klipler kullanın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar çok uzun ve açıklayıcı grafikler veya animasyonlar içermiyor, sadece altyazı gibi duruyor.",
+        "fix": "Yazıları anahtar kelimelere indirgeyin (referanstaki gibi 'KULAK HAREKETİ', 'YÜZÜMÜZÜ GÖRÜRLER'). Bilgiyi desteklemek için basit oklar, vurgular veya daireler gibi grafik öğeleri (eğer otomatik kurgu aracı izin veriyorsa) kullanın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca yeterince güçlü değil ve ana bilginin (yüzümüzü daha net görme) şaşırtıcılığı tam olarak vurgulanmıyor.",
+        "fix": "Videonun başında daha çarpıcı bir soru veya iddia ile başlayın. Örneğin, 'Köpekler kafalarını neden eğiyor? Cevabı sizi şaşırtacak!' gibi. Bilginin neden şaşırtıcı olduğunu daha net belirtin."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği videonun enerjisine uymuyor ve ses efektleri eksik.",
+        "fix": "Daha enerjik, merak uyandıran ve hızlı tempolu bir arka plan müziği seçin. Geçişleri veya önemli anları vurgulamak için basit ses efektleri (örneğin, 'whoosh' veya 'ding') ekleyin (eğer otomatik kurgu aracı izin veriyorsa)."
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazı tipi ve renk seçimi daha profesyonel ve dikkat çekici olabilir.",
+        "fix": "Daha modern, kalın ve okunaklı bir font kullanın. Arka planla yüksek kontrast sağlayan renkler seçin (örneğin, referanstaki gibi sarı/beyaz ve mavi vurgular)."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitlilik, farklı köpek ırkları olsa da, eylem açısından sınırlı.",
+        "fix": "Sadece farklı ırklar değil, farklı açılardan çekilmiş, farklı ortamlarda (ev içi, dış mekan) ve farklı tepkiler veren köpek klipleri arayın."
+      }
+    ],
+    "strengths": [
+      "Kısa (Shorts formatına uygun)",
+      "Bilgi verici (Net bilgi sunuyor)"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
