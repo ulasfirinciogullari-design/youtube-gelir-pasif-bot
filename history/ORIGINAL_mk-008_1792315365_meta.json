@@ -1,0 +1,313 @@
+{
+  "topic_id": "mk-008",
+  "topic": "Deniz suyu neden tuzlu da nehir suyu tatlı?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Deniz Neden Tuzlu? Nehirler Neden Tatlı? İşte Cevabı! 🌊",
+  "hook_text": "DENİZ NEDEN TUZLU, NEHİR NEDEN TATLI?",
+  "description": "Deniz neden tuzlu, nehirler neden tatlı?\n\nHer litre deniz suyu 35 gram tuz barındırır. Yağmur suyu kayalardaki mineralleri çözerek nehirlere taşır ve bu mineraller okyanuslara ulaşır. Okyanus suyu buharlaşırken tuz geride kalır, nehirler ise sürekli yenilendiği için tatlı kalır.\n\nSence dünya üzerindeki suların yüzde kaçı tatlı sudur: %3 mü %10 mu?\n\n#denizsuyu #nehirler #tatlısu #tuzlusu #shorts #bilim #merak #keşfet\n\nSeri: mk-008",
+  "tags": [
+    "deniz neden tuzlu",
+    "nehirler neden tatlı",
+    "deniz suyu",
+    "nehir suyu",
+    "tuzlu su",
+    "tatlı su",
+    "okyanus tuzu",
+    "yağmur suyu",
+    "mineraller",
+    "su döngüsü",
+    "neden tuzlu",
+    "neden tatlı",
+    "ilginç bilgiler",
+    "bilim",
+    "coğrafya",
+    "genel kültür",
+    "merak ettikleriniz",
+    "bilgi",
+    "eğitim",
+    "shorts",
+    "sea water",
+    "river water",
+    "salt water",
+    "fresh water",
+    "tuzluluk",
+    "doğa",
+    "keşif",
+    "merak",
+    "zirvenin kanunu",
+    "nehirler neden tatli",
+    "tatli su",
+    "yagmur suyu",
+    "su dongusu",
+    "neden tatli"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why is the Sea Salty? Why are Rivers Fresh? Here's the Answer! 🌊",
+      "description": "Have you ever wondered why the sea is salty while rivers are fresh? Every liter of seawater contains 35 grams of salt. Rain dissolves minerals from rocks, carrying them to rivers and eventually the oceans. As ocean water evaporates, the salt is left behind, making the sea salty while rivers continuously refresh.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "es": {
+      "title": "¿Por qué el mar es salado y los ríos dulces? ¡Aquí la respuesta! 🌊",
+      "description": "¿Alguna vez te has preguntado por qué el mar es salado y los ríos son de agua dulce? Cada litro de agua de mar contiene 35 gramos de sal. La lluvia disuelve minerales de las rocas, llevándolos a los ríos y, finalmente, a los océanos. Mientras el agua del océano se evapora, la sal se queda, lo que hace que el mar sea salado y los ríos se renueven constantemente.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "pt": {
+      "title": "Por que o Mar é Salgado e os Rios Doces? A Resposta Está Aqui! 🌊",
+      "description": "Você já se perguntou por que o mar é salgado enquanto os rios são de água doce? Cada litro de água do mar contém 35 gramas de sal. A água da chuva dissolve minerais das rochas, transportando-os para os rios e, por fim, para os oceanos. À medida que a água do oceano evapora, o sal permanece, tornando o mar salgado, enquanto os rios se renovam continuamente.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "de": {
+      "title": "Warum ist das Meer salzig, Flüsse aber süß? Die Antwort! 🌊",
+      "description": "Hast du dich je gefragt, warum das Meer salzig ist, Flüsse aber Süßwasser führen? Jeder Liter Meerwasser enthält 35 Gramm Salz. Regenwasser löst Mineralien aus Gesteinen, die dann in Flüsse und schließlich in die Ozeane gelangen. Während das Meerwasser verdunstet, bleibt das Salz zurück, wodurch das Meer salzig wird, während sich Flüsse ständig erneuern.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "fr": {
+      "title": "Pourquoi la mer est salée et les rivières douces ? La réponse est là ! 🌊",
+      "description": "Vous êtes-vous déjà demandé pourquoi la mer est salée alors que les rivières sont d'eau douce ? Chaque litre d'eau de mer contient 35 grammes de sel. L'eau de pluie dissout les minéraux des roches, les transportant vers les rivières et finalement les océans. Lorsque l'eau de l'océan s'évapore, le sel reste, rendant la mer salée tandis que les rivières se renouvellent continuellement.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "it": {
+      "title": "Perché il mare è salato e i fiumi dolci? Ecco la risposta! 🌊",
+      "description": "Ti sei mai chiesto perché il mare è salato mentre i fiumi sono d'acqua dolce? Ogni litro di acqua di mare contiene 35 grammi di sale. L'acqua piovana scioglie i minerali dalle rocce, trasportandoli nei fiumi e infine negli oceani. Mentre l'acqua dell'oceano evapora, il sale rimane, rendendo il mare salato, mentre i fiumi si rinnovano continuamente.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "ru": {
+      "title": "Почему море соленое, а реки пресные? Вот ответ! 🌊",
+      "description": "Вы когда-нибудь задумывались, почему море соленое, а реки пресные? Каждый литр морской воды содержит 35 граммов соли. Дождевая вода растворяет минералы из горных пород, перенося их в реки и, в конечном итоге, в океаны. Когда океанская вода испаряется, соль остается, делая море соленым, в то время как реки постоянно обновляются.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "ar": {
+      "title": "لماذا البحر مالح والأنهار عذبة؟ إليك الجواب! 🌊",
+      "description": "هل تساءلت يوماً لماذا البحر مالح بينما الأنهار عذبة؟ كل لتر من مياه البحر يحتوي على 35 جراماً من الملح. تعمل مياه الأمطار على إذابة المعادن من الصخور، حاملة إياها إلى الأنهار وفي النهاية إلى المحيطات. عندما تتبخر مياه المحيط، يبقى الملح، مما يجعل البحر مالحاً بينما تتجدد الأنهار باستمرار.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "hi": {
+      "title": "समुद्र खारा क्यों है और नदियाँ मीठी क्यों? जानें जवाब! 🌊",
+      "description": "क्या आपने कभी सोचा है कि समुद्र खारा क्यों है जबकि नदियाँ मीठी होती हैं? समुद्र के हर लीटर पानी में 35 ग्राम नमक होता है। बारिश का पानी चट्टानों से खनिजों को घोलकर नदियों में ले जाता है और अंततः महासागरों तक पहुँचाता है। जैसे ही महासागर का पानी वाष्पित होता है, नमक पीछे रह जाता है, जिससे समुद्र खारा हो जाता है जबकि नदियाँ लगातार ताज़ा रहती हैं।\n\n#shorts\n\nSeri: mk-008"
+    },
+    "id": {
+      "title": "Mengapa Laut Asin dan Sungai Tawar? Ini Jawabannya! 🌊",
+      "description": "Pernahkah Anda bertanya-tanya mengapa laut asin sementara sungai tawar? Setiap liter air laut mengandung 35 gram garam. Air hujan melarutkan mineral dari bebatuan, membawanya ke sungai dan akhirnya ke lautan. Saat air laut menguap, garam tertinggal, membuat laut asin sementara sungai terus-menerus menyegarkan diri.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "ja": {
+      "title": "なぜ海は塩辛く、川は淡水なの？その答えはこれ！🌊",
+      "description": "なぜ海は塩辛く、川は淡水なのか疑問に思ったことはありませんか？海水の1リットルには35グラムの塩が含まれています。雨水は岩石からミネラルを溶かし、それを川へ、そして最終的には海へと運びます。海水が蒸発する際、塩分が残るため海は塩辛くなり、川は絶えず新鮮な状態を保ちます。\n\n#shorts\n\nSeri: mk-008"
+    },
+    "ko": {
+      "title": "바다는 왜 짜고 강은 민물일까요? 정답은 여기! 🌊",
+      "description": "바다는 왜 짜고 강은 민물인지 궁금해 본 적 있으신가요? 바닷물 1리터에는 35그램의 소금이 들어있습니다. 빗물은 바위에서 미네랄을 녹여 강으로, 그리고 결국 바다로 운반합니다. 바닷물이 증발할 때 소금은 뒤에 남아 바다를 짜게 만들고, 강물은 계속해서 새로워지기 때문입니다.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "pl": {
+      "title": "Dlaczego morze jest słone, a rzeki słodkie? Oto odpowiedź! 🌊",
+      "description": "Zastanawiałeś się kiedyś, dlaczego morze jest słone, a rzeki słodkie? Każdy litr wody morskiej zawiera 35 gramów soli. Woda deszczowa rozpuszcza minerały ze skał, przenosząc je do rzek, a ostatecznie do oceanów. Kiedy woda oceaniczna paruje, sól pozostaje, sprawiając, że morze jest słone, podczas gdy rzeki stale się odświeżają.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "nl": {
+      "title": "Waarom is de zee zout en rivieren zoet? Het antwoord! 🌊",
+      "description": "Heb je je ooit afgevraagd waarom de zee zout is terwijl rivieren zoet zijn? Elke liter zeewater bevat 35 gram zout. Regenwater lost mineralen uit rotsen op en voert deze naar rivieren en uiteindelijk naar de oceanen. Terwijl oceaanwater verdampt, blijft het zout achter, waardoor de zee zout wordt terwijl rivieren voortdurend worden ververst.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "uk": {
+      "title": "Чому море солоне, а річки прісні? Ось відповідь! 🌊",
+      "description": "Ви коли-небудь замислювалися, чому море солоне, а річки прісні? Кожен літр морської води містить 35 грамів солі. Дощова вода розчиняє мінерали з гірських порід, переносячи їх у річки, а згодом в океани. Коли океанська вода випаровується, сіль залишається, роблячи море солоним, тоді як річки постійно оновлюються.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "vi": {
+      "title": "Tại sao Biển Mặn và Sông Ngọt? Đây là Câu Trả Lời! 🌊",
+      "description": "Bạn đã bao giờ tự hỏi tại sao biển lại mặn trong khi sông lại ngọt chưa? Mỗi lít nước biển chứa 35 gram muối. Nước mưa hòa tan khoáng chất từ đá, mang chúng đến sông và cuối cùng là đại dương. Khi nước đại dương bay hơi, muối còn lại, làm cho biển mặn trong khi sông liên tục được làm mới.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "az": {
+      "title": "Dəniz Niyə Duzlu, Çaylar Niyə Şirindir? Cavabı Budur! 🌊",
+      "description": "Heç düşünmüsünüzmü, dəniz niyə duzlu, çaylar niyə şirindir? Hər litr dəniz suyu 35 qram duz ehtiva edir. Yağış suyu qayalardakı mineralları həll edərək çaylara və nəhayət okeanlara daşıyır. Okean suyu buxarlandığında duz geridə qalır, dənizi duzlu edir, çaylar isə daim yenilənir.\n\n#shorts\n\nSeri: mk-008"
+    },
+    "ro": {
+      "title": "De ce Marea e Sărată și Râurile Dulci? Iată Răspunsul! 🌊",
+      "description": "Te-ai întrebat vreodată de ce marea este sărată, iar râurile sunt dulci? Fiecare litru de apă de mare conține 35 de grame de sare. Apa de ploaie dizolvă mineralele din roci, transportându-le în râuri și, în cele din urmă, în oceane. Pe măsură ce apa oceanului se evaporă, sarea rămâne, făcând marea sărată, în timp ce râurile se reînnoiesc continuu.\n\n#shorts\n\nSeri: mk-008"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence dünya üzerindeki suların yüzde kaçı tatlı sudur: %3 mü %10 mu?",
+  "scenes": [
+    {
+      "text": "Her litre deniz suyu 35 gram tuz barındırır.",
+      "visual": "Ocean waves crashing on rocks and sparkling water surface",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 1
+        },
+        {
+          "n": 3,
+          "kare": 2
+        }
+      ],
+      "callout": "35 GRAM TUZ"
+    },
+    {
+      "text": "Peki nehirler neden böyle tatlı akar?",
+      "visual": "Clear river water flowing over rocks or showing riverbed",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 1
+        },
+        {
+          "n": 33,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Yağmur suyu, kayalardaki mineralleri çözerek nehirlere taşır.",
+      "visual": "Stream or river flowing over rocks, showing water interacting with terrain",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 6,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 1
+        },
+        {
+          "n": 26,
+          "kare": 1
+        }
+      ],
+      "callout": "MİNERAL TAŞINIMI"
+    },
+    {
+      "text": "Bu mineraller nehirlerle okyanuslara ulaşır.",
+      "visual": "River landscape or coastline where river meets the sea",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 4,
+          "kare": 1
+        },
+        {
+          "n": 2,
+          "kare": 1
+        },
+        {
+          "n": 35,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Okyanus suyu buharlaşırken, tuz geride kalır.",
+      "visual": "Ocean waves on the shore with sunlight, or wide ocean view",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 16,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 3
+        },
+        {
+          "n": 1,
+          "kare": 2
+        }
+      ],
+      "callout": "BUHARLAŞMA"
+    },
+    {
+      "text": "Nehirler sürekli yenilenirken, okyanus tuzu biriktirir işte bu yüzden.",
+      "visual": "Dynamic ocean waves crashing or moving water",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 1
+        },
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 28,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 13.75,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Grafiksel açıklama eksikliği",
+        "fix": "Mineral taşınımı ve buharlaşma gibi süreçleri açıklayan basit animasyonlu oklar veya ikonlar ekle. Bu, karmaşık bilgileri görsel olarak daha anlaşılır kılar."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesinin monotonluğu ve enerji eksikliği",
+        "fix": "Yapay zeka sesinin hızını, tonunu ve vurgularını ayarlayarak daha enerjik ve doğal bir konuşma ritmi yakala. Anahtar kelimelere vurgu yap."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görsel çeşitliliğin azlığı ve genel/tekrar eden çekimler",
+        "fix": "Konuyu daha iyi anlatan, dinamik ve çeşitli stok videolar kullan. Örneğin, minerallerin çözülmesini gösteren yakın çekimler, buharlaşmayı simgeleyen görseller veya nehir akışının farklı perspektifleri. Alakasız insan içeren çekimlerden kaçı"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Geçişlerin ani ve dinamik olmaması, yavaş tempo",
+        "fix": "Daha hızlı kesmeler ve akıcı geçişler (örneğin, hızlı çapraz geçişler veya hafif bir kaydırma efekti) kullanarak videonun temposunu artır. Anlatıcının ritmine uygun kesmeler yap."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazıların animasyonsuz ve statik olması",
+        "fix": "Yazıların ekrana girişini (örneğin, hafif bir solma, yukarı kayma veya büyüme efektiyle) animasyonlu hale getirerek daha dinamik bir görünüm sağla."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziğinin etkisizliği ve atmosfer yaratmaması",
+        "fix": "Daha merak uyandırıcı, hafif tempolu ve videonun genel enerjisine uygun bir fon müziği seç. Müziğin ses seviyesini anlatımı bastırmayacak şekilde ayarla."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektlerinin eksikliği",
+        "fix": "Önemli anları veya süreçleri vurgulamak için (örneğin, su sesi, hafif bir 'ding' sesi, buharlaşma sesi gibi) uygun ses efektleri ekle. Bu, izleyicinin dikkatini çeker ve bilgiyi pekiştirir."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığının veya büyüklüğünün yeterince vurgulanmaması",
+        "fix": "Bilginin ölçeğini veya sürekliliğini vurgulayan (örn. 'milyarlarca yıldır süren bu döngü' gibi) ifadelerle senaryoyu güçlendir. Daha çarpıcı kelimeler kullan."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi aktarımı",
+      "Başlangıç kancası (soru) ilgi çekici",
+      "Bilgi akışı mantıklı ve anlaşılır"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
