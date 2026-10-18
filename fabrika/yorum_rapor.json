@@ -1,24 +1,25 @@
 {
- "started": "2026-10-18T15:02:27+00:00",
+ "started": "2026-10-18T15:07:27+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 6,
+ "threads": 7,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugw40g-2w6PGz-y_ypp4AaABAg",
-   "video": "f6WyXXJWASs",
-   "comment": "Ya denizler yok olsaydı",
-   "reply": "Oksijenimizin yarısından fazlasını denizlerdeki mikroskobik canlılar üretir; sular yok olsaydı nefes bile alamazdık. Bu konuyu hemen listemize ekledik.\n— Profesör Pi 🔭",
+   "id": "Ugy6zFUSm-ycmoy0Ir94AaABAg",
+   "video": "xMYUnZVVITU",
+   "comment": "Ayın yerine uranus geçseydi ne olurdu",
+   "reply": "Uranüs Dünya'dan 14 kat daha ağır olduğu için aslında Dünya onun uydusu haline gelirdi! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭",
+   "topic": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T15:02:46+00:00"
+ "finished": "2026-10-18T15:07:38+00:00"
 }
