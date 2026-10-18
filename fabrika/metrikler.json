@@ -1,5 +1,5 @@
 {
- "at": "2026-10-18T18:06:30+00:00",
+ "at": "2026-10-18T20:42:30+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,49 +15,198 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "videos": {
-  "-7OxhWXxc8w": {
-   "views": 115,
-   "estimatedMinutesWatched": 28,
-   "averageViewDuration": 33,
-   "averageViewPercentage": 82.37,
-   "likes": 4,
+  "8KoJ0-4fHyY": {
+   "views": 1189,
+   "estimatedMinutesWatched": 187,
+   "averageViewDuration": 19,
+   "averageViewPercentage": 56.15,
+   "likes": 12,
    "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
+   "comments": 2,
+   "subscribersGained": 2,
+   "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1146,
+    "YT_SEARCH": 21,
+    "YT_CHANNEL": 15,
+    "YT_OTHER_PAGE": 5,
+    "NOTIFICATION": 2,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "yHElVXfvdsw": {
+   "views": 301,
+   "estimatedMinutesWatched": 59,
+   "averageViewDuration": 23,
+   "averageViewPercentage": 60.91,
+   "likes": 1,
+   "shares": 0,
+   "comments": 2,
+   "subscribersGained": 3,
+   "title": "Güneş Gerçekte Ne Kadar Büyük?",
+   "sources": {
+    "SHORTS": 263,
+    "YT_SEARCH": 24,
+    "YT_CHANNEL": 12,
+    "SUBSCRIBER": 1,
+    "PLAYLIST": 1,
+    "NO_LINK_OTHER": 0,
+    "YT_OTHER_PAGE": 0
+   }
+  },
+  "-7OxhWXxc8w": {
+   "views": 173,
+   "estimatedMinutesWatched": 42,
+   "averageViewDuration": 31,
+   "averageViewPercentage": 77.82,
+   "likes": 6,
+   "shares": 0,
+   "comments": 1,
+   "subscribersGained": 1,
    "title": "",
    "sources": {
-    "SHORTS": 103,
-    "YT_CHANNEL": 8,
-    "YT_SEARCH": 2,
+    "SHORTS": 153,
+    "YT_CHANNEL": 14,
+    "YT_SEARCH": 4,
     "YT_OTHER_PAGE": 1,
     "NOTIFICATION": 1,
     "NO_LINK_OTHER": 0
    }
   },
-  "8KoJ0-4fHyY": {
-   "views": 5,
-   "estimatedMinutesWatched": 0,
-   "averageViewDuration": 4,
-   "averageViewPercentage": 13.600000000000001,
+  "HdSKbp0rIz8": {
+   "views": 56,
+   "estimatedMinutesWatched": 9,
+   "averageViewDuration": 22,
+   "averageViewPercentage": 61.83,
    "likes": 0,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 0,
-   "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
+   "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
    "sources": {
-    "SHORTS": 5
+    "YT_SEARCH": 38,
+    "YT_CHANNEL": 8,
+    "SHORTS": 8,
+    "SUBSCRIBER": 2
    }
   },
-  "yHElVXfvdsw": {
-   "views": 1,
-   "estimatedMinutesWatched": 0,
-   "averageViewDuration": 36,
-   "averageViewPercentage": 95.53,
+  "-PC7chCMp_s": {
+   "views": 31,
+   "estimatedMinutesWatched": 7,
+   "averageViewDuration": 22,
+   "averageViewPercentage": 59.88,
    "likes": 0,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 0,
-   "title": "Güneş Gerçekte Ne Kadar Büyük?",
+   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+   "sources": {
+    "YT_SEARCH": 25,
+    "SHORTS": 5,
+    "YT_CHANNEL": 1
+   }
+  },
+  "4GSDZD52uI0": {
+   "views": 21,
+   "estimatedMinutesWatched": 4,
+   "averageViewDuration": 20,
+   "averageViewPercentage": 51.97999999999999,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
+   "sources": {
+    "YT_SEARCH": 18,
+    "SHORTS": 2,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "f6WyXXJWASs": {
+   "views": 14,
+   "estimatedMinutesWatched": 2,
+   "averageViewDuration": 20,
+   "averageViewPercentage": 58.84,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
+   "sources": {
+    "YT_SEARCH": 9,
+    "YT_CHANNEL": 4,
+    "SHORTS": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "xMYUnZVVITU": {
+   "views": 3,
+   "estimatedMinutesWatched": 1,
+   "averageViewDuration": 32,
+   "averageViewPercentage": 95.3,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+   "sources": {
+    "YT_SEARCH": 2,
+    "SHORTS": 1
+   }
+  },
+  "53rXVX6QpA0": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 0,
+   "averageViewPercentage": 0,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Kalbin 1 Günde Kaç Kez Atar?",
+   "sources": {
+    "YT_CHANNEL": 2
+   }
+  },
+  "X9ouBiGHD4Q": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 6,
+   "averageViewPercentage": 16.58,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
+   "sources": {
+    "YT_SEARCH": 2
+   }
+  },
+  "RLuGUU-xaYE": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 4,
+   "averageViewPercentage": 14.41,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "1 Günde Kaç Kez Nefes Alırsın?",
+   "sources": {
+    "YT_CHANNEL": 2
+   }
+  },
+  "bqFeef1QL08": {
+   "views": 1,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 19,
+   "averageViewPercentage": 52.21,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "sources": {
     "YT_SEARCH": 1
    }
@@ -69,6 +218,12 @@
    "views": 121,
    "estimatedMinutesWatched": 29,
    "subscribersGained": 2
+  },
+  {
+   "day": "2026-10-16",
+   "views": 1674,
+   "estimatedMinutesWatched": 285,
+   "subscribersGained": 7
   }
  ]
 }
