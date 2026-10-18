@@ -940,6 +940,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         )
 
     storyboard(final_mp4, final_mp4.with_name(f"{final_mp4.stem}_story.jpg"), duration)
+    if ig_mp4.exists():  # the backup step takes every ORIGINAL_*_story.jpg to the channel history
+        storyboard(ig_mp4, final_mp4.with_name(f"{final_mp4.stem}_ig_story.jpg"), duration)
 
     title = script["title"]
     full_title = title[:100]  # YouTube has not needed "#shorts" in the title to classify a Short since 15 Oct 2024
