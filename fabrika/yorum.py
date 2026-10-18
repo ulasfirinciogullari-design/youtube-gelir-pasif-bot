@@ -176,6 +176,8 @@ def clean_reply(item):
     who = item.get("who") if item.get("who") in SIGN else "bit"
     if not text or len(text) > 260 or LINK.search(text) or "#" in text:
         return None
+    mark = SIGN[who].split()[-1]  # the signature already carries the character's emoji
+    text = text.removesuffix(mark).rstrip() if text.endswith(mark) and len(text) > len(mark) else text
     return f"{text}\n{SIGN[who]}"
 
 
