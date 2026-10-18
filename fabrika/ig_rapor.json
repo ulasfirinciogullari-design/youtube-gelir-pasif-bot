@@ -1,31 +1,21 @@
 {
- "started": "2026-10-18T00:12:22+00:00",
- "mod": "kontrol",
+ "started": "2026-10-18T00:22:27+00:00",
+ "mod": "nöbet",
  "anahtar_bitis": "2026-12-16T22:49+00:00",
- "hesap": {
-  "username": "yaolsaydi.bilim",
-  "account_type": "MEDIA_CREATOR",
-  "media_count": 1,
-  "followers_count": 0
- },
- "paylasim_hakki": {
-  "data": [
-   {
-    "quota_usage": 4,
-    "config": {
-     "quota_total": 100,
-     "quota_duration": 86400
-    }
-   }
-  ]
- },
- "dm_konusmalari": 0,
- "medya": [
+ "new": 1,
+ "quiet": 0,
+ "room": 20,
+ "sent_last_24h": 0,
+ "later": 0,
+ "items": [
   {
-   "link": "https://www.instagram.com/reel/DenWg-9lByU/",
-   "yorum_sayisi": 1,
-   "api_yorum": 0
+   "id": "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDY3MjcyNjkyODAzOjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI1OTU1OTQzNTgyNzY0NTY4MzozMzA2MTcyNzY4MjMxNTg2Mjk2Mjc2OTE4MjM3OTIxMjgwMAZDZD",
+   "kind": "dm",
+   "author": "4b0bafab5127",
+   "text": "(özel mesaj)",
+   "reply": "(özel mesaj)",
+   "result": "gönderilemedi: POST me/messages 403: {\"error\":{\"message\":\"This message is sent outside of allowed window.\",\"type\":\"IGApiException\",\"code\":10,\"error_subcode\":2534022,\"fbtrace_id\":\"A9SU4BOOT3xLdTkkFeaxREL\"}}"
   }
  ],
- "finished": "2026-10-18T00:12:24+00:00"
+ "finished": "2026-10-18T00:22:39+00:00"
 }

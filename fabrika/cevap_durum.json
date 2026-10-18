@@ -38,17 +38,23 @@
   ]
  },
  "ig": {
-  "done": {},
+  "done": {
+   "aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDY3MjcyNjkyODAzOjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI1OTU1OTQzNTgyNzY0NTY4MzozMzA2MTcyNzY4MjMxNTg2Mjk2Mjc2OTE4MjM3OTIxMjgwMAZDZD": [
+    1792282948.0192676,
+    "s",
+    "gönderilemedi"
+   ]
+  },
   "son": []
  },
  "oneriler": [],
  "nobet": {
   "basladi": "2026-10-18T00:16:27+00:00",
   "run": "39082147103",
-  "tur": 1,
+  "tur": 7,
   "ig_cevap": 0,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-10-18T00:16:29+00:00"
+  "son_tur": "2026-10-18T00:22:39+00:00"
  }
 }
