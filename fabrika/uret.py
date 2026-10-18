@@ -26,6 +26,8 @@ WORK = HERE / "_is"
 DAILY = int(os.environ.get("YO_GUNLUK") or 6)
 # Turkish prime time (UTC+3): 09, 12, 15, 18, 20, 22. Ulaş cut 24/day to 6/day on 2026-10-16 (views too thin).
 SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "6,9,12,15,17,19").split(",") if h.strip()]
+# Instagram backfill (2026-10-18): episodes from before Instagram go out as Reels one at a time, at hours between the slots
+IG_BACKFILL = [int(h) for h in (os.environ.get("YO_IG_YEDEK") or "8,14").split(",") if h.strip()]
 GAP_MIN = 35
 MIN_CREDITS = 12000
 
@@ -49,6 +51,13 @@ def save(state):
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def ig_backlog(state):
+    """-> the oldest YouTube episode with no Reel yet, or None."""
+    posted = state.get("instagram", {}).get("posted", {})
+    return next((e["id"] for e in state.get("episodes", [])
+                 if e.get("id") not in posted and (HERE / "bolumler" / f"{e.get('id')}.json").exists()), None)
+
+
 def gate(state, mod):
     """-> (go, reason). Hourly ticks come twice an hour (GitHub drops some), a slot holds one episode."""
     if mod in ("zorla", "deneme", "igbolum"):
@@ -58,6 +67,15 @@ def gate(state, mod):
     eps = state.get("episodes", [])
     t = now()
     hour = t - t % 3600
+    if int(t // 3600 % 24) in IG_BACKFILL and os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
+        nxt = ig_backlog(state)
+        if not nxt:
+            return False, "Instagram'a aktarılacak eski bölüm kalmadı"
+        if any(r.get("at", 0) >= hour for r in state.get("instagram", {}).get("posted", {}).values()):
+            return False, "bu saatin Reels'i paylaşıldı"
+        if state.get("fail_streak", 0) >= 6 and t - state.get("last_fail", 0) < 3 * 3600:
+            return False, "üst üste 6 deneme başarısız oldu, 3 saat bekleniyor"
+        return True, f"instagram yedek: {nxt}"
     if int(t // 3600 % 24) not in SLOTS:
         return False, f"yayın saati değil (UTC {SLOTS})"
     if any(e.get("at", 0) >= hour for e in eps):
@@ -299,6 +317,8 @@ def main():
             with open(out, "a") as f:
                 f.write(f"go={'true' if go else 'false'}\n")
         return
+    if a.mod == "saatlik" and go and why.startswith("instagram yedek: "):
+        a.mod, a.bolum = "igbolum", why.split(": ", 1)[1]
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "mod": a.mod, "gate": why}
     sys.path.insert(0, str(HERE))
     import yazar
