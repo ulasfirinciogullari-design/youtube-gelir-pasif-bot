@@ -1,17 +1,90 @@
 {
- "started": "2026-10-18T08:07:47+00:00",
- "mod": "igbolum",
- "gate": "instagram yedek: n001",
- "title": "Güneş Gerçekte Ne Kadar Büyük?",
- "chars": 556,
+ "started": "2026-10-18T09:07:11+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "9",
+  "videos": "14"
+ },
+ "credits_before": [
+  4061,
+  613902
+ ],
+ "topic": {
+  "id": "g004",
+  "series": "1 Gün Boyunca",
+  "q": "1 günde kaç kez göz kırparsın?"
+ },
+ "attempts": 1,
+ "model": "gemini-3.8-flash",
+ "fact_check": {
+  "ok": false,
+  "fixes": [
+   {
+    "line": 0,
+    "why": "Göz kırpma sayısı kişiden kişiye değişir, 'tam 19.200' kesinlik hatasıdır; ayrıca 16 saatlik uyanıklıkta dakikada 15-20 kırpış 14.400 ila 19.200 aralığına denk gelir."
+   },
+   {
+    "line": 2,
+    "why": "Onda bir saniye (0,1 saniye) süren kırpışlar günde 19.200 kez tekrarlandığında yaklaşık 32 dakika (ortalama 25-35 dakika) eder; 1,5 saat (90 dakika) matematiksel ve bilimsel olarak yanlıştır."
+   }
+  ]
+ },
+ "chunks": 0,
+ "grounded": true,
+ "chars": 408,
+ "duration": 25.7,
+ "title": "1 Günde Kaç Kez Göz Kırparsın?",
+ "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
  "instagram": {
   "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18115594412113261",
-  "url": "https://www.instagram.com/reel/DeoOAyfDO3E/",
-  "at": 1792310953.616937
+  "media_id": "17983338803899032",
+  "url": "https://www.instagram.com/reel/DeoVJZBEuLe/",
+  "at": 1792314692.9286048
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DeoOAyfDO3E/"
+ "recent_status": {
+  "y004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "95",
+   "reason": null
+  },
+  "y005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "15",
+   "reason": null
+  },
+  "n003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "370",
+   "reason": null
+  },
+  "y006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "380",
+   "reason": null
+  },
+  "g004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  4159,
+  613902
  ],
- "finished": "2026-10-18T08:09:13+00:00"
+ "log": [
+  "Konu: g004 1 günde kaç kez göz kırparsın? (1 Gün Boyunca)",
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash",
+  "Instagram: https://www.instagram.com/reel/DeoVJZBEuLe/"
+ ],
+ "finished": "2026-10-18T09:11:34+00:00"
 }

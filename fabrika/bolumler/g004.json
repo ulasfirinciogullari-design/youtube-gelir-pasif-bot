@@ -1,0 +1,608 @@
+{
+ "title": "1 Günde Kaç Kez Göz Kırparsın?",
+ "bar": {
+  "hi": "KAÇ KEZ",
+  "rest": "GÖZ KIRPARSIN?"
+ },
+ "summary": "Her gün farkında olmadan binlerce kez gözlerimizi kapatıyoruz. Peki uyanıkken toplam kaç saati zifiri karanlıkta geçirdiğini biliyor musun?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Her gün uyanıkken yaklaşık 14.400 ila 19.200 kez göz kırparsın.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "👁️",
+    "value": "19.200",
+    "unit": "kez",
+    "label": "GÜNLÜK KIRPIŞ",
+    "key": "19.200"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu, dakikada ortalama 15 ila 20 keze denk gelir.",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "DAKİKALIK HIZ",
+    "from": 0,
+    "to": 20,
+    "unit": "kez/dk",
+    "e": "⏱️",
+    "key": "15"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her kırpış onda bir saniye sürer ve günde yaklaşık 30 dakika karanlık yaratır.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "1 KIRPIŞ",
+      "e": "⚡",
+      "label": "0,1 SANİYE"
+     },
+     {
+      "when": "16 SAAT",
+      "e": "👁️",
+      "label": "19.200 KEZ"
+     },
+     {
+      "when": "TOPLAM",
+      "e": "🌑",
+      "label": "1,5 SAAT"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Telefona bakarken gözümü hiç kırpmıyorum!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "📱",
+    "do": "shake",
+    "key": "Telefona",
+    "label": "EKRAN ETKİSİ"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ekranda bu sayı dakikada 5'e kadar düşer.",
+   "v": {
+    "t": "meter",
+    "bg": "lab",
+    "label": "EKRAN MODU",
+    "from": 20,
+    "to": 5,
+    "unit": "kez/dk",
+    "e": "📉",
+    "key": "5'e"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Beynin araları sildiği için o karanlığı asla fark etmezsin.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧠",
+    "do": "pulse",
+    "key": "Beynin",
+    "label": "BEYİN SANSÜRÜ"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Şu an gözlerin kurudu mu? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "👀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Sağlıklı bir yetişkin dakikada ortalama 15 ila 20, 16 saatlik uyanık bir günde ise yaklaşık 14.400 ila 19.200 kez göz kırpar.",
+   "source": "Cleveland Clinic",
+   "url": "https://my.clevelandclinic.org/health/symptoms/blinking"
+  },
+  {
+   "text": "Her bir göz kırpma 100 ila 400 milisaniye sürer ve uyanık olunan sürenin yaklaşık yüzde 10'unda gözler kapalı kalır.",
+   "source": "National Institutes of Health (NIH)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3624705/"
+  },
+  {
+   "text": "Dijital ekranlara bakarken göz kırpma sıklığı dakikada 5 keze kadar gerileyerek göz kuruluğuna yol açar.",
+   "source": "American Academy of Ophthalmology",
+   "url": "https://www.aao.org/eye-health/tips-prevention/computer-usage"
+  },
+  {
+   "text": "Göz kırpma anında beynin görsel korteksi baskılanır ve oluşan mikro kararmalar bilinçli görüntü algısını kesintiye uğratmaz.",
+   "source": "Current Biology",
+   "url": "https://www.cell.com/current-biology/fulltext/S0960-9822(05)00744-8"
+  }
+ ],
+ "tags": [
+  "göz kırpma",
+  "göz sağlığı",
+  "insan vücudu",
+  "biyoloji",
+  "göz kırpma sayısı",
+  "ekran yorgunluğu",
+  "blinking",
+  "eye health",
+  "human body facts",
+  "1 gün boyunca",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#gözkırpma",
+  "#insanvücudu",
+  "#ilginçbilgiler"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://my.clevelandclinic.org/health/symptoms/blinking",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC3624705/",
+  "https://www.aao.org/eye-health/tips-prevention/computer-usage"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Times Do You Blink in 1 Day?",
+   "summary": "Every day, without realizing it, we close our eyes thousands of times. But do you know how many total hours you spend in pitch darkness while awake?",
+   "facts": [
+    "A healthy adult blinks an average of 15 to 20 times per minute, and about 14,400 to 19,200 times in a 16-hour waking day.",
+    "Each blink lasts 100 to 400 milliseconds, meaning the eyes remain closed for about 10 percent of waking hours.",
+    "When looking at digital screens, the blink rate drops to as low as 5 times per minute, causing dry eyes.",
+    "During a blink, the visual cortex of the brain is suppressed, so the micro-blackouts do not interrupt conscious visual perception."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas veces parpadeas en 1 día?",
+   "summary": "Cada día cerramos los ojos miles de veces sin darnos cuenta. ¿Sabías cuántas horas en total pasas despierto en completa oscuridad?",
+   "facts": [
+    "Un adulto sano parpadea un promedio de 15 a 20 veces por minuto, lo que equivale a unas 14.400 a 19.200 veces en un día de 16 horas despierto.",
+    "Cada parpadeo dura entre 100 y 400 milisegundos, por lo que los ojos permanecen cerrados cerca del 10 por ciento del tiempo despierto.",
+    "Al mirar pantallas digitales, la frecuencia de parpadeo se reduce a solo 5 veces por minuto, provocando sequedad ocular.",
+    "Al parpadear, la corteza visual del cerebro se suprime, por lo que los microapagones resultantes no interrumpen la percepción visual consciente."
+   ]
+  },
+  "pt": {
+   "title": "Quantas vezes você pisca em 1 dia?",
+   "summary": "Todos os dias fechamos os olhos milhares de vezes sem perceber. Mas você sabe quantas horas passa na escuridão total enquanto está acordado?",
+   "facts": [
+    "Um adulto saudável pisca em média de 15 a 20 vezes por minuto, e cerca de 14.400 a 19.200 vezes em um dia de 16 horas acordado.",
+    "Cada piscada dura de 100 a 400 milissegundos, mantendo os olhos fechados por cerca de 10 por cento do tempo acordado.",
+    "Ao olhar para telas digitais, a frequência de piscadas cai para até 5 vezes por minuto, causando ressecamento ocular.",
+    "No momento da piscada, o córtex visual do cérebro é suprimido e os microapagões resultantes não interrompem a percepção visual consciente."
+   ]
+  },
+  "ar": {
+   "title": "كم مرة ترمش في اليوم الواحد؟",
+   "summary": "نغمض أعيننا آلاف المرات يومياً دون أن ندرك ذلك. لكن هل تعلم كم ساعة تقضيها في ظلام دامس وأنت مستيقظ؟",
+   "facts": [
+    "يرمش البالغ السليم ما بين 15 إلى 20 مرة في الدقيقة، أي حوالي 14,400 إلى 19,200 مرة خلال يوم يقظة مدته 16 ساعة.",
+    "تستغرق كل رمشة ما بين 100 إلى 400 مللي ثانية، وتبقى العين مغلقة لنحو 10 بالمئة من وقت الاستيقاظ.",
+    "عند النظر إلى الشاشات الرقمية، ينخفض معدل الرمش إلى 5 مرات فقط في الدقيقة، مما يسبب جفاف العين.",
+    "تُكبح القشرة البصرية في الدماغ لحظة الرمش، فلا تؤدي فترات الإعتام الدقيقة إلى مقاطعة الإدراك البصري الواعي."
+   ]
+  },
+  "hi": {
+   "title": "आप 1 दिन में कितनी बार पलकें झपकाते हैं?",
+   "summary": "हर दिन हम बिना जाने हजारों बार अपनी आंखें बंद करते हैं। लेकिन क्या आप जानते हैं कि जागते हुए आप कुल कितने घंटे घोर अंधेरे में बिताते हैं?",
+   "facts": [
+    "एक स्वस्थ वयस्क प्रति मिनट औसतन 15 से 20 बार, यानी 16 घंटे के जागने के समय में लगभग 14,400 से 19,200 बार पलकें झपकाता है।",
+    "प्रत्येक पलक झपकना 100 से 400 मिलीसेकंड तक रहता है, और जागते समय की लगभग 10 प्रतिशत अवधि में आंखें बंद रहती हैं।",
+    "डिजिटल स्क्रीन देखते समय पलक झपकाने की दर घटकर प्रति मिनट 5 बार तक हो जाती है, जिससे आंखों में सूखापन आता है।",
+    "पलक झपकते ही मस्तिष्क का विजुअल कॉर्टेक्स दब जाता है, जिससे होने वाले सूक्ष्म अंधेरे सचेत दृश्य धारणा में बाधा नहीं डालते।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Kali Anda Berkedip dalam 1 Hari?",
+   "summary": "Setiap hari tanpa disadari kita menutup mata ribuan kali. Namun tahukah Anda berapa total jam yang Anda habiskan dalam kegelapan total saat terjaga?",
+   "facts": [
+    "Orang dewasa yang sehat berkedip rata-rata 15 hingga 20 kali per menit, atau sekitar 14.400 hingga 19.200 kali dalam 16 jam waktu terjaga.",
+    "Setiap kedipan berlangsung antara 100 hingga 400 milidetik, membuat mata tertutup sekitar 10 persen dari waktu terjaga.",
+    "Saat menatap layar digital, frekuensi berkedip turun hingga hanya 5 kali per menit, menyebabkan mata kering.",
+    "Saat berkedip, korteks visual otak ditekan sehingga kegelapan mikro yang terjadi tidak mengganggu persepsi visual sadar."
+   ]
+  },
+  "fr": {
+   "title": "Combien de fois clignes-tu des yeux en 1 jour ?",
+   "summary": "Chaque jour, sans nous en rendre compte, nous fermons les yeux des milliers de fois. Sais-tu combien d'heures au total tu passes dans le noir absolu en étant éveillé ?",
+   "facts": [
+    "Un adulte en bonne santé cligne des yeux en moyenne 15 à 20 fois par minute, soit environ 14 400 à 19 200 fois sur une journée d'éveil de 16 heures.",
+    "Chaque clignement dure de 100 à 400 millisecondes, et les yeux restent fermés environ 10 pour cent du temps d'éveil.",
+    "En fixant des écrans numériques, la fréquence de clignement chute jusqu'à 5 fois par minute, provoquant une sécheresse oculaire.",
+    "Au moment du clignement, le cortex visuel du cerveau est inhibé, de sorte que les micro-coupures n'interrompent pas la perception visuelle consciente."
+   ]
+  },
+  "de": {
+   "title": "Wie oft blinzelst du an 1 Tag?",
+   "summary": "Jeden Tag schließen wir unbewusst tausende Male die Augen. Aber weißt du, wie viele Stunden du im Wachzustand in völliger Dunkelheit verbringst?",
+   "facts": [
+    "Ein gesunder Erwachsener blinzelt durchschnittlich 15 bis 20 Mal pro Minute, also etwa 14.400 bis 19.200 Mal an einem 16-stündigen Wachtag.",
+    "Jeder Blinzelvorgang dauert 100 bis 400 Millisekunden, sodass die Augen etwa 10 Prozent der Wachzeit geschlossen bleiben.",
+    "Beim Blick auf digitale Bildschirme sinkt die Blinzelrate auf bis zu 5 Mal pro Minute, was zu trockenen Augen führt.",
+    "Während des Blinzelns wird der visuelle Kortex des Gehirns unterdrückt, sodass die Mikroverdunkelungen die bewusste visuelle Wahrnehmung nicht stören."
+   ]
+  },
+  "ru": {
+   "title": "Сколько раз вы моргаете за 1 день?",
+   "summary": "Каждый день мы неосознанно закрываем глаза тысячи раз. Но знаете ли вы, сколько часов бодрствования проводите в полной темноте?",
+   "facts": [
+    "Здоровый взрослый человек моргает в среднем от 15 до 20 раз в минуту, что составляет от 14 400 до 19 200 раз за 16 часов бодрствования.",
+    "Каждое моргание длится от 100 до 400 миллисекунд, и глаза остаются закрытыми около 10 процентов времени бодрствования.",
+    "При взгляде на цифровые экраны частота моргания снижается всего до 5 раз в минуту, что вызывает сухость глаз.",
+    "В момент моргания зрительная кора мозга подавляется, поэтому микрозатемнения не прерывают осознанное зрительное восприятие."
+   ]
+  },
+  "az": {
+   "title": "1 gündə neçə dəfə göz qırpırsan?",
+   "summary": "Hər gün fərqində olmadan minlərlə dəfə gözlərimizi yumuruq. Bəs oyaq ikən cəmi neçə saatı zülmət qaranlıqda keçirdiyini bilirsən?",
+   "facts": [
+    "Sağlam bir yetkin insan dəqiqədə orta hesabla 15-20, 16 saatlıq oyaq bir gündə isə təxminən 14.400-19.200 dəfə göz qırpır.",
+    "Hər bir göz qırpımı 100-400 millisaniyə çəkir və oyaq vaxtın təxminən 10 faizində gözlər qapalı qalır.",
+    "Rəqəmsal ekranlara baxarkən göz qırpma tezliyi dəqiqədə 5 dəfəyə qədər azalaraq göz quruluğuna səbəb olur.",
+    "Göz qırpılan anda beynin görmə qabığı basdırılır və yaranan mikro qaranlıqlar şüurlu görmə qavrayışını pozmur."
+   ]
+  }
+ },
+ "id": "g004",
+ "series": "1 Gün Boyunca",
+ "q": "1 günde kaç kez göz kırparsın?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 4.901,
+   "words": [
+    {
+     "w": "Her",
+     "t0": 0.35,
+     "t1": 0.513
+    },
+    {
+     "w": "gün",
+     "t0": 0.571,
+     "t1": 0.675
+    },
+    {
+     "w": "uyanıkken",
+     "t0": 0.71,
+     "t1": 1.1629999999999998
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 1.221,
+     "t1": 1.685
+    },
+    {
+     "w": "14.400",
+     "t0": 1.755,
+     "t1": 2.579
+    },
+    {
+     "w": "ila",
+     "t0": 2.625,
+     "t1": 2.834
+    },
+    {
+     "w": "19.200",
+     "t0": 2.904,
+     "t1": 3.74
+    },
+    {
+     "w": "kez",
+     "t0": 3.786,
+     "t1": 3.926
+    },
+    {
+     "w": "göz",
+     "t0": 3.972,
+     "t1": 4.123
+    },
+    {
+     "w": "kırparsın.",
+     "t0": 4.169,
+     "t1": 4.901
+    }
+   ]
+  },
+  {
+   "t0": 5.101111111111111,
+   "t1": 8.07311111111111,
+   "words": [
+    {
+     "w": "Bu,",
+     "t0": 5.101111111111111,
+     "t1": 5.264111111111111
+    },
+    {
+     "w": "dakikada",
+     "t0": 5.287111111111111,
+     "t1": 5.740111111111111
+    },
+    {
+     "w": "ortalama",
+     "t0": 5.809111111111111,
+     "t1": 6.2621111111111105
+    },
+    {
+     "w": "15",
+     "t0": 6.331111111111111,
+     "t1": 6.598111111111111
+    },
+    {
+     "w": "ila",
+     "t0": 6.645111111111111,
+     "t1": 6.761111111111111
+    },
+    {
+     "w": "20",
+     "t0": 6.865111111111111,
+     "t1": 7.1211111111111105
+    },
+    {
+     "w": "keze",
+     "t0": 7.156111111111111,
+     "t1": 7.341111111111111
+    },
+    {
+     "w": "denk",
+     "t0": 7.388111111111111,
+     "t1": 7.550111111111111
+    },
+    {
+     "w": "gelir.",
+     "t0": 7.585111111111111,
+     "t1": 8.07311111111111
+    }
+   ]
+  },
+  {
+   "t0": 8.273265306122449,
+   "t1": 12.59226530612245,
+   "words": [
+    {
+     "w": "Her",
+     "t0": 8.273265306122449,
+     "t1": 8.470265306122448
+    },
+    {
+     "w": "kırpış",
+     "t0": 8.540265306122448,
+     "t1": 8.912265306122448
+    },
+    {
+     "w": "onda",
+     "t0": 8.99326530612245,
+     "t1": 9.190265306122448
+    },
+    {
+     "w": "bir",
+     "t0": 9.248265306122448,
+     "t1": 9.364265306122448
+    },
+    {
+     "w": "saniye",
+     "t0": 9.38726530612245,
+     "t1": 9.712265306122449
+    },
+    {
+     "w": "sürer",
+     "t0": 9.747265306122449,
+     "t1": 10.026265306122449
+    },
+    {
+     "w": "ve",
+     "t0": 10.084265306122449,
+     "t1": 10.165265306122448
+    },
+    {
+     "w": "günde",
+     "t0": 10.212265306122449,
+     "t1": 10.455265306122449
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 10.49026530612245,
+     "t1": 10.89726530612245
+    },
+    {
+     "w": "30",
+     "t0": 10.955265306122449,
+     "t1": 11.164265306122449
+    },
+    {
+     "w": "dakika",
+     "t0": 11.198265306122448,
+     "t1": 11.489265306122448
+    },
+    {
+     "w": "karanlık",
+     "t0": 11.535265306122449,
+     "t1": 11.930265306122449
+    },
+    {
+     "w": "yaratır.",
+     "t0": 11.976265306122448,
+     "t1": 12.59226530612245
+    }
+   ]
+  },
+  {
+   "t0": 12.972265306122448,
+   "t1": 15.201265306122448,
+   "words": [
+    {
+     "w": "Telefona",
+     "t0": 12.972265306122448,
+     "t1": 13.41326530612245
+    },
+    {
+     "w": "bakarken",
+     "t0": 13.460265306122448,
+     "t1": 13.947265306122448
+    },
+    {
+     "w": "gözümü",
+     "t0": 13.994265306122449,
+     "t1": 14.30726530612245
+    },
+    {
+     "w": "hiç",
+     "t0": 14.34226530612245,
+     "t1": 14.49326530612245
+    },
+    {
+     "w": "kırpmıyorum!",
+     "t0": 14.551265306122449,
+     "t1": 15.201265306122448
+    }
+   ]
+  },
+  {
+   "t0": 15.584555555555555,
+   "t1": 17.953555555555557,
+   "words": [
+    {
+     "w": "Ekranda",
+     "t0": 15.584555555555555,
+     "t1": 16.037555555555556
+    },
+    {
+     "w": "bu",
+     "t0": 16.083555555555556,
+     "t1": 16.188555555555556
+    },
+    {
+     "w": "sayı",
+     "t0": 16.246555555555556,
+     "t1": 16.432555555555556
+    },
+    {
+     "w": "dakikada",
+     "t0": 16.466555555555555,
+     "t1": 16.896555555555555
+    },
+    {
+     "w": "5'e",
+     "t0": 16.931555555555555,
+     "t1": 17.128555555555554
+    },
+    {
+     "w": "kadar",
+     "t0": 17.163555555555554,
+     "t1": 17.384555555555554
+    },
+    {
+     "w": "düşer.",
+     "t0": 17.419555555555554,
+     "t1": 17.953555555555557
+    }
+   ]
+  },
+  {
+   "t0": 18.153555555555556,
+   "t1": 21.218555555555557,
+   "words": [
+    {
+     "w": "Beynin",
+     "t0": 18.153555555555556,
+     "t1": 18.443555555555555
+    },
+    {
+     "w": "araları",
+     "t0": 18.501555555555555,
+     "t1": 18.815555555555555
+    },
+    {
+     "w": "sildiği",
+     "t0": 18.861555555555555,
+     "t1": 19.174555555555557
+    },
+    {
+     "w": "için",
+     "t0": 19.198555555555558,
+     "t1": 19.395555555555557
+    },
+    {
+     "w": "o",
+     "t0": 19.465555555555557,
+     "t1": 19.511555555555557
+    },
+    {
+     "w": "karanlığı",
+     "t0": 19.569555555555556,
+     "t1": 19.929555555555556
+    },
+    {
+     "w": "asla",
+     "t0": 19.999555555555556,
+     "t1": 20.219555555555555
+    },
+    {
+     "w": "fark",
+     "t0": 20.289555555555555,
+     "t1": 20.510555555555555
+    },
+    {
+     "w": "etmezsin.",
+     "t0": 20.556555555555555,
+     "t1": 21.218555555555557
+    }
+   ]
+  },
+  {
+   "t0": 21.598589569161,
+   "t1": 24.059589569161,
+   "words": [
+    {
+     "w": "Şu",
+     "t0": 21.598589569161,
+     "t1": 21.784589569161
+    },
+    {
+     "w": "an",
+     "t0": 21.807589569161,
+     "t1": 21.888589569161
+    },
+    {
+     "w": "gözlerin",
+     "t0": 21.946589569161,
+     "t1": 22.376589569161
+    },
+    {
+     "w": "kurudu",
+     "t0": 22.434589569161,
+     "t1": 22.759589569161
+    },
+    {
+     "w": "mu?",
+     "t0": 22.794589569161,
+     "t1": 22.933589569161
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 22.968589569161,
+     "t1": 23.455589569161
+    },
+    {
+     "w": "yaz!",
+     "t0": 23.502589569161,
+     "t1": 24.059589569161
+    }
+   ]
+  }
+ ]
+}

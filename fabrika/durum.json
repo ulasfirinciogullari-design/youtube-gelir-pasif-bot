@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1258",
+    "views": "1259",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "329",
+    "views": "334",
     "reason": null
    }
   },
@@ -116,7 +116,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "4",
+    "views": "5",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "122",
+    "views": "124",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "94",
+    "views": "95",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "13",
+    "views": "15",
     "reason": null
    }
   },
@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "253",
+    "views": "370",
     "reason": null
    }
   },
@@ -386,6 +386,36 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
+    "views": "380",
+    "reason": null
+   }
+  },
+  {
+   "id": "g004",
+   "video_id": "ZX3l0E9HzMw",
+   "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
+   "title": "1 Günde Kaç Kez Göz Kırparsın?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Times Do You Blink in 1 Day?",
+    "es": "¿Cuántas veces parpadeas en 1 día?",
+    "pt": "Quantas vezes você pisca em 1 dia?",
+    "ar": "كم مرة ترمش في اليوم الواحد؟",
+    "hi": "आप 1 दिन में कितनी बार पलकें झपकाते हैं?",
+    "id": "Berapa Kali Anda Berkedip dalam 1 Hari?",
+    "fr": "Combien de fois clignes-tu des yeux en 1 jour ?",
+    "de": "Wie oft blinzelst du an 1 Tag?",
+    "ru": "Сколько раз вы моргаете за 1 день?",
+    "az": "1 gündə neçə dəfə göz qırpırsan?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792314623.589435,
+   "chars": 408,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
     "views": "0",
     "reason": null
    }
@@ -404,7 +434,8 @@
   "y004",
   "y005",
   "n003",
-  "y006"
+  "y006",
+  "g004"
  ],
  "extra": [
   {
@@ -587,6 +618,14 @@
    "mod": "igbolum",
    "title": "Güneş Gerçekte Ne Kadar Büyük?",
    "chars": 556
+  },
+  {
+   "finished": "2026-10-18T09:11:34+00:00",
+   "mod": "saatlik",
+   "title": "1 Günde Kaç Kez Göz Kırparsın?",
+   "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
+   "duration": 25.7,
+   "chars": 408
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -616,6 +655,11 @@
     "media_id": "18115594412113261",
     "url": "https://www.instagram.com/reel/DeoOAyfDO3E/",
     "at": 1792310953.616937
+   },
+   "g004": {
+    "media_id": "17983338803899032",
+    "url": "https://www.instagram.com/reel/DeoVJZBEuLe/",
+    "at": 1792314692.9286048
    }
   },
   "eski": [
