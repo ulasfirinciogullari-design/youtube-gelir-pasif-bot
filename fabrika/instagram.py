@@ -471,6 +471,11 @@ def kontrol(state, report):
     d = me(tok, state)
     report["hesap"] = {k: d.get(k) for k in ("username", "account_type", "media_count", "followers_count")}
     report["paylasim_hakki"] = call(tok, "GET", "me/content_publishing_limit", params={"fields": "quota_usage,config"})
+    try:  # needs instagram_business_manage_insights, added to the token on 2026-10-18
+        call(tok, "GET", "me/insights", params={"metric": "reach", "period": "day"})
+        report["istatistik_izni"] = "var"
+    except IGError as e:
+        report["istatistik_izni"] = f"yok: {e}"[:300]
     try:  # empty while "Allow access to messages" is off in the Instagram app
         convs = call(tok, "GET", "me/conversations", params={"platform": "instagram", "fields": "id,updated_time"})
         report["dm_konusmalari"] = len(convs.get("data", []))
