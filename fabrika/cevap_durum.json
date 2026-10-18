@@ -164,39 +164,14 @@
    }
   ]
  },
- "oneriler": [
-  {
-   "id": "o0003",
-   "series": "Ya Olsaydı?",
-   "q": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
-   "oneri": true
-  },
-  {
-   "id": "o0004",
-   "series": "Ya Olsaydı?",
-   "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
-   "oneri": true
-  },
-  {
-   "id": "o0005",
-   "series": "1 Gün Boyunca",
-   "q": "Kalbin 1 günde kaç kez atar?",
-   "oneri": true
-  },
-  {
-   "id": "o0006",
-   "series": "Ya Olsaydı?",
-   "q": "Jüpiter yok olsaydı ne olurdu?",
-   "oneri": true
-  }
- ],
+ "oneriler": [],
  "nobet": {
   "basladi": "2026-10-18T11:57:27+00:00",
   "run": "39124638763",
-  "tur": 311,
+  "tur": 322,
   "ig_cevap": 0,
   "yt_cevap": 7,
   "son_hata": null,
-  "son_tur": "2026-10-18T17:07:39+00:00"
+  "son_tur": "2026-10-18T17:18:29+00:00"
  }
 }
