@@ -10,16 +10,17 @@
  },
  "slots": {
   "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok",
-  "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/"
+  "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/",
+  "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/"
  },
  "nobet": {
   "basladi": "2026-10-19T08:44:55+00:00",
   "run": "39223756411",
-  "tur": 63,
+  "tur": 77,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-10-19T09:46:56+00:00"
+  "son_tur": "2026-10-19T10:01:45+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -28,6 +29,13 @@
    "at": 1792346467,
    "title": "Hıçkırık neden kendi kendine geçer? 🤯",
    "topic_id": "mk-018"
+  },
+  "FD6RkHQlEgU": {
+   "media_id": "17983540535898849",
+   "url": "https://www.instagram.com/reel/Deq_r3pmfyi/",
+   "at": 1792404105,
+   "title": "Pazartesi Sabahları Neden Daha Yorgun Uyanırız? 😴",
+   "topic_id": "mk-023"
   }
  }
 }
