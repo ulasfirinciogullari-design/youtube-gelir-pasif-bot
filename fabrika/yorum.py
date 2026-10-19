@@ -254,7 +254,7 @@ def judge(batch, vids, planned):
         vlines.append(f"- {vid}: {v['title']}" + (" | facts: " + " / ".join(v["facts"]) if v["facts"] else ""))
     comments = comments_json(batch)
     prompt = PROMPT.format(videos="\n".join(vlines), planned="; ".join(planned[:150]) or "-", comments=comments)
-    text, _ = yazar.call(prompt, search=True, temperature=0.6)
+    text, _ = yazar.call(prompt, search=True, temperature=0.6, cheap=True)
     items = yazar.parse_json(text).get("items", [])
     return {str(i.get("id")): i for i in items if isinstance(i, dict)}
 

@@ -6,7 +6,8 @@
   python fabrika/uret.py --mod deneme      produce, keep video and cover in fabrika/deneme/, do not upload
   python fabrika/uret.py --mod igbolum --bolum y001   voice and draw an earlier episode again, post it to Instagram only
 
-State: fabrika/durum.json (uploaded episodes, used topics). Outcome of every run: fabrika/rapor.json.
+Scripts come first from fabrika/kuyruk/ (written ahead by Claude, see fabrika/kuyruk.py); Gemini writes only
+when the queue is empty. State: fabrika/durum.json (uploaded episodes, used topics). Outcome: fabrika/rapor.json.
 """
 import argparse
 import json
@@ -122,13 +123,21 @@ def varied(pool, state, last=3):
     return next((t for t in pool if not subjects(t["q"]) & recent), pool[0])
 
 
+def same_q(text):
+    """'Kalbin 1 Günde Kaç Kez Atar?' and 'Kalbin 1 günde kaç kez atar?' are the same question."""
+    return " ".join("".join(ch for ch in text.replace("I", "ı").replace("İ", "i").lower() if ch.isalnum() or ch == " ").split())
+
+
 def pick_topic(state):
     import yazar
     conf = json.loads(TOPICS.read_text(encoding="utf-8"))
     order = conf["order"]
     series = order[len(state.get("episodes", [])) % len(order)]
-    used = set(state.get("used", [])) | set(state.get("skipped", []))
-    pool = [t for t in conf["topics"] + state.get("extra", []) if t["series"] == series and t["id"] not in used]
+    queued = {p.name.split("-", 2)[-1].removesuffix(".json") for p in (HERE / "kuyruk").glob("*.json")}
+    used = set(state.get("used", [])) | set(state.get("skipped", [])) | queued  # a queued topic is already written
+    made = {same_q(e.get("title", "")) for e in state.get("episodes", [])}  # a viewer may suggest a filmed one
+    pool = [t for t in conf["topics"] + state.get("extra", [])
+            if t["series"] == series and t["id"] not in used and same_q(t["q"]) not in made]
     pool.sort(key=lambda t: not t.get("oneri"))  # viewers' ideas from the comments go first (fabrika/yorum.py)
     if not pool:
         known = [t["q"] for t in conf["topics"] + state.get("extra", [])]
@@ -163,6 +172,27 @@ def write_episode(topic, state, report):
         last_probs = probs
         yazar.log(f"Yazım denemesi {attempt + 1} kurallara uymadı: {'; '.join(probs)}")
     raise RuntimeError("3 denemede kurallara uyan senaryo çıkmadı: " + "; ".join(last_probs))
+
+
+def from_queue(state, report):
+    """-> (file, episode) of the oldest usable queue file, or None. Unusable files move to kuyruk/bozuk/, so the
+    next morning's writer sees why and a broken file is not tried again every run."""
+    import kuyruk
+    used = set(state.get("used", [])) | set(state.get("skipped", []))
+    for p in kuyruk.files():
+        try:
+            ep = json.loads(p.read_text(encoding="utf-8"))
+            probs = kuyruk.problems(ep, used)
+        except (OSError, ValueError, TypeError, KeyError, AttributeError) as e:
+            ep, probs = None, [f"okunamadı: {type(e).__name__}: {e}"]
+        if not probs:
+            report["kuyruk"] = {"dosya": p.name, "kalan": len(kuyruk.files()) - 1}
+            return p, ep
+        report.setdefault("warnings", []).append(f"kuyruk {p.name} kullanılamadı: {'; '.join(probs)}"[:400])
+        kuyruk.BAD.mkdir(parents=True, exist_ok=True)
+        p.rename(kuyruk.BAD / p.name)
+    report["kuyruk"] = {"dosya": None, "kalan": 0}
+    return None
 
 
 def fact_check(ep, report):
@@ -244,27 +274,38 @@ def produce(state, mod, report):
             report["skipped"] = f"ElevenLabs kredisi az ({cr[1] - cr[0]} kaldı), Zirvenin Kanunu'na bırakıldı"
             return None
         report["credits_before"] = cr
-    topic = pick_topic(state)
-    report["topic"] = topic
-    yazar.log(f"Konu: {topic['id']} {topic['q']} ({topic['series']})")
-    try:
-        ep = write_episode(topic, state, report)
-    except RuntimeError:
-        state.setdefault("skipped", []).append(topic["id"])  # do not get stuck on one topic
-        raise
-    chunks = fact_check(ep, report)
-    ep["sources"] = yazar.sources(ep, chunks)
-    if not ep["sources"]:
-        report.setdefault("warnings", []).append("çalışan kaynak linki bulunamadı")
-    try:
-        ep["i18n"] = yazar.translate(ep)
-    except (yazar.GeminiError, ValueError) as e:
-        ep["i18n"] = {}
-        report.setdefault("warnings", []).append(f"çeviri yapılamadı: {e}"[:300])
-    ep.update({"id": topic["id"], "series": topic["series"], "q": topic["q"]})
-    for k in ("_chunks", "_grounded"):
-        report[k.strip("_")] = len(ep[k]) if k == "_chunks" else ep[k]
-        ep.pop(k, None)
+    queued = from_queue(state, report)
+    if queued:  # written, fact-checked and translated by Claude ahead of time: no Gemini call
+        qfile, ep = queued
+        topic = {k: ep[k] for k in ("id", "series", "q")}
+        report.update(topic=topic, yazar="Claude (kuyruk)")
+        yazar.log(f"Kuyruktan: {qfile.name} {topic['q']} ({topic['series']})")
+        ep["sources"] = yazar.sources({"facts": []}, [{"uri": u} for u in ep["sources"]], search_more=False)
+        if not ep["sources"]:
+            report.setdefault("warnings", []).append("kuyruktaki kaynak linkleri açılmadı")
+    else:
+        qfile = None
+        topic = pick_topic(state)
+        report.update(topic=topic, yazar="Gemini (kuyruk boş)")
+        yazar.log(f"Konu: {topic['id']} {topic['q']} ({topic['series']})")
+        try:
+            ep = write_episode(topic, state, report)
+        except RuntimeError:
+            state.setdefault("skipped", []).append(topic["id"])  # do not get stuck on one topic
+            raise
+        chunks = fact_check(ep, report)
+        ep["sources"] = yazar.sources(ep, chunks)
+        if not ep["sources"]:
+            report.setdefault("warnings", []).append("çalışan kaynak linki bulunamadı")
+        try:
+            ep["i18n"] = yazar.translate(ep)
+        except (yazar.GeminiError, ValueError) as e:
+            ep["i18n"] = {}
+            report.setdefault("warnings", []).append(f"çeviri yapılamadı: {e}"[:300])
+        ep.update({"id": topic["id"], "series": topic["series"], "q": topic["q"]})
+        for k in ("_chunks", "_grounded"):
+            report[k.strip("_")] = len(ep[k]) if k == "_chunks" else ep[k]
+            ep.pop(k, None)
 
     WORK.mkdir(exist_ok=True)
     timings, mix, chars = ses.make(ep, WORK)
@@ -292,6 +333,8 @@ def produce(state, mod, report):
     state.setdefault("episodes", []).append(rec)
     state.setdefault("used", []).append(topic["id"])
     save(state)  # never lose an uploaded video's id
+    if qfile:
+        qfile.unlink(missing_ok=True)
     report["url"] = rec["url"]
     if os.environ.get("YO_IG_HEMEN") and os.environ.get("YA_IG_TOKEN") and not os.environ.get("YO_IG_KAPALI"):
         try:  # Instagram is a bonus: a refusal there never fails the YouTube episode

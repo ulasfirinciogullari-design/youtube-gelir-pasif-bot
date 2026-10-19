@@ -35,11 +35,12 @@ class GeminiError(RuntimeError):
 
 
 _models = None
+_lite = []
 
 
 def models():
     """Flash text models this key can use, newest first (YO_GEMINI_MODEL first when set)."""
-    global _models
+    global _models, _lite
     if _models is None:
         key = os.environ["GEMINI_API_KEY"]
         names = []
@@ -64,14 +65,19 @@ def models():
             m = re.search(r"gemini-(\d+(?:\.\d+)?)", n)
             return (float(m.group(1)) if m else 0, "preview" not in n and "exp" not in n, -len(n))
         flash.sort(key=ver, reverse=True)
+        lite = sorted((n for n in names if "flash-lite" in n and not any(s in n for s in skip if s != "lite")),
+                      key=ver, reverse=True)
+        _lite = list(dict.fromkeys(([os.environ["YO_GEMINI_UCUZ"]] if os.environ.get("YO_GEMINI_UCUZ") else [])
+                                   + lite[:2] + ["gemini-2.5-flash-lite"]))
         _models = ([os.environ["YO_GEMINI_MODEL"]] if os.environ.get("YO_GEMINI_MODEL") else []) + flash[:4] + ["gemini-2.5-flash"]
         _models = list(dict.fromkeys(_models))
-        log(f"Gemini modelleri: {', '.join(_models)}")
+        log(f"Gemini modelleri: {', '.join(_models)}; ucuz: {', '.join(_lite)}")
     return _models
 
 
-def call(prompt, search=False, json_mode=False, temperature=0.8):
-    """-> (text, grounding chunks). Tries the models in order on quota/server errors."""
+def call(prompt, search=False, json_mode=False, temperature=0.8, cheap=False):
+    """-> (text, grounding chunks). Tries the models in order on quota/server errors. cheap: Flash-Lite models
+    first (comment replies: short answers, a fraction of the price), the normal ones only as a fallback."""
     key = os.environ["GEMINI_API_KEY"]
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": temperature}}
@@ -80,7 +86,8 @@ def call(prompt, search=False, json_mode=False, temperature=0.8):
     if search:
         body["tools"] = [{"google_search": {}}]
     last = None
-    for model in models():
+    order = models()
+    for model in (list(dict.fromkeys(_lite + order)) if cheap else order):
         for attempt in range(2):
             try:
                 r = requests.post(f"{BASE}/models/{model}:generateContent", headers={"x-goog-api-key": key},

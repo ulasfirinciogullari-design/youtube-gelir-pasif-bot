@@ -12,6 +12,7 @@ push() {
   git add fabrika/durum.json fabrika/rapor.json fabrika/yorum_rapor.json fabrika/metrikler.json 2>/dev/null || true
   git add fabrika/ig_rapor.json fabrika/ig_anahtar.enc fabrika/cevap_durum.json 2>/dev/null || true
   git add fabrika/bolumler fabrika/ses fabrika/deneme 2>/dev/null || true
+  git add -A fabrika/kuyruk 2>/dev/null || true  # used and broken queue files leave the queue
   git commit -q -m "$1 [skip ci]" || { echo "değişiklik yok"; return 0; }
   for i in 1 2 3; do
     git pull -q --rebase origin ya-olsaydi && git push -q origin HEAD:ya-olsaydi && return 0
