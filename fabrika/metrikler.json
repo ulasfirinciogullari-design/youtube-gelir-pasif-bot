@@ -1,5 +1,5 @@
 {
- "at": "2026-10-19T10:06:36+00:00",
+ "at": "2026-10-19T11:16:56+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -45,8 +45,8 @@
    "subscribersGained": 3,
    "title": "Güneş Gerçekte Ne Kadar Büyük?",
    "sources": {
-    "SHORTS": 263,
-    "YT_SEARCH": 24,
+    "SHORTS": 264,
+    "YT_SEARCH": 23,
     "YT_CHANNEL": 12,
     "SUBSCRIBER": 1,
     "PLAYLIST": 1,
@@ -65,11 +65,9 @@
    "subscribersGained": 1,
    "title": "",
    "sources": {
-    "SHORTS": 153,
-    "YT_CHANNEL": 14,
+    "SHORTS": 151,
+    "YT_CHANNEL": 9,
     "YT_SEARCH": 4,
-    "YT_OTHER_PAGE": 1,
-    "NOTIFICATION": 1,
     "NO_LINK_OTHER": 0
    }
   },
@@ -155,20 +153,6 @@
     "SHORTS": 1
    }
   },
-  "53rXVX6QpA0": {
-   "views": 2,
-   "estimatedMinutesWatched": 0,
-   "averageViewDuration": 0,
-   "averageViewPercentage": 0,
-   "likes": 0,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Kalbin 1 Günde Kaç Kez Atar?",
-   "sources": {
-    "YT_CHANNEL": 2
-   }
-  },
   "X9ouBiGHD4Q": {
    "views": 2,
    "estimatedMinutesWatched": 0,
@@ -182,6 +166,18 @@
    "sources": {
     "YT_SEARCH": 2
    }
+  },
+  "53rXVX6QpA0": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 0,
+   "averageViewPercentage": 0,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Kalbin 1 Günde Kaç Kez Atar?",
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason"
   },
   "RLuGUU-xaYE": {
    "views": 2,
