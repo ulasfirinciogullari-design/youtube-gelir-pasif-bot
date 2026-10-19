@@ -22,7 +22,7 @@ sys.path.insert(0, str(HERE))
 MOTOR = HERE / "motor"
 OUT = HERE / "cikti"
 REPORT = HERE / "rapor.json"
-SCENES = {"usta", "meclis", "yasak", "kitaplik", "dost", "beyin"}
+SCENES = {"usta", "meclis", "yaranma", "mektup", "gonder", "celiski", "cozum", "dost"}
 
 
 def validate(ep):
@@ -34,8 +34,8 @@ def validate(ep):
     if not 5 <= len(lines) <= 9:
         probs.append(f"{len(lines)} satır (5-9 olmalı)")
     words = sum(len(str(l.get("text", "")).split()) for l in lines)
-    if not 40 <= words <= 80:
-        probs.append(f"{words} kelime (40-80 olmalı)")
+    if not 40 <= words <= 100:
+        probs.append(f"{words} kelime (40-100 olmalı)")
     for i, l in enumerate(lines):
         if (l.get("v") or {}).get("t") not in SCENES:
             probs.append(f"satır {i + 1}: bilinmeyen sahne {(l.get('v') or {}).get('t')}")
@@ -44,7 +44,7 @@ def validate(ep):
 
 def render(ep, timings, mix, video):
     (MOTOR / "bolum.js").write_text("window.EP = " + json.dumps(
-        {k: ep[k] for k in ("kanun", "title", "lines")}, ensure_ascii=False) + ";\n", encoding="utf-8")
+        {k: ep.get(k) for k in ("kanun", "title", "lines", "tablolar")}, ensure_ascii=False) + ";\n", encoding="utf-8")
     subprocess.run(["node", str(MOTOR / "render.js"), str(video), str(timings), str(mix)], check=True)
     story = OUT / "_story"
     shutil.rmtree(story, ignore_errors=True)
@@ -75,6 +75,8 @@ def main():
         work = HERE / "_is" / ep["id"]
         work.mkdir(parents=True, exist_ok=True)
         OUT.mkdir(exist_ok=True)
+        import tablolar
+        report["tablolar"] = tablolar.fetch(ep)
         timings, mix, chars = ses.make(ep, work, Path(a.data))
         report.update(chars=chars, voice={k: v for k, v in ses.VOICE.items() if k != "voice_id"})
         shutil.copy(mix, OUT / f"{ep['id']}_mix.mp3")

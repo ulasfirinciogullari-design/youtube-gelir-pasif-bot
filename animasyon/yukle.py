@@ -36,6 +36,9 @@ def description(ep):
     parts = [ep.get("summary", "")]
     if ep.get("facts"):
         parts.append("Videodaki bilgiler:\n" + "\n".join(f"• {f}" for f in ep["facts"]))
+    if ep.get("tablolar"):
+        parts.append("Tablolar (kamu malı):\n" + "\n".join(f"• {t['eser']}" + (f" ({t['yil']})" if t.get("yil") else "")
+                                                     for t in ep["tablolar"] if t.get("zorunlu", True)))
     if ep.get("sources"):
         parts.append("Kaynaklar:\n" + "\n".join(ep["sources"]))
     parts.append(" ".join(ep.get("hashtags", []) + ["#shorts"]))

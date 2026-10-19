@@ -2,93 +2,110 @@
  "id": "k001",
  "kanun": "I",
  "title": {
-  "top": "Seni sevmeyenden",
-  "hi": "iyilik iste"
+  "top": "Düşmanını kazanmak için",
+  "hi": "ondan iyilik iste"
  },
- "yt_title": "Seni Sevmeyen Birini Kazanmanın En Garip Yolu 🤫 #psikoloji",
+ "yt_title": "Düşmanını Dosta Çevirmenin En Garip Yolu 🤫 #psikoloji",
  "lines": [
   {
-   "text": "Seni sevmeyen birini kazanmanın en garip yolu: ondan bir iyilik istemek.",
+   "text": "Düşmanını dosta çevirmek istiyorsan ona iyilik yapma, ondan iyilik iste.",
+   "keys": [
+    "yapma",
+    "iste"
+   ],
    "v": {
     "t": "usta",
-    "prop": "book",
-    "key": "iyilik",
-    "ghost": "sevmeyen"
+    "no": "yapma",
+    "yes": "iste"
    }
   },
   {
-   "text": "1700'lerde mecliste bir adam, Benjamin Franklin'e açıkça cephe aldı.",
+   "text": "Meclise yeni giren zengin ve eğitimli bir adam, Benjamin Franklin'e karşı uzun bir konuşma yaptı.",
    "keys": [
-    "Franklin"
+    "Franklin'e",
+    "karşı"
    ],
    "v": {
     "t": "meclis",
-    "year": "1700'ler",
-    "label": "Benjamin Franklin",
-    "key": "cephe"
+    "year": "1737 · Pensilvanya Meclisi",
+    "who": "Benjamin",
+    "key": "karşı",
+    "tablo": "franklin"
    }
   },
   {
-   "text": "Franklin ne yalvardı, ne de hediye verdi.",
-   "v": {
-    "t": "yasak",
-    "items": [
-     {
-      "i": "yalvar",
-      "label": "Yalvarmak",
-      "key": "yalvardı"
-     },
-     {
-      "i": "hediye",
-      "label": "Hediye",
-      "key": "hediye"
-     }
-    ]
-   }
-  },
-  {
-   "text": "Sadece adamın kütüphanesindeki nadir bir kitabı ödünç istedi.",
+   "text": "Çoğu insan böyle birine yaranmaya çalışır.",
    "keys": [
-    "nadir"
+    "yaranmaya"
    ],
    "v": {
-    "t": "kitaplik",
-    "key": "nadir",
-    "fly": "kitabı",
-    "note": "ödünç",
-    "label": "Tek bir not"
+    "t": "yaranma",
+    "key": "yaranmaya",
+    "label": "Çoğu insan"
    }
   },
   {
-   "text": "Adam kitabı hemen gönderdi ve ikisi ömür boyu dost oldu.",
+   "text": "Franklin tam tersini yaptı: adamın çok nadir bir kitabı olduğunu duydu ve onu ödünç istedi.",
    "keys": [
+    "tersini",
+    "nadir",
+    "ödünç"
+   ],
+   "v": {
+    "t": "mektup",
+    "key": "tersini",
+    "book": "nadir",
+    "ask": "ödünç",
+    "note": "Nadir kitabınızı birkaç günlüğüne ödünç alabilir miyim?"
+   }
+  },
+  {
+   "text": "Adam kitabı hemen gönderdi.",
+   "keys": [
+    "hemen"
+   ],
+   "v": {
+    "t": "gonder",
+    "key": "hemen"
+   }
+  },
+  {
+   "text": "Psikologlara göre o an kafasında bir çelişki başladı: \"Sevmediğim birine neden yardım ettim?\"",
+   "keys": [
+    "çelişki",
+    "sevmediğim",
+    "yardım"
+   ],
+   "v": {
+    "t": "celiski",
+    "key": "çelişki",
+    "no": "sevmediğim",
+    "yes": "yardım"
+   }
+  },
+  {
+   "text": "Beyni bunu tek yolla çözdü: \"Demek ki onu aslında seviyorum.\"",
+   "keys": [
+    "seviyorum"
+   ],
+   "v": {
+    "t": "cozum",
+    "key": "seviyorum",
+    "label": "Ben Franklin etkisi"
+   }
+  },
+  {
+   "text": "Bir sonraki toplantıda adam Franklin'le ilk kez kendisi konuştu ve ölene kadar dost kaldılar.",
+   "keys": [
+    "ilk",
     "dost"
    ],
    "v": {
     "t": "dost",
-    "give": "gönderdi",
+    "walk": "adam",
+    "talk": "konuştu",
     "key": "dost",
-    "label": "Ömür boyu dost"
-   }
-  },
-  {
-   "text": "Çünkü beyin, iyilik yaptığı kişiyi sevdiğine kendini ikna eder.",
-   "keys": [
-    "beyin"
-   ],
-   "v": {
-    "t": "beyin",
-    "label": "Ben Franklin etkisi",
-    "steps": [
-     {
-      "text": "Ona iyilik yaptım",
-      "key": "iyilik"
-     },
-     {
-      "text": "Demek ki onu seviyorum",
-      "key": "sevdiğine"
-     }
-    ]
+    "label": "Ölene kadar dost"
    }
   },
   {
@@ -100,15 +117,16 @@
   }
  ],
  "facts": [
-  "Benjamin Franklin otobiyografisinde, Pennsylvania meclisinde kendisine karşı konuşan yeni bir üyeden nadir bir kitabı ödünç istediğini yazar.",
-  "Adam kitabı hemen gönderdi; Franklin bir hafta sonra teşekkür notuyla geri verdi ve ikisi adamın ölümüne kadar dost kaldı.",
-  "Bu etki 1969'da Jecker ve Landy'nin deneyiyle sınandı: kendisinden iyilik istenen kişiler, iyilik istemeyen kişiyi daha çok sevdi."
+  "Franklin otobiyografisinde 1737'de meclis kâtipliğine yeniden aday gösterildiğinde, yeni bir üyenin (zengin ve eğitimli bir beyefendi) başka bir adayı desteklemek için ona karşı uzun bir konuşma yaptığını yazar.",
+  "Franklin ona yaranmaya çalışmadı; adamın kütüphanesinde çok nadir ve ilginç bir kitap olduğunu duyunca birkaç günlüğüne ödünç istedi. Adam kitabı hemen gönderdi, Franklin bir hafta sonra teşekkür notuyla iade etti.",
+  "Bir sonraki toplantıda adam Franklin'le ilk kez kendisi konuştu, hem de nezaketle; ikisi adamın ölümüne kadar dost kaldı.",
+  "Psikologlar bunu bilişsel çelişkiyle açıklar; Jecker ve Landy'nin 1969 deneyinde kendisinden iyilik istenen kişiler, iyilik isteyeni daha çok sevdi."
  ],
  "sources": [
   "https://www.gutenberg.org/ebooks/20203",
   "https://doi.org/10.1177/001872676902200407"
  ],
- "summary": "Seni sevmeyen birini kazanmak için ona hediye almak ya da yalvarmak yerine, ondan küçük bir iyilik iste. Benjamin Franklin meclisteki rakibini nadir bir kitabı ödünç isteyerek dostuna çevirdi. Psikologlar buna Ben Franklin etkisi diyor: insan, iyilik yaptığı kişiyi sevdiğine kendini ikna eder.",
+ "summary": "Düşmanını dosta çevirmek istiyorsan ona iyilik yapma, ondan küçük bir iyilik iste. 1737'de Pensilvanya Meclisi'nde zengin ve eğitimli yeni bir üye Benjamin Franklin'e karşı uzun bir konuşma yaptı. Franklin ona yaranmaya çalışmadı; adamın nadir bir kitabını ödünç istedi. Adam kitabı gönderdi ve kafasında bir çelişki başladı: sevmediği birine neden yardım etmişti? Beyni bunu \"demek ki onu seviyorum\" diye çözdü. Bir sonraki toplantıda adam Franklin'le ilk kez kendisi konuştu ve ölene kadar dost kaldılar. Psikologlar buna Ben Franklin etkisi diyor.",
  "tags": [
   "ben franklin etkisi",
   "psikoloji",
@@ -130,5 +148,26 @@
   "#psikoloji",
   "#benfranklinetkisi",
   "#zirveninkanunu"
+ ],
+ "tablolar": [
+  {
+   "id": "franklin",
+   "eser": "Joseph Siffred Duplessis, Benjamin Franklin portresi",
+   "yil": 1778,
+   "zorunlu": true,
+   "files": [
+    "Joseph_Siffrein_Duplessis_-_Benjamin_Franklin_-_Google_Art_Project.jpg",
+    "BenFranklinDuplessis.jpg",
+    "Benjamin_Franklin_by_Joseph_Siffrein_Duplessis.jpg",
+    "Benjamin_Franklin_by_Joseph_Duplessis_1778.jpg"
+   ],
+   "ara": "Duplessis Benjamin Franklin portrait 1778"
+  },
+  {
+   "id": "meclis",
+   "eser": "Pensilvanya Meclis Binası (State House), Philadelphia",
+   "zorunlu": false,
+   "ara": "State House Philadelphia 1778 Peale engraving"
+  }
  ]
 }
