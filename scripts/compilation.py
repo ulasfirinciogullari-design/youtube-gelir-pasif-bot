@@ -7,6 +7,7 @@ themselves, best first, with one chapter per Short. Nothing is generated, so it 
 
     python scripts/compilation.py --data channel-data --out output/derleme [--privacy private] [--count 15]
     python scripts/compilation.py ... --no-upload   # build the video and its storyboard, upload nothing
+    python scripts/compilation.py --data channel-data --publish VIDEO_ID   # make a recorded compilation public
 
 Standard library plus ffmpeg. The record of every upload goes to <data>/compilations.json, which the workflow
 commits to channel-data.
@@ -36,10 +37,13 @@ import comment_replies  # noqa: E402
 STATE_FILE = "compilations.json"
 UPLOADS_FILE = "uploads.json"
 WINDOW = timedelta(days=7)
+GAP = timedelta(days=5)  # a published compilation within this long means this week's is done
 COUNT = 15
 MIN_COUNT = 5  # fewer than this is not worth a video
 WIDTH, HEIGHT, FPS = 1920, 1080, 30
 UPLOAD_URL = "https://www.googleapis.com/upload/youtube/v3"
+API_URL = "https://www.googleapis.com/youtube/v3"
+STATUS_FIELDS = ("embeddable", "license", "publicStatsViewable", "selfDeclaredMadeForKids", "containsSyntheticMedia")
 CATEGORY = "27"  # Education, like the Shorts
 FIXED_TAGS = ["zirvenin kanunu", "merak", "bilgi", "ilginç bilgiler", "bilim", "derleme", "haftanın en iyileri"]
 TAGS_CHARS = 450  # YouTube allows 500 characters of tags, counting separators
@@ -314,6 +318,59 @@ def build(data_dir: Path, out_dir: Path, now: datetime, count: int = COUNT, env=
     return {"video": video, "cover": cover, "story": story, "body": body, "shorts": picked, "seconds": round(length)}
 
 
+def published_recently(data_dir: Path, now: datetime, gap: timedelta = GAP) -> dict | None:
+    """The newest public compilation recorded within `gap`, if any. An unlisted one is not this week's release."""
+    for record in reversed(load_json(data_dir / STATE_FILE, [])):
+        if not isinstance(record, dict) or record.get("privacy") != "public":
+            continue
+        try:
+            if timedelta(0) <= now - datetime.fromisoformat(record.get("published_at") or record["at"]) <= gap:
+                return record
+        except (KeyError, TypeError, ValueError):
+            continue
+    return None
+
+
+def publish(video_id: str, env=os.environ, send=_upload_request) -> None:
+    """Make an uploaded video public, keeping the rest of its status as it is (an update replaces the whole status,
+    so the writable fields are read first)."""
+    tok = comment_replies.access_token(env)
+    auth = {"Authorization": f"Bearer {tok}"}
+    query = urllib.parse.urlencode({"part": "status", "id": video_id})
+    with send(f"{API_URL}/videos?{query}", None, auth, method="GET") as resp:
+        items = json.loads(resp.read().decode("utf-8")).get("items") or []
+    if not items:
+        raise CompilationError(f"{video_id} bu kanalda bulunamadı")
+    current = items[0].get("status") or {}
+    status = {k: current[k] for k in STATUS_FIELDS if k in current}
+    status["privacyStatus"] = "public"
+    body = json.dumps({"id": video_id, "status": status}).encode("utf-8")
+    with send(f"{API_URL}/videos?part=status", body, {**auth, "Content-Type": "application/json; charset=UTF-8"},
+              method="PUT") as resp:
+        privacy = (json.loads(resp.read().decode("utf-8")).get("status") or {}).get("privacyStatus")
+    if privacy != "public":
+        raise CompilationError(f"YouTube görünürlüğü {privacy!r} olarak döndü")
+
+
+def publish_recorded(data_dir: Path, video_id: str, now: datetime) -> int:
+    """Publish a compilation this script uploaded, and mark it published so its Shorts are used up. Any other video
+    is refused: this never touches the channel's Shorts."""
+    state = load_json(data_dir / STATE_FILE, [])
+    record = next((r for r in state if isinstance(r, dict) and r.get("video_id") == video_id), None)
+    if record is None:
+        print(f"❌ {video_id} kayıtlı bir derleme değil, dokunulmadı")
+        return 1
+    try:
+        publish(video_id)
+    except (RuntimeError, OSError) as e:
+        print(f"❌ Yayınlanamadı: {e}")
+        return 1
+    record.update(privacy="public", published_at=now.isoformat(timespec="seconds"))
+    (data_dir / STATE_FILE).write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"🎉 Derleme herkese açık: https://www.youtube.com/watch?v={video_id}")
+    return 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--data", type=Path, default=Path("channel-data"))
@@ -321,8 +378,17 @@ def main(argv=None) -> int:
     parser.add_argument("--privacy", default="private", choices=["private", "unlisted", "public"])
     parser.add_argument("--count", type=int, default=COUNT)
     parser.add_argument("--no-upload", action="store_true")
+    parser.add_argument("--publish", metavar="VIDEO_ID", help="make a recorded compilation public and stop")
     args = parser.parse_args(argv)
     now = datetime.now(timezone.utc)
+    if args.publish:
+        return publish_recorded(args.data, args.publish, now)
+    if args.privacy != "private" and not args.no_upload:
+        # The weekly run starts from several schedule ticks and a backup dispatch; the first one does the work.
+        done = published_recently(args.data, now)
+        if done:
+            print(f"ℹ️ Bu haftanın derlemesi zaten yayında: https://www.youtube.com/watch?v={done.get('video_id')}")
+            return 0
     try:
         result = build(args.data, args.out, now, args.count)
     except (RuntimeError, OSError, subprocess.SubprocessError) as e:

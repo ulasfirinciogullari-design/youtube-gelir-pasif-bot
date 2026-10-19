@@ -1,9 +1,17 @@
 name: Zirvenin Kanunu haftalık derleme
 
-# The week's most watched Shorts joined into one 16:9 video with chapters (scripts/compilation.py). Started by
-# hand for now; the first one goes up private for Ulaş to check.
+# The week's most watched Shorts joined into one 16:9 video with chapters (scripts/compilation.py). Goes up public
+# every Sunday at TR 20:00 (17:00 UTC). GitHub drops many schedule ticks, so several Sunday ticks start it and a
+# Claude routine dispatches it as a backup; compilation.py skips when this week's is already public. By hand the
+# default is private, and yayinla makes a recorded compilation public.
 
 on:
+  schedule:
+    - cron: '0 17 * * 0'
+    - cron: '30 17 * * 0'
+    - cron: '0 18 * * 0'
+    - cron: '0 19 * * 0'
+    - cron: '0 20 * * 0'
   workflow_dispatch:
     inputs:
       gorunurluk:
@@ -25,6 +33,11 @@ on:
         required: true
         default: true
         type: boolean
+      yayinla:
+        description: 'Yüklenmiş bir derlemeyi herkese açık yap (video kimliği; boşsa yeni derleme hazırlanır)'
+        required: false
+        default: ''
+        type: string
 
 concurrency:
   group: zk-derleme
@@ -65,10 +78,14 @@ jobs:
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
-          GORUNURLUK: ${{ inputs.gorunurluk }}
-          ADET: ${{ inputs.adet }}
-          YUKLE: ${{ inputs.yukle }}
+          GORUNURLUK: ${{ inputs.gorunurluk || 'public' }}
+          ADET: ${{ inputs.adet || '15' }}
+          YUKLE: ${{ github.event_name == 'schedule' || inputs.yukle }}
+          YAYINLA: ${{ inputs.yayinla }}
         run: |
+          if [ -n "$YAYINLA" ]; then
+            exec python scripts/compilation.py --data channel-data --publish "$YAYINLA"
+          fi
           set -- --data channel-data --out output/derleme --privacy "$GORUNURLUK" --count "$ADET"
           [ "$YUKLE" = "true" ] || set -- "$@" --no-upload
           python scripts/compilation.py "$@"
