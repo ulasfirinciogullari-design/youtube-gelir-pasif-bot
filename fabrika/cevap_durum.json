@@ -85,6 +85,31 @@
     1792423453,
     "r",
     "UgyKvO6EcX9Ls74PuGt4AaABAg.Ac94AdfoDwMAc94XGcpc4G"
+   ],
+   "Ugw40g-2w6PGz-y_ypp4AaABAg.Ac6T1XTgZgjAc92QwvsK5P": [
+    1792431384,
+    "r",
+    "Ugw40g-2w6PGz-y_ypp4AaABAg.Ac6T1XTgZgjAc9JeQjYmZf"
+   ],
+   "Ugxjp3bH6tnvqeeWo2d4AaABAg.Ac6XfazaoVeAc6rdTyVHVW": [
+    1792431385,
+    "r",
+    "Ugxjp3bH6tnvqeeWo2d4AaABAg.Ac6XfazaoVeAc9JeVPk2L8"
+   ],
+   "UgyLxp6knZyB7vUl49N4AaABAg.Ac6gAj2_ze-Ac6q6Exj-o-": [
+    1792431386,
+    "r",
+    "UgyLxp6knZyB7vUl49N4AaABAg.Ac6gAj2_ze-Ac9Je_najAF"
+   ],
+   "Ugzuo-SbqukJ-rxPSft4AaABAg": [
+    1792431386,
+    "r",
+    "Ugzuo-SbqukJ-rxPSft4AaABAg.Ac6eYdV5lekAc9JedZ4srF"
+   ],
+   "UgxHAAxxStetDfg4W1t4AaABAg": [
+    1792431387,
+    "r",
+    "UgxHAAxxStetDfg4W1t4AaABAg.Ac6eXWuXbHyAc9JehsEyL0"
    ]
   },
   "son": [
@@ -177,8 +202,55 @@
     "video": "ActwPx-yTCQ",
     "comment": "👍",
     "reply": "Beğendiğini görmek harika bir his!\n— Bit 🤖"
+   },
+   {
+    "at": 1792431384,
+    "video": "f6WyXXJWASs",
+    "comment": "Ya ay 5 kat daha büyük olsaydı",
+    "reply": "Gelgitler devasa tsunamilere dönüşür, kıyı şehirleri düzenli olarak sular altında kalırdı. Bu fikri de video listemize aldık.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792431385,
+    "video": "RLuGUU-xaYE",
+    "comment": "bir insan en çok kaç kilo kaldıra bilir?❤😊",
+    "reply": "Resmi deadlift rekorunda bir insan tam 501 kilo kaldırmayı başardı; bu neredeyse küçük bir araba ağırlığı demektir.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792431386,
+    "video": "bqFeef1QL08",
+    "comment": "çok saol cevapladığın için",
+    "reply": "Rica ederim, merakın hiç bitmesin! Yeni videolarda görüşmek üzere. 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1792431386,
+    "video": "4GSDZD52uI0",
+    "comment": "6ey",
+    "reply": "Klavyen minik bir dans yapmış gibi görünüyor, kocaman selamlar!\n— Bit 🤖"
+   },
+   {
+    "at": 1792431387,
+    "video": "4GSDZD52uI0",
+    "comment": "I2e5ıdeeıaq6wa7suswe ,лслпшущалг шкгырпкщ",
+    "reply": "Klavyen gizli bir robot dili konuşmaya karar vermiş gibi, selamlar!\n— Bit 🤖"
    }
-  ]
+  ],
+  "sayilar": {
+   "UgyKvO6EcX9Ls74PuGt4AaABAg": 1,
+   "UgxCKx_RqwRxkVVNKQV4AaABAg": 1,
+   "UgyqekfoIVfriVX5INN4AaABAg": 1,
+   "UgxbwSM3Jh-XBoiOuZV4AaABAg": 1,
+   "Ugxmdly0Ot5Op3bayMt4AaABAg": 1,
+   "UgyvS1jFfdNvNUJ2K694AaABAg": 1,
+   "UgyLxp6knZyB7vUl49N4AaABAg": 2,
+   "UgzgojEqqmsYhUkkVvh4AaABAg": 1,
+   "Ugxjp3bH6tnvqeeWo2d4AaABAg": 2,
+   "Ugzmp3psy3XR4N9WrXt4AaABAg": 1,
+   "Ugy6zFUSm-ycmoy0Ir94AaABAg": 1,
+   "Ugw40g-2w6PGz-y_ypp4AaABAg": 2,
+   "UgzuMTygOOhUwz2nxON4AaABAg": 1,
+   "UgzmGQYg_zUuO-J7ZfJ4AaABAg": 1,
+   "UgypMdIQNONBpTOwYhx4AaABAg": 1
+  }
  },
  "ig": {
   "done": {
@@ -234,12 +306,12 @@
  },
  "oneriler": [],
  "nobet": {
-  "basladi": "2026-10-19T14:24:01+00:00",
-  "run": "39268567254",
-  "tur": 186,
-  "ig_cevap": 1,
-  "yt_cevap": 2,
+  "basladi": "2026-10-19T17:36:03+00:00",
+  "run": "39295484892",
+  "tur": 1,
+  "ig_cevap": 0,
+  "yt_cevap": 5,
   "son_hata": null,
-  "son_tur": "2026-10-19T17:29:03+00:00"
+  "son_tur": "2026-10-19T17:36:26+00:00"
  }
 }

@@ -1,24 +1,55 @@
 {
- "started": "2026-10-19T15:24:01+00:00",
+ "started": "2026-10-19T17:36:03+00:00",
  "deneme": false,
  "mod": "nöbet",
  "threads": 19,
- "new": 1,
  "quiet": 0,
- "sent_last_24h": 9,
+ "new": 5,
+ "sent_last_24h": 6,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgyKvO6EcX9Ls74PuGt4AaABAg",
-   "video": "ActwPx-yTCQ",
-   "comment": "👍",
-   "reply": "Beğendiğini görmek harika bir his!\n— Bit 🤖",
+   "id": "Ugw40g-2w6PGz-y_ypp4AaABAg.Ac6T1XTgZgjAc92QwvsK5P",
+   "video": "f6WyXXJWASs",
+   "comment": "Ya ay 5 kat daha büyük olsaydı",
+   "cevaba_cevap": true,
+   "reply": "Gelgitler devasa tsunamilere dönüşür, kıyı şehirleri düzenli olarak sular altında kalırdı. Bu fikri de video listemize aldık.\n— Profesör Pi 🔭",
+   "result": "gönderildi"
+  },
+  {
+   "id": "Ugxjp3bH6tnvqeeWo2d4AaABAg.Ac6XfazaoVeAc6rdTyVHVW",
+   "video": "RLuGUU-xaYE",
+   "comment": "bir insan en çok kaç kilo kaldıra bilir?❤😊",
+   "cevaba_cevap": true,
+   "reply": "Resmi deadlift rekorunda bir insan tam 501 kilo kaldırmayı başardı; bu neredeyse küçük bir araba ağırlığı demektir.\n— Profesör Pi 🔭",
+   "result": "gönderildi"
+  },
+  {
+   "id": "UgyLxp6knZyB7vUl49N4AaABAg.Ac6gAj2_ze-Ac6q6Exj-o-",
+   "video": "bqFeef1QL08",
+   "comment": "çok saol cevapladığın için",
+   "cevaba_cevap": true,
+   "reply": "Rica ederim, merakın hiç bitmesin! Yeni videolarda görüşmek üzere. 🚀\n— Bit 🤖",
+   "result": "gönderildi"
+  },
+  {
+   "id": "Ugzuo-SbqukJ-rxPSft4AaABAg",
+   "video": "4GSDZD52uI0",
+   "comment": "6ey",
+   "reply": "Klavyen minik bir dans yapmış gibi görünüyor, kocaman selamlar!\n— Bit 🤖",
+   "result": "gönderildi"
+  },
+  {
+   "id": "UgxHAAxxStetDfg4W1t4AaABAg",
+   "video": "4GSDZD52uI0",
+   "comment": "I2e5ıdeeıaq6wa7suswe ,лслпшущалг шкгырпкщ",
+   "reply": "Klavyen gizli bir robot dili konuşmaya karar vermiş gibi, selamlar!\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-19T15:24:13+00:00"
+ "finished": "2026-10-19T17:36:26+00:00"
 }
