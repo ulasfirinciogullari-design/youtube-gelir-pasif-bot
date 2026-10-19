@@ -40,6 +40,7 @@ from app.services.channel_memory import load_uploads, record_upload, used_topic_
 from app.services.competitor_scan import dna_age_days, load_dna, run_scan
 from app.services.seo_pack import build_seo_pack
 from app.services import tiktok
+from app.services import script_queue
 from app.services.original_script import write_script
 from app.services.original_visuals import build_visual_track
 from app.services.video_critic import critique, format_critique
@@ -948,6 +949,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     seo = build_seo_pack(
         title, topic["topic"], " ".join(s["text"] for s in script["scenes"]), script,
         SERIES[series]["tags"], SERIES[series]["hashtags"], f"{MARKER_PREFIX}{topic['id']}", series=series,
+        prewritten=script.get("seo"),
     )
     print(f"       SEO: {seo['seo_engine']} | {len(seo['tags'])} etiket | {len(seo['localizations'])} dil")
     meta = {
@@ -985,8 +987,9 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     except Exception as e:
         print(f"ℹ️ Kalite raporu notu: {e}")
 
-    if series == "merak" and os.environ.get("GEMINI_API_KEY"):
-        # A Gemini editor compares the finished Short with a reference Short; it never blocks the upload.
+    if series == "merak" and os.environ.get("GEMINI_API_KEY") and provider != script_queue.PROVIDER:
+        # A Gemini editor compares the finished Short with a reference Short; it never blocks the upload. It only
+        # writes a score into the meta, so Claude's queued scripts skip it to save the call.
         verdict = critique(final_mp4, work_dir)
         if verdict:
             print(format_critique(verdict))
@@ -1080,11 +1083,17 @@ def main(argv=None) -> int:
             print(f"ℹ️ Rakip analizi yenilenemedi: {str(e)[:200]}")
     series = pick_series(args.series, DATA_DIR, args.topic_id)
     metrics = load_metrics()
-    topic = choose_topic(published, args.topic_id, dna, series=series, metrics=metrics)
+    # A script Claude wrote ahead of time comes first (script_queue); it saves the Gemini topic, script, fact-check,
+    # SEO and critic calls. A run asked for a topic id keeps the Gemini flow.
+    queued = script_queue.take(published) if series == "merak" and not args.topic_id else None
+    topic = queued["topic"] if queued else choose_topic(published, args.topic_id, dna, series=series, metrics=metrics)
     print(f"🎯 Seri {series} | konu {topic['id']}: {topic['topic']}")
 
     clip_pool = None
-    if series == "merak":
+    if queued:
+        script, provider = queued["script"], script_queue.PROVIDER
+        print(f"📝 Claude'un yazdığı metin: {queued['file']}")
+    elif series == "merak":
         # Channel top titles and competitor rules come from history/film videos, so the merak prompts use their own.
         topic, script, provider, clip_pool = merak_script(topic, published, bool(args.topic_id), dna,
                                                           metrics=metrics)
