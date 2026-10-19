@@ -1,0 +1,17 @@
+{
+ "started": "2026-10-19T22:43:46+00:00",
+ "bolum": "k001",
+ "mod": "deneme",
+ "chars": 391,
+ "voice": {
+  "model": "eleven_flash_v2_5",
+  "speed": 1.08,
+  "stability": 0.42,
+  "style": 0.5,
+  "similarity_boost": 0.8
+ },
+ "duration": 23.65,
+ "render_seconds": 85,
+ "title": "Seni Sevmeyen Birini Kazanmanın En Garip Yolu 🤫 #psikoloji",
+ "finished": "2026-10-19T22:45:20+00:00"
+}
