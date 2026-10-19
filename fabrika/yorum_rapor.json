@@ -1,24 +1,25 @@
 {
- "started": "2026-10-18T18:47:39+00:00",
+ "started": "2026-10-19T05:03:02+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 15,
+ "threads": 16,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 8,
+ "sent_last_24h": 9,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "Ugxmdly0Ot5Op3bayMt4AaABAg",
+   "id": "UgxbwSM3Jh-XBoiOuZV4AaABAg",
    "video": "RLuGUU-xaYE",
-   "comment": "bir insan en çok kaç kilo kaldıra bilir?",
-   "reply": "Resmi deadlift rekoru 501 kilogramdır. Kas ve tendonlarımızın dayanabileceği teorik sınırın da bu seviyelere, yani yaklaşık yarım tona oldukça yakın olduğu hesaplanıyor.\n— Profesör Pi 🔭",
+   "comment": "Peki evren yok olsaydı tek bir dünya kalsaydı ne olurdu?",
+   "reply": "Evren yok olursa uzay-zaman dokusu da kalmayacağı için Dünya'nın bulunabileceği bir boşluk bile olmazdı! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭",
+   "topic": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-18T18:48:13+00:00"
+ "finished": "2026-10-19T05:03:14+00:00"
 }

@@ -75,6 +75,11 @@
     1792349293,
     "r",
     "Ugxmdly0Ot5Op3bayMt4AaABAg.Ac6rty2pW_cAc6s4WaNn8Z"
+   ],
+   "UgxbwSM3Jh-XBoiOuZV4AaABAg": [
+    1792386194,
+    "r",
+    "UgxbwSM3Jh-XBoiOuZV4AaABAg.Ac7y36q15dBAc7yT1m_Wu3"
    ]
   },
   "son": [
@@ -143,6 +148,12 @@
     "video": "RLuGUU-xaYE",
     "comment": "bir insan en çok kaç kilo kaldıra bilir?",
     "reply": "Resmi deadlift rekoru 501 kilogramdır. Kas ve tendonlarımızın dayanabileceği teorik sınırın da bu seviyelere, yani yaklaşık yarım tona oldukça yakın olduğu hesaplanıyor.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792386194,
+    "video": "RLuGUU-xaYE",
+    "comment": "Peki evren yok olsaydı tek bir dünya kalsaydı ne olurdu?",
+    "reply": "Evren yok olursa uzay-zaman dokusu da kalmayacağı için Dünya'nın bulunabileceği bir boşluk bile olmazdı! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -192,15 +203,21 @@
    "series": "Ya Olsaydı?",
    "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0008",
+   "series": "Ya Olsaydı?",
+   "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "nobet": {
   "basladi": "2026-10-19T04:58:02+00:00",
   "run": "39201871913",
-  "tur": 1,
+  "tur": 6,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-19T04:58:07+00:00"
+  "son_tur": "2026-10-19T05:03:14+00:00"
  }
 }
