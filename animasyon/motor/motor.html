@@ -69,7 +69,7 @@ const VIS = {
         glow(980, 760, 560, rgba(C.red, 1), .28 * gk * (1 - warm));
         ctx.save(); ctx.globalAlpha = gk;
         person('rakip', lerp(980, 870, gk), 880, .8, -1, mixColor(C.red, C.gold, warm), t,
-          { arm: 'cross', armK: 1 - warm, mood: warm > .5 ? 'calm' : 'angry', lean: lerp(-.03, .05, warm) });
+          { arm: 'cross', armK: 1 - warm, mood: warm > .5 ? 'calm' : 'angry', lean: lerp(-.03, .05, warm), nod: lerp(-.1, .04, warm) });
         ctx.restore();
       }
     }
@@ -96,10 +96,10 @@ const VIS = {
     const cx = lerp(470, 610, eio(prog(t, kt - .6, kt + .5))), z = 1.1 + .05 * eio(prog(t, kt - .6, kt + .5));
     cam(cx, 920, z, () => hall(t), .5);
     cam(cx, 920, z, () => {
-      person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t, { mood: 'calm', lean: -.03 * pk });
+      person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t, { mood: 'calm', lean: -.03 * pk, nod: -.06 * pk });
       const shout = t > kt && t < L.t1 ? .4 + .6 * Math.abs(Math.sin(t * 13)) : 0;
       person('rakip', lerp(860, 780, rk), 930, 1.0, -1, mixColor(C.goldDim, C.red, rk), t,
-        { arm: 'point', armK: pk, mood: rk > .3 ? 'angry' : 'calm', lean: .06 * pk, talk: shout });
+        { arm: 'point', armK: pk, mood: rk > .3 ? 'angry' : 'calm', lean: .06 * pk, talk: shout, nod: .07 * pk + .05 * shout * Math.sin(t * 13) });
       fog(t, 1330, .045);
     });
     cam(cx, 920, z, () => crowd(t, 1640, C.candle), 1.4);  // the members in front move more than the stage
@@ -121,7 +121,7 @@ const VIS = {
     hits.forEach(h => { const p = prog(t, h - .15, h + .75); if (p > 0 && p < 1) no = Math.max(no, Math.sin(p * Math.PI)); });
     const fin = eo(prog(lt, 0, .5));
     ctx.save(); ctx.globalAlpha = fin;
-    person('franklin', lerp(380, 430, fin), 1250, .95, 1, C.gold, t, { arm: 'stop', armK: no, mood: 'calm', lean: -.02 * no });
+    person('franklin', lerp(380, 430, fin), 1250, .95, 1, C.gold, t, { arm: 'stop', armK: no, mood: 'calm', lean: -.02 * no, nod: no * .07 * Math.sin(t * 16) });
     ctx.restore();
     fog(t, 1420, .05);
     items.forEach((it, i) => {
@@ -169,9 +169,10 @@ const VIS = {
     cam(540, cy, z, () => hall(t), .5);
     cam(540, cy, z, () => {
       const gk = eo(prog(t, give - .4, give)), happy = c > .9 && t > kt;
-      person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c, mood: happy ? 'happy' : 'calm' });
+      const bow = eo(prog(t, kt, kt + .5)) * (1 - .5 * eo(prog(t, kt + .6, kt + 1.2)));
+      person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c, mood: happy ? 'happy' : 'calm', nod: .14 * bow });
       person('rakip', rx, 930, 1.0, -1, rim, t, { arm: 'give', armK: Math.max(gk * (1 - bk * .4), c), arm2: 'shake', armMix: c,
-        mood: happy ? 'happy' : bk > .3 ? 'calm' : 'angry', lean: .04 * gk * (1 - c) });
+        mood: happy ? 'happy' : bk > .3 ? 'calm' : 'angry', lean: .04 * gk * (1 - c), nod: .06 * gk * (1 - c) + .14 * bow });
       fog(t, 1330, .045);
       if (bk > 0 && bk < 1) {  // the book travels from his hands to Franklin's
         const x = lerp(rx - 120, fx + 120, eio(bk)), y = 1060 - Math.sin(bk * Math.PI) * 140;

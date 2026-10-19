@@ -175,8 +175,14 @@ function person(who, x, y, s, dir, rim, t, o = {}) {
   g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, sil.width, sil.height);
   g.setTransform(s, 0, 0, s, -FIG_BOX[0] * s, -FIG_BOX[1] * s);
   g.fillStyle = '#000'; g.strokeStyle = '#000'; g.lineCap = 'round'; g.lineJoin = 'round';
-  g.fill(FIGURE);
+  // the head turns on the neck: nod > 0 tips it forward, plus a slow idle sway so nobody stands frozen
+  const nod = (o.nod || 0) + .018 * Math.sin(t * 1.25 + (dir > 0 ? 0 : 2.2));
+  const neck = c => { c.translate(-14, 34); c.rotate(nod); c.translate(14, -34); };
+  g.save(); g.beginPath(); g.rect(-400, 30, 1000, 1200); g.clip(); g.fill(FIGURE); g.restore();
+  g.save(); neck(g);
+  g.save(); g.beginPath(); g.rect(-400, -420, 1000, 466); g.clip(); g.fill(FIGURE); g.restore();
   if (who === 'franklin') g.fill(HAIR); else { g.fill(QUEUE); g.fill(TRICORN); }
+  g.restore();
   if (arm && k > 0) {
     let { el, wr } = armPose(arm, k); const sh = [-14, 116];
     if (o.arm2 && o.armMix > 0) {
@@ -210,13 +216,13 @@ function person(who, x, y, s, dir, rim, t, o = {}) {
   ctx.strokeStyle = rgba(rim, .3); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-60, 470); ctx.quadraticCurveTo(-10, 480, 40, 466); ctx.stroke();
   ctx.restore();
   if (who === 'franklin') {  // spectacles catching the light
-    ctx.save(); ctx.scale(s, s); ctx.strokeStyle = rgba(C.gold2, .95); ctx.lineWidth = 3.2; ctx.shadowColor = C.gold; ctx.shadowBlur = 10;
+    ctx.save(); ctx.scale(s, s); neck(ctx); ctx.strokeStyle = rgba(C.gold2, .95); ctx.lineWidth = 3.2; ctx.shadowColor = C.gold; ctx.shadowBlur = 10;
     ctx.beginPath(); ctx.roundRect(70, -134, 30, 18, 7); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(70, -127); ctx.lineTo(14, -122); ctx.stroke();
     ctx.restore();
   }
   if (o.mood || o.talk) {
-    ctx.save(); ctx.scale(s, s);
+    ctx.save(); ctx.scale(s, s); neck(ctx);
     if (o.mood) { ctx.save(); ctx.translate(58, -122); ctx.scale(1.55, 1.55); profileEye(0, 0, o.mood, o.eye || rim, t, dir > 0 ? 0 : 1.6); ctx.restore(); }
     if (o.talk > .05) {  // the lips part: a sliver of light at the mouth
       ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.shadowColor = o.eye || rim; ctx.shadowBlur = 12;
