@@ -12,16 +12,17 @@
   "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok",
   "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/",
   "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/",
-  "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/"
+  "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/",
+  "2026-10-19T18": "HVLl6Fm8pUE https://www.instagram.com/reel/Der2oOEAaQ0/"
  },
  "nobet": {
   "basladi": "2026-10-19T14:25:09+00:00",
   "run": "39267230005",
-  "tur": 186,
+  "tur": 216,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-10-19T17:30:10+00:00"
+  "son_tur": "2026-10-19T18:02:00+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -44,6 +45,13 @@
    "at": 1792418506,
    "title": "Ayılar neden tam kış uykusuna yatmaz? 🐻",
    "topic_id": "mk-042"
+  },
+  "HVLl6Fm8pUE": {
+   "media_id": "18194241841403000",
+   "url": "https://www.instagram.com/reel/Der2oOEAaQ0/",
+   "at": 1792432920,
+   "title": "Ağaçkakanların Başı Neden Hiç Ağrımaz? 🤯",
+   "topic_id": "mk-044"
   }
  }
 }
