@@ -1,0 +1,262 @@
+{
+  "topic_id": "mk-045",
+  "topic": "Yarasalar neden baş aşağı uyur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x4",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yarasalar Baş Aşağı Asılırken Kas Kullanmaz! 😮",
+  "hook_text": "BAŞ AŞAĞI NEDEN UYURLAR?",
+  "description": "Yarasalar neden baş aşağı uyur?\n\nYarasalar, baş aşağı asılı kalmak için kas kullanmazlar. Onların özel tendonları, vücut ağırlıklarıyla otomatik olarak kilitlenir. Bu mekanizma sayesinde dinlenirken enerji harcamazlar ve uçuşa hızla geçebilirler.\n\nSence yarasalar uyurken kaslarını kullanır mı: Evet mi Hayır mı?\n\n#yarasa #hayvanlaralemi #bilgi #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-045",
+  "tags": [
+    "yarasa",
+    "yarasalar",
+    "yarasa nasıl uyur",
+    "yarasalar neden baş aşağı uyur",
+    "yarasa kas kullanmaz",
+    "yarasa tendonları",
+    "yarasa baş aşağı",
+    "hayvanlar alemi",
+    "ilginç hayvanlar",
+    "hayvan bilgileri",
+    "doğa bilgileri",
+    "bilimsel gerçekler",
+    "merak edilenler",
+    "hayvan davranışları",
+    "enerji harcamaz",
+    "nasıl asılırlar",
+    "özel tendonlar",
+    "bilim",
+    "doğa",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "kısa bilgiler",
+    "bat",
+    "bats",
+    "bat facts",
+    "biyoloji",
+    "shorts",
+    "keşif vakti",
+    "zirvenin kanunu",
+    "merak",
+    "yarasa nasil uyur"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Bats Don't Use Muscles to Hang Upside Down! 😮",
+      "description": "Ever wondered how bats effortlessly hang upside down? Unlike humans, they don't rely on muscle strength for this incredible feat. Their unique tendons automatically lock in place with their body weight, saving energy and allowing them to take flight instantly.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "es": {
+      "title": "¡Los Murciélagos No Usan Músculos para Colgarse Boca Abajo! 😮",
+      "description": "¿Te has preguntado cómo los murciélagos se cuelgan boca abajo sin esfuerzo? No utilizan sus músculos para mantenerse en esa posición. Sus tendones especiales se bloquean automáticamente con su propio peso, permitiéndoles descansar sin gastar energía y despegar rápidamente.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "pt": {
+      "title": "Morcegos Não Usam Músculos para Ficar Pendurados de Ponta Cabeça! 😮",
+      "description": "Já se perguntou como os morcegos conseguem se pendurar de cabeça para baixo sem esforço? Eles não usam os músculos para isso. Seus tendões especiais travam automaticamente com o peso do corpo, economizando energia e permitindo que voem rapidamente.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "de": {
+      "title": "Fledermäuse Nutzen Keine Muskeln, um Kopfüber zu Hängen! 😮",
+      "description": "Haben Sie sich jemals gefragt, wie Fledermäuse mühelos kopfüber hängen? Sie nutzen dafür keine Muskeln. Ihre speziellen Sehnen verriegeln sich automatisch mit ihrem Körpergewicht, was ihnen ermöglicht, Energie zu sparen und schnell abzuheben.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "fr": {
+      "title": "Les Chauves-souris N'utilisent Pas de Muscles pour Se Suspendre Tête en Bas! 😮",
+      "description": "Vous êtes-vous déjà demandé comment les chauves-souris se suspendent tête en bas sans effort ? Elles n'utilisent pas leurs muscles pour cela. Leurs tendons spéciaux se verrouillent automatiquement avec le poids de leur corps, leur permettant d'économiser de l'énergie et de s'envoler rapidement.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "it": {
+      "title": "I Pipistrelli Non Usano i Muscoli per Appendersi a Testa in Giù! 😮",
+      "description": "Ti sei mai chiesto come i pipistrelli riescano ad appendersi a testa in giù senza sforzo? Non usano i muscoli per farlo. I loro tendini speciali si bloccano automaticamente con il peso del corpo, permettendo loro di risparmiare energia e di spiccare il volo rapidamente.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "ru": {
+      "title": "Летучие Мыши Не Используют Мышцы, Вися Вниз Головой! 😮",
+      "description": "Задумывались ли вы, как летучие мыши без усилий висят вниз головой? Они не используют для этого мышцы. Их специальные сухожилия автоматически фиксируются под весом тела, что позволяет им экономить энергию и быстро взлетать.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "ar": {
+      "title": "الخفافيش لا تستخدم العضلات للتعلق رأساً على عقب! 😮",
+      "description": "هل تساءلت يومًا كيف تتعلق الخفافيش رأسًا على عقب دون عناء؟ إنها لا تعتمد على العضلات لهذا العمل المذهل. تتشابك أوتارها الخاصة تلقائيًا مع وزن جسمها، مما يوفر الطاقة ويسمح لها بالتحليق في الجو على الفور.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "hi": {
+      "title": "चमगादड़ उल्टे लटकने के लिए मांसपेशियों का इस्तेमाल नहीं करते! 😮",
+      "description": "क्या आपने कभी सोचा है कि चमगादड़ कैसे आसानी से उल्टे लटकते हैं? वे इसके लिए मांसपेशियों पर निर्भर नहीं करते। उनके विशेष टेंडन शरीर के वजन से अपने आप लॉक हो जाते हैं, जिससे ऊर्जा बचती है और वे तुरंत उड़ान भर सकते हैं।\n\n#shorts\n\nSeri: mk-045"
+    },
+    "id": {
+      "title": "Kelelawar Tidak Menggunakan Otot untuk Bergantung Terbalik! 😮",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana kelelawar dengan mudah bergantung terbalik? Mereka tidak mengandalkan kekuatan otot untuk melakukannya. Tendon khusus mereka secara otomatis mengunci dengan berat badan, menghemat energi, dan memungkinkan mereka terbang seketika.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "ja": {
+      "title": "コウモリは逆さまにぶら下がるのに筋肉を使わない！ 😮",
+      "description": "コウモリがなぜ逆さまにぶら下がることができるのか、疑問に思ったことはありませんか？彼らは筋肉の力に頼ることはありません。特別な腱が体重によって自動的にロックされ、エネルギーを節約し、瞬時に飛び立つことができます。\n\n#shorts\n\nSeri: mk-045"
+    },
+    "ko": {
+      "title": "박쥐는 거꾸로 매달릴 때 근육을 사용하지 않습니다! 😮",
+      "description": "박쥐가 어떻게 힘들이지 않고 거꾸로 매달려 있는지 궁금해 본 적 있으신가요? 이 놀라운 행동을 위해 박쥐는 근육의 힘에 의존하지 않습니다. 특별한 힘줄이 체중에 따라 자동으로 잠겨 에너지를 절약하고 즉시 비행할 수 있게 해줍니다.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "pl": {
+      "title": "Nietoperze Nie Używają Mięśni, Aby Wisieć Do Góry Nogami! 😮",
+      "description": "Czy zastanawiałeś się kiedyś, jak nietoperze bez wysiłku wiszą do góry nogami? Nie polegają na sile mięśni. Ich specjalne ścięgna automatycznie blokują się pod ciężarem ciała, oszczędzając energię i pozwalając im natychmiast wzbić się w powietrze.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "nl": {
+      "title": "Vleermuizen Gebruiken Geen Spieren om Ondersteboven Te Hangen! 😮",
+      "description": "Heb je je ooit afgevraagd hoe vleermuizen moeiteloos ondersteboven hangen? Ze vertrouwen niet op spierkracht. Hun speciale pezen vergrendelen automatisch met hun lichaamsgewicht, wat energie bespaart en hen in staat stelt direct weg te vliegen.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "uk": {
+      "title": "Кажани Не Використовують М'язи, Висячи Донизу Головою! 😮",
+      "description": "Ви коли-небудь замислювалися, як кажани без зусиль висять донизу головою? Вони не покладаються на м'язову силу для цього дивовижного трюку. Їхні унікальні сухожилля автоматично фіксуються під вагою тіла, економлячи енергію та дозволяючи їм миттєво злітати.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "vi": {
+      "title": "Dơi Không Dùng Cơ Bắp Để Treo Ngược! 😮",
+      "description": "Bạn có bao giờ tự hỏi làm thế nào dơi có thể treo ngược mà không tốn sức? Chúng không dựa vào sức mạnh cơ bắp cho điều này. Các gân đặc biệt của chúng tự động khóa lại với trọng lượng cơ thể, giúp tiết kiệm năng lượng và cho phép chúng bay lên ngay lập tức.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "az": {
+      "title": "Yarasalar Baş Aşağı Asılarkən Əzələ İstifadə Etmir! 😮",
+      "description": "Heç düşünmüsünüzmü ki, yarasalar necə asanlıqla baş aşağı asılır? Onlar bu inanılmaz bacarıq üçün əzələ gücünə etibar etmirlər. Onların xüsusi vətərləri bədən çəkisi ilə avtomatik olaraq kilidlənir, bu da enerji qənaət edir və dərhal uçuşa keçmələrinə imkan verir.\n\n#shorts\n\nSeri: mk-045"
+    },
+    "ro": {
+      "title": "Liliecii Nu Folosesc Mușchii Pentru a Sta Atârnați Cu Capul în Jos! 😮",
+      "description": "Te-ai întrebat vreodată cum liliecii stau atârnați cu capul în jos fără efort? Ei nu se bazează pe forța musculară pentru asta. Tendonii lor speciali se blochează automat cu greutatea corpului, economisind energie și permițându-le să decoleze instantaneu.\n\n#shorts\n\nSeri: mk-045"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence yarasalar uyurken kaslarını kullanır mı: Evet mi Hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu yarasalar baş aşağı asılı kalmak için kas kullanmazlar.",
+      "visual": "A bat hanging upside down, close-up.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 18,
+          "kare": 1
+        }
+      ],
+      "callout": "KAS KULLANMAZLAR"
+    },
+    {
+      "text": "İnsanlar için zorlayıcı olan bu pozisyon, yarasalar için neden bu kadar kolay?",
+      "visual": "Multiple bats hanging from tree branches.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 11,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Onların özel tendonları, vücut ağırlıklarıyla otomatik olarak kilitlenir. Bu, tutunmayı zahmetsiz yapar.",
+      "visual": "Paper bat decorations hanging.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 4,
+          "kare": 2
+        },
+        {
+          "n": 8,
+          "kare": 2
+        }
+      ],
+      "callout": "KİLİTLİ TENDONLAR"
+    },
+    {
+      "text": "Bu mekanizma sayesinde dinlenirken enerji harcamazlar ve uçuşa hızla geçebilirler.",
+      "visual": "Paper bats hanging and a child in a bat costume.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 2
+        }
+      ],
+      "callout": "UÇUŞA HIZLA HAZIR"
+    }
+  ],
+  "duration_seconds": 14.16,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-045_1792416523_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Video, yarasalarla alakasız ve kafa karıştırıcı görüntüler içeriyor (meyve/sebze split-screen, kağıt yarasa süsleri, yarasa kostümlü çocuk). Bu, videonun profesyonelliğini ciddi şekilde düşürüyor.",
+        "fix": "Tüm alakasız ve kafa karıştırıcı görüntüleri çıkarın. Sadece gerçek yarasaların doğal ortamlarında veya ilgili davranışlarını gösteren yüksek kaliteli stok videoları kullanın. Özellikle 'baş aşağı asılı kalmak' ve 'uçuşa geçmek' gibi anahta"
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Yazılar sadece bilgiyi aktarıyor, görsel olarak mekanizmayı (kilitli tendonlar) açıklamıyor. Referans videodaki gibi hareketli oklar veya vurgular yok.",
+        "fix": "Anahtar kavramları (örn. 'KİLİTLİ TENDONLAR') vurgulamak için daha dinamik metin animasyonları kullanın. 'Kilitlenir' gibi kelimeler geçerken, yarasaların pençelerine odaklanan bir görsel üzerine basit bir kilit veya ok simgesi gibi temel g"
+      },
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı yavaş ve enerjisi düşük, bu da videonun genel etkileşimini azaltıyor.",
+        "fix": "Yapay zeka sesinin hızını %10-20 oranında artırın ve daha enerjik, merak uyandıran bir ton veya profil seçmeye çalışın. Anlatımın daha dinamik ve sürükleyici olmasını sağlayın."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve etkisiz; video boyunca hiç ses efekti kullanılmamış.",
+        "fix": "Daha gizemli, ilgi çekici veya hafif tempolu bir arka plan müziği seçin. 'Kilitlenir' gibi anlarda veya yarasanın hareketlerinde (örn. kanat çırpma) uygun, ücretsiz ve hafif ses efektleri ekleyerek videoyu daha sürükleyici hale getirin."
+      },
+      {
+        "area": "kurgu ve geçişler",
+        "problem": "Geçişler ani ve temel, referans videodaki akıcı ve dinamik geçişlerden yoksun.",
+        "fix": "Klipler arasında hızlı ve akıcı geçişler (örn. kısa çapraz geçişler veya yumuşak kesmeler) kullanın. Kurguyu anlatımın ritmine uygun hale getirerek daha dinamik bir akış sağlayın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Yarasa görüntülerinin çeşitliliği sınırlı, bu da videonun görsel olarak tekrarlayıcı hissettirmesine neden oluyor.",
+        "fix": "Pexels veya Pixabay gibi platformlarda 'bat hanging', 'bat flying', 'bat close up' gibi anahtar kelimelerle daha fazla ve çeşitli stok video arayın. Farklı açılardan ve farklı davranışları gösteren görüntülerle görsel zenginliği artırın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca (hook) yeterince güçlü değil ve bilginin şaşırtıcılığı tam olarak vurgulanmıyor. Akış, referans videodaki gibi bir 'bilimsel keşif' veya 'çözülmesi gereken bir sır' hissi yaratmıyor.",
+        "fix": "Girişi daha çarpıcı hale getirin, örneğin 'İnsanlar için imkansız olan bu durum, yarasalar için neden bu kadar kolay?' gibi bir soruyla başlayın. 'Kilitli tendonlar' bilgisini bir çözüm veya şaşırtıcı bir adaptasyon olarak sunarak bilginin "
+      },
+      {
+        "area": "ekrandaki yazılar ve grafikler",
+        "problem": "Yazılar bazen ekranın önemli kısımlarını kapatıyor veya boyutları optimal değil.",
+        "fix": "Metin boyutunu ve yerleşimini optimize edin. Görüntünün ana odağını kapatmamasına ve her zaman kolayca okunabilir olmasına dikkat edin. Daha kısa ve öz metin blokları kullanın."
+      }
+    ],
+    "strengths": [
+      "Video kısa ve doğrudan konuya giriyor.",
+      "İlginç bir bilgi aktarıyor."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

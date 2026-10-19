@@ -42,5 +42,15 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-045",
+    "topic": "Yarasalar neden baş aşağı uyur?",
+    "stock_hint": "bat hanging upside down",
+    "subject": [
+      "bat"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]
