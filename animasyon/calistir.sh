@@ -2,8 +2,8 @@
 # One animated episode on GitHub Actions. animasyon/tetik.txt holds "<bolum> <mod>", e.g. "k001 gizli".
 set -uo pipefail
 cd "$(dirname "$0")/.."
-BOLUM=$(awk '{print $1}' animasyon/tetik.txt)
-MOD=$(awk '{print $2}' animasyon/tetik.txt)
+BOLUM=$(head -n1 animasyon/tetik.txt | awk "{print \$1}")
+MOD=$(head -n1 animasyon/tetik.txt | awk "{print \$2}")
 MOD=${MOD:-deneme}
 
 git fetch -q origin channel-data
