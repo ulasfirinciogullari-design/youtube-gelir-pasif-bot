@@ -1,0 +1,169 @@
+{
+  "topic_id": "mk-c0001",
+  "topic": "Zürafanın boynunda kaç kemik var?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Zürafanın boynunda senin kadar kemik var 🦒",
+  "hook_text": "O DEV BOYUN NASIL TAŞINIYOR?",
+  "description": "Zürafanın boynunda kaç kemik var?\n\nZürafanın boynunda da insandaki gibi tam yedi omur var. Fark sayıda değil boyda: zürafanın tek bir boyun omuru yirmi beş santimetreyi geçebilir. Bu yüzden yerden su içerken bacaklarını iki yana açmak zorunda kalır.\n\nSence hangisinin boynunda daha çok kemik var: farenin mi, zürafanın mı?\n\n#zürafa #hayvanlar #ilginçbilgiler #vahşidoğa #shorts #bilim #merak #keşfet\n\nSeri: mk-c0001",
+  "tags": [
+    "zürafa",
+    "zürafa boynu",
+    "zürafanın boynu",
+    "zürafa kaç omur",
+    "boyun omuru",
+    "boyun kemiği",
+    "yedi omur",
+    "zürafa nasıl su içer",
+    "zürafa boyu",
+    "uzun boyunlu hayvan",
+    "afrika hayvanları",
+    "savana",
+    "vahşi doğa",
+    "hayvanlar",
+    "hayvan belgeseli",
+    "ilginç bilgiler",
+    "bilgi",
+    "bilim",
+    "merak",
+    "giraffe",
+    "giraffe neck",
+    "omur",
+    "afrika",
+    "shorts",
+    "zirvenin kanunu",
+    "zurafa",
+    "zurafa boynu",
+    "zurafanin boynu",
+    "zurafa kac omur",
+    "boyun kemigi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A giraffe's neck has the same number of bones as yours 🦒",
+      "description": "A giraffe's neck has seven vertebrae, exactly like a human's. The difference is size: a single giraffe neck bone can be longer than 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "es": {
+      "title": "El cuello de la jirafa tiene los mismos huesos que el tuyo 🦒",
+      "description": "La jirafa tiene siete vértebras en el cuello, igual que tú. La diferencia es el tamaño: una sola puede medir más de 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "pt": {
+      "title": "O pescoço da girafa tem os mesmos ossos que o seu 🦒",
+      "description": "A girafa tem sete vértebras no pescoço, exatamente como você. A diferença é o tamanho: uma só pode passar de 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "de": {
+      "title": "Eine Giraffe hat genauso viele Halswirbel wie du 🦒",
+      "description": "Im Hals einer Giraffe stecken sieben Wirbel, genau wie bei dir. Der Unterschied ist die Größe: Ein einziger Wirbel kann über 25 cm lang sein.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "fr": {
+      "title": "Le cou de la girafe a autant d'os que le tien 🦒",
+      "description": "La girafe a sept vertèbres cervicales, comme toi. La différence, c'est la taille : une seule peut dépasser 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "it": {
+      "title": "Il collo della giraffa ha le stesse ossa del tuo 🦒",
+      "description": "La giraffa ha sette vertebre nel collo, proprio come te. La differenza è la lunghezza: una sola può superare i 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "ru": {
+      "title": "В шее жирафа столько же позвонков, сколько у тебя 🦒",
+      "description": "В шее жирафа семь позвонков, как и у человека. Разница в размере: один позвонок может быть длиннее 25 см.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "ar": {
+      "title": "رقبة الزرافة فيها عدد العظام نفسه الذي في رقبتك 🦒",
+      "description": "في رقبة الزرافة سبع فقرات تمامًا مثل الإنسان. الفرق في الحجم: فقرة واحدة قد يزيد طولها على 25 سم.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "hi": {
+      "title": "जिराफ की गर्दन में उतनी ही हड्डियाँ हैं जितनी आपकी गर्दन में 🦒",
+      "description": "जिराफ की गर्दन में इंसानों की तरह सात कशेरुकाएँ होती हैं। फर्क आकार का है: एक कशेरुका 25 सेमी से भी लंबी हो सकती है।\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "id": {
+      "title": "Leher jerapah punya jumlah tulang yang sama denganmu 🦒",
+      "description": "Leher jerapah punya tujuh ruas tulang, sama seperti manusia. Bedanya ukuran: satu ruas bisa lebih dari 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "ja": {
+      "title": "キリンの首の骨は人間と同じ7個 🦒",
+      "description": "キリンの首の骨は人間と同じく7個しかありません。違うのは大きさで、1個が25cmを超えることもあります。\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "ko": {
+      "title": "기린 목뼈 개수는 사람과 똑같다 🦒",
+      "description": "기린의 목뼈는 사람처럼 7개뿐입니다. 차이는 크기로, 뼈 하나가 25cm를 넘기도 합니다.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "pl": {
+      "title": "Żyrafa ma w szyi tyle samo kręgów co ty 🦒",
+      "description": "Szyja żyrafy ma siedem kręgów, dokładnie jak u człowieka. Różnica to rozmiar: jeden kręg może mieć ponad 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "nl": {
+      "title": "Een giraf heeft net zoveel nekwervels als jij 🦒",
+      "description": "In de nek van een giraf zitten zeven wervels, net als bij jou. Het verschil is de grootte: één wervel kan langer zijn dan 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "uk": {
+      "title": "У шиї жирафа стільки ж хребців, скільки у тебе 🦒",
+      "description": "У шиї жирафа сім хребців, як і в людини. Різниця в розмірі: один хребець може бути довшим за 25 см.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "vi": {
+      "title": "Cổ hươu cao cổ có số xương bằng đúng cổ bạn 🦒",
+      "description": "Cổ hươu cao cổ chỉ có bảy đốt sống, giống hệt con người. Khác biệt là kích thước: một đốt có thể dài hơn 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "az": {
+      "title": "Zürafənin boynunda sənin qədər sümük var 🦒",
+      "description": "Zürafənin boynunda da insanda olduğu kimi yeddi fəqərə var. Fərq ölçüdədir: bir fəqərə 25 sm-dən uzun ola bilər.\n\n#shorts\n\nSeri: mk-c0001"
+    },
+    "ro": {
+      "title": "Gâtul girafei are tot atâtea oase cât al tău 🦒",
+      "description": "Girafa are șapte vertebre cervicale, exact ca omul. Diferența e mărimea: o singură vertebră poate depăși 25 cm.\n\n#shorts\n\nSeri: mk-c0001"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisinin boynunda daha çok kemik var: farenin mi, zürafanın mı?",
+  "scenes": [
+    {
+      "text": "Bu zürafanın boynunda sadece yedi kemik var.",
+      "visual": "giraffe stretching its long neck toward an acacia tree, golden savanna light",
+      "stock_query": "giraffe neck",
+      "source": "stock",
+      "callout": "7 OMUR"
+    },
+    {
+      "text": "Senin boynunda da tam yedi tane var, ne bir fazla ne bir eksik.",
+      "visual": "close up of a giraffe head turning slowly, blue sky",
+      "stock_query": "giraffe head",
+      "source": "stock",
+      "callout": "SENDE DE 7"
+    },
+    {
+      "text": "Fark boyda: zürafanın tek bir omuru yirmi beş santimetreyi geçebilir.",
+      "visual": "tall giraffe walking across the savanna, side view",
+      "stock_query": "giraffe walking",
+      "source": "stock",
+      "callout": "25 CM"
+    },
+    {
+      "text": "Bu yüzden yerden su içerken bacaklarını iki yana açmak zorunda kalır.",
+      "visual": "giraffe spreading its front legs to drink at a waterhole",
+      "stock_query": "giraffe drinking",
+      "source": "stock"
+    },
+    {
+      "text": "Şimdi kendi boynuna dokun; elinin altındaki kemik sayısı şu devinkiyle aynı.",
+      "visual": "giraffe looking down at the camera, close up",
+      "stock_query": "giraffe looking",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.54,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0001_1792452565_ig.mp4"
+}
