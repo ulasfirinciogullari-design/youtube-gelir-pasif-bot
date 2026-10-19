@@ -1,0 +1,299 @@
+{
+  "topic_id": "mk-043",
+  "topic": "Sinekler Neden Ters Yüz Yürüyebilir?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Sinekler Neden Ters Yüz Yürür? 🤯",
+  "hook_text": "SİNEKLER NEDEN TERS YÜZ YÜRÜYEBİLİR?",
+  "description": "Sinekler neden ters yüz yürür?\n\nSineklerin ayaklarında mikroskobik tüyler ve yapışkan yastıkçıklar bulunur. Bu yapılar, Van der Waals kuvvetleri sayesinde yüzeye yüzlerce katı gücünde tutunarak cam gibi pürüzsüz yerlerde bile yürümelerini sağlar.\n\nSence bir insan, kendi ağırlığının kaç katını kaldırabilir: 1 mi 5 mi?\n\n#sinek #böcekler #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-043",
+  "tags": [
+    "sinek",
+    "sinekler",
+    "sinek nasıl yürür",
+    "sinek tavanda yürür",
+    "sinek neden ters yürür",
+    "sinekler nasıl tutunur",
+    "sinek ayakları",
+    "Van der Waals kuvvetleri",
+    "mikroskobik tüyler",
+    "yapışkan yastıkçıklar",
+    "böcekler",
+    "hayvanlar",
+    "bilim",
+    "doğa",
+    "biyoloji",
+    "ilginç bilgiler",
+    "merak",
+    "kısa video",
+    "fly",
+    "flies",
+    "Van der Waals force",
+    "shorts",
+    "keşfet",
+    "bilgi",
+    "zirvenin kanunu",
+    "sinek nasil yurur",
+    "sinek tavanda yurur",
+    "sinek neden ters yurur",
+    "sinekler nasil tutunur",
+    "sinek ayaklari"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Flies Walk Upside Down? 🤯",
+      "description": "Ever wondered how flies defy gravity and walk on ceilings? Their feet are equipped with microscopic hairs and sticky pads. These create a powerful bond with surfaces using Van der Waals forces, allowing them to walk on smooth surfaces like glass with ease.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "es": {
+      "title": "¿Por qué las moscas caminan boca abajo? 🤯",
+      "description": "¿Alguna vez te has preguntado cómo las moscas desafían la gravedad? Sus patas tienen pelos microscópicos y almohadillas adhesivas. Estas estructuras generan fuerzas de Van der Waals, permitiéndoles adherirse a superficies lisas como el vidrio con una fuerza cientos de veces superior a su peso.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "pt": {
+      "title": "Por que as moscas andam de cabeça para baixo? 🤯",
+      "description": "Já se perguntou como as moscas desafiam a gravidade? Seus pés possuem pelos microscópicos e almofadas pegajosas. Estas criam uma forte ligação com as superfícies usando forças de Van der Waals, permitindo que andem em superfícies lisas como vidro com facilidade.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "de": {
+      "title": "Warum laufen Fliegen kopfüber? 🤯",
+      "description": "Hast du dich jemals gefragt, wie Fliegen der Schwerkraft trotzen? Ihre Füße sind mit mikroskopisch kleinen Haaren und klebrigen Polstern ausgestattet. Diese erzeugen starke Van-der-Waals-Kräfte, die es ihnen ermöglichen, mühelos an glatten Oberflächen wie Glas zu laufen.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "fr": {
+      "title": "Pourquoi les mouches marchent-elles à l'envers ? 🤯",
+      "description": "Vous êtes-vous déjà demandé comment les mouches défient la gravité? Leurs pattes sont équipées de poils microscopiques et de coussinets adhésifs. Ceux-ci créent une forte liaison avec les surfaces grâce aux forces de Van der Waals, leur permettant de marcher facilement sur des surfaces lisses comme le verre.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "it": {
+      "title": "Perché le mosche camminano a testa in giù? 🤯",
+      "description": "Ti sei mai chiesto come fanno le mosche a sfidare la gravità? Le loro zampe sono dotate di peli microscopici e cuscinetti adesivi. Questi creano un forte legame con le superfici usando le forze di Van der Waals, consentendo loro di camminare su superfici lisce come il vetro con facilità.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "ru": {
+      "title": "Почему мухи ходят вверх ногами? 🤯",
+      "description": "Задумывались ли вы, как мухи бросают вызов гравитации? Их лапки снабжены микроскопическими волосками и липкими подушечками. Они создают сильную связь с поверхностями, используя силы Ван-дер-Ваальса, что позволяет им легко ходить даже по гладким поверхностям, таким как стекло.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "ar": {
+      "title": "لماذا تمشي الذباب رأساً على عقب؟ 🤯",
+      "description": "هل تساءلت يومًا كيف تتحدى الذباب الجاذبية؟ أقدامها مزودة بشعيرات مجهرية ووسادات لاصقة. هذه تخلق رابطة قوية مع الأسطح باستخدام قوى فاندرفال، مما يسمح لها بالمشي على الأسطح الملساء مثل الزجاج بسهولة.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "hi": {
+      "title": "मक्खियाँ उल्टी क्यों चलती हैं? 🤯",
+      "description": "क्या आपने कभी सोचा है कि मक्खियाँ गुरुत्वाकर्षण को कैसे मात देती हैं? उनके पैरों में सूक्ष्म बाल और चिपचिपी पैड होती हैं। ये वैन डेर वाल्स बलों का उपयोग करके सतहों के साथ एक मजबूत बंधन बनाते हैं, जिससे वे कांच जैसी चिकनी सतहों पर भी आसानी से चल पाती हैं।\n\n#shorts\n\nSeri: mk-043"
+    },
+    "id": {
+      "title": "Mengapa Lalat Berjalan Terbalik? 🤯",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana lalat menentang gravitasi? Kaki mereka dilengkapi dengan rambut mikroskopis dan bantalan lengket. Ini menciptakan ikatan yang kuat dengan permukaan menggunakan gaya Van der Waals, memungkinkan mereka berjalan di permukaan halus seperti kaca dengan mudah.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "ja": {
+      "title": "ハエはなぜ逆さまに歩くの？ 🤯",
+      "description": "ハエがどのように重力に逆らって歩くのか、疑問に思ったことはありませんか？彼らの足には微細な毛と粘着性のパッドが備わっています。これらはファンデルワールス力を使って表面と強力な結合を作り、ガラスのような滑らかな表面でも簡単に歩くことを可能にします。\n\n#shorts\n\nSeri: mk-043"
+    },
+    "ko": {
+      "title": "파리는 왜 거꾸로 걸을까요? 🤯",
+      "description": "파리가 어떻게 중력을 거스르고 천장에 붙어 걷는지 궁금해 본 적 있나요? 파리 발에는 미세한 털과 끈끈한 패드가 있습니다. 이들은 반데르발스 힘을 이용해 표면과 강력한 결합을 형성하여 유리처럼 매끄러운 표면에서도 쉽게 걸을 수 있게 합니다.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "pl": {
+      "title": "Dlaczego muchy chodzą do góry nogami? 🤯",
+      "description": "Czy zastanawiałeś się kiedyś, jak muchy pokonują grawitację? Ich stopy są wyposażone w mikroskopijne włoski i lepkie poduszeczki. Te tworzą silne wiązanie z powierzchniami za pomocą sił Van der Waalsa, umożliwiając im łatwe chodzenie po gładkich powierzchniach, takich jak szkło.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "nl": {
+      "title": "Waarom lopen vliegen ondersteboven? 🤯",
+      "description": "Heb je je ooit afgevraagd hoe vliegen de zwaartekracht trotseren? Hun poten zijn uitgerust met microscopische haartjes en kleverige kussentjes. Deze creëren een sterke verbinding met oppervlakken via Van der Waals-krachten, waardoor ze gemakkelijk op gladde oppervlakken zoals glas kunnen lopen.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "uk": {
+      "title": "Чому мухи ходять догори ногами? 🤯",
+      "description": "Чи замислювалися ви, як мухи кидають виклик гравітації? Їхні лапки оснащені мікроскопічними волосками та липкими подушечками. Вони створюють міцний зв'язок з поверхнями за допомогою сил Ван дер Ваальса, дозволяючи їм легко ходити навіть по гладких поверхнях, таких як скло.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "vi": {
+      "title": "Tại sao ruồi lại đi lộn ngược? 🤯",
+      "description": "Bạn đã bao giờ tự hỏi làm thế nào ruồi có thể thách thức trọng lực? Chân của chúng được trang bị lông siêu nhỏ và miếng đệm dính. Những thứ này tạo ra một liên kết mạnh mẽ với bề mặt bằng cách sử dụng lực Van der Waals, cho phép chúng đi trên các bề mặt nhẵn như kính một cách dễ dàng.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "az": {
+      "title": "Niyə milçəklər tərs üz gəzir? 🤯",
+      "description": "Heç düşünmüsünüzmü ki, milçəklər necə cazibə qüvvəsinə meydan oxuyur? Onların ayaqlarında mikroskopik tüklər və yapışqan yastıqcıqlar var. Bunlar Van der Waals qüvvələri ilə səthlə güclü bir əlaqə yaradır, bu da onların şüşə kimi hamar səthlərdə belə asanlıqla gəzməsinə imkan verir.\n\n#shorts\n\nSeri: mk-043"
+    },
+    "ro": {
+      "title": "De ce zboară muștele cu capul în jos? 🤯",
+      "description": "Te-ai întrebat vreodată cum sfidează muștele gravitația? Picioarele lor sunt echipate cu fire de păr microscopice și pernuțe adezive. Acestea creează o legătură puternică cu suprafețele folosind forțele Van der Waals, permițându-le să meargă cu ușurință pe suprafețe netede precum sticla.\n\n#shorts\n\nSeri: mk-043"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bir insan, kendi ağırlığının kaç katını kaldırabilir: 1 mi 5 mi?",
+  "scenes": [
+    {
+      "text": "Bu sinek, ağırlığının yüzlerce katı gücünde yüzeye tutunabilir.",
+      "visual": "A close-up of a fly resting on a green leaf.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 18,
+          "kare": 2
+        },
+        {
+          "n": 33,
+          "kare": 1
+        },
+        {
+          "n": 38,
+          "kare": 2
+        }
+      ],
+      "callout": "YÜZLERCE KATI GÜÇ"
+    },
+    {
+      "text": "Peki, bu küçük böcekler yerçekimine nasıl meydan okuyor?",
+      "visual": "A fly walking on a concrete ledge.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 3
+        },
+        {
+          "n": 1,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Ayaklarında, mikroskobik tüyler ve yapışkan yastıkçıklar bulunur.",
+      "visual": "A close-up of a fly on a tree branch, showing its legs.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 35,
+          "kare": 3
+        }
+      ],
+      "callout": "MİKROSKOBİK TÜYLER"
+    },
+    {
+      "text": "Bunlar, Van der Waals kuvvetleriyle yüzeye güçlü bir bağ oluşturur.",
+      "visual": "A fly on a green leaf, gripping the surface.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 30,
+          "kare": 2
+        },
+        {
+          "n": 3,
+          "kare": 2
+        }
+      ],
+      "callout": "VAN DER WAALS"
+    },
+    {
+      "text": "Bu sayede, cam gibi pürüzsüz yüzeylerde bile rahatça yürüyebilirler.",
+      "visual": "A grasshopper on a vertical blue wall, then a cockroach in a glass tube.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 26,
+          "kare": 2
+        },
+        {
+          "n": 19,
+          "kare": 1
+        }
+      ],
+      "callout": "PÜRÜZSÜZ YÜZEY"
+    },
+    {
+      "text": "İşte bu sayede sinekler, baş aşağı bile özgürce hareket eder.",
+      "visual": "A hoverfly on a flower, an insect on a branch, and another insect on a flower bud.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 40,
+          "kare": 2
+        },
+        {
+          "n": 14,
+          "kare": 2
+        },
+        {
+          "n": 23,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 16.76,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-043_1792401777_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Karmaşık bilgiyi açıklayan görsel grafikler eksik.",
+        "fix": "Van der Waals kuvvetleri veya mikroskobik tüyler gibi kavramları açıklamak için basit animasyonlu oklar, daireler veya temel şekillerle oluşturulmuş soyut grafikler kullan."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Video hızı ve kesimler referans videoya göre yavaş ve durağan.",
+        "fix": "Kurgu hızını artır, her bir görüntünün süresini kısaltarak daha dinamik bir akış sağla."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi enerjiden yoksun ve monoton.",
+        "fix": "Yapay zeka sesinin hızını ve tonunu ayarlayarak daha enerjik ve ilgi çekici hale getir. Genel okuma hızını artır."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler çoğunlukla statik veya yavaş hareket eden yakın çekimlerden oluşuyor, dinamik aksiyon eksik.",
+        "fix": "Böceklerin yüzeylerde hareket ettiğini, indiğini veya kalktığını gösteren daha dinamik stok videolar ara. Farklı böcek türlerini ve hareketlerini göstererek çeşitliliği artır."
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektleri kullanılmamış, bu da videonun etkisini azaltıyor.",
+        "fix": "Metinlerin ekrana gelmesi, yapışma eylemleri veya geçişler için ince ve ilgili ses efektleri (örn. hafif bir 'vınlama', 'tık' sesi) ekle."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki metinler statik ve bazen çok fazla bilgi içeriyor.",
+        "fix": "Uzun cümleleri daha kısa, vurucu metin parçalarına böl. Metinlerin giriş/çıkışlarına basit animasyonlar (solma, kayma) ekleyerek dinamizm kat."
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve enerjiden yoksun.",
+        "fix": "Daha enerjik, merak uyandıran veya 'keşif' temalı telifsiz müzikler seçerek videonun genel enerjisini yükselt."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin 'nasıl' kısmı (Van der Waals kuvvetleri) görsel olarak yeterince desteklenmiyor.",
+        "fix": "Senaryoyu, görsel açıklamaları (basit grafikler dahil) doğrudan destekleyecek şekilde yeniden düzenle ve karmaşık terimleri daha basit bir dille açıkla."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz",
+      "Bilgilendirici",
+      "Net soru ile iyi bir kanca"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

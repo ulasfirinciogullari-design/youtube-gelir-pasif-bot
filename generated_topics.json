@@ -20,5 +20,16 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-043",
+    "topic": "Sinekler Neden Ters Yüz Yürüyebilir?",
+    "stock_hint": "fly walking ceiling, insect feet",
+    "subject": [
+      "fly",
+      "insect"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]
