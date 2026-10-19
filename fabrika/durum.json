@@ -504,6 +504,18 @@
    "series": "Ya Olsaydı?",
    "q": "Jüpiter yok olsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0007",
+   "series": "Ya Olsaydı?",
+   "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?",
+   "oneri": true
+  },
+  {
+   "id": "o0008",
+   "series": "Ya Olsaydı?",
+   "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "fail_streak": 0,
@@ -701,6 +713,12 @@
    "mod": "igbolum",
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
    "chars": 574
+  },
+  {
+   "finished": "2026-10-19T09:10:26+00:00",
+   "mod": "igbolum",
+   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
+   "chars": 538
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -750,6 +768,11 @@
     "media_id": "18171009394460557",
     "url": "https://www.instagram.com/reel/DepLvNOiKIx/",
     "at": 1792343341.0074987
+   },
+   "y004": {
+    "media_id": "18027807878879482",
+    "url": "https://www.instagram.com/reel/Deq50ohD42v/",
+    "at": 1792401026.4980254
    }
   },
   "eski": [
