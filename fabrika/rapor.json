@@ -1,17 +1,75 @@
 {
- "started": "2026-10-19T17:09:22+00:00",
- "mod": "igbolum",
- "gate": "instagram: g002",
- "title": "1 Günde Kaç Kez Nefes Alırsın?",
- "chars": 518,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18131855605690640",
-  "url": "https://www.instagram.com/reel/DerwzY7FBdW/",
-  "at": 1792429856.310994
+ "started": "2026-10-19T18:07:16+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "33",
+  "videos": "18"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DerwzY7FBdW/"
+ "credits_before": [
+  7227,
+  613902
  ],
- "finished": "2026-10-19T17:10:56+00:00"
+ "topic": {
+  "id": "o0004",
+  "series": "Ya Olsaydı?",
+  "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
+  "oneri": true
+ },
+ "attempts": 1,
+ "model": "gemini-3.8-flash",
+ "fact_check": {
+  "ok": true,
+  "fixes": []
+ },
+ "chunks": 0,
+ "grounded": true,
+ "chars": 337,
+ "duration": 22.1,
+ "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "url": "https://youtube.com/shorts/hJaWCEzLO_4",
+ "recent_status": {
+  "g004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "741",
+   "reason": null
+  },
+  "y007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1236",
+   "reason": null
+  },
+  "o0003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "150",
+   "reason": null
+  },
+  "n004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "22",
+   "reason": null
+  },
+  "o0004": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  7227,
+  613902
+ ],
+ "log": [
+  "Konu: o0004 Güneş 10 saniyeliğine yok olsaydı ne olurdu? (Ya Olsaydı?)",
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+ ],
+ "finished": "2026-10-19T18:10:29+00:00"
 }

@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1278",
+    "views": "1280",
     "reason": null
    }
   },
@@ -86,7 +86,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "99",
+    "views": "101",
     "reason": null
    }
   },
@@ -116,7 +116,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "23",
+    "views": "26",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "297",
+    "views": "303",
     "reason": null
    }
   },
@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "490",
+    "views": "492",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1315",
+    "views": "1323",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1343",
+    "views": "1348",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1253",
+    "views": "1268",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "112",
+    "views": "114",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "36",
+    "views": "39",
     "reason": null
    }
   },
@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "976",
+    "views": "986",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1006",
+    "views": "1012",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "702",
+    "views": "741",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1221",
+    "views": "1236",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "53",
+    "views": "150",
     "reason": null
    }
   },
@@ -504,6 +504,36 @@
    "at": 1792419098.7218385,
    "chars": 390,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "22",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0004",
+   "video_id": "hJaWCEzLO_4",
+   "url": "https://youtube.com/shorts/hJaWCEzLO_4",
+   "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If the Sun Disappeared for 10 Seconds?",
+    "es": "¿Qué pasaría si el Sol desapareciera 10 segundos?",
+    "pt": "E se o Sol desaparecesse por 10 segundos?",
+    "ar": "ماذا لو اختفت الشمس لمدة 10 ثوانٍ؟",
+    "hi": "क्या होगा अगर सूरज 10 सेकंड के लिए गायब हो जाए?",
+    "id": "Apa Jadinya Jika Matahari Hilang Selama 10 Detik?",
+    "fr": "Et si le Soleil disparaissait pendant 10 secondes ?",
+    "de": "Was wäre, wenn die Sonne für 10 Sekunden verschwindet?",
+    "ru": "Что, если Солнце исчезнет на 10 секунд?",
+    "az": "Günəş 10 saniyəliyinə yox olsaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792433428.1463304,
+   "chars": 337,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -528,7 +558,8 @@
   "g004",
   "y007",
   "o0003",
-  "n004"
+  "n004",
+  "o0004"
  ],
  "extra": [
   {
@@ -821,6 +852,14 @@
    "mod": "igbolum",
    "title": "1 Günde Kaç Kez Nefes Alırsın?",
    "chars": 518
+  },
+  {
+   "finished": "2026-10-19T18:10:29+00:00",
+   "mod": "saatlik",
+   "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/hJaWCEzLO_4",
+   "duration": 22.1,
+   "chars": 337
   }
  ],
  "last_fail": 1792238864.8448575,

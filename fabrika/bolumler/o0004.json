@@ -1,0 +1,535 @@
+{
+ "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "bar": {
+  "hi": "GÜNEŞ",
+  "rest": " 10 SN YOKSA?"
+ },
+ "summary": "Güneş bir anda 10 saniyeliğine ortadan kaybolsaydı Dünya karanlığa gömülüp uzaya mı fırlardı? Görelilik fiziğinin sunduğu gerçek sonuç tahmin ettiğinden çok daha şaşırtıcı!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Güneş yok olsa, ilk 8 dakika 20 saniye hiçbir şey hissetmezdin.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "vanish",
+    "target": 0,
+    "key": "Güneş",
+    "label": "Güneş Yok Oldu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü ışık ve kütleçekimin bize varması tam 500 saniye sürer.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "500",
+    "unit": "saniye",
+    "label": "Işık Süresi",
+    "key": "500"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra Güneş söner, Dünya saniyede 30 kilometreyle düz uçardı.",
+   "v": {
+    "t": "meter",
+    "bg": "night",
+    "label": "Dünya Hızı",
+    "from": 0,
+    "to": 30,
+    "unit": "km/s",
+    "e": "🌍",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uzayın derinliğine mi savrulduk?",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "🚀",
+    "label": "Kayıp Dünya?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş dönünce yörüngemiz sadece 30 santimetre kaymış olurdu!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "📏",
+    "value": "30",
+    "unit": "cm",
+    "label": "Yörünge Sapması",
+    "key": "santimetre"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "O 10 saniyede sen ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "❓"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Güneş ile Dünya arasındaki mesafe yaklaşık 149,6 milyon kilometredir ve ışık ile kütleçekim etkisinin Dünya'ya ulaşması yaklaşık 8 dakika 20 saniye sürer.",
+   "source": "NASA",
+   "url": "https://solarsystem.nasa.gov"
+  },
+  {
+   "text": "Genel Görelilik kuramına göre kütleçekim dalgaları boşlukta tam olarak ışık hızında yayılır.",
+   "source": "Caltech / LIGO",
+   "url": "https://www.ligo.caltech.edu"
+  },
+  {
+   "text": "Dünya, Güneş çevresindeki yörüngesinde saniyede yaklaşık 29,8 kilometre hızla hareket eder.",
+   "source": "NASA Goddard Space Flight Center",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+  },
+  {
+   "text": "Kütleçekim 10 saniyeliğine kesildiğinde Dünya teğetsel doğrultuda 300 kilometre ilerler ancak dairesel yörüngesinden dışa doğru yalnızca yaklaşık 30 santimetre sapar.",
+   "source": "University of Illinois",
+   "url": "https://van.physics.illinois.edu"
+  }
+ ],
+ "tags": [
+  "güneş",
+  "dünya",
+  "uzay",
+  "kütleçekim",
+  "ışık hızı",
+  "güneş sistemi",
+  "astronomi",
+  "sun disappears",
+  "gravity",
+  "speed of light",
+  "earth orbit",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#güneş",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If the Sun Disappeared for 10 Seconds?",
+   "summary": "If the Sun suddenly disappeared for 10 seconds, would Earth plunge into darkness and fly off into space? The real answer from relativity physics is far more surprising than you think!",
+   "facts": [
+    "The distance between the Sun and Earth is about 149.6 million kilometers, and it takes about 8 minutes and 20 seconds for light and gravity to reach Earth.",
+    "According to General Relativity, gravitational waves travel through a vacuum at exactly the speed of light.",
+    "Earth travels in its orbit around the Sun at a speed of approximately 29.8 kilometers per second.",
+    "If gravity cut out for 10 seconds, Earth would travel 300 kilometers tangentially, but deviate outward from its circular orbit by only about 30 centimeters."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si el Sol desapareciera 10 segundos?",
+   "summary": "Si el Sol desapareciera de pronto durante 10 segundos, ¿se sumiría la Tierra en la oscuridad y saldría disparada al espacio? ¡La respuesta según la relatividad es mucho más sorprendente de lo que crees!",
+   "facts": [
+    "La distancia entre el Sol y la Tierra es de unos 149,6 millones de kilómetros, y la luz y la gravedad tardan unos 8 minutos y 20 segundos en llegar a la Tierra.",
+    "Según la relatividad general, las ondas gravitacionales se propagan en el vacío exactamente a la velocidad de la luz.",
+    "La Tierra se desplaza en su órbita alrededor del Sol a una velocidad de unos 29,8 kilómetros por segundo.",
+    "Si la gravedad se cortara durante 10 segundos, la Tierra avanzaría 300 kilómetros en línea recta tangencial, pero solo se desviaría hacia afuera unos 30 centímetros de su órbita circular."
+   ]
+  },
+  "pt": {
+   "title": "E se o Sol desaparecesse por 10 segundos?",
+   "summary": "Se o Sol desaparecesse de repente por 10 segundos, a Terra ficaria no escuro e seria lançada no espaço? A resposta da relatividade é muito mais surpreendente do que você imagina!",
+   "facts": [
+    "A distância entre o Sol e a Terra é de cerca de 149,6 milhões de quilômetros, e a luz e a gravidade levam cerca de 8 minutos e 20 segundos para chegar à Terra.",
+    "De acordo com a Relatividade Geral, as ondas gravitacionais se propagam no vácuo exatamente à velocidade da luz.",
+    "A Terra se move em sua órbita ao redor do Sol a uma velocidade de cerca de 29,8 quilômetros por segundo.",
+    "Se a gravidade fosse interrompida por 10 segundos, a Terra avançaria 300 quilômetros tangencialmente, mas se desviaria para fora de sua órbita circular por apenas cerca de 30 centímetros."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو اختفت الشمس لمدة 10 ثوانٍ؟",
+   "summary": "لو اختفت الشمس فجأة لمدة 10 ثوانٍ، هل ستغرق الأرض في الظلام وتطير في الفضاء؟ النتيجة الحقيقية التي تقدمها فيزياء النسبية أكثر إثارة للدهشة مما تتوقع!",
+   "facts": [
+    "تبلغ المسافة بين الشمس والأرض حوالي 149.6 مليون كيلومتر، ويستغرق وصول الضوء وتأثير الجاذبية إلى الأرض حوالي 8 دقائق و20 ثانية.",
+    "وفقًا للنظرية النسبية العامة، تنتشر موجات الجاذبية في الفراغ بسرعة الضوء تمامًا.",
+    "تتحرك الأرض في مدارها حول الشمس بسرعة تقارب 29.8 كيلومترًا في الثانية.",
+    "إذا انقطعت الجاذبية لمدة 10 ثوانٍ، فستتحرك الأرض 300 كيلومتر في اتجاه مماسي، لكنها ستنحرف إلى الخارج عن مدارها الدائري بنحو 30 سنتيمترًا فقط."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर सूरज 10 सेकंड के लिए गायब हो जाए?",
+   "summary": "अगर सूरज अचानक 10 सेकंड के लिए गायब हो जाए, तो क्या पृथ्वी अंधेरे में डूबकर अंतरिक्ष में फेंक दी जाएगी? सापेक्षता भौतिकी का वास्तविक परिणाम आपकी कल्पना से कहीं अधिक आश्चर्यजनक है!",
+   "facts": [
+    "सूर्य और पृथ्वी के बीच की दूरी लगभग 149.6 मिलियन किलोमीटर है, और प्रकाश व गुरुत्वाकर्षण के प्रभाव को पृथ्वी तक पहुँचने में लगभग 8 मिनट और 20 सेकंड लगते हैं।",
+    "सामान्य सापेक्षता के सिद्धांत के अनुसार, गुरुत्वाकर्षण तरंगें निर्वात में ठीक प्रकाश की गति से यात्रा करती हैं।",
+    "पृथ्वी सूर्य के चारों ओर अपनी कक्षा में लगभग 29.8 किलोमीटर प्रति सेकंड की गति से चलती है।",
+    "यदि गुरुत्वाकर्षण 10 सेकंड के लिए बंद हो जाए, तो पृथ्वी स्पर्शरेखीय दिशा में 300 किलोमीटर आगे बढ़ेगी, लेकिन अपनी वृत्ताकार कक्षा से केवल लगभग 30 सेंटीमीटर बाहर भटकेगी."
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Matahari Hilang Selama 10 Detik?",
+   "summary": "Jika Matahari tiba-tiba menghilang selama 10 detik, apakah Bumi akan tenggelam dalam kegelapan dan terlempar ke luar angkasa? Hasil nyata dari fisika relativitas jauh lebih mengejutkan daripada perkiraanmu!",
+   "facts": [
+    "Jarak antara Matahari dan Bumi sekitar 149,6 juta kilometer, dan cahaya serta gravitasi membutuhkan waktu sekitar 8 menit 20 detik untuk mencapai Bumi.",
+    "Menurut Relativitas Umum, gelombang gravitasi merambat di ruang hampa tepat dengan kecepatan cahaya.",
+    "Bumi bergerak pada orbitnya mengelilingi Matahari dengan kecepatan sekitar 29,8 kilometer per detik.",
+    "Jika gravitasi terputus selama 10 detik, Bumi akan bergerak maju 300 kilometer secara tangensial, tetapi hanya menyimpang ke luar dari orbit lingkarannya sekitar 30 sentimeter."
+   ]
+  },
+  "fr": {
+   "title": "Et si le Soleil disparaissait pendant 10 secondes ?",
+   "summary": "Si le Soleil disparaissait soudainement pendant 10 secondes, la Terre serait-elle plongée dans le noir et éjectée dans l'espace ? La réponse de la relativité est bien plus surprenante que vous ne le pensez !",
+   "facts": [
+    "La distance entre le Soleil et la Terre est d'environ 149,6 millions de kilomètres, et la lumière ainsi que la gravité mettent environ 8 minutes et 20 secondes pour atteindre la Terre.",
+    "Selon la relativité générale, les ondes gravitationnelles se propagent dans le vide exactement à la vitesse de la lumière.",
+    "La Terre se déplace sur son orbite autour du Soleil à une vitesse d'environ 29,8 kilomètres par seconde.",
+    "Si la gravité disparaissait pendant 10 secondes, la Terre avancerait de 300 kilomètres sur sa trajectoire tangentielle, mais ne s'écarterait de son orbite circulaire que d'environ 30 centimètres."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn die Sonne für 10 Sekunden verschwindet?",
+   "summary": "Wenn die Sonne plötzlich für 10 Sekunden verschwände, würde die Erde in Dunkelheit versinken und ins All geschleudert werden? Die reale Antwort der Relativitätstheorie ist weitaus überraschender, als du denkst!",
+   "facts": [
+    "Die Entfernung zwischen Sonne und Erde beträgt etwa 149,6 Millionen Kilometer, und Licht sowie Gravitation benötigen etwa 8 Minuten und 20 Sekunden, um die Erde zu erreichen.",
+    "Nach der Allgemeinen Relativitätstheorie breiten sich Gravitationswellen im Vakuum exakt mit Lichtgeschwindigkeit aus.",
+    "Die Erde bewegt sich auf ihrer Umlaufbahn um die Sonne mit einer Geschwindigkeit von rund 29,8 Kilometern pro Sekunde.",
+    "Fällt die Schwerkraft für 10 Sekunden aus, bewegt sich die Erde tangential 300 Kilometer vorwärts, weicht jedoch nur um etwa 30 Zentimeter nach außen von ihrer Kreisbahn ab."
+   ]
+  },
+  "ru": {
+   "title": "Что, если Солнце исчезнет на 10 секунд?",
+   "summary": "Если бы Солнце внезапно исчезло на 10 секунд, погрузилась бы Земля во тьму и улетела бы в открытый космос? Реальный ответ теории относительности гораздо удивительнее, чем вы думаете!",
+   "facts": [
+    "Расстояние между Солнцем и Землей составляет около 149,6 миллиона километров, а свету и гравитации требуется около 8 минут и 20 секунд, чтобы достичь Земли.",
+    "Согласно общей теории относительности, гравитационные волны распространяются в вакууме точно со скоростью света.",
+    "Земля движется по орбите вокруг Солнца со скоростью около 29,8 километра в секунду.",
+    "Если гравитация отключится на 10 секунд, Земля пройдет по касательной 300 километров, но отклонится наружу от круговой орбиты всего лишь примерно на 30 сантиметров."
+   ]
+  },
+  "az": {
+   "title": "Günəş 10 saniyəliyinə yox olsaydı nə olardı?",
+   "summary": "Günəş qəfil 10 saniyəliyinə yox olsaydı, Yer zülmətə qərq olub kosmosa fırlanardı? Nisbilik fizikasının təqdim etdiyi real nəticə təsəvvür etdiyinizdən qat-qat təəccüblüdür!",
+   "facts": [
+    "Günəş ilə Yer arasındakı məsafə təxminən 149,6 milyon kilometrdir və işıq ilə qravitasiya təsirinin Yerə çatması təxminən 8 dəqiqə 20 saniyə çəkir.",
+    "Ümumi Nisbilik Nəzəriyyəsinə görə, qravitasiya dalğaları vakuumda dəqiq olaraq işıq sürəti ilə yayılır.",
+    "Yer Günəş ətrafındakı orbitində saniyədə təxminən 29,8 kilometr sürətlə hərəkət edir.",
+    "Qravitasiya 10 saniyəliyinə kəsildikdə Yer toxunan istiqamətində 300 kilometr irəliləyir, lakin dairəvi orbitindən kənara doğru cəmi təxminən 30 santimetr yayınır."
+   ]
+  }
+ },
+ "id": "o0004",
+ "series": "Ya Olsaydı?",
+ "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 4.112,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 0.35,
+     "t1": 0.663
+    },
+    {
+     "w": "yok",
+     "t0": 0.733,
+     "t1": 0.884
+    },
+    {
+     "w": "olsa,",
+     "t0": 0.942,
+     "t1": 1.174
+    },
+    {
+     "w": "ilk",
+     "t0": 1.232,
+     "t1": 1.3719999999999999
+    },
+    {
+     "w": "8",
+     "t0": 1.4300000000000002,
+     "t1": 1.697
+    },
+    {
+     "w": "dakika",
+     "t0": 1.7439999999999998,
+     "t1": 2.057
+    },
+    {
+     "w": "20",
+     "t0": 2.127,
+     "t1": 2.394
+    },
+    {
+     "w": "saniye",
+     "t0": 2.4290000000000003,
+     "t1": 2.742
+    },
+    {
+     "w": "hiçbir",
+     "t0": 2.777,
+     "t1": 3.021
+    },
+    {
+     "w": "şey",
+     "t0": 3.044,
+     "t1": 3.1830000000000003
+    },
+    {
+     "w": "hissetmezdin.",
+     "t0": 3.218,
+     "t1": 4.112
+    }
+   ]
+  },
+  {
+   "t0": 4.312,
+   "t1": 7.7490000000000006,
+   "words": [
+    {
+     "w": "Çünkü",
+     "t0": 4.312,
+     "t1": 4.6370000000000005
+    },
+    {
+     "w": "ışık",
+     "t0": 4.695,
+     "t1": 4.892
+    },
+    {
+     "w": "ve",
+     "t0": 4.9510000000000005,
+     "t1": 5.0200000000000005
+    },
+    {
+     "w": "kütleçekimin",
+     "t0": 5.067,
+     "t1": 5.659000000000001
+    },
+    {
+     "w": "bize",
+     "t0": 5.694,
+     "t1": 5.891
+    },
+    {
+     "w": "varması",
+     "t0": 5.926,
+     "t1": 6.344
+    },
+    {
+     "w": "tam",
+     "t0": 6.402,
+     "t1": 6.553000000000001
+    },
+    {
+     "w": "500",
+     "t0": 6.611000000000001,
+     "t1": 6.890000000000001
+    },
+    {
+     "w": "saniye",
+     "t0": 6.913,
+     "t1": 7.215
+    },
+    {
+     "w": "sürer.",
+     "t0": 7.25,
+     "t1": 7.7490000000000006
+    }
+   ]
+  },
+  {
+   "t0": 7.949,
+   "t1": 11.664,
+   "words": [
+    {
+     "w": "Sonra",
+     "t0": 7.949,
+     "t1": 8.251
+    },
+    {
+     "w": "Güneş",
+     "t0": 8.309,
+     "t1": 8.564
+    },
+    {
+     "w": "söner,",
+     "t0": 8.588,
+     "t1": 9.029
+    },
+    {
+     "w": "Dünya",
+     "t0": 9.190999999999999,
+     "t1": 9.516
+    },
+    {
+     "w": "saniyede",
+     "t0": 9.586,
+     "t1": 9.981
+    },
+    {
+     "w": "30",
+     "t0": 10.039,
+     "t1": 10.259
+    },
+    {
+     "w": "kilometreyle",
+     "t0": 10.306000000000001,
+     "t1": 10.805
+    },
+    {
+     "w": "düz",
+     "t0": 10.84,
+     "t1": 10.968
+    },
+    {
+     "w": "uçardı.",
+     "t0": 10.991,
+     "t1": 11.664
+    }
+   ]
+  },
+  {
+   "t0": 12.044192743764173,
+   "t1": 13.902192743764173,
+   "words": [
+    {
+     "w": "Uzayın",
+     "t0": 12.044192743764173,
+     "t1": 12.381192743764172
+    },
+    {
+     "w": "derinliğine",
+     "t0": 12.439192743764172,
+     "t1": 12.950192743764173
+    },
+    {
+     "w": "mi",
+     "t0": 12.996192743764173,
+     "t1": 13.112192743764172
+    },
+    {
+     "w": "savrulduk?",
+     "t0": 13.159192743764173,
+     "t1": 13.902192743764173
+    }
+   ]
+  },
+  {
+   "t0": 14.296074829931973,
+   "t1": 17.594074829931973,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 14.296074829931973,
+     "t1": 14.586074829931972
+    },
+    {
+     "w": "dönünce",
+     "t0": 14.633074829931973,
+     "t1": 14.946074829931973
+    },
+    {
+     "w": "yörüngemiz",
+     "t0": 14.993074829931972,
+     "t1": 15.504074829931973
+    },
+    {
+     "w": "sadece",
+     "t0": 15.550074829931972,
+     "t1": 15.899074829931973
+    },
+    {
+     "w": "30",
+     "t0": 15.945074829931972,
+     "t1": 16.166074829931972
+    },
+    {
+     "w": "santimetre",
+     "t0": 16.189074829931972,
+     "t1": 16.70007482993197
+    },
+    {
+     "w": "kaymış",
+     "t0": 16.734074829931973,
+     "t1": 17.025074829931974
+    },
+    {
+     "w": "olurdu!",
+     "t0": 17.083074829931974,
+     "t1": 17.594074829931973
+    }
+   ]
+  },
+  {
+   "t0": 17.974074829931972,
+   "t1": 20.48207482993197,
+   "words": [
+    {
+     "w": "O",
+     "t0": 17.974074829931972,
+     "t1": 18.067074829931972
+    },
+    {
+     "w": "10",
+     "t0": 18.14807482993197,
+     "t1": 18.22907482993197
+    },
+    {
+     "w": "saniyede",
+     "t0": 18.28707482993197,
+     "t1": 18.69407482993197
+    },
+    {
+     "w": "sen",
+     "t0": 18.74007482993197,
+     "t1": 18.891074829931974
+    },
+    {
+     "w": "ne",
+     "t0": 18.949074829931973,
+     "t1": 19.019074829931974
+    },
+    {
+     "w": "yapardın?",
+     "t0": 19.088074829931973,
+     "t1": 19.541074829931972
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 19.564074829931972,
+     "t1": 20.041074829931972
+    },
+    {
+     "w": "yaz!",
+     "t0": 20.07507482993197,
+     "t1": 20.48207482993197
+    }
+   ]
+  }
+ ]
+}
