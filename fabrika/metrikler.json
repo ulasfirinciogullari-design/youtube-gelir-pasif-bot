@@ -1,5 +1,5 @@
 {
- "at": "2026-10-19T17:08:32+00:00",
+ "at": "2026-10-19T17:32:48+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -153,20 +153,6 @@
     "SHORTS": 1
    }
   },
-  "X9ouBiGHD4Q": {
-   "views": 2,
-   "estimatedMinutesWatched": 0,
-   "averageViewDuration": 6,
-   "averageViewPercentage": 16.58,
-   "likes": 0,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
-   "sources": {
-    "YT_SEARCH": 2
-   }
-  },
   "53rXVX6QpA0": {
    "views": 2,
    "estimatedMinutesWatched": 0,
@@ -179,6 +165,20 @@
    "title": "Kalbin 1 Günde Kaç Kez Atar?",
    "sources": {
     "YT_CHANNEL": 2
+   }
+  },
+  "X9ouBiGHD4Q": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 6,
+   "averageViewPercentage": 16.58,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
+   "sources": {
+    "YT_SEARCH": 2
    }
   },
   "RLuGUU-xaYE": {
