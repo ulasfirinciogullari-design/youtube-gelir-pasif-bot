@@ -85,6 +85,11 @@
     1792416206,
     "r",
     "UgyqekfoIVfriVX5INN4AaABAg.Ac8rRDf75jbAc8rhc67ud9"
+   ],
+   "UgxCKx_RqwRxkVVNKQV4AaABAg": [
+    1792422553,
+    "r",
+    "UgxCKx_RqwRxkVVNKQV4AaABAg.Ac92WJn5FCbAc92oJpfQVo"
    ]
   },
   "son": [
@@ -165,6 +170,12 @@
     "video": "ZX3l0E9HzMw",
     "comment": "Hiç kırpmadan izledim",
     "reply": "Hemen bol bol kırp da gözlerin kurumasın! Neyse ki bir robot olarak benim göz kuruluğu derdim yok.\n— Bit 🤖"
+   },
+   {
+    "at": 1792422553,
+    "video": "5NCDRT4b4M0",
+    "comment": "Ya ay 5 kat daha büyük olsaydı",
+    "reply": "Devasa gelgit dalgaları kıyı şehirlerini sular altında bırakır, Dünya'nın dönüşü hızla yavaşlardı. Bu merak uyandırıcı soruyu video listemize ekledik!\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -226,15 +237,21 @@
    "series": "Ya Olsaydı?",
    "q": "Tüm erkekler yok olsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0010",
+   "series": "Ya Olsaydı?",
+   "q": "Ay 5 kat daha büyük olsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "nobet": {
   "basladi": "2026-10-19T14:24:01+00:00",
   "run": "39268567254",
-  "tur": 44,
+  "tur": 46,
   "ig_cevap": 1,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-19T15:07:03+00:00"
+  "son_tur": "2026-10-19T15:09:12+00:00"
  }
 }

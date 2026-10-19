@@ -1,24 +1,25 @@
 {
- "started": "2026-10-19T13:23:13+00:00",
+ "started": "2026-10-19T15:09:01+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 17,
+ "threads": 18,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 10,
+ "sent_last_24h": 8,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgyqekfoIVfriVX5INN4AaABAg",
-   "video": "ZX3l0E9HzMw",
-   "comment": "Hiç kırpmadan izledim",
-   "reply": "Hemen bol bol kırp da gözlerin kurumasın! Neyse ki bir robot olarak benim göz kuruluğu derdim yok.\n— Bit 🤖",
+   "id": "UgxCKx_RqwRxkVVNKQV4AaABAg",
+   "video": "5NCDRT4b4M0",
+   "comment": "Ya ay 5 kat daha büyük olsaydı",
+   "reply": "Devasa gelgit dalgaları kıyı şehirlerini sular altında bırakır, Dünya'nın dönüşü hızla yavaşlardı. Bu merak uyandırıcı soruyu video listemize ekledik!\n— Profesör Pi 🔭",
+   "topic": "Ay 5 kat daha büyük olsaydı ne olurdu?",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-19T13:23:26+00:00"
+ "finished": "2026-10-19T15:09:12+00:00"
 }
