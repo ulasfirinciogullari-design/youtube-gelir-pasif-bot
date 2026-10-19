@@ -28,7 +28,7 @@ LEAD = 0.12  # the hook starts at once: the first frame of a Short decides the s
 ALP = "HV5rAif1q1ITHdvxqyMw"  # app/services/elevenlabs_engine.py DEFAULT_TURKISH_VOICE_ID, "Alp - Deep & Cinematic Baritone"
 VOICE = {"voice_id": (os.environ.get("ELEVENLABS_VOICE_ID") or "").strip() or ALP,
          "model": os.environ.get("ZK_ANIM_MODEL") or os.environ.get("ELEVENLABS_MODEL") or "eleven_flash_v2_5",
-         "speed": float(os.environ.get("ZK_ANIM_SPEED") or 1.08), "stability": float(os.environ.get("ZK_ANIM_STABILITY") or 0.42),
+         "speed": float(os.environ.get("ZK_ANIM_SPEED") or 1.1), "stability": float(os.environ.get("ZK_ANIM_STABILITY") or 0.42),
          "style": float(os.environ.get("ZK_ANIM_STYLE") or 0.5), "similarity_boost": 0.8}
 STOCK = {"impact": "sfx/impact.mp3", "whoosh": "sfx/whoosh.mp3", "riser": "sfx/riser.mp3", "pop": "sfx/pop.mp3"}
 MADE = {

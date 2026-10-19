@@ -22,7 +22,7 @@ status=$?
 
 git config user.name "zk-animasyon-bot"
 git config user.email "zk-animasyon-bot@users.noreply.github.com"
-git add animasyon/rapor.json animasyon/cikti animasyon/ses 2>/dev/null || true
+git add -f animasyon/rapor.json animasyon/cikti animasyon/ses 2>/dev/null || true  # the repo ignores *.mp3
 msg=$(python3 -c "import json;r=json.load(open('animasyon/rapor.json'));print((r.get('url') or r.get('error') or 'deneme')[:80])")
 git commit -q -m "Animasyon $BOLUM ($MOD): $msg [skip ci]" || echo "değişiklik yok"
 for i in 1 2 3; do
