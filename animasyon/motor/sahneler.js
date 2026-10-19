@@ -131,7 +131,8 @@ function figureCanvas(key, s) {
 }
 const POSES = {  // elbow and wrist goals in figure units, facing right
   point: { el: [110, 170], wr: [205, 100] }, shake: { el: [80, 330], wr: [180, 300] },
-  give: { el: [100, 270], wr: [212, 246] }, cross: { el: [24, 316], wr: [128, 236] }
+  give: { el: [100, 270], wr: [212, 246] }, cross: { el: [24, 316], wr: [128, 236] },
+  stop: { el: [136, 160], wr: [184, -40] }  // a raised palm: no
 };
 function armPose(arm, k) {
   const rest = { el: [6, 300], wr: [26, 450] }, goal = POSES[arm] || POSES.shake;
@@ -142,7 +143,7 @@ function hand(g, x, y, ang, kind) {
   g.beginPath(); g.ellipse(8, 0, 30, 24, 0, 0, Math.PI * 2); g.fill();          // palm
   g.beginPath(); g.ellipse(-2, -20, 16, 10, -.6, 0, Math.PI * 2); g.fill();     // thumb
   if (kind === 'point') { g.beginPath(); g.roundRect(20, -8, 62, 15, 7); g.fill(); }
-  else if (kind === 'give') { g.beginPath(); g.roundRect(14, -6, 52, 22, 10); g.fill(); }  // flat, palm up
+  else if (kind === 'give' || kind === 'stop') { g.beginPath(); g.roundRect(14, -6, 52, 22, 10); g.fill(); }  // flat, palm up
   else { g.beginPath(); g.roundRect(14, -18, 40, 36, 14); g.fill(); }
   g.restore();
 }

@@ -114,13 +114,22 @@ const VIS = {
   yasak(V, L, t, lt) {
     room(t, '#0e0c11');
     beam(540, 0, 1500, 260, 1000, C.gold, .06, t, 30);
-    const items = (V.items || []).slice(0, 2), xs = [300, 780];
+    const items = (V.items || []).slice(0, 2), xs = [290, 790];
+    const hits = items.map((it, i) => wordTime(L, it.key, .3 + .4 * i));
+    // Franklin below the two cards, raising a hand at each one: not this, not this either
+    let no = 0;
+    hits.forEach(h => { const p = prog(t, h - .15, h + .75); if (p > 0 && p < 1) no = Math.max(no, Math.sin(p * Math.PI)); });
+    const fin = eo(prog(lt, 0, .5));
+    ctx.save(); ctx.globalAlpha = fin;
+    person('franklin', lerp(380, 430, fin), 1250, .95, 1, C.gold, t, { arm: 'stop', armK: no, mood: 'calm', lean: -.02 * no });
+    ctx.restore();
+    fog(t, 1420, .05);
     items.forEach((it, i) => {
-      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 940;
+      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 780;
       if (k <= .01) return;
-      const st = wordTime(L, it.key, .3 + .4 * i), hit = prog(t, st, st + .35);
+      const st = hits[i], hit = prog(t, st, st + .35);
       const shake = hit > 0 && hit < 1 ? Math.sin(t * 70) * 10 * (1 - hit) : 0;
-      ctx.save(); ctx.translate(x + shake, y); ctx.scale(k, k);
+      ctx.save(); ctx.translate(x + shake, y); ctx.scale(k * .88, k * .88);
       ctx.fillStyle = 'rgba(14,12,16,.92)'; ctx.shadowColor = 'rgba(0,0,0,.8)'; ctx.shadowBlur = 40; rr(-205, -250, 410, 500, 18); ctx.fill();
       ctx.shadowColor = 'transparent'; ctx.strokeStyle = rgba(C.gold, .55 * (1 - hit * .6)); ctx.lineWidth = 3; rr(-205, -250, 410, 500, 18); ctx.stroke();
       icon(it.i, 0, -30, 1.25, hit > 0 ? mixColor(C.gold, '#6d5a3a', hit) : C.gold);
