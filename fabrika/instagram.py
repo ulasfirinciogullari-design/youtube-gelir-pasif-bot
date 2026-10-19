@@ -270,15 +270,26 @@ def fresh_comments(tok, user, done, pending):
         if _seen("media", m["id"], m["comments_count"]):
             continue
         cs = call(tok, "GET", f"{m['id']}/comments", params={
-            "fields": "id,text,username,timestamp,replies{username}", "limit": 50}).get("data", [])
+            "fields": "id,text,username,timestamp,replies.limit(50){id,text,username,timestamp}",
+            "limit": 50}).get("data", [])
         ids = []
         for c in cs:
             cid, name = c["id"], c.get("username")
+            replies = (c.get("replies") or {}).get("data", [])
+            # what people wrote under our reply gets an answer too, in the same thread with an @mention
+            msg = lambda x: {"id": x["id"], "author": x.get("username"), "name": x.get("username"),
+                             "text": " ".join((x.get("text") or "").split()), "at": _ts(x.get("timestamp"))}
+            items, q = yorum.follow_ups([msg(c)] + [msg(r) for r in replies], {user["username"]}, done, limit)
+            for it in items:
+                it.update(kind="yorum", video=m["id"], parent=cid)
+            fresh += items
+            quiet.update(q)
+            ids += [i for it in items for i in [it["id"], *it["also"]]] + list(q)
             if cid in done or name == user["username"]:
                 continue
             ids.append(cid)
-            text = " ".join((c.get("text") or "").split())
-            if any(r.get("username") == user["username"] for r in (c.get("replies") or {}).get("data", [])):
+            text = yorum.strip_mentions(" ".join((c.get("text") or "").split()))
+            if any(r.get("username") == user["username"] for r in replies):
                 quiet[cid] = "hesap zaten cevaplamış"
             elif _ts(c.get("timestamp")) < limit:
                 quiet[cid] = "eski"
@@ -334,7 +345,7 @@ def fresh_dms(tok, user, done, pending):
 def judge(batch, vids, planned):
     vlines = [f"- {vid}: {v['title']}" + (" | facts: " + " / ".join(v["facts"]) if v["facts"] else "")
               for vid, v in vids.items() if vid in {c["video"] for c in batch}]
-    comments = json.dumps([{"id": c["id"], "video": c["video"], "text": c["text"]} for c in batch], ensure_ascii=False)
+    comments = yorum.comments_json(batch)
     prompt = PROMPT.format(videos="\n".join(vlines) or "-", planned="; ".join(planned[:150]) or "-", comments=comments)
     text, _ = yazar.call(prompt, search=True, temperature=0.6)
     items = yazar.parse_json(text).get("items", [])
@@ -419,20 +430,26 @@ def _answer(state, report, dry, tok, box, batch, now):
         v = verdicts.get(c["id"], {})
         # a DM is private and this report lands on the public branch: only comments keep their text
         item = {"id": c["id"], "kind": c["kind"], "author": _who(c["author"]),
-                "text": c["text"] if c["kind"] != "dm" else "(özel mesaj)"}
+                "text": c["text"] if c["kind"] != "dm" else "(özel mesaj)",
+                **({"cevaba_cevap": True} if c.get("parent") else {})}
         out.append(item)
+
+        def mark(entry, c=c):  # the earlier messages a follow-up covered share its outcome
+            done[c["id"]] = entry
+            for i in c.get("also", []):
+                done[i] = [entry[0], "s", "aynı sohbette birlikte cevaplandı" if entry[1] == "r" else entry[2]]
         if v.get("action") != "reply":
             item["result"] = f"atlandı: {v.get('why') or 'karar yok'}"
             if not dry:  # no verdict counts too: asking Gemini again every minute would not change it
-                done[c["id"]] = [now, "s", item["result"]]
+                mark([now, "s", item["result"]])
             continue
         reply = yorum.clean_reply(v)
         if not reply:
             item["result"] = "atlandı: cevap kurala uymadı"
             if not dry:
-                done[c["id"]] = [now, "s", item["result"]]
+                mark([now, "s", item["result"]])
             continue
-        item["reply"] = reply if c["kind"] != "dm" else "(özel mesaj)"  # an answer to a DM says what it asked
+        item["reply"] = reply if c["kind"] != "dm" else "(özel mesaj)"  # a DM answer says what it asked; the @username goes only into the posted text
         topic = None if dry or v.get("planned") else yorum.add_topic(state, v.get("topic"), planned)
         if topic:
             item["topic"] = topic["q"]
@@ -444,8 +461,9 @@ def _answer(state, report, dry, tok, box, batch, now):
             if c["kind"] == "dm":
                 call(tok, "POST", "me/messages", json={"recipient": {"id": c["to"]}, "message": {"text": reply}})
             else:
-                call(tok, "POST", f"{c['id']}/replies", data={"message": reply})
-            done[c["id"]] = [now, "r", reply[:80] if c["kind"] != "dm" else "", _who(c["author"])]
+                call(tok, "POST", f"{c.get('parent', c['id'])}/replies",
+                     data={"message": yorum.mention(c["name"], reply) if c.get("parent") else reply})
+            mark([now, "r", reply[:80] if c["kind"] != "dm" else "", _who(c["author"])])
             item["result"] = "gönderildi"
             box["son"] = (box["son"] + [{"at": now, "kind": c["kind"], "text": item["text"][:120],
                                          "reply": reply if c["kind"] != "dm" else "(özel mesaj)"}])[-40:]
@@ -454,7 +472,7 @@ def _answer(state, report, dry, tok, box, batch, now):
             if rate_limited(e):
                 report["rate_limit"] = True
                 break  # try again after the pause
-            done[c["id"]] = [now, "s", "gönderilemedi"]
+            mark([now, "s", "gönderilemedi"])
 
 
 def rate_limited(e):
