@@ -1,0 +1,259 @@
+{
+  "topic_id": "mk-049",
+  "topic": "Ateş böcekleri geceleri neden parlar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x4",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Ateş Böcekleri Neden Geceleri Parlar? ✨",
+  "hook_text": "GECE NASIL IŞIK SAÇARLAR?",
+  "description": "Ateş böcekleri neden geceleri parlar?\n\nAteş böcekleri, lüsiferin adlı özel bir kimyasal sayesinde parlar. Bu madde oksijenle buluştuğunda enerji açığa çıkar ve bu enerjinin %98'i ışığa dönüşür. Böylece neredeyse hiç ısı kaybetmeden parlayabilirler.\n\nSence ateş böceklerinin ışığı normal bir ampulden kaç kat daha verimlidir: 20 mi 50 mi?\n\n#ateşböceği #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-049",
+  "tags": [
+    "ateş böceği",
+    "ateş böcekleri",
+    "ateş böcekleri neden parlar",
+    "ateş böceği ışığı",
+    "ateş böceği nasıl ışık saçar",
+    "ateş böceği parlaklığı",
+    "lüsiferin",
+    "biyolüminesans",
+    "böcekler neden parlar",
+    "gece parlayan böcekler",
+    "ateş böceği ışık üretimi",
+    "hayvanlar",
+    "doğa",
+    "bilim",
+    "ilginç bilgiler",
+    "merak ettikleriniz",
+    "shorts türkçe",
+    "keşfet",
+    "firefly",
+    "fireflies",
+    "bioluminescence",
+    "insect",
+    "enteresan bilgiler",
+    "hayvanlar alemi",
+    "canlılar dünyası",
+    "DoğaBilimi",
+    "IşıkSırrı",
+    "KimyasalReaksiyon",
+    "MeraklıBilgiler"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Fireflies Glow at Night? ✨",
+      "description": "Ever wondered how fireflies create their magical light? These fascinating insects use a special chemical called luciferin that reacts with oxygen to produce light. Discover the incredible efficiency of their natural glow!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "es": {
+      "title": "¿Por qué brillan las luciérnagas de noche? ✨",
+      "description": "¿Alguna vez te has preguntado cómo las luciérnagas crean su luz mágica? Estos fascinantes insectos utilizan una sustancia química especial llamada luciferina que reacciona con el oxígeno para producir luz. ¡Descubre la increíble eficiencia de su brillo natural!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "pt": {
+      "title": "Por que os vaga-lumes brilham à noite? ✨",
+      "description": "Já se perguntou como os vaga-lumes criam sua luz mágica? Esses insetos fascinantes usam uma substância química especial chamada luciferina que reage com o oxigênio para produzir luz. Descubra a incrível eficiência do seu brilho natural!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "de": {
+      "title": "Warum leuchten Glühwürmchen nachts? ✨",
+      "description": "Hast du dich jemals gefragt, wie Glühwürmchen ihr magisches Licht erzeugen? Diese faszinierenden Insekten nutzen eine spezielle Chemikalie namens Luciferin, die mit Sauerstoff reagiert, um Licht zu produzieren. Entdecke die unglaubliche Effizienz ihres natürlichen Leuchtens!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "fr": {
+      "title": "Pourquoi les lucioles brillent-elles la nuit ? ✨",
+      "description": "Vous êtes-vous déjà demandé comment les lucioles créent leur lumière magique? Ces insectes fascinants utilisent une substance chimique spéciale appelée luciférine qui réagit avec l'oxygène pour produire de la lumière. Découvrez l'incroyable efficacité de leur lueur naturelle!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "it": {
+      "title": "Perché le lucciole brillano di notte? ✨",
+      "description": "Ti sei mai chiesto come le lucciole creano la loro luce magica? Questi affascinanti insetti usano una speciale sostanza chimica chiamata luciferina che reagisce con l'ossigeno per produrre luce. Scopri l'incredibile efficienza del loro bagliore naturale!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "ru": {
+      "title": "Почему светлячки светятся ночью? ✨",
+      "description": "Задумывались ли вы, как светлячки создают свой волшебный свет? Эти удивительные насекомые используют особое химическое вещество под названием люциферин, которое реагирует с кислородом, производя свет. Откройте для себя невероятную эффективность их естественного свечения!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "ar": {
+      "title": "لماذا تتوهج اليراعات ليلاً؟ ✨",
+      "description": "هل تساءلت يومًا كيف تُنتج اليراعات ضوءها الساحر؟ تستخدم هذه الحشرات الرائعة مادة كيميائية خاصة تسمى لوسيفيرين تتفاعل مع الأكسجين لإنتاج الضوء. اكتشف الكفاءة المذهلة لتوهجها الطبيعي!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "hi": {
+      "title": "जुगनू रात में क्यों चमकते हैं? ✨",
+      "description": "क्या आपने कभी सोचा है कि जुगनू अपनी जादुई रोशनी कैसे पैदा करते हैं? ये आकर्षक कीड़े लूसिफेरिन नामक एक विशेष रसायन का उपयोग करते हैं जो ऑक्सीजन के साथ प्रतिक्रिया करके प्रकाश उत्पन्न करता है। उनकी प्राकृतिक चमक की अविश्वसनीय दक्षता की खोज करें!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "id": {
+      "title": "Mengapa Kunang-kunang Berpendar di Malam Hari? ✨",
+      "description": "Pernahkah Anda bertanya-tanya bagaimana kunang-kunang menciptakan cahaya magisnya? Serangga menarik ini menggunakan bahan kimia khusus bernama luciferin yang bereaksi dengan oksigen untuk menghasilkan cahaya. Temukan efisiensi luar biasa dari cahaya alami mereka!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "ja": {
+      "title": "ホタルはなぜ夜に光るの？ ✨",
+      "description": "ホタルがどのようにして神秘的な光を作り出すか、不思議に思ったことはありませんか？これらの魅力的な昆虫は、酸素と反応して光を生成するルシフェリンという特殊な化学物質を使用します。彼らの自然な光の驚くべき効率を発見してください！\n\n#shorts\n\nSeri: mk-049"
+    },
+    "ko": {
+      "title": "반딧불이는 왜 밤에 빛날까요? ✨",
+      "description": "반딧불이가 어떻게 마법 같은 빛을 만들어내는지 궁금해 본 적 있나요? 이 매혹적인 곤충들은 산소와 반응하여 빛을 생성하는 루시페린이라는 특별한 화학 물질을 사용합니다. 그들의 자연적인 빛의 놀라운 효율성을 알아보세요!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "pl": {
+      "title": "Dlaczego świetliki świecą nocą? ✨",
+      "description": "Czy zastanawiałeś się kiedyś, jak świetliki tworzą swoje magiczne światło? Te fascynujące owady wykorzystują specjalną substancję chemiczną zwaną lucyferyną, która reaguje z tlenem, wytwarzając światło. Odkryj niesamowitą wydajność ich naturalnego blasku!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "nl": {
+      "title": "Waarom geven vuurvliegjes licht in het donker? ✨",
+      "description": "Heb je je ooit afgevraagd hoe vuurvliegjes hun magische licht creëren? Deze fascinerende insecten gebruiken een speciale chemische stof genaamd luciferine die reageert met zuurstof om licht te produceren. Ontdek de ongelooflijke efficiëntie van hun natuurlijke gloed!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "uk": {
+      "title": "Чому світлячки світяться вночі? ✨",
+      "description": "Чи замислювалися ви, як світлячки створюють своє чарівне світло? Ці дивовижні комахи використовують особливу хімічну речовину під назвою люциферин, яка реагує з киснем, виробляючи світло. Відкрийте для себе неймовірну ефективність їхнього природного світіння!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "vi": {
+      "title": "Tại sao đom đóm phát sáng vào ban đêm? ✨",
+      "description": "Bạn đã bao giờ tự hỏi làm thế nào đom đóm tạo ra ánh sáng kỳ diệu của chúng chưa? Những côn trùng hấp dẫn này sử dụng một hóa chất đặc biệt gọi là luciferin, phản ứng với oxy để tạo ra ánh sáng. Khám phá hiệu quả đáng kinh ngạc của ánh sáng tự nhiên của chúng!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "az": {
+      "title": "Atəşböcəkləri gecələr niyə parlayır? ✨",
+      "description": "Heç düşünmüsünüzmü ki, atəşböcəkləri sehrli işıqlarını necə yaradır? Bu maraqlı həşəratlar oksigenlə reaksiyaya girərək işıq istehsal edən lüsiferin adlı xüsusi bir kimyəvi maddədən istifadə edir. Onların təbii parıltısının inanılmaz effektivliyini kəşf edin!\n\n#shorts\n\nSeri: mk-049"
+    },
+    "ro": {
+      "title": "De ce licuricii luminează noaptea? ✨",
+      "description": "Te-ai întrebat vreodată cum își creează licuricii lumina magică? Aceste insecte fascinante folosesc o substanță chimică specială numită luciferină care reacționează cu oxigenul pentru a produce lumină. Descoperă eficiența incredibilă a strălucirii lor naturale!\n\n#shorts\n\nSeri: mk-049"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence ateş böceklerinin ışığı normal bir ampulden kaç kat daha verimlidir: 20 mi 50 mi?",
+  "scenes": [
+    {
+      "text": "Bu böcekler, geceleri kendi ışıklarını üreten özel canlılardır.",
+      "visual": "Fireflies glowing in the dark, then abstract bright particles in air.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 2,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        }
+      ],
+      "callout": "BİYOLÜMİNESANS"
+    },
+    {
+      "text": "Onların parlaklığı, lüsiferin adlı özel bir kimyasalın eseridir. Bu madde, oksijenle buluştuğunda enerji açığa çıkarır.",
+      "visual": "Abstract particles representing chemicals and oxygen reacting.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 9,
+          "kare": 1
+        },
+        {
+          "n": 12,
+          "kare": 2
+        },
+        {
+          "n": 15,
+          "kare": 3
+        }
+      ],
+      "callout": "LÜSİFERİN"
+    },
+    {
+      "text": "Ama asıl şaşırtıcı olan, bu enerjinin neredeyse tamamının ışığa dönüşmesi. (%98 verimle!)",
+      "visual": "More intense light particles, representing efficient energy conversion.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 18,
+          "kare": 1
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 24,
+          "kare": 2
+        }
+      ],
+      "callout": "%98 VERİM"
+    },
+    {
+      "text": "İşte bu sayede, neredeyse hiç ısı kaybetmeden parlar ve eşlerini kolayca bulurlar.",
+      "visual": "Light particles floating in the air.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 27,
+          "kare": 1
+        },
+        {
+          "n": 29,
+          "kare": 3
+        },
+        {
+          "n": 32,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 17.36,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-049_1792445338_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı ve enerjisi düşük, monoton bir yapay zeka sesi kullanılmış.",
+        "fix": "Yapay zeka sesinin hızını artırın, anahtar kelimelerde tonlama ve vurguyu güçlendirin. Daha doğal ve enerjik bir yapay zeka sesi seçmeye çalışın."
+      },
+      {
+        "area": "yazı",
+        "problem": "Karmaşık bilgiyi (kimyasal reaksiyon, verimlilik) görselleştirecek grafik veya animasyon eksikliği.",
+        "fix": "Ücretsiz stok video sitelerinden (Pexels, Pixabay) soyut enerji akışı, kimyasal reaksiyon veya ışık yayılımı gibi konseptleri anlatan kısa animasyonlar/grafikler bulun. Bulunamıyorsa, metin tabanlı basit animasyonlarla görselleştirme yapın "
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görsel değişimler yavaş ve basit kesmelerden ibaret, video dinamik değil.",
+        "fix": "Her 2-3 saniyede bir veya her önemli bilgi parçasında görseli değiştirin. Anahtar kelimelerin ekrana geldiği anlarda görsel geçişleri hızlandırın ve daha fazla stok video kullanarak çeşitliliği artırın."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Ateş böceği görüntüleri birbirine benziyor, son görüntü konuyla alakasız (sinekler/arılar).",
+        "fix": "Daha farklı açılardan, farklı ortamlarda çekilmiş ateş böceği videoları bulun. Mümkünse yaşam döngüsü veya yakın çekimlerini içeren videolar ekleyin. Son görüntüdeki alakasız görseli kaldırıp yerine ateş böcekleriyle ilgili bir görsel koyun"
+      },
+      {
+        "area": "ses",
+        "problem": "Videoda herhangi bir ses efekti (yazıların ekrana gelmesi, vurgu efektleri) kullanılmamış.",
+        "fix": "Anahtar kelimeler ekrana geldiğinde veya önemli bir bilgi verildiğinde hafif 'ding' veya 'whoosh' gibi ses efektleri ekleyin. Bu, videonun enerjisini artırır ve izleyicinin dikkatini çeker."
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazıların ekrana gelme animasyonu basit ve tekdüze.",
+        "fix": "Yazıların ekrana daha dinamik bir şekilde gelmesini sağlayan farklı animasyonlar kullanın (örneğin, hızlı bir şekilde büyüme, kayarak gelme). Anahtar kelimeleri daha belirgin hale getirmek için farklı renkler veya vurgu efektleri deneyin."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca ('GECE NASIL IŞIK SAÇARLAR?') fena değil ama referans videodaki gibi 'şaşırtıcı' veya 'merak uyandırıcı' bir iddia içermiyor.",
+        "fix": "Kancayı daha ilgi çekici hale getirin. Örneğin, 'Geceleri parlayan bu böcekler, doğanın en şaşırtıcı sırlarından birini saklıyor!' veya 'Bu böcekler, 200 yıldır bilim insanlarını şaşırtan bir enerji sırrına sahip!' gibi ifadeler kullanın."
+      }
+    ],
+    "strengths": [
+      "kısa",
+      "bilgilendirici"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

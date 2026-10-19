@@ -86,5 +86,16 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-049",
+    "topic": "Ateş böcekleri geceleri neden parlar?",
+    "stock_hint": "firefly glow night",
+    "subject": [
+      "firefly",
+      "insect"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]

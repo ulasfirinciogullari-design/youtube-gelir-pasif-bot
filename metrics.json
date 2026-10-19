@@ -1,12 +1,22 @@
 [
   {
+    "video_id": "LJU_l-5hOa8",
+    "topic_id": "mk-048",
+    "title": "Kuşlar binlerce kilometreyi nasıl bulur? 🧭",
+    "published_at": "2026-10-19T19:27:52Z",
+    "privacy": "public",
+    "views": 3,
+    "likes": 0,
+    "comments": 1
+  },
+  {
     "video_id": "CaqDaNCHfY0",
     "topic_id": "mk-047",
     "title": "Kediler Neden Yoğurur? İşte Şaşırtıcı Gerçek! 🐾",
     "published_at": "2026-10-19T17:31:34Z",
     "privacy": "public",
-    "views": 0,
-    "likes": 0,
+    "views": 714,
+    "likes": 6,
     "comments": 1
   },
   {
@@ -15,7 +25,7 @@
     "title": "Parmaklarımız Suda Neden Buruşur? 🤔",
     "published_at": "2026-10-19T15:29:35Z",
     "privacy": "public",
-    "views": 806,
+    "views": 945,
     "likes": 7,
     "comments": 1
   },
@@ -25,7 +35,7 @@
     "title": "Yarasalar Baş Aşağı Asılırken Kas Kullanmaz! 😮",
     "published_at": "2026-10-19T13:31:58Z",
     "privacy": "public",
-    "views": 696,
+    "views": 922,
     "likes": 6,
     "comments": 1
   },
@@ -35,7 +45,7 @@
     "title": "Ağaçkakanların Başı Neden Hiç Ağrımaz? 🤯",
     "published_at": "2026-10-19T11:29:51Z",
     "privacy": "public",
-    "views": 1289,
+    "views": 1312,
     "likes": 3,
     "comments": 1
   },
@@ -45,9 +55,10 @@
     "title": "Sinekler Neden Ters Yüz Yürür? 🤯",
     "published_at": "2026-10-19T09:26:14Z",
     "privacy": "public",
-    "views": 989,
+    "views": 1013,
     "likes": 9,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 84.41
   },
   {
     "video_id": "c35gmT12OGk",
@@ -55,9 +66,10 @@
     "title": "Ayılar neden tam kış uykusuna yatmaz? 🐻",
     "published_at": "2026-10-19T07:31:35Z",
     "privacy": "public",
-    "views": 1009,
+    "views": 1011,
     "likes": 11,
-    "comments": 1
+    "comments": 1,
+    "views_per_hour": 72.67
   },
   {
     "video_id": "XZWBsVp_kOk",
@@ -65,10 +77,10 @@
     "title": "Okyanusun Gizemli Işıkları: Neden Parlıyorlar? ✨",
     "published_at": "2026-10-18T21:27:44Z",
     "privacy": "public",
-    "views": 273,
+    "views": 283,
     "likes": 0,
     "comments": 1,
-    "views_per_hour": 12.46
+    "views_per_hour": 11.8
   },
   {
     "video_id": "FD6RkHQlEgU",
@@ -76,10 +88,10 @@
     "title": "Pazartesi Sabahları Neden Daha Yorgun Uyanırız? 😴",
     "published_at": "2026-10-18T19:26:32Z",
     "privacy": "public",
-    "views": 1086,
+    "views": 1087,
     "likes": 8,
     "comments": 1,
-    "views_per_hour": 45.37
+    "views_per_hour": 41.81
   },
   {
     "video_id": "CGjHVJfvL3A",
@@ -87,10 +99,10 @@
     "title": "Hıçkırık neden kendi kendine geçer? 🤯",
     "published_at": "2026-10-18T17:26:21Z",
     "privacy": "public",
-    "views": 3,
+    "views": 5,
     "likes": 0,
     "comments": 1,
-    "views_per_hour": 0.12
+    "views_per_hour": 0.18
   },
   {
     "video_id": "PTewgWexXP8",
@@ -98,10 +110,10 @@
     "title": "Müzik dinlerken neden tüylerimiz ürperir? 🎶",
     "published_at": "2026-10-18T15:29:12Z",
     "privacy": "public",
-    "views": 810,
+    "views": 841,
     "likes": 9,
     "comments": 1,
-    "views_per_hour": 29.04
+    "views_per_hour": 28.08
   },
   {
     "video_id": "2m968K7vOfg",
@@ -109,10 +121,10 @@
     "title": "Soğan Doğrarken Gözler Neden Yaşarır? 🧅",
     "published_at": "2026-10-18T13:27:34Z",
     "privacy": "public",
-    "views": 1116,
+    "views": 1127,
     "likes": 9,
     "comments": 1,
-    "views_per_hour": 37.3
+    "views_per_hour": 35.24
   },
   {
     "video_id": "F6cvfvbDu2g",
@@ -120,10 +132,10 @@
     "title": "Rüyalarını Neden Hatırlamıyorsun? 😴",
     "published_at": "2026-10-18T11:26:09Z",
     "privacy": "public",
-    "views": 1110,
+    "views": 1120,
     "likes": 3,
     "comments": 1,
-    "views_per_hour": 34.75
+    "views_per_hour": 32.94
   },
   {
     "video_id": "SuvCYyIvKv8",
@@ -134,7 +146,7 @@
     "views": 1106,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 32.58
+    "views_per_hour": 30.72
   },
   {
     "video_id": "Ps-3m0_T22s",
@@ -142,10 +154,10 @@
     "title": "Gökyüzü Neden Mavi, Gün Batımı Turuncu? 🤯",
     "published_at": "2026-10-18T07:26:07Z",
     "privacy": "public",
-    "views": 105,
+    "views": 107,
     "likes": 0,
     "comments": 1,
-    "views_per_hour": 2.92
+    "views_per_hour": 2.82
   },
   {
     "video_id": "A_OVF8W4d2U",
@@ -153,12 +165,12 @@
     "title": "Kaydedilen Sesiniz Size Neden Tuhaf Gelir? 🎤",
     "published_at": "2026-10-17T22:40:29Z",
     "privacy": "public",
-    "views": 1006,
+    "views": 1009,
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 67.7,
-    "views_per_hour": 22.5
+    "views_per_hour": 21.58
   },
   {
     "video_id": "0x98EpB5kto",
@@ -166,12 +178,12 @@
     "title": "Uçakların Gizemli Kavisli Rotaları 🤔",
     "published_at": "2026-10-16T21:30:29Z",
     "privacy": "public",
-    "views": 14,
+    "views": 16,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 8.0,
     "avg_view_pct": 63.9,
-    "views_per_hour": 0.2
+    "views_per_hour": 0.22
   },
   {
     "video_id": "if3nfLYsuF4",
@@ -203,12 +215,12 @@
     "title": "Kalabalıkta Neden Kimse Yardım Etmez? 🤯",
     "published_at": "2026-10-16T18:26:16Z",
     "privacy": "public",
-    "views": 5,
+    "views": 6,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 73.0,
     "avg_view_pct": 431.2,
-    "views_per_hour": 0.07
+    "views_per_hour": 0.08
   },
   {
     "video_id": "1MiQv04V8TE",
@@ -229,12 +241,12 @@
     "title": "Telefonun Titremediği Halde Neden Titrediğini Sanırız? 👻",
     "published_at": "2026-10-16T16:25:58Z",
     "privacy": "public",
-    "views": 5,
+    "views": 6,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 6.0,
     "avg_view_pct": 41.4,
-    "views_per_hour": 0.07
+    "views_per_hour": 0.08
   },
   {
     "video_id": "JM9R0cATqXU",
@@ -242,12 +254,12 @@
     "title": "3000 Yıllık Bal Neden Çürümüyor? 🍯",
     "published_at": "2026-10-16T15:27:29Z",
     "privacy": "public",
-    "views": 17,
+    "views": 18,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 7.0,
     "avg_view_pct": 56.8,
-    "views_per_hour": 0.22
+    "views_per_hour": 0.23
   },
   {
     "video_id": "TquxXcmk094",
@@ -255,12 +267,12 @@
     "title": "Karıncalar Evini Nasıl Bulur? 🐜",
     "published_at": "2026-10-16T14:28:01Z",
     "privacy": "public",
-    "views": 7,
+    "views": 8,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 0.0,
     "avg_view_pct": 0.0,
-    "views_per_hour": 0.09
+    "views_per_hour": 0.1
   },
   {
     "video_id": "eI3Nyrjn2LE",
@@ -268,12 +280,12 @@
     "title": "Arılar Neden Hep Altıgen Petek Yapar? 🐝",
     "published_at": "2026-10-16T13:29:41Z",
     "privacy": "public",
-    "views": 76,
+    "views": 79,
     "likes": 1,
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 79.4,
-    "views_per_hour": 0.98
+    "views_per_hour": 0.99
   },
   {
     "video_id": "UUHZ6p74pug",
@@ -281,12 +293,12 @@
     "title": "Bukalemunlar Renklerini Nasıl Değiştirir? 🎨",
     "published_at": "2026-10-16T12:30:50Z",
     "privacy": "public",
-    "views": 24,
+    "views": 26,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 9.0,
     "avg_view_pct": 60.4,
-    "views_per_hour": 0.3
+    "views_per_hour": 0.32
   },
   {
     "video_id": "4JaO46shfHU",
@@ -294,12 +306,12 @@
     "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
     "published_at": "2026-10-16T11:26:33Z",
     "privacy": "public",
-    "views": 1072,
+    "views": 1075,
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 88.8,
-    "views_per_hour": 13.41
+    "views_per_hour": 13.11
   },
   {
     "video_id": "xH99jEtGQRg",
@@ -307,12 +319,12 @@
     "title": "Filler Neden Asla Unutmaz? 🐘",
     "published_at": "2026-10-16T10:26:34Z",
     "privacy": "public",
-    "views": 1614,
+    "views": 1621,
     "likes": 7,
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 98.1,
-    "views_per_hour": 19.94
+    "views_per_hour": 19.53
   },
   {
     "video_id": "4gAkxCV7MaA",
@@ -320,12 +332,12 @@
     "title": "Devenin hörgücünde gerçekten ne var? 🤔",
     "published_at": "2026-10-16T09:36:29Z",
     "privacy": "public",
-    "views": 1197,
+    "views": 1201,
     "likes": 6,
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 87.8,
-    "views_per_hour": 14.64
+    "views_per_hour": 14.33
   },
   {
     "video_id": "C0nA-448ifg",
@@ -333,12 +345,12 @@
     "title": "Zebraların Sırrı: Çizgiler Neden Var? 🦓",
     "published_at": "2026-10-16T08:26:09Z",
     "privacy": "public",
-    "views": 1967,
+    "views": 1969,
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 88.6,
-    "views_per_hour": 23.72
+    "views_per_hour": 23.16
   },
   {
     "video_id": "vsmgJqjZ8CQ",
@@ -346,12 +358,12 @@
     "title": "Köpekbalıkları Neden Durursa Boğulur? 🦈",
     "published_at": "2026-10-16T07:26:41Z",
     "privacy": "public",
-    "views": 1187,
+    "views": 1189,
     "likes": 9,
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 74.7,
-    "views_per_hour": 14.14
+    "views_per_hour": 13.83
   },
   {
     "video_id": "LSRR_tONJdo",
@@ -359,12 +371,12 @@
     "title": "Kolibriler havada nasıl asılı kalır? 😮",
     "published_at": "2026-10-16T06:25:04Z",
     "privacy": "public",
-    "views": 1018,
+    "views": 1020,
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 77.5,
-    "views_per_hour": 11.98
+    "views_per_hour": 11.72
   },
   {
     "video_id": "IKsp_tXE4EI",
@@ -372,12 +384,12 @@
     "title": "Zürafalar Neden Bayılmaz? İnanılmaz Bir Adaptasyon! 🦒",
     "published_at": "2026-10-16T05:28:03Z",
     "privacy": "public",
-    "views": 5555,
+    "views": 5591,
     "likes": 20,
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 76.5,
-    "views_per_hour": 64.66
+    "views_per_hour": 63.56
   },
   {
     "video_id": "kdEbtK5fwQQ",
@@ -385,12 +397,12 @@
     "title": "Köpekler Neden Saniyeler İçinde Kurur? 💧",
     "published_at": "2026-10-16T04:39:13Z",
     "privacy": "public",
-    "views": 2776,
+    "views": 2796,
     "likes": 11,
     "comments": 2,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 75.7,
-    "views_per_hour": 32.01
+    "views_per_hour": 31.49
   },
   {
     "video_id": "9RAohHZ0ur4",
@@ -398,12 +410,12 @@
     "title": "Flamingolar neden bu kadar pembeler? 💖",
     "published_at": "2026-10-16T01:43:10Z",
     "privacy": "public",
-    "views": 3130,
+    "views": 3153,
     "likes": 22,
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 68.4,
-    "views_per_hour": 34.91
+    "views_per_hour": 34.38
   },
   {
     "video_id": "LZUWW_pFBIw",
@@ -411,12 +423,12 @@
     "title": "Kedilerin Mırlama Sırrı Ortaya Çıktı! 🤫",
     "published_at": "2026-10-16T00:12:35Z",
     "privacy": "public",
-    "views": 1917,
+    "views": 1920,
     "likes": 28,
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 74.1,
-    "views_per_hour": 21.03
+    "views_per_hour": 20.59
   },
   {
     "video_id": "OFWm_FYPo1s",
@@ -424,12 +436,12 @@
     "title": "Yunuslar Boğulmadan Nasıl Uyur? 🐬",
     "published_at": "2026-10-15T23:19:42Z",
     "privacy": "public",
-    "views": 1154,
+    "views": 1157,
     "likes": 13,
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 74.3,
-    "views_per_hour": 12.54
+    "views_per_hour": 12.29
   },
   {
     "video_id": "Q7Fdwf2i1KI",
@@ -437,12 +449,12 @@
     "title": "Kutup Ayılarının Kürkü Aslında Beyaz Değil! 😮",
     "published_at": "2026-10-15T18:43:11Z",
     "privacy": "public",
-    "views": 1035,
+    "views": 1037,
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 19.0,
     "avg_view_pct": 94.3,
-    "views_per_hour": 10.71
+    "views_per_hour": 10.5
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -455,7 +467,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 59.0,
-    "views_per_hour": 9.94
+    "views_per_hour": 9.74
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -463,12 +475,12 @@
     "title": "İnsan kendini neden gıdıklayamaz? 🧠 #shorts",
     "published_at": "2026-10-15T09:46:53Z",
     "privacy": "public",
-    "views": 1196,
+    "views": 1197,
     "likes": 7,
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 51.6,
-    "views_per_hour": 11.33
+    "views_per_hour": 11.12
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -476,12 +488,12 @@
     "title": "Biri esneyince neden sen de esnersin? 🥱 #shorts",
     "published_at": "2026-10-14T21:32:01Z",
     "privacy": "public",
-    "views": 1070,
+    "views": 1071,
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 50.7,
-    "views_per_hour": 9.08
+    "views_per_hour": 8.93
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -489,12 +501,12 @@
     "title": "Köpekler neden kafalarını yana eğer? 🤔 #shorts",
     "published_at": "2026-10-14T19:12:05Z",
     "privacy": "public",
-    "views": 1156,
+    "views": 1157,
     "likes": 24,
     "comments": 1,
     "avg_view_seconds": 17.0,
     "avg_view_pct": 65.3,
-    "views_per_hour": 9.62
+    "views_per_hour": 9.47
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -507,7 +519,7 @@
     "comments": 0,
     "avg_view_seconds": 20.0,
     "avg_view_pct": 80.3,
-    "views_per_hour": 13.79
+    "views_per_hour": 13.56
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -520,6 +532,6 @@
     "comments": 0,
     "avg_view_seconds": 9.0,
     "avg_view_pct": 30.6,
-    "views_per_hour": 2.8
+    "views_per_hour": 2.76
   }
 ]
