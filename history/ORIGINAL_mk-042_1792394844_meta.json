@@ -1,0 +1,293 @@
+{
+  "topic_id": "mk-042",
+  "topic": "Ayılar neden kış uykusuna yatar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Ayılar neden tam kış uykusuna yatmaz? 🐻",
+  "hook_text": "NEDEN KIŞ UYKUSU DEĞİL?",
+  "description": "Ayılar neden tam kış uykusuna yatmaz?\n\nAyıların kalbi kışın 8 atışa kadar düşer ama bu gerçek kış uykusundan farklıdır. Onlar torpor denilen özel bir dinlenme haline geçer, böylece kolayca uyanabilirler.\n\nSence ayının kalbi kışın kaç atışa düşer: 8 mi 20 mi?\n\n#ayı #kışuykusu #torpor #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-042",
+  "tags": [
+    "ayı kış uykusu",
+    "ayılar neden uyumaz",
+    "ayılar kış uykusuna yatmaz",
+    "ayı torpor",
+    "ayı kalbi kışın",
+    "ayılar kışın ne yapar",
+    "kış uykusu nedir",
+    "gerçek kış uykusu",
+    "ayılar uyur mu",
+    "ayılar kışın",
+    "ilginç hayvan bilgileri",
+    "hayvanlar alemi",
+    "vahşi yaşam",
+    "doğa belgeseli",
+    "merak edilenler",
+    "bilimsel gerçekler",
+    "kısa bilgiler",
+    "youtube shorts",
+    "shorts video",
+    "bear hibernation",
+    "bear torpor",
+    "bears",
+    "animals",
+    "animal facts",
+    "ayılar",
+    "kış uykusu",
+    "torpor",
+    "doğa",
+    "bilim",
+    "merak",
+    "ayi kis uykusu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why don't bears truly hibernate? 🐻",
+      "description": "Bears' hearts can slow down to 8 beats per minute in winter, but this isn't true hibernation. Instead, they enter a special resting state called torpor, allowing them to easily wake up and survive the winter's food scarcity.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "es": {
+      "title": "¿Por qué los osos no hibernan completamente? 🐻",
+      "description": "El corazón de los osos puede bajar hasta 8 latidos por minuto en invierno, pero esto no es una hibernación completa. Entran en un estado especial de descanso llamado letargo, lo que les permite despertar fácilmente y sobrevivir a la escasez de alimentos invernal.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "pt": {
+      "title": "Por que os ursos não hibernam de verdade? 🐻",
+      "description": "O coração dos ursos pode diminuir para 8 batimentos por minuto no inverno, mas isso não é hibernação verdadeira. Eles entram em um estado de repouso especial chamado torpor, que lhes permite acordar facilmente e sobreviver à escassez de alimentos do inverno.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "de": {
+      "title": "Warum halten Bären keinen echten Winterschlaf? 🐻",
+      "description": "Das Herz eines Bären kann im Winter auf nur 8 Schläge pro Minute sinken, doch das ist kein echter Winterschlaf. Stattdessen verfallen sie in einen speziellen Ruhezustand namens Torpor, der es ihnen ermöglicht, leicht aufzuwachen und die Nahrungsknappheit des Winters zu überleben.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "fr": {
+      "title": "Pourquoi les ours n'hibernent-ils pas vraiment? 🐻",
+      "description": "Le cœur des ours peut descendre jusqu'à 8 battements par minute en hiver, mais ce n'est pas une véritable hibernation. Ils entrent dans un état de repos spécial appelé torpeur, ce qui leur permet de se réveiller facilement et de survivre à la rareté de la nourriture hivernale.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "it": {
+      "title": "Perché gli orsi non vanno in letargo completo? 🐻",
+      "description": "Il cuore degli orsi può rallentare fino a 8 battiti al minuto in inverno, ma non è un vero letargo. Entrano in uno stato di riposo speciale chiamato torpore, che permette loro di svegliarsi facilmente e sopravvivere alla scarsità di cibo invernale.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "ru": {
+      "title": "Почему медведи не впадают в настоящую спячку? 🐻",
+      "description": "Сердце медведя зимой может замедляться до 8 ударов в минуту, но это не настоящая спячка. Вместо этого они входят в особое состояние покоя, называемое оцепенением (торпор), что позволяет им легко просыпаться и переживать зимнюю нехватку пищи.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "ar": {
+      "title": "لماذا لا يسبت الدببة سباتًا شتويًا كاملاً؟ 🐻",
+      "description": "يمكن أن ينخفض معدل ضربات قلب الدببة إلى 8 نبضات في الدقيقة خلال الشتاء، لكن هذا ليس سباتًا حقيقيًا. بدلاً من ذلك، يدخلون في حالة راحة خاصة تسمى \"السبات الخفيف\" (torpor) مما يسمح لهم بالاستيقاظ بسهولة والبقاء على قيد الحياة خلال ندرة الطعام في الشتاء.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "hi": {
+      "title": "भालू पूरी तरह से शीतनिद्रा में क्यों नहीं जाते? 🐻",
+      "description": "सर्दियों में भालुओं के दिल की धड़कन 8 प्रति मिनट तक धीमी हो सकती है, लेकिन यह सच्ची शीतनिद्रा नहीं है। इसके बजाय, वे टॉरपोर नामक एक विशेष आराम की स्थिति में प्रवेश करते हैं, जिससे वे आसानी से जाग सकते हैं और सर्दियों में भोजन की कमी से बच सकते हैं।\n\n#shorts\n\nSeri: mk-042"
+    },
+    "id": {
+      "title": "Mengapa beruang tidak berhibernasi sepenuhnya? 🐻",
+      "description": "Jantung beruang dapat melambat hingga 8 detak per menit di musim dingin, tapi ini bukan hibernasi sejati. Sebaliknya, mereka memasuki kondisi istirahat khusus yang disebut torpor, memungkinkan mereka untuk mudah terbangun dan bertahan dari kelangkaan makanan di musim dingin.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "ja": {
+      "title": "なぜクマは完全に冬眠しないの？ 🐻",
+      "description": "冬の間、クマの心拍数は1分間に8回まで低下しますが、これは真の冬眠ではありません。彼らはトーポアと呼ばれる特別な休眠状態に入り、簡単に目覚めることができ、冬の食料不足を乗り越えます。\n\n#shorts\n\nSeri: mk-042"
+    },
+    "ko": {
+      "title": "곰은 왜 완전한 동면에 들지 않을까? 🐻",
+      "description": "겨울에 곰의 심장은 분당 8회까지 느려지지만, 이것은 진정한 동면이 아닙니다. 대신 곰은 토포르(torpor)라는 특별한 휴식 상태에 들어가 쉽게 깨어날 수 있으며, 겨울의 먹이 부족을 견뎌냅니다.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "pl": {
+      "title": "Dlaczego niedźwiedzie nie zapadają w prawdziwy sen zimowy? 🐻",
+      "description": "Serce niedźwiedzia może zwolnić do 8 uderzeń na minutę zimą, ale to nie jest prawdziwy sen zimowy. Zamiast tego, wchodzą w specjalny stan spoczynku zwany torporem, co pozwala im łatwo się obudzić i przetrwać niedobór jedzenia zimą.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "nl": {
+      "title": "Waarom houden beren geen echte winterslaap? 🐻",
+      "description": "Het hart van een beer kan in de winter vertragen tot 8 slagen per minuut, maar dit is geen echte winterslaap. Ze gaan in een speciale rusttoestand genaamd torpor, waardoor ze gemakkelijk wakker kunnen worden en de voedseltekorten in de winter kunnen overleven.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "uk": {
+      "title": "Чому ведмеді не впадають у справжню сплячку? 🐻",
+      "description": "Серце ведмедя може сповільнюватися до 8 ударів на хвилину взимку, але це не справжня сплячка. Натомість вони входять в особливий стан спокою, що називається торпором, що дозволяє їм легко прокидатися і переживати зимовий дефіцит їжі.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "vi": {
+      "title": "Tại sao gấu không ngủ đông hoàn toàn? 🐻",
+      "description": "Tim gấu có thể giảm xuống còn 8 nhịp mỗi phút vào mùa đông, nhưng đây không phải là ngủ đông thực sự. Thay vào đó, chúng đi vào trạng thái nghỉ ngơi đặc biệt gọi là torpor, giúp chúng dễ dàng tỉnh dậy và sống sót qua mùa đông khan hiếm thức ăn.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "az": {
+      "title": "Ayılar niyə tam qış yuxusuna getmir? 🐻",
+      "description": "Qışda ayının ürəyi dəqiqədə 8 döyüntüyə qədər yavaşlaya bilər, lakin bu, əsl qış yuxusu deyil. Bunun əvəzinə, onlar torpor adlanan xüsusi bir istirahət vəziyyətinə keçirlər ki, bu da onlara asanlıqla oyanmağa və qışın qida çatışmazlığından sağ çıxmağa imkan verir.\n\n#shorts\n\nSeri: mk-042"
+    },
+    "ro": {
+      "title": "De ce urșii nu hibernează complet? 🐻",
+      "description": "Inima urșilor poate încetini până la 8 bătăi pe minut iarna, dar aceasta nu este o hibernare adevărată. Ei intră într-o stare specială de repaus numită torpoare, ceea ce le permite să se trezească ușor și să supraviețuiască penuriei de hrană din timpul iernii.\n\n#shorts\n\nSeri: mk-042"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence ayının kalbi kışın kaç atışa düşer: 8 mi 20 mi?",
+  "scenes": [
+    {
+      "text": "Bu ayının kalbi, kışın 8 atışa kadar düşer.",
+      "visual": "A brown bear lying down, resting in nature.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        },
+        {
+          "n": 6,
+          "kare": 1
+        }
+      ],
+      "callout": "8 ATIŞ/DK"
+    },
+    {
+      "text": "Bu durum, gerçek kış uykusundan daha farklıdır.",
+      "visual": "A polar bear resting in a den-like structure made of ice.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 2
+        },
+        {
+          "n": 1,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Ayılar tam bir kış uykusu yerine, torpor denilen özel bir dinlenme haline geçer.",
+      "visual": "A brown bear standing alert in a forest.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 32,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 27,
+          "kare": 2
+        }
+      ],
+      "callout": "TORPOR"
+    },
+    {
+      "text": "Böylece vücut ısıları çok düşmez ve kolayca uyanabilirler.",
+      "visual": "A polar bear lifting its head and sitting up from rest.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 34,
+          "kare": 3
+        },
+        {
+          "n": 16,
+          "kare": 3
+        },
+        {
+          "n": 17,
+          "kare": 1
+        }
+      ],
+      "callout": "KOLAY UYANIR"
+    },
+    {
+      "text": "Kışın yiyecek kıtlığından korunmak için enerji depolarlar.",
+      "visual": "A brown bear grazing and eating grass in a field.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 3
+        },
+        {
+          "n": 19,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 3
+        }
+      ],
+      "callout": "ENERJİ DEPOLAR"
+    },
+    {
+      "text": "Bu yaşam stratejisi, ayıları kışın hayatta tutar.",
+      "visual": "A black bear entering a den-like structure.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 15,
+          "kare": 3
+        },
+        {
+          "n": 40,
+          "kare": 3
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.69,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-042_1792394844_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve enerjisiz, hiç ses efekti kullanılmamış.",
+        "fix": "Yapay zeka sesinin hızını ve tonlamasını daha dinamik hale getirin. Önemli anlarda (yazıların belirmesi, bilgi vurgusu) ücretsiz ses efektleri (whoosh, pop, ding) ekleyin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar sadece belirip kayboluyor, animasyon ve açıklayıcı grafikler (oklar, çizgiler) eksik. Sarı renk bazen arka planla karışıyor.",
+        "fix": "Yazılara basit giriş/çıkış animasyonları ekleyin (zoom in/out, fade in/out). Bilgiyi destekleyecek basit grafikler (örn. kalp atışı düşüşünü gösteren bir grafik) kullanın. Yazıların rengini ve dış çizgisini (stroke) arka planla daha kontras"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kurgu yavaş ve dinamik değil. Görüntü geçişleri basit kesmelerden ibaret.",
+        "fix": "Görüntülerin süresini kısaltarak daha hızlı bir ritim yakalayın. Bilgi akışına göre daha keskin geçişler kullanın veya basit geçiş efektleri (fade, slide) ekleyin."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler genel olarak ayıları gösteriyor ancak 'torpor' durumunu veya 'uyanma' kolaylığını görsel olarak doğrudan anlatan spesifik görüntüler eksik.",
+        "fix": "Ayıların 'uyku' veya 'dinlenme' halini daha net gösteren, belki biraz daha yakın çekim görüntüler bulun. 'Kolayca uyanabilirler' kısmını destekleyecek, uyanan bir ayı görüntüsü bulmaya çalışın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "'Torpor' kavramı ilginç olsa da, bilginin şaşırtıcılığı referans videodaki kadar güçlü değil.",
+        "fix": "Bilginin sunumunu daha dramatik hale getirin. Örneğin, 'Peki ayılar neden gerçek kış uykusuna yatmaz? Çünkü onların özel bir sırrı var: Torpor!' gibi ifadelerle merakı artırın."
+      }
+    ],
+    "strengths": [
+      "Kısa ve öz bilgi sunumu.",
+      "Net bir kanca (soru) ile başlıyor.",
+      "Mantıklı bir bilgi akışı var."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

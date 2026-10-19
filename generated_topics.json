@@ -10,5 +10,15 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-042",
+    "topic": "Ayılar neden kış uykusuna yatar?",
+    "stock_hint": "bear hibernation winter",
+    "subject": [
+      "bear"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]
