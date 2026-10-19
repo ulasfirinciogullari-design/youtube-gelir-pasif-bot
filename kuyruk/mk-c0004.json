@@ -1,0 +1,177 @@
+{
+ "id": "mk-c0004",
+ "topic": "Su samurları uyurken neden el ele tutuşur?",
+ "kategori": "hayvan",
+ "subject": [
+  "otter"
+ ],
+ "stock_hint": "sea otter floating",
+ "script": {
+  "title": "Su samurları uyurken neden el ele tutuşur? 🦦",
+  "hook_text": "BIRAKSALAR NE OLUR?",
+  "scenes": [
+   {
+    "text": "Bu iki su samuru uyurken birbirinin elini bırakmıyor.",
+    "visual": "two sea otters floating on their backs holding paws",
+    "stock_query": "sea otter floating",
+    "source": "stock",
+    "callout": "EL ELE"
+   },
+   {
+    "text": "Sırtüstü suda yüzerek uyurlar ve akıntı onları kolayca sürükleyebilir.",
+    "visual": "sea otter sleeping on its back in calm water",
+    "stock_query": "sea otter",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Tutuşunca kimse uzaklaşmıyor, bütün grup birlikte kalıyor.",
+    "visual": "group of sea otters resting together on the water",
+    "stock_query": "otter group water",
+    "source": "stock",
+    "callout": "GRUP KALIR"
+   },
+   {
+    "text": "Bazıları da sürüklenmemek için kendini deniz yosununa sarar.",
+    "visual": "sea otter wrapped in kelp floating in the ocean",
+    "stock_query": "otter kelp",
+    "source": "stock",
+    "callout": "YOSUNA SARILIR"
+   },
+   {
+    "text": "Kürklerinin her santimetrekaresinde yüz binden fazla kıl var.",
+    "visual": "close up of wet sea otter fur and face",
+    "stock_query": "otter closeup",
+    "source": "stock",
+    "callout": "100.000+ KIL"
+   },
+   {
+    "text": "El ele uyumak onlar için romantizm değil, hayatta kalma yolu.",
+    "visual": "sea otter grooming its face while floating",
+    "stock_query": "otter swimming",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Deniz su samurları sırtüstü uyurken akıntıya kapılmamak için birbirlerinin elini tutar ya da yosuna sarılır.",
+  "tags": [
+   "su samuru",
+   "deniz su samuru",
+   "el ele",
+   "sevimli hayvanlar",
+   "okyanus",
+   "ilginç bilgiler",
+   "hayvanlar",
+   "uyku"
+  ],
+  "pinned_comment": "Sence hangisi daha tatlı: el ele uyumak mı, yosuna sarılmak mı?",
+  "en_title": "Why do sea otters hold hands while they sleep? 🦦",
+  "en_description": "Sea otters sleep floating on their backs. Holding paws or wrapping in kelp keeps the current from carrying them apart.",
+  "mood": "eglenceli"
+ },
+ "seo": {
+  "description": "Su samurları uyurken neden el ele tutuşur?\n\nDeniz su samurları sırtüstü suda yüzerek uyur ve akıntı onları kolayca sürükleyebilir. Birbirlerinin elini tutunca grup dağılmaz; bazıları da kendini deniz yosununa sarar. Kürklerinin her santimetrekaresinde yüz binden fazla kıl vardır.\n\nSence hangisi daha tatlı: el ele uyumak mı, yosuna sarılmak mı?",
+  "hashtags": [
+   "#susamuru",
+   "#sevimlihayvanlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "su samuru",
+   "deniz su samuru",
+   "su samuru el ele",
+   "su samurları nasıl uyur",
+   "el ele uyuyan hayvanlar",
+   "su samuru uyku",
+   "su samuru yosun",
+   "su samuru kürkü",
+   "sevimli hayvanlar",
+   "tatlı hayvanlar",
+   "okyanus canlıları",
+   "deniz canlıları",
+   "hayvanlar",
+   "hayvan videoları",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "deniz memelileri",
+   "sea otter",
+   "otters holding hands"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why do sea otters hold hands while they sleep? 🦦",
+    "description": "Sea otters sleep floating on their backs, and the current can easily carry them off. Holding paws keeps the group together, and some wrap themselves in kelp."
+   },
+   "es": {
+    "title": "¿Por qué las nutrias marinas duermen de la mano? 🦦",
+    "description": "Las nutrias marinas duermen flotando boca arriba y la corriente puede separarlas. Se toman de las patas o se envuelven en algas para no alejarse."
+   },
+   "pt": {
+    "title": "Por que as lontras-marinhas dormem de mãos dadas? 🦦",
+    "description": "As lontras-marinhas dormem boiando de costas e a correnteza pode afastá-las. Elas dão as mãos ou se enrolam em algas para ficar juntas."
+   },
+   "de": {
+    "title": "Warum halten sich Seeotter beim Schlafen an den Pfoten? 🦦",
+    "description": "Seeotter schlafen auf dem Rücken treibend, und die Strömung kann sie forttragen. Sie halten sich an den Pfoten oder wickeln sich in Seetang."
+   },
+   "fr": {
+    "title": "Pourquoi les loutres de mer dorment main dans la main ? 🦦",
+    "description": "Les loutres de mer dorment sur le dos en flottant et le courant peut les séparer. Elles se tiennent la patte ou s'enroulent dans les algues."
+   },
+   "it": {
+    "title": "Perché le lontre marine dormono mano nella mano? 🦦",
+    "description": "Le lontre marine dormono a pancia in su sull'acqua e la corrente può separarle. Si tengono per mano o si avvolgono nelle alghe."
+   },
+   "ru": {
+    "title": "Почему каланы спят, держась за лапки? 🦦",
+    "description": "Каланы спят на спине прямо на воде, и течение легко уносит их. Они держатся за лапки или заворачиваются в водоросли."
+   },
+   "ar": {
+    "title": "لماذا تمسك ثعالب البحر أيدي بعضها أثناء النوم؟ 🦦",
+    "description": "تنام ثعالب البحر طافية على ظهرها وقد يجرفها التيار بسهولة. لذلك تمسك أيدي بعضها أو تلتف بالأعشاب البحرية."
+   },
+   "hi": {
+    "title": "समुद्री ऊदबिलाव सोते समय हाथ क्यों पकड़ते हैं? 🦦",
+    "description": "समुद्री ऊदबिलाव पीठ के बल पानी पर तैरते हुए सोते हैं और धारा उन्हें बहा सकती है। इसलिए वे एक-दूसरे का हाथ पकड़ते हैं या समुद्री घास में लिपट जाते हैं।"
+   },
+   "id": {
+    "title": "Kenapa berang-berang laut tidur sambil bergandengan tangan? 🦦",
+    "description": "Berang-berang laut tidur mengapung telentang dan arus bisa menyeret mereka. Mereka bergandengan atau membungkus diri dengan rumput laut."
+   },
+   "ja": {
+    "title": "ラッコはなぜ手をつないで眠るの? 🦦",
+    "description": "ラッコは仰向けで水に浮かんで眠るので、流されてしまうことがあります。手をつないだり海藻を体に巻いたりして離れないようにします。"
+   },
+   "ko": {
+    "title": "해달은 왜 손을 잡고 잘까? 🦦",
+    "description": "해달은 물 위에 등을 대고 떠서 자기 때문에 물살에 쉽게 떠내려갑니다. 그래서 서로 손을 잡거나 해초를 몸에 감습니다."
+   },
+   "pl": {
+    "title": "Dlaczego wydry morskie śpią, trzymając się za łapki? 🦦",
+    "description": "Wydry morskie śpią na plecach na wodzie, a prąd łatwo je rozdziela. Trzymają się za łapki albo owijają w wodorosty."
+   },
+   "nl": {
+    "title": "Waarom houden zeeotters elkaars hand vast als ze slapen? 🦦",
+    "description": "Zeeotters slapen drijvend op hun rug en de stroming kan ze meenemen. Ze houden elkaars poot vast of wikkelen zich in kelp."
+   },
+   "uk": {
+    "title": "Чому калани сплять, тримаючись за лапки? 🦦",
+    "description": "Калани сплять на спині просто на воді, і течія легко їх відносить. Вони тримаються за лапки або загортаються у водорості."
+   },
+   "vi": {
+    "title": "Vì sao rái cá biển nắm tay nhau khi ngủ? 🦦",
+    "description": "Rái cá biển ngủ nổi ngửa trên mặt nước và dòng chảy có thể cuốn chúng đi. Chúng nắm tay nhau hoặc quấn mình trong tảo bẹ."
+   },
+   "az": {
+    "title": "Dəniz su samurları yatarkən niyə əl-ələ tutur? 🦦",
+    "description": "Dəniz su samurları arxası üstə suda üzə-üzə yatır və axın onları apara bilər. Ona görə bir-birinin əlini tutur və ya yosuna sarılırlar."
+   },
+   "ro": {
+    "title": "De ce dorm vidrele de mare ținându-se de mână? 🦦",
+    "description": "Vidrele de mare dorm plutind pe spate, iar curentul le poate despărți. Se țin de lăbuțe sau se înfășoară în alge."
+   }
+  }
+ }
+}

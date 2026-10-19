@@ -1,0 +1,177 @@
+{
+ "id": "mk-c0006",
+ "topic": "Kargalar insan yüzünü hatırlar mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "crow"
+ ],
+ "stock_hint": "crow bird close up",
+ "script": {
+  "title": "Kargalar kötü davranan insanın yüzünü unutmaz 🐦",
+  "hook_text": "SENİ GERÇEKTEN TANIYOR MU?",
+  "scenes": [
+   {
+    "text": "Bu karga, kendisine kötü davranan yüzü yıllarca unutmaz.",
+    "visual": "black crow staring into the camera from a branch",
+    "stock_query": "crow bird",
+    "source": "stock",
+    "callout": "YILLARCA"
+   },
+   {
+    "text": "Bilim insanları maske takıp birkaç kargayı yakaladı, sonra serbest bıraktı.",
+    "visual": "crow taking off from a fence",
+    "stock_query": "crow flying",
+    "source": "stock",
+    "callout": "MASKE"
+   },
+   {
+    "text": "O maskeyi takan kim geçse, kargalar etrafını sarıp bağırdı.",
+    "visual": "group of crows cawing on a tree",
+    "stock_query": "crows tree",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Daha şaşırtıcısı, hiç yakalanmamış kargalar bile maskeye bağırmaya başladı.",
+    "visual": "flock of crows circling in the sky",
+    "stock_query": "crows flock",
+    "source": "stock",
+    "callout": "HİÇ GÖRMEDİLER"
+   },
+   {
+    "text": "Kargalar düşmanının yüzünü birbirine öğretiyor.",
+    "visual": "two crows sitting close together on a wire",
+    "stock_query": "crow closeup",
+    "source": "stock",
+    "callout": "BİRBİRİNE ÖĞRETİR"
+   },
+   {
+    "text": "Bir dahaki sefere kargaya taş atmadan önce iki kere düşün.",
+    "visual": "crow tilting its head and watching",
+    "stock_query": "crow head",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kargalar kendilerine kötü davranan insanın yüzünü yıllarca hatırlar ve bunu diğer kargalara da öğretir.",
+  "tags": [
+   "karga",
+   "karga zekası",
+   "kuşlar",
+   "yüz tanıma",
+   "hayvan zekası",
+   "ilginç bilgiler",
+   "hayvanlar",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha zeki: karga mı, köpek mi?",
+  "en_title": "Crows never forget the face of someone who hurt them 🐦",
+  "en_description": "In a famous mask experiment, crows remembered a threatening face for years and even taught it to other crows.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kargalar insan yüzünü hatırlar mı?\n\nBilim insanları maske takıp birkaç kargayı yakalayıp serbest bıraktı. O maskeyi takan kim geçse kargalar etrafını sarıp bağırdı; hiç yakalanmamış kargalar bile maskeye bağırmaya başladı. Kargalar tehlikeli bir yüzü yıllarca hatırlıyor ve birbirine öğretiyor.\n\nSence hangisi daha zeki: karga mı, köpek mi?",
+  "hashtags": [
+   "#karga",
+   "#kuşlar",
+   "#hayvanzekası",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "karga",
+   "kargalar",
+   "karga zekası",
+   "kargalar yüz tanır mı",
+   "karga intikam",
+   "karga hafızası",
+   "kargalar unutmaz",
+   "maske deneyi",
+   "hayvan zekası",
+   "zeki hayvanlar",
+   "kuşlar",
+   "yüz tanıma",
+   "hayvanlar",
+   "hayvan davranışları",
+   "ilginç bilgiler",
+   "bilim",
+   "deney",
+   "merak",
+   "crow",
+   "crows remember faces"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Crows never forget the face of someone who hurt them 🐦",
+    "description": "Researchers wore a mask while catching a few crows. Years later, crows still mobbed anyone in that mask, even crows that had never been caught."
+   },
+   "es": {
+    "title": "Los cuervos nunca olvidan la cara de quien los trató mal 🐦",
+    "description": "Unos científicos atraparon cuervos usando una máscara. Después, los cuervos atacaban a gritos a quien la llevara, incluso los que nunca fueron atrapados."
+   },
+   "pt": {
+    "title": "Corvos nunca esquecem o rosto de quem os maltratou 🐦",
+    "description": "Cientistas capturaram corvos usando uma máscara. Depois, os corvos gritavam com quem a usasse, até os que nunca foram pegos."
+   },
+   "de": {
+    "title": "Krähen vergessen nie das Gesicht eines Feindes 🐦",
+    "description": "Forscher fingen mit einer Maske ein paar Krähen. Danach beschimpften Krähen jeden mit dieser Maske, sogar solche, die nie gefangen worden waren."
+   },
+   "fr": {
+    "title": "Les corbeaux n'oublient jamais le visage d'un ennemi 🐦",
+    "description": "Des chercheurs ont capturé des corbeaux en portant un masque. Ensuite, les corbeaux harcelaient quiconque le portait, même ceux jamais capturés."
+   },
+   "it": {
+    "title": "I corvi non dimenticano mai il volto di chi li ha maltrattati 🐦",
+    "description": "Alcuni ricercatori hanno catturato dei corvi indossando una maschera. Poi i corvi gridavano contro chiunque la portasse, anche quelli mai catturati."
+   },
+   "ru": {
+    "title": "Вороны никогда не забывают лицо обидчика 🐦",
+    "description": "Учёные ловили ворон в маске. Потом вороны кричали на любого в этой маске, даже те, которых никогда не ловили."
+   },
+   "ar": {
+    "title": "الغربان لا تنسى أبدًا وجه من أساء إليها 🐦",
+    "description": "ارتدى باحثون قناعًا أثناء الإمساك ببعض الغربان. بعد ذلك صارت الغربان تصرخ على كل من يرتديه، حتى التي لم يُمسك بها قط."
+   },
+   "hi": {
+    "title": "कौवे बुरा बर्ताव करने वाले का चेहरा कभी नहीं भूलते 🐦",
+    "description": "वैज्ञानिकों ने मास्क पहनकर कुछ कौवे पकड़े। बाद में कौवे उस मास्क वाले हर इंसान पर चिल्लाने लगे, वे भी जो कभी पकड़े नहीं गए थे।"
+   },
+   "id": {
+    "title": "Gagak tak pernah lupa wajah orang yang menyakitinya 🐦",
+    "description": "Peneliti menangkap beberapa gagak sambil memakai topeng. Setelah itu gagak meneriaki siapa pun yang memakainya, bahkan gagak yang tak pernah ditangkap."
+   },
+   "ja": {
+    "title": "カラスは嫌なことをした人の顔を忘れない 🐦",
+    "description": "研究者がマスクをつけてカラスを捕まえる実験をしました。その後、捕まったことのないカラスまでそのマスクの人を攻撃するようになりました。"
+   },
+   "ko": {
+    "title": "까마귀는 자기를 괴롭힌 사람 얼굴을 잊지 않는다 🐦",
+    "description": "연구자들이 가면을 쓰고 까마귀를 잡았습니다. 그 뒤로 까마귀들은 그 가면을 쓴 사람에게 몰려들어 울었고, 잡힌 적 없는 까마귀까지 그랬습니다."
+   },
+   "pl": {
+    "title": "Wrony nigdy nie zapominają twarzy wroga 🐦",
+    "description": "Naukowcy łapali wrony w masce. Potem wrony krzyczały na każdego w tej masce, nawet te, których nigdy nie złapano."
+   },
+   "nl": {
+    "title": "Kraaien vergeten nooit het gezicht van een vijand 🐦",
+    "description": "Onderzoekers vingen kraaien terwijl ze een masker droegen. Daarna scholden kraaien iedereen met dat masker uit, zelfs kraaien die nooit gevangen waren."
+   },
+   "uk": {
+    "title": "Ворони ніколи не забувають обличчя кривдника 🐦",
+    "description": "Науковці ловили ворон у масці. Потім ворони кричали на кожного в цій масці, навіть ті, яких ніколи не ловили."
+   },
+   "vi": {
+    "title": "Quạ không bao giờ quên mặt kẻ đã hại chúng 🐦",
+    "description": "Các nhà khoa học đeo mặt nạ để bắt vài con quạ. Sau đó, đàn quạ la ó bất kỳ ai đeo mặt nạ ấy, kể cả những con chưa từng bị bắt."
+   },
+   "az": {
+    "title": "Qarğalar pis davranan insanın üzünü unutmur 🐦",
+    "description": "Alimlər maska taxıb bir neçə qarğanı tutdular. Sonra qarğalar o maskanı taxan hər kəsə qışqırdı, heç tutulmayanlar da."
+   },
+   "ro": {
+    "title": "Ciorile nu uită niciodată fața celui care le-a făcut rău 🐦",
+    "description": "Cercetătorii au prins câteva ciori purtând o mască. Apoi ciorile țipau la oricine o purta, chiar și cele care nu fuseseră prinse niciodată."
+   }
+  }
+ }
+}

@@ -1,0 +1,170 @@
+{
+ "id": "mk-c0007",
+ "topic": "Filler ayaklarıyla nasıl duyar?",
+ "kategori": "hayvan",
+ "subject": [
+  "elephant"
+ ],
+ "stock_hint": "elephant walking savanna",
+ "script": {
+  "title": "Filler ayaklarıyla nasıl duyar? 🐘",
+  "hook_text": "AYAKLA DUYMAK NASIL OLUR?",
+  "scenes": [
+   {
+    "text": "Bu fil, kilometrelerce uzaktaki sürüyü ayaklarıyla duyuyor.",
+    "visual": "elephant walking slowly across dusty savanna at sunset",
+    "stock_query": "elephant walking",
+    "source": "stock",
+    "callout": "AYAKLA DUYAR"
+   },
+   {
+    "text": "Filler çok alçak bir sesle gürler; bu ses havadan çok yerden yayılır.",
+    "visual": "herd of elephants moving together across the plain",
+    "stock_query": "elephant herd",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Ayak tabanlarındaki hassas sinirler, yerdeki bu titreşimi yakalar.",
+    "visual": "close up of an elephant foot stepping on the ground",
+    "stock_query": "elephant foot",
+    "source": "stock",
+    "callout": "TİTREŞİM"
+   },
+   {
+    "text": "Tehlike sezince ağırlığını öne verip bir ayağını kaldırarak dinler.",
+    "visual": "elephant standing still with ears spread, alert",
+    "stock_query": "elephant standing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Senin duyamadığın bir mesaj, onun için yerin altından geliyor.",
+    "visual": "elephant family walking in a line, wide shot",
+    "stock_query": "elephant family",
+    "source": "stock",
+    "callout": "YERİN ALTINDAN"
+   }
+  ],
+  "description": "Filler alçak sesli gürlemeleri ve yerdeki titreşimleri ayak tabanlarındaki hassas sinirlerle algılayabilir.",
+  "tags": [
+   "fil",
+   "filler",
+   "fil ayağı",
+   "titreşim",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "vahşi doğa",
+   "afrika"
+  ],
+  "pinned_comment": "Sence filler en çok neyle duyar: kulakla mı, ayakla mı?",
+  "en_title": "How do elephants hear with their feet? 🐘",
+  "en_description": "Elephants rumble at very low pitch, and the sound travels through the ground. Sensitive nerves in their feet pick it up.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Filler ayaklarıyla nasıl duyar?\n\nFiller çok alçak bir sesle gürler ve bu ses havadan çok yerden yayılır. Ayak tabanlarındaki hassas sinirler yerdeki titreşimi yakalar; tehlike sezince fil ağırlığını öne verip bir ayağını kaldırarak dinler. Böylece kilometrelerce uzaktaki sürüyü duyabilir.\n\nSence filler en çok neyle duyar: kulakla mı, ayakla mı?",
+  "hashtags": [
+   "#fil",
+   "#hayvanlar",
+   "#vahşidoğa",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "fil",
+   "filler",
+   "filler ayaklarıyla duyar",
+   "fil ayağı",
+   "fil iletişimi",
+   "fil sesi",
+   "titreşim",
+   "yer titreşimi",
+   "fil sürüsü",
+   "afrika fili",
+   "afrika hayvanları",
+   "savana",
+   "vahşi doğa",
+   "hayvanlar",
+   "hayvan belgeseli",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "elephant",
+   "elephant feet"
+  ],
+  "localizations": {
+   "en": {
+    "title": "How do elephants hear with their feet? 🐘",
+    "description": "Elephants rumble at a very low pitch, and the sound travels through the ground. Sensitive nerves in their feet pick up the vibrations, so they can sense a herd far away."
+   },
+   "es": {
+    "title": "¿Cómo escuchan los elefantes con las patas? 🐘",
+    "description": "Los elefantes emiten bramidos muy graves que viajan por el suelo. Los nervios sensibles de sus patas captan esas vibraciones a gran distancia."
+   },
+   "pt": {
+    "title": "Como os elefantes ouvem com os pés? 🐘",
+    "description": "Os elefantes emitem roncos muito graves que viajam pelo chão. Nervos sensíveis nas patas captam essas vibrações de longe."
+   },
+   "de": {
+    "title": "Wie hören Elefanten mit den Füßen? 🐘",
+    "description": "Elefanten grollen sehr tief, und der Schall breitet sich im Boden aus. Empfindliche Nerven in ihren Fußsohlen spüren die Vibrationen über weite Strecken."
+   },
+   "fr": {
+    "title": "Comment les éléphants entendent-ils avec leurs pieds ? 🐘",
+    "description": "Les éléphants émettent des grondements très graves qui voyagent dans le sol. Des nerfs sensibles sous leurs pieds captent ces vibrations de loin."
+   },
+   "it": {
+    "title": "Come fanno gli elefanti a sentire con i piedi? 🐘",
+    "description": "Gli elefanti emettono brontolii molto bassi che viaggiano nel terreno. I nervi sensibili delle zampe captano quelle vibrazioni anche da lontano."
+   },
+   "ru": {
+    "title": "Как слоны слышат ногами? 🐘",
+    "description": "Слоны издают очень низкий рокот, который распространяется по земле. Чувствительные нервы в стопах улавливают эти вибрации издалека."
+   },
+   "ar": {
+    "title": "كيف تسمع الفيلة بأقدامها؟ 🐘",
+    "description": "تصدر الفيلة هديرًا منخفضًا جدًا ينتقل عبر الأرض. وتلتقط أعصاب حساسة في باطن أقدامها هذه الاهتزازات من مسافات بعيدة."
+   },
+   "hi": {
+    "title": "हाथी अपने पैरों से कैसे सुनते हैं? 🐘",
+    "description": "हाथी बहुत गहरी आवाज़ में गुर्राते हैं जो ज़मीन से होकर जाती है। उनके तलवों की संवेदनशील नसें दूर से आती इन कंपनों को पकड़ लेती हैं।"
+   },
+   "id": {
+    "title": "Bagaimana gajah mendengar dengan kakinya? 🐘",
+    "description": "Gajah mengeluarkan gemuruh bernada sangat rendah yang merambat lewat tanah. Saraf peka di telapak kakinya menangkap getaran itu dari jauh."
+   },
+   "ja": {
+    "title": "ゾウは足で音を聞いている? 🐘",
+    "description": "ゾウはとても低い声でうなり、その音は地面を伝わります。足の裏の敏感な神経が、遠くからの振動をとらえるのです。"
+   },
+   "ko": {
+    "title": "코끼리는 발로 어떻게 들을까? 🐘",
+    "description": "코끼리는 아주 낮은 소리로 울고, 그 소리는 땅을 타고 퍼집니다. 발바닥의 예민한 신경이 멀리서 오는 진동을 잡아냅니다."
+   },
+   "pl": {
+    "title": "Jak słonie słyszą stopami? 🐘",
+    "description": "Słonie wydają bardzo niskie pomruki, które rozchodzą się po ziemi. Wrażliwe nerwy w ich stopach wyczuwają te drgania z daleka."
+   },
+   "nl": {
+    "title": "Hoe horen olifanten met hun voeten? 🐘",
+    "description": "Olifanten rommelen heel laag, en dat geluid reist door de grond. Gevoelige zenuwen in hun voetzolen vangen die trillingen van ver op."
+   },
+   "uk": {
+    "title": "Як слони чують ногами? 🐘",
+    "description": "Слони видають дуже низький гуркіт, що поширюється землею. Чутливі нерви в їхніх стопах вловлюють ці вібрації здалеку."
+   },
+   "vi": {
+    "title": "Voi nghe bằng chân như thế nào? 🐘",
+    "description": "Voi phát ra tiếng gầm rất trầm truyền qua mặt đất. Các dây thần kinh nhạy cảm ở bàn chân bắt được rung động đó từ rất xa."
+   },
+   "az": {
+    "title": "Fillər ayaqları ilə necə eşidir? 🐘",
+    "description": "Fillər çox alçaq səslə nərildəyir və bu səs yerdən yayılır. Ayaqaltılarındakı həssas sinirlər bu titrəyişi uzaqdan tutur."
+   },
+   "ro": {
+    "title": "Cum aud elefanții cu picioarele? 🐘",
+    "description": "Elefanții scot mormăieli foarte joase care se propagă prin pământ. Nervii sensibili din tălpi prind aceste vibrații de la mare distanță."
+   }
+  }
+ }
+}

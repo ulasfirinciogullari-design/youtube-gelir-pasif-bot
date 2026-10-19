@@ -1,0 +1,170 @@
+{
+ "id": "mk-c0009",
+ "topic": "Timsahlar dilini neden dışarı çıkaramaz?",
+ "kategori": "hayvan",
+ "subject": [
+  "crocodile"
+ ],
+ "stock_hint": "crocodile open mouth",
+ "script": {
+  "title": "Timsahlar dilini neden dışarı çıkaramaz? 🐊",
+  "hook_text": "DİLİNİ NEDEN GÖSTEREMİYOR?",
+  "scenes": [
+   {
+    "text": "Bu timsah ağzını sonuna kadar açsa da dilini çıkaramaz.",
+    "visual": "crocodile lying on a riverbank with its jaws wide open",
+    "stock_query": "crocodile mouth",
+    "source": "stock",
+    "callout": "DİLİ YAPIŞIK"
+   },
+   {
+    "text": "Dili, ağzının tabanına bir zarla sıkıca bağlıdır.",
+    "visual": "close up of a crocodile's open jaws and teeth",
+    "stock_query": "crocodile teeth",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Boğazının arkasında da suyu tutan bir kapak var.",
+    "visual": "crocodile floating with only its eyes above the water",
+    "stock_query": "crocodile water",
+    "source": "stock",
+    "callout": "BOĞAZ KAPAĞI"
+   },
+   {
+    "text": "Bu kapak sayesinde su altında ağzını açıp avını yakalarken boğulmaz.",
+    "visual": "crocodile swimming underwater in a river",
+    "stock_query": "crocodile swimming",
+    "source": "stock",
+    "callout": "BOĞULMAZ"
+   },
+   {
+    "text": "Ağzı açık güneşlenen bir timsah görürsen, dilini aramaya boşuna uğraşma.",
+    "visual": "crocodile basking in the sun with its mouth open",
+    "stock_query": "crocodile basking",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Timsahın dili ağzının tabanına bir zarla bağlıdır; boğazındaki kapak da su altında ağzını açınca suyun içeri dolmasını engeller.",
+  "tags": [
+   "timsah",
+   "timsah dili",
+   "sürüngenler",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "nehir",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tehlikeli: timsah mı, köpekbalığı mı?",
+  "en_title": "Why can't crocodiles stick out their tongues? 🐊",
+  "en_description": "A crocodile's tongue is held to the floor of its mouth by a membrane, and a flap in its throat keeps water out.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Timsahlar dilini neden dışarı çıkaramaz?\n\nTimsahın dili ağzının tabanına bir zarla sıkıca bağlıdır, bu yüzden ağzını sonuna kadar açsa da dilini çıkaramaz. Boğazının arkasındaki kapak suyu tutar; timsah bu sayede su altında ağzını açıp avını yakalarken boğulmaz.\n\nSence hangisi daha tehlikeli: timsah mı, köpekbalığı mı?",
+  "hashtags": [
+   "#timsah",
+   "#sürüngenler",
+   "#vahşidoğa",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "timsah",
+   "timsah dili",
+   "timsah dilini çıkarır mı",
+   "timsah ağzı",
+   "timsah boğazı",
+   "timsah su altında",
+   "timsah avlanması",
+   "timsah dişleri",
+   "sürüngenler",
+   "nehir canlıları",
+   "vahşi doğa",
+   "hayvanlar",
+   "hayvan belgeseli",
+   "tehlikeli hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "biyoloji",
+   "merak",
+   "crocodile",
+   "crocodile tongue"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why can't crocodiles stick out their tongues? 🐊",
+    "description": "A crocodile's tongue is held to the floor of its mouth by a membrane. A flap at the back of its throat keeps water out, so it can open its jaws underwater without drowning."
+   },
+   "es": {
+    "title": "¿Por qué los cocodrilos no pueden sacar la lengua? 🐊",
+    "description": "La lengua del cocodrilo está unida al fondo de la boca por una membrana. Una válvula en la garganta impide que entre agua cuando abre la boca sumergido."
+   },
+   "pt": {
+    "title": "Por que os crocodilos não conseguem pôr a língua para fora? 🐊",
+    "description": "A língua do crocodilo é presa ao fundo da boca por uma membrana. Uma válvula na garganta impede a entrada de água quando ele abre a boca submerso."
+   },
+   "de": {
+    "title": "Warum können Krokodile die Zunge nicht herausstrecken? 🐊",
+    "description": "Die Zunge des Krokodils ist durch eine Haut am Mundboden festgewachsen. Eine Klappe im Rachen hält Wasser draußen, wenn es unter Wasser das Maul öffnet."
+   },
+   "fr": {
+    "title": "Pourquoi les crocodiles ne peuvent pas tirer la langue ? 🐊",
+    "description": "La langue du crocodile est fixée au plancher de la bouche par une membrane. Un clapet au fond de la gorge bloque l'eau quand il ouvre la gueule sous l'eau."
+   },
+   "it": {
+    "title": "Perché i coccodrilli non possono tirare fuori la lingua? 🐊",
+    "description": "La lingua del coccodrillo è attaccata al fondo della bocca da una membrana. Una valvola in gola blocca l'acqua quando apre le fauci sott'acqua."
+   },
+   "ru": {
+    "title": "Почему крокодил не может высунуть язык? 🐊",
+    "description": "Язык крокодила прикреплён ко дну пасти перепонкой. Клапан в глотке не пускает воду, когда он открывает пасть под водой."
+   },
+   "ar": {
+    "title": "لماذا لا يستطيع التمساح إخراج لسانه؟ 🐊",
+    "description": "لسان التمساح مثبت في قاع فمه بغشاء. وصمام في مؤخرة حلقه يمنع دخول الماء عندما يفتح فمه تحت الماء."
+   },
+   "hi": {
+    "title": "मगरमच्छ अपनी जीभ बाहर क्यों नहीं निकाल सकते? 🐊",
+    "description": "मगरमच्छ की जीभ एक झिल्ली से मुँह के तल से जुड़ी होती है। गले का एक वाल्व पानी के अंदर मुँह खोलने पर पानी को अंदर जाने से रोकता है।"
+   },
+   "id": {
+    "title": "Kenapa buaya tidak bisa menjulurkan lidah? 🐊",
+    "description": "Lidah buaya menempel di dasar mulut oleh selaput. Katup di tenggorokannya menahan air saat ia membuka mulut di dalam air."
+   },
+   "ja": {
+    "title": "ワニはなぜ舌を出せないの? 🐊",
+    "description": "ワニの舌は膜で口の底にくっついています。のどの奥にはふたがあり、水中で口を開けても水が入りません。"
+   },
+   "ko": {
+    "title": "악어는 왜 혀를 내밀지 못할까? 🐊",
+    "description": "악어의 혀는 막으로 입 바닥에 붙어 있습니다. 목 안쪽의 판막이 물속에서 입을 벌려도 물이 들어오지 않게 막아 줍니다."
+   },
+   "pl": {
+    "title": "Dlaczego krokodyle nie mogą wystawić języka? 🐊",
+    "description": "Język krokodyla jest przyczepiony błoną do dna pyska. Zastawka w gardle nie wpuszcza wody, gdy otwiera paszczę pod wodą."
+   },
+   "nl": {
+    "title": "Waarom kunnen krokodillen hun tong niet uitsteken? 🐊",
+    "description": "De tong van een krokodil zit met een vlies vast aan de mondbodem. Een klep in de keel houdt water tegen als hij onder water zijn bek opent."
+   },
+   "uk": {
+    "title": "Чому крокодил не може висунути язик? 🐊",
+    "description": "Язик крокодила прикріплений до дна пащі перетинкою. Клапан у горлі не пускає воду, коли він відкриває пащу під водою."
+   },
+   "vi": {
+    "title": "Vì sao cá sấu không thè lưỡi ra được? 🐊",
+    "description": "Lưỡi cá sấu dính vào đáy miệng bằng một lớp màng. Một van ở cổ họng chặn nước khi nó há miệng dưới nước."
+   },
+   "az": {
+    "title": "Timsahlar niyə dilini çölə çıxara bilmir? 🐊",
+    "description": "Timsahın dili ağzının dibinə bir pərdə ilə bağlıdır. Boğazındakı qapaq su altında ağzını açanda suyun içəri dolmasına imkan vermir."
+   },
+   "ro": {
+    "title": "De ce nu pot crocodilii să scoată limba? 🐊",
+    "description": "Limba crocodilului e prinsă de fundul gurii printr-o membrană. O valvă din gât oprește apa când deschide gura sub apă."
+   }
+  }
+ }
+}
