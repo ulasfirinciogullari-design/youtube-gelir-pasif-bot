@@ -90,6 +90,11 @@
     1792422553,
     "r",
     "UgxCKx_RqwRxkVVNKQV4AaABAg.Ac92WJn5FCbAc92oJpfQVo"
+   ],
+   "UgyKvO6EcX9Ls74PuGt4AaABAg": [
+    1792423453,
+    "r",
+    "UgyKvO6EcX9Ls74PuGt4AaABAg.Ac94AdfoDwMAc94XGcpc4G"
    ]
   },
   "son": [
@@ -176,6 +181,12 @@
     "video": "5NCDRT4b4M0",
     "comment": "Ya ay 5 kat daha büyük olsaydı",
     "reply": "Devasa gelgit dalgaları kıyı şehirlerini sular altında bırakır, Dünya'nın dönüşü hızla yavaşlardı. Bu merak uyandırıcı soruyu video listemize ekledik!\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792423453,
+    "video": "ActwPx-yTCQ",
+    "comment": "👍",
+    "reply": "Beğendiğini görmek harika bir his!\n— Bit 🤖"
    }
   ]
  },
@@ -248,10 +259,10 @@
  "nobet": {
   "basladi": "2026-10-19T14:24:01+00:00",
   "run": "39268567254",
-  "tur": 57,
+  "tur": 61,
   "ig_cevap": 1,
-  "yt_cevap": 1,
+  "yt_cevap": 2,
   "son_hata": null,
-  "son_tur": "2026-10-19T15:20:02+00:00"
+  "son_tur": "2026-10-19T15:24:13+00:00"
  }
 }
