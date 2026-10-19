@@ -1,0 +1,41 @@
+name: Zirvenin Kanunu animasyon (elle)
+
+# Voices, draws and (with "gizli") uploads one animated episode privately to Zirvenin Kanunu. Started by pushing a
+# change to animasyon/tetik.txt ("<bolum> deneme|gizli") on the zk-animasyon branch. The daily schedule does not
+# use this format until Ulaş approves the sample (2026-10-19, "Güç psikolojisi").
+on:
+  push:
+    branches: [zk-animasyon]
+    paths: ['animasyon/tetik.txt']
+  workflow_dispatch:
+
+concurrency:
+  group: zk-animasyon
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bolum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Bölüm üret
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+          ELEVENLABS_MODEL: ${{ vars.ELEVENLABS_MODEL || 'eleven_flash_v2_5' }}
+          ZK_ANIM_MODEL: ${{ vars.ZK_ANIM_MODEL }}
+          ZK_ANIM_SPEED: ${{ vars.ZK_ANIM_SPEED }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: bash animasyon/calistir.sh

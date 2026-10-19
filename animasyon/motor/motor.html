@@ -1,0 +1,245 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="ortak.js"></script>
+<script src="sahneler.js"></script>
+<script src="bolum.js"></script>
+<script>
+// Zirvenin Kanunu episode engine. bolum.js sets window.EP:
+//   {kanun: 'I', title: {top, hi}, lines: [{text, v: {t: <scene>, key, ...}}]}
+// render.js injects the narrator's word timings with setTimings([{t0, t1, words: [{w, t0, t1}]}]).
+// The last line leads back into the first ("Bu yüzden unutma:" -> the hook), so the video loops.
+const EP = window.EP;
+function buildTimeline() {
+  if (window.TIMINGS) return window.TIMINGS.map((tm, i) => ({ ...EP.lines[i], ...tm }));
+  let t = 0.12; const out = [];
+  EP.lines.forEach(l => {
+    const ws = []; let tt = t;
+    l.text.split(' ').forEach(w => { const d = 0.14 + w.length * 0.045 + (/[.,!?:]$/.test(w) ? 0.2 : 0); ws.push({ w, t0: tt, t1: tt + d }); tt += d; });
+    out.push({ ...l, t0: t, t1: tt, words: ws });
+    t = tt + 0.22;
+  });
+  return out;
+}
+let TL = buildTimeline();
+window.DURATION = () => TL.at(-1).t1 + 0.45;
+const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
+function wordTime(L, prefix, share = .35) {
+  if (prefix) {
+    const p = norm(prefix);
+    const w = L.words.find(w => norm(w.w).startsWith(p) || (p.length > 3 && norm(w.w).includes(p)));
+    if (w) return w.t0;
+  }
+  return L.t0 + (L.t1 - L.t0) * share;
+}
+function talk(t, L) {
+  if (!L || t < L.t0 || t > L.t1) return 0;
+  const w = L.words.find(w => t >= w.t0 && t <= w.t1);
+  if (!w) return .15;
+  return .4 + .6 * Math.abs(Math.sin((t - w.t0) / Math.max(.05, w.t1 - w.t0) * Math.PI));
+}
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+// ---------- scenes: f(V, L, t, lt), lt = seconds since the scene started ----------
+const VIS = {
+  usta(V, L, t, lt) {
+    room(t, '#0e0c11');
+    beam(540, 0, 1500, 220, 900, C.gold, .10, t, 50);
+    embers(t, 30, 120, 960, 1550, 1000);
+    const end = V.end ? prog(t, L.t1 + .05, L.t1 + .4) : 0;  // the loop restarts with the eyes opening
+    const open = L.t0 < .5 ? .45 + .55 * eo(prog(t, 0, .3)) : 1;
+    const bt = wordTime(L, V.key, .6);
+    if (V.ghost) {  // the person who dislikes you, behind the narrator; warms up when the favour appears
+      const gk = eo(prog(t, wordTime(L, V.ghost, .2) - .1, wordTime(L, V.ghost, .2) + .45));
+      if (gk > 0) {
+        ctx.save(); ctx.globalAlpha = gk;
+        person('rakip', lerp(930, 860, gk), 880, .8, -1, mixColor(C.red, C.gold, eo(prog(t, bt, bt + .6))), t);
+        ctx.restore();
+      }
+    }
+    usta(540, 930, 1.32, t, { talk: talk(t, L), eyes: open * (1 - end) });
+    floor(1500, C.gold, .25, 1000);
+    if (V.prop === 'book') {
+      const kt = bt, k = eo(prog(t, kt - .1, kt + .5));
+      if (k > 0) {
+        beam(540, 1000, 1500, 60, 420, C.gold2, .12 * k, t, 12);
+        book(540, lerp(1330, 1215, k) + Math.sin(t * 2) * 6, 210 * lerp(.6, 1, k), t, { alpha: k, rot: Math.sin(t * 1.3) * .04 });
+      }
+    }
+  },
+  meclis(V, L, t, lt) {
+    hall(t);
+    const kt = wordTime(L, V.key, .5);
+    const fk = eo(prog(lt, 0, .7)), rk = eo(prog(t, kt - .3, kt + .3));
+    person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t);
+    person('rakip', lerp(860, 780, rk), 930, 1.0, -1, mixColor(C.goldDim, C.red, rk), t, { arm: 'point', armK: eo(prog(t, kt, kt + .45)) });
+    if (V.year) {
+      const k = eo(prog(lt, .1, .6));
+      ctx.save(); ctx.globalAlpha = k;
+      text(up(V.year), 540, 560, 92, C.gold, SERIF, 900, 'center', 10, C.ink, 6);
+      ctx.restore();
+    }
+    plate(V.label, 330, 1345, 40, back(prog(lt, .25, .7)));
+  },
+  yasak(V, L, t, lt) {
+    room(t, '#0e0c11');
+    beam(540, 0, 1500, 260, 1000, C.gold, .06, t, 30);
+    const items = (V.items || []).slice(0, 2), xs = [300, 780];
+    items.forEach((it, i) => {
+      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 880;
+      if (k <= .01) return;
+      const st = wordTime(L, it.key, .3 + .4 * i), hit = prog(t, st, st + .35);
+      const shake = hit > 0 && hit < 1 ? Math.sin(t * 70) * 10 * (1 - hit) : 0;
+      ctx.save(); ctx.translate(x + shake, y); ctx.scale(k, k);
+      ctx.fillStyle = 'rgba(14,12,16,.92)'; ctx.shadowColor = 'rgba(0,0,0,.8)'; ctx.shadowBlur = 40; rr(-205, -250, 410, 500, 18); ctx.fill();
+      ctx.shadowColor = 'transparent'; ctx.strokeStyle = rgba(C.gold, .55 * (1 - hit * .6)); ctx.lineWidth = 3; rr(-205, -250, 410, 500, 18); ctx.stroke();
+      icon(it.i, 0, -30, 1.25, hit > 0 ? mixColor(C.gold, '#6d5a3a', hit) : C.gold);
+      text(up(it.label), 0, 185, 44, hit > 0 ? C.bone : C.ivory, SANS, 900, 'center', 0, C.ink, 4);
+      cross(0, -20, 330, prog(t, st, st + .3));
+      ctx.restore();
+    });
+  },
+  kitaplik(V, L, t, lt) {
+    room(t, '#0c0a09');
+    const lit = wordTime(L, V.key, .35), fly = wordTime(L, V.fly, .6), note = wordTime(L, V.note, .8);
+    shelves(t, [1, 7], eo(prog(t, fly, fly + .6)) * (t > lit ? 1 : 0) + (t > lit ? .001 : 0));
+    candle(150, 1350, t, 1.1);
+    const sk = eo(prog(t, fly, fly + .6));
+    if (t > lit && shelves.slot) {
+      const [sx, sy] = shelves.slot;
+      const k = sk, x = lerp(sx, 560, k), y = lerp(sy, 900, k);
+      if (k > 0) book(x, y, lerp(46, 300, k), t, { alpha: 1, rot: lerp(0, -.05, k), shine: k });
+      else glow(sx, sy, 140, rgba(C.gold, 1), .6 * prog(t, lit, lit + .3));
+    }
+    const nk = eo(prog(t, note, note + .5));
+    if (nk > 0) letter(lerp(-200, 330, nk), lerp(1300, 1210, nk), 260, lerp(-.5, -.12, nk));
+    plate(V.label, 600, 1340, 40, back(prog(t, note + .2, note + .6)));
+  },
+  dost(V, L, t, lt) {
+    hall(t);
+    const give = wordTime(L, V.give, .3), kt = wordTime(L, V.key, .7);
+    const bk = prog(t, give, give + .8), c = eo(prog(t, kt - .5, kt + .2));
+    const fx = lerp(260, 330, c), rx = lerp(820, 750, c);
+    const rim = mixColor(C.red, C.gold, eo(prog(t, give + .3, kt + .1)));
+    person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c });
+    person('rakip', rx, 930, 1.0, -1, rim, t, { arm: 'shake', armK: c });
+    if (bk > 0 && bk < 1) {  // the book travels from his hands to Franklin's
+      const x = lerp(rx - 120, fx + 120, eio(bk)), y = 1060 - Math.sin(bk * Math.PI) * 140;
+      book(x, y, 90, t, { rot: bk * 6.28 * .5, shine: .7 });
+    }
+    if (c > .95) {
+      const p = prog(t, kt + .15, kt + 1.1);
+      if (p > 0 && p < 1) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 26; i++) {
+          const a = rnd(i) * 6.28, d = eo(p) * (80 + rnd(i + 2) * 260);
+          ctx.globalAlpha = 1 - p; circle(540 + Math.cos(a) * d, 1000 + Math.sin(a) * d * .7, 3 + rnd(i + 4) * 4, C.gold2);
+        }
+        ctx.restore();
+      }
+      glow(540, 1010, 260, rgba(C.gold, 1), .5 * eo(prog(t, kt, kt + .4)));
+    }
+    plate(V.label, 540, 1345, 44, back(prog(t, kt + .1, kt + .5)));
+  },
+  beyin(V, L, t, lt) {
+    room(t, '#0d0b10');
+    beam(540, 0, 1400, 200, 800, C.gold, .07, t, 30);
+    brain(540, 860, 1.25, t, eo(prog(lt, 0, .5)));
+    plate(V.label, 540, 520, 42, back(prog(lt, .15, .6)));
+    (V.steps || []).forEach((s, i) => {
+      const at = wordTime(L, s.key, .3 + .4 * i), k = back(prog(t, at, at + .4)), y = 1190 + i * 125;
+      if (i) { ctx.save(); ctx.globalAlpha = clamp(k); text('▼', 540, y - 64, 30, C.gold, SANS, 900); ctx.restore(); }
+      plate(s.text, 540, y, 38, k, i ? C.gold2 : C.bone);
+    });
+  }
+};
+
+// ---------- overlays ----------
+function titleBar(t) {
+  ctx.save();  // fully there from the first frame: it is the feed preview
+  const label = `KANUN ${EP.kanun || ''}`.trim();
+  const lw = measure(label, 40, SERIF, 700, 10);
+  text(label, 540, 166, 40, C.gold, SERIF, 700, 'center', 0, C.ink, 10);
+  ctx.strokeStyle = rgba(C.gold, .8); ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(540 - lw / 2 - 30, 168); ctx.lineTo(540 - lw / 2 - 150, 168);
+  ctx.moveTo(540 + lw / 2 + 30, 168); ctx.lineTo(540 + lw / 2 + 150, 168); ctx.stroke();
+  [[540 - lw / 2 - 22, 168], [540 + lw / 2 + 22, 168]].forEach(([x, y]) => { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.PI / 4); ctx.fillStyle = C.gold; ctx.fillRect(-5, -5, 10, 10); ctx.restore(); });
+  const lines = [[up(EP.title.top), C.ivory], [up(EP.title.hi), C.gold]].filter(l => l[0]);
+  lines.forEach(([s, col], i) => {
+    let size = 86; const w = measure(s, size, SERIF, 900, 2); if (w > 980) size = Math.floor(size * 980 / w);
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 24;
+    if (col === C.gold) { ctx.shadowColor = rgba(C.gold, .45); ctx.shadowBlur = 30; }
+    text(s, 540, 252 + i * 96, size, col, SERIF, 900, 'center', 8, C.ink, 2);
+    ctx.restore();
+  });
+  ctx.restore();
+}
+function subtitles(t, line) {
+  if (!line || t > line.t1 + .25) return;
+  const words = line.words, Y = 1500, S = 74, gap = 30;
+  let idx = words.findIndex(w => t >= w.t0 && t < w.t1);
+  if (idx < 0) { idx = 0; words.forEach((w, i) => { if (t >= w.t0) idx = i; }); }
+  const wd = (w, s) => measure(up(w), s, SANS, 900);
+  const groups = []; let cur = [];
+  words.forEach((w, i) => {
+    const tw = [...cur, i].reduce((a, j) => a + wd(words[j].w, S) + gap, -gap);
+    if (cur.length && (cur.length >= 3 || tw > 940)) { groups.push(cur); cur = []; }
+    cur.push(i);
+  });
+  groups.push(cur);
+  const grp = groups.find(g => g.includes(idx));
+  let size = S; const tw = grp.reduce((a, j) => a + wd(words[j].w, S) + gap, -gap); if (tw > 960) size = Math.floor(S * 960 / tw);
+  const ws = grp.map(j => wd(words[j].w, size)); const total = ws.reduce((a, b) => a + b, 0) + gap * (grp.length - 1);
+  let x = 540 - total / 2;
+  const keys = (line.keys || []).map(norm);
+  grp.forEach((j, k) => {
+    const w = words[j].w, active = j === idx;
+    const isKey = /\d/.test(w) || keys.some(p => p && norm(w).startsWith(p));
+    const pop = active ? 1 + .1 * (1 - eo(prog(t, words[j].t0, words[j].t0 + .12))) : 1;
+    ctx.save(); ctx.translate(x + ws[k] / 2, Y); ctx.scale(pop, pop);
+    if (active) {
+      ctx.shadowColor = rgba(C.gold, .6); ctx.shadowBlur = 26;
+      ctx.fillStyle = isKey ? C.red : C.gold; rr(-ws[k] / 2 - 12, -size * .62, ws[k] + 24, size * 1.24, 8); ctx.fill();
+      ctx.shadowColor = 'transparent';
+    }
+    text(up(w), 0, 3, size, active ? (isKey ? C.ivory : C.ink) : (isKey ? C.gold : C.ivory), SANS, 900, 'center', active ? 0 : 12);
+    ctx.restore(); x += ws[k] + gap;
+  });
+}
+
+window.setTimings = tm => { window.TIMINGS = tm; TL = buildTimeline(); };
+window.draw = function (t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1; ctx.shadowColor = 'transparent'; ctx.globalCompositeOperation = 'source-over';
+  let li = TL.findIndex(l => t < l.t1 + 0.18); if (li < 0) li = TL.length - 1;
+  const line = TL[li];
+  let si = li; while (si > 0 && same(TL[si - 1].v, line.v)) si--;
+  const sceneStart = si === 0 ? 0 : TL[si].t0 - 0.12;
+  const lt = Math.max(0, t - sceneStart);
+  const z = 1.035 - .035 * eo(prog(lt, 0, .45)) + .012 * lt;  // a snap in, then a slow push
+  ctx.save(); ctx.translate(540, 900); ctx.scale(z, z); ctx.translate(-540, -900);
+  const V = line.v || { t: 'usta' };
+  (VIS[V.t] || VIS.usta)(V, line, t, lt);
+  ctx.restore();
+  ctx.globalAlpha = 1; ctx.shadowColor = 'transparent'; ctx.globalCompositeOperation = 'source-over';
+  if (si > 0 && lt < .3) { ctx.fillStyle = `rgba(0,0,0,${.85 * (1 - eo(lt / .3))})`; ctx.fillRect(0, 0, W, H); }
+  vignette(.8);
+  // keep the title and subtitles readable over bright scenes
+  let g = ctx.createLinearGradient(0, 0, 0, 470); g.addColorStop(0, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, 470);
+  g = ctx.createLinearGradient(0, 1380, 0, 1640); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.5, 'rgba(0,0,0,.55)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 1380, W, 260);
+  titleBar(t);
+  if (!window.COVER) subtitles(t, t >= line.t0 - .05 ? line : null);
+  grain(t);
+};
+window.cover = function (li) {
+  const L = TL[li];
+  window.COVER = true; draw(Math.min(L.t1 - .05, wordTime(L, (L.v || {}).key, .4) + 1.0)); window.COVER = false;
+};
+window.ready = document.fonts.load(`900 40px ${SERIF}`).then(() => document.fonts.load(`900 40px ${SANS}`))
+  .then(() => document.fonts.load(`700 40px ${SERIF}`)).then(() => { draw(0); return true; });
+</script></body></html>

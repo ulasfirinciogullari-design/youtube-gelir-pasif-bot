@@ -1,0 +1,134 @@
+{
+ "id": "k001",
+ "kanun": "I",
+ "title": {
+  "top": "Seni sevmeyenden",
+  "hi": "iyilik iste"
+ },
+ "yt_title": "Seni Sevmeyen Birini Kazanmanın En Garip Yolu 🤫 #psikoloji",
+ "lines": [
+  {
+   "text": "Seni sevmeyen birini kazanmanın en garip yolu: ondan bir iyilik istemek.",
+   "v": {
+    "t": "usta",
+    "prop": "book",
+    "key": "iyilik",
+    "ghost": "sevmeyen"
+   }
+  },
+  {
+   "text": "1700'lerde mecliste bir adam, Benjamin Franklin'e açıkça cephe aldı.",
+   "keys": [
+    "Franklin"
+   ],
+   "v": {
+    "t": "meclis",
+    "year": "1700'ler",
+    "label": "Benjamin Franklin",
+    "key": "cephe"
+   }
+  },
+  {
+   "text": "Franklin ne yalvardı, ne de hediye verdi.",
+   "v": {
+    "t": "yasak",
+    "items": [
+     {
+      "i": "yalvar",
+      "label": "Yalvarmak",
+      "key": "yalvardı"
+     },
+     {
+      "i": "hediye",
+      "label": "Hediye",
+      "key": "hediye"
+     }
+    ]
+   }
+  },
+  {
+   "text": "Sadece adamın kütüphanesindeki nadir bir kitabı ödünç istedi.",
+   "keys": [
+    "nadir"
+   ],
+   "v": {
+    "t": "kitaplik",
+    "key": "nadir",
+    "fly": "kitabı",
+    "note": "ödünç",
+    "label": "Tek bir not"
+   }
+  },
+  {
+   "text": "Adam kitabı hemen gönderdi ve ikisi ömür boyu dost oldu.",
+   "keys": [
+    "dost"
+   ],
+   "v": {
+    "t": "dost",
+    "give": "gönderdi",
+    "key": "dost",
+    "label": "Ömür boyu dost"
+   }
+  },
+  {
+   "text": "Çünkü beyin, iyilik yaptığı kişiyi sevdiğine kendini ikna eder.",
+   "keys": [
+    "beyin"
+   ],
+   "v": {
+    "t": "beyin",
+    "label": "Ben Franklin etkisi",
+    "steps": [
+     {
+      "text": "Ona iyilik yaptım",
+      "key": "iyilik"
+     },
+     {
+      "text": "Demek ki onu seviyorum",
+      "key": "sevdiğine"
+     }
+    ]
+   }
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {
+    "t": "usta",
+    "end": true
+   }
+  }
+ ],
+ "facts": [
+  "Benjamin Franklin otobiyografisinde, Pennsylvania meclisinde kendisine karşı konuşan yeni bir üyeden nadir bir kitabı ödünç istediğini yazar.",
+  "Adam kitabı hemen gönderdi; Franklin bir hafta sonra teşekkür notuyla geri verdi ve ikisi adamın ölümüne kadar dost kaldı.",
+  "Bu etki 1969'da Jecker ve Landy'nin deneyiyle sınandı: kendisinden iyilik istenen kişiler, iyilik istemeyen kişiyi daha çok sevdi."
+ ],
+ "sources": [
+  "https://www.gutenberg.org/ebooks/20203",
+  "https://doi.org/10.1177/001872676902200407"
+ ],
+ "summary": "Seni sevmeyen birini kazanmak için ona hediye almak ya da yalvarmak yerine, ondan küçük bir iyilik iste. Benjamin Franklin meclisteki rakibini nadir bir kitabı ödünç isteyerek dostuna çevirdi. Psikologlar buna Ben Franklin etkisi diyor: insan, iyilik yaptığı kişiyi sevdiğine kendini ikna eder.",
+ "tags": [
+  "ben franklin etkisi",
+  "psikoloji",
+  "insan psikolojisi",
+  "ikna",
+  "karanlık psikoloji",
+  "güç psikolojisi",
+  "benjamin franklin",
+  "iyilik",
+  "sosyal psikoloji",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri",
+  "bilişsel çelişki",
+  "ilişkiler",
+  "etkileme sanatı"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#benfranklinetkisi",
+  "#zirveninkanunu"
+ ]
+}
