@@ -1,25 +1,24 @@
 {
- "started": "2026-10-19T05:03:02+00:00",
+ "started": "2026-10-19T13:23:13+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 16,
+ "threads": 17,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 9,
+ "sent_last_24h": 10,
  "room": 10,
  "model": "gemini-3.8-flash",
  "items": [
   {
-   "id": "UgxbwSM3Jh-XBoiOuZV4AaABAg",
-   "video": "RLuGUU-xaYE",
-   "comment": "Peki evren yok olsaydı tek bir dünya kalsaydı ne olurdu?",
-   "reply": "Evren yok olursa uzay-zaman dokusu da kalmayacağı için Dünya'nın bulunabileceği bir boşluk bile olmazdı! Bu ilginç senaryoyu video listemize ekledik.\n— Profesör Pi 🔭",
-   "topic": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
+   "id": "UgyqekfoIVfriVX5INN4AaABAg",
+   "video": "ZX3l0E9HzMw",
+   "comment": "Hiç kırpmadan izledim",
+   "reply": "Hemen bol bol kırp da gözlerin kurumasın! Neyse ki bir robot olarak benim göz kuruluğu derdim yok.\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
  ],
- "finished": "2026-10-19T05:03:14+00:00"
+ "finished": "2026-10-19T13:23:26+00:00"
 }
