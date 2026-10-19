@@ -1,17 +1,24 @@
 {
- "started": "2026-10-19T22:43:46+00:00",
+ "started": "2026-10-19T22:47:46+00:00",
  "bolum": "k001",
- "mod": "deneme",
+ "mod": "gizli",
  "chars": 391,
  "voice": {
   "model": "eleven_flash_v2_5",
-  "speed": 1.08,
+  "speed": 1.1,
   "stability": 0.42,
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 23.65,
- "render_seconds": 85,
+ "duration": 23.33,
+ "render_seconds": 83,
  "title": "Seni Sevmeyen Birini Kazanmanın En Garip Yolu 🤫 #psikoloji",
- "finished": "2026-10-19T22:45:20+00:00"
+ "video_id": "dAcy-zC3_oM",
+ "url": "https://youtube.com/shorts/dAcy-zC3_oM",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "finished": "2026-10-19T22:50:14+00:00"
 }
