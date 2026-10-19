@@ -1,5 +1,5 @@
 {
- "at": "2026-10-19T11:16:56+00:00",
+ "at": "2026-10-19T13:11:25+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -153,6 +153,20 @@
     "SHORTS": 1
    }
   },
+  "53rXVX6QpA0": {
+   "views": 2,
+   "estimatedMinutesWatched": 0,
+   "averageViewDuration": 0,
+   "averageViewPercentage": 0,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Kalbin 1 Günde Kaç Kez Atar?",
+   "sources": {
+    "YT_CHANNEL": 2
+   }
+  },
   "X9ouBiGHD4Q": {
    "views": 2,
    "estimatedMinutesWatched": 0,
@@ -166,18 +180,6 @@
    "sources": {
     "YT_SEARCH": 2
    }
-  },
-  "53rXVX6QpA0": {
-   "views": 2,
-   "estimatedMinutesWatched": 0,
-   "averageViewDuration": 0,
-   "averageViewPercentage": 0,
-   "likes": 0,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Kalbin 1 Günde Kaç Kez Atar?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason"
   },
   "RLuGUU-xaYE": {
    "views": 2,
