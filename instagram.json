@@ -11,16 +11,17 @@
  "slots": {
   "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok",
   "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/",
-  "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/"
+  "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/",
+  "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/"
  },
  "nobet": {
   "basladi": "2026-10-19T08:44:55+00:00",
   "run": "39223756411",
-  "tur": 291,
+  "tur": 317,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-10-19T13:34:56+00:00"
+  "son_tur": "2026-10-19T14:01:45+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -36,6 +37,13 @@
    "at": 1792404105,
    "title": "Pazartesi Sabahları Neden Daha Yorgun Uyanırız? 😴",
    "topic_id": "mk-023"
+  },
+  "c35gmT12OGk": {
+   "media_id": "18134804578677578",
+   "url": "https://www.instagram.com/reel/DerbKKWCqmm/",
+   "at": 1792418506,
+   "title": "Ayılar neden tam kış uykusuna yatmaz? 🐻",
+   "topic_id": "mk-042"
   }
  }
 }
