@@ -1,11 +1,11 @@
 import contextlib
 from datetime import datetime, timedelta, timezone
 import importlib.util
-import io
 import json
 from pathlib import Path
 import shutil
 import subprocess
+import zipfile
 
 import pytest
 
@@ -32,7 +32,8 @@ def write(data_dir, uploads, compilations=None):
 
 def test_candidates_are_the_weeks_public_shorts_not_in_a_published_compilation(tmp_path):
     write(tmp_path, [upload("a", 2), upload("b", 24 * 6), upload("old", 24 * 8), upload("priv", 3, "private"),
-                     upload("used", 5), upload("sample", 6), {"video_id": "broken"}],
+                     upload("used", 5), upload("sample", 6), {"video_id": "broken"},
+                     {**upload("bad", 1), "uploaded_at": "dün"}, {**upload("naive", 1), "uploaded_at": "2026-10-25T10:00:00"}],
           [{"privacy": "public", "shorts": ["used"]}, {"privacy": "private", "shorts": ["sample"]}])
     assert [u["video_id"] for u in compilation.candidates(tmp_path, NOW)] == ["a", "sample", "b"]
 
@@ -86,19 +87,21 @@ def test_build_joins_the_most_viewed_shorts_best_first_and_skips_expired_ones(tm
     monkeypatch.setattr(compilation, "MIN_COUNT", 2)
     data = tmp_path / "data"
     write(data, [upload("a", 30, title="Arılar neden altıgen yapar? 🐝"), upload("b", 20, title="Baykuş 🦉"),
-                 upload("gone", 10), upload("c", 5, title="Ceylan #shorts")])
+                 upload("gone", 10), upload("corrupt", 8), upload("c", 5, title="Ceylan #shorts")])
     calls = []
 
     def find(upload_, out_dir, repo, token, extras=()):
         calls.append((upload_["video_id"], extras))
         if upload_["video_id"] == "gone":
             return None
+        if upload_["video_id"] == "corrupt":
+            raise zipfile.BadZipFile("File is not a zip file")
         return fake_short(out_dir, f"ORIGINAL_{upload_['topic_id']}_1", 1.5, 440), {
             "title": upload_["title"], "tags": ["arı", "shorts"], "contains_synthetic_media": False}
 
-    views = lambda ids, env: {"a": 10, "b": 500, "gone": 900, "c": 50}
+    views = lambda ids, env: {"a": 10, "b": 500, "gone": 900, "corrupt": 700, "c": 50}
     result = compilation.build(data, tmp_path / "out", NOW, count=2, env={}, find=find, views=views)
-    assert [c[0] for c in calls] == ["gone", "b", "c"] and calls[0][1] == ("_thumb.jpg",)
+    assert [c[0] for c in calls] == ["gone", "corrupt", "b", "c"] and calls[0][1] == ("_thumb.jpg",)
     assert result["shorts"] == ["b", "c"]
     probe = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=width,height", "-of", "csv=p=0",
                             str(result["video"])], capture_output=True, text=True, check=True).stdout.split()
@@ -111,6 +114,27 @@ def test_build_joins_the_most_viewed_shorts_best_first_and_skips_expired_ones(tm
     assert result["body"]["status"] == {"privacyStatus": "private", "selfDeclaredMadeForKids": False,
                                         "containsSyntheticMedia": False}
     assert result["cover"].exists() and result["story"].exists()
+
+
+def test_build_skips_a_short_that_fails_to_render(tmp_path, monkeypatch):
+    monkeypatch.setattr(compilation, "MIN_COUNT", 2)
+    write(tmp_path, [upload("a", 3), upload("b", 2), upload("c", 1)])
+
+    def widescreen(short, out):
+        if "mk-b" in short.name:
+            raise subprocess.CalledProcessError(1, "ffmpeg")
+        out.write_bytes(b"seg")
+        return out
+
+    monkeypatch.setattr(compilation, "widescreen", widescreen)
+    monkeypatch.setattr(compilation, "duration", lambda path: 12.0)
+    monkeypatch.setattr(compilation, "join", lambda segments, out: out)
+    monkeypatch.setattr(compilation, "thumbnail", lambda covers, count, frame, out: out)
+    monkeypatch.setattr(compilation, "storyboard", lambda video, out, length: None)
+    find = lambda u, out_dir, repo, token, extras=(): (out_dir / f"ORIGINAL_{u['topic_id']}_1.mp4",
+                                                        {"title": u["title"]})
+    result = compilation.build(tmp_path, tmp_path / "out", NOW, env={}, find=find, views=lambda ids, env: {})
+    assert result["shorts"] == ["c", "a"]
 
 
 def test_build_refuses_a_week_with_too_few_shorts(tmp_path):
@@ -131,7 +155,9 @@ class FakeResponse(contextlib.AbstractContextManager):
         return False
 
 
-def test_upload_is_resumable_then_sets_the_cover(tmp_path, monkeypatch):
+@pytest.mark.parametrize("thumb_error", [compilation.CompilationError("YouTube 403: thumbnails not allowed"),
+                                         TimeoutError("timed out"), compilation.urllib.error.URLError("reset")])
+def test_upload_is_resumable_then_sets_the_cover_and_survives_a_failed_cover(tmp_path, monkeypatch, thumb_error):
     monkeypatch.setattr(compilation.comment_replies, "access_token", lambda env: "tok")
     video, cover = tmp_path / "v.mp4", tmp_path / "c.jpg"
     video.write_bytes(b"video-bytes")
@@ -145,7 +171,7 @@ def test_upload_is_resumable_then_sets_the_cover(tmp_path, monkeypatch):
             return FakeResponse(headers={"Location": "https://upload.example/session"})
         if url == "https://upload.example/session":
             return FakeResponse(b'{"id": "VID123"}')
-        raise compilation.CompilationError("YouTube 403: thumbnails not allowed")
+        raise thumb_error
 
     body = {"snippet": {"title": "t"}, "status": {"privacyStatus": "private"}}
     assert compilation.upload(video, cover, body, env={}, send=send) == "VID123"

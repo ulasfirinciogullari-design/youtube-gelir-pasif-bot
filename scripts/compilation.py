@@ -26,6 +26,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -80,7 +81,11 @@ def candidates(data_dir: Path, now: datetime, window: timedelta = WINDOW) -> lis
             continue
         if upload.get("privacy") != "public" or upload["video_id"] in used:
             continue
-        if not timedelta(0) <= now - _uploaded(upload) <= window:
+        try:
+            age = now - _uploaded(upload)
+        except (TypeError, ValueError):  # a malformed or zone-less time
+            continue
+        if not timedelta(0) <= age <= window:
             continue
         found.append(upload)
     return sorted(found, key=_uploaded, reverse=True)
@@ -245,11 +250,12 @@ def upload(video: Path, cover: Path | None, body: dict, env=os.environ, send=_up
                                                    "Content-Length": str(size)}, method="PUT") as resp:
         video_id = json.loads(resp.read().decode("utf-8"))["id"]
     if cover and cover.exists():
+        # The video is up by now: a failed cover must not read as a failed upload and send it up twice.
         try:
             with send(f"{UPLOAD_URL}/thumbnails/set?videoId={video_id}", cover.read_bytes(),
                       {**auth, "Content-Type": "image/jpeg"}):
                 pass
-        except CompilationError as e:
+        except (CompilationError, urllib.error.URLError, OSError) as e:
             print(f"ℹ️ Kapak görseli notu: {e}")
     return video_id
 
@@ -272,14 +278,18 @@ def build(data_dir: Path, out_dir: Path, now: datetime, count: int = COUNT, env=
         try:
             found = find(upload_, out_dir / upload_["video_id"], env.get("GITHUB_REPOSITORY", ""),
                          env.get("GITHUB_TOKEN", ""), extras=("_thumb.jpg",))
-        except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        except (urllib.error.URLError, OSError, ValueError, KeyError, zipfile.BadZipFile) as e:
             print(f"ℹ️ {upload_['video_id']} indirilemedi: {e}")
             continue
         if found is None:
             print(f"ℹ️ {upload_['video_id']} için yayın paketi yok (paketler 14 gün saklanıyor)")
             continue
         short, meta = found
-        segment = widescreen(short, out_dir / f"parca_{len(picked) + 1:02d}.mp4")
+        try:
+            segment = widescreen(short, out_dir / f"parca_{len(picked) + 1:02d}.mp4")
+        except (OSError, subprocess.SubprocessError) as e:
+            print(f"ℹ️ {upload_['video_id']} yatay kareye çizilemedi: {e}")
+            continue
         picked.append(upload_["video_id"])
         segments.append(segment)
         metas.append(meta)
