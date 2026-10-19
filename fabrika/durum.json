@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1275",
+    "views": "1278",
     "reason": null
    }
   },
@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "488",
+    "views": "490",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1310",
+    "views": "1315",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1342",
+    "views": "1343",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1251",
+    "views": "1253",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1004",
+    "views": "1006",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "584",
+    "views": "702",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1203",
+    "views": "1221",
     "reason": null
    }
   },
@@ -474,6 +474,36 @@
    "at": 1792404712.5911913,
    "chars": 352,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "53",
+    "reason": null
+   }
+  },
+  {
+   "id": "n004",
+   "video_id": "5NCDRT4b4M0",
+   "url": "https://youtube.com/shorts/5NCDRT4b4M0",
+   "title": "Okyanus Gerçekte Ne Kadar Derin?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Deep Is the Ocean Really?",
+    "es": "¿Qué tan profundo es el océano en realidad?",
+    "pt": "Quão profundo é o oceano de verdade?",
+    "ar": "كم يبلغ عمق المحيط في الحقيقة؟",
+    "hi": "समुद्र असल में कितना गहरा है?",
+    "id": "Seberapa Dalam Sebenarnya Lautan Itu?",
+    "fr": "À quel point l'océan est-il profond ?",
+    "de": "Wie tief ist der Ozean wirklich?",
+    "ru": "Насколько глубок океан на самом деле?",
+    "az": "Okean əslində nə qədər dərindir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792419098.7218385,
+   "chars": 390,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -497,7 +527,8 @@
   "y006",
   "g004",
   "y007",
-  "o0003"
+  "o0003",
+  "n004"
  ],
  "extra": [
   {
@@ -764,6 +795,14 @@
    "mod": "igbolum",
    "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "chars": 562
+  },
+  {
+   "finished": "2026-10-19T14:11:40+00:00",
+   "mod": "saatlik",
+   "title": "Okyanus Gerçekte Ne Kadar Derin?",
+   "url": "https://youtube.com/shorts/5NCDRT4b4M0",
+   "duration": 25.4,
+   "chars": 390
   }
  ],
  "last_fail": 1792238864.8448575,

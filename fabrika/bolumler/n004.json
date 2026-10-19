@@ -1,0 +1,559 @@
+{
+ "title": "Okyanus Gerçekte Ne Kadar Derin?",
+ "bar": {
+  "hi": "OKYANUS",
+  "rest": " NE KADAR DERİN?"
+ },
+ "summary": "Dünyanın en yüksek dağı Everest'i okyanusun dibine koysaydık ne olurdu? Okyanusların akılalmaz derinliğini ve tabandaki ölümcül basıncı keşfedin.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Everest'i dibe koysan, zirvesi bile 2 kilometre su altında kalırdı.",
+   "v": {
+    "t": "compare",
+    "bg": "underwater",
+    "a": {
+     "e": "🏔️",
+     "label": "Everest",
+     "value": 8849
+    },
+    "b": {
+     "e": "🌊",
+     "label": "Mariana",
+     "value": 10935
+    },
+    "mode": "bar",
+    "key": "Everest'i"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Oysa okyanusların ortalama derinliği yaklaşık 3.682 metre.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "📏",
+    "value": "3.682",
+    "unit": "metre",
+    "label": "Ortalama Derinlik",
+    "key": "3.682"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş ışığıysa en fazla 1.000 metreye kadar inebilir.",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "☀️",
+    "do": "vanish",
+    "key": "ışığıysa",
+    "label": "Güneş Işığı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "En dip nokta Mariana Çukuru yaklaşık 11 kilometre.",
+   "v": {
+    "t": "split",
+    "bg": "underwater",
+    "left": {
+     "e": "🏊",
+     "label": "Yüzey: 0 m"
+    },
+    "right": {
+     "e": "🕳️",
+     "label": "Dip: 10.935 m"
+    },
+    "key": "Mariana"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dipteki basınç yüzeyin yaklaşık 1.072 katına çıkıyor.",
+   "v": {
+    "t": "meter",
+    "bg": "underwater",
+    "label": "Su Basıncı",
+    "from": 1,
+    "to": 1086,
+    "unit": "bar",
+    "e": "💥",
+    "key": "1.086"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gövdem orada saniyede ezilirdi!",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🤖",
+    "do": "shrink",
+    "key": "Gövdem",
+    "label": "Robot Bit"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen o karanlığa dalar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "underwater",
+    "e": "❓"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Okyanusların küresel ortalama derinliği yaklaşık 3.682 metredir.",
+   "source": "NOAA",
+   "url": "https://oceanservice.noaa.gov/facts/deepocean.html"
+  },
+  {
+   "text": "Mariana Çukuru'nun en derin noktası olan Challenger Deep yaklaşık 10.935 metre derinliktedir.",
+   "source": "NOAA",
+   "url": "https://oceanexplorer.noaa.gov/facts/ocean-depth.html"
+  },
+  {
+   "text": "Güneş ışığının neredeyse tamamı okyanusta ilk 200 metreden sonra soğurulur ve alt katmanlar zifiri karanlıktır.",
+   "source": "National Geographic",
+   "url": ""
+  },
+  {
+   "text": "Mariana Çukuru'nun tabanındaki hidrostatik basınç yaklaşık 1.086 bar olup yüzeydeki atmosfer basıncının binden fazlasıdır.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/place/Mariana-Trench"
+  }
+ ],
+ "tags": [
+  "okyanus derinliği",
+  "mariana çukuru",
+  "challenger deep",
+  "denizaltı",
+  "everest dağı",
+  "okyanus ne kadar derin",
+  "derin deniz",
+  "ocean depth",
+  "mariana trench",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#OkyanusDerinliği",
+  "#MarianaÇukuru",
+  "#Bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://oceanservice.noaa.gov/facts/deepocean.html",
+  "https://oceanexplorer.noaa.gov/ocean-fact/ocean-depth/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Deep Is the Ocean Really?",
+   "summary": "What would happen if we placed Mount Everest, the world's highest mountain, at the bottom of the ocean? Discover the mind-boggling depth of the oceans and the crushing pressure at the bottom.",
+   "facts": [
+    "The global average depth of the oceans is approximately 3,682 meters.",
+    "Challenger Deep, the deepest point of the Mariana Trench, lies at a depth of about 10,935 meters.",
+    "Almost all sunlight is absorbed within the first 200 meters of the ocean, leaving the layers below pitch black.",
+    "The hydrostatic pressure at the bottom of the Mariana Trench is about 1,086 bar, over a thousand times surface atmospheric pressure."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan profundo es el océano en realidad?",
+   "summary": "¿Qué pasaría si pusiéramos el Monte Everest, la montaña más alta del mundo, en el fondo del océano? Descubre la asombrosa profundidad de los océanos y la presión mortal en sus profundidades.",
+   "facts": [
+    "La profundidad media global de los océanos es de aproximadamente 3.682 metros.",
+    "El abismo de Challenger, el punto más profundo de la fosa de las Marianas, alcanza unos 10.935 metros de profundidad.",
+    "Casi toda la luz solar se absorbe en los primeros 200 metros del océano, dejando las capas inferiores en total oscuridad.",
+    "La presión hidrostática en el fondo de la fosa de las Marianas es de unos 1.086 bares, más de mil veces la presión atmosférica en la superficie."
+   ]
+  },
+  "pt": {
+   "title": "Quão profundo é o oceano de verdade?",
+   "summary": "O que aconteceria se colocássemos o Monte Everest no fundo do oceano? Descubra a profundidade inacreditável dos oceanos e a pressão mortal em seu leito.",
+   "facts": [
+    "A profundidade média global dos oceanos é de aproximadamente 3.682 metros.",
+    "O Challenger Deep, ponto mais profundo da Fossa das Marianas, fica a cerca de 10.935 metros de profundidade.",
+    "Quase toda a luz solar é absorvida nos primeiros 200 metros do oceano, deixando as camadas inferiores na escuridão total.",
+    "A pressão hidrostática no fundo da Fossa das Marianas é de cerca de 1.086 bar, mais de mil vezes a pressão atmosférica da superfície."
+   ]
+  },
+  "ar": {
+   "title": "كم يبلغ عمق المحيط في الحقيقة؟",
+   "summary": "ماذا سيحدث لو وضعنا جبل إفرست، أعلى جبل في العالم، في قاع المحيط؟ اكتشف العمق الهائل للمحيطات والضغط المميت في أعماقها.",
+   "facts": [
+    "يبلغ متوسط العمق العالمي للمحيطات حوالي 3682 متراً.",
+    "تقع نقطة تشالنجر ديب، أعمق نقطة في خندق ماريانا، على عمق حوالي 10935 متراً.",
+    "يُمتص ضوء الشمس بالكامل تقريباً بعد أول 200 متر في المحيط، وتغرق الطبقات السفلية في ظلام دامس.",
+    "يبلغ الضغط الهيدروستاتيكي في قاع خندق ماريانا حوالي 1086 بار، وهو أكثر بألف مرة من الضغط الجوي عند السطح."
+   ]
+  },
+  "hi": {
+   "title": "समुद्र असल में कितना गहरा है?",
+   "summary": "अगर हम दुनिया के सबसे ऊंचे पहाड़ माउंट एवरेस्ट को समुद्र के तल में रख दें तो क्या होगा? महासागरों की अकल्पनीय गहराई और तल के जानलेवा दबाव को जानिए।",
+   "facts": [
+    "महासागरों की वैश्विक औसत गहराई लगभग 3,682 मीटर है।",
+    "मारियाना ट्रेंच का सबसे गहरा बिंदु चैलेंजर डीप लगभग 10,935 मीटर गहरा है।",
+    "समुद्र में पहले 200 मीटर के बाद लगभग सारा सूर्य का प्रकाश अवशोषित हो जाता है और निचली परतें घने अंधेरे में डूबी रहती हैं।",
+    "मारियाना ट्रेंच के तल पर हाइड्रोस्टैटिक दबाव लगभग 1,086 बार होता है, जो सतह के वायुमंडलीय दबाव से एक हजार गुना अधिक है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Dalam Sebenarnya Lautan Itu?",
+   "summary": "Apa jadinya jika Gunung Everest diletakkan di dasar samudra? Temukan kedalaman laut yang luar biasa dan tekanan mematikan di dasarnya.",
+   "facts": [
+    "Kedalaman rata-rata global samudra adalah sekitar 3.682 meter.",
+    "Challenger Deep, titik terdalam di Palung Mariana, memiliki kedalaman sekitar 10.935 meter.",
+    "Hampir seluruh sinar matahari terserap setelah 200 meter pertama, menyisakan lapisan bawah dalam kegelapan total.",
+    "Tekanan hidrostatik di dasar Palung Mariana sekitar 1.086 bar, lebih dari seribu kali lipat tekanan atmosfer di permukaan."
+   ]
+  },
+  "fr": {
+   "title": "À quel point l'océan est-il profond ?",
+   "summary": "Que se passerait-il si l'on posait le mont Everest au fond de l'océan ? Découvrez la profondeur stupéfiante des océans et la pression mortelle qui règne au fond.",
+   "facts": [
+    "La profondeur moyenne mondiale des océans est d'environ 3 682 mètres.",
+    "Challenger Deep, le point le plus profond de la fosse des Mariannes, se situe à environ 10 935 mètres de profondeur.",
+    "La quasi-totalité de la lumière du soleil est absorbée après les 200 premiers mètres, plongeant les couches inférieures dans l'obscurité totale.",
+    "La pression hydrostatique au fond de la fosse des Mariannes est d'environ 1 086 bars, soit plus de mille fois la pression atmosphérique de surface."
+   ]
+  },
+  "de": {
+   "title": "Wie tief ist der Ozean wirklich?",
+   "summary": "Was würde passieren, wenn wir den Mount Everest auf den Grund des Ozeans stellen würden? Entdecke die unglaubliche Tiefe der Meere und den tödlichen Druck am Meeresboden.",
+   "facts": [
+    "Die weltweite Durchschnittstiefe der Ozeane beträgt rund 3.682 Meter.",
+    "Das Challengertief, der tiefste Punkt des Marianengrabens, liegt in etwa 10.935 Metern Tiefe.",
+    "Fast das gesamte Sonnenlicht wird in den ersten 200 Metern absorbiert, sodass die tieferen Schichten in völliger Dunkelheit liegen.",
+    "Der hydrostatische Druck am Grund des Marianengrabens beträgt etwa 1.086 Bar – mehr als das Tausendfache des atmosphärischen Drucks an der Oberfläche."
+   ]
+  },
+  "ru": {
+   "title": "Насколько глубок океан на самом деле?",
+   "summary": "Что произойдет, если поместить Эверест на дно океана? Откройте для себя невероятную глубину океанов и смертельное давление на самом дне.",
+   "facts": [
+    "Средняя глобальная глубина океанов составляет около 3 682 метров.",
+    "Бездна Челленджера, глубочайшая точка Марианской впадины, имеет глубину около 10 935 метров.",
+    "Почти весь солнечный свет поглощается в первых 200 метрах океана, оставляя нижние слои в полной темноте.",
+    "Гидростатическое давление на дне Марианской впадины составляет около 1 086 бар, что более чем в тысячу раз превышает атмосферное давление на поверхности."
+   ]
+  },
+  "az": {
+   "title": "Okean əslində nə qədər dərindir?",
+   "summary": "Dünyanın ən hündür dağı olan Everesti okeanın dibinə qoysaydıq nə baş verərdi? Okeanların ağlasığmaz dərinliyini və dibindəki ölümcül təzyiqi kəşf edin.",
+   "facts": [
+    "Okeanların qlobal orta dərinliyi təxminən 3 682 metrdir.",
+    "Mariana çökəkliyinin ən dərin nöqtəsi olan Çellencer dərinliyi təxminən 10 935 metrdir.",
+    "Günəş işığının demək olar ki, hamısı okeanda ilk 200 metrdən sonra udulur və alt qatlar zülmət qaranlıq olur.",
+    "Mariana çökəkliyinin dibindəki hidrostatik təzyiq təxminən 1 086 bar olub, səthdəki atmosfer təzyiqindən min dəfədən çoxdur."
+   ]
+  }
+ },
+ "id": "n004",
+ "series": "Ne Kadar Büyük?",
+ "q": "Okyanus gerçekte ne kadar derin?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 4.1579999999999995,
+   "words": [
+    {
+     "w": "Everest'i",
+     "t0": 0.35,
+     "t1": 0.872
+    },
+    {
+     "w": "dibe",
+     "t0": 0.9189999999999999,
+     "t1": 1.093
+    },
+    {
+     "w": "koysan,",
+     "t0": 1.139,
+     "t1": 1.5350000000000001
+    },
+    {
+     "w": "zirvesi",
+     "t0": 1.569,
+     "t1": 1.976
+    },
+    {
+     "w": "bile",
+     "t0": 2.022,
+     "t1": 2.162
+    },
+    {
+     "w": "2",
+     "t0": 2.22,
+     "t1": 2.371
+    },
+    {
+     "w": "kilometre",
+     "t0": 2.4170000000000003,
+     "t1": 2.8810000000000002
+    },
+    {
+     "w": "su",
+     "t0": 2.928,
+     "t1": 3.032
+    },
+    {
+     "w": "altında",
+     "t0": 3.0900000000000003,
+     "t1": 3.45
+    },
+    {
+     "w": "kalırdı.",
+     "t0": 3.497,
+     "t1": 4.1579999999999995
+    }
+   ]
+  },
+  {
+   "t0": 4.358072562358276,
+   "t1": 8.816072562358276,
+   "words": [
+    {
+     "w": "Oysa",
+     "t0": 4.358072562358276,
+     "t1": 4.613072562358276
+    },
+    {
+     "w": "okyanusların",
+     "t0": 4.671072562358276,
+     "t1": 5.287072562358277
+    },
+    {
+     "w": "ortalama",
+     "t0": 5.345072562358276,
+     "t1": 5.716072562358276
+    },
+    {
+     "w": "derinliği",
+     "t0": 5.763072562358277,
+     "t1": 6.239072562358277
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 6.459072562358276,
+     "t1": 6.9010725623582765
+    },
+    {
+     "w": "3.682",
+     "t0": 6.970072562358276,
+     "t1": 8.236072562358277
+    },
+    {
+     "w": "metre.",
+     "t0": 8.282072562358277,
+     "t1": 8.816072562358276
+    }
+   ]
+  },
+  {
+   "t0": 9.016303854875282,
+   "t1": 11.895303854875282,
+   "words": [
+    {
+     "w": "Güneş",
+     "t0": 9.016303854875282,
+     "t1": 9.318303854875282
+    },
+    {
+     "w": "ışığıysa",
+     "t0": 9.376303854875282,
+     "t1": 9.829303854875283
+    },
+    {
+     "w": "en",
+     "t0": 9.898303854875282,
+     "t1": 10.003303854875282
+    },
+    {
+     "w": "fazla",
+     "t0": 10.073303854875283,
+     "t1": 10.351303854875283
+    },
+    {
+     "w": "1.000",
+     "t0": 10.409303854875283,
+     "t1": 10.560303854875283
+    },
+    {
+     "w": "metreye",
+     "t0": 10.595303854875283,
+     "t1": 10.920303854875282
+    },
+    {
+     "w": "kadar",
+     "t0": 10.967303854875283,
+     "t1": 11.210303854875281
+    },
+    {
+     "w": "inebilir.",
+     "t0": 11.257303854875282,
+     "t1": 11.895303854875282
+    }
+   ]
+  },
+  {
+   "t0": 12.095578231292516,
+   "t1": 15.113578231292514,
+   "words": [
+    {
+     "w": "En",
+     "t0": 12.095578231292516,
+     "t1": 12.223578231292516
+    },
+    {
+     "w": "dip",
+     "t0": 12.258578231292516,
+     "t1": 12.374578231292515
+    },
+    {
+     "w": "nokta",
+     "t0": 12.432578231292515,
+     "t1": 12.792578231292515
+    },
+    {
+     "w": "Mariana",
+     "t0": 12.954578231292516,
+     "t1": 13.279578231292515
+    },
+    {
+     "w": "Çukuru",
+     "t0": 13.348578231292516,
+     "t1": 13.615578231292515
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 13.650578231292515,
+     "t1": 14.033578231292516
+    },
+    {
+     "w": "11",
+     "t0": 14.103578231292516,
+     "t1": 14.335578231292516
+    },
+    {
+     "w": "kilometre.",
+     "t0": 14.382578231292516,
+     "t1": 15.113578231292514
+    }
+   ]
+  },
+  {
+   "t0": 15.314172335600906,
+   "t1": 18.519172335600906,
+   "words": [
+    {
+     "w": "Dipteki",
+     "t0": 15.314172335600906,
+     "t1": 15.697172335600907
+    },
+    {
+     "w": "basınç",
+     "t0": 15.755172335600907,
+     "t1": 16.092172335600907
+    },
+    {
+     "w": "yüzeyin",
+     "t0": 16.127172335600907,
+     "t1": 16.452172335600906
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 16.522172335600906,
+     "t1": 16.928172335600905
+    },
+    {
+     "w": "1.072",
+     "t0": 16.986172335600905,
+     "t1": 17.555172335600908
+    },
+    {
+     "w": "katına",
+     "t0": 17.590172335600904,
+     "t1": 17.834172335600908
+    },
+    {
+     "w": "çıkıyor.",
+     "t0": 17.880172335600907,
+     "t1": 18.519172335600906
+    }
+   ]
+  },
+  {
+   "t0": 18.899172335600905,
+   "t1": 20.942172335600905,
+   "words": [
+    {
+     "w": "Gövdem",
+     "t0": 18.899172335600905,
+     "t1": 19.305172335600904
+    },
+    {
+     "w": "orada",
+     "t0": 19.387172335600905,
+     "t1": 19.596172335600905
+    },
+    {
+     "w": "saniyede",
+     "t0": 19.654172335600904,
+     "t1": 20.152172335600905
+    },
+    {
+     "w": "ezilirdi!",
+     "t0": 20.199172335600906,
+     "t1": 20.942172335600905
+    }
+   ]
+  },
+  {
+   "t0": 21.148038548752833,
+   "t1": 23.79503854875283,
+   "words": [
+    {
+     "w": "Sen",
+     "t0": 21.148038548752833,
+     "t1": 21.357038548752833
+    },
+    {
+     "w": "o",
+     "t0": 21.415038548752833,
+     "t1": 21.438038548752832
+    },
+    {
+     "w": "karanlığa",
+     "t0": 21.496038548752832,
+     "t1": 22.00703854875283
+    },
+    {
+     "w": "dalar",
+     "t0": 22.065038548752835,
+     "t1": 22.402038548752834
+    },
+    {
+     "w": "mıydın?",
+     "t0": 22.472038548752835,
+     "t1": 22.762038548752834
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 22.785038548752834,
+     "t1": 23.261038548752833
+    },
+    {
+     "w": "yaz!",
+     "t0": 23.308038548752833,
+     "t1": 23.79503854875283
+    }
+   ]
+  }
+ ]
+}

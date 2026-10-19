@@ -1,17 +1,87 @@
 {
- "started": "2026-10-19T13:12:09+00:00",
- "mod": "igbolum",
- "gate": "instagram: y003",
- "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
- "chars": 562,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18016780301950143",
-  "url": "https://www.instagram.com/reel/DerVyNRFNb8/",
-  "at": 1792415688.0607054
+ "started": "2026-10-19T14:08:02+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "33",
+  "videos": "17"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DerVyNRFNb8/"
+ "credits_before": [
+  6847,
+  613902
  ],
- "finished": "2026-10-19T13:14:48+00:00"
+ "topic": {
+  "id": "n004",
+  "series": "Ne Kadar Büyük?",
+  "q": "Okyanus gerçekte ne kadar derin?"
+ },
+ "attempts": 1,
+ "model": "gemini-3.8-flash",
+ "fact_check": {
+  "ok": false,
+  "fixes": [
+   {
+    "line": 1,
+    "why": "Everest being submerged by 2 km is not caused by the average depth (Everest is 8.849 m, so it would tower over an average depth of 3.682 m); it serves as a contrast, and average depth is an estimate rather than exact."
+   },
+   {
+    "line": 2,
+    "why": "Sunlight penetrates down to approximately 1.000 meters (the dysphotic/twilight zone); 200 meters is only the boundary for photosynthesis (euphotic zone)."
+   },
+   {
+    "line": 4,
+    "why": "1.086 is the pressure in bar, which corresponds to roughly 1.072 times standard atmospheric surface pressure (1 atm ≈ 1,013 bar), not an exact 1.086 times."
+   }
+  ]
+ },
+ "chunks": 0,
+ "grounded": true,
+ "chars": 390,
+ "duration": 25.4,
+ "title": "Okyanus Gerçekte Ne Kadar Derin?",
+ "url": "https://youtube.com/shorts/5NCDRT4b4M0",
+ "recent_status": {
+  "y006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1006",
+   "reason": null
+  },
+  "g004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "702",
+   "reason": null
+  },
+  "y007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1221",
+   "reason": null
+  },
+  "o0003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "53",
+   "reason": null
+  },
+  "n004": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  6847,
+  613902
+ ],
+ "log": [
+  "Konu: n004 Okyanus gerçekte ne kadar derin? (Ne Kadar Büyük?)",
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+ ],
+ "finished": "2026-10-19T14:11:40+00:00"
 }
