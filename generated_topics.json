@@ -52,5 +52,18 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-046",
+    "topic": "Parmaklarımız suda neden buruşur?",
+    "stock_hint": "wrinkled fingers water",
+    "subject": [
+      "hand",
+      "finger",
+      "water",
+      "skin"
+    ],
+    "kategori": "vücut",
+    "source": "gemini"
   }
 ]

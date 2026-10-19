@@ -1,0 +1,294 @@
+{
+  "topic_id": "mk-046",
+  "topic": "Parmaklarımız suda neden buruşur?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Parmaklarımız Suda Neden Buruşur? 🤔",
+  "hook_text": "PARMAKLAR NEDEN BURUŞUR?",
+  "description": "Parmaklarımız suda neden buruşur?\n\nParmaklarımız suda yaklaşık 5 dakikada buruşmaya başlar. Bu, sinir sistemimizin aktif ve planlı bir tepkisi. Beyin, ıslaklığı algılayınca parmaklardaki kan damarlarını daraltır ve oluklu yüzey sayesinde ıslak zeminde daha iyi tutuş sağlarız.\n\nSence bu adaptasyon, insanlık için kaç yüz yıldır var: 1000 mi 100.000 mi?\n\n#Parmaklar #Vücut #shorts #bilim #merak #keşfet\n\nSeri: mk-046",
+  "tags": [
+    "Parmaklar buruşması",
+    "parmaklar suda neden buruşur",
+    "parmaklar neden buruşur",
+    "suda buruşan parmaklar",
+    "ıslak parmaklar",
+    "sinir sistemi tepkisi",
+    "beyin tepkisi",
+    "kan damarları",
+    "tutuş",
+    "kavrama",
+    "adaptasyon",
+    "insan vücudu",
+    "merak edilenler",
+    "ilginç bilgiler",
+    "bilim",
+    "insan",
+    "vücut",
+    "biyoloji",
+    "sağlık",
+    "kısa bilgiler",
+    "nasıl çalışır",
+    "neden olur",
+    "vücut gerçekleri",
+    "fingers",
+    "wrinkled fingers",
+    "parmak buruşması",
+    "bilimsel gerçekler",
+    "shorts",
+    "keşif vakti",
+    "anatomi",
+    "Parmaklar burusmasi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Do Our Fingers Wrinkle in Water? 🤔",
+      "description": "Ever wondered why your fingers get wrinkly after a few minutes in water? It's not just water absorption! This is actually your nervous system's clever way of giving you better grip on wet surfaces.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "es": {
+      "title": "¿Por qué se arrugan nuestros dedos en el agua? 🤔",
+      "description": "¿Alguna vez te has preguntado por qué tus dedos se arrugan después de un rato en el agua? No es solo absorción. Es una respuesta inteligente de tu sistema nervioso para ayudarte a sujetar mejor objetos mojados.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "pt": {
+      "title": "Por que nossos dedos enrugam na água? 🤔",
+      "description": "Já se perguntou por que seus dedos ficam enrugados depois de alguns minutos na água? Não é apenas absorção! É uma resposta engenhosa do seu sistema nervoso para melhorar sua aderência em superfícies molhadas.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "de": {
+      "title": "Warum bekommen unsere Finger im Wasser Falten? 🤔",
+      "description": "Hast du dich jemals gefragt, warum deine Finger nach ein paar Minuten im Wasser schrumpelig werden? Das ist keine bloße Wasseraufnahme! Es ist eine clevere Reaktion deines Nervensystems, um dir besseren Halt auf nassen Oberflächen zu geben.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "fr": {
+      "title": "Pourquoi nos doigts se rident-ils dans l'eau ? 🤔",
+      "description": "Vous êtes-vous déjà demandé pourquoi vos doigts se rident après quelques minutes dans l'eau ? Ce n'est pas une simple absorption ! C'est en fait une réponse intelligente de votre système nerveux pour vous donner une meilleure prise sur les surfaces humides.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "it": {
+      "title": "Perché le nostre dita si raggrinziscono in acqua? 🤔",
+      "description": "Ti sei mai chiesto perché le tue dita si raggrinziscono dopo qualche minuto in acqua? Non è solo assorbimento! È una risposta intelligente del tuo sistema nervoso per darti una presa migliore su superfici bagnate.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "ru": {
+      "title": "Почему наши пальцы морщатся в воде? 🤔",
+      "description": "Задумывались ли вы, почему ваши пальцы сморщиваются после нескольких минут в воде? Это не просто поглощение воды! Это хитрая реакция вашей нервной системы, чтобы обеспечить лучшее сцепление на мокрых поверхностях.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "ar": {
+      "title": "لماذا تتجعد أصابعنا في الماء؟ 🤔",
+      "description": "هل تساءلت يومًا لماذا تتجعد أصابعك بعد بضع دقائق في الماء؟ الأمر ليس مجرد امتصاص للماء! إنها استجابة ذكية من جهازك العصبي لتمنحك قبضة أفضل على الأسطح المبللة.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "hi": {
+      "title": "पानी में हमारी उंगलियां सिकुड़ क्यों जाती हैं? 🤔",
+      "description": "क्या आपने कभी सोचा है कि पानी में कुछ मिनटों के बाद आपकी उंगलियां क्यों सिकुड़ जाती हैं? यह केवल पानी का सोखना नहीं है! यह वास्तव में आपके तंत्रिका तंत्र की एक चतुर प्रतिक्रिया है जो आपको गीली सतहों पर बेहतर पकड़ देती है।\n\n#shorts\n\nSeri: mk-046"
+    },
+    "id": {
+      "title": "Mengapa Jari Kita Keriput di Air? 🤔",
+      "description": "Pernahkah Anda bertanya-tanya mengapa jari-jari Anda menjadi keriput setelah beberapa menit di air? Ini bukan hanya penyerapan air! Ini sebenarnya respons cerdas sistem saraf Anda untuk memberi Anda cengkeraman yang lebih baik di permukaan basah.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "ja": {
+      "title": "なぜ水中で指はしわしわになるの？ 🤔",
+      "description": "水中で数分後、なぜ指がしわしわになるのか疑問に思ったことはありませんか？これは単なる吸水ではありません！実は、濡れた表面でより良いグリップを得るための神経系の賢い反応なのです。\n\n#shorts\n\nSeri: mk-046"
+    },
+    "ko": {
+      "title": "물속에서 손가락이 쭈글쭈글해지는 이유? 🤔",
+      "description": "물속에서 몇 분 후 손가락이 왜 쭈글쭈글해지는지 궁금한 적이 있나요? 단순히 물을 흡수하는 것이 아닙니다! 이는 젖은 표면에서 더 나은 그립을 제공하기 위한 신경계의 영리한 반응입니다.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "pl": {
+      "title": "Dlaczego nasze palce marszczą się w wodzie? 🤔",
+      "description": "Zastanawiałeś się kiedyś, dlaczego twoje palce marszczą się po kilku minutach w wodzie? To nie tylko wchłanianie wody! To sprytna reakcja twojego układu nerwowego, aby zapewnić ci lepszą przyczepność na mokrych powierzchniach.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "nl": {
+      "title": "Waarom rimpelen onze vingers in water? 🤔",
+      "description": "Heb je je ooit afgevraagd waarom je vingers rimpelig worden na een paar minuten in water? Het is niet alleen waterabsorptie! Dit is eigenlijk een slimme reactie van je zenuwstelsel om je betere grip te geven op natte oppervlakken.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "uk": {
+      "title": "Чому наші пальці зморщуються у воді? 🤔",
+      "description": "Ви коли-небудь замислювалися, чому ваші пальці зморщуються після кількох хвилин у воді? Це не просто поглинання води! Це розумна реакція вашої нервової системи, щоб забезпечити краще зчеплення на мокрих поверхнях.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "vi": {
+      "title": "Tại sao ngón tay chúng ta bị nhăn trong nước? 🤔",
+      "description": "Bạn có bao giờ tự hỏi tại sao ngón tay của mình lại bị nhăn sau vài phút trong nước không? Đây không chỉ là sự hấp thụ nước! Đó thực sự là một phản ứng thông minh của hệ thần kinh để giúp bạn cầm nắm tốt hơn trên bề mặt ẩm ướt.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "az": {
+      "title": "Niyə barmaqlarımız suda qırışır? 🤔",
+      "description": "Heç düşünmüsünüzmü ki, niyə barmaqlarınız suda bir neçə dəqiqədən sonra qırışır? Bu, sadəcə su udulması deyil! Bu, əslində sinir sisteminizin nəm səthlərdə daha yaxşı tutuş təmin etmək üçün ağıllı bir reaksiyasıdır.\n\n#shorts\n\nSeri: mk-046"
+    },
+    "ro": {
+      "title": "De ce ni se încrețesc degetele în apă? 🤔",
+      "description": "Te-ai întrebat vreodată de ce ți se încrețesc degetele după câteva minute în apă? Nu este doar absorbție de apă! Aceasta este de fapt o reacție inteligentă a sistemului tău nervos pentru a-ți oferi o aderență mai bună pe suprafețele umede.\n\n#shorts\n\nSeri: mk-046"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bu adaptasyon, insanlık için kaç yüz yıldır var: 1000 mi 100.000 mi?",
+  "scenes": [
+    {
+      "text": "Parmaklarımız suda yaklaşık 5 dakikada buruşmaya başlar.",
+      "visual": "Hand submerged in clear water, showing initial signs of wrinkling.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 3
+        },
+        {
+          "n": 8,
+          "kare": 1
+        },
+        {
+          "n": 25,
+          "kare": 1
+        }
+      ],
+      "callout": "5 DAKİKADA"
+    },
+    {
+      "text": "Peki bu sadece su emilimi mi sanıyorsun?",
+      "visual": "Close-up of a wrinkled finger or hand, emphasizing the texture.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 17,
+          "kare": 1
+        },
+        {
+          "n": 27,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Hayır, bu sinir sistemimizin aktif ve planlı bir tepkisi.",
+      "visual": "Smooth skin transitions to a hand moving, suggesting active biological control.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 6,
+          "kare": 1
+        },
+        {
+          "n": 23,
+          "kare": 1
+        },
+        {
+          "n": 15,
+          "kare": 2
+        }
+      ],
+      "callout": "SİNİR SİSTEMİ"
+    },
+    {
+      "text": "Beyin, ıslaklığı algılayınca parmaklardaki kan damarlarını daraltır.",
+      "visual": "Hands interacting with water, implying the brain's detection of wetness.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 13,
+          "kare": 3
+        },
+        {
+          "n": 38,
+          "kare": 1
+        },
+        {
+          "n": 2,
+          "kare": 2
+        }
+      ],
+      "callout": "BEYNİN EMRİ"
+    },
+    {
+      "text": "Böylece parmak uçları oluklu bir yüzey kazanır, ıslak zeminde daha iyi tutuş sağlar.",
+      "visual": "Hands in water, interacting with objects or showing a textured wet surface, implying enhanced grip.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 10,
+          "kare": 2
+        },
+        {
+          "n": 20,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ],
+      "callout": "DAHA İYİ KAVRAMA"
+    },
+    {
+      "text": "Böylece daha iyi kavrarız.",
+      "visual": "A hand in water, demonstrating interaction or readiness to grip.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 31,
+          "kare": 1
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 14.8,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-046_1792423559_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "görüntü",
+        "problem": "Görseller bilginin mekanizmasını (damar daralması, oluklu yüzey) yeterince göstermiyor ve tekrar ediyor.",
+        "fix": "Kan damarlarının daralmasını veya oluklu yüzeyin nasıl tutuş sağladığını anlatan daha açıklayıcı stok videolar bulun (örneğin, yakın çekimler, metaforik görüntüler) ve görsel çeşitliliği artırın. Konuyla daha az ilgili (bitki sulama, musluk"
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, uzun süre kalıyor ve açıklayıcı grafikler (oklar, vurgular) eksik.",
+        "fix": "Yazıları daha dinamik hale getirin (hızlı giriş/çıkış), anahtar kelimeleri vurgulayın. Kan damarlarının daralması veya oluklu yüzeyin işlevini açıklamak için basit oklar, renkli bölgeler veya şekiller gibi grafik katmanları ekleyin."
+      },
+      {
+        "area": "ses",
+        "problem": "Anlatıcının hızı yavaş ve enerjisi düşük, bu da videonun temposunu düşürüyor.",
+        "fix": "Yapay zeka sesinin hızını %20-30 oranında artırın ve daha enerjik, merak uyandırıcı bir ton seçin. Cümle vurgularını daha belirgin hale getirin."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Kesimler yavaş ve dinamizmden yoksun, izleyiciyi sıkabilir.",
+        "fix": "Klipler arasındaki geçişleri hızlandırın, ortalama klip süresini 1-2 saniyeye düşürün. Aksiyon üzerine veya yeni bir bilgi verildiğinde daha hızlı kesimler yapın."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Bilginin şaşırtıcılığı yeterince vurgulanmıyor ve kanca daha güçlü olabilir.",
+        "fix": "Giriş cümlesini daha merak uyandırıcı hale getirin (örn. 'Parmaklarınızın buruşması sadece su emilimi değil, beyninizin akıllıca bir planı!'). Yaygın yanlış bilgiyi (su emilimi) daha net bir şekilde çürütün ve asıl bilginin neden şaşırtıcı "
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği genel ve video enerjisine katkısı az; ses efektleri eksik.",
+        "fix": "Daha dinamik, hafif gizemli veya keşif temalı bir arka plan müziği seçin. Metinlerin ekrana gelmesi, geçişler veya önemli anlar için (örn. hafif bir 'vınlama' veya 'patlama' sesi) uygun ses efektleri ekleyin."
+      }
+    ],
+    "strengths": [
+      "Konu açık ve anlaşılır.",
+      "Yapay zeka sesi ve stok video kullanımı, belirlenen sınırlar içinde kalıyor.",
+      "Günlük hayattan ilginç bir fenomeni açıklıyor."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
