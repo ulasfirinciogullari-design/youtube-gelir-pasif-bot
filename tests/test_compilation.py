@@ -209,3 +209,64 @@ def test_main_without_upload_records_nothing(tmp_path, monkeypatch, capsys):
     assert compilation.main(["--data", str(data), "--no-upload"]) == 0
     assert not (data / "compilations.json").exists()
     assert "Yükleme istenmedi" in capsys.readouterr().out
+
+
+def test_publish_keeps_the_rest_of_the_status_and_checks_the_answer(monkeypatch):
+    monkeypatch.setattr(compilation.comment_replies, "access_token", lambda env: "tok")
+    sent = []
+    current = {"privacyStatus": "private", "uploadStatus": "processed", "embeddable": True, "license": "youtube",
+               "publicStatsViewable": True, "selfDeclaredMadeForKids": False, "containsSyntheticMedia": False}
+
+    def send(url, data, headers, method="POST"):
+        sent.append((method, url, data))
+        if method == "GET":
+            return FakeResponse(json.dumps({"items": [{"id": "VID", "status": current}]}).encode())
+        return FakeResponse(json.dumps({"id": "VID", "status": {**json.loads(data)["status"]}}).encode())
+
+    compilation.publish("VID", env={}, send=send)
+    (get, _, _), (put, url, data) = sent
+    assert get == "GET" and put == "PUT" and url.endswith("/videos?part=status")
+    expected = {k: v for k, v in current.items() if k != "uploadStatus"} | {"privacyStatus": "public"}
+    assert json.loads(data) == {"id": "VID", "status": expected}
+
+
+@pytest.mark.parametrize("answer,error", [({"items": []}, "bulunamadı"), (None, "private")])
+def test_publish_fails_loudly_when_the_video_is_missing_or_stays_private(monkeypatch, answer, error):
+    monkeypatch.setattr(compilation.comment_replies, "access_token", lambda env: "tok")
+
+    def send(url, data, headers, method="POST"):
+        if method == "GET":
+            return FakeResponse(json.dumps(answer or {"items": [{"status": {"privacyStatus": "private"}}]}).encode())
+        return FakeResponse(b'{"status": {"privacyStatus": "private"}}')
+
+    with pytest.raises(compilation.CompilationError, match=error):
+        compilation.publish("VID", env={}, send=send)
+
+
+def test_main_publishes_only_a_recorded_compilation_and_marks_it(tmp_path, monkeypatch):
+    write(tmp_path, [], [{"at": "2026-10-19T14:50:00+00:00", "video_id": "COMP", "privacy": "private",
+                          "shorts": ["a"]}])
+    published = []
+    monkeypatch.setattr(compilation, "publish", lambda vid: published.append(vid))
+    assert compilation.main(["--data", str(tmp_path), "--publish", "SHORT1"]) == 1
+    assert compilation.main(["--data", str(tmp_path), "--publish", "COMP"]) == 0
+    assert published == ["COMP"]
+    record = json.loads((tmp_path / "compilations.json").read_text(encoding="utf-8"))[0]
+    assert record["privacy"] == "public" and record["published_at"]
+    assert compilation.candidates(tmp_path, NOW) == []
+
+
+def test_a_public_run_skips_when_this_weeks_compilation_is_already_out(tmp_path, monkeypatch):
+    now = datetime.now(timezone.utc)
+    write(tmp_path, [], [{"at": (now - timedelta(days=9)).isoformat(), "video_id": "OLD", "privacy": "public"},
+                         {"at": (now - timedelta(hours=2)).isoformat(), "video_id": "SAMPLE", "privacy": "private"}])
+    built = []
+    monkeypatch.setattr(compilation, "build", lambda *a, **k: built.append(1) or pytest.fail("ilerlememeli"))
+    assert compilation.published_recently(tmp_path, now) is None
+    records = json.loads((tmp_path / "compilations.json").read_text(encoding="utf-8"))
+    records.append({"at": (now - timedelta(days=8)).isoformat(), "published_at": (now - timedelta(hours=1)).isoformat(),
+                    "video_id": "NEW", "privacy": "public"})
+    (tmp_path / "compilations.json").write_text(json.dumps(records), encoding="utf-8")
+    assert compilation.published_recently(tmp_path, now)["video_id"] == "NEW"
+    assert compilation.main(["--data", str(tmp_path), "--privacy", "public"]) == 0
+    assert built == []
