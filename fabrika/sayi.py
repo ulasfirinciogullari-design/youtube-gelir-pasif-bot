@@ -90,6 +90,7 @@ def ordinal(word):
 
 
 ORDINAL = re.compile(r"^(\d+)\.$")
+SCALES = {"bin", "milyon", "milyar", "trilyon"}
 
 
 def is_ordinal(w, nxt):
@@ -111,7 +112,8 @@ def spoken(text):
             s = " ".join(out[:-1] + [ordinal(out[-1])])
         else:
             s = say_word(w)
-        prev_num = s != w and bool(re.search(r"\d", w))
+        # "2,6 milyon km": the unit after a number's scale word is still read out in full
+        prev_num = (s != w and bool(re.search(r"\d", w))) or (prev_num and bare.lower() in SCALES)
         said.append(s)
         groups.append((w, len(s.split())))
     return " ".join(said), groups
@@ -121,5 +123,6 @@ if __name__ == "__main__":
     for t in ["Ay her yıl bizden 3,8 santim uzaklaşıyor.", "Işık 384.400 km yolu 1,3 saniyede alır.",
               "Vücudunun %60'ı su.", "1990'da 8 milyar insan yoktu, 2025'te 8,2 milyar.", "Sıcaklık -50°C olurdu.",
               "Kalbin günde 100.000 kez atar.", "0,05 saniye", "23,4° eğik", "1/3 oranında", "11 bin 2 yüz",
-              "15. kattaki evimiz", "1. Dünya Savaşı", "21. yüzyıl", "Kalbin günde 100.", "40. ve 4. kat", "4'üncü sırada", "4'e böl", "24'ü"]:
+              "15. kattaki evimiz", "1. Dünya Savaşı", "21. yüzyıl", "Kalbin günde 100.", "40. ve 4. kat", "4'üncü sırada", "4'e böl", "24'ü",
+              "2,6 milyon km yol", "150 milyon km/s", "milyon km"]:
         print(t, "->", spoken(t)[0])
