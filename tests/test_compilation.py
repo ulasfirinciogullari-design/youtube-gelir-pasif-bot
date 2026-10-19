@@ -259,7 +259,8 @@ def test_main_publishes_only_a_recorded_compilation_and_marks_it(tmp_path, monke
 def test_a_public_run_skips_when_this_weeks_compilation_is_already_out(tmp_path, monkeypatch):
     now = datetime.now(timezone.utc)
     write(tmp_path, [], [{"at": (now - timedelta(days=9)).isoformat(), "video_id": "OLD", "privacy": "public"},
-                         {"at": (now - timedelta(hours=2)).isoformat(), "video_id": "SAMPLE", "privacy": "private"}])
+                         {"at": (now - timedelta(hours=2)).isoformat(), "video_id": "SAMPLE", "privacy": "private"},
+                         {"at": (now - timedelta(hours=3)).isoformat(), "video_id": "LINK", "privacy": "unlisted"}])
     built = []
     monkeypatch.setattr(compilation, "build", lambda *a, **k: built.append(1) or pytest.fail("ilerlememeli"))
     assert compilation.published_recently(tmp_path, now) is None

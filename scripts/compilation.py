@@ -319,9 +319,9 @@ def build(data_dir: Path, out_dir: Path, now: datetime, count: int = COUNT, env=
 
 
 def published_recently(data_dir: Path, now: datetime, gap: timedelta = GAP) -> dict | None:
-    """The newest non-private compilation recorded within `gap`, if any."""
+    """The newest public compilation recorded within `gap`, if any. An unlisted one is not this week's release."""
     for record in reversed(load_json(data_dir / STATE_FILE, [])):
-        if not isinstance(record, dict) or record.get("privacy") == "private":
+        if not isinstance(record, dict) or record.get("privacy") != "public":
             continue
         try:
             if timedelta(0) <= now - datetime.fromisoformat(record.get("published_at") or record["at"]) <= gap:
