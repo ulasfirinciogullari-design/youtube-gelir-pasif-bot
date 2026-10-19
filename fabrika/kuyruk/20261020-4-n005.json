@@ -1,0 +1,271 @@
+{
+ "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
+ "bar": {
+  "hi": "ATOM",
+  "rest": "NE KADAR KÜÇÜK?"
+ },
+ "summary": "Bir atomu elma boyutunda görmek için elmayı Dünya kadar büyütmen gerekirdi. Bir kâğıdın kalınlığına kaç atom sığdığını ve vücudunda kaç atom olduğunu öğren!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Elmayı Dünya kadar büyütsen, atomları ancak elma kadar olurdu.",
+   "v": {
+    "t": "split",
+    "bg": "lab",
+    "left": {
+     "e": "🍎",
+     "label": "Elma = Dünya"
+    },
+    "right": {
+     "e": "⚛️",
+     "label": "Atom = Elma"
+    },
+    "key": "atomları"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir altın atomu, metrenin 3 milyarda biri kadar.",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "⚛️",
+    "value": "1/3.000.000.000",
+    "unit": "metre",
+    "label": "Altın Atomu",
+    "key": "milyarda"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir kâğıdın kalınlığına üst üste 300.000 kadar altın atomu sığar.",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "📄",
+     "label": "Kâğıt Kalınlığı",
+     "value": 300000
+    },
+    "b": {
+     "e": "⚛️",
+     "label": "Altın Atomu",
+     "value": 1
+    },
+    "mode": "size",
+    "key": "300.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kâğıt bile atom gökdeleniymiş!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏙️",
+    "do": "grow",
+    "key": "gökdeleniymiş",
+    "label": "Atom Gökdeleni"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çekirdeği ise atomdan 100.000 kata kadar küçük.",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "⚛️",
+     "label": "Atom",
+     "value": 100000
+    },
+    "b": {
+     "e": "🔴",
+     "label": "Çekirdek",
+     "value": 1
+    },
+    "mode": "size",
+    "key": "100.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Vücudundaysa yaklaşık 7 milyar milyar milyar atom var!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧍",
+    "do": "multiply",
+    "key": "milyar",
+    "label": "Vücudundaki Atom"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence bir damla suda kaç atom var? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "lab",
+    "e": "💧"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Bir elma Dünya büyüklüğüne getirilseydi, içindeki atomlar yaklaşık olarak elmanın kendi boyutunda olurdu.",
+   "source": "Caltech – The Feynman Lectures on Physics",
+   "url": "https://www.feynmanlectures.caltech.edu/I_01.html"
+  },
+  {
+   "text": "Tek bir altın atomunun çapı yaklaşık üçte bir nanometredir; bir kâğıt yaprağı ise yaklaşık 100.000 nanometre kalınlığındadır.",
+   "source": "ABD Ulusal Nanoteknoloji Girişimi (nano.gov)",
+   "url": "https://www.nano.gov/about-nanotechnology/just-how-small-is-nano"
+  },
+  {
+   "text": "Atom çekirdekleri, atomun kendisinden 10.000 ila 100.000 kat daha küçüktür.",
+   "source": "California State University, Fresno",
+   "url": "https://zimmer.fresnostate.edu/~davidz/Chem3AF97/ChA/atomsize.html"
+  },
+  {
+   "text": "70 kilogramlık bir insan vücudunda yaklaşık 7 × 10²⁷, yani 7 milyar milyar milyar atom bulunur.",
+   "source": "Jefferson Lab (ABD Enerji Bakanlığı)",
+   "url": "https://education.jlab.org/qa/mathatom_04.html"
+  }
+ ],
+ "tags": [
+  "atom",
+  "atom ne kadar küçük",
+  "atom çekirdeği",
+  "nanometre",
+  "mikro dünya",
+  "fizik",
+  "kimya",
+  "ne kadar büyük",
+  "how small is an atom",
+  "atom size",
+  "atomic nucleus",
+  "scale",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#atom",
+  "#fizik",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.feynmanlectures.caltech.edu/I_01.html",
+  "https://www.nano.gov/about-nanotechnology/just-how-small-is-nano",
+  "https://zimmer.fresnostate.edu/~davidz/Chem3AF97/ChA/atomsize.html",
+  "https://education.jlab.org/qa/mathatom_04.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Small Is an Atom, Really?",
+   "summary": "To see an atom the size of an apple, you would have to blow the apple up to the size of Earth. Find out how many atoms fit in the thickness of a sheet of paper and how many atoms are in your body!",
+   "facts": [
+    "If an apple were magnified to the size of Earth, the atoms in it would be about the size of the original apple.",
+    "A single gold atom is about a third of a nanometer across, while a sheet of paper is about 100,000 nanometers thick.",
+    "Atomic nuclei are 10,000 to 100,000 times smaller than the atom itself.",
+    "A 70-kilogram human body contains about 7 × 10²⁷ atoms, that is, 7 billion billion billion."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan pequeño es realmente un átomo?",
+   "summary": "Para ver un átomo del tamaño de una manzana, tendrías que agrandar la manzana hasta el tamaño de la Tierra. ¡Descubre cuántos átomos caben en el grosor de una hoja de papel y cuántos hay en tu cuerpo!",
+   "facts": [
+    "Si una manzana se agrandara hasta el tamaño de la Tierra, sus átomos tendrían aproximadamente el tamaño de la manzana original.",
+    "Un solo átomo de oro mide aproximadamente un tercio de nanómetro de diámetro, mientras que una hoja de papel tiene unos 100.000 nanómetros de grosor.",
+    "Los núcleos atómicos son entre 10.000 y 100.000 veces más pequeños que el propio átomo.",
+    "Un cuerpo humano de 70 kilogramos contiene unos 7 × 10²⁷ átomos, es decir, un 7 seguido de 27 ceros."
+   ]
+  },
+  "pt": {
+   "title": "Quão pequeno é um átomo de verdade?",
+   "summary": "Para ver um átomo do tamanho de uma maçã, você teria que aumentar a maçã até o tamanho da Terra. Descubra quantos átomos cabem na espessura de uma folha de papel e quantos existem no seu corpo!",
+   "facts": [
+    "Se uma maçã fosse ampliada até o tamanho da Terra, seus átomos teriam aproximadamente o tamanho da maçã original.",
+    "Um único átomo de ouro tem cerca de um terço de nanômetro de diâmetro, enquanto uma folha de papel tem cerca de 100.000 nanômetros de espessura.",
+    "Os núcleos atômicos são de 10.000 a 100.000 vezes menores que o próprio átomo.",
+    "Um corpo humano de 70 quilogramas contém cerca de 7 × 10²⁷ átomos, ou seja, um 7 seguido de 27 zeros."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى صِغَر الذرة حقًا؟",
+   "summary": "لكي ترى ذرة بحجم تفاحة، عليك أن تكبّر التفاحة حتى تصبح بحجم الأرض. اكتشف كم ذرة تتسع لها سماكة ورقة واحدة وكم ذرة في جسمك!",
+   "facts": [
+    "لو كُبّرت تفاحة حتى تصبح بحجم الأرض، لأصبحت ذراتها تقريبًا بحجم التفاحة الأصلية.",
+    "يبلغ قطر ذرة الذهب الواحدة نحو ثلث نانومتر، بينما يبلغ سُمك الورقة نحو 100,000 نانومتر.",
+    "نوى الذرات أصغر من الذرة نفسها بما يتراوح بين 10,000 و100,000 مرة.",
+    "يحتوي جسم إنسان وزنه 70 كيلوغرامًا على نحو 7 × 10²⁷ ذرة، أي الرقم 7 متبوعًا بـ27 صفرًا."
+   ]
+  },
+  "hi": {
+   "title": "एक परमाणु असल में कितना छोटा होता है?",
+   "summary": "किसी परमाणु को सेब जितना बड़ा देखने के लिए आपको सेब को पृथ्वी जितना बड़ा करना पड़ेगा। जानिए कागज़ की एक शीट की मोटाई में कितने परमाणु समाते हैं और आपके शरीर में कितने परमाणु हैं!",
+   "facts": [
+    "अगर किसी सेब को पृथ्वी जितना बड़ा कर दिया जाए, तो उसके परमाणु लगभग मूल सेब जितने बड़े होंगे।",
+    "सोने के एक परमाणु का व्यास लगभग एक-तिहाई नैनोमीटर होता है, जबकि कागज़ की एक शीट लगभग 100,000 नैनोमीटर मोटी होती है।",
+    "परमाणु का नाभिक खुद परमाणु से 10,000 से 100,000 गुना तक छोटा होता है।",
+    "70 किलोग्राम के मानव शरीर में लगभग 7 × 10²⁷ परमाणु होते हैं, यानी 7 के बाद 27 शून्य।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Kecil Sebenarnya Sebuah Atom?",
+   "summary": "Untuk melihat atom sebesar apel, kamu harus memperbesar apel itu hingga seukuran Bumi. Cari tahu berapa atom yang muat dalam ketebalan selembar kertas dan berapa banyak atom di tubuhmu!",
+   "facts": [
+    "Jika sebuah apel diperbesar hingga seukuran Bumi, atom-atomnya akan kira-kira sebesar apel aslinya.",
+    "Satu atom emas berdiameter sekitar sepertiga nanometer, sedangkan selembar kertas tebalnya sekitar 100.000 nanometer.",
+    "Inti atom 10.000 hingga 100.000 kali lebih kecil daripada atom itu sendiri.",
+    "Tubuh manusia seberat 70 kilogram mengandung sekitar 7 × 10²⁷ atom, yaitu angka 7 diikuti 27 nol."
+   ]
+  },
+  "fr": {
+   "title": "À quel point un atome est-il petit ?",
+   "summary": "Pour voir un atome de la taille d'une pomme, il faudrait agrandir la pomme jusqu'à la taille de la Terre. Découvre combien d'atomes tiennent dans l'épaisseur d'une feuille de papier et combien ton corps en contient !",
+   "facts": [
+    "Si une pomme était agrandie jusqu'à la taille de la Terre, ses atomes auraient à peu près la taille de la pomme d'origine.",
+    "Un seul atome d'or mesure environ un tiers de nanomètre de diamètre, alors qu'une feuille de papier fait environ 100 000 nanomètres d'épaisseur.",
+    "Les noyaux atomiques sont de 10 000 à 100 000 fois plus petits que l'atome lui-même.",
+    "Un corps humain de 70 kilogrammes contient environ 7 × 10²⁷ atomes, soit un 7 suivi de 27 zéros."
+   ]
+  },
+  "de": {
+   "title": "Wie klein ist ein Atom wirklich?",
+   "summary": "Um ein Atom so groß wie einen Apfel zu sehen, müsstest du den Apfel auf die Größe der Erde aufblasen. Finde heraus, wie viele Atome in die Dicke eines Blatts Papier passen und wie viele Atome in deinem Körper stecken!",
+   "facts": [
+    "Würde man einen Apfel auf die Größe der Erde vergrößern, wären seine Atome etwa so groß wie der ursprüngliche Apfel.",
+    "Ein einzelnes Goldatom hat einen Durchmesser von etwa einem Drittel Nanometer, ein Blatt Papier ist dagegen etwa 100.000 Nanometer dick.",
+    "Atomkerne sind 10.000- bis 100.000-mal kleiner als das Atom selbst.",
+    "Ein 70 Kilogramm schwerer menschlicher Körper enthält etwa 7 × 10²⁷ Atome, also eine 7 mit 27 Nullen."
+   ]
+  },
+  "ru": {
+   "title": "Насколько на самом деле мал атом?",
+   "summary": "Чтобы увидеть атом размером с яблоко, пришлось бы увеличить само яблоко до размеров Земли. Узнай, сколько атомов умещается в толщине листа бумаги и сколько атомов в твоём теле!",
+   "facts": [
+    "Если увеличить яблоко до размеров Земли, его атомы стали бы примерно размером с исходное яблоко.",
+    "Диаметр одного атома золота — около трети нанометра, а толщина листа бумаги — около 100 000 нанометров.",
+    "Атомные ядра в 10 000–100 000 раз меньше самого атома.",
+    "В теле человека массой 70 килограммов около 7 × 10²⁷ атомов — это семёрка с 27 нулями."
+   ]
+  },
+  "az": {
+   "title": "Bir atom əslində nə qədər kiçikdir?",
+   "summary": "Bir atomu alma boyda görmək üçün almanı Yer boyda böyütməli olardın. Bir vərəq kağızın qalınlığına neçə atom sığdığını və bədənində neçə atom olduğunu öyrən!",
+   "facts": [
+    "Bir alma Yer boyda böyüdülsəydi, içindəki atomlar təxminən almanın öz ölçüsündə olardı.",
+    "Tək bir qızıl atomunun diametri təxminən nanometrin üçdə biri qədərdir, bir vərəq kağızın qalınlığı isə təxminən 100.000 nanometrdir.",
+    "Atom nüvələri atomun özündən 10.000-100.000 dəfə kiçikdir.",
+    "70 kiloqramlıq insan bədənində təxminən 7 × 10²⁷ atom var, yəni 7 rəqəmindən sonra 27 sıfır."
+   ]
+  }
+ },
+ "id": "n005",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir atom ne kadar küçük?"
+}

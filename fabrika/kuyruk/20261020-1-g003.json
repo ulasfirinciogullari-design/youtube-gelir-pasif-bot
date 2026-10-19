@@ -1,0 +1,274 @@
+{
+ "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
+ "bar": {
+  "hi": "DÜNYA",
+  "rest": "1 GÜNDE KAÇ KM?"
+ },
+ "summary": "Sen yerinde otururken bile Dünya seni uzayda müthiş bir hızla taşıyor. Bir günde kaç kilometre yol aldığını ve bunu neden hiç hissetmediğini öğren!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Kıpırdamasan bile bugün Güneş'in etrafında 2,6 milyon km yol alırsın.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "2,6",
+    "unit": "milyon km",
+    "label": "Günlük Yol",
+    "key": "2,6"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dünya, Güneş'in çevresinde saatte 107.000 km hızla döner.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Yörünge Hızı",
+    "from": 0,
+    "to": 107000,
+    "unit": "km/sa",
+    "e": "☀️",
+    "key": "107.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yani her gün Ay'a 6 kez gidecek kadar yol!",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "1 SAAT",
+      "e": "🌍",
+      "label": "107.000 Km"
+     },
+     {
+      "when": "1 GÜN",
+      "e": "🛣️",
+      "label": "2,6 Milyon Km"
+     },
+     {
+      "when": "AY YOLU",
+      "e": "🌕",
+      "label": "6 Kez"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş de bizi galakside taşır: günde yaklaşık 20 milyon km!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "galaxy",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "sun",
+      "size": "s",
+      "at": "tr"
+     }
+    ],
+    "do": "orbit",
+    "target": 1,
+    "key": "galakside",
+    "label": "Günde 20 Milyon Km"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Peki neden hiç başım dönmüyor?",
+   "v": {
+    "t": "question",
+    "bg": "sky",
+    "e": "🌀",
+    "label": "Neden Hissetmeyiz?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü bu hız hiç sarsılmaz; pürüzsüz uçan bir uçak gibi.",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "✈️",
+    "do": "float",
+    "key": "uçak",
+    "label": "Sarsıntı Yok"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bu hızla ilk nereye giderdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Dünya, Güneş'in çevresinde ortalama saatte yaklaşık 107.000 kilometre hızla dolanır; bu da günde yaklaşık 2,6 milyon kilometre eder.",
+   "source": "Space.com",
+   "url": "https://www.space.com/33527-how-fast-is-earth-moving.html"
+  },
+  {
+   "text": "Ay, Dünya'dan ortalama 384.400 kilometre uzaktadır.",
+   "source": "NASA Space Place",
+   "url": "https://spaceplace.nasa.gov/moon-distance/en/"
+  },
+  {
+   "text": "Güneş Sistemi, Samanyolu'nun merkezi çevresinde ortalama saatte yaklaşık 828.000 kilometre hızla dolanır; bu da günde yaklaşık 20 milyon kilometre eder.",
+   "source": "NASA StarChild (Goddard)",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html"
+  },
+  {
+   "text": "Dünya'nın dönüşü ve yörüngesi neredeyse sabit hızda ve sarsıntısız olduğu için, tıpkı düzgün uçan bir uçaktaki yolcular gibi bu hareketi hissetmeyiz.",
+   "source": "University of Texas at Arlington",
+   "url": "https://www.uta.edu/academics/schools-colleges/science/news/2025/10/17/why-cant-we-feel-the-earth-moving"
+  }
+ ],
+ "tags": [
+  "dünya",
+  "dünyanın hızı",
+  "güneş etrafında dönüş",
+  "samanyolu",
+  "uzay",
+  "astronomi",
+  "1 gün boyunca",
+  "how fast is earth moving",
+  "earth orbit",
+  "milky way",
+  "speed of earth",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dünya",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.space.com/33527-how-fast-is-earth-moving.html",
+  "https://spaceplace.nasa.gov/moon-distance/en/",
+  "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+  "https://www.uta.edu/academics/schools-colleges/science/news/2025/10/17/why-cant-we-feel-the-earth-moving"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Far Does Earth Travel Through Space in 1 Day?",
+   "summary": "Even while you sit still, Earth is carrying you through space at an incredible speed. Find out how many kilometers you travel in a single day and why you never feel it!",
+   "facts": [
+    "Earth orbits the Sun at an average of about 107,000 kilometers per hour, which adds up to about 2.6 million kilometers per day.",
+    "The Moon is an average of 384,400 kilometers from Earth.",
+    "The solar system orbits the center of the Milky Way at an average of about 828,000 kilometers per hour, which adds up to about 20 million kilometers per day.",
+    "Because Earth's spin and orbit are nearly constant and free of jolts, we don't feel the motion, just like passengers on a smoothly cruising airplane."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto viaja la Tierra por el espacio en 1 día?",
+   "summary": "Aunque estés quieto, la Tierra te lleva por el espacio a una velocidad increíble. ¡Descubre cuántos kilómetros recorres en un solo día y por qué nunca lo notas!",
+   "facts": [
+    "La Tierra gira alrededor del Sol a una media de unos 107.000 kilómetros por hora, lo que suma unos 2,6 millones de kilómetros al día.",
+    "La Luna está, de media, a 384.400 kilómetros de la Tierra.",
+    "El sistema solar gira alrededor del centro de la Vía Láctea a una media de unos 828.000 kilómetros por hora, lo que suma unos 20 millones de kilómetros al día.",
+    "Como la rotación y la órbita de la Tierra son casi constantes y sin sacudidas, no sentimos el movimiento, igual que los pasajeros de un avión que vuela con suavidad."
+   ]
+  },
+  "pt": {
+   "title": "Quanto a Terra viaja pelo espaço em 1 dia?",
+   "summary": "Mesmo parado, você está sendo levado pela Terra através do espaço a uma velocidade incrível. Descubra quantos quilômetros você percorre em um único dia e por que nunca sente isso!",
+   "facts": [
+    "A Terra orbita o Sol a uma média de cerca de 107.000 quilômetros por hora, o que soma cerca de 2,6 milhões de quilômetros por dia.",
+    "A Lua fica, em média, a 384.400 quilômetros da Terra.",
+    "O sistema solar orbita o centro da Via Láctea a uma média de cerca de 828.000 quilômetros por hora, o que soma cerca de 20 milhões de quilômetros por dia.",
+    "Como a rotação e a órbita da Terra são quase constantes e sem solavancos, não sentimos o movimento, assim como os passageiros de um avião voando suavemente."
+   ]
+  },
+  "ar": {
+   "title": "كم تقطع الأرض في الفضاء خلال يوم واحد؟",
+   "summary": "حتى وأنت جالس في مكانك، تحملك الأرض عبر الفضاء بسرعة مذهلة. اكتشف كم كيلومترًا تقطع في يوم واحد ولماذا لا تشعر بذلك أبدًا!",
+   "facts": [
+    "تدور الأرض حول الشمس بمتوسط سرعة يقارب 107,000 كيلومتر في الساعة، أي ما يقارب 2.6 مليون كيلومتر في اليوم.",
+    "يبعد القمر عن الأرض في المتوسط 384,400 كيلومتر.",
+    "يدور النظام الشمسي حول مركز مجرة درب التبانة بمتوسط سرعة يقارب 828,000 كيلومتر في الساعة، أي نحو 20 مليون كيلومتر في اليوم.",
+    "لأن دوران الأرض ومدارها شبه ثابتين وخاليين من الاهتزازات، لا نشعر بالحركة، تمامًا مثل ركاب طائرة تحلّق بسلاسة."
+   ]
+  },
+  "hi": {
+   "title": "पृथ्वी 1 दिन में अंतरिक्ष में कितनी दूरी तय करती है?",
+   "summary": "आप एक जगह बैठे हों, तब भी पृथ्वी आपको अंतरिक्ष में ज़बरदस्त रफ़्तार से ले जा रही है। जानिए एक दिन में आप कितने किलोमीटर का सफ़र करते हैं और आपको यह महसूस क्यों नहीं होता!",
+   "facts": [
+    "पृथ्वी सूर्य की परिक्रमा औसतन लगभग 107,000 किलोमीटर प्रति घंटे की गति से करती है, जो हर दिन लगभग 2.6 मिलियन किलोमीटर होता है।",
+    "चंद्रमा पृथ्वी से औसतन 384,400 किलोमीटर दूर है।",
+    "सौरमंडल आकाशगंगा (मिल्की वे) के केंद्र की परिक्रमा औसतन लगभग 828,000 किलोमीटर प्रति घंटे की गति से करता है, जो हर दिन लगभग 20 मिलियन किलोमीटर होता है।",
+    "पृथ्वी का घूमना और उसकी परिक्रमा लगभग स्थिर गति से और बिना झटकों के होते हैं, इसलिए हमें यह गति महसूस नहीं होती, ठीक वैसे ही जैसे आराम से उड़ते विमान के यात्रियों को।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Jauh Bumi Melaju di Luar Angkasa dalam 1 Hari?",
+   "summary": "Bahkan saat kamu duduk diam, Bumi membawamu melintasi luar angkasa dengan kecepatan luar biasa. Cari tahu berapa kilometer yang kamu tempuh dalam sehari dan kenapa kamu tidak pernah merasakannya!",
+   "facts": [
+    "Bumi mengorbit Matahari dengan kecepatan rata-rata sekitar 107.000 kilometer per jam, atau sekitar 2,6 juta kilometer per hari.",
+    "Bulan berjarak rata-rata 384.400 kilometer dari Bumi.",
+    "Tata Surya mengorbit pusat Bima Sakti dengan kecepatan rata-rata sekitar 828.000 kilometer per jam, atau sekitar 20 juta kilometer per hari.",
+    "Karena rotasi dan orbit Bumi hampir konstan dan tanpa guncangan, kita tidak merasakan gerakannya, sama seperti penumpang pesawat yang terbang dengan mulus."
+   ]
+  },
+  "fr": {
+   "title": "Quelle distance la Terre parcourt-elle dans l'espace en 1 jour ?",
+   "summary": "Même quand tu restes immobile, la Terre t'emporte à travers l'espace à une vitesse incroyable. Découvre combien de kilomètres tu parcours en une seule journée et pourquoi tu ne le sens jamais !",
+   "facts": [
+    "La Terre tourne autour du Soleil à une vitesse moyenne d'environ 107 000 kilomètres par heure, soit environ 2,6 millions de kilomètres par jour.",
+    "La Lune se trouve en moyenne à 384 400 kilomètres de la Terre.",
+    "Le Système solaire tourne autour du centre de la Voie lactée à une vitesse moyenne d'environ 828 000 kilomètres par heure, soit environ 20 millions de kilomètres par jour.",
+    "Comme la rotation et l'orbite de la Terre sont presque constantes et sans secousses, nous ne ressentons pas ce mouvement, comme les passagers d'un avion qui vole en douceur."
+   ]
+  },
+  "de": {
+   "title": "Wie weit reist die Erde an einem Tag durchs All?",
+   "summary": "Selbst wenn du stillsitzt, trägt dich die Erde mit unglaublichem Tempo durchs All. Finde heraus, wie viele Kilometer du an einem einzigen Tag zurücklegst und warum du nichts davon spürst!",
+   "facts": [
+    "Die Erde umkreist die Sonne mit durchschnittlich etwa 107.000 Kilometern pro Stunde, das sind rund 2,6 Millionen Kilometer pro Tag.",
+    "Der Mond ist im Durchschnitt 384.400 Kilometer von der Erde entfernt.",
+    "Das Sonnensystem umkreist das Zentrum der Milchstraße mit durchschnittlich etwa 828.000 Kilometern pro Stunde, das sind rund 20 Millionen Kilometer pro Tag.",
+    "Da Erdrotation und Umlaufbahn nahezu gleichmäßig und ohne Ruckeln verlaufen, spüren wir die Bewegung nicht – genau wie Passagiere in einem ruhig fliegenden Flugzeug."
+   ]
+  },
+  "ru": {
+   "title": "Какое расстояние Земля пролетает в космосе за 1 день?",
+   "summary": "Даже когда ты сидишь неподвижно, Земля несёт тебя сквозь космос с невероятной скоростью. Узнай, сколько километров ты пролетаешь всего за один день и почему совсем этого не чувствуешь!",
+   "facts": [
+    "Земля обращается вокруг Солнца со средней скоростью около 107 000 километров в час — это примерно 2,6 миллиона километров в сутки.",
+    "Луна находится в среднем в 384 400 километрах от Земли.",
+    "Солнечная система обращается вокруг центра Млечного Пути со средней скоростью около 828 000 километров в час — это примерно 20 миллионов километров в сутки.",
+    "Поскольку вращение Земли и её движение по орбите почти равномерны и без толчков, мы не чувствуем этого движения — как пассажиры плавно летящего самолёта."
+   ]
+  },
+  "az": {
+   "title": "Yer 1 gündə kosmosda nə qədər yol qət edir?",
+   "summary": "Sən yerindən tərpənməsən belə, Yer səni kosmosda heyrətamiz sürətlə daşıyır. Bir gündə neçə kilometr yol getdiyini və bunu niyə heç hiss etmədiyini öyrən!",
+   "facts": [
+    "Yer Günəşin ətrafında orta hesabla saatda təxminən 107.000 kilometr sürətlə dolanır, bu da gündə təxminən 2,6 milyon kilometr edir.",
+    "Ay Yerdən orta hesabla 384.400 kilometr uzaqdadır.",
+    "Günəş sistemi Süd Yolu qalaktikasının mərkəzi ətrafında orta hesabla saatda təxminən 828.000 kilometr sürətlə dolanır, bu da gündə təxminən 20 milyon kilometr edir.",
+    "Yerin öz oxu ətrafında fırlanması və orbit üzrə hərəkəti demək olar ki, sabit sürətlə və silkələnmədən baş verdiyi üçün, rəvan uçan təyyarədəki sərnişinlər kimi biz də bu hərəkəti hiss etmirik."
+   ]
+  }
+ },
+ "id": "g003",
+ "series": "1 Gün Boyunca",
+ "q": "Dünya 1 günde uzayda ne kadar yol alır?"
+}

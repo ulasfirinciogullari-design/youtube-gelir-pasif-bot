@@ -1,0 +1,244 @@
+{
+ "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+ "bar": {
+  "hi": "JÜPİTER",
+  "rest": "YOK OLSAYDI?"
+ },
+ "summary": "Güneş Sistemi'nin devi Jüpiter bir anda ortadan kalksa Dünya'yı neler beklerdi? Kalkan mı, sapan mı; bilim insanlarının hâlâ tartıştığı cevabı keşfet!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Jüpiter yok olsa, gezegen kütlesinin üçte ikisinden fazlası silinirdi.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "jupiter",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "xs",
+      "at": "bl"
+     }
+    ],
+    "do": "vanish",
+    "target": 0,
+    "key": "silinirdi",
+    "label": "Jüpiter Yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş bile rahatlardı: 318 Dünya ağırlığındaki bu dev onu sallıyor.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "jupiter",
+     "label": "Jüpiter",
+     "value": 318
+    },
+    "b": {
+     "b": "earth",
+     "label": "Dünya",
+     "value": 1
+    },
+    "mode": "bar",
+    "key": "318"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uzak kuyruklu yıldızlara karşı kalkanımız zayıflayabilirdi.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "☄️",
+    "do": "fall",
+    "key": "kalkanımız",
+    "label": "Kalkan Zayıflar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama bazı hesaplara göre, bize çarpan göktaşları azalabilirdi bile!",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "☄️",
+     "label": "Jüpiterle: Çok"
+    },
+    "right": {
+     "e": "🌍",
+     "label": "Jüpitersiz: Az?"
+    },
+    "key": "azalabilirdi"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hem kalkan hem sapan; tam bir ikili oyun!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🛡️",
+    "label": "Dost mu Düşman mı?"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence Jüpiter dost mu düşman mı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🪐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Jüpiter, Dünya'dan 318 kat daha ağırdır ve kütlesi diğer tüm gezegenlerin toplamının iki katından fazladır.",
+   "source": "ESA",
+   "url": "https://www.esa.int/Science_Exploration/Space_Science/Juice/Facts_about_Jupiter"
+  },
+  {
+   "text": "Güneş ile Jüpiter'in ortak kütle merkezi Güneş'in yüzeyinin hemen dışındadır; bu yüzden Güneş bu nokta etrafında hafifçe yalpalar.",
+   "source": "NASA Space Place",
+   "url": "https://spaceplace.nasa.gov/barycenter/en/"
+  },
+  {
+   "text": "Bilgisayar simülasyonlarına göre Jüpiter, Güneş Sistemi'nin uzak bölgelerinden gelen kuyruklu yıldızları saptırmada başarılıdır; ama yakındaki bazı kuyruklu yıldız ve asteroitleri Dünya'ya yönlendirerek çarpma riskini artırabilir.",
+   "source": "BBC Science Focus (Horner ve Jones simülasyonları)",
+   "url": "https://www.sciencefocus.com/space/does-jupiter-really-protect-us-from-cosmic-impacts"
+  }
+ ],
+ "tags": [
+  "jüpiter",
+  "jüpiter yok olsaydı",
+  "güneş sistemi",
+  "kuyruklu yıldız",
+  "göktaşı",
+  "gezegenler",
+  "astronomi",
+  "jupiter",
+  "what if jupiter disappeared",
+  "solar system",
+  "comets",
+  "asteroids",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#jüpiter",
+  "#uzay",
+  "#güneşsistemi"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.esa.int/Science_Exploration/Space_Science/Juice/Facts_about_Jupiter",
+  "https://spaceplace.nasa.gov/barycenter/en/",
+  "https://www.sciencefocus.com/space/does-jupiter-really-protect-us-from-cosmic-impacts"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Jupiter Disappeared?",
+   "summary": "What would happen to Earth if Jupiter, the giant of the solar system, suddenly vanished? Shield or slingshot: discover the answer scientists are still debating!",
+   "facts": [
+    "Jupiter is 318 times as massive as Earth and more than twice as massive as all the other planets combined.",
+    "The barycenter of Jupiter and the Sun lies just outside the Sun's surface, so the Sun wobbles slightly around this point.",
+    "Computer simulations suggest Jupiter is good at deflecting comets from the distant reaches of the solar system, but it can also send some nearby comets and asteroids toward Earth, raising the impact risk."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si Júpiter desapareciera?",
+   "summary": "¿Qué le pasaría a la Tierra si Júpiter, el gigante del sistema solar, desapareciera de repente? ¿Escudo u honda? ¡Descubre la respuesta que los científicos todavía debaten!",
+   "facts": [
+    "Júpiter tiene 318 veces la masa de la Tierra y más del doble de la masa de todos los demás planetas juntos.",
+    "El baricentro de Júpiter y el Sol está justo fuera de la superficie del Sol, por lo que el Sol se bambolea ligeramente alrededor de ese punto.",
+    "Según simulaciones por ordenador, Júpiter desvía bien los cometas que llegan de las regiones lejanas del sistema solar, pero también puede empujar algunos cometas y asteroides cercanos hacia la Tierra y aumentar el riesgo de impacto."
+   ]
+  },
+  "pt": {
+   "title": "E se Júpiter desaparecesse?",
+   "summary": "O que aconteceria com a Terra se Júpiter, o gigante do sistema solar, desaparecesse de repente? Escudo ou estilingue: descubra a resposta que os cientistas ainda debatem!",
+   "facts": [
+    "Júpiter tem 318 vezes a massa da Terra e mais que o dobro da massa de todos os outros planetas juntos.",
+    "O baricentro de Júpiter e do Sol fica logo fora da superfície do Sol, por isso o Sol oscila levemente em torno desse ponto.",
+    "Simulações de computador indicam que Júpiter desvia bem os cometas vindos das regiões distantes do sistema solar, mas também pode lançar alguns cometas e asteroides próximos em direção à Terra, aumentando o risco de impacto."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو اختفى المشتري؟",
+   "summary": "ماذا سيحدث للأرض لو اختفى المشتري، عملاق المجموعة الشمسية، فجأة؟ درع أم مقلاع؟ اكتشف الإجابة التي لا يزال العلماء يتجادلون حولها!",
+   "facts": [
+    "كتلة المشتري تعادل 318 ضعف كتلة الأرض، وتزيد على ضعف كتلة جميع الكواكب الأخرى مجتمعة.",
+    "يقع مركز الكتلة المشترك للمشتري والشمس خارج سطح الشمس بقليل، ولذلك تتمايل الشمس قليلًا حول هذه النقطة.",
+    "تشير المحاكاة الحاسوبية إلى أن المشتري يجيد إبعاد المذنبات القادمة من أطراف المجموعة الشمسية البعيدة، لكنه قد يدفع أيضًا بعض المذنبات والكويكبات القريبة نحو الأرض فيزيد خطر الاصطدام."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर बृहस्पति गायब हो जाए?",
+   "summary": "अगर सौरमंडल का दानव बृहस्पति अचानक गायब हो जाए तो पृथ्वी का क्या होगा? ढाल या गुलेल: वह जवाब जानिए जिस पर वैज्ञानिक आज भी बहस करते हैं!",
+   "facts": [
+    "बृहस्पति का द्रव्यमान पृथ्वी से 318 गुना है और बाकी सभी ग्रहों के कुल द्रव्यमान के दोगुने से भी ज़्यादा है।",
+    "बृहस्पति और सूर्य का साझा द्रव्यमान केंद्र (बैरीसेंटर) सूर्य की सतह के ठीक बाहर है, इसलिए सूर्य इस बिंदु के चारों ओर हल्का-सा डगमगाता है।",
+    "कंप्यूटर सिमुलेशन बताते हैं कि बृहस्पति सौरमंडल के दूर-दराज़ से आने वाले धूमकेतुओं को अच्छी तरह मोड़ देता है, लेकिन पास के कुछ धूमकेतुओं और क्षुद्रग्रहों को पृथ्वी की ओर भी धकेल सकता है, जिससे टक्कर का खतरा बढ़ जाता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Jupiter Lenyap?",
+   "summary": "Apa yang akan terjadi pada Bumi jika Jupiter, raksasa Tata Surya, tiba-tiba lenyap? Perisai atau ketapel: temukan jawaban yang masih diperdebatkan para ilmuwan!",
+   "facts": [
+    "Massa Jupiter 318 kali massa Bumi dan lebih dari dua kali massa gabungan semua planet lainnya.",
+    "Barisenter Jupiter dan Matahari terletak tepat di luar permukaan Matahari, sehingga Matahari sedikit bergoyang di sekitar titik ini.",
+    "Simulasi komputer menunjukkan Jupiter pandai membelokkan komet dari wilayah jauh Tata Surya, tetapi juga dapat mendorong sebagian komet dan asteroid di dekatnya ke arah Bumi sehingga meningkatkan risiko tabrakan."
+   ]
+  },
+  "fr": {
+   "title": "Et si Jupiter disparaissait ?",
+   "summary": "Que deviendrait la Terre si Jupiter, le géant du Système solaire, disparaissait soudainement ? Bouclier ou lance-pierre : découvre la réponse dont les scientifiques débattent encore !",
+   "facts": [
+    "Jupiter est 318 fois plus massive que la Terre et plus de deux fois plus massive que toutes les autres planètes réunies.",
+    "Le barycentre de Jupiter et du Soleil se trouve juste à l'extérieur de la surface du Soleil, si bien que le Soleil oscille légèrement autour de ce point.",
+    "Selon des simulations informatiques, Jupiter dévie efficacement les comètes venues des confins du Système solaire, mais elle peut aussi envoyer certaines comètes et astéroïdes proches vers la Terre, ce qui augmente le risque d'impact."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Jupiter verschwinden würde?",
+   "summary": "Was würde mit der Erde passieren, wenn Jupiter, der Riese des Sonnensystems, plötzlich verschwände? Schutzschild oder Steinschleuder: Entdecke die Antwort, über die Forscher noch immer streiten!",
+   "facts": [
+    "Jupiter hat die 318-fache Masse der Erde und mehr als doppelt so viel Masse wie alle anderen Planeten zusammen.",
+    "Der gemeinsame Schwerpunkt von Jupiter und Sonne liegt knapp außerhalb der Sonnenoberfläche, deshalb taumelt die Sonne leicht um diesen Punkt.",
+    "Computersimulationen zeigen, dass Jupiter Kometen aus dem fernen äußeren Sonnensystem gut ablenkt, aber auch manche nahen Kometen und Asteroiden in Richtung Erde lenken kann und so das Einschlagsrisiko erhöht."
+   ]
+  },
+  "ru": {
+   "title": "Что, если Юпитер исчезнет?",
+   "summary": "Что случилось бы с Землёй, если бы Юпитер, гигант Солнечной системы, вдруг исчез? Щит или рогатка: узнай ответ, о котором учёные спорят до сих пор!",
+   "facts": [
+    "Юпитер в 318 раз массивнее Земли и более чем вдвое массивнее всех остальных планет вместе взятых.",
+    "Общий центр масс Юпитера и Солнца находится чуть за пределами поверхности Солнца, поэтому Солнце слегка покачивается вокруг этой точки.",
+    "Компьютерные модели показывают, что Юпитер хорошо отклоняет кометы с далёких окраин Солнечной системы, но может и направлять некоторые близкие кометы и астероиды к Земле, повышая риск столкновения."
+   ]
+  },
+  "az": {
+   "title": "Yupiter yox olsaydı nə olardı?",
+   "summary": "Günəş sisteminin nəhəngi Yupiter birdən yox olsaydı, Yeri nələr gözləyərdi? Qalxan, yoxsa sapand: alimlərin hələ də mübahisə etdiyi cavabı kəşf et!",
+   "facts": [
+    "Yupiterin kütləsi Yerinkindən 318 dəfə böyükdür və digər bütün planetlərin birlikdə kütləsinin iki qatından çoxdur.",
+    "Yupiter ilə Günəşin ortaq kütlə mərkəzi Günəşin səthindən bir az kənarda yerləşir, buna görə Günəş bu nöqtə ətrafında azca yırğalanır.",
+    "Kompüter modelləşdirmələrinə görə Yupiter Günəş sisteminin uzaq bölgələrindən gələn kometləri yaxşı yayındırır, lakin yaxındakı bəzi kometləri və asteroidləri Yerə doğru da yönəldə bilər və bu, toqquşma riskini artırır."
+   ]
+  }
+ },
+ "id": "o0006",
+ "series": "Ya Olsaydı?",
+ "q": "Jüpiter yok olsaydı ne olurdu?"
+}

@@ -1,0 +1,281 @@
+{
+ "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "bar": {
+  "hi": "KARBONDİOKSİT",
+  "rest": "5 SN YOKSA?"
+ },
+ "summary": "Havadaki karbondioksit 5 saniyeliğine kaybolsa bir felaket mi yaşanırdı? Cevap hem şaşırtıcı hem de bu minicik gazın Dünya'yı nasıl sıcak tuttuğunu gösteriyor!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Karbondioksit kalıcı olarak yok olsa, Dünya zamanla buz tutardı.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "freeze",
+    "target": 0,
+    "key": "buz",
+    "label": "Buz Tutan Dünya"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Oysa havada çok az: 10.000 molekülde sadece 4 tane.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "💨",
+    "value": "%0,04",
+    "label": "Havadaki Payı",
+    "key": "sadece"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yine de sera etkisinin %20 kadarı ondan gelir.",
+   "v": {
+    "t": "meter",
+    "bg": "sunset",
+    "label": "Sera Etkisi Payı",
+    "from": 0,
+    "to": 20,
+    "unit": "%",
+    "e": "🌡️",
+    "key": "%20"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Minicik ama Dünya'nın atkısı!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🧣",
+    "do": "pulse",
+    "key": "atkısı",
+    "label": "Dünya'nın Atkısı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "5 saniyede ise bitkiler kısa bir mola verirdi, o kadar.",
+   "v": {
+    "t": "timeline",
+    "bg": "forest",
+    "steps": [
+     {
+      "when": "0. SANİYE",
+      "e": "🌿",
+      "label": "Fotosentez Durur"
+     },
+     {
+      "when": "5. SANİYE",
+      "e": "🌱",
+      "label": "Yeniden Başlar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sen fark etmezdin; vücudun günde 1 kilo kadar karbondioksit üretir.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🫁",
+    "value": "1",
+    "unit": "kg",
+    "label": "Günlük Üretim",
+    "key": "1"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence en çok kim etkilenirdi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🌍"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Havadaki karbondioksit 2024'te ortalama 422,8 ppm ile rekor kırdı; bu, havadaki her 10.000 molekülden yaklaşık 4'ü demektir.",
+   "source": "NOAA Climate.gov",
+   "url": "https://www.climate.gov/news-features/understanding-climate/climate-change-atmospheric-carbon-dioxide"
+  },
+  {
+   "text": "Karbondioksit olmasaydı, Dünya'nın doğal sera etkisi ortalama yüzey sıcaklığını donma noktasının üzerinde tutmaya yetmezdi.",
+   "source": "NOAA Climate.gov",
+   "url": "https://www.climate.gov/news-features/understanding-climate/climate-change-atmospheric-carbon-dioxide"
+  },
+  {
+   "text": "Karbondioksit, Dünya'nın sera etkisinin yaklaşık %20'sini sağlar; su buharı yaklaşık %50, bulutlar ise yaklaşık %25 katkı yapar.",
+   "source": "NASA Goddard Uzay Araştırmaları Enstitüsü (GISS)",
+   "url": "https://www.giss.nasa.gov/research/briefs/2010_lacis_01/"
+  },
+  {
+   "text": "Bitkiler fotosentez sırasında havadaki karbondioksiti ve suyu kullanarak şeker üretir.",
+   "source": "National Geographic Education",
+   "url": "https://education.nationalgeographic.org/resource/photosynthesis/"
+  },
+  {
+   "text": "Bir insan vücudu günde yaklaşık 1 kilogram karbondioksit üretir.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/ochmo-tb-004-carbon-dioxide-2/"
+  }
+ ],
+ "tags": [
+  "karbondioksit",
+  "co2",
+  "sera etkisi",
+  "atmosfer",
+  "fotosentez",
+  "iklim",
+  "hava",
+  "carbon dioxide",
+  "greenhouse effect",
+  "photosynthesis",
+  "what if co2 disappeared",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#karbondioksit",
+  "#iklim",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.climate.gov/news-features/understanding-climate/climate-change-atmospheric-carbon-dioxide",
+  "https://www.giss.nasa.gov/research/briefs/2010_lacis_01/",
+  "https://education.nationalgeographic.org/resource/photosynthesis/",
+  "https://www.nasa.gov/ochmo-tb-004-carbon-dioxide-2/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Carbon Dioxide Disappeared for 5 Seconds?",
+   "summary": "Would it be a disaster if the carbon dioxide in the air vanished for just 5 seconds? The answer is surprising, and it shows how this tiny gas keeps Earth warm!",
+   "facts": [
+    "Carbon dioxide in the air reached a record average of 422.8 ppm in 2024, which means about 4 out of every 10,000 molecules of air.",
+    "Without carbon dioxide, Earth's natural greenhouse effect would be too weak to keep the average surface temperature above freezing.",
+    "Carbon dioxide provides about 20% of Earth's greenhouse effect, while water vapor contributes about 50% and clouds about 25%.",
+    "During photosynthesis, plants use carbon dioxide from the air and water to make sugar.",
+    "A human body produces about 1 kilogram of carbon dioxide per day."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si el dióxido de carbono desapareciera 5 segundos?",
+   "summary": "¿Sería una catástrofe que el dióxido de carbono del aire desapareciera solo 5 segundos? ¡La respuesta es sorprendente y muestra cómo este gas diminuto mantiene caliente la Tierra!",
+   "facts": [
+    "El dióxido de carbono del aire alcanzó en 2024 una media récord de 422,8 ppm, es decir, unas 4 de cada 10.000 moléculas de aire.",
+    "Sin dióxido de carbono, el efecto invernadero natural de la Tierra sería demasiado débil para mantener la temperatura media de la superficie por encima del punto de congelación.",
+    "El dióxido de carbono aporta alrededor del 20 % del efecto invernadero de la Tierra; el vapor de agua, cerca del 50 %, y las nubes, cerca del 25 %.",
+    "Durante la fotosíntesis, las plantas usan el dióxido de carbono del aire y el agua para fabricar azúcar.",
+    "El cuerpo humano produce alrededor de 1 kilogramo de dióxido de carbono al día."
+   ]
+  },
+  "pt": {
+   "title": "E se o dióxido de carbono sumisse por 5 segundos?",
+   "summary": "Seria uma catástrofe se o dióxido de carbono do ar sumisse por apenas 5 segundos? A resposta é surpreendente e mostra como esse gás minúsculo mantém a Terra aquecida!",
+   "facts": [
+    "O dióxido de carbono no ar atingiu a média recorde de 422,8 ppm em 2024, ou seja, cerca de 4 em cada 10.000 moléculas de ar.",
+    "Sem dióxido de carbono, o efeito estufa natural da Terra seria fraco demais para manter a temperatura média da superfície acima do ponto de congelamento.",
+    "O dióxido de carbono responde por cerca de 20% do efeito estufa da Terra; o vapor d'água contribui com cerca de 50% e as nuvens, com cerca de 25%.",
+    "Na fotossíntese, as plantas usam o dióxido de carbono do ar e a água para produzir açúcar.",
+    "O corpo humano produz cerca de 1 quilograma de dióxido de carbono por dia."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو اختفى ثاني أكسيد الكربون لمدة 5 ثوانٍ؟",
+   "summary": "هل ستحدث كارثة لو اختفى ثاني أكسيد الكربون من الهواء لمدة 5 ثوانٍ فقط؟ الإجابة مدهشة، وتكشف كيف يحافظ هذا الغاز الضئيل على دفء الأرض!",
+   "facts": [
+    "بلغ متوسط ثاني أكسيد الكربون في الهواء رقمًا قياسيًا قدره 422.8 جزءًا في المليون عام 2024، أي نحو 4 من كل 10,000 جزيء من الهواء.",
+    "لولا ثاني أكسيد الكربون لكان الاحتباس الحراري الطبيعي للأرض أضعف من أن يُبقي متوسط حرارة السطح فوق درجة التجمد.",
+    "يساهم ثاني أكسيد الكربون بنحو 20% من الاحتباس الحراري للأرض، بينما يساهم بخار الماء بنحو 50% والسحب بنحو 25%.",
+    "تستخدم النباتات في عملية البناء الضوئي ثاني أكسيد الكربون من الهواء والماء لصنع السكر.",
+    "ينتج جسم الإنسان نحو 1 كيلوغرام من ثاني أكسيد الكربون يوميًا."
+   ]
+  },
+  "hi": {
+   "title": "क्या होगा अगर कार्बन डाइऑक्साइड 5 सेकंड के लिए गायब हो जाए?",
+   "summary": "अगर हवा से कार्बन डाइऑक्साइड सिर्फ़ 5 सेकंड के लिए गायब हो जाए, तो क्या तबाही आ जाएगी? जवाब हैरान करने वाला है और दिखाता है कि यह छोटी-सी गैस पृथ्वी को कैसे गर्म रखती है!",
+   "facts": [
+    "2024 में हवा में कार्बन डाइऑक्साइड का औसत रिकॉर्ड 422.8 ppm तक पहुँच गया, यानी हवा के हर 10,000 अणुओं में लगभग 4।",
+    "कार्बन डाइऑक्साइड के बिना पृथ्वी का प्राकृतिक ग्रीनहाउस प्रभाव इतना कमज़ोर होता कि सतह का औसत तापमान हिमांक से ऊपर नहीं रह पाता।",
+    "पृथ्वी के ग्रीनहाउस प्रभाव में कार्बन डाइऑक्साइड का योगदान लगभग 20% है, जबकि जलवाष्प का लगभग 50% और बादलों का लगभग 25% है।",
+    "प्रकाश संश्लेषण के दौरान पौधे हवा की कार्बन डाइऑक्साइड और पानी से शर्करा बनाते हैं।",
+    "मानव शरीर हर दिन लगभग 1 किलोग्राम कार्बन डाइऑक्साइड बनाता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Karbon Dioksida Lenyap Selama 5 Detik?",
+   "summary": "Apakah akan terjadi bencana jika karbon dioksida di udara lenyap hanya 5 detik? Jawabannya mengejutkan dan menunjukkan bagaimana gas mungil ini menjaga Bumi tetap hangat!",
+   "facts": [
+    "Karbon dioksida di udara mencapai rata-rata rekor 422,8 ppm pada 2024, artinya sekitar 4 dari setiap 10.000 molekul udara.",
+    "Tanpa karbon dioksida, efek rumah kaca alami Bumi terlalu lemah untuk menjaga suhu rata-rata permukaan di atas titik beku.",
+    "Karbon dioksida menyumbang sekitar 20% efek rumah kaca Bumi, sedangkan uap air sekitar 50% dan awan sekitar 25%.",
+    "Saat fotosintesis, tumbuhan memakai karbon dioksida dari udara dan air untuk membuat gula.",
+    "Tubuh manusia menghasilkan sekitar 1 kilogram karbon dioksida per hari."
+   ]
+  },
+  "fr": {
+   "title": "Et si le dioxyde de carbone disparaissait pendant 5 secondes ?",
+   "summary": "Serait-ce une catastrophe si le dioxyde de carbone de l'air disparaissait seulement 5 secondes ? La réponse est surprenante et montre comment ce gaz minuscule garde la Terre au chaud !",
+   "facts": [
+    "En 2024, le dioxyde de carbone dans l'air a atteint une moyenne record de 422,8 ppm, soit environ 4 molécules d'air sur 10 000.",
+    "Sans dioxyde de carbone, l'effet de serre naturel de la Terre serait trop faible pour maintenir la température moyenne de surface au-dessus du point de congélation.",
+    "Le dioxyde de carbone assure environ 20 % de l'effet de serre de la Terre, contre environ 50 % pour la vapeur d'eau et environ 25 % pour les nuages.",
+    "Pendant la photosynthèse, les plantes utilisent le dioxyde de carbone de l'air et l'eau pour fabriquer du sucre.",
+    "Le corps humain produit environ 1 kilogramme de dioxyde de carbone par jour."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Kohlendioxid 5 Sekunden lang verschwindet?",
+   "summary": "Wäre es eine Katastrophe, wenn das Kohlendioxid in der Luft nur 5 Sekunden lang verschwände? Die Antwort ist überraschend und zeigt, wie dieses winzige Gas die Erde warm hält!",
+   "facts": [
+    "Das Kohlendioxid in der Luft erreichte 2024 einen Rekord-Mittelwert von 422,8 ppm, also etwa 4 von 10.000 Luftmolekülen.",
+    "Ohne Kohlendioxid wäre der natürliche Treibhauseffekt der Erde zu schwach, um die mittlere Oberflächentemperatur über dem Gefrierpunkt zu halten.",
+    "Kohlendioxid trägt etwa 20 % zum Treibhauseffekt der Erde bei, Wasserdampf etwa 50 % und Wolken etwa 25 %.",
+    "Bei der Fotosynthese nutzen Pflanzen Kohlendioxid aus der Luft und Wasser, um Zucker herzustellen.",
+    "Der menschliche Körper produziert pro Tag etwa 1 Kilogramm Kohlendioxid."
+   ]
+  },
+  "ru": {
+   "title": "Что, если углекислый газ исчезнет на 5 секунд?",
+   "summary": "Случилась бы катастрофа, если бы углекислый газ исчез из воздуха всего на 5 секунд? Ответ удивит и покажет, как этот крошечный газ согревает Землю!",
+   "facts": [
+    "В 2024 году содержание углекислого газа в воздухе достигло рекордного среднего значения 422,8 ppm — это примерно 4 из каждых 10 000 молекул воздуха.",
+    "Без углекислого газа естественный парниковый эффект Земли был бы слишком слабым, чтобы удерживать среднюю температуру поверхности выше точки замерзания.",
+    "Углекислый газ обеспечивает около 20% парникового эффекта Земли, водяной пар — около 50%, а облака — около 25%.",
+    "Во время фотосинтеза растения используют углекислый газ из воздуха и воду, чтобы производить сахар.",
+    "Организм человека производит около 1 килограмма углекислого газа в сутки."
+   ]
+  },
+  "az": {
+   "title": "Karbon dioksid 5 saniyəliyinə yox olsaydı nə olardı?",
+   "summary": "Havadakı karbon dioksid cəmi 5 saniyəliyinə yox olsaydı, fəlakət baş verərdimi? Cavab təəccüblüdür və bu kiçik qazın Yeri necə isti saxladığını göstərir!",
+   "facts": [
+    "Havadakı karbon dioksidin orta miqdarı 2024-cü ildə rekord həddə, 422,8 ppm-ə çatıb; bu, havadakı hər 10.000 molekuldan təxminən 4-ü deməkdir.",
+    "Karbon dioksid olmasaydı, Yerin təbii istixana effekti orta səth temperaturunu donma nöqtəsindən yuxarıda saxlamağa yetməzdi.",
+    "Karbon dioksid Yerin istixana effektinin təxminən 20%-ni təmin edir; su buxarının payı təxminən 50%, buludlarınkı isə təxminən 25%-dir.",
+    "Bitkilər fotosintez zamanı havadakı karbon dioksiddən və sudan istifadə edərək şəkər hazırlayır.",
+    "İnsan bədəni gündə təxminən 1 kiloqram karbon dioksid istehsal edir."
+   ]
+  }
+ },
+ "id": "o0007",
+ "series": "Ya Olsaydı?",
+ "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?"
+}
