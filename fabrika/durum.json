@@ -578,6 +578,18 @@
    "series": "Ya Olsaydı?",
    "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
    "oneri": true
+  },
+  {
+   "id": "o0009",
+   "series": "Ya Olsaydı?",
+   "q": "Tüm erkekler yok olsaydı ne olurdu?",
+   "oneri": true
+  },
+  {
+   "id": "o0010",
+   "series": "Ya Olsaydı?",
+   "q": "Ay 5 kat daha büyük olsaydı ne olurdu?",
+   "oneri": true
   }
  ],
  "fail_streak": 0,
@@ -803,6 +815,12 @@
    "url": "https://youtube.com/shorts/5NCDRT4b4M0",
    "duration": 25.4,
    "chars": 390
+  },
+  {
+   "finished": "2026-10-19T17:10:56+00:00",
+   "mod": "igbolum",
+   "title": "1 Günde Kaç Kez Nefes Alırsın?",
+   "chars": 518
   }
  ],
  "last_fail": 1792238864.8448575,
@@ -862,6 +880,11 @@
     "media_id": "18016780301950143",
     "url": "https://www.instagram.com/reel/DerVyNRFNb8/",
     "at": 1792415688.0607054
+   },
+   "g002": {
+    "media_id": "18131855605690640",
+    "url": "https://www.instagram.com/reel/DerwzY7FBdW/",
+    "at": 1792429856.310994
    }
   },
   "eski": [
