@@ -1,0 +1,275 @@
+{
+  "topic_id": "mk-047",
+  "topic": "Kediler neden yoğurma hareketi yapar?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kediler Neden Yoğurur? İşte Şaşırtıcı Gerçek! 🐾",
+  "hook_text": "KEDİLER NEDEN YOĞURMA YAPAR?",
+  "description": "Kediler neden yoğurur?\n\nKediler, bebekliklerinden kalma özel bir hareket yapıyor. Yavrular, süt akışını artırmak için annelerinin karnını yoğurur. Bu hareket onlara huzur verir ve patilerindeki özel bezlerden koku bırakır.\n\nKediler yoğururken koku bırakır mı? A) Evet B) Hayır\n\n#kedi #kediler #kedidavranışları #evcilhayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-047",
+  "tags": [
+    "kedi yoğurma",
+    "kediler neden yoğurur",
+    "kedi neden yoğurur",
+    "kedi patisi",
+    "kedi masajı",
+    "kedilerin yoğurması",
+    "kedi davranışı",
+    "kedi hareketleri",
+    "evcil kedi",
+    "kedi bilgileri",
+    "kedi merak",
+    "kedi gerçekleri",
+    "yavru kedi",
+    "hayvanlar",
+    "evcil hayvanlar",
+    "hayvan davranışı",
+    "bilim",
+    "ilginç bilgiler",
+    "hayvanlar alemi",
+    "cat kneading",
+    "cat behavior",
+    "cats",
+    "kediler",
+    "kedi davranışları",
+    "neden yoğurur",
+    "shorts",
+    "ilginç gerçekler",
+    "kedilerin sırrı",
+    "merak",
+    "bilgi",
+    "kedi yogurma",
+    "kedi neden yogurur"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do cats knead? The surprising truth! 🐾",
+      "description": "Ever wondered why your cat kneads? This special behavior dates back to their kittenhood. Kittens knead their mother's belly to stimulate milk flow, a movement that brings them comfort and leaves their scent.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "es": {
+      "title": "¿Por qué los gatos amasan? ¡La sorprendente verdad! 🐾",
+      "description": "¿Te has preguntado por qué tu gato amasa? Este es un movimiento especial que conservan desde su infancia. Los gatitos amasan el vientre de su madre para estimular el flujo de leche, lo que les da consuelo y deja su olor.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "pt": {
+      "title": "Por que os gatos amassam? A verdade surpreendente! 🐾",
+      "description": "Já se perguntou por que seu gato amassa? Este é um movimento especial que eles mantêm desde a infância. Os gatinhos amassam a barriga da mãe para aumentar o fluxo de leite, o que lhes traz conforto e deixa seu cheiro.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "de": {
+      "title": "Warum \"kneten\" Katzen? Die überraschende Wahrheit! 🐾",
+      "description": "Hast du dich jemals gefragt, warum deine Katze knetet? Dieses Verhalten ist eine besondere Angewohnheit aus ihrer Kittenzeit. Kätzchen kneten den Bauch ihrer Mutter, um den Milchfluss zu fördern, was ihnen Trost spendet und ihren Duft hinterlässt.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "fr": {
+      "title": "Pourquoi les chats pétrissent-ils ? La vérité étonnante ! 🐾",
+      "description": "Vous êtes-vous déjà demandé pourquoi votre chat pétrit ? Ce comportement est un mouvement spécial qu'ils ont gardé de leur enfance. Les chatons pétrissent le ventre de leur mère pour stimuler le flux de lait, ce qui leur procure du réconfort et laisse leur odeur.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "it": {
+      "title": "Perché i gatti impastano? La sorprendente verità! 🐾",
+      "description": "Ti sei mai chiesto perché il tuo gatto impasta? Questo è un movimento speciale che conservano dalla loro infanzia. I gattini impastano il ventre della madre per aumentare il flusso di latte, il che dà loro conforto e lascia il loro odore.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "ru": {
+      "title": "Почему кошки \"месят\"? Удивительная правда! 🐾",
+      "description": "Вы когда-нибудь задумывались, почему ваша кошка \"месит\" лапами? Это особое движение, сохранившееся у них с детства. Котята массируют живот матери, чтобы усилить приток молока, что приносит им утешение и оставляет их запах.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "ar": {
+      "title": "لماذا تعجن القطط؟ الحقيقة المدهشة! 🐾",
+      "description": "هل تساءلت يومًا لماذا تعجن قطتك؟ هذا سلوك خاص يعود إلى فترة صغرها. تعجن القطط الصغيرة بطن أمها لزيادة تدفق الحليب، مما يمنحها الراحة ويترك رائحتها.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "hi": {
+      "title": "बिल्लियाँ क्यों गूंथती हैं? चौंकाने वाला सच! 🐾",
+      "description": "क्या आपने कभी सोचा है कि आपकी बिल्ली क्यों गूंथती है? यह बचपन से उनकी एक खास आदत है। बिल्ली के बच्चे दूध के प्रवाह को बढ़ाने के लिए अपनी माँ के पेट को गूंथते हैं, जिससे उन्हें आराम मिलता है और वे अपनी गंध छोड़ते हैं।\n\n#shorts\n\nSeri: mk-047"
+    },
+    "id": {
+      "title": "Mengapa kucing \"menguleni\"? Inilah fakta mengejutkan! 🐾",
+      "description": "Pernahkah Anda bertanya-tanya mengapa kucing Anda \"menguleni\"? Ini adalah perilaku khusus yang mereka miliki sejak masa kecil. Anak kucing menguleni perut induknya untuk meningkatkan aliran susu, yang memberi mereka kenyamanan dan meninggalkan bau mereka.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "ja": {
+      "title": "猫はどうして「ふみふみ」するの？驚きの真実！ 🐾",
+      "description": "あなたの猫がなぜ「ふみふみ」するのか、疑問に思ったことはありませんか？これは子猫の頃からの特別な行動です。子猫は母猫のお腹を揉んでミルクの流れを促し、それが彼らに安心感を与え、自分の匂いを残すのです。\n\n#shorts\n\nSeri: mk-047"
+    },
+    "ko": {
+      "title": "고양이들은 왜 '꾹꾹이'를 할까요? 놀라운 진실! 🐾",
+      "description": "고양이가 왜 꾹꾹이를 하는지 궁금한 적이 있나요? 이것은 아기 고양이 시절부터 이어진 특별한 행동입니다. 아기 고양이들은 젖의 흐름을 늘리기 위해 어미의 배를 꾹꾹 누르며, 이는 편안함을 주고 발바닥의 특별한 샘에서 냄새를 남깁니다.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "pl": {
+      "title": "Dlaczego koty ugniatają? Oto zaskakująca prawda! 🐾",
+      "description": "Czy zastanawiałeś się kiedyś, dlaczego Twój kot ugniata? To specjalne zachowanie, które pochodzi z ich kocięctwa. Kocięta ugniatają brzuch matki, aby zwiększyć przepływ mleka, co daje im komfort i pozostawia ich zapach.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "nl": {
+      "title": "Waarom kneden katten? De verrassende waarheid! 🐾",
+      "description": "Heb je je ooit afgevraagd waarom je kat kneedt? Dit speciale gedrag komt voort uit hun kittentijd. Kittens kneden de buik van hun moeder om de melkstroom te stimuleren, wat hen troost biedt en hun geur achterlaat.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "uk": {
+      "title": "Чому коти \"місять\"? Дивовижна правда! 🐾",
+      "description": "Чи замислювалися ви, чому ваш кіт \"місить\" лапами? Це особлива поведінка, що залишилася у них з дитинства. Кошенята масажують живіт матері, щоб посилити приплив молока, що приносить їм втіху і залишає їхній запах.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "vi": {
+      "title": "Tại sao mèo \"nhào bột\"? Sự thật bất ngờ! 🐾",
+      "description": "Bạn có bao giờ tự hỏi tại sao mèo của bạn lại \"nhào bột\" không? Đây là một hành vi đặc biệt từ thời thơ ấu của chúng. Mèo con nhào bụng mẹ để kích thích dòng sữa, điều này mang lại cho chúng sự thoải mái và để lại mùi hương của chúng.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "az": {
+      "title": "Pişiklər niyə \"yoğurur\"? Təəccüblü həqiqət! 🐾",
+      "description": "Heç düşünmüsünüzmü ki, niyə pişiyiniz \"yoğurur\"? Bu, onların balalıqdan qalan xüsusi bir davranışıdır. Balalar süd axışını artırmaq üçün analarının qarnını yoğurur, bu da onlara rahatlıq verir və pəncələrindəki xüsusi vəzlərdən qoxu buraxır.\n\n#shorts\n\nSeri: mk-047"
+    },
+    "ro": {
+      "title": "De ce frământă pisicile? Adevărul surprinzător! 🐾",
+      "description": "Te-ai întrebat vreodată de ce pisica ta frământă? Acesta este un comportament special pe care îl păstrează din copilărie. Pisicuțele frământă burta mamei pentru a stimula fluxul de lapte, ceea ce le oferă confort și lasă mirosul lor.\n\n#shorts\n\nSeri: mk-047"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Kediler yoğururken koku bırakır mı? A) Evet B) Hayır",
+  "scenes": [
+    {
+      "text": "Bu kediler, bebekliklerinden kalma özel bir hareket yapıyor.",
+      "visual": "A calico cat kneading on a blanket.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 27,
+          "kare": 2
+        }
+      ],
+      "callout": "BEBEKLİK ALIŞKANLIĞI"
+    },
+    {
+      "text": "Yavrular, süt akışını artırmak için annelerinin karnını yoğurur.",
+      "visual": "A mother cat with her kittens, then a kitten being held.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 8,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 1
+        },
+        {
+          "n": 15,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Bu hareket onlara huzur verir ve patilerindeki özel bezlerden koku bırakır.",
+      "visual": "Close-up of a cat's paw, then two sleeping cats.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 2
+        },
+        {
+          "n": 11,
+          "kare": 2
+        },
+        {
+          "n": 25,
+          "kare": 2
+        }
+      ],
+      "callout": "KOKU İŞARETİ"
+    },
+    {
+      "text": "Böylece çevrelerini işaretleyip, kendilerini güvende hissederler.",
+      "visual": "A person petting a cat, then another cat being petted.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 28,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Aslında bu hareket, onların en derin konfor ve güven arayışıdır.",
+      "visual": "A cat rolling on its back, then a cat looking content.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 24,
+          "kare": 2
+        },
+        {
+          "n": 37,
+          "kare": 2
+        }
+      ],
+      "callout": "DERİN KONFOR"
+    }
+  ],
+  "duration_seconds": 14.71,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-047_1792430875_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "kurgu",
+        "problem": "Video kurgusu yavaş ve geçişler basit, izleyiciyi dinamik tutmakta yetersiz kalıyor.",
+        "fix": "Her bir görseli ekranda daha kısa tutarak (1-2 saniye) ve hızlı, keskin geçişler kullanarak videonun temposunu artır. Otomatik kurgu araçlarında hızlı kesim seçeneklerini dene."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka seslendirmesi yavaş ve enerjisiz, profesyonel bir ton yakalayamıyor.",
+        "fix": "Yapay zeka seslendirmesinin hızını artır ve daha dinamik, vurgulu bir ton seçmeye çalış. Cümleler arasında daha az duraklama yapmasını sağla."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler çoğunlukla kedilerin yoğurma hareketine odaklanmış ve görsel çeşitlilik eksikliği var, referanstaki gibi farklı senaryolar veya dinamik çekimler bulunmuyor.",
+        "fix": "Yoğurma hareketini farklı açılardan, farklı kedilerle ve farklı arka planlarda gösteren daha çeşitli stok videolar kullan. Kedinin genel rahatlama hallerini (uyuklama, esneme) gösteren kısa geçişler ekleyerek görsel çeşitliliği artır."
+      },
+      {
+        "area": "yazı",
+        "problem": "Ekrandaki yazılar statik, görselin önemli bir kısmını kaplıyor ve bilgi akışını dinamik olarak desteklemiyor.",
+        "fix": "Yazıları daha küçük ve stratejik noktalara yerleştir. Anahtar kelimeleri vurgulamak için renk veya boyut değişikliği kullan (örneğin sadece sarı metin veya kalın font). Yazıların ekrana giriş/çıkış animasyonları ekle (basit fade-in/out veya"
+      },
+      {
+        "area": "senaryo",
+        "problem": "Videonun kancası (giriş cümlesi) referanstaki kadar merak uyandırıcı değil ve sunulan bilgi çoğu kedi sahibi için bilindik, şaşırtıcılık unsuru eksik.",
+        "fix": "Giriş cümlesini daha merak uyandırıcı hale getir (örn: 'Kedilerin bu gizemli hareketi ne anlama geliyor?'). Bilgiyi sunarken daha çarpıcı ifadeler kullanmaya çalış (örn: 'Bilim insanları bile bu hareketi inceliyor' gibi ilgi çekici bir giri"
+      },
+      {
+        "area": "ses",
+        "problem": "Arka plan müziği videonun enerjisine katkıda bulunmuyor ve ses efektleri eksik.",
+        "fix": "Daha enerjik, ritmik ve videonun genel temposuna uygun bir arka plan müziği seç. Kedinin yoğurma hareketine eşlik eden hafif, hoş ses efektleri (örn: hafif tıkırtı, mırıldanma sesi) ekle."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Bilginin görselleştirilmesi yetersiz. Örneğin, 'süt akışını artırmak' veya 'koku bırakmak' gibi eylemler doğrudan görsel olarak desteklenmiyor.",
+        "fix": "'Süt akışını artırmak' kısmında anne kedi ve yavrularının emzirme anlarını gösteren stok videoları kullan. 'Koku bırakmak' kısmında kedinin patilerini yakından gösteren, patilerinin kumaşa bastığını vurgulayan bir çekim kullan."
+      }
+    ],
+    "strengths": [
+      "Konu net ve anlaşılır",
+      "Ekrandaki yazı stili tutarlı",
+      "Görseller konuyla alakalı"
+    ],
+    "reference": "k951xfBlETg"
+  }
+}

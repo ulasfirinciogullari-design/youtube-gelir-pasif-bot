@@ -65,5 +65,16 @@
     ],
     "kategori": "vücut",
     "source": "gemini"
+  },
+  {
+    "id": "mk-047",
+    "topic": "Kediler neden yoğurma hareketi yapar?",
+    "stock_hint": "cat kneading blanket",
+    "subject": [
+      "cat",
+      "kitten"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]
