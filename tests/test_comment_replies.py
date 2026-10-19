@@ -173,6 +173,19 @@ def test_a_viewer_writing_back_under_an_answer_given_by_hand_in_studio_gets_a_re
     assert yt.posted == [("t1", "@ayse cevap t1.b")] and state["tracked"]["t1"]["n"] == 3
 
 
+def test_in_a_viewers_thread_only_what_follows_our_latest_answer_is_new():
+    state = {"done": {}, "tracked": {"t1": {"at": round(NOW - 5 * HOUR), "n": 1, "reply": "İlk cevabımız"}}}
+    yt = FakeYouTube(threads=[thread("t1", "ayse", "Kediler neden mırlar?", hours_ago=6, count=4)],
+                     replies={"t1": [reply("t1.a", CH, "İlk cevabımız", hours_ago=5),
+                                     reply("t1.b", "ayse", "@zirveninkanunu peki neden?", hours_ago=4),
+                                     reply("t1.c", CH, "Elle yazılan cevap", hours_ago=3),
+                                     reply("t1.d", "ayse", "@zirveninkanunu teşekkürler", hours_ago=1)]})
+    ask = FakeGemini()
+    go(yt, ask, state)
+    assert ask.comments() == [{"id": "t1.d", "video": "v1", "kind": "followup", "text": "teşekkürler",
+                               "our_reply": "Elle yazılan cevap"}]
+
+
 def test_the_same_comment_pasted_twice_gets_one_answer():
     yt = FakeYouTube(threads=[thread("new", "a", "Harika kanal!", hours_ago=1, video="v2"),
                               thread("old", "a", "harika kanal", hours_ago=3)])

@@ -342,6 +342,33 @@ def test_what_people_write_under_our_reply_gets_an_answer_in_the_same_thread(tmp
     assert "ayse" not in json.dumps(state, ensure_ascii=False) + json.dumps(report, ensure_ascii=False)
 
 
+def test_a_follow_up_starts_after_our_latest_reply_and_reads_every_page_of_replies(monkeypatch):
+    now = datetime.now(timezone.utc).timestamp()
+    stamp = lambda minutes: datetime.fromtimestamp(now - minutes * 60, timezone.utc).strftime(  # noqa: E731
+        "%Y-%m-%dT%H:%M:%S+0000")
+    first = [{"id": f"x{i}", "text": "katılıyorum", "username": f"u{i}", "timestamp": stamp(50)} for i in range(49)]
+    first.append({"id": "r1", "text": "Evet, kükürt gazı.", "username": "zirveninkanunu", "timestamp": stamp(25)})
+    later = [{"id": "r2", "text": "teşekkürler", "username": "ayse", "timestamp": stamp(10)},
+             {"id": "r3", "text": "Rica ederim 🙂", "username": "zirveninkanunu", "timestamp": stamp(8)},
+             {"id": "r4", "text": "peki ya kırmızı soğan?", "username": "ayse", "timestamp": stamp(3)}]
+    comment = {"id": "c1", "text": "Doğru mu?", "username": "ayse", "timestamp": stamp(60),
+               "replies": {"data": first, "paging": {"cursors": {"after": "P2"}, "next": "https://graph/next"}}}
+    asked = []
+
+    def call(tok, method, path, params=None, **kw):
+        asked.append((path, (params or {}).get("after")))
+        return {"data": later, "paging": {"cursors": {"after": "P3"}}}
+
+    monkeypatch.setattr(ig, "call", call)
+    replies = ig.all_replies("tok", comment)
+    assert asked == [("c1/replies", "P2")] and len(replies) == 53
+    items, quiet = ig.follow_ups({**comment, "replies": {"data": replies}}, "zirveninkanunu", {}, now - 86400)
+    # r2 was answered by hand (r3), so only r4 is new, and our hand-written answer is the context
+    assert [(i["id"], i["also"], i["text"], i["context"]) for i in items] == [
+        ("r4", [], "peki ya kırmızı soğan?", "Rica ederim 🙂")]
+    assert quiet == {}
+
+
 def test_every_page_of_a_busy_reels_comments_is_read(monkeypatch):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+0000")
     pages = {None: {"data": [{"id": f"a{i}", "text": "soru?", "username": f"u{i}", "timestamp": now}

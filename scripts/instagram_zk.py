@@ -506,21 +506,35 @@ def _seen(kind: str, key: str, mark) -> bool:
     return bool(hit) and hit[0] == mark and time.time() - hit[1] < CACHE_TTL
 
 
+def all_replies(tok: str, comment: dict) -> list[dict]:
+    """A comment's replies: the first 50 come with the comment, the rest page by page."""
+    box = comment.get("replies") or {}
+    replies, paging = list(box.get("data", [])), box.get("paging") or {}
+    for _ in range(COMMENT_PAGES):
+        after = (paging.get("cursors") or {}).get("after")
+        if not paging.get("next") or not after:
+            break
+        page = call(tok, "GET", f"{comment['id']}/replies", params={
+            "fields": "id,text,username,timestamp", "limit": 50, "after": after})
+        replies += page.get("data", [])
+        paging = page.get("paging") or {}
+    return replies
+
+
 def follow_ups(comment: dict, ours: str, done: dict, oldest: float) -> tuple[list[dict], dict]:
-    """What people wrote under a comment of theirs after our reply to it -> (one item per person, newest message
-    as its id and everything else they wrote since in "also"; {id: why} to close). Instagram keeps a comment's
-    replies one level deep, so the answer goes under the same comment, starting with the person's @name."""
+    """What people wrote under a comment of theirs after our latest reply there -> (one item per person, newest
+    message as its id and everything else they wrote since in "also"; {id: why} to close). What came before our
+    latest reply is answered already, by the watch or by hand. Instagram keeps a comment's replies one level deep,
+    so the answer goes under the same comment, starting with the person's @name."""
     replies = sorted((comment.get("replies") or {}).get("data", []), key=lambda r: _ts(r.get("timestamp")))
-    first = next((_ts(r.get("timestamp")) for r in replies if r.get("username") == ours), None)
-    if first is None:
+    mine = [r for r in replies if r.get("username") == ours]
+    if not mine:
         return [], {}
-    people, quiet, last_ours = {}, {}, ""
+    since, context = max(_ts(mine[-1].get("timestamp")), oldest), " ".join((mine[-1].get("text") or "").split())
+    people, quiet = {}, {}
     for r in replies:
         rid, name = r.get("id"), r.get("username")
-        if name == ours:
-            last_ours = " ".join((r.get("text") or "").split())
-            continue
-        if not rid or rid in done or _ts(r.get("timestamp")) < max(first, oldest):
+        if name == ours or not rid or rid in done or _ts(r.get("timestamp")) < since:
             continue
         text, why = comment_replies.screen(" ".join((r.get("text") or "").split()), ours)
         if why:
@@ -529,9 +543,9 @@ def follow_ups(comment: dict, ours: str, done: dict, oldest: float) -> tuple[lis
         person = people.setdefault(name, {"texts": [], "ids": []})
         person["texts"].append(text)
         person["ids"].append(rid)
-        person.update(at=_ts(r.get("timestamp")), context=last_ours)
+        person["at"] = _ts(r.get("timestamp"))
     items = [{"id": p["ids"][-1], "also": p["ids"][:-1], "kind": "followup", "parent": comment["id"],
-              "text": " / ".join(p["texts"])[:500], "author": name, "at": p["at"], "context": p["context"]}
+              "text": " / ".join(p["texts"])[:500], "author": name, "at": p["at"], "context": context}
              for name, p in people.items()]
     return items, quiet
 
@@ -562,6 +576,8 @@ def fresh_comments(tok: str, user: dict, done: dict, pending: dict) -> tuple[lis
             cid, name = c["id"], c.get("username")
             if name == user["username"]:
                 continue
+            if c.get("replies"):
+                c["replies"] = {"data": all_replies(tok, c)}
             later, later_quiet = follow_ups(c, user["username"], done, oldest)
             for item in later:
                 item["video"] = m["id"]

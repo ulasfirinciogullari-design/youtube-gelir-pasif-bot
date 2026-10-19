@@ -329,6 +329,12 @@ def collect(yt, threads: list[dict], channel: dict, state: dict, now: float, log
                 continue
             read[tid] = count
             since = max(oldest, _at(top, now) if own else follow.get("at", 0))
+            context = _text(top) if own else follow.get("reply", "")
+            mine = sorted((item.get("snippet") or {} for item in items if _author(item.get("snippet") or {}) == cid),
+                          key=lambda rs: _at(rs, now))
+            if not own and mine and _at(mine[-1], now) > since:
+                # In a viewer's thread what came before our latest answer, ours or one written by hand, is answered.
+                since, context = _at(mine[-1], now), _text(mine[-1])
             for item in items:
                 rid, rs = item.get("id"), item.get("snippet") or {}
                 if not rid or rid in done or _author(rs) == cid or _at(rs, now) < since:
@@ -340,8 +346,7 @@ def collect(yt, threads: list[dict], channel: dict, state: dict, now: float, log
                 name = str(rs.get("authorDisplayName") or "")
                 fresh.append({"id": rid, "parent": tid, "kind": "answer" if own else "followup", "video": video,
                               "text": text[:500], "at": _at(rs, now), "author": _author(rs), "count": count,
-                              "mention": name if name.startswith("@") else "",
-                              "context": _text(top) if own else follow.get("reply", "")})
+                              "mention": name if name.startswith("@") else "", "context": context})
             continue
         if tid in done:
             continue
