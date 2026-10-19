@@ -241,15 +241,17 @@
    "UgxbwSM3Jh-XBoiOuZV4AaABAg": 1,
    "Ugxmdly0Ot5Op3bayMt4AaABAg": 1,
    "UgyvS1jFfdNvNUJ2K694AaABAg": 1,
-   "UgyLxp6knZyB7vUl49N4AaABAg": 2,
+   "UgyLxp6knZyB7vUl49N4AaABAg": 3,
    "UgzgojEqqmsYhUkkVvh4AaABAg": 1,
-   "Ugxjp3bH6tnvqeeWo2d4AaABAg": 2,
+   "Ugxjp3bH6tnvqeeWo2d4AaABAg": 3,
    "Ugzmp3psy3XR4N9WrXt4AaABAg": 1,
    "Ugy6zFUSm-ycmoy0Ir94AaABAg": 1,
-   "Ugw40g-2w6PGz-y_ypp4AaABAg": 2,
+   "Ugw40g-2w6PGz-y_ypp4AaABAg": 3,
    "UgzuMTygOOhUwz2nxON4AaABAg": 1,
    "UgzmGQYg_zUuO-J7ZfJ4AaABAg": 1,
-   "UgypMdIQNONBpTOwYhx4AaABAg": 1
+   "UgypMdIQNONBpTOwYhx4AaABAg": 1,
+   "Ugzuo-SbqukJ-rxPSft4AaABAg": 1,
+   "UgxHAAxxStetDfg4W1t4AaABAg": 1
   }
  },
  "ig": {
@@ -308,10 +310,10 @@
  "nobet": {
   "basladi": "2026-10-19T17:36:03+00:00",
   "run": "39295484892",
-  "tur": 1,
+  "tur": 6,
   "ig_cevap": 0,
   "yt_cevap": 5,
   "son_hata": null,
-  "son_tur": "2026-10-19T17:36:26+00:00"
+  "son_tur": "2026-10-19T17:41:05+00:00"
  }
 }
