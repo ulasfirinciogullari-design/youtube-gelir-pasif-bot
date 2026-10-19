@@ -31,5 +31,16 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-044",
+    "topic": "Ağaçkakanlar neden ağaçlara vurmaktan baş ağrısı çekmez?",
+    "stock_hint": "woodpecker pecking, woodpecker head, tree trunk",
+    "subject": [
+      "woodpecker",
+      "tree"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]

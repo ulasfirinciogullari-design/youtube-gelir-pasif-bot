@@ -1,0 +1,283 @@
+{
+  "topic_id": "mk-044",
+  "topic": "Ağaçkakanlar neden ağaçlara vurmaktan baş ağrısı çekmez?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Ağaçkakanların Başı Neden Hiç Ağrımaz? 🤯",
+  "hook_text": "AĞAÇKAKANLAR NEDEN BAŞ AĞRISI ÇEKMEZ?",
+  "description": "Ağaçkakanlar neden ağaçlara vurmaktan baş ağrısı çekmez?\n\nKafatasları, darbeyi etkili bir şekilde emen ve dağıtan özel bir kemik yapısına sahiptir. Ayrıca, uzun dilleri kafatasını sararak beyni darbelere karşı sabitler. Bu inanılmaz adaptasyonlar sayesinde ağaçkakan saniyede 20 kez ağaca vurmasına rağmen baş ağrısı çekmez.\n\nSence bu adaptasyonlar olmadan insan saniyede kaç darbe vurabilir: 1 mi 5 mi?\n\n#ağaçkakan #kuşlar #hayvanlaralemi #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-044",
+  "tags": [
+    "ağaçkakan",
+    "ağaçkakan başı",
+    "ağaçkakan baş ağrısı",
+    "ağaçkakan beyni",
+    "ağaçkakan kafatası",
+    "ağaçkakan dili",
+    "ağaçkakan vuruşu",
+    "ağaçkakan darbe",
+    "saniyede 20 kez",
+    "kuşlar",
+    "hayvanlar",
+    "doğa",
+    "bilim",
+    "ilginç bilgiler",
+    "merak edilenler",
+    "hayvanlar alemi",
+    "doğa harikaları",
+    "adaptasyon",
+    "evrim",
+    "woodpecker",
+    "animal adaptations",
+    "bird facts",
+    "nature science",
+    "MeraklıBilgiler",
+    "ZirveninKanunu",
+    "Biyoloji",
+    "ŞaşırtıcıGerçekler",
+    "shorts",
+    "merak",
+    "bilgi",
+    "agackakan",
+    "agackakan basi",
+    "agackakan bas agrisi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why Don't Woodpeckers Get Headaches? 🤯",
+      "description": "This woodpecker strikes trees 20 times per second! How do they avoid a splitting headache despite such violent impacts? Their skull has a unique bone structure that effectively absorbs and disperses impact, and their long tongue wraps around the skull, stabilizing the brain.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "es": {
+      "title": "¿Por qué los pájaros carpinteros no tienen dolor de cabeza? 🤯",
+      "description": "¡Este pájaro carpintero golpea los árboles 20 veces por segundo! ¿Cómo es posible que no sufran dolor de cabeza a pesar de impactos tan fuertes? Su cráneo posee una estructura ósea especial que absorbe y dispersa eficazmente los impactos, y su larga lengua envuelve el cráneo, fijando el cerebro.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "pt": {
+      "title": "Por que os pica-paus não sentem dor de cabeça? 🤯",
+      "description": "Este pica-pau pode golpear uma árvore 20 vezes por segundo! Como ele evita dores de cabeça com impactos tão fortes? O crânio dele possui uma estrutura óssea única que absorve e distribui eficazmente o impacto, e sua língua longa envolve o crânio, estabilizando o cérebro.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "de": {
+      "title": "Warum bekommen Spechte keine Kopfschmerzen? 🤯",
+      "description": "Dieser Specht hämmert 20 Mal pro Sekunde auf einen Baum! Wie kann er bei so heftigen Schlägen keine Kopfschmerzen bekommen? Sein Schädel hat eine besondere Knochenstruktur, die Stöße effektiv absorbiert und verteilt, und seine lange Zunge umwickelt den Schädel, um das Gehirn zu stabilisieren.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "fr": {
+      "title": "Pourquoi les pics n'ont-ils jamais mal à la tête ? 🤯",
+      "description": "Ce pic frappe un arbre 20 fois par seconde ! Comment ne souffre-t-il pas de maux de tête malgré ces chocs violents ? Son crâne possède une structure osseuse spéciale qui absorbe et disperse efficacement les impacts, et sa longue langue enveloppe le crâne, stabilisant ainsi le cerveau.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "it": {
+      "title": "Perché i picchi non hanno mai mal di testa? 🤯",
+      "description": "Questo picchio colpisce un albero 20 volte al secondo! Come fa a non avere mal di testa nonostante colpi così violenti? Il suo cranio ha una struttura ossea speciale che assorbe e distribuisce efficacemente gli impatti, e la sua lunga lingua avvolge il cranio, stabilizzando il cervello.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "ru": {
+      "title": "Почему у дятлов никогда не болит голова? 🤯",
+      "description": "Этот дятел стучит по дереву 20 раз в секунду! Как он не страдает от головной боли после таких сильных ударов? Его череп имеет особую костную структуру, которая эффективно поглощает и рассеивает удары, а его длинный язык обвивает череп, фиксируя мозг.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "ar": {
+      "title": "لماذا لا تُصاب نقار الخشب بالصداع؟ 🤯",
+      "description": "ينقر نقار الخشب الشجرة 20 مرة في الثانية! كيف لا يصاب بالصداع رغم هذه الضربات العنيفة؟ جمجمته لها بنية عظمية خاصة تمتص وتوزع الصدمات بفعالية، كما أن لسانه الطويل يلتف حول الجمجمة ويثبت الدماغ.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "hi": {
+      "title": "कठफोड़वों को सिरदर्द क्यों नहीं होता? 🤯",
+      "description": "यह कठफोड़वा एक सेकंड में 20 बार पेड़ पर वार करता है! इन ज़बरदस्त वारों के बावजूद उसे सिरदर्द क्यों नहीं होता? उसकी खोपड़ी में एक विशेष हड्डी संरचना होती है जो झटके को प्रभावी ढंग से अवशोषित और वितरित करती है, और उसकी लंबी जीभ खोपड़ी को घेरकर मस्तिष्क को स्थिर करती है।\n\n#shorts\n\nSeri: mk-044"
+    },
+    "id": {
+      "title": "Kenapa Burung Pelatuk Tidak Pernah Sakit Kepala? 🤯",
+      "description": "Burung pelatuk ini mematuk pohon 20 kali per detik! Bagaimana ia tidak sakit kepala meskipun dengan pukulan keras seperti itu? Tengkoraknya memiliki struktur tulang khusus yang secara efektif menyerap dan menyebarkan benturan, dan lidahnya yang panjang melilit tengkorak, menstabilkan otak.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "ja": {
+      "title": "キツツキはなぜ頭痛にならないの？ 🤯",
+      "description": "キツツキは1秒間に20回も木を叩きます！これほど激しい衝撃を受けても、なぜ頭痛がしないのでしょうか？頭蓋骨には衝撃を効果的に吸収・分散する特殊な骨構造があり、さらに長い舌が頭蓋骨を包み込み、脳を衝撃から固定しています。\n\n#shorts\n\nSeri: mk-044"
+    },
+    "ko": {
+      "title": "딱따구리는 왜 머리가 아프지 않을까? 🤯",
+      "description": "이 딱따구리는 1초에 20번 나무를 쪼아댑니다! 이렇게 격렬한 충격에도 불구하고 어떻게 머리가 아프지 않을까요? 두개골은 충격을 효과적으로 흡수하고 분산시키는 특별한 뼈 구조를 가지고 있으며, 긴 혀가 두개골을 감싸 뇌를 충격으로부터 고정시킵니다.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "pl": {
+      "title": "Dlaczego dzięcioły nigdy nie mają bólu głowy? 🤯",
+      "description": "Ten dzięcioł uderza w drzewo 20 razy na sekundę! Jak to możliwe, że mimo tak silnych uderzeń nie cierpi na ból głowy? Jego czaszka ma specjalną strukturę kostną, która skutecznie pochłania i rozprasza uderzenia, a długi język owija się wokół czaszki, stabilizując mózg.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "nl": {
+      "title": "Waarom krijgen spechten nooit hoofdpijn? 🤯",
+      "description": "Deze specht slaat 20 keer per seconde op een boom! Hoe krijgt hij ondanks deze krachtige klappen geen hoofdpijn? Zijn schedel heeft een speciale botstructuur die de impact effectief absorbeert en verspreidt, en zijn lange tong wikkelt zich om de schedel, waardoor de hersenen stabiel blijven.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "uk": {
+      "title": "Чому у дятлів ніколи не болить голова? 🤯",
+      "description": "Цей дятел стукає по дереву 20 разів на секунду! Як він не страждає від головного болю після таких сильних ударів? Його череп має особливу кісткову структуру, яка ефективно поглинає та розсіює удари, а його довгий язик обвиває череп, фіксуючи мозок.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "vi": {
+      "title": "Tại sao chim gõ kiến không bị đau đầu? 🤯",
+      "description": "Chim gõ kiến này gõ vào cây 20 lần mỗi giây! Làm thế nào mà nó không bị đau đầu dù va đập mạnh như vậy? Hộp sọ của nó có cấu trúc xương đặc biệt giúp hấp thụ và phân tán tác động hiệu quả, và chiếc lưỡi dài của nó quấn quanh hộp sọ, cố định não.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "az": {
+      "title": "Niyə ağacdələnlərin başı ağrımır? 🤯",
+      "description": "Bu ağacdələn saniyədə 20 dəfə ağaca vurur! Bəs bu güclü zərbələrə baxmayaraq necə baş ağrısı çəkmir? Kəllə sümüyü zərbəni effektiv şəkildə udan və yayan xüsusi sümük quruluşuna malikdir. Həmçinin, uzun dili kəllə sümüyünü sarayaraq beyni zərbələrə qarşı sabitləyir.\n\n#shorts\n\nSeri: mk-044"
+    },
+    "ro": {
+      "title": "De ce ciocănitoarele nu au dureri de cap? 🤯",
+      "description": "Această ciocănitoare lovește un copac de 20 de ori pe secundă! Cum de nu suferă de dureri de cap în ciuda acestor lovituri violente? Craniul său are o structură osoasă specială care absoarbe și dispersează eficient impactul, iar limba sa lungă înconjoară craniul, stabilizând creierul.\n\n#shorts\n\nSeri: mk-044"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence bu adaptasyonlar olmadan insan saniyede kaç darbe vurabilir: 1 mi 5 mi?",
+  "scenes": [
+    {
+      "text": "Bu ağaçkakan saniyede 20 kez ağaca vurur!",
+      "visual": "Woodpecker rapidly pecking a tree trunk.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 17,
+          "kare": 2
+        }
+      ],
+      "callout": "20 VURUŞ/SN"
+    },
+    {
+      "text": "Peki, bu şiddetli darbelere rağmen nasıl baş ağrısı çekmez?",
+      "visual": "Woodpecker perched on a tree, looking around.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 1
+        },
+        {
+          "n": 8,
+          "kare": 1
+        },
+        {
+          "n": 9,
+          "kare": 1
+        }
+      ]
+    },
+    {
+      "text": "Kafatası, darbeyi etkili bir şekilde emen ve dağıtan özel bir kemik yapısına sahiptir.",
+      "visual": "Close-up of a woodpecker's head on a tree.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 22,
+          "kare": 1
+        },
+        {
+          "n": 33,
+          "kare": 1
+        },
+        {
+          "n": 21,
+          "kare": 2
+        }
+      ],
+      "callout": "ÖZEL KEMİK YAPISI"
+    },
+    {
+      "text": "Ayrıca, uzun dili kafatasını sararak beyni darbelere karşı sabitler.",
+      "visual": "Woodpecker's head, implying internal structure.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 23,
+          "kare": 1
+        },
+        {
+          "n": 2,
+          "kare": 1
+        },
+        {
+          "n": 15,
+          "kare": 1
+        }
+      ],
+      "callout": "SARILI DİL"
+    },
+    {
+      "text": "Bu inanılmaz adaptasyonlar sayesinde ağaçkakanlar baş ağrısı çekmez.",
+      "visual": "Woodpecker pecking or resting on a tree.",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 31,
+          "kare": 2
+        },
+        {
+          "n": 32,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 2
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 15.01,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-044_1792409168_ig.mp4",
+  "critique": {
+    "score": 4,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Bilgiyi görselleştiren grafik ve animasyon eksikliği. Sadece metin vurguları var, bu da karmaşık bilgilerin (kafatası yapısı, dilin sarılması) anlaşılmasını zorlaştırıyor.",
+        "fix": "Otomatik kurgu yazılımlarında metin animasyonları veya basit şekil ekleme özelliklerini kullanarak bilgiyi görselleştirin. Örneğin, 'özel kemik yapısı' derken kafatası bölgesine bir vurgu, 'uzun dili kafatasını sararak' derken dilin kafatas"
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görüntü değişimleri metinle tam senkronize değil ve dinamizm eksikliği var. Görüntüler bazen çok uzun kalıyor veya metin bitmeden değişiyor.",
+        "fix": "Her anahtar kelime veya cümle parçasıyla yeni bir görüntü veya görsel vurgu gelecek şekilde kurguyu hızlandırın. Otomatik kurgu yazılımlarında metin analizi ve görüntü senkronizasyonu ayarlarını daha agresif kullanarak görüntü sürelerini me"
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesi monoton ve enerjisiz, referanstaki insan sesi kadar ilgi çekici değil.",
+        "fix": "Yapay zeka sesinin hızını ve tonunu ayarlama seçenekleri varsa, daha hızlı ve dinamik bir ton seçin. Vurgulanacak kelimelerde ses tonunu hafifçe yükseltme veya duraklama ekleme gibi ayarlar deneyin. Farklı yapay zeka ses seçeneklerini test "
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntülerde çeşitlilik az, bazıları çok genel (kuş yuvası) ve konunun detaylarını desteklemiyor.",
+        "fix": "Ağaçkakanın farklı açılardan, farklı ağaçlarda vurduğu, gagası ve dili yakın çekim olan daha spesifik stok videolar arayın. 'Kafatası' veya 'dil' gibi anahtar kelimelerle arama yaparak daha ilgili ve açıklayıcı görüntüler bulmaya çalışın. G"
+      },
+      {
+        "area": "ses",
+        "problem": "Fon müziği yeterince dinamik değil ve ses efektleri eksik.",
+        "fix": "Daha enerjik, ritmik ve merak uyandıran ücretsiz fon müzikleri bulun. Görüntü değişimlerinde veya ağaçkakanın vuruş anlarında hafif 'vurma' veya 'swish' gibi ücretsiz ses efektleri ekleyerek videoyu daha dinamik hale getirin."
+      },
+      {
+        "area": "yazı",
+        "problem": "Markalama (kullanıcı adı) basit ve referanstaki gibi profesyonel bir logo değil.",
+        "fix": "Basit ama şık bir logo tasarımı yapın (ücretsiz logo araçları kullanılabilir) ve videonun sol üst köşesine referanstaki gibi sabit bir şekilde yerleştirin. Bu, marka kimliğini güçlendirir."
+      }
+    ],
+    "strengths": [
+      "İyi bir kanca cümlesi var.",
+      "Bilgi akışı mantıklı ve anlaşılır.",
+      "Metinler okunabilir boyutta."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
