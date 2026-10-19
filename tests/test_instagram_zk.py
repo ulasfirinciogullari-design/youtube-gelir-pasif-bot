@@ -213,7 +213,7 @@ class FakeInstagram:
             "me/media": {"data": [{"id": "m1", "timestamp": stamp(60), "comments_count": 4}]},
             "m1/comments": {"data": [
                 {"id": "c1", "text": "Bu gerçekten doğru mu?", "username": "ayse", "timestamp": stamp(5)},
-                {"id": "c2", "text": "bak @ali", "username": "veli", "timestamp": stamp(4)},
+                {"id": "c2", "text": "@ali @veli.tr", "username": "veli", "timestamp": stamp(4)},
                 {"id": "c3", "text": "Peki ya kırmızı soğan?", "username": "ayse", "timestamp": stamp(3)},
                 {"id": "c4", "text": "Teşekkürler", "username": "zirveninkanunu", "timestamp": stamp(2)}]},
             "me/conversations": {"data": [{"id": "cv1", "updated_time": stamp(1)}]},
@@ -250,7 +250,7 @@ def test_comments_and_dms_get_replies_without_their_private_parts_on_the_branch(
                                           "message": {"text": "Yaşım yok, ben bir bilgi kanalıyım 🙂"}}),
                          ("c3/replies", {"message": "Kırmızı soğanda da aynı gaz var."})]
     done = state["cevaplar"]["done"]
-    assert done["c2"][1:] == ["s", "link veya etiket içeriyor"]
+    assert done["c2"][1:] == ["s", "sadece etiket"]
     assert done["c1"][2].startswith("kişi başı günlük 1")  # ayse's newer comment got this run's one reply
     assert "c4" not in done  # our own comment
     # The DM is read whole (both messages) but never stored: no text, no name, on the public branch.
@@ -302,6 +302,44 @@ def test_the_watch_is_not_started_before_the_token_exists(monkeypatch):
     monkeypatch.setattr(watch, "github", lambda method, path, body=None: (200, {"workflow_runs": [
         {"status": "in_progress"}]}))
     assert "çalışıyor" in watch.ensure()
+
+
+def test_what_people_write_under_our_reply_gets_an_answer_in_the_same_thread(tmp_path, monkeypatch):
+    now = datetime.now(timezone.utc).timestamp()
+    stamp = lambda minutes: datetime.fromtimestamp(now - minutes * 60, timezone.utc).strftime(  # noqa: E731
+        "%Y-%m-%dT%H:%M:%S+0000")
+    fake = FakeInstagram(now)
+    fake.routes["me/conversations"] = {"data": []}
+    fake.routes["m1/comments"] = {"data": [
+        {"id": "c1", "text": "Bu gerçekten doğru mu?", "username": "ayse", "timestamp": stamp(30), "replies": {
+            "data": [{"id": "r4", "text": "peki ya kırmızı soğan?", "username": "ayse", "timestamp": stamp(3)},
+                     {"id": "r0", "text": "bence de", "username": "mehmet", "timestamp": stamp(28)},
+                     {"id": "r1", "text": "Evet, kükürt gazı yüzünden.", "username": "zirveninkanunu",
+                      "timestamp": stamp(25)},
+                     {"id": "r2", "text": "@zirveninkanunu teşekkürler 🙏", "username": "ayse",
+                      "timestamp": stamp(10)},
+                     {"id": "r3", "text": "@ayse katılıyorum", "username": "veli", "timestamp": stamp(5)}]}}]}
+    monkeypatch.setattr(ig, "call", fake)
+    (tmp_path / "uploads.json").write_text("[]", encoding="utf-8")
+    asked = []
+
+    def ask(prompt):
+        asked.append(prompt)
+        return "gemini-test", json.dumps({"items": [{"id": "r4", "action": "reply",
+                                                     "reply": "Kırmızı soğanda da aynı gaz var 🧅"}]})
+
+    state, report = {}, {}
+    box = state.setdefault("cevaplar", {"done": {"c1": [now - 1500, "r", "Evet", "x"]}, "son": []})
+    ig.cevap(tmp_path, state, report, env={"ZK_IG_TOKEN": "tok"}, ask=ask)
+
+    assert fake.sent == [("c1/replies", {"message": "@ayse Kırmızı soğanda da aynı gaz var 🧅"})]
+    comments = json.loads(asked[0].split("Comments:\n")[1].split("\n\nAnswer with")[0])
+    assert comments == [{"id": "r4", "video": "m1", "kind": "followup", "text": "teşekkürler 🙏 / peki ya kırmızı soğan?",
+                         "our_reply": "Evet, kükürt gazı yüzünden."}]
+    done = box["done"]
+    assert done["r4"][1] == "r" and done["r2"][1:] == ["s", "aynı sohbette birlikte cevaplandı"]
+    assert done["r3"][1:] == ["s", "başka birine yazılmış"] and "r0" not in done  # before our reply
+    assert "ayse" not in json.dumps(state, ensure_ascii=False) + json.dumps(report, ensure_ascii=False)
 
 
 def test_every_page_of_a_busy_reels_comments_is_read(monkeypatch):
