@@ -141,6 +141,18 @@ jobs:
           ZK_IG_NOBET_KAPALI: ${{ vars.ZK_IG_NOBET_KAPALI }}
         run: python3 scripts/instagram_watch.py --ensure
 
+      # Scripts Claude writes ahead of time (app/services/script_queue.py, Ulaş 2026-10-19 "Claude yazsın"). Without
+      # the zk-metin branch, or with nothing unused in it, the factory writes with Gemini as before.
+      - name: 📝 Claude'un Metinlerini Getir
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          if git ls-remote --exit-code --heads origin zk-metin >/dev/null 2>&1; then
+            git fetch origin zk-metin:refs/remotes/origin/zk-metin
+            git worktree add --detach metin-kuyrugu origin/zk-metin
+            echo "ZK_KUYRUK=$PWD/metin-kuyrugu/kuyruk" >> "$GITHUB_ENV"
+            ls metin-kuyrugu/kuyruk 2>/dev/null | tail -n 3
+          fi
+
       - name: 🐍 Python 3.12 Kur
         if: steps.gate.outputs.go == 'true'
         uses: actions/setup-python@v5

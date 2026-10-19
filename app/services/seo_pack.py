@@ -190,8 +190,10 @@ def clean_localizations(raw: dict) -> dict:
 
 
 def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_tags: list[str],
-                   base_hashtags: str, marker: str, call=_call_gemini_text, series: str = "story") -> dict:
-    """Returns {"description", "tags", "localizations", "seo_engine"} ready for the upload body."""
+                   base_hashtags: str, marker: str, call=_call_gemini_text, series: str = "story",
+                   prewritten: dict | None = None) -> dict:
+    """Returns {"description", "tags", "localizations", "seo_engine"} ready for the upload body. `prewritten` is a
+    pack Claude wrote with the script (script_queue): it goes through the same checks instead of a Gemini call."""
     pinned = f"💬 {script['pinned_comment']}" if script.get("pinned_comment") else ""
     fallback_localizations = {}
     if script.get("en_title"):
@@ -203,9 +205,13 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
         "localizations": fallback_localizations,
         "seo_engine": "script",
     }
+    engine = "claude" if isinstance(prewritten, dict) else "gemini"
     try:
-        raw = call(build_prompt(title, topic, narration, series, str(script.get("pinned_comment") or "")))
-        data = _extract_json(raw) if raw else None
+        if engine == "claude":
+            data = prewritten
+        else:
+            raw = call(build_prompt(title, topic, narration, series, str(script.get("pinned_comment") or "")))
+            data = _extract_json(raw) if raw else None
     except Exception as e:  # SEO is a bonus; never block an upload on it
         print(f"ℹ️ SEO paketi notu: {str(e)[:200]}")
         data = None
@@ -221,14 +227,14 @@ def build_seo_pack(title: str, topic: str, narration: str, script: dict, base_ta
                 tags=clean_tags(_as_list(data.get("tags"), ",") + list(script.get("tags", [])) + base_tags,
                                 fold=FOLDED_TAGS),
                 localizations={**fallback_localizations, **localizations},
-                seo_engine="gemini",
+                seo_engine=engine,
             )
         else:
             print(f"ℹ️ SEO paketi zayıf geldi (açıklama {len(description)} karakter, {len(localizations)} dil); "
                   "senaryonun açıklaması kullanılıyor.")
 
-    if pack["seo_engine"] == "gemini":
-        pinned = ""  # the Gemini description already ends with its own call to comment
+    if pack["seo_engine"] != "script":
+        pinned = ""  # the written description already ends with its own call to comment
     pack["description"] = "\n\n".join(part for part in [pack["description"], pinned, pack["hashtags"], marker] if part)
     for item in pack["localizations"].values():
         # Titles carry no #shorts: YouTube has not needed it to classify a Short since 15 Oct 2024.
