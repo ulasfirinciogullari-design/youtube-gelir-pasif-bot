@@ -191,6 +191,12 @@
     "r",
     "",
     "4b0bafab5127"
+   ],
+   "18131274500509778": [
+    1792419842.4694164,
+    "r",
+    "Mevcut sperm bankaları üremeyi bir süre sürdürse de genetik çeşitlilik hızla tük",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -205,17 +211,30 @@
     "kind": "dm",
     "text": "(özel mesaj)",
     "reply": "(özel mesaj)"
+   },
+   {
+    "at": 1792419842.4694164,
+    "kind": "yorum",
+    "text": "Tüm erkekler yok olsa ne olurdu",
+    "reply": "Mevcut sperm bankaları üremeyi bir süre sürdürse de genetik çeşitlilik hızla tükenirdi. Bu merak uyandırıcı soruyu video listemize aldım.\n— Profesör Pi 🔭"
    }
   ]
  },
- "oneriler": [],
+ "oneriler": [
+  {
+   "id": "o0009",
+   "series": "Ya Olsaydı?",
+   "q": "Tüm erkekler yok olsaydı ne olurdu?",
+   "oneri": true
+  }
+ ],
  "nobet": {
-  "basladi": "2026-10-19T14:22:49+00:00",
-  "run": "39268362408",
+  "basladi": "2026-10-19T14:24:01+00:00",
+  "run": "39268567254",
   "tur": 1,
-  "ig_cevap": 0,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-10-19T14:22:52+00:00"
+  "son_tur": "2026-10-19T14:24:16+00:00"
  }
 }
