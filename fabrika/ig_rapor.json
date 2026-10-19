@@ -1,147 +1,20 @@
 {
- "started": "2026-10-18T12:16:23+00:00",
- "mod": "kontrol",
+ "started": "2026-10-19T14:01:13+00:00",
+ "mod": "nöbet",
  "anahtar_bitis": "2026-12-16T22:49+00:00",
- "hesap": {
-  "username": "yaolsaydi.bilim",
-  "account_type": "MEDIA_CREATOR",
-  "media_count": 5,
-  "followers_count": 3
- },
- "paylasim_hakki": {
-  "data": [
-   {
-    "quota_usage": 8,
-    "config": {
-     "quota_total": 100,
-     "quota_duration": 86400
-    }
-   }
-  ]
- },
- "istatistik_izni": "var",
- "dm_konusmalari": 1,
- "dm_kimlik": [
+ "new": 1,
+ "quiet": 0,
+ "room": 20,
+ "sent_last_24h": 0,
+ "later": 0,
+ "items": [
   {
-   "katilimci": [
-    {
-     "id": "eebc8b7c43b9",
-     "uzunluk": 17,
-     "biz": true
-    },
-    {
-     "id": "6e058c125164",
-     "uzunluk": 16,
-     "biz": false
-    }
-   ],
-   "mesajlar": [
-    {
-     "from": "eebc8b7c43b9",
-     "uzunluk": 17,
-     "to": [
-      "6e058c125164"
-     ],
-     "zaman": "2026-10-18T00:34:31+0000"
-    },
-    {
-     "from": "6e058c125164",
-     "uzunluk": 16,
-     "to": [
-      "eebc8b7c43b9"
-     ],
-     "zaman": "2026-10-18T00:34:04+0000"
-    },
-    {
-     "from": "6e058c125164",
-     "uzunluk": 16,
-     "to": [
-      "eebc8b7c43b9"
-     ],
-     "zaman": "2026-10-18T00:26:31+0000"
-    },
-    {
-     "from": "6e058c125164",
-     "uzunluk": 16,
-     "to": [
-      "eebc8b7c43b9"
-     ],
-     "zaman": "2026-10-17T23:30:48+0000"
-    }
-   ]
+   "id": "18131274500509778",
+   "kind": "yorum",
+   "author": "dc937b598926",
+   "text": "Tüm erkekler yok olsa ne olurdu",
+   "result": "atlandı: not safe for a family channel"
   }
  ],
- "medya": [
-  {
-   "link": "https://www.instagram.com/reel/DeopnMZkb5w/",
-   "zaman": "2026-10-18T12:10:14+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 5,
-    "reach": 0,
-    "saved": 0,
-    "shares": 0,
-    "likes": 0,
-    "ig_reels_avg_watch_time": 0
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DeoVJZBEuLe/",
-   "zaman": "2026-10-18T09:11:22+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 967,
-    "reach": 732,
-    "saved": 2,
-    "shares": 0,
-    "likes": 7,
-    "ig_reels_avg_watch_time": 8806
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DeoOAyfDO3E/",
-   "zaman": "2026-10-18T08:09:04+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1453,
-    "reach": 1297,
-    "saved": 3,
-    "shares": 0,
-    "likes": 9,
-    "ig_reels_avg_watch_time": 14804
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DeoAmM2k_Qw/",
-   "zaman": "2026-10-18T06:11:50+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1506,
-    "reach": 1311,
-    "saved": 0,
-    "shares": 0,
-    "likes": 1,
-    "ig_reels_avg_watch_time": 11111
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DenWg-9lByU/",
-   "zaman": "2026-10-18T00:04:00+0000",
-   "yorum_sayisi": 2,
-   "api_yorum": 2,
-   "istatistik": {
-    "views": 1679,
-    "reach": 1529,
-    "saved": 1,
-    "shares": 0,
-    "likes": 7,
-    "ig_reels_avg_watch_time": 10857
-   }
-  }
- ],
- "finished": "2026-10-18T12:16:37+00:00"
+ "finished": "2026-10-19T14:01:54+00:00"
 }
