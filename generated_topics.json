@@ -76,5 +76,15 @@
     ],
     "kategori": "hayvan",
     "source": "gemini"
+  },
+  {
+    "id": "mk-048",
+    "topic": "Kuşlar binlerce kilometre yolu kaybolmadan nasıl göç eder?",
+    "stock_hint": "bird migration, navigation",
+    "subject": [
+      "bird"
+    ],
+    "kategori": "hayvan",
+    "source": "gemini"
   }
 ]

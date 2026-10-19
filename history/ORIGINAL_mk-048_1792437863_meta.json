@@ -1,0 +1,309 @@
+{
+  "topic_id": "mk-048",
+  "topic": "Kuşlar binlerce kilometre yolu kaybolmadan nasıl göç eder?",
+  "series": "merak",
+  "script_provider": "gemini (görüntüye göre)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kuşlar binlerce kilometreyi nasıl bulur? 🧭",
+  "hook_text": "KUŞLAR YOLUNU NASIL BULUR?",
+  "description": "Kuşlar binlerce kilometre yolu kaybolmadan nasıl göç eder?\n\nGözlerindeki özel yapılarla Dünya'nın manyetik alanını hissederler. Güneşi ve yıldızları bir pusula gibi kullanırlar ve koku alma duyularıyla tanıdık kokuları takip ederler.\n\nSence kuşlar yön bulmak için en çok hangi duyularını kullanır: Manyetik alan mı, koku mu?\n\n#kuşlar #kuşgöçü #yönbulma #doğa #shorts #bilim #merak #keşfet\n\nSeri: mk-048",
+  "tags": [
+    "kuşlar",
+    "kuş göçü",
+    "kuşlar nasıl göç eder",
+    "kuşlar yolunu nasıl bulur",
+    "kuş yön bulma",
+    "kuşların yön bulma yöntemleri",
+    "kuşlar manyetik alan",
+    "kuşlar koku alma duyusu",
+    "kuşlar güneş yıldız",
+    "göçmen kuşlar",
+    "hayvanlarda yön bulma",
+    "binlerce kilometre",
+    "doğa harikası",
+    "ilginç bilgiler",
+    "bilimsel bilgiler",
+    "merak ettikleriniz",
+    "hayvanlar",
+    "bilim",
+    "doğa",
+    "eğitici",
+    "keşfet",
+    "shorts video",
+    "birds",
+    "bird migration",
+    "Göç",
+    "Navigasyon",
+    "Manyetik Alan",
+    "Yön Bulma",
+    "ZirveninKanunu",
+    "YouTubeShorts",
+    "kuslar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "How do birds find their way across thousands of kilometers? 🧭",
+      "description": "Birds travel thousands of kilometers each year without getting lost. They sense Earth's magnetic field, use the sun and stars as a compass, and follow familiar scents. Which sense do you think is most crucial for their navigation: magnetic field or smell?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "es": {
+      "title": "¿Cómo encuentran las aves su camino a lo largo de miles de kilómetros? 🧭",
+      "description": "Las aves viajan miles de kilómetros cada año sin perderse. Sienten el campo magnético de la Tierra, usan el sol y las estrellas como brújula, y siguen olores familiares. ¿Cuál crees que es el sentido más importante para su orientación: el campo magnético o el olfato?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "pt": {
+      "title": "Como as aves encontram seu caminho por milhares de quilômetros? 🧭",
+      "description": "As aves migram milhares de quilômetros anualmente sem se perder. Elas sentem o campo magnético da Terra, usam o sol e as estrelas como bússola, e seguem cheiros familiares. Na sua opinião, qual sentido é mais crucial para a sua navegação: campo magnético ou olfato?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "de": {
+      "title": "Wie finden Vögel ihren Weg über Tausende von Kilometern? 🧭",
+      "description": "Vögel legen jedes Jahr Tausende von Kilometern zurück, ohne sich zu verirren. Sie spüren das Magnetfeld der Erde, nutzen Sonne und Sterne als Kompass und folgen vertrauten Gerüchen. Welchen Sinn halten Sie für die Vogelnavigation am wichtigsten: Magnetfeld oder Geruchssinn?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "fr": {
+      "title": "Comment les oiseaux retrouvent-ils leur chemin sur des milliers de kilomètres? 🧭",
+      "description": "Chaque année, les oiseaux parcourent des milliers de kilomètres sans se perdre. Ils perçoivent le champ magnétique terrestre, utilisent le soleil et les étoiles comme boussole, et suivent des odeurs familières. Selon vous, quel sens est le plus essentiel pour leur orientation : le champ magnétique ou l'odorat ?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "it": {
+      "title": "Come fanno gli uccelli a trovare la strada per migliaia di chilometri? 🧭",
+      "description": "Ogni anno, gli uccelli percorrono migliaia di chilometri senza perdersi. Sentono il campo magnetico terrestre, usano il sole e le stelle come bussola e seguono odori familiari. Secondo te, qual è il senso più importante per la loro navigazione: il campo magnetico o l'olfatto?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "ru": {
+      "title": "Как птицы находят свой путь за тысячи километров? 🧭",
+      "description": "Каждый год птицы преодолевают тысячи километров, не теряясь. Они чувствуют магнитное поле Земли, используют солнце и звезды как компас и следуют знакомым запахам. Как вы думаете, какое чувство наиболее важно для их ориентации: магнитное поле или обоняние?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "ar": {
+      "title": "كيف تجد الطيور طريقها عبر آلاف الكيلومترات؟ 🧭",
+      "description": "تسافر الطيور آلاف الكيلومترات كل عام دون أن تضل طريقها. تشعر بالحقل المغناطيسي للأرض، وتستخدم الشمس والنجوم كبوصلة، وتتبع الروائح المألوفة. في رأيك، أي حاسة هي الأكثر أهمية لتوجيهها: المجال المغناطيسي أم الشم؟\n\n#shorts\n\nSeri: mk-048"
+    },
+    "hi": {
+      "title": "पक्षी हजारों किलोमीटर का रास्ता कैसे खोजते हैं? 🧭",
+      "description": "पक्षी हर साल हजारों किलोमीटर की यात्रा करते हैं बिना रास्ता भटके। वे पृथ्वी के चुंबकीय क्षेत्र को महसूस करते हैं, सूर्य और तारों को कम्पास की तरह इस्तेमाल करते हैं, और परिचित गंधों का अनुसरण करते हैं। आपके अनुसार, उनकी दिशा खोजने के लिए कौन सी इंद्रिय सबसे महत्वपूर्ण है: चुंबकीय क्षेत्र या गंध?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "id": {
+      "title": "Bagaimana burung menemukan jalannya ribuan kilometer jauhnya? 🧭",
+      "description": "Burung melakukan perjalanan ribuan kilometer setiap tahun tanpa tersesat. Mereka merasakan medan magnet Bumi, menggunakan matahari dan bintang sebagai kompas, serta mengikuti bau yang dikenal. Menurut Anda, indra mana yang paling penting untuk navigasi mereka: medan magnet atau penciuman?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "ja": {
+      "title": "鳥は何千キロも離れた場所をどうやって見つけるの？ 🧭",
+      "description": "鳥は毎年、何千キロもの距離を迷うことなく旅します。彼らは地球の磁場を感じ取り、太陽や星を羅針盤のように使い、慣れた匂いをたどります。彼らの方向感覚にとって最も重要なのは、磁場と嗅覚のどちらだと思いますか？\n\n#shorts\n\nSeri: mk-048"
+    },
+    "ko": {
+      "title": "새들은 수천 킬로미터를 어떻게 찾아갈까요? 🧭",
+      "description": "새들은 매년 수천 킬로미터를 길을 잃지 않고 이동합니다. 그들은 지구의 자기장을 감지하고, 태양과 별을 나침반처럼 사용하며, 익숙한 냄새를 따라갑니다. 새들의 길 찾기에 가장 중요한 감각은 자기장일까요, 아니면 후각일까요?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "pl": {
+      "title": "Jak ptaki odnajdują drogę na tysiące kilometrów? 🧭",
+      "description": "Ptaki co roku pokonują tysiące kilometrów, nie gubiąc się. Wyczuwają pole magnetyczne Ziemi, używają słońca i gwiazd jako kompasu oraz podążają za znajomymi zapachami. Który zmysł jest Twoim zdaniem najważniejszy dla ich nawigacji: pole magnetyczne czy węch?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "nl": {
+      "title": "Hoe vinden vogels hun weg over duizenden kilometers? 🧭",
+      "description": "Vogels leggen elk jaar duizenden kilometers af zonder te verdwalen. Ze voelen het magnetisch veld van de aarde, gebruiken de zon en sterren als kompas, en volgen bekende geuren. Welke zintuig is volgens jou het meest cruciaal voor hun navigatie: het magnetisch veld of de reukzin?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "uk": {
+      "title": "Як птахи знаходять свій шлях за тисячі кілометрів? 🧭",
+      "description": "Щороку птахи долають тисячі кілометрів, не гублячись. Вони відчувають магнітне поле Землі, використовують сонце та зірки як компас і слідують знайомим запахам. На вашу думку, яке почуття найважливіше для їхньої орієнтації: магнітне поле чи нюх?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "vi": {
+      "title": "Làm thế nào chim tìm đường đi hàng ngàn kilomet? 🧭",
+      "description": "Chim di chuyển hàng ngàn kilomet mỗi năm mà không bị lạc. Chúng cảm nhận từ trường Trái Đất, sử dụng mặt trời và các vì sao làm la bàn, và theo dõi những mùi hương quen thuộc. Theo bạn, giác quan nào quan trọng nhất cho việc định hướng của chúng: từ trường hay khứu giác?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "az": {
+      "title": "Quşlar minlərlə kilometri necə tapır? 🧭",
+      "description": "Quşlar hər il minlərlə kilometr yolu azmadan qət edir. Onlar Yerin maqnit sahəsini hiss edir, Günəşi və ulduzları kompas kimi istifadə edir, tanış qoxuları izləyirlər. Sizcə, quşlar istiqamət tapmaq üçün ən çox hansı hisslərindən istifadə edir: Maqnit sahəsi yoxsa qoxu?\n\n#shorts\n\nSeri: mk-048"
+    },
+    "ro": {
+      "title": "Cum își găsesc păsările drumul pe mii de kilometri? 🧭",
+      "description": "Păsările parcurg mii de kilometri în fiecare an fără să se piardă. Ele simt câmpul magnetic al Pământului, folosesc soarele și stelele ca busolă și urmăresc mirosurile familiare. Ce simț credeți că este cel mai important pentru navigația lor: câmpul magnetic sau mirosul?\n\n#shorts\n\nSeri: mk-048"
+    }
+  },
+  "seo_engine": "gemini",
+  "pinned_comment": "Sence kuşlar yön bulmak için en çok hangi duyularını kullanır: Manyetik alan mı, koku mu?",
+  "scenes": [
+    {
+      "text": "Bu kuşlar her yıl binlerce kilometre yol kat eder.",
+      "visual": "Flock of birds flying in V-formation against sky",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 1,
+          "kare": 2
+        },
+        {
+          "n": 12,
+          "kare": 1
+        },
+        {
+          "n": 16,
+          "kare": 1
+        }
+      ],
+      "callout": "BİNLERCE KM"
+    },
+    {
+      "text": "Peki, bu binlerce kilometrelik yolculukta nasıl kaybolmazlar?",
+      "visual": "Large flock of birds flying in clear blue sky",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 3,
+          "kare": 2
+        },
+        {
+          "n": 21,
+          "kare": 2
+        },
+        {
+          "n": 29,
+          "kare": 2
+        }
+      ]
+    },
+    {
+      "text": "Gözlerindeki özel yapılarla Dünya'nın manyetik alanını hissederler.",
+      "visual": "Close-up of bird's eye, looking intently",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 25,
+          "kare": 2
+        },
+        {
+          "n": 7,
+          "kare": 2
+        },
+        {
+          "n": 9,
+          "kare": 2
+        }
+      ],
+      "callout": "MANYETİK PUSULA"
+    },
+    {
+      "text": "Güneşi ve yıldızları bir pusula gibi kullanırlar.",
+      "visual": "Birds flying against sunset or moonlit sky",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 13,
+          "kare": 2
+        },
+        {
+          "n": 22,
+          "kare": 2
+        },
+        {
+          "n": 10,
+          "kare": 3
+        }
+      ],
+      "callout": "GÜNEŞ VE YILDIZLAR"
+    },
+    {
+      "text": "Koku alma duyularıyla tanıdık kokuları takip ederler.",
+      "visual": "Bird foraging on the ground or perched, moving its head",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 35,
+          "kare": 2
+        },
+        {
+          "n": 5,
+          "kare": 2
+        },
+        {
+          "n": 15,
+          "kare": 2
+        }
+      ],
+      "callout": "KOKU HARİTASI"
+    },
+    {
+      "text": "Bu inanılmaz duyularla her zaman evlerini bulurlar.",
+      "visual": "Flock of birds flying or descending over a landscape",
+      "stock_query": "",
+      "source": "ai",
+      "clips": [
+        {
+          "n": 17,
+          "kare": 3
+        },
+        {
+          "n": 38,
+          "kare": 3
+        }
+      ]
+    }
+  ],
+  "duration_seconds": 14.14,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "senaryo görüntüye göre",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-048_1792437863_ig.mp4",
+  "critique": {
+    "score": 5,
+    "issues": [
+      {
+        "area": "yazı",
+        "problem": "Bilgiyi görselleştiren grafik ve animasyon eksikliği, videoyu statik ve daha az açıklayıcı yapıyor.",
+        "fix": "Metindeki anahtar kavramları (manyetik alan, yönler, koku haritası) görselleştiren basit animasyonlu grafikler (oklar, pusula simgeleri, dalga efektleri) ekle. Ücretsiz stok animasyonlar veya basit hareketli grafikler kullanılabilir."
+      },
+      {
+        "area": "ses",
+        "problem": "Yapay zeka sesinin monotonluğu, izleyiciyi sıkabilir ve videonun etkisini azaltır.",
+        "fix": "Farklı yapay zeka sesleri dene, daha dinamik ve merak uyandıran bir tonlama seçmeye çalış. Gerekirse metni daha kısa cümlelere bölerek veya vurgulanacak kelimeleri belirterek yapay zekanın tonlamasını yönlendir."
+      },
+      {
+        "area": "kurgu",
+        "problem": "Görüntülerin ekranda uzun kalması ve basit kesmeler, videonun dinamizmini düşürüyor.",
+        "fix": "Görüntüleri daha hızlı değiştir (her 1-2 saniyede bir). Metnin akışına göre görüntüleri daha sık keserek videoya daha dinamik bir ritim kazandır."
+      },
+      {
+        "area": "görüntü",
+        "problem": "Görüntüler genel kalıyor, metindeki spesifik bilgileri doğrudan görselleştirmekte yetersiz kalıyor.",
+        "fix": "Her metin parçası için en uygun, en çarpıcı ve doğrudan ilgili stok videoları ara. Örneğin, manyetik pusula için kuşun gözündeki özel yapıları vurgulayan bir yakın çekim veya koku haritası için kuşun burnunu veya yerdeki kokuyu aramasını gö"
+      },
+      {
+        "area": "ses",
+        "problem": "Ses efektlerinin olmaması, videonun genel prodüksiyon kalitesini düşürüyor ve izleyici deneyimini zayıflatıyor.",
+        "fix": "Yazıların ekrana gelmesi, önemli bir bilginin vurgulanması gibi anlarda basit 'whoosh', 'pop' veya 'ding' gibi ses efektleri kullan."
+      },
+      {
+        "area": "senaryo",
+        "problem": "Kanca ve bilginin şaşırtıcılığı yeterince vurgulanmıyor, bu da izleyicinin ilgisini çekme potansiyelini azaltıyor.",
+        "fix": "Kancayı daha çarpıcı hale getir. Örneğin, 'Binlerce kilometre yol kat eden kuşlar, GPS'siz nasıl yol bulur?' gibi bir soruyla başlayabilir. Bilgilerin 'inanılmaz' olduğunu anlatıcının tonlaması ve görsel efektlerle destekle."
+      },
+      {
+        "area": "yazı",
+        "problem": "Yazıların statik görünümü ve bazen görüntüyü kapatması, görsel akışı bozuyor.",
+        "fix": "Yazıları görüntünün daha az önemli kısımlarına yerleştir veya boyutunu ayarlayarak görüntüyü engellemesini önle. Yazıların ekrana basit bir 'fade in' veya 'slide in' animasyonuyla gelmesini sağla."
+      },
+      {
+        "area": "ses",
+        "problem": "Müzik seçimi videonun genel atmosferini yeterince desteklemiyor.",
+        "fix": "Daha merak uyandırıcı, hafif gerilimli veya 'keşif' temalı ücretsiz fon müzikleri araştır ve kullan."
+      }
+    ],
+    "strengths": [
+      "Konu net ve bilgiler anlaşılır bir şekilde aktarılıyor.",
+      "Shorts formatına uygun, gereksiz uzatmalardan kaçınılmış.",
+      "Kullanılan stok videoların genel kalitesi iyi.",
+      "Ekrandaki yazılar büyük ve kolay okunabilir."
+    ],
+    "reference": "k951xfBlETg"
+  }
+}
