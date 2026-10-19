@@ -1,17 +1,84 @@
 {
- "started": "2026-10-19T09:07:54+00:00",
- "mod": "igbolum",
- "gate": "instagram: y004",
- "title": "Kara Deliğe Düşseydin Ne Olurdu?",
- "chars": 538,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18027807878879482",
-  "url": "https://www.instagram.com/reel/Deq50ohD42v/",
-  "at": 1792401026.4980254
+ "started": "2026-10-19T10:07:32+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "33",
+  "videos": "16"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Deq50ohD42v/"
+ "credits_before": [
+  6470,
+  613902
  ],
- "finished": "2026-10-19T09:10:26+00:00"
+ "topic": {
+  "id": "o0003",
+  "series": "Ya Olsaydı?",
+  "q": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
+  "oneri": true
+ },
+ "attempts": 1,
+ "model": "gemini-3.8-flash",
+ "fact_check": {
+  "ok": false,
+  "fixes": [
+   {
+    "line": 1,
+    "why": "Uranüs'ün açısal çapı Ay'ın tam 15 katı değil, yaklaşık 14,6 katıdır; 'tam' ifadesi hatalıdır."
+   },
+   {
+    "line": 2,
+    "why": "Uranüs'ün halkaları son derece ince ve kömür kadar karanlıktır (albedosu ~%2); Ay mesafesinde bile teleskopsuz görülemez."
+   }
+  ]
+ },
+ "chunks": 3,
+ "grounded": true,
+ "chars": 352,
+ "duration": 23.1,
+ "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
+ "url": "https://youtube.com/shorts/ActwPx-yTCQ",
+ "recent_status": {
+  "n003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "976",
+   "reason": null
+  },
+  "y006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1004",
+   "reason": null
+  },
+  "g004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "584",
+   "reason": null
+  },
+  "y007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1203",
+   "reason": null
+  },
+  "o0003": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  6556,
+  613902
+ ],
+ "log": [
+  "Konu: o0003 Ay'ın yerine Uranüs geçseydi ne olurdu? (Ya Olsaydı?)",
+  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
+ ],
+ "finished": "2026-10-19T10:11:54+00:00"
 }

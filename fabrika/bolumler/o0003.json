@@ -1,0 +1,557 @@
+{
+ "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
+ "bar": {
+  "hi": "URANÜS",
+  "rest": "AY OLSAYDI?"
+ },
+ "summary": "Ay'ın yerinde dev buz devi Uranüs bulunsaydı gökyüzümüz nasıl görünürdü? Dünya'nın bir gezegen olmaktan çıkıp bir uyduya dönüşeceği bu çılgın senaryoyu keşfedin.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Dünya bir gezegen olmaktan çıkar, Uranüs'ün uydusu olurdu.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "uranus",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "orbit",
+    "target": 1,
+    "key": "uydusu",
+    "label": "Yeni Uydu Dünya"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gökyüzünde Ay’dan yaklaşık 15 kat daha geniş görünürdü.",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "b": "uranus",
+     "label": "Uranüs",
+     "value": 15
+    },
+    "b": {
+     "b": "moon",
+     "label": "Ay",
+     "value": 1
+    },
+    "mode": "size",
+    "key": "15"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ama o karanlık halkalarını çıplak gözle yine göremezdik!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🪐",
+    "do": "grow",
+    "key": "halkalarını",
+    "label": "Buz Halkaları"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gelgitler 1.000 kat güçlenir, dev tsunamiler karaları yutardı.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "1.000",
+    "unit": "kat",
+    "label": "Gelgit Kuvveti",
+    "key": "1.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik Uranüs etrafındaki bir turumuz sadece 7 gün sürerdi.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "uranus",
+      "size": "l",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "xs",
+      "at": "r"
+     }
+    ],
+    "do": "spin",
+    "target": 1,
+    "key": "7",
+    "label": "7 Günlük Tur"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Mavi bir devin uydusu olmak ister miydin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Uranüs, Dünya'dan yaklaşık 14,5 kat daha büyük bir kütleye sahip olduğu için sistemin kütle merkezi Uranüs'ün içinde kalır ve Dünya onun uydusu olurdu.",
+   "source": "NASA Uranus Fact Sheet",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranusfact.html"
+  },
+  {
+   "text": "Uranüs'ün yaklaşık 51.118 kilometrelik çapı, 384.400 kilometre uzaklıkta gökyüzünde Ay'dan yaklaşık 15 kat daha geniş bir açısal çap kaplardı.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/uranus/facts/"
+  },
+  {
+   "text": "Uranüs'ün muazzam kütlesi nedeniyle Dünya üzerindeki gelgit çekim kuvveti Ay'ın oluşturduğundan 1.000 kattan fazla olurdu.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/uranus/facts/"
+  },
+  {
+   "text": "Kepler yasalarına göre Dünya'nın Uranüs etrafındaki ortalama yörünge süresi yaklaşık 7 gün sürerdi.",
+   "source": "NASA Fact Sheet",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranusfact.html"
+  }
+ ],
+ "tags": [
+  "uranüs",
+  "ay",
+  "dünya",
+  "uzay",
+  "gezegenler",
+  "astronomi",
+  "gökbilim",
+  "gelgit",
+  "gökyüzü",
+  "uranus",
+  "moon",
+  "earth",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#Uranüs",
+  "#YaOlsaydı",
+  "#UzayBilimi"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranusfact.html",
+  "https://science.nasa.gov/uranus/facts/",
+  "https://www.runcell.dev/tool/true-size-map/moon-replaced-by-planets"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Uranus Replaced the Moon?",
+   "summary": "What would our sky look like if the giant ice giant Uranus took the Moon's place? Discover this crazy scenario where Earth stops being a planet and becomes a moon.",
+   "facts": [
+    "Because Uranus has about 14.5 times the mass of Earth, the center of mass would remain inside Uranus, making Earth its moon.",
+    "With a diameter of about 51,118 kilometers at a distance of 384,400 kilometers, Uranus would span an angular diameter roughly 15 times larger than the Moon in the sky.",
+    "Due to Uranus's immense mass, the tidal gravitational force on Earth would be over 1,000 times stronger than what the Moon creates.",
+    "According to Kepler's laws, Earth's average orbital period around Uranus would be approximately 7 days."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si Urano reemplazara a la Luna?",
+   "summary": "¿Cómo se vería nuestro cielo si el gigante de hielo Urano estuviera en el lugar de la Luna? Descubre este loco escenario donde la Tierra dejaría de ser un planeta para convertirse en una luna.",
+   "facts": [
+    "Dado que Urano tiene unas 14,5 veces más masa que la Tierra, el centro de masa del sistema quedaría dentro de Urano y la Tierra se convertiría en su luna.",
+    "El diámetro de Urano, de unos 51.118 kilómetros, abarcaría a 384.400 kilómetros de distancia un diámetro angular unas 15 veces mayor que el de la Luna en el cielo.",
+    "Debido a la colosal masa de Urano, la fuerza gravitatoria de marea sobre la Tierra sería más de 1.000 veces mayor que la generada por la Luna.",
+    "Según las leyes de Kepler, el período orbital promedio de la Tierra alrededor de Urano duraría aproximadamente 7 días."
+   ]
+  },
+  "pt": {
+   "title": "E se Urano substituísse a Lua?",
+   "summary": "Como seria o nosso céu se o gigante de gelo Urano estivesse no lugar da Lua? Descubra este cenário insano em que a Terra deixaria de ser um planeta para se tornar uma lua.",
+   "facts": [
+    "Como Urano tem cerca de 14,5 vezes a massa da Terra, o centro de massa do sistema ficaria dentro de Urano e a Terra se tornaria sua lua.",
+    "Com um diâmetro de cerca de 51.118 quilômetros a 384.400 quilômetros de distância, Urano cobriria no céu um diâmetro angular cerca de 15 vezes maior que o da Lua.",
+    "Devido à imensa massa de Urano, a força gravitacional de maré sobre a Terra seria mais de 1.000 vezes maior do que a gerada pela Lua.",
+    "De acordo com as leis de Kepler, o período orbital médio da Terra ao redor de Urano duraria cerca de 7 dias."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو حل أورانوس محل القمر؟",
+   "summary": "كيف ستبدو سماؤنا لو حل العملاق الجليدي أورانوس محل القمر؟ اكتشف هذا السيناريو المثير حيث تتوقف الأرض عن كونها كوكباً وتتحول إلى قمر تابع.",
+   "facts": [
+    "نظراً لأن كتلة أورانوس تعادل نحو 14.5 ضعف كتلة الأرض، فإن مركز كتلة النظام سيكون داخل أورانوس، وستصبح الأرض قمراً تابعاً له.",
+    "بقطر يبلغ نحو 51,118 كيلومتراً وعلى مسافة 384,400 كيلومتر، سيشغل أورانوس في السماء قطراً زاويّاً أكبر بنحو 15 مرة من حجم القمر.",
+    "نظراً لكتلة أورانوس الهائلة، ستكون قوى المد والجزر الجاذبية المؤثرة على الأرض أكبر بأكثر من 1,000 مرة مما يسببه القمر.",
+    "وفقاً لقوانين كبلر، ستستغرق الفترة المدارية المتوسطة للأرض حول أورانوس نحو 7 أيام."
+   ]
+  },
+  "hi": {
+   "title": "क्या होता अगर चाँद की जगह यूरेनस आ जाता?",
+   "summary": "अगर चाँद की जगह विशाल बर्फ़ीला ग्रह यूरेनस आ जाए तो हमारा आसमान कैसा दिखेगा? जानिए इस अनोखे परिदृश्य के बारे में जहां पृथ्वी एक ग्रह न रहकर एक उपग्रह बन जाएगी।",
+   "facts": [
+    "यूरेनस का द्रव्यमान पृथ्वी से लगभग 14.5 गुना अधिक होने के कारण, प्रणाली का द्रव्यमान केंद्र यूरेनस के भीतर रहेगा और पृथ्वी इसका उपग्रह बन जाएगी।",
+    "384,400 किलोमीटर की दूरी पर यूरेनस का लगभग 51,118 किलोमीटर का व्यास, आसमान में चाँद की तुलना में लगभग 15 गुना बड़ा कोणीय व्यास घेरेगा।",
+    "यूरेनस के विशाल द्रव्यमान के कारण, पृथ्वी पर ज्वार-भाटा गुरुत्वाकर्षण बल चाँद द्वारा उत्पन्न बल से 1,000 गुना से भी अधिक होगा।",
+    "केप्लर के नियमों के अनुसार, यूरेनस के चारों ओर पृथ्वी की औसत कक्षीय अवधि लगभग 7 दिन होगी।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Uranus Menggantikan Bulan?",
+   "summary": "Seperti apa penampakan langit kita jika raksasa es Uranus menggantikan posisi Bulan? Jelajahi skenario gila ini di mana Bumi bukan lagi sebuah planet melainkan berubah menjadi sebuah bulan.",
+   "facts": [
+    "Karena Uranus memiliki massa sekitar 14,5 kali lebih besar dari Bumi, pusat massa sistem akan berada di dalam Uranus dan Bumi akan menjadi bulannya.",
+    "Diameter Uranus yang sekitar 51.118 kilometer pada jarak 384.400 kilometer akan mencakup diameter sudut sekitar 15 kali lebih besar daripada Bulan di langit.",
+    "Akibat massa masif Uranus, gaya pasang surut gravitasi pada Bumi akan lebih dari 1.000 kali lebih besar daripada yang dihasilkan Bulan.",
+    "Berdasarkan hukum Kepler, periode orbit rata-rata Bumi mengelilingi Uranus akan berlangsung sekitar 7 hari."
+   ]
+  },
+  "fr": {
+   "title": "Et si Uranus remplaçait la Lune ?",
+   "summary": "À quoi ressemblerait notre ciel si la géante de glace Uranus prenait la place de la Lune ? Découvrez ce scénario fou où la Terre cesserait d'être une planète pour devenir une lune.",
+   "facts": [
+    "Comme Uranus a une masse environ 14,5 fois supérieure à celle de la Terre, le centre de masse du système se trouverait à l'intérieur d'Uranus et la Terre deviendrait sa lune.",
+    "Avec un diamètre d'environ 51 118 kilomètres à une distance de 384 400 kilomètres, Uranus occuperait dans le ciel un diamètre angulaire environ 15 fois plus grand que la Lune.",
+    "En raison de la masse colossale d'Uranus, la force de marée gravitationnelle exercée sur la Terre serait plus de 1 000 fois supérieure à celle créée par la Lune.",
+    "Selon les lois de Kepler, la période orbitale moyenne de la Terre autour d'Uranus durerait environ 7 jours."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Uranus den Mond ersetzen würde?",
+   "summary": "Wie würde unser Himmel aussehen, wenn der riesige Eisriese Uranus den Mond ersetzen würde? Entdecke dieses verrückte Szenario, in dem die Erde kein Planet mehr wäre, sondern zu einem Mond würde.",
+   "facts": [
+    "Da Uranus etwa 14,5-mal mehr Masse als die Erde besitzt, würde der Massenschwerpunkt des Systems im Inneren von Uranus liegen und die Erde würde zu seinem Mond.",
+    "Uranus' Durchmesser von etwa 51.118 Kilometern würde in einer Entfernung von 384.400 Kilometern am Himmel einen etwa 15-mal größeren Winkeldurchmesser als der Mond einnehmen.",
+    "Aufgrund der gewaltigen Masse von Uranus wäre die Gezeitengravitationskraft auf die Erde mehr als 1.000-mal stärker als die des Mondes.",
+    "Nach den Keplerschen Gesetzen würde die durchschnittliche Umlaufzeit der Erde um Uranus etwa 7 Tage betragen."
+   ]
+  },
+  "ru": {
+   "title": "Что, если бы Уран заменил Луну?",
+   "summary": "Как выглядело бы наше небо, если бы на месте Луны оказался ледяной гигант Уран? Узнайте об этом безумном сценарии, в котором Земля перестает быть планетой и превращается в спутник.",
+   "facts": [
+    "Поскольку масса Урана примерно в 14,5 раз превышает массу Земли, центр масс системы остался бы внутри Урана, и Земля стала бы его спутником.",
+    "Диаметр Урана около 51 118 километров на расстоянии 384 400 километров создавал бы на небе угловой размер примерно в 15 раз больше Луны.",
+    "Из-за колоссальной массы Урана приливная гравитационная сила на Земле была бы более чем в 1 000 раз сильнее, чем создаваемая Луной.",
+    "Согласно законам Кеплера, средний период обращения Земли вокруг Урана составил бы около 7 дней."
+   ]
+  },
+  "az": {
+   "title": "Ayın yerinə Uran keçsəydi nə olardı?",
+   "summary": "Ayın yerində nəhəng buz nəhəngi Uran olsaydı, səmamız necə görünərdi? Yerin bir planet olmaqdan çıxıb peykə çevriləcəyi bu ağlasığmaz ssenarini kəşf edin.",
+   "facts": [
+    "Uran Yerdən təxminən 14,5 dəfə böyük kütləyə malik olduğu üçün sistemin kütlə mərkəzi Uranın daxilində qalar və Yer onun peykinə çevrilərdi.",
+    "Uranın təxminən 51.118 kilometrlik diametri 384.400 kilometr məsafədə səmada Aydan təxminən 15 dəfə daha geniş bucaq diametri tutardı.",
+    "Uranın nəhəng kütləsinə görə Yer üzərindəki qabarma-çəkilmə cazibə qüvvəsi Ayın yaratdığından 1.000 dəfədən çox olardı.",
+    "Kepler qanunlarına görə Yerin Uran ətrafındakı orta orbit dövrü təxminən 7 gün çəkərdi."
+   ]
+  }
+ },
+ "id": "o0003",
+ "series": "Ya Olsaydı?",
+ "q": "Ay'ın yerine Uranüs geçseydi ne olurdu?",
+ "timings": [
+  {
+   "t0": 0.35,
+   "t1": 3.555,
+   "words": [
+    {
+     "w": "Dünya",
+     "t0": 0.35,
+     "t1": 0.663
+    },
+    {
+     "w": "bir",
+     "t0": 0.722,
+     "t1": 0.826
+    },
+    {
+     "w": "gezegen",
+     "t0": 0.884,
+     "t1": 1.198
+    },
+    {
+     "w": "olmaktan",
+     "t0": 1.256,
+     "t1": 1.697
+    },
+    {
+     "w": "çıkar,",
+     "t0": 1.7429999999999999,
+     "t1": 2.1029999999999998
+    },
+    {
+     "w": "Uranüs'ün",
+     "t0": 2.15,
+     "t1": 2.556
+    },
+    {
+     "w": "uydusu",
+     "t0": 2.602,
+     "t1": 2.916
+    },
+    {
+     "w": "olurdu.",
+     "t0": 2.939,
+     "t1": 3.555
+    }
+   ]
+  },
+  {
+   "t0": 3.7550000000000003,
+   "t1": 6.913,
+   "words": [
+    {
+     "w": "Gökyüzünde",
+     "t0": 3.7550000000000003,
+     "t1": 4.277
+    },
+    {
+     "w": "Ay’dan",
+     "t0": 4.347,
+     "t1": 4.626
+    },
+    {
+     "w": "yaklaşık",
+     "t0": 4.684,
+     "t1": 5.114000000000001
+    },
+    {
+     "w": "15",
+     "t0": 5.183,
+     "t1": 5.416
+    },
+    {
+     "w": "kat",
+     "t0": 5.485,
+     "t1": 5.625
+    },
+    {
+     "w": "daha",
+     "t0": 5.659000000000001,
+     "t1": 5.8340000000000005
+    },
+    {
+     "w": "geniş",
+     "t0": 5.868,
+     "t1": 6.112
+    },
+    {
+     "w": "görünürdü.",
+     "t0": 6.159000000000001,
+     "t1": 6.913
+    }
+   ]
+  },
+  {
+   "t0": 7.293,
+   "t1": 10.544,
+   "words": [
+    {
+     "w": "Ama",
+     "t0": 7.293,
+     "t1": 7.525
+    },
+    {
+     "w": "o",
+     "t0": 7.5600000000000005,
+     "t1": 7.583
+    },
+    {
+     "w": "karanlık",
+     "t0": 7.641,
+     "t1": 8.059000000000001
+    },
+    {
+     "w": "halkalarını",
+     "t0": 8.106,
+     "t1": 8.605
+    },
+    {
+     "w": "çıplak",
+     "t0": 8.663,
+     "t1": 9.0
+    },
+    {
+     "w": "gözle",
+     "t0": 9.046,
+     "t1": 9.336
+    },
+    {
+     "w": "yine",
+     "t0": 9.394,
+     "t1": 9.592
+    },
+    {
+     "w": "göremezdik!",
+     "t0": 9.638,
+     "t1": 10.544
+    }
+   ]
+  },
+  {
+   "t0": 10.935199546485261,
+   "t1": 14.325199546485262,
+   "words": [
+    {
+     "w": "Gelgitler",
+     "t0": 10.935199546485261,
+     "t1": 11.399199546485262
+    },
+    {
+     "w": "1.000",
+     "t0": 11.457199546485262,
+     "t1": 11.585199546485262
+    },
+    {
+     "w": "kat",
+     "t0": 11.620199546485262,
+     "t1": 11.759199546485261
+    },
+    {
+     "w": "güçlenir,",
+     "t0": 11.806199546485262,
+     "t1": 12.305199546485262
+    },
+    {
+     "w": "dev",
+     "t0": 12.52619954648526,
+     "t1": 12.723199546485262
+    },
+    {
+     "w": "tsunamiler",
+     "t0": 12.770199546485262,
+     "t1": 13.246199546485261
+    },
+    {
+     "w": "karaları",
+     "t0": 13.304199546485261,
+     "t1": 13.640199546485261
+    },
+    {
+     "w": "yutardı.",
+     "t0": 13.66419954648526,
+     "t1": 14.325199546485262
+    }
+   ]
+  },
+  {
+   "t0": 14.52531292517007,
+   "t1": 17.91531292517007,
+   "words": [
+    {
+     "w": "Üstelik",
+     "t0": 14.52531292517007,
+     "t1": 14.92031292517007
+    },
+    {
+     "w": "Uranüs",
+     "t0": 14.97831292517007,
+     "t1": 15.26831292517007
+    },
+    {
+     "w": "etrafındaki",
+     "t0": 15.32631292517007,
+     "t1": 15.95331292517007
+    },
+    {
+     "w": "bir",
+     "t0": 15.98831292517007,
+     "t1": 16.08131292517007
+    },
+    {
+     "w": "turumuz",
+     "t0": 16.11631292517007,
+     "t1": 16.45231292517007
+    },
+    {
+     "w": "sadece",
+     "t0": 16.49931292517007,
+     "t1": 16.90531292517007
+    },
+    {
+     "w": "7",
+     "t0": 16.96331292517007,
+     "t1": 17.11431292517007
+    },
+    {
+     "w": "gün",
+     "t0": 17.14931292517007,
+     "t1": 17.25331292517007
+    },
+    {
+     "w": "sürerdi.",
+     "t0": 17.288312925170068,
+     "t1": 17.91531292517007
+    }
+   ]
+  },
+  {
+   "t0": 18.295426303854878,
+   "t1": 21.45342630385488,
+   "words": [
+    {
+     "w": "Mavi",
+     "t0": 18.295426303854878,
+     "t1": 18.597426303854878
+    },
+    {
+     "w": "bir",
+     "t0": 18.643426303854877,
+     "t1": 18.759426303854877
+    },
+    {
+     "w": "devin",
+     "t0": 18.817426303854877,
+     "t1": 19.02642630385488
+    },
+    {
+     "w": "uydusu",
+     "t0": 19.08442630385488,
+     "t1": 19.410426303854877
+    },
+    {
+     "w": "olmak",
+     "t0": 19.45642630385488,
+     "t1": 19.70042630385488
+    },
+    {
+     "w": "ister",
+     "t0": 19.74742630385488,
+     "t1": 20.03742630385488
+    },
+    {
+     "w": "miydin?",
+     "t0": 20.106426303854878,
+     "t1": 20.39742630385488
+    },
+    {
+     "w": "Yorumlara",
+     "t0": 20.43242630385488,
+     "t1": 20.873426303854878
+    },
+    {
+     "w": "yaz!",
+     "t0": 20.919426303854877,
+     "t1": 21.45342630385488
+    }
+   ]
+  }
+ ]
+}
