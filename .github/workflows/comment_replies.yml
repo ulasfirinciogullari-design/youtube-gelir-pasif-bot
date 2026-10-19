@@ -3,8 +3,8 @@ name: Yorum Cevaplayıcı
 # Answers new comments on the channel every hour in the channel's voice, also when nobody is online
 # (scripts/comment_replies.py; Ulaş asked for it on 2026-10-16). GitHub drops most cron ticks, so the hourly
 # watch (slot_heartbeat.yml) starts this workflow at :45 too; a run that finds nothing new ends in seconds.
-# At most ZK_YORUM_GUNLUK replies a day (default 30, 1,500 of the 10,000 YouTube units shared with Ya
-# Olsaydı?). To stop it: Settings > Secrets and variables > Actions > Variables, add ZK_YORUM_KAPALI = 1.
+# At most ZK_YORUM_GUNLUK replies a day (default 80, 4,000 of the channel's own 10,000 YouTube units).
+# To stop it: Settings > Secrets and variables > Actions > Variables, add ZK_YORUM_KAPALI = 1.
 
 on:
   workflow_dispatch:
