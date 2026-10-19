@@ -42,40 +42,67 @@ function talk(t, L) {
   return .4 + .6 * Math.abs(Math.sin((t - w.t0) / Math.max(.05, w.t1 - w.t0) * Math.PI));
 }
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+function cam(cx, cy, z, fn, depth = 1) {
+  const k = depth;
+  ctx.save(); ctx.translate(540, 900); ctx.scale(1 + (z - 1) * k, 1 + (z - 1) * k);
+  ctx.translate(-lerp(540, cx, k), -lerp(900, cy, k)); fn(); ctx.restore();
+}
 
 // ---------- scenes: f(V, L, t, lt), lt = seconds since the scene started ----------
 const VIS = {
   usta(V, L, t, lt) {
+    // The loop: the last line pushes into Usta's eyes until they go dark, the first frame starts on those eyes
+    // opening and pulls back to reveal the stage.
+    const zin = L.t0 < .5 ? 1 - eio(prog(t, .05, 1.2)) : 0;
+    const zout = V.end ? eio(prog(t, L.t0 + .1, L.t1 + .45)) : 0;
+    const zz = 1 + 1.3 * Math.max(zin, zout);
+    ctx.save(); ctx.translate(540, 880); ctx.scale(zz, zz); ctx.translate(-540, -880);
     room(t, '#0e0c11');
     beam(540, 0, 1500, 220, 900, C.gold, .10, t, 50);
     embers(t, 30, 120, 960, 1550, 1000);
-    const end = V.end ? prog(t, L.t1 + .05, L.t1 + .4) : 0;  // the loop restarts with the eyes opening
+    const end = V.end ? prog(t, L.t1 + .05, L.t1 + .4) : 0;
     const open = L.t0 < .5 ? .45 + .55 * eo(prog(t, 0, .3)) : 1;
-    const bt = wordTime(L, V.key, .6);
-    if (V.ghost) {  // the person who dislikes you, behind the narrator; warms up when the favour appears
-      const gk = eo(prog(t, wordTime(L, V.ghost, .2) - .1, wordTime(L, V.ghost, .2) + .45));
+    const bt = wordTime(L, V.key, .6), warm = eo(prog(t, bt, bt + .6));
+    if (V.ghost) {  // the person who dislikes you, behind the narrator: arms crossed, red; he warms up at the favour
+      const gt = wordTime(L, V.ghost, .2), gk = eo(prog(t, gt - .1, gt + .45));
       if (gk > 0) {
+        glow(980, 760, 560, rgba(C.red, 1), .28 * gk * (1 - warm));
         ctx.save(); ctx.globalAlpha = gk;
-        person('rakip', lerp(930, 860, gk), 880, .8, -1, mixColor(C.red, C.gold, eo(prog(t, bt, bt + .6))), t);
+        person('rakip', lerp(980, 870, gk), 880, .8, -1, mixColor(C.red, C.gold, warm), t,
+          { arm: 'cross', armK: 1 - warm, mood: warm > .5 ? 'calm' : 'angry', lean: lerp(-.03, .05, warm) });
         ctx.restore();
       }
     }
+    ctx.save(); ctx.translate(540, 1900); ctx.rotate(Math.sin(t * .6) * .012); ctx.translate(-540, -1900);
     usta(540, 930, 1.32, t, { talk: talk(t, L), eyes: open * (1 - end) });
+    ctx.restore();
     floor(1500, C.gold, .25, 1000);
+    fog(t, 1420, .05);
     if (V.prop === 'book') {
-      const kt = bt, k = eo(prog(t, kt - .1, kt + .5));
+      const k = eo(prog(t, bt - .1, bt + .5));
       if (k > 0) {
+        const by = lerp(1330, 1215, k) + Math.sin(t * 2) * 6, bw = 210 * lerp(.6, 1, k);
         beam(540, 1000, 1500, 60, 420, C.gold2, .12 * k, t, 12);
-        book(540, lerp(1330, 1215, k) + Math.sin(t * 2) * 6, 210 * lerp(.6, 1, k), t, { alpha: k, rot: Math.sin(t * 1.3) * .04 });
+        book(540, by, bw, t, { alpha: k, rot: Math.sin(t * 1.3) * .04 });
+        ustaHands(540, by, bw, C.gold, k);
       }
     }
+    ctx.restore();
   },
   meclis(V, L, t, lt) {
-    hall(t);
     const kt = wordTime(L, V.key, .5);
-    const fk = eo(prog(lt, 0, .7)), rk = eo(prog(t, kt - .3, kt + .3));
-    person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t);
-    person('rakip', lerp(860, 780, rk), 930, 1.0, -1, mixColor(C.goldDim, C.red, rk), t, { arm: 'point', armK: eo(prog(t, kt, kt + .45)) });
+    const fk = eo(prog(lt, 0, .7)), rk = eo(prog(t, kt - .3, kt + .3)), pk = eo(prog(t, kt, kt + .45));
+    // the camera starts on Franklin and swings to the man who attacks him
+    const cx = lerp(470, 610, eio(prog(t, kt - .6, kt + .5))), z = 1.1 + .05 * eio(prog(t, kt - .6, kt + .5));
+    cam(cx, 920, z, () => hall(t), .5);
+    cam(cx, 920, z, () => {
+      person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t, { mood: 'calm', lean: -.03 * pk });
+      const shout = t > kt && t < L.t1 ? .4 + .6 * Math.abs(Math.sin(t * 13)) : 0;
+      person('rakip', lerp(860, 780, rk), 930, 1.0, -1, mixColor(C.goldDim, C.red, rk), t,
+        { arm: 'point', armK: pk, mood: rk > .3 ? 'angry' : 'calm', lean: .06 * pk, talk: shout });
+      fog(t, 1330, .045);
+    });
+    cam(cx, 920, z, () => crowd(t, 1640, C.candle), 1.4);  // the members in front move more than the stage
     if (V.year) {
       const k = eo(prog(lt, .1, .6));
       ctx.save(); ctx.globalAlpha = k;
@@ -89,7 +116,7 @@ const VIS = {
     beam(540, 0, 1500, 260, 1000, C.gold, .06, t, 30);
     const items = (V.items || []).slice(0, 2), xs = [300, 780];
     items.forEach((it, i) => {
-      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 880;
+      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 940;
       if (k <= .01) return;
       const st = wordTime(L, it.key, .3 + .4 * i), hit = prog(t, st, st + .35);
       const shake = hit > 0 && hit < 1 ? Math.sin(t * 70) * 10 * (1 - hit) : 0;
@@ -103,54 +130,70 @@ const VIS = {
     });
   },
   kitaplik(V, L, t, lt) {
-    room(t, '#0c0a09');
     const lit = wordTime(L, V.key, .35), fly = wordTime(L, V.fly, .6), note = wordTime(L, V.note, .8);
-    shelves(t, [1, 7], eo(prog(t, fly, fly + .6)) * (t > lit ? 1 : 0) + (t > lit ? .001 : 0));
-    candle(150, 1350, t, 1.1);
     const sk = eo(prog(t, fly, fly + .6));
-    if (t > lit && shelves.slot) {
-      const [sx, sy] = shelves.slot;
-      const k = sk, x = lerp(sx, 560, k), y = lerp(sy, 900, k);
-      if (k > 0) book(x, y, lerp(46, 300, k), t, { alpha: 1, rot: lerp(0, -.05, k), shine: k });
-      else glow(sx, sy, 140, rgba(C.gold, 1), .6 * prog(t, lit, lit + .3));
-    }
-    const nk = eo(prog(t, note, note + .5));
-    if (nk > 0) letter(lerp(-200, 330, nk), lerp(1300, 1210, nk), 260, lerp(-.5, -.12, nk));
+    // a slow push towards the shelf, then the camera settles on the book as it comes forward
+    const z = 1.04 + .1 * eio(prog(lt, 0, 1.4)) - .06 * sk, cy = lerp(820, 900, sk);
+    cam(540, cy, z, () => {
+      room(t, '#0c0a09');
+      shelves(t, [1, 7], sk * (t > lit ? 1 : 0) + (t > lit ? .001 : 0));
+      candle(140, 1200, t, 1);
+      if (t > lit && shelves.slot) {
+        const [sx, sy] = shelves.slot;
+        const x = lerp(sx, 560, sk), y = lerp(sy, 900, sk);
+        if (sk > 0) book(x, y, lerp(46, 300, sk), t, { alpha: 1, rot: lerp(0, -.05, sk), shine: sk });
+        else glow(sx, sy, 140, rgba(C.gold, 1), .6 * prog(t, lit, lit + .3));
+      }
+      const nk = eo(prog(t, note, note + .5));
+      if (nk > 0) letter(lerp(-200, 330, nk), lerp(1300, 1210, nk), 260, lerp(-.5, -.12, nk));
+      fog(t, 1400, .04, '#a08060');
+    });
     plate(V.label, 600, 1340, 40, back(prog(t, note + .2, note + .6)));
   },
   dost(V, L, t, lt) {
-    hall(t);
     const give = wordTime(L, V.give, .3), kt = wordTime(L, V.key, .7);
     const bk = prog(t, give, give + .8), c = eo(prog(t, kt - .5, kt + .2));
     const fx = lerp(260, 330, c), rx = lerp(820, 750, c);
     const rim = mixColor(C.red, C.gold, eo(prog(t, give + .3, kt + .1)));
-    person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c });
-    person('rakip', rx, 930, 1.0, -1, rim, t, { arm: 'shake', armK: c });
-    if (bk > 0 && bk < 1) {  // the book travels from his hands to Franklin's
-      const x = lerp(rx - 120, fx + 120, eio(bk)), y = 1060 - Math.sin(bk * Math.PI) * 140;
-      book(x, y, 90, t, { rot: bk * 6.28 * .5, shine: .7 });
-    }
-    if (c > .95) {
-      const p = prog(t, kt + .15, kt + 1.1);
-      if (p > 0 && p < 1) {
-        ctx.save(); ctx.globalCompositeOperation = 'lighter';
-        for (let i = 0; i < 26; i++) {
-          const a = rnd(i) * 6.28, d = eo(p) * (80 + rnd(i + 2) * 260);
-          ctx.globalAlpha = 1 - p; circle(540 + Math.cos(a) * d, 1000 + Math.sin(a) * d * .7, 3 + rnd(i + 4) * 4, C.gold2);
-        }
-        ctx.restore();
+    // wide while the book changes hands, then a push in on the handshake
+    const push = eio(prog(t, kt - .3, kt + .6)), z = lerp(1.04, 1.3, push), cy = lerp(920, 1040, push);
+    cam(540, cy, z, () => hall(t), .5);
+    cam(540, cy, z, () => {
+      const gk = eo(prog(t, give - .4, give)), happy = c > .9 && t > kt;
+      person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c, mood: happy ? 'happy' : 'calm' });
+      person('rakip', rx, 930, 1.0, -1, rim, t, { arm: 'give', armK: Math.max(gk * (1 - bk * .4), c), arm2: 'shake', armMix: c,
+        mood: happy ? 'happy' : bk > .3 ? 'calm' : 'angry', lean: .04 * gk * (1 - c) });
+      fog(t, 1330, .045);
+      if (bk > 0 && bk < 1) {  // the book travels from his hands to Franklin's
+        const x = lerp(rx - 120, fx + 120, eio(bk)), y = 1060 - Math.sin(bk * Math.PI) * 140;
+        book(x, y, 90, t, { rot: bk * 6.28 * .5, shine: .7 });
       }
-      glow(540, 1010, 260, rgba(C.gold, 1), .5 * eo(prog(t, kt, kt + .4)));
-    }
+      if (c > .95) {
+        const p = prog(t, kt + .15, kt + 1.1);
+        if (p > 0 && p < 1) {
+          ctx.save(); ctx.globalCompositeOperation = 'lighter';
+          for (let i = 0; i < 26; i++) {
+            const a = rnd(i) * 6.28, d = eo(p) * (80 + rnd(i + 2) * 260);
+            ctx.globalAlpha = 1 - p; circle(540 + Math.cos(a) * d, 1210 + Math.sin(a) * d * .7, 3 + rnd(i + 4) * 4, C.gold2);
+          }
+          ctx.restore();
+        }
+        glow(540, 1220, 260, rgba(C.gold, 1), .5 * eo(prog(t, kt, kt + .4)));
+      }
+    });
     plate(V.label, 540, 1345, 44, back(prog(t, kt + .1, kt + .5)));
   },
   beyin(V, L, t, lt) {
     room(t, '#0d0b10');
     beam(540, 0, 1400, 200, 800, C.gold, .07, t, 30);
-    brain(540, 860, 1.25, t, eo(prog(lt, 0, .5)));
+    cam(540, 860, 1 + .08 * eio(prog(lt, 0, 3)), () => {
+      ctx.save(); ctx.translate(540, 860); ctx.rotate(Math.sin(t * .5) * .02); ctx.translate(-540, -860);
+      brain(540, 860, 1.25, t, eo(prog(lt, 0, .5)));
+      ctx.restore();
+    });
     plate(V.label, 540, 520, 42, back(prog(lt, .15, .6)));
     (V.steps || []).forEach((s, i) => {
-      const at = wordTime(L, s.key, .3 + .4 * i), k = back(prog(t, at, at + .4)), y = 1190 + i * 125;
+      const at = wordTime(L, s.key, .3 + .4 * i), k = back(prog(t, at, at + .4)), y = 1235 + i * 118;
       if (i) { ctx.save(); ctx.globalAlpha = clamp(k); text('▼', 540, y - 64, 30, C.gold, SANS, 900); ctx.restore(); }
       plate(s.text, 540, y, 38, k, i ? C.gold2 : C.bone);
     });
@@ -179,7 +222,7 @@ function titleBar(t) {
 }
 function subtitles(t, line) {
   if (!line || t > line.t1 + .25) return;
-  const words = line.words, Y = 1500, S = 74, gap = 30;
+  const words = line.words, Y = 1500, S = 74, gap = 36;
   let idx = words.findIndex(w => t >= w.t0 && t < w.t1);
   if (idx < 0) { idx = 0; words.forEach((w, i) => { if (t >= w.t0) idx = i; }); }
   const wd = (w, s) => measure(up(w), s, SANS, 900);
@@ -198,7 +241,7 @@ function subtitles(t, line) {
   grp.forEach((j, k) => {
     const w = words[j].w, active = j === idx;
     const isKey = /\d/.test(w) || keys.some(p => p && norm(w).startsWith(p));
-    const pop = active ? 1 + .1 * (1 - eo(prog(t, words[j].t0, words[j].t0 + .12))) : 1;
+    const pop = active ? 1 + .06 * (1 - eo(prog(t, words[j].t0, words[j].t0 + .12))) : 1;
     ctx.save(); ctx.translate(x + ws[k] / 2, Y); ctx.scale(pop, pop);
     if (active) {
       ctx.shadowColor = rgba(C.gold, .6); ctx.shadowBlur = 26;
@@ -217,7 +260,7 @@ window.draw = function (t) {
   let li = TL.findIndex(l => t < l.t1 + 0.18); if (li < 0) li = TL.length - 1;
   const line = TL[li];
   let si = li; while (si > 0 && same(TL[si - 1].v, line.v)) si--;
-  const sceneStart = si === 0 ? 0 : TL[si].t0 - 0.12;
+  const sceneStart = si === 0 ? 0 : Math.min(TL[si].t0 - 0.12, TL[si - 1].t1 + 0.18);
   const lt = Math.max(0, t - sceneStart);
   const z = 1.035 - .035 * eo(prog(lt, 0, .45)) + .012 * lt;  // a snap in, then a slow push
   ctx.save(); ctx.translate(540, 900); ctx.scale(z, z); ctx.translate(-540, -900);
@@ -225,7 +268,14 @@ window.draw = function (t) {
   (VIS[V.t] || VIS.usta)(V, line, t, lt);
   ctx.restore();
   ctx.globalAlpha = 1; ctx.shadowColor = 'transparent'; ctx.globalCompositeOperation = 'source-over';
-  if (si > 0 && lt < .3) { ctx.fillStyle = `rgba(0,0,0,${.85 * (1 - eo(lt / .3))})`; ctx.fillRect(0, 0, W, H); }
+  if (si > 0 && lt < .22) { ctx.fillStyle = `rgba(0,0,0,${.7 * (1 - eo(lt / .22))})`; ctx.fillRect(0, 0, W, H); }
+  if (si > 0 && lt < .4) {
+    const sx = lerp(-500, W + 500, eio(lt / .4));
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.translate(sx, 960); ctx.rotate(.35);
+    const sg = ctx.createLinearGradient(-160, 0, 160, 0);
+    sg.addColorStop(0, 'rgba(232,181,74,0)'); sg.addColorStop(.5, 'rgba(232,181,74,.16)'); sg.addColorStop(1, 'rgba(232,181,74,0)');
+    ctx.fillStyle = sg; ctx.fillRect(-160, -1400, 320, 2800); ctx.restore();
+  }
   vignette(.8);
   // keep the title and subtitles readable over bright scenes
   let g = ctx.createLinearGradient(0, 0, 0, 470); g.addColorStop(0, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,0)');

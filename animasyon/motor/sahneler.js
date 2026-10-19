@@ -129,9 +129,12 @@ function figureCanvas(key, s) {
   c.forEach(k => { if (k.width !== w || k.height !== h) { k.width = w; k.height = h; } });
   return c;
 }
+const POSES = {  // elbow and wrist goals in figure units, facing right
+  point: { el: [110, 170], wr: [205, 100] }, shake: { el: [80, 330], wr: [180, 300] },
+  give: { el: [100, 270], wr: [212, 246] }, cross: { el: [24, 316], wr: [128, 236] }
+};
 function armPose(arm, k) {
-  const rest = { el: [6, 300], wr: [26, 450] };
-  const goal = arm === 'point' ? { el: [110, 170], wr: [205, 100] } : { el: [80, 330], wr: [180, 300] };
+  const rest = { el: [6, 300], wr: [26, 450] }, goal = POSES[arm] || POSES.shake;
   return { el: rest.el.map((v, i) => lerp(v, goal.el[i], k)), wr: rest.wr.map((v, i) => lerp(v, goal.wr[i], k)) };
 }
 function hand(g, x, y, ang, kind) {
@@ -139,11 +142,31 @@ function hand(g, x, y, ang, kind) {
   g.beginPath(); g.ellipse(8, 0, 30, 24, 0, 0, Math.PI * 2); g.fill();          // palm
   g.beginPath(); g.ellipse(-2, -20, 16, 10, -.6, 0, Math.PI * 2); g.fill();     // thumb
   if (kind === 'point') { g.beginPath(); g.roundRect(20, -8, 62, 15, 7); g.fill(); }
+  else if (kind === 'give') { g.beginPath(); g.roundRect(14, -6, 52, 22, 10); g.fill(); }  // flat, palm up
   else { g.beginPath(); g.roundRect(14, -18, 40, 36, 14); g.fill(); }
   g.restore();
 }
+// a glowing eye and a lit brow on the dark profile: the only face these figures have, so it carries the mood
+// ('angry' slit under a lowered brow, 'calm' almond that blinks, 'happy' closed smiling arc)
+function profileEye(x, y, mood, color, t, seed = 0) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+  ctx.shadowColor = color; ctx.shadowBlur = 16; ctx.fillStyle = color; ctx.strokeStyle = color;
+  const bl = (t + seed) % 3.7 < .13 ? .15 : 1;
+  if (mood === 'happy') {
+    ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(x - 12, y + 2); ctx.quadraticCurveTo(x - 1, y - 12, x + 10, y + 2); ctx.stroke();
+    ctx.lineWidth = 4; ctx.globalAlpha = .75; ctx.beginPath(); ctx.moveTo(x - 16, y - 22); ctx.quadraticCurveTo(x - 2, y - 32, x + 12, y - 25); ctx.stroke();
+  } else if (mood === 'angry') {
+    ctx.beginPath(); ctx.moveTo(x - 12, y - 4); ctx.quadraticCurveTo(x - 1, y - 8, x + 10, y + 1); ctx.quadraticCurveTo(x - 1, y + 3, x - 12, y - 4); ctx.fill();
+    ctx.lineWidth = 5; ctx.globalAlpha = .85; ctx.beginPath(); ctx.moveTo(x - 16, y - 24); ctx.lineTo(x + 13, y - 11); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.moveTo(x - 11, y); ctx.quadraticCurveTo(x, y - 9 * bl, x + 9, y - 1); ctx.quadraticCurveTo(x, y + 6 * bl, x - 11, y); ctx.fill();
+    ctx.lineWidth = 4; ctx.globalAlpha = .7; ctx.beginPath(); ctx.moveTo(x - 15, y - 19); ctx.quadraticCurveTo(x - 2, y - 24, x + 11, y - 19); ctx.stroke();
+  }
+  ctx.restore();
+}
 // who: 'franklin' (bald crown, long hair, spectacles) or 'rakip' (tricorn hat, tied queue)
-// arm: null, 'point' or 'shake', raised by armK (0..1)
+// arm: null, 'point', 'shake', 'give' or 'cross', raised by armK (0..1); arm2 + armMix blend into a second pose.
+// mood: the eye ('angry', 'calm', 'happy'), eye: its colour (default the rim), lean: radians forward from the feet
 function person(who, x, y, s, dir, rim, t, o = {}) {
   const arm = o.arm, k = o.armK === undefined ? 1 : o.armK;
   const [sil, tint] = figureCanvas(who, s);
@@ -154,14 +177,18 @@ function person(who, x, y, s, dir, rim, t, o = {}) {
   g.fill(FIGURE);
   if (who === 'franklin') g.fill(HAIR); else { g.fill(QUEUE); g.fill(TRICORN); }
   if (arm && k > 0) {
-    const { el, wr } = armPose(arm, k), sh = [-14, 116];
+    let { el, wr } = armPose(arm, k); const sh = [-14, 116];
+    if (o.arm2 && o.armMix > 0) {
+      const b = armPose(o.arm2, 1);
+      el = el.map((v, i) => lerp(v, b.el[i], o.armMix)); wr = wr.map((v, i) => lerp(v, b.wr[i], o.armMix));
+    }
     g.lineWidth = 62; g.beginPath(); g.moveTo(...sh); g.lineTo(...el); g.stroke();
     g.lineWidth = 48; g.beginPath(); g.moveTo(...el); g.lineTo(...wr); g.stroke();
     const ang = Math.atan2(wr[1] - el[1], wr[0] - el[0]);
     g.save(); g.translate(...wr); g.rotate(ang);  // lace cuff
     g.beginPath(); for (let i = 0; i <= 6; i++) { const a = -Math.PI / 2 + i * Math.PI / 6; g.lineTo(8 + Math.cos(a) * 10, Math.sin(a) * (34 + (i % 2) * 6)); } g.lineTo(-4, 0); g.fill();
     g.restore();
-    hand(g, wr[0] + Math.cos(ang) * 30, wr[1] + Math.sin(ang) * 30, ang, arm);
+    hand(g, wr[0] + Math.cos(ang) * 30, wr[1] + Math.sin(ang) * 30, ang, o.arm2 && o.armMix > .5 ? o.arm2 : arm);
   }
   // tinted copy for the rim
   const tg = tint.getContext('2d');
@@ -170,6 +197,7 @@ function person(who, x, y, s, dir, rim, t, o = {}) {
   tg.globalCompositeOperation = 'source-in'; tg.fillStyle = rim; tg.fillRect(0, 0, tint.width, tint.height);
   tg.globalCompositeOperation = 'source-over';
   ctx.save(); ctx.translate(x, y + Math.sin(t * 1.4 + (dir > 0 ? 0 : 2)) * 3); ctx.scale(dir, 1);
+  if (o.lean) { ctx.translate(0, 800 * s); ctx.rotate(o.lean); ctx.translate(0, -800 * s); }
   const ox = FIG_BOX[0] * s, oy = FIG_BOX[1] * s;
   ctx.shadowColor = rgba(rim, .7); ctx.shadowBlur = 40; ctx.drawImage(tint, ox, oy);  // halo
   ctx.shadowColor = 'transparent';
@@ -184,6 +212,16 @@ function person(who, x, y, s, dir, rim, t, o = {}) {
     ctx.save(); ctx.scale(s, s); ctx.strokeStyle = rgba(C.gold2, .95); ctx.lineWidth = 3.2; ctx.shadowColor = C.gold; ctx.shadowBlur = 10;
     ctx.beginPath(); ctx.roundRect(70, -134, 30, 18, 7); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(70, -127); ctx.lineTo(14, -122); ctx.stroke();
+    ctx.restore();
+  }
+  if (o.mood || o.talk) {
+    ctx.save(); ctx.scale(s, s);
+    if (o.mood) { ctx.save(); ctx.translate(58, -122); ctx.scale(1.55, 1.55); profileEye(0, 0, o.mood, o.eye || rim, t, dir > 0 ? 0 : 1.6); ctx.restore(); }
+    if (o.talk > .05) {  // the lips part: a sliver of light at the mouth
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.shadowColor = o.eye || rim; ctx.shadowBlur = 12;
+      ctx.fillStyle = rgba(o.eye || rim, .85); ctx.beginPath(); ctx.ellipse(76, -45, 11, 2 + 6 * o.talk, -.1, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
     ctx.restore();
   }
   ctx.restore();
@@ -215,6 +253,24 @@ function book(x, y, w, t, o = {}) {
   sg.addColorStop(0, 'rgba(255,230,170,0)'); sg.addColorStop(.5, 'rgba(255,230,170,.22)'); sg.addColorStop(1, 'rgba(255,230,170,0)');
   ctx.fillStyle = sg; ctx.fillRect(-w / 2, -h / 2, w, h);
   ctx.restore();
+  ctx.restore();
+}
+// Usta's dark gloved hands gripping a book of width w at (x, y) from both sides, sleeves running back into the cloak
+function ustaHands(x, y, w, rim, a = 1) {
+  if (a <= 0) return;
+  const h = w * 1.36;
+  ctx.save(); ctx.globalAlpha *= a;
+  [-1, 1].forEach(d => {
+    const ex = x + d * w / 2, ey = y + h * .12;
+    ctx.save(); ctx.translate(ex, ey); ctx.scale(d, 1);  // drawn for the right hand, mirrored for the left
+    const sleeve = path([['M', 4, -54], ['C', 60, -40, 120, 20, 150, 150], ['L', 70, 190], ['C', 50, 90, 20, 40, -6, 30], ['Z']]);
+    rimFill(sleeve, rim, .8, 60, .8);
+    const glove = new Path2D();
+    glove.roundRect(-26, -46, 50, 86, 22);
+    for (let i = 0; i < 4; i++) glove.roundRect(-46, -40 + i * 20, 40, 17, 8);  // fingers over the cover's edge
+    rimFill(glove, rim, .9, -30, 1);
+    ctx.restore();
+  });
   ctx.restore();
 }
 // a sealed letter: parchment with a crimson wax seal
@@ -313,25 +369,62 @@ function hall(t) {
   ctx.restore();
   floor(1320, C.candle, .2, 900);
 }
-// gold line icons for the "not this" scene
+// any black shape drawn by fn(g) on an offscreen canvas (origin at its centre), lit like the people: a halo and a
+// bright edge in the rim colour
+const SHAPE_CACHE = {};
+function litShape(key, w, h, fn, x, y, rim, edge = [-5, 3]) {
+  const c = SHAPE_CACHE[key] || (SHAPE_CACHE[key] = [0, 1].map(() => { const k = document.createElement('canvas'); k.width = w; k.height = h; return k; }));
+  const [sil, tint] = c, g = sil.getContext('2d'), tg = tint.getContext('2d');
+  if (!sil.drawn) {
+    g.translate(w / 2, h / 2); g.fillStyle = '#000'; g.strokeStyle = '#000'; g.lineCap = 'round'; g.lineJoin = 'round';
+    fn(g); sil.drawn = true;
+  }
+  tg.globalCompositeOperation = 'source-over'; tg.clearRect(0, 0, w, h); tg.drawImage(sil, 0, 0);
+  tg.globalCompositeOperation = 'source-in'; tg.fillStyle = rim; tg.fillRect(0, 0, w, h);
+  ctx.save(); ctx.translate(x - w / 2, y - h / 2);
+  ctx.shadowColor = rgba(rim, .7); ctx.shadowBlur = 34; ctx.drawImage(tint, 0, 0);
+  ctx.shadowColor = 'transparent'; ctx.drawImage(tint, 0, 0);
+  ctx.drawImage(sil, edge[0], edge[1]); ctx.drawImage(sil, edge[0] / 2, edge[1] * 2);
+  ctx.restore();
+}
+// the two things Franklin did not do, drawn like the rest of the stage instead of as line icons
 function icon(name, x, y, s, color) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.shadowColor = color; ctx.shadowBlur = 18;
-  if (name === 'yalvar') {  // a kneeling figure, hands raised together
-    ctx.beginPath(); ctx.arc(10, -95, 24, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(0, -62); ctx.quadraticCurveTo(-18, -10, -10, 30);  // back
-    ctx.lineTo(-62, 34); ctx.lineTo(-58, 92);  // thigh, shin on the floor
-    ctx.moveTo(-10, 30); ctx.lineTo(42, 34); ctx.lineTo(42, 92);  // front leg
-    ctx.moveTo(4, -50); ctx.lineTo(44, -78); ctx.lineTo(60, -128);  // arms up
-    ctx.moveTo(4, -40); ctx.lineTo(48, -66); ctx.lineTo(66, -122);
-    ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(-100, 96); ctx.lineTo(100, 96); ctx.stroke();
-  } else if (name === 'hediye') {  // a gift box with a bow
-    ctx.strokeRect(-80, -30, 160, 120); ctx.strokeRect(-92, -64, 184, 36);
-    ctx.beginPath(); ctx.moveTo(0, -64); ctx.lineTo(0, 90); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, -66); ctx.bezierCurveTo(-30, -120, -84, -100, -50, -70); ctx.closePath(); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, -66); ctx.bezierCurveTo(30, -120, 84, -100, 50, -70); ctx.closePath(); ctx.stroke();
+  if (name === 'yalvar') {  // a man on his knees in profile, hands clasped and raised, a coin purse at his knee
+    litShape('yalvar', 320, 330, g => {
+      g.beginPath(); g.arc(34, -108, 30, 0, Math.PI * 2); g.fill();                       // head, bowed forward
+      g.beginPath(); g.moveTo(18, -84); g.bezierCurveTo(-26, -64, -40, -10, -34, 40);      // back
+      g.lineTo(28, 46); g.bezierCurveTo(34, 0, 40, -40, 40, -76); g.closePath(); g.fill();  // chest
+      g.lineWidth = 34; g.beginPath(); g.moveTo(-20, 40); g.lineTo(52, 66); g.lineTo(58, 118); g.stroke();  // thigh, knee down
+      g.beginPath(); g.moveTo(-26, 44); g.lineTo(-30, 112); g.lineTo(-96, 118); g.stroke();  // shin back along the floor
+      g.lineWidth = 26; g.beginPath(); g.moveTo(16, -60); g.lineTo(74, -70); g.lineTo(98, -122); g.stroke();  // arms up
+      g.beginPath(); g.ellipse(102, -134, 20, 26, .4, 0, Math.PI * 2); g.fill();            // clasped hands
+      g.beginPath(); g.moveTo(-150, 132); g.lineTo(150, 132); g.lineWidth = 8; g.stroke();  // floor
+    }, 0, 0, color);
+  } else if (name === 'hediye') {  // a lacquered gift box tied with a gold ribbon
+    const red = color === C.gold ? '#7a1a20' : '#3a2a22', dark = color === C.gold ? '#3a0a0e' : '#1d1612';
+    glow(0, 10, 220, rgba(color, 1), .25);
+    ctx.shadowColor = 'rgba(0,0,0,.8)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 14;
+    let g = ctx.createLinearGradient(-90, 0, 90, 0); g.addColorStop(0, dark); g.addColorStop(.45, red); g.addColorStop(1, dark);
+    ctx.fillStyle = g; ctx.fillRect(-90, -20, 180, 130);                       // box
+    ctx.shadowColor = 'transparent';
+    g = ctx.createLinearGradient(0, -60, 0, -20); g.addColorStop(0, red); g.addColorStop(1, dark);
+    ctx.fillStyle = g; ctx.fillRect(-104, -58, 208, 40);                       // lid
+    ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(-90, -18, 180, 12);         // lid shadow
+    g = ctx.createLinearGradient(-20, 0, 20, 0); g.addColorStop(0, C.goldDim); g.addColorStop(.5, C.gold2); g.addColorStop(1, C.goldDim);
+    ctx.fillStyle = g; ctx.fillRect(-16, -58, 32, 168);                        // ribbon
+    ctx.fillStyle = rgba(C.gold2, .85); ctx.fillRect(-104, -44, 208, 12);
+    ctx.save(); ctx.shadowColor = color; ctx.shadowBlur = 16; ctx.fillStyle = C.gold;  // bow
+    [-1, 1].forEach(d => {
+      ctx.beginPath(); ctx.moveTo(0, -60); ctx.bezierCurveTo(d * 30, -118, d * 92, -110, d * 70, -76);
+      ctx.bezierCurveTo(d * 56, -60, d * 24, -58, 0, -60); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(d * 6, -58); ctx.lineTo(d * 40, -20); ctx.lineTo(d * 22, -18); ctx.closePath(); ctx.fill();
+    });
+    ctx.fillStyle = '#5a3e12';
+    [-1, 1].forEach(d => { ctx.beginPath(); ctx.ellipse(d * 42, -82, 14, 8, d * -.5, 0, Math.PI * 2); ctx.fill(); });
+    ctx.fillStyle = C.gold2; ctx.beginPath(); ctx.arc(0, -62, 14, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = rgba(color, .5); ctx.lineWidth = 3; ctx.strokeRect(-90, -20, 180, 130); ctx.strokeRect(-104, -58, 208, 40);
   }
   ctx.restore();
 }
@@ -380,5 +473,20 @@ function brain(x, y, s, t, k) {
     glow(px, py, 30, rgba(C.gold2, 1), .8 * k);
     circle(px, py, 5, rgba('#fff4d6', k));
   }
+  ctx.restore();
+}
+// the assembly in the foreground: heads and shoulders of seated members, out of focus, just rimmed
+function crowd(t, y, rim) {
+  ctx.save();
+  ctx.filter = 'blur(3px)';
+  [[60, 1.15, 0], [290, 1.0, 1], [560, 1.2, 0], [820, 1.05, 1], [1040, 1.15, 0]].forEach(([x, s, wig], i) => {
+    ctx.save(); ctx.translate(x, y + Math.sin(t * 1.1 + i) * 2 + (i % 2) * 40); ctx.scale(s, s);
+    const p = new Path2D();
+    p.ellipse(0, -150, 62, 74, 0, 0, Math.PI * 2);                                  // head from behind
+    if (wig) { p.ellipse(-48, -120, 30, 48, .2, 0, Math.PI * 2); p.ellipse(48, -120, 30, 48, -.2, 0, Math.PI * 2); }
+    p.moveTo(-200, 200); p.bezierCurveTo(-190, 0, -110, -70, 0, -76); p.bezierCurveTo(110, -70, 190, 0, 200, 200); p.closePath();
+    ctx.shadowColor = rgba(rim, .35); ctx.shadowBlur = 24; ctx.fillStyle = '#050406'; ctx.fill(p);
+    ctx.restore();
+  });
   ctx.restore();
 }

@@ -78,6 +78,7 @@ def main():
         timings, mix, chars = ses.make(ep, work, Path(a.data))
         report.update(chars=chars, voice={k: v for k, v in ses.VOICE.items() if k != "voice_id"})
         shutil.copy(mix, OUT / f"{ep['id']}_mix.mp3")
+        shutil.copy(work / "timings.json", OUT / f"{ep['id']}_timings.json")  # lets frames be checked locally
         video = work / f"{ep['id']}.mp4"
         t = time.time()
         report["duration"] = round(render(ep, work / "timings.json", mix, video), 2)

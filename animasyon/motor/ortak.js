@@ -123,3 +123,14 @@ function vignette(a = .85) {
   g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${a})`);
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 }
+// low haze drifting across the floor, so even a still frame keeps moving
+function fog(t, y = 1350, a = .06, color = '#8c8076') {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 6; i++) {
+    const x = ((rnd(i) * 1800 + t * (16 + rnd(i + 1) * 22)) % 1900) - 400, yy = y + (rnd(i + 2) - .5) * 280;
+    ctx.save(); ctx.translate(x, yy); ctx.scale(1, .33);
+    glow(0, 0, 360 + rnd(i + 3) * 220, rgba(color, 1), a * (.6 + .4 * Math.sin(t * .5 + i)));
+    ctx.restore();
+  }
+  ctx.restore();
+}

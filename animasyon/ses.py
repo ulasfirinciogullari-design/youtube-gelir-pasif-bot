@@ -145,6 +145,8 @@ def cues(ep, timings):
             out.append((tm["t0"] - 0.16, "whoosh", 0.28))
         kind = v.get("t")
         if kind == "usta" and v.get("prop"):
+            if v.get("ghost"):
+                out.append((word_time(tm, v.get("ghost"), .2) - 0.1, "whoosh", 0.22))
             out.append((word_time(tm, v.get("key"), .6), "shimmer", 0.4))
         elif kind == "usta" and v.get("end"):
             out.append((tm["t0"], "impact", 0.35))
@@ -159,6 +161,7 @@ def cues(ep, timings):
         elif kind == "dost":
             out.append((word_time(tm, v.get("give"), .3), "whoosh", 0.22))
             out.append((word_time(tm, v.get("key"), .7), "shimmer", 0.45))
+            out.append((word_time(tm, v.get("key"), .7) - 0.3, "impact", 0.22))  # the push in on the handshake
         elif kind == "beyin":
             out.append((tm["t0"] - 2.6, "riser", 0.25))
             for k, s in enumerate(v.get("steps") or []):
@@ -212,7 +215,7 @@ def make(ep, work, data):
     m = decode(data / "audio" / MUSIC)
     if len(m) < n:
         m = np.tile(m, int(np.ceil(n / len(m))))
-    m = loudnorm(m[:n], -29)
+    m = loudnorm(m[:n], -27)
     fade = int(0.35 * SR)  # short ends: the video loops straight back into the hook
     m[-fade:] *= np.linspace(1, 0.3, fade)
 
