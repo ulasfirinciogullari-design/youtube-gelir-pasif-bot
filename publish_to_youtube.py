@@ -34,17 +34,14 @@ def get_authenticated_service():
     refresh_token = os.environ.get("YOUTUBE_REFRESH_TOKEN")
 
     if client_id and client_secret and refresh_token:
+        # No scopes on purpose (like channel_metrics): Google answers invalid_scope when a refresh asks for a
+        # scope the key lacks, and the key issued on 2026-10-17 has youtube instead of youtube.readonly.
         creds = Credentials(
             token=None,
             refresh_token=refresh_token,
             token_uri="https://oauth2.googleapis.com/token",
             client_id=client_id,
             client_secret=client_secret,
-            scopes=[
-                "https://www.googleapis.com/auth/youtube.upload",
-                "https://www.googleapis.com/auth/youtube.readonly",
-                "https://www.googleapis.com/auth/youtube.force-ssl",
-            ],
         )
         return build("youtube", "v3", credentials=creds)
 

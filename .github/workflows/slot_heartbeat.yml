@@ -6,7 +6,8 @@ name: Saatlik Short Nöbeti
 # (scripts/slot_heartbeat.py). After 5 h 40 min it starts its own successor and ends, before the 6 h job
 # limit; the successor waits in the concurrency group until then. The Shorts workflow restarts the watch on
 # every run if the chain ever breaks, and so does the cron below. The repository is public, so the waiting
-# runner costs no Actions minutes. To stop it: Actions > Saatlik Short Nöbeti > ... > Disable workflow.
+# runner costs no Actions minutes. At :45 it also starts the comment responder (comment_replies.yml).
+# To stop it: Actions > Saatlik Short Nöbeti > ... > Disable workflow.
 
 on:
   workflow_dispatch:
@@ -18,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  actions: write  # start the Shorts workflow and the next watch
+  actions: write  # start the Shorts workflow, the comment responder and the next watch
   contents: read  # read channel-data/uploads.json
 
 jobs:

@@ -2,13 +2,14 @@ name: YouTube Shorts Cloud Autopilot (God-Tier)
 
 on:
   schedule:
-    # 24 Shorts a day, one every hour around the clock (Ulaş asked for it on 2026-10-15). GitHub delays or drops
+    # Eight Shorts a day, every two hours from 10:00 to 24:00 Turkey time (scripts/slot_gate.py says why: at one
+    # an hour the channel's new Shorts stopped getting views on 2026-10-16). GitHub delays or drops
     # top-of-hour cron events (runs started up to 3.6 h late; on 2026-10-14 the 11:00 and 14:00 UTC
-    # slots never ran), so the workflow ticks at :07 and :37 of each hourly slot and the
+    # slots never ran), so the workflow ticks at :07 and :37 of each slot hour and the
     # "🚦 Sıra Kontrolü" step (scripts/slot_gate.py) lets a tick produce only while its slot is empty,
     # 35 min after the last public upload and under the daily cap. A skipped tick costs a few seconds.
     # Uploads have their own YouTube quota of 100 a day since June 2026.
-    - cron: '7,37 * * * *'
+    - cron: '7,37 7,9,11,13,15,17,19,21 * * *'
   workflow_dispatch:
     inputs:
       privacy:
@@ -21,7 +22,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir)'
         required: true
         default: 'video'
         type: choice
@@ -34,6 +35,7 @@ on:
           - 'referans'
           - 'sesornek'
           - 'tiktok'
+          - 'yorum'
           - 'durum'
           - 'anahtar'
           - 'izlenme'
@@ -131,6 +133,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/slot_heartbeat.py --ensure
+
+      # The Instagram watch (zk_instagram_nobet.yml) answers comments and DMs and posts the Reels; every run restarts
+      # it when it is not running, once the ZK_IG_TOKEN secret exists.
+      - name: 📸 Instagram Nöbetini Kontrol Et
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ZK_IG_HAZIR: ${{ secrets.ZK_IG_TOKEN != '' && '1' || '' }}
+          ZK_IG_NOBET_KAPALI: ${{ vars.ZK_IG_NOBET_KAPALI }}
+        run: python3 scripts/instagram_watch.py --ensure
 
       - name: 🐍 Python 3.12 Kur
         if: steps.gate.outputs.go == 'true'
@@ -232,6 +244,11 @@ jobs:
             python -m app.services.tiktok login --code "$KOD" --data channel-data
             exit $?
           fi
+          if [ "$TASK" = "yorum" ]; then
+            # A preview: the replies land in channel-data/comment_preview.json, nothing is posted.
+            python scripts/comment_replies.py --data channel-data --deneme
+            exit $?
+          fi
           if [ "$TASK" = "sesornek" ]; then
             # The backup step commits the samples to the channel-data branch.
             python scripts/voice_samples.py --out channel-data/history/voice_samples
@@ -275,10 +292,16 @@ jobs:
           if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
           git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -qm "Kanal verisi: run ${{ github.run_id }}"
-          # Someone (or a manual seed) may have pushed since this run fetched the branch.
-          git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            pull --rebase -q origin channel-data || true
-          git push origin HEAD:channel-data
+          # Someone (or a manual seed) may have pushed since this run fetched the branch, and the Instagram watch
+          # pushes instagram.json every few minutes (never a file this run writes), so a push that loses the race
+          # pulls again.
+          for attempt in 1 2 3 4; do
+            git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              pull --rebase -q origin channel-data || git rebase --abort 2>/dev/null || true
+            git push origin HEAD:channel-data && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
 
       - name: 📤 Yayın Paketini Sakla (Artifact)
         if: always() && steps.gate.outputs.go == 'true'

@@ -121,6 +121,13 @@ CALLOUT_SIZE = 118
 CALLOUT_LINE_CHARS = 14  # characters that fit one line at CALLOUT_SIZE; longer key facts get a smaller font
 SKIPPED_TOPICS_FILE = "skipped_topics.json"  # curiosity topics free footage could not show
 SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
+# The Instagram copy of a Short (instagram_subtitles): Instagram shows a Reel cropped to 4:5 (y 285-1635) in the feed
+# and the profile grid, which cut the top of the hook at MarginV 250, and puts its like/comment/share buttons over
+# the right edge.
+INSTAGRAM_HOOK_MARGIN_V = 330
+INSTAGRAM_SUBTITLE_SIDE = 120
+# Instagram's Reels limits: video at most 25 Mbps (CRF 18 can pass that on busy footage), AAC at 128 kbps.
+INSTAGRAM_ENCODE = ("-maxrate", "20M", "-bufsize", "40M", "-c:a", "aac", "-b:a", "128k", "-ar", "48000")
 # The heavy rounded face of popular Shorts captions; the workflow installs fonts-montserrat. Arial Black was never on
 # the runner, so the text fell back to a plain sans font, as it still would without Montserrat.
 FONT = "Montserrat Black"
@@ -263,9 +270,10 @@ def invent_merak_topic(used: list[str], best: list[str] | None = None) -> dict:
             **({"kategori": kind} if kind in MERAK_CATEGORIES else {})}
 
 
-# Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". Every public merak Short had stopped near 1,000
-# views, so the next topic comes from the kind that held viewers best: categories are ranked by the median views of
-# their Shorts old enough to judge, and one with fewer than two such Shorts counts as average, so it is still tried.
+# Ulaş, 2026-10-16: "izlenmeleri artırmak için neler yapabiliriz". The next topic comes from the kind that held
+# viewers best: categories are ranked by the median share of the Short watched (YouTube Analytics) of their Shorts old
+# enough to judge, and one with fewer than two such Shorts counts as average, so it is still tried. Views are only the
+# fallback: until 2026-10-16 paid promotion gave nearly every Short ~1,000 views whatever it was like (2026-10-18).
 MIN_SHORTS_PER_CATEGORY = 2
 
 
@@ -291,14 +299,22 @@ def judged_merak_videos(metrics: list[dict] | None) -> list[dict]:
             and (_age_hours(str(v.get("published_at", "")), now) or 0) >= MIN_AGE_HOURS_FOR_RANKING]
 
 
-def category_scores(metrics: list[dict] | None, topics: list[dict]) -> dict[str, float]:
+def category_scores(metrics: list[dict] | None, topics: list[dict]) -> tuple[str, dict[str, float]]:
+    """(what was measured, its median per category): the share watched where Analytics has it, else views."""
     kinds = {t["id"]: t.get("kategori") for t in topics}
-    views: dict[str, list[int]] = {}
+    watched: dict[str, list[float]] = {}
+    views: dict[str, list[float]] = {}
     for video in judged_merak_videos(metrics):
         kind = kinds.get(video["topic_id"])
         if kind:
             views.setdefault(kind, []).append(int(video.get("views") or 0))
-    return {kind: statistics.median(v) for kind, v in views.items() if len(v) >= MIN_SHORTS_PER_CATEGORY}
+            if video.get("avg_view_pct") is not None:
+                watched.setdefault(kind, []).append(float(video["avg_view_pct"]))
+    for label, samples in (("izlenme oranı %", watched), ("izlenme", views)):
+        scores = {kind: statistics.median(v) for kind, v in samples.items() if len(v) >= MIN_SHORTS_PER_CATEGORY}
+        if scores:
+            return label, scores
+    return "izlenme", {}
 
 
 def rank_topics(topics: list[dict], scores: dict[str, float]) -> list[dict]:
@@ -400,11 +416,11 @@ def choose_topic(published: set[str], topic_id: str | None = None, dna: dict | N
     generated = load_generated_topics(data_dir)
     topics = load_topics(cfg["topics"]) + [t for t in generated if t["id"].startswith(cfg["prefix"] + "-")]
     if series == "merak" and metrics:
-        scores = category_scores(metrics, topics)
+        label, scores = category_scores(metrics, topics)
         topics = rank_topics(topics, scores)
         if scores and not topic_id:
-            print("📈 Konu türleri, ortanca izlenme: "
-                  + ", ".join(f"{kind} {views:.0f}" for kind, views in sorted(scores.items(), key=lambda kv: -kv[1])))
+            print(f"📈 Konu türleri, ortanca {label}: "
+                  + ", ".join(f"{kind} {score:.0f}" for kind, score in sorted(scores.items(), key=lambda kv: -kv[1])))
         if invent is None:
             invent = functools.partial(invent_merak_topic, best=best_merak_titles(metrics))
     try:
@@ -773,6 +789,28 @@ def add_callouts(ass_path: Path, scenes: list[dict], durations: list[float]) -> 
     return times
 
 
+def instagram_subtitles(ass_path: Path) -> Path:
+    """The Short's subtitles for its Instagram copy, next to the original: the hook moved down into the 4:5 feed crop,
+    the captions kept clear of Instagram's buttons on the right, and no @zirveninkanunu stamp, which sits above the
+    crop and on Instagram would read as an account name that may be someone else's."""
+    lines = []
+    for line in ass_path.read_text(encoding="utf-8").splitlines(keepends=True):
+        if ",WatermarkStyle," in line and line.startswith("Dialogue:"):
+            continue
+        name = line.split(",", 1)[0]
+        if name in ("Style: HookStyle", "Style: ShortsStyle"):
+            fields = line.rstrip("\n").split(",")  # ..., Alignment, MarginL, MarginR, MarginV, Encoding
+            if name == "Style: HookStyle":
+                fields[-2] = str(INSTAGRAM_HOOK_MARGIN_V)
+            else:
+                fields[-4] = fields[-3] = str(INSTAGRAM_SUBTITLE_SIDE)
+            line = ",".join(fields) + "\n"
+        lines.append(line)
+    out = ass_path.with_name(f"{ass_path.stem}_ig{ass_path.suffix}")
+    out.write_text("".join(lines), encoding="utf-8")
+    return out
+
+
 def storyboard(video: Path, out: Path, duration: float, every: float = STORYBOARD_SECONDS) -> Path | None:
     """One small frame per `every` seconds, tiled eight to a row into a JPEG that goes to the channel history.
     The cloud sessions that build these Shorts can open neither YouTube nor the run's artifacts; this is how
@@ -790,9 +828,9 @@ def storyboard(video: Path, out: Path, duration: float, every: float = STORYBOAR
 
 
 def render_final(segments: list[Path], audio: Path, subtitles_file: Path, duration: float, work_dir: Path,
-                 final_mp4: Path, slots: list[float] | None = None) -> Path:
+                 final_mp4: Path, slots: list[float] | None = None, extra: tuple[str, ...] = ()) -> Path:
     """With `slots` (each segment's place on the timeline) the shots dissolve into each other;
-    without them they are joined with hard cuts."""
+    without them they are joined with hard cuts. `extra` output options override the defaults."""
     from app.services.original_visuals import crossfade_graph
     from app.services.visual_fx_engine import generate_neon_progress_bar_filter
 
@@ -816,7 +854,7 @@ def render_final(segments: list[Path], audio: Path, subtitles_file: Path, durati
             "ffmpeg", "-y", *inputs, "-i", str(audio.resolve()), "-filter_complex", graph,
             "-map", "[vout]", "-map", f"{audio_index}:a:0",
             "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-r", "60", "-fps_mode", "cfr",
-            "-pix_fmt", "yuv420p", "-c:a", "copy", "-t", f"{duration:.3f}", "-movflags", "+faststart",
+            "-pix_fmt", "yuv420p", "-c:a", "copy", *extra, "-t", f"{duration:.3f}", "-movflags", "+faststart",
             str(final_mp4.resolve()),
         ],
         check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=str(subtitles_file.parent),
@@ -880,6 +918,14 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     print("[4/4] 🚀 Render")
     final_mp4 = OUTPUT_DIR / f"ORIGINAL_{topic['id']}_{stamp}.mp4"
     render_final(visuals["segments"], audio, subs, duration, work_dir, final_mp4, visuals.get("durations"))
+    # The same Short for Instagram (scripts/instagram_zk.py posts it as a Reel), with the text inside Instagram's crops.
+    ig_mp4 = final_mp4.with_name(f"{final_mp4.stem}_ig.mp4")
+    try:
+        render_final(visuals["segments"], audio, instagram_subtitles(subs), duration, work_dir, ig_mp4,
+                     visuals.get("durations"), INSTAGRAM_ENCODE)
+    except (OSError, subprocess.SubprocessError) as e:  # Instagram must never cost the YouTube upload
+        print(f"ℹ️ Instagram kopyası çizilemedi: {e}")
+        ig_mp4.unlink(missing_ok=True)
 
     thumb = final_mp4.with_name(f"{final_mp4.stem}_thumb.jpg")
     if visuals["thumbnail"]:
@@ -894,6 +940,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         )
 
     storyboard(final_mp4, final_mp4.with_name(f"{final_mp4.stem}_story.jpg"), duration)
+    if ig_mp4.exists():  # the backup step takes every ORIGINAL_*_story.jpg to the channel history
+        storyboard(ig_mp4, final_mp4.with_name(f"{final_mp4.stem}_ig_story.jpg"), duration)
 
     title = script["title"]
     full_title = title[:100]  # YouTube has not needed "#shorts" in the title to classify a Short since 15 Oct 2024
@@ -926,6 +974,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "clip_match": visuals.get("clip_match"),
         "contains_synthetic_media": visuals["ai_images"] > 0,
     }
+    if ig_mp4.exists():
+        meta["instagram_video"] = ig_mp4.name
     meta_path = final_mp4.with_name(f"{final_mp4.stem}_meta.json")
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 

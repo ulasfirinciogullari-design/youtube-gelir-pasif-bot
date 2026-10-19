@@ -434,13 +434,25 @@ def test_the_next_merak_topic_comes_from_the_best_watched_category(tmp_path, mon
                _views("mk-099", 9000, 3),                               # too young to judge
                _views("zk-001", 9000, 50), _views("mk-098", 9000, 50, privacy="private")]
     published = {"mk-001", "mk-002", "mk-003", "mk-004", "mk-005"}
-    assert original_factory.category_scores(metrics, MERAK_LIST) == {"hayvan": 950, "vücut": 1300}
+    assert original_factory.category_scores(metrics, MERAK_LIST) == ("izlenme", {"hayvan": 950, "vücut": 1300})
     topic = original_factory.choose_topic(published, data_dir=tmp_path, series="merak", metrics=metrics)
     assert topic["id"] == "mk-006"  # vücut, ahead of psikoloji (no data, counts as average) though later in the list
     assert "📈 Konu türleri, ortanca izlenme: vücut 1300, hayvan 950" in capsys.readouterr().out
     # Without statistics, or with a topic asked for by id, the list order holds.
     assert original_factory.choose_topic(published - {"mk-005"}, data_dir=tmp_path, series="merak")["id"] == "mk-005"
     assert original_factory.choose_topic(published, "mk-007", data_dir=tmp_path, series="merak", metrics=metrics)["id"] == "mk-007"
+
+
+def test_the_share_watched_ranks_categories_once_analytics_reports_it(tmp_path, monkeypatch, capsys):
+    # 2026-10-18: paid promotion gave nearly every Short ~1,000 views, so views said nothing about the Shorts.
+    monkeypatch.setattr(original_factory, "load_topics", lambda path=None: [dict(t) for t in MERAK_LIST])
+    metrics = [dict(_views("mk-001", 1000, 30), avg_view_pct=80.0), dict(_views("mk-005", 1000, 20), avg_view_pct=70.0),
+               dict(_views("mk-002", 1400, 40), avg_view_pct=40.0), dict(_views("mk-003", 1200, 15), avg_view_pct=50.0)]
+    assert original_factory.category_scores(metrics, MERAK_LIST) == ("izlenme oranı %", {"hayvan": 75.0, "vücut": 45.0})
+    published = {"mk-001", "mk-002", "mk-003", "mk-005"}
+    topic = original_factory.choose_topic(published, data_dir=tmp_path, series="merak", metrics=metrics)
+    assert topic["id"] == "mk-004"  # untried doğa counts as average and beats vücut, most viewed but least watched
+    assert "📈 Konu türleri, ortanca izlenme oranı %: hayvan 75, vücut 45" in capsys.readouterr().out
 
 
 def test_an_invented_merak_topic_is_modelled_on_the_most_watched_titles(tmp_path, monkeypatch):
