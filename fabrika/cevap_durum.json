@@ -197,27 +197,14 @@
    }
   ]
  },
- "oneriler": [
-  {
-   "id": "o0007",
-   "series": "Ya Olsaydı?",
-   "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?",
-   "oneri": true
-  },
-  {
-   "id": "o0008",
-   "series": "Ya Olsaydı?",
-   "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
-   "oneri": true
-  }
- ],
+ "oneriler": [],
  "nobet": {
   "basladi": "2026-10-19T04:58:02+00:00",
   "run": "39201871913",
-  "tur": 251,
+  "tur": 261,
   "ig_cevap": 0,
   "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-19T09:08:04+00:00"
+  "son_tur": "2026-10-19T09:18:04+00:00"
  }
 }
