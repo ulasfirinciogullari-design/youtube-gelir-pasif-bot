@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "528",
+    "views": "533",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1396",
+    "views": "1407",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1444",
+    "views": "1452",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1299",
+    "views": "1314",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "115",
+    "views": "116",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "40",
+    "views": "41",
     "reason": null
    }
   },
@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1006",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1075",
+    "views": "1078",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "943",
+    "views": "950",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1274",
+    "views": "1279",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "373",
+    "views": "425",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1066",
+    "views": "1069",
     "reason": null
    }
   },
@@ -564,6 +564,36 @@
    "at": 1792490868.7395144,
    "chars": 401,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "776",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0006",
+   "video_id": "iKojt12DL_Y",
+   "url": "https://youtube.com/shorts/iKojt12DL_Y",
+   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Jupiter Disappeared?",
+    "es": "¿Qué pasaría si Júpiter desapareciera?",
+    "pt": "E se Júpiter desaparecesse?",
+    "ar": "ماذا لو اختفى المشتري؟",
+    "hi": "क्या होगा अगर बृहस्पति गायब हो जाए?",
+    "id": "Apa Jadinya Jika Jupiter Lenyap?",
+    "fr": "Et si Jupiter disparaissait ?",
+    "de": "Was wäre, wenn Jupiter verschwinden würde?",
+    "ru": "Что, если Юпитер исчезнет?",
+    "az": "Yupiter yox olsaydı nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792505398.4409072,
+   "chars": 362,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -590,7 +620,8 @@
   "o0003",
   "n004",
   "o0004",
-  "g003"
+  "g003",
+  "o0006"
  ],
  "extra": [
   {
@@ -932,6 +963,14 @@
    "mod": "igbolum",
    "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "chars": 337
+  },
+  {
+   "finished": "2026-10-20T14:09:59+00:00",
+   "mod": "saatlik",
+   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/iKojt12DL_Y",
+   "duration": 24.2,
+   "chars": 362
   }
  ],
  "last_fail": 1792487549.018023,
