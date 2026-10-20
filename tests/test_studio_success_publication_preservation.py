@@ -77,6 +77,40 @@ def test_normal_success_poll_keeps_publication_and_does_not_refresh_activity(sta
     assert client.get(module.JOB_PREFIX + TASK) == before
 
 
+@pytest.mark.parametrize('persisted,attempt,backend', [
+    ('FAILURE', 0, 'SUCCESS'), ('FAILURE', 1, 'SUCCESS'),
+    ('PROGRESS', 2, 'SUCCESS'), ('SUCCESS', 5, 'SUCCESS'),
+    ('PROGRESS', 2, 'FAILURE'), ('SUCCESS', 5, 'FAILURE'),
+])
+def test_framecase_source_is_not_overwritten_by_original_stopped_delivery(state, persisted, attempt, backend):
+    module, client = state
+    job, _ = seed(module, client, state=persisted)
+    job['spec']['framecase_animation'] = True
+    job['framecase_resume_attempt'] = attempt
+    if persisted != 'SUCCESS':
+        job.update(stage='failed' if persisted == 'FAILURE' else 'voice', progress=20,
+                   framecase_failure_code='credit_cross_mode_request_conflict')
+        job.pop('result')
+    client.set(module.JOB_PREFIX + TASK, json.dumps(job))
+    before = client.get(module.JOB_PREFIX + TASK)
+    sync, success = sync_function(module, {'status': 'stopped', 'task_id': TASK,
+        'reason': 'credit_cross_mode_request_conflict'}, celery_state=backend)
+    assert sync(TASK) == job
+    success.assert_not_called()
+    sync.__globals__['mark_failure'].assert_not_called()
+    assert client.get(module.JOB_PREFIX + TASK) == before
+
+
+def test_framecase_first_delivery_hard_failure_is_still_observed(state):
+    module, client = state
+    job, _ = seed(module, client, state='PROGRESS', publication=False)
+    job['spec']['framecase_animation'] = True
+    client.set(module.JOB_PREFIX + TASK, json.dumps(job))
+    sync, _ = sync_function(module, 'actual worker failure', celery_state='FAILURE')
+    sync(TASK)
+    sync.__globals__['mark_failure'].assert_called_once_with(TASK, 'actual worker failure')
+
+
 def test_success_sync_after_stale_progress_preserves_publisher_fields_and_frozen_job(state):
     module, client = state
     job, cached = seed(module, client, state='PROGRESS')

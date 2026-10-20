@@ -52,7 +52,7 @@ def retry_chain(hops=2, final_state='FAILURE'):
 
 
 @pytest.fixture
-def ui():
+def ui(monkeypatch):
     source = ROOT / 'app' / 'studio.py'
     tree = ast.parse(source.read_text(encoding='utf-8'))
     tree.body = [node for node in tree.body if not (
@@ -65,11 +65,15 @@ def ui():
     namespace = {
         'settings': SimpleNamespace(factory_api_token=COOKIE),
         'get_job': lookup, 'list_jobs': lambda _limit: deepcopy(list(records.values())),
+        '_stored_get_job': lookup, '_stored_list_jobs': lambda _limit: deepcopy(list(records.values())),
         'get_upload_record': ledger_lookup,
         'youtube_router': APIRouter(), 'update_job': forbidden,
         'create_job': forbidden, 'mark_success': forbidden, 'mark_failure': forbidden,
         'run_video_pipeline': SimpleNamespace(delay=forbidden, apply_async=forbidden),
     }
+    from app.services import studio_operations
+    monkeypatch.setattr(studio_operations, 'held_task_ids', lambda rows: {
+        row['task_id'] for row in rows if records.get(row.get('task_id'), {}).get('quality_held') is True})
     exec(compile(tree, str(source), 'exec'), namespace)
 
     class FixedDateTime(datetime):
@@ -281,7 +285,8 @@ def test_failed_publisher_rolls_up_to_source_keeps_preview_and_existing_record_l
     ui.records.update({r['task_id']: r for r in records})
     response = ui.client.get('/studio/history?status=attention')
     assert response.status_code == 200
-    assert '<video class="ready-video"' in response.text
+    assert '<video controls playsinline' in response.text
+    assert 'https://media.example/final.mp4' in response.text
     assert 'data-status-count="attention">1</span>' in response.text
     detail = ui.client.get(f'/studio/job/{source["task_id"]}')
     assert 'Mevcut yüklemeyi kontrol et' in detail.text

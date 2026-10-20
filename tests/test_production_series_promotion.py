@@ -117,7 +117,9 @@ def case(production):
     evidence = _load('app/services/source_evidence.py', {})
     prep = _load('app/services/production_next_series.py', {
         **ns, 'normalize_evidence_sources': evidence['normalize_evidence_sources']})
-    ns['_planning_channel_identity'] = prep['_planning_channel_identity']
+    from app.services.production_editorial_history import recent_topics
+    prep['recent_topics'] = recent_topics
+    ns.update({name: prep[name] for name in ('_planning_channel_identity', '_preparation_key', '_preparation_slot')})
     prep['redis'] = ns['redis']
     prep['_configuration'] = Mock(return_value=('openai', 'configured-model', 'opaque-fixture-key'))
     profile = _profile(release_mode='public', require_thumbnail=True, series_id='first-series',
@@ -174,6 +176,16 @@ def test_real_ready_batch_rotates_explicit_epoch_archives_and_ordinary_tick_star
     assert case.prep['_generate'].call_count == 1
 
 
+def test_public_disclosure_upgrade_archives_actual_true_without_editing_original_plan(case):
+    _change(case, case.keys['ledger'], ['publish_plan', 'contains_synthetic_media'], False)
+    records={name:case.client.get(case.keys[name])for name in ('source','publisher','ledger')}
+    result=_run(case)
+    assert result['status']=='promoted'
+    archive=json.loads(case.client.get(result['archive_key']))
+    assert archive['public_proof']['contains_synthetic_media'] is True
+    assert {name:case.client.get(case.keys[name])for name in records}==records
+
+
 def test_duplicate_and_concurrent_calls_promote_once_without_resetting_next_job(case):
     with ThreadPoolExecutor(max_workers=8) as pool:
         results = list(pool.map(lambda _: _run(case), range(12)))
@@ -222,7 +234,7 @@ def test_second_epoch_preserves_history_and_daily_budget_fence(case):
     ('ledger', ['release_completed_at'], None),
     ('ledger', ['publish_plan', 'series', 'number'], 1),
     ('ledger', ['publish_plan', 'series', 'total'], True),
-    ('ledger', ['publish_plan', 'contains_synthetic_media'], False),
+    ('ledger', ['publish_plan', 'contains_synthetic_media'], None),
     ('profile', ['profile_revision'], 'changed-revision'),
     ('profile', ['series_total'], 3),
     ('profile', ['production_enabled'], False),
@@ -316,6 +328,71 @@ def test_same_channel_active_blocks_but_other_channel_is_untouched(case, same_ch
             assert case.client.dump(key) == before[key]
 
 
+@pytest.mark.parametrize('marker', ['master', 'portrait', 'manifest', 'malformed_master'])
+@pytest.mark.parametrize('state', ['SUCCESS', 'FAILURE'])
+def test_earlier_delivery_family_blocks_rotation_after_final_short_is_public(case, marker, state):
+    task_id = str(UUID(int=998))
+    spec = {'production_channel_id': CHANNEL, 'production_profile_revision': case.revision}
+    result = {'delivery_status': 'complete', 'quality_disposition': 'automated_qc_pass',
+              'manual_qa_required': False}
+    if marker == 'master':
+        spec.update(format='landscape', duration_minutes=8,
+                    production_delivery={'version': 1, 'long_minutes': 8, 'derived_shorts': 3})
+    elif marker == 'portrait':
+        spec.update(format='shorts', production_derived_from=str(UUID(int=997)))
+    elif marker == 'manifest':
+        result['delivery_manifest_key'] = 'videos/earlier/delivery/manifest.json'
+    else:
+        spec['production_delivery'] = None
+    _write(case.client, case.ns['JOB_PREFIX'] + task_id,
+           {'task_id': task_id, 'state': state, 'kind': 'render', 'spec': spec, 'result': result})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    # Turning the feature off or setting a mutable completion label must not
+    # make an outstanding family eligible for legacy Shorts-only rotation.
+    case.ns['settings'].studio_longform_delivery_enabled = False
+    before = _snapshot(case)
+    with pytest.raises(case.ns['SeriesPromotionError'], match='series_delivery_family_pending'):
+        _run(case)
+    assert _snapshot(case) == before
+
+
+@pytest.mark.parametrize('destination', ['UC_other_channel', None])
+def test_other_channel_family_is_untouched_but_unknown_family_cannot_authorize_rotation(case, destination):
+    task_id = str(UUID(int=998))
+    _write(case.client, case.ns['JOB_PREFIX'] + task_id, {'task_id': task_id, 'state': 'SUCCESS',
+        'kind': 'render', 'spec': {'production_channel_id': destination,
+                                 'production_derived_from': str(UUID(int=997))}})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    before = _snapshot(case)
+    if destination is None:
+        with pytest.raises(case.ns['SeriesPromotionError'], match='series_delivery_channel_unknown'):
+            _run(case)
+        assert _snapshot(case) == before
+    else:
+        assert _run(case)['status'] == 'promoted'
+        for key in (case.ns['JOB_INDEX'], case.ns['JOB_PREFIX'] + task_id):
+            assert case.client.dump(key) == before[key]
+
+
+def test_concurrent_earlier_family_marker_cannot_escape_watched_registry(case, monkeypatch):
+    task_id = str(UUID(int=998))
+    key = case.ns['JOB_PREFIX'] + task_id
+    _write(case.client, key, {'task_id': task_id, 'state': 'SUCCESS', 'kind': 'render',
+                            'spec': {'production_channel_id': CHANNEL}})
+    case.client.zadd(case.ns['JOB_INDEX'], {task_id: NOW - 2000})
+    before_profile = case.client.get(case.profile_key)
+    original = case.ns['_Snapshot'].compare
+    def racing(snapshot, pipe):
+        original(snapshot, pipe)
+        _change(case, key, ['spec', 'production_delivery'],
+                {'version': 1, 'long_minutes': 8, 'derived_shorts': 3})
+    monkeypatch.setattr(case.ns['_Snapshot'], 'compare', racing)
+    with pytest.raises(case.ns['SeriesPromotionError']):
+        _run(case)
+    assert case.client.get(case.profile_key) == before_profile
+    assert not case.client.keys(case.ns['ARCHIVE_PREFIX'] + '*')
+
+
 @pytest.mark.parametrize('target', ['profile', 'state', 'credential', 'epoch', 'pending', 'daily',
                                     'source', 'publisher', 'ledger', 'membership', 'active', 'job_index', 'history'])
 def test_watch_compare_rejects_concurrent_proof_or_authority_change(case, monkeypatch, target):
@@ -402,13 +479,13 @@ def test_full_retry_receipt_requires_actual_claimed_public_descendant(case):
     assert archive['public_proof']['lineage'] == [case.source_id, child_id]
 
 
-def test_only_pure_channel_identity_helper_is_imported_from_preparation():
+def test_only_pure_identity_and_attempt_key_helpers_are_imported_from_preparation():
     path = ROOT / 'app/services/production_series_promotion.py'
     tree = ast.parse(path.read_text(encoding='utf-8'))
     imports = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)
                and n.module == 'app.services.production_next_series']
-    assert len(imports) == 1
-    assert [(name.name, name.asname) for name in imports[0].names] == [('_planning_channel_identity', None)]
+    assert {(name.name, name.asname) for node in imports for name in node.names} == {
+        ('_planning_channel_identity', None), ('_preparation_key', None), ('_preparation_slot', None)}
     assert not any(name in path.read_text(encoding='utf-8') for name in ('apply_async(', 'videos.insert(', 'OpenAI('))
 
 

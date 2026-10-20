@@ -1,0 +1,149 @@
+"""Owner cost page: what each paid call and each video cost, live."""
+from datetime import datetime
+from html import escape
+
+from fastapi import APIRouter, Cookie
+from fastapi.responses import HTMLResponse, JSONResponse
+
+from app.studio import _require_auth as _auth, _shell, COOKIE_NAME
+from app.services import cost_meter
+
+router = APIRouter()
+
+_OPERATIONS = {
+    'responses': 'Metin / senaryo', 'text': 'Metin / denetim', 'messages': 'Metin / denetim',
+    'video': 'AI video klibi', 'text_to_video': 'AI video klibi', 'speech': 'Seslendirme',
+    'image': 'AI görsel', 'transcription': 'Ses kontrolü', 'interaction': 'Gemini işlemi',
+}
+_STATUS = {
+    'published': ('Yayında', 'cost-ok'), 'running': ('Üretiliyor', 'cost-wait'),
+    'failed': ('Başarısız', 'cost-bad'), 'unpublished': ('Hazır, yayında değil', 'cost-wait'),
+    'unknown': ('Studio kaydı yok', 'cost-wait'),
+}
+
+
+def _usd(value) -> str:
+    if value is None:
+        return '—'
+    return '$' + format(float(value), ',.2f')
+
+
+def _clock(value) -> str:
+    try:
+        return datetime.fromisoformat(str(value)).astimezone(cost_meter.LOCAL_TZ).strftime('%H:%M')
+    except (TypeError, ValueError):
+        return ''
+
+
+def _operation(entry: dict) -> str:
+    return _OPERATIONS.get(str(entry.get('operation')), str(entry.get('operation') or ''))
+
+
+def _amount(entry: dict) -> str:
+    return _usd(entry.get('usd')) if entry.get('priced') else 'fiyat yok'
+
+
+def _provider_rows(providers: dict, total: float) -> str:
+    rows = []
+    for provider, usd in sorted(providers.items(), key=lambda item: -item[1]):
+        share = (usd / total * 100) if total else 0
+        rows.append('<div class="cost-bar"><span>' + escape(cost_meter.PROVIDER_LABELS.get(provider, provider))
+                    + '</span><div><i style="width:' + format(min(share, 100), '.1f') + '%"></i></div><b>'
+                    + _usd(usd) + '</b></div>')
+    return ''.join(rows) or '<p class="muted">Henüz kayıt yok.</p>'
+
+
+def _kpi(label: str, value: str, note: str) -> str:
+    return ('<div class="cost-kpi"><small>' + escape(label) + '</small><b>' + value + '</b><small>'
+            + escape(note) + '</small></div>')
+
+
+def render(data: dict):
+    today, month = data['today'], data['month']
+    unpriced = month.get('unpriced_calls', 0)
+    body = """<style>
+.cost-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}.cost-kpi{padding:14px 16px;border-radius:12px;background:#f2f7f4}.cost-kpi small{display:block;color:#667d73;font-size:12px}.cost-kpi b{font-size:24px}.cost-bar{display:grid;grid-template-columns:110px 1fr 76px;gap:10px;align-items:center;padding:6px 0;font-size:14px}.cost-bar div{background:#e5ebed;border-radius:6px;height:10px;overflow:hidden}.cost-bar i{display:block;height:100%;background:#26785c}.cost-bar b{text-align:right}.cost-day{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e5ebed;font-size:14px}.cost-day span{color:#667d73}.cost-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.cost-item{padding:12px 0;border-bottom:1px solid #e5ebed}.cost-item:last-child,.cost-day:last-child{border:0}.cost-item-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.cost-item-top a{font-weight:700;overflow-wrap:break-word;min-width:0}.cost-item-top b{white-space:nowrap}.cost-item-meta{margin-top:6px;font-size:12px;color:#667d73;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}.cost-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;white-space:nowrap}.cost-ok{background:#e3f2ea;color:#1e6b4f}.cost-wait{background:#eef1f4;color:#4d5b66}.cost-bad{background:#fbe9e7;color:#9a3b2c}.cost-event{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 10px;padding:9px 0;border-bottom:1px solid #e5ebed;font-size:13px}.cost-event:last-child{border:0}.cost-event time{color:#667d73}.cost-event small{grid-column:2/4;color:#667d73;font-size:11px;overflow-wrap:anywhere}@media(max-width:900px){.cost-grid{grid-template-columns:1fr}.cost-bar{grid-template-columns:84px 1fr 66px}.cost-kpi b{font-size:21px}}
+</style><div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1><p class="muted">Her ücretli yapay zeka çağrısı yapıldığı anda buraya düşer. Sayfa dakikada bir yenilenir.</p></div></div>"""
+    body += ('<div class="cost-kpis">'
+             + _kpi('Bugün', _usd(today['total']), str(today.get('calls', 0)) + ' çağrı')
+             + _kpi('Bu ay', _usd(month['total']), str(month.get('calls', 0)) + ' çağrı')
+             + _kpi('Ay sonu tahmini', _usd(data['projected_month']), 'bugüne kadarki hızla')
+             + _kpi('Yayınlanan video başına', _usd(data.get('per_published_video')), 'ortalama maliyet')
+             + _kpi('1.000 izlenme başına', _usd(data.get('usd_per_1000_views')), 'yayındaki videolarda')
+             + _kpi('Boşa giden (30 gün)', _usd(data.get('wasted_total')),
+                    str(data.get('wasted_count', 0)) + ' başarısız iş')
+             + '</div>')
+    if unpriced:
+        body += ('<p class="notice">Bu ay ' + str(unpriced) + ' çağrının fiyatı bilinmiyor ve toplama $0 olarak girdi. '
+                 'Gerçek tarife COST_METER_PRICES_JSON ile eklenebilir.</p>')
+    body += ('<div class="cost-grid"><section class="card"><h2>Bu ay servislere göre</h2>'
+             + _provider_rows(month['providers'], month['total']) + '</section>'
+             '<section class="card"><h2>Son 7 gün</h2>'
+             + ''.join('<div class="cost-day"><span>' + escape(day['day']) + ' · ' + str(day.get('calls', 0))
+                       + ' çağrı</span><b>' + _usd(day['total']) + '</b></div>' for day in data['daily'][:7])
+             + '</section></div>')
+    video_rows = []
+    for row in data.get('videos', []):
+        label, tone = _STATUS.get(row['status'], ('—', 'cost-wait'))
+        views = row.get('views')
+        meta = ['<span class="cost-tag ' + tone + '">' + label + '</span>']
+        if views is not None:
+            meta.append('{:,}'.format(views).replace(',', '.') + ' izlenme')
+        if row.get('usd_per_1000_views') is not None:
+            meta.append(_usd(row['usd_per_1000_views']) + ' / 1.000 izlenme')
+        meta.append(escape(', '.join(cost_meter.PROVIDER_LABELS.get(p, p) for p in row['providers'])))
+        video_rows.append(
+            '<article class="cost-item"><div class="cost-item-top"><a href="/studio/job/' + escape(row['root_id']) + '">'
+            + escape(row['title']) + '</a><b>' + _usd(row['total']) + '</b></div><div class="cost-item-meta">'
+            + '<span>' + '</span><span>'.join(meta) + '</span></div></article>')
+    body += ('<section class="card"><h2>Video başına maliyet ve sonuç</h2>'
+             + (''.join(video_rows) or '<p class="muted">Henüz video kaydı yok.</p>')
+             + '<p class="tiny">Planlama, çekim, seslendirme ve düzeltme denemeleri aynı videonun altında toplanır. '
+             'İzlenmeler Performans sayfasının son okumasından gelir.</p></section>')
+    event_rows = ''.join(
+        '<div class="cost-event"><time>' + escape(_clock(event.get('at'))) + '</time><span>'
+        + escape(cost_meter.PROVIDER_LABELS.get(event.get('provider'), str(event.get('provider'))))
+        + ' · ' + escape(_operation(event)) + '</span><b>' + _amount(event) + '</b><small>'
+        + escape(str(event.get('model') or '')) + (' · ' + escape(str(event['units'])) if event.get('units') else '')
+        + '</small></div>'
+        for event in data['recent'][:60])
+    body += ('<section class="card"><h2>Canlı akış</h2>'
+             + (event_rows or '<p class="muted">Henüz ücretli çağrı yok.</p>')
+             + '<p class="tiny">Saatler Türkiye saatidir. Tutarlar liste fiyatından hesaplanan tahmindir, fatura değildir. Metin modellerinde '
+             'servisin bildirdiği gerçek token sayısı kullanılır. Railway, ChatGPT, Abacus veya ses paketleri gibi sabit aylık '
+             'abonelikler bu sayfaya girmez.</p></section>')
+    return _shell(body, active='costs', title='Maliyet · Studio',
+                  script='<script>setTimeout(function(){location.reload()},60000)</script>')
+
+
+_UNAVAILABLE = 'Maliyet kayıtları şu an okunamıyor.'
+
+
+def unavailable():
+    response = _shell('<div class="hero"><div><div class="eyebrow">MALİYET</div><h1>Hangi iş ne kadara mal oldu?</h1>'
+                      '</div></div><p class="notice">' + escape(_UNAVAILABLE) + ' Sayfa bir dakika içinde yeniden dener.</p>',
+                      active='costs', title='Maliyet · Studio',
+                      script='<script>setTimeout(function(){location.reload()},60000)</script>')
+    response.status_code = 503
+    return response
+
+
+# HTMLResponse lets the Studio auth handler send a signed-out browser to the login page.
+@router.get('/studio/costs', response_class=HTMLResponse)
+def costs(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _auth(studio_token)
+    try:
+        data = cost_meter.summary()
+    except Exception:
+        return unavailable()
+    return render(data)
+
+
+@router.get('/studio/api/costs')
+def costs_api(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _auth(studio_token)
+    try:
+        data = cost_meter.summary()
+    except Exception:
+        return JSONResponse({'detail': _UNAVAILABLE}, status_code=503)
+    return JSONResponse(data)

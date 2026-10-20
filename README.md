@@ -10,14 +10,29 @@
 - OpenAI API + web search: araştırma, senaryo, başlık, açıklama
 - ElevenLabs: doğal çok dilli seslendirme
 - Pexels: gerçek B-roll
-- Runway + isteğe bağlı Fal Seedance: premium AI video sahneleri
+- Fal üzerinden Veo / Seedance seçimi; mevcut Runway yolu: AI video sahneleri
 - FFmpeg: kurgu, altyazı, ses miksajı
 - YouTube Data API: yükleme ve yayın
 - YouTube Analytics API: performans geri beslemesi
 
 ## Güvenlik
 
-API anahtarları ve OAuth secret'ları repoya yazılmaz. Railway Variables / secret store kullanılır. Fal video geri dönüşü yalnız sunucu tarafındaki `FAL_KEY` ile etkinleşir.
+API anahtarları ve OAuth secret'ları repoya yazılmaz. Railway Variables / secret store kullanılır.
+
+Fal bağlantısı için web ve `video-worker` hizmetlerine `FAL_KEY` eklenir.
+Varsayılan `STUDIO_VIDEO_PROVIDER=auto`, anahtar varsa Fal'ı seçer; yoksa
+mevcut sağlayıcı yolu sürer. `legacy` eski yola dönmek, `fal` ise anahtar
+eksikliğinde durmak için kullanılabilir. `STUDIO_FAL_VIDEO_MODEL=auto`, 8 saniyeye kadar
+sessiz Veo 3.1 Lite, daha uzun sahnelerde sessiz Seedance 1.5 Pro kullanır.
+İsteğe bağlı sabit seçimler `veo_lite`, `seedance_pro`, `seedance_fast`.
+Tüm profiller 720p'dir; süreyi karşılamayan seçim ücretli istek göndermeden
+reddedilir. Model seçimi kalite onayı değildir; mevcut görüntü kontrolleri sürer.
+
+Fal seçimi, daha pahalı bir sağlayıcıya otomatik geçiş yapmaz. Mevcut kurulum
+üretiminde aynı kalıcı sahne kaydı ve bölüm başına üretim sınırı kullanılır.
+Normal bütçeli üretimde Fal hesabının mevcut bütçe sistemine ayrıca tanımlanması
+gerekir; yalnız API anahtarı eklemek para harcama yetkisi oluşturmaz.
+Bağlantı, fiyat doğrulaması ve devreye alma ayrıntıları: [Fal video](docs/fal-video.md).
 
 YouTube yayın merkezi en fazla 10 doğrulanmış kanalı ayrı OAuth bağlantıları
 olarak saklar. Her yükleme başlatılırken hedef kanal ve bağlantı nesli

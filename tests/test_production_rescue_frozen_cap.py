@@ -29,6 +29,7 @@ def _context(count, cap, **changes):
         'options': {'mode': 'production', 'format': 'shorts', 'content_style': 'documentary'},
         'duration_minutes': 0.5, 'total_paid_create_cap': cap,
         'scene_repair_recovery': False, 'provider_outage_stock_scenes': set(),
+        'recovered_generated_media': None, 'selected_recovery': None,
         'stock_quality_fallback_scenes': set(), 'runway_submission_cap': 2,
         'ranked_runway_candidates': [{'scene_index': index} for index in range(count)],
         'scenes': [{'narration': 'Unchanged story.'} for _ in range(count)],

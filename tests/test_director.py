@@ -6,15 +6,16 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import httpx
+
 
 openai_stub = types.ModuleType('openai')
 openai_stub.OpenAI = object
 sys.modules.setdefault('openai', openai_stub)
 
-httpx_stub = types.ModuleType('httpx')
-httpx_stub.Timeout = lambda *args, **kwargs: object()
-httpx_stub.post = lambda *args, **kwargs: None
-sys.modules.setdefault('httpx', httpx_stub)
+# Keep the real transport module importable by other SDKs (notably Runway).
+# Individual tests patch requests; a process-wide partial stub breaks tests
+# depending on collection order, even though no provider traffic is needed.
 
 config_stub = types.ModuleType('app.config')
 config_stub.settings = SimpleNamespace(
@@ -5257,21 +5258,22 @@ class ShortSpokenQualityTests(unittest.TestCase):
 
 
 class ShortStoryApprovalTests(unittest.TestCase):
-    def test_pre_source_identity_contracts_fail_even_with_matching_fingerprints(self):
-        self.assertEqual(director_module._SHORT_STORY_QC_VERSION, 5)
-        self.assertEqual(director_module._STOCK_SCENE_QC_VERSION, 9)
-        self.assertEqual(director_module._STORY_STOCK_CONTRACT, 'openai-story-stock-v5')
-        for old_story, old_stock in ((True, False), (False, True), (True, True)):
-            with self.subTest(old_story=old_story, old_stock=old_stock):
-                package = self._approved_package()
-                self.assertTrue(short_story_package_is_approved(package, 'one useful phone story'))
-                if old_story:
-                    package['short_story_qc']['version'] = 4
-                if old_stock:
-                    package['stock_scene_qc']['version'] = 8
-                package['short_story_qc']['fingerprint'] = _short_story_fingerprint(package)
-                self.assertEqual(package['short_story_qc']['fingerprint'], _short_story_fingerprint(package))
-                self.assertFalse(short_story_package_is_approved(package, 'one useful phone story'))
+    def test_pre_source_audit_contracts_fail_even_with_matching_fingerprints(self):
+        self.assertEqual(director_module._SHORT_STORY_QC_VERSION, 7)
+        self.assertEqual(director_module._STOCK_SCENE_QC_VERSION, 11)
+        self.assertEqual(director_module._STORY_STOCK_CONTRACT, 'openai-story-stock-v7')
+        for story_version, stock_version in ((5, 9), (6, 10)):
+            for old_story, old_stock in ((True, False), (False, True), (True, True)):
+                with self.subTest(story_version=story_version, old_story=old_story, old_stock=old_stock):
+                    package = self._approved_package()
+                    self.assertTrue(short_story_package_is_approved(package, 'one useful phone story'))
+                    if old_story:
+                        package['short_story_qc']['version'] = story_version
+                    if old_stock:
+                        package['stock_scene_qc']['version'] = stock_version
+                    package['short_story_qc']['fingerprint'] = _short_story_fingerprint(package)
+                    self.assertEqual(package['short_story_qc']['fingerprint'], _short_story_fingerprint(package))
+                    self.assertFalse(short_story_package_is_approved(package, 'one useful phone story'))
 
     def _approved_package(self):
         client = FakeClient([

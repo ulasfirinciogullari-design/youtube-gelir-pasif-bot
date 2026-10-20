@@ -1447,7 +1447,7 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             'if is_private_ai_first_omni_preview:\n'
             '            # Omni continuity is causal:'
         )
-        loop_position = source.index('for candidate in selected_runway:')
+        loop_position = source.index('for candidate_number, candidate in enumerate(selected_runway, start=1):')
         self.assertLess(sort_position, loop_position)
         self.assertIn(
             "key=lambda item: int(item['scene_index'])",
@@ -1519,13 +1519,15 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
             '    GeminiOmniTerminalError,',
             source,
         )
-        self.assertIn(
-            'dont_autoretry_for=(\n'
-            '        FinalVisualQualityError,\n'
-            '        FinalAudioQualityError,\n'
-            '        GeminiOmniContinuityReferenceError,',
-            source,
-        )
+        pipeline = next(node for node in ast.parse(source).body
+                        if isinstance(node, ast.FunctionDef) and node.name == 'run_video_pipeline')
+        exclusions = next(keyword.value for decorator in pipeline.decorator_list
+                          if isinstance(decorator, ast.Call) for keyword in decorator.keywords
+                          if keyword.arg == 'dont_autoretry_for')
+        self.assertIsInstance(exclusions, ast.Tuple)
+        self.assertTrue({'FinalVisualQualityError', 'FinalAudioQualityError',
+                         'GeminiOmniContinuityReferenceError'} <= {
+                             node.id for node in exclusions.elts if isinstance(node, ast.Name)})
         terminal_start = source.index('terminal_pre_media_error = isinstance(')
         terminal_end = source.index('\n        if (', terminal_start)
         self.assertIn(
@@ -1535,10 +1537,18 @@ class GeminiOmniTaskOrchestrationTests(unittest.TestCase):
 
     def test_accepted_or_ambiguous_omni_scene_cannot_be_resubmitted_as_repair(self):
         source = TASKS_PATH.read_text(encoding='utf-8')
-        self.assertIn(
-            "if isinstance(exc, GeminiOmniTerminalError):",
-            source,
-        )
+        guards = [node for node in ast.walk(ast.parse(source)) if isinstance(node, ast.If)
+                  and isinstance(node.test, ast.Call) and isinstance(node.test.func, ast.Name)
+                  and node.test.func.id == 'isinstance' and len(node.test.args) == 2
+                  and isinstance(node.test.args[0], ast.Name) and node.test.args[0].id == 'exc'
+                  and any(isinstance(part, ast.Name) and part.id == 'GeminiOmniTerminalError'
+                          for part in ast.walk(node.test.args[1]))]
+        self.assertEqual(len(guards), 2)
+        for guard in guards:
+            self.assertTrue(any(isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                                and isinstance(node.func.value, ast.Name)
+                                and node.func.value.id == 'omni_unsafe_submission_scenes'
+                                and node.func.attr == 'add' for node in ast.walk(guard)))
         self.assertIn(
             'if scene_idx not in omni_unsafe_submission_scenes',
             source,

@@ -490,6 +490,9 @@ def build_publish_plan(
     source_task_id = _safe_id(source_task_id, 'source_task_id')
     result = source_job.get('result') if isinstance(source_job.get('result'), dict) else {}
     spec = source_job.get('spec') if isinstance(source_job.get('spec'), dict) else {}
+    from app.services.channel_formats import allows
+    if not allows(profile.get('channel_id'), spec.get('format')):
+        raise MetadataValidationError('Owner enabled Shorts only for this channel')
     if result.get('quality_disposition') == 'editorial_review_pass':
         from app.services.external_editorial_review import validate_editorial_publication
 
@@ -545,13 +548,20 @@ def build_publish_plan(
     series_id = str(profile.get('series_id') or '')
     series_total = int(profile.get('series_total') or 0)
     series_name = _one_line(profile.get('series_name'), 100)
-    if series_id:
+    queued_series = 'content_plan_item_id' in spec
+    if queued_series:
+        from app.services.content_plan import publication_series
+        assigned = publication_series(source_job, profile)
+        series_id, series_name = (assigned['id'], assigned['name']) if assigned else ('', '')
+        series_total, series_number = (assigned['total'], assigned['number']) if assigned else (0, None)
+    if series_id and not queued_series:
         series_number = reserve_series_number(
             str(profile.get('channel_id') or ''),
             series_id,
             source_task_id,
             total=series_total,
         )
+    if series_id:
         fraction = f'{series_number}/{series_total}' if series_total else str(series_number)
         title = _truncate_title(title, f'({fraction})')
         series_line = f'{series_name or series_id} · {fraction}'
@@ -645,6 +655,10 @@ def build_publish_plan(
             editorial_review_id=result.get('editorial_review_id'),
             editorial_review_sha256=result.get('editorial_review_sha256'),
         )
+    if queued_series:
+        # Narration and its timing still require full QA. A downloadable
+        # subtitle file is optional delivery metadata for owner-planned videos.
+        plan['caption_required'] = False
     return validate_publish_plan(plan)
 
 
@@ -652,6 +666,8 @@ def validate_publish_plan(value: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(value, dict) or value.get('schema_version') != 1:
         raise MetadataValidationError('Publish plan is missing or invalid')
     plan = dict(value)
+    if 'caption_required' in plan and type(plan['caption_required']) is not bool:
+        raise MetadataValidationError('Caption delivery policy is invalid')
     plan['source_task_id'] = _safe_id(plan.get('source_task_id'), 'source_task_id')
     plan['target_channel_id'] = _safe_id(plan.get('target_channel_id'))
     plan['title'] = _one_line(plan.get('title'), 100)

@@ -11,6 +11,9 @@ from unittest.mock import Mock
 
 import pytest
 
+from app.services.abacus_generation import AbacusGenerationError
+from app.services.production_spend import SpendBlocked
+
 
 SOURCE = Path(__file__).resolve().parents[1] / 'app/tasks.py'
 TREE = ast.parse(SOURCE.read_text(encoding='utf-8'))
@@ -50,6 +53,7 @@ def case(monkeypatch):
     monkeypatch.setitem(sys.modules, 'app.services.director', SimpleNamespace(
         ensure_scheduled_short_shot_prompts=ensure))
     ns = {'re': re, 'json': json, 'hashlib': hashlib, 'FinalVisualQualityError': RuntimeError,
+          'SpendBlocked': SpendBlocked, 'AbacusGenerationError': AbacusGenerationError,
           '_RECOVERED_MEDIA_SOURCE_PATTERN': re.compile(r'^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$'),
           'set_stage': Mock(), 'research_and_script': Mock(return_value={'draft': True}),
           'direct_and_qc': Mock(return_value={'approved': True}),
@@ -233,6 +237,7 @@ def test_approved_package_never_enters_fresh_writers_even_if_flag_is_passed(case
 
 def _rank(case, **changes):
     ns = dict(options=case.spec, duration_minutes=.5, recovered_generated_media=None,
+        selected_recovery=None,
         recovery_repair_scene_indices=set(), fresh_scheduled_shot_prompts=True,
         scenes=deepcopy(case.package['scenes']) + [{'index': 1, 'narration': 'Stock fact.', 'ai_prompt': None}],
         current_reviews={0: {'score': 40, 'retry_queries': ['old unrelated warehouse']}, 1: {'score': 40}},
@@ -297,6 +302,7 @@ def _real_director_bridge(case, monkeypatch):
              '_scheduled_shot_prompt_units', '_immutable_narration_map',
              'ensure_scheduled_short_shot_prompts'}
     ns = {'deepcopy': deepcopy, '_MAX_PRODUCTION_SCENES': 6,
+          'SpendBlocked': SpendBlocked, 'AbacusGenerationError': AbacusGenerationError,
           'build_production_shot_prompt': build_production_shot_prompt,
           'short_story_package_is_approved': Mock(return_value=True),
           '_compress_scheduled_shot_prompts': Mock(), 'revalidate_immutable_short_story': Mock()}

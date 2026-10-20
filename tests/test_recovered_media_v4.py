@@ -1,5 +1,6 @@
 """V4 alone permits up to four declared repairs, never implicit substitutes."""
 import ast
+from contextlib import nullcontext
 from copy import deepcopy
 from pathlib import Path
 from unittest.mock import Mock
@@ -194,6 +195,8 @@ def test_actual_v4_selection_ignores_stock_rank_and_has_no_undeclared_candidate(
 
 
 def _primary(runtime, tmp_path, *, fail_index=None):
+    from app.services.production_spend import SpendBlocked
+
     events, validations = [], []
     durable = {'used': runtime['runway_attempts']}
     def slots(task_id, cap, *, reserve=False):
@@ -213,6 +216,8 @@ def _primary(runtime, tmp_path, *, fail_index=None):
             raise RuntimeError('A mocked accepted-provider failure')
         return {'provider': 'gemini_veo', 'provider_attempts': 1}
     runtime.update(
+        SpendBlocked=SpendBlocked,
+        video_scene_budget=None, spending_scene=lambda *_args: nullcontext(),
         task_id='child', work=tmp_path, scene_durations=[5.0] * 6,
         download_file=lambda key, path: events.append(('download', key)),
         _validate_recovered_generated_clip=lambda *args, **kwargs: validations.append(kwargs),
@@ -348,6 +353,8 @@ def test_v4_retained_and_repaired_assets_still_face_unchanged_final_gate(boundar
         manual_qa_preview_scenes=set(), rescued_final_scenes=[],
         runway_failed_scenes=[], final_runway_repair_failures=[], runway_failure_diagnostics=[],
         _checkpoint_qa_workprint=lambda *args, **kwargs: None,
+        _checkpoint_selected_visuals=lambda *args, **kwargs: None,
+        effective_edit_target_seconds=30.0,
         task_id='child', work=Path('/tmp/mock-work'), voice_result={}, scene_durations=[5.0] * 6,
         package={'narration': 'Saved narration'}, audio_qc={}, audio_duration_qc={}, audio_prosody_qc={},
         _final_visual_rejection_diagnostics=lambda **kwargs: {'rejected': kwargs['rejected_scene_indices']},

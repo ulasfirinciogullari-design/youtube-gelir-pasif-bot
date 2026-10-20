@@ -21,6 +21,7 @@ from app.services.studio_state import (
 )
 from app.services.youtube_auth import (
     STATE_TTL_SECONDS,
+    OAuthStateError,
     YouTubeAuthError,
     build_authorization_url,
     complete_authorization,
@@ -179,7 +180,7 @@ def _require_same_origin(request: Request) -> None:
     if not expected:
         # Logout remains usable before OAuth is configured. The request host is
         # a safe fallback here because an attacker cannot both target a
-        # different host and attach this host's Strict Studio cookie.
+        # different host and attach this host's Studio cookie on a form POST.
         expected = _canonical_origin(str(request.base_url))
     if not expected:
         raise HTTPException(status_code=503, detail='Studio public origin is not configured')
@@ -213,16 +214,15 @@ def _shell(
     same_origin_forms: bool = False,
     extra_css: str = '',
 ) -> HTMLResponse:
+    from app.studio import BASE_CSS, _nav
+    from app.services.studio_console_theme import CSS as console_css
     response = HTMLResponse(
         '<!doctype html><html lang="tr"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        '<meta name="theme-color" content="#090c11">'
-        f'<title>{escape(title)}</title><style>{CSS}{extra_css}</style></head><body>'
+        '<meta name="theme-color" content="#f4f6f8">'
+        f'<title>{escape(title)}</title><style>{BASE_CSS}{CSS}{extra_css}{console_css}</style></head><body>'
         '<a class="skip-link" href="#main-content">İçeriğe geç</a><div class="wrap">'
-        '<header class="top"><a class="brand" href="/studio">YouTube Studio</a>'
-        '<nav class="nav" aria-label="Ana menü"><a href="/studio">Yeni video</a>'
-        '<a href="/studio/history?status=library">Videolar</a>'
-        '<a class="active" aria-current="page" href="/studio/youtube">YouTube</a></nav></header>'
+        + _nav('youtube') +
         f'<main id="main-content" tabindex="-1">{body}</main></div>{script}</body></html>',
         status_code=status_code,
     )
@@ -321,11 +321,18 @@ def _produce_now_form(profile: dict, state: dict | None) -> str:
         cursor = int(state.get('cursor', '-1'))
     except (TypeError, ValueError):
         return ''
+    promoted_start = (
+        cursor == 0 and state.get('dispatch_status') == 'series_promoted'
+        and state.get('profile_revision') == profile.get('profile_revision')
+        and type(profile.get('series_epoch')) is int and profile['series_epoch'] > 0
+        and state.get('series_epoch') == str(profile['series_epoch'])
+        and state.get('last_series_promotion') and not state.get('last_task_id')
+    )
     if not (
         profile.get('production_enabled') is True and profile.get('auto_publish') is True
         and profile.get('release_mode') == 'public' and profile.get('profile_revision')
-        and isinstance(topics, list) and 1 <= cursor < len(topics)
-        and state.get('dispatch_status') == 'finished'
+        and isinstance(topics, list) and 0 <= cursor < len(topics)
+        and (promoted_start or (cursor > 0 and state.get('dispatch_status') == 'finished'))
         and not state.get('paused_reason') and not state.get('active_task_id')
     ):
         return ''
@@ -462,6 +469,10 @@ def youtube_home(
 
     if status.get('configured'):
         channel_cards = []
+        channel_metrics = {
+            row.get('channel_id'): row for row in (metrics.get('channels') or [])
+            if isinstance(row, dict)
+        }
         for channel in connections:
             channel_id = str(channel.get('id') or '')
             connection_id = str(channel.get('connection_id') or '')
@@ -475,8 +486,14 @@ def youtube_home(
                     production_state = {'unavailable': True}
             production_retry = presentation._active_production_retry(profile, production_state, by_id)
             profile_form = _profile_form(channel, profile, production_state, production_retry)
+            measured = channel_metrics.get(channel_id, {})
+            reconnect = channel.get('requires_reconnect') is True or measured.get('reason') == 'permission'
+            connection_label = ('Bağlantı yenilenmeli' if reconnect else
+                                '● Bağlı' if measured.get('status') == 'fresh' else 'Bağlantı kayıtlı')
+            reconnect_notice = ('<p class="notice" role="status">Google erişimi yenilenmeli. '
+                                'Yeniden bağla düğmesine basıp bu kanalı seç.</p>' if reconnect else '')
             channel_cards.append(f'''
-<article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{'Bağlantı yenilenmeli' if channel.get('requires_reconnect') is True else '● Bağlı'}</span></div>{profile_form}<div class="channel-actions"><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
+<article class="channel-card" id="channel-{escape(channel_id, quote=True)}"><div class="channel-card-head"><div><div class="channel-title">{escape(_ellipsize(_safe_ui_text(channel.get('title') or 'YouTube kanalı'), 60))}</div><div class="tiny">Kanal ve otomasyon ayarları</div></div><span class="badge">{connection_label}</span></div>{reconnect_notice}{profile_form}<div class="actions channel-actions"><form method="post" action="/studio/youtube/reconnect/{escape(channel_id, quote=True)}"><button class="btn secondary small" type="submit">Yeniden bağla</button></form><form method="post" action="/studio/youtube/disconnect"><input type="hidden" name="youtube_channel_id" value="{escape(channel_id, quote=True)}"><input type="hidden" name="connection_id" value="{escape(connection_id, quote=True)}"><button class="btn danger small" type="submit">Bağlantıyı kaldır</button></form></div></article>''')
         count = int(status.get('connection_count') or len(connections))
         limit = int(status.get('connection_limit') or 10)
         connection_notice = ''
@@ -485,7 +502,7 @@ def youtube_home(
         if count < limit:
             connect_action = f'<div class="actions"><form class="inline" method="post" action="/studio/youtube/connect"><button type="submit">+ Google ile kanal bağla</button></form><span class="tiny">{count}/{limit} kanal kullanılıyor</span></div>'
         else:
-            connect_action = f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Yeni kanal için önce bir bağlantıyı kaldır.</div>'
+            connect_action = f'<div class="notice">Kanal sınırı dolu ({count}/{limit}). Mevcut kanallarını yenileyebilirsin. Yeni kanal eklemek için bir bağlantıyı kaldır.</div>'
         empty_channels = '<div class="empty">Henüz bağlı kanal yok.</div>' if not channel_cards else ''
         account_card = f'''<section class="card"><div class="section-head"><div><span class="section-kicker">HESAPLAR</span><h2>Bağlı kanallar</h2><div class="muted">Her video yükleme anında tek bir hedef kanala sabitlenir.</div></div><span class="badge">{count}/{limit}</span></div>{connection_notice}<div class="channel-grid">{''.join(channel_cards)}</div>{empty_channels}{connect_action}</section>'''
     else:
@@ -561,8 +578,9 @@ def youtube_home(
     sections += '<div class="actions"><a class="btn secondary" href="/studio/history?status=deleted">Silinenler · geçmiş yayın kayıtları</a></div>'
     overview = '<section class="card">' + presentation._metrics_header(metrics) + '<div id="channel-overview-host">' + presentation._channel_overview(metrics.get('channels') or []) + '</div></section>'
     success = '<div class="notice success" role="status">YouTube kanalı başarıyla bağlandı.</div>' if connected else ''
+    budget_notice = presentation._production_budget_notice()
     body = f'''
-<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{overview}{sections}{account_card}'''
+<div class="hero"><div class="hero-copy"><div class="eyebrow">YouTube</div><h1>Yayın merkezi</h1><div class="muted">Kanallar, gerçek yayın durumu ve performans tek yerde.</div></div><div class="hero-tools"><span class="badge good">🔒 İlk yükleme daima gizli</span><span class="badge">En fazla 10 kanal</span></div></div>{success}{budget_notice}{overview}{account_card}{sections}'''
     return _shell(body, same_origin_forms=True, script=presentation._metrics_script(), extra_css=presentation.METRICS_CSS)
 
 
@@ -700,13 +718,15 @@ def youtube_production_budget(
     from app.services.production_spend_runtime import budget_status
 
     _require_auth(studio_token)
-    return JSONResponse(budget_status(), headers={'Cache-Control': 'no-store'})
+    return JSONResponse(budget_status(read_timeout=2), headers={'Cache-Control': 'no-store'})
 
 
-@router.post('/studio/youtube/connect')
-def youtube_connect(
+def _begin_youtube_connect(
     request: Request,
-    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+    studio_token: str | None,
+    *,
+    target_channel_id: str | None = None,
+    analytics: bool = False,
 ):
     _require_auth(studio_token)
     # Starting a flow rotates the global authorization epoch, so it is a
@@ -714,8 +734,11 @@ def youtube_connect(
     _require_same_origin(request)
     browser_binding = secrets.token_urlsafe(32)
     try:
+        options = {'target_channel_id': target_channel_id} if target_channel_id is not None else {}
+        if analytics:
+            options['analytics'] = True
         response = RedirectResponse(
-            build_authorization_url(browser_binding),
+            build_authorization_url(browser_binding, **options),
             status_code=302,
         )
     except YouTubeAuthError as exc:
@@ -734,6 +757,39 @@ def youtube_connect(
     return response
 
 
+@router.post('/studio/youtube/connect')
+def youtube_connect(
+    request: Request,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    return _begin_youtube_connect(request, studio_token)
+
+
+@router.post('/studio/youtube/reconnect/{youtube_channel_id}')
+def youtube_reconnect(
+    request: Request,
+    youtube_channel_id: str,
+    studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME),
+):
+    return _begin_youtube_connect(request, studio_token, target_channel_id=youtube_channel_id)
+
+
+@router.post('/studio/youtube/analytics/connect/{youtube_channel_id}')
+def youtube_analytics_connect(request: Request, youtube_channel_id: str,
+        studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    return _begin_youtube_connect(request, studio_token,
+        target_channel_id=youtube_channel_id, analytics=True)
+
+
+@router.get('/studio/analytics', response_class=HTMLResponse)
+def youtube_analytics_home(studio_token: str | None = Cookie(default=None, alias=COOKIE_NAME)):
+    _require_auth(studio_token)
+    from app.services.youtube_analytics import dashboard
+    from app.services.studio_analytics import render
+    from app.studio import _shell as studio_shell
+    return studio_shell(render(dashboard()), active='analytics', title='İzleyici analizi · Studio')
+
+
 @router.get('/studio/youtube/callback', name='youtube_oauth_callback')
 def youtube_oauth_callback(
     request: Request,
@@ -750,17 +806,53 @@ def youtube_oauth_callback(
                 '<div class="hero"><h1>Google izni tamamlanmadı</h1></div><div class="notice">Bağlantı kurulmadı; istersen güvenli giriş akışını yeniden başlatabilirsin.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>',
                 status_code=400,
             ))
-        complete_authorization(code, state, oauth_binding or '')
-        # The Studio session cookie is SameSite=Strict. Render one same-origin
+        channel = complete_authorization(code, state, oauth_binding or '')
+        if isinstance(channel, dict) and channel.get('analytics_connected') is True:
+            return _delete_oauth_binding_cookie(_shell(
+                '<div class="hero"><h1>İzleyici analizi bağlandı</h1></div>'
+                '<div class="card">İzlenme süresi ve izleyici tutma raporları sunucuda düzenli okunacak. '
+                'İlk rapor bir sonraki saatlik kontrolde görünecek.</div><div class="actions">'
+                '<a class="btn" href="/studio/analytics">Performansa dön</a></div>'))
+        # Older Studio session cookies are SameSite=Strict. Render a same-origin
         # document before navigating back so the cookie is available after the
         # cross-site Google callback without weakening CSRF protection.
         return _delete_oauth_binding_cookie(_shell(
             '<div class="hero"><h1>Kanal doğrulandı</h1></div><div class="card">YouTube bağlantısı tamamlandı. Studio’ya dönülüyor…</div><div class="actions"><a class="btn success" href="/studio/youtube?connected=1">Studio’ya dön</a></div>',
             script='<script>window.location.replace("/studio/youtube?connected=1")</script>',
         ))
-    except YouTubeAuthError:
+    except YouTubeAuthError as exc:
+        if str(exc) == 'youtube_oauth_channel_mismatch':
+            detail = getattr(exc, 'channel_mismatch', None)
+            selected = ''
+            back = '/studio/youtube'
+            if type(detail) is dict and set(detail) == {'target_id', 'target_title', 'selected_title'}:
+                selected = ('<p>Yenilenecek kanal: <strong>' + escape(detail['target_title'])
+                    + '</strong><br>Google’dan gelen kanal: <strong>'
+                    + escape(detail['selected_title']) + '</strong></p>')
+                if re.fullmatch(r'UC[A-Za-z0-9_-]{22}', detail['target_id']):
+                    back += '#channel-' + detail['target_id']
+            return _delete_oauth_binding_cookie(_shell(
+                '<div class="hero"><h1>Farklı bir kanal seçildi</h1></div><div class="notice">'
+                'Yenilemek istediğin kanal seçilmediği için bu bağlantı kaydedilmedi.' + selected
+                + '<p>Kanallara dön, ilgili kanalın <strong>Yeniden bağla</strong> düğmesine bas. '
+                'Google’da o kanalı yönettiğin hesabı ve ardından kanal adını seç.</p>'
+                '<p>Kanal seçimi çıkmıyorsa YouTube’da profil menüsünden istediğin kanala geç. '
+                'YouTube → Ayarlar → Gelişmiş ayarlar bölümünde bu kanalı hesabın varsayılan kanalı '
+                'yapıp bağlantıyı yeniden başlat. '
+                '<a href="https://support.google.com/youtube/answer/6019090?hl=tr" '
+                'target="_blank" rel="noopener noreferrer">Google’ın kanal seçimi açıklaması</a></p>'
+                '</div><div class="actions"><a class="btn secondary" href="' + back
+                + '">Kanallara dön</a></div>',
+                status_code=400,
+            ))
+        detail = ('Bağlantı oturumu sona ermiş veya başka bir bağlantı işlemiyle değişmiş. '
+            'İlgili sayfadan bağlantıyı yeniden başlat.' if isinstance(exc, OAuthStateError) else
+            'Google izni kaydedilemedi. Mevcut kanal bağlantın korunuyor. '
+            'Bağlantıyı yeniden başlatıp istenen izinleri işaretle; sorun sürerse bize bildir.')
         return _delete_oauth_binding_cookie(_shell(
-            '<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice">OAuth yanıtı geçersiz, süresi dolmuş veya daha önce kullanılmış. Güvenli bağlantıyı yeniden başlat.</div><div class="actions"><a class="btn secondary" href="/studio/youtube">Geri dön</a></div>',
+            '<div class="hero"><h1>Bağlantı kurulamadı</h1></div><div class="notice">' + detail
+            + '</div><div class="actions"><a class="btn secondary" href="/studio/analytics">Performansa dön</a>'
+            '<a class="btn secondary" href="/studio/youtube">Kanallara dön</a></div>',
             status_code=400,
         ))
 

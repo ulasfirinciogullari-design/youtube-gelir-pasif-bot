@@ -133,3 +133,15 @@ def test_sourced_explanation_does_not_raise_a_low_model_score(score, tmp_path):
         'score': score, 'reason': 'The merchandise remains obscured by foreground objects.',
     })
     assert row['score'] == row['raw_score'] == score
+
+
+@pytest.mark.parametrize('provider', ['openai', 'gemini'])
+def test_documentary_review_cannot_invent_landscape_requirement(provider, tmp_path):
+    row, model = _run_qc(tmp_path, provider, scene=SCENE, sources=SOURCES,
+        review_changes={'score': 52, 'reason': 'The cafeteria subject is missing.'})
+    request = model.call_args
+    instruction = request.kwargs['instructions' if provider == 'openai' else 'system_instruction']
+    assert 'documentary is a genre, not a landscape format' in instruction
+    assert 'Honor any explicit output-framing requirement' in instruction
+    assert 'never excuses a cropped essential detail, missing action' in instruction
+    assert row['score'] == row['raw_score'] == 52

@@ -19,13 +19,20 @@ from app.services.voice import (
     save_selected_voice,
     get_selected_voice,
 )
-from app.studio import router as studio_router, _production_publish_options
+from app.studio import router as studio_router, _production_publish_options, studio_auth_exception
 from app.external_routes import router as external_router
 from app.editorial_routes import router as editorial_router
 from app.episode_delivery_routes import router as episode_delivery_router
 from app.publication_hold_routes import router as publication_hold_router
 from app.held_render_cancellation_routes import router as held_render_cancellation_router
 from app.deleted_episode_replacement_routes import router as deleted_episode_replacement_router
+from app.provider_key_routes import router as provider_key_router
+from app.kie_provider_routes import router as kie_provider_router
+from app.studio_access_routes import router as studio_access_router
+from app.studio_settings_routes import router as studio_settings_router
+from app.content_plan_routes import router as content_plan_router
+from app.growth_routes import router as growth_router
+from app.cost_routes import router as cost_router
 
 app = FastAPI(title='YouTube 7/24 Content Factory', version='2.0.0')
 app.include_router(studio_router)
@@ -35,6 +42,14 @@ app.include_router(episode_delivery_router)
 app.include_router(publication_hold_router)
 app.include_router(held_render_cancellation_router)
 app.include_router(deleted_episode_replacement_router)
+app.include_router(provider_key_router)
+app.include_router(kie_provider_router)
+app.include_router(studio_access_router)
+app.include_router(studio_settings_router)
+app.include_router(content_plan_router)
+app.include_router(growth_router)
+app.include_router(cost_router)
+app.add_exception_handler(HTTPException, studio_auth_exception)
 
 
 class JobCreate(BaseModel):

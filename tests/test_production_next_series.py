@@ -160,6 +160,18 @@ def test_ready_is_separate_unapproved_pending_batch_and_reservation_precedes_req
     assert 'provider' not in result and 'model' not in result and 'format' not in result
 
 
+def test_included_source_rotation_comes_from_consumed_server_execution_binding(case, monkeypatch):
+    from app.services import production_editorial_history as history
+    case.configuration.return_value = ('abacus_included', 'route-llm', 'not-a-real-key')
+    prior = ['A previous public topic https://www.ibm.com/history/upc']
+    monkeypatch.setattr(history, 'recent_topics', lambda *_: prior)
+    result = _run(case)
+    assert result['status'] == 'ready' and result['qa_approved'] is False
+    context = case.generate.call_args.args[0]
+    assert context['source_rotation'] == 0 and context['previous_topics'] == prior
+    assert 'source_rotation' not in result
+
+
 @pytest.mark.parametrize('cursor', [2, 3, 4])
 def test_prepares_only_when_at_most_two_topics_remain(case, cursor):
     _save(case, cursor)

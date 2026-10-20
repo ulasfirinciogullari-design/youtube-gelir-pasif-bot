@@ -801,10 +801,10 @@ class RunwayPromptTests(unittest.TestCase):
             '_preflight_runway_candidates_before_paid(\n'
             '            [int(item'
         )
-        initial_loop = source.index('for candidate in selected_runway:')
+        initial_loop = source.index('for candidate_number, candidate in enumerate(selected_runway, start=1):')
         repair_preflight = source.index(
             '_preflight_runway_candidates_before_paid(\n'
-            '            [int(index)'
+            '                [int(index)'
         )
         repair_loop = source.index(
             'for scene_idx in final_runway_repair_candidates:'
@@ -824,11 +824,11 @@ class RunwayPromptTests(unittest.TestCase):
         )
         prosody_gate = source.index('audio_prosody_qc = verify_audio_prosody(')
         audio_rejection = source.index(
-            'raise FinalAudioQualityError(',
+            'raise content_rejection(FinalAudioQualityError(',
             audio_gate,
         )
         initial_runway_loop = source.index(
-            'for candidate in selected_runway:'
+            'for candidate_number, candidate in enumerate(selected_runway, start=1):'
         )
 
         self.assertLess(audio_gate, audio_rejection)

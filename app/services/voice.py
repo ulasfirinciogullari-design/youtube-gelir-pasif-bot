@@ -162,8 +162,13 @@ def _media_duration(path: str | Path) -> float:
     return float(out)
 
 
-def _voice_speed(target_seconds: float | None = None) -> float:
-    """Use ElevenLabs' natural speed for short Turkish previews."""
+def _voice_speed(target_seconds: float | None = None, *, language: str | None = None) -> float:
+    """Calibrate English Short delivery at synthesis, before measured fitting."""
+    if target_seconds and 0 < target_seconds <= 40 and str(language or '').lower() == 'en':
+        # The selected voice's observed 66-word take needed 1.192x post-process
+        # tempo at its default rate. A native 1.10 delivery leaves modest fitting
+        # headroom; actual transcript, duration and prosody gates still decide.
+        return 1.10
     return 1.0 if target_seconds and target_seconds <= 40 else 1.01
 
 
@@ -781,9 +786,26 @@ def _fit_duration(
     target_seconds: float | None,
     *,
     prior_tempo_rate: float = 1.0,
+    flexible_short: bool = False,
+    natural_timeline: bool = False,
 ) -> tuple[list[float], float, float, float]:
     """Fit narration with bounded tempo changes; full audio QA still follows."""
     before = _media_duration(output)
+    if natural_timeline is True:
+        # Original animation is cut to the complete measured performance.
+        # Its caller still verifies speech density, all words, prosody and
+        # the exact delivered frame/tail bounds before publication.
+        bounds = (20, 39.45) if target_seconds == 30 else (120, 239) if target_seconds == 180 else None
+        if (bounds is None or prior_tempo_rate != 1.0 or not math.isfinite(before)
+                or not bounds[0] <= before <= bounds[1]):
+            raise VoiceScriptFitError('Natural narration is outside the commissioned edit window')
+        return scene_durations, before, before, 1.0
+    # Fresh automatic Shorts may use their natural 30-40 second edit. Keep
+    # this take intact; the pipeline must still align the final endpoint and
+    # pass actual transcript, prosody, scene-duration and render checks.
+    if (flexible_short is True and target_seconds == 30 and prior_tempo_rate == 1.0
+            and 29.75 < before <= 39.45):
+        return scene_durations, before, before, 1.0
     after = before
     tempo_rate = 1.0
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
@@ -894,6 +916,8 @@ def synthesize_scene_sequence(
     profile_override: str | None = None,
     before_paid_request=None,
     raw_audio_sink=None,
+    flexible_short: bool = False,
+    natural_timeline: bool = False,
 ) -> dict:
     if profile_override is not None and (
         profile_override != 'turkish_multilingual_v2'
@@ -906,10 +930,21 @@ def synthesize_scene_sequence(
         raise VoiceScriptFitError('Voice replacement profile requires one reserved Turkish short take')
     if (before_paid_request is not None or raw_audio_sink is not None) and profile_override is None:
         raise VoiceScriptFitError('Voice replacement reservation requires an explicit profile')
-    selected = _selected_voice_or_raise()
+    from app.services import kie_voice_production, fal_voice_production
+    fal_choice = fal_voice_production.select(language) if profile_override is None else None
+    kie_choice = kie_voice_production.select(language) if profile_override is None and not fal_choice else None
+    from app.services.narrator_rotation import assigned as assigned_narrator
+    alternative = fal_choice or kie_choice
+    selected = ({'voice_id': alternative['voice_id'], 'name': alternative['voice_id']}
+                if alternative else assigned_narrator(language) if profile_override is None else None)
+    selected = selected or _selected_voice_or_raise()
     voice_id = selected['voice_id']
     source_texts = [str(s.get('narration') or '').strip() for s in scenes]
     short_preview = bool(target_seconds and 0 < target_seconds <= 40)
+    from app.services.commissioning_longform import active, natural_documentary_timing
+    continuous_long = target_seconds == 180 and active()
+    documentary_timing = (continuous_long and natural_timeline is False
+                          and natural_documentary_timing())
     turkish_short_preview = _use_turkish_short_preview_profile(
         language,
         target_seconds,
@@ -926,12 +961,12 @@ def synthesize_scene_sequence(
 
     work = Path('/tmp') / f'{job_id}_voice'
     work.mkdir(parents=True, exist_ok=True)
-    selected_speed = _voice_speed(target_seconds)
+    selected_speed = _voice_speed(target_seconds, language=language)
     raw_output = work / 'joined.mp3'
     removed_silence_seconds = 0.0
     compacted_boundary_pause_count = 0
     compacted_trailing_silence = False
-    if short_preview:
+    if short_preview or continuous_long:
         narration, spans = _join_scene_narration(spoken)
         timestamp_options = {
             'speed': selected_speed,
@@ -950,19 +985,24 @@ def synthesize_scene_sequence(
             # Durable, one-shot reservation immediately precedes the only
             # synthesis request. An uncertain result must not be retried.
             before_paid_request(voice_id)
-        audio, alignment = synthesize_voice_with_timestamps(
-            narration,
-            voice_id,
-            **timestamp_options,
-        )
-        raw_output.write_bytes(audio)
-        raw_media_duration = _media_duration(raw_output)
-        edit_plan = _short_preview_audio_edit_plan(
-            narration,
-            spans,
-            alignment,
-            raw_media_duration,
-        )
+        if fal_choice:
+            audio, alignment = fal_voice_production.synthesize(narration, fal_choice, attempt=generation_attempt)
+            raw_output.write_bytes(audio)
+            raw_media_duration = _media_duration(raw_output)
+            from app.services.fal_voice_alignment import edit_plan as fal_edit_plan
+            edit_plan = fal_edit_plan(spoken, alignment, raw_media_duration)
+        elif kie_choice:
+            audio, evidence = kie_voice_production.synthesize(narration, kie_choice,
+                attempt=generation_attempt, work=work)
+            raw_output.write_bytes(audio)
+            raw_media_duration = _media_duration(raw_output)
+            from app.services.word_timed_narration import edit_plan as word_edit_plan
+            edit_plan = word_edit_plan(spoken, evidence, raw_media_duration, language=language)
+        else:
+            audio, alignment = synthesize_voice_with_timestamps(narration, voice_id, **timestamp_options)
+            raw_output.write_bytes(audio)
+            raw_media_duration = _media_duration(raw_output)
+            edit_plan = _short_preview_audio_edit_plan(narration, spans, alignment, raw_media_duration)
         scene_durations, _ = _apply_short_preview_audio_edit_plan(
             raw_output,
             raw_media_duration,
@@ -1026,12 +1066,31 @@ def synthesize_scene_sequence(
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     output = Path('/tmp') / f'{job_id}.mp3'
-    subprocess.run([
-        'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-15:TP=-1.0:LRA=7',
-        '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
-    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if fal_choice:
+        # This exact complete performance is already normalized and captured.
+        # Reusing its bytes also reuses its independent speech receipt.
+        output.write_bytes(raw_output.read_bytes())
+    else:
+        subprocess.run([
+            'ffmpeg', '-y', '-i', str(raw_output), '-af', 'loudnorm=I=-15:TP=-1.0:LRA=7',
+            '-c:a', 'libmp3lame', '-b:a', '192k', str(output),
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(output, scene_durations, target_seconds)
+    if documentary_timing:
+        # Keep the complete performance and its alignment. The existing final
+        # long-form duration gate is 70-122% of the brief; leave room for its
+        # closing visual hold and reject thin/dense takes before buying media.
+        seconds = _media_duration(output)
+        words = len(re.findall(r"\b\w+(?:['’]\w+)*\b", ' '.join(spoken), re.UNICODE))
+        if (not math.isfinite(seconds) or not 126 <= seconds <= 219
+                or not 95 <= words * 60 / seconds <= 185):
+            raise VoiceScriptFitError('Natural documentary narration is outside the duration or speech-density window')
+    scene_durations, before_fit, after_fit, tempo_rate = _fit_duration(
+        output, scene_durations, target_seconds,
+        **({'flexible_short': True} if flexible_short is True and profile_override is None else {}),
+        **({'natural_timeline': True} if (natural_timeline is True or documentary_timing)
+           and profile_override is None else {}),
+    )
     reserved_tail_seconds = (
         0.50 if target_seconds and 0 < target_seconds <= 40 else 0.0
     )
@@ -1040,12 +1099,13 @@ def synthesize_scene_sequence(
         'scene_durations': scene_durations,
         'spoken_texts': spoken,
         'voice_name': selected.get('name'),
-        'voice_model': (
+        'voice_id': voice_id,
+        'voice_model': alternative['model'] if alternative else (
             ELEVENLABS_TURKISH_SHORT_MODEL_ID
             if turkish_short_preview
             else ELEVENLABS_MULTILINGUAL_V2_MODEL_ID
         ),
-        'voice_language_code': 'tr' if turkish_short_preview else None,
+        'voice_language_code': language if alternative else 'tr' if turkish_short_preview else None,
         'duration_before_fit': before_fit,
         'duration_after_fit': after_fit,
         'tempo_rate': tempo_rate,
@@ -1053,6 +1113,8 @@ def synthesize_scene_sequence(
         'compacted_boundary_pause_count': compacted_boundary_pause_count,
         'compacted_trailing_silence': compacted_trailing_silence,
         'content_target_seconds': (
+            after_fit if documentary_timing else
+            after_fit if flexible_short is True and target_seconds == 30 and after_fit > 29.75 else
             float(target_seconds) - reserved_tail_seconds
             if target_seconds and target_seconds > 0
             else after_fit

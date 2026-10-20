@@ -1,0 +1,91 @@
+{
+  "channel_id": "UCs93z6wf134H5_BL9pkQX4Q",
+  "channel_name": "Framecase Stories",
+  "handle": "@framecasestories",
+  "language": "en",
+  "series_id": "framecase_clock_that_lied_s01",
+  "series_name": "The Clock That Lied",
+  "playlist_id": "PLMWmwXA6VKsY",
+  "audience": "General audience animated mystery; adult investigator and restrained suspense, no child-directed presentation.",
+  "visual_bible": "Original cinematic painterly 2D animation. Fictional city Bellwick. Midnight navy, amber light, ivory, muted teal. Mira Vale is an adult investigator with shoulder-length dark wavy hair, hazel eyes and a cream raincoat. Preserve her identity and the cracked brass pocket watch across all five episodes. Eli Rowan is the adult watchmaker, greying hair and a charcoal waistcoat. Inspector Voss is an adult city inspector in a dark overcoat with one distinctive silver cuff. No real celebrity likeness or existing fictional franchise. Meaningful animated character and object actions in every shot, no slideshow or slow zooms on still pictures. Original English narration; optional separate subtitles, no burned-in narration. Each episode resolves one clue and carries one precise question to the next. The fifth resolves the mystery. CLOCK CONTINUITY: city clocks are moved BACK sixty seconds after the first midnight chime; the independent cracked watch is then one minute AHEAD. The second midnight chime occurs one real minute after the first. Never depict a forward clock adjustment.",
+  "episodes": [
+    {
+      "number": 1,
+      "title": "Every Clock Agreed. One Watch Didn't. | The Clock That Lied 1/5",
+      "hook": "The guard heard a bell before the thief left. The camera says the thief left before the bell.",
+      "narration": "Every clock in Bellwick agreed. One cracked watch didn't. At midnight, a painting vanished from the gallery. A shadow left through the side door. The guard heard the bell before the footsteps. The camera said the footsteps came first. Mira checked her father's watch: one minute ahead of the city's clocks. Then she heard the recording. The tower had rung midnight twice.",
+      "shots": [
+        "Immediate close-up: Mira exposes the cracked brass watch beside a city clock. The independent watch is one minute ahead; both second hands move.",
+        "The gallery guard points at an empty frame. Briefly show an adult shadow leaving through the side door after the first midnight bell.",
+        "Mira scrubs the continuous security recording; compare the footsteps, bell and a controlled timestamp insert without dense generated UI.",
+        "A second midnight bell sounds. Mira looks toward the clock tower and closes the watch decisively."
+      ],
+      "payoff": "The apparent disagreement between the guard and camera is linked to two midnight chimes.",
+      "next_question": "Why did the tower ring twice?",
+      "narration_word_count": 62
+    },
+    {
+      "number": 2,
+      "title": "The Bell Rang Twice | The Clock That Lied 2/5",
+      "hook": "The clock did not lose a minute. It repeated one.",
+      "narration": "The tower rang midnight twice. Between the chimes, its clock had been turned back sixty seconds. Mira replayed the gallery camera. An umbrella kept moving as the timestamp jumped backward. No footage was missing. One minute had happened twice. Someone wanted their exit to appear before the theft. Mira froze the shadow in a shop-window reflection. A silver cuff caught the light.",
+      "shots": [
+        "Open on the clock tower reaching midnight, then show its minute hand being set backward one minute while rain continues moving.",
+        "Mira compares two midnight strikes on a simple sound waveform; the chimes are one real minute apart.",
+        "A passing umbrella moves continuously while a controlled camera timestamp insert jumps backward. Never show skipped video frames.",
+        "Mira leans toward the shop-window reflection of the departing figure. A single silver cuff catches the light."
+      ],
+      "payoff": "The timestamp went backward while the camera recorded continuously; the exit was made to look earlier.",
+      "next_question": "Who wore the silver cuff?",
+      "narration_word_count": 62
+    },
+    {
+      "number": 3,
+      "title": "The Reflection Saw Him | The Clock That Lied 3/5",
+      "hook": "The camera missed his face. The glass kept his signature.",
+      "narration": "The camera never saw his face. The shop window saw his cuff. Mira followed the reflection to the tower entrance. A man carried a narrow case beneath his coat. Inspector Voss claimed he'd left the gallery before midnight. His silver cuff matched. That wasn't proof. Inside the tower, Mira found a service note: one minute back. Signed by someone else.",
+      "shots": [
+        "Open on the silver cuff in a rain-streaked shop-window reflection as an adult man turns away.",
+        "Follow Mira through the narrow street toward the tower; coat and hair respond to the wind.",
+        "Cut to Voss closing a narrow case; retain the distinct silver cuff without showing a recognizable real person.",
+        "Mira unfolds a service note beside the mechanism. End on the note and her doubtful reaction; keep any necessary readable wording as a simple short controlled insert."
+      ],
+      "payoff": "The reflection points to Voss, but the service note implicates another person.",
+      "next_question": "Who signed the clock adjustment?",
+      "narration_word_count": 60
+    },
+    {
+      "number": 4,
+      "title": "The Signature Was Wrong | The Clock That Lied 4/5",
+      "hook": "The watchmaker's name is on the order, but one physical detail does not match.",
+      "narration": "The order carried the watchmaker's signature. Eli stared at it. Then he held up his bandaged hand. He hadn't written anything all week. Mira compared the paper with the tower's receipt book. The torn edge matched a missing page. Voss had taken it during his inspection. The forged order moved every clock backward. But one cracked watch had never joined the city's system.",
+      "shots": [
+        "Eli turns his bandaged writing hand toward Mira beside the forged service order.",
+        "Mira places the torn order beside the receipt-book stub; paper edges align in a deliberate physical action.",
+        "A concise visual recollection shows Voss taking the blank receipt page with his silver cuff visible.",
+        "Mira winds the mechanical pocket watch; its independent gears turn while the tower's linked mechanism moves in the background."
+      ],
+      "payoff": "The adjustment order was forged, and the independent watch preserves the true timeline.",
+      "next_question": "Can Mira put the missing minute back?",
+      "narration_word_count": 63
+    },
+    {
+      "number": 5,
+      "title": "He Didn't Steal Time. He Stole an Alibi. | The Clock That Lied 5/5",
+      "hook": "Three ordinary clues restore the minute the thief tried to erase.",
+      "narration": "Mira put the minute back. The first bell marked midnight. Voss left the gallery after it, his silver cuff reflected in the glass. Turning the clocks backward made him appear to leave earlier. The second bell exposed the trick. His alibi collapsed. Voss opened his narrow case. The painting was inside. Mira kept the cracked watch. Sometimes, the one thing that doesn't fit is the truth.",
+      "shots": [
+        "Open on Mira placing the watch, recording and torn receipt together as three clean physical clues.",
+        "She confronts Voss in the gallery, calmly pointing to his cuff and the narrow case.",
+        "Voss opens the case to reveal the missing painting; the guard recognizes it. No weapons, violence or humiliation.",
+        "At dawn Mira closes the cracked watch as the restored clock tower chimes once. End on the warm doorway emblem only if it does not delay the story payoff."
+      ],
+      "payoff": "The clock manipulation, false alibi and stolen painting are resolved within the episode.",
+      "next_question": "",
+      "narration_word_count": 66
+    }
+  ],
+  "status": "authored_screenplays_not_rendered_video_stock",
+  "draft_revision": 2,
+  "continuity_rule": "At true midnight, the first bell sounds. The city clocks are then turned BACK sixty seconds. The thief exits after the first bell but the camera timestamp reads before midnight. The independent mechanical watch remains correct, one minute AHEAD of the city. The clock reaches midnight again and the bell repeats. No video frames disappear. Mira restores the real sequence using the two bells, continuous movement and the independent watch."
+}

@@ -95,6 +95,8 @@ end
 '''
 
 
+from app.services.channel_cadence import PRODUCTION_LUA
+
 _RESERVE = _ACTIVE_CLAIMS_LUA + r'''
 local profile_raw = redis.call('GET', KEYS[1])
 if profile_raw ~= ARGV[1] then return 'profile_changed' end
@@ -131,12 +133,26 @@ end
 if due > tonumber(ARGV[5]) then return 'not_due' end
 local claims = active_claims(redis.call('GET', KEYS[3]))
 if not claims then return 'invalid_state' end
-if #claims >= 2 then return 'active' end
+local owner_raw = redis.call('GET', KEYS[10])
+local owner_count = 0
+if owner_raw then
+  local valid_owner, owner = pcall(cjson.decode, owner_raw)
+  if not valid_owner or type(owner) ~= 'table' then return 'invalid_state' end
+  for channel_id, item in pairs(owner) do
+    if type(channel_id) ~= 'string' or type(item) ~= 'string' then return 'invalid_state' end
+    if channel_id == ARGV[7] then return 'active' end
+    owner_count = owner_count + 1
+  end
+end
+-- Keep the two legacy claims bound. One held owner-plan channel must not
+-- occupy both legacy channels' queue capacity. Render concurrency stays two.
+if #claims >= 2 or #claims + owner_count >= 3 then return 'active' end
 for _, claim in ipairs(claims) do
   if claim['channel_id'] == ARGV[7] or claim['task_id'] == ARGV[9] then return 'active' end
 end
 if (redis.call('HGET', KEYS[2], 'active_task_id') or '') ~= '' then return 'active' end
 if redis.call('EXISTS', KEYS[4]) == 1 then return 'invalid_state' end
+''' + PRODUCTION_LUA + r'''
 redis.call('HSET', KEYS[2],
   'cursor', cursor + 1, 'consumed_prefix', ARGV[4],
   'next_due', ARGV[6], 'active_task_id', ARGV[9],
@@ -155,21 +171,30 @@ return 'reserved'
 
 
 _RECONCILE = _ACTIVE_CLAIMS_LUA + r'''
-if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 'active_changed' end
-local claims = active_claims(ARGV[1])
+local recheck_public = ARGV[7] == 'public_hold_recheck'
+local current_active = redis.call('GET', KEYS[1])
+if (current_active or '') ~= ARGV[1] then return 'active_changed' end
+local claims = active_claims(current_active)
 if not claims then return 'state_unavailable' end
 local matched
 for index, claim in ipairs(claims) do
+  if recheck_public and (claim['channel_id'] == ARGV[4] or claim['task_id'] == ARGV[2]) then return 'active' end
   if claim['task_id'] == ARGV[2] and claim['channel_id'] == ARGV[4] then matched = index end
 end
-if not matched then return 'active_changed' end
+if recheck_public then
+  if redis.call('HGET', KEYS[3], 'paused_reason') ~= 'previous_publication_blocked'
+     or redis.call('HGET', KEYS[3], 'last_task_id') ~= ARGV[2]
+     or redis.call('HGET', KEYS[3], 'last_result') ~= 'SUCCESS'
+     or redis.call('HGET', KEYS[3], 'dispatch_status') ~= 'finished'
+     or (redis.call('HGET', KEYS[3], 'active_task_id') or '') ~= '' then return 'state_unavailable' end
+elseif not matched then return 'active_changed' end
 local raw_job = redis.call('GET', KEYS[2])
 local ok, job = pcall(cjson.decode, raw_job or '')
 if not ok or type(job) ~= 'table' then return 'state_unavailable' end
 if job['task_id'] ~= ARGV[2] or job['kind'] ~= 'render' then
   return 'state_unavailable'
 end
-if redis.call('HGET', KEYS[3], 'active_task_id') ~= ARGV[2] then
+if not recheck_public and redis.call('HGET', KEYS[3], 'active_task_id') ~= ARGV[2] then
   return 'state_unavailable'
 end
 local state = job['state']
@@ -256,7 +281,9 @@ else
               and empty(record['thumbnail_error_code'])
               and (plan['require_thumbnail'] ~= true and profile['require_thumbnail'] ~= true
                    or record['thumbnail_uploaded'] == true)
-              and record['contains_synthetic_media'] == plan['contains_synthetic_media']
+              and type(record['contains_synthetic_media']) == 'boolean'
+              and record['contains_synthetic_media'] == attribution['contains_synthetic_media']
+              and (plan['contains_synthetic_media'] ~= true or record['contains_synthetic_media'] == true)
           end
           local function public_delivery(record)
             if record['idempotent_replay'] ~= true then return public_assets(record) end
@@ -271,7 +298,7 @@ else
               and empty(record['caption_error_code']) and empty(record['thumbnail_error_code'])
               and omitted_or('profile_revision', revision) and omitted_or('caption_uploaded', true)
               and omitted_or('thumbnail_uploaded', attribution['thumbnail_uploaded'])
-              and omitted_or('contains_synthetic_media', plan['contains_synthetic_media'])
+              and omitted_or('contains_synthetic_media', attribution['contains_synthetic_media'])
           end
           continue_public = type(spec) == 'table' and type(attribution) == 'table' and type(plan) == 'table'
             and type(connection) == 'string' and connection ~= '' and type(revision) == 'string' and revision ~= ''
@@ -309,6 +336,15 @@ else
       end
     end
   end
+end
+if recheck_public then
+  -- Reuse the complete public/ownership/assets proof above. Rechecking a
+  -- finished hold neither recreates a claim nor edits any publication record.
+  if reason ~= '' or not continue_public then return 'publication_still_unverified' end
+  redis.call('HDEL', KEYS[3], 'paused_reason')
+  redis.call('HSET', KEYS[3], 'next_due', ARGV[5], 'last_public_task_id', ARGV[2],
+             'last_public_continued_at', ARGV[5])
+  return 'public_hold_cleared'
 end
 if reason ~= '' then redis.call('HSET', KEYS[3], 'paused_reason', reason) end
 if continue_public and reason == '' then
@@ -385,6 +421,33 @@ def reconcile_active_production(*, now: float | None = None) -> str:
         raise ChannelProductionError('production_state_unavailable') from exc
 
 
+def reconcile_publication_holds(profiles: list[dict], *, now: float | None = None) -> dict:
+    """Recheck only finished public holds; the full atomic proof stays binding."""
+    now = time.time() if now is None else now
+    if type(now) not in (int, float) or not math.isfinite(now) or now < 0:
+        raise ChannelProductionError('production_state_unavailable')
+    client, results = _redis(), {}
+    for profile in profiles:
+        channel_id = _channel_id(profile.get('channel_id'))
+        state = client.hgetall(CHANNEL_STATE_PREFIX + channel_id)
+        if (state.get('paused_reason') != 'previous_publication_blocked'
+                or state.get('last_result') != 'SUCCESS' or state.get('active_task_id')):
+            continue
+        task_id = state.get('last_task_id')
+        if not isinstance(task_id, str) or not _TASK_ID.fullmatch(task_id):
+            continue
+        raw = client.get(ACTIVE_KEY)
+        if raw is not None:
+            _decode_active_claims(raw)
+        results[channel_id] = client.eval(
+            _RECONCILE, 7, ACTIVE_KEY, JOB_PREFIX + task_id,
+            CHANNEL_STATE_PREFIX + channel_id, PROFILE_PREFIX + channel_id,
+            OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id, OAUTH_CHANNEL_INDEX,
+            raw or '', task_id, JOB_PREFIX, channel_id, now, PUBLICATION_UPLOAD_PREFIX, 'public_hold_recheck',
+        )
+    return results
+
+
 def _decode_active_claims(raw: str) -> list[dict]:
     if not isinstance(raw, str) or len(raw) > 4096:
         raise ValueError('invalid production active claims')
@@ -437,6 +500,11 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         raise ChannelProductionError('production_time_invalid')
     try:
         client = _redis()
+        from app.services.content_plan import owns_channel
+        from app.services import daily_voice_priority
+        short_priority = owns_channel(channel_id, client=client) and daily_voice_priority.eligible(channel_id, client=client)
+        if owns_channel(channel_id, client=client) and not short_priority:
+            return {'status': 'owner_content_plan'}
         profile_raw = client.get(PROFILE_PREFIX + channel_id)
         persisted_profile = json.loads(profile_raw or '{}')
         if persisted_profile != profile:
@@ -454,8 +522,27 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
         brief = topic + (f'\n\nChannel editorial direction: {identity}' if identity else '')
         from app.services.production_editorial import choose_production_editorial
 
-        editorial = choose_production_editorial(topic, identity)
+        delivery_enabled = getattr(settings, 'studio_longform_delivery_enabled', False) is True
+        editorial = choose_production_editorial(
+            topic, identity, **({'long_duration_minutes': 8} if delivery_enabled else {}),
+        )
+        from app.services.channel_cadence import daily_editorial
+        editorial = daily_editorial(channel_id, editorial, client=client, now=now,
+            **({'defer_daily_long': True} if short_priority else {}))
         duration_minutes = editorial['duration_minutes']
+        if duration_minutes == 3 and editorial.get('reason_code') in {'owner_daily_mix', 'owner_next_day_stock'}:
+            from app.services.channel_cadence import install_daily_long
+            return install_daily_long(profile, topics[cursor:], client=client, now=now,
+                **({'advance': True} if editorial['reason_code'] == 'owner_next_day_stock' else {}))
+        if duration_minutes == 8 and getattr(settings, 'studio_spend_enforcement', False) is not True:
+            return {'status': 'delivery_budget_not_enabled'}
+        if getattr(settings, 'studio_spend_enforcement', False) is True:
+            from app.services.production_spend_runtime import preflight_scheduled_production, SpendBlocked
+
+            try:
+                preflight_scheduled_production(channel_id, kind='long' if duration_minutes > 1 else 'shorts')
+            except SpendBlocked as error:
+                return {'status': 'budget_blocked', 'reason_code': str(error)}
         route = str(profile.get('route_label') or channel_id).strip()
         task_id = str(uuid5(NAMESPACE_URL, f'youtube-production:{channel_id}:{cursor}:{_prefix_digest([topic])}'))
         options = {
@@ -470,6 +557,10 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             'production_topic_index': cursor,
             'production_editorial': editorial,
         }
+        if duration_minutes == 8:
+            from app.services.production_delivery import CONTRACT
+
+            options['production_delivery'] = dict(CONTRACT)
         spec = {'topic': brief, 'duration_minutes': duration_minutes, 'language': language, 'channel_id': route, **options}
         iso_now = datetime.fromtimestamp(now, timezone.utc).isoformat()
         record = {
@@ -480,17 +571,34 @@ def reserve_due_production(profile: dict, connection: dict, *, now: float | None
             'result': None, 'error': None,
         }
         active = json.dumps({'channel_id': channel_id, 'task_id': task_id}, sort_keys=True)
-        status = client.eval(
-            _RESERVE, 9, PROFILE_PREFIX + channel_id,
+        from app.services.channel_cadence import lua_arguments
+        cadence_keys = lua_arguments(channel_id, 'long' if duration_minutes > 1 else 'shorts', now=now)
+        reservation = (
+            _RESERVE, 13, PROFILE_PREFIX + channel_id,
             CHANNEL_STATE_PREFIX + channel_id, ACTIVE_KEY, JOB_PREFIX + task_id,
             OAUTH_CHANNEL_PREFIX + channel_id, OAUTH_CREDENTIAL_PREFIX + channel_id,
             OAUTH_CHANNEL_INDEX, JOB_INDEX, DISPATCH_CURSOR_KEY,
+            'youtube_studio:content_plan:v1:active', *cadence_keys[:3],
             profile_raw, cursor, _prefix_digest(topics[:cursor]),
             _prefix_digest(topics[:cursor + 1]), now, now + interval * 3600,
             channel_id, connection_id, task_id, active,
             json.dumps(record, ensure_ascii=False),
-            str(profile.get('profile_revision') or ''), JOB_TTL_SECONDS,
+            str(profile.get('profile_revision') or ''), JOB_TTL_SECONDS, *cadence_keys[3:],
         )
+        if short_priority:
+            # Recheck the exact pending item and full credit history inside
+            # the transaction that creates the Short. An edit, voice send or
+            # long reservation racing this decision invalidates the commit.
+            with client.pipeline() as pipe:
+                if not daily_voice_priority.eligible(channel_id, client=client, pipe=pipe):
+                    return {'status': 'owner_content_plan'}
+                pipe.multi(); pipe.eval(*reservation)
+                reply = pipe.execute()
+                if type(reply) is not list or len(reply) != 1:
+                    raise ValueError('invalid production reservation acknowledgement')
+                status = reply[0]
+        else:
+            status = client.eval(*reservation)
         if status == 'invalid_state':
             raise ValueError('invalid production reservation state')
         if status != 'reserved':

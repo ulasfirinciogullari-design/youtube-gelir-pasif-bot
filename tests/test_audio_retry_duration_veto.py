@@ -38,6 +38,7 @@ def _namespace(duration=25.272, transcript_pass=False):
                   '_generation_attempt': 1, '_generation_attempts_used': 2}
     return {
         **_helpers(), 'voice_result': voice, 'voice_path': voice['path'],
+        'selected_recovery': None,
         'scene_durations': voice['scene_durations'], 'scenes': [],
         'audio_pause_repair_attempted': False, 'short_form_prosody_required': True,
         'recovered_voice': False, 'saved_voice_retry': False, 'duration_minutes': .5,

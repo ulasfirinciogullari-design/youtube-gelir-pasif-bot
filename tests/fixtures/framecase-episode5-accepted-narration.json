@@ -1,0 +1,388 @@
+{
+  "voice": {
+    "duration_after_fit": 33.24,
+    "duration_before_fit": 33.24,
+    "scene_durations": [
+      5.23,
+      10.23,
+      10.079999999999998,
+      7.700000000000003
+    ],
+    "voice_name": "Kore",
+    "voice_model": "google/gemini-3-1-flash-tts",
+    "spoken_texts": [
+      "Mira put the minute back. The first bell marked midnight.",
+      "Voss left the gallery after it, his silver cuff reflected in the glass. Turning the clocks backward made him appear to leave earlier.",
+      "The second bell exposed the trick. His alibi collapsed. Voss opened his narrow case. The painting was inside.",
+      "Mira kept the cracked watch. Sometimes, the one thing that doesn't fit is the truth."
+    ],
+    "asset": {
+      "key": "framecase/6f4d791f-6f7c-5f32-a87f-b4bab587e781/d8dfec49a4aae2dc3b1d72a78cfc57b240a9b85c883f985a573136906bb8bf98/voice.mp3",
+      "sha256": "d8dfec49a4aae2dc3b1d72a78cfc57b240a9b85c883f985a573136906bb8bf98",
+      "size": 798380
+    }
+  },
+  "transcript": {
+    "available": true,
+    "ending_word_time": 32.88,
+    "independent_recognizer": true,
+    "language_code": "eng",
+    "language_probability": 1.0,
+    "mismatch_details": {
+      "exact_match": true,
+      "expected_token_count": 66,
+      "heard_token_count": 66,
+      "missing_words": [],
+      "operations": [],
+      "sequence_ratio": 1.0,
+      "timestamp_sequence_match": true,
+      "unexpected_words": []
+    },
+    "normalized_expected": "mira put the minute back the first bell marked midnight voss left the gallery after it his silver cuff reflected in the glass turning the clocks backward made him appear to leave earlier the second bell exposed the trick his alibi collapsed voss opened his narrow case the painting was inside mira kept the cracked watch sometimes the one thing that doesnt fit is the truth",
+    "normalized_transcript": "mira put the minute back the first bell marked midnight voss left the gallery after it his silver cuff reflected in the glass turning the clocks backward made him appear to leave earlier the second bell exposed the trick his alibi collapsed voss opened his narrow case the painting was inside mira kept the cracked watch sometimes the one thing that doesnt fit is the truth",
+    "pass": true,
+    "primary_recognizer": {
+      "pass": false,
+      "provider": "openai",
+      "score": 0,
+      "transcript": ""
+    },
+    "provider": "elevenlabs",
+    "score": 100.0,
+    "transcript": "Mira put the minute back. The first bell marked midnight. Voss left the gallery after it, his silver cuff reflected in the glass. Turning the clocks backward made him appear to leave earlier. The second bell exposed the trick. His alibi collapsed. Voss opened his narrow case. The painting was inside. Mira kept the cracked watch. Sometimes the one thing that doesn't fit is the truth",
+    "word_timestamps": [
+      {
+        "end": 0.8,
+        "start": 0.38,
+        "text": "Mira"
+      },
+      {
+        "end": 1.04,
+        "start": 0.86,
+        "text": "put"
+      },
+      {
+        "end": 1.2,
+        "start": 1.08,
+        "text": "the"
+      },
+      {
+        "end": 1.62,
+        "start": 1.26,
+        "text": "minute"
+      },
+      {
+        "end": 2.04,
+        "start": 1.68,
+        "text": "back."
+      },
+      {
+        "end": 2.84,
+        "start": 2.7,
+        "text": "The"
+      },
+      {
+        "end": 3.28,
+        "start": 2.94,
+        "text": "first"
+      },
+      {
+        "end": 3.84,
+        "start": 3.34,
+        "text": "bell"
+      },
+      {
+        "end": 4.24,
+        "start": 3.9,
+        "text": "marked"
+      },
+      {
+        "end": 4.8,
+        "start": 4.32,
+        "text": "midnight."
+      },
+      {
+        "end": 6.14,
+        "start": 5.66,
+        "text": "Voss"
+      },
+      {
+        "end": 6.5,
+        "start": 6.24,
+        "text": "left"
+      },
+      {
+        "end": 6.62,
+        "start": 6.56,
+        "text": "the"
+      },
+      {
+        "end": 7.1,
+        "start": 6.68,
+        "text": "gallery"
+      },
+      {
+        "end": 7.44,
+        "start": 7.22,
+        "text": "after"
+      },
+      {
+        "end": 7.62,
+        "start": 7.5,
+        "text": "it,"
+      },
+      {
+        "end": 8.2,
+        "start": 8.06,
+        "text": "his"
+      },
+      {
+        "end": 8.62,
+        "start": 8.28,
+        "text": "silver"
+      },
+      {
+        "end": 8.98,
+        "start": 8.68,
+        "text": "cuff"
+      },
+      {
+        "end": 9.56,
+        "start": 9.04,
+        "text": "reflected"
+      },
+      {
+        "end": 9.66,
+        "start": 9.6,
+        "text": "in"
+      },
+      {
+        "end": 9.74,
+        "start": 9.7,
+        "text": "the"
+      },
+      {
+        "end": 10.28,
+        "start": 9.8,
+        "text": "glass."
+      },
+      {
+        "end": 11.48,
+        "start": 11.18,
+        "text": "Turning"
+      },
+      {
+        "end": 11.6,
+        "start": 11.52,
+        "text": "the"
+      },
+      {
+        "end": 12.08,
+        "start": 11.66,
+        "text": "clocks"
+      },
+      {
+        "end": 12.58,
+        "start": 12.12,
+        "text": "backward"
+      },
+      {
+        "end": 13.18,
+        "start": 13.0,
+        "text": "made"
+      },
+      {
+        "end": 13.36,
+        "start": 13.24,
+        "text": "him"
+      },
+      {
+        "end": 13.88,
+        "start": 13.42,
+        "text": "appear"
+      },
+      {
+        "end": 14.04,
+        "start": 13.94,
+        "text": "to"
+      },
+      {
+        "end": 14.4,
+        "start": 14.1,
+        "text": "leave"
+      },
+      {
+        "end": 14.96,
+        "start": 14.48,
+        "text": "earlier."
+      },
+      {
+        "end": 16.059,
+        "start": 15.96,
+        "text": "The"
+      },
+      {
+        "end": 16.44,
+        "start": 16.14,
+        "text": "second"
+      },
+      {
+        "end": 16.86,
+        "start": 16.5,
+        "text": "bell"
+      },
+      {
+        "end": 17.48,
+        "start": 16.94,
+        "text": "exposed"
+      },
+      {
+        "end": 17.6,
+        "start": 17.52,
+        "text": "the"
+      },
+      {
+        "end": 18.0,
+        "start": 17.66,
+        "text": "trick."
+      },
+      {
+        "end": 18.72,
+        "start": 18.54,
+        "text": "His"
+      },
+      {
+        "end": 19.26,
+        "start": 18.82,
+        "text": "alibi"
+      },
+      {
+        "end": 19.94,
+        "start": 19.32,
+        "text": "collapsed."
+      },
+      {
+        "end": 21.46,
+        "start": 21.04,
+        "text": "Voss"
+      },
+      {
+        "end": 21.88,
+        "start": 21.56,
+        "text": "opened"
+      },
+      {
+        "end": 22.1,
+        "start": 21.92,
+        "text": "his"
+      },
+      {
+        "end": 22.5,
+        "start": 22.18,
+        "text": "narrow"
+      },
+      {
+        "end": 22.96,
+        "start": 22.58,
+        "text": "case."
+      },
+      {
+        "end": 23.6,
+        "start": 23.52,
+        "text": "The"
+      },
+      {
+        "end": 24.18,
+        "start": 23.66,
+        "text": "painting"
+      },
+      {
+        "end": 24.34,
+        "start": 24.24,
+        "text": "was"
+      },
+      {
+        "end": 25.0,
+        "start": 24.4,
+        "text": "inside."
+      },
+      {
+        "end": 26.54,
+        "start": 26.08,
+        "text": "Mira"
+      },
+      {
+        "end": 26.92,
+        "start": 26.62,
+        "text": "kept"
+      },
+      {
+        "end": 27.06,
+        "start": 26.98,
+        "text": "the"
+      },
+      {
+        "end": 27.44,
+        "start": 27.12,
+        "text": "cracked"
+      },
+      {
+        "end": 27.92,
+        "start": 27.52,
+        "text": "watch."
+      },
+      {
+        "end": 29.64,
+        "start": 28.82,
+        "text": "Sometimes"
+      },
+      {
+        "end": 29.88,
+        "start": 29.7,
+        "text": "the"
+      },
+      {
+        "end": 30.26,
+        "start": 30.02,
+        "text": "one"
+      },
+      {
+        "end": 30.6,
+        "start": 30.34,
+        "text": "thing"
+      },
+      {
+        "end": 30.86,
+        "start": 30.66,
+        "text": "that"
+      },
+      {
+        "end": 31.26,
+        "start": 30.92,
+        "text": "doesn't"
+      },
+      {
+        "end": 31.68,
+        "start": 31.34,
+        "text": "fit"
+      },
+      {
+        "end": 32.299,
+        "start": 32.18,
+        "text": "is"
+      },
+      {
+        "end": 32.439,
+        "start": 32.36,
+        "text": "the"
+      },
+      {
+        "end": 32.88,
+        "start": 32.52,
+        "text": "truth"
+      }
+    ]
+  },
+  "narration": "Mira put the minute back. The first bell marked midnight. Voss left the gallery after it, his silver cuff reflected in the glass. Turning the clocks backward made him appear to leave earlier. The second bell exposed the trick. His alibi collapsed. Voss opened his narrow case. The painting was inside. Mira kept the cracked watch. Sometimes, the one thing that doesn't fit is the truth.",
+  "effective": 33.8
+}

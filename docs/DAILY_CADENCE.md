@@ -1,0 +1,131 @@
+# Capital and Margin daily delivery
+
+The owner selected a ceiling of **one long video and five Shorts per channel per
+Europe/Istanbul calendar day** on 2026-09-24. Capital and Margin are the only
+managed channels. The separately managed animation channel is outside this rule.
+The owner also requested an initial release of genuinely ready approved stock,
+followed by a fresh daily batch. The activation audit found no such unqueued
+ready master: two historical private uploads still lacked publication assets
+or current delivery bindings. They are not silently released or duplicated.
+
+The minute server scheduler runs independently of Studio and this task. Existing
+ordered owner queues finish first. Afterwards a source-backed three-minute
+documentary is installed as an ordinary queue item, followed by five Shorts.
+The existing topic cursor, series numbering, source review, voice review, visual
+review and final render gates remain active. An upper limit is not a guarantee
+that six videos will pass quality review each day.
+
+Once the day's one long video and five Shorts are actually public, the next
+ordinary tick may install tomorrow's first long documentary as stock. Its
+production reservation belongs to tomorrow's Istanbul date, while publication
+waits until that date begins. The marker binds the exact queue item, daily-plan
+receipt and all six original public-delivery records. Concurrent ticks cannot
+add a second copy, and merely starting six jobs does not unlock advance stock.
+If dispatch happens after the intended day, it consumes the current day's
+allowance. The ordered queue still waits for this film's real publication before
+starting the following item; this does not create unlimited advance batches.
+
+Production reservation and job creation happen in the same Redis transaction.
+The three connected channels can each retain one queued or held assignment.
+Two render processes execute those jobs; queue ownership does not reserve a
+physical process. A held Margin/Framecase assignment therefore cannot prevent
+Capital from joining the queue. The legacy topic scheduler still permits at
+most two simultaneous legacy claims, and the combined queue refuses a fourth
+channel assignment. Existing holds and their original records are never removed
+to make room for another channel.
+
+Publication has its own durable root claim before upload dispatch. Outstanding
+publication claims count on subsequent days until the original delivery outcome
+is known. A retry stays under the same root. Day rollover never deletes receipts,
+replays an upload or resets paid work. A failed post-release bookkeeping write is
+reconciled from the original source and publisher records. A slot reserved before
+an upload record exists can re-enter ordinary publisher admission, which owns
+the actual upload fence.
+
+When an owner plan reaches 80 completed entries, its exact document and completion
+records are archived before the next daily item is installed. Historical jobs,
+provider journals and completion keys remain intact. An owner's removal of a
+new, undispatched daily item is respected for that date.
+
+Studio's Growth page shows the selected channel's daily counts. A video waiting
+for the next calendar day remains viewable in its job page. Financial control is
+separate: commissioning authorization does not alter existing spending receipts
+or buy subscriptions, credits or automatic topups. The owner will choose the
+final operating budget after commissioning.
+
+Existing ElevenLabs reserve credits can be reassigned once in a provider period
+by an explicit operator action using the owner's commissioning authorization.
+This requires a fresh authenticated balance, unchanged account/key/quota/reset,
+disabled overage, no unsettled voice intent and no known overspend. The complete
+previous policy, state and journal are archived under two durable anchors before
+the new covered allowance becomes available. All request identities, old charges
+and narrator assignments remain effective. Worker ticks never invoke this action.
+The next genuine provider reset restores the original allocation cap and reserve;
+the adjustment neither purchases credits nor changes cash or auto-top-up settings.
+
+An untouched automatic daily documentary waiting solely for the larger voice
+allowance does not prevent affordable Shorts from using their ordinary queue.
+This narrow exception requires 1,000–4,999 available native credits, no uncertain
+voice reservation, exactly one unfinished automatic daily long item, its exact
+creation receipt, no dispatch/job, and an enabled plan allowing automatic Shorts.
+The original long item and every completion/spend record remain unchanged.
+The final Short reservation rechecks queue and full credit history in the same
+WATCH transaction as its existing scheduling Lua. Paused or edited owner plans,
+numbered series, dependencies, started long films and other channels retain their
+normal ordering. Ordinary funding checks and daily publication limits still apply.
+
+The same exception allows the ordinary topic planner to replenish an exhausted
+Shorts queue. Preparation watches the full queue and credit history, stores the
+original plan hash, and rechecks both before worker execution and model requests.
+Owner edits, a pause, a started long film or reduced credits stop that preparation.
+Original attempt fences, source checks and terminal/public handoff proofs remain
+mandatory; no rejected video is marked published to advance the topic queue.
+
+For English narration, an attached decade modifier such as "during the mid-1950s"
+matches "during the mid 1950s" only in explicit temporal context. Real negative
+numbers, changed years, missing words and incomplete provider timings still fail.
+
+## Rejected standalone documentaries
+
+For Capital and Margin, a conclusively failed standalone documentary can move
+to the plan's private attention list after its retained-media repair is exhausted,
+or after a pre-speech factual/editorial rejection or a conclusively returned
+voice-duration rejection before video work. A settled voice charge stays charged;
+archiving never retries synthesis or releases its original daily reservation. Every ancestor, original
+dispatch, terminal failure and provider receipt remains intact. Unknown native
+requests, uploads, owner holds/cancellation, numbered episodes and unpublished
+dependencies keep their hold. No completion receipt is fabricated. Existing
+daily production reservations remain used, so a failed film cannot restart an
+unlimited sequence of new long videos on the same day. The next eligible Shorts
+or next day's documentary then use ordinary queue, budget and quality checks.
+
+Long documentary critics constrain copied narration to the exact source lines.
+A fully returned malformed critique gets at most one fresh assessment per batch;
+the original response stays in history and an unknown transport is never retried.
+An existing root that stopped before any speech or video after a malformed
+critique can continue once under the same root and daily slot. All native model
+responses must already be captured and the native voice/cash ledgers must prove
+no media was submitted. A lost queue acknowledgement never causes another send.
+A repeated failure of that child can move to attention under the rules above.
+
+Natural long documentary timing follows the measured complete continuous voice
+for these two channels only, after the existing durable long-form authorization.
+The accepted edit window is 126–219 seconds with 95–185 spoken words per minute.
+No tempo stretch is applied to these takes; original word alignment and scene
+durations remain intact. Thin, dense or out-of-window speech still stops before
+paid video work. Transcript, source, visual and final-render checks remain mandatory.
+Other channels, Shorts, previews and retained-media retry timing keep their own rules.
+
+A completed next-series draft that repeats a previously used topic is archived
+under the same transaction that verifies topic history. Its original daily attempt
+receipt remains occupied. An uncertain planner cannot be retired; a concurrent
+topic-history change requires a fresh snapshot. A later ordinary tick prepares a
+new source-backed topic without repeatedly attempting the rejected promotion.
+
+The English transcript comparator recognizes the dictionary spelling pair
+bull's-eye / bullseye without joining across clauses or dropping sounds or words.
+See [American Heritage](https://www.ahdictionary.com/word/search.html?q=bull%27s+eye).
+A previously failed voice may use the existing one-shot retained-voice continuation
+only when the stored blind transcript and real word timings now match completely.
+The unchanged audio then still goes through normal story, audio, visual and render
+review; this lexical correction never itself grants publication or new synthesis.

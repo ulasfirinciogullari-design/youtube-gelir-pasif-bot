@@ -54,7 +54,7 @@ def test_auth_before_headers_body_and_path(case):
 
 
 @pytest.mark.parametrize('field,value', [('series_number', 2), ('now', 0), ('qa_approved', True),
-    ('cancelled_retry_task_id', str(uuid4())), ('deferred_failed_leaf_id', 'bad'),
+    pytest.param('cancelled_retry_task_id', str(uuid4()), id='cancelled_retry_task_id-different-task'), ('deferred_failed_leaf_id', 'bad'),
     ('expected_profile_revision', ''), ('expected_channel_id', '../other'), ('owner_reason', 'short'),
     ('owner_reason', 'x' * 1201), ('owner_reason', 'api_key=sk-private-secret-not-allowed')])
 def test_malformed_extra_and_caller_authority_fields_reject(case, field, value):

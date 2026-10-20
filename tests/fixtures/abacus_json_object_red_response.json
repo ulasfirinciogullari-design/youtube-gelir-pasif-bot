@@ -1,0 +1,1 @@
+{"created": 1789883158, "choices": [{"index": 0, "message": {"role": "assistant", "content": "{\"color\":\"red\"}"}, "finish_reason": "stop", "native_finish_reason": "stop"}], "usage": {"input_tokens": 46, "output_tokens": 33, "reasoning_tokens": 19, "raw_input_tokens": 46}, "model": "gpt-5.6-luna"}

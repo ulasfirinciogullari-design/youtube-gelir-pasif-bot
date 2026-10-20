@@ -23,7 +23,9 @@ from app.services.channel_production import (
 from app.services.studio_state import (
     JOB_PREFIX, RETRY_CHILD_CLAIM_PREFIX, RETRY_DISPATCH_PREFIX,
     RETRY_CHILD_EXECUTION_PREFIX, REPAIR_CHECKPOINT_CLAIM_PREFIX,
+    RENDER_CANCELLATION_PREFIX,
 )
+from app.services.source_publication_hold import HOLD_PREFIX
 from app.services.youtube_automation import contains_synthetic_media
 from app.services.youtube_publish_state import UPLOAD_PREFIX
 
@@ -159,7 +161,7 @@ def _completed_public_replay(record: dict, attribution: dict, plan: dict,
         and omitted_or('profile_revision', revision)
         and omitted_or('caption_uploaded', True)
         and omitted_or('thumbnail_uploaded', attribution.get('thumbnail_uploaded'))
-        and omitted_or('contains_synthetic_media', plan.get('contains_synthetic_media'))
+        and omitted_or('contains_synthetic_media', attribution.get('contains_synthetic_media'))
     )
 
 
@@ -368,6 +370,15 @@ def _resume_after_retry(
                      'recovery_lineage_invalid')
             seen.add(task_id)
             job = _json_snapshot(client, JOB_PREFIX + task_id, snapshots)
+            if public_recovery:
+                _require('publication_hold' not in job and 'owner_cancellation' not in job,
+                         'recovery_owner_hold')
+                for fence in (RENDER_CANCELLATION_PREFIX, HOLD_PREFIX):
+                    raw_fence = client.get(fence + task_id)
+                    snapshots.append((fence + task_id, {
+                        'kind': 'none' if raw_fence is None else 'string', 'value': raw_fence,
+                    }))
+                    _require(raw_fence is None, 'recovery_owner_hold')
             _require(job.get('task_id') == task_id and job.get('kind') == 'render'
                      and isinstance(job.get('spec'), dict), 'recovery_lineage_invalid')
             _require(job.get('state') == ('SUCCESS' if not chain else 'FAILURE'),
@@ -525,8 +536,14 @@ def _resume_after_retry(
                      and automation.get('profile_revision') == expected_profile_revision
                      and automation.get('release_mode') == 'public',
                      'recovery_publication_binding_changed')
-            disclosure = plan.get('contains_synthetic_media')
-            _require(type(disclosure) is bool
+            planned_disclosure = plan.get('contains_synthetic_media')
+            disclosure = attribution.get('contains_synthetic_media')
+            # The publisher may strengthen a frozen False when render provenance
+            # is positive or unknown (including empty lists round-tripped by
+            # Redis Lua). Require the actual delivery proof, never downgrade the
+            # frozen plan or trust an omitted/unknown disclosure flag.
+            _require(type(planned_disclosure) is bool and type(disclosure) is bool
+                     and (not planned_disclosure or disclosure is True)
                      and (not contains_synthetic_media(chain[0]) or disclosure is True),
                      'recovery_disclosure_unverified')
             # A compact replay never supplies missing proof: the full source
@@ -562,7 +579,7 @@ def _resume_after_retry(
         if public:
             audit.update(release_mode='public', release_status='public', caption_uploaded=True,
                          continue_immediately=continue_immediately,
-                         contains_synthetic_media=plan['contains_synthetic_media'])
+                         contains_synthetic_media=disclosure)
         if recovered_proof is not None:
             audit.update(publication_proof='blocked_public_recovery', thumbnail_uploaded=True,
                          continue_immediately=continue_immediately,
