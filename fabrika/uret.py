@@ -35,8 +35,8 @@ IG_HOURS = [int(h) for h in (os.environ.get("YO_IG_SAATLER") or "9,13,17").split
 GAP_MIN = 35
 MIN_CREDITS = 12000
 # The hook opening (motor.html HOOK). Studio, 2026-10-20: only 48% of feed viewers stayed past the first seconds.
-# Off until Ulaş has seen the sample (calistir.sh ornek); YO_ACILIS=1/0 overrides.
-ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
+# On from 2026-10-21 after the sample fabrika/deneme/ornek-o0006.mp4 (sent to Ulaş 2026-10-20); YO_ACILIS=0 turns it off.
+ACILIS = (os.environ.get("YO_ACILIS") or "1") == "1"
 
 
 def now():

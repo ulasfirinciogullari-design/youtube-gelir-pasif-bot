@@ -39,7 +39,7 @@ const LY = EP.layout === 'ig'
 // episode opened on the same calm scene. It plays the episode's most striking moment (the reveal on its cover line)
 // raised clear of the question in big letters; the characters and the title bar come in with the cut to the running
 // scene.
-// uret.py turns it on (EP.hook) once Ulaş has seen a sample.
+// uret.py ACILIS sets EP.hook.
 const HOOK = EP.hook ? 1.6 : 0;
 let BGM = null;  // the backdrop always fills the frame, even when the 'ig' layout shrinks the scene
 const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
