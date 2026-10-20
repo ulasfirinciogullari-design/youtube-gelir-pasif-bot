@@ -1,71 +1,18 @@
 {
- "started": "2026-10-20T10:07:00+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-20T13:08:10+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: o0004",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "36",
-  "videos": "19"
+ "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "chars": 337,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18132929923819420",
+  "url": "https://www.instagram.com/reel/Det5-o8lZTj/",
+  "at": 1792501775.1624427
  },
- "credits_before": [
-  10033,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261020-1-g003.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "g003",
-  "series": "1 Gün Boyunca",
-  "q": "Dünya 1 günde uzayda ne kadar yol alır?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 401,
- "duration": 26.7,
- "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
- "url": "https://youtube.com/shorts/zkaODqXzaCo",
- "recent_status": {
-  "y007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1274",
-   "reason": null
-  },
-  "o0003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "373",
-   "reason": null
-  },
-  "n004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1066",
-   "reason": null
-  },
-  "o0004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1080",
-   "reason": null
-  },
-  "g003": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  10131,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261020-1-g003.json Dünya 1 günde uzayda ne kadar yol alır? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/Det5-o8lZTj/"
  ],
- "finished": "2026-10-20T10:07:50+00:00"
+ "finished": "2026-10-20T13:09:35+00:00"
 }
