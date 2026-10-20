@@ -26,7 +26,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1280",
+    "views": "1288",
     "reason": null
    }
   },
@@ -56,7 +56,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "386",
+    "views": "389",
     "reason": null
    }
   },
@@ -146,7 +146,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "303",
+    "views": "302",
     "reason": null
    }
   },
@@ -176,7 +176,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "492",
+    "views": "528",
     "reason": null
    }
   },
@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1323",
+    "views": "1396",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1348",
+    "views": "1444",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1268",
+    "views": "1299",
     "reason": null
    }
   },
@@ -296,7 +296,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "114",
+    "views": "115",
     "reason": null
    }
   },
@@ -326,7 +326,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "39",
+    "views": "40",
     "reason": null
    }
   },
@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "986",
+    "views": "1003",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1012",
+    "views": "1075",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "741",
+    "views": "943",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1236",
+    "views": "1274",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "150",
+    "views": "373",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "22",
+    "views": "1066",
     "reason": null
    }
   },
@@ -534,6 +534,36 @@
    "at": 1792433428.1463304,
    "chars": 337,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "1080",
+    "reason": null
+   }
+  },
+  {
+   "id": "g003",
+   "video_id": "zkaODqXzaCo",
+   "url": "https://youtube.com/shorts/zkaODqXzaCo",
+   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Far Does Earth Travel Through Space in 1 Day?",
+    "es": "¿Cuánto viaja la Tierra por el espacio en 1 día?",
+    "pt": "Quanto a Terra viaja pelo espaço em 1 dia?",
+    "ar": "كم تقطع الأرض في الفضاء خلال يوم واحد؟",
+    "hi": "पृथ्वी 1 दिन में अंतरिक्ष में कितनी दूरी तय करती है?",
+    "id": "Seberapa Jauh Bumi Melaju di Luar Angkasa dalam 1 Hari?",
+    "fr": "Quelle distance la Terre parcourt-elle dans l'espace en 1 jour ?",
+    "de": "Wie weit reist die Erde an einem Tag durchs All?",
+    "ru": "Какое расстояние Земля пролетает в космосе за 1 день?",
+    "az": "Yer 1 gündə kosmosda nə qədər yol qət edir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792490868.7395144,
+   "chars": 401,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -559,7 +589,8 @@
   "y007",
   "o0003",
   "n004",
-  "o0004"
+  "o0004",
+  "g003"
  ],
  "extra": [
   {
@@ -887,6 +918,14 @@
    "mod": "igbolum",
    "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
    "chars": 478
+  },
+  {
+   "finished": "2026-10-20T10:07:50+00:00",
+   "mod": "saatlik",
+   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
+   "url": "https://youtube.com/shorts/zkaODqXzaCo",
+   "duration": 26.7,
+   "chars": 401
   }
  ],
  "last_fail": 1792487549.018023,
