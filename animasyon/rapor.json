@@ -1,12 +1,9 @@
 {
- "started": "2026-10-20T00:39:37+00:00",
- "bolum": "k001",
- "mod": "gizli",
- "tablolar": {
-  "franklin": "franklin.jpg",
-  "meclis": "meclis.jpg"
- },
- "chars": 601,
+ "started": "2026-10-20T01:01:53+00:00",
+ "bolum": "k002",
+ "mod": "deneme",
+ "tablolar": {},
+ "chars": 612,
  "voice": {
   "model": "eleven_flash_v2_5",
   "speed": 1.1,
@@ -14,15 +11,8 @@
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 37.77,
- "render_seconds": 150,
- "title": "Düşmanını Dosta Çevirmenin En Garip Yolu 🤫 #psikoloji",
- "video_id": "nPlAI5iPSJA",
- "url": "https://youtube.com/shorts/nPlAI5iPSJA",
- "privacy": "private",
- "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu"
- },
- "finished": "2026-10-20T00:42:15+00:00"
+ "duration": 33.77,
+ "render_seconds": 122,
+ "title": "İnsanlara Hayır Dedirtmeyen Küçük Hile 🤫 #psikoloji",
+ "finished": "2026-10-20T01:04:03+00:00"
 }
