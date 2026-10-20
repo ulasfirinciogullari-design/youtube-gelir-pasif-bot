@@ -65,7 +65,7 @@ function paintingFull(img, t, t0, t1, focus, z0 = 1.05, z1 = 1.18) {
   const k = eio(prog(t, t0, t1)), z = lerp(z0, z1, k);
   const sc = Math.max(W / img.naturalWidth, 1500 / img.naturalHeight) * z, iw = img.naturalWidth * sc, ih = img.naturalHeight * sc;
   const ix = clamp(540 - iw * focus[0], W - iw, 0), iy = clamp(900 - ih * focus[1], 1500 - ih, 0);
-  ctx.save(); ctx.filter = 'sepia(.35) contrast(1.05) brightness(.92)'; ctx.drawImage(img, ix, iy + 150, iw, ih); ctx.restore();
+  ctx.drawImage(toned(img), ix, iy + 150, iw, ih);
   const g = ctx.createLinearGradient(0, 1300, 0, 1800); g.addColorStop(0, 'rgba(18,13,10,0)'); g.addColorStop(1, 'rgba(18,13,10,1)');
   ctx.fillStyle = g; ctx.fillRect(0, 1300, W, 620);
 }
@@ -129,7 +129,7 @@ const VIS = {
     }
     if (t >= tC && t < tD) {  // the real Franklin
       setLight(-.8, -.6, { rim: '#9fc2ff', rimA: .6 });
-      ctx.save(); ctx.filter = 'blur(10px) brightness(.45)'; assemblyRoom(t, .1); ctx.restore();
+      drawSoft(.1, () => assemblyRoom(t, .1), .55);
       const k = prog(t, tC - .05, tC + .35), z = lerp(1.0, 1.08, prog(t, tC, tD));
       gildedFrame(IMG.franklin, 540, 860, 520 * z, 650 * z, [.48, .3], 1.25, back(k));
       plate('Benjamin Franklin', 540, 1300, 52, back(prog(t, tC + .1, tC + .45)), C.gold);
@@ -163,7 +163,7 @@ const VIS = {
     // what most people would do, shown as an old faded memory: bowing, a gift held out, and a cold shoulder
     setLight(-.7, -.7, { rim: '#ffd9a0', rimA: .4 });
     const k = eo(prog(lt, 0, .8)), kt = wordTime(L, V.key, .5);
-    ctx.save(); ctx.filter = 'sepia(.75) saturate(.8) brightness(.9)';
+    ctx.save();
     cam(560, 980, lerp(1.25, 1.32, prog(lt, 0, 3)), () => {
       assemblyRoom(t, .2);
       chandelier(560, 330, t, .9, .7);
@@ -173,6 +173,7 @@ const VIS = {
       figure('rakip', 810, 1520, .74, t, { dir: -1, expr: 'haughty', headTilt: -.12 - .06 * prog(t, kt, kt + .4), nod: 0,
         front: { sh: 1.2 * prog(t, kt - .2, kt + .3), el: .3, hand: 'palm' }, back: { sh: -.1, el: .4 }, seed: 1 });
     });
+    sepiaTone(.75, .1);
     ctx.restore();
     // a faded film frame around the memory
     ctx.save(); ctx.strokeStyle = 'rgba(232,210,170,.5)'; ctx.lineWidth = 6; rr(60, 430, 960, 1000, 26); ctx.stroke(); ctx.restore();

@@ -1,7 +1,45 @@
 // Zirvenin Kanunu animation helpers. Canvas is 1080x1920; the look is a dark stage: near-black rooms, one warm
 // light, silhouettes with gold or crimson rim light, film grain and a vignette on top.
 const W = 1080, H = 1920, SERIF = 'Cinzel', SANS = 'Montserrat';
-const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const cv = document.getElementById('c');
+let ctx = cv.getContext('2d');  // let: drawSoft() points it at an offscreen canvas for a moment
+// Canvas filters (blur, sepia) cost seconds per frame in headless Chrome without a GPU, so a softened layer is drawn
+// small on an offscreen canvas and scaled up, tones use blend modes, and painting tones are baked once.
+const SOFT = {};
+function drawSoft(scale, fn, dark = 0) {  // fn draws in frame coordinates; the result lands under the current transform
+  const w = Math.round(W * scale), h = Math.round(H * scale), key = w + 'x' + h;
+  const c = SOFT[key] || (SOFT[key] = Object.assign(document.createElement('canvas'), { width: w, height: h })), o = c.getContext('2d');
+  o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.globalAlpha = 1; o.clearRect(0, 0, w, h);
+  o.setTransform(scale, 0, 0, scale, 0, 0);
+  const keep = ctx; ctx = o;
+  try { fn(); } finally { ctx = keep; }
+  if (dark > 0) { o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-atop'; o.fillStyle = `rgba(0,0,0,${dark})`; o.fillRect(0, 0, w, h); }
+  ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, W, H); ctx.restore();
+}
+// an old-photo tone over everything drawn so far: a desaturation, then a warm brown colour, a and dim 0..1
+function sepiaTone(a = .75, dim = .1) {
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = 'saturation'; ctx.globalAlpha = a; ctx.fillStyle = '#808080'; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'color'; ctx.globalAlpha = a * .7; ctx.fillStyle = '#a5845c'; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = dim; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+}
+// a painting with CSS-like sepia(s) contrast(c) brightness(b) baked into a canvas once
+const TONED = new Map();
+function toned(img, s = .35, c = 1.05, b = .92) {
+  if (TONED.has(img)) return TONED.get(img);
+  const out = Object.assign(document.createElement('canvas'), { width: img.naturalWidth, height: img.naturalHeight }), o = out.getContext('2d');
+  o.drawImage(img, 0, 0);
+  const d = o.getImageData(0, 0, out.width, out.height), p = d.data, u = 1 - s;
+  const m = [.393 + .607 * u, .769 - .769 * u, .189 - .189 * u, .349 - .349 * u, .686 + .314 * u, .168 - .168 * u,
+             .272 - .272 * u, .534 - .534 * u, .131 + .869 * u];
+  const f = v => ((v / 255 - .5) * c + .5) * b * 255;
+  for (let i = 0; i < p.length; i += 4) {
+    const r = p[i], g = p[i + 1], bl = p[i + 2];
+    p[i] = f(m[0] * r + m[1] * g + m[2] * bl); p[i + 1] = f(m[3] * r + m[4] * g + m[5] * bl); p[i + 2] = f(m[6] * r + m[7] * g + m[8] * bl);
+  }
+  o.putImageData(d, 0, 0); TONED.set(img, out); return out;
+}
 const C = {
   black: '#060609', night: '#0c0b10', smoke: '#17151b', ink: '#030304',
   ivory: '#f3ead8', bone: '#cdbfa6', gold: '#e8b54a', gold2: '#ffd98a', goldDim: '#8a6a2c',

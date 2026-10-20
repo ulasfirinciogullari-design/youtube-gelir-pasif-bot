@@ -267,13 +267,13 @@ function sparks(x, y, t, n, spread, k, color = '#ffd98a') {
 }
 // the other members at the back tables, small and softened, so the room is never empty
 function backMembers(t, warm = 0) {
-  ctx.save(); ctx.filter = `blur(2px) brightness(${.62 + .2 * warm})`;
+  drawSoft(.5, () => {
   const wig = { ...CAST.uye, coat: '#4a3a2a', hairColor: '#e6e0d6', hair: 'wig' }, blue = { ...CAST.uye, coat: '#2c3a52' };
   [[150, 1, CAST.uye, 'neutral'], [420, 1, wig, 'calm'], [700, -1, blue, 'neutral'], [960, -1, wig, 'displeased']].forEach(([x, d, who, e], i) => {
     figure(who, x, 1330, .36, t + i, { dir: d, expr: e, legs: 'hide', hideArms: true, seed: i + 4, noShadow: true });
   });
   [[280, 380], [830, 380]].forEach(([x, w]) => baizeTable(x, 1100, w, t, { h: 120, papers: false }));
-  ctx.restore();
+  }, .38 - .2 * warm);
 }
 // a painted red X drawn in two strokes, k 0..1
 function cross(x, y, size, k) {
