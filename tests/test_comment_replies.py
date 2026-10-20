@@ -125,10 +125,10 @@ def test_older_videos_are_looked_up_for_their_title():
     assert "- film1: Scarface masa sahnesi" in ask.prompts[0]
 
 
-def test_links_tags_old_and_already_answered_comments_get_no_answer():
+def test_links_bare_tags_old_and_already_answered_comments_get_no_answer():
     yt = FakeYouTube(threads=[
         thread("link", "a", "Bana da bak www.kanalim.com"),
-        thread("tag", "b", "@ali buna bak"),
+        thread("tags", "b", "@ali @veli.tr"),
         thread("to-us", "c", "@zirveninkanunu   bu bilgi doğru mu?"),
         thread("answered", "d", "Süper", count=1, replies=[snippet(CH, "Teşekkürler")]),
         thread("closed", "e", "Yorum", can_reply=False),
@@ -139,8 +139,51 @@ def test_links_tags_old_and_already_answered_comments_get_no_answer():
     assert [c["id"] for c in ask.comments()] == ["to-us"]
     assert ask.comments()[0]["text"] == "bu bilgi doğru mu?"
     reasons = {k: v[2] for k, v in state["done"].items() if v[1] == "s"}
-    assert reasons == {"link": "link veya etiket içeriyor", "tag": "başka birine yazılmış",
-                       "answered": "kanal zaten cevaplamış", "closed": "cevaplanamaz", "empty": "boş"}
+    assert reasons == {"link": "link içeriyor", "tags": "sadece etiket", "closed": "cevaplanamaz", "empty": "boş"}
+    assert "answered" not in state["done"] and state["tracked"]["answered"]["reply"] == "Teşekkürler"
+
+
+def test_a_friend_tagged_next_to_real_words_still_gets_an_answer():
+    inside = "Bunu @ayse.tr ile tartıştık, gerçekten doğru mu?"
+    yt = FakeYouTube(threads=[thread("tag", "b", "@ali buna bak, sen de hep böyle yapıyorsun 😂", hours_ago=1),
+                              thread("inside", "c", inside, hours_ago=2)])
+    ask = FakeGemini()
+    go(yt, ask)
+    assert [(c["id"], c["text"]) for c in ask.comments()] == [
+        ("tag", "buna bak, sen de hep böyle yapıyorsun 😂"), ("inside", inside)]
+    assert yt.posted == [("tag", "cevap tag"), ("inside", "cevap inside")]
+
+
+def test_the_prompt_answers_thanks_gibberish_and_lone_emoji_instead_of_skipping_them():
+    text = comment_replies.PROMPT
+    assert "Always reply" in text and "a lone emoji" in text and "when in doubt, reply" in text
+    skip = text[text.index("Skip (no reply) only:"):]
+    assert "gibberish" not in skip and "medical" not in skip and "tagging other people" in skip
+
+
+def test_a_viewer_writing_back_under_an_answer_given_by_hand_in_studio_gets_a_reply():
+    yt = FakeYouTube(threads=[thread("t1", "ayse", "Kediler neden mırlar?", hours_ago=5, count=2,
+                                     replies=[snippet(CH, "Mutlu olunca ve kendini iyileştirirken.", hours_ago=4)])],
+                     replies={"t1": [reply("t1.a", CH, "Mutlu olunca ve kendini iyileştirirken.", hours_ago=4),
+                                     reply("t1.b", "ayse", "@zirveninkanunu teşekkürler 🙏", hours_ago=1)]})
+    ask = FakeGemini()
+    state, _ = go(yt, ask)
+    assert ask.comments() == [{"id": "t1.b", "video": "v1", "kind": "followup", "text": "teşekkürler 🙏",
+                               "our_reply": "Mutlu olunca ve kendini iyileştirirken."}]
+    assert yt.posted == [("t1", "@ayse cevap t1.b")] and state["tracked"]["t1"]["n"] == 3
+
+
+def test_in_a_viewers_thread_only_what_follows_our_latest_answer_is_new():
+    state = {"done": {}, "tracked": {"t1": {"at": round(NOW - 5 * HOUR), "n": 1, "reply": "İlk cevabımız"}}}
+    yt = FakeYouTube(threads=[thread("t1", "ayse", "Kediler neden mırlar?", hours_ago=6, count=4)],
+                     replies={"t1": [reply("t1.a", CH, "İlk cevabımız", hours_ago=5),
+                                     reply("t1.b", "ayse", "@zirveninkanunu peki neden?", hours_ago=4),
+                                     reply("t1.c", CH, "Elle yazılan cevap", hours_ago=3),
+                                     reply("t1.d", "ayse", "@zirveninkanunu teşekkürler", hours_ago=1)]})
+    ask = FakeGemini()
+    go(yt, ask, state)
+    assert ask.comments() == [{"id": "t1.d", "video": "v1", "kind": "followup", "text": "teşekkürler",
+                               "our_reply": "Elle yazılan cevap"}]
 
 
 def test_the_same_comment_pasted_twice_gets_one_answer():
@@ -174,7 +217,7 @@ def test_later_runs_read_only_threads_that_grew_and_answer_followups():
 
 
 def test_daily_cap_leaves_the_rest_for_later_and_the_thread_is_read_again():
-    sent = {f"old{i}": [round(NOW) - HOUR, "r", f"x{i}", f"p{i}"] for i in range(29)}
+    sent = {f"old{i}": [round(NOW) - HOUR, "r", f"x{i}", f"p{i}"] for i in range(comment_replies.DAILY - 1)}
     yt = FakeYouTube(threads=[thread("t2", CH, "Soru? 👇", hours_ago=5, count=2)],
                      replies={"t2": [reply("t2.a", "mert", "Bir", hours_ago=1),
                                      reply("t2.b", "ece", "İki", hours_ago=2)]})
@@ -189,12 +232,13 @@ def test_daily_cap_leaves_the_rest_for_later_and_the_thread_is_read_again():
     assert state["tracked"]["t2"]["n"] == 3
 
 
-def test_one_person_gets_at_most_three_replies_a_day():
-    state = {"done": {f"x{i}": [round(NOW) - HOUR, "r", f"r{i}", "talkative"] for i in range(3)}}
+def test_one_person_gets_at_most_ten_replies_a_day():
+    assert comment_replies.PER_PERSON == 10
+    state = {"done": {f"x{i}": [round(NOW) - HOUR, "r", f"r{i}", "talkative"] for i in range(10)}}
     yt = FakeYouTube(threads=[thread("t9", "talkative", "Bir şey daha soracağım")])
     state, _ = go(yt, state=state)
     assert yt.posted == []
-    assert state["done"]["t9"][1:] == ["s", "aynı kişiye 24 saatte 3 cevap verildi"]
+    assert state["done"]["t9"][1:] == ["s", "aynı kişiye 24 saatte 10 cevap verildi"]
 
 
 def test_skips_and_drafts_that_break_the_rules_are_closed_without_posting():

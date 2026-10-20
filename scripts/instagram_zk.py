@@ -506,9 +506,54 @@ def _seen(kind: str, key: str, mark) -> bool:
     return bool(hit) and hit[0] == mark and time.time() - hit[1] < CACHE_TTL
 
 
+def all_replies(tok: str, comment: dict) -> list[dict]:
+    """A comment's replies: the first 50 come with the comment, the rest page by page."""
+    box = comment.get("replies") or {}
+    replies, paging = list(box.get("data", [])), box.get("paging") or {}
+    for _ in range(COMMENT_PAGES):
+        after = (paging.get("cursors") or {}).get("after")
+        if not paging.get("next") or not after:
+            break
+        page = call(tok, "GET", f"{comment['id']}/replies", params={
+            "fields": "id,text,username,timestamp", "limit": 50, "after": after})
+        replies += page.get("data", [])
+        paging = page.get("paging") or {}
+    return replies
+
+
+def follow_ups(comment: dict, ours: str, done: dict, oldest: float) -> tuple[list[dict], dict]:
+    """What people wrote under a comment of theirs after our latest reply there -> (one item per person, newest
+    message as its id and everything else they wrote since in "also"; {id: why} to close). What came before our
+    latest reply is answered already, by the watch or by hand. Instagram keeps a comment's replies one level deep,
+    so the answer goes under the same comment, starting with the person's @name."""
+    replies = sorted((comment.get("replies") or {}).get("data", []), key=lambda r: _ts(r.get("timestamp")))
+    mine = [r for r in replies if r.get("username") == ours]
+    if not mine:
+        return [], {}
+    since, context = max(_ts(mine[-1].get("timestamp")), oldest), " ".join((mine[-1].get("text") or "").split())
+    people, quiet = {}, {}
+    for r in replies:
+        rid, name = r.get("id"), r.get("username")
+        if name == ours or not rid or rid in done or _ts(r.get("timestamp")) < since:
+            continue
+        text, why = comment_replies.screen(" ".join((r.get("text") or "").split()), ours)
+        if why:
+            quiet[rid] = why
+            continue
+        person = people.setdefault(name, {"texts": [], "ids": []})
+        person["texts"].append(text)
+        person["ids"].append(rid)
+        person["at"] = _ts(r.get("timestamp"))
+    items = [{"id": p["ids"][-1], "also": p["ids"][:-1], "kind": "followup", "parent": comment["id"],
+              "text": " / ".join(p["texts"])[:500], "author": name, "at": p["at"], "context": context}
+             for name, p in people.items()]
+    return items, quiet
+
+
 def fresh_comments(tok: str, user: dict, done: dict, pending: dict) -> tuple[list[dict], dict]:
     """-> (comments to judge, {id: why} to close without a reply); `pending` collects the cache marks to set once
-    every fresh comment of that media is handled."""
+    every fresh comment of that media is handled. A comment we answered is read again for what people wrote
+    under our reply (Ulaş, 2026-10-19: "hiçbir şey cevapsız kalmasın")."""
     fresh, quiet = [], {}
     oldest = time.time() - MAX_AGE_DAYS * 86400
     media = call(tok, "GET", "me/media", params={"fields": "id,timestamp,comments_count", "limit": 100}).get("data", [])
@@ -516,7 +561,8 @@ def fresh_comments(tok: str, user: dict, done: dict, pending: dict) -> tuple[lis
         if not m.get("comments_count") or _ts(m.get("timestamp")) < oldest or _seen("media", m["id"],
                                                                                     m["comments_count"]):
             continue
-        comments, params = [], {"fields": "id,text,username,timestamp,replies{username}", "limit": 50}
+        comments, params = [], {"fields": "id,text,username,timestamp,replies.limit(50){id,text,username,timestamp}",
+                                "limit": 50}
         for _ in range(COMMENT_PAGES):  # a Reel past 50 comments: the rest are on the next pages
             page = call(tok, "GET", f"{m['id']}/comments", params=params)
             comments += page.get("data", [])
@@ -528,18 +574,27 @@ def fresh_comments(tok: str, user: dict, done: dict, pending: dict) -> tuple[lis
         ids = []
         for c in comments:
             cid, name = c["id"], c.get("username")
-            if cid in done or name == user["username"]:
+            if name == user["username"]:
+                continue
+            if c.get("replies"):
+                c["replies"] = {"data": all_replies(tok, c)}
+            later, later_quiet = follow_ups(c, user["username"], done, oldest)
+            for item in later:
+                item["video"] = m["id"]
+                ids += [item["id"], *item["also"]]
+            fresh += later
+            quiet.update(later_quiet)
+            ids += list(later_quiet)
+            if cid in done:
                 continue
             ids.append(cid)
-            text = " ".join((c.get("text") or "").split())
+            text, why = comment_replies.screen(" ".join((c.get("text") or "").split()), user["username"], top=True)
             if any(r.get("username") == user["username"] for r in (c.get("replies") or {}).get("data", [])):
                 quiet[cid] = "hesap zaten cevaplamış"
             elif _ts(c.get("timestamp")) < oldest:
                 quiet[cid] = "eski"
-            elif not text:
-                quiet[cid] = "boş"
-            elif comment_replies.LINK.search(text):
-                quiet[cid] = "link veya etiket içeriyor"
+            elif why:
+                quiet[cid] = why
             else:
                 fresh.append({"id": cid, "kind": "comment", "video": m["id"], "text": text[:500], "author": name,
                               "at": _ts(c.get("timestamp")), "context": ""})
@@ -576,8 +631,8 @@ def fresh_dms(tok: str, user: dict, done: dict, pending: dict) -> tuple[list[dic
             quiet[last["id"]] = "24 saat geçmiş"
         elif not text:
             quiet[last["id"]] = "metin yok (fotoğraf, ses veya paylaşım)"
-        elif comment_replies.LINK.search(text):
-            quiet[last["id"]] = "link veya etiket içeriyor"
+        elif comment_replies.check(text):
+            quiet[last["id"]] = comment_replies.check(text)
         else:
             fresh.append({"id": last["id"], "kind": "dm", "video": "dm", "to": sender.get("id"), "text": text[:500],
                           "author": sender.get("username") or sender.get("id"), "at": _ts(last.get("created_time")),
@@ -651,7 +706,8 @@ def cevap(data_dir: Path, state: dict, report: dict, dry: bool = False, env=os.e
         who = _who(c["author"])
         if per_person.get(who, 0) >= person_cap:
             if not dry:
-                done[c["id"]] = [now, "s", f"kişi başı günlük {person_cap} cevap doldu"]
+                for i in [c["id"], *c.get("also", [])]:
+                    done[i] = [now, "s", f"kişi başı günlük {person_cap} cevap doldu"]
             continue
         if len(batch) >= room:
             later += 1
@@ -681,16 +737,22 @@ def _answer(data_dir, state, report, dry, tok, box, batch, now, ask) -> None:
         item = {"id": c["id"], "kind": c["kind"], "author": _who(c["author"]),
                 "text": "(özel mesaj)" if private else c["text"][:160]}
         out.append(item)
+
+        def mark(entry, c=c):  # the earlier messages a follow-up covered share its outcome
+            done[c["id"]] = entry
+            for other in c.get("also", []):
+                done[other] = [entry[0], "s", "aynı sohbette birlikte cevaplandı" if entry[1] == "r" else entry[2]]
+
         if verdict.get("action") != "reply":
             item["result"] = f"atlandı: {verdict.get('why') or 'karar yok'}"[:160]
             if not dry:  # no verdict counts too: asking Gemini again every minute would not change it
-                done[c["id"]] = [now, "s", item["result"]]
+                mark([now, "s", item["result"]])
             continue
         reply = comment_replies.clean_reply(verdict)
         if not reply:
             item["result"] = "atlandı: cevap kurala uymadı"
             if not dry:
-                done[c["id"]] = [now, "s", item["result"]]
+                mark([now, "s", item["result"]])
             continue
         item["reply"] = "(özel mesaj)" if private else reply  # an answer to a DM says what it asked
         idea = " ".join(str(verdict.get("idea") or "").split())[:120]
@@ -702,6 +764,8 @@ def _answer(data_dir, state, report, dry, tok, box, batch, now, ask) -> None:
         try:
             if private:
                 call(tok, "POST", "me/messages", body={"recipient": {"id": c["to"]}, "message": {"text": reply}})
+            elif c["kind"] == "followup":  # the @name goes only into the posted text, never onto the branch
+                call(tok, "POST", f"{c['parent']}/replies", form={"message": f"@{c['author']} {reply}"})
             else:
                 call(tok, "POST", f"{c['id']}/replies", form={"message": reply})
         except IGError as e:
@@ -709,9 +773,9 @@ def _answer(data_dir, state, report, dry, tok, box, batch, now, ask) -> None:
             if rate_limited(e):
                 report["rate_limit"] = True
                 break  # the rest waits for the pause
-            done[c["id"]] = [now, "s", "gönderilemedi"]
+            mark([now, "s", "gönderilemedi"])
             continue
-        done[c["id"]] = [now, "r", "" if private else reply[:80], _who(c["author"])]
+        mark([now, "r", "" if private else reply[:80], _who(c["author"])])
         item["result"] = "gönderildi"
         box["son"] = (box.get("son", []) + [{"at": round(now), "kind": c["kind"], "text": item["text"],
                                              "reply": item["reply"]}])[-40:]

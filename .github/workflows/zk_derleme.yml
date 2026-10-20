@@ -1,0 +1,118 @@
+name: Zirvenin Kanunu haftalık derleme
+
+# The week's most watched Shorts joined into one 16:9 video with chapters (scripts/compilation.py). Goes up public
+# every Sunday at TR 20:00 (17:00 UTC). GitHub drops many schedule ticks, so several Sunday ticks start it and a
+# Claude routine dispatches it as a backup; compilation.py skips when this week's is already public. By hand the
+# default is private, and yayinla makes a recorded compilation public.
+
+on:
+  schedule:
+    - cron: '0 17 * * 0'
+    - cron: '30 17 * * 0'
+    - cron: '0 18 * * 0'
+    - cron: '0 19 * * 0'
+    - cron: '0 20 * * 0'
+  workflow_dispatch:
+    inputs:
+      gorunurluk:
+        description: 'Görünürlük (private = sadece sen görürsün)'
+        required: true
+        default: 'private'
+        type: choice
+        options:
+          - 'private'
+          - 'unlisted'
+          - 'public'
+      adet:
+        description: 'Kaç Short girsin (en çok izlenenler)'
+        required: true
+        default: '15'
+        type: string
+      yukle:
+        description: 'YouTube''a yükle (kapalıysa video sadece Artifact olarak kalır)'
+        required: true
+        default: true
+        type: boolean
+      yayinla:
+        description: 'Yüklenmiş bir derlemeyi herkese açık yap (video kimliği; boşsa yeni derleme hazırlanır)'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: zk-derleme
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # the record and storyboard on channel-data
+  actions: read    # download the Shorts' artifacts
+
+jobs:
+  derleme:
+    name: 🎞️ Haftalık derleme
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 🧠 Kanal Hafızasını Getir
+        run: |
+          git fetch origin channel-data:refs/remotes/origin/channel-data
+          git worktree add -B channel-data channel-data origin/channel-data
+
+      - name: 🐍 Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🎥 FFmpeg ve Fontları Kur
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-montserrat
+
+      - name: 🎞️ Derlemeyi Hazırla
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GORUNURLUK: ${{ inputs.gorunurluk || 'public' }}
+          ADET: ${{ inputs.adet || '15' }}
+          YUKLE: ${{ github.event_name == 'schedule' || inputs.yukle }}
+          YAYINLA: ${{ inputs.yayinla }}
+        run: |
+          if [ -n "$YAYINLA" ]; then
+            exec python scripts/compilation.py --data channel-data --publish "$YAYINLA"
+          fi
+          set -- --data channel-data --out output/derleme --privacy "$GORUNURLUK" --count "$ADET"
+          [ "$YUKLE" = "true" ] || set -- "$@" --no-upload
+          python scripts/compilation.py "$@"
+
+      - name: 💾 Kanal Hafızasını Yedekle
+        if: always()
+        run: |
+          [ -e channel-data/.git ] || exit 0
+          cd channel-data
+          for f in compilations.json history/DERLEME_*; do [ -e "$f" ] && git add "$f"; done
+          if git diff --cached --quiet; then echo "Yeni veri yok"; exit 0; fi
+          git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -qm "Derleme: run ${{ github.run_id }}"
+          for attempt in 1 2 3 4; do
+            git -c user.name="zirve-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              pull --rebase -q origin channel-data || git rebase --abort 2>/dev/null || true
+            git push origin HEAD:channel-data && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+      - name: 📤 Derlemeyi Sakla (Artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: derleme-${{ github.run_id }}
+          path: |
+            output/derleme/DERLEME_*
+          retention-days: 7
+          if-no-files-found: ignore
