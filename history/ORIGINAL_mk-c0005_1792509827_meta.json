@@ -1,0 +1,167 @@
+{
+  "topic_id": "mk-c0005",
+  "topic": "Flamingolar neden tek ayak üstünde durur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Flamingolar neden tek ayak üstünde durur? 🦩",
+  "hook_text": "TEK AYAKTA NASIL YORULMUYOR?",
+  "description": "Flamingolar neden tek ayak üstünde durur?\n\nBilim insanları flamingonun tek ayak duruşunun neredeyse hiç kas gücü istemediğini buldu: vücut ağırlığı bacağı kendiliğinden kilitliyor. Bir görüşe göre diğer bacağını gövdesine çekmek soğuk suda ısısını da koruyor. Flamingo bu hâlde uyuyabiliyor bile.\n\nSence sen tek ayakta kaç saniye durursun: 30 mu, 60 mı?\n\n#flamingo #kuşlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0005",
+  "tags": [
+    "flamingo",
+    "flamingo tek ayak",
+    "flamingolar neden tek ayak",
+    "tek ayak üstünde durmak",
+    "flamingo uykusu",
+    "flamingo bacağı",
+    "pembe flamingo",
+    "flamingo dengesi",
+    "kuşlar",
+    "su kuşları",
+    "göl kuşları",
+    "denge",
+    "vahşi doğa",
+    "hayvanlar",
+    "hayvan belgeseli",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "flamingo one leg",
+    "tek ayak",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "tek ayak ustunde durmak",
+    "flamingo bacagi",
+    "kuslar",
+    "su kuslari",
+    "gol kuslari"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why do flamingos stand on one leg? 🦩",
+      "description": "Scientists found that a flamingo's one-legged pose takes almost no muscle effort: its body weight locks the leg in place. It can even sleep like this.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "es": {
+      "title": "¿Por qué los flamencos se paran en una sola pata? 🦩",
+      "description": "Los científicos descubrieron que esta postura casi no requiere fuerza muscular: el peso del cuerpo bloquea la pata. Incluso pueden dormir así.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "pt": {
+      "title": "Por que os flamingos ficam numa perna só? 🦩",
+      "description": "Cientistas descobriram que essa postura quase não exige força muscular: o peso do corpo trava a perna. Eles até dormem assim.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "de": {
+      "title": "Warum stehen Flamingos auf einem Bein? 🦩",
+      "description": "Forscher fanden heraus, dass diese Haltung fast keine Muskelkraft kostet: Das Körpergewicht arretiert das Bein. Flamingos schlafen sogar so.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "fr": {
+      "title": "Pourquoi les flamants roses tiennent sur une patte ? 🦩",
+      "description": "Des chercheurs ont découvert que cette posture ne demande presque aucun effort musculaire : le poids du corps verrouille la patte. Ils dorment même ainsi.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "it": {
+      "title": "Perché i fenicotteri stanno su una zampa sola? 🦩",
+      "description": "Gli scienziati hanno scoperto che questa posizione non richiede quasi forza muscolare: il peso del corpo blocca la zampa. Ci dormono persino.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "ru": {
+      "title": "Почему фламинго стоят на одной ноге? 🦩",
+      "description": "Учёные выяснили, что эта поза почти не требует усилий мышц: вес тела сам фиксирует ногу. Фламинго даже спят так.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "ar": {
+      "title": "لماذا يقف طائر الفلامنغو على ساق واحدة؟ 🦩",
+      "description": "اكتشف العلماء أن هذه الوقفة لا تحتاج تقريبًا إلى أي جهد عضلي، فوزن الجسم يثبت الساق تلقائيًا. بل إنه ينام هكذا.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "hi": {
+      "title": "फ्लेमिंगो एक पैर पर क्यों खड़े होते हैं? 🦩",
+      "description": "वैज्ञानिकों ने पाया कि इस मुद्रा में लगभग कोई मांसपेशी ताकत नहीं लगती: शरीर का वजन पैर को अपने आप लॉक कर देता है। वे ऐसे सो भी जाते हैं।\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "id": {
+      "title": "Kenapa flamingo berdiri dengan satu kaki? 🦩",
+      "description": "Ilmuwan menemukan bahwa pose ini hampir tidak butuh tenaga otot: berat tubuh mengunci kakinya. Flamingo bahkan tidur seperti ini.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "ja": {
+      "title": "フラミンゴはなぜ片足で立つの? 🦩",
+      "description": "研究者によると、この姿勢はほとんど筋肉の力を使いません。体重で脚が自然に固定されるのです。このまま眠ることさえできます。\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "ko": {
+      "title": "플라밍고는 왜 한 다리로 설까? 🦩",
+      "description": "과학자들은 이 자세가 근육 힘을 거의 쓰지 않는다는 걸 알아냈습니다. 몸무게가 다리를 저절로 고정해 줍니다. 이대로 잠도 잡니다.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "pl": {
+      "title": "Dlaczego flamingi stoją na jednej nodze? 🦩",
+      "description": "Naukowcy odkryli, że ta pozycja prawie nie wymaga pracy mięśni: ciężar ciała sam blokuje nogę. Flamingi nawet tak śpią.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "nl": {
+      "title": "Waarom staan flamingo's op één poot? 🦩",
+      "description": "Onderzoekers ontdekten dat deze houding bijna geen spierkracht kost: het lichaamsgewicht zet de poot vast. Flamingo's slapen zelfs zo.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "uk": {
+      "title": "Чому фламінго стоять на одній нозі? 🦩",
+      "description": "Учені з'ясували, що ця поза майже не потребує зусиль м'язів: вага тіла сама фіксує ногу. Фламінго навіть сплять так.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "vi": {
+      "title": "Vì sao hồng hạc đứng một chân? 🦩",
+      "description": "Các nhà khoa học phát hiện tư thế này gần như không tốn sức cơ: trọng lượng cơ thể tự khóa chân lại. Chúng còn ngủ như vậy.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "az": {
+      "title": "Flaminqolar niyə tək ayaq üstə durur? 🦩",
+      "description": "Alimlər bu duruşun demək olar ki, əzələ gücü tələb etmədiyini tapıb: bədən ağırlığı ayağı özü kilidləyir. Flaminqo belə yata da bilir.\n\n#shorts\n\nSeri: mk-c0005"
+    },
+    "ro": {
+      "title": "De ce stau flamingii într-un picior? 🦩",
+      "description": "Cercetătorii au descoperit că poziția aproape nu cere efort muscular: greutatea corpului blochează piciorul. Flamingii chiar dorm așa.\n\n#shorts\n\nSeri: mk-c0005"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence sen tek ayakta kaç saniye durursun: 30 mu, 60 mı?",
+  "scenes": [
+    {
+      "text": "Bu flamingo saatlerce tek ayak üstünde duruyor.",
+      "visual": "pink flamingo standing on one leg in shallow water",
+      "stock_query": "flamingo standing",
+      "source": "stock",
+      "callout": "TEK AYAK"
+    },
+    {
+      "text": "Bilim insanları bu duruşun neredeyse hiç kas gücü istemediğini buldu.",
+      "visual": "flock of flamingos resting in a lagoon",
+      "stock_query": "flamingo lagoon",
+      "source": "stock",
+      "callout": "KAS GÜCÜ YOK"
+    },
+    {
+      "text": "Vücut ağırlığı bacağı kendiliğinden kilitliyor, flamingo âdeta askıda duruyor.",
+      "visual": "close up of a flamingo leg and knee in the water",
+      "stock_query": "flamingo leg",
+      "source": "stock",
+      "callout": "KİLİTLİ BACAK"
+    },
+    {
+      "text": "Bir görüşe göre diğer bacağını gövdesine çekmek, soğuk suda ısısını da koruyor.",
+      "visual": "flamingo tucking its leg and head into its feathers",
+      "stock_query": "flamingo sleeping",
+      "source": "stock"
+    },
+    {
+      "text": "Sen tek ayakta otuz saniye bile zor durursun, o ise böyle uyur.",
+      "visual": "flamingo sleeping on one leg with its head tucked",
+      "stock_query": "flamingo one leg",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.63,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0005_1792509827_ig.mp4"
+}
