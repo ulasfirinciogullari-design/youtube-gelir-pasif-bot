@@ -1,71 +1,18 @@
 {
- "started": "2026-10-20T14:08:59+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-20T17:09:43+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n004",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "37",
-  "videos": "20"
+ "title": "Okyanus Gerçekte Ne Kadar Derin?",
+ "chars": 390,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18130566226818273",
+  "url": "https://www.instagram.com/reel/DeuVpD2ksyl/",
+  "at": 1792516281.258153
  },
- "credits_before": [
-  10380,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261020-2-o0006.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "o0006",
-  "series": "Ya Olsaydı?",
-  "q": "Jüpiter yok olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 362,
- "duration": 24.2,
- "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/iKojt12DL_Y",
- "recent_status": {
-  "o0003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "425",
-   "reason": null
-  },
-  "n004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1069",
-   "reason": null
-  },
-  "o0004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1080",
-   "reason": null
-  },
-  "g003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "776",
-   "reason": null
-  },
-  "o0006": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  10467,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261020-2-o0006.json Jüpiter yok olsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DeuVpD2ksyl/"
  ],
- "finished": "2026-10-20T14:09:59+00:00"
+ "finished": "2026-10-20T17:11:21+00:00"
 }
