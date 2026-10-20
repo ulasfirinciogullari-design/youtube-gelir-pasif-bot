@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0002",
+  "topic": "Ahtapotun neden üç kalbi var?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Ahtapotun üç kalbi var, biri yüzerken duruyor 🐙",
+  "hook_text": "YÜZMEK ONU NEDEN YORUYOR?",
+  "description": "Ahtapotun neden üç kalbi var?\n\nAhtapotun iki kalbi kanı solungaçlara, üçüncüsü bütün vücuda pompalar. Ahtapot yüzerken bu üçüncü kalp durur; bu yüzden çoğu zaman kollarıyla deniz tabanında yürür. Kanı da bakır taşıdığı için mavidir.\n\nSence hangisi daha tuhaf: üç kalp mi, mavi kan mı?\n\n#ahtapot #denizcanlıları #okyanus #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0002",
+  "tags": [
+    "ahtapot",
+    "ahtapotun kalbi",
+    "ahtapot kaç kalbi var",
+    "üç kalp",
+    "mavi kan",
+    "ahtapot kanı neden mavi",
+    "ahtapot yüzmesi",
+    "ahtapot yürür mü",
+    "bakır kan",
+    "deniz canlıları",
+    "okyanus canlıları",
+    "deniz altı",
+    "hayvanlar",
+    "hayvan belgeseli",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "octopus",
+    "octopus hearts",
+    "ahtapot kalbi",
+    "okyanus",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "ahtapot kac kalbi var",
+    "uc kalp",
+    "ahtapot kani neden mavi",
+    "ahtapot yuzmesi",
+    "ahtapot yurur mu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "An octopus has three hearts, and one stops when it swims 🐙",
+      "description": "Two of an octopus's hearts pump blood to the gills and the third to the rest of the body. That third heart stops while it swims, so octopuses often prefer to walk.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "es": {
+      "title": "El pulpo tiene tres corazones y uno se detiene al nadar 🐙",
+      "description": "Dos corazones bombean sangre a las branquias y el tercero al cuerpo. Ese tercero se detiene cuando nada, por eso el pulpo prefiere caminar.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "pt": {
+      "title": "O polvo tem três corações e um para quando ele nada 🐙",
+      "description": "Dois corações bombeiam sangue para as brânquias e o terceiro para o corpo. Esse terceiro para quando ele nada, por isso o polvo prefere andar.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "de": {
+      "title": "Ein Oktopus hat drei Herzen, und eins bleibt beim Schwimmen stehen 🐙",
+      "description": "Zwei Herzen pumpen Blut zu den Kiemen, das dritte in den Körper. Dieses dritte Herz setzt beim Schwimmen aus, deshalb läuft der Oktopus lieber.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "fr": {
+      "title": "La pieuvre a trois cœurs, et l'un s'arrête quand elle nage 🐙",
+      "description": "Deux cœurs envoient le sang vers les branchies, le troisième vers le corps. Celui-ci s'arrête quand elle nage, alors la pieuvre préfère marcher.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "it": {
+      "title": "Il polpo ha tre cuori e uno si ferma quando nuota 🐙",
+      "description": "Due cuori pompano sangue alle branchie, il terzo al corpo. Il terzo si ferma durante il nuoto, per questo il polpo preferisce camminare.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "ru": {
+      "title": "У осьминога три сердца, и одно останавливается, когда он плывёт 🐙",
+      "description": "Два сердца качают кровь к жабрам, третье по всему телу. Когда осьминог плывёт, третье сердце останавливается, поэтому он чаще ходит по дну.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "ar": {
+      "title": "للأخطبوط ثلاثة قلوب وأحدها يتوقف عندما يسبح 🐙",
+      "description": "قلبان يضخان الدم إلى الخياشيم والثالث إلى الجسم كله. يتوقف القلب الثالث أثناء السباحة، لذلك يفضل الأخطبوط المشي على القاع.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "hi": {
+      "title": "ऑक्टोपस के तीन दिल होते हैं, और तैरते समय एक रुक जाता है 🐙",
+      "description": "दो दिल गलफड़ों तक खून भेजते हैं और तीसरा पूरे शरीर में। तैरते समय तीसरा दिल रुक जाता है, इसलिए ऑक्टोपस अक्सर चलना पसंद करता है।\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "id": {
+      "title": "Gurita punya tiga jantung, satu berhenti saat berenang 🐙",
+      "description": "Dua jantung memompa darah ke insang, yang ketiga ke seluruh tubuh. Jantung ketiga berhenti saat berenang, jadi gurita lebih suka berjalan.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "ja": {
+      "title": "タコには心臓が3つ、泳ぐと1つが止まる 🐙",
+      "description": "2つの心臓がえらへ、もう1つが全身へ血を送ります。泳ぐとその3つ目が止まるので、タコは歩くほうを好みます。\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "ko": {
+      "title": "문어는 심장이 3개, 헤엄치면 하나가 멈춘다 🐙",
+      "description": "두 심장은 아가미로, 나머지 하나는 온몸으로 피를 보냅니다. 헤엄칠 때 세 번째 심장이 멈춰서 문어는 걷는 걸 더 좋아합니다.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "pl": {
+      "title": "Ośmiornica ma trzy serca, a jedno staje, gdy pływa 🐙",
+      "description": "Dwa serca pompują krew do skrzeli, trzecie do całego ciała. To trzecie zatrzymuje się podczas pływania, więc ośmiornica woli chodzić.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "nl": {
+      "title": "Een octopus heeft drie harten, en één stopt als hij zwemt 🐙",
+      "description": "Twee harten pompen bloed naar de kieuwen, het derde naar het lichaam. Dat derde stopt tijdens het zwemmen, dus een octopus loopt liever.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "uk": {
+      "title": "У восьминога три серця, і одне зупиняється, коли він пливе 🐙",
+      "description": "Два серця качають кров до зябер, третє по всьому тілу. Під час плавання третє серце зупиняється, тому восьминіг частіше ходить дном.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "vi": {
+      "title": "Bạch tuộc có ba quả tim, một quả ngừng đập khi bơi 🐙",
+      "description": "Hai quả tim bơm máu tới mang, quả thứ ba bơm khắp cơ thể. Quả thứ ba ngừng khi bơi, nên bạch tuộc thích bò hơn.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "az": {
+      "title": "Ahtapotun üç ürəyi var, biri üzəndə dayanır 🐙",
+      "description": "İki ürək qanı qəlsəmələrə, üçüncüsü bütün bədənə vurur. Üzəndə üçüncü ürək dayanır, ona görə ahtapot çox vaxt yeriməyi seçir.\n\n#shorts\n\nSeri: mk-c0002"
+    },
+    "ro": {
+      "title": "Caracatița are trei inimi, iar una se oprește când înoată 🐙",
+      "description": "Două inimi pompează sânge spre branhii, a treia spre corp. A treia se oprește când înoată, așa că preferă să meargă pe fundul mării.\n\n#shorts\n\nSeri: mk-c0002"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: üç kalp mi, mavi kan mı?",
+  "scenes": [
+    {
+      "text": "Bu ahtapotun içinde tam üç kalp atıyor.",
+      "visual": "octopus gliding over a coral reef, soft blue light",
+      "stock_query": "octopus swimming",
+      "source": "stock",
+      "callout": "3 KALP"
+    },
+    {
+      "text": "İkisi kanı yalnızca solungaçlara pompalıyor.",
+      "visual": "octopus resting between rocks underwater, close up",
+      "stock_query": "octopus underwater",
+      "source": "stock"
+    },
+    {
+      "text": "Üçüncüsü bütün vücuda, ama ahtapot yüzerken bu kalp duruyor.",
+      "visual": "octopus jetting through open water",
+      "stock_query": "octopus ocean",
+      "source": "stock",
+      "callout": "KALP DURUYOR"
+    },
+    {
+      "text": "Bu yüzden çoğu zaman yüzmek yerine kollarıyla deniz tabanında yürür.",
+      "visual": "octopus crawling on the sandy sea floor with its arms",
+      "stock_query": "octopus crawling",
+      "source": "stock"
+    },
+    {
+      "text": "Kanı da kırmızı değil mavidir, çünkü demir yerine bakır taşır.",
+      "visual": "close up of octopus skin and eye underwater",
+      "stock_query": "octopus closeup",
+      "source": "stock",
+      "callout": "MAVİ KAN"
+    },
+    {
+      "text": "Yürüyen bir ahtapot görürsen bil ki üç kalbi de çalışıyor.",
+      "visual": "octopus walking across rocks on the seabed",
+      "stock_query": "octopus reef",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.81,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0002_1792488161_ig.mp4"
+}
