@@ -95,7 +95,7 @@ permissions:
 jobs:
   produce_original_short:
     name: 🎬 Özgün Short Üret ve Yayınla
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: ubuntu-latest moved to 26.04 on 2026-10-20; keep the image the factory was tested on
     timeout-minutes: 60
 
     steps:
