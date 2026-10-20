@@ -1,8 +1,12 @@
 {
- "started": "2026-10-19T23:26:20+00:00",
+ "started": "2026-10-20T00:33:36+00:00",
  "bolum": "k001",
- "mod": "gizli",
- "chars": 391,
+ "mod": "deneme",
+ "tablolar": {
+  "franklin": "franklin.jpg",
+  "meclis": "meclis.jpg"
+ },
+ "chars": 601,
  "voice": {
   "model": "eleven_flash_v2_5",
   "speed": 1.1,
@@ -10,15 +14,8 @@
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 21.93,
- "render_seconds": 149,
- "title": "Seni Sevmeyen Birini Kazanmanın En Garip Yolu 🤫 #psikoloji",
- "video_id": "j179DbCPBgQ",
- "url": "https://youtube.com/shorts/j179DbCPBgQ",
- "privacy": "private",
- "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu"
- },
- "finished": "2026-10-19T23:28:55+00:00"
+ "duration": 36.38,
+ "render_seconds": 142,
+ "title": "Düşmanını Dosta Çevirmenin En Garip Yolu 🤫 #psikoloji",
+ "finished": "2026-10-20T00:36:03+00:00"
 }
