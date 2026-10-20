@@ -1,0 +1,167 @@
+{
+  "topic_id": "mk-c0008",
+  "topic": "Köpeklerin burun izi parmak izi gibi eşsiz mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Köpeğinin burnu parmak izi gibi eşsiz 🐶",
+  "hook_text": "BURUN İZİYLE KİMLİK OLUR MU?",
+  "description": "Köpeklerin burun izi parmak izi gibi eşsiz mi?\n\nKöpeğin burnundaki çizgi ve kabarcık deseni, insan parmak izi gibi her köpekte farklıdır. Bu yüzden bazı köpek kulüpleri burun izini kimlik olarak kabul eder. Islak burun da kokuyu yakalamasına yardım eder.\n\nSence köpeğin en özel yanı hangisi: burnu mu, kulakları mı?\n\n#köpek #sevimlihayvanlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0008",
+  "tags": [
+    "köpek",
+    "köpek burnu",
+    "köpek burun izi",
+    "burun izi",
+    "parmak izi",
+    "köpek burnu neden ıslak",
+    "köpek kimliği",
+    "köpek koku alma",
+    "köpek bilgileri",
+    "köpek sahipleri",
+    "evcil hayvan",
+    "sevimli hayvanlar",
+    "köpek videoları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "dog nose",
+    "dog nose print",
+    "köpekler",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "kopek",
+    "kopek burnu",
+    "kopek burun izi",
+    "kopek burnu neden islak",
+    "kopek kimligi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your dog's nose print is as unique as a fingerprint 🐶",
+      "description": "The ridges and bumps on a dog's nose form a pattern no other dog has. That's why some kennel clubs accept nose prints as ID.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "es": {
+      "title": "La huella de la nariz de tu perro es única como una huella dactilar 🐶",
+      "description": "Las líneas y relieves de la nariz de un perro forman un patrón que ningún otro tiene. Por eso algunos clubes caninos la aceptan como identificación.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "pt": {
+      "title": "O focinho do seu cachorro é único como uma impressão digital 🐶",
+      "description": "As linhas e saliências do focinho formam um desenho que nenhum outro cão tem. Por isso alguns clubes caninos aceitam a marca do focinho como identidade.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "de": {
+      "title": "Die Nase deines Hundes ist einzigartig wie ein Fingerabdruck 🐶",
+      "description": "Die Rillen und Wölbungen auf der Hundenase bilden ein Muster, das kein anderer Hund hat. Manche Hundeclubs akzeptieren den Nasenabdruck deshalb als Ausweis.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "fr": {
+      "title": "La truffe de ton chien est unique comme une empreinte digitale 🐶",
+      "description": "Les sillons et reliefs de la truffe forment un motif qu'aucun autre chien ne possède. Certains clubs canins l'acceptent comme pièce d'identité.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "it": {
+      "title": "Il naso del tuo cane è unico come un'impronta digitale 🐶",
+      "description": "Le linee e i rilievi del tartufo formano un disegno che nessun altro cane ha. Per questo alcuni club cinofili lo accettano come documento.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "ru": {
+      "title": "Отпечаток носа собаки уникален, как отпечаток пальца 🐶",
+      "description": "Узор из бороздок и бугорков на носу собаки не повторяется ни у кого. Поэтому некоторые кинологические клубы принимают его как удостоверение.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "ar": {
+      "title": "بصمة أنف كلبك فريدة مثل بصمة الإصبع 🐶",
+      "description": "تشكل الخطوط والنتوءات على أنف الكلب نمطًا لا يتكرر عند أي كلب آخر. لذلك تقبل بعض أندية الكلاب بصمة الأنف كهوية.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "hi": {
+      "title": "आपके कुत्ते की नाक का निशान उंगलियों के निशान जैसा अनोखा है 🐶",
+      "description": "कुत्ते की नाक की रेखाएँ और उभार ऐसा पैटर्न बनाते हैं जो किसी और कुत्ते का नहीं होता। इसलिए कुछ डॉग क्लब नाक के निशान को पहचान मानते हैं।\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "id": {
+      "title": "Cetakan hidung anjingmu unik seperti sidik jari 🐶",
+      "description": "Garis dan tonjolan di hidung anjing membentuk pola yang tak dimiliki anjing lain. Karena itu beberapa klub anjing menerimanya sebagai identitas.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "ja": {
+      "title": "犬の鼻紋は指紋と同じく一頭ずつ違う 🐶",
+      "description": "犬の鼻の表面のしわや凹凸の模様は、ほかの犬とは決して同じになりません。そのため鼻紋を身分証明に使う団体もあります。\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "ko": {
+      "title": "강아지 코 무늬는 지문처럼 세상에 하나뿐 🐶",
+      "description": "강아지 코의 주름과 돌기 무늬는 다른 어떤 개와도 같지 않습니다. 그래서 일부 애견 단체는 비문을 신분 확인에 씁니다.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "pl": {
+      "title": "Odcisk nosa twojego psa jest unikalny jak odcisk palca 🐶",
+      "description": "Bruzdy i wypukłości na psim nosie tworzą wzór, którego nie ma żaden inny pies. Dlatego niektóre kluby kynologiczne uznają go za dowód tożsamości.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "nl": {
+      "title": "De neusafdruk van je hond is uniek als een vingerafdruk 🐶",
+      "description": "De groeven en bultjes op een hondenneus vormen een patroon dat geen andere hond heeft. Sommige kennelclubs accepteren het daarom als identiteitsbewijs.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "uk": {
+      "title": "Відбиток носа собаки унікальний, як відбиток пальця 🐶",
+      "description": "Візерунок із борозенок і горбочків на носі собаки не повторюється ні в кого. Тому деякі кінологічні клуби приймають його як посвідчення.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "vi": {
+      "title": "Vân mũi của chó độc nhất như vân tay 🐶",
+      "description": "Các đường rãnh và nốt sần trên mũi chó tạo thành hoa văn không con nào giống con nào. Vì vậy một số câu lạc bộ chó dùng vân mũi để nhận dạng.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "az": {
+      "title": "İtinin burun izi barmaq izi kimi təkdir 🐶",
+      "description": "İtin burnundakı xətlər və qabarcıqlar heç bir başqa itdə olmayan naxış yaradır. Ona görə bəzi it klubları burun izini şəxsiyyət kimi qəbul edir.\n\n#shorts\n\nSeri: mk-c0008"
+    },
+    "ro": {
+      "title": "Amprenta nasului câinelui tău e unică, la fel ca amprenta digitală 🐶",
+      "description": "Liniile și denivelările de pe nasul câinelui formează un model pe care niciun alt câine nu îl are. De aceea unele cluburi chinologice îl acceptă ca act de identitate.\n\n#shorts\n\nSeri: mk-c0008"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence köpeğin en özel yanı hangisi: burnu mu, kulakları mı?",
+  "scenes": [
+    {
+      "text": "Bu köpeğin burnundaki desen dünyada bir tane.",
+      "visual": "extreme close up of a wet dog nose",
+      "stock_query": "dog nose",
+      "source": "stock",
+      "callout": "TEK BİR TANE"
+    },
+    {
+      "text": "Burundaki çizgi ve kabarcıklar, insan parmak izi gibi her köpekte farklıdır.",
+      "visual": "dog sniffing the grass, close up on its nose",
+      "stock_query": "dog sniffing",
+      "source": "stock"
+    },
+    {
+      "text": "Bu yüzden bazı köpek kulüpleri burun izini kimlik olarak kabul eder.",
+      "visual": "happy dog looking into the camera",
+      "stock_query": "dog face",
+      "source": "stock",
+      "callout": "BURUN KİMLİĞİ"
+    },
+    {
+      "text": "Islak burun da kokuyu yakalamasına yardım eder.",
+      "visual": "dog nose twitching while smelling the air",
+      "stock_query": "dog smelling",
+      "source": "stock",
+      "callout": "ISLAK BURUN"
+    },
+    {
+      "text": "Köpeğinin burnuna bir bak; o desen başka hiçbir köpekte yok.",
+      "visual": "dog resting its head on a person's lap",
+      "stock_query": "dog closeup",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 12.78,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0008_1792531390_ig.mp4"
+}
