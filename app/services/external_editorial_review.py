@@ -142,43 +142,9 @@ def _independent_audio_crosscheck(pack, binding, attempt, result, expected, lang
              and all(result.get(k) == value for k, value in validated.items()))
 
 
-def _evidence(pack):
-    pack = _object(pack, MAX_EVIDENCE_BYTES)
-    _require(not artifact._SECRET.search(ingest._json(pack)))
-    crosscheck = 'prosody_raw_response_json' in pack
-    _require(not crosscheck or type(pack.get('version')) is int and pack['version'] == 2)
-    _exact(pack, ('version', 'manifest', 'asr_provider_evidence_json', 'asr_attempt_json',
-                  'prosody_result_json', 'prosody_attempt_json', 'frames', 'scenes',
-                  'sources', 'rights_basis', 'limitations', 'blocking_issues', 'publish_metadata',
-                  *(('prosody_raw_response_json',) if crosscheck else ())))
-    _require(type(pack['version']) is int and pack['version'] in (1, 2)
-             and type(pack['limitations']) is dict and set(pack['limitations']) == {*_LIMITATIONS, 'notes'}
-             and all(type(pack['limitations'].get(k)) is type(v) and pack['limitations'].get(k) == v
-                     for k, v in _LIMITATIONS.items())
-             and pack['blocking_issues'] == [])
-    _require(type(pack['limitations']['notes']) is list and 1 <= len(pack['limitations']['notes']) <= 10)
-    for note in pack['limitations']['notes']:
-        _text(note)
-    manifest = artifact.validate_external_manifest(pack['manifest'])
+def _legacy_audio_evidence(pack, manifest, *, crosscheck):
     version, language = pack['version'], manifest['language']
-    _require(manifest['version'] == version and (language == 'en' if version == 1 else language in {'tr', 'en'}))
     duration = manifest['duration_ms'] / 1000
-    frame_count = round(duration * 30)
-    metadata = pack['publish_metadata']
-    _exact(metadata, ('title', 'description', 'tags', 'hashtags', 'sources', 'contains_synthetic_media'))
-    _require(metadata['contains_synthetic_media'] is True
-             and metadata['sources'] == [row['url'] for row in manifest['sources']])
-    for key, maximum in (('title', 100), ('description', 4000)):
-        artifact._text(metadata[key], maximum)
-        _require(not re.search(r'\b\d+\s*/\s*\d+\b', metadata[key]))
-    for key, maximum, length in (('tags', 30, 100), ('hashtags', 10, 60)):
-        _require(type(metadata[key]) is list and 1 <= len(metadata[key]) <= maximum)
-        for item in metadata[key]:
-            artifact._text(item, length)
-            if key == 'hashtags':
-                _require(re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*', item))
-    authored = ' '.join([metadata['title'], metadata['description'], *metadata['tags'], *metadata['hashtags']])
-    _require(all(not c.isalpha() or 'LATIN' in unicodedata.name(c, '') for c in authored))
     expected = ' '.join(scene['narration'] for scene in manifest['scenes'])
     asr, asr_attempt, prosody, prosody_attempt = [_object(pack[key]) for key in (
         'asr_provider_evidence_json', 'asr_attempt_json', 'prosody_result_json', 'prosody_attempt_json')]
@@ -272,6 +238,56 @@ def _evidence(pack):
     _require(all(type(v) in (int, float) and math.isfinite(v) and 0 <= v <= 100 for v in scores.values())
              and all(v >= (86 if version == 1 else 70) for k, v in scores.items() if k != 'roboticness')
              and scores['roboticness'] <= 30)
+    return binding, unknown
+
+
+def _evidence(pack):
+    pack = _object(pack, MAX_EVIDENCE_BYTES)
+    _require(not artifact._SECRET.search(ingest._json(pack)))
+    crosscheck = 'prosody_raw_response_json' in pack
+    _require(not crosscheck or type(pack.get('version')) is int and pack['version'] in (2, 3))
+    retained = type(pack.get('version')) is int and pack['version'] == 3
+    _require(not retained or crosscheck)
+    _exact(pack, ('version', 'manifest',
+                  *(('source_asr_evidence_json', 'audio_artifact_envelope') if retained else
+                    ('asr_provider_evidence_json', 'asr_attempt_json')),
+                  'prosody_result_json', 'prosody_attempt_json', 'frames', 'scenes',
+                  'sources', 'rights_basis', 'limitations', 'blocking_issues', 'publish_metadata',
+                  *(('prosody_raw_response_json',) if crosscheck else ())))
+    _require(type(pack['version']) is int and pack['version'] in (1, 2, 3)
+             and type(pack['limitations']) is dict and set(pack['limitations']) == {*_LIMITATIONS, 'notes'}
+             and all(type(pack['limitations'].get(k)) is type(v) and pack['limitations'].get(k) == v
+                     for k, v in _LIMITATIONS.items())
+             and pack['blocking_issues'] == [])
+    _require(type(pack['limitations']['notes']) is list and 1 <= len(pack['limitations']['notes']) <= 10)
+    for note in pack['limitations']['notes']:
+        _text(note)
+    manifest = artifact.validate_external_manifest(pack['manifest'])
+    version, language = pack['version'], manifest['language']
+    _require(manifest['version'] == (2 if retained else version)
+             and (language == 'en' if version == 1 else language in {'tr', 'en'}))
+    duration = manifest['duration_ms'] / 1000
+    frame_count = round(duration * 30)
+    metadata = pack['publish_metadata']
+    _exact(metadata, ('title', 'description', 'tags', 'hashtags', 'sources', 'contains_synthetic_media'))
+    _require(metadata['contains_synthetic_media'] is True
+             and metadata['sources'] == [row['url'] for row in manifest['sources']])
+    for key, maximum in (('title', 100), ('description', 4000)):
+        artifact._text(metadata[key], maximum)
+        _require(not re.search(r'\b\d+\s*/\s*\d+\b', metadata[key]))
+    for key, maximum, length in (('tags', 30, 100), ('hashtags', 10, 60)):
+        _require(type(metadata[key]) is list and 1 <= len(metadata[key]) <= maximum)
+        for item in metadata[key]:
+            artifact._text(item, length)
+            if key == 'hashtags':
+                _require(re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*', item))
+    authored = ' '.join([metadata['title'], metadata['description'], *metadata['tags'], *metadata['hashtags']])
+    _require(all(not c.isalpha() or 'LATIN' in unicodedata.name(c, '') for c in authored))
+    if version == 3:
+        from app.services.retained_editorial_evidence import validate_retained_audio
+        binding, unknown = validate_retained_audio(pack, manifest)
+    else:
+        binding, unknown = _legacy_audio_evidence(pack, manifest, crosscheck=crosscheck)
     urls = {row['url'] for row in manifest['sources']}
     _require(type(pack['sources']) is list and len(pack['sources']) == len(urls))
     for row in pack['sources']:
@@ -293,7 +309,7 @@ def _evidence(pack):
         _exact(row, ('index', 'frame_indices', 'visual_observation', 'alignment_observation', 'source_urls', 'claim_note'))
         _require(type(row['index']) is int and row['index'] == i and type(row['frame_indices']) is list
                  and row['frame_indices'] and len(row['frame_indices']) <= 10
-                 and all(type(n) is int and n in frames and manifest['scenes'][i]['start_ms'] <= (round(n * 1000 / 30) if version == 2 else n * 1000 / 30)
+                 and all(type(n) is int and n in frames and manifest['scenes'][i]['start_ms'] <= (round(n * 1000 / 30) if version in (2, 3) else n * 1000 / 30)
                          < manifest['scenes'][i]['end_ms'] for n in row['frame_indices'])
                  and type(row['source_urls']) is list and row['source_urls'] and set(row['source_urls']) <= urls)
         for key in ('visual_observation', 'alignment_observation', 'claim_note'):
@@ -637,10 +653,13 @@ def create_editorial_review(source_task_id, evidence_pack, *, reference_video=No
 def validate_editorial_publication(source, frozen_plan=None):
     """No writes. The publisher MUST additionally hash its actual downloaded files."""
     try:
+        from app.services.editorial_series_display import series_display_watch_keys, validate_series_display_plan
         client = ingest._redis()
         with client.pipeline() as pipe:
-            pipe.watch(*_keys(source), *_series_keys(source, frozen_plan))
+            pipe.watch(*_keys(source), *_series_keys(source, frozen_plan),
+                       *series_display_watch_keys(source, frozen_plan))
             receipt = _validate(pipe, source, frozen_plan)
+            validate_series_display_plan(source, frozen_plan, reader=pipe)
             pipe.multi()
             pipe.execute()  # Empty EXEC still rejects concurrent revocation/job replacement.
             return receipt
