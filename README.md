@@ -2,6 +2,18 @@
 
 Çok kanallı, kuyruk tabanlı YouTube içerik üretim ve yayın altyapısı.
 
+## Tarayıcı oyunu / Browser game
+
+**Çiçek Rotası / Bloom Trail · v0.2.1 · Filiz Oyun**
+
+**Türkçe:** Aynı renkteki komşu çiçekleri birleştir; 24 bölümde altı bahçeyi keşfet. Bölümleri ve görevleri tamamlayarak yaprak kazan, 18 bahçe süslemesini aç. Telefonunda veya bilgisayarında, sekiz dil desteğiyle tarayıcıdan ücretsiz oyna.
+
+**English:** Connect neighboring flowers of the same color across 24 levels and six gardens. Earn petals from levels and garden tasks to unlock 18 decorations. Play free in your browser on mobile or desktop, with eight languages supported.
+
+**[Playgama’da ücretsiz oyna / Play free on Playgama](https://playgama.ai/play/j5nxkurnvy)**
+
+Diller / Languages: Türkçe, English, Español, Português, Français, Deutsch, Italiano, Bahasa Indonesia.
+
 ## Hedef mimari
 
 - FastAPI: kontrol API'si
