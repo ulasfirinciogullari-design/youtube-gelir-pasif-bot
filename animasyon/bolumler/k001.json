@@ -156,18 +156,17 @@
    "yil": 1778,
    "zorunlu": true,
    "files": [
-    "Joseph_Siffrein_Duplessis_-_Benjamin_Franklin_-_Google_Art_Project.jpg",
-    "BenFranklinDuplessis.jpg",
-    "Benjamin_Franklin_by_Joseph_Siffrein_Duplessis.jpg",
-    "Benjamin_Franklin_by_Joseph_Duplessis_1778.jpg"
-   ],
-   "ara": "Duplessis Benjamin Franklin portrait 1778"
+    "Joseph_Siffrein_Duplessis_-_Benjamin_Franklin_-_Google_Art_Project.jpg"
+   ]
   },
   {
    "id": "meclis",
-   "eser": "Pensilvanya Meclis Binası (State House), Philadelphia",
-   "zorunlu": false,
-   "ara": "State House Philadelphia 1778 Peale engraving"
+   "eser": "Charles Willson Peale, Pensilvanya Meclis Binası gravürü",
+   "zorunlu": true,
+   "yil": 1778,
+   "files": [
+    "A_North-west_view_of_the_State_House_in_Philadelphia,_taken_in_1778_(Columbian_Magazine,_July_1787).jpg"
+   ]
   }
  ]
 }

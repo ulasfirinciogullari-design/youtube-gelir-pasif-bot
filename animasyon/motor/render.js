@@ -5,12 +5,21 @@ const { chromium } = require('playwright');
 const { spawn, execFileSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const http = require('http');
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('page error:', e.message); process.exitCode = 1; });
-  await page.goto('file://' + path.join(__dirname, 'motor.html'));
+  // served over local http, not file://, so real paintings drawn on the canvas do not taint it
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.png': 'image/png' };
+  const server = http.createServer((req, res) => {
+    const file = path.join(__dirname, decodeURIComponent(req.url.split('?')[0]));
+    if (!file.startsWith(__dirname) || !fs.existsSync(file)) { res.writeHead(404); return res.end(); }
+    res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream' }); fs.createReadStream(file).pipe(res);
+  });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  await page.goto(`http://127.0.0.1:${server.address().port}/motor.html`);
   await page.evaluate(() => window.ready);
   const args = process.argv.slice(2);
   const timingsArg = args.find(a => a.endsWith('.json'));
@@ -42,4 +51,5 @@ const fs = require('fs');
     console.log('duration', dur.toFixed(2), 'frames', n);
   }
   await browser.close();
+  server.close();
 })();

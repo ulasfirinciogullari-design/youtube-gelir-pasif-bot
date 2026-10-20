@@ -283,20 +283,17 @@ function head(spec, o, t) {
     } });
   if (spec.jowl) stroke(INK, 4, () => { ctx.moveTo(40, 112); ctx.quadraticCurveTo(70, 104, 84, 82); }, .45);
   ctx.restore();
-  if (spec.beard) {
+  if (spec.beard) {  // a long pointed goatee from the mouth corners down past the chin
     shape(() => {
-      ctx.moveTo(-74, 20); ctx.bezierCurveTo(-74, 100, -20, 150, 30, 196); ctx.bezierCurveTo(60, 150, 100, 110, 100, 30);
-      ctx.bezierCurveTo(96, 60, 84, 84, 64, 92); ctx.bezierCurveTo(50, 104, 20, 104, 4, 92); ctx.bezierCurveTo(-20, 84, -50, 60, -74, 20);
-    }, spec.hairColor, { shade: 18, hi: 8,
-      after: () => stroke(shadeOf(spec.hairColor, .5), 3, () => { for (let i = 0; i < 6; i++) { ctx.moveTo(-50 + i * 24, 70 + i * 4); ctx.quadraticCurveTo(-30 + i * 18, 130, 20 + i * 4, 180); } }, .6) });
+      ctx.moveTo(12, 80); ctx.bezierCurveTo(0, 120, 14, 170, 40, 210); ctx.bezierCurveTo(70, 168, 92, 120, 76, 80);
+      ctx.bezierCurveTo(66, 96, 24, 98, 12, 80); ctx.closePath();
+    }, spec.hairColor, { shade: 12, hi: 7,
+      after: () => stroke(shadeOf(spec.hairColor, .5), 3, () => { for (let i = 0; i < 4; i++) { ctx.moveTo(22 + i * 14, 100); ctx.quadraticCurveTo(26 + i * 10, 150, 40, 196 - i * 6); } }, .6) });
   }
   frontHair(spec, t);
   face(spec, e, t, o.talk || 0, o.seed || 0);
-  if (spec.beard) {  // moustache over the mouth, flowing down into the beard
-    shape(() => {
-      ctx.moveTo(30, 60); ctx.bezierCurveTo(44, 44, 76, 46, 92, 62); ctx.bezierCurveTo(100, 76, 98, 96, 90, 110);
-      ctx.bezierCurveTo(86, 90, 76, 74, 62, 70); ctx.bezierCurveTo(50, 72, 40, 80, 26, 96); ctx.bezierCurveTo(20, 80, 22, 68, 30, 60);
-    }, spec.hairColor, { shade: 7, hi: 5, line: 4.5 });
+  if (spec.beard) {  // a thin moustache above the lip, the mouth stays readable
+    shape(() => { ctx.moveTo(30, 58); ctx.bezierCurveTo(46, 48, 74, 48, 90, 60); ctx.bezierCurveTo(74, 58, 50, 58, 30, 58); }, spec.hairColor, { shade: 3, hi: 3, line: 4 });
   }
   if (spec.glowEyes && o.glow > 0) { glow(92, -4, 60, rgba(C.gold, 1), .5 * o.glow); glow(28, -4, 46, rgba(C.gold, 1), .4 * o.glow); }
   if (spec.glasses) {
@@ -450,7 +447,7 @@ function figure(who, x, y, s, t, p = {}) {
   ctx.translate(0, -440 + (p.bob || 0));
   const torso = () => { ctx.rotate(p.lean || 0); ctx.scale(1, 1 + breathe); };
   // the arm behind the body, then the skirt, then the upper body that leans
-  if (!p.hideArms) { ctx.save(); torso(); ctx.translate(-66 * b.chest, -296); arm(spec, p.back || {}, false, t); ctx.restore(); }
+  if (!p.hideArms && !p.hideBack) { ctx.save(); torso(); ctx.translate(-66 * b.chest, -296); arm(spec, p.back || {}, false, t); ctx.restore(); }
   if (!hood) coatSkirt(spec);
   ctx.save(); torso();
   if (hood) {  // the cloak instead of a coat
@@ -466,7 +463,7 @@ function figure(who, x, y, s, t, p = {}) {
   ctx.translate(18, -96); ctx.scale(1.02, 1.02);
   head(spec, p, t);
   ctx.restore();
-  if (!p.hideArms) { ctx.save(); ctx.translate(66 * b.chest, -296); arm(spec, p.front || {}, true, t); ctx.restore(); }
+  if (!p.hideArms && !p.hideFront) { ctx.save(); ctx.translate(66 * b.chest, -296); arm(spec, p.front || {}, true, t); ctx.restore(); }
   ctx.restore();
   ctx.restore();
 }

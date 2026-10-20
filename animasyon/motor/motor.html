@@ -5,14 +5,21 @@
 </head><body>
 <canvas id="c" width="1080" height="1920"></canvas>
 <script src="ortak.js"></script>
-<script src="sahneler.js"></script>
+<script src="karakter.js"></script>
+<script src="mekan.js"></script>
 <script src="bolum.js"></script>
 <script>
 // Zirvenin Kanunu episode engine. bolum.js sets window.EP:
-//   {kanun: 'I', title: {top, hi}, lines: [{text, v: {t: <scene>, key, ...}}]}
+//   {kanun: 'I', title: {top, hi}, lines: [{text, v: {t: <scene>, key, ...}}], tablolar: [{id, ...}]}
+// Scenes are cartoon (karakter.js, mekan.js); real public-domain paintings from tablolar/<id>.jpg appear where a
+// real person or place is named.
 // render.js injects the narrator's word timings with setTimings([{t0, t1, words: [{w, t0, t1}]}]).
 // The last line leads back into the first ("Bu yüzden unutma:" -> the hook), so the video loops.
 const EP = window.EP;
+const IMG = {};
+const imagesReady = Promise.all((EP.tablolar || []).map(tb => new Promise(res => {
+  const im = new Image(); im.onload = im.onerror = () => res(); im.src = `tablolar/${tb.id}.jpg`; IMG[tb.id] = im;
+})));
 function buildTimeline() {
   if (window.TIMINGS) return window.TIMINGS.map((tm, i) => ({ ...EP.lines[i], ...tm }));
   let t = 0.12; const out = [];
@@ -49,164 +56,248 @@ function cam(cx, cy, z, fn, depth = 1) {
 }
 
 // ---------- scenes: f(V, L, t, lt), lt = seconds since the scene started ----------
+// a sub-shot cut: a short gold-white flash where the shot changes inside one line
+function flash(t, at, a = .55) { const k = prog(t, at, at + .16); if (k > 0 && k < 1) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = `rgba(255,230,190,${a * (1 - k)})`; ctx.fillRect(0, 0, W, H); ctx.restore(); } }
+// the real painting full frame, slowly pushed toward `focus`, with an old-print warmth
+function paintingFull(img, t, t0, t1, focus, z0 = 1.05, z1 = 1.18) {
+  ctx.fillStyle = '#120d0a'; ctx.fillRect(0, 0, W, H);
+  if (!img || !img.naturalWidth) return;
+  const k = eio(prog(t, t0, t1)), z = lerp(z0, z1, k);
+  const sc = Math.max(W / img.naturalWidth, 1500 / img.naturalHeight) * z, iw = img.naturalWidth * sc, ih = img.naturalHeight * sc;
+  const ix = clamp(540 - iw * focus[0], W - iw, 0), iy = clamp(900 - ih * focus[1], 1500 - ih, 0);
+  ctx.save(); ctx.filter = 'sepia(.35) contrast(1.05) brightness(.92)'; ctx.drawImage(img, ix, iy + 150, iw, ih); ctx.restore();
+  const g = ctx.createLinearGradient(0, 1300, 0, 1800); g.addColorStop(0, 'rgba(18,13,10,0)'); g.addColorStop(1, 'rgba(18,13,10,1)');
+  ctx.fillStyle = g; ctx.fillRect(0, 1300, W, 620);
+}
+function ustaStage(t) {
+  room(t, '#0e0c11');
+  beam(540, 0, 1500, 220, 900, C.gold, .10, t, 50);
+  embers(t, 30, 120, 960, 1550, 1000);
+}
 const VIS = {
   usta(V, L, t, lt) {
-    // The loop: the last line pushes into Usta's eyes until they go dark, the first frame starts on those eyes
-    // opening and pulls back to reveal the stage.
-    const zin = L.t0 < .5 ? 1 - eio(prog(t, .05, 1.2)) : 0;
-    const zout = V.end ? eio(prog(t, L.t0 + .1, L.t1 + .45)) : 0;
-    const zz = 1 + 1.3 * Math.max(zin, zout);
-    ctx.save(); ctx.translate(540, 880); ctx.scale(zz, zz); ctx.translate(-540, -880);
-    room(t, '#0e0c11');
-    beam(540, 0, 1500, 220, 900, C.gold, .10, t, 50);
-    embers(t, 30, 120, 960, 1550, 1000);
+    // The loop: the last line pushes into Usta's eyes until they go dark, the first frame starts on those eyes and
+    // pulls back to reveal him.
+    setLight(-.6, -.8, { rim: '#ffcf7a', rimA: .8, warm: '#ffd9a0', cool: '#140f1c' });
+    const S = 1.25 * CAST.usta.build.height, hx = 540 + 32 * S + 30 * S, hy = 1900 - 886 * S - 4 * S;
+    const zin = L.t0 < .5 ? 1 - eio(prog(t, .05, 1.1)) : 0;
+    const zout = V.end ? eio(prog(t, L.t0 + .05, L.t1 + .45)) : 0;
+    const zz = 1 + 2.2 * Math.max(zin, zout);
+    ctx.save(); ctx.translate(hx, hy); ctx.scale(zz, zz); ctx.translate(-hx, -hy);
+    ustaStage(t);
+    const no = V.no ? wordTime(L, V.no, .5) : 99, yes = V.yes ? wordTime(L, V.yes, .85) : 99;
+    const wag = prog(t, no - .2, no + .15) * (1 - prog(t, yes - .3, yes));
+    const offer = prog(t, yes - .25, yes + .1);
     const end = V.end ? prog(t, L.t1 + .05, L.t1 + .4) : 0;
-    const open = L.t0 < .5 ? .45 + .55 * eo(prog(t, 0, .3)) : 1;
-    const bt = wordTime(L, V.key, .6), warm = eo(prog(t, bt, bt + .6));
-    if (V.ghost) {  // the person who dislikes you, behind the narrator: arms crossed, red; he warms up at the favour
-      const gt = wordTime(L, V.ghost, .2), gk = eo(prog(t, gt - .1, gt + .45));
-      if (gk > 0) {
-        glow(980, 760, 560, rgba(C.red, 1), .28 * gk * (1 - warm));
-        ctx.save(); ctx.globalAlpha = gk;
-        person('rakip', lerp(980, 870, gk), 880, .8, -1, mixColor(C.red, C.gold, warm), t,
-          { arm: 'cross', armK: 1 - warm, mood: warm > .5 ? 'calm' : 'angry', lean: lerp(-.03, .05, warm), nod: lerp(-.1, .04, warm) });
+    figure('usta', 540, 1900, 1.25, t, {
+      legs: 'hide', expr: V.end ? 'knowing' : (offer > .5 ? 'sly' : (wag > .5 ? 'displeased' : 'knowing')), talk: talk(t, L),
+      glow: 1 - end, nod: Math.sin(t * 1.1) * .02 - .03 * offer,
+      front: { sh: lerp(lerp(.06, 2.5, eo(wag)), 1.1, eo(offer)) + Math.sin(t * 14) * .12 * wag, el: lerp(lerp(.3, .5, wag), -.1, offer), hand: offer > .3 ? 'palm' : (wag > .3 ? 'point' : 'open') },
+      hideBack: true, hideFront: wag + offer < .05
+    });
+    floor(1500, C.gold, .25, 1000);
+    fog(t, 1420, .05);
+    ctx.restore();
+    if (V.no) {
+      const k = back(prog(t, no - .05, no + .3));
+      if (k > 0) {
+        ctx.save(); ctx.translate(300, 1060); ctx.rotate(-.06);
+        giftBox(0, 40, 120 * k, t);
+        plate('İyilik yapma', 0, 130, 54, k, C.red);
+        cross(0, -10, 210, prog(t, no + .25, no + .6));
         ctx.restore();
       }
     }
-    ctx.save(); ctx.translate(540, 1900); ctx.rotate(Math.sin(t * .6) * .012); ctx.translate(-540, -1900);
-    usta(540, 930, 1.32, t, { talk: talk(t, L), eyes: open * (1 - end) });
-    ctx.restore();
-    floor(1500, C.gold, .25, 1000);
-    fog(t, 1420, .05);
-    if (V.prop === 'book') {
-      const k = eo(prog(t, bt - .1, bt + .5));
+    if (V.yes) {
+      const k = back(prog(t, yes - .1, yes + .25));
       if (k > 0) {
-        const by = lerp(1330, 1215, k) + Math.sin(t * 2) * 6, bw = 210 * lerp(.6, 1, k);
-        beam(540, 1000, 1500, 60, 420, C.gold2, .12 * k, t, 12);
-        book(540, by, bw, t, { alpha: k, rot: Math.sin(t * 1.3) * .04 });
-        ustaHands(540, by, bw, C.gold, k);
+        ctx.save(); ctx.translate(780, 1300); ctx.rotate(.04);
+        glow(0, 0, 260, 'rgba(232,181,74,1)', .3 * k);
+        plate('İyilik iste', 0, 0, 62, k, C.gold);
+        ctx.restore();
       }
     }
-    ctx.restore();
+    if (zz > 1.8) { ctx.fillStyle = `rgba(0,0,0,${clamp((zz - 1.8) / 1.4) * (V.end ? 1 : .9)})`; ctx.fillRect(0, 0, W, H); }
   },
   meclis(V, L, t, lt) {
-    const kt = wordTime(L, V.key, .5);
-    const fk = eo(prog(lt, 0, .7)), rk = eo(prog(t, kt - .3, kt + .3)), pk = eo(prog(t, kt, kt + .45));
-    // the camera starts on Franklin and swings to the man who attacks him
-    const cx = lerp(470, 610, eio(prog(t, kt - .6, kt + .5))), z = 1.1 + .05 * eio(prog(t, kt - .6, kt + .5));
-    cam(cx, 920, z, () => hall(t), .5);
-    cam(cx, 920, z, () => {
-      person('franklin', lerp(240, 300, fk), 930, 1.0, 1, C.gold, t, { mood: 'calm', lean: -.03 * pk, nod: -.06 * pk });
-      const shout = t > kt && t < L.t1 ? .4 + .6 * Math.abs(Math.sin(t * 13)) : 0;
-      person('rakip', lerp(860, 780, rk), 930, 1.0, -1, mixColor(C.goldDim, C.red, rk), t,
-        { arm: 'point', armK: pk, mood: rk > .3 ? 'angry' : 'calm', lean: .06 * pk, talk: shout, nod: .07 * pk + .05 * shout * Math.sin(t * 13) });
-      fog(t, 1330, .045);
+    const tB = wordTime(L, 'zengin', .22), tC = wordTime(L, V.who || 'Benjamin', .45), tD = wordTime(L, V.key || 'karşı', .7);
+    const shout = { expr: 'shout', talk: talk(t, L) };
+    if (t < tB) {  // the real building, a 1778 engraving
+      paintingFull(IMG.meclis, t, L.t0 - .1, tB + .2, [.72, .42]);
+      plate('Pensilvanya Meclisi', 540, 1240, 50, back(prog(t, L.t0 + .1, L.t0 + .45)));
+      return;
+    }
+    if (t >= tC && t < tD) {  // the real Franklin
+      setLight(-.8, -.6, { rim: '#9fc2ff', rimA: .6 });
+      ctx.save(); ctx.filter = 'blur(10px) brightness(.45)'; assemblyRoom(t, .1); ctx.restore();
+      const k = prog(t, tC - .05, tC + .35), z = lerp(1.0, 1.08, prog(t, tC, tD));
+      gildedFrame(IMG.franklin, 540, 860, 520 * z, 650 * z, [.48, .3], 1.25, back(k));
+      plate('Benjamin Franklin', 540, 1300, 52, back(prog(t, tC + .1, tC + .45)), C.gold);
+      flash(t, tC);
+      return;
+    }
+    // the cartoon assembly at night: the rival on his feet, pointing; Franklin seated across
+    setLight(-.7, -.7, { rim: '#9fc2ff', rimA: .75, warm: '#ffd9a0', cool: '#1c1d3a' });
+    const two = t >= tD, pan = two ? eio(prog(t, tD, tD + .9)) : 0;
+    const cx = two ? lerp(700, 560, pan) : lerp(760, 720, prog(t, tB, tC)), z = two ? lerp(1.35, 1.12, pan) : lerp(1.45, 1.38, prog(t, tB, tC));
+    cam(cx, 980, z, () => {
+      assemblyRoom(t, .1);
+      chandelier(560, 330, t, .9, .9);
+      backMembers(t);
+      // Franklin across the room, seated behind his table
+      figure('franklin', 290, 1500, .66, t, { expr: two ? (prog(t, tD, tD + .6) > .5 ? 'displeased' : 'surprised') : 'neutral', legs: 'hide',
+        front: { sh: .5, el: 1.3, hand: 'open' }, back: { sh: .4, el: 1.2 }, nod: two ? -.04 : 0, seed: 2 });
+      baizeTable(300, 1170, 330, t, { candle: -.6, h: 330 });
+      // the rival behind his own table, on his feet
+      const jab = Math.max(0, Math.sin(t * 7)) * .08;
+      figure('rakip', 800, 1530, .74, t, { dir: -1, ...shout, lean: .05 + jab * .3, nod: -.04 + jab * .4,
+        front: { sh: 1.45 + jab, el: .05, hand: 'point' }, back: { sh: -.15, el: .7, hand: 'fist' }, seed: 1 });
+      baizeTable(800, 1250, 360, t, { candle: .7, h: 300 });
+      
     });
-    cam(cx, 920, z, () => crowd(t, 1640, C.candle), 1.4);  // the members in front move more than the stage
-    if (V.year) {
-      const k = eo(prog(lt, .1, .6));
-      ctx.save(); ctx.globalAlpha = k;
-      text(up(V.year), 540, 560, 92, C.gold, SERIF, 900, 'center', 10, C.ink, 6);
+    plate(V.year, 540, 520, 42, back(prog(t, tB + .05, tB + .4)) * (1 - prog(t, tC - .2, tC)));
+    if (two) plate('Franklin\'e karşı', 540, 520, 52, back(prog(t, tD + .1, tD + .45)), C.red);
+    flash(t, tB); flash(t, tD);
+  },
+  yaranma(V, L, t, lt) {
+    // what most people would do, shown as an old faded memory: bowing, a gift held out, and a cold shoulder
+    setLight(-.7, -.7, { rim: '#ffd9a0', rimA: .4 });
+    const k = eo(prog(lt, 0, .8)), kt = wordTime(L, V.key, .5);
+    ctx.save(); ctx.filter = 'sepia(.75) saturate(.8) brightness(.9)';
+    cam(560, 980, lerp(1.25, 1.32, prog(lt, 0, 3)), () => {
+      assemblyRoom(t, .2);
+      chandelier(560, 330, t, .9, .7);
+      backMembers(t);
+      figure('uye', 270, 1520, .72, t, { expr: 'warm', lean: .1 + .3 * k, nod: .12 * k, talk: talk(t, L) * .5,
+        front: { sh: .55 + .15 * k, el: .9, hand: 'hold', prop: () => giftBox(0, 60, 130, t) }, back: { sh: .6 * k, el: 1.0 }, seed: 3 });
+      figure('rakip', 810, 1520, .74, t, { dir: -1, expr: 'haughty', headTilt: -.12 - .06 * prog(t, kt, kt + .4), nod: 0,
+        front: { sh: 1.2 * prog(t, kt - .2, kt + .3), el: .3, hand: 'palm' }, back: { sh: -.1, el: .4 }, seed: 1 });
+    });
+    ctx.restore();
+    // a faded film frame around the memory
+    ctx.save(); ctx.strokeStyle = 'rgba(232,210,170,.5)'; ctx.lineWidth = 6; rr(60, 430, 960, 1000, 26); ctx.stroke(); ctx.restore();
+    plate(V.label, 540, 520, 52, back(prog(lt, .1, .45)));
+    cross(540, 1000, 520, prog(t, L.t1 - .25, L.t1 + .2));
+  },
+  mektup(V, L, t, lt) {
+    // Franklin's study at night: he writes to the rival, the book glows in his thoughts, then the note itself
+    setLight(.8, -.5, { rim: '#9fc2ff', rimA: .6, warm: '#ffd09a', cool: '#1a1630' });
+    const tk = wordTime(L, V.key, .2), tb = wordTime(L, V.book, .45), ta = wordTime(L, V.ask, .75);
+    const note = prog(t, ta - .15, ta + .35);
+    cam(540, 960, lerp(1.18, 1.26, prog(lt, 0, 5)), () => {
+      ctx.fillStyle = vlin(0, 0, 0, 1300, '#2a1e1a', '#3a2a22'); ctx.fillRect(0, 0, W, 1300);
+      bookshelf(-40, 280, 380, 980, t, 4);
+      window2(700, 380, 300, 420, t);
+      fillRect(0, 1240, W, 700, '#1a110c');
+      figure('franklin', 470, 1640, .82, t, { expr: t > tb ? 'sly' : 'neutral', legs: 'hide', nod: .1 - .1 * prog(t, tb - .3, tb), headTilt: Math.sin(t * 3) * .01,
+        front: { sh: .95 + Math.sin(t * 9) * .04 * (1 - note), el: 1.35, hand: 'hold', prop: () => quill(0, 60, -.4, .5) }, back: { sh: .6, el: 1.4 }, seed: 2 });
+      desk(540, 1240, 900, t);
+      ctx.save(); ctx.translate(560, 1224); ctx.scale(1, .3); letterSheet(0, 0, 240, .05, prog(t, tk, ta), ['Sayın Bay,', 'kitabınız'], t); ctx.restore();
+      candleProp(860, 1225, t, 1.1);
+    });
+    plate('Tam tersi', 540, 520, 54, back(prog(t, tk, tk + .35)) * (1 - prog(t, tb - .2, tb)));
+    const tbk = back(prog(t, tb - .1, tb + .35)) * (1 - note);
+    if (tbk > 0) {
+      thought(760, 660, 380, 300, 620, 860, tbk);
+      rareBook(760, 650, 120 * clamp(tbk), t, { rot: -.08 });
+      plate('Nadir kitap', 760, 870, 40, tbk, C.gold);
+    }
+    if (note > 0) {  // the note slides up, filling itself in
+      ctx.save(); ctx.fillStyle = `rgba(0,0,0,${.5 * note})`; ctx.fillRect(0, 0, W, H); ctx.restore();
+      letterSheet(540, lerp(1700, 960, eo(note)), 560, -.04, prog(t, ta, L.t1 + .1), ['Sayın Bay,', '', 'Nadir kitabınızı', 'birkaç günlüğüne', 'ödünç alabilir miyim?', '', '— B. Franklin'], t);
+    }
+  },
+  gonder(V, L, t, lt) {
+    // the rival's library: the note in his hand, a surprised look, and the book sent at once
+    setLight(.8, -.4, { rim: '#ff9a50', rimA: .7, warm: '#ffc080', cool: '#1c1424' });
+    const kt = wordTime(L, V.key, .4), send = eo(prog(t, kt - .1, kt + .3));
+    cam(560, 960, lerp(1.25, 1.2, prog(lt, 0, 2)), () => {
+      ctx.fillStyle = '#20140f'; ctx.fillRect(0, 0, W, H);
+      bookshelf(-20, 200, 520, 1080, t, 11); bookshelf(560, 200, 540, 1080, t, 23);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(1000, 1200, 700, 'rgba(255,120,40,1)', .22 + .04 * Math.sin(t * 9)); ctx.restore();
+      fillRect(0, 1280, W, 700, '#1a100c');
+      figure('rakip', 560, 1660, .9, t, { dir: -1, expr: send > .5 ? 'calm' : 'surprised', legs: 'hide', nod: -.05 * (1 - send),
+        front: { sh: lerp(.9, 1.5, send), el: lerp(1.2, .1, send), hand: 'hold',
+          prop: () => send < .6 ? letterSheet(0, 80, 110, .2, 1, ['...'], t) : null },
+        back: { sh: .1, el: .3 }, seed: 1 });
+    });
+    if (send > .4) {  // the book flies off toward Franklin
+      const f = prog(t, kt + .1, kt + .7);
+      ctx.save(); ctx.globalAlpha = .35; for (let i = 1; i < 5; i++) rareBook(lerp(380, -200, eo(clamp(f - i * .05))), lerp(820, 640, clamp(f - i * .05)), 150, t, { rot: -.3, shine: 0 }); ctx.restore();
+      rareBook(lerp(380, -200, eo(f)), lerp(820, 640, f), 150, t, { rot: -.3 + f * .4 });
+    }
+    plate('Hemen', 540, 520, 64, back(prog(t, kt, kt + .35)), C.gold);
+  },
+  celiski(V, L, t, lt) {
+    // close on the rival: two thoughts that cannot both be true collide over his head
+    setLight(.7, -.6, { rim: '#ff5a4f', rimA: .7, warm: '#ffd9a0', cool: '#18142e' });
+    const tk = wordTime(L, V.key, .3), tn = wordTime(L, V.no, .55), ty = wordTime(L, V.yes, .8);
+    const shake = prog(t, ty, ty + .2) > 0 ? Math.sin(t * 60) * 6 * (1 - prog(t, ty + .1, ty + .6)) : 0;
+    ctx.save(); ctx.translate(shake, 0);
+    ctx.fillStyle = '#100c16'; ctx.fillRect(0, 0, W, H);
+    glow(160, 760, 760, 'rgba(210,35,47,1)', .35); glow(940, 900, 760, 'rgba(70,110,255,1)', .3);
+    cam(560, 1000, lerp(1.0, 1.08, prog(lt, 0, 5)), () => {
+      figure('rakip', 610, 2450, 1.6, t, { dir: -1, expr: 'confused', legs: 'hide', headTilt: -.06 + Math.sin(t * 1.4) * .03,
+        front: { sh: .5, el: 2.45, hand: 'fist' }, back: { sh: .1, el: .3 }, seed: 1 });
+    });
+    plate('Çelişki', 540, 520, 56, back(prog(t, tk, tk + .35)) * (1 - prog(t, tn - .1, tn + .1)));
+    const kn = back(prog(t, tn - .05, tn + .3)), ky = back(prog(t, ty - .05, ty + .3));
+    if (kn > 0) { ctx.save(); ctx.translate(380, 590); ctx.rotate(-.06); plate('Onu sevmiyorum', 0, 0, 50, kn, C.red); ctx.restore(); }
+    if (ky > 0) { ctx.save(); ctx.translate(690, 750); ctx.rotate(.05); plate('Ama yardım ettim', 0, 0, 50, ky, C.gold); ctx.restore(); }
+    if (ky > .5) {  // a crackle between the two
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = '#ffe2a0'; ctx.lineWidth = 5; ctx.shadowColor = '#ffb04a'; ctx.shadowBlur = 20;
+      ctx.beginPath(); for (let i = 0; i <= 8; i++) { const px = lerp(470, 600, i / 8), py = lerp(640, 700, i / 8) + (i % 2 ? -1 : 1) * (10 + 14 * rnd(i + Math.floor(t * 20))); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.stroke(); ctx.restore();
+      text('?', 860 + Math.sin(t * 3) * 10, 930, 140, C.ivory, SERIF, 900, 'center', 10);
+    }
+    ctx.restore();
+  },
+  cozum(V, L, t, lt) {
+    // the red thought cracks and falls, the gold one becomes "I must like him", and his face softens
+    setLight(.7, -.6, { rim: '#ffcf7a', rimA: .7, warm: '#ffd9a0', cool: '#20182a' });
+    const tk = wordTime(L, V.key, .8), warm = eo(prog(lt, .2, 1.4)), love = prog(t, tk - .1, tk + .4);
+    ctx.fillStyle = mixColor('#100c16', '#2a1a10', warm); ctx.fillRect(0, 0, W, H);
+    glow(160, 760, 760, 'rgba(210,35,47,1)', .35 * (1 - warm)); glow(540, 820, 900, 'rgba(232,181,74,1)', .32 * warm);
+    cam(560, 1000, lerp(1.08, 1.14, prog(lt, 0, 4)), () => {
+      figure('rakip', 610, 2450, 1.6, t, { dir: -1, expr: love > .5 ? 'happy' : exprMix('confused', 'warm', warm), legs: 'hide', headTilt: lerp(-.06, .04, warm),
+        front: { sh: lerp(.5, .06, warm), el: lerp(2.45, .3, warm), hand: warm > .5 ? 'open' : 'fist' }, back: { sh: .1, el: .3 }, seed: 1 });
+    });
+    // the red plate cracks and drops away
+    const fall = prog(lt, .15, 1.0);
+    if (fall < 1) {
+      ctx.save(); ctx.translate(380 - fall * 80, 590 + fall * fall * 900); ctx.rotate(-.06 - fall * .9); ctx.globalAlpha = 1 - fall;
+      plate('Onu sevmiyorum', 0, 0, 50, 1, C.red);
+      ctx.strokeStyle = '#f3ead8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-40, -34); ctx.lineTo(-10, -4); ctx.lineTo(-30, 10); ctx.lineTo(6, 36); ctx.stroke();
       ctx.restore();
     }
-    plate(V.label, 330, 1345, 40, back(prog(lt, .25, .7)));
-  },
-  yasak(V, L, t, lt) {
-    room(t, '#0e0c11');
-    beam(540, 0, 1500, 260, 1000, C.gold, .06, t, 30);
-    const items = (V.items || []).slice(0, 2), xs = [290, 790];
-    const hits = items.map((it, i) => wordTime(L, it.key, .3 + .4 * i));
-    // Franklin below the two cards, raising a hand at each one: not this, not this either
-    let no = 0;
-    hits.forEach(h => { const p = prog(t, h - .15, h + .75); if (p > 0 && p < 1) no = Math.max(no, Math.sin(p * Math.PI)); });
-    const fin = eo(prog(lt, 0, .5));
-    ctx.save(); ctx.globalAlpha = fin;
-    person('franklin', lerp(380, 430, fin), 1250, .95, 1, C.gold, t, { arm: 'stop', armK: no, mood: 'calm', lean: -.02 * no, nod: no * .07 * Math.sin(t * 16) });
+    const gy = lerp(750, 600, eo(prog(lt, .3, 1.0))), gx = lerp(690, 540, eo(prog(lt, .3, 1.0)));
+    ctx.save(); ctx.translate(gx, gy); ctx.rotate(lerp(.06, 0, warm));
+    plate(love > .3 ? 'Demek ki onu seviyorum' : 'Ama yardım ettim', 0, 0, love > .3 ? 52 : 50, love > .3 ? back(prog(t, tk - .1, tk + .3)) : 1, C.gold);
     ctx.restore();
-    fog(t, 1420, .05);
-    items.forEach((it, i) => {
-      const k = back(prog(lt, i * .2, i * .2 + .45)), x = xs[i], y = 780;
-      if (k <= .01) return;
-      const st = hits[i], hit = prog(t, st, st + .35);
-      const shake = hit > 0 && hit < 1 ? Math.sin(t * 70) * 10 * (1 - hit) : 0;
-      ctx.save(); ctx.translate(x + shake, y); ctx.scale(k * .88, k * .88);
-      ctx.fillStyle = 'rgba(14,12,16,.92)'; ctx.shadowColor = 'rgba(0,0,0,.8)'; ctx.shadowBlur = 40; rr(-205, -250, 410, 500, 18); ctx.fill();
-      ctx.shadowColor = 'transparent'; ctx.strokeStyle = rgba(C.gold, .55 * (1 - hit * .6)); ctx.lineWidth = 3; rr(-205, -250, 410, 500, 18); ctx.stroke();
-      icon(it.i, 0, -30, 1.25, hit > 0 ? mixColor(C.gold, '#6d5a3a', hit) : C.gold);
-      text(up(it.label), 0, 185, 44, hit > 0 ? C.bone : C.ivory, SANS, 900, 'center', 0, C.ink, 4);
-      cross(0, -20, 330, prog(t, st, st + .3));
-      ctx.restore();
-    });
-  },
-  kitaplik(V, L, t, lt) {
-    const lit = wordTime(L, V.key, .35), fly = wordTime(L, V.fly, .6), note = wordTime(L, V.note, .8);
-    const sk = eo(prog(t, fly, fly + .6));
-    // a slow push towards the shelf, then the camera settles on the book as it comes forward
-    const z = 1.04 + .1 * eio(prog(lt, 0, 1.4)) - .06 * sk, cy = lerp(820, 900, sk);
-    cam(540, cy, z, () => {
-      room(t, '#0c0a09');
-      shelves(t, [1, 7], sk * (t > lit ? 1 : 0) + (t > lit ? .001 : 0));
-      candle(140, 1200, t, 1);
-      if (t > lit && shelves.slot) {
-        const [sx, sy] = shelves.slot;
-        const x = lerp(sx, 560, sk), y = lerp(sy, 900, sk);
-        if (sk > 0) book(x, y, lerp(46, 300, sk), t, { alpha: 1, rot: lerp(0, -.05, sk), shine: sk });
-        else glow(sx, sy, 140, rgba(C.gold, 1), .6 * prog(t, lit, lit + .3));
-      }
-      const nk = eo(prog(t, note, note + .5));
-      if (nk > 0) letter(lerp(-200, 330, nk), lerp(1300, 1210, nk), 260, lerp(-.5, -.12, nk));
-      fog(t, 1400, .04, '#a08060');
-    });
-    plate(V.label, 600, 1340, 40, back(prog(t, note + .2, note + .6)));
+    sparks(540, 620, t, 26, 260, prog(t, tk, tk + 1));
+    plate(V.label, 540, 1330, 50, back(prog(t, tk + .1, tk + .5)), C.gold);
   },
   dost(V, L, t, lt) {
-    const give = wordTime(L, V.give, .3), kt = wordTime(L, V.key, .7);
-    const bk = prog(t, give, give + .8), c = eo(prog(t, kt - .5, kt + .2));
-    const fx = lerp(260, 330, c), rx = lerp(820, 750, c);
-    const rim = mixColor(C.red, C.gold, eo(prog(t, give + .3, kt + .1)));
-    // wide while the book changes hands, then a push in on the handshake
-    const push = eio(prog(t, kt - .3, kt + .6)), z = lerp(1.04, 1.3, push), cy = lerp(920, 1040, push);
-    cam(540, cy, z, () => hall(t), .5);
-    cam(540, cy, z, () => {
-      const gk = eo(prog(t, give - .4, give)), happy = c > .9 && t > kt;
-      const bow = eo(prog(t, kt, kt + .5)) * (1 - .5 * eo(prog(t, kt + .6, kt + 1.2)));
-      person('franklin', fx, 930, 1.0, 1, C.gold, t, { arm: 'shake', armK: c, mood: happy ? 'happy' : 'calm', nod: .14 * bow });
-      person('rakip', rx, 930, 1.0, -1, rim, t, { arm: 'give', armK: Math.max(gk * (1 - bk * .4), c), arm2: 'shake', armMix: c,
-        mood: happy ? 'happy' : bk > .3 ? 'calm' : 'angry', lean: .04 * gk * (1 - c), nod: .06 * gk * (1 - c) + .14 * bow });
-      fog(t, 1330, .045);
-      if (bk > 0 && bk < 1) {  // the book travels from his hands to Franklin's
-        const x = lerp(rx - 120, fx + 120, eio(bk)), y = 1060 - Math.sin(bk * Math.PI) * 140;
-        book(x, y, 90, t, { rot: bk * 6.28 * .5, shine: .7 });
-      }
-      if (c > .95) {
-        const p = prog(t, kt + .15, kt + 1.1);
-        if (p > 0 && p < 1) {
-          ctx.save(); ctx.globalCompositeOperation = 'lighter';
-          for (let i = 0; i < 26; i++) {
-            const a = rnd(i) * 6.28, d = eo(p) * (80 + rnd(i + 2) * 260);
-            ctx.globalAlpha = 1 - p; circle(540 + Math.cos(a) * d, 1210 + Math.sin(a) * d * .7, 3 + rnd(i + 4) * 4, C.gold2);
-          }
-          ctx.restore();
-        }
-        glow(540, 1220, 260, rgba(C.gold, 1), .5 * eo(prog(t, kt, kt + .4)));
-      }
+    // the next sitting: the rival crosses the room, speaks to Franklin first, and they shake hands
+    setLight(-.6, -.7, { rim: '#ffcf7a', rimA: .7, warm: '#ffd9a0', cool: '#2a1e2a' });
+    const tw = wordTime(L, V.walk, .1), tt = wordTime(L, V.talk, .5), tk = wordTime(L, V.key, .75);
+    const walk = eio(prog(t, L.t0, tt - .2)), shake = eo(prog(t, tk - .35, tk + .1));
+    const z = lerp(1.18, 1.42, eio(prog(t, tk - .3, tk + .6)));
+    cam(lerp(560, 565, shake), lerp(980, 1040, shake), z, () => {
+      assemblyRoom(t, 1);
+      chandelier(560, 330, t, .9, 1.2);
+      backMembers(t, 1);
+      baizeTable(140, 1180, 300, t, { candle: .5, h: 320, papers: true });
+      const fx = 345, rx = lerp(1080, 785, walk), jig = shake > .9 ? Math.sin(t * 18) * .08 * (1 - prog(t, tk + .2, tk + .9)) : 0;
+      figure('franklin', fx, 1450, .74, t, { expr: shake > .5 ? 'happy' : (t > tt ? 'surprised' : 'neutral'), nod: .08 * shake,
+        front: { sh: lerp(.06, .15, shake), el: lerp(.3, 1.35, shake) + jig, hand: shake > .3 ? 'hold' : 'open' }, back: { sh: .05, el: .3 }, seed: 2 });
+      figure('rakip', rx, 1450, .74, t, { dir: -1, expr: shake > .5 ? 'happy' : 'warm', talk: t > tt - .3 && t < tk ? talk(t, L) : 0,
+        legs: walk < 1 ? 'walk' : 'stand', phase: walk * 14, bob: walk < 1 ? -Math.abs(Math.sin(walk * 14)) * 10 : 0, nod: .1 * shake,
+        front: { sh: lerp(.06, .15, shake), el: lerp(.3, 1.35, shake) + jig, hand: shake > .3 ? 'hold' : 'open' }, back: { sh: .05, el: .3 }, seed: 1 });
+      sparks(565, 1040, t, 30, 220, prog(t, tk, tk + 1));
     });
-    plate(V.label, 540, 1345, 44, back(prog(t, kt + .1, kt + .5)));
-  },
-  beyin(V, L, t, lt) {
-    room(t, '#0d0b10');
-    beam(540, 0, 1400, 200, 800, C.gold, .07, t, 30);
-    cam(540, 860, 1 + .08 * eio(prog(lt, 0, 3)), () => {
-      ctx.save(); ctx.translate(540, 860); ctx.rotate(Math.sin(t * .5) * .02); ctx.translate(-540, -860);
-      brain(540, 860, 1.25, t, eo(prog(lt, 0, .5)));
-      ctx.restore();
-    });
-    plate(V.label, 540, 520, 42, back(prog(lt, .15, .6)));
-    (V.steps || []).forEach((s, i) => {
-      const at = wordTime(L, s.key, .3 + .4 * i), k = back(prog(t, at, at + .4)), y = 1235 + i * 118;
-      if (i) { ctx.save(); ctx.globalAlpha = clamp(k); text('▼', 540, y - 64, 30, C.gold, SANS, 900); ctx.restore(); }
-      plate(s.text, 540, y, 38, k, i ? C.gold2 : C.bone);
-    });
+    plate(V.label, 540, 520, 56, back(prog(t, tk + .05, tk + .45)), C.gold);
+    plate('İlk kez', 540, 520, 52, back(prog(t, tt - .3, tt)) * (1 - prog(t, tk - .1, tk + .05)));
   }
 };
 
@@ -301,5 +392,5 @@ window.cover = function (li) {
   window.COVER = true; draw(Math.min(L.t1 - .05, wordTime(L, (L.v || {}).key, .4) + 1.0)); window.COVER = false;
 };
 window.ready = document.fonts.load(`900 40px ${SERIF}`).then(() => document.fonts.load(`900 40px ${SANS}`))
-  .then(() => document.fonts.load(`700 40px ${SERIF}`)).then(() => { draw(0); return true; });
+  .then(() => document.fonts.load(`700 40px ${SERIF}`)).then(() => imagesReady).then(() => { draw(0); return true; });
 </script></body></html>

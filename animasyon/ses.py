@@ -144,28 +144,30 @@ def cues(ep, timings):
         if i and v != prev:
             out.append((tm["t0"] - 0.16, "whoosh", 0.28))
         kind = v.get("t")
-        if kind == "usta" and v.get("prop"):
-            if v.get("ghost"):
-                out.append((word_time(tm, v.get("ghost"), .2) - 0.1, "whoosh", 0.22))
-            out.append((word_time(tm, v.get("key"), .6), "shimmer", 0.4))
+        if kind == "usta" and v.get("no"):
+            out.append((word_time(tm, v["no"], .5) + 0.25, "stamp", 0.5))
+            out.append((word_time(tm, v.get("yes"), .85), "shimmer", 0.4))
         elif kind == "usta" and v.get("end"):
             out.append((tm["t0"], "impact", 0.35))
-        elif kind == "meclis":
-            out.append((word_time(tm, v.get("key"), .5), "impact", 0.3))
-        elif kind == "yasak":
-            for k, it in enumerate(v.get("items") or []):
-                out.append((word_time(tm, it.get("key"), .3 + .4 * k), "stamp", 0.55))
-        elif kind == "kitaplik":
-            out.append((word_time(tm, v.get("key"), .35), "shimmer", 0.35))
-            out.append((word_time(tm, v.get("note"), .8), "paper", 0.45))
+        elif kind == "meclis":  # engraving -> the rival -> the real portrait -> both of them
+            for k, share in (("zengin", .22), (v.get("who") or "Benjamin", .45), (v.get("key") or "karşı", .7)):
+                out.append((word_time(tm, k, share) - 0.08, "whoosh", 0.2))
+            out.append((word_time(tm, v.get("who") or "Benjamin", .45), "impact", 0.3))
+        elif kind == "yaranma":
+            out.append((tm["t1"] - 0.1, "stamp", 0.5))
+        elif kind == "mektup":
+            out.append((word_time(tm, v.get("book"), .45), "shimmer", 0.35))
+            out.append((word_time(tm, v.get("ask"), .75) - 0.1, "paper", 0.45))
+        elif kind == "gonder":
+            out.append((word_time(tm, v.get("key"), .4) + 0.1, "whoosh", 0.3))
+        elif kind == "celiski":
+            out.append((word_time(tm, v.get("no"), .55), "pop", 0.3))
+            out.append((word_time(tm, v.get("yes"), .8), "impact", 0.35))
+        elif kind == "cozum":
+            out.append((word_time(tm, v.get("key"), .8), "shimmer", 0.45))
         elif kind == "dost":
-            out.append((word_time(tm, v.get("give"), .3), "whoosh", 0.22))
-            out.append((word_time(tm, v.get("key"), .7), "shimmer", 0.45))
-            out.append((word_time(tm, v.get("key"), .7) - 0.3, "impact", 0.22))  # the push in on the handshake
-        elif kind == "beyin":
-            out.append((tm["t0"] - 2.6, "riser", 0.25))
-            for k, s in enumerate(v.get("steps") or []):
-                out.append((word_time(tm, s.get("key"), .3 + .4 * k), "pop", 0.3))
+            out.append((word_time(tm, v.get("key"), .75) - 0.3, "impact", 0.22))
+            out.append((word_time(tm, v.get("key"), .75), "shimmer", 0.45))
         prev = v
     return out
 

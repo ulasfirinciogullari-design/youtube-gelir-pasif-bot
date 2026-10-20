@@ -1,2 +1,2 @@
-k001 tablo
-# tablolar 2026-10-19T23:49:50Z
+k001 deneme
+# çizgi film sürümü 2026-10-20T00:02:15Z
