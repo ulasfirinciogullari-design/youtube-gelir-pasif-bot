@@ -34,6 +34,9 @@ SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "10,14,18").split(",")
 IG_HOURS = [int(h) for h in (os.environ.get("YO_IG_SAATLER") or "9,13,17").split(",") if h.strip()]
 GAP_MIN = 35
 MIN_CREDITS = 12000
+# The hook opening (motor.html HOOK). Studio, 2026-10-20: only 48% of feed viewers stayed past the first seconds.
+# Off until Ulaş has seen the sample (calistir.sh ornek); YO_ACILIS=1/0 overrides.
+ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
 
 
 def now():
@@ -72,7 +75,7 @@ def ig_pick(state):
 
 def gate(state, mod):
     """-> (go, reason). Hourly ticks come twice an hour (GitHub drops some), a slot holds one episode."""
-    if mod in ("zorla", "deneme", "igbolum"):
+    if mod in ("zorla", "deneme", "igbolum", "ornek"):
         return True, mod
     if os.environ.get("YO_DURDUR"):
         return False, "YO_DURDUR değişkeni açık, üretim durduruldu"
@@ -220,11 +223,13 @@ def node(*args):
     return r.stdout
 
 
-def render(ep, timings_path, mix, out_video, out_cover, layout=None):
-    """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY)."""
+def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None):
+    """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY).
+    hook: open on the cover line's moment with the question in big letters (motor.html HOOK); default ACILIS."""
     motor = HERE / "motor"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
-        {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout},
+        {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout, "cover": ep.get("cover", 1),
+         "hook": ACILIS if hook is None else hook},
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
@@ -240,6 +245,26 @@ def to_instagram(ep, timings_path, mix, state):
     video, cover = WORK / "ig_video.mp4", WORK / "ig_kapak.jpg"
     render(ep, timings_path, mix, video, cover, layout="ig")
     return instagram.paylas(ep, video, cover, state)
+
+
+def ornek(ep_id, report):
+    """A finished episode voiced again and drawn with the hook opening into fabrika/deneme/ornek-<id>.mp4, so a
+    change to the look can be seen before it goes live. Nothing is uploaded."""
+    import ses
+    p = HERE / "bolumler" / f"{ep_id}.json"
+    if not p.exists():
+        raise SystemExit(f"bölüm bulunamadı: {ep_id}")
+    ep = json.loads(p.read_text(encoding="utf-8"))
+    WORK.mkdir(exist_ok=True)
+    timings, mix, chars = ses.make(ep, WORK)
+    video, cover = WORK / "video.mp4", WORK / "kapak.jpg"
+    report.update({"title": ep["title"], "chars": chars})
+    report["duration"] = round(render(ep, WORK / "timings.json", mix, video, cover, hook=True), 1)
+    d = HERE / "deneme"
+    d.mkdir(exist_ok=True)
+    (d / f"ornek-{ep_id}.mp4").write_bytes(video.read_bytes())
+    report["deneme"] = f"fabrika/deneme/ornek-{ep_id}.mp4"
+    return ep
 
 
 def ig_bolum(state, ep_id, report):
@@ -367,8 +392,8 @@ def produce(state, mod, report):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kapi", action="store_true")
-    ap.add_argument("--mod", default="saatlik", choices=["saatlik", "zorla", "deneme", "igbolum"])
-    ap.add_argument("--bolum", help="igbolum: the episode id, e.g. y001")
+    ap.add_argument("--mod", default="saatlik", choices=["saatlik", "zorla", "deneme", "igbolum", "ornek"])
+    ap.add_argument("--bolum", help="igbolum, ornek: the episode id, e.g. y001")
     a = ap.parse_args()
     state = load()
     go, why = gate(state, a.mod)
@@ -388,7 +413,8 @@ def main():
     import yazar
     try:
         if go:
-            ep = ig_bolum(state, a.bolum, report) if a.mod == "igbolum" else produce(state, a.mod, report)
+            ep = (ig_bolum(state, a.bolum, report) if a.mod == "igbolum" else ornek(a.bolum, report) if a.mod == "ornek"
+                  else produce(state, a.mod, report))
             if ep is not None:
                 state["fail_streak"] = 0
     except (Exception, SystemExit) as e:  # the Actions log is hard to reach, so the reason lands in rapor.json
