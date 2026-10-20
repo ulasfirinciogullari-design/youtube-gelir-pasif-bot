@@ -1,22 +1,259 @@
 {
- "started": "2026-10-19T14:24:01+00:00",
- "mod": "nöbet",
+ "started": "2026-10-20T17:23:35+00:00",
+ "mod": "kontrol",
  "anahtar_bitis": "2026-12-16T22:49+00:00",
- "new": 1,
- "quiet": 0,
- "room": 20,
- "sent_last_24h": 0,
- "later": 0,
- "items": [
+ "hesap": {
+  "username": "yaolsaydi.bilim",
+  "account_type": "MEDIA_CREATOR",
+  "media_count": 13,
+  "followers_count": 37
+ },
+ "paylasim_hakki": {
+  "data": [
+   {
+    "quota_usage": 3,
+    "config": {
+     "quota_total": 100,
+     "quota_duration": 86400
+    }
+   }
+  ]
+ },
+ "istatistik_izni": "var",
+ "dm_konusmalari": 1,
+ "dm_kimlik": [
   {
-   "id": "18131274500509778",
-   "kind": "yorum",
-   "author": "dc937b598926",
-   "text": "Tüm erkekler yok olsa ne olurdu",
-   "reply": "Mevcut sperm bankaları üremeyi bir süre sürdürse de genetik çeşitlilik hızla tükenirdi. Bu merak uyandırıcı soruyu video listemize aldım.\n— Profesör Pi 🔭",
-   "topic": "Tüm erkekler yok olsaydı ne olurdu?",
-   "result": "gönderildi"
+   "katilimci": [
+    {
+     "id": "eebc8b7c43b9",
+     "uzunluk": 17,
+     "biz": true
+    },
+    {
+     "id": "6e058c125164",
+     "uzunluk": 16,
+     "biz": false
+    }
+   ],
+   "mesajlar": [
+    {
+     "from": "eebc8b7c43b9",
+     "uzunluk": 17,
+     "to": [
+      "6e058c125164"
+     ],
+     "zaman": "2026-10-18T00:34:31+0000"
+    },
+    {
+     "from": "6e058c125164",
+     "uzunluk": 16,
+     "to": [
+      "eebc8b7c43b9"
+     ],
+     "zaman": "2026-10-18T00:34:04+0000"
+    },
+    {
+     "from": "6e058c125164",
+     "uzunluk": 16,
+     "to": [
+      "eebc8b7c43b9"
+     ],
+     "zaman": "2026-10-18T00:26:31+0000"
+    },
+    {
+     "from": "6e058c125164",
+     "uzunluk": 16,
+     "to": [
+      "eebc8b7c43b9"
+     ],
+     "zaman": "2026-10-17T23:30:48+0000"
+    }
+   ]
   }
  ],
- "finished": "2026-10-19T14:24:15+00:00"
+ "medya": [
+  {
+   "link": "https://www.instagram.com/reel/DeuVpD2ksyl/",
+   "zaman": "2026-10-20T17:11:10+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 0,
+    "reach": 0,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 0
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Det5-o8lZTj/",
+   "zaman": "2026-10-20T13:09:26+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1886,
+    "reach": 1505,
+    "saved": 1,
+    "shares": 0,
+    "likes": 5,
+    "ig_reels_avg_watch_time": 10906
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DetfRj1D5yM/",
+   "zaman": "2026-10-20T09:16:11+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1697,
+    "reach": 1462,
+    "saved": 0,
+    "shares": 0,
+    "likes": 5,
+    "ig_reels_avg_watch_time": 12539
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DerwzY7FBdW/",
+   "zaman": "2026-10-19T17:10:47+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1727,
+    "reach": 1476,
+    "saved": 1,
+    "shares": 1,
+    "likes": 9,
+    "ig_reels_avg_watch_time": 11830
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DerVyNRFNb8/",
+   "zaman": "2026-10-19T13:14:39+0000",
+   "yorum_sayisi": 2,
+   "api_yorum": 2,
+   "istatistik": {
+    "views": 3153,
+    "reach": 2777,
+    "saved": 4,
+    "shares": 1,
+    "likes": 19,
+    "ig_reels_avg_watch_time": 17779
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Deq50ohD42v/",
+   "zaman": "2026-10-19T09:10:17+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1704,
+    "reach": 1571,
+    "saved": 3,
+    "shares": 0,
+    "likes": 8,
+    "ig_reels_avg_watch_time": 11372
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DepLvNOiKIx/",
+   "zaman": "2026-10-18T17:08:52+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1978,
+    "reach": 1739,
+    "saved": 0,
+    "shares": 1,
+    "likes": 14,
+    "ig_reels_avg_watch_time": 14702
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeowOfvDGk5/",
+   "zaman": "2026-10-18T13:08:02+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1722,
+    "reach": 1510,
+    "saved": 3,
+    "shares": 1,
+    "likes": 8,
+    "ig_reels_avg_watch_time": 10334
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeopnMZkb5w/",
+   "zaman": "2026-10-18T12:10:14+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1656,
+    "reach": 1424,
+    "saved": 1,
+    "shares": 1,
+    "likes": 1,
+    "ig_reels_avg_watch_time": 9222
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeoVJZBEuLe/",
+   "zaman": "2026-10-18T09:11:22+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1709,
+    "reach": 1478,
+    "saved": 3,
+    "shares": 1,
+    "likes": 12,
+    "ig_reels_avg_watch_time": 9627
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeoOAyfDO3E/",
+   "zaman": "2026-10-18T08:09:04+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1702,
+    "reach": 1537,
+    "saved": 3,
+    "shares": 1,
+    "likes": 12,
+    "ig_reels_avg_watch_time": 14283
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeoAmM2k_Qw/",
+   "zaman": "2026-10-18T06:11:50+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1763,
+    "reach": 1537,
+    "saved": 0,
+    "shares": 1,
+    "likes": 3,
+    "ig_reels_avg_watch_time": 11084
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DenWg-9lByU/",
+   "zaman": "2026-10-18T00:04:00+0000",
+   "yorum_sayisi": 2,
+   "api_yorum": 2,
+   "istatistik": {
+    "views": 1718,
+    "reach": 1560,
+    "saved": 2,
+    "shares": 1,
+    "likes": 6,
+    "ig_reels_avg_watch_time": 10838
+   }
+  }
+ ],
+ "finished": "2026-10-20T17:23:57+00:00"
 }
