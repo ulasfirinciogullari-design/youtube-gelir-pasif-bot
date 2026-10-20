@@ -35,6 +35,8 @@ MADE = {
     "stamp": ("Heavy rubber stamp slammed onto a wooden desk, single dull thud, close and dry, no voice", 1.0),
     "paper": ("Old parchment letter sliding across a wooden table, short soft paper rustle, no voice", 1.2),
     "shimmer": ("Soft dark magical shimmer, low warm chime with a short sparkle tail, cinematic, no voice", 1.6),
+    "knock": ("Three firm knuckle knocks on a wooden front door, close and dry, no voice", 1.0),
+    "tick": ("Single soft wooden click, very short and dry, no voice", 0.5),
 }
 MUSIC = "music/karakter_2.mp3"  # "modern dark cinematic beat: deep sub bass, sparse haunting piano, ticking hi-hats"
 
@@ -168,6 +170,10 @@ def cues(ep, timings):
         elif kind == "dost":
             out.append((word_time(tm, v.get("key"), .75) - 0.3, "impact", 0.22))
             out.append((word_time(tm, v.get("key"), .75), "shimmer", 0.45))
+        # newer episodes list their own: "sfx": [[word or null, share, effect, gain, offset seconds], ...]
+        for cue in v.get("sfx", []):
+            word, share, name, gain, off = (list(cue) + [0])[:5]
+            out.append((word_time(tm, word, share) + off, name, gain))
         prev = v
     return out
 

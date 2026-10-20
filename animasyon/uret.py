@@ -2,13 +2,16 @@
 
   python animasyon/uret.py --bolum k001 --mod deneme   video and storyboard only, nothing uploaded
   python animasyon/uret.py --bolum k001 --mod gizli    and upload it private to Zirvenin Kanunu
+  python animasyon/uret.py --bolum k001 --js           only write motor/bolum.js + motor/sahne.js for local stills
 
-The episode script is animasyon/bolumler/<id>.json (written by Claude, see BOLUM_REHBERI.md). Music and stock
+The episode script is animasyon/bolumler/<id>.json and its own scenes animasyon/bolumler/<id>.js (both written by
+Claude, see BOLUM_REHBERI.md). Music and stock
 effects come from the channel-data branch (--data). Outcome: animasyon/rapor.json and
 animasyon/cikti/<id>_story.jpg (one frame per second) plus <id>_mix.mp3 for checking the sound.
 """
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -22,7 +25,13 @@ sys.path.insert(0, str(HERE))
 MOTOR = HERE / "motor"
 OUT = HERE / "cikti"
 REPORT = HERE / "rapor.json"
-SCENES = {"usta", "meclis", "yaranma", "mektup", "gonder", "celiski", "cozum", "dost"}
+
+
+def scenes(ep_id):
+    """usta plus the scenes the episode's own .js defines."""
+    src = HERE / "bolumler" / f"{ep_id}.js"
+    text = src.read_text(encoding="utf-8") if src.exists() else ""
+    return {"usta"} | set(re.findall(r"^  (\w+)\(V, L, t, lt\) \{", text, re.M))
 
 
 def validate(ep):
@@ -36,15 +45,25 @@ def validate(ep):
     words = sum(len(str(l.get("text", "")).split()) for l in lines)
     if not 40 <= words <= 100:
         probs.append(f"{words} kelime (40-100 olmalı)")
+    known = scenes(ep.get("id", ""))
     for i, l in enumerate(lines):
-        if (l.get("v") or {}).get("t") not in SCENES:
-            probs.append(f"satır {i + 1}: bilinmeyen sahne {(l.get('v') or {}).get('t')}")
+        v = l.get("v") or {}
+        if v.get("t") not in known:
+            probs.append(f"satır {i + 1}: bilinmeyen sahne {v.get('t')}")
+        if v.get("t") == "usta" and v.get("no") and not (v.get("no_label") and v.get("yes_label")):
+            probs.append(f"satır {i + 1}: usta için no_label / yes_label eksik")
     return probs
 
 
-def render(ep, timings, mix, video):
+def write_js(ep):
+    """motor.html reads the episode from bolum.js and its own scenes from sahne.js."""
     (MOTOR / "bolum.js").write_text("window.EP = " + json.dumps(
         {k: ep.get(k) for k in ("kanun", "title", "lines", "tablolar")}, ensure_ascii=False) + ";\n", encoding="utf-8")
+    shutil.copy(HERE / "bolumler" / f"{ep['id']}.js", MOTOR / "sahne.js")
+
+
+def render(ep, timings, mix, video):
+    write_js(ep)
     subprocess.run(["node", str(MOTOR / "render.js"), str(video), str(timings), str(mix)], check=True)
     story = OUT / "_story"
     shutil.rmtree(story, ignore_errors=True)
@@ -64,7 +83,13 @@ def main():
     ap.add_argument("--bolum", required=True)
     ap.add_argument("--mod", choices=["deneme", "gizli"], default="deneme")
     ap.add_argument("--data", default="channel-data")
+    ap.add_argument("--js", action="store_true", help="only write motor/bolum.js and motor/sahne.js")
     a = ap.parse_args()
+    if a.js:
+        ep = json.loads((HERE / "bolumler" / f"{a.bolum}.json").read_text(encoding="utf-8"))
+        print("\n".join(validate(ep)) or "senaryo uygun")
+        write_js(ep)
+        return 0
     report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "bolum": a.bolum, "mod": a.mod}
     try:
         import ses

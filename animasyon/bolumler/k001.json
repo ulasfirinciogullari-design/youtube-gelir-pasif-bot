@@ -16,7 +16,10 @@
    "v": {
     "t": "usta",
     "no": "yapma",
-    "yes": "iste"
+    "yes": "iste",
+    "no_label": "İyilik yapma",
+    "yes_label": "İyilik iste",
+    "no_prop": "giftBox"
    }
   },
   {

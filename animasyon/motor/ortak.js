@@ -3,6 +3,7 @@
 const W = 1080, H = 1920, SERIF = 'Cinzel', SANS = 'Montserrat';
 const cv = document.getElementById('c');
 let ctx = cv.getContext('2d');  // let: drawSoft() points it at an offscreen canvas for a moment
+const SAHNE = {};  // each episode's own scenes, filled by sahne.js
 // Canvas filters (blur, sepia) cost seconds per frame in headless Chrome without a GPU, so a softened layer is drawn
 // small on an offscreen canvas and scaled up, tones use blend modes, and painting tones are baked once.
 const SOFT = {};
