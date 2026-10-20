@@ -1,5 +1,5 @@
 {
- "at": "2026-10-20T19:35:47+00:00",
+ "at": "2026-10-20T22:40:40+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -63,12 +63,11 @@
    "subscribersGained": 2,
    "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
    "sources": {
-    "SHORTS": 1237,
-    "YT_SEARCH": 23,
-    "YT_CHANNEL": 22,
+    "SHORTS": 1232,
+    "YT_SEARCH": 22,
+    "YT_CHANNEL": 14,
     "YT_OTHER_PAGE": 5,
     "PLAYLIST": 2,
-    "NOTIFICATION": 2,
     "NO_LINK_OTHER": 0
    }
   },
@@ -82,7 +81,14 @@
    "comments": 4,
    "subscribersGained": 4,
    "title": "1 Günde Kaç Kez Nefes Alırsın?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason"
+   "sources": {
+    "SHORTS": 1218,
+    "YT_CHANNEL": 19,
+    "YT_SEARCH": 16,
+    "YT_OTHER_PAGE": 3,
+    "HASHTAGS": 1,
+    "NO_LINK_OTHER": 0
+   }
   },
   "pJPCpis147c": {
    "views": 1204,
@@ -186,9 +192,9 @@
    "subscribersGained": 3,
    "title": "Güneş Gerçekte Ne Kadar Büyük?",
    "sources": {
-    "SHORTS": 336,
+    "SHORTS": 322,
     "YT_SEARCH": 40,
-    "YT_CHANNEL": 21,
+    "YT_CHANNEL": 16,
     "PLAYLIST": 5,
     "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
@@ -208,7 +214,7 @@
    "sources": {
     "SHORTS": 255,
     "YT_SEARCH": 38,
-    "YT_CHANNEL": 15,
+    "YT_CHANNEL": 11,
     "NO_LINK_OTHER": 0,
     "YT_OTHER_PAGE": 0
    }
@@ -224,8 +230,8 @@
    "subscribersGained": 1,
    "title": "",
    "sources": {
-    "SHORTS": 203,
-    "YT_CHANNEL": 12,
+    "SHORTS": 201,
+    "YT_CHANNEL": 8,
     "YT_SEARCH": 6,
     "NO_LINK_OTHER": 0
    }
@@ -260,8 +266,7 @@
    "sources": {
     "YT_SEARCH": 69,
     "SHORTS": 20,
-    "YT_CHANNEL": 18,
-    "SUBSCRIBER": 2,
+    "YT_CHANNEL": 11,
     "NO_LINK_OTHER": 0
    }
   },
@@ -294,7 +299,7 @@
    "title": "Kalbin 1 Günde Kaç Kez Atar?",
    "sources": {
     "YT_SEARCH": 10,
-    "YT_CHANNEL": 9,
+    "YT_CHANNEL": 7,
     "SHORTS": 3,
     "NO_LINK_OTHER": 0
    }
