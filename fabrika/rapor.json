@@ -1,75 +1,11 @@
 {
- "started": "2026-10-19T18:07:16+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "33",
-  "videos": "18"
- },
- "credits_before": [
-  7227,
-  613902
- ],
- "topic": {
-  "id": "o0004",
-  "series": "Ya Olsaydı?",
-  "q": "Güneş 10 saniyeliğine yok olsaydı ne olurdu?",
-  "oneri": true
- },
- "attempts": 1,
- "model": "gemini-3.8-flash",
- "fact_check": {
-  "ok": true,
-  "fixes": []
- },
- "chunks": 0,
- "grounded": true,
- "chars": 337,
- "duration": 22.1,
- "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/hJaWCEzLO_4",
- "recent_status": {
-  "g004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "741",
-   "reason": null
-  },
-  "y007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1236",
-   "reason": null
-  },
-  "o0003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "150",
-   "reason": null
-  },
-  "n004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "22",
-   "reason": null
-  },
-  "o0004": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  7227,
-  613902
- ],
- "log": [
-  "Konu: o0004 Güneş 10 saniyeliğine yok olsaydı ne olurdu? (Ya Olsaydı?)",
-  "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash"
- ],
- "finished": "2026-10-19T18:10:29+00:00"
+ "started": "2026-10-20T09:07:22+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y002",
+ "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+ "chars": 475,
+ "error": "CalledProcessError: Command '['node', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/ig_video.mp4', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/timings.json', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/mix.mp3']' returned non-zero exit status 1.",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 381, in main\n    ep = ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else produce(state, a.mod, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 253, in ig_bolum\n    report[\"instagram\"] = to_instagram(ep, WORK / \"timings.json\", mix, state)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 232, in to_instagram\n    render(ep, timings_path, mix, video, cover, layout=\"ig\")\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 219, in render\n    subprocess.run([\"node\", str(motor / \"render.js\"), str(out_video), str(timings_path), str(mix)], check=True)\n  File \"/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['node', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/ig_video.mp4', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/timings.json', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/mix.mp3']' returned non-zero exit status 1.\n",
+ "log": [],
+ "finished": "2026-10-20T09:07:31+00:00"
 }
