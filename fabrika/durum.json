@@ -623,7 +623,7 @@
    "oneri": true
   }
  ],
- "fail_streak": 3,
+ "fail_streak": 0,
  "runs": [
   {
    "finished": "2026-10-16T05:10:36+00:00",
@@ -881,6 +881,12 @@
    "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
    "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nbrowserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                | kurulum: BEWARE: your OS is not officially supported by Playwright; installing dependencies for ubuntu26.04-x64 as a fallback.\nCannot install dependencies for ubuntu26.04-x64 with Playwright 1.55.0!\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n--with-deps olmadı, yalnız tarayıcı kuruluyor\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n",
    "chars": 478
+  },
+  {
+   "finished": "2026-10-20T09:16:19+00:00",
+   "mod": "igbolum",
+   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
+   "chars": 478
   }
  ],
  "last_fail": 1792487549.018023,
@@ -945,6 +951,11 @@
     "media_id": "18131855605690640",
     "url": "https://www.instagram.com/reel/DerwzY7FBdW/",
     "at": 1792429856.310994
+   },
+   "y002": {
+    "media_id": "18112991939173665",
+    "url": "https://www.instagram.com/reel/DetfRj1D5yM/",
+    "at": 1792487779.1202347
    }
   },
   "eski": [

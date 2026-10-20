@@ -1,11 +1,17 @@
 {
- "started": "2026-10-20T09:12:20+00:00",
+ "started": "2026-10-20T09:14:18+00:00",
  "mod": "igbolum",
  "gate": "igbolum",
  "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
  "chars": 478,
- "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nbrowserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                | kurulum: BEWARE: your OS is not officially supported by Playwright; installing dependencies for ubuntu26.04-x64 as a fallback.\nCannot install dependencies for ubuntu26.04-x64 with Playwright 1.55.0!\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n--with-deps olmadı, yalnız tarayıcı kuruluyor\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 390, in main\n    ep = ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else produce(state, a.mod, report)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 262, in ig_bolum\n    report[\"instagram\"] = to_instagram(ep, WORK / \"timings.json\", mix, state)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 241, in to_instagram\n    render(ep, timings_path, mix, video, cover, layout=\"ig\")\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 229, in render\n    node(motor / \"render.js\", out_video, timings_path, mix)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 219, in node\n    raise RuntimeError(f\"çizim hatası ({r.returncode}): \" + (r.stderr.strip() or r.stdout.strip())[:500] + more)\nRuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nbrowserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                | kurulum: BEWARE: your OS is not officially supported by Playwright; installing dependencies for ubuntu26.04-x64 as a fallback.\nCannot install dependencies for ubuntu26.04-x64 with Playwright 1.55.0!\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n--with-deps olmadı, yalnız tarayıcı kuruluyor\nFailed to install browsers\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n\n",
- "log": [],
- "finished": "2026-10-20T09:12:29+00:00"
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18112991939173665",
+  "url": "https://www.instagram.com/reel/DetfRj1D5yM/",
+  "at": 1792487779.1202347
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DetfRj1D5yM/"
+ ],
+ "finished": "2026-10-20T09:16:19+00:00"
 }
