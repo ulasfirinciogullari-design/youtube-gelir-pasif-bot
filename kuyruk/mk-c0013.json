@@ -7,15 +7,15 @@
  ],
  "stock_hint": "dog playing ball grass",
  "script": {
-  "title": "Köpekler renk körü değil, ama kırmızıyı görmez 🐶",
+  "title": "Köpekler siyah beyaz görmez ama kırmızıyı göremez 🐶",
   "hook_text": "KÖPEĞİN GÖZÜNDE DÜNYA HANGİ RENK?",
   "scenes": [
    {
-    "text": "Bu köpek kırmızıyı göremiyor, ama renk körü değil.",
+    "text": "Bu köpek kırmızıyı göremiyor ama siyah beyaz görmüyor.",
     "visual": "happy dog looking at the camera on green grass",
     "stock_query": "dog grass",
     "source": "stock",
-    "callout": "RENK KÖRÜ DEĞİL"
+    "callout": "SİYAH BEYAZ DEĞİL"
    },
    {
     "text": "Uzun yıllar köpeklerin dünyayı siyah beyaz gördüğü sanıldı.",
@@ -46,7 +46,7 @@
     "callout": "MAVİ TOP AT"
    }
   ],
-  "description": "Köpekler renk körü değildir; iki tür koni hücreleriyle maviyi ve sarıyı görürler ama kırmızıyla yeşili ayırt edemezler.",
+  "description": "Köpekler dünyayı siyah beyaz görmez; iki tür koni hücreleriyle maviyi ve sarıyı görürler ama kırmızıyla yeşili ayırt edemezler.",
   "tags": [
    "köpek",
    "köpekler",
@@ -58,12 +58,12 @@
    "evcil hayvanlar"
   ],
   "pinned_comment": "Sence köpeğin hangi topu daha kolay bulur: kırmızıyı mı, maviyi mi?",
-  "en_title": "Dogs aren't colorblind, but they can't see red 🐶",
+  "en_title": "Dogs don't see in black and white, but they can't see red 🐶",
   "en_description": "Dogs have two types of color cones instead of three. They see blue and yellow but can't tell red from green.",
   "mood": "eğlenceli"
  },
  "seo": {
-  "description": "Köpekler renkleri nasıl görür, renk körü mü?\n\nKöpekler renk körü değildir ama kırmızıyı göremez. Gözlerinde renk algılayan iki tür koni hücresi vardır, insanda ise üç tür; bu yüzden maviyi ve sarıyı görürler, kırmızıyla yeşili ayırt edemezler. Yeşil çimde kırmızı top onlar için kaybolur, mavi ya da sarı top çok daha kolay seçilir.\n\nSence köpeğin hangi topu daha kolay bulur: kırmızıyı mı, maviyi mi?",
+  "description": "Köpekler renkleri nasıl görür, renk körü mü?\n\nKöpekler dünyayı siyah beyaz görmez ama kırmızıyı göremez. Gözlerinde renk algılayan iki tür koni hücresi vardır, insanda ise üç tür; bu yüzden maviyi ve sarıyı görürler, kırmızıyla yeşili ayırt edemezler. Yeşil çimde kırmızı top onlar için kaybolur, mavi ya da sarı top çok daha kolay seçilir.\n\nSence köpeğin hangi topu daha kolay bulur: kırmızıyı mı, maviyi mi?",
   "hashtags": [
    "#köpek",
    "#köpekler",
@@ -96,7 +96,7 @@
   ],
   "localizations": {
    "en": {
-    "title": "Dogs aren't colorblind, but they can't see red 🐶",
+    "title": "Dogs don't see in black and white, but they can't see red 🐶",
     "description": "Dogs have two types of color-sensing cones; humans have three. They see blues and yellows but can't tell red from green, so a red ball on green grass practically disappears. Throw a blue or yellow one instead."
    },
    "es": {
@@ -132,7 +132,7 @@
     "description": "कुत्तों की आँखों में रंग पहचानने वाले दो तरह के कोन होते हैं, जबकि इंसानों में तीन। वे नीला और पीला देख लेते हैं, पर लाल और हरे में फर्क नहीं कर पाते, इसलिए हरी घास पर लाल गेंद लगभग गायब हो जाती है। नीली या पीली गेंद फेंकिए।"
    },
    "id": {
-    "title": "Anjing tidak buta warna, tapi tak bisa melihat merah 🐶",
+    "title": "Anjing tidak melihat hitam putih, tapi tak bisa melihat merah 🐶",
     "description": "Anjing punya dua jenis sel kerucut pendeteksi warna, sedangkan manusia tiga. Mereka melihat biru dan kuning tapi tak bisa membedakan merah dan hijau, jadi bola merah di rumput hampir tak terlihat. Lemparkan bola biru atau kuning saja."
    },
    "ja": {
