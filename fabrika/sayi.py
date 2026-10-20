@@ -105,8 +105,11 @@ def spoken(text):
     ws = text.split()
     for i, w in enumerate(ws):
         bare = w.rstrip(".,!?;:")
+        unit, _, suffix = bare.partition("'")
         if prev_num and bare in UNITS:  # "384.400 km" -> kilometre
             s = UNITS[bare] + w[len(bare):]
+        elif prev_num and suffix and unit in UNITS:  # "-18 °C'ye" -> dereceye
+            s = UNITS[unit] + w[len(unit) + 1:]
         elif is_ordinal(w, ws[i + 1] if i + 1 < len(ws) else ""):  # "15. kattaki" -> on beşinci kattaki
             out = words(int(bare))
             s = " ".join(out[:-1] + [ordinal(out[-1])])
@@ -124,5 +127,5 @@ if __name__ == "__main__":
               "Vücudunun %60'ı su.", "1990'da 8 milyar insan yoktu, 2025'te 8,2 milyar.", "Sıcaklık -50°C olurdu.",
               "Kalbin günde 100.000 kez atar.", "0,05 saniye", "23,4° eğik", "1/3 oranında", "11 bin 2 yüz",
               "15. kattaki evimiz", "1. Dünya Savaşı", "21. yüzyıl", "Kalbin günde 100.", "40. ve 4. kat", "4'üncü sırada", "4'e böl", "24'ü",
-              "2,6 milyon km yol", "150 milyon km/s", "milyon km"]:
+              "2,6 milyon km yol", "150 milyon km/s", "milyon km", "sıcaklık -18 °C'ye düşerdi.", "5 km'den"]:
         print(t, "->", spoken(t)[0])

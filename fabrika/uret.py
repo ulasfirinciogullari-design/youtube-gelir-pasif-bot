@@ -210,15 +210,22 @@ def fact_check(ep, report):
     return res.get("_chunks", [])
 
 
+def node(*args):
+    """Runs the renderer; on failure its own error lines go into rapor.json (Actions logs are not readable here)."""
+    r = subprocess.run(["node", *map(str, args)], capture_output=True, text=True)
+    if r.returncode:
+        raise RuntimeError(f"çizim hatası ({r.returncode}): " + (r.stderr.strip() or r.stdout.strip())[:800])
+    return r.stdout
+
+
 def render(ep, timings_path, mix, out_video, out_cover, layout=None):
     """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY)."""
     motor = HERE / "motor"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
         {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout},
         ensure_ascii=False) + ";\n", encoding="utf-8")
-    subprocess.run(["node", str(motor / "render.js"), str(out_video), str(timings_path), str(mix)], check=True)
-    subprocess.run(["node", str(motor / "render.js"), "--cover", str(ep.get("cover", 1)), str(out_cover), str(timings_path)],
-                   check=True)
+    node(motor / "render.js", out_video, timings_path, mix)
+    node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
                                 str(out_video)], capture_output=True, text=True, check=True).stdout.strip())
     if not 14 <= dur <= 60:
