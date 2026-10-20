@@ -382,7 +382,8 @@ def main():
         return
     if a.mod == "saatlik" and go and why.startswith("instagram: "):
         a.mod, a.bolum = "igbolum", why.split(": ", 1)[1]
-    report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "mod": a.mod, "gate": why}
+    report = {"started": datetime.now(timezone.utc).isoformat(timespec="seconds"), "mod": a.mod, "gate": why,
+              "tarayici": os.environ.get("CHROME_PATH") or "playwright " + (os.environ.get("PLAYWRIGHT_HOST_PLATFORM_OVERRIDE") or "")}
     sys.path.insert(0, str(HERE))
     import yazar
     try:
