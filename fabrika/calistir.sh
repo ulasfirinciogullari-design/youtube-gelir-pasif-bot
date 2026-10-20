@@ -57,10 +57,14 @@ if [ "$MOD" = "saatlik" ]; then
   if [ "$go" != "true" ]; then echo "Bu tur üretim yok."; push "$out; $(head -n 1 fabrika/_kapi.out)"; exit 0; fi
 fi
 
-sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg >/dev/null
+sudo apt-get update -qq || echo "apt-get update hata verdi, kuruluma yine de geçiliyor"  # one broken mirror must not stop it
+sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null
 pip install -q numpy requests cryptography
 [ -f package.json ] || npm init -y >/dev/null
-npm install -q --no-save playwright@1.55.0 && npx playwright install --with-deps chromium >/dev/null
+npm install -q --no-save playwright@1.55.0
+# --with-deps needs apt; when that step fails the browser alone still downloads (2026-10-20: two runs had no browser)
+npx playwright install --with-deps chromium > fabrika/_pw.log 2>&1 \
+  || { echo "--with-deps olmadı, yalnız tarayıcı kuruluyor" >> fabrika/_pw.log; npx playwright install chromium >> fabrika/_pw.log 2>&1; }
 
 if [ "$MOD" = "igbolum" ]; then  # tetik.txt: "igbolum y001" posts that earlier episode to Instagram
   python fabrika/uret.py --mod igbolum --bolum "$(awk '{print $2}' fabrika/tetik.txt)"

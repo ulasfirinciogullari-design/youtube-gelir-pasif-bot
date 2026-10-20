@@ -214,7 +214,9 @@ def node(*args):
     """Runs the renderer; on failure its own error lines go into rapor.json (Actions logs are not readable here)."""
     r = subprocess.run(["node", *map(str, args)], capture_output=True, text=True)
     if r.returncode:
-        raise RuntimeError(f"çizim hatası ({r.returncode}): " + (r.stderr.strip() or r.stdout.strip())[:800])
+        pw = HERE / "_pw.log"  # the browser install's output (calistir.sh), when the browser is what is missing
+        more = " | kurulum: " + pw.read_text(errors="replace")[-500:] if "Executable doesn't exist" in r.stderr and pw.exists() else ""
+        raise RuntimeError(f"çizim hatası ({r.returncode}): " + (r.stderr.strip() or r.stdout.strip())[:500] + more)
     return r.stdout
 
 
