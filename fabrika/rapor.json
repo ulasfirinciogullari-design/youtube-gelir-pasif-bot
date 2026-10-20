@@ -1,18 +1,71 @@
 {
- "started": "2026-10-20T17:09:43+00:00",
- "mod": "igbolum",
- "gate": "instagram: n004",
+ "started": "2026-10-20T18:06:54+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Okyanus Gerçekte Ne Kadar Derin?",
- "chars": 390,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18130566226818273",
-  "url": "https://www.instagram.com/reel/DeuVpD2ksyl/",
-  "at": 1792516281.258153
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "39",
+  "videos": "21"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DeuVpD2ksyl/"
+ "credits_before": [
+  10732,
+  613902
  ],
- "finished": "2026-10-20T17:11:21+00:00"
+ "kuyruk": {
+  "dosya": "20261020-3-o0007.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "o0007",
+  "series": "Ya Olsaydı?",
+  "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 371,
+ "duration": 24.5,
+ "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "url": "https://youtube.com/shorts/rijRRVfG0ZY",
+ "recent_status": {
+  "n004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1072",
+   "reason": null
+  },
+  "o0004": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1099",
+   "reason": null
+  },
+  "g003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1118",
+   "reason": null
+  },
+  "o0006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "682",
+   "reason": null
+  },
+  "o0007": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  10823,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261020-3-o0007.json Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-10-20T18:07:50+00:00"
 }
