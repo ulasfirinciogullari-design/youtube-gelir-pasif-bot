@@ -243,18 +243,18 @@ const VIS = {
     ctx.fillStyle = '#100c16'; ctx.fillRect(0, 0, W, H);
     glow(160, 760, 760, 'rgba(210,35,47,1)', .35); glow(940, 900, 760, 'rgba(70,110,255,1)', .3);
     cam(560, 1000, lerp(1.0, 1.08, prog(lt, 0, 5)), () => {
-      figure('rakip', 610, 2450, 1.6, t, { dir: -1, expr: 'confused', legs: 'hide', headTilt: -.06 + Math.sin(t * 1.4) * .03,
+      figure('rakip', 610, 2600, 1.6, t, { dir: -1, expr: 'confused', legs: 'hide', headTilt: -.06 + Math.sin(t * 1.4) * .03,
         front: { sh: .5, el: 2.45, hand: 'fist' }, back: { sh: .1, el: .3 }, seed: 1 });
     });
     plate('Çelişki', 540, 520, 56, back(prog(t, tk, tk + .35)) * (1 - prog(t, tn - .1, tn + .1)));
     const kn = back(prog(t, tn - .05, tn + .3)), ky = back(prog(t, ty - .05, ty + .3));
-    if (kn > 0) { ctx.save(); ctx.translate(380, 590); ctx.rotate(-.06); plate('Onu sevmiyorum', 0, 0, 50, kn, C.red); ctx.restore(); }
-    if (ky > 0) { ctx.save(); ctx.translate(690, 750); ctx.rotate(.05); plate('Ama yardım ettim', 0, 0, 50, ky, C.gold); ctx.restore(); }
+    if (kn > 0) { ctx.save(); ctx.translate(375, 480); ctx.rotate(-.06); plate('Onu sevmiyorum', 0, 0, 50, kn, C.red); ctx.restore(); }
+    if (ky > 0) { ctx.save(); ctx.translate(650, 625); ctx.rotate(.05); plate('Ama yardım ettim', 0, 0, 50, ky, C.gold); ctx.restore(); }
     if (ky > .5) {  // a crackle between the two
       ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = '#ffe2a0'; ctx.lineWidth = 5; ctx.shadowColor = '#ffb04a'; ctx.shadowBlur = 20;
-      ctx.beginPath(); for (let i = 0; i <= 8; i++) { const px = lerp(470, 600, i / 8), py = lerp(640, 700, i / 8) + (i % 2 ? -1 : 1) * (10 + 14 * rnd(i + Math.floor(t * 20))); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.beginPath(); for (let i = 0; i <= 8; i++) { const px = lerp(470, 580, i / 8), py = lerp(530, 585, i / 8) + (i % 2 ? -1 : 1) * (10 + 14 * rnd(i + Math.floor(t * 20))); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
       ctx.stroke(); ctx.restore();
-      text('?', 860 + Math.sin(t * 3) * 10, 930, 140, C.ivory, SERIF, 900, 'center', 10);
+      text('?', 880 + Math.sin(t * 3) * 10, 1070, 140, C.ivory, SERIF, 900, 'center', 10);
     }
     ctx.restore();
   },
@@ -265,22 +265,22 @@ const VIS = {
     ctx.fillStyle = mixColor('#100c16', '#2a1a10', warm); ctx.fillRect(0, 0, W, H);
     glow(160, 760, 760, 'rgba(210,35,47,1)', .35 * (1 - warm)); glow(540, 820, 900, 'rgba(232,181,74,1)', .32 * warm);
     cam(560, 1000, lerp(1.08, 1.14, prog(lt, 0, 4)), () => {
-      figure('rakip', 610, 2450, 1.6, t, { dir: -1, expr: love > .5 ? 'happy' : exprMix('confused', 'warm', warm), legs: 'hide', headTilt: lerp(-.06, .04, warm),
+      figure('rakip', 610, 2600, 1.6, t, { dir: -1, expr: love > .5 ? 'happy' : exprMix('confused', 'warm', warm), legs: 'hide', headTilt: lerp(-.06, .04, warm),
         front: { sh: lerp(.5, .06, warm), el: lerp(2.45, .3, warm), hand: warm > .5 ? 'open' : 'fist' }, back: { sh: .1, el: .3 }, seed: 1 });
     });
     // the red plate cracks and drops away
     const fall = prog(lt, .15, 1.0);
     if (fall < 1) {
-      ctx.save(); ctx.translate(380 - fall * 80, 590 + fall * fall * 900); ctx.rotate(-.06 - fall * .9); ctx.globalAlpha = 1 - fall;
+      ctx.save(); ctx.translate(375 - fall * 80, 480 + fall * fall * 900); ctx.rotate(-.06 - fall * .9); ctx.globalAlpha = 1 - fall;
       plate('Onu sevmiyorum', 0, 0, 50, 1, C.red);
       ctx.strokeStyle = '#f3ead8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-40, -34); ctx.lineTo(-10, -4); ctx.lineTo(-30, 10); ctx.lineTo(6, 36); ctx.stroke();
       ctx.restore();
     }
-    const gy = lerp(750, 600, eo(prog(lt, .3, 1.0))), gx = lerp(690, 540, eo(prog(lt, .3, 1.0)));
+    const gy = lerp(625, 540, eo(prog(lt, .3, 1.0))), gx = lerp(650, 540, eo(prog(lt, .3, 1.0)));
     ctx.save(); ctx.translate(gx, gy); ctx.rotate(lerp(.06, 0, warm));
     plate(love > .3 ? 'Demek ki onu seviyorum' : 'Ama yardım ettim', 0, 0, love > .3 ? 52 : 50, love > .3 ? back(prog(t, tk - .1, tk + .3)) : 1, C.gold);
     ctx.restore();
-    sparks(540, 620, t, 26, 260, prog(t, tk, tk + 1));
+    sparks(540, 560, t, 26, 260, prog(t, tk, tk + 1));
     plate(V.label, 540, 1330, 50, back(prog(t, tk + .1, tk + .5)), C.gold);
   },
   dost(V, L, t, lt) {
