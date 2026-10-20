@@ -1,71 +1,12 @@
 {
- "started": "2026-10-20T18:06:54+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-20T21:39:30+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "39",
-  "videos": "21"
- },
- "credits_before": [
-  10732,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261020-3-o0007.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "o0007",
-  "series": "Ya Olsaydı?",
-  "q": "Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 371,
- "duration": 24.5,
- "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/rijRRVfG0ZY",
- "recent_status": {
-  "n004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1072",
-   "reason": null
-  },
-  "o0004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1099",
-   "reason": null
-  },
-  "g003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1118",
-   "reason": null
-  },
-  "o0006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "682",
-   "reason": null
-  },
-  "o0007": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  10823,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261020-3-o0007.json Karbondioksit 5 saniyeliğine yok olsaydı ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-10-20T18:07:50+00:00"
+ "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+ "chars": 362,
+ "duration": 23.5,
+ "deneme": "fabrika/deneme/ornek-o0006.mp4",
+ "log": [],
+ "finished": "2026-10-20T21:40:04+00:00"
 }
