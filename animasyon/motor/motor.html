@@ -7,6 +7,7 @@
 <script src="ortak.js"></script>
 <script src="karakter.js"></script>
 <script src="mekan.js"></script>
+<script src="sokak.js"></script>
 <script src="bolum.js"></script>
 <script src="sahne.js"></script>
 <script>
@@ -100,10 +101,12 @@ const VIS = {
     floor(1500, C.gold, .25, 1000);
     fog(t, 1420, .05);
     ctx.restore();
+    // keep a long label inside the frame: its plate is centred on x unless that would cut it off
+    const fitX = (label, size, x) => { const w = Math.min(900, measure(up(label), size, SANS, 900, size * .08)) + size * 1.4; return clamp(x, 40 + w / 2, W - 40 - w / 2); };
     if (V.no) {
       const k = back(prog(t, no - .05, no + .3));
       if (k > 0) {
-        ctx.save(); ctx.translate(300, 1060); ctx.rotate(-.06);
+        ctx.save(); ctx.translate(fitX(V.no_label, 54, 300), 1060); ctx.rotate(-.06);
         if (V.no_prop) window[V.no_prop](0, 40, 120 * k, t);
         plate(V.no_label, 0, 130, 54, k, C.red);
         cross(0, -10, 210, prog(t, no + .25, no + .6));
@@ -113,7 +116,7 @@ const VIS = {
     if (V.yes) {
       const k = back(prog(t, yes - .1, yes + .25));
       if (k > 0) {
-        ctx.save(); ctx.translate(780, 1300); ctx.rotate(.04);
+        ctx.save(); ctx.translate(fitX(V.yes_label, 62, 780), 1300); ctx.rotate(.04);
         glow(0, 0, 260, 'rgba(232,181,74,1)', .3 * k);
         if (V.yes_prop) window[V.yes_prop](0, -150, 110 * k, t);
         plate(V.yes_label, 0, 0, 62, k, C.gold);

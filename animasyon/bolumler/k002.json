@@ -1,0 +1,203 @@
+{
+ "id": "k002",
+ "kanun": "II",
+ "title": {
+  "top": "Büyük bir şey isteyeceksen",
+  "hi": "önce küçüğünü iste"
+ },
+ "yt_title": "İnsanlara Hayır Dedirtmeyen Küçük Hile 🤫 #psikoloji",
+ "lines": [
+  {
+   "text": "Birinden büyük bir şey isteyeceksen, önce ona küçük bir şey iste.",
+   "v": {
+    "t": "usta",
+    "no": "büyük",
+    "yes": "küçük",
+    "no_label": "Hemen büyüğü isteme",
+    "yes_label": "Önce küçüğü iste",
+    "no_prop": "bigSignProp",
+    "yes_prop": "stickerProp"
+   }
+  },
+  {
+   "text": "1966'da Kaliforniya'da araştırmacılar kapı kapı dolaşıp ev sahiplerinden küçücük bir şey istedi:",
+   "v": {
+    "t": "kapi",
+    "year": "1966 · Kaliforniya",
+    "knock": "kapı",
+    "door": "ev",
+    "small": "küçücük",
+    "sfx": [
+     [
+      "kapı",
+      0.3,
+      "knock",
+      0.5,
+      0.1
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Pencereye avuç içi kadar bir \"Güvenli sür\" etiketi asmak.",
+   "v": {
+    "t": "etiket",
+    "key": "etiketi",
+    "label": "Küçük rica",
+    "sfx": [
+     [
+      "etiketi",
+      0.7,
+      "pop",
+      0.35,
+      0.05
+     ]
+    ]
+   }
+  },
+  {
+   "text": "İki hafta sonra başka araştırmacılar geldi ve bu kez bahçeye evin önünü kapatan dev, çirkin bir tabela dikmek istedi.",
+   "v": {
+    "t": "tabela",
+    "later": "2 hafta sonra",
+    "key": "dev",
+    "label": "Büyük rica",
+    "sfx": [
+     [
+      "dev",
+      0.7,
+      "impact",
+      0.4,
+      0.15
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Önce küçük ricayı duyan evlerin yüzde yetmiş altısı evet dedi.",
+   "v": {
+    "t": "sonuc",
+    "pct": 76,
+    "label": "Önce küçük rica duyanlar",
+    "key": "evet",
+    "sfx": [
+     [
+      null,
+      0.25,
+      "tick",
+      0.3
+     ],
+     [
+      null,
+      0.4,
+      "tick",
+      0.3
+     ],
+     [
+      null,
+      0.55,
+      "tick",
+      0.3
+     ],
+     [
+      null,
+      0.7,
+      "tick",
+      0.3
+     ],
+     [
+      "evet",
+      0.85,
+      "shimmer",
+      0.35
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Küçük ricayı hiç duymayanlarda bu oran beşte birin bile altındaydı.",
+   "v": {
+    "t": "kontrol",
+    "pct": 17,
+    "label": "Hiç duymayanlar",
+    "key": "altındaydı",
+    "sfx": [
+     [
+      null,
+      0.45,
+      "tick",
+      0.3
+     ],
+     [
+      null,
+      0.65,
+      "tick",
+      0.3
+     ],
+     [
+      "altındaydı",
+      0.85,
+      "stamp",
+      0.4
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Psikologlara göre küçük evet, insanın kendine bakışını değiştirdi: \"Ben iyi işlere destek olan biriyim.\"",
+   "v": {
+    "t": "kendilik",
+    "key": "kendine",
+    "quote": "Ben",
+    "sfx": [
+     [
+      "Ben",
+      0.6,
+      "shimmer",
+      0.45
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {
+    "t": "usta",
+    "end": true
+   }
+  }
+ ],
+ "facts": [
+  "Jonathan Freedman ve Scott Fraser 1966'da Kaliforniya'nın Palo Alto şehrinde evleri kapı kapı dolaştı. Bazı ev sahiplerinden pencerelerine ya da arabalarına yaklaşık 7,5 cm'lik (3 inç) kare bir \"güvenli sür\" etiketi asmaları istendi.",
+  "İki hafta sonra ilk ziyaretle bağlantısı olmayan başka araştırmacılar geldi ve 7-10 gün boyunca ön bahçeye evin önünün çoğunu kapatan, özensiz harflerle yazılmış büyük bir \"Dikkatli Sür\" tabelası dikmeyi istedi.",
+  "İlk ziyarette küçük etiket ricasıyla karşılaşan evlerin %76'sı büyük tabelaya evet dedi. Daha önce hiç ziyaret edilmeyen evlerde bu oran yaklaşık %17'ydi (beşte birin altında).",
+  "Araştırmacılar etkiyi, küçük bir ricaya evet diyen kişinin kendini \"iyi işlere destek olan, harekete geçen biri\" olarak görmeye başlamasıyla açıkladı. Bu yönteme \"kapıya ayak koyma tekniği\" denir."
+ ],
+ "sources": [
+  "https://doi.org/10.1037/h0023552",
+  "https://en.wikipedia.org/wiki/Foot-in-the-door_technique"
+ ],
+ "summary": "Birinden büyük bir şey isteyeceksen, önce küçük bir şey iste. 1966'da Kaliforniya'da araştırmacılar ev sahiplerinden pencerelerine küçücük bir \"güvenli sür\" etiketi asmalarını istedi. İki hafta sonra başka araştırmacılar bahçeye evin önünü kapatan dev, çirkin bir tabela dikmek istedi. Önce küçük ricayı duyan evlerin %76'sı evet dedi; hiç duymayanlarda bu oran beşte birin altındaydı. Psikologlara göre küçük evet, insanın kendine bakışını değiştiriyor: \"Ben iyi işlere destek olan biriyim.\" Bu yüzden unutma: büyük bir şey isteyeceksen önce küçüğünü iste.",
+ "tags": [
+  "kapıya ayak koyma",
+  "foot in the door",
+  "psikoloji",
+  "ikna",
+  "ikna teknikleri",
+  "güç psikolojisi",
+  "karanlık psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri",
+  "etkileme sanatı",
+  "pazarlık",
+  "rica etmek"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#iknasanatı",
+  "#zirveninkanunu"
+ ]
+}

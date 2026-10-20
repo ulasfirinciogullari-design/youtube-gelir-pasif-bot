@@ -115,13 +115,17 @@ function eye(x, y, rx, ry, e, blink, iris, inner) {
   if (lid < .9) {
     stroke(INK, 3, () => ctx.ellipse(x, y, rx, ry, 0, .15 * Math.PI, .85 * Math.PI), .55);
     stroke(INK, 7, () => { ctx.moveTo(x + rx + 3, lidY - 1); ctx.lineTo(x + rx + 9, lidY - 7); }, inner ? 0 : 1);
+    if (e.lashes) stroke(INK, 4.5, () => {  // three lashes toward the outer corner
+      [[.35, 9], [.62, 11], [.86, 10]].forEach(([k, l]) => { const lx = x - rx + rx * 2 * k, lyy = lidY - Math.sin(k * Math.PI) * ry * .25;
+        ctx.moveTo(lx, lyy); ctx.lineTo(lx + l * .45, lyy - l); });
+    });
   }
 }
 
 // head-local: origin at the head's centre, facing right in three-quarter view; r is the head radius (about 100)
 function face(spec, e, t, talkK, seed) {
   const fx = 28, skin = spec.skin, lidColor = shadeOf(skin, .18);
-  const E = { ...e, lidColor };
+  const E = { ...e, lidColor, lashes: spec.lashes };
   const blink = blinkAt(t, seed);
   // eyes
   const ey = -4;
@@ -157,6 +161,12 @@ function face(spec, e, t, talkK, seed) {
   const open = clamp((e.open || 0) + talkK * .75);
   const yl = my - c * 9 + sm * 6, yr = my - c * 9 - sm * 10;
   if (open < .06) {
+    if (spec.lips) {  // lipstick: a full upper and lower lip under the line
+      ctx.save(); ctx.fillStyle = spec.lips; ctx.beginPath(); ctx.moveTo(mx - mw / 2, yl);
+      ctx.quadraticCurveTo(mx - 6, my - 13 + c * 4, mx + 2, my - 7 + c * 2); ctx.quadraticCurveTo(mx + 8, my - 13 + c * 4, mx + mw / 2, yr);
+      ctx.quadraticCurveTo(mx + 2, my + 16 + c * 14, mx - mw / 2, yl); ctx.fill();
+      ctx.globalAlpha = .5; circle(mx + 6, my + 6 + c * 8, 5, '#ffd6d0'); ctx.restore();
+    }
     stroke(INK, 6.5, () => { ctx.moveTo(mx - mw / 2, yl); ctx.quadraticCurveTo(mx, my + c * 15 + Math.abs(sm) * 2, mx + mw / 2, yr); });
     if (c > .4) { stroke(INK, 4, () => { ctx.moveTo(mx + mw / 2 - 2, yr - 2); ctx.quadraticCurveTo(mx + mw / 2 + 8, yr + 2, mx + mw / 2 + 6, yr + 10); }, .7); }
   } else {
@@ -201,6 +211,22 @@ const CAST = {
     skin: '#e3b08e', iris: '#4a3a2c', brow: '#4a3a2c', browW: 8, blush: .2, nose: 1.2, age: .5, mouthW: 44,
     coat: '#3d4a5e', trim: '#a8946a', waist: '#c8b48c', shirt: '#f1ebdf', breeches: '#2c3442', hose: '#e6dfd2', shoe: '#1c1a1e',
     hair: 'short', hairColor: '#5a4030', build: { chest: 1, belly: 1.05, neck: 1, height: 1 }
+  },
+  // 1960s: a young researcher in a grey suit and horn-rims, a second one in brown, and a housewife in a teal dress
+  arastirmaci: {
+    skin: '#f0c4a2', iris: '#4a6a8a', brow: '#3a2a20', browW: 8, blush: .2, nose: 1.05, age: .15, mouthW: 44,
+    outfit: 'suit', coat: '#646c78', trim: '#646c78', shirt: '#f6f4ee', tie: '#24345a', breeches: '#4e5664', hose: '#4e5664', shoe: '#1c1a1e',
+    hair: 'side', hairColor: '#3a2a20', glasses: true, glassesColor: '#1e1816', head: [.96, 1.02], build: { chest: 1, belly: .95, neck: 1, height: 1.03 }
+  },
+  arastirmaci2: {
+    skin: '#e2b08c', iris: '#3d3020', brow: '#1e1814', browW: 9, blush: .15, nose: 1.3, age: .35, mouthW: 46,
+    outfit: 'suit', coat: '#6e5640', trim: '#6e5640', shirt: '#f3efe4', tie: '#8a2a2a', breeches: '#4a3a2c', hose: '#4a3a2c', shoe: '#1c1410',
+    hair: 'side', hairColor: '#1e1814', head: [1, 1.04], build: { chest: 1.08, belly: 1.05, neck: 1.08, height: 1.08 }
+  },
+  evsahibi: {
+    skin: '#f3c9a8', iris: '#6a4a2a', brow: '#6a3a22', browW: 6, blush: .38, nose: .8, age: 0, mouthW: 38,
+    outfit: 'dress', sleeve: 'short', coat: '#3f8f8a', trim: '#f4efe4', shirt: '#fbf8f0', breeches: '#e9bf9f', hose: '#e9bf9f', shoe: '#9a2a36',
+    hair: 'flip', hairColor: '#8a4a26', lips: '#c4404c', lashes: true, head: [.94, .98], build: { chest: .9, belly: .8, neck: .82, height: .94, arm: .8 }
   }
 };
 
@@ -216,6 +242,13 @@ function backHair(spec) {
     // the queue with a black ribbon bow
     shape(() => { ctx.moveTo(-96, 10); ctx.bezierCurveTo(-130, 40, -136, 110, -122, 170); ctx.lineTo(-104, 170); ctx.bezierCurveTo(-110, 110, -100, 50, -76, 26); ctx.closePath(); }, c, { shade: 10 });
     shape(() => { ctx.moveTo(-112, 40); ctx.bezierCurveTo(-160, 10, -166, 70, -118, 58); ctx.bezierCurveTo(-74, 80, -70, 20, -112, 40); }, '#16121a', { shade: 6, hi: 4, line: 5 });
+  } else if (spec.hair === 'flip') {
+    // a 1960s flip: full at the back, down to the jaw, the ends curling outward
+    shape(() => {
+      ctx.moveTo(-10, -150); ctx.bezierCurveTo(-120, -160, -158, -60, -146, 40); ctx.bezierCurveTo(-140, 90, -150, 116, -178, 128);
+      ctx.bezierCurveTo(-150, 150, -104, 146, -84, 118); ctx.bezierCurveTo(-60, 136, -20, 140, 0, 120); ctx.lineTo(-20, 0); ctx.closePath();
+    }, c, { shade: 22, hi: 10,
+      after: () => stroke(shadeOf(c, .45), 3, () => { for (let i = 0; i < 4; i++) { ctx.moveTo(-60 - i * 18, -120 + i * 10); ctx.quadraticCurveTo(-130 - i * 6, -20, -120 - i * 10, 110); } }, .6) });
   } else if (spec.hair === 'hood') {
     shape(() => {
       ctx.moveTo(-40, -150); ctx.bezierCurveTo(-150, -140, -170, 20, -150, 150); ctx.bezierCurveTo(-120, 220, 20, 230, 110, 180);
@@ -245,6 +278,23 @@ function frontHair(spec, t) {
       shape(() => ctx.ellipse(x, y, 42, 20, -.05, 0, Math.PI * 2), c, { shade: 10, hi: 6, line: 5.5 });
       stroke(shadeOf(c, .5), 3.5, () => { ctx.ellipse(x - 8, y, 18, 9, 0, .3, Math.PI * 1.7); }, .8);
     });
+  } else if (spec.hair === 'side') {
+    // a neat 1960s side parting with a swoop over the forehead
+    shape(() => {
+      ctx.moveTo(84, -66); ctx.bezierCurveTo(80, -128, -10, -150, -72, -116); ctx.bezierCurveTo(-106, -92, -110, -36, -98, 8);
+      ctx.lineTo(-70, 4); ctx.bezierCurveTo(-70, -36, -54, -66, -16, -78); ctx.bezierCurveTo(24, -90, 60, -86, 84, -66); ctx.closePath();
+    }, c, { shade: 14, hi: 9,
+      after: () => {
+        stroke(shadeOf(c, .6), 4, () => { ctx.moveTo(-34, -136); ctx.quadraticCurveTo(-40, -110, -50, -84); }, .9);
+        stroke(hiOf(c, .5), 3, () => { for (let i = 0; i < 4; i++) { ctx.moveTo(-26 + i * 4, -128 + i * 8); ctx.quadraticCurveTo(20 + i * 10, -126 + i * 8, 70, -86 + i * 6); } }, .5);
+      } });
+  } else if (spec.hair === 'flip') {
+    // a bouffant crown and a side-swept fringe
+    shape(() => {
+      ctx.moveTo(100, -72); ctx.bezierCurveTo(112, -160, 10, -200, -70, -164); ctx.bezierCurveTo(-118, -140, -126, -70, -112, -10);
+      ctx.lineTo(-74, -4); ctx.bezierCurveTo(-70, -54, -54, -90, -20, -104); ctx.bezierCurveTo(30, -84, 70, -80, 100, -72); ctx.closePath();
+    }, c, { shade: 18, hi: 11,
+      after: () => stroke(shadeOf(c, .45), 3, () => { for (let i = 0; i < 5; i++) { ctx.moveTo(90 - i * 30, -60 - i * 6); ctx.quadraticCurveTo(60 - i * 34, -150 + i * 4, -10 - i * 24, -168 + i * 12); } }, .55) });
   } else if (spec.hair === 'short') {
     shape(() => {
       ctx.moveTo(70, -80); ctx.bezierCurveTo(50, -130, -40, -140, -84, -100); ctx.bezierCurveTo(-110, -70, -108, -20, -96, 10);
@@ -297,9 +347,10 @@ function head(spec, o, t) {
   }
   if (spec.glowEyes && o.glow > 0) { glow(92, -4, 60, rgba(C.gold, 1), .5 * o.glow); glow(28, -4, 46, rgba(C.gold, 1), .4 * o.glow); }
   if (spec.glasses) {
-    stroke('#5a4a3a', 4.5, () => { ctx.arc(64, -4, 27, 0, Math.PI * 2); });
-    stroke('#5a4a3a', 4, () => { ctx.arc(2, -4, 21, 0, Math.PI * 2); });
-    stroke('#5a4a3a', 4, () => { ctx.moveTo(23, -8); ctx.quadraticCurveTo(32, -14, 38, -8); ctx.moveTo(-19, -8); ctx.lineTo(-58, -2); });
+    const gc = spec.glassesColor || '#5a4a3a', gw = spec.glassesColor ? 7 : 4.5;
+    stroke(gc, gw, () => { ctx.arc(64, -4, 27, 0, Math.PI * 2); });
+    stroke(gc, gw * .9, () => { ctx.arc(2, -4, 21, 0, Math.PI * 2); });
+    stroke(gc, 4, () => { ctx.moveTo(23, -8); ctx.quadraticCurveTo(32, -14, 38, -8); ctx.moveTo(-19, -8); ctx.lineTo(-58, -2); });
     ctx.save(); ctx.globalAlpha = .45; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = inkLine(4); ctx.beginPath(); ctx.arc(64, -4, 19, -2.6, -1.9); ctx.stroke(); ctx.restore();
   }
 }
@@ -333,35 +384,49 @@ function hand(spec, kind, s = 1) {
 // pose: { dir, lean, headTilt, nod, front: {sh, el, hand}, back: {sh, el, hand}, legs: 'stand' | 'walk' | 'hide',
 //         phase, expr, talk, glow, prop: fn(spec) drawn in the front hand }
 function arm(spec, a, isFront, t) {
-  const sh = a.sh ?? .06, el = a.el ?? .3, up = 180, fo = 168;
+  const sh = a.sh ?? .06, el = a.el ?? .3, up = 180, fo = 168, aw = spec.build.arm || 1;
   const sleeve = isFront ? spec.coat : shadeOf(spec.coat, .3);
+  const bare = spec.sleeve === 'short' ? (isFront ? spec.skin : shadeOf(spec.skin, .3)) : null;
   ctx.save(); ctx.rotate(-sh);
-  shape(capsule(up, 88, 68), sleeve, { shade: 18, hi: 9, outline: capsuleLine(up, 88, 68) });
+  if (bare) shape(capsule(up, 70 * aw, 58 * aw), bare, { shade: 14, hi: 8, outline: capsuleLine(up, 70 * aw, 58 * aw) });
+  shape(bare ? capsule(up * .55, 92 * aw, 80 * aw) : capsule(up, 88 * aw, 68 * aw), sleeve, { shade: 18, hi: 9,
+    outline: bare ? capsuleLine(up * .55, 92 * aw, 80 * aw) : capsuleLine(up, 88 * aw, 68 * aw) });
   ctx.translate(0, up - 4); ctx.rotate(-el);
-  shape(capsule(fo, 68, 58), sleeve, { shade: 15, hi: 8, outline: capsuleLine(fo, 68, 58) });
-  // the big turned-back cuff and the lace ruffle
+  shape(capsule(fo, 68 * aw, 58 * aw), bare || sleeve, { shade: 15, hi: 8, outline: capsuleLine(fo, 68 * aw, 58 * aw) });
   ctx.save(); ctx.translate(0, fo - 30);
-  shape(() => { ctx.moveTo(-38, 4); ctx.quadraticCurveTo(0, -6, 38, 4); ctx.lineTo(42, 46); ctx.quadraticCurveTo(0, 54, -42, 46); ctx.closePath(); },
-    isFront ? spec.trim : shadeOf(spec.trim, .3), { shade: 9, hi: 6, line: 5.5 });
-  if (spec.hair !== 'hood') shape(() => { ctx.moveTo(-28, 44); for (let i = 0; i <= 4; i++) ctx.quadraticCurveTo(-28 + i * 14 - 7, 68, -28 + i * 14, 46); ctx.lineTo(28, 44); ctx.closePath(); }, spec.shirt, { shade: 5, hi: 3, line: 4 });
-  ctx.translate(0, 56);
-  hand(spec, a.hand || 'open', 1.3);
+  if (!spec.outfit) {  // the big turned-back cuff and the lace ruffle
+    shape(() => { ctx.moveTo(-38, 4); ctx.quadraticCurveTo(0, -6, 38, 4); ctx.lineTo(42, 46); ctx.quadraticCurveTo(0, 54, -42, 46); ctx.closePath(); },
+      isFront ? spec.trim : shadeOf(spec.trim, .3), { shade: 9, hi: 6, line: 5.5 });
+    if (spec.hair !== 'hood') shape(() => { ctx.moveTo(-28, 44); for (let i = 0; i <= 4; i++) ctx.quadraticCurveTo(-28 + i * 14 - 7, 68, -28 + i * 14, 46); ctx.lineTo(28, 44); ctx.closePath(); }, spec.shirt, { shade: 5, hi: 3, line: 4 });
+  } else if (spec.outfit === 'suit') {  // a shirt cuff showing under the jacket sleeve
+    shape(() => rrp(-29, 30, 58, 20, 6), isFront ? spec.shirt : shadeOf(spec.shirt, .3), { shade: 4, hi: 3, line: 4.5 });
+  }
+  ctx.translate(0, spec.outfit ? 50 : 56);
+  hand(spec, a.hand || 'open', 1.3 * Math.sqrt(aw));
   if (a.prop && isFront) a.prop(spec, t);
   ctx.restore();
   ctx.restore();
 }
 function legs(spec, p, t) {
   if (p.legs === 'hide') return;
-  const walk = p.legs === 'walk' ? Math.sin(p.phase || 0) : 0;
+  const walk = p.legs === 'walk' ? Math.sin(p.phase || 0) : 0, o = spec.outfit;
+  // 18th century: breeches, hose, buckled shoes; suit: straight trousers, plain shoes; dress: slim legs and pumps
+  const w = o === 'suit' ? [84, 74, 74, 66] : o === 'dress' ? [62, 50, 48, 36] : [86, 70, 62, 48];
   [[-1, -walk], [1, walk]].forEach(([side, sw]) => {
     const isFront = side > 0;
-    ctx.save(); ctx.translate(side * 26 + 4, -440); ctx.rotate(sw * .38);
-    shape(capsule(220, 86, 70), isFront ? spec.breeches : shadeOf(spec.breeches, .25), { shade: 14 });
+    ctx.save(); ctx.translate(side * (o === 'dress' ? 20 : 26) + 4, -440); ctx.rotate(sw * .38);
+    shape(capsule(220, w[0], w[1]), isFront ? spec.breeches : shadeOf(spec.breeches, .25), { shade: 14 });
     ctx.translate(0, 210); ctx.rotate(Math.max(0, -sw) * .5);
-    shape(capsule(215, 62, 48), isFront ? spec.hose : shadeOf(spec.hose, .3), { shade: 12 });
+    shape(capsule(215, w[2], w[3]), isFront ? spec.hose : shadeOf(spec.hose, .3), { shade: 12, outline: capsuleLine(215, w[2], w[3]) });
+    if (o === 'suit') stroke(rgba(INK, .35), 3, () => { ctx.moveTo(10, -150); ctx.lineTo(8, 200); });
     ctx.translate(0, 215); ctx.rotate(-sw * .2);
-    shape(() => { ctx.moveTo(-26, -12); ctx.lineTo(18, -12); ctx.quadraticCurveTo(66, -6, 70, 12); ctx.lineTo(-30, 14); ctx.closePath(); }, isFront ? spec.shoe : shadeOf(spec.shoe, .3), { shade: 6, hi: 6, line: 5 });
-    shape(() => rrp(4, -14, 22, 12, 3), '#d9c27a', { shade: 3, hi: 3, line: 3, noRim: true });
+    const shoe = isFront ? spec.shoe : shadeOf(spec.shoe, .3);
+    if (o === 'dress') {
+      shape(() => { ctx.moveTo(-20, -14); ctx.lineTo(14, -12); ctx.quadraticCurveTo(54, -4, 56, 8); ctx.lineTo(-6, 10); ctx.lineTo(-14, 26); ctx.lineTo(-22, 26); ctx.closePath(); }, shoe, { shade: 5, hi: 6, line: 4.5 });
+    } else {
+      shape(() => { ctx.moveTo(-26, -12); ctx.lineTo(18, -12); ctx.quadraticCurveTo(66, -6, 70, 12); ctx.lineTo(-30, 14); ctx.closePath(); }, shoe, { shade: 6, hi: 6, line: 5 });
+      if (!o) shape(() => rrp(4, -14, 22, 12, 3), '#d9c27a', { shade: 3, hi: 3, line: 3, noRim: true });
+    }
     ctx.restore();
   });
 }
@@ -423,7 +488,88 @@ function coatUpper(spec) {
   ctx.beginPath(); edge(); ctx.lineWidth = inkLine(4.5); ctx.strokeStyle = INK; ctx.stroke();
   shape(() => { ctx.moveTo(-50, -346); ctx.bezierCurveTo(-30, -380, 30, -384, 60, -350); ctx.bezierCurveTo(30, -360, -20, -356, -50, -346); }, shadeOf(spec.coat, .15), { shade: 6, hi: 6, line: 5 });
 }
+// ---------- 20th-century clothes (spec.outfit) ----------
+// the shared torso silhouette from the hips (y 10) to the shoulders (y -338)
+function torsoSide(spec, waist = 1) {
+  const b = spec.build, ch = b.chest, be = b.belly * waist;
+  return () => {
+    ctx.moveTo(-84 * be, 10); ctx.quadraticCurveTo(-90 * be, 0, -86 * be, -30);
+    ctx.bezierCurveTo(-98 * ch * waist, -140, -104 * ch, -250, -92 * ch, -300);
+    ctx.bezierCurveTo(-86 * ch, -326, -72 * ch, -334, -58 * ch, -338);
+    ctx.bezierCurveTo(-20, -356, 36, -356, 66 * ch, -336);
+    ctx.bezierCurveTo(98 * ch, -318, 104 * ch, -270, 100 * ch, -220);
+    ctx.bezierCurveTo(98 * be, -150, 108 * be, -90, 92 * be, -30);
+    ctx.quadraticCurveTo(96 * be, 0, 90 * be, 10);
+  };
+}
+// a suit jacket: the shirt and tie in the V between the lapels, two buttons, a breast pocket
+function suitUpper(spec) {
+  const ch = spec.build.chest, side = torsoSide(spec), vx = 26, vy = -176;
+  shape(() => { side(); ctx.closePath(); }, spec.coat, { shade: 32, hi: 15, outline: side,
+    after: () => {
+      ctx.fillStyle = spec.shirt; ctx.beginPath(); ctx.moveTo(-14, -352); ctx.lineTo(74 * ch, -352); ctx.lineTo(vx, vy); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = shadeOf(spec.shirt, .3); ctx.beginPath(); ctx.moveTo(-14, -352); ctx.lineTo(4, -352); ctx.lineTo(vx, vy); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = spec.tie; ctx.beginPath(); ctx.moveTo(vx - 8, -326); ctx.lineTo(vx + 10, -326); ctx.lineTo(vx + 16, -230); ctx.lineTo(vx + 2, vy + 6); ctx.lineTo(vx - 12, -230); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = hiOf(spec.tie, .3); ctx.fillRect(vx - 2, -322, 5, 120);
+      // lapels, a shade darker, folded back from the V
+      ctx.fillStyle = shadeOf(spec.coat, .22);
+      ctx.beginPath(); ctx.moveTo(-14, -352); ctx.lineTo(vx, vy); ctx.lineTo(-30, -290); ctx.lineTo(-36, -330); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = hiOf(spec.coat, .15);
+      ctx.beginPath(); ctx.moveTo(74 * ch, -352); ctx.lineTo(vx, vy); ctx.lineTo(92 * ch, -276); ctx.lineTo(96 * ch, -318); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = rgba(INK, .55); ctx.lineWidth = inkLine(3.5);
+      ctx.beginPath(); ctx.moveTo(-36, -330); ctx.lineTo(-30, -290); ctx.lineTo(vx, vy); ctx.lineTo(92 * ch, -276); ctx.lineTo(96 * ch, -318); ctx.stroke();
+      ctx.strokeStyle = rgba(INK, .4); ctx.beginPath(); ctx.moveTo(56, -250); ctx.lineTo(92, -254); ctx.stroke();
+      [-126, -62].forEach(y => { circle(vx + 8, y, 7, shadeOf(spec.coat, .5)); circle(vx + 7, y - 2, 3, hiOf(spec.coat, .4)); });
+      const g = ctx.createLinearGradient(0, -40, 0, 12); g.addColorStop(0, 'rgba(10,6,12,0)'); g.addColorStop(1, 'rgba(10,6,12,.22)');
+      ctx.fillStyle = g; ctx.fillRect(-150, -40, 300, 52);
+    } });
+  stroke(INK, 4.5, () => { ctx.moveTo(vx, vy); ctx.bezierCurveTo(vx + 6, -100, vx + 10, -30, vx + 14, 10); });
+}
+// the jacket below the waist: a short hem with the front opening curving away
+function suitHem(spec) {
+  const be = spec.build.belly;
+  shape(() => {
+    ctx.moveTo(-86 * be, -40); ctx.lineTo(94 * be, -40); ctx.bezierCurveTo(100 * be, 10, 104 * be, 50, 100 * be, 74);
+    ctx.lineTo(54, 78); ctx.quadraticCurveTo(44, 50, 40, 10); ctx.lineTo(36, 76); ctx.quadraticCurveTo(-30, 84, -92 * be, 70);
+    ctx.bezierCurveTo(-94 * be, 30, -90 * be, -10, -86 * be, -40); ctx.closePath();
+  }, spec.coat, { shade: 30, hi: 12,
+    after: () => { ctx.strokeStyle = rgba(INK, .35); ctx.lineWidth = inkLine(3); ctx.beginPath(); ctx.moveTo(-50, 20); ctx.lineTo(-10, 18); ctx.stroke(); } });
+}
+// a dress: a fitted bodice with buttons and a belt, a flared knee-length skirt
+function dressUpper(spec) {
+  const side = torsoSide(spec, .92);
+  shape(() => { side(); ctx.closePath(); }, spec.coat, { shade: 30, hi: 15, outline: side,
+    after: () => {
+      ctx.fillStyle = spec.trim; ctx.fillRect(-150, -46, 300, 30);
+      ctx.strokeStyle = rgba(INK, .5); ctx.lineWidth = inkLine(3); ctx.strokeRect(-150, -46, 300, 30);
+      shape(() => rrp(14, -44, 30, 26, 5), '#d9c27a', { shade: 3, hi: 3, line: 3, noRim: true });
+      for (let i = 0; i < 4; i++) { circle(30, -290 + i * 56, 6, spec.trim); circle(29, -292 + i * 56, 2.5, '#ffffff'); }
+      ctx.strokeStyle = rgba(INK, .25); ctx.lineWidth = inkLine(3);
+      [[-50, -230, -60, -60], [70, -200, 76, -60]].forEach(([x0, y0, x1, y1]) => { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(x0 - 8, (y0 + y1) / 2, x1, y1); ctx.stroke(); });
+    } });
+}
+function dressSkirt(spec) {
+  shape(() => {
+    ctx.moveTo(-80, -40); ctx.lineTo(86, -40); ctx.bezierCurveTo(116, 60, 146, 160, 158, 236);
+    ctx.quadraticCurveTo(10, 264, -148, 236); ctx.bezierCurveTo(-130, 150, -108, 50, -80, -40); ctx.closePath();
+  }, spec.coat, { shade: 38, hi: 14,
+    after: () => {
+      ctx.strokeStyle = 'rgba(10,6,12,.3)'; ctx.lineWidth = inkLine(3.5);
+      [[-40, 0, -84, 244], [10, 0, 0, 258], [60, 0, 96, 250]].forEach(([x0, y0, x1, y1]) => { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo((x0 + x1) / 2 - 6, 130, x1, y1); ctx.stroke(); });
+    } });
+}
 function neckwear(spec) {
+  if (spec.outfit === 'suit') {  // shirt collar points over the tie knot
+    shape(() => { ctx.moveTo(-2, -368); ctx.lineTo(24, -338); ctx.lineTo(4, -322); ctx.lineTo(-14, -352); ctx.closePath(); }, spec.shirt, { shade: 4, hi: 3, line: 4 });
+    shape(() => { ctx.moveTo(52, -368); ctx.lineTo(28, -338); ctx.lineTo(48, -320); ctx.lineTo(66, -350); ctx.closePath(); }, spec.shirt, { shade: 4, hi: 3, line: 4 });
+    shape(() => { ctx.moveTo(16, -342); ctx.lineTo(38, -342); ctx.lineTo(34, -322); ctx.lineTo(20, -322); ctx.closePath(); }, spec.tie, { shade: 3, hi: 4, line: 4 });
+    return;
+  }
+  if (spec.outfit === 'dress') {  // a round white collar
+    shape(() => { ctx.moveTo(-34, -360); ctx.quadraticCurveTo(-40, -322, -6, -318); ctx.quadraticCurveTo(14, -320, 24, -338); ctx.quadraticCurveTo(34, -320, 56, -320); ctx.quadraticCurveTo(84, -326, 74, -362); ctx.quadraticCurveTo(20, -376, -34, -360); ctx.closePath(); },
+      spec.shirt, { shade: 6, hi: 4, line: 4.5 });
+    return;
+  }
   if (spec.jabot) {  // a lace jabot cascading down the chest
     shape(() => {
       ctx.moveTo(0, -350); ctx.bezierCurveTo(30, -340, 60, -330, 56, -300);
@@ -448,7 +594,7 @@ function figure(who, x, y, s, t, p = {}) {
   const torso = () => { ctx.rotate(p.lean || 0); ctx.scale(1, 1 + breathe); };
   // the arm behind the body, then the skirt, then the upper body that leans
   if (!p.hideArms && !p.hideBack) { ctx.save(); torso(); ctx.translate(-66 * b.chest, -296); arm(spec, p.back || {}, false, t); ctx.restore(); }
-  if (!hood) coatSkirt(spec);
+  if (spec.outfit === 'suit') suitHem(spec); else if (spec.outfit === 'dress') dressSkirt(spec); else if (!hood) coatSkirt(spec);
   ctx.save(); torso();
   if (hood) {  // the cloak instead of a coat
     shape(() => {
@@ -456,7 +602,7 @@ function figure(who, x, y, s, t, p = {}) {
       ctx.lineTo(-150, 226); ctx.bezierCurveTo(-140, 40, -130, -220, -90, -340); ctx.closePath();
     }, spec.coat, { shade: 40, hi: 14,
       after: () => { ctx.strokeStyle = rgba(C.gold, .8); ctx.lineWidth = inkLine(5); ctx.beginPath(); ctx.moveTo(24, -330); ctx.bezierCurveTo(30, -200, 40, 0, 50, 226); ctx.stroke(); } });
-  } else coatUpper(spec);
+  } else if (spec.outfit === 'suit') suitUpper(spec); else if (spec.outfit === 'dress') dressUpper(spec); else coatUpper(spec);
   neckwear(spec);
   ctx.save(); ctx.translate(14, -350); ctx.rotate((p.headTilt || 0) + (p.nod || 0));
   if (!hood) shape(capsule(70, 66 * b.neck, 70 * b.neck), spec.skin, { shade: 18, hi: 4, after: () => { ctx.fillStyle = 'rgba(40,20,30,.35)'; ctx.fillRect(-60, -50, 120, 70); } });
