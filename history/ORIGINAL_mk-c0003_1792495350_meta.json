@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0003",
+  "topic": "Denizatlarında yavruları kim doğurur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Denizatlarında yavruları babalar doğurur 🌊",
+  "hook_text": "ANNE YUMURTALARI NEREYE BIRAKIYOR?",
+  "description": "Denizatlarında yavruları kim doğurur?\n\nDenizatlarında dişi yumurtalarını erkeğin karnındaki özel bir keseye bırakır. Baba yumurtaları orada döller, haftalarca taşır ve doğum anında kasılarak yavruları suya fırlatır. Bazı türlerde tek seferde binden fazla yavru doğar.\n\nSence hangisi daha zor: hamilelik mi, yüzlerce yavru doğurmak mı?\n\n#denizatı #denizcanlıları #okyanus #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0003",
+  "tags": [
+    "denizatı",
+    "denizatı doğum",
+    "erkek denizatı",
+    "denizatı hamile",
+    "erkek hamileliği",
+    "baba doğuruyor",
+    "denizatı yavrusu",
+    "denizatı kesesi",
+    "doğuran baba",
+    "deniz canlıları",
+    "okyanus canlıları",
+    "deniz altı",
+    "hayvanlar",
+    "hayvan belgeseli",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "seahorse",
+    "male pregnancy",
+    "baba",
+    "okyanus",
+    "doğum",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "denizati",
+    "denizati dogum",
+    "erkek denizati",
+    "denizati hamile",
+    "erkek hamileligi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "In seahorses, it's the father who gives birth 🌊",
+      "description": "The female drops her eggs into a pouch on the male's belly. He fertilizes and carries them for weeks, then pushes out hundreds of babies, sometimes more than a thousand.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "es": {
+      "title": "En los caballitos de mar, es el padre quien da a luz 🌊",
+      "description": "La hembra deja sus huevos en una bolsa del macho. Él los lleva durante semanas y luego expulsa cientos de crías.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "pt": {
+      "title": "Nos cavalos-marinhos, quem dá à luz é o pai 🌊",
+      "description": "A fêmea deposita os ovos numa bolsa na barriga do macho. Ele os carrega por semanas e depois solta centenas de filhotes.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "de": {
+      "title": "Bei Seepferdchen bringt der Vater die Babys zur Welt 🌊",
+      "description": "Das Weibchen legt seine Eier in eine Bruttasche am Bauch des Männchens. Er trägt sie wochenlang und presst dann Hunderte Junge heraus.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "fr": {
+      "title": "Chez l'hippocampe, c'est le père qui accouche 🌊",
+      "description": "La femelle dépose ses œufs dans une poche sur le ventre du mâle. Il les porte pendant des semaines puis expulse des centaines de petits.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "it": {
+      "title": "Nei cavallucci marini è il padre a partorire 🌊",
+      "description": "La femmina depone le uova in una tasca sul ventre del maschio. Lui le porta per settimane e poi espelle centinaia di piccoli.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "ru": {
+      "title": "У морских коньков детёнышей рожает папа 🌊",
+      "description": "Самка откладывает икру в сумку на животе самца. Он вынашивает её неделями, а потом выталкивает в воду сотни мальков.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "ar": {
+      "title": "عند فرس البحر الأب هو من يلد الصغار 🌊",
+      "description": "تضع الأنثى بيضها في كيس على بطن الذكر. يحمله الذكر أسابيع ثم يدفع مئات الصغار إلى الماء.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "hi": {
+      "title": "समुद्री घोड़ों में बच्चे पिता जन्म देता है 🌊",
+      "description": "मादा अपने अंडे नर के पेट की थैली में छोड़ती है। नर हफ्तों तक उन्हें रखता है और फिर सैकड़ों बच्चों को जन्म देता है।\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "id": {
+      "title": "Pada kuda laut, sang ayahlah yang melahirkan 🌊",
+      "description": "Betina menitipkan telurnya di kantong perut jantan. Jantan membawanya berminggu-minggu lalu melahirkan ratusan anak.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "ja": {
+      "title": "タツノオトシゴはお父さんが子どもを産む 🌊",
+      "description": "メスはオスのおなかの袋に卵を産みつけます。オスは数週間それを育て、何百匹もの子どもを産み出します。\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "ko": {
+      "title": "해마는 아빠가 새끼를 낳는다 🌊",
+      "description": "암컷은 수컷 배의 주머니에 알을 넣습니다. 수컷은 몇 주 동안 품었다가 수백 마리의 새끼를 낳습니다.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "pl": {
+      "title": "U koników morskich rodzi ojciec 🌊",
+      "description": "Samica składa jaja do torby na brzuchu samca. On nosi je tygodniami, a potem wypuszcza setki młodych.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "nl": {
+      "title": "Bij zeepaardjes bevalt de vader 🌊",
+      "description": "Het vrouwtje legt haar eitjes in een buidel op de buik van het mannetje. Hij draagt ze wekenlang en perst dan honderden jongen naar buiten.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "uk": {
+      "title": "У морських коників дітей народжує тато 🌊",
+      "description": "Самка відкладає ікру в сумку на животі самця. Він виношує її тижнями, а потім випускає у воду сотні мальків.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "vi": {
+      "title": "Ở cá ngựa, cá bố mới là người sinh con 🌊",
+      "description": "Cá mái đẻ trứng vào túi trên bụng cá trống. Cá trống mang chúng nhiều tuần rồi đẩy ra hàng trăm con non.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "az": {
+      "title": "Dəniz atlarında balaları ata doğur 🌊",
+      "description": "Dişi yumurtalarını erkəyin qarnındakı kisəyə qoyur. Ata onları həftələrlə daşıyır və yüzlərlə bala doğur.\n\n#shorts\n\nSeri: mk-c0003"
+    },
+    "ro": {
+      "title": "La căluții de mare, tatăl este cel care naște 🌊",
+      "description": "Femela își depune ouăle într-o pungă de pe burta masculului. El le poartă săptămâni întregi, apoi dă naștere la sute de pui.\n\n#shorts\n\nSeri: mk-c0003"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha zor: hamilelik mi, yüzlerce yavru doğurmak mı?",
+  "scenes": [
+    {
+      "text": "Bu denizatı baba, karnında yüzlerce yavru taşıyor.",
+      "visual": "male seahorse with a round belly holding onto seagrass",
+      "stock_query": "seahorse",
+      "source": "stock",
+      "callout": "YÜZLERCE YAVRU"
+    },
+    {
+      "text": "Dişi, yumurtalarını erkeğin karnındaki özel bir keseye bırakır.",
+      "visual": "two seahorses swimming face to face among seagrass",
+      "stock_query": "seahorse pair",
+      "source": "stock"
+    },
+    {
+      "text": "Baba yumurtaları orada döller ve haftalarca taşır.",
+      "visual": "seahorse floating slowly in clear water, close up",
+      "stock_query": "seahorse closeup",
+      "source": "stock",
+      "callout": "HAFTALARCA"
+    },
+    {
+      "text": "Doğum anı gelince kasılarak yavruları suya fırlatır.",
+      "visual": "seahorse gripping coral with its tail in blue water",
+      "stock_query": "seahorse coral",
+      "source": "stock",
+      "callout": "DOĞUM"
+    },
+    {
+      "text": "Bazı türlerde tek seferde binden fazla yavru dünyaya gelir.",
+      "visual": "group of tiny seahorses drifting in the water",
+      "stock_query": "seahorse swimming",
+      "source": "stock",
+      "callout": "1000+ YAVRU"
+    },
+    {
+      "text": "Babalar Günü'nü en çok hak eden canlı belki de bu.",
+      "visual": "seahorse curling its tail around a plant stem",
+      "stock_query": "seahorse ocean",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.37,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0003_1792495350_ig.mp4"
+}
