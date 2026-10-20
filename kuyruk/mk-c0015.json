@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0015",
+ "topic": "Flamingonun bacağı neden ters bükülür?",
+ "kategori": "hayvan",
+ "subject": [
+  "flamingo"
+ ],
+ "stock_hint": "flamingo walking water",
+ "script": {
+  "title": "Flamingonun ters bükülen yeri dizi değil 🦩",
+  "hook_text": "BACAĞI NEDEN TERS BÜKÜLÜYOR?",
+  "scenes": [
+   {
+    "text": "Bu flamingonun ters bükülen eklemi dizi değil.",
+    "visual": "flamingo walking through shallow water, legs bending",
+    "stock_query": "flamingo walking",
+    "source": "stock",
+    "callout": "DİZ DEĞİL"
+   },
+   {
+    "text": "Dizi sandığın o eklem aslında ayak bileği.",
+    "visual": "close up of flamingo legs stepping in water",
+    "stock_query": "flamingo legs",
+    "source": "stock",
+    "callout": "AYAK BİLEĞİ"
+   },
+   {
+    "text": "Gerçek dizi çok daha yukarıda, gövdeye yakın ve tüylerin altında saklı.",
+    "visual": "flamingo standing and preening its pink feathers",
+    "stock_query": "flamingo feathers",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kuşlar topukları yerden kalkık, sadece parmaklarının üstünde yürür.",
+    "visual": "flock of flamingos walking in a lagoon",
+    "stock_query": "flamingo flock",
+    "source": "stock",
+    "callout": "PARMAK UCU"
+   },
+   {
+    "text": "Parmak uçlarında yükselince topuğun geriye çıkar; flamingonun dizi sandığın yer işte o.",
+    "visual": "single flamingo walking slowly toward the camera",
+    "stock_query": "flamingo bird",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Flamingonun ters büküldüğünü sandığımız eklem dizi değil, ayak bileğidir; gerçek dizi yukarıda, tüylerin altında saklıdır.",
+  "tags": [
+   "flamingo",
+   "flamingolar",
+   "flamingo bacağı",
+   "kuşların dizi",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "kuş anatomisi"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: bileği diz sanmak mı, parmak ucunda yürümek mi?",
+  "en_title": "That backward flamingo 'knee' is actually its ankle 🦩",
+  "en_description": "The joint that seems to bend backwards on a flamingo is its ankle. The real knee is hidden under the feathers, and birds walk on their toes.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Flamingonun bacağı neden ters bükülür?\n\nFlamingonun ters bükülüyormuş gibi görünen eklemi dizi değil, ayak bileğidir. Gerçek dizi çok daha yukarıda, gövdeye yakın ve tüylerin altında saklıdır. Kuşlar topukları yerden kalkık, sadece parmaklarının üstünde yürür.\n\nSence hangisi daha şaşırtıcı: bileği diz sanmak mı, parmak ucunda yürümek mi?",
+  "hashtags": [
+   "#flamingo",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "flamingo",
+   "flamingolar",
+   "flamingo bacağı",
+   "flamingo dizi",
+   "flamingo bacağı neden ters",
+   "ters diz",
+   "kuşların dizi",
+   "kuş bacağı",
+   "ayak bileği",
+   "kuşlar parmak ucunda yürür",
+   "pembe flamingo",
+   "flamingo yürüyüşü",
+   "kuş anatomisi",
+   "kuşlar",
+   "su kuşları",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "flamingo legs",
+   "bird knees"
+  ],
+  "localizations": {
+   "en": {
+    "title": "That backward-bending flamingo 'knee' is actually its ankle 🦩",
+    "description": "The joint that seems to bend backwards on a flamingo's leg is its ankle. The real knee sits much higher, close to the body and hidden under feathers, and birds walk with their heels raised, on their toes only."
+   },
+   "es": {
+    "title": "Esa «rodilla» al revés del flamenco es en realidad su tobillo 🦩",
+    "description": "La articulación que parece doblarse hacia atrás en la pata del flamenco es el tobillo. La rodilla de verdad está mucho más arriba, pegada al cuerpo y oculta bajo las plumas, y las aves caminan solo sobre los dedos."
+   },
+   "pt": {
+    "title": "O “joelho” ao contrário do flamingo é, na verdade, o tornozelo 🦩",
+    "description": "A articulação que parece dobrar para trás na perna do flamingo é o tornozelo. O joelho de verdade fica bem mais acima, junto ao corpo e escondido pelas penas, e as aves andam apenas na ponta dos dedos."
+   },
+   "de": {
+    "title": "Das „Knie“ des Flamingos ist in Wahrheit sein Fußgelenk 🦩",
+    "description": "Das Gelenk, das beim Flamingo scheinbar nach hinten knickt, ist das Fußgelenk. Das echte Knie sitzt viel weiter oben, dicht am Körper und unter den Federn versteckt. Vögel laufen mit angehobener Ferse nur auf den Zehen."
+   },
+   "fr": {
+    "title": "Le « genou » à l'envers du flamant est en fait sa cheville 🦩",
+    "description": "L'articulation qui semble plier à l'envers sur la patte du flamant rose est sa cheville. Le vrai genou est bien plus haut, collé au corps et caché sous les plumes, et les oiseaux marchent uniquement sur leurs doigts."
+   },
+   "it": {
+    "title": "Il «ginocchio» al contrario del fenicottero è in realtà la caviglia 🦩",
+    "description": "L'articolazione che sembra piegarsi all'indietro nella zampa del fenicottero è la caviglia. Il vero ginocchio è molto più in alto, vicino al corpo e nascosto dalle piume, e gli uccelli camminano solo sulle dita."
+   },
+   "ru": {
+    "title": "«Колено» фламинго, которое гнётся назад, на самом деле лодыжка 🦩",
+    "description": "Сустав, который будто сгибается назад на ноге фламинго, это голеностоп. Настоящее колено гораздо выше, у самого тела, и спрятано под перьями, а птицы ходят только на пальцах."
+   },
+   "ar": {
+    "title": "ما يبدو ركبة مقلوبة عند الفلامنغو هو في الحقيقة كاحله 🦩",
+    "description": "المفصل الذي يبدو أنه ينثني إلى الخلف في ساق الفلامنغو هو الكاحل. أما الركبة الحقيقية فتقع أعلى بكثير قرب الجسم ومخفية تحت الريش، والطيور تمشي على أصابعها فقط."
+   },
+   "hi": {
+    "title": "फ्लेमिंगो का उल्टा मुड़ता 'घुटना' असल में उसका टखना है 🦩",
+    "description": "फ्लेमिंगो की टाँग में जो जोड़ पीछे की ओर मुड़ता दिखता है, वह टखना है। असली घुटना काफी ऊपर, शरीर के पास पंखों के नीचे छिपा होता है, और पक्षी सिर्फ पैरों की उँगलियों पर चलते हैं।"
+   },
+   "id": {
+    "title": "Lutut flamingo yang menekuk terbalik ternyata pergelangan kakinya 🦩",
+    "description": "Sendi yang tampak menekuk ke belakang di kaki flamingo sebenarnya pergelangan kaki. Lutut aslinya jauh lebih tinggi, dekat tubuh dan tersembunyi di balik bulu, dan burung berjalan hanya dengan jari kakinya."
+   },
+   "ja": {
+    "title": "フラミンゴの逆向きの「ひざ」は実は足首 🦩",
+    "description": "フラミンゴの脚で後ろに曲がって見える関節は、実は足首です。本当のひざはずっと上の体の近くにあり、羽毛に隠れています。鳥はかかとを上げ、つま先だけで歩いているのです。"
+   },
+   "ko": {
+    "title": "플라밍고의 거꾸로 굽은 '무릎'은 사실 발목이다 🦩",
+    "description": "플라밍고 다리에서 뒤로 꺾이는 것처럼 보이는 관절은 발목입니다. 진짜 무릎은 훨씬 위쪽, 몸 가까이 깃털 속에 숨어 있죠. 새는 발뒤꿈치를 들고 발가락으로만 걷습니다."
+   },
+   "pl": {
+    "title": "To, co wygląda jak odwrócone kolano flaminga, to kostka 🦩",
+    "description": "Staw, który na nodze flaminga zgina się jakby do tyłu, to kostka. Prawdziwe kolano jest dużo wyżej, przy tułowiu i ukryte pod piórami, a ptaki chodzą wyłącznie na palcach."
+   },
+   "nl": {
+    "title": "De achterstevoren 'knie' van een flamingo is eigenlijk zijn enkel 🦩",
+    "description": "Het gewricht dat bij een flamingo naar achteren lijkt te buigen, is de enkel. De echte knie zit veel hoger, tegen het lichaam en verstopt onder de veren, en vogels lopen alleen op hun tenen."
+   },
+   "uk": {
+    "title": "«Коліно» фламінго, що гнеться назад, насправді щиколотка 🦩",
+    "description": "Суглоб, який на нозі фламінго ніби згинається назад, це щиколотка. Справжнє коліно розташоване набагато вище, біля тіла, і сховане під пір'ям, а птахи ходять лише на пальцях."
+   },
+   "vi": {
+    "title": "Cái “đầu gối” gập ngược của hồng hạc thật ra là cổ chân 🦩",
+    "description": "Khớp trông như gập ngược ra sau trên chân hồng hạc thực chất là cổ chân. Đầu gối thật nằm cao hơn nhiều, sát thân và bị lông che khuất, còn loài chim chỉ đi bằng các ngón chân."
+   },
+   "az": {
+    "title": "Flaminqonun tərsinə bükülən “dizi” əslində topuğudur 🦩",
+    "description": "Flaminqonun ayağında geriyə bükülən kimi görünən oynaq topuqdur. Əsl diz xeyli yuxarıda, bədənə yaxın yerdə lələklərin altında gizlənir, quşlar isə yalnız barmaqlarının üstündə yeriyir."
+   },
+   "ro": {
+    "title": "„Genunchiul” întors al flamingoului e de fapt glezna 🦩",
+    "description": "Încheietura care pare să se îndoaie invers pe piciorul flamingoului este glezna. Genunchiul adevărat e mult mai sus, lângă corp, ascuns sub pene, iar păsările merg doar pe degete."
+   }
+  }
+ }
+}

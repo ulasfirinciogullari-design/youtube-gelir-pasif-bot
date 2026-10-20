@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0016",
+ "topic": "Sabahları neden akşamdan daha uzunuz?",
+ "kategori": "vücut",
+ "subject": [
+  "woman",
+  "spine"
+ ],
+ "stock_hint": "woman stretching morning bed",
+ "script": {
+  "title": "Sabahları akşamdan daha uzunsun 📏",
+  "hook_text": "BOY GÜN İÇİNDE NEDEN KISALIR?",
+  "scenes": [
+   {
+    "text": "Sabah kalktığında akşamkinden daha uzunsun.",
+    "visual": "woman stretching her arms in bed in the morning, warm sunlight",
+    "stock_query": "woman stretching",
+    "source": "stock",
+    "callout": "SABAH DAHA UZUN"
+   },
+   {
+    "text": "Gün boyunca omurların arasındaki diskler, üst gövdenin ağırlığını taşır.",
+    "visual": "people walking on a busy city street, side view",
+    "stock_query": "people walking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bu yük disklerden suyu dışarı iter ve sen bir santimetreden fazla kısalırsın.",
+    "visual": "3d model of a human spine rotating",
+    "stock_query": "human spine",
+    "source": "stock",
+    "callout": "1+ CM"
+   },
+   {
+    "text": "Gece uzanınca su geri dolar ve omurga yeniden uzar.",
+    "visual": "person sleeping peacefully in bed at night",
+    "stock_query": "woman sleeping",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Yerçekiminin hissedilmediği uzayda astronotlar yüzde üçe kadar uzuyor.",
+    "visual": "astronaut floating inside a space station",
+    "stock_query": "astronaut space",
+    "source": "stock",
+    "callout": "%3 UZUN"
+   },
+   {
+    "text": "Boyunu sabah ölç; akşam ölçersen kendini daha kısa bulursun.",
+    "visual": "child measuring height against a wall with a tape",
+    "stock_query": "measuring height",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Gün boyunca omurlar arasındaki diskler yük altında su kaybeder ve boy bir santimetreden fazla kısalır; gece su geri döner.",
+  "tags": [
+   "omurga",
+   "boy",
+   "sabah daha uzun",
+   "insan vücudu",
+   "astronot",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence sabahla akşam arasındaki fark sende ne kadar: bir santim mi, iki santim mi?",
+  "en_title": "You're taller in the morning than at night 📏",
+  "en_description": "Spinal discs lose water under your body's weight during the day, so you shrink by more than a centimeter and regain it overnight.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Sabahları neden akşamdan daha uzunuz?\n\nGün boyunca omurların arasındaki diskler üst gövdenin ağırlığını taşır; bu yük disklerden suyu dışarı iter ve boy bir santimetreden fazla kısalır. Gece uzanınca su geri dolar ve omurga yeniden uzar. Yerçekiminin hissedilmediği uzayda astronotlar yüzde üçe kadar uzar.\n\nSence sabahla akşam arasındaki fark sende ne kadar: bir santim mi, iki santim mi?",
+  "hashtags": [
+   "#omurga",
+   "#insanvücudu",
+   "#bilim",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "sabah daha uzun",
+   "sabahları neden uzunuz",
+   "boy uzaması",
+   "boy kısalması",
+   "akşam boy kısalır mı",
+   "boy ölçmek",
+   "omurga",
+   "omurga diskleri",
+   "omurlar",
+   "astronot boyu",
+   "astronotlar uzar mı",
+   "uzayda boy uzaması",
+   "yerçekimi",
+   "insan vücudu",
+   "vücut bilgileri",
+   "sağlık",
+   "uyku",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "biyoloji",
+   "spine",
+   "height"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You're taller in the morning than at night 📏",
+    "description": "During the day the discs between your vertebrae carry your upper body's weight, squeezing water out and shrinking you by more than a centimeter. Overnight the water flows back, and in space astronauts can grow up to 3 percent taller."
+   },
+   "es": {
+    "title": "Por la mañana eres más alto que por la noche 📏",
+    "description": "Durante el día, los discos entre tus vértebras cargan el peso del torso y pierden agua, así que mides más de un centímetro menos. De noche el agua vuelve, y en el espacio los astronautas llegan a crecer hasta un 3 %."
+   },
+   "pt": {
+    "title": "De manhã você é mais alto do que à noite 📏",
+    "description": "Ao longo do dia, os discos entre as vértebras sustentam o peso do tronco e perdem água, e você encolhe mais de um centímetro. À noite a água volta, e no espaço os astronautas chegam a ficar até 3% mais altos."
+   },
+   "de": {
+    "title": "Morgens bist du größer als abends 📏",
+    "description": "Tagsüber tragen die Bandscheiben das Gewicht deines Oberkörpers und verlieren dabei Wasser, du schrumpfst um mehr als einen Zentimeter. Nachts strömt das Wasser zurück, und im All werden Astronauten sogar bis zu 3 Prozent größer."
+   },
+   "fr": {
+    "title": "Tu es plus grand le matin que le soir 📏",
+    "description": "Pendant la journée, les disques entre tes vertèbres portent le poids du haut du corps et perdent de l'eau : tu perds plus d'un centimètre. La nuit, l'eau revient, et dans l'espace les astronautes peuvent grandir jusqu'à 3 %."
+   },
+   "it": {
+    "title": "Al mattino sei più alto che la sera 📏",
+    "description": "Durante il giorno i dischi tra le vertebre reggono il peso del busto e perdono acqua, così ti accorci di oltre un centimetro. Di notte l'acqua torna, e nello spazio gli astronauti diventano fino al 3% più alti."
+   },
+   "ru": {
+    "title": "Утром ты выше, чем вечером 📏",
+    "description": "За день межпозвоночные диски держат вес верхней части тела и теряют воду, и рост уменьшается больше чем на сантиметр. Ночью вода возвращается, а в космосе астронавты становятся выше до 3 процентов."
+   },
+   "ar": {
+    "title": "أنت في الصباح أطول منك في المساء 📏",
+    "description": "خلال النهار تحمل الأقراص بين فقرات ظهرك وزن الجزء العلوي من جسمك فتفقد بعض مائها، فيقصر طولك أكثر من سنتيمتر. وفي الليل يعود الماء، أما في الفضاء فقد يزداد طول رواد الفضاء حتى 3 في المئة."
+   },
+   "hi": {
+    "title": "सुबह आप शाम से ज़्यादा लंबे होते हैं 📏",
+    "description": "दिनभर रीढ़ की कशेरुकाओं के बीच की डिस्क शरीर के ऊपरी हिस्से का वज़न उठाती हैं और उनका पानी बाहर निकलता है, जिससे लंबाई एक सेंटीमीटर से ज़्यादा घट जाती है। रात में पानी लौट आता है, और अंतरिक्ष में यात्री 3 प्रतिशत तक लंबे हो जाते हैं।"
+   },
+   "id": {
+    "title": "Pagi hari kamu lebih tinggi daripada malam 📏",
+    "description": "Sepanjang hari, bantalan di antara ruas tulang belakang menahan berat tubuh bagian atas dan kehilangan air, sehingga tinggimu berkurang lebih dari satu sentimeter. Malam hari airnya kembali, dan di luar angkasa astronaut bisa bertambah tinggi hingga 3 persen."
+   },
+   "ja": {
+    "title": "朝のあなたは夜より背が高い 📏",
+    "description": "日中、背骨の椎間板は上半身の重さを支えて水分を失い、身長は1cm以上縮みます。寝ている間に水分が戻り、宇宙では宇宙飛行士の身長が最大3％伸びることもあります。"
+   },
+   "ko": {
+    "title": "아침의 당신은 저녁보다 키가 크다 📏",
+    "description": "낮 동안 척추 사이 디스크가 상체 무게를 받치며 수분을 잃어 키가 1cm 넘게 줄어듭니다. 밤에 누워 있으면 수분이 다시 차오르고, 우주에서는 우주비행사의 키가 최대 3%까지 커집니다."
+   },
+   "pl": {
+    "title": "Rano jesteś wyższy niż wieczorem 📏",
+    "description": "W ciągu dnia krążki między kręgami dźwigają ciężar górnej części ciała i tracą wodę, więc tracisz ponad centymetr wzrostu. W nocy woda wraca, a w kosmosie astronauci rosną nawet o 3 procent."
+   },
+   "nl": {
+    "title": "'s Ochtends ben je langer dan 's avonds 📏",
+    "description": "Overdag dragen de tussenwervelschijven het gewicht van je bovenlichaam en verliezen ze vocht, waardoor je meer dan een centimeter krimpt. 's Nachts stroomt het vocht terug, en in de ruimte worden astronauten tot 3 procent langer."
+   },
+   "uk": {
+    "title": "Уранці ти вищий, ніж увечері 📏",
+    "description": "Протягом дня міжхребцеві диски тримають вагу верхньої частини тіла й втрачають воду, тож зріст зменшується більш ніж на сантиметр. Уночі вода повертається, а в космосі астронавти стають вищими до 3 відсотків."
+   },
+   "vi": {
+    "title": "Buổi sáng bạn cao hơn buổi tối 📏",
+    "description": "Suốt cả ngày, các đĩa đệm giữa những đốt sống phải đỡ sức nặng nửa thân trên và mất bớt nước, khiến bạn thấp đi hơn một xăng-ti-mét. Ban đêm nước trở lại, còn ngoài không gian, phi hành gia có thể cao thêm tới 3%."
+   },
+   "az": {
+    "title": "Səhər axşamkından daha hündürsən 📏",
+    "description": "Gün ərzində fəqərələr arasındakı disklər bədənin yuxarı hissəsinin ağırlığını daşıyır və su itirir, buna görə boyun bir santimetrdən çox qısalır. Gecə su geri qayıdır, kosmosda isə astronavtların boyu 3 faizədək uzanır."
+   },
+   "ro": {
+    "title": "Dimineața ești mai înalt decât seara 📏",
+    "description": "În timpul zilei, discurile dintre vertebre duc greutatea trunchiului și pierd apă, așa că scazi cu peste un centimetru. Noaptea apa revine, iar în spațiu astronauții ajung să fie cu până la 3% mai înalți."
+   }
+  }
+ }
+}

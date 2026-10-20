@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0012",
+ "topic": "Zürafanın dili neden mor ve ne kadar uzun?",
+ "kategori": "hayvan",
+ "subject": [
+  "giraffe"
+ ],
+ "stock_hint": "giraffe tongue eating leaves",
+ "script": {
+  "title": "Zürafanın dili neden mor-siyah renkte? 🦒",
+  "hook_text": "BU DİL NEDEN MOR?",
+  "scenes": [
+   {
+    "text": "Bu zürafanın dili kırk beş santimetreyi bulur.",
+    "visual": "giraffe sticking out its long dark tongue to grab acacia leaves",
+    "stock_query": "giraffe tongue",
+    "source": "stock",
+    "callout": "45 CM"
+   },
+   {
+    "text": "Onunla dikenli akasya dallarının arasından yaprakları tek tek koparır.",
+    "visual": "giraffe eating leaves from a thorny acacia tree",
+    "stock_query": "giraffe eating",
+    "source": "stock",
+    "callout": "DİKENLER ARASI"
+   },
+   {
+    "text": "Dilin ucu mor-siyah, ağzın içinde kalan dibi ise pembe.",
+    "visual": "close up of a giraffe head chewing, savanna background",
+    "stock_query": "giraffe head",
+    "source": "stock",
+    "callout": "MOR-SİYAH"
+   },
+   {
+    "text": "Bir görüşe göre bu koyu renk, saatlerce güneşte kalan dili yanıktan korur.",
+    "visual": "giraffe feeding from a tree under bright african sun",
+    "stock_query": "giraffe tree",
+    "source": "stock",
+    "callout": "GÜNEŞ KORUMASI"
+   },
+   {
+    "text": "Dilini burnuna değdirmeyi dene; zürafa aynı dille burnunu temizler.",
+    "visual": "giraffe licking its nose with its long tongue, close up",
+    "stock_query": "giraffe close",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Zürafanın dili kırk beş santimetreyi bulur; ucu mor-siyah, dibi pembedir. Bir görüşe göre koyu renk dili güneş yanığından korur.",
+  "tags": [
+   "zürafa",
+   "zürafa dili",
+   "mor dil",
+   "akasya",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "vahşi doğa",
+   "afrika"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: mor dil mi, dille burun temizlemek mi?",
+  "en_title": "Why is a giraffe's tongue purple-black? 🦒",
+  "en_description": "A giraffe's tongue can reach about 45 cm. Its tip is purple-black and its base pink; one idea is that the dark color prevents sunburn.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Zürafanın dili neden mor ve ne kadar uzun?\n\nZürafanın dili kırk beş santimetreyi bulur ve onunla dikenli akasya dallarının arasından yaprakları tek tek koparır. Dilin ucu mor-siyah, ağzın içinde kalan dibi pembedir; bir görüşe göre koyu renk, saatlerce güneşte kalan dili yanıktan korur. Zürafa aynı dille burnunu bile temizler.\n\nSence hangisi daha tuhaf: mor dil mi, dille burun temizlemek mi?",
+  "hashtags": [
+   "#zürafa",
+   "#hayvanlar",
+   "#vahşidoğa",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "zürafa",
+   "zürafa dili",
+   "zürafanın dili",
+   "zürafa dili neden mor",
+   "zürafa dili kaç cm",
+   "mor dil",
+   "siyah dil",
+   "zürafa nasıl beslenir",
+   "akasya",
+   "uzun dilli hayvanlar",
+   "zürafa burnu",
+   "afrika hayvanları",
+   "savana",
+   "vahşi doğa",
+   "hayvan belgeseli",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilgi",
+   "bilim",
+   "merak",
+   "giraffe",
+   "giraffe tongue"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why is a giraffe's tongue purple-black? 🦒",
+    "description": "A giraffe's tongue can reach about 45 cm, long enough to pluck leaves from between acacia thorns. The tip is purple-black while the base is pink, and a leading idea is that the dark pigment protects it from sunburn."
+   },
+   "es": {
+    "title": "¿Por qué la lengua de la jirafa es negra y morada? 🦒",
+    "description": "La lengua de una jirafa puede medir unos 45 cm y le sirve para arrancar hojas entre las espinas de la acacia. La punta es negro violácea y la base, rosada; una de las explicaciones es que el pigmento la protege de las quemaduras solares."
+   },
+   "pt": {
+    "title": "Por que a língua da girafa é roxo-escura? 🦒",
+    "description": "A língua da girafa chega a uns 45 cm e serve para arrancar folhas entre os espinhos da acácia. A ponta é roxo-escura e a base é rosada; uma das hipóteses é que o pigmento escuro a proteja das queimaduras de sol."
+   },
+   "de": {
+    "title": "Warum ist die Zunge der Giraffe lila-schwarz? 🦒",
+    "description": "Die Zunge einer Giraffe wird rund 45 cm lang, lang genug, um Blätter zwischen Akaziendornen zu zupfen. Die Spitze ist lila-schwarz, der Ansatz rosa. Eine gängige Erklärung: Das dunkle Pigment schützt vor Sonnenbrand."
+   },
+   "fr": {
+    "title": "Pourquoi la langue de la girafe est-elle violet foncé ? 🦒",
+    "description": "La langue d'une girafe peut atteindre environ 45 cm, de quoi cueillir les feuilles entre les épines d'acacia. Le bout est violet-noir et la base rose : selon une hypothèse, ce pigment la protège des coups de soleil."
+   },
+   "it": {
+    "title": "Perché la lingua della giraffa è viola scuro? 🦒",
+    "description": "La lingua della giraffa arriva a circa 45 cm e le serve per strappare le foglie tra le spine dell'acacia. La punta è viola-nera, la base rosa: secondo un'ipotesi il pigmento scuro la protegge dalle scottature."
+   },
+   "ru": {
+    "title": "Почему у жирафа фиолетово-чёрный язык? 🦒",
+    "description": "Язык жирафа достигает примерно 45 см, им он срывает листья между колючками акации. Кончик языка фиолетово-чёрный, а основание розовое; по одной из версий, тёмный пигмент защищает его от солнечных ожогов."
+   },
+   "ar": {
+    "title": "لماذا لسان الزرافة أرجواني داكن؟ 🦒",
+    "description": "يصل طول لسان الزرافة إلى نحو 45 سم، وبه تقطف الأوراق من بين أشواك السنط. طرفه أرجواني داكن وقاعدته وردية، ووفق إحدى الفرضيات يحميه اللون الداكن من حروق الشمس."
+   },
+   "hi": {
+    "title": "जिराफ की जीभ बैंगनी-काली क्यों होती है? 🦒",
+    "description": "जिराफ की जीभ लगभग 45 सेमी तक लंबी हो सकती है, जिससे वह बबूल के काँटों के बीच से पत्तियाँ तोड़ लेता है। जीभ का सिरा बैंगनी-काला और पिछला हिस्सा गुलाबी होता है; एक मत के अनुसार गहरा रंग उसे धूप से जलने से बचाता है।"
+   },
+   "id": {
+    "title": "Kenapa lidah jerapah berwarna ungu kehitaman? 🦒",
+    "description": "Lidah jerapah bisa mencapai sekitar 45 cm, cukup panjang untuk memetik daun di sela duri akasia. Ujungnya ungu kehitaman dan pangkalnya merah muda; salah satu dugaan, pigmen gelap itu melindunginya dari sengatan matahari."
+   },
+   "ja": {
+    "title": "キリンの舌はなぜ紫がかった黒なの？ 🦒",
+    "description": "キリンの舌は約45cmにもなり、アカシアのトゲの間から葉を器用にむしり取ります。先端は紫がかった黒で、根元はピンク色。暗い色は日焼けを防ぐためだという説があります。"
+   },
+   "ko": {
+    "title": "기린 혀는 왜 보랏빛 검은색일까? 🦒",
+    "description": "기린의 혀는 약 45cm에 달해 아카시아 가시 사이의 잎을 뜯어 먹을 수 있습니다. 혀끝은 보랏빛 검은색이고 안쪽은 분홍색인데, 어두운 색소가 햇볕 화상을 막아 준다는 설이 있습니다."
+   },
+   "pl": {
+    "title": "Dlaczego żyrafa ma fioletowo-czarny język? 🦒",
+    "description": "Język żyrafy osiąga około 45 cm i pozwala zrywać liście spomiędzy kolców akacji. Czubek jest fioletowo-czarny, a nasada różowa; według jednej z hipotez ciemny barwnik chroni go przed oparzeniem słonecznym."
+   },
+   "nl": {
+    "title": "Waarom is de tong van een giraf paarszwart? 🦒",
+    "description": "De tong van een giraf wordt zo'n 45 cm lang, genoeg om bladeren tussen acaciadoorns weg te plukken. De punt is paarszwart en de basis roze; volgens een gangbare verklaring beschermt het donkere pigment tegen zonnebrand."
+   },
+   "uk": {
+    "title": "Чому в жирафа фіолетово-чорний язик? 🦒",
+    "description": "Язик жирафа сягає приблизно 45 см, ним він зриває листя між колючками акації. Кінчик фіолетово-чорний, а основа рожева; за однією з версій, темний пігмент захищає язик від сонячних опіків."
+   },
+   "vi": {
+    "title": "Vì sao lưỡi hươu cao cổ có màu tím đen? 🦒",
+    "description": "Lưỡi hươu cao cổ dài tới khoảng 45 cm, đủ để tuốt lá giữa những gai cây keo. Đầu lưỡi màu tím đen còn gốc lưỡi màu hồng; một giả thuyết cho rằng sắc tố sẫm giúp lưỡi không bị cháy nắng."
+   },
+   "az": {
+    "title": "Zürafənin dili niyə bənövşəyi-qaradır? 🦒",
+    "description": "Zürafənin dili təxminən 45 sm-ə çatır və onunla akasiya tikanlarının arasından yarpaqları qoparır. Dilin ucu bənövşəyi-qara, dibi isə çəhrayıdır; bir fikrə görə tünd rəng dili günəş yanığından qoruyur."
+   },
+   "ro": {
+    "title": "De ce are girafa limba mov-negricioasă? 🦒",
+    "description": "Limba girafei ajunge la aproximativ 45 cm și o folosește ca să smulgă frunze dintre spinii salcâmului african. Vârful e mov-negricios, iar baza roz; după o ipoteză, pigmentul închis o apără de arsurile solare."
+   }
+  }
+ }
+}

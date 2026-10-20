@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0013",
+ "topic": "Köpekler renkleri nasıl görür?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog playing ball grass",
+ "script": {
+  "title": "Köpekler renk körü değil, ama kırmızıyı görmez 🐶",
+  "hook_text": "KÖPEĞİN GÖZÜNDE DÜNYA HANGİ RENK?",
+  "scenes": [
+   {
+    "text": "Bu köpek kırmızıyı göremiyor, ama renk körü değil.",
+    "visual": "happy dog looking at the camera on green grass",
+    "stock_query": "dog grass",
+    "source": "stock",
+    "callout": "RENK KÖRÜ DEĞİL"
+   },
+   {
+    "text": "Uzun yıllar köpeklerin dünyayı siyah beyaz gördüğü sanıldı.",
+    "visual": "black and white shot of a dog sitting and looking around",
+    "stock_query": "dog sitting",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa gözlerinde renk algılayan iki tür koni hücresi var; sende üç tür.",
+    "visual": "extreme close up of a dog's eye",
+    "stock_query": "dog eye",
+    "source": "stock",
+    "callout": "2 KONİ"
+   },
+   {
+    "text": "Maviyi ve sarıyı görürler, kırmızıyla yeşili ise ayırt edemezler.",
+    "visual": "dog running in a park with a blue ball in its mouth",
+    "stock_query": "dog ball",
+    "source": "stock",
+    "callout": "MAVİ VE SARI"
+   },
+   {
+    "text": "Yeşil çimde kırmızı top onun için kaybolur; ona mavi ya da sarı top at.",
+    "visual": "dog jumping to catch a yellow ball in a park",
+    "stock_query": "dog playing",
+    "source": "stock",
+    "callout": "MAVİ TOP AT"
+   }
+  ],
+  "description": "Köpekler renk körü değildir; iki tür koni hücreleriyle maviyi ve sarıyı görürler ama kırmızıyla yeşili ayırt edemezler.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpek gözü",
+   "renk körü",
+   "köpek oyuncağı",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "evcil hayvanlar"
+  ],
+  "pinned_comment": "Sence köpeğin hangi topu daha kolay bulur: kırmızıyı mı, maviyi mi?",
+  "en_title": "Dogs aren't colorblind, but they can't see red 🐶",
+  "en_description": "Dogs have two types of color cones instead of three. They see blue and yellow but can't tell red from green.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler renkleri nasıl görür, renk körü mü?\n\nKöpekler renk körü değildir ama kırmızıyı göremez. Gözlerinde renk algılayan iki tür koni hücresi vardır, insanda ise üç tür; bu yüzden maviyi ve sarıyı görürler, kırmızıyla yeşili ayırt edemezler. Yeşil çimde kırmızı top onlar için kaybolur, mavi ya da sarı top çok daha kolay seçilir.\n\nSence köpeğin hangi topu daha kolay bulur: kırmızıyı mı, maviyi mi?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpekler renkleri nasıl görür",
+   "köpekler renk körü mü",
+   "köpek gözü",
+   "köpek görüşü",
+   "köpekler hangi renkleri görür",
+   "köpek renk görme",
+   "koni hücresi",
+   "renk körlüğü",
+   "köpek oyuncağı",
+   "köpek topu",
+   "mavi top",
+   "köpek eğitimi",
+   "köpek bilgileri",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "dog",
+   "dog vision"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Dogs aren't colorblind, but they can't see red 🐶",
+    "description": "Dogs have two types of color-sensing cones; humans have three. They see blues and yellows but can't tell red from green, so a red ball on green grass practically disappears. Throw a blue or yellow one instead."
+   },
+   "es": {
+    "title": "Los perros no ven en blanco y negro, pero no distinguen el rojo 🐶",
+    "description": "Los perros tienen dos tipos de conos para el color; nosotros, tres. Ven azules y amarillos, pero no distinguen el rojo del verde, así que una pelota roja en el césped casi desaparece. Mejor lánzale una azul o amarilla."
+   },
+   "pt": {
+    "title": "Cachorro não enxerga em preto e branco, mas não vê o vermelho 🐶",
+    "description": "Os cães têm dois tipos de cones para cor; nós temos três. Eles veem azul e amarelo, mas não distinguem vermelho de verde, então uma bolinha vermelha na grama quase some. Jogue uma azul ou amarela."
+   },
+   "de": {
+    "title": "Hunde sehen Farben, nur kein Rot 🐶",
+    "description": "Hunde haben zwei Arten von Farbzapfen, wir Menschen drei. Sie sehen Blau und Gelb, können Rot und Grün aber nicht unterscheiden: Ein roter Ball im grünen Gras verschwindet für sie fast. Wirf lieber einen blauen oder gelben."
+   },
+   "fr": {
+    "title": "Ton chien voit les couleurs, sauf le rouge 🐶",
+    "description": "Les chiens ont deux types de cônes pour les couleurs, nous en avons trois. Ils voient le bleu et le jaune mais confondent le rouge et le vert : une balle rouge dans l'herbe disparaît presque. Lance-lui plutôt une balle bleue ou jaune."
+   },
+   "it": {
+    "title": "I cani vedono i colori, ma non il rosso 🐶",
+    "description": "I cani hanno due tipi di coni per i colori, noi ne abbiamo tre. Vedono il blu e il giallo ma non distinguono il rosso dal verde: una pallina rossa sul prato quasi sparisce. Meglio lanciargliene una blu o gialla."
+   },
+   "ru": {
+    "title": "Собаки видят цвета, но не красный 🐶",
+    "description": "У собак два типа колбочек, различающих цвет, а у человека три. Они видят синий и жёлтый, но путают красный с зелёным, поэтому красный мяч на траве для них почти теряется. Лучше бросьте синий или жёлтый."
+   },
+   "ar": {
+    "title": "الكلاب ترى الألوان لكنها لا ترى الأحمر 🐶",
+    "description": "لدى الكلاب نوعان من المخاريط التي تميّز الألوان، بينما لدى الإنسان ثلاثة. ترى الأزرق والأصفر لكنها لا تفرّق بين الأحمر والأخضر، لذلك تكاد الكرة الحمراء تختفي على العشب. ارمِ لكلبك كرة زرقاء أو صفراء."
+   },
+   "hi": {
+    "title": "कुत्ते रंग देखते हैं, बस लाल नहीं 🐶",
+    "description": "कुत्तों की आँखों में रंग पहचानने वाले दो तरह के कोन होते हैं, जबकि इंसानों में तीन। वे नीला और पीला देख लेते हैं, पर लाल और हरे में फर्क नहीं कर पाते, इसलिए हरी घास पर लाल गेंद लगभग गायब हो जाती है। नीली या पीली गेंद फेंकिए।"
+   },
+   "id": {
+    "title": "Anjing tidak buta warna, tapi tak bisa melihat merah 🐶",
+    "description": "Anjing punya dua jenis sel kerucut pendeteksi warna, sedangkan manusia tiga. Mereka melihat biru dan kuning tapi tak bisa membedakan merah dan hijau, jadi bola merah di rumput hampir tak terlihat. Lemparkan bola biru atau kuning saja."
+   },
+   "ja": {
+    "title": "犬は色が見えるけど、赤は見分けられない 🐶",
+    "description": "犬の目には色を感じる錐体細胞が2種類しかなく、人間は3種類あります。青と黄色は見えますが、赤と緑の区別がつかないので、芝生の上の赤いボールはほぼ見えなくなります。投げるなら青か黄色のボールを。"
+   },
+   "ko": {
+    "title": "개는 흑백으로 보지 않지만 빨간색은 못 본다 🐶",
+    "description": "개의 눈에는 색을 감지하는 원뿔세포가 두 종류뿐이고 사람은 세 종류입니다. 파란색과 노란색은 보지만 빨간색과 초록색은 구별하지 못해서, 잔디 위 빨간 공은 거의 보이지 않습니다. 파란색이나 노란색 공을 던져 주세요."
+   },
+   "pl": {
+    "title": "Psy widzą kolory, tylko nie czerwony 🐶",
+    "description": "Psy mają dwa rodzaje czopków rozróżniających barwy, a ludzie trzy. Widzą niebieski i żółty, ale nie odróżniają czerwonego od zielonego, więc czerwona piłka na trawie prawie znika. Rzuć psu niebieską albo żółtą."
+   },
+   "nl": {
+    "title": "Honden zien kleuren, alleen geen rood 🐶",
+    "description": "Honden hebben twee soorten kleurgevoelige kegeltjes, mensen drie. Ze zien blauw en geel, maar kunnen rood en groen niet uit elkaar houden, dus een rode bal in het gras valt bijna weg. Gooi liever een blauwe of gele."
+   },
+   "uk": {
+    "title": "Собаки бачать кольори, але не червоний 🐶",
+    "description": "У собак два типи колбочок, що розрізняють колір, а в людини три. Вони бачать синій і жовтий, але не відрізняють червоний від зеленого, тож червоний м'яч на траві для них майже зникає. Краще киньте синій або жовтий."
+   },
+   "vi": {
+    "title": "Chó không nhìn thế giới đen trắng, nhưng không thấy màu đỏ 🐶",
+    "description": "Mắt chó chỉ có hai loại tế bào nón nhận biết màu, còn người có ba. Chó thấy màu xanh dương và vàng nhưng không phân biệt được đỏ với xanh lá, nên quả bóng đỏ trên cỏ gần như biến mất. Hãy ném bóng xanh dương hoặc vàng."
+   },
+   "az": {
+    "title": "İtlər rəngləri görür, amma qırmızını yox 🐶",
+    "description": "İtlərin gözündə rəngi seçən iki növ kolbacıq var, insanda isə üç. Onlar mavini və sarını görür, amma qırmızı ilə yaşılı ayırd edə bilmir, ona görə yaşıl otda qırmızı top az qala yox olur. İtinə mavi və ya sarı top at."
+   },
+   "ro": {
+    "title": "Câinii văd culori, dar nu și roșul 🐶",
+    "description": "Câinii au două tipuri de conuri care percep culoarea, iar oamenii trei. Văd albastru și galben, dar nu deosebesc roșul de verde, așa că o minge roșie în iarbă aproape dispare. Aruncă-i mai bine una albastră sau galbenă."
+   }
+  }
+ }
+}

@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0011",
+ "topic": "Kediler tatlının tadını alabilir mi?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat eating close up",
+ "script": {
+  "title": "Kediler tatlının tadını hiç alamaz 🐱",
+  "hook_text": "KEDİ ŞEKERİ NEDEN ANLAMAZ?",
+  "scenes": [
+   {
+    "text": "Bu kedi dünyadaki hiçbir tatlının tadını alamaz.",
+    "visual": "close up of a tabby cat sniffing food in a bowl, soft indoor light",
+    "stock_query": "cat eating",
+    "source": "stock",
+    "callout": "TATLI YOK"
+   },
+   {
+    "text": "Tatlıyı algılayan alıcı iki parçadan oluşur ve kedide bir parçanın geni bozuk.",
+    "visual": "cat licking its lips after eating, close up",
+    "stock_query": "cat licking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "O genden tam iki yüz kırk yedi baz çifti silinmiş.",
+    "visual": "close up of a cat face with whiskers, shallow depth of field",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": "247 BAZ EKSİK"
+   },
+   {
+    "text": "Aynı kusur kaplanlarda ve çitalarda da bulundu.",
+    "visual": "tiger walking through tall grass, side view",
+    "stock_query": "tiger walking",
+    "source": "stock",
+    "callout": "KAPLANDA DA"
+   },
+   {
+    "text": "Kedin pastana uzanıyorsa aradığı şey tat değil, büyük ihtimalle yağı ya da kıvamı.",
+    "visual": "curious cat sniffing a plate on a kitchen table",
+    "stock_query": "cat table",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedilerde tatlıyı algılayan alıcının bir parçasını yapan gen bozuktur; bu yüzden şekerin tatlılığını hissetmezler.",
+  "tags": [
+   "kedi",
+   "kediler",
+   "tatlı tadı",
+   "kedi tat alma",
+   "kedi beslenmesi",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence kedin pastaya neden uzanıyor: kokusu için mi, yağı için mi?",
+  "en_title": "Cats can't taste sweetness at all 🐱",
+  "en_description": "Cats carry a broken copy of one of the two genes behind the sweet taste receptor, so sugar tastes like nothing to them.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediler tatlının tadını alabilir mi?\n\nAlamaz: tatlıyı algılayan alıcı iki parçadan oluşur ve kedide bu parçalardan birini yapan genden iki yüz kırk yedi baz çifti silinmiştir. Aynı kusur kaplanlarda ve çitalarda da bulundu. Kedin pastana uzanıyorsa aradığı şey büyük ihtimalle yağı ya da kıvamıdır, tatlılığı değil.\n\nSence kedin pastaya neden uzanıyor: kokusu için mi, yağı için mi?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi",
+   "kediler",
+   "kediler tatlı tadı alır mı",
+   "kedi tatlı yer mi",
+   "kedi şeker",
+   "kedi tat alma",
+   "kedilerin tat alması",
+   "tatlı tadı",
+   "tat reseptörü",
+   "kedi geni",
+   "kedi pasta",
+   "kedi dondurma yer mi",
+   "kedi beslenmesi",
+   "kaplan",
+   "çita",
+   "kedi bilgileri",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "biyoloji",
+   "merak",
+   "cat",
+   "cats sweet taste"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Cats can't taste sweetness at all 🐱",
+    "description": "The sweet taste receptor is built from two parts, and in cats the gene for one of them is broken: 247 base pairs are missing. Tigers and cheetahs share the same defect, so if your cat goes for your cake, it's most likely after the fat or the texture, not the sugar."
+   },
+   "es": {
+    "title": "Los gatos no pueden saborear lo dulce 🐱",
+    "description": "El receptor del sabor dulce tiene dos piezas y, en los gatos, el gen de una de ellas está roto: le faltan 247 pares de bases. Tigres y guepardos tienen el mismo defecto, así que si tu gato va por tu pastel, lo más probable es que busque la grasa o la textura, no el azúcar."
+   },
+   "pt": {
+    "title": "Gatos não sentem o gosto doce 🐱",
+    "description": "O receptor do sabor doce tem duas partes e, nos gatos, o gene de uma delas está quebrado: faltam 247 pares de bases. Tigres e guepardos têm o mesmo defeito, então se o seu gato vai atrás do seu bolo, provavelmente quer a gordura ou a textura, não o açúcar."
+   },
+   "de": {
+    "title": "Katzen können Süßes gar nicht schmecken 🐱",
+    "description": "Der Rezeptor für süßen Geschmack besteht aus zwei Teilen, und bei Katzen ist das Gen für einen davon kaputt: Ihm fehlen 247 Basenpaare. Tiger und Geparden haben denselben Defekt. Wenn deine Katze an deinen Kuchen will, geht es ihr wohl um Fett oder Konsistenz, nicht um Zucker."
+   },
+   "fr": {
+    "title": "Les chats ne sentent pas du tout le goût sucré 🐱",
+    "description": "Le récepteur du goût sucré est formé de deux pièces et, chez le chat, le gène de l'une d'elles est cassé : il lui manque 247 paires de bases. Les tigres et les guépards ont le même défaut. Si ton chat lorgne ton gâteau, c'est sans doute pour le gras ou la texture, pas pour le sucre."
+   },
+   "it": {
+    "title": "I gatti non sentono il sapore dolce 🐱",
+    "description": "Il recettore del dolce è fatto di due parti e nei gatti il gene di una delle due è rotto: mancano 247 coppie di basi. Tigri e ghepardi hanno lo stesso difetto, quindi se il tuo gatto punta la tua torta probabilmente cerca il grasso o la consistenza, non lo zucchero."
+   },
+   "ru": {
+    "title": "Кошки совсем не чувствуют сладкого 🐱",
+    "description": "Рецептор сладкого вкуса состоит из двух частей, и у кошек ген одной из них сломан: в нём не хватает 247 пар оснований. Тот же дефект нашли у тигров и гепардов, так что если кошка тянется к торту, её скорее привлекает жир или текстура, а не сахар."
+   },
+   "ar": {
+    "title": "القطط لا تشعر بالطعم الحلو إطلاقًا 🐱",
+    "description": "يتكوّن مستقبل الطعم الحلو من جزأين، وعند القطط يكون الجين المسؤول عن أحدهما معطّلًا إذ تنقصه 247 زوجًا قاعديًا. والعيب نفسه موجود عند النمور والفهود، فإن مدّ قطك رأسه نحو قطعة الكعك فهو على الأرجح يبحث عن الدهن أو القوام لا عن السكر."
+   },
+   "hi": {
+    "title": "बिल्लियाँ मीठे का स्वाद बिल्कुल नहीं ले पातीं 🐱",
+    "description": "मीठा स्वाद पहचानने वाला रिसेप्टर दो हिस्सों से बनता है, और बिल्लियों में इनमें से एक का जीन खराब होता है: उसमें 247 बेस पेयर गायब हैं। बाघ और चीते में भी यही कमी मिली है, इसलिए अगर आपकी बिल्ली केक की ओर लपकती है, तो उसे शायद चीनी नहीं, चिकनाई या बनावट खींचती है।"
+   },
+   "id": {
+    "title": "Kucing sama sekali tidak bisa merasakan manis 🐱",
+    "description": "Reseptor rasa manis terdiri dari dua bagian, dan pada kucing gen untuk salah satunya rusak: hilang 247 pasang basa. Harimau dan cheetah punya cacat yang sama, jadi kalau kucingmu mengincar kuemu, kemungkinan besar yang dicarinya lemak atau teksturnya, bukan gulanya."
+   },
+   "ja": {
+    "title": "ネコは甘さをまったく感じない 🐱",
+    "description": "甘味を感じる受容体は2つの部品でできていますが、ネコではそのうち1つの遺伝子が壊れていて、247塩基対が欠けています。トラやチーターにも同じ欠損があり、ネコがケーキに寄ってくるのは砂糖ではなく脂肪や食感が目当てだと考えられています。"
+   },
+   "ko": {
+    "title": "고양이는 단맛을 전혀 못 느낀다 🐱",
+    "description": "단맛 수용체는 두 부분으로 이루어지는데, 고양이는 그중 하나를 만드는 유전자가 망가져 염기쌍 247개가 빠져 있습니다. 호랑이와 치타도 같은 결함이 있어서, 고양이가 케이크에 다가온다면 설탕이 아니라 지방이나 식감 때문일 가능성이 큽니다."
+   },
+   "pl": {
+    "title": "Koty w ogóle nie czują słodkiego smaku 🐱",
+    "description": "Receptor słodkiego smaku składa się z dwóch części, a u kotów gen jednej z nich jest uszkodzony: brakuje w nim 247 par zasad. Tygrysy i gepardy mają tę samą wadę, więc jeśli twój kot sięga po ciasto, kusi go raczej tłuszcz albo konsystencja, a nie cukier."
+   },
+   "nl": {
+    "title": "Katten proeven helemaal niets zoets 🐱",
+    "description": "De receptor voor zoete smaak bestaat uit twee delen, en bij katten is het gen voor één ervan kapot: er ontbreken 247 baseparen. Tijgers en jachtluipaarden hebben hetzelfde defect, dus als je kat op je taart afkomt, gaat het waarschijnlijk om het vet of de textuur, niet om de suiker."
+   },
+   "uk": {
+    "title": "Коти зовсім не відчувають солодкого 🐱",
+    "description": "Рецептор солодкого смаку складається з двох частин, і в котів ген однієї з них зламаний: у ньому бракує 247 пар основ. Такий самий дефект мають тигри й гепарди, тож якщо кіт тягнеться до торта, його, найімовірніше, вабить жир або текстура, а не цукор."
+   },
+   "vi": {
+    "title": "Mèo hoàn toàn không cảm nhận được vị ngọt 🐱",
+    "description": "Thụ thể vị ngọt gồm hai phần, và ở mèo, gen tạo ra một trong hai phần đó bị hỏng vì thiếu mất 247 cặp base. Hổ và báo săn cũng mang lỗi này, nên nếu mèo nhà bạn sà vào miếng bánh, nhiều khả năng thứ nó thích là chất béo hay độ mềm chứ không phải đường."
+   },
+   "az": {
+    "title": "Pişiklər şirin dadı heç hiss etmir 🐱",
+    "description": "Şirin dadı tanıyan reseptor iki hissədən ibarətdir və pişiklərdə onlardan birini yaradan gen xarabdır: ondan 247 cüt əsas silinib. Eyni qüsur pələnglərdə və gepardlarda da tapılıb, ona görə pişiyin tortuna uzanırsa, onu çox güman ki şəkər yox, yağ və ya tekstura cəlb edir."
+   },
+   "ro": {
+    "title": "Pisicile nu simt deloc gustul dulce 🐱",
+    "description": "Receptorul pentru gustul dulce are două părți, iar la pisici gena uneia dintre ele e defectă: îi lipsesc 247 de perechi de baze. Tigrii și ghepardii au același defect, așa că, dacă pisica ta se întinde după prăjitură, cel mai probabil o atrage grăsimea sau textura, nu zahărul."
+   }
+  }
+ }
+}

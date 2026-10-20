@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0014",
+ "topic": "Baykuşlar nasıl sessiz uçar?",
+ "kategori": "hayvan",
+ "subject": [
+  "owl"
+ ],
+ "stock_hint": "owl flying",
+ "script": {
+  "title": "Baykuşlar neden neredeyse sessiz uçar? 🦉",
+  "hook_text": "BU SESSİZLİĞİN SIRRI NE?",
+  "scenes": [
+   {
+    "text": "Bu baykuş kanat çırpar ama neredeyse duyulmaz.",
+    "visual": "barn owl flying low over a meadow at dusk, slow motion",
+    "stock_query": "owl flying",
+    "source": "stock",
+    "callout": "SESSİZ UÇUŞ"
+   },
+   {
+    "text": "Uçan bir kuşun sesinin önemli kısmı, kanat kenarındaki hava girdaplarından gelir.",
+    "visual": "owl flapping its wings in flight, close up",
+    "stock_query": "owl flight",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Baykuşun kanat tüylerinin ön kenarı tarak gibi dişli.",
+    "visual": "close up of owl wing feathers spread open",
+    "stock_query": "owl feathers",
+    "source": "stock",
+    "callout": "TARAK KENAR"
+   },
+   {
+    "text": "Arka kenarı yumuşak saçaklı, üstü kadife gibi; hava daha az girdap yapıyor.",
+    "visual": "owl spreading its wings on a branch",
+    "stock_query": "owl wings",
+    "source": "stock",
+    "callout": "KADİFE TÜY"
+   },
+   {
+    "text": "Fare onun geldiğini duymaz, baykuş ise uçarken farenin tıkırtısını duyar.",
+    "visual": "owl swooping down into the grass to hunt",
+    "stock_query": "owl hunting",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Baykuşun kanat tüylerinin ön kenarı tarak gibi dişli, arka kenarı saçaklı, üstü kadife gibidir; bu yüzden neredeyse sessiz uçar.",
+  "tags": [
+   "baykuş",
+   "baykuşlar",
+   "sessiz uçuş",
+   "baykuş kanadı",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "vahşi doğa"
+  ],
+  "pinned_comment": "Sence baykuşun en büyük silahı hangisi: sessiz kanatları mı, keskin kulakları mı?",
+  "en_title": "Why do owls fly almost silently? 🦉",
+  "en_description": "Owl flight feathers have a comb-like leading edge, a soft fringed trailing edge and a velvety surface that quiet the air around the wing.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Baykuşlar nasıl bu kadar sessiz uçar?\n\nUçan bir kuşun sesinin önemli kısmı kanat kenarındaki hava girdaplarından gelir. Baykuşun kanat tüylerinin ön kenarı tarak gibi dişli, arka kenarı yumuşak saçaklı, üstü kadife gibidir; bu yüzden hava daha az girdap yapar. Fare baykuşun geldiğini duymaz, baykuş ise uçarken farenin tıkırtısını duyar.\n\nSence baykuşun en büyük silahı hangisi: sessiz kanatları mı, keskin kulakları mı?",
+  "hashtags": [
+   "#baykuş",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "baykuş",
+   "baykuşlar",
+   "baykuş sessiz uçuş",
+   "baykuş nasıl sessiz uçar",
+   "baykuş kanadı",
+   "baykuş tüyü",
+   "peçeli baykuş",
+   "sessiz uçuş",
+   "baykuş avlanması",
+   "gece avcısı",
+   "yırtıcı kuşlar",
+   "kuşlar",
+   "kuş tüyü",
+   "kanat",
+   "vahşi doğa",
+   "hayvan belgeseli",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "owl",
+   "silent flight"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why do owls fly almost silently? 🦉",
+    "description": "Much of a flying bird's noise comes from air swirling off the edges of its wings. An owl's flight feathers have a comb-like leading edge, a soft fringed trailing edge and a velvety surface, so a mouse doesn't hear it coming while the owl can still hear the mouse."
+   },
+   "es": {
+    "title": "¿Por qué los búhos vuelan casi en silencio? 🦉",
+    "description": "Buena parte del ruido de un ave al volar viene de los remolinos de aire en el borde de las alas. Las plumas del búho tienen un borde delantero como un peine, un borde trasero con flecos suaves y una superficie aterciopelada: el ratón no lo oye llegar, pero el búho sí oye al ratón."
+   },
+   "pt": {
+    "title": "Por que as corujas voam quase em silêncio? 🦉",
+    "description": "Boa parte do barulho de um pássaro voando vem dos redemoinhos de ar nas bordas das asas. As penas da coruja têm a borda da frente serrilhada como um pente, a de trás com franjas macias e a superfície aveludada: o rato não ouve a coruja chegar, mas ela ouve o rato."
+   },
+   "de": {
+    "title": "Warum fliegen Eulen fast lautlos? 🦉",
+    "description": "Ein großer Teil des Fluggeräuschs entsteht durch Luftwirbel an den Flügelkanten. Eulenfedern haben eine kammartige Vorderkante, eine weiche, ausgefranste Hinterkante und eine samtige Oberfläche. Die Maus hört die Eule nicht kommen, die Eule hört aber die Maus."
+   },
+   "fr": {
+    "title": "Pourquoi les chouettes volent presque sans bruit ? 🦉",
+    "description": "Une bonne partie du bruit d'un oiseau en vol vient des tourbillons d'air au bord des ailes. Les plumes de la chouette ont un bord avant dentelé comme un peigne, un bord arrière frangé et une surface veloutée : la souris ne l'entend pas arriver, mais la chouette, elle, entend la souris."
+   },
+   "it": {
+    "title": "Perché i gufi volano quasi in silenzio? 🦉",
+    "description": "Gran parte del rumore di un uccello in volo nasce dai vortici d'aria sul bordo delle ali. Le penne del gufo hanno il bordo anteriore dentellato come un pettine, quello posteriore sfrangiato e una superficie vellutata: il topo non lo sente arrivare, mentre il gufo sente il topo."
+   },
+   "ru": {
+    "title": "Почему совы летают почти бесшумно? 🦉",
+    "description": "Значительная часть шума в полёте возникает из-за завихрений воздуха на краях крыльев. У маховых перьев совы передний край зазубрен, как гребень, задний мягко бахромчатый, а поверхность бархатистая: мышь не слышит сову, а сова слышит мышь."
+   },
+   "ar": {
+    "title": "لماذا تطير البومة بصمت تقريبًا؟ 🦉",
+    "description": "جزء كبير من صوت الطائر أثناء الطيران يأتي من دوامات الهواء عند حواف الجناحين. ريش البومة حافته الأمامية مسنّنة كالمشط، والخلفية ناعمة مهدّبة، وسطحه مخملي، فلا يسمع الفأر قدومها بينما تسمعه هي."
+   },
+   "hi": {
+    "title": "उल्लू लगभग बिना आवाज़ किए क्यों उड़ता है? 🦉",
+    "description": "उड़ते पक्षी की आवाज़ का बड़ा हिस्सा पंखों के किनारों पर बनने वाले हवा के भँवरों से आता है। उल्लू के पंखों का अगला किनारा कंघी जैसा दाँतेदार, पिछला किनारा मुलायम झालरदार और ऊपरी सतह मखमली होती है, इसलिए चूहा उसे आते नहीं सुन पाता, पर उल्लू चूहे को सुन लेता है।"
+   },
+   "id": {
+    "title": "Kenapa burung hantu terbang hampir tanpa suara? 🦉",
+    "description": "Banyak suara burung saat terbang berasal dari pusaran udara di tepi sayap. Bulu burung hantu punya tepi depan bergerigi seperti sisir, tepi belakang berumbai lembut, dan permukaan seperti beludru, sehingga tikus tak mendengarnya datang, sementara burung hantu tetap bisa mendengar tikus."
+   },
+   "ja": {
+    "title": "フクロウはなぜほとんど音を立てずに飛べるの？ 🦉",
+    "description": "鳥が飛ぶときの音の多くは、翼のふちにできる空気の渦から生まれます。フクロウの羽は前のふちがくしのようにギザギザで、後ろのふちは柔らかな房状、表面はビロードのよう。だからネズミは近づく音に気づかず、フクロウはネズミの音を聞き取れます。"
+   },
+   "ko": {
+    "title": "올빼미는 왜 거의 소리 없이 날까? 🦉",
+    "description": "새가 날 때 나는 소리의 상당 부분은 날개 가장자리에서 생기는 공기 소용돌이에서 나옵니다. 올빼미 깃털은 앞쪽 가장자리가 빗처럼 톱니 모양이고, 뒤쪽은 부드러운 술 모양, 표면은 벨벳 같습니다. 그래서 쥐는 다가오는 소리를 못 듣지만 올빼미는 쥐 소리를 듣습니다."
+   },
+   "pl": {
+    "title": "Dlaczego sowy latają prawie bezgłośnie? 🦉",
+    "description": "Spora część hałasu lecącego ptaka bierze się z wirów powietrza na krawędziach skrzydeł. Pióra sowy mają przednią krawędź ząbkowaną jak grzebień, tylną miękko postrzępioną i aksamitną powierzchnię, więc mysz nie słyszy nadlatującej sowy, a sowa słyszy mysz."
+   },
+   "nl": {
+    "title": "Waarom vliegen uilen bijna geruisloos? 🦉",
+    "description": "Een groot deel van het vlieggeluid van een vogel komt van luchtwervels langs de vleugelranden. Uilenveren hebben een kamvormige voorrand, een zachte franjerand achteraan en een fluweelachtig oppervlak: een muis hoort de uil niet aankomen, maar de uil hoort de muis wel."
+   },
+   "uk": {
+    "title": "Чому сови літають майже безшумно? 🦉",
+    "description": "Значна частина шуму в польоті виникає через завихрення повітря на краях крил. У пір'я сови передній край зубчастий, як гребінець, задній м'яко бахромчастий, а поверхня оксамитова: миша не чує сову, а сова чує мишу."
+   },
+   "vi": {
+    "title": "Vì sao cú bay gần như không phát ra tiếng động? 🦉",
+    "description": "Một phần đáng kể tiếng ồn khi chim bay đến từ các xoáy khí ở mép cánh. Lông cánh cú có mép trước khía răng như chiếc lược, mép sau có tua mềm và bề mặt như nhung, nên chuột không nghe thấy cú đến, còn cú vẫn nghe được tiếng chuột."
+   },
+   "az": {
+    "title": "Bayquşlar niyə demək olar ki səssiz uçur? 🦉",
+    "description": "Uçan quşun səsinin xeyli hissəsi qanad kənarlarında yaranan hava burulğanlarından gəlir. Bayquş lələklərinin ön kənarı daraq kimi dişli, arxa kənarı yumşaq saçaqlı, üzü isə məxmər kimidir: siçan bayquşun gəldiyini eşitmir, bayquş isə siçanı eşidir."
+   },
+   "ro": {
+    "title": "De ce zboară bufnițele aproape fără zgomot? 🦉",
+    "description": "O bună parte din zgomotul unei păsări în zbor vine din vârtejurile de aer de la marginea aripilor. Penele bufniței au marginea din față zimțată ca un pieptene, cea din spate franjurată și moale, iar suprafața catifelată, așa că șoarecele n-o aude venind, dar bufnița aude șoarecele."
+   }
+  }
+ }
+}
