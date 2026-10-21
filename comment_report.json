@@ -1,22 +1,22 @@
 {
- "started": "2026-10-21T16:45:14+00:00",
+ "started": "2026-10-21T18:45:17+00:00",
  "deneme": false,
- "threads": 97,
- "reply_threads_read": 1,
+ "threads": 99,
+ "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 2,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxtCzxUHP75RgnWRI14AaABAg.AcE3b95S1iXAcEGoLhGpks",
-   "kind": "followup",
-   "video": "ZziBlIDkwWc",
-   "comment": "​@zirveninkanunurahatladı baya oldu 1 ay fln",
-   "reply": "@Miiawster Ne güzel! İçinin rahatlamasına sevindik, bizim de amacımız buydu. 😊",
+   "id": "UgxbiG-8m6thpwn1tNx4AaABAg",
+   "kind": "comment",
+   "video": "f3V2BKqQYbI",
+   "comment": "Bunlar Fenerbahçeli mi",
+   "reply": "Maviyi ve sarıyı görebildikleri kesin, gerisi taraftarın kalbinde! 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-21T16:45:18+00:00"
+ "finished": "2026-10-21T18:45:23+00:00"
 }
