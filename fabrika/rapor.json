@@ -1,18 +1,71 @@
 {
- "started": "2026-10-21T13:09:01+00:00",
- "mod": "igbolum",
- "gate": "instagram: o0006",
+ "started": "2026-10-21T14:08:50+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
- "chars": 362,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "17993517264026442",
-  "url": "https://www.instagram.com/reel/Dewe4QCEbjZ/",
-  "at": 1792588230.4380558
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "39",
+  "videos": "23"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dewe4QCEbjZ/"
+ "credits_before": [
+  13295,
+  613902
  ],
- "finished": "2026-10-21T13:10:30+00:00"
+ "kuyruk": {
+  "dosya": "20261021-1-o0008.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "o0008",
+  "series": "Ya Olsaydı?",
+  "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 230,
+ "duration": 16.3,
+ "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
+ "url": "https://youtube.com/shorts/-Ob9VS2V1H4",
+ "recent_status": {
+  "g003": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1212",
+   "reason": null
+  },
+  "o0006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1150",
+   "reason": null
+  },
+  "o0007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "357",
+   "reason": null
+  },
+  "n005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "444",
+   "reason": null
+  },
+  "o0008": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  13351,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261021-1-o0008.json Evren yok olup sadece Dünya kalsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-10-21T14:09:30+00:00"
 }

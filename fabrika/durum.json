@@ -356,7 +356,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1016",
+    "views": "1017",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "963",
+    "views": "968",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1303",
+    "views": "1311",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "871",
+    "views": "888",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1086",
+    "views": "1087",
     "reason": null
    }
   },
@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1123",
+    "views": "1124",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1205",
+    "views": "1212",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1146",
+    "views": "1150",
     "reason": null
    }
   },
@@ -626,7 +626,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "318",
+    "views": "357",
     "reason": null
    }
   },
@@ -653,6 +653,36 @@
    "thumbnail": true,
    "at": 1792577298.407814,
    "chars": 362,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "444",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0008",
+   "video_id": "-Ob9VS2V1H4",
+   "url": "https://youtube.com/shorts/-Ob9VS2V1H4",
+   "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Only Earth Were Left in the Universe, What Would Happen to You?",
+    "es": "Si en el universo solo quedara la Tierra, ¿qué te pasaría?",
+    "pt": "Se Só a Terra Restasse no Universo, o Que Aconteceria com Você?",
+    "ar": "لو اختفى الكون ولم تبقَ إلا الأرض، ماذا سيحدث لك؟",
+    "hi": "अगर ब्रह्मांड में सिर्फ़ पृथ्वी बचे, तो आपके साथ क्या होगा?",
+    "id": "Jika Alam Semesta Lenyap dan Hanya Bumi Tersisa, Apa Nasibmu?",
+    "fr": "S'il ne restait que la Terre dans l'univers, que t'arriverait-il ?",
+    "de": "Bliebe nur die Erde im Universum übrig – was würde mit dir passieren?",
+    "ru": "Если бы во Вселенной осталась только Земля, что стало бы с тобой?",
+    "az": "Kainatda Yalnız Yer Qalsaydı, Sənə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792591769.108067,
+   "chars": 230,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -683,7 +713,8 @@
   "g003",
   "o0006",
   "o0007",
-  "n005"
+  "n005",
+  "o0008"
  ],
  "extra": [
   {
@@ -1074,6 +1105,14 @@
    "mod": "igbolum",
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
    "chars": 362
+  },
+  {
+   "finished": "2026-10-21T14:09:30+00:00",
+   "mod": "saatlik",
+   "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
+   "url": "https://youtube.com/shorts/-Ob9VS2V1H4",
+   "duration": 16.3,
+   "chars": 230
   }
  ],
  "last_fail": 1792487549.018023,
