@@ -1062,6 +1062,12 @@
    "url": "https://youtube.com/shorts/kJHNXA1I-SU",
    "duration": 24.0,
    "chars": 362
+  },
+  {
+   "finished": "2026-10-21T10:11:40+00:00",
+   "mod": "igbolum",
+   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
+   "chars": 401
   }
  ],
  "last_fail": 1792487549.018023,
@@ -1141,6 +1147,11 @@
     "media_id": "18130566226818273",
     "url": "https://www.instagram.com/reel/DeuVpD2ksyl/",
     "at": 1792516281.258153
+   },
+   "g003": {
+    "media_id": "18122946598906786",
+    "url": "https://www.instagram.com/reel/DewKZjbCs2b/",
+    "at": 1792577500.974205
    }
   },
   "eski": [

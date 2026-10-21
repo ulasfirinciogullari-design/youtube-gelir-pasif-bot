@@ -1,71 +1,18 @@
 {
- "started": "2026-10-21T10:07:23+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-21T10:09:50+00:00",
+ "mod": "igbolum",
+ "gate": "igbolum",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "39",
-  "videos": "22"
+ "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
+ "chars": 401,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18122946598906786",
+  "url": "https://www.instagram.com/reel/DewKZjbCs2b/",
+  "at": 1792577500.974205
  },
- "credits_before": [
-  12874,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261020-4-n005.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "n005",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bir atom ne kadar küçük?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 362,
- "duration": 24.0,
- "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
- "url": "https://youtube.com/shorts/kJHNXA1I-SU",
- "recent_status": {
-  "o0004": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1123",
-   "reason": null
-  },
-  "g003": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1205",
-   "reason": null
-  },
-  "o0006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1146",
-   "reason": null
-  },
-  "o0007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "318",
-   "reason": null
-  },
-  "n005": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  12874,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261020-4-n005.json Bir atom ne kadar küçük? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/DewKZjbCs2b/"
  ],
- "finished": "2026-10-21T10:08:19+00:00"
+ "finished": "2026-10-21T10:11:40+00:00"
 }
