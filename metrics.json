@@ -8,7 +8,9 @@
     "views": 956,
     "likes": 9,
     "comments": 1,
-    "views_per_hour": 21.8
+    "avg_view_seconds": 41.0,
+    "avg_view_pct": 229.5,
+    "views_per_hour": 20.86
   },
   {
     "video_id": "LJU_l-5hOa8",
@@ -16,10 +18,12 @@
     "title": "Kuşlar binlerce kilometreyi nasıl bulur? 🧭",
     "published_at": "2026-10-19T19:27:52Z",
     "privacy": "public",
-    "views": 994,
+    "views": 999,
     "likes": 12,
     "comments": 1,
-    "views_per_hour": 21.64
+    "avg_view_seconds": 34.0,
+    "avg_view_pct": 227.3,
+    "views_per_hour": 20.85
   },
   {
     "video_id": "CaqDaNCHfY0",
@@ -27,10 +31,12 @@
     "title": "Kediler Neden Yoğurur? İşte Şaşırtıcı Gerçek! 🐾",
     "published_at": "2026-10-19T17:31:34Z",
     "privacy": "public",
-    "views": 1088,
-    "likes": 9,
+    "views": 1152,
+    "likes": 10,
     "comments": 1,
-    "views_per_hour": 22.73
+    "avg_view_seconds": 29.0,
+    "avg_view_pct": 195.6,
+    "views_per_hour": 23.11
   },
   {
     "video_id": "B1WUrxV1qgU",
@@ -41,7 +47,9 @@
     "views": 2219,
     "likes": 8,
     "comments": 1,
-    "views_per_hour": 44.47
+    "avg_view_seconds": 10.0,
+    "avg_view_pct": 71.2,
+    "views_per_hour": 42.78
   },
   {
     "video_id": "1CvkZxAa-Vc",
@@ -52,7 +60,9 @@
     "views": 1003,
     "likes": 6,
     "comments": 1,
-    "views_per_hour": 19.34
+    "avg_view_seconds": 10.0,
+    "avg_view_pct": 68.4,
+    "views_per_hour": 18.63
   },
   {
     "video_id": "HVLl6Fm8pUE",
@@ -60,10 +70,12 @@
     "title": "Ağaçkakanların Başı Neden Hiç Ağrımaz? 🤯",
     "published_at": "2026-10-19T11:29:51Z",
     "privacy": "public",
-    "views": 1368,
+    "views": 1372,
     "likes": 3,
     "comments": 1,
-    "views_per_hour": 25.38
+    "avg_view_seconds": 11.0,
+    "avg_view_pct": 71.3,
+    "views_per_hour": 24.56
   },
   {
     "video_id": "rHjp41oK2ac",
@@ -71,10 +83,12 @@
     "title": "Sinekler Neden Ters Yüz Yürür? 🤯",
     "published_at": "2026-10-19T09:26:14Z",
     "privacy": "public",
-    "views": 1021,
+    "views": 1026,
     "likes": 9,
     "comments": 1,
-    "views_per_hour": 18.25
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 74.2,
+    "views_per_hour": 17.71
   },
   {
     "video_id": "c35gmT12OGk",
@@ -82,10 +96,12 @@
     "title": "Ayılar neden tam kış uykusuna yatmaz? 🐻",
     "published_at": "2026-10-19T07:31:35Z",
     "privacy": "public",
-    "views": 1039,
+    "views": 1040,
     "likes": 11,
     "comments": 1,
-    "views_per_hour": 17.96
+    "avg_view_seconds": 17.0,
+    "avg_view_pct": 106.7,
+    "views_per_hour": 17.38
   },
   {
     "video_id": "XZWBsVp_kOk",
@@ -96,9 +112,9 @@
     "views": 583,
     "likes": 2,
     "comments": 1,
-    "avg_view_seconds": 122.0,
-    "avg_view_pct": 682.1,
-    "views_per_hour": 8.58
+    "avg_view_seconds": 65.0,
+    "avg_view_pct": 361.7,
+    "views_per_hour": 8.34
   },
   {
     "video_id": "FD6RkHQlEgU",
@@ -111,7 +127,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 72.4,
-    "views_per_hour": 15.4
+    "views_per_hour": 14.97
   },
   {
     "video_id": "CGjHVJfvL3A",
@@ -122,7 +138,9 @@
     "views": 23,
     "likes": 0,
     "comments": 1,
-    "views_per_hour": 0.32
+    "avg_view_seconds": 15.0,
+    "avg_view_pct": 94.3,
+    "views_per_hour": 0.31
   },
   {
     "video_id": "PTewgWexXP8",
@@ -130,12 +148,12 @@
     "title": "Müzik dinlerken neden tüylerimiz ürperir? 🎶",
     "published_at": "2026-10-18T15:29:12Z",
     "privacy": "public",
-    "views": 990,
+    "views": 991,
     "likes": 12,
     "comments": 1,
-    "avg_view_seconds": 9.0,
-    "avg_view_pct": 68.3,
-    "views_per_hour": 13.4
+    "avg_view_seconds": 10.0,
+    "avg_view_pct": 74.3,
+    "views_per_hour": 13.06
   },
   {
     "video_id": "2m968K7vOfg",
@@ -143,12 +161,12 @@
     "title": "Soğan Doğrarken Gözler Neden Yaşarır? 🧅",
     "published_at": "2026-10-18T13:27:34Z",
     "privacy": "public",
-    "views": 1223,
+    "views": 1225,
     "likes": 9,
     "comments": 1,
-    "avg_view_seconds": 12.0,
-    "avg_view_pct": 71.7,
-    "views_per_hour": 16.11
+    "avg_view_seconds": 13.0,
+    "avg_view_pct": 77.5,
+    "views_per_hour": 15.72
   },
   {
     "video_id": "F6cvfvbDu2g",
@@ -160,8 +178,8 @@
     "likes": 3,
     "comments": 1,
     "avg_view_seconds": 10.0,
-    "avg_view_pct": 65.8,
-    "views_per_hour": 15.37
+    "avg_view_pct": 66.0,
+    "views_per_hour": 14.99
   },
   {
     "video_id": "SuvCYyIvKv8",
@@ -169,12 +187,12 @@
     "title": "Deniz Neden Tuzlu? Nehirler Neden Tatlı? İşte Cevabı! 🌊",
     "published_at": "2026-10-18T09:25:49Z",
     "privacy": "public",
-    "views": 1191,
+    "views": 1192,
     "likes": 7,
     "comments": 1,
-    "avg_view_seconds": 11.0,
-    "avg_view_pct": 80.2,
-    "views_per_hour": 14.89
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 85.8,
+    "views_per_hour": 14.55
   },
   {
     "video_id": "Ps-3m0_T22s",
@@ -182,12 +200,12 @@
     "title": "Gökyüzü Neden Mavi, Gün Batımı Turuncu? 🤯",
     "published_at": "2026-10-18T07:26:07Z",
     "privacy": "public",
-    "views": 110,
+    "views": 111,
     "likes": 0,
     "comments": 1,
-    "avg_view_seconds": 9.0,
-    "avg_view_pct": 62.3,
-    "views_per_hour": 1.34
+    "avg_view_seconds": 10.0,
+    "avg_view_pct": 67.4,
+    "views_per_hour": 1.32
   },
   {
     "video_id": "A_OVF8W4d2U",
@@ -198,9 +216,9 @@
     "views": 1021,
     "likes": 4,
     "comments": 1,
-    "avg_view_seconds": 11.0,
-    "avg_view_pct": 64.9,
-    "views_per_hour": 11.25
+    "avg_view_seconds": 10.0,
+    "avg_view_pct": 64.5,
+    "views_per_hour": 11.01
   },
   {
     "video_id": "0x98EpB5kto",
@@ -208,12 +226,12 @@
     "title": "Uçakların Gizemli Kavisli Rotaları 🤔",
     "published_at": "2026-10-16T21:30:29Z",
     "privacy": "public",
-    "views": 27,
+    "views": 28,
     "likes": 0,
     "comments": 1,
-    "avg_view_seconds": 9.0,
-    "avg_view_pct": 71.2,
-    "views_per_hour": 0.23
+    "avg_view_seconds": 11.0,
+    "avg_view_pct": 88.0,
+    "views_per_hour": 0.24
   },
   {
     "video_id": "if3nfLYsuF4",
@@ -221,12 +239,12 @@
     "title": "Yarım kalan işler aklımızı neden kurcalar? 🤯",
     "published_at": "2026-10-16T20:25:47Z",
     "privacy": "public",
-    "views": 4,
+    "views": 5,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 0.0,
     "avg_view_pct": 0.0,
-    "views_per_hour": 0.03
+    "views_per_hour": 0.04
   },
   {
     "video_id": "2tSSw4llUPI",
@@ -237,6 +255,8 @@
     "views": 2,
     "likes": 0,
     "comments": 1,
+    "avg_view_seconds": 8.0,
+    "avg_view_pct": 49.4,
     "views_per_hour": 0.02
   },
   {
@@ -261,8 +281,8 @@
     "views": 4,
     "likes": 0,
     "comments": 1,
-    "avg_view_seconds": 0.0,
-    "avg_view_pct": 0.0,
+    "avg_view_seconds": 15.0,
+    "avg_view_pct": 103.3,
     "views_per_hour": 0.03
   },
   {
@@ -271,11 +291,11 @@
     "title": "Telefonun Titremediği Halde Neden Titrediğini Sanırız? 👻",
     "published_at": "2026-10-16T16:25:58Z",
     "privacy": "public",
-    "views": 8,
+    "views": 9,
     "likes": 0,
     "comments": 1,
-    "avg_view_seconds": 6.0,
-    "avg_view_pct": 41.4,
+    "avg_view_seconds": 5.0,
+    "avg_view_pct": 31.6,
     "views_per_hour": 0.07
   },
   {
@@ -284,12 +304,12 @@
     "title": "3000 Yıllık Bal Neden Çürümüyor? 🍯",
     "published_at": "2026-10-16T15:27:29Z",
     "privacy": "public",
-    "views": 20,
+    "views": 26,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 7.0,
     "avg_view_pct": 54.5,
-    "views_per_hour": 0.16
+    "views_per_hour": 0.21
   },
   {
     "video_id": "TquxXcmk094",
@@ -297,11 +317,11 @@
     "title": "Karıncalar Evini Nasıl Bulur? 🐜",
     "published_at": "2026-10-16T14:28:01Z",
     "privacy": "public",
-    "views": 8,
+    "views": 9,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 76.9,
+    "avg_view_pct": 78.1,
     "views_per_hour": 0.07
   },
   {
@@ -310,12 +330,12 @@
     "title": "Arılar Neden Hep Altıgen Petek Yapar? 🐝",
     "published_at": "2026-10-16T13:29:41Z",
     "privacy": "public",
-    "views": 82,
+    "views": 84,
     "likes": 1,
     "comments": 1,
-    "avg_view_seconds": 12.0,
-    "avg_view_pct": 80.1,
-    "views_per_hour": 0.66
+    "avg_view_seconds": 11.0,
+    "avg_view_pct": 75.9,
+    "views_per_hour": 0.67
   },
   {
     "video_id": "UUHZ6p74pug",
@@ -323,12 +343,12 @@
     "title": "Bukalemunlar Renklerini Nasıl Değiştirir? 🎨",
     "published_at": "2026-10-16T12:30:50Z",
     "privacy": "public",
-    "views": 29,
+    "views": 30,
     "likes": 0,
     "comments": 1,
     "avg_view_seconds": 9.0,
-    "avg_view_pct": 60.4,
-    "views_per_hour": 0.23
+    "avg_view_pct": 62.7,
+    "views_per_hour": 0.24
   },
   {
     "video_id": "4JaO46shfHU",
@@ -336,12 +356,12 @@
     "title": "Penguenler Buz Üstünde Nasıl Yaşar? 🐧",
     "published_at": "2026-10-16T11:26:33Z",
     "privacy": "public",
-    "views": 1083,
+    "views": 1084,
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 87.9,
-    "views_per_hour": 8.6
+    "avg_view_pct": 87.4,
+    "views_per_hour": 8.47
   },
   {
     "video_id": "xH99jEtGQRg",
@@ -352,9 +372,9 @@
     "views": 1642,
     "likes": 7,
     "comments": 1,
-    "avg_view_seconds": 16.0,
-    "avg_view_pct": 94.5,
-    "views_per_hour": 12.93
+    "avg_view_seconds": 15.0,
+    "avg_view_pct": 93.7,
+    "views_per_hour": 12.74
   },
   {
     "video_id": "4gAkxCV7MaA",
@@ -367,7 +387,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 87.8,
-    "views_per_hour": 9.42
+    "views_per_hour": 9.28
   },
   {
     "video_id": "C0nA-448ifg",
@@ -380,7 +400,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 88.7,
-    "views_per_hour": 15.28
+    "views_per_hour": 15.05
   },
   {
     "video_id": "vsmgJqjZ8CQ",
@@ -392,8 +412,8 @@
     "likes": 9,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 74.6,
-    "views_per_hour": 9.2
+    "avg_view_pct": 74.4,
+    "views_per_hour": 9.06
   },
   {
     "video_id": "LSRR_tONJdo",
@@ -405,8 +425,8 @@
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 77.7,
-    "views_per_hour": 7.79
+    "avg_view_pct": 77.9,
+    "views_per_hour": 7.67
   },
   {
     "video_id": "IKsp_tXE4EI",
@@ -418,8 +438,8 @@
     "likes": 20,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 76.5,
-    "views_per_hour": 43.32
+    "avg_view_pct": 76.6,
+    "views_per_hour": 42.68
   },
   {
     "video_id": "kdEbtK5fwQQ",
@@ -431,8 +451,8 @@
     "likes": 11,
     "comments": 2,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 75.3,
-    "views_per_hour": 21.64
+    "avg_view_pct": 75.6,
+    "views_per_hour": 21.32
   },
   {
     "video_id": "9RAohHZ0ur4",
@@ -444,8 +464,8 @@
     "likes": 22,
     "comments": 1,
     "avg_view_seconds": 15.0,
-    "avg_view_pct": 68.0,
-    "views_per_hour": 23.85
+    "avg_view_pct": 67.5,
+    "views_per_hour": 23.51
   },
   {
     "video_id": "LZUWW_pFBIw",
@@ -457,8 +477,8 @@
     "likes": 28,
     "comments": 1,
     "avg_view_seconds": 15.0,
-    "avg_view_pct": 72.7,
-    "views_per_hour": 14.12
+    "avg_view_pct": 72.0,
+    "views_per_hour": 13.92
   },
   {
     "video_id": "OFWm_FYPo1s",
@@ -471,7 +491,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 74.4,
-    "views_per_hour": 8.37
+    "views_per_hour": 8.25
   },
   {
     "video_id": "Q7Fdwf2i1KI",
@@ -484,7 +504,7 @@
     "comments": 1,
     "avg_view_seconds": 19.0,
     "avg_view_pct": 94.5,
-    "views_per_hour": 7.27
+    "views_per_hour": 7.17
   },
   {
     "video_id": "WADWjFRfYYw",
@@ -497,7 +517,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 59.0,
-    "views_per_hour": 6.82
+    "views_per_hour": 6.73
   },
   {
     "video_id": "Z1LGmwcsd8Q",
@@ -509,8 +529,8 @@
     "likes": 7,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 51.6,
-    "views_per_hour": 7.9
+    "avg_view_pct": 51.7,
+    "views_per_hour": 7.79
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -522,8 +542,8 @@
     "likes": 10,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 50.7,
-    "views_per_hour": 6.55
+    "avg_view_pct": 50.5,
+    "views_per_hour": 6.47
   },
   {
     "video_id": "6GSVlmFIAmM",
@@ -536,7 +556,7 @@
     "comments": 1,
     "avg_view_seconds": 17.0,
     "avg_view_pct": 65.4,
-    "views_per_hour": 6.96
+    "views_per_hour": 6.88
   },
   {
     "video_id": "Tepqt4MN0lE",
@@ -549,7 +569,7 @@
     "comments": 0,
     "avg_view_seconds": 20.0,
     "avg_view_pct": 80.3,
-    "views_per_hour": 10.08
+    "views_per_hour": 9.97
   },
   {
     "video_id": "qu9sr0JtHHM",
@@ -562,6 +582,6 @@
     "comments": 0,
     "avg_view_seconds": 9.0,
     "avg_view_pct": 30.6,
-    "views_per_hour": 2.12
+    "views_per_hour": 2.09
   }
 ]
