@@ -1,22 +1,22 @@
 {
- "started": "2026-10-21T14:45:11+00:00",
+ "started": "2026-10-21T15:45:11+00:00",
  "deneme": false,
- "threads": 96,
- "reply_threads_read": 0,
+ "threads": 97,
+ "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxtCzxUHP75RgnWRI14AaABAg",
-   "kind": "comment",
+   "id": "UgxtCzxUHP75RgnWRI14AaABAg.AcE3b95S1iXAcEAZl2oitV",
+   "kind": "followup",
    "video": "ZziBlIDkwWc",
-   "comment": "ama benim kedim öldü üzgün emojiyi bulamadım",
-   "reply": "Kedini kaybettiğin için çok üzüldüm, bu zor zamanında sana güç diliyorum. 😔",
+   "comment": "​@zirveninkanunuteşekürler😢",
+   "reply": "@Miiawster Rica ederim, umarım biraz olsun içini rahatlatabilmişizdir. 🫂",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-21T14:45:15+00:00"
+ "finished": "2026-10-21T15:45:16+00:00"
 }
