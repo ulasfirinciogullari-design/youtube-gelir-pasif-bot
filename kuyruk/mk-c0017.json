@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0017",
+ "topic": "Kaplan neden turuncu, geyik onu nasıl görür?",
+ "kategori": "hayvan",
+ "subject": [
+  "tiger"
+ ],
+ "stock_hint": "tiger walking forest",
+ "script": {
+  "title": "Kaplan geyiğin gözünde neden yeşil görünür? 🐯",
+  "hook_text": "KAPLAN NEDEN TURUNCU?",
+  "scenes": [
+   {
+    "text": "Bu turuncu kaplan, geyiğin gözünde yeşil.",
+    "visual": "bengal tiger walking through green grass in a forest, daylight",
+    "stock_query": "tiger walking",
+    "source": "stock",
+    "callout": "GEYİĞE YEŞİL"
+   },
+   {
+    "text": "Biz renkleri gözümüzdeki üç tür hücreyle ayırırız, geyikler sadece ikiyle.",
+    "visual": "deer standing alert in a forest clearing, looking around",
+    "stock_query": "deer forest",
+    "source": "stock",
+    "callout": "3'E KARŞI 2"
+   },
+   {
+    "text": "Bu yüzden geyik, turuncuyu yeşilden ayıramaz.",
+    "visual": "deer grazing calmly in a green meadow",
+    "stock_query": "deer grazing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Ormanda kaplan, geyiğin gözünde yeşil yapraklara karışıp kaybolur.",
+    "visual": "tiger hiding in tall grass and leaves, stalking slowly",
+    "stock_query": "tiger grass",
+    "source": "stock",
+    "callout": "KAMUFLAJ"
+   },
+   {
+    "text": "Kara memelilerinin çoğu renkleri geyik gibi görür; kaplanın kendisi de.",
+    "visual": "close up of a tiger face looking into the camera",
+    "stock_query": "tiger face",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kaplanın yeşil kürke hiç ihtiyacı yok.",
+    "visual": "tiger walking slowly through a dense green jungle",
+    "stock_query": "tiger jungle",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kaplanın turuncu kürkü, renkleri iki tür hücreyle gören geyiğin gözünde yeşilden ayırt edilemez; bu yüzden kaplan ormanda yapraklara karışır.",
+  "tags": [
+   "kaplan",
+   "geyik",
+   "kamuflaj",
+   "hayvanlar renkleri nasıl görür",
+   "kaplan neden turuncu",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: geyiğin turuncuyu görememesi mi, kaplanın da renkleri aynı şekilde görmesi mi?",
+  "en_title": "Why a tiger looks green to a deer 🐯",
+  "en_description": "Deer see color with only two types of cone cells, so they can't tell orange from green. To them, a tiger blends into the leaves.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kaplan neden turuncu, geyik kaplanı nasıl görür?\n\nİnsanlar renkleri gözdeki üç tür hücreyle ayırır, geyikler ise sadece ikiyle. Bu yüzden geyik turuncuyu yeşilden ayıramaz ve ormanda kaplan onun gözünde yeşil yapraklara karışır. Kara memelilerinin çoğu, kaplanın kendisi de dahil, renkleri böyle görür.\n\nSence hangisi daha tuhaf: geyiğin turuncuyu görememesi mi, kaplanın da renkleri aynı şekilde görmesi mi?",
+  "hashtags": [
+   "#kaplan",
+   "#geyik",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kaplan",
+   "kaplanlar",
+   "kaplan neden turuncu",
+   "kaplan rengi",
+   "kaplan kamuflajı",
+   "geyik",
+   "geyikler nasıl görür",
+   "hayvanlar renkleri nasıl görür",
+   "hayvanlarda renk görme",
+   "renk körlüğü",
+   "kamuflaj",
+   "bengal kaplanı",
+   "yırtıcı hayvanlar",
+   "av ve avcı",
+   "vahşi doğa",
+   "orman",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "belgesel",
+   "tiger",
+   "tiger camouflage",
+   "deer vision"
+  ],
+  "localizations": {
+   "en": {
+    "title": "This orange tiger looks green to a deer 🐯",
+    "description": "We see color with three types of cone cells, but deer have only two, so they can't tell orange from green. In the forest, a tiger simply melts into the leaves. Most land mammals, tigers included, see color this way."
+   },
+   "es": {
+    "title": "Este tigre naranja es verde a los ojos de un ciervo 🐯",
+    "description": "Nosotros vemos el color con tres tipos de conos; los ciervos, solo con dos, así que no distinguen el naranja del verde. En el bosque, el tigre se pierde entre las hojas. La mayoría de los mamíferos terrestres, incluido el propio tigre, ven así."
+   },
+   "pt": {
+    "title": "Este tigre laranja parece verde para um cervo 🐯",
+    "description": "Nós enxergamos as cores com três tipos de cones; os cervos, com apenas dois, e por isso não distinguem laranja de verde. Na floresta, o tigre some no meio das folhas. A maioria dos mamíferos terrestres, inclusive o próprio tigre, vê assim."
+   },
+   "de": {
+    "title": "Für einen Hirsch ist dieser orange Tiger grün 🐯",
+    "description": "Wir sehen Farben mit drei Zapfentypen, Hirsche nur mit zwei, deshalb können sie Orange und Grün nicht unterscheiden. Im Wald verschmilzt der Tiger für sie mit dem Laub. Die meisten Landsäugetiere, auch der Tiger selbst, sehen Farben so."
+   },
+   "fr": {
+    "title": "Pour un cerf, ce tigre orange est vert 🐯",
+    "description": "Nous voyons les couleurs grâce à trois types de cônes, les cerfs n'en ont que deux : ils ne distinguent pas l'orange du vert. En forêt, le tigre se fond alors dans le feuillage. La plupart des mammifères terrestres, tigre compris, voient ainsi."
+   },
+   "it": {
+    "title": "Agli occhi di un cervo questa tigre arancione è verde 🐯",
+    "description": "Noi vediamo i colori con tre tipi di coni, i cervi solo con due: per loro arancione e verde si confondono. Nella foresta la tigre sparisce tra le foglie. La maggior parte dei mammiferi terrestri, tigre compresa, vede così."
+   },
+   "ru": {
+    "title": "Для оленя этот рыжий тигр зелёный 🐯",
+    "description": "Мы различаем цвета тремя типами колбочек, а у оленей их всего два, поэтому оранжевый для них не отличается от зелёного. В лесу тигр просто сливается с листвой. Так видят цвета большинство наземных млекопитающих, включая самого тигра."
+   },
+   "ar": {
+    "title": "هذا النمر البرتقالي أخضر في عين الأيل 🐯",
+    "description": "نرى الألوان بثلاثة أنواع من الخلايا المخروطية، أما الأيائل فلديها نوعان فقط، لذلك لا تميّز البرتقالي من الأخضر. وفي الغابة يذوب النمر بين الأوراق. ومعظم الثدييات البرية، ومنها النمر نفسه، ترى الألوان بهذه الطريقة."
+   },
+   "hi": {
+    "title": "हिरण की आँखों में यह नारंगी बाघ हरा दिखता है 🐯",
+    "description": "हम रंगों को तीन तरह की कोन कोशिकाओं से पहचानते हैं, लेकिन हिरण के पास सिर्फ़ दो होती हैं, इसलिए वह नारंगी और हरे में फ़र्क नहीं कर पाता। जंगल में बाघ उसके लिए पत्तों में घुल-मिल जाता है। ज़्यादातर ज़मीनी स्तनधारी, ख़ुद बाघ भी, रंग ऐसे ही देखते हैं।"
+   },
+   "id": {
+    "title": "Di mata rusa, harimau oranye ini terlihat hijau 🐯",
+    "description": "Kita melihat warna dengan tiga jenis sel kerucut, sedangkan rusa hanya punya dua, jadi mereka tak bisa membedakan oranye dan hijau. Di hutan, harimau pun menyatu dengan dedaunan. Sebagian besar mamalia darat, termasuk harimau sendiri, melihat warna seperti ini."
+   },
+   "ja": {
+    "title": "シカの目には、このオレンジ色のトラは緑に見える 🐯",
+    "description": "人間は3種類の錐体細胞で色を見分けますが、シカには2種類しかなく、オレンジと緑の区別がつきません。森の中では、トラは葉っぱに溶け込んでしまうのです。陸の哺乳類の多くは、トラ自身も含めてこうした見え方をしています。"
+   },
+   "ko": {
+    "title": "사슴 눈에는 이 주황색 호랑이가 초록색으로 보인다 🐯",
+    "description": "사람은 세 종류의 원뿔세포로 색을 구별하지만 사슴은 두 종류뿐이라 주황색과 초록색을 구분하지 못합니다. 그래서 숲속의 호랑이는 사슴에게 나뭇잎 속에 묻혀 보이죠. 호랑이 자신을 포함해 대부분의 육상 포유류가 이렇게 색을 봅니다."
+   },
+   "pl": {
+    "title": "Dla jelenia ten pomarańczowy tygrys jest zielony 🐯",
+    "description": "My rozróżniamy kolory dzięki trzem rodzajom czopków, a jelenie mają tylko dwa, więc nie odróżniają pomarańczowego od zielonego. W lesie tygrys po prostu znika im wśród liści. Większość ssaków lądowych, łącznie z samym tygrysem, widzi kolory właśnie tak."
+   },
+   "nl": {
+    "title": "Voor een hert is deze oranje tijger groen 🐯",
+    "description": "Wij zien kleuren met drie soorten kegeltjes, herten met maar twee, waardoor ze oranje niet van groen kunnen onderscheiden. In het bos gaat de tijger voor hen op in het groen. De meeste landzoogdieren, ook de tijger zelf, zien kleuren zo."
+   },
+   "uk": {
+    "title": "Для оленя цей рудий тигр зелений 🐯",
+    "description": "Ми розрізняємо кольори трьома типами колбочок, а в оленів їх лише два, тож помаранчевий для них не відрізняється від зеленого. У лісі тигр просто зливається з листям. Так бачать кольори більшість наземних ссавців, зокрема й сам тигр."
+   },
+   "vi": {
+    "title": "Trong mắt con hươu, chú hổ màu cam này lại có màu xanh lá 🐯",
+    "description": "Chúng ta phân biệt màu nhờ ba loại tế bào hình nón, còn hươu chỉ có hai, nên chúng không phân biệt được màu cam với xanh lá. Trong rừng, con hổ hòa lẫn vào tán lá. Phần lớn động vật có vú trên cạn, kể cả chính loài hổ, đều nhìn màu như vậy."
+   },
+   "az": {
+    "title": "Maralın gözündə bu narıncı pələng yaşıldır 🐯",
+    "description": "Biz rəngləri üç növ kolbacıq hüceyrəsi ilə ayırırıq, maralların isə cəmi iki növü var, ona görə narıncını yaşıldan seçə bilmirlər. Meşədə pələng onların gözündə yarpaqların arasında itib gedir. Quru məməlilərinin çoxu, elə pələngin özü də, rəngləri belə görür."
+   },
+   "ro": {
+    "title": "Pentru un cerb, acest tigru portocaliu e verde 🐯",
+    "description": "Noi deosebim culorile cu trei tipuri de conuri, cerbii doar cu două, așa că nu pot separa portocaliul de verde. În pădure, tigrul se pierde printre frunze. Majoritatea mamiferelor terestre, inclusiv tigrul, văd culorile la fel."
+   }
+  }
+ }
+}

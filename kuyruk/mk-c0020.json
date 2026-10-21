@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0020",
+ "topic": "Pandanın altıncı parmağı nedir?",
+ "kategori": "hayvan",
+ "subject": [
+  "panda"
+ ],
+ "stock_hint": "panda eating bamboo",
+ "script": {
+  "title": "Pandanın altıncı parmağı aslında bilek kemiği 🐼",
+  "hook_text": "PANDANIN ALTINCI PARMAĞI NE?",
+  "scenes": [
+   {
+    "text": "Bu pandanın altıncı parmağı aslında bir bilek kemiği.",
+    "visual": "giant panda sitting and holding a bamboo stalk with its paw",
+    "stock_query": "panda eating",
+    "source": "stock",
+    "callout": "6. PARMAK"
+   },
+   {
+    "text": "Beş gerçek parmağı yan yana dizilidir, bizimki gibi karşıt başparmağı yoktur.",
+    "visual": "close up of a giant panda paw gripping bamboo",
+    "stock_query": "panda paw",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bunun yerine bileğindeki bir kemik uzamış, etli bir yastıkla kaplanmış.",
+    "visual": "giant panda chewing bamboo leaves, close up",
+    "stock_query": "panda bamboo",
+    "source": "stock",
+    "callout": "BİLEK KEMİĞİ"
+   },
+   {
+    "text": "Bu sahte başparmakla bambu saplarını sıkıca kavrar.",
+    "visual": "giant panda pulling a bamboo stem toward its mouth",
+    "stock_query": "giant panda",
+    "source": "stock",
+    "callout": "SAHTE BAŞPARMAK"
+   },
+   {
+    "text": "Panda günün yarısını bambu yiyerek geçirir.",
+    "visual": "giant panda lying on its back eating bamboo",
+    "stock_query": "panda eating bamboo",
+    "source": "stock",
+    "callout": "GÜNDE 12 SAAT"
+   },
+   {
+    "text": "Pandanın en işe yarayan parmağı, aslında parmak bile değil.",
+    "visual": "cute giant panda sitting in a green forest",
+    "stock_query": "panda cute",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Pandanın bambuyu tutmasını sağlayan altıncı parmak aslında uzamış bir bilek kemiğidir; panda günün yarısını bambu yiyerek geçirir.",
+  "tags": [
+   "panda",
+   "dev panda",
+   "panda parmağı",
+   "sahte başparmak",
+   "panda bambu",
+   "sevimli hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: bilekten çıkan parmak mı, günde on iki saat yemek mi?",
+  "en_title": "A panda's sixth 'finger' is actually a wrist bone 🐼",
+  "en_description": "Giant pandas have no opposable thumb. An enlarged wrist bone covered by a fleshy pad works as a false thumb for gripping bamboo.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Pandanın altıncı parmağı nedir, panda bambuyu nasıl tutar?\n\nDev pandanın beş gerçek parmağı yan yana dizilidir ve bizimki gibi karşıt başparmağı yoktur. Bambuyu kavramak için bileğindeki bir kemik uzamış ve etli bir yastıkla kaplanmıştır; bu sahte başparmak altıncı parmak gibi çalışır. Panda günün yarısını, yaklaşık on iki saatini bambu yiyerek geçirir.\n\nSence hangisi daha şaşırtıcı: bilekten çıkan parmak mı, günde on iki saat yemek mi?",
+  "hashtags": [
+   "#panda",
+   "#hayvanlar",
+   "#ilginçbilgiler",
+   "#bilim"
+  ],
+  "tags": [
+   "panda",
+   "dev panda",
+   "pandalar",
+   "panda parmağı",
+   "pandanın altıncı parmağı",
+   "sahte başparmak",
+   "panda bambu",
+   "panda ne yer",
+   "panda bambuyu nasıl tutar",
+   "bilek kemiği",
+   "altı parmak",
+   "sevimli hayvanlar",
+   "ayılar",
+   "hayvan anatomisi",
+   "Çin",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "giant panda",
+   "panda thumb"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A panda's sixth 'finger' is actually a wrist bone 🐼",
+    "description": "A giant panda's five real fingers sit side by side, with no opposable thumb. Instead, an enlarged wrist bone covered by a fleshy pad works as a false thumb for gripping bamboo, which pandas eat for about half the day."
+   },
+   "es": {
+    "title": "El sexto «dedo» del panda es en realidad un hueso de la muñeca 🐼",
+    "description": "Los cinco dedos del panda gigante están alineados y no tiene pulgar oponible. En su lugar, un hueso de la muñeca alargado y cubierto por una almohadilla le sirve de falso pulgar para sujetar el bambú, que come durante casi medio día."
+   },
+   "pt": {
+    "title": "O sexto “dedo” do panda é, na verdade, um osso do pulso 🐼",
+    "description": "Os cinco dedos do panda-gigante ficam lado a lado, sem polegar opositor. No lugar dele, um osso do pulso alongado e coberto por uma almofada funciona como falso polegar para segurar o bambu, que ele come por cerca de metade do dia."
+   },
+   "de": {
+    "title": "Der sechste „Finger“ des Pandas ist ein Handwurzelknochen 🐼",
+    "description": "Die fünf echten Finger des Großen Pandas liegen nebeneinander, einen opponierbaren Daumen hat er nicht. Stattdessen dient ein verlängerter, gepolsterter Handwurzelknochen als falscher Daumen zum Greifen von Bambus, den Pandas etwa den halben Tag lang fressen."
+   },
+   "fr": {
+    "title": "Le sixième « doigt » du panda est en fait un os du poignet 🐼",
+    "description": "Les cinq vrais doigts du panda géant sont alignés, sans pouce opposable. À la place, un os du poignet allongé et recouvert d'un coussinet sert de faux pouce pour saisir le bambou, qu'il mange environ la moitié de la journée."
+   },
+   "it": {
+    "title": "Il sesto «dito» del panda è in realtà un osso del polso 🐼",
+    "description": "Le cinque vere dita del panda gigante sono allineate, senza pollice opponibile. Al suo posto, un osso del polso allungato e ricoperto da un cuscinetto fa da falso pollice per afferrare il bambù, che mangia per circa metà della giornata."
+   },
+   "ru": {
+    "title": "Шестой «палец» панды на самом деле кость запястья 🐼",
+    "description": "Пять настоящих пальцев большой панды расположены в ряд, и противопоставленного большого пальца у неё нет. Его заменяет удлинённая кость запястья с мясистой подушечкой: этим ложным пальцем панда держит бамбук, который ест около половины суток."
+   },
+   "ar": {
+    "title": "الإصبع السادس للباندا هو في الحقيقة عظمة في الرسغ 🐼",
+    "description": "أصابع الباندا العملاقة الخمسة مصفوفة جنبًا إلى جنب، وليس لديها إبهام مقابل مثلنا. وبدلًا منه تعمل عظمة رسغ متطاولة مغطاة بوسادة لحمية كإبهام زائف تمسك به سيقان الخيزران، الذي تقضي نحو نصف يومها في أكله."
+   },
+   "hi": {
+    "title": "पांडा की छठी 'उंगली' असल में कलाई की हड्डी है 🐼",
+    "description": "जायंट पांडा की पाँचों असली उंगलियाँ एक कतार में होती हैं और उसके पास हमारे जैसा अंगूठा नहीं होता। इसकी जगह कलाई की एक लंबी हड्डी, जिस पर गद्दी चढ़ी होती है, नकली अंगूठे का काम करती है और बाँस पकड़ने में मदद करती है। पांडा दिन का लगभग आधा समय बाँस खाने में बिताता है।"
+   },
+   "id": {
+    "title": "“Jari keenam” panda sebenarnya tulang pergelangan tangan 🐼",
+    "description": "Lima jari asli panda raksasa berjajar sejajar, tanpa ibu jari yang bisa berhadapan. Sebagai gantinya, tulang pergelangan yang memanjang dan berbantalan daging menjadi ibu jari palsu untuk menggenggam bambu, yang dimakannya sekitar setengah hari."
+   },
+   "ja": {
+    "title": "パンダの「6本目の指」は実は手首の骨 🐼",
+    "description": "ジャイアントパンダの5本の指は横一列に並び、人のように向かい合わせにできる親指はありません。その代わり、肉球に覆われた細長い手首の骨が「偽の親指」となって竹をつかみます。パンダは1日のおよそ半分を食事に費やします。"
+   },
+   "ko": {
+    "title": "판다의 여섯 번째 '손가락'은 사실 손목뼈다 🐼",
+    "description": "자이언트판다의 다섯 손가락은 나란히 붙어 있고, 사람처럼 마주 보는 엄지가 없습니다. 대신 길쭉하게 자란 손목뼈가 살집 있는 패드에 덮여 가짜 엄지 역할을 하며 대나무를 움켜쥡니다. 판다는 하루의 절반가량을 먹는 데 씁니다."
+   },
+   "pl": {
+    "title": "Szósty „palec” pandy to tak naprawdę kość nadgarstka 🐼",
+    "description": "Pięć prawdziwych palców pandy wielkiej leży obok siebie i nie ma ona przeciwstawnego kciuka. Zamiast niego wydłużona kość nadgarstka pokryta mięsistą poduszką działa jak fałszywy kciuk do chwytania bambusa, którego panda je mniej więcej przez pół dnia."
+   },
+   "nl": {
+    "title": "De zesde ‘vinger’ van een panda is eigenlijk een polsbot 🐼",
+    "description": "De vijf echte vingers van een reuzenpanda liggen naast elkaar, zonder opponeerbare duim. In plaats daarvan werkt een verlengd polsbotje met een vlezig kussentje als nepduim om bamboe vast te pakken, dat panda's ongeveer de helft van de dag eten."
+   },
+   "uk": {
+    "title": "Шостий «палець» панди насправді кістка зап'ястя 🐼",
+    "description": "П'ять справжніх пальців великої панди розташовані в ряд, і протиставленого великого пальця в неї немає. Його замінює видовжена кістка зап'ястя з м'ясистою подушечкою: цим несправжнім пальцем панда тримає бамбук, який їсть близько половини доби."
+   },
+   "vi": {
+    "title": "“Ngón tay thứ sáu” của gấu trúc thật ra là xương cổ tay 🐼",
+    "description": "Năm ngón tay thật của gấu trúc lớn nằm thẳng hàng, không có ngón cái đối diện như người. Thay vào đó, một xương cổ tay dài ra, bọc lớp đệm thịt, làm ngón cái giả để nắm chặt thân tre, món mà chúng ăn gần nửa ngày."
+   },
+   "az": {
+    "title": "Pandanın altıncı “barmağı” əslində bilək sümüyüdür 🐼",
+    "description": "Nəhəng pandanın beş əsl barmağı yan-yana düzülüb, bizdəki kimi qarşı duran baş barmağı yoxdur. Onun yerinə uzanmış və ətli yastıqla örtülmüş bilək sümüyü saxta baş barmaq kimi işləyir və bambuku tutmağa kömək edir. Panda günün təxminən yarısını yeməklə keçirir."
+   },
+   "ro": {
+    "title": "Al șaselea „deget” al ursului panda e de fapt un os al încheieturii 🐼",
+    "description": "Cele cinci degete adevărate ale ursului panda uriaș stau unul lângă altul, fără un deget mare opozabil. În locul lui, un os alungit al încheieturii, acoperit de o pernuță, funcționează ca un deget mare fals pentru a apuca bambusul, pe care îl mănâncă aproape jumătate de zi."
+   }
+  }
+ }
+}

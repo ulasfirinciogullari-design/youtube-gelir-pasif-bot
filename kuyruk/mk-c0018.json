@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0018",
+ "topic": "Kurbağalar yutkunmak için gözlerini nasıl kullanır?",
+ "kategori": "hayvan",
+ "subject": [
+  "frog"
+ ],
+ "stock_hint": "frog eyes close up",
+ "script": {
+  "title": "Kurbağalar gözleriyle yutkunur 🐸",
+  "hook_text": "KURBAĞA NASIL YUTKUNUR?",
+  "scenes": [
+   {
+    "text": "Bu kurbağa yutkunmak için gözlerini kullanıyor.",
+    "visual": "close up of a green frog sitting on a leaf, big bulging eyes",
+    "stock_query": "frog eyes",
+    "source": "stock",
+    "callout": "GÖZLE YUTKUNMA"
+   },
+   {
+    "text": "Avını ağzına alınca gözlerini kafasının içine doğru çeker.",
+    "visual": "frog at the edge of a pond, close up of its head",
+    "stock_query": "frog close up",
+    "source": "stock",
+    "callout": "GÖZLER İÇERİ"
+   },
+   {
+    "text": "Göz küreleri ağzın içine iner ve lokmayı boğaza doğru iter.",
+    "visual": "frog swallowing an insect, eyes sinking into its head",
+    "stock_query": "frog eating",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bilim insanları bunu röntgen videolarıyla kaydetti.",
+    "visual": "frog sitting still in shallow water, side view",
+    "stock_query": "frog pond",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Gözlerini içeri çekemeyen kurbağalar, bir cırcır böceği için neredeyse iki kat fazla yutkundu.",
+    "visual": "frog next to a cricket on the ground, ready to catch it",
+    "stock_query": "frog insect",
+    "source": "stock",
+    "callout": "2 KATA YAKIN"
+   },
+   {
+    "text": "Bir kurbağayı yemek yerken izle: yutkunurken gözleri içeri gömülür.",
+    "visual": "frog in water blinking, close up of eyes",
+    "stock_query": "frog water",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kurbağa avını yutarken gözlerini kafasının içine çeker; göz küreleri ağzın içine inerek lokmayı boğaza doğru iter.",
+  "tags": [
+   "kurbağa",
+   "kurbağa gözleri",
+   "kurbağa nasıl yutkunur",
+   "amfibiler",
+   "tuhaf hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: kurbağanın gözüyle yutkunması mı, dilini fırlatarak avlanması mı?",
+  "en_title": "Frogs use their eyes to swallow 🐸",
+  "en_description": "When a frog swallows, it pulls its eyeballs down into its mouth and presses the food toward its throat.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kurbağalar nasıl yutkunur, gözleri neden içeri çöker?\n\nKurbağa avını ağzına alınca gözlerini kafasının içine doğru çeker; göz küreleri ağzın içine inerek lokmayı boğaza doğru iter. Leopar kurbağalarıyla yapılan bir çalışmada gözlerini içeri çekemeyen kurbağalar, bir cırcır böceği için neredeyse iki kat fazla yutkundu.\n\nSence hangisi daha tuhaf: kurbağanın gözüyle yutkunması mı, dilini fırlatarak avlanması mı?",
+  "hashtags": [
+   "#kurbağa",
+   "#hayvanlar",
+   "#ilginçbilgiler",
+   "#bilim"
+  ],
+  "tags": [
+   "kurbağa",
+   "kurbağalar",
+   "kurbağa nasıl yutkunur",
+   "kurbağa gözleri",
+   "kurbağa göz kırpma",
+   "kurbağa yemek yerken",
+   "gözle yutkunmak",
+   "kurbağa beslenmesi",
+   "leopar kurbağası",
+   "amfibiler",
+   "iki yaşamlılar",
+   "cırcır böceği",
+   "hayvan anatomisi",
+   "tuhaf hayvanlar",
+   "sevimli hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "doğa",
+   "frog",
+   "frog eyes",
+   "frog swallowing"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Frogs use their eyes to swallow 🐸",
+    "description": "When a frog swallows, it pulls its eyeballs down into its mouth, pressing the food toward its throat. In one study, frogs that couldn't retract their eyes needed almost twice as many swallows per cricket."
+   },
+   "es": {
+    "title": "Las ranas usan los ojos para tragar 🐸",
+    "description": "Cuando una rana traga, hunde los ojos hacia el interior de la boca y empuja el bocado hacia la garganta. En un estudio, las ranas que no podían retraer los ojos necesitaron casi el doble de tragos por cada grillo."
+   },
+   "pt": {
+    "title": "Sapos e rãs usam os olhos para engolir 🐸",
+    "description": "Na hora de engolir, a rã puxa os olhos para dentro da boca e empurra a comida em direção à garganta. Em um estudo, rãs que não conseguiam recolher os olhos precisaram de quase o dobro de engolidas para cada grilo."
+   },
+   "de": {
+    "title": "Frösche schlucken mit den Augen 🐸",
+    "description": "Beim Schlucken zieht ein Frosch seine Augäpfel nach unten in die Mundhöhle und drückt die Beute Richtung Rachen. In einer Studie brauchten Frösche, die ihre Augen nicht einziehen konnten, fast doppelt so viele Schluckbewegungen pro Grille."
+   },
+   "fr": {
+    "title": "Les grenouilles avalent avec leurs yeux 🐸",
+    "description": "Pour avaler, la grenouille enfonce ses globes oculaires dans sa bouche et pousse ainsi la proie vers la gorge. Dans une étude, des grenouilles incapables de rentrer les yeux ont eu besoin de presque deux fois plus de déglutitions par grillon."
+   },
+   "it": {
+    "title": "Le rane usano gli occhi per deglutire 🐸",
+    "description": "Quando deglutisce, la rana ritrae i bulbi oculari dentro la bocca e spinge il boccone verso la gola. In uno studio, le rane che non potevano ritrarre gli occhi hanno avuto bisogno di quasi il doppio delle deglutizioni per ogni grillo."
+   },
+   "ru": {
+    "title": "Лягушки глотают с помощью глаз 🐸",
+    "description": "Когда лягушка глотает, она втягивает глаза внутрь, в ротовую полость, и проталкивает добычу к горлу. В одном исследовании лягушкам, которые не могли втягивать глаза, понадобилось почти вдвое больше глотков на одного сверчка."
+   },
+   "ar": {
+    "title": "الضفادع تستخدم عيونها لتبتلع طعامها 🐸",
+    "description": "عندما يبتلع الضفدع يسحب عينيه إلى داخل فمه فتدفعان اللقمة نحو الحلق. وفي إحدى الدراسات احتاجت الضفادع التي لم تستطع سحب عيونها إلى ضعف عدد مرات البلع تقريبًا لكل صرصور ليل."
+   },
+   "hi": {
+    "title": "मेंढक निगलने के लिए अपनी आँखों का इस्तेमाल करते हैं 🐸",
+    "description": "निगलते समय मेंढक अपनी आँखों को नीचे मुँह के अंदर खींच लेता है, जिससे खाना गले की ओर धकेला जाता है। एक अध्ययन में जो मेंढक आँखें अंदर नहीं खींच पाए, उन्हें एक झींगुर के लिए लगभग दोगुनी बार निगलना पड़ा।"
+   },
+   "id": {
+    "title": "Katak menelan dengan bantuan matanya 🐸",
+    "description": "Saat menelan, katak menarik bola matanya ke dalam rongga mulut sehingga makanan terdorong ke tenggorokan. Dalam sebuah penelitian, katak yang tak bisa menarik matanya butuh hampir dua kali lebih banyak telanan untuk satu jangkrik."
+   },
+   "ja": {
+    "title": "カエルは目を使って飲み込む 🐸",
+    "description": "カエルは獲物を飲み込むとき、目玉を口の中へ引っ込め、食べ物をのどの奥へ押し込みます。ある研究では、目を引っ込められないカエルは、コオロギ1匹を飲み込むのにほぼ2倍の回数が必要でした。"
+   },
+   "ko": {
+    "title": "개구리는 눈으로 음식을 삼킨다 🐸",
+    "description": "개구리는 먹이를 삼킬 때 눈알을 입안으로 끌어내려 먹이를 목구멍 쪽으로 밀어 넣습니다. 한 연구에서 눈을 집어넣지 못한 개구리는 귀뚜라미 한 마리를 삼키는 데 거의 두 배나 더 여러 번 삼켜야 했습니다."
+   },
+   "pl": {
+    "title": "Żaby przełykają za pomocą oczu 🐸",
+    "description": "Przy przełykaniu żaba wciąga gałki oczne do jamy gębowej i dociska nimi kęs w stronę gardła. W jednym badaniu żaby, które nie mogły wciągać oczu, potrzebowały niemal dwa razy więcej przełknięć na jednego świerszcza."
+   },
+   "nl": {
+    "title": "Kikkers slikken met hun ogen 🐸",
+    "description": "Als een kikker slikt, trekt hij zijn oogbollen omlaag in zijn bek en duwt zo de prooi richting keel. In een onderzoek hadden kikkers die hun ogen niet konden intrekken bijna twee keer zoveel slikbewegingen nodig per krekel."
+   },
+   "uk": {
+    "title": "Жаби ковтають за допомогою очей 🐸",
+    "description": "Коли жаба ковтає, вона втягує очі всередину, у ротову порожнину, і проштовхує здобич до горла. В одному дослідженні жабам, які не могли втягувати очі, знадобилося майже вдвічі більше ковтків на одного цвіркуна."
+   },
+   "vi": {
+    "title": "Ếch dùng mắt để nuốt thức ăn 🐸",
+    "description": "Khi nuốt, con ếch kéo nhãn cầu tụt xuống khoang miệng để đẩy mồi về phía cổ họng. Trong một nghiên cứu, những con ếch không rụt mắt được phải nuốt gần gấp đôi số lần cho mỗi con dế."
+   },
+   "az": {
+    "title": "Qurbağalar gözləri ilə udqunur 🐸",
+    "description": "Qurbağa yeməyi udanda göz almalarını ağzının içinə doğru çəkir və tikəni boğaza tərəf itələyir. Bir araşdırmada gözlərini içəri çəkə bilməyən qurbağalar bir cırcırama üçün təxminən iki dəfə çox udqunmalı oldu."
+   },
+   "ro": {
+    "title": "Broaștele înghit cu ajutorul ochilor 🐸",
+    "description": "Când înghite, broasca își trage globii oculari în jos, în gură, și împinge astfel prada spre gât. Într-un studiu, broaștele care nu își puteau retrage ochii au avut nevoie de aproape două ori mai multe înghițituri pentru un greier."
+   }
+  }
+ }
+}

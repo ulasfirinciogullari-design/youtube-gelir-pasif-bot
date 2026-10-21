@@ -1,0 +1,179 @@
+{
+ "id": "mk-c0023",
+ "topic": "Tavus kuşunun kuyruğu gerçekten kuyruk mu?",
+ "kategori": "hayvan",
+ "subject": [
+  "peacock"
+ ],
+ "stock_hint": "peacock display feathers",
+ "script": {
+  "title": "Tavus kuşunun ünlü kuyruğu aslında kuyruk değil 🦚",
+  "hook_text": "ASIL KUYRUK NEREDE?",
+  "scenes": [
+   {
+    "text": "Bu tavus kuşunun görkemli kuyruğu, aslında kuyruk değil.",
+    "visual": "male peacock fanning its colorful feathers in a full display",
+    "stock_query": "peacock display",
+    "source": "stock",
+    "callout": "KUYRUK DEĞİL"
+   },
+   {
+    "text": "O uzun tüyler, kuyruğun dibini örten örtü tüyleri.",
+    "visual": "close up of shimmering peacock feathers with eye spots",
+    "stock_query": "peacock feathers",
+    "source": "stock",
+    "callout": "ÖRTÜ TÜYLERİ"
+   },
+   {
+    "text": "Asıl kuyruk, arkadaki daha kısa ve sert tüylerdir.",
+    "visual": "peacock seen from behind while displaying its fan",
+    "stock_query": "peacock tail",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Erkek gösteri yaparken bu kısa kuyruk, yelpazeyi arkadan destekler.",
+    "visual": "peacock dancing and shaking its open fan of feathers",
+    "stock_query": "peacock dancing",
+    "source": "stock",
+    "callout": "GİZLİ DESTEK"
+   },
+   {
+    "text": "Örtü tüyleri bir buçuk metreyi geçebilir ve her yıl dökülüp yeniden uzar.",
+    "visual": "peacock walking slowly with its long train trailing on the ground",
+    "stock_query": "peacock walking",
+    "source": "stock",
+    "callout": "1,6 METREYE KADAR"
+   },
+   {
+    "text": "Herkesin hayran olduğu kuyruk, gerçek kuyruğun sadece örtüsü.",
+    "visual": "peacock standing proudly in a garden",
+    "stock_query": "peacock bird",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Tavus kuşunun göz desenli uzun tüyleri kuyruk değil, kuyruğun dibini örten örtü tüyleridir; asıl kısa kuyruk gösteri sırasında yelpazeyi arkadan destekler.",
+  "tags": [
+   "tavus kuşu",
+   "tavus kuşu kuyruğu",
+   "tavus kuşu tüyü",
+   "örtü tüyleri",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kuyruğun kuyruk olmaması mı, her yıl baştan uzaması mı?",
+  "en_title": "A peacock's famous tail isn't actually its tail 🦚",
+  "en_description": "Those long eye-spotted feathers are tail coverts. The real tail is shorter and stiffer and props up the fan during display.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Tavus kuşunun kuyruğu gerçekten kuyruk mu?\n\nTavus kuşunun göz desenli uzun tüyleri kuyruk değil, kuyruğun dibini örten örtü tüyleridir. Asıl kuyruk arkadaki daha kısa ve sert tüylerdir; erkek gösteri yaparken yelpazeyi arkadan destekler. Örtü tüyleri bir buçuk metreyi geçebilir ve her yıl dökülüp yeniden uzar.\n\nSence hangisi daha şaşırtıcı: kuyruğun kuyruk olmaması mı, her yıl baştan uzaması mı?",
+  "hashtags": [
+   "#tavuskuşu",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tavus kuşu",
+   "tavus kuşları",
+   "tavus kuşu kuyruğu",
+   "tavus kuşu tüyü",
+   "tavus kuşu kuyruk açması",
+   "tavus kuşu neden kuyruk açar",
+   "örtü tüyleri",
+   "kuş tüyleri",
+   "erkek tavus kuşu",
+   "dişi tavus kuşu",
+   "kur yapma",
+   "kuşlar",
+   "renkli kuşlar",
+   "kuş anatomisi",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "doğa",
+   "peacock",
+   "peacock feathers"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A peacock's famous tail isn't actually its tail 🦚",
+    "description": "Those long eye-spotted feathers are tail coverts, the feathers that cover the base of the tail. The real tail is shorter and stiffer and props up the fan during display. The train can exceed 1.5 meters and regrows every year."
+   },
+   "es": {
+    "title": "La famosa cola del pavo real no es en realidad su cola 🦚",
+    "description": "Esas largas plumas con ocelos son coberteras, plumas que cubren la base de la cola. La cola verdadera es más corta y rígida, y sostiene el abanico durante el cortejo. Pueden superar el metro y medio y se renuevan cada año."
+   },
+   "pt": {
+    "title": "A famosa cauda do pavão não é, na verdade, a cauda 🦚",
+    "description": "Aquelas penas longas com “olhos” são coberteiras, penas que cobrem a base da cauda. A cauda de verdade é mais curta e firme e sustenta o leque durante a exibição. Elas podem passar de um metro e meio e crescem de novo todo ano."
+   },
+   "de": {
+    "title": "Der berühmte Pfauenschwanz ist gar kein Schwanz 🦚",
+    "description": "Die langen Federn mit den Augenflecken sind Oberschwanzdecken, die den Ansatz des Schwanzes bedecken. Der echte Schwanz ist kürzer und steifer und stützt das Rad bei der Balz. Die Schleppe kann über 1,5 Meter lang werden und wächst jedes Jahr neu."
+   },
+   "fr": {
+    "title": "La célèbre queue du paon n'est pas vraiment sa queue 🦚",
+    "description": "Ces longues plumes ocellées sont des couvertures caudales, qui recouvrent la base de la queue. La vraie queue, plus courte et plus rigide, soutient la roue pendant la parade. Ces plumes peuvent dépasser 1,5 mètre et repoussent chaque année."
+   },
+   "it": {
+    "title": "La famosa coda del pavone in realtà non è una coda 🦚",
+    "description": "Quelle lunghe penne con gli occhi sono copritrici, penne che coprono la base della coda. La vera coda è più corta e rigida e sostiene il ventaglio durante la parata. Possono superare il metro e mezzo e ricrescono ogni anno."
+   },
+   "ru": {
+    "title": "Знаменитый хвост павлина на самом деле не хвост 🦚",
+    "description": "Длинные перья с «глазками» это кроющие перья, которые прикрывают основание хвоста. Настоящий хвост короче и жёстче, он подпирает веер во время брачного танца. Эти перья бывают длиннее полутора метров и отрастают заново каждый год."
+   },
+   "ar": {
+    "title": "ذيل الطاووس الشهير ليس ذيلًا في الحقيقة 🦚",
+    "description": "تلك الريشات الطويلة ذات العيون هي ريش غطاء الذيل الذي يغطي قاعدته. أما الذيل الحقيقي فأقصر وأصلب، ويسند المروحة من الخلف أثناء الاستعراض. وقد يتجاوز طولها مترًا ونصفًا وتنمو من جديد كل عام."
+   },
+   "hi": {
+    "title": "मोर की मशहूर पूँछ असल में पूँछ नहीं है 🦚",
+    "description": "आँखों जैसे निशान वाले वे लंबे पंख पूँछ के आधार को ढकने वाले पंख हैं। असली पूँछ छोटी और सख़्त होती है और नाचते समय फैले पंखों को पीछे से सहारा देती है। ये पंख डेढ़ मीटर से भी लंबे हो सकते हैं और हर साल दोबारा उगते हैं।"
+   },
+   "id": {
+    "title": "Ekor merak yang terkenal itu ternyata bukan ekornya 🦚",
+    "description": "Bulu panjang bermotif mata itu adalah bulu penutup yang menutupi pangkal ekor. Ekor aslinya lebih pendek dan kaku, dan menopang kipas bulu saat merak memamerkannya. Bulu ini bisa lebih dari 1,5 meter dan tumbuh baru setiap tahun."
+   },
+   "ja": {
+    "title": "クジャクの有名な尾羽は、実は尾ではない 🦚",
+    "description": "目玉模様の長い羽は「上尾筒」と呼ばれ、尾の付け根を覆う羽です。本当の尾はもっと短くて硬く、羽を広げるときに後ろから支えています。上尾筒は1.5メートルを超えることもあり、毎年生え替わります。"
+   },
+   "ko": {
+    "title": "공작의 유명한 꼬리는 사실 꼬리가 아니다 🦚",
+    "description": "눈 무늬가 있는 긴 깃털은 꼬리 밑동을 덮는 위꼬리덮깃입니다. 진짜 꼬리는 더 짧고 뻣뻣하며, 구애할 때 펼친 깃털을 뒤에서 받쳐 줍니다. 이 깃털은 1.5m가 넘기도 하고 해마다 새로 자랍니다."
+   },
+   "pl": {
+    "title": "Słynny ogon pawia to tak naprawdę nie ogon 🦚",
+    "description": "Te długie pióra z „oczkami” to pokrywy nadogonowe, które okrywają nasadę ogona. Prawdziwy ogon jest krótszy i sztywniejszy i podpiera wachlarz podczas tokowania. Pióra mogą mieć ponad półtora metra i co roku odrastają."
+   },
+   "nl": {
+    "title": "De beroemde staart van een pauw is eigenlijk geen staart 🦚",
+    "description": "Die lange veren met oogvlekken zijn bovenstaartdekveren, die de basis van de staart bedekken. De echte staart is korter en stugger en ondersteunt de waaier tijdens het pronken. De veren kunnen langer dan anderhalve meter worden en groeien elk jaar opnieuw."
+   },
+   "uk": {
+    "title": "Знаменитий хвіст павича насправді не хвіст 🦚",
+    "description": "Довге пір'я з «очками» це покривне пір'я, що прикриває основу хвоста. Справжній хвіст коротший і жорсткіший, він підпирає віяло під час шлюбного танцю. Це пір'я буває довшим за півтора метра й щороку відростає заново."
+   },
+   "vi": {
+    "title": "Chiếc đuôi nổi tiếng của công thật ra không phải là đuôi 🦚",
+    "description": "Những chiếc lông dài có hình mắt ấy là lông phủ, che phần gốc đuôi. Đuôi thật ngắn và cứng hơn, giúp chống đỡ chiếc quạt lông từ phía sau khi công múa. Bộ lông này có thể dài hơn một mét rưỡi và mọc lại mỗi năm."
+   },
+   "az": {
+    "title": "Tovuz quşunun məşhur quyruğu əslində quyruq deyil 🦚",
+    "description": "Göz naxışlı o uzun lələklər quyruğun dibini örtən örtük lələkləridir. Əsl quyruq daha qısa və sərtdir, nümayiş zamanı yelpicəyi arxadan dəstəkləyir. Bu lələklər bir yarım metrdən uzun ola bilir və hər il yenidən çıxır."
+   },
+   "ro": {
+    "title": "Celebra coadă a păunului nu este, de fapt, coada lui 🦚",
+    "description": "Acele pene lungi cu „ochi” sunt tectrice, pene care acoperă baza cozii. Coada adevărată este mai scurtă și mai rigidă și sprijină evantaiul în timpul paradei. Penele pot depăși un metru și jumătate și cresc din nou în fiecare an."
+   }
+  }
+ }
+}

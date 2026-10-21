@@ -1,0 +1,179 @@
+{
+ "id": "mk-c0024",
+ "topic": "Su aygırı neden kırmızı terler?",
+ "kategori": "hayvan",
+ "subject": [
+  "hippo"
+ ],
+ "stock_hint": "hippo river",
+ "script": {
+  "title": "Su aygırı kendi güneş kremini üretir 🦛",
+  "hook_text": "BU KIRMIZI SIVI NE?",
+  "scenes": [
+   {
+    "text": "Bu su aygırı kendi güneş kremini üretiyor.",
+    "visual": "hippopotamus standing on a sunny riverbank, wet reddish skin",
+    "stock_query": "hippo",
+    "source": "stock",
+    "callout": "GÜNEŞ KREMİ"
+   },
+   {
+    "text": "Derisinden sızan kan kırmızısı sıvı, kan değil.",
+    "visual": "close up of a hippo emerging from a river",
+    "stock_query": "hippo river",
+    "source": "stock",
+    "callout": "KAN DEĞİL"
+   },
+   {
+    "text": "Önce renksiz çıkar, birkaç dakikada kırmızıya, sonra kahverengiye döner.",
+    "visual": "hippo resting in shallow water under the sun",
+    "stock_query": "hippo water",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "İçindeki kırmızı ve turuncu iki pigment, morötesi ışığı emer.",
+    "visual": "hippo lying in mud in bright sunlight",
+    "stock_query": "hippo mud",
+    "source": "stock",
+    "callout": "UV KALKANI"
+   },
+   {
+    "text": "Kırmızı pigment, laboratuvarda hastalık yapan iki bakterinin üremesini de yavaşlattı.",
+    "visual": "hippo opening its huge mouth wide",
+    "stock_query": "hippo mouth",
+    "source": "stock",
+    "callout": "ANTİBAKTERİYEL"
+   },
+   {
+    "text": "Su aygırının kremi şişeden değil, kendi derisinden geliyor.",
+    "visual": "hippo swimming slowly in a river, only head above water",
+    "stock_query": "hippo swimming",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Su aygırının derisinden sızan kırmızı sıvı kan değildir; içindeki pigmentler morötesi ışığı emer ve bazı bakterilerin üremesini yavaşlatır.",
+  "tags": [
+   "su aygırı",
+   "hipopotam",
+   "kırmızı ter",
+   "doğal güneş kremi",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kendi güneş kremi mi, mikroplara karşı kalkanı mı?",
+  "en_title": "Hippos make their own sunscreen 🦛",
+  "en_description": "The red fluid on a hippo's skin isn't blood. Its pigments absorb ultraviolet light and slowed the growth of two disease-causing bacteria in lab tests.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Su aygırı neden kırmızı terler, kan mı terler?\n\nSu aygırının derisinden sızan kırmızı sıvı kan değildir. Önce renksiz çıkar, birkaç dakikada kırmızıya, sonra kahverengiye döner. İçindeki kırmızı ve turuncu iki pigment morötesi ışığı emer; kırmızı pigment laboratuvarda hastalık yapan iki bakterinin üremesini de yavaşlattı.\n\nSence hangisi daha şaşırtıcı: kendi güneş kremi mi, mikroplara karşı kalkanı mı?",
+  "hashtags": [
+   "#suaygırı",
+   "#hayvanlar",
+   "#vahşidoğa",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "su aygırı",
+   "hipopotam",
+   "su aygırı kırmızı ter",
+   "su aygırı kan mı terler",
+   "hipopotam terlemesi",
+   "kırmızı ter",
+   "kan teri",
+   "doğal güneş kremi",
+   "güneş kremi",
+   "morötesi ışık",
+   "antibakteriyel",
+   "Afrika hayvanları",
+   "memeliler",
+   "vahşi doğa",
+   "Afrika",
+   "safari",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "hippo",
+   "hippo sweat"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Hippos make their own sunscreen 🦛",
+    "description": "The blood-red fluid oozing from a hippo's skin isn't blood. It comes out colorless, turns red within minutes and later brown, and its red and orange pigments absorb ultraviolet light. In lab tests the red pigment also slowed the growth of two disease-causing bacteria."
+   },
+   "es": {
+    "title": "Los hipopótamos fabrican su propio protector solar 🦛",
+    "description": "El líquido rojo que brota de la piel del hipopótamo no es sangre. Sale incoloro, se vuelve rojo en pocos minutos y después marrón, y sus pigmentos rojo y naranja absorben la luz ultravioleta. En el laboratorio, el pigmento rojo además frenó el crecimiento de dos bacterias patógenas."
+   },
+   "pt": {
+    "title": "O hipopótamo produz o próprio protetor solar 🦛",
+    "description": "O líquido vermelho que escorre da pele do hipopótamo não é sangue. Ele sai incolor, fica vermelho em poucos minutos e depois marrom, e seus pigmentos vermelho e laranja absorvem a luz ultravioleta. Em laboratório, o pigmento vermelho ainda freou o crescimento de duas bactérias causadoras de doenças."
+   },
+   "de": {
+    "title": "Flusspferde stellen ihre eigene Sonnencreme her 🦛",
+    "description": "Die blutrote Flüssigkeit auf der Haut eines Flusspferds ist kein Blut. Sie tritt farblos aus, färbt sich binnen Minuten rot und später braun, und ihre roten und orangefarbenen Pigmente schlucken UV-Licht. Im Labor bremste das rote Pigment zudem das Wachstum zweier Krankheitserreger."
+   },
+   "fr": {
+    "title": "L'hippopotame fabrique sa propre crème solaire 🦛",
+    "description": "Le liquide rouge sang qui suinte de la peau de l'hippopotame n'est pas du sang. Incolore au départ, il rougit en quelques minutes puis brunit, et ses pigments rouge et orange absorbent les UV. En laboratoire, le pigment rouge a aussi freiné la croissance de deux bactéries pathogènes."
+   },
+   "it": {
+    "title": "L'ippopotamo produce la sua crema solare 🦛",
+    "description": "Il liquido rosso sangue che trasuda dalla pelle dell'ippopotamo non è sangue. Esce incolore, diventa rosso in pochi minuti e poi marrone, e i suoi pigmenti rosso e arancione assorbono i raggi ultravioletti. In laboratorio il pigmento rosso ha anche rallentato la crescita di due batteri patogeni."
+   },
+   "ru": {
+    "title": "Бегемот сам вырабатывает себе солнцезащитный крем 🦛",
+    "description": "Кроваво-красная жидкость на коже бегемота вовсе не кровь. Она выделяется бесцветной, за несколько минут краснеет, а потом буреет, и её красный и оранжевый пигменты поглощают ультрафиолет. В лаборатории красный пигмент к тому же замедлил рост двух болезнетворных бактерий."
+   },
+   "ar": {
+    "title": "فرس النهر يصنع واقي الشمس الخاص به 🦛",
+    "description": "السائل الأحمر الذي ينضح من جلد فرس النهر ليس دمًا. يخرج عديم اللون ثم يحمرّ خلال دقائق ويصبح بنيًا لاحقًا، وتمتص صبغتاه الحمراء والبرتقالية الأشعة فوق البنفسجية. وفي المختبر أبطأت الصبغة الحمراء أيضًا نمو نوعين من البكتيريا المسببة للأمراض."
+   },
+   "hi": {
+    "title": "दरियाई घोड़ा अपना सनस्क्रीन ख़ुद बनाता है 🦛",
+    "description": "दरियाई घोड़े की त्वचा से रिसने वाला लाल तरल ख़ून नहीं है। यह पहले बेरंग निकलता है, कुछ ही मिनटों में लाल और फिर भूरा हो जाता है, और इसके लाल व नारंगी रंगद्रव्य पराबैंगनी किरणों को सोख लेते हैं। प्रयोगशाला में लाल रंगद्रव्य ने बीमारी फैलाने वाले दो बैक्टीरिया की बढ़त भी धीमी कर दी।"
+   },
+   "id": {
+    "title": "Kuda nil membuat tabir suryanya sendiri 🦛",
+    "description": "Cairan merah darah yang merembes dari kulit kuda nil bukanlah darah. Awalnya bening, dalam beberapa menit berubah merah lalu cokelat, dan pigmen merah serta oranyenya menyerap sinar ultraviolet. Di laboratorium, pigmen merahnya juga memperlambat pertumbuhan dua bakteri penyebab penyakit."
+   },
+   "ja": {
+    "title": "カバは自分で日焼け止めを作る 🦛",
+    "description": "カバの皮膚からにじみ出る血のように赤い液体は、血ではありません。出たときは無色で、数分で赤く、やがて茶色に変わり、その赤とオレンジの色素が紫外線を吸収します。実験では、赤い色素が病原菌2種類の増殖を抑えることもわかりました。"
+   },
+   "ko": {
+    "title": "하마는 자기만의 자외선 차단제를 만든다 🦛",
+    "description": "하마 피부에서 배어 나오는 핏빛 액체는 피가 아닙니다. 처음엔 투명하다가 몇 분 만에 붉게, 나중엔 갈색으로 변하며, 그 속의 붉은색과 주황색 색소가 자외선을 흡수합니다. 실험실에서는 붉은 색소가 병원균 두 종의 증식을 늦추기도 했습니다."
+   },
+   "pl": {
+    "title": "Hipopotam sam produkuje sobie krem z filtrem 🦛",
+    "description": "Krwistoczerwona ciecz na skórze hipopotama to wcale nie krew. Wydziela się bezbarwna, w ciągu kilku minut czerwienieje, a potem brązowieje, a jej czerwony i pomarańczowy barwnik pochłaniają promieniowanie UV. W laboratorium czerwony barwnik spowolnił też wzrost dwóch chorobotwórczych bakterii."
+   },
+   "nl": {
+    "title": "Nijlpaarden maken hun eigen zonnebrandcrème 🦛",
+    "description": "De bloedrode vloeistof op de huid van een nijlpaard is geen bloed. Ze komt kleurloos naar buiten, wordt binnen enkele minuten rood en later bruin, en de rode en oranje pigmenten absorberen uv-licht. In het lab remde het rode pigment ook de groei van twee ziekteverwekkende bacteriën."
+   },
+   "uk": {
+    "title": "Бегемот сам виробляє собі сонцезахисний крем 🦛",
+    "description": "Криваво-червона рідина на шкірі бегемота зовсім не кров. Вона виділяється безбарвною, за кілька хвилин червоніє, а згодом буріє, і її червоний та помаранчевий пігменти поглинають ультрафіолет. У лабораторії червоний пігмент ще й уповільнив ріст двох хвороботворних бактерій."
+   },
+   "vi": {
+    "title": "Hà mã tự làm kem chống nắng cho mình 🦛",
+    "description": "Thứ chất lỏng đỏ như máu rỉ ra trên da hà mã không phải là máu. Lúc mới tiết ra nó không màu, vài phút sau chuyển đỏ rồi dần ngả nâu, và hai sắc tố đỏ, cam trong đó hấp thụ tia cực tím. Trong phòng thí nghiệm, sắc tố đỏ còn làm chậm sự phát triển của hai loại vi khuẩn gây bệnh."
+   },
+   "az": {
+    "title": "Begemot öz günəş kremini özü hazırlayır 🦛",
+    "description": "Begemotun dərisindən sızan qan qırmızısı maye qan deyil. O əvvəlcə rəngsiz çıxır, bir neçə dəqiqəyə qırmızıya, sonra qəhvəyiyə çalır, içindəki qırmızı və narıncı piqmentlər isə ultrabənövşəyi şüaları udur. Laboratoriyada qırmızı piqment xəstəlik törədən iki bakteriyanın çoxalmasını da yavaşlatdı."
+   },
+   "ro": {
+    "title": "Hipopotamul își face singur crema de protecție solară 🦛",
+    "description": "Lichidul roșu ca sângele care se prelinge pe pielea hipopotamului nu este sânge. Iese incolor, devine roșu în câteva minute și apoi maro, iar pigmenții săi roșu și portocaliu absorb razele ultraviolete. În laborator, pigmentul roșu a încetinit și creșterea a două bacterii care provoacă boli."
+   }
+  }
+ }
+}

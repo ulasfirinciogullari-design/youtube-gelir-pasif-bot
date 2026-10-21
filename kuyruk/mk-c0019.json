@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0019",
+ "topic": "Neden hep bir burun deliğimiz daha tıkalı?",
+ "kategori": "vücut",
+ "subject": [
+  "woman",
+  "breathing"
+ ],
+ "stock_hint": "woman breathing deeply",
+ "script": {
+  "title": "Burun deliklerin neden sırayla çalışır? 👃",
+  "hook_text": "HANGİ BURUN DELİĞİN AÇIK?",
+  "scenes": [
+   {
+    "text": "Nefesinin çoğu şu an tek burun deliğinden geçiyor.",
+    "visual": "close up of a woman breathing in deeply through her nose, calm, soft light",
+    "stock_query": "woman breathing",
+    "source": "stock",
+    "callout": "TEK DELİK"
+   },
+   {
+    "text": "Burnunun içindeki dokular sırayla kanla dolup şişer.",
+    "visual": "side profile close up of a person's face and nose",
+    "stock_query": "woman face",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir taraf hafifçe tıkanırken diğeri açılır; buna burun döngüsü denir.",
+    "visual": "man breathing slowly with eyes closed, relaxed",
+    "stock_query": "man breathing",
+    "source": "stock",
+    "callout": "BURUN DÖNGÜSÜ"
+   },
+   {
+    "text": "Birkaç saatte bir iki delik rol değiştirir.",
+    "visual": "time lapse of a wall clock with moving hands",
+    "stock_query": "clock time lapse",
+    "source": "stock",
+    "callout": "BİRKAÇ SAATTE BİR"
+   },
+   {
+    "text": "Bunu otonom sinir sistemi yönetir, çoğu insan fark etmez.",
+    "visual": "person sleeping peacefully in bed, breathing calmly",
+    "stock_query": "woman sleeping",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deliğini kapatıp nefes al, sonra öbürünü dene: biri muhtemelen daha açık.",
+    "visual": "woman doing a breathing exercise, closing one nostril with a finger",
+    "stock_query": "breathing exercise",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Burnun içindeki dokular sırayla kanla dolup şişer; bu yüzden nefesin çoğu tek burun deliğinden geçer ve iki delik birkaç saatte bir rol değiştirir.",
+  "tags": [
+   "burun döngüsü",
+   "burun deliği",
+   "burun tıkanıklığı",
+   "nefes",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence şu an hangisi daha açık: sağ burun deliğin mi, sol burun deliğin mi?",
+  "en_title": "Why one nostril always feels more blocked 👃",
+  "en_description": "The tissue inside your nose takes turns swelling with blood, so most of your breath goes through one nostril, and the sides switch every few hours.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Neden hep bir burun deliğimiz daha tıkalı?\n\nBurnun içindeki dokular sırayla kanla dolup şişer; bir taraf hafifçe tıkanırken diğeri açılır. Buna burun döngüsü denir ve iki delik birkaç saatte bir rol değiştirir. Bu düzeni otonom sinir sistemi yönetir, çoğu insan fark etmez.\n\nSence şu an hangisi daha açık: sağ burun deliğin mi, sol burun deliğin mi?",
+  "hashtags": [
+   "#burun",
+   "#insanvücudu",
+   "#bilim",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "burun döngüsü",
+   "burun deliği",
+   "tek burun deliği tıkalı",
+   "bir burun deliği tıkalı",
+   "burun neden tıkanır",
+   "burun tıkanıklığı",
+   "burundan nefes alma",
+   "nefes almak",
+   "nefes",
+   "burun",
+   "otonom sinir sistemi",
+   "solunum",
+   "insan vücudu",
+   "vücut bilgileri",
+   "sağlık",
+   "uyku",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "biyoloji",
+   "nasal cycle",
+   "nostril"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why one nostril always feels more blocked 👃",
+    "description": "The tissue inside your nose takes turns filling with blood and swelling, so one side narrows while the other opens. This is the nasal cycle, and the dominant nostril switches every few hours without you noticing."
+   },
+   "es": {
+    "title": "¿Por qué siempre tienes una fosa nasal más tapada? 👃",
+    "description": "El tejido del interior de la nariz se llena de sangre y se hincha por turnos: un lado se estrecha mientras el otro se abre. Es el ciclo nasal, y la fosa dominante cambia cada pocas horas sin que lo notes."
+   },
+   "pt": {
+    "title": "Por que uma narina sempre parece mais entupida? 👃",
+    "description": "O tecido dentro do nariz se enche de sangue e incha em turnos: um lado fecha um pouco enquanto o outro se abre. É o ciclo nasal, e a narina dominante troca a cada poucas horas sem você perceber."
+   },
+   "de": {
+    "title": "Warum ein Nasenloch immer verstopfter ist 👃",
+    "description": "Das Gewebe in deiner Nase füllt sich abwechselnd mit Blut und schwillt an: Eine Seite wird enger, die andere frei. Das ist der Nasenzyklus, und die führende Seite wechselt alle paar Stunden, ohne dass du es merkst."
+   },
+   "fr": {
+    "title": "Pourquoi une narine est toujours plus bouchée 👃",
+    "description": "Les tissus à l'intérieur du nez se gorgent de sang à tour de rôle : un côté se rétrécit pendant que l'autre se dégage. C'est le cycle nasal, et la narine dominante change plusieurs fois par jour sans qu'on s'en rende compte."
+   },
+   "it": {
+    "title": "Perché una narice è sempre più chiusa dell'altra? 👃",
+    "description": "Il tessuto dentro il naso si riempie di sangue e si gonfia a turno: un lato si restringe mentre l'altro si apre. È il ciclo nasale, e la narice dominante cambia nel giro di qualche ora senza che te ne accorga."
+   },
+   "ru": {
+    "title": "Почему одна ноздря всегда заложена сильнее? 👃",
+    "description": "Ткань внутри носа по очереди наполняется кровью и набухает: одна сторона сужается, другая освобождается. Это носовой цикл, и ведущая ноздря меняется каждые несколько часов, а мы этого даже не замечаем."
+   },
+   "ar": {
+    "title": "لماذا تبدو إحدى فتحتي أنفك أكثر انسدادًا؟ 👃",
+    "description": "تمتلئ الأنسجة داخل الأنف بالدم وتنتفخ بالتناوب، فيضيق جانب بينما ينفتح الآخر. هذه هي الدورة الأنفية، وتتبادل فتحتا الأنف الدور كل بضع ساعات دون أن تشعر."
+   },
+   "hi": {
+    "title": "एक नथुना हमेशा ज़्यादा बंद क्यों लगता है? 👃",
+    "description": "नाक के अंदर का ऊतक बारी-बारी से खून से भरकर फूलता है, जिससे एक तरफ़ थोड़ी बंद और दूसरी खुली रहती है। इसे नेज़ल साइकिल कहते हैं, और हर कुछ घंटों में बारी बदल जाती है, हमें पता भी नहीं चलता।"
+   },
+   "id": {
+    "title": "Kenapa satu lubang hidung selalu terasa lebih tersumbat? 👃",
+    "description": "Jaringan di dalam hidung bergantian terisi darah dan membengkak, jadi satu sisi menyempit sementara sisi lain terbuka. Inilah siklus hidung, dan lubang yang dominan berganti setiap beberapa jam tanpa kita sadari."
+   },
+   "ja": {
+    "title": "片方の鼻の穴がいつも詰まりがちなのはなぜ? 👃",
+    "description": "鼻の中の組織は交互に血液で膨らみ、片側が狭くなるともう片側が開きます。これを「鼻周期(ネーザルサイクル)」と呼び、数時間ごとに左右が入れ替わっていますが、ほとんどの人は気づいていません。"
+   },
+   "ko": {
+    "title": "왜 한쪽 콧구멍이 늘 더 막혀 있을까? 👃",
+    "description": "코 안의 조직은 번갈아 가며 피가 차서 부풀어, 한쪽이 좁아지면 다른 쪽이 열립니다. 이것을 비주기라고 하며, 몇 시간마다 주로 쓰는 콧구멍이 바뀌지만 대부분은 알아차리지 못합니다."
+   },
+   "pl": {
+    "title": "Dlaczego jedna dziurka w nosie jest zawsze bardziej zatkana? 👃",
+    "description": "Tkanka w nosie na zmianę wypełnia się krwią i pęcznieje, więc jedna strona się zwęża, a druga otwiera. To cykl nosowy, a dominująca dziurka zmienia się co kilka godzin, choć zwykle tego nie zauważamy."
+   },
+   "nl": {
+    "title": "Waarom zit één neusgat altijd meer dicht? 👃",
+    "description": "Het weefsel in je neus vult zich om de beurt met bloed en zwelt op, waardoor de ene kant smaller wordt en de andere opengaat. Dat heet de neuscyclus: om de paar uur wisselt het dominante neusgat, zonder dat je het merkt."
+   },
+   "uk": {
+    "title": "Чому одна ніздря завжди закладена більше? 👃",
+    "description": "Тканина всередині носа по черзі наповнюється кров'ю й набрякає: один бік звужується, інший відкривається. Це носовий цикл, і провідна ніздря змінюється кожні кілька годин, а ми цього навіть не помічаємо."
+   },
+   "vi": {
+    "title": "Vì sao luôn có một bên mũi nghẹt hơn? 👃",
+    "description": "Mô bên trong mũi thay phiên nhau căng máu và phồng lên, nên một bên hẹp lại trong khi bên kia thông thoáng. Đó là chu kỳ mũi, và bên mũi chiếm ưu thế đổi lượt sau vài giờ mà ta không hề hay biết."
+   },
+   "az": {
+    "title": "Niyə burun dəliklərindən biri həmişə daha tutulu olur? 👃",
+    "description": "Burnun içindəki toxumalar növbə ilə qanla dolub şişir: bir tərəf daralır, digəri açılır. Buna burun dövrü deyilir və üstünlük bir neçə saatdan bir o biri dəliyə keçir, çoxumuz bunu hiss etmirik."
+   },
+   "ro": {
+    "title": "De ce o nară pare mereu mai înfundată? 👃",
+    "description": "Țesutul din interiorul nasului se umple pe rând cu sânge și se umflă, așa că o parte se îngustează, iar cealaltă se deschide. Este ciclul nazal, iar nara dominantă se schimbă la câteva ore, fără să observi."
+   }
+  }
+ }
+}

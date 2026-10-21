@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0022",
+ "topic": "Bebekler neden yetişkinlerden daha fazla kemikle doğar?",
+ "kategori": "vücut",
+ "subject": [
+  "baby"
+ ],
+ "stock_hint": "newborn baby sleeping",
+ "script": {
+  "title": "Bebeklerin kemiği neden senden fazla? 👶",
+  "hook_text": "KEMİKLER NEREYE GİDİYOR?",
+  "scenes": [
+   {
+    "text": "Bu bebeğin kemik sayısı seninkinden fazla.",
+    "visual": "newborn baby sleeping peacefully wrapped in a soft blanket",
+    "stock_query": "newborn baby",
+    "source": "stock",
+    "callout": "DAHA ÇOK KEMİK"
+   },
+   {
+    "text": "Yenidoğan bir bebekte yaklaşık üç yüz kemik var, birçoğu henüz kıkırdak.",
+    "visual": "close up of a sleeping baby's face and tiny hands",
+    "stock_query": "baby sleeping",
+    "source": "stock",
+    "callout": "YAKLAŞIK 300"
+   },
+   {
+    "text": "Büyüdükçe bu parçaların bir kısmı birbirine kaynaşır.",
+    "visual": "toddler taking first steps in a bright living room",
+    "stock_query": "toddler walking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bıngıldak kapanır, omurganın alt kısmında beş omur tek kemik olur.",
+    "visual": "3d model of a human spine rotating slowly",
+    "stock_query": "human spine",
+    "source": "stock",
+    "callout": "5 OMUR TEK KEMİK"
+   },
+   {
+    "text": "Büyüme bitince geriye iki yüz altı kemik kalır.",
+    "visual": "3d human skeleton model rotating on a dark background",
+    "stock_query": "human skeleton",
+    "source": "stock",
+    "callout": "206 KEMİK"
+   },
+   {
+    "text": "Kemik sayın azaldı ama hiçbirini kaybetmedin; sadece birleştiler.",
+    "visual": "adult hand gently holding a baby's tiny hand",
+    "stock_query": "baby hand",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yenidoğan bebekte yaklaşık üç yüz kemik ve kıkırdak parça vardır; büyüdükçe bir kısmı kaynaşır ve yetişkinde iki yüz altı kemik kalır.",
+  "tags": [
+   "bebek",
+   "kemik sayısı",
+   "bebeklerin kaç kemiği var",
+   "206 kemik",
+   "bıngıldak",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: bebeklerin daha çok kemiği olması mı, beş omurun tek kemiğe dönüşmesi mi?",
+  "en_title": "Why babies have more bones than you 👶",
+  "en_description": "A newborn has around 300 bones, many still cartilage. Some fuse as the body grows, leaving 206 in an adult.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Bebekler neden yetişkinlerden daha fazla kemikle doğar?\n\nYenidoğan bir bebekte yaklaşık üç yüz kemik bulunur ve bunların birçoğu henüz kıkırdaktır. Büyüdükçe bir kısmı kaynaşır: kafatasındaki bıngıldak kapanır, omurganın alt kısmında beş omur tek bir kemik olur. Büyüme bitince yetişkinde iki yüz altı kemik kalır.\n\nSence hangisi daha şaşırtıcı: bebeklerin daha çok kemiği olması mı, beş omurun tek kemiğe dönüşmesi mi?",
+  "hashtags": [
+   "#bebek",
+   "#insanvücudu",
+   "#kemik",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "bebek kemik sayısı",
+   "bebeklerin kaç kemiği var",
+   "bebekler kaç kemikle doğar",
+   "insanda kaç kemik var",
+   "206 kemik",
+   "kemik sayısı",
+   "kemikler",
+   "kemik kaynaşması",
+   "bıngıldak",
+   "bıngıldak ne zaman kapanır",
+   "sakrum",
+   "omurga",
+   "iskelet",
+   "kıkırdak",
+   "yenidoğan bebek",
+   "bebek",
+   "insan vücudu",
+   "vücut bilgileri",
+   "sağlık",
+   "biyoloji",
+   "ilginç bilgiler",
+   "bilim",
+   "baby bones"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Why babies have more bones than you 👶",
+    "description": "A newborn has around 300 bones, many of them still cartilage. As the body grows, some fuse together: the soft spots in the skull close and five vertebrae become a single bone, leaving 206 in an adult."
+   },
+   "es": {
+    "title": "¿Por qué un bebé tiene más huesos que tú? 👶",
+    "description": "Un recién nacido tiene unos 300 huesos, muchos todavía de cartílago. Al crecer, algunos se fusionan: las fontanelas del cráneo se cierran y cinco vértebras se convierten en un solo hueso. De adulto quedan 206."
+   },
+   "pt": {
+    "title": "Por que um bebê tem mais ossos do que você? 👶",
+    "description": "Um recém-nascido tem cerca de 300 ossos, muitos ainda de cartilagem. Com o crescimento, alguns se fundem: a moleira se fecha e cinco vértebras viram um único osso. No adulto restam 206."
+   },
+   "de": {
+    "title": "Warum Babys mehr Knochen haben als du 👶",
+    "description": "Ein Neugeborenes hat rund 300 Knochen, viele davon noch aus Knorpel. Beim Wachsen verschmelzen einige: Die Fontanellen schließen sich, und fünf Wirbel werden zu einem einzigen Knochen. Erwachsene haben am Ende 206."
+   },
+   "fr": {
+    "title": "Pourquoi un bébé a plus d'os que toi 👶",
+    "description": "Un nouveau-né compte environ 300 os, dont beaucoup sont encore du cartilage. En grandissant, certains fusionnent : les fontanelles se ferment et cinq vertèbres ne forment plus qu'un seul os. À l'âge adulte, il en reste 206."
+   },
+   "it": {
+    "title": "Perché un neonato ha più ossa di te 👶",
+    "description": "Un neonato ha circa 300 ossa, molte ancora fatte di cartilagine. Crescendo alcune si fondono: le fontanelle si chiudono e cinque vertebre diventano un unico osso. Da adulti ne restano 206."
+   },
+   "ru": {
+    "title": "Почему у младенца больше костей, чем у тебя 👶",
+    "description": "У новорождённого около 300 костей, многие из них ещё хрящевые. С ростом часть из них срастается: роднички закрываются, а пять позвонков превращаются в одну кость. У взрослого остаётся 206."
+   },
+   "ar": {
+    "title": "لماذا يملك الرضيع عظامًا أكثر منك؟ 👶",
+    "description": "يولد الطفل بنحو 300 عظمة، كثير منها ما زال غضروفًا. ومع النمو يلتحم بعضها: تنغلق اليوافيخ في الجمجمة وتتحول خمس فقرات إلى عظمة واحدة، فيبقى لدى البالغ 206 عظام."
+   },
+   "hi": {
+    "title": "नवजात शिशु में आपसे ज़्यादा हड्डियाँ क्यों होती हैं? 👶",
+    "description": "नवजात शिशु के शरीर में लगभग 300 हड्डियाँ होती हैं, जिनमें से कई अभी उपास्थि होती हैं। बढ़ने के साथ कुछ आपस में जुड़ जाती हैं: खोपड़ी के नरम हिस्से बंद होते हैं और पाँच कशेरुक मिलकर एक हड्डी बन जाते हैं। वयस्क में 206 हड्डियाँ बचती हैं।"
+   },
+   "id": {
+    "title": "Kenapa bayi punya lebih banyak tulang daripada kamu? 👶",
+    "description": "Bayi baru lahir punya sekitar 300 tulang, banyak di antaranya masih berupa tulang rawan. Seiring tumbuh, sebagian menyatu: ubun-ubun menutup dan lima ruas tulang belakang menjadi satu tulang. Orang dewasa tinggal punya 206."
+   },
+   "ja": {
+    "title": "赤ちゃんの骨が大人より多いのはなぜ? 👶",
+    "description": "生まれたばかりの赤ちゃんには約300個の骨があり、その多くはまだ軟骨です。成長とともに一部がくっつき、頭の大泉門は閉じ、5つの椎骨は1つの骨になります。大人になると206個になります。"
+   },
+   "ko": {
+    "title": "아기는 왜 어른보다 뼈가 더 많을까? 👶",
+    "description": "신생아는 약 300개의 뼈를 갖고 태어나며, 그중 상당수는 아직 연골입니다. 자라면서 일부가 서로 붙어 정수리의 숨구멍이 닫히고 척추뼈 다섯 개가 하나로 합쳐집니다. 어른이 되면 206개가 남습니다."
+   },
+   "pl": {
+    "title": "Dlaczego niemowlę ma więcej kości niż ty? 👶",
+    "description": "Noworodek ma około 300 kości, a wiele z nich to wciąż chrząstka. Z wiekiem część się zrasta: ciemiączka się zamykają, a pięć kręgów staje się jedną kością. U dorosłego zostaje 206."
+   },
+   "nl": {
+    "title": "Waarom een baby meer botten heeft dan jij 👶",
+    "description": "Een pasgeboren baby heeft zo'n 300 botten, waarvan veel nog uit kraakbeen bestaan. Tijdens het opgroeien vergroeien sommige met elkaar: de fontanellen sluiten en vijf wervels worden één bot. Een volwassene houdt er 206 over."
+   },
+   "uk": {
+    "title": "Чому в немовляти більше кісток, ніж у тебе 👶",
+    "description": "Новонароджений має близько 300 кісток, багато з яких ще хрящові. Із ростом частина з них зростається: тім'ячка закриваються, а п'ять хребців стають однією кісткою. У дорослого залишається 206."
+   },
+   "vi": {
+    "title": "Vì sao em bé có nhiều xương hơn bạn? 👶",
+    "description": "Trẻ sơ sinh có khoảng 300 xương, nhiều chiếc vẫn còn là sụn. Khi lớn lên, một số dính liền với nhau: thóp trên đầu khép lại và năm đốt sống hợp thành một xương. Người trưởng thành còn lại 206 xương."
+   },
+   "az": {
+    "title": "Körpənin sümükləri niyə səndən çoxdur? 👶",
+    "description": "Yeni doğulan körpədə təxminən 300 sümük olur, onların çoxu hələ qığırdaqdır. Böyüdükcə bəziləri birləşir: kəllədəki əmgək bağlanır, beş fəqərə isə tək sümüyə çevrilir. Yetkin insanda 206 sümük qalır."
+   },
+   "ro": {
+    "title": "De ce un bebeluș are mai multe oase decât tine 👶",
+    "description": "Un nou-născut are în jur de 300 de oase, multe încă din cartilaj. Pe măsură ce crește, unele se sudează: fontanelele se închid, iar cinci vertebre devin un singur os. La adult rămân 206."
+   }
+  }
+ }
+}
