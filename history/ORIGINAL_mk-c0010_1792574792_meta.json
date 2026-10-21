@@ -1,0 +1,167 @@
+{
+  "topic_id": "mk-c0010",
+  "topic": "Kelebekler tadı nereden alır?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kelebekler tadı ayaklarıyla alır 🦋",
+  "hook_text": "TADI NEREDEN ALIYOR?",
+  "description": "Kelebekler tadı nereden alır?\n\nKelebeklerin tat almaya yarayan algılayıcıları ayaklarındadır. Dişi kelebek yaprağa ayaklarıyla vurup tadını kontrol eder; doğru bitkiyse yumurtalarını oraya bırakır, çünkü yumurtadan çıkan tırtıllar o bitkiyi yiyecektir.\n\nSence hangisi daha garip: ayakla tat almak mı, ayakla duymak mı?\n\n#kelebek #böcekler #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0010",
+  "tags": [
+    "kelebek",
+    "kelebekler",
+    "kelebekler nasıl tat alır",
+    "kelebek ayağı",
+    "ayakla tat almak",
+    "tat alma",
+    "kelebek yumurtası",
+    "tırtıl",
+    "kelebek bilgileri",
+    "böcekler",
+    "doğa",
+    "doğa belgeseli",
+    "bahçe",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "butterfly",
+    "butterflies taste",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "kelebekler nasil tat alir",
+    "kelebek ayagi",
+    "kelebek yumurtasi",
+    "tirtil",
+    "bocekler"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Butterflies taste with their feet 🦋",
+      "description": "A butterfly's taste sensors are on its feet. A female drums on a leaf to taste it, and lays her eggs only on the right plant, the one her caterpillars will eat.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "es": {
+      "title": "Las mariposas saborean con las patas 🦋",
+      "description": "Los sensores del gusto de una mariposa están en sus patas. La hembra golpea la hoja para probarla y solo pone huevos en la planta correcta para sus orugas.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "pt": {
+      "title": "As borboletas sentem o gosto com os pés 🦋",
+      "description": "Os sensores de sabor da borboleta ficam nas patas. A fêmea bate na folha para provar e só põe ovos na planta certa para suas lagartas.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "de": {
+      "title": "Schmetterlinge schmecken mit den Füßen 🦋",
+      "description": "Die Geschmackssensoren eines Schmetterlings sitzen an den Beinen. Das Weibchen trommelt auf ein Blatt, um es zu schmecken, und legt Eier nur auf die richtige Pflanze.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "fr": {
+      "title": "Les papillons goûtent avec leurs pattes 🦋",
+      "description": "Les capteurs du goût d'un papillon se trouvent sur ses pattes. La femelle tapote une feuille pour la goûter et ne pond que sur la bonne plante pour ses chenilles.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "it": {
+      "title": "Le farfalle sentono il sapore con le zampe 🦋",
+      "description": "I sensori del gusto di una farfalla sono sulle zampe. La femmina tamburella sulla foglia per assaggiarla e depone le uova solo sulla pianta giusta.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "ru": {
+      "title": "Бабочки чувствуют вкус ногами 🦋",
+      "description": "Вкусовые рецепторы бабочки находятся на лапках. Самка постукивает по листу, пробуя его, и откладывает яйца только на подходящее растение.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "ar": {
+      "title": "الفراشات تتذوق بأقدامها 🦋",
+      "description": "توجد مستقبلات التذوق عند الفراشة في أقدامها. تنقر الأنثى على الورقة لتتذوقها ولا تضع بيضها إلا على النبات المناسب لصغارها.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "hi": {
+      "title": "तितलियाँ अपने पैरों से स्वाद लेती हैं 🦋",
+      "description": "तितली के स्वाद पहचानने वाले सेंसर उसके पैरों में होते हैं। मादा पत्ते को पैरों से थपथपाकर चखती है और सही पौधे पर ही अंडे देती है।\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "id": {
+      "title": "Kupu-kupu mengecap rasa dengan kakinya 🦋",
+      "description": "Sensor perasa kupu-kupu ada di kakinya. Betina mengetuk daun untuk mencicipinya dan hanya bertelur di tanaman yang tepat untuk ulatnya.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "ja": {
+      "title": "チョウは足で味を感じている 🦋",
+      "description": "チョウの味を感じるセンサーは足にあります。メスは葉を足でたたいて味見し、幼虫が食べられる植物にだけ卵を産みます。\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "ko": {
+      "title": "나비는 발로 맛을 본다 🦋",
+      "description": "나비의 맛을 느끼는 감각기는 발에 있습니다. 암컷은 잎을 발로 두드려 맛을 보고, 애벌레가 먹을 수 있는 식물에만 알을 낳습니다.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "pl": {
+      "title": "Motyle czują smak stopami 🦋",
+      "description": "Receptory smaku motyla znajdują się na jego nogach. Samica bębni w liść, żeby go posmakować, i składa jaja tylko na właściwej roślinie.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "nl": {
+      "title": "Vlinders proeven met hun poten 🦋",
+      "description": "De smaakzintuigen van een vlinder zitten op zijn poten. Het vrouwtje trommelt op een blad om het te proeven en legt alleen eitjes op de juiste plant.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "uk": {
+      "title": "Метелики відчувають смак лапками 🦋",
+      "description": "Смакові рецептори метелика розташовані на лапках. Самка постукує по листку, куштуючи його, і відкладає яйця лише на потрібну рослину.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "vi": {
+      "title": "Bướm nếm vị bằng chân 🦋",
+      "description": "Các cảm biến vị giác của bướm nằm ở chân. Bướm cái gõ chân lên lá để nếm và chỉ đẻ trứng trên đúng loại cây mà sâu con ăn được.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "az": {
+      "title": "Kəpənəklər dadı ayaqları ilə bilir 🦋",
+      "description": "Kəpənəyin dad hiss edən reseptorları ayaqlarındadır. Dişi yarpağa ayaqları ilə vurub dadına baxır və yumurtanı yalnız düzgün bitkiyə qoyur.\n\n#shorts\n\nSeri: mk-c0010"
+    },
+    "ro": {
+      "title": "Fluturii simt gustul cu picioarele 🦋",
+      "description": "Senzorii de gust ai fluturelui sunt pe picioare. Femela bate ușor frunza ca s-o guste și își depune ouăle doar pe planta potrivită pentru omizi.\n\n#shorts\n\nSeri: mk-c0010"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha garip: ayakla tat almak mı, ayakla duymak mı?",
+  "scenes": [
+    {
+      "text": "Bu kelebek bir yaprağa konduğu an onun tadına bakıyor.",
+      "visual": "colorful butterfly landing on a green leaf, macro",
+      "stock_query": "butterfly leaf",
+      "source": "stock",
+      "callout": "AYAKLA TAT"
+    },
+    {
+      "text": "Tat almaya yarayan algılayıcılar ayaklarında bulunur.",
+      "visual": "macro shot of butterfly legs on a flower",
+      "stock_query": "butterfly flower",
+      "source": "stock"
+    },
+    {
+      "text": "Dişi kelebek yaprağa ayaklarıyla vurup tadını kontrol eder.",
+      "visual": "butterfly walking on a leaf, close up",
+      "stock_query": "butterfly macro",
+      "source": "stock",
+      "callout": "TADINA BAKAR"
+    },
+    {
+      "text": "Doğru bitkiyse yumurtalarını oraya bırakır, çünkü tırtıllar onu yiyecek.",
+      "visual": "caterpillar eating a leaf",
+      "stock_query": "caterpillar leaf",
+      "source": "stock",
+      "callout": "DOĞRU BİTKİ"
+    },
+    {
+      "text": "Senin dilinle yaptığını o, bastığı her yerde ayaklarıyla yapıyor.",
+      "visual": "butterfly opening its wings on a flower in sunlight",
+      "stock_query": "butterfly wings",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 13.72,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0010_1792574792_ig.mp4"
+}
