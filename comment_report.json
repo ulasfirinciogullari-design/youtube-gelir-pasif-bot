@@ -1,22 +1,22 @@
 {
- "started": "2026-10-21T15:45:11+00:00",
+ "started": "2026-10-21T16:45:14+00:00",
  "deneme": false,
  "threads": 97,
  "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxtCzxUHP75RgnWRI14AaABAg.AcE3b95S1iXAcEAZl2oitV",
+   "id": "UgxtCzxUHP75RgnWRI14AaABAg.AcE3b95S1iXAcEGoLhGpks",
    "kind": "followup",
    "video": "ZziBlIDkwWc",
-   "comment": "​@zirveninkanunuteşekürler😢",
-   "reply": "@Miiawster Rica ederim, umarım biraz olsun içini rahatlatabilmişizdir. 🫂",
+   "comment": "​@zirveninkanunurahatladı baya oldu 1 ay fln",
+   "reply": "@Miiawster Ne güzel! İçinin rahatlamasına sevindik, bizim de amacımız buydu. 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-21T15:45:16+00:00"
+ "finished": "2026-10-21T16:45:18+00:00"
 }
