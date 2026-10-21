@@ -1,0 +1,259 @@
+{
+ "id": "o0009",
+ "series": "Ya Olsaydı?",
+ "q": "Tüm erkekler yok olsaydı ne olurdu?",
+ "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
+ "bar": {
+  "hi": "ERKEKLER",
+  "rest": "YOK OLSAYDI?"
+ },
+ "summary": "Tüm erkekler bir anda yok olsa Dünya nüfusunun yarısı kaybolur ve doğumlar neredeyse durur. Nüfus bilimi ve biyolojiyle insanlığın kaç yıl dayanabileceğini ve sperm ile embriyo bankalarının neden en büyük umut olduğunu öğren!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bir anda 4 milyardan fazla insan, Dünya'nın yarısı yok olurdu.",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "👥",
+    "value": "4.100.000.000",
+    "label": "Bir Anda Yok",
+    "key": "4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yarısı mı?!",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "👥",
+     "label": "8,2 Milyar"
+    },
+    "right": {
+     "e": "👤",
+     "label": "4,1 Milyar"
+    },
+    "key": "yarısı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Günde 360.000 doğum, 9 ay içinde neredeyse sıfıra inerdi.",
+   "v": {
+    "t": "meter",
+    "bg": "city",
+    "label": "Günlük Doğum",
+    "from": 360000,
+    "to": 0,
+    "unit": "bebek",
+    "e": "👶",
+    "key": "9"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sperm ve embriyo bankaları olmasa, insanlık 120 yılda tükenirdi.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "1. GÜN",
+      "e": "👥",
+      "label": "Yarısı Gider"
+     },
+     {
+      "when": "9. AY",
+      "e": "👶",
+      "label": "Doğum Durur"
+     },
+     {
+      "when": "120. YIL",
+      "e": "🕯️",
+      "label": "Son İnsan"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence insanlık nasıl kurtulurdu? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🧬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "BM'ye göre Dünya nüfusu 2024'te 8,2 milyara ulaştı; Our World in Data'ya göre kadınların payı %50'nin biraz altında, yani erkekler 4 milyardan fazla.",
+   "source": "Birleşmiş Milletler / Our World in Data",
+   "url": "https://ourworldindata.org/gender-ratio"
+  },
+  {
+   "text": "Dünyada her yıl yaklaşık 132 milyon bebek doğuyor; bu, günde yaklaşık 360.000 doğum demek.",
+   "source": "Our World in Data (Oxford Üniversitesi)",
+   "url": "https://ourworldindata.org/births-and-deaths"
+  },
+  {
+   "text": "Avustralya'daki Newcastle Üniversitesi'nden araştırmacı Brett Nixon'a göre doğru dondurulan sperm on yıllarca canlı kalabilir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/sex/how-long-can-human-sperm-survive"
+  },
+  {
+   "text": "Uzmanlara göre -196 °C'de sıvı azotta saklanan embriyolar süresiz dayanabilir; 27 yıl dondurulmuş bir embriyodan bile bebek doğdu.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/how-long-can-embryos-stay-frozen.html"
+  },
+  {
+   "text": "Kesin olarak doğrulanmış en uzun insan ömrü, 1997'de 122 yaşında ölen Fransız Jeanne Calment'a ait.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/science-nature/keeping-track-oldest-people-world-180951976/"
+  }
+ ],
+ "tags": [
+  "erkekler yok olsaydı",
+  "dünya nüfusu",
+  "nüfus bilimi",
+  "üreme",
+  "sperm bankası",
+  "embriyo",
+  "insan ömrü",
+  "demografi",
+  "what if all men disappeared",
+  "world population",
+  "human reproduction",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#nüfus",
+  "#biyoloji",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.un.org/sustainabledevelopment/blog/2024/07/media-advisory-wpp2024",
+  "https://ourworldindata.org/gender-ratio",
+  "https://www.livescience.com/health/sex/how-long-can-human-sperm-survive",
+  "https://www.smithsonianmag.com/science-nature/keeping-track-oldest-people-world-180951976/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If All Men Disappeared, How Long Would Humanity Last?",
+   "summary": "If all men vanished at once, half of the world's population would be gone and births would almost stop. Learn through population science and biology how many years humanity could last, and why sperm and embryo banks would be our biggest hope!",
+   "facts": [
+    "According to the UN, the world population reached 8.2 billion in 2024; according to Our World in Data, women make up just under 50% of it, so there are more than 4 billion men.",
+    "About 132 million babies are born worldwide each year, roughly 360,000 births a day.",
+    "According to Brett Nixon, a researcher at the University of Newcastle in Australia, sperm can survive for decades if it is frozen properly.",
+    "According to experts, embryos stored in liquid nitrogen at -196 °C can last indefinitely; a baby has even been born from an embryo frozen for 27 years.",
+    "The longest confirmed human lifespan belongs to Jeanne Calment of France, who died in 1997 at the age of 122."
+   ]
+  },
+  "es": {
+   "title": "Si desaparecieran todos los hombres, ¿cuánto duraría la humanidad?",
+   "summary": "Si todos los hombres desaparecieran de golpe, se iría la mitad de la población mundial y los nacimientos casi se detendrían. Descubre con la demografía y la biología cuántos años resistiría la humanidad y por qué los bancos de esperma y embriones serían nuestra mayor esperanza.",
+   "facts": [
+    "Según la ONU, la población mundial llegó a 8.200 millones en 2024; según Our World in Data, las mujeres son algo menos del 50 %, así que hay más de 4.000 millones de hombres.",
+    "Cada año nacen en el mundo unos 132 millones de bebés, unos 360.000 nacimientos al día.",
+    "Según Brett Nixon, investigador de la Universidad de Newcastle (Australia), el esperma bien congelado puede sobrevivir durante décadas.",
+    "Según los expertos, los embriones guardados en nitrógeno líquido a -196 °C pueden durar indefinidamente; incluso nació un bebé de un embrión congelado durante 27 años.",
+    "La vida humana más larga confirmada es la de la francesa Jeanne Calment, que murió en 1997 a los 122 años."
+   ]
+  },
+  "pt": {
+   "title": "Se Todos os Homens Sumissem, Quantos Anos a Humanidade Duraria?",
+   "summary": "Se todos os homens sumissem de repente, metade da população mundial desapareceria e os nascimentos quase parariam. Descubra com a demografia e a biologia quantos anos a humanidade aguentaria e por que os bancos de esperma e de embriões seriam nossa maior esperança!",
+   "facts": [
+    "Segundo a ONU, a população mundial chegou a 8,2 bilhões em 2024; segundo o Our World in Data, as mulheres são um pouco menos de 50%, ou seja, há mais de 4 bilhões de homens.",
+    "Cerca de 132 milhões de bebês nascem no mundo por ano, cerca de 360 mil nascimentos por dia.",
+    "Segundo Brett Nixon, pesquisador da Universidade de Newcastle, na Austrália, o esperma congelado da forma certa pode sobreviver por décadas.",
+    "Segundo especialistas, embriões guardados em nitrogênio líquido a -196 °C podem durar indefinidamente; já nasceu até um bebê de um embrião congelado por 27 anos.",
+    "A vida humana mais longa já confirmada é a da francesa Jeanne Calment, que morreu em 1997 aos 122 anos."
+   ]
+  },
+  "ar": {
+   "title": "لو اختفى جميع الرجال، كم عامًا ستصمد البشرية؟",
+   "summary": "لو اختفى جميع الرجال فجأة، لاختفى نصف سكان العالم ولتوقفت الولادات تقريبًا. تعرّف عبر علم السكان وعلم الأحياء على عدد السنوات التي قد تصمدها البشرية، ولماذا ستكون بنوك الحيوانات المنوية والأجنّة أكبر أمل لنا!",
+   "facts": [
+    "بحسب الأمم المتحدة، بلغ عدد سكان العالم 8.2 مليار نسمة في عام 2024، وبحسب Our World in Data تشكّل النساء أقل بقليل من 50% منهم، أي أن عدد الرجال يتجاوز 4 مليارات.",
+    "يولد في العالم نحو 132 مليون طفل كل عام، أي نحو 360,000 ولادة يوميًا.",
+    "بحسب بريت نيكسون، الباحث في جامعة نيوكاسل الأسترالية، يمكن للحيوانات المنوية المجمّدة بشكل صحيح أن تبقى حية لعقود.",
+    "بحسب الخبراء، يمكن للأجنّة المحفوظة في النيتروجين السائل عند -196 درجة مئوية أن تبقى إلى أجل غير مسمى، وقد وُلد طفل من جنين ظل مجمّدًا 27 عامًا.",
+    "أطول عمر بشري مؤكد يعود إلى الفرنسية جان كالمان التي توفيت عام 1997 عن 122 عامًا."
+   ]
+  },
+  "hi": {
+   "title": "अगर सभी पुरुष गायब हो जाएँ, तो इंसानियत कितने साल टिकेगी?",
+   "summary": "अगर सभी पुरुष अचानक गायब हो जाएँ, तो दुनिया की आधी आबादी खत्म हो जाएगी और जन्म लगभग रुक जाएँगे। जनसंख्या विज्ञान और जीव विज्ञान से जानिए इंसानियत कितने साल टिक सकती है और स्पर्म व भ्रूण बैंक सबसे बड़ी उम्मीद क्यों होंगे!",
+   "facts": [
+    "संयुक्त राष्ट्र के अनुसार 2024 में दुनिया की आबादी 8.2 अरब तक पहुँच गई, और Our World in Data के अनुसार इसमें महिलाओं का हिस्सा 50% से थोड़ा कम है, यानी पुरुष 4 अरब से ज़्यादा हैं।",
+    "दुनिया में हर साल लगभग 13.2 करोड़ (132 मिलियन) बच्चे पैदा होते हैं, यानी रोज़ लगभग 3,60,000 जन्म।",
+    "ऑस्ट्रेलिया की न्यूकैसल यूनिवर्सिटी के शोधकर्ता ब्रेट निक्सन के अनुसार, सही तरीके से जमाए गए शुक्राणु दशकों तक जीवित रह सकते हैं।",
+    "विशेषज्ञों के अनुसार, -196 °C पर तरल नाइट्रोजन में रखे भ्रूण अनिश्चित काल तक सुरक्षित रह सकते हैं; 27 साल तक जमे रहे एक भ्रूण से बच्चा भी पैदा हो चुका है।",
+    "अब तक की सबसे लंबी पुष्ट मानव आयु फ़्रांस की जीन कालमां की है, जिनकी 1997 में 122 वर्ष की उम्र में मृत्यु हुई।"
+   ]
+  },
+  "id": {
+   "title": "Jika Semua Pria Lenyap, Berapa Lama Umat Manusia Bertahan?",
+   "summary": "Jika semua pria lenyap seketika, separuh penduduk dunia akan hilang dan kelahiran hampir berhenti. Pelajari lewat ilmu kependudukan dan biologi berapa tahun umat manusia bisa bertahan dan mengapa bank sperma dan embrio menjadi harapan terbesar kita!",
+   "facts": [
+    "Menurut PBB, penduduk dunia mencapai 8,2 miliar jiwa pada 2024; menurut Our World in Data, perempuan sedikit di bawah 50%, artinya jumlah pria lebih dari 4 miliar.",
+    "Sekitar 132 juta bayi lahir di dunia setiap tahun, atau sekitar 360.000 kelahiran per hari.",
+    "Menurut Brett Nixon, peneliti dari University of Newcastle di Australia, sperma yang dibekukan dengan benar bisa bertahan selama puluhan tahun.",
+    "Menurut para ahli, embrio yang disimpan dalam nitrogen cair bersuhu -196 °C bisa bertahan tanpa batas waktu; bahkan pernah lahir bayi dari embrio yang dibekukan selama 27 tahun.",
+    "Usia manusia terpanjang yang terkonfirmasi dimiliki Jeanne Calment dari Prancis, yang meninggal pada 1997 di usia 122 tahun."
+   ]
+  },
+  "fr": {
+   "title": "Si les hommes disparaissaient, combien de temps durerait l'humanité ?",
+   "summary": "Si tous les hommes disparaissaient d'un coup, la moitié de la population mondiale s'évanouirait et les naissances s'arrêteraient presque. Découvre grâce à la démographie et à la biologie combien d'années l'humanité tiendrait, et pourquoi les banques de sperme et d'embryons seraient notre plus grand espoir !",
+   "facts": [
+    "Selon l'ONU, la population mondiale a atteint 8,2 milliards en 2024 ; selon Our World in Data, les femmes en représentent un peu moins de 50 %, il y a donc plus de 4 milliards d'hommes.",
+    "Environ 132 millions de bébés naissent chaque année dans le monde, soit environ 360 000 naissances par jour.",
+    "Selon Brett Nixon, chercheur à l'université de Newcastle, en Australie, un sperme bien congelé peut survivre pendant des décennies.",
+    "Selon les experts, des embryons conservés dans l'azote liquide à -196 °C peuvent tenir indéfiniment ; un bébé est même né d'un embryon congelé pendant 27 ans.",
+    "La plus longue vie humaine confirmée est celle de la Française Jeanne Calment, morte en 1997 à 122 ans."
+   ]
+  },
+  "de": {
+   "title": "Wenn alle Männer verschwänden: Wie lange hielte die Menschheit durch?",
+   "summary": "Würden alle Männer auf einmal verschwinden, wäre die Hälfte der Weltbevölkerung weg und es gäbe fast keine Geburten mehr. Erfahre mit Bevölkerungswissenschaft und Biologie, wie viele Jahre die Menschheit durchhalten könnte und warum Samen- und Embryobanken unsere größte Hoffnung wären!",
+   "facts": [
+    "Laut den Vereinten Nationen erreichte die Weltbevölkerung 2024 8,2 Milliarden Menschen; laut Our World in Data sind knapp unter 50 % davon Frauen – es gibt also mehr als 4 Milliarden Männer.",
+    "Weltweit werden jedes Jahr etwa 132 Millionen Babys geboren, also rund 360.000 Geburten pro Tag.",
+    "Laut Brett Nixon, Forscher an der University of Newcastle in Australien, können richtig eingefrorene Spermien jahrzehntelang überleben.",
+    "Laut Fachleuten halten Embryonen in flüssigem Stickstoff bei -196 °C unbegrenzt; sogar aus einem 27 Jahre lang eingefrorenen Embryo wurde schon ein Baby geboren.",
+    "Die längste bestätigte Lebensdauer eines Menschen erreichte die Französin Jeanne Calment, die 1997 im Alter von 122 Jahren starb."
+   ]
+  },
+  "ru": {
+   "title": "Если бы все мужчины исчезли, сколько продержалось бы человечество?",
+   "summary": "Если бы все мужчины разом исчезли, пропала бы половина населения Земли, а рождения почти прекратились бы. Узнай с помощью демографии и биологии, сколько лет продержалось бы человечество и почему банки спермы и эмбрионов стали бы нашей главной надеждой!",
+   "facts": [
+    "По данным ООН, в 2024 году население мира достигло 8,2 миллиарда человек; по данным Our World in Data, женщины составляют чуть меньше 50%, то есть мужчин больше 4 миллиардов.",
+    "Ежегодно в мире рождается около 132 миллионов детей — примерно 360 000 рождений в день.",
+    "По словам Бретта Никсона, исследователя из Университета Ньюкасла в Австралии, правильно замороженная сперма может сохраняться десятилетиями.",
+    "По словам специалистов, эмбрионы в жидком азоте при -196 °C могут храниться бессрочно; ребёнок родился даже из эмбриона, пролежавшего замороженным 27 лет.",
+    "Самая долгая подтверждённая продолжительность жизни — у француженки Жанны Кальман, умершей в 1997 году в возрасте 122 лет."
+   ]
+  },
+  "az": {
+   "title": "Bütün Kişilər Yox Olsaydı, Bəşəriyyət Neçə İl Davam Gətirərdi?",
+   "summary": "Bütün kişilər birdən yox olsa, dünya əhalisinin yarısı itər və doğuşlar demək olar ki, dayanardı. Əhali elmi və biologiya ilə bəşəriyyətin neçə il davam gətirə biləcəyini və sperma ilə embrion banklarının niyə ən böyük ümid olacağını öyrən!",
+   "facts": [
+    "BMT-yə görə dünya əhalisi 2024-cü ildə 8,2 milyarda çatıb; Our World in Data-ya görə qadınlar bunun 50%-dən bir qədər azını təşkil edir, yəni kişilərin sayı 4 milyarddan çoxdur.",
+    "Dünyada hər il təxminən 132 milyon körpə doğulur, bu da gündə təxminən 360.000 doğuş deməkdir.",
+    "Avstraliyadakı Nyukasl Universitetinin tədqiqatçısı Brett Niksona görə, düzgün dondurulmuş sperma onilliklər boyu canlı qala bilər.",
+    "Mütəxəssislərə görə, -196 °C-də maye azotda saxlanan embrionlar qeyri-müəyyən müddət qala bilər; 27 il dondurulmuş embriondan belə körpə doğulub.",
+    "Təsdiqlənmiş ən uzun insan ömrü 1997-ci ildə 122 yaşında vəfat edən fransız Janna Kalmana məxsusdur."
+   ]
+  }
+ }
+}

@@ -1,0 +1,240 @@
+{
+ "id": "o0008",
+ "series": "Ya Olsaydı?",
+ "q": "Evren yok olup sadece Dünya kalsaydı ne olurdu?",
+ "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
+ "bar": {
+  "hi": "SADECE DÜNYA",
+  "rest": "KALSAYDI?"
+ },
+ "summary": "Evrendeki her şey silinse ve geriye sadece Dünya kalsa ilk günlerde neler yaşardık? Güneş'siz bir gezegende 3 günde gelen ayazdan donup yere yağan havaya kadar her şeyi Profesör Pi anlatıyor!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Güneş de silinirdi; 3 gün içinde neredeyse her yer buz keserdi.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "l",
+      "at": "tl"
+     },
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "br"
+     }
+    ],
+    "do": "vanish",
+    "target": 0,
+    "key": "silinirdi",
+    "label": "Güneş Yok"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "3 günde mi?!",
+   "v": {
+    "t": "number",
+    "bg": "ice",
+    "e": "🥶",
+    "value": "3",
+    "unit": "gün",
+    "label": "Her Yer Donar",
+    "key": "3"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yüzeydeki yaşam, insanlar dahil, birkaç yıl içinde sönerdi.",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🧍",
+    "do": "freeze",
+    "key": "sönerdi",
+    "label": "Yaşam Söner"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonunda soluduğun hava bile donup kar gibi yere yağardı!",
+   "v": {
+    "t": "split",
+    "bg": "night",
+    "left": {
+     "e": "💨",
+     "label": "Soluduğun Hava"
+    },
+    "right": {
+     "e": "❄️",
+     "label": "Donmuş Hava"
+    },
+    "key": "donup"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen nerede saklanırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🔦"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "George Mason Üniversitesi'nden Michael Summers'a göre Güneş yok olsa Dünya ilk günlerde her 24 saatte yaklaşık 20 °C soğur ve 2-3 gün içinde neredeyse her yer donma noktasının altına iner.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/planet-earth/what-would-happen-to-earth-if-the-sun-suddenly-vanished"
+  },
+  {
+   "text": "Caltech gezegen bilimcisi Dave Stevenson'a göre Güneş'siz bir Dünya'da yüzeydeki yaşam yıllar ya da daha kısa bir sürede sona erer ve insanlar yüzeyde hayatta kalamaz.",
+   "source": "Caltech",
+   "url": "https://experts.caltech.edu/news/caltech-question-month-if-sun-ceased-exist-right-now-how-long-would-mankind-survive-would"
+  },
+  {
+   "text": "Stevenson'a göre atmosfer zamanla katı oksijen ve azot olarak donar; yüzey milyonlarca yıl içinde yaklaşık 30 kelvine, yani -243 °C'ye iner.",
+   "source": "Caltech",
+   "url": "https://experts.caltech.edu/news/caltech-question-month-if-sun-ceased-exist-right-now-how-long-would-mankind-survive-would"
+  },
+  {
+   "text": "Stevenson'a göre az sayıda insan, yüzeyin kilometrelerce altına kazılmış bir yaşam alanında uzun süre hayatta kalabilir.",
+   "source": "Caltech",
+   "url": "https://experts.caltech.edu/news/caltech-question-month-if-sun-ceased-exist-right-now-how-long-would-mankind-survive-would"
+  }
+ ],
+ "tags": [
+  "evren yok olsaydı",
+  "sadece dünya kalsaydı",
+  "güneş olmasaydı",
+  "dünya donsaydı",
+  "atmosfer donarsa",
+  "uzay",
+  "astronomi",
+  "what if the universe disappeared",
+  "only earth left",
+  "what if the sun vanished",
+  "frozen earth",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#evren",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/planet-earth/what-would-happen-to-earth-if-the-sun-suddenly-vanished",
+  "https://experts.caltech.edu/news/caltech-question-month-if-sun-ceased-exist-right-now-how-long-would-mankind-survive-would"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Only Earth Were Left in the Universe, What Would Happen to You?",
+   "summary": "If everything in the universe vanished and only Earth remained, what would the first days be like? From a deep freeze within 3 days to the very air falling as snow, Professor Pi explains it all!",
+   "facts": [
+    "According to Michael Summers of George Mason University, if the Sun vanished, Earth would at first cool by about 20 °C every 24 hours, and almost the whole world would drop below freezing within 2-3 days.",
+    "According to Caltech planetary scientist Dave Stevenson, on an Earth without the Sun, life at the surface would be wiped out within years or less, and humans could not survive on the surface.",
+    "According to Stevenson, the atmosphere would eventually freeze out as solid oxygen and nitrogen, and over millions of years the surface would settle at about 30 kelvin, or -243 °C.",
+    "According to Stevenson, a small number of people could survive for a long time in a habitat drilled miles below the surface."
+   ]
+  },
+  "es": {
+   "title": "Si en el universo solo quedara la Tierra, ¿qué te pasaría?",
+   "summary": "Si todo el universo desapareciera y solo quedara la Tierra, ¿cómo serían los primeros días? Desde una helada casi total en 3 días hasta el propio aire cayendo como nieve, el Profesor Pi te lo explica todo.",
+   "facts": [
+    "Según Michael Summers, de la Universidad George Mason, si el Sol desapareciera, la Tierra se enfriaría al principio unos 20 °C cada 24 horas y casi todo el planeta quedaría bajo cero en 2 o 3 días.",
+    "Según el científico planetario Dave Stevenson, de Caltech, en una Tierra sin Sol la vida en la superficie se extinguiría en años o menos, y los humanos no sobrevivirían en la superficie.",
+    "Según Stevenson, la atmósfera acabaría congelándose en oxígeno y nitrógeno sólidos, y en millones de años la superficie se estabilizaría en unos 30 kelvin, es decir, -243 °C.",
+    "Según Stevenson, un pequeño número de personas podría sobrevivir mucho tiempo en un refugio excavado a kilómetros bajo la superficie."
+   ]
+  },
+  "pt": {
+   "title": "Se Só a Terra Restasse no Universo, o Que Aconteceria com Você?",
+   "summary": "Se tudo no universo sumisse e só restasse a Terra, como seriam os primeiros dias? De um congelamento quase total em 3 dias até o próprio ar caindo como neve, o Professor Pi explica tudo!",
+   "facts": [
+    "Segundo Michael Summers, da Universidade George Mason, se o Sol sumisse, a Terra esfriaria no início cerca de 20 °C a cada 24 horas, e quase o mundo inteiro ficaria abaixo de zero em 2 a 3 dias.",
+    "Segundo o cientista planetário Dave Stevenson, do Caltech, numa Terra sem Sol a vida na superfície seria extinta em anos ou menos, e os humanos não sobreviveriam na superfície.",
+    "Segundo Stevenson, a atmosfera acabaria congelando em oxigênio e nitrogênio sólidos, e em milhões de anos a superfície se estabilizaria em cerca de 30 kelvin, ou -243 °C.",
+    "Segundo Stevenson, um pequeno número de pessoas poderia sobreviver por muito tempo em um abrigo escavado a quilômetros abaixo da superfície."
+   ]
+  },
+  "ar": {
+   "title": "لو اختفى الكون ولم تبقَ إلا الأرض، ماذا سيحدث لك؟",
+   "summary": "لو اختفى كل شيء في الكون ولم يبقَ سوى الأرض، كيف ستكون الأيام الأولى؟ من تجمّد شبه شامل خلال 3 أيام إلى هواء يتجمّد ويتساقط كالثلج، يشرح لك البروفيسور باي كل شيء!",
+   "facts": [
+    "بحسب مايكل سامرز من جامعة جورج ميسون، لو اختفت الشمس لبردت الأرض في البداية بنحو 20 درجة مئوية كل 24 ساعة، ولانخفضت الحرارة في كل مكان تقريبًا إلى ما دون التجمّد خلال 2 إلى 3 أيام.",
+    "بحسب عالم الكواكب ديف ستيفنسون من معهد كالتك، فإن الحياة على سطح أرض بلا شمس ستنتهي خلال سنوات أو أقل، ولن يتمكن البشر من النجاة على السطح.",
+    "بحسب ستيفنسون، سيتجمّد الغلاف الجوي في النهاية إلى أكسجين ونيتروجين صلبين، وخلال ملايين السنين ستستقر حرارة السطح عند نحو 30 كلفن، أي -243 درجة مئوية.",
+    "بحسب ستيفنسون، يمكن لعدد قليل من البشر أن يعيشوا طويلًا في ملجأ محفور على عمق كيلومترات تحت السطح."
+   ]
+  },
+  "hi": {
+   "title": "अगर ब्रह्मांड में सिर्फ़ पृथ्वी बचे, तो आपके साथ क्या होगा?",
+   "summary": "अगर ब्रह्मांड की हर चीज़ गायब हो जाए और सिर्फ़ पृथ्वी बचे, तो पहले कुछ दिन कैसे होंगे? 3 दिन में जमा देने वाली ठंड से लेकर बर्फ़ की तरह गिरती हवा तक, प्रोफ़ेसर पाई सब कुछ समझाते हैं!",
+   "facts": [
+    "जॉर्ज मेसन यूनिवर्सिटी के माइकल समर्स के अनुसार, अगर सूरज गायब हो जाए तो पृथ्वी शुरुआत में हर 24 घंटे में लगभग 20 °C ठंडी होगी और 2-3 दिनों में लगभग पूरी दुनिया का तापमान शून्य से नीचे चला जाएगा।",
+    "कैलटेक के ग्रह वैज्ञानिक डेव स्टीवेन्सन के अनुसार, बिना सूरज वाली पृथ्वी पर सतह का जीवन कुछ ही वर्षों या उससे कम समय में खत्म हो जाएगा, और इंसान सतह पर जीवित नहीं रह पाएंगे।",
+    "स्टीवेन्सन के अनुसार, वायुमंडल आखिरकार ठोस ऑक्सीजन और नाइट्रोजन के रूप में जम जाएगा, और लाखों वर्षों में सतह का तापमान लगभग 30 केल्विन, यानी -243 °C पर स्थिर हो जाएगा।",
+    "स्टीवेन्सन के अनुसार, कुछ लोग सतह से कई किलोमीटर नीचे खोदे गए आवास में लंबे समय तक जीवित रह सकते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Jika Alam Semesta Lenyap dan Hanya Bumi Tersisa, Apa Nasibmu?",
+   "summary": "Jika segala isi alam semesta lenyap dan hanya Bumi yang tersisa, seperti apa hari-hari pertamanya? Dari dingin membekukan dalam 3 hari hingga udara yang membeku dan turun seperti salju, Profesor Pi menjelaskan semuanya!",
+   "facts": [
+    "Menurut Michael Summers dari Universitas George Mason, jika Matahari lenyap, Bumi awalnya akan mendingin sekitar 20 °C setiap 24 jam, dan hampir seluruh dunia akan berada di bawah titik beku dalam 2-3 hari.",
+    "Menurut ilmuwan planet Caltech Dave Stevenson, di Bumi tanpa Matahari kehidupan di permukaan akan musnah dalam hitungan tahun atau kurang, dan manusia tidak akan bertahan di permukaan.",
+    "Menurut Stevenson, atmosfer pada akhirnya akan membeku menjadi oksigen dan nitrogen padat, dan dalam jutaan tahun suhu permukaan akan stabil di sekitar 30 kelvin, atau -243 °C.",
+    "Menurut Stevenson, sejumlah kecil manusia bisa bertahan lama di habitat yang digali berkilo-kilometer di bawah permukaan."
+   ]
+  },
+  "fr": {
+   "title": "S'il ne restait que la Terre dans l'univers, que t'arriverait-il ?",
+   "summary": "Si tout l'univers disparaissait et qu'il ne restait que la Terre, à quoi ressembleraient les premiers jours ? D'un gel presque total en 3 jours jusqu'à l'air lui-même tombant comme de la neige, le Professeur Pi t'explique tout !",
+   "facts": [
+    "Selon Michael Summers, de l'université George Mason, si le Soleil disparaissait, la Terre se refroidirait d'abord d'environ 20 °C toutes les 24 heures, et presque toute la planète passerait sous zéro en 2 à 3 jours.",
+    "Selon le planétologue Dave Stevenson, du Caltech, sur une Terre sans Soleil, la vie en surface s'éteindrait en quelques années ou moins, et les humains ne pourraient pas survivre en surface.",
+    "Selon Stevenson, l'atmosphère finirait par geler en oxygène et azote solides, et en quelques millions d'années la surface se stabiliserait vers 30 kelvins, soit -243 °C.",
+    "Selon Stevenson, un petit nombre de personnes pourrait survivre longtemps dans un habitat creusé à plusieurs kilomètres sous la surface."
+   ]
+  },
+  "de": {
+   "title": "Bliebe nur die Erde im Universum übrig – was würde mit dir passieren?",
+   "summary": "Wenn alles im Universum verschwände und nur die Erde übrig bliebe, wie sähen die ersten Tage aus? Vom Kälteschock binnen 3 Tagen bis zur Luft, die als Schnee zu Boden fällt – Professor Pi erklärt alles!",
+   "facts": [
+    "Laut Michael Summers von der George Mason University würde die Erde ohne Sonne anfangs um etwa 20 °C pro 24 Stunden abkühlen, und fast die ganze Welt läge innerhalb von 2 bis 3 Tagen unter dem Gefrierpunkt.",
+    "Laut dem Caltech-Planetenforscher Dave Stevenson würde das Leben an der Oberfläche einer Erde ohne Sonne innerhalb von Jahren oder schneller erlöschen, und Menschen könnten an der Oberfläche nicht überleben.",
+    "Laut Stevenson würde die Atmosphäre schließlich zu festem Sauerstoff und Stickstoff gefrieren, und über Millionen Jahre würde sich die Oberfläche bei etwa 30 Kelvin, also -243 °C, einpendeln.",
+    "Laut Stevenson könnten wenige Menschen lange in einem Lebensraum überleben, der kilometertief unter die Oberfläche gebohrt ist."
+   ]
+  },
+  "ru": {
+   "title": "Если бы во Вселенной осталась только Земля, что стало бы с тобой?",
+   "summary": "Если бы всё во Вселенной исчезло и осталась только Земля, какими были бы первые дни? От лютого мороза за 3 дня до самого воздуха, падающего снегом, — профессор Пи объясняет всё!",
+   "facts": [
+    "По словам Майкла Саммерса из Университета Джорджа Мейсона, если бы Солнце исчезло, Земля сначала остывала бы примерно на 20 °C каждые 24 часа, и почти везде температура опустилась бы ниже нуля за 2-3 дня.",
+    "По словам планетолога Дэйва Стивенсона из Калтеха, на Земле без Солнца жизнь на поверхности угасла бы за годы или быстрее, а люди не смогли бы выжить на поверхности.",
+    "По словам Стивенсона, атмосфера в итоге вымерзла бы в твёрдые кислород и азот, а за миллионы лет температура поверхности установилась бы около 30 кельвинов, то есть -243 °C.",
+    "По словам Стивенсона, небольшое число людей могло бы долго выживать в убежище, пробуренном на километры под поверхностью."
+   ]
+  },
+  "az": {
+   "title": "Kainatda Yalnız Yer Qalsaydı, Sənə Nə Olardı?",
+   "summary": "Kainatdakı hər şey yox olsa və geriyə yalnız Yer qalsa, ilk günlər necə keçərdi? 3 gündə gələn şaxtadan donub qar kimi yerə yağan havaya qədər hər şeyi Professor Pi izah edir!",
+   "facts": [
+    "Corc Meyson Universitetindən Maykl Sammersə görə, Günəş yox olsaydı, Yer əvvəlcə hər 24 saatda təxminən 20 °C soyuyar və 2-3 gün ərzində demək olar ki, hər yerdə temperatur donma nöqtəsindən aşağı düşərdi.",
+    "Caltech-in planet alimi Deyv Stivensona görə, Günəşsiz Yerdə səthdəki həyat bir neçə il və ya daha qısa müddətdə sönər, insanlar isə səthdə sağ qala bilməzdi.",
+    "Stivensona görə, atmosfer sonda bərk oksigen və azot kimi donar, milyonlarla il ərzində səth temperaturu təxminən 30 kelvinə, yəni -243 °C-yə enərdi.",
+    "Stivensona görə, az sayda insan səthdən kilometrlərlə aşağıda qazılmış sığınacaqda uzun müddət yaşaya bilər."
+   ]
+  }
+ }
+}

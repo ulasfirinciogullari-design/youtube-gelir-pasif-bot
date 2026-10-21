@@ -1,0 +1,290 @@
+{
+ "id": "g005",
+ "series": "1 Gün Boyunca",
+ "q": "Vücudun 1 günde kaç hücre yeniler?",
+ "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
+ "bar": {
+  "hi": "1 GÜNDE",
+  "rest": "KAÇ HÜCRE?"
+ },
+ "summary": "Sen bu videoyu izlerken vücudunda her saniye milyonlarca hücre ölüp yerine yenisi geliyor. Günde kaç hücre yenilendiğini, yanan dilinin neden çabucak toparlandığını ve hiç değişmeyen hücrelerini öğren!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bunu izlerken her saniye 3,8 milyon hücren ölüp yenileniyor.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🧬",
+    "value": "3,8 milyon",
+    "label": "Her Saniye",
+    "key": "3,8"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Şu an mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧍",
+    "do": "shake",
+    "key": "şu",
+    "label": "Şu An Sende"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Günde 330 milyar hücre eder, çoğu kan hücresi.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🩸",
+    "value": "330 milyar",
+    "label": "Her Gün",
+    "key": "330"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dilini çayla yaktın mı? Tat hücrelerin 10 günde bir yenilenir.",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "1. GÜN",
+      "e": "☕",
+      "label": "Dil Yandı"
+     },
+     {
+      "when": "10. GÜN",
+      "e": "👅",
+      "label": "Yeni Tat Hücresi"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "80 günde, hücre sayın kadar yenisini yaparsın: 30 trilyon!",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "80 Günde",
+    "from": 0,
+    "to": 30,
+    "unit": "trilyon",
+    "e": "🧍",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yepyeni bir ben mi?!",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🧍",
+     "label": "Bugünkü Sen"
+    },
+    "right": {
+     "e": "✨",
+     "label": "80 Gün Sonra"
+    },
+    "key": "yepyeni"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama göz merceğinin ortası, doğduğundan beri aynı!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👁️",
+    "do": "pulse",
+    "key": "merceğinin",
+    "label": "Doğumdan Beri"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen 80 gün önceki senle aynı mısın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🧬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Weizmann Bilim Enstitüsü'nün araştırmasına göre vücutta her gün yaklaşık 330 milyar hücre ölür ve yerine yenisi gelir; bu, saniyede yaklaşık 3,8 milyon hücre eder.",
+   "source": "Weizmann Bilim Enstitüsü",
+   "url": "https://wis-wander.weizmann.ac.il/life-sciences/cell-replacement-numbers"
+  },
+  {
+   "text": "Her gün yenilenen hücrelerin sayıca yaklaşık %90'ı kan hücreleridir.",
+   "source": "Weizmann Bilim Enstitüsü",
+   "url": "https://wis-wander.weizmann.ac.il/life-sciences/cell-replacement-numbers"
+  },
+  {
+   "text": "Virginia Üniversitesi'nden psikolog David Hill'e göre tat hücreleri yaklaşık 10 günde bir yenilenir; dilini yaksan bile tat alma birkaç gün içinde geri gelir.",
+   "source": "Virginia Üniversitesi",
+   "url": "https://www.as.virginia.edu/news/sense-taste-psychology-professor-david-hill-examines-taste-system"
+  },
+  {
+   "text": "Vücut yaklaşık her 80 günde, toplam 30 trilyon hücresi kadar yeni hücre üretir.",
+   "source": "Weizmann Bilim Enstitüsü",
+   "url": "https://wis-wander.weizmann.ac.il/life-sciences/cell-replacement-numbers"
+  },
+  {
+   "text": "eLife dergisindeki bir araştırmaya göre yetişkin göz merceğinin merkezi, doğumdan önce oluşan ve ömür boyu yenilenmeyen hücrelerden oluşur.",
+   "source": "eLife (NIH PubMed Central)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4384533"
+  }
+ ],
+ "tags": [
+  "hücre yenilenmesi",
+  "vücut hücreleri",
+  "1 gün boyunca",
+  "insan vücudu",
+  "kan hücreleri",
+  "tat hücreleri",
+  "göz merceği",
+  "biyoloji",
+  "cell turnover",
+  "human body cells",
+  "how many cells replaced daily",
+  "biology facts",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#hücre",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 2,
+ "sources": [
+  "https://wis-wander.weizmann.ac.il/life-sciences/cell-replacement-numbers",
+  "https://www.as.virginia.edu/news/sense-taste-psychology-professor-david-hill-examines-taste-system",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC4384533"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Cells Does Your Body Replace in 1 Day?",
+   "summary": "While you watch this video, millions of your cells die and are replaced every second. Find out how many cells you renew each day, why a burned tongue recovers so fast, and which cells never change!",
+   "facts": [
+    "According to research from the Weizmann Institute of Science, about 330 billion cells die and are replaced in the body every day, which works out to about 3.8 million cells per second.",
+    "By number, about 90% of the cells replaced each day are blood cells.",
+    "According to University of Virginia psychology professor David Hill, taste cells turn over about every 10 days, so even after you burn your tongue, your sense of taste returns within days.",
+    "Roughly every 80 days, the body produces as many new cells as the 30 trillion cells it contains.",
+    "According to a study in the journal eLife, the center of the adult eye lens is made of cells formed before birth that are never replaced during a person's life."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas células renueva tu cuerpo en 1 día?",
+   "summary": "Mientras ves este video, millones de tus células mueren y se reemplazan cada segundo. Descubre cuántas células renuevas al día, por qué tu lengua quemada se recupera tan rápido y qué células nunca cambian.",
+   "facts": [
+    "Según una investigación del Instituto Weizmann de Ciencias, cada día mueren y se reemplazan en el cuerpo unos 330.000 millones de células, es decir, unos 3,8 millones por segundo.",
+    "Por número, cerca del 90 % de las células que se reemplazan cada día son células sanguíneas.",
+    "Según el psicólogo David Hill, de la Universidad de Virginia, las células gustativas se renuevan aproximadamente cada 10 días, así que aunque te quemes la lengua, recuperas el gusto en pocos días.",
+    "Aproximadamente cada 80 días, el cuerpo produce tantas células nuevas como los 30 billones que tiene.",
+    "Según un estudio publicado en la revista eLife, el centro del cristalino del ojo adulto está formado por células creadas antes del nacimiento que nunca se reemplazan en toda la vida."
+   ]
+  },
+  "pt": {
+   "title": "Quantas Células Seu Corpo Renova em 1 Dia?",
+   "summary": "Enquanto você assiste a este vídeo, milhões de células suas morrem e são substituídas a cada segundo. Descubra quantas células você renova por dia, por que a língua queimada se recupera tão rápido e quais células nunca mudam!",
+   "facts": [
+    "Segundo uma pesquisa do Instituto Weizmann de Ciência, cerca de 330 bilhões de células morrem e são substituídas no corpo todos os dias, o que dá cerca de 3,8 milhões por segundo.",
+    "Em número, cerca de 90% das células substituídas a cada dia são células do sangue.",
+    "Segundo o psicólogo David Hill, da Universidade da Virgínia, as células gustativas se renovam mais ou menos a cada 10 dias; por isso, mesmo depois de queimar a língua, o paladar volta em poucos dias.",
+    "Mais ou menos a cada 80 dias, o corpo produz tantas células novas quanto os 30 trilhões que possui.",
+    "Segundo um estudo publicado na revista eLife, o centro do cristalino do olho adulto é formado por células criadas antes do nascimento que nunca são substituídas ao longo da vida."
+   ]
+  },
+  "ar": {
+   "title": "كم خلية يجدّدها جسمك في يوم واحد؟",
+   "summary": "بينما تشاهد هذا الفيديو، تموت ملايين الخلايا في جسمك وتحلّ محلها خلايا جديدة كل ثانية. اكتشف كم خلية تتجدد يوميًا، ولماذا يتعافى لسانك المحروق بسرعة، وما الخلايا التي لا تتغير أبدًا!",
+   "facts": [
+    "بحسب بحث من معهد وايزمان للعلوم، يموت في الجسم نحو 330 مليار خلية كل يوم وتحلّ محلها خلايا جديدة، أي نحو 3.8 مليون خلية في الثانية.",
+    "من حيث العدد، نحو 90% من الخلايا التي تتجدد كل يوم هي خلايا دم.",
+    "بحسب أستاذ علم النفس ديفيد هيل من جامعة فيرجينيا، تتجدد خلايا التذوق كل 10 أيام تقريبًا، لذلك حتى لو أحرقت لسانك يعود إليك حس التذوق خلال أيام.",
+    "كل 80 يومًا تقريبًا، ينتج الجسم عددًا من الخلايا الجديدة يساوي الـ30 تريليون خلية الموجودة فيه.",
+    "بحسب دراسة في مجلة eLife، يتكوّن مركز عدسة العين لدى البالغين من خلايا تشكّلت قبل الولادة ولا تُستبدل طوال العمر."
+   ]
+  },
+  "hi": {
+   "title": "आपका शरीर 1 दिन में कितनी कोशिकाएँ बदलता है?",
+   "summary": "जब आप यह वीडियो देख रहे हैं, आपके शरीर में हर सेकंड लाखों कोशिकाएँ मरती हैं और उनकी जगह नई बनती हैं। जानिए रोज़ कितनी कोशिकाएँ नई होती हैं, जली हुई जीभ इतनी जल्दी क्यों ठीक होती है और कौन-सी कोशिकाएँ कभी नहीं बदलतीं!",
+   "facts": [
+    "वाइज़मैन इंस्टीट्यूट ऑफ़ साइंस के शोध के अनुसार, शरीर में हर दिन लगभग 330 अरब कोशिकाएँ मरती हैं और उनकी जगह नई आती हैं, यानी लगभग 38 लाख (3.8 मिलियन) कोशिकाएँ प्रति सेकंड।",
+    "संख्या के हिसाब से, रोज़ बदली जाने वाली लगभग 90% कोशिकाएँ रक्त कोशिकाएँ होती हैं।",
+    "वर्जीनिया विश्वविद्यालय के मनोविज्ञान प्रोफ़ेसर डेविड हिल के अनुसार, स्वाद कोशिकाएँ लगभग हर 10 दिन में नई हो जाती हैं, इसलिए जीभ जलने पर भी कुछ ही दिनों में स्वाद लौट आता है।",
+    "लगभग हर 80 दिन में शरीर उतनी नई कोशिकाएँ बना लेता है जितनी उसमें कुल होती हैं, यानी 30 ट्रिलियन।",
+    "eLife पत्रिका के एक अध्ययन के अनुसार, वयस्क आँख के लेंस का केंद्र जन्म से पहले बनी कोशिकाओं से बना होता है, जो जीवन भर कभी नहीं बदलतीं।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Banyak Sel yang Diperbarui Tubuhmu dalam 1 Hari?",
+   "summary": "Saat kamu menonton video ini, jutaan sel di tubuhmu mati dan digantikan setiap detik. Cari tahu berapa sel yang kamu perbarui setiap hari, mengapa lidah yang terbakar cepat pulih, dan sel mana yang tidak pernah berganti!",
+   "facts": [
+    "Menurut penelitian Weizmann Institute of Science, sekitar 330 miliar sel di tubuh mati dan digantikan setiap hari, atau sekitar 3,8 juta sel per detik.",
+    "Berdasarkan jumlahnya, sekitar 90% sel yang diganti setiap hari adalah sel darah.",
+    "Menurut profesor psikologi David Hill dari University of Virginia, sel pengecap diperbarui sekitar setiap 10 hari, jadi meski lidahmu terbakar, indra perasa kembali dalam beberapa hari.",
+    "Kira-kira setiap 80 hari, tubuh menghasilkan sel baru sebanyak 30 triliun sel yang dimilikinya.",
+    "Menurut studi di jurnal eLife, bagian tengah lensa mata orang dewasa terdiri dari sel yang terbentuk sebelum lahir dan tidak pernah diganti seumur hidup."
+   ]
+  },
+  "fr": {
+   "title": "Combien de cellules ton corps renouvelle-t-il en 1 jour ?",
+   "summary": "Pendant que tu regardes cette vidéo, des millions de tes cellules meurent et sont remplacées chaque seconde. Découvre combien de cellules tu renouvelles chaque jour, pourquoi une langue brûlée guérit si vite et quelles cellules ne changent jamais !",
+   "facts": [
+    "Selon une étude de l'Institut Weizmann des sciences, environ 330 milliards de cellules meurent et sont remplacées chaque jour dans le corps, soit environ 3,8 millions par seconde.",
+    "En nombre, environ 90 % des cellules remplacées chaque jour sont des cellules sanguines.",
+    "Selon David Hill, professeur de psychologie à l'université de Virginie, les cellules gustatives se renouvellent environ tous les 10 jours : même après une brûlure de la langue, le goût revient en quelques jours.",
+    "Environ tous les 80 jours, le corps produit autant de nouvelles cellules que les 30 000 milliards qu'il contient.",
+    "Selon une étude parue dans la revue eLife, le centre du cristallin de l'adulte est formé de cellules apparues avant la naissance, qui ne sont jamais remplacées au cours de la vie."
+   ]
+  },
+  "de": {
+   "title": "Wie viele Zellen erneuert dein Körper an 1 Tag?",
+   "summary": "Während du dieses Video schaust, sterben jede Sekunde Millionen deiner Zellen und werden ersetzt. Erfahre, wie viele Zellen du täglich erneuerst, warum sich eine verbrannte Zunge so schnell erholt und welche Zellen sich nie ändern!",
+   "facts": [
+    "Laut einer Studie des Weizmann-Instituts für Wissenschaften sterben im Körper jeden Tag etwa 330 Milliarden Zellen und werden ersetzt – das sind etwa 3,8 Millionen pro Sekunde.",
+    "Der Anzahl nach sind etwa 90 % der täglich ersetzten Zellen Blutzellen.",
+    "Laut dem Psychologieprofessor David Hill von der University of Virginia erneuern sich Geschmackszellen etwa alle 10 Tage; selbst nach einer verbrannten Zunge kehrt der Geschmackssinn innerhalb weniger Tage zurück.",
+    "Etwa alle 80 Tage bildet der Körper so viele neue Zellen, wie er insgesamt hat: 30 Billionen.",
+    "Laut einer Studie in der Fachzeitschrift eLife besteht das Zentrum der Augenlinse Erwachsener aus Zellen, die vor der Geburt entstanden sind und lebenslang nie ersetzt werden."
+   ]
+  },
+  "ru": {
+   "title": "Сколько клеток твоё тело обновляет за 1 день?",
+   "summary": "Пока ты смотришь это видео, каждую секунду миллионы твоих клеток умирают и заменяются новыми. Узнай, сколько клеток обновляется за день, почему обожжённый язык так быстро восстанавливается и какие клетки не меняются никогда!",
+   "facts": [
+    "По данным исследования Института Вейцмана, каждый день в организме погибает и заменяется около 330 миллиардов клеток — это примерно 3,8 миллиона клеток в секунду.",
+    "По численности около 90% клеток, которые заменяются за день, — это клетки крови.",
+    "По словам профессора психологии Дэвида Хилла из Университета Вирджинии, вкусовые клетки обновляются примерно каждые 10 дней, поэтому даже после ожога языка вкус возвращается за несколько дней.",
+    "Примерно каждые 80 дней организм производит столько новых клеток, сколько в нём всего, — 30 триллионов.",
+    "Согласно исследованию в журнале eLife, центр хрусталика глаза взрослого человека состоит из клеток, образовавшихся ещё до рождения и не заменяющихся всю жизнь."
+   ]
+  },
+  "az": {
+   "title": "Bədənin 1 Gündə Neçə Hüceyrəni Yeniləyir?",
+   "summary": "Sən bu videonu izləyərkən bədənində hər saniyə milyonlarla hüceyrə ölür və yerinə yenisi gəlir. Gündə neçə hüceyrənin yeniləndiyini, yanmış dilin niyə tez sağaldığını və heç dəyişməyən hüceyrələrini öyrən!",
+   "facts": [
+    "Veysman Elm İnstitutunun araşdırmasına görə, bədəndə hər gün təxminən 330 milyard hüceyrə ölür və yerinə yenisi gəlir; bu, saniyədə təxminən 3,8 milyon hüceyrə deməkdir.",
+    "Sayca hər gün yenilənən hüceyrələrin təxminən 90%-i qan hüceyrələridir.",
+    "Virciniya Universitetinin psixologiya professoru Devid Hilə görə, dad hüceyrələri təxminən hər 10 gündən bir yenilənir; dilini yandırsan belə, dad hissi bir neçə günə qayıdır.",
+    "Təxminən hər 80 gündə bədən özündəki 30 trilyon hüceyrə qədər yeni hüceyrə istehsal edir.",
+    "eLife jurnalındakı araşdırmaya görə, yetkin insanın göz büllurunun mərkəzi doğuşdan əvvəl yaranan və ömür boyu dəyişməyən hüceyrələrdən ibarətdir."
+   ]
+  }
+ }
+}
