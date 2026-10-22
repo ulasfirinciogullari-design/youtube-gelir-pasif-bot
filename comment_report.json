@@ -1,22 +1,30 @@
 {
- "started": "2026-10-21T18:45:17+00:00",
+ "started": "2026-10-22T14:45:13+00:00",
  "deneme": false,
- "threads": 99,
- "reply_threads_read": 0,
- "new": 1,
+ "threads": 100,
+ "reply_threads_read": 1,
+ "new": 2,
  "quiet": 0,
  "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxbiG-8m6thpwn1tNx4AaABAg",
+   "id": "Ugyu_xv0G2xfFfapnXV4AaABAg.AcEe_b7RB_NAcGeyxkQNgI",
+   "kind": "answer",
+   "video": "7j-kXv3xblQ",
+   "comment": "İkisideeee",
+   "reply": "@hakkımıistiyorum İkisi de çok ilginç gerçekten! Kuşların bacak yapısı insanlardan çok farklı, bu yüzden bazen yanıltıcı olabiliyor. 🦢",
+   "result": "gönderildi"
+  },
+  {
+   "id": "UgyaA9DWgQkpnxhKBht4AaABAg",
    "kind": "comment",
-   "video": "f3V2BKqQYbI",
-   "comment": "Bunlar Fenerbahçeli mi",
-   "reply": "Maviyi ve sarıyı görebildikleri kesin, gerisi taraftarın kalbinde! 😉",
+   "video": "fI8aO5_Nxug",
+   "comment": "Sol açık şuan",
+   "reply": "Vay, hemen denemişsin! Çoğu kişi fark etmez ama dikkat edince anlaşılıyor değil mi? 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-21T18:45:23+00:00"
+ "finished": "2026-10-22T14:45:20+00:00"
 }
