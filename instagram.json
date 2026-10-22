@@ -19,16 +19,17 @@
   "2026-10-20T18": "lUzrJ7tIkTc https://www.instagram.com/reel/DeubU14H1pN/",
   "2026-10-21T10": "syjCIdu7idw https://www.instagram.com/reel/DewJRmwiulP/",
   "2026-10-21T14": "PGdsZfAcU8E https://www.instagram.com/reel/DewkruXHaNF/",
-  "2026-10-21T18": "6Pr2ex3xuOU https://www.instagram.com/reel/DexALdnE0Vh/"
+  "2026-10-21T18": "6Pr2ex3xuOU https://www.instagram.com/reel/DexALdnE0Vh/",
+  "2026-10-22T10": "f3V2BKqQYbI https://www.instagram.com/reel/DeyuCeNCaFe/"
  },
  "nobet": {
   "basladi": "2026-10-22T04:47:37+00:00",
   "run": "39723979001",
-  "tur": 309,
+  "tur": 314,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-10-22T09:55:37+00:00"
+  "son_tur": "2026-10-22T10:01:28+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -100,6 +101,13 @@
    "at": 1792605694,
    "title": "Timsahlar dilini neden dışarı çıkaramaz? 🐊",
    "topic_id": "mk-c0009"
+  },
+  "f3V2BKqQYbI": {
+   "media_id": "18097960655113186",
+   "url": "https://www.instagram.com/reel/DeyuCeNCaFe/",
+   "at": 1792663288,
+   "title": "Köpekler siyah beyaz görmez ama kırmızıyı göremez 🐶",
+   "topic_id": "mk-c0013"
   }
  }
 }
