@@ -4,13 +4,15 @@
 
 ## Tarayıcı oyunu / Browser game
 
-**Çiçek Rotası / Bloom Trail · v0.2.1 · Filiz Oyun**
+**Çiçek Rotası / Bloom Trail · v0.3.1 · Filiz Oyun**
 
-**Türkçe:** Aynı renkteki komşu çiçekleri birleştir; 24 bölümde altı bahçeyi keşfet. Bölümleri ve görevleri tamamlayarak yaprak kazan, 18 bahçe süslemesini aç. Telefonunda veya bilgisayarında, sekiz dil desteğiyle tarayıcıdan ücretsiz oyna.
+**Türkçe:** Piko’yu kurtar, Kalp Çiçeği’ni uyandır. İlk üç bölümde Piko’nun bahçesini onar; dördüncü bölümde kökleri kırıp onu kurtar. Ardından diğer beş dostun yuvasını canlandır. 24 bulmaca, yaprak ödülleri ve 18 bahçe süslemesi; telefonda veya bilgisayarda sekiz dilde ücretsiz oyna.
 
-**English:** Connect neighboring flowers of the same color across 24 levels and six gardens. Earn petals from levels and garden tasks to unlock 18 decorations. Play free in your browser on mobile or desktop, with eight languages supported.
+**English:** Rescue Piko and awaken the Heart Flower. Restore his garden in the first three levels, then break the roots to free him in the fourth. Five more garden friends are waiting. Play 24 puzzles, earn petals and grow 18 decorations, free in your browser on mobile or desktop.
 
 **[Playgama’da ücretsiz oyna / Play free on Playgama](https://playgama.ai/play/j5nxkurnvy)**
+
+[Piko’nun hikâyesi ve oyun görselleri / Meet Piko and see the game](https://cicek-rotasi.foggy-box-5054.chatgpt.site/review/duyurular/pikoyu-kurtar/)
 
 Diller / Languages: Türkçe, English, Español, Português, Français, Deutsch, Italiano, Bahasa Indonesia.
 
