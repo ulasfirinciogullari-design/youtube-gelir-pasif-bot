@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0026",
+ "topic": "Devekuşunun gözü beyninden büyük mü?",
+ "kategori": "hayvan",
+ "subject": [
+  "ostrich"
+ ],
+ "stock_hint": "ostrich head close up",
+ "script": {
+  "title": "Devekuşunun bir gözü beyninden büyük 👀",
+  "hook_text": "BU GÖZLER NEDEN BU KADAR BÜYÜK?",
+  "scenes": [
+   {
+    "text": "Bu devekuşunun tek bir gözü, beyninden büyük.",
+    "visual": "close up of an ostrich head with huge dark eyes and long eyelashes",
+    "stock_query": "ostrich head",
+    "source": "stock",
+    "callout": "GÖZ BEYİNDEN BÜYÜK"
+   },
+   {
+    "text": "Her göz yaklaşık beş santimetre; karadaki hayvanlar arasında en büyüğü.",
+    "visual": "ostrich looking into the camera, its large eye in sharp focus",
+    "stock_query": "ostrich eye",
+    "source": "stock",
+    "callout": "5 CM"
+   },
+   {
+    "text": "Senin gözünün yaklaşık iki katı genişlikte.",
+    "visual": "ostrich face in profile against a blue sky",
+    "stock_query": "ostrich face",
+    "source": "stock",
+    "callout": "2 KAT"
+   },
+   {
+    "text": "Açık arazide bu dev gözler, tehlikeyi çok uzaktan görmesini sağlar.",
+    "visual": "ostrich standing tall in open savanna scanning the horizon",
+    "stock_query": "ostrich savanna",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Başını kuma gömdüğü ise koca bir efsane.",
+    "visual": "ostrich running fast across dry grassland",
+    "stock_query": "ostrich running",
+    "source": "stock",
+    "callout": "EFSANE"
+   },
+   {
+    "text": "Kaçamayınca başını ve boynunu yere yatırır; uzaktan sadece gövdesi görünür.",
+    "visual": "ostrich lying low on the ground with its neck stretched flat",
+    "stock_query": "ostrich bird",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Devekuşunun her gözü yaklaşık beş santimetredir ve tek bir gözü beyninden büyüktür; bu, karadaki hayvanların en büyük gözüdür. Başını kuma gömdüğü ise bir efsanedir.",
+  "tags": [
+   "devekuşu",
+   "devekuşu gözü",
+   "en büyük göz",
+   "göz beyinden büyük",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: beyninden büyük gözler mi, kum efsanesinin yanlış çıkması mı?",
+  "en_title": "An ostrich's eye is bigger than its brain 👀",
+  "en_description": "Each ostrich eye is about 5 cm across, the largest of any land animal, and a single eye is bigger than its brain. And no, ostriches don't bury their heads in sand.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Devekuşunun gözü gerçekten beyninden büyük mü?\n\nDevekuşunun her gözü yaklaşık beş santimetredir; bu, karada yaşayan hayvanlar arasındaki en büyük göz ve insan gözünün yaklaşık iki katı genişlik. Tek bir gözü beyninden büyüktür. Başını kuma gömdüğü ise bir efsanedir: kaçamayınca başını ve boynunu yere yatırır, uzaktan sadece gövdesi görünür.\n\nSence hangisi daha şaşırtıcı: beyninden büyük gözler mi, kum efsanesinin yanlış çıkması mı?",
+  "hashtags": [
+   "#devekuşu",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "devekuşu",
+   "devekuşları",
+   "devekuşu gözü",
+   "devekuşu beyni",
+   "göz beyinden büyük",
+   "devekuşunun gözü ne kadar",
+   "en büyük göz",
+   "en büyük gözlü hayvan",
+   "devekuşu başını kuma gömer mi",
+   "devekuşu efsanesi",
+   "kum efsanesi",
+   "en büyük kuş",
+   "uçamayan kuşlar",
+   "Afrika hayvanları",
+   "kuşlar",
+   "vahşi doğa",
+   "safari",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "ostrich",
+   "ostrich eye"
+  ],
+  "localizations": {
+   "en": {
+    "title": "An ostrich's eye is bigger than its brain 👀",
+    "description": "Each ostrich eye is about 5 centimeters across, the largest of any land animal and about twice as wide as a human eye. A single eye is bigger than its brain. And no, ostriches don't bury their heads in sand: when cornered they lie flat, and from afar only the body shows."
+   },
+   "es": {
+    "title": "El ojo del avestruz es más grande que su cerebro 👀",
+    "description": "Cada ojo del avestruz mide unos 5 centímetros, el más grande de cualquier animal terrestre y unas dos veces más ancho que el ojo humano. Un solo ojo supera a su cerebro. Y no, no esconde la cabeza en la arena: cuando se ve acorralado se tumba en el suelo y de lejos solo se ve el cuerpo."
+   },
+   "pt": {
+    "title": "O olho do avestruz é maior que o cérebro dele 👀",
+    "description": "Cada olho do avestruz tem cerca de 5 centímetros, o maior entre os animais terrestres e cerca do dobro da largura do olho humano. Um único olho é maior que o cérebro. E não, ele não enterra a cabeça na areia: quando encurralado, deita no chão e de longe só se vê o corpo."
+   },
+   "de": {
+    "title": "Das Auge eines Straußes ist größer als sein Gehirn 👀",
+    "description": "Jedes Straußenauge misst etwa 5 Zentimeter, mehr als bei jedem anderen Landtier und etwa doppelt so breit wie ein menschliches Auge. Ein einziges Auge ist größer als das Gehirn. Den Kopf in den Sand steckt der Strauß übrigens nicht: In die Enge getrieben legt er sich flach hin, und von Weitem sieht man nur den Körper."
+   },
+   "fr": {
+    "title": "L'œil de l'autruche est plus gros que son cerveau 👀",
+    "description": "Chaque œil d'autruche mesure environ 5 centimètres, le plus grand de tous les animaux terrestres et environ deux fois plus large qu'un œil humain. Un seul œil est plus gros que son cerveau. Et non, l'autruche ne met pas la tête dans le sable : acculée, elle s'aplatit au sol et de loin on ne voit plus que son corps."
+   },
+   "it": {
+    "title": "L'occhio dello struzzo è più grande del suo cervello 👀",
+    "description": "Ogni occhio dello struzzo misura circa 5 centimetri, il più grande tra gli animali terrestri e circa il doppio di quello umano. Un solo occhio è più grande del cervello. E no, lo struzzo non nasconde la testa sotto la sabbia: quando è messo alle strette si appiattisce a terra e da lontano si vede solo il corpo."
+   },
+   "ru": {
+    "title": "Глаз страуса больше его мозга 👀",
+    "description": "Каждый глаз страуса около 5 сантиметров в поперечнике: это самые большие глаза среди наземных животных, примерно вдвое шире человеческих. Один глаз больше всего мозга. А голову в песок страус не прячет: загнанный в угол, он ложится на землю, и издали видно только туловище."
+   },
+   "ar": {
+    "title": "عين النعامة أكبر من دماغها 👀",
+    "description": "يبلغ قطر كل عين من عيني النعامة نحو 5 سنتيمترات، وهي أكبر عين بين حيوانات اليابسة وتبلغ نحو ضعف عرض عين الإنسان. وعين واحدة فقط أكبر من دماغها. أما دفن رأسها في الرمل فخرافة: فعندما تُحاصَر تنبطح أرضًا، فلا يظهر من بعيد سوى جسمها."
+   },
+   "hi": {
+    "title": "शुतुरमुर्ग की एक आँख उसके दिमाग़ से बड़ी होती है 👀",
+    "description": "शुतुरमुर्ग की हर आँख लगभग 5 सेंटीमीटर चौड़ी होती है, जो ज़मीन पर रहने वाले किसी भी जानवर में सबसे बड़ी है और इंसानी आँख से करीब दोगुनी। उसकी एक आँख ही उसके दिमाग़ से बड़ी है। और नहीं, वह सिर रेत में नहीं छिपाता: घिर जाने पर ज़मीन पर लेट जाता है, और दूर से सिर्फ़ उसका शरीर दिखता है।"
+   },
+   "id": {
+    "title": "Mata burung unta lebih besar dari otaknya 👀",
+    "description": "Setiap mata burung unta berukuran sekitar 5 sentimeter, terbesar di antara hewan darat dan sekitar dua kali lebar mata manusia. Satu matanya saja lebih besar dari otaknya. Dan bukan, burung unta tidak membenamkan kepala ke pasir: saat terpojok ia merebahkan diri, sehingga dari jauh hanya tubuhnya yang terlihat."
+   },
+   "ja": {
+    "title": "ダチョウの目は脳より大きい 👀",
+    "description": "ダチョウの目は直径約5センチで、陸上動物で最大、人間の目の約2倍の大きさです。片方の目だけで脳より大きいのです。ちなみに砂に頭を突っ込むというのは俗説で、追い詰められると地面に伏せるため、遠くからは胴体しか見えなくなります。"
+   },
+   "ko": {
+    "title": "타조의 눈은 뇌보다 크다 👀",
+    "description": "타조의 눈은 지름이 약 5cm로 육지 동물 중 가장 크고, 사람 눈의 약 두 배입니다. 눈 하나가 뇌보다 큽니다. 머리를 모래에 파묻는다는 건 속설이에요. 궁지에 몰리면 땅에 납작 엎드려서 멀리서는 몸통만 보일 뿐입니다."
+   },
+   "pl": {
+    "title": "Oko strusia jest większe niż jego mózg 👀",
+    "description": "Każde oko strusia ma około 5 centymetrów średnicy. To największe oczy wśród zwierząt lądowych, mniej więcej dwa razy szersze niż ludzkie. Jedno oko jest większe niż cały mózg. A głowy w piasek struś nie chowa: przyparty do muru kładzie się płasko na ziemi i z daleka widać tylko tułów."
+   },
+   "nl": {
+    "title": "Het oog van een struisvogel is groter dan zijn hersenen 👀",
+    "description": "Elk oog van een struisvogel is zo'n 5 centimeter breed, het grootste van alle landdieren en ongeveer twee keer zo breed als een mensenoog. Eén oog is groter dan de hersenen. En nee, een struisvogel steekt zijn kop niet in het zand: in het nauw gedreven gaat hij plat liggen, en van ver zie je alleen zijn lijf."
+   },
+   "uk": {
+    "title": "Око страуса більше за його мозок 👀",
+    "description": "Кожне око страуса має близько 5 сантиметрів у поперечнику: це найбільші очі серед наземних тварин, приблизно вдвічі ширші за людські. Одне око більше за весь мозок. А голову в пісок страус не ховає: загнаний у кут, він лягає на землю, і здалеку видно лише тулуб."
+   },
+   "vi": {
+    "title": "Mắt đà điểu còn to hơn cả não của nó 👀",
+    "description": "Mỗi mắt đà điểu rộng khoảng 5 cm, lớn nhất trong các loài động vật trên cạn và rộng khoảng gấp đôi mắt người. Chỉ một con mắt thôi đã to hơn bộ não. Còn chuyện đà điểu vùi đầu xuống cát chỉ là lời đồn: khi bị dồn vào đường cùng, nó nằm rạp xuống đất nên nhìn từ xa chỉ thấy thân."
+   },
+   "az": {
+    "title": "Dəvəquşunun bir gözü beynindən böyükdür 👀",
+    "description": "Dəvəquşunun hər gözü təxminən 5 santimetrdir: bu, quruda yaşayan heyvanlar arasında ən böyük gözdür və insan gözündən təxminən iki dəfə enlidir. Tək bir gözü beynindən böyükdür. Başını quma soxması isə əfsanədir: qaça bilməyəndə yerə uzanır və uzaqdan yalnız bədəni görünür."
+   },
+   "ro": {
+    "title": "Ochiul struțului este mai mare decât creierul lui 👀",
+    "description": "Fiecare ochi de struț are aproximativ 5 centimetri, cel mai mare dintre toate animalele de uscat și cam de două ori mai lat decât ochiul uman. Un singur ochi este mai mare decât creierul. Iar struțul nu își bagă capul în nisip: când e încolțit se culcă la pământ, iar de departe i se vede doar corpul."
+   }
+  }
+ }
+}

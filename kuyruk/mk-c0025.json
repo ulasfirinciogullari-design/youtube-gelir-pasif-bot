@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0025",
+ "topic": "Keçiler başını eğince gözlerini neden döndürür?",
+ "kategori": "hayvan",
+ "subject": [
+  "goat"
+ ],
+ "stock_hint": "goat grazing close up",
+ "script": {
+  "title": "Keçi başını eğince gözlerini döndürür 🐐",
+  "hook_text": "GÖZBEBEĞİ NEDEN DİKDÖRTGEN?",
+  "scenes": [
+   {
+    "text": "Bu keçi başını eğince gözlerini döndürüyor.",
+    "visual": "goat lowering its head to graze in a green meadow, close view of its face and eye",
+    "stock_query": "goat grazing",
+    "source": "stock",
+    "callout": "GÖZLER DÖNÜYOR"
+   },
+   {
+    "text": "Dikdörtgen gözbebekleri, kafası yere inse bile hep yatay duruyor.",
+    "visual": "extreme close up of a goat eye with a horizontal rectangular pupil",
+    "stock_query": "goat eye",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bunun için her göz elli derece, hatta daha fazla dönebiliyor.",
+    "visual": "close up of a goat head turning slowly, eye in sharp focus",
+    "stock_query": "goat face",
+    "source": "stock",
+    "callout": "50 DERECE"
+   },
+   {
+    "text": "Bu, insan gözünün yapabildiğinin on katı.",
+    "visual": "goat looking straight into the camera on a farm",
+    "stock_query": "goat head",
+    "source": "stock",
+    "callout": "10 KAT"
+   },
+   {
+    "text": "Otlarken bile geniş bir panorama görür; yerden yaklaşan avcıyı fark etmesi kolaylaşır.",
+    "visual": "herd of goats grazing on a hillside with wide open view",
+    "stock_query": "goats herd",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir keçi otlarken gözüne bak: kafa iner, gözbebeği yatay kalır.",
+    "visual": "goat eating grass with its head down, eye visible in profile",
+    "stock_query": "goat eating grass",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Keçiler otlamak için başlarını eğdiğinde gözlerini döndürür; böylece dikdörtgen gözbebekleri hep yatay kalır ve otlarken bile geniş bir panorama görürler.",
+  "tags": [
+   "keçi",
+   "keçi gözü",
+   "keçi gözbebeği",
+   "dikdörtgen gözbebeği",
+   "çiftlik hayvanları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: dikdörtgen gözbebeği mi, elli derece dönen gözler mi?",
+  "en_title": "Goats rotate their eyes when they lower their heads 🐐",
+  "en_description": "When a goat bends down to graze, each eye rotates 50 degrees or more so its rectangular pupils stay horizontal. That is about ten times the range of human eyes.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Keçinin gözbebeği neden dikdörtgen, keçiler başını eğince gözlerine ne olur?\n\nKeçiler otlamak için başlarını eğdiğinde gözlerini döndürür; böylece dikdörtgen gözbebekleri hep yatay kalır. Her göz elli derece, hatta daha fazla dönebilir; bu, insan gözünün yapabildiğinin on katı. Yatay gözbebeği, otlarken bile geniş bir panorama görmesini ve yerden yaklaşan avcıyı fark etmesini kolaylaştırır.\n\nSence hangisi daha tuhaf: dikdörtgen gözbebeği mi, elli derece dönen gözler mi?",
+  "hashtags": [
+   "#keçi",
+   "#hayvanlar",
+   "#çiftlikhayvanları",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "keçi",
+   "keçiler",
+   "keçi gözü",
+   "keçi gözbebeği",
+   "dikdörtgen gözbebeği",
+   "yatay gözbebeği",
+   "keçi gözü neden dikdörtgen",
+   "keçinin gözleri neden garip",
+   "keçiler nasıl görür",
+   "hayvanların gözleri",
+   "gözbebeği şekli",
+   "göz dönmesi",
+   "otçul hayvanlar",
+   "çiftlik hayvanları",
+   "koyun",
+   "hayvan gözleri",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "doğa",
+   "goat",
+   "goat eyes"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Goats rotate their eyes when they lower their heads 🐐",
+    "description": "When a goat bends down to graze, its eyes rotate so the rectangular pupils stay level with the ground. Each eye can turn 50 degrees or more, about ten times what human eyes can do, giving the goat a wide panoramic view for spotting predators."
+   },
+   "es": {
+    "title": "Las cabras giran los ojos cuando bajan la cabeza 🐐",
+    "description": "Cuando una cabra agacha la cabeza para pastar, sus ojos giran para que las pupilas rectangulares sigan horizontales. Cada ojo puede rotar 50 grados o más, unas diez veces más que el ojo humano, y así conserva una vista panorámica para detectar depredadores."
+   },
+   "pt": {
+    "title": "As cabras giram os olhos quando abaixam a cabeça 🐐",
+    "description": "Quando a cabra abaixa a cabeça para pastar, os olhos giram e as pupilas retangulares continuam na horizontal. Cada olho pode girar 50 graus ou mais, cerca de dez vezes o que o olho humano consegue, garantindo uma visão panorâmica para perceber predadores."
+   },
+   "de": {
+    "title": "Ziegen drehen ihre Augen, wenn sie den Kopf senken 🐐",
+    "description": "Senkt eine Ziege den Kopf zum Grasen, drehen sich ihre Augen so, dass die rechteckigen Pupillen waagerecht bleiben. Jedes Auge kann sich um 50 Grad oder mehr drehen, etwa zehnmal so weit wie ein menschliches Auge. So behält die Ziege den Rundumblick und bemerkt Raubtiere leichter."
+   },
+   "fr": {
+    "title": "Les chèvres font pivoter leurs yeux quand elles baissent la tête 🐐",
+    "description": "Quand une chèvre baisse la tête pour brouter, ses yeux pivotent pour que ses pupilles rectangulaires restent horizontales. Chaque œil peut tourner de 50 degrés ou plus, environ dix fois plus que l'œil humain, ce qui lui garde une vue panoramique pour repérer les prédateurs."
+   },
+   "it": {
+    "title": "Le capre ruotano gli occhi quando abbassano la testa 🐐",
+    "description": "Quando una capra abbassa la testa per brucare, gli occhi ruotano e le pupille rettangolari restano orizzontali. Ogni occhio può ruotare di 50 gradi o più, circa dieci volte l'occhio umano, così la capra mantiene una visione panoramica per accorgersi dei predatori."
+   },
+   "ru": {
+    "title": "Козы поворачивают глаза, когда опускают голову 🐐",
+    "description": "Когда коза наклоняет голову к траве, её глаза поворачиваются, и прямоугольные зрачки остаются горизонтальными. Каждый глаз может повернуться на 50 градусов и больше, примерно в десять раз сильнее человеческого. Так коза сохраняет панорамный обзор и легче замечает хищников."
+   },
+   "ar": {
+    "title": "الماعز تدير عينيها عندما تخفض رأسها 🐐",
+    "description": "عندما تحني الماعز رأسها لترعى، تدور عيناها لتبقى حدقتاها المستطيلتان أفقيتين. ويمكن لكل عين أن تدور 50 درجة أو أكثر، أي نحو عشرة أضعاف عين الإنسان، فتحتفظ برؤية بانورامية تساعدها على رصد المفترسات."
+   },
+   "hi": {
+    "title": "बकरी सिर झुकाते ही अपनी आँखें घुमा लेती है 🐐",
+    "description": "जब बकरी चरने के लिए सिर झुकाती है, तो उसकी आँखें घूम जाती हैं ताकि आयताकार पुतलियाँ क्षैतिज बनी रहें। हर आँख 50 डिग्री या उससे ज़्यादा घूम सकती है, जो इंसानी आँख से करीब दस गुना है। इससे उसे चारों ओर का चौड़ा नज़ारा मिलता है और शिकारी जल्दी दिख जाते हैं।"
+   },
+   "id": {
+    "title": "Kambing memutar matanya saat menundukkan kepala 🐐",
+    "description": "Saat kambing menunduk untuk merumput, matanya berputar agar pupil persegi panjangnya tetap mendatar. Setiap mata bisa berputar 50 derajat atau lebih, sekitar sepuluh kali kemampuan mata manusia, sehingga kambing tetap punya pandangan luas untuk melihat pemangsa."
+   },
+   "ja": {
+    "title": "ヤギは頭を下げると目を回転させる 🐐",
+    "description": "ヤギが草を食べようと頭を下げると、目が回転して長方形の瞳孔が水平に保たれます。片目で50度以上回ることができ、これは人間の目の約10倍です。おかげで食事中も広い視野を保ち、捕食者に気づきやすくなります。"
+   },
+   "ko": {
+    "title": "염소는 고개를 숙이면 눈을 돌린다 🐐",
+    "description": "염소가 풀을 뜯으려고 고개를 숙이면 눈이 회전해 직사각형 동공이 계속 수평을 유지합니다. 한쪽 눈이 50도 이상 돌아갈 수 있는데, 사람 눈의 약 10배입니다. 덕분에 풀을 먹는 동안에도 넓은 시야로 포식자를 알아차리기 쉽습니다."
+   },
+   "pl": {
+    "title": "Kozy obracają oczy, gdy pochylają głowę 🐐",
+    "description": "Gdy koza pochyla głowę, by skubać trawę, jej oczy obracają się tak, że prostokątne źrenice pozostają poziome. Każde oko może obrócić się o 50 stopni lub więcej, mniej więcej dziesięć razy bardziej niż ludzkie. Dzięki temu koza zachowuje panoramiczny widok i łatwiej dostrzega drapieżniki."
+   },
+   "nl": {
+    "title": "Geiten draaien hun ogen als ze hun kop laten zakken 🐐",
+    "description": "Als een geit haar kop laat zakken om te grazen, draaien haar ogen mee zodat de rechthoekige pupillen horizontaal blijven. Elk oog kan 50 graden of meer draaien, ongeveer tien keer zoveel als een mensenoog. Zo houdt de geit een panoramisch zicht en ziet ze roofdieren sneller aankomen."
+   },
+   "uk": {
+    "title": "Кози повертають очі, коли нахиляють голову 🐐",
+    "description": "Коли коза нахиляє голову до трави, її очі повертаються, і прямокутні зіниці залишаються горизонтальними. Кожне око може повернутися на 50 градусів і більше, приблизно вдесятеро більше, ніж людське. Так коза зберігає панорамний огляд і легше помічає хижаків."
+   },
+   "vi": {
+    "title": "Dê xoay mắt mỗi khi cúi đầu xuống 🐐",
+    "description": "Khi dê cúi đầu gặm cỏ, mắt nó xoay để đồng tử hình chữ nhật luôn nằm ngang. Mỗi mắt có thể xoay 50 độ hoặc hơn, gấp khoảng mười lần mắt người, nhờ vậy dê vẫn giữ được tầm nhìn toàn cảnh để phát hiện kẻ săn mồi."
+   },
+   "az": {
+    "title": "Keçi başını əyəndə gözlərini döndərir 🐐",
+    "description": "Keçi otlamaq üçün başını əyəndə gözləri dönür və düzbucaqlı göz bəbəkləri üfüqi qalır. Hər göz 50 dərəcə və daha çox dönə bilir, bu da insan gözündən təxminən on dəfə çoxdur. Bunun sayəsində keçi geniş mənzərəni görür və yırtıcını asanlıqla fərq edir."
+   },
+   "ro": {
+    "title": "Caprele își rotesc ochii când își apleacă capul 🐐",
+    "description": "Când o capră își apleacă capul ca să pască, ochii i se rotesc astfel încât pupilele dreptunghiulare să rămână orizontale. Fiecare ochi se poate roti cu 50 de grade sau mai mult, de circa zece ori mai mult decât ochiul uman, iar capra păstrează o vedere panoramică pentru a observa prădătorii."
+   }
+  }
+ }
+}

@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0031",
+ "topic": "Deniz kaplumbağasının cinsiyetini ne belirler?",
+ "kategori": "hayvan",
+ "subject": [
+  "turtle"
+ ],
+ "stock_hint": "sea turtle beach hatchling",
+ "script": {
+  "title": "Kaplumbağanın cinsiyetini kumun sıcaklığı seçer 🐢",
+  "hook_text": "DİŞİ Mİ ERKEK Mİ, KİM SEÇER?",
+  "scenes": [
+   {
+    "text": "Bu kaplumbağanın cinsiyetini kumun sıcaklığı seçti.",
+    "visual": "sea turtle hatchling crawling across the sand toward the sea",
+    "stock_query": "sea turtle beach",
+    "source": "stock",
+    "callout": "KUM SEÇTİ"
+   },
+   {
+    "text": "Deniz kaplumbağalarında yavrunun cinsiyetini yuvanın sıcaklığı belirler.",
+    "visual": "sea turtle eggs in a nest dug in the sand",
+    "stock_query": "turtle eggs",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Sıcak kumda daha çok dişi, serin kumda daha çok erkek çıkar.",
+    "visual": "baby sea turtles emerging from the sand on a sunny beach",
+    "stock_query": "baby turtle",
+    "source": "stock",
+    "callout": "SICAK KUM = DİŞİ"
+   },
+   {
+    "text": "Avustralya'daki dev bir yeşil kaplumbağa topluluğunda gençlerin yüzde doksan dokuzundan fazlası dişi.",
+    "visual": "green sea turtle swimming over a coral reef",
+    "stock_query": "green sea turtle",
+    "source": "stock",
+    "callout": "%99+ DİŞİ"
+   },
+   {
+    "text": "Araştırmacılara göre sebep, giderek ısınan kumsallar.",
+    "visual": "empty tropical beach under strong sunlight",
+    "stock_query": "turtle beach",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kumdaki birkaç derecelik fark, kumsaldan kaç erkek çıkacağını belirliyor.",
+    "visual": "sea turtle swimming gracefully in clear blue water",
+    "stock_query": "sea turtle swimming",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Deniz kaplumbağalarında yavrunun cinsiyetini yuvanın sıcaklığı belirler: sıcak kumda daha çok dişi, serin kumda daha çok erkek çıkar. Avustralya'daki dev bir yeşil kaplumbağa topluluğunda gençlerin yüzde doksan dokuzundan fazlası dişi.",
+  "tags": [
+   "deniz kaplumbağası",
+   "kaplumbağa",
+   "kaplumbağa cinsiyeti",
+   "kaplumbağa yavrusu",
+   "okyanus",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: cinsiyeti kumun seçmesi mi, gençlerin neredeyse hepsinin dişi olması mı?",
+  "en_title": "Sand temperature decides if a sea turtle is male or female 🐢",
+  "en_description": "In sea turtles, nest temperature decides a hatchling's sex: warmer sand makes more females. In one huge green turtle population in Australia, over 99% of young turtles were female.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Deniz kaplumbağasının dişi mi erkek mi olacağını ne belirler?\n\nDeniz kaplumbağalarında yavrunun cinsiyetini yuvanın sıcaklığı belirler: sıcak kumda daha çok dişi, serin kumda daha çok erkek çıkar. Avustralya'daki dev bir yeşil kaplumbağa topluluğunda gençlerin yüzde doksan dokuzundan fazlası dişi çıktı; araştırmacılara göre sebep, giderek ısınan kumsallar.\n\nSence hangisi daha şaşırtıcı: cinsiyeti kumun seçmesi mi, gençlerin neredeyse hepsinin dişi olması mı?",
+  "hashtags": [
+   "#denizkaplumbağası",
+   "#kaplumbağa",
+   "#hayvanlar",
+   "#okyanus"
+  ],
+  "tags": [
+   "deniz kaplumbağası",
+   "kaplumbağa",
+   "kaplumbağalar",
+   "yeşil deniz kaplumbağası",
+   "kaplumbağa cinsiyeti",
+   "kaplumbağa yavrusu",
+   "kaplumbağa yumurtası",
+   "cinsiyeti sıcaklık belirler",
+   "kaplumbağa dişi mi erkek mi",
+   "sıcaklık ve cinsiyet",
+   "kumsal",
+   "iklim değişikliği",
+   "küresel ısınma",
+   "deniz canlıları",
+   "okyanus",
+   "sürüngenler",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "sea turtle",
+   "baby sea turtle"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Sand temperature decides if a sea turtle is male or female 🐢",
+    "description": "In sea turtles, the temperature of the nest decides a hatchling's sex: warmer sand produces more females, cooler sand more males. In one huge green turtle population in Australia, more than 99% of young turtles were female, which researchers link to warming beaches."
+   },
+   "es": {
+    "title": "En las tortugas marinas, la arena decide si serán macho o hembra 🐢",
+    "description": "En las tortugas marinas, la temperatura del nido decide el sexo de la cría: la arena más cálida produce más hembras y la más fresca, más machos. En una enorme población de tortugas verdes de Australia, más del 99 % de las tortugas jóvenes eran hembras, algo que los investigadores relacionan con el calentamiento de las playas."
+   },
+   "pt": {
+    "title": "Nas tartarugas marinhas, é a areia que decide o sexo 🐢",
+    "description": "Nas tartarugas marinhas, a temperatura do ninho define o sexo do filhote: areia mais quente gera mais fêmeas, areia mais fresca, mais machos. Numa enorme população de tartarugas-verdes na Austrália, mais de 99% das jovens eram fêmeas, algo que os pesquisadores ligam ao aquecimento das praias."
+   },
+   "de": {
+    "title": "Bei Meeresschildkröten bestimmt der Sand das Geschlecht 🐢",
+    "description": "Bei Meeresschildkröten entscheidet die Temperatur im Nest über das Geschlecht: Wärmerer Sand bringt mehr Weibchen, kühlerer mehr Männchen. In einer riesigen Population von Suppenschildkröten in Australien waren über 99 % der jungen Tiere weiblich, was Forschende mit sich erwärmenden Stränden in Verbindung bringen."
+   },
+   "fr": {
+    "title": "Chez la tortue marine, c'est le sable qui choisit le sexe 🐢",
+    "description": "Chez les tortues marines, la température du nid décide du sexe des petits : un sable plus chaud donne plus de femelles, un sable plus frais plus de mâles. Dans une immense population de tortues vertes en Australie, plus de 99 % des jeunes étaient des femelles, ce que les chercheurs relient au réchauffement des plages."
+   },
+   "it": {
+    "title": "Nelle tartarughe marine è la sabbia a decidere il sesso 🐢",
+    "description": "Nelle tartarughe marine è la temperatura del nido a stabilire il sesso dei piccoli: la sabbia più calda produce più femmine, quella più fresca più maschi. In un'enorme popolazione di tartarughe verdi in Australia, oltre il 99% delle giovani era femmina, cosa che i ricercatori collegano al riscaldamento delle spiagge."
+   },
+   "ru": {
+    "title": "Пол морской черепахи выбирает температура песка 🐢",
+    "description": "У морских черепах пол детёнышей определяет температура гнезда: в тёплом песке вылупляется больше самок, в прохладном больше самцов. В одной огромной популяции зелёных черепах в Австралии более 99% молодых особей оказались самками, и исследователи связывают это с потеплением пляжей."
+   },
+   "ar": {
+    "title": "حرارة الرمل تقرر جنس السلحفاة البحرية 🐢",
+    "description": "في السلاحف البحرية تحدد حرارة العش جنس الصغار: فالرمل الأدفأ يُخرج إناثًا أكثر، والأبرد ذكورًا أكثر. وفي مجموعة ضخمة من السلاحف الخضراء في أستراليا كانت أكثر من 99% من السلاحف اليافعة إناثًا، ويربط الباحثون ذلك باحترار الشواطئ."
+   },
+   "hi": {
+    "title": "समुद्री कछुए का लिंग रेत का तापमान तय करता है 🐢",
+    "description": "समुद्री कछुओं में बच्चे नर होंगे या मादा, यह घोंसले का तापमान तय करता है: गर्म रेत में ज़्यादा मादाएँ और ठंडी रेत में ज़्यादा नर निकलते हैं। ऑस्ट्रेलिया में हरे कछुओं की एक विशाल आबादी में 99% से ज़्यादा युवा कछुए मादा निकले, जिसे शोधकर्ता गर्म होते समुद्र तटों से जोड़ते हैं।"
+   },
+   "id": {
+    "title": "Suhu pasir menentukan jenis kelamin penyu 🐢",
+    "description": "Pada penyu, suhu sarang menentukan jenis kelamin tukik: pasir yang lebih hangat menghasilkan lebih banyak betina, pasir yang lebih sejuk lebih banyak jantan. Di satu populasi penyu hijau raksasa di Australia, lebih dari 99% penyu muda adalah betina, yang oleh peneliti dikaitkan dengan pantai yang makin hangat."
+   },
+   "ja": {
+    "title": "ウミガメの性別は砂の温度で決まる 🐢",
+    "description": "ウミガメの子の性別は巣の温度で決まります。砂が暖かいとメスが、涼しいとオスが多く生まれます。オーストラリアのアオウミガメの巨大な集団では、若いカメの99%以上がメスで、研究者は砂浜の温暖化が原因だと考えています。"
+   },
+   "ko": {
+    "title": "바다거북의 성별은 모래 온도가 정한다 🐢",
+    "description": "바다거북은 둥지 온도에 따라 새끼의 성별이 정해집니다. 모래가 따뜻하면 암컷이, 서늘하면 수컷이 더 많이 태어나죠. 호주의 거대한 푸른바다거북 무리에서는 어린 거북의 99% 이상이 암컷이었고, 연구진은 해변이 따뜻해진 탓으로 봅니다."
+   },
+   "pl": {
+    "title": "O płci żółwia morskiego decyduje temperatura piasku 🐢",
+    "description": "U żółwi morskich płeć młodych zależy od temperatury gniazda: cieplejszy piasek daje więcej samic, chłodniejszy więcej samców. W ogromnej populacji żółwi zielonych w Australii ponad 99% młodych osobników okazało się samicami, co badacze wiążą z ocieplaniem się plaż."
+   },
+   "nl": {
+    "title": "Bij zeeschildpadden bepaalt het zand het geslacht 🐢",
+    "description": "Bij zeeschildpadden bepaalt de temperatuur van het nest het geslacht van de jongen: warmer zand levert meer vrouwtjes op, koeler zand meer mannetjes. In een enorme populatie soepschildpadden in Australië was meer dan 99% van de jonge dieren vrouwelijk, wat onderzoekers koppelen aan opwarmende stranden."
+   },
+   "uk": {
+    "title": "Стать морської черепахи обирає температура піску 🐢",
+    "description": "У морських черепах стать малят визначає температура гнізда: у теплому піску вилуплюється більше самиць, у прохолодному більше самців. В одній величезній популяції зелених черепах в Австралії понад 99% молодих особин виявилися самицями, і дослідники пов'язують це з потеплінням пляжів."
+   },
+   "vi": {
+    "title": "Nhiệt độ cát quyết định rùa biển là đực hay cái 🐢",
+    "description": "Ở rùa biển, nhiệt độ của tổ quyết định giới tính rùa con: cát ấm hơn nở ra nhiều con cái hơn, cát mát hơn nở ra nhiều con đực hơn. Trong một quần thể rùa xanh khổng lồ ở Úc, hơn 99% rùa non là con cái, điều mà các nhà nghiên cứu cho là do bãi biển ngày càng nóng lên."
+   },
+   "az": {
+    "title": "Dəniz tısbağasının cinsini qumun temperaturu seçir 🐢",
+    "description": "Dəniz tısbağalarında balanın cinsini yuvanın temperaturu müəyyən edir: isti qumda daha çox dişi, sərin qumda daha çox erkək çıxır. Avstraliyadakı nəhəng bir yaşıl tısbağa populyasiyasında gənc tısbağaların 99%-dən çoxu dişi çıxıb; tədqiqatçılar bunu isinən çimərliklərlə əlaqələndirir."
+   },
+   "ro": {
+    "title": "Temperatura nisipului decide sexul țestoasei marine 🐢",
+    "description": "La țestoasele marine, temperatura cuibului decide sexul puilor: nisipul mai cald dă mai multe femele, cel mai răcoros mai mulți masculi. Într-o populație uriașă de țestoase verzi din Australia, peste 99% dintre exemplarele tinere erau femele, lucru pe care cercetătorii îl pun pe seama încălzirii plajelor."
+   }
+  }
+ }
+}

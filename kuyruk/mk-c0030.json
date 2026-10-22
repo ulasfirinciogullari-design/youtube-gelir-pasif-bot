@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0030",
+ "topic": "Koalaların parmak izi insanınkine benzer mi?",
+ "kategori": "hayvan",
+ "subject": [
+  "koala"
+ ],
+ "stock_hint": "koala eucalyptus tree",
+ "script": {
+  "title": "Koalanın parmak izi seninkine çok benziyor 🐨",
+  "hook_text": "KOALADA PARMAK İZİ NEDEN VAR?",
+  "scenes": [
+   {
+    "text": "Bu koalanın parmak izi seninkine neredeyse tıpatıp benziyor.",
+    "visual": "koala gripping a eucalyptus branch, close view of its hands and fingers",
+    "stock_query": "koala",
+    "source": "stock",
+    "callout": "PARMAK İZİ"
+   },
+   {
+    "text": "Bir adli bilim uzmanına göre mikroskop altında bile ayırt etmek zor.",
+    "visual": "koala sitting in the fork of a tree looking at the camera",
+    "stock_query": "koala tree",
+    "source": "stock",
+    "callout": "MİKROSKOPTA BİLE"
+   },
+   {
+    "text": "Oysa yakın akrabaları vombat ve kanguruda parmak izi yok.",
+    "visual": "koala climbing slowly up a eucalyptus trunk",
+    "stock_query": "koala climbing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bizimle son ortak atası yüz milyon yıldan da önce yaşadı.",
+    "visual": "koala resting on a branch high in a eucalyptus tree",
+    "stock_query": "koala branch",
+    "source": "stock",
+    "callout": "100+ MİLYON YIL"
+   },
+   {
+    "text": "Bir görüşe göre bu izler, avuç avuç yaprak tutabilmek için kendi başına evrimleşti.",
+    "visual": "koala holding a bunch of eucalyptus leaves and eating",
+    "stock_query": "koala eating",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Koalaların parmak izleri insanınkine o kadar benzer ki bir adli bilim uzmanına göre mikroskop altında bile ayırt etmek zordur; yakın akrabaları vombat ve kanguruda ise parmak izi yoktur.",
+  "tags": [
+   "koala",
+   "koala parmak izi",
+   "parmak izi",
+   "yakınsak evrim",
+   "Avustralya hayvanları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: mikroskopta bile ayırt edilememesi mi, kangurularda hiç olmaması mı?",
+  "en_title": "Koala fingerprints look almost exactly like yours 🐨",
+  "en_description": "Koala fingerprints are so close to ours that even under a microscope they are hard to tell apart, yet their close relatives, wombats and kangaroos, have none.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Koalaların parmak izi var mı, insanınkine benzer mi?\n\nKoalaların parmak izleri insanınkine neredeyse tıpatıp benzer; bir adli bilim uzmanına göre mikroskop altında bile ayırt etmek zordur. Yakın akrabaları vombat ve kanguruda parmak izi yoktur; bizimle son ortak ataları da yüz milyon yıldan önce yaşadı. Bir görüşe göre bu izler, avuç avuç yaprak tutabilmek için kendi başına evrimleşti.\n\nSence hangisi daha şaşırtıcı: mikroskopta bile ayırt edilememesi mi, kangurularda hiç olmaması mı?",
+  "hashtags": [
+   "#koala",
+   "#hayvanlar",
+   "#vahşidoğa",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "koala",
+   "koalalar",
+   "koala parmak izi",
+   "koalaların parmak izi var mı",
+   "parmak izi",
+   "insan parmak izi",
+   "parmak izi benzerliği",
+   "adli bilim",
+   "yakınsak evrim",
+   "evrim",
+   "okaliptüs",
+   "keseli hayvanlar",
+   "keseliler",
+   "Avustralya hayvanları",
+   "sevimli hayvanlar",
+   "vahşi doğa",
+   "Avustralya",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "koala fingerprints"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Koala fingerprints look almost exactly like yours 🐨",
+    "description": "Koala fingerprints are so similar to human ones that, according to a forensic scientist, even careful analysis under a microscope struggles to tell them apart. Their close relatives, wombats and kangaroos, have none, and our last common ancestor lived over 100 million years ago, so the prints evolved separately."
+   },
+   "es": {
+    "title": "Las huellas dactilares del koala son casi idénticas a las tuyas 🐨",
+    "description": "Las huellas del koala se parecen tanto a las humanas que, según un científico forense, ni con un análisis al microscopio es fácil distinguirlas. Sus parientes cercanos, wombats y canguros, no las tienen, y nuestro último ancestro común vivió hace más de 100 millones de años: las huellas evolucionaron por separado."
+   },
+   "pt": {
+    "title": "As digitais do coala são quase idênticas às suas 🐨",
+    "description": "As impressões digitais do coala se parecem tanto com as humanas que, segundo um cientista forense, nem uma análise ao microscópio as distingue com facilidade. Seus parentes próximos, vombates e cangurus, não têm digitais, e nosso último ancestral comum viveu há mais de 100 milhões de anos: elas evoluíram separadamente."
+   },
+   "de": {
+    "title": "Koala-Fingerabdrücke sehen fast genauso aus wie deine 🐨",
+    "description": "Fingerabdrücke von Koalas ähneln menschlichen so sehr, dass sie laut einem Forensiker selbst unter dem Mikroskop kaum zu unterscheiden sind. Ihre nahen Verwandten, Wombats und Kängurus, haben keine, und unser letzter gemeinsamer Vorfahre lebte vor über 100 Millionen Jahren. Die Abdrücke sind also unabhängig entstanden."
+   },
+   "fr": {
+    "title": "Les empreintes digitales du koala sont presque identiques aux tiennes 🐨",
+    "description": "Les empreintes du koala ressemblent tant aux nôtres que, selon un scientifique médico-légal, même une analyse au microscope peine à les distinguer. Ses proches parents, wombats et kangourous, n'en ont pas, et notre dernier ancêtre commun vivait il y a plus de 100 millions d'années : elles sont apparues séparément."
+   },
+   "it": {
+    "title": "Le impronte digitali del koala sono quasi identiche alle tue 🐨",
+    "description": "Le impronte del koala somigliano così tanto a quelle umane che, secondo uno scienziato forense, nemmeno al microscopio è facile distinguerle. I suoi parenti stretti, vombati e canguri, non le hanno, e il nostro ultimo antenato comune è vissuto oltre 100 milioni di anni fa: si sono evolute separatamente."
+   },
+   "ru": {
+    "title": "Отпечатки пальцев коалы почти не отличить от твоих 🐨",
+    "description": "Отпечатки пальцев коалы так похожи на человеческие, что, по словам судебного эксперта, их трудно различить даже под микроскопом. У близких родственников коалы, вомбатов и кенгуру, отпечатков нет, а наш последний общий предок жил более 100 миллионов лет назад. Значит, узоры возникли независимо."
+   },
+   "ar": {
+    "title": "بصمات أصابع الكوالا تكاد تطابق بصماتك 🐨",
+    "description": "تشبه بصمات الكوالا بصمات الإنسان إلى حد أن عالمًا في الطب الشرعي يرى أن التمييز بينهما صعب حتى تحت المجهر. أما أقاربها القريبون، الومبت والكنغر، فليست لديهم بصمات، وآخر سلف مشترك بيننا وبينها عاش قبل أكثر من 100 مليون سنة، لذا تطورت البصمات بشكل مستقل."
+   },
+   "hi": {
+    "title": "कोआला की उँगलियों के निशान लगभग तुम्हारे जैसे होते हैं 🐨",
+    "description": "कोआला के फिंगरप्रिंट इंसानों से इतने मिलते हैं कि एक फ़ॉरेंसिक वैज्ञानिक के अनुसार माइक्रोस्कोप के नीचे भी इन्हें अलग पहचानना मुश्किल है। उसके क़रीबी रिश्तेदारों, वॉम्बैट और कंगारू, के फिंगरप्रिंट नहीं होते, और हमारा आख़िरी साझा पूर्वज 10 करोड़ साल से भी पहले रहता था। यानी ये निशान अलग से विकसित हुए।"
+   },
+   "id": {
+    "title": "Sidik jari koala hampir sama persis dengan milikmu 🐨",
+    "description": "Sidik jari koala begitu mirip dengan sidik jari manusia sehingga, menurut seorang ilmuwan forensik, bahkan di bawah mikroskop pun sulit membedakannya. Kerabat dekatnya, wombat dan kanguru, tidak punya sidik jari, dan leluhur bersama terakhir kita hidup lebih dari 100 juta tahun lalu, jadi sidik jari itu berevolusi secara terpisah."
+   },
+   "ja": {
+    "title": "コアラの指紋は人間とそっくり 🐨",
+    "description": "コアラの指紋は人間のものにとてもよく似ていて、法医学者によれば顕微鏡で見ても見分けるのが難しいほどです。近縁のカンガルーやウォンバットには指紋がなく、私たちとの最後の共通祖先は1億年以上前に生きていました。つまり指紋はそれぞれ別々に進化したのです。"
+   },
+   "ko": {
+    "title": "코알라의 지문은 사람 지문과 거의 똑같다 🐨",
+    "description": "코알라 지문은 사람 지문과 너무 닮아서, 한 법의학자에 따르면 현미경으로 봐도 구별하기 어렵습니다. 가까운 친척인 웜뱃과 캥거루에게는 지문이 없고, 우리와의 마지막 공통 조상은 1억 년도 더 전에 살았습니다. 지문이 따로따로 진화한 셈이죠."
+   },
+   "pl": {
+    "title": "Odciski palców koali wyglądają prawie jak twoje 🐨",
+    "description": "Odciski palców koali są tak podobne do ludzkich, że według eksperta medycyny sądowej trudno je odróżnić nawet pod mikroskopem. Bliscy krewni koali, wombaty i kangury, w ogóle ich nie mają, a nasz ostatni wspólny przodek żył ponad 100 milionów lat temu. Te wzory powstały więc niezależnie."
+   },
+   "nl": {
+    "title": "De vingerafdrukken van een koala lijken bijna precies op de jouwe 🐨",
+    "description": "Koala-vingerafdrukken lijken zo sterk op die van mensen dat ze volgens een forensisch onderzoeker zelfs onder de microscoop lastig te onderscheiden zijn. Hun naaste verwanten, wombats en kangoeroes, hebben ze niet, en onze laatste gemeenschappelijke voorouder leefde meer dan 100 miljoen jaar geleden. De afdrukken zijn dus los van elkaar ontstaan."
+   },
+   "uk": {
+    "title": "Відбитки пальців коали майже не відрізнити від твоїх 🐨",
+    "description": "Відбитки пальців коали настільки схожі на людські, що, за словами судового експерта, їх важко розрізнити навіть під мікроскопом. У близьких родичів коали, вомбатів і кенгуру, відбитків немає, а наш останній спільний предок жив понад 100 мільйонів років тому. Отже, візерунки з'явилися незалежно."
+   },
+   "vi": {
+    "title": "Dấu vân tay của gấu túi koala gần như giống hệt bạn 🐨",
+    "description": "Dấu vân tay của koala giống người đến mức, theo một nhà khoa học pháp y, ngay cả dưới kính hiển vi cũng khó phân biệt. Những họ hàng gần của chúng là gấu túi mũi trần và kangaroo lại không có vân tay, còn tổ tiên chung cuối cùng của chúng ta với koala sống cách đây hơn 100 triệu năm, nên vân tay đã tiến hóa riêng rẽ."
+   },
+   "az": {
+    "title": "Koalanın barmaq izi sənin barmaq izinə çox bənzəyir 🐨",
+    "description": "Koalanın barmaq izləri insanınkına o qədər bənzəyir ki, bir məhkəmə ekspertinin sözlərinə görə, mikroskop altında belə onları ayırmaq çətindir. Yaxın qohumları olan vombat və kenquruda barmaq izi yoxdur, bizimlə son ortaq əcdadı isə 100 milyon ildən də əvvəl yaşayıb. Deməli, bu izlər ayrıca təkamül edib."
+   },
+   "ro": {
+    "title": "Amprentele koalei seamănă aproape perfect cu ale tale 🐨",
+    "description": "Amprentele koalei seamănă atât de mult cu cele umane încât, potrivit unui expert criminalist, sunt greu de deosebit chiar și la microscop. Rudele sale apropiate, vombații și cangurii, nu au amprente, iar ultimul nostru strămoș comun a trăit acum peste 100 de milioane de ani, deci amprentele au evoluat separat."
+   }
+  }
+ }
+}
