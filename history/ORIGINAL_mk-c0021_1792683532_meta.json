@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0021",
+  "topic": "Atlar neden ağızdan nefes alamaz?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Atlar neden ağızdan nefes alamaz? 🐴",
+  "hook_text": "AT NASIL NEFES ALIR?",
+  "description": "Atlar neden ağızdan nefes alamaz?\n\nAtın yumuşak damağı, ağzını hava yolundan sıkıca ayırır; bu yüzden içine çektiği bütün hava burun deliklerinden geçer. Atlar köpekler gibi ağızdan soluyarak serinleyemez ve dörtnala koşarken her adımda bir nefes alır.\n\nSence hangisi daha şaşırtıcı: atın ağzından nefes alamaması mı, her adımda bir nefes alması mı?\n\n#at #atlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0021",
+  "tags": [
+    "at",
+    "atlar",
+    "at ağızdan nefes alır mı",
+    "at nasıl nefes alır",
+    "at burnu",
+    "at burun delikleri",
+    "yumuşak damak",
+    "dörtnala",
+    "at koşusu",
+    "at yarışı",
+    "binicilik",
+    "at bakımı",
+    "safkan at",
+    "at anatomisi",
+    "çiftlik hayvanları",
+    "evcil hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "horse",
+    "horse breathing",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "at agizdan nefes alir mi",
+    "at nasil nefes alir",
+    "yumusak damak",
+    "dortnala",
+    "at kosusu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Why horses can't breathe through their mouths 🐴",
+      "description": "A horse's soft palate seals the mouth off from the airway, so every breath goes in through the nostrils. Horses can't pant to cool down like dogs, and at a gallop they take one breath per stride.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "es": {
+      "title": "Por qué los caballos no pueden respirar por la boca 🐴",
+      "description": "El paladar blando del caballo separa la boca de las vías respiratorias, así que todo el aire entra por los ollares. No pueden jadear para refrescarse como los perros, y al galope toman una respiración por cada tranco.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "pt": {
+      "title": "Por que os cavalos não conseguem respirar pela boca 🐴",
+      "description": "O palato mole do cavalo isola a boca das vias aéreas, então todo o ar entra pelas narinas. Cavalos não ofegam para se refrescar como os cães e, a galope, respiram uma vez a cada passada.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "de": {
+      "title": "Warum Pferde nicht durch das Maul atmen können 🐴",
+      "description": "Das Gaumensegel des Pferdes trennt das Maul von den Atemwegen, deshalb strömt jeder Atemzug durch die Nüstern. Pferde können nicht wie Hunde hecheln, um sich abzukühlen, und im Galopp atmen sie einmal pro Galoppsprung.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "fr": {
+      "title": "Pourquoi les chevaux ne peuvent pas respirer par la bouche 🐴",
+      "description": "Le voile du palais du cheval isole la bouche des voies respiratoires : tout l'air passe par les naseaux. Le cheval ne peut pas haleter comme un chien pour se rafraîchir, et au galop il respire une fois par foulée.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "it": {
+      "title": "Perché i cavalli non possono respirare con la bocca 🐴",
+      "description": "Il palato molle del cavallo separa la bocca dalle vie aeree, quindi tutta l'aria passa dalle narici. I cavalli non possono ansimare per rinfrescarsi come i cani e al galoppo fanno un respiro a ogni falcata.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "ru": {
+      "title": "Почему лошади не могут дышать ртом 🐴",
+      "description": "Мягкое нёбо лошади отделяет рот от дыхательных путей, поэтому весь воздух идёт через ноздри. Лошадь не может охлаждаться, часто дыша ртом, как собака, а на галопе делает один вдох на каждый галопный скачок.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "ar": {
+      "title": "لماذا لا تستطيع الخيول التنفس من أفواهها؟ 🐴",
+      "description": "يفصل الحنك الرخو عند الحصان الفم عن مجرى التنفس، لذلك يدخل كل الهواء من فتحتي الأنف. ولا يستطيع الحصان اللهاث ليبرّد جسمه كما تفعل الكلاب، وعند العدو يأخذ نفسًا واحدًا مع كل خطوة.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "hi": {
+      "title": "घोड़े मुँह से साँस क्यों नहीं ले सकते? 🐴",
+      "description": "घोड़े का नरम तालु मुँह को साँस की नली से अलग रखता है, इसलिए सारी हवा नथुनों से ही अंदर जाती है। घोड़े कुत्तों की तरह हाँफकर ठंडे नहीं हो सकते, और सरपट दौड़ते समय हर कदम पर एक साँस लेते हैं।\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "id": {
+      "title": "Kenapa kuda tidak bisa bernapas lewat mulut? 🐴",
+      "description": "Langit-langit lunak kuda menutup rapat jalur antara mulut dan saluran napas, jadi semua udara masuk lewat lubang hidung. Kuda tidak bisa terengah-engah untuk mendinginkan tubuh seperti anjing, dan saat berlari kencang ia bernapas sekali di setiap langkah.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "ja": {
+      "title": "馬が口で息をできない理由 🐴",
+      "description": "馬は軟口蓋が口と気道をしっかり仕切っているため、空気はすべて鼻の穴から入ります。犬のように口でハアハアして体を冷やすこともできず、全速力で走るときは一完歩ごとに一回呼吸しています。\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "ko": {
+      "title": "말은 왜 입으로 숨을 쉬지 못할까? 🐴",
+      "description": "말의 물렁입천장은 입과 기도를 단단히 막아, 모든 공기가 콧구멍으로만 들어갑니다. 개처럼 헐떡이며 열을 식히지도 못하고, 전속력으로 달릴 때는 한 걸음에 한 번씩 숨을 쉽니다.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "pl": {
+      "title": "Dlaczego koń nie może oddychać pyskiem? 🐴",
+      "description": "Podniebienie miękkie konia oddziela jamę gębową od dróg oddechowych, więc całe powietrze wpada przez chrapy. Konie nie mogą ziajać jak psy, żeby się ochłodzić, a w galopie biorą jeden oddech na każdy skok galopu.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "nl": {
+      "title": "Waarom paarden niet door hun mond kunnen ademen 🐴",
+      "description": "Het zachte gehemelte van een paard sluit de mond af van de luchtwegen, dus alle lucht gaat via de neusgaten. Paarden kunnen niet hijgen om af te koelen zoals honden, en in galop nemen ze één ademhaling per galopsprong.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "uk": {
+      "title": "Чому коні не можуть дихати ротом 🐴",
+      "description": "М'яке піднебіння коня відокремлює рот від дихальних шляхів, тому все повітря проходить через ніздрі. Кінь не може охолоджуватися, часто дихаючи ротом, як собака, а на галопі робить один вдих на кожен стрибок.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "vi": {
+      "title": "Vì sao ngựa không thể thở bằng miệng? 🐴",
+      "description": "Vòm miệng mềm của ngựa ngăn kín khoang miệng với đường thở, nên toàn bộ không khí đi qua lỗ mũi. Ngựa không thể thở hổn hển để hạ nhiệt như chó, và khi phi nước đại chúng hít một hơi cho mỗi sải chân.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "az": {
+      "title": "Atlar niyə ağızdan nəfəs ala bilmir? 🐴",
+      "description": "Atın yumşaq damağı ağzı tənəffüs yolundan kip ayırır, buna görə bütün hava burun dəliklərindən keçir. Atlar itlər kimi ağızdan tez-tez nəfəs alıb sərinləyə bilmir, çaparaq qaçanda isə hər addımda bir nəfəs alır.\n\n#shorts\n\nSeri: mk-c0021"
+    },
+    "ro": {
+      "title": "De ce caii nu pot respira pe gură 🐴",
+      "description": "Vălul palatin al calului desparte gura de căile respiratorii, așa că tot aerul intră pe nări. Caii nu pot gâfâi ca să se răcorească, precum câinii, iar la galop respiră o dată la fiecare salt.\n\n#shorts\n\nSeri: mk-c0021"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: atın ağzından nefes alamaması mı, her adımda bir nefes alması mı?",
+  "scenes": [
+    {
+      "text": "Bu at ağzından nefes alamıyor.",
+      "visual": "horse galloping across a green field, nostrils flared",
+      "stock_query": "horse running",
+      "source": "stock",
+      "callout": "SADECE BURUN"
+    },
+    {
+      "text": "Yumuşak damağı, ağzını hava yolundan sıkıca ayırır.",
+      "visual": "close up of a horse head in profile",
+      "stock_query": "horse head",
+      "source": "stock"
+    },
+    {
+      "text": "Bu yüzden içine çektiği bütün hava burun deliklerinden geçer.",
+      "visual": "extreme close up of horse nostrils breathing",
+      "stock_query": "horse nose",
+      "source": "stock",
+      "callout": "TÜM HAVA BURUNDAN"
+    },
+    {
+      "text": "Köpekler gibi ağzından soluyarak serinleyemez de.",
+      "visual": "horse standing in a sunny meadow",
+      "stock_query": "horse field",
+      "source": "stock"
+    },
+    {
+      "text": "Dörtnala koşarken her adımda tam bir nefes alır.",
+      "visual": "horse galloping fast, side view tracking shot",
+      "stock_query": "horse galloping",
+      "source": "stock",
+      "callout": "ADIM BAŞINA 1 NEFES"
+    },
+    {
+      "text": "Koşan bir atın ağzı açık olsa bile nefesi burnundan geçer.",
+      "visual": "horses running together across a field",
+      "stock_query": "horses running",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 13.91,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0021_1792683532_ig.mp4"
+}
