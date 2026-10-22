@@ -1,5 +1,5 @@
 {
- "at": "2026-10-22T17:06:55+00:00",
+ "at": "2026-10-22T17:58:43+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -155,14 +155,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Okyanus Gerçekte Ne Kadar Derin?",
-   "sources": {
-    "SHORTS": 1035,
-    "YT_SEARCH": 24,
-    "YT_CHANNEL": 6,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0,
-    "NOTIFICATION": 0
-   }
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason"
   },
   "oyPgO_oDYlU": {
    "views": 1000,
