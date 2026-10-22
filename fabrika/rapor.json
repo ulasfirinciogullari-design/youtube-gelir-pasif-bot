@@ -1,18 +1,71 @@
 {
- "started": "2026-10-22T09:08:30+00:00",
- "mod": "igbolum",
- "gate": "instagram: n005",
+ "started": "2026-10-22T10:16:05+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
- "chars": 362,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18116160224013921",
-  "url": "https://www.instagram.com/reel/DeyoIuQCWys/",
-  "at": 1792660194.018235
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "41",
+  "videos": "25"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DeyoIuQCWys/"
+ "credits_before": [
+  14295,
+  613902
  ],
- "finished": "2026-10-22T09:09:54+00:00"
+ "kuyruk": {
+  "dosya": "20261021-3-o0009.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "o0009",
+  "series": "Ya Olsaydı?",
+  "q": "Tüm erkekler yok olsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 264,
+ "duration": 18.8,
+ "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
+ "url": "https://youtube.com/shorts/VMP8uC3O6jU",
+ "recent_status": {
+  "o0007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "783",
+   "reason": null
+  },
+  "n005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "973",
+   "reason": null
+  },
+  "o0008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1007",
+   "reason": null
+  },
+  "g005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "928",
+   "reason": null
+  },
+  "o0009": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  14359,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261021-3-o0009.json Tüm erkekler yok olsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-10-22T10:16:45+00:00"
 }
