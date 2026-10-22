@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1358",
+    "views": "1361",
     "reason": null
    }
   },
@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1145",
+    "views": "1147",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1353",
+    "views": "1355",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "925",
+    "views": "927",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1181",
+    "views": "1183",
     "reason": null
    }
   },
@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1246",
+    "views": "1295",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1326",
+    "views": "1455",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1229",
+    "views": "1317",
     "reason": null
    }
   },
@@ -626,7 +626,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "913",
+    "views": "980",
     "reason": null
    }
   },
@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "978",
+    "views": "991",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1010",
+    "views": "1013",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "932",
+    "views": "936",
     "reason": null
    }
   },
@@ -746,7 +746,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "306",
+    "views": "659",
     "reason": null
    }
   },
@@ -773,6 +773,36 @@
    "thumbnail": true,
    "at": 1792678333.790051,
    "chars": 277,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "462",
+    "reason": null
+   }
+  },
+  {
+   "id": "n006",
+   "video_id": "gEB2tRsHr5s",
+   "url": "https://youtube.com/shorts/gEB2tRsHr5s",
+   "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Long Would It Take to Drive Across the Milky Way?",
+    "es": "¿Cuánto tardarías en cruzar la Vía Láctea en coche?",
+    "pt": "Quanto Tempo Você Levaria para Cruzar a Via Láctea de Carro?",
+    "ar": "كم سنة ستحتاج لعبور درب التبانة بالسيارة؟",
+    "hi": "कार से आकाशगंगा पार करने में कितने साल लगेंगे?",
+    "id": "Berapa Lama Menyeberangi Bima Sakti dengan Mobil?",
+    "fr": "Combien de Temps pour Traverser la Voie Lactée en Voiture ?",
+    "de": "Wie lange würdest du mit dem Auto durch die Milchstraße fahren?",
+    "ru": "Сколько лет ехать через Млечный Путь на машине?",
+    "az": "Samanyolunu Maşınla Keçmək Neçə İl Çəkərdi?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792697573.0407064,
+   "chars": 384,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -807,7 +837,8 @@
   "o0008",
   "g005",
   "o0009",
-  "o0010"
+  "o0010",
+  "n006"
  ],
  "extra": [
   {
@@ -1258,6 +1289,14 @@
   {
    "finished": "2026-10-22T19:30:10+00:00",
    "mod": "saatlik"
+  },
+  {
+   "finished": "2026-10-22T19:32:54+00:00",
+   "mod": "zorla",
+   "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
+   "url": "https://youtube.com/shorts/gEB2tRsHr5s",
+   "duration": 25.3,
+   "chars": 384
   }
  ],
  "last_fail": 1792487549.018023,

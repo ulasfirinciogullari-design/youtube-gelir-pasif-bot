@@ -1,8 +1,71 @@
 {
- "started": "2026-10-22T19:30:09+00:00",
- "mod": "saatlik",
- "gate": "yayın saati değil (UTC [10, 14, 18])",
+ "started": "2026-10-22T19:31:57+00:00",
+ "mod": "zorla",
+ "gate": "zorla",
  "tarayici": "playwright ubuntu24.04-x64",
- "log": [],
- "finished": "2026-10-22T19:30:10+00:00"
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "41",
+  "videos": "27"
+ },
+ "credits_before": [
+  14988,
+  613902
+ ],
+ "kuyruk": {
+  "dosya": "20261022-2-n006.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "n006",
+  "series": "Ne Kadar Büyük?",
+  "q": "Samanyolu ne kadar büyük?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 384,
+ "duration": 25.3,
+ "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
+ "url": "https://youtube.com/shorts/gEB2tRsHr5s",
+ "recent_status": {
+  "o0008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1013",
+   "reason": null
+  },
+  "g005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "936",
+   "reason": null
+  },
+  "o0009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "659",
+   "reason": null
+  },
+  "o0010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "462",
+   "reason": null
+  },
+  "n006": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  15081,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261022-2-n006.json Samanyolu ne kadar büyük? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-10-22T19:32:54+00:00"
 }
