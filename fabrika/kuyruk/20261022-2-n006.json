@@ -1,0 +1,290 @@
+{
+ "id": "n006",
+ "series": "Ne Kadar Büyük?",
+ "q": "Samanyolu ne kadar büyük?",
+ "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
+ "bar": {
+  "hi": "SAMANYOLU",
+  "rest": "NE KADAR BÜYÜK?"
+ },
+ "summary": "Saatte 100 kilometreyle giden bir arabayla Samanyolu'nu geçmen evrenin yaşından 78 kat uzun sürerdi! Galaksimizin gerçek boyutunu, Güneş'in içindeki yerini ve şu an ne kadar hızlı gittiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Arabayla Samanyolu'nu geçmen 1 trilyon yıl sürerdi.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🚗",
+    "value": "1.000.000.000.000",
+    "unit": "yıl",
+    "label": "100 km/sa Arabayla",
+    "key": "trilyon"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Evrenin yaşının 78 katı mı?!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "🌌",
+     "label": "Evrenin Yaşı",
+     "value": "13,8"
+    },
+    "b": {
+     "e": "🚗",
+     "label": "Araba Yolculuğu",
+     "value": "1.080"
+    },
+    "mode": "size",
+    "key": "78"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Işık bile onu 100.000 yılda geçer.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "galaxy",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "spin",
+    "target": 0,
+    "key": "100.000",
+    "label": "100.000 Işık Yılı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş, en az 100 milyar yıldızdan sadece biri.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "☀️",
+    "do": "shrink",
+    "key": "biri",
+    "label": "Sadece Bir Yıldız"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ve sen şu an onunla saatte 828.000 kilometreyle galakside dönüyorsun!",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Senin Hızın",
+    "from": 0,
+    "to": 828000,
+    "unit": "km/sa",
+    "e": "🧍",
+    "key": "828.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir tur 230 milyon yıl sürer; son turun başında ilk dinozorlar vardı.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "230 MİLYON YIL ÖNCE",
+      "e": "🦕",
+      "label": "İlk Dinozorlar"
+     },
+     {
+      "when": "BUGÜN",
+      "e": "🧍",
+      "label": "Tur Bitiyor"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence Samanyolu'nda yalnız mıyız? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "👽"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Samanyolu yaklaşık 100.000 ışık yılı genişliğinde ve içinde 100 ile 400 milyar arası yıldız var.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/universe/exoplanets/our-milky-way-galaxy-how-big-is-space/"
+  },
+  {
+   "text": "NASA'ya göre 1 ışık yılı yaklaşık 9,5 trilyon km; saatte 100 km giden bir araba 100.000 ışık yılını yaklaşık 1,08 trilyon yılda geçer.",
+   "source": "NASA Science verileriyle hesap",
+   "url": "https://science.nasa.gov/universe/exoplanets/our-milky-way-galaxy-how-big-is-space/"
+  },
+  {
+   "text": "NASA'ya göre evren yaklaşık 13,8 milyar yaşında; 1,08 trilyon yıl bunun yaklaşık 78 katı.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/universe/overview/"
+  },
+  {
+   "text": "NASA'ya göre Güneş Sistemi galaksinin merkezi çevresinde saatte ortalama 828.000 km hızla gider ve bir turu yaklaşık 230 milyon yıl sürer.",
+   "source": "NASA StarChild",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html"
+  },
+  {
+   "text": "Londra Doğa Tarihi Müzesi'ne göre ilk dinozorlar yaklaşık 245 milyon yıl önce, Triyas döneminde ortaya çıktı.",
+   "source": "Natural History Museum, Londra",
+   "url": "https://www.nhm.ac.uk/discover/when-did-dinosaurs-live.html"
+  }
+ ],
+ "tags": [
+  "samanyolu",
+  "samanyolu ne kadar büyük",
+  "galaksi",
+  "ışık yılı",
+  "güneş sistemi",
+  "yıldızlar",
+  "uzay",
+  "ne kadar büyük",
+  "milky way",
+  "how big is the milky way",
+  "galaxy",
+  "light year",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#samanyolu",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/universe/exoplanets/our-milky-way-galaxy-how-big-is-space/",
+  "https://science.nasa.gov/universe/overview/",
+  "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+  "https://www.nhm.ac.uk/discover/when-did-dinosaurs-live.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Long Would It Take to Drive Across the Milky Way?",
+   "summary": "Driving across the Milky Way at 100 km/h would take 78 times longer than the age of the universe! Professor Pi reveals the real size of our galaxy, the Sun's place in it and how fast you are moving right now.",
+   "facts": [
+    "According to NASA, the Milky Way is about 100,000 light-years across and holds 100 to 400 billion stars.",
+    "According to NASA, one light-year is about 9.5 trillion km, so a car going 100 km/h would need about 1.08 trillion years to cross 100,000 light-years.",
+    "According to NASA, the universe is about 13.8 billion years old; 1.08 trillion years is about 78 times that.",
+    "According to NASA, the solar system moves around the center of the galaxy at an average of 828,000 km/h and takes about 230 million years to complete one orbit.",
+    "According to the Natural History Museum in London, the first dinosaurs appeared about 245 million years ago, in the Triassic period."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto tardarías en cruzar la Vía Láctea en coche?",
+   "summary": "¡Cruzar la Vía Láctea en coche a 100 km/h llevaría 78 veces más que la edad del universo! El Profesor Pi revela el tamaño real de nuestra galaxia, el lugar del Sol en ella y lo rápido que te mueves ahora mismo.",
+   "facts": [
+    "Según la NASA, la Vía Láctea mide unos 100.000 años luz de ancho y contiene entre 100.000 y 400.000 millones de estrellas.",
+    "Según la NASA, un año luz equivale a unos 9,5 billones de km, así que un coche a 100 km/h tardaría unos 1,08 billones de años en recorrer 100.000 años luz.",
+    "Según la NASA, el universo tiene unos 13.800 millones de años; 1,08 billones de años son unas 78 veces más.",
+    "Según la NASA, el sistema solar gira alrededor del centro de la galaxia a una media de 828.000 km/h y tarda unos 230 millones de años en dar una vuelta.",
+    "Según el Museo de Historia Natural de Londres, los primeros dinosaurios aparecieron hace unos 245 millones de años, en el Triásico."
+   ]
+  },
+  "pt": {
+   "title": "Quanto Tempo Você Levaria para Cruzar a Via Láctea de Carro?",
+   "summary": "Cruzar a Via Láctea de carro a 100 km/h levaria 78 vezes a idade do universo! O Professor Pi revela o tamanho real da nossa galáxia, o lugar do Sol nela e a velocidade com que você se move agora mesmo.",
+   "facts": [
+    "Segundo a NASA, a Via Láctea tem cerca de 100.000 anos-luz de largura e abriga de 100 a 400 bilhões de estrelas.",
+    "Segundo a NASA, um ano-luz equivale a cerca de 9,5 trilhões de km; assim, um carro a 100 km/h levaria cerca de 1,08 trilhão de anos para percorrer 100.000 anos-luz.",
+    "Segundo a NASA, o universo tem cerca de 13,8 bilhões de anos; 1,08 trilhão de anos é cerca de 78 vezes isso.",
+    "Segundo a NASA, o Sistema Solar viaja ao redor do centro da galáxia a uma média de 828.000 km/h e leva cerca de 230 milhões de anos para completar uma volta.",
+    "Segundo o Museu de História Natural de Londres, os primeiros dinossauros surgiram há cerca de 245 milhões de anos, no período Triássico."
+   ]
+  },
+  "ar": {
+   "title": "كم سنة ستحتاج لعبور درب التبانة بالسيارة؟",
+   "summary": "عبور درب التبانة بسيارة تسير بسرعة 100 كم/ساعة سيستغرق 78 ضعف عمر الكون! يكشف البروفيسور باي الحجم الحقيقي لمجرتنا، ومكان الشمس فيها، وسرعتك في هذه اللحظة.",
+   "facts": [
+    "بحسب ناسا، يبلغ عرض درب التبانة نحو 100,000 سنة ضوئية، ويضم ما بين 100 و400 مليار نجم.",
+    "بحسب ناسا، تعادل السنة الضوئية نحو 9.5 تريليون كم، لذا تحتاج سيارة تسير بسرعة 100 كم/ساعة إلى نحو 1.08 تريليون سنة لقطع 100,000 سنة ضوئية.",
+    "بحسب ناسا، يبلغ عمر الكون نحو 13.8 مليار سنة، و1.08 تريليون سنة تعادل نحو 78 ضعفًا من ذلك.",
+    "بحسب ناسا، تدور المجموعة الشمسية حول مركز المجرة بسرعة متوسطة تبلغ 828,000 كم/ساعة، وتستغرق الدورة الواحدة نحو 230 مليون سنة.",
+    "بحسب متحف التاريخ الطبيعي في لندن، ظهرت الديناصورات الأولى قبل نحو 245 مليون سنة، في العصر الترياسي."
+   ]
+  },
+  "hi": {
+   "title": "कार से आकाशगंगा पार करने में कितने साल लगेंगे?",
+   "summary": "100 किमी/घंटा की कार से हमारी आकाशगंगा (मिल्की वे) पार करने में ब्रह्मांड की उम्र से 78 गुना ज़्यादा समय लगेगा! प्रोफ़ेसर पाई बताते हैं हमारी आकाशगंगा का असली आकार, उसमें सूरज की जगह और आप इस वक़्त कितनी तेज़ी से चल रहे हैं।",
+   "facts": [
+    "NASA के अनुसार आकाशगंगा लगभग 1,00,000 प्रकाश-वर्ष चौड़ी है और इसमें 100 से 400 अरब तारे हैं।",
+    "NASA के अनुसार 1 प्रकाश-वर्ष लगभग 9.5 ट्रिलियन किमी है, इसलिए 100 किमी/घंटा की कार को 1,00,000 प्रकाश-वर्ष पार करने में लगभग 1.08 ट्रिलियन साल लगेंगे।",
+    "NASA के अनुसार ब्रह्मांड लगभग 13.8 अरब साल पुराना है; 1.08 ट्रिलियन साल इसका लगभग 78 गुना है।",
+    "NASA के अनुसार सौर मंडल आकाशगंगा के केंद्र के चारों ओर औसतन 8,28,000 किमी/घंटा की रफ़्तार से चलता है और एक चक्कर में लगभग 23 करोड़ साल लगते हैं।",
+    "लंदन के नेचुरल हिस्ट्री म्यूज़ियम के अनुसार पहले डायनासोर लगभग 24.5 करोड़ साल पहले, ट्रायसिक काल में आए।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Lama Menyeberangi Bima Sakti dengan Mobil?",
+   "summary": "Menyeberangi Bima Sakti dengan mobil berkecepatan 100 km/jam butuh waktu 78 kali umur alam semesta! Profesor Pi mengungkap ukuran asli galaksi kita, posisi Matahari di dalamnya, dan seberapa cepat kamu bergerak saat ini.",
+   "facts": [
+    "Menurut NASA, Bima Sakti lebarnya sekitar 100.000 tahun cahaya dan berisi 100 hingga 400 miliar bintang.",
+    "Menurut NASA, 1 tahun cahaya sekitar 9,5 triliun km, sehingga mobil berkecepatan 100 km/jam butuh sekitar 1,08 triliun tahun untuk menempuh 100.000 tahun cahaya.",
+    "Menurut NASA, alam semesta berumur sekitar 13,8 miliar tahun; 1,08 triliun tahun kira-kira 78 kali lipatnya.",
+    "Menurut NASA, Tata Surya bergerak mengelilingi pusat galaksi dengan kecepatan rata-rata 828.000 km/jam dan butuh sekitar 230 juta tahun untuk satu putaran.",
+    "Menurut Natural History Museum di London, dinosaurus pertama muncul sekitar 245 juta tahun lalu, pada periode Trias."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Temps pour Traverser la Voie Lactée en Voiture ?",
+   "summary": "Traverser la Voie lactée en voiture à 100 km/h prendrait 78 fois l'âge de l'Univers ! Le Professeur Pi dévoile la vraie taille de notre galaxie, la place du Soleil et la vitesse à laquelle tu fonces en ce moment.",
+   "facts": [
+    "Selon la NASA, la Voie lactée mesure environ 100 000 années-lumière de large et compte de 100 à 400 milliards d'étoiles.",
+    "Selon la NASA, une année-lumière vaut environ 9 500 milliards de km : une voiture à 100 km/h mettrait environ 1 080 milliards d'années à parcourir 100 000 années-lumière.",
+    "Selon la NASA, l'Univers a environ 13,8 milliards d'années ; 1 080 milliards d'années, c'est environ 78 fois plus.",
+    "Selon la NASA, le Système solaire tourne autour du centre de la galaxie à 828 000 km/h en moyenne et met environ 230 millions d'années à en faire le tour.",
+    "Selon le Muséum d'histoire naturelle de Londres, les premiers dinosaures sont apparus il y a environ 245 millions d'années, au Trias."
+   ]
+  },
+  "de": {
+   "title": "Wie lange würdest du mit dem Auto durch die Milchstraße fahren?",
+   "summary": "Mit dem Auto bei 100 km/h würde die Fahrt durch die Milchstraße 78-mal länger dauern, als das Universum alt ist! Professor Pi zeigt die wahre Größe unserer Galaxie, den Platz der Sonne darin und wie schnell du gerade unterwegs bist.",
+   "facts": [
+    "Laut NASA ist die Milchstraße etwa 100.000 Lichtjahre breit und enthält 100 bis 400 Milliarden Sterne.",
+    "Laut NASA ist ein Lichtjahr etwa 9,5 Billionen km lang; ein Auto mit 100 km/h bräuchte für 100.000 Lichtjahre also rund 1,08 Billionen Jahre.",
+    "Laut NASA ist das Universum etwa 13,8 Milliarden Jahre alt; 1,08 Billionen Jahre sind rund 78-mal so lang.",
+    "Laut NASA bewegt sich das Sonnensystem mit durchschnittlich 828.000 km/h um das Zentrum der Galaxie und braucht für eine Runde etwa 230 Millionen Jahre.",
+    "Laut dem Natural History Museum in London erschienen die ersten Dinosaurier vor etwa 245 Millionen Jahren in der Trias."
+   ]
+  },
+  "ru": {
+   "title": "Сколько лет ехать через Млечный Путь на машине?",
+   "summary": "Поездка через Млечный Путь на машине со скоростью 100 км/ч длилась бы в 78 раз дольше, чем существует Вселенная! Профессор Пи показывает настоящий размер нашей галактики, место Солнца в ней и то, как быстро ты движешься прямо сейчас.",
+   "facts": [
+    "По данным NASA, Млечный Путь имеет в поперечнике около 100 000 световых лет, и в нём от 100 до 400 миллиардов звёзд.",
+    "По данным NASA, световой год — это около 9,5 триллиона км, поэтому машине со скоростью 100 км/ч понадобилось бы около 1,08 триллиона лет, чтобы проехать 100 000 световых лет.",
+    "По данным NASA, возраст Вселенной около 13,8 миллиарда лет; 1,08 триллиона лет — примерно в 78 раз больше.",
+    "По данным NASA, Солнечная система движется вокруг центра галактики со средней скоростью 828 000 км/ч и делает один оборот примерно за 230 миллионов лет.",
+    "По данным Музея естествознания в Лондоне, первые динозавры появились около 245 миллионов лет назад, в триасовом периоде."
+   ]
+  },
+  "az": {
+   "title": "Samanyolunu Maşınla Keçmək Neçə İl Çəkərdi?",
+   "summary": "Saatda 100 km sürətlə gedən maşınla Samanyolunu keçmək Kainatın yaşından 78 dəfə uzun çəkərdi! Professor Pi qalaktikamızın əsl ölçüsünü, Günəşin oradakı yerini və indi nə qədər sürətlə hərəkət etdiyini izah edir.",
+   "facts": [
+    "NASA-ya görə Samanyolu təxminən 100.000 işıq ili enindədir və içində 100 ilə 400 milyard arası ulduz var.",
+    "NASA-ya görə 1 işıq ili təxminən 9,5 trilyon km-dir; saatda 100 km gedən maşın 100.000 işıq ilini təxminən 1,08 trilyon ilə keçərdi.",
+    "NASA-ya görə Kainat təxminən 13,8 milyard yaşındadır; 1,08 trilyon il bunun təxminən 78 qatıdır.",
+    "NASA-ya görə Günəş sistemi qalaktikanın mərkəzi ətrafında orta hesabla saatda 828.000 km sürətlə hərəkət edir və bir dövrəni təxminən 230 milyon ilə tamamlayır.",
+    "London Təbiət Tarixi Muzeyinə görə ilk dinozavrlar təxminən 245 milyon il əvvəl, Trias dövründə meydana çıxıb."
+   ]
+  }
+ }
+}

@@ -1,0 +1,255 @@
+{
+ "id": "o0010",
+ "series": "Ya Olsaydı?",
+ "q": "Ay 5 kat daha büyük olsaydı ne olurdu?",
+ "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
+ "bar": {
+  "hi": "AY 5 KAT",
+  "rest": "BÜYÜK OLSAYDI?"
+ },
+ "summary": "Ay 5 kat büyük olsaydı Dünya'dan bile ağır olur, gelgitler 125 kat güçlenirdi. Sahildeki evlerin neden günde 2 kez sular altında kalacağını ve denizin kaç metre yükseleceğini Profesör Pi anlatıyor!",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Sahilde yaşasan, evin günde 2 kez sular altında kalırdı.",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "🏠",
+     "label": "Sahildeki Evin"
+    },
+    "right": {
+     "e": "🌊",
+     "label": "Sular Altında"
+    },
+    "key": "sular"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "5 kat büyük Ay, 125 kat ağır olur; Dünya'yı bile geçerdi.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "moon",
+     "label": "Bugünkü Ay",
+     "value": 1
+    },
+    "b": {
+     "b": "moon",
+     "label": "5 Kat Büyük Ay",
+     "value": 125
+    },
+    "mode": "size",
+    "key": "125"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gelgit de 125 kat güçlenir: 1 metrelik gelgit 125 metre olurdu!",
+   "v": {
+    "t": "meter",
+    "bg": "ocean",
+    "label": "Gelgit Yüksekliği",
+    "from": 1,
+    "to": 125,
+    "unit": "metre",
+    "e": "🌊",
+    "key": "metrelik"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "40 katlı bina boyu su mu?!",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "🏢",
+    "value": "40",
+    "unit": "kat",
+    "label": "Bina Boyu Su",
+    "key": "40"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen nereye taşınırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "🏔️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Ay'ın çapı yaklaşık 3.475 km; 5 katı olan yaklaşık 17.375 km, Dünya'nın 12.742 km'lik çapından bile büyük.",
+   "source": "NASA NSSDC Ay Bilgi Sayfası",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+  },
+  {
+   "text": "Aynı yoğunlukta 5 kat büyük bir Ay'ın kütlesi 5 × 5 × 5 = 125 kat artar; bu, Dünya kütlesinin yaklaşık 1,5 katı demek.",
+   "source": "NASA NSSDC verileriyle hesap",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+  },
+  {
+   "text": "NOAA'ya göre gelgit kuvveti cismin kütlesiyle artar ve uzaklığın küpüyle azalır; bu yüzden aynı uzaklıkta 125 kat ağır bir Ay, 125 kat güçlü gelgit yaratır.",
+   "source": "NOAA",
+   "url": "https://oceanservice.noaa.gov/education/tutorial_tides/tides02_cause.html"
+  },
+  {
+   "text": "Maine Üniversitesi'nden fizikçi Neil Comins'e göre Ay yarı uzaklıkta olsaydı gelgitler 8 kat yükselir, kalabalık kıyılar büyük olasılıkla yaşanmaz hale gelirdi; aynı oranla 1 metrelik gelgit 125 metre olur.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/what-if-moon-closer-to-earth.html"
+  },
+  {
+   "text": "NOAA'ya göre kıyı bölgelerinde genellikle her 24 saat 50 dakikada 2 yüksek ve 2 alçak gelgit yaşanır.",
+   "source": "NOAA",
+   "url": "https://oceanservice.noaa.gov/education/tutorial_tides/tides05_lunarday.html"
+  }
+ ],
+ "tags": [
+  "ay 5 kat büyük olsaydı",
+  "ay büyük olsaydı",
+  "gelgit",
+  "gelgit kuvveti",
+  "ay",
+  "deniz seviyesi",
+  "kıyı şehirleri",
+  "what if the moon was bigger",
+  "bigger moon",
+  "tides",
+  "moon",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#gelgit",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+  "https://oceanservice.noaa.gov/education/tutorial_tides/tides02_cause.html",
+  "https://www.livescience.com/what-if-moon-closer-to-earth.html",
+  "https://oceanservice.noaa.gov/education/tutorial_tides/tides05_lunarday.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If the Moon Were 5 Times Bigger, Would Your Home Flood?",
+   "summary": "If the Moon were 5 times bigger, it would outweigh even Earth and tides would become 125 times stronger. Professor Pi explains why seaside homes would flood twice a day and how many meters the sea would rise!",
+   "facts": [
+    "According to NASA, the Moon is about 3,475 km across; 5 times that, about 17,375 km, is wider than Earth's 12,742 km.",
+    "At the same density, a Moon 5 times bigger would have 5 × 5 × 5 = 125 times the mass, about 1.5 times the mass of Earth.",
+    "According to NOAA, tidal force grows with an object's mass and falls with the cube of its distance, so a Moon 125 times heavier at the same distance would raise tides 125 times stronger.",
+    "University of Maine physicist Neil Comins says that with the Moon at half its distance, tides would be 8 times higher and populated coastlines would likely become uninhabitable; by the same scaling, a 1-meter tide would become 125 meters.",
+    "According to NOAA, coastal areas usually have two high and two low tides every 24 hours and 50 minutes."
+   ]
+  },
+  "es": {
+   "title": "Si la Luna fuera 5 veces más grande, ¿se inundaría tu casa?",
+   "summary": "Si la Luna fuera 5 veces más grande, pesaría más que la propia Tierra y las mareas serían 125 veces más fuertes. ¡El Profesor Pi explica por qué las casas de la costa se inundarían dos veces al día y cuántos metros subiría el mar!",
+   "facts": [
+    "Según la NASA, la Luna mide unos 3.475 km de diámetro; 5 veces más, unos 17.375 km, supera incluso los 12.742 km de la Tierra.",
+    "Con la misma densidad, una Luna 5 veces más grande tendría 5 × 5 × 5 = 125 veces más masa, cerca de 1,5 veces la masa de la Tierra.",
+    "Según la NOAA, la fuerza de marea aumenta con la masa del cuerpo y disminuye con el cubo de la distancia, así que una Luna 125 veces más pesada a la misma distancia produciría mareas 125 veces más fuertes.",
+    "Según el físico Neil Comins, de la Universidad de Maine, con la Luna a la mitad de distancia las mareas serían 8 veces más altas y las costas pobladas probablemente quedarían inhabitables; con la misma proporción, una marea de 1 metro llegaría a 125 metros.",
+    "Según la NOAA, en las costas suele haber dos mareas altas y dos bajas cada 24 horas y 50 minutos."
+   ]
+  },
+  "pt": {
+   "title": "Se a Lua Fosse 5 Vezes Maior, Sua Casa Ficaria Debaixo d'Água?",
+   "summary": "Se a Lua fosse 5 vezes maior, pesaria mais que a própria Terra e as marés ficariam 125 vezes mais fortes. O Professor Pi explica por que as casas no litoral seriam inundadas duas vezes por dia e quantos metros o mar subiria!",
+   "facts": [
+    "Segundo a NASA, a Lua tem cerca de 3.475 km de diâmetro; 5 vezes isso, cerca de 17.375 km, é maior até que os 12.742 km da Terra.",
+    "Com a mesma densidade, uma Lua 5 vezes maior teria 5 × 5 × 5 = 125 vezes mais massa, cerca de 1,5 vez a massa da Terra.",
+    "Segundo a NOAA, a força de maré cresce com a massa do corpo e cai com o cubo da distância; por isso, uma Lua 125 vezes mais pesada à mesma distância geraria marés 125 vezes mais fortes.",
+    "Segundo o físico Neil Comins, da Universidade do Maine, com a Lua à metade da distância as marés seriam 8 vezes mais altas e litorais povoados provavelmente ficariam inabitáveis; na mesma proporção, uma maré de 1 metro chegaria a 125 metros.",
+    "Segundo a NOAA, as áreas costeiras costumam ter duas marés altas e duas baixas a cada 24 horas e 50 minutos."
+   ]
+  },
+  "ar": {
+   "title": "لو كان القمر أكبر 5 مرات، هل كان البحر سيغمر بيتك؟",
+   "summary": "لو كان القمر أكبر 5 مرات لصار أثقل من الأرض نفسها، ولأصبح المد أقوى 125 مرة. يشرح البروفيسور باي لماذا كانت البيوت الساحلية ستغرق مرتين في اليوم، وكم مترًا كان البحر سيرتفع!",
+   "facts": [
+    "بحسب ناسا، يبلغ قطر القمر نحو 3,475 كم؛ و5 أضعافه، أي نحو 17,375 كم، أكبر حتى من قطر الأرض البالغ 12,742 كم.",
+    "بالكثافة نفسها، تكون كتلة قمر أكبر 5 مرات أكبر بمقدار 5 × 5 × 5 = 125 مرة، أي نحو 1.5 ضعف كتلة الأرض.",
+    "بحسب الإدارة الوطنية للمحيطات والغلاف الجوي الأمريكية (NOAA)، تزداد قوة المد بزيادة كتلة الجسم وتضعف مع مكعب المسافة، لذا فإن قمرًا أثقل 125 مرة على المسافة نفسها يولّد مدًّا أقوى 125 مرة.",
+    "يقول الفيزيائي نيل كومينز من جامعة مين إن القمر لو كان على نصف مسافته لارتفع المد 8 مرات ولأصبحت السواحل المأهولة على الأرجح غير صالحة للسكن؛ وبالنسبة نفسها يصبح المد الذي يبلغ مترًا واحدًا 125 مترًا.",
+    "بحسب NOAA، تشهد المناطق الساحلية عادةً مدّين عاليين وجزرين كل 24 ساعة و50 دقيقة."
+   ]
+  },
+  "hi": {
+   "title": "अगर चाँद 5 गुना बड़ा होता, तो क्या आपका घर डूब जाता?",
+   "summary": "अगर चाँद 5 गुना बड़ा होता, तो वह पृथ्वी से भी भारी होता और ज्वार 125 गुना ताकतवर हो जाते। प्रोफ़ेसर पाई बताते हैं कि समुद्र किनारे के घर दिन में 2 बार क्यों डूबते और समुद्र कितने मीटर ऊपर उठता!",
+   "facts": [
+    "NASA के अनुसार चाँद का व्यास लगभग 3,475 किमी है; इसका 5 गुना, लगभग 17,375 किमी, पृथ्वी के 12,742 किमी व्यास से भी बड़ा है।",
+    "उसी घनत्व पर 5 गुना बड़े चाँद का द्रव्यमान 5 × 5 × 5 = 125 गुना होता, यानी पृथ्वी के द्रव्यमान का लगभग 1.5 गुना।",
+    "NOAA के अनुसार ज्वारीय बल पिंड के द्रव्यमान के साथ बढ़ता है और दूरी के घन के साथ घटता है, इसलिए उसी दूरी पर 125 गुना भारी चाँद 125 गुना ताकतवर ज्वार पैदा करता।",
+    "यूनिवर्सिटी ऑफ़ मेन के भौतिकविद नील कॉमिन्स के अनुसार अगर चाँद आधी दूरी पर होता तो ज्वार 8 गुना ऊँचे होते और आबादी वाले तट शायद रहने लायक न रहते; इसी अनुपात से 1 मीटर का ज्वार 125 मीटर का हो जाता।",
+    "NOAA के अनुसार तटीय इलाकों में आमतौर पर हर 24 घंटे 50 मिनट में 2 बार ऊँचा और 2 बार नीचा ज्वार आता है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Bulan 5 Kali Lebih Besar, Apakah Rumahmu Akan Kebanjiran?",
+   "summary": "Jika Bulan 5 kali lebih besar, ia akan lebih berat daripada Bumi dan pasang surut menjadi 125 kali lebih kuat. Profesor Pi menjelaskan mengapa rumah di tepi pantai akan terendam 2 kali sehari dan berapa meter laut akan naik!",
+   "facts": [
+    "Menurut NASA, diameter Bulan sekitar 3.475 km; 5 kalinya, sekitar 17.375 km, bahkan lebih besar dari diameter Bumi yang 12.742 km.",
+    "Dengan kepadatan yang sama, Bulan yang 5 kali lebih besar memiliki massa 5 × 5 × 5 = 125 kali lipat, sekitar 1,5 kali massa Bumi.",
+    "Menurut NOAA, gaya pasang surut bertambah seiring massa benda dan berkurang menurut pangkat tiga jaraknya, sehingga Bulan yang 125 kali lebih berat pada jarak yang sama menimbulkan pasang 125 kali lebih kuat.",
+    "Menurut fisikawan Neil Comins dari University of Maine, jika Bulan berada di setengah jaraknya, pasang akan 8 kali lebih tinggi dan pesisir yang padat penduduk kemungkinan tak bisa dihuni; dengan perbandingan yang sama, pasang 1 meter menjadi 125 meter.",
+    "Menurut NOAA, wilayah pesisir biasanya mengalami 2 kali pasang naik dan 2 kali pasang surut setiap 24 jam 50 menit."
+   ]
+  },
+  "fr": {
+   "title": "Si la Lune Était 5 Fois Plus Grosse, Ta Maison Serait-elle Inondée ?",
+   "summary": "Si la Lune était 5 fois plus grosse, elle pèserait plus lourd que la Terre et les marées deviendraient 125 fois plus fortes. Le Professeur Pi explique pourquoi les maisons du bord de mer seraient inondées 2 fois par jour et de combien de mètres la mer monterait !",
+   "facts": [
+    "Selon la NASA, la Lune mesure environ 3 475 km de diamètre ; 5 fois plus, soit environ 17 375 km, dépasse même les 12 742 km de la Terre.",
+    "À densité égale, une Lune 5 fois plus grosse aurait 5 × 5 × 5 = 125 fois plus de masse, soit environ 1,5 fois la masse de la Terre.",
+    "Selon la NOAA, la force de marée augmente avec la masse de l'astre et diminue avec le cube de la distance : une Lune 125 fois plus lourde à la même distance créerait des marées 125 fois plus fortes.",
+    "Selon le physicien Neil Comins, de l'université du Maine, une Lune deux fois plus proche rendrait les marées 8 fois plus hautes et les côtes peuplées deviendraient probablement inhabitables ; dans la même proportion, une marée de 1 mètre atteindrait 125 mètres.",
+    "Selon la NOAA, les zones côtières connaissent en général 2 marées hautes et 2 marées basses toutes les 24 heures et 50 minutes."
+   ]
+  },
+  "de": {
+   "title": "Wäre der Mond 5-mal größer, stünde dein Haus unter Wasser?",
+   "summary": "Wäre der Mond 5-mal größer, wäre er schwerer als die Erde selbst und die Gezeiten würden 125-mal stärker. Professor Pi erklärt, warum Häuser an der Küste zweimal am Tag überflutet würden und wie viele Meter das Meer steigen würde!",
+   "facts": [
+    "Laut NASA hat der Mond etwa 3.475 km Durchmesser; das 5-Fache, rund 17.375 km, ist sogar größer als die 12.742 km der Erde.",
+    "Bei gleicher Dichte hätte ein 5-mal größerer Mond 5 × 5 × 5 = 125-mal so viel Masse, etwa das 1,5-Fache der Erdmasse.",
+    "Laut NOAA wächst die Gezeitenkraft mit der Masse eines Körpers und sinkt mit der dritten Potenz der Entfernung; ein 125-mal schwererer Mond in gleicher Entfernung würde also 125-mal stärkere Gezeiten erzeugen.",
+    "Laut dem Physiker Neil Comins von der University of Maine wären die Gezeiten bei halber Mondentfernung 8-mal höher und bewohnte Küsten wahrscheinlich unbewohnbar; im gleichen Verhältnis würden aus 1 Meter Tidenhub 125 Meter.",
+    "Laut NOAA gibt es an Küsten meist 2 Hoch- und 2 Niedrigwasser alle 24 Stunden und 50 Minuten."
+   ]
+  },
+  "ru": {
+   "title": "Если бы Луна была в 5 раз больше, затопило бы твой дом?",
+   "summary": "Если бы Луна была в 5 раз больше, она весила бы больше самой Земли, а приливы стали бы в 125 раз сильнее. Профессор Пи объясняет, почему дома на побережье затапливало бы 2 раза в день и на сколько метров поднималось бы море!",
+   "facts": [
+    "По данным NASA, диаметр Луны около 3475 км; в 5 раз больше — около 17 375 км, это больше даже диаметра Земли в 12 742 км.",
+    "При той же плотности Луна в 5 раз больше имела бы массу в 5 × 5 × 5 = 125 раз больше — примерно 1,5 массы Земли.",
+    "По данным NOAA, приливная сила растёт с массой тела и убывает пропорционально кубу расстояния, поэтому Луна в 125 раз тяжелее на том же расстоянии вызывала бы приливы в 125 раз сильнее.",
+    "По словам физика Нила Коминса из Университета штата Мэн, если бы Луна была вдвое ближе, приливы стали бы в 8 раз выше, а населённые побережья, вероятно, стали бы непригодны для жизни; в той же пропорции прилив в 1 метр вырос бы до 125 метров.",
+    "По данным NOAA, на побережьях обычно бывает 2 прилива и 2 отлива каждые 24 часа 50 минут."
+   ]
+  },
+  "az": {
+   "title": "Ay 5 Dəfə Böyük Olsaydı, Evini Su Basardımı?",
+   "summary": "Ay 5 dəfə böyük olsaydı, hətta Yerdən də ağır olar, qabarmalar 125 dəfə güclənərdi. Sahildəki evlərin niyə gündə 2 dəfə su altında qalacağını və dənizin neçə metr qalxacağını Professor Pi izah edir!",
+   "facts": [
+    "NASA-ya görə Ayın diametri təxminən 3.475 km-dir; onun 5 qatı, təxminən 17.375 km, hətta Yerin 12.742 km-lik diametrindən də böyükdür.",
+    "Eyni sıxlıqda 5 dəfə böyük Ayın kütləsi 5 × 5 × 5 = 125 dəfə artar, bu da Yerin kütləsinin təxminən 1,5 qatı deməkdir.",
+    "NOAA-ya görə qabarma qüvvəsi cismin kütləsi ilə artır və məsafənin kubu ilə azalır; buna görə eyni məsafədə 125 dəfə ağır Ay 125 dəfə güclü qabarma yaradardı.",
+    "Men Universitetinin fiziki Nil Kominsə görə Ay yarı məsafədə olsaydı, qabarmalar 8 dəfə yüksələr və sıx məskunlaşmış sahillər çox güman ki, yaşayış üçün yararsız olardı; eyni nisbətlə 1 metrlik qabarma 125 metr olar.",
+    "NOAA-ya görə sahil bölgələrində adətən hər 24 saat 50 dəqiqədə 2 qabarma və 2 çəkilmə olur."
+   ]
+  }
+ }
+}

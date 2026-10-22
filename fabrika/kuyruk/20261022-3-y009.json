@@ -1,0 +1,229 @@
+{
+ "id": "y009",
+ "series": "Ya Olsaydı?",
+ "q": "Uzayda kaskını çıkarsaydın ne olurdu?",
+ "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
+ "bar": {
+  "hi": "UZAYDA",
+  "rest": "KASKINI ÇIKARSAN?"
+ },
+ "summary": "Uzayda kaskını çıkarsan filmlerdeki gibi patlamazdın ama dilindeki tükürük kaynamaya başlardı! Kaç saniye bilincin yerinde kalırdı ve neden asla nefesini tutmamalısın, Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Daha bayılmadan dilindeki tükürük kaynamaya başlardı!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🫧",
+    "do": "multiply",
+    "key": "kaynamaya",
+    "label": "Tükürük Kaynar"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Tükürüğümüz mü kaynardı?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "👅",
+    "do": "shake",
+    "key": "kaynardı",
+    "label": "Kaynayan Tükürük"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "15 saniye dolmadan bayılırdın. Şimdi 15'e kadar say: süren bu!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "15",
+    "unit": "saniye",
+    "label": "Bilincin Gider",
+    "key": "15"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tuzak: nefesini tutarsan ciğerlerin yırtılırdı!",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🫁",
+     "label": "Nefes Tutarsan"
+    },
+    "right": {
+     "e": "💥",
+     "label": "Ciğer Yırtılır"
+    },
+    "key": "yırtılırdı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen o 15 saniyede ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "👨‍🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre 1966'da NASA'daki bir vakum odası testinde giysisinin havası kaçan mühendis Jim LeBlanc, bayılmadan hemen önce dilindeki tükürüğün köpürdüğünü hissetti.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/human-body-no-spacesuit"
+  },
+  {
+   "text": "ESA'dan Stefaan de Mey'e göre uzay boşluğunda tükürük ve gözyaşı gibi vücut sıvıları kaynamaya başlar.",
+   "source": "Space.com",
+   "url": "https://www.space.com/how-long-could-you-survive-in-space-without-spacesuit"
+  },
+  {
+   "text": "ESA'dan Stefaan de Mey'e göre korumasız biri oksijensizlikten 10-15 saniye içinde bilincini kaybeder.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/space-exploration/how-long-could-a-person-survive-in-space-without-a-spacesuit"
+  },
+  {
+   "text": "Aynı uzmana göre boşluğa çıkmadan önce ciğerler boşaltılmalı; içerideki hava genleşip ciğerleri yırtar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/space-exploration/how-long-could-a-person-survive-in-space-without-a-spacesuit"
+  }
+ ],
+ "tags": [
+  "uzayda kask çıkarmak",
+  "uzay boşluğu",
+  "astronot",
+  "uzay giysisi",
+  "vakum",
+  "insan vücudu",
+  "tükürük kaynar",
+  "jim leblanc",
+  "space without spacesuit",
+  "vacuum of space",
+  "astronaut helmet",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzay",
+  "#astronot",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.livescience.com/human-body-no-spacesuit",
+  "https://www.livescience.com/space/space-exploration/how-long-could-a-person-survive-in-space-without-a-spacesuit",
+  "https://www.space.com/how-long-could-you-survive-in-space-without-spacesuit"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If You Took Off Your Helmet in Space, How Long Would You Last?",
+   "summary": "Take off your helmet in space and you wouldn't explode like in the movies, but the saliva on your tongue would start to boil! Professor Pi explains how many seconds you'd stay conscious and why you must never hold your breath.",
+   "facts": [
+    "According to Live Science, in 1966 NASA engineer Jim LeBlanc, whose suit lost pressure during a vacuum chamber test, felt the saliva on his tongue start to bubble just before he passed out.",
+    "According to ESA's Stefaan de Mey, bodily fluids such as saliva and tears would begin to boil in the vacuum of space.",
+    "According to ESA's Stefaan de Mey, an unprotected person would lose consciousness from lack of oxygen within 10 to 15 seconds.",
+    "According to the same expert, you would need to empty your lungs first, because the air inside would expand and tear them apart."
+   ]
+  },
+  "es": {
+   "title": "Si te quitaras el casco en el espacio, ¿cuánto aguantarías?",
+   "summary": "Si te quitaras el casco en el espacio no explotarías como en las películas, ¡pero la saliva de tu lengua empezaría a hervir! El Profesor Pi explica cuántos segundos seguirías consciente y por qué nunca debes contener la respiración.",
+   "facts": [
+    "Según Live Science, en 1966 el ingeniero de la NASA Jim LeBlanc, cuyo traje perdió presión en una prueba en cámara de vacío, sintió burbujear la saliva en su lengua justo antes de desmayarse.",
+    "Según Stefaan de Mey, de la ESA, en el vacío del espacio los fluidos corporales como la saliva y las lágrimas empezarían a hervir.",
+    "Según Stefaan de Mey, de la ESA, una persona sin protección perdería el conocimiento por falta de oxígeno en 10 a 15 segundos.",
+    "Según el mismo experto, habría que vaciar antes los pulmones, porque el aire de dentro se expandiría y los desgarraría."
+   ]
+  },
+  "pt": {
+   "title": "Se Você Tirasse o Capacete no Espaço, Quanto Tempo Aguentaria?",
+   "summary": "Se você tirasse o capacete no espaço, não explodiria como nos filmes, mas a saliva na sua língua começaria a ferver! O Professor Pi explica quantos segundos você ficaria consciente e por que nunca deve prender a respiração.",
+   "facts": [
+    "Segundo a Live Science, em 1966 o engenheiro da NASA Jim LeBlanc, cujo traje perdeu pressão num teste em câmara de vácuo, sentiu a saliva na língua borbulhar pouco antes de desmaiar.",
+    "Segundo Stefaan de Mey, da ESA, no vácuo do espaço fluidos corporais como saliva e lágrimas começariam a ferver.",
+    "Segundo Stefaan de Mey, da ESA, uma pessoa sem proteção perderia a consciência por falta de oxigênio em 10 a 15 segundos.",
+    "Segundo o mesmo especialista, seria preciso esvaziar os pulmões antes, porque o ar dentro deles se expandiria e os rasgaria."
+   ]
+  },
+  "ar": {
+   "title": "لو خلعت خوذتك في الفضاء، كم ثانية ستصمد؟",
+   "summary": "لو خلعت خوذتك في الفضاء فلن تنفجر كما في الأفلام، لكن اللعاب على لسانك سيبدأ في الغليان! يشرح البروفيسور باي كم ثانية ستبقى واعيًا، ولماذا يجب ألا تحبس أنفاسك أبدًا.",
+   "facts": [
+    "بحسب موقع Live Science، شعر مهندس ناسا جيم لوبلان عام 1966، حين فقدت بدلته الضغط أثناء اختبار في غرفة مفرغة من الهواء، باللعاب يفور على لسانه قبيل فقدانه الوعي.",
+    "بحسب ستيفان دي مي من وكالة الفضاء الأوروبية، تبدأ سوائل الجسم مثل اللعاب والدموع في الغليان في فراغ الفضاء.",
+    "بحسب ستيفان دي مي من وكالة الفضاء الأوروبية، يفقد الشخص غير المحمي وعيه بسبب نقص الأكسجين خلال 10 إلى 15 ثانية.",
+    "بحسب الخبير نفسه، يجب إفراغ الرئتين قبل التعرض للفراغ، لأن الهواء داخلهما سيتمدد ويمزقهما."
+   ]
+  },
+  "hi": {
+   "title": "अंतरिक्ष में हेलमेट उतार दें तो आप कितने सेकंड टिकेंगे?",
+   "summary": "अंतरिक्ष में हेलमेट उतारने पर आप फ़िल्मों की तरह फटेंगे नहीं, लेकिन जीभ पर लार उबलने लगेगी! प्रोफ़ेसर पाई बताते हैं कि आप कितने सेकंड होश में रहेंगे और साँस रोकना क्यों जानलेवा है।",
+   "facts": [
+    "Live Science के अनुसार 1966 में NASA के इंजीनियर जिम लेब्लांक का सूट एक वैक्यूम चैंबर टेस्ट में दबाव खो बैठा, और बेहोश होने से ठीक पहले उन्हें जीभ पर लार में बुलबुले उठते महसूस हुए।",
+    "ESA के स्टेफ़ान डी मे के अनुसार अंतरिक्ष के निर्वात में लार और आँसू जैसे शरीर के तरल उबलने लगते हैं।",
+    "ESA के स्टेफ़ान डी मे के अनुसार बिना सुरक्षा वाला व्यक्ति ऑक्सीजन की कमी से 10 से 15 सेकंड में बेहोश हो जाएगा।",
+    "इसी विशेषज्ञ के अनुसार पहले फेफड़े खाली करने होंगे, क्योंकि अंदर की हवा फैलकर उन्हें फाड़ देगी।"
+   ]
+  },
+  "id": {
+   "title": "Jika Kamu Melepas Helm di Luar Angkasa, Berapa Lama Kamu Bertahan?",
+   "summary": "Jika kamu melepas helm di luar angkasa, kamu tidak akan meledak seperti di film, tetapi air liur di lidahmu mulai mendidih! Profesor Pi menjelaskan berapa detik kamu tetap sadar dan mengapa kamu tidak boleh menahan napas.",
+   "facts": [
+    "Menurut Live Science, pada 1966 insinyur NASA Jim LeBlanc, yang pakaiannya kehilangan tekanan saat uji di ruang vakum, merasakan air liur di lidahnya mulai menggelembung tepat sebelum pingsan.",
+    "Menurut Stefaan de Mey dari ESA, cairan tubuh seperti air liur dan air mata akan mulai mendidih di ruang hampa.",
+    "Menurut Stefaan de Mey dari ESA, orang tanpa pelindung akan kehilangan kesadaran karena kekurangan oksigen dalam 10 sampai 15 detik.",
+    "Menurut pakar yang sama, paru-paru harus dikosongkan terlebih dahulu karena udara di dalamnya akan mengembang dan merobeknya."
+   ]
+  },
+  "fr": {
+   "title": "Sans Casque dans l'Espace, Combien de Secondes Tiendrais-tu ?",
+   "summary": "Si tu enlevais ton casque dans l'espace, tu n'exploserais pas comme au cinéma, mais la salive sur ta langue se mettrait à bouillir ! Le Professeur Pi explique combien de secondes tu resterais conscient et pourquoi il ne faut jamais retenir ta respiration.",
+   "facts": [
+    "Selon Live Science, en 1966, l'ingénieur de la NASA Jim LeBlanc, dont la combinaison s'est dépressurisée lors d'un test en chambre à vide, a senti la salive bouillonner sur sa langue juste avant de s'évanouir.",
+    "Selon Stefaan de Mey, de l'ESA, dans le vide spatial, les fluides corporels comme la salive et les larmes commenceraient à bouillir.",
+    "Selon Stefaan de Mey, de l'ESA, une personne sans protection perdrait connaissance par manque d'oxygène en 10 à 15 secondes.",
+    "Selon le même expert, il faudrait d'abord vider ses poumons, car l'air à l'intérieur se dilaterait et les déchirerait."
+   ]
+  },
+  "de": {
+   "title": "Helm ab im Weltall: Wie viele Sekunden würdest du durchhalten?",
+   "summary": "Ohne Helm im All würdest du nicht wie im Film explodieren, aber der Speichel auf deiner Zunge würde anfangen zu kochen! Professor Pi erklärt, wie viele Sekunden du bei Bewusstsein bliebest und warum du nie die Luft anhalten darfst.",
+   "facts": [
+    "Laut Live Science spürte NASA-Ingenieur Jim LeBlanc 1966, als sein Anzug bei einem Test in der Vakuumkammer Druck verlor, kurz vor der Ohnmacht den Speichel auf seiner Zunge blubbern.",
+    "Laut Stefaan de Mey von der ESA würden Körperflüssigkeiten wie Speichel und Tränen im Vakuum des Alls zu kochen beginnen.",
+    "Laut Stefaan de Mey von der ESA würde ein ungeschützter Mensch wegen Sauerstoffmangels innerhalb von 10 bis 15 Sekunden das Bewusstsein verlieren.",
+    "Laut demselben Experten müsste man vorher die Lunge leeren, weil sich die Luft darin ausdehnen und sie zerreißen würde."
+   ]
+  },
+  "ru": {
+   "title": "Если снять шлем в космосе, сколько секунд ты продержишься?",
+   "summary": "Если снять шлем в космосе, ты не взорвёшься, как в кино, но слюна на языке начнёт закипать! Профессор Пи объясняет, сколько секунд ты останешься в сознании и почему ни в коем случае нельзя задерживать дыхание.",
+   "facts": [
+    "По данным Live Science, в 1966 году инженер NASA Джим Леблан, чей скафандр разгерметизировался во время испытаний в вакуумной камере, почувствовал, как слюна на языке начала пузыриться, прямо перед тем как потерял сознание.",
+    "По словам Стефана де Мея из ЕКА, в космическом вакууме жидкости тела, такие как слюна и слёзы, начали бы закипать.",
+    "По словам Стефана де Мея из ЕКА, человек без защиты потерял бы сознание от нехватки кислорода за 10–15 секунд.",
+    "По словам того же эксперта, лёгкие нужно заранее опустошить, иначе воздух внутри расширится и разорвёт их."
+   ]
+  },
+  "az": {
+   "title": "Kosmosda Dəbilqəni Çıxarsaydın, Neçə Saniyə Dözərdin?",
+   "summary": "Kosmosda dəbilqəni çıxarsan, filmlərdəki kimi partlamazdın, amma dilindəki tüpürcək qaynamağa başlayardı! Neçə saniyə huşunda qalacağını və niyə heç vaxt nəfəsini saxlamamalı olduğunu Professor Pi izah edir.",
+   "facts": [
+    "Live Science-ə görə 1966-cı ildə NASA-da vakuum kamerası sınağında skafandrının təzyiqi düşən mühəndis Cim Leblan huşunu itirməzdən az əvvəl dilindəki tüpürcəyin köpüklənməyə başladığını hiss edib.",
+    "ESA-dan Stefan de Meyə görə kosmos boşluğunda tüpürcək və göz yaşı kimi bədən mayeləri qaynamağa başlayar.",
+    "ESA-dan Stefan de Meyə görə qorunmasız insan oksigen çatışmazlığından 10-15 saniyə ərzində huşunu itirər.",
+    "Eyni mütəxəssisə görə boşluğa çıxmazdan əvvəl ağciyərlər boşaldılmalıdır, çünki içəridəki hava genişlənib onları cırar."
+   ]
+  }
+ }
+}
