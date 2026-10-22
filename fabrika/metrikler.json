@@ -1,5 +1,5 @@
 {
- "at": "2026-10-22T18:53:12+00:00",
+ "at": "2026-10-22T20:12:09+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -14,60 +14,221 @@
  "kanal": [
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
+ "kanal_istatistik": {
+  "subscriberCount": 41,
+  "viewCount": 21358,
+  "videoCount": 28
+ },
+ "canli": {
+  "8KoJ0-4fHyY": {
+   "view": 1295,
+   "like": 15,
+   "comment": 1
+  },
+  "yHElVXfvdsw": {
+   "view": 392,
+   "like": 3,
+   "comment": 4
+  },
+  "HdSKbp0rIz8": {
+   "view": 105,
+   "like": 2,
+   "comment": 0
+  },
+  "53rXVX6QpA0": {
+   "view": 30,
+   "like": 2,
+   "comment": 0
+  },
+  "f6WyXXJWASs": {
+   "view": 305,
+   "like": 4,
+   "comment": 4
+  },
+  "xMYUnZVVITU": {
+   "view": 550,
+   "like": 12,
+   "comment": 2
+  },
+  "4GSDZD52uI0": {
+   "view": 1419,
+   "like": 18,
+   "comment": 4
+  },
+  "bqFeef1QL08": {
+   "view": 1468,
+   "like": 17,
+   "comment": 8
+  },
+  "RLuGUU-xaYE": {
+   "view": 1361,
+   "like": 21,
+   "comment": 8
+  },
+  "-PC7chCMp_s": {
+   "view": 120,
+   "like": 2,
+   "comment": 0
+  },
+  "X9ouBiGHD4Q": {
+   "view": 44,
+   "like": 2,
+   "comment": 0
+  },
+  "oyPgO_oDYlU": {
+   "view": 1027,
+   "like": 10,
+   "comment": 0
+  },
+  "0iq7G5-5dds": {
+   "view": 1147,
+   "like": 7,
+   "comment": 0
+  },
+  "ZX3l0E9HzMw": {
+   "view": 987,
+   "like": 17,
+   "comment": 2
+  },
+  "pJPCpis147c": {
+   "view": 1355,
+   "like": 9,
+   "comment": 4
+  },
+  "ActwPx-yTCQ": {
+   "view": 927,
+   "like": 8,
+   "comment": 4
+  },
+  "5NCDRT4b4M0": {
+   "view": 1182,
+   "like": 14,
+   "comment": 2
+  },
+  "hJaWCEzLO_4": {
+   "view": 1299,
+   "like": 17,
+   "comment": 0
+  },
+  "zkaODqXzaCo": {
+   "view": 1463,
+   "like": 10,
+   "comment": 0
+  },
+  "iKojt12DL_Y": {
+   "view": 1303,
+   "like": 7,
+   "comment": 0
+  },
+  "rijRRVfG0ZY": {
+   "view": 980,
+   "like": 10,
+   "comment": 2
+  },
+  "kJHNXA1I-SU": {
+   "view": 991,
+   "like": 1,
+   "comment": 0
+  },
+  "-Ob9VS2V1H4": {
+   "view": 1013,
+   "like": 5,
+   "comment": 0
+  },
+  "CK03tB9BVyY": {
+   "view": 936,
+   "like": 4,
+   "comment": 2
+  },
+  "VMP8uC3O6jU": {
+   "view": 700,
+   "like": 6,
+   "comment": 0
+  },
+  "LjCJ1NSbCQQ": {
+   "view": 516,
+   "like": 3,
+   "comment": 0
+  },
+  "gEB2tRsHr5s": {
+   "view": 0,
+   "like": 0,
+   "comment": 0
+  }
+ },
  "videos": {
   "bqFeef1QL08": {
-   "views": 1456,
-   "estimatedMinutesWatched": 351,
+   "views": 1475,
+   "estimatedMinutesWatched": 357,
    "averageViewDuration": 27,
-   "averageViewPercentage": 72.48,
+   "averageViewPercentage": 72.49,
    "likes": 16,
    "shares": 0,
    "comments": 3,
    "subscribersGained": 3,
    "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "sources": {
-    "SHORTS": 1396,
+    "SHORTS": 1413,
     "YT_SEARCH": 37,
     "YT_CHANNEL": 13,
-    "PLAYLIST": 5,
+    "PLAYLIST": 7,
     "YT_OTHER_PAGE": 4,
     "NO_LINK_OTHER": 1
    }
   },
   "4GSDZD52uI0": {
-   "views": 1405,
-   "estimatedMinutesWatched": 314,
+   "views": 1424,
+   "estimatedMinutesWatched": 319,
    "averageViewDuration": 23,
-   "averageViewPercentage": 60.95,
+   "averageViewPercentage": 60.919999999999995,
    "likes": 18,
    "shares": 0,
    "comments": 2,
    "subscribersGained": 5,
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
    "sources": {
-    "SHORTS": 1218,
+    "SHORTS": 1235,
     "YT_SEARCH": 176,
     "YT_CHANNEL": 10,
-    "YT_OTHER_PAGE": 1,
+    "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
    }
   },
   "RLuGUU-xaYE": {
-   "views": 1308,
-   "estimatedMinutesWatched": 223,
+   "views": 1360,
+   "estimatedMinutesWatched": 235,
    "averageViewDuration": 20,
-   "averageViewPercentage": 58.96,
+   "averageViewPercentage": 59.67,
    "likes": 20,
    "shares": 0,
    "comments": 4,
    "subscribersGained": 4,
    "title": "1 Günde Kaç Kez Nefes Alırsın?",
    "sources": {
-    "SHORTS": 1263,
-    "YT_CHANNEL": 21,
-    "YT_SEARCH": 20,
+    "SHORTS": 1310,
+    "YT_CHANNEL": 24,
+    "YT_SEARCH": 22,
     "YT_OTHER_PAGE": 3,
     "HASHTAGS": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "pJPCpis147c": {
+   "views": 1316,
+   "estimatedMinutesWatched": 169,
+   "averageViewDuration": 17,
+   "averageViewPercentage": 65.75,
+   "likes": 7,
+   "shares": 0,
+   "comments": 2,
+   "subscribersGained": 3,
+   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1209,
+    "YT_SEARCH": 87,
+    "YT_CHANNEL": 18,
+    "YT_OTHER_PAGE": 1,
+    "EXT_URL": 1,
     "NO_LINK_OTHER": 0
    }
   },
@@ -90,110 +251,128 @@
     "NO_LINK_OTHER": 0
    }
   },
-  "pJPCpis147c": {
-   "views": 1284,
-   "estimatedMinutesWatched": 163,
-   "averageViewDuration": 17,
-   "averageViewPercentage": 65.82,
+  "zkaODqXzaCo": {
+   "views": 1203,
+   "estimatedMinutesWatched": 156,
+   "averageViewDuration": 15,
+   "averageViewPercentage": 56.68,
    "likes": 7,
    "shares": 0,
-   "comments": 2,
-   "subscribersGained": 3,
-   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+   "comments": 0,
+   "subscribersGained": 1,
+   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
    "sources": {
-    "SHORTS": 1178,
-    "YT_SEARCH": 86,
-    "YT_CHANNEL": 18,
+    "SHORTS": 1138,
+    "YT_SEARCH": 63,
+    "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
-    "EXT_URL": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "iKojt12DL_Y": {
+   "views": 1145,
+   "estimatedMinutesWatched": 173,
+   "averageViewDuration": 17,
+   "averageViewPercentage": 70.3,
+   "likes": 6,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 2,
+   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1096,
+    "YT_SEARCH": 47,
+    "YT_CHANNEL": 1,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   }
+  },
+  "hJaWCEzLO_4": {
+   "views": 1127,
+   "estimatedMinutesWatched": 160,
+   "averageViewDuration": 16,
+   "averageViewPercentage": 70.38,
+   "likes": 10,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 2,
+   "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1071,
+    "YT_SEARCH": 53,
+    "YT_CHANNEL": 2,
+    "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    }
   },
   "0iq7G5-5dds": {
-   "views": 1077,
-   "estimatedMinutesWatched": 126,
+   "views": 1125,
+   "estimatedMinutesWatched": 133,
    "averageViewDuration": 17,
-   "averageViewPercentage": 67.26,
+   "averageViewPercentage": 67.11,
    "likes": 6,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 0,
    "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
    "sources": {
-    "SHORTS": 1027,
+    "SHORTS": 1074,
     "YT_SEARCH": 36,
-    "YT_CHANNEL": 11,
+    "YT_CHANNEL": 12,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
    }
   },
-  "hJaWCEzLO_4": {
-   "views": 1071,
-   "estimatedMinutesWatched": 150,
-   "averageViewDuration": 15,
-   "averageViewPercentage": 68.96,
-   "likes": 9,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 2,
-   "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1032,
-    "YT_SEARCH": 37,
-    "YT_CHANNEL": 1,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   }
-  },
   "5NCDRT4b4M0": {
-   "views": 1066,
-   "estimatedMinutesWatched": 153,
+   "views": 1088,
+   "estimatedMinutesWatched": 156,
    "averageViewDuration": 16,
-   "averageViewPercentage": 63.16,
+   "averageViewPercentage": 63.38,
    "likes": 12,
    "shares": 0,
    "comments": 1,
    "subscribersGained": 1,
    "title": "Okyanus Gerçekte Ne Kadar Derin?",
    "sources": {
-    "SHORTS": 1035,
-    "YT_SEARCH": 24,
+    "SHORTS": 1053,
+    "YT_SEARCH": 27,
     "YT_CHANNEL": 6,
+    "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0,
     "NOTIFICATION": 0
    }
   },
   "oyPgO_oDYlU": {
-   "views": 1000,
-   "estimatedMinutesWatched": 130,
+   "views": 1018,
+   "estimatedMinutesWatched": 133,
    "averageViewDuration": 16,
-   "averageViewPercentage": 69.45,
+   "averageViewPercentage": 69.86,
    "likes": 9,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 2,
    "title": "En Büyük Yıldız Ne Kadar Büyük?",
    "sources": {
-    "SHORTS": 882,
-    "YT_SEARCH": 106,
-    "YT_CHANNEL": 11,
+    "SHORTS": 889,
+    "YT_SEARCH": 116,
+    "YT_CHANNEL": 12,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
    }
   },
   "ZX3l0E9HzMw": {
-   "views": 950,
-   "estimatedMinutesWatched": 167,
+   "views": 969,
+   "estimatedMinutesWatched": 170,
    "averageViewDuration": 19,
-   "averageViewPercentage": 73.43,
+   "averageViewPercentage": 73.54,
    "likes": 15,
    "shares": 0,
    "comments": 1,
    "subscribersGained": 1,
    "title": "1 Günde Kaç Kez Göz Kırparsın?",
    "sources": {
-    "SHORTS": 910,
+    "SHORTS": 929,
     "YT_SEARCH": 28,
     "YT_CHANNEL": 11,
     "SUBSCRIBER": 1,
@@ -201,18 +380,35 @@
     "NOTIFICATION": 0
    }
   },
+  "ActwPx-yTCQ": {
+   "views": 878,
+   "estimatedMinutesWatched": 168,
+   "averageViewDuration": 19,
+   "averageViewPercentage": 80.87,
+   "likes": 7,
+   "shares": 0,
+   "comments": 2,
+   "subscribersGained": 0,
+   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
+   "sources": {
+    "SHORTS": 832,
+    "YT_SEARCH": 35,
+    "YT_CHANNEL": 11,
+    "NO_LINK_OTHER": 0
+   }
+  },
   "xMYUnZVVITU": {
-   "views": 536,
-   "estimatedMinutesWatched": 99,
+   "views": 554,
+   "estimatedMinutesWatched": 104,
    "averageViewDuration": 23,
-   "averageViewPercentage": 67.96,
+   "averageViewPercentage": 68.06,
    "likes": 11,
    "shares": 0,
    "comments": 1,
    "subscribersGained": 7,
    "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
    "sources": {
-    "SHORTS": 511,
+    "SHORTS": 529,
     "YT_CHANNEL": 16,
     "YT_SEARCH": 8,
     "YT_OTHER_PAGE": 1,
@@ -239,20 +435,20 @@
     "NO_LINK_OTHER": 0
    }
   },
-  "ActwPx-yTCQ": {
-   "views": 374,
-   "estimatedMinutesWatched": 68,
-   "averageViewDuration": 19,
-   "averageViewPercentage": 81.5,
-   "likes": 3,
+  "rijRRVfG0ZY": {
+   "views": 329,
+   "estimatedMinutesWatched": 38,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 57.38999999999999,
+   "likes": 2,
    "shares": 0,
-   "comments": 2,
+   "comments": 1,
    "subscribersGained": 0,
-   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
+   "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "sources": {
-    "SHORTS": 348,
-    "YT_SEARCH": 17,
-    "YT_CHANNEL": 9,
+    "SHORTS": 319,
+    "YT_SEARCH": 9,
+    "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    }
   },
@@ -292,7 +488,7 @@
    }
   },
   "-PC7chCMp_s": {
-   "views": 116,
+   "views": 117,
    "estimatedMinutesWatched": 22,
    "averageViewDuration": 19,
    "averageViewPercentage": 51.85999999999999,
@@ -304,7 +500,7 @@
    "sources": {
     "YT_SEARCH": 80,
     "SHORTS": 27,
-    "YT_CHANNEL": 9,
+    "YT_CHANNEL": 10,
     "NO_LINK_OTHER": 0
    }
   },
@@ -326,7 +522,7 @@
    }
   },
   "X9ouBiGHD4Q": {
-   "views": 40,
+   "views": 41,
    "estimatedMinutesWatched": 6,
    "averageViewDuration": 23,
    "averageViewPercentage": 62.480000000000004,
@@ -337,7 +533,7 @@
    "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
    "sources": {
     "YT_SEARCH": 26,
-    "YT_CHANNEL": 12,
+    "YT_CHANNEL": 13,
     "SHORTS": 2,
     "NO_LINK_OTHER": 0
    }
@@ -390,6 +586,12 @@
    "views": 3364,
    "estimatedMinutesWatched": 535,
    "subscribersGained": 4
+  },
+  {
+   "day": "2026-10-20",
+   "views": 3486,
+   "estimatedMinutesWatched": 528,
+   "subscribersGained": 3
   }
  ]
 }
