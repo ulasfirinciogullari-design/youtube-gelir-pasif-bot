@@ -319,6 +319,12 @@
     "r",
     "Mevcut sperm bankaları üremeyi bir süre sürdürse de genetik çeşitlilik hızla tük",
     "dc937b598926"
+   ],
+   "18468920026139670": [
+    1792670840.737752,
+    "r",
+    "Tek bir su molekülü iki hidrojen ve bir oksijen atomundan oluşur, yani bir damla",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -339,6 +345,12 @@
     "kind": "yorum",
     "text": "Tüm erkekler yok olsa ne olurdu",
     "reply": "Mevcut sperm bankaları üremeyi bir süre sürdürse de genetik çeşitlilik hızla tükenirdi. Bu merak uyandırıcı soruyu video listemize aldım.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792670840.737752,
+    "kind": "yorum",
+    "text": "Bir damla suda yaklaşık 4.8 sextrilyon atom var",
+    "reply": "Tek bir su molekülü iki hidrojen ve bir oksijen atomundan oluşur, yani bir damla suda milyarlarca milyar atom vardır.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -346,10 +358,10 @@
  "nobet": {
   "basladi": "2026-10-22T07:58:20+00:00",
   "run": "39743056185",
-  "tur": 245,
-  "ig_cevap": 0,
+  "tur": 250,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-10-22T12:02:23+00:00"
+  "son_tur": "2026-10-22T12:07:24+00:00"
  }
 }
