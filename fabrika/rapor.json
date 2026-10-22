@@ -1,71 +1,18 @@
 {
- "started": "2026-10-21T18:07:32+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-22T09:08:30+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n005",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "40",
-  "videos": "24"
+ "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
+ "chars": 362,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18116160224013921",
+  "url": "https://www.instagram.com/reel/DeyoIuQCWys/",
+  "at": 1792660194.018235
  },
- "credits_before": [
-  13594,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261021-2-g005.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "g005",
-  "series": "1 Gün Boyunca",
-  "q": "Vücudun 1 günde kaç hücre yeniler?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 385,
- "duration": 25.7,
- "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
- "url": "https://youtube.com/shorts/CK03tB9BVyY",
- "recent_status": {
-  "o0006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1161",
-   "reason": null
-  },
-  "o0007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "496",
-   "reason": null
-  },
-  "n005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "763",
-   "reason": null
-  },
-  "o0008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "760",
-   "reason": null
-  },
-  "g005": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  13594,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261021-2-g005.json Vücudun 1 günde kaç hücre yeniler? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/DeyoIuQCWys/"
  ],
- "finished": "2026-10-21T18:08:32+00:00"
+ "finished": "2026-10-22T09:09:54+00:00"
 }
