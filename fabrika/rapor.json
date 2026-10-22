@@ -1,18 +1,8 @@
 {
- "started": "2026-10-22T17:07:38+00:00",
- "mod": "igbolum",
- "gate": "instagram: g005",
+ "started": "2026-10-22T19:30:09+00:00",
+ "mod": "saatlik",
+ "gate": "yayın saati değil (UTC [10, 14, 18])",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
- "chars": 385,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18076081538577598",
-  "url": "https://www.instagram.com/reel/Deze_xRjbAU/",
-  "at": 1792688953.8506248
- },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Deze_xRjbAU/"
- ],
- "finished": "2026-10-22T17:09:13+00:00"
+ "log": [],
+ "finished": "2026-10-22T19:30:10+00:00"
 }
