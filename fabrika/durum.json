@@ -206,7 +206,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1418",
+    "views": "1419",
     "reason": null
    }
   },
@@ -236,7 +236,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1466",
+    "views": "1468",
     "reason": null
    }
   },
@@ -266,7 +266,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1353",
+    "views": "1358",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "986",
+    "views": "987",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "922",
+    "views": "925",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1180",
+    "views": "1181",
     "reason": null
    }
   },
@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1233",
+    "views": "1246",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1323",
+    "views": "1326",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1183",
+    "views": "1229",
     "reason": null
    }
   },
@@ -626,7 +626,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "783",
+    "views": "913",
     "reason": null
    }
   },
@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "973",
+    "views": "978",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1007",
+    "views": "1010",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "932",
     "reason": null
    }
   },
@@ -743,6 +743,36 @@
    "thumbnail": true,
    "at": 1792664204.1152513,
    "chars": 264,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "306",
+    "reason": null
+   }
+  },
+  {
+   "id": "o0010",
+   "video_id": "LjCJ1NSbCQQ",
+   "url": "https://youtube.com/shorts/LjCJ1NSbCQQ",
+   "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If the Moon Were 5 Times Bigger, Would Your Home Flood?",
+    "es": "Si la Luna fuera 5 veces más grande, ¿se inundaría tu casa?",
+    "pt": "Se a Lua Fosse 5 Vezes Maior, Sua Casa Ficaria Debaixo d'Água?",
+    "ar": "لو كان القمر أكبر 5 مرات، هل كان البحر سيغمر بيتك؟",
+    "hi": "अगर चाँद 5 गुना बड़ा होता, तो क्या आपका घर डूब जाता?",
+    "id": "Jika Bulan 5 Kali Lebih Besar, Apakah Rumahmu Akan Kebanjiran?",
+    "fr": "Si la Lune Était 5 Fois Plus Grosse, Ta Maison Serait-elle Inondée ?",
+    "de": "Wäre der Mond 5-mal größer, stünde dein Haus unter Wasser?",
+    "ru": "Если бы Луна была в 5 раз больше, затопило бы твой дом?",
+    "az": "Ay 5 Dəfə Böyük Olsaydı, Evini Su Basardımı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792678333.790051,
+   "chars": 277,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -776,7 +806,8 @@
   "n005",
   "o0008",
   "g005",
-  "o0009"
+  "o0009",
+  "o0010"
  ],
  "extra": [
   {
@@ -1209,6 +1240,14 @@
    "mod": "igbolum",
    "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
    "chars": 230
+  },
+  {
+   "finished": "2026-10-22T14:12:15+00:00",
+   "mod": "saatlik",
+   "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
+   "url": "https://youtube.com/shorts/LjCJ1NSbCQQ",
+   "duration": 19.2,
+   "chars": 277
   }
  ],
  "last_fail": 1792487549.018023,
