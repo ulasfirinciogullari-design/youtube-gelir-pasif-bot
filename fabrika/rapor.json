@@ -1,71 +1,18 @@
 {
- "started": "2026-10-22T14:11:29+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-22T17:07:38+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g005",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "41",
-  "videos": "25"
+ "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
+ "chars": 385,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18076081538577598",
+  "url": "https://www.instagram.com/reel/Deze_xRjbAU/",
+  "at": 1792688953.8506248
  },
- "credits_before": [
-  14585,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261022-1-o0010.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "o0010",
-  "series": "Ya Olsaydı?",
-  "q": "Ay 5 kat daha büyük olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 277,
- "duration": 19.2,
- "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
- "url": "https://youtube.com/shorts/LjCJ1NSbCQQ",
- "recent_status": {
-  "n005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "978",
-   "reason": null
-  },
-  "o0008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1010",
-   "reason": null
-  },
-  "g005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "932",
-   "reason": null
-  },
-  "o0009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "306",
-   "reason": null
-  },
-  "o0010": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  14585,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261022-1-o0010.json Ay 5 kat daha büyük olsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Deze_xRjbAU/"
  ],
- "finished": "2026-10-22T14:12:15+00:00"
+ "finished": "2026-10-22T17:09:13+00:00"
 }
