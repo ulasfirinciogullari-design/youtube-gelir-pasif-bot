@@ -1,30 +1,22 @@
 {
- "started": "2026-10-22T14:45:13+00:00",
+ "started": "2026-10-22T19:33:54+00:00",
  "deneme": false,
  "threads": 100,
- "reply_threads_read": 1,
- "new": 2,
+ "reply_threads_read": 0,
+ "new": 1,
  "quiet": 0,
- "sent_last_24h": 3,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugyu_xv0G2xfFfapnXV4AaABAg.AcEe_b7RB_NAcGeyxkQNgI",
-   "kind": "answer",
-   "video": "7j-kXv3xblQ",
-   "comment": "İkisideeee",
-   "reply": "@hakkımıistiyorum İkisi de çok ilginç gerçekten! Kuşların bacak yapısı insanlardan çok farklı, bu yüzden bazen yanıltıcı olabiliyor. 🦢",
-   "result": "gönderildi"
-  },
-  {
-   "id": "UgyaA9DWgQkpnxhKBht4AaABAg",
+   "id": "UgwwAVJ933fkeQiBYyB4AaABAg",
    "kind": "comment",
-   "video": "fI8aO5_Nxug",
-   "comment": "Sol açık şuan",
-   "reply": "Vay, hemen denemişsin! Çoğu kişi fark etmez ama dikkat edince anlaşılıyor değil mi? 😊",
+   "video": "qducKltyWbs",
+   "comment": "İlk",
+   "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-22T14:45:20+00:00"
+ "finished": "2026-10-22T19:33:58+00:00"
 }

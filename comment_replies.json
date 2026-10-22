@@ -95,6 +95,12 @@
    "r",
    "UgyaA9DWgQkpnxhKBht4AaABAg.AcGeHfZ8ptMAcGjT6bQY8E",
    "UCYv47f9rIJvxDyU2kgtSVCw"
+  ],
+  "UgwwAVJ933fkeQiBYyB4AaABAg": [
+   1792697634,
+   "r",
+   "UgwwAVJ933fkeQiBYyB4AaABAg.AcH3HaTUdjCAcHFV8hG8lQ",
+   "UC6SEEInZYTnVGr8P063ES_Q"
   ]
  },
  "tracked": {
@@ -169,6 +175,11 @@
   "Ugyu_xv0G2xfFfapnXV4AaABAg": {
    "at": 1792680313,
    "n": 2
+  },
+  "UgwwAVJ933fkeQiBYyB4AaABAg": {
+   "at": 1792697634,
+   "n": 1,
+   "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉"
   }
  },
  "channel": {
@@ -241,6 +252,12 @@
    "video": "fI8aO5_Nxug",
    "comment": "Sol açık şuan",
    "reply": "Vay, hemen denemişsin! Çoğu kişi fark etmez ama dikkat edince anlaşılıyor değil mi? 😊"
+  },
+  {
+   "at": 1792697634,
+   "video": "qducKltyWbs",
+   "comment": "İlk",
+   "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉"
   }
  ]
 }
