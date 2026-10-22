@@ -6,6 +6,8 @@ Per video: views, average % watched, average seconds watched, likes, shares, com
 and where the views came from (Shorts feed, search, channel page...). YouTube fills these in with a delay of
 one to three days, so the newest episodes show up later. Without the permission it only records which
 permissions the key has, so a missing re-authorisation is visible in the file.
+"kanal_istatistik" and "canli" are the live public counts (subscribers, total views; each episode's views,
+likes and comments) from the Data API, which has no delay.
 """
 import hashlib
 import json
@@ -65,6 +67,18 @@ def scopes(access):
     return sorted(s.rsplit("/", 1)[-1] for s in r.json().get("scope", "").split()) if r.ok else []
 
 
+def live(access, ids):
+    """Public views, likes and comments of these videos right now (the Data API, no analytics delay)."""
+    out = {}
+    for i in range(0, len(ids), 50):
+        r = requests.get(f"{Y.API}/videos", params={"part": "statistics", "id": ",".join(ids[i:i + 50])}, timeout=30,
+                         headers={"Authorization": f"Bearer {access}"})
+        for v in r.json().get("items", []) if r.ok else []:
+            st = v.get("statistics", {})
+            out[v["id"]] = {k: int(st.get(k + "Count", 0)) for k in ("view", "like", "comment")}
+    return out
+
+
 def main():
     out = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     try:
@@ -72,16 +86,21 @@ def main():
             raise RuntimeError("YA_YT_* anahtarları yok")
         access, out["anahtar"] = key_info()
         out["scopes"] = scopes(access)
-        ch = requests.get(f"{Y.API}/channels", params={"part": "snippet", "mine": "true"}, timeout=30,
+        ch = requests.get(f"{Y.API}/channels", params={"part": "snippet,statistics", "mine": "true"}, timeout=30,
                           headers={"Authorization": f"Bearer {access}"}).json().get("items", [])
         out["kanal"] = [f"{c['snippet']['title']} ({c['id']})" for c in ch]
         want = json.loads((HERE.parent / "pilot-ay" / "youtube_state.json").read_text()).get("channel_id")
+        episodes = json.loads(STATE.read_text()).get("episodes", [])
+        if [c["id"] for c in ch] == [want]:
+            st = ch[0].get("statistics", {})
+            out["kanal_istatistik"] = {k: int(st.get(k, 0)) for k in ("subscriberCount", "viewCount", "videoCount")}
+            out["canli"] = live(access, [e["video_id"] for e in episodes if e.get("video_id")])
         if [c["id"] for c in ch] != [want]:
             out["skipped"] = f"anahtar Ya Olsaydı? kanalına ({want}) değil, başka bir kanala bağlı"
         elif "yt-analytics.readonly" not in out["scopes"]:
             out["skipped"] = "anahtarda yt-analytics.readonly izni yok, OAuth yeniden yapılmalı"
         else:
-            titles = {e["video_id"]: e["title"] for e in json.loads(STATE.read_text()).get("episodes", [])}
+            titles = {e["video_id"]: e["title"] for e in episodes}
             rows = report(access, metrics=METRICS, dimensions="video", sort="-views", maxResults=200)
             videos = {r.pop("video"): r for r in rows}
             for vid, r in videos.items():
