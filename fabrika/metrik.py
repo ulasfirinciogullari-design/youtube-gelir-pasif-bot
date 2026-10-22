@@ -2,7 +2,7 @@
 
   python fabrika/metrik.py      writes fabrika/metrikler.json (needs the yt-analytics.readonly permission)
 
-Per video: views, average % watched, average seconds watched, likes, shares, comments, subscribers gained,
+Per video: views, engaged views and the share that kept watching ("devam_yuzde"), average % watched, average seconds watched, likes, shares, comments, subscribers gained,
 and where the views came from (Shorts feed, search, channel page...). YouTube fills these in with a delay of
 one to three days, so the newest episodes show up later. Without the permission it only records which
 permissions the key has, so a missing re-authorisation is visible in the file.
@@ -111,6 +111,13 @@ def main():
                     r["sources"] = {s["insightTrafficSourceType"]: s["views"] for s in src}
                 except RuntimeError as e:
                     r["sources_error"] = str(e)[:200]
+            try:  # engaged views / views = Studio's "İzlemeye devam edenler": the share that didn't swipe away at once
+                for r in report(access, metrics="engagedViews,views", dimensions="video", sort="-views", maxResults=200):
+                    if r["video"] in videos:
+                        videos[r["video"]]["engagedViews"] = r["engagedViews"]
+                        videos[r["video"]]["devam_yuzde"] = round(100 * r["engagedViews"] / max(r["views"], 1), 1)
+            except RuntimeError as e:
+                out["engaged_error"] = str(e)[:200]
             out["videos"] = videos
             out["days"] = report(access, metrics="views,estimatedMinutesWatched,subscribersGained",
                                  dimensions="day", sort="day")
