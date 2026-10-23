@@ -1,18 +1,71 @@
 {
- "started": "2026-10-23T17:36:44+00:00",
- "mod": "igbolum",
- "gate": "instagram: o0010",
+ "started": "2026-10-23T18:07:21+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
- "chars": 277,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18222019288357024",
-  "url": "https://www.instagram.com/reel/De2HMaOCQGj/",
-  "at": 1792777147.6942205
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "42",
+  "videos": "30"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/De2HMaOCQGj/"
+ "credits_before": [
+  16304,
+  613902
  ],
- "finished": "2026-10-23T17:39:07+00:00"
+ "kuyruk": {
+  "dosya": "20261023-2-y010.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "y010",
+  "series": "Ya Olsaydı?",
+  "q": "Arılar yok olsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 387,
+ "duration": 27.8,
+ "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
+ "url": "https://youtube.com/shorts/fwDsy2Wq4S4",
+ "recent_status": {
+  "o0010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "895",
+   "reason": null
+  },
+  "n006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "895",
+   "reason": null
+  },
+  "y009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "955",
+   "reason": null
+  },
+  "g006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "276",
+   "reason": null
+  },
+  "y010": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  16397,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261023-2-y010.json Arılar yok olsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-10-23T18:08:14+00:00"
 }
