@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0032",
+  "topic": "Geyik boynuzları her yıl neden yeniden çıkar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌",
+  "hook_text": "ESKİ BOYNUZLARA NE OLUYOR?",
+  "description": "Geyik boynuzları her yıl düşer mi, neden yeniden çıkar?\n\nSığır boynuzu ömür boyu kalır, geyik boynuzu ise baştan sona kemiktir ve her yıl yenilenir: çiftleşme mevsiminden sonra düşer, ertesi bahar yeniden uzamaya başlar. Büyürken kan damarları ve sinirlerle dolu, kadife gibi bir deriyle kaplıdır. Bazı türlerde günde iki santimetreye kadar uzayabilir.\n\nSence hangisi daha şaşırtıcı: her yıl yeniden çıkması mı, günde iki santimetre uzaması mı?\n\n#geyik #hayvanlar #vahşidoğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0032",
+  "tags": [
+    "geyik",
+    "geyikler",
+    "geyik boynuzu",
+    "geyik boynuzu düşer mi",
+    "geyik boynuzu neden düşer",
+    "geyik boynuzu ne kadar uzar",
+    "boynuz kemik mi",
+    "kadife boynuz",
+    "erkek geyik",
+    "kızıl geyik",
+    "karaca",
+    "boynuz",
+    "orman hayvanları",
+    "memeliler",
+    "vahşi doğa",
+    "orman",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "deer",
+    "deer antlers",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "geyik boynuzu duser mi",
+    "geyik boynuzu neden duser",
+    "kizil geyik",
+    "orman hayvanlari",
+    "vahsi doga"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Deer grow a brand-new set of antlers every year 🦌",
+      "description": "Cattle keep their horns for life, but deer antlers are solid bone that is shed after the mating season and regrown the next spring. While growing, they are covered in velvet, a skin full of blood vessels and nerves. In some species they can grow up to 2 centimeters a day.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "es": {
+      "title": "Los ciervos estrenan cornamenta cada año 🦌",
+      "description": "La vaca conserva sus cuernos toda la vida, pero las astas del ciervo son hueso macizo: se caen tras la época de celo y vuelven a crecer la primavera siguiente. Mientras crecen, las cubre el terciopelo, una piel llena de vasos sanguíneos y nervios. En algunas especies pueden crecer hasta 2 centímetros al día.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "pt": {
+      "title": "O cervo ganha chifres novinhos todo ano 🦌",
+      "description": "O gado mantém os chifres a vida toda, mas as galhadas do cervo são osso puro: caem depois da época de acasalamento e voltam a crescer na primavera seguinte. Enquanto crescem, ficam cobertas por um veludo, uma pele cheia de vasos sanguíneos e nervos. Em algumas espécies podem crescer até 2 centímetros por dia.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "de": {
+      "title": "Hirsche bekommen jedes Jahr ein brandneues Geweih 🦌",
+      "description": "Rinder behalten ihre Hörner ein Leben lang, ein Hirschgeweih dagegen ist reiner Knochen: Es wird nach der Brunft abgeworfen und wächst im nächsten Frühjahr neu. Während des Wachstums ist es von Bast überzogen, einer Haut voller Blutgefäße und Nerven. Bei manchen Arten wächst es bis zu 2 Zentimeter pro Tag.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "fr": {
+      "title": "Le cerf se refait des bois tout neufs chaque année 🦌",
+      "description": "Une vache garde ses cornes toute sa vie, mais les bois du cerf sont entièrement en os : ils tombent après la saison des amours et repoussent au printemps suivant. Pendant leur croissance, ils sont couverts de velours, une peau pleine de vaisseaux sanguins et de nerfs. Chez certaines espèces, ils poussent jusqu'à 2 centimètres par jour.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "it": {
+      "title": "Il cervo si rifà palchi nuovi ogni anno 🦌",
+      "description": "I bovini tengono le corna per tutta la vita, mentre i palchi del cervo sono interamente d'osso: cadono dopo la stagione degli amori e ricrescono la primavera successiva. Mentre crescono sono rivestiti di velluto, una pelle piena di vasi sanguigni e nervi. In alcune specie possono allungarsi fino a 2 centimetri al giorno.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "ru": {
+      "title": "Олени каждый год отращивают новые рога 🦌",
+      "description": "Корова носит рога всю жизнь, а оленьи рога целиком состоят из кости: они сбрасываются после гона и отрастают заново следующей весной. Пока они растут, их покрывает бархатистая кожа, полная сосудов и нервов. У некоторых видов рога растут до 2 сантиметров в сутки.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "ar": {
+      "title": "الأيل ينمّي قرونًا جديدة تمامًا كل عام 🦌",
+      "description": "تحتفظ البقرة بقرنيها طوال حياتها، أما قرون الأيل فعظم خالص: تسقط بعد موسم التزاوج وتنمو من جديد في الربيع التالي. وأثناء نموها يغطيها جلد مخملي مليء بالأوعية الدموية والأعصاب. وفي بعض الأنواع قد تطول حتى 2 سنتيمتر في اليوم.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "hi": {
+      "title": "हिरण हर साल बिल्कुल नए सींग उगाता है 🦌",
+      "description": "गाय-बैल के सींग उम्र भर रहते हैं, पर हिरण के सींग पूरी तरह हड्डी के होते हैं: संभोग के मौसम के बाद गिर जाते हैं और अगले वसंत में फिर उगते हैं। बढ़ते समय वे मख़मल जैसी त्वचा से ढके रहते हैं, जो ख़ून की नलियों और नसों से भरी होती है। कुछ प्रजातियों में ये दिन में 2 सेंटीमीटर तक बढ़ सकते हैं।\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "id": {
+      "title": "Rusa menumbuhkan tanduk baru setiap tahun 🦌",
+      "description": "Sapi memiliki tanduk seumur hidup, tetapi ranggah rusa sepenuhnya terbuat dari tulang: lepas setelah musim kawin dan tumbuh lagi pada musim semi berikutnya. Saat tumbuh, ranggah dibungkus kulit beludru yang penuh pembuluh darah dan saraf. Pada beberapa spesies, ranggah bisa bertambah hingga 2 sentimeter sehari.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "ja": {
+      "title": "シカの角は毎年まるごと生え替わる 🦌",
+      "description": "牛の角は一生生え替わりませんが、シカの角は丸ごと骨でできています。繁殖期が終わると落ち、翌春にまた伸び始めます。成長中は血管と神経が詰まったビロードのような皮膚に覆われています。種類によっては1日に最大2センチも伸びます。\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "ko": {
+      "title": "사슴은 해마다 완전히 새 뿔을 기른다 🦌",
+      "description": "소뿔은 평생 그대로지만, 사슴뿔은 통째로 뼈로 되어 있습니다. 짝짓기 철이 지나면 떨어지고 이듬해 봄에 다시 자라죠. 자라는 동안에는 혈관과 신경이 가득한 벨벳 같은 피부로 덮여 있습니다. 어떤 종은 하루에 최대 2cm까지 자랍니다.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "pl": {
+      "title": "Jeleń co roku wyhodowuje zupełnie nowe poroże 🦌",
+      "description": "Krowa nosi rogi przez całe życie, a poroże jelenia to w całości kość: jest zrzucane po rui i odrasta następnej wiosny. Podczas wzrostu pokrywa je scypuł, skóra pełna naczyń krwionośnych i nerwów. U niektórych gatunków może rosnąć nawet 2 centymetry dziennie.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "nl": {
+      "title": "Herten krijgen elk jaar een gloednieuw gewei 🦌",
+      "description": "Een koe houdt haar hoorns haar hele leven, maar een hertengewei is massief bot: het valt af na de bronst en groeit het volgende voorjaar opnieuw. Tijdens de groei zit er bast omheen, een huid vol bloedvaten en zenuwen. Bij sommige soorten groeit het tot 2 centimeter per dag.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "uk": {
+      "title": "Олені щороку відрощують нові роги 🦌",
+      "description": "Корова носить роги все життя, а роги оленя повністю складаються з кістки: вони скидаються після гону й відростають наступної весни. Поки вони ростуть, їх укриває оксамитова шкіра, повна судин і нервів. У деяких видів роги ростуть до 2 сантиметрів на добу.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "vi": {
+      "title": "Hươu mọc bộ gạc mới toanh mỗi năm 🦌",
+      "description": "Bò giữ sừng suốt đời, còn gạc hươu hoàn toàn là xương: chúng rụng sau mùa giao phối và mọc lại vào mùa xuân năm sau. Khi đang mọc, gạc được phủ một lớp da nhung đầy mạch máu và dây thần kinh. Ở một số loài, gạc có thể dài thêm tới 2 cm mỗi ngày.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "az": {
+      "title": "Maral hər il təptəzə buynuz çıxarır 🦌",
+      "description": "Mal buynuzu ömür boyu qalır, maral buynuzu isə tamamilə sümükdür: cütləşmə mövsümündən sonra düşür və növbəti yaz yenidən çıxır. Böyüyərkən qan damarları və sinirlərlə dolu, məxmər kimi bir dəri ilə örtülür. Bəzi növlərdə buynuz gündə 2 santimetrə qədər uzana bilir.\n\n#shorts\n\nSeri: mk-c0032"
+    },
+    "ro": {
+      "title": "Cerbii își fac coarne noi în fiecare an 🦌",
+      "description": "Vitele își păstrează coarnele toată viața, dar coarnele cerbului sunt în întregime din os: cad după sezonul de împerechere și cresc din nou în primăvara următoare. Cât timp cresc, sunt acoperite de o piele catifelată, plină de vase de sânge și nervi. La unele specii pot crește până la 2 centimetri pe zi.\n\n#shorts\n\nSeri: mk-c0032"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: her yıl yeniden çıkması mı, günde iki santimetre uzaması mı?",
+  "scenes": [
+    {
+      "text": "Bu geyiğin boynuzları her yıl düşüp yeniden çıkıyor.",
+      "visual": "male deer with large antlers standing in a misty forest",
+      "stock_query": "deer antlers",
+      "source": "stock",
+      "callout": "HER YIL YENİ"
+    },
+    {
+      "text": "Sığır boynuzu ömür boyu kalır, bunlar ise baştan sona kemik.",
+      "visual": "close up of a stag's antlers against the sky",
+      "stock_query": "deer stag",
+      "source": "stock",
+      "callout": "GERÇEK KEMİK"
+    },
+    {
+      "text": "Çiftleşme mevsiminden sonra düşer, baharda yeniden uzar.",
+      "visual": "deer walking through a forest clearing in early spring",
+      "stock_query": "deer forest",
+      "source": "stock"
+    },
+    {
+      "text": "Büyürken, kan damarları ve sinirlerle dolu kadife gibi bir deriyle kaplıdır.",
+      "visual": "young male deer with fuzzy velvet-covered growing antlers",
+      "stock_query": "deer velvet",
+      "source": "stock",
+      "callout": "KADİFE DERİ"
+    },
+    {
+      "text": "Bazı türlerde günde iki santimetreye kadar uzayabilir.",
+      "visual": "red deer stag grazing in a meadow",
+      "stock_query": "red deer",
+      "source": "stock",
+      "callout": "GÜNDE 2 CM"
+    },
+    {
+      "text": "Ormanda bulduğun dökülmüş bir boynuz, geyiğin geçen yıldan kalan kemiği.",
+      "visual": "deer walking away into the woods",
+      "stock_query": "deer walking",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.63,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0032_1792784540_ig.mp4"
+}
