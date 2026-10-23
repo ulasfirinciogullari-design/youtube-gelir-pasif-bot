@@ -37,6 +37,10 @@ META = {
 }
 
 
+def prompt_comments(prompt):
+    return json.loads(prompt.split("Comments:\n")[1].split("\n\nAnswer with")[0])
+
+
 @pytest.fixture(autouse=True)
 def fresh_module_state(monkeypatch):
     monkeypatch.setattr(ig, "CACHE", None)
@@ -239,9 +243,12 @@ def test_comments_and_dms_get_replies_without_their_private_parts_on_the_branch(
 
     def ask(prompt):
         asked.append(prompt)
+        key = {c["text"]: c["id"] for c in prompt_comments(prompt)}  # the model sees short keys, not our ids
         return "gemini-test", json.dumps({"items": [
-            {"id": "d2", "action": "reply", "reply": "Yaşım yok, ben bir bilgi kanalıyım 🙂"},
-            {"id": "c3", "action": "reply", "reply": "Harika soru! Kırmızı soğanda da aynı gaz var."}]})
+            {"id": key.get("merhaba / kaç yaşındasın?"), "action": "reply",
+             "reply": "Yaşım yok, ben bir bilgi kanalıyım 🙂"},
+            {"id": key.get("Peki ya kırmızı soğan?"), "action": "reply",
+             "reply": "Harika soru! Kırmızı soğanda da aynı gaz var."}]})
 
     state, report = {}, {}
     ig.cevap(tmp_path, state, report, env={"ZK_IG_TOKEN": "tok", "ZK_IG_KISI": "1"}, ask=ask)
@@ -325,7 +332,7 @@ def test_what_people_write_under_our_reply_gets_an_answer_in_the_same_thread(tmp
 
     def ask(prompt):
         asked.append(prompt)
-        return "gemini-test", json.dumps({"items": [{"id": "r4", "action": "reply",
+        return "gemini-test", json.dumps({"items": [{"id": "c1", "action": "reply",
                                                      "reply": "Kırmızı soğanda da aynı gaz var 🧅"}]})
 
     state, report = {}, {}
@@ -333,8 +340,8 @@ def test_what_people_write_under_our_reply_gets_an_answer_in_the_same_thread(tmp
     ig.cevap(tmp_path, state, report, env={"ZK_IG_TOKEN": "tok"}, ask=ask)
 
     assert fake.sent == [("c1/replies", {"message": "@ayse Kırmızı soğanda da aynı gaz var 🧅"})]
-    comments = json.loads(asked[0].split("Comments:\n")[1].split("\n\nAnswer with")[0])
-    assert comments == [{"id": "r4", "video": "m1", "kind": "followup", "text": "teşekkürler 🙏 / peki ya kırmızı soğan?",
+    comments = prompt_comments(asked[0])
+    assert comments == [{"id": "c1", "video": "m1", "kind": "followup", "text": "teşekkürler 🙏 / peki ya kırmızı soğan?",
                          "our_reply": "Evet, kükürt gazı yüzünden."}]
     done = box["done"]
     assert done["r4"][1] == "r" and done["r2"][1:] == ["s", "aynı sohbette birlikte cevaplandı"]

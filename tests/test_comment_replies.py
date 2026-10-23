@@ -36,8 +36,10 @@ def reply(rid: str, author: str, text: str, hours_ago: float = 1, now: float = N
 
 
 class FakeYouTube:
-    def __init__(self, threads=(), replies=None, fail=None, titles=None):
+    def __init__(self, threads=(), replies=None, fail=None, titles=None, older=()):
         self.thread_items = list(threads)
+        self.older = list(older)  # threads past the newest pages, reachable only by id
+        self.by_id = []
         self.reply_items = replies or {}
         self.fail = fail
         self.titles = titles or {}
@@ -46,9 +48,13 @@ class FakeYouTube:
     def channel(self):
         return {"id": CH, "handle": "zirveninkanunu"}
 
-    def threads(self, channel_id):
+    def threads(self, channel_id, oldest=0.0):
         assert channel_id == CH
-        return self.thread_items
+        return list(self.thread_items)
+
+    def threads_by_id(self, ids):
+        self.by_id.append(ids)
+        return [t for t in self.older if t["id"] in ids]
 
     def replies(self, thread_id):
         self.reads.append(thread_id)
@@ -66,7 +72,8 @@ class FakeYouTube:
 
 
 class FakeGemini:
-    """Answers every comment it is shown with decide(comment), the way Gemini's JSON comes back."""
+    """Answers every comment it is shown with decide(comment), the way Gemini's JSON comes back. Comments carry
+    short keys (c1, c2... newest first), so the default reply "cevap c1" names the first one."""
 
     def __init__(self, decide=None):
         self.decide = decide or (lambda c: {"action": "reply", "reply": f"cevap {c['id']}"})
@@ -102,18 +109,18 @@ def test_answers_viewer_comments_and_answers_to_the_pinned_question():
     ask = FakeGemini()
     state, report = go(yt, ask)
     # Newest first; an answer under our pinned question names the person, as YouTube does in a thread.
-    assert yt.posted == [("t2", "@mert cevap t2.a"), ("t1", "cevap t1")]
+    assert yt.posted == [("t2", "@mert cevap c1"), ("t1", "cevap c2")]
     assert ask.comments() == [
-        {"id": "t2.a", "video": "v1", "kind": "answer", "text": "Evet, banyoya kadar geliyor",
+        {"id": "c1", "video": "v1", "kind": "answer", "text": "Evet, banyoya kadar geliyor",
          "question": "Senin kedin de seni izliyor mu? 👇"},
-        {"id": "t1", "video": "v1", "kind": "comment", "text": "Benim kedim de hep beni izliyor"}]
+        {"id": "c2", "video": "v1", "kind": "comment", "text": "Benim kedim de hep beni izliyor"}]
     assert "Kedin seni neden izliyor? 🤯 | pinned question: Senin kedin de seni izliyor mu?" in ask.prompts[0]
     assert state["done"]["t1"] == [round(NOW), "r", "r2", "ayse"]
     assert state["done"]["t2.a"] == [round(NOW), "r", "r1", "mert"]
-    assert state["tracked"]["t1"] == {"at": round(NOW), "n": 1, "reply": "cevap t1"}
+    assert state["tracked"]["t1"] == {"at": round(NOW), "n": 1, "reply": "cevap c2"}
     assert state["tracked"]["t2"]["n"] == 3  # with our reply
     assert report["model"] == "fake-flash" and [r["result"] for r in report["items"]] == ["gönderildi"] * 2
-    assert [r["reply"] for r in state["recent"]] == ["@mert cevap t2.a", "cevap t1"]
+    assert [r["reply"] for r in state["recent"]] == ["@mert cevap c1", "cevap c2"]
 
 
 def test_older_videos_are_looked_up_for_their_title():
@@ -136,8 +143,8 @@ def test_links_bare_tags_old_and_already_answered_comments_get_no_answer():
         thread("empty", "g", "   ")])
     ask = FakeGemini()
     state, _ = go(yt, ask)
-    assert [c["id"] for c in ask.comments()] == ["to-us"]
-    assert ask.comments()[0]["text"] == "bu bilgi doğru mu?"
+    assert [c["text"] for c in ask.comments()] == ["bu bilgi doğru mu?"]
+    assert yt.posted == [("to-us", "cevap c1")]
     reasons = {k: v[2] for k, v in state["done"].items() if v[1] == "s"}
     assert reasons == {"link": "link içeriyor", "tags": "sadece etiket", "closed": "cevaplanamaz", "empty": "boş"}
     assert "answered" not in state["done"] and state["tracked"]["answered"]["reply"] == "Teşekkürler"
@@ -149,9 +156,8 @@ def test_a_friend_tagged_next_to_real_words_still_gets_an_answer():
                               thread("inside", "c", inside, hours_ago=2)])
     ask = FakeGemini()
     go(yt, ask)
-    assert [(c["id"], c["text"]) for c in ask.comments()] == [
-        ("tag", "buna bak, sen de hep böyle yapıyorsun 😂"), ("inside", inside)]
-    assert yt.posted == [("tag", "cevap tag"), ("inside", "cevap inside")]
+    assert [c["text"] for c in ask.comments()] == ["buna bak, sen de hep böyle yapıyorsun 😂", inside]
+    assert yt.posted == [("tag", "cevap c1"), ("inside", "cevap c2")]
 
 
 def test_the_prompt_answers_thanks_gibberish_and_lone_emoji_instead_of_skipping_them():
@@ -168,9 +174,9 @@ def test_a_viewer_writing_back_under_an_answer_given_by_hand_in_studio_gets_a_re
                                      reply("t1.b", "ayse", "@zirveninkanunu teşekkürler 🙏", hours_ago=1)]})
     ask = FakeGemini()
     state, _ = go(yt, ask)
-    assert ask.comments() == [{"id": "t1.b", "video": "v1", "kind": "followup", "text": "teşekkürler 🙏",
+    assert ask.comments() == [{"id": "c1", "video": "v1", "kind": "followup", "text": "teşekkürler 🙏",
                                "our_reply": "Mutlu olunca ve kendini iyileştirirken."}]
-    assert yt.posted == [("t1", "@ayse cevap t1.b")] and state["tracked"]["t1"]["n"] == 3
+    assert yt.posted == [("t1", "@ayse cevap c1")] and state["tracked"]["t1"]["n"] == 3
 
 
 def test_in_a_viewers_thread_only_what_follows_our_latest_answer_is_new():
@@ -182,7 +188,7 @@ def test_in_a_viewers_thread_only_what_follows_our_latest_answer_is_new():
                                      reply("t1.d", "ayse", "@zirveninkanunu teşekkürler", hours_ago=1)]})
     ask = FakeGemini()
     go(yt, ask, state)
-    assert ask.comments() == [{"id": "t1.d", "video": "v1", "kind": "followup", "text": "teşekkürler",
+    assert ask.comments() == [{"id": "c1", "video": "v1", "kind": "followup", "text": "teşekkürler",
                                "our_reply": "Elle yazılan cevap"}]
 
 
@@ -190,7 +196,7 @@ def test_the_same_comment_pasted_twice_gets_one_answer():
     yt = FakeYouTube(threads=[thread("new", "a", "Harika kanal!", hours_ago=1, video="v2"),
                               thread("old", "a", "harika kanal", hours_ago=3)])
     state, _ = go(yt)
-    assert yt.posted == [("new", "cevap new")]
+    assert yt.posted == [("new", "cevap c1")]
     assert state["done"]["old"][2] == "aynı kişinin aynı yorumu, bir kez cevaplandı"
 
 
@@ -209,11 +215,70 @@ def test_later_runs_read_only_threads_that_grew_and_answer_followups():
     ask = FakeGemini()
     go(second, ask, state, now=later)
     assert second.reads == ["t1"]  # t2 grew only by our own reply
-    assert ask.comments() == [{"id": "t1.z", "video": "v1", "kind": "followup", "text": "peki köpekler?",
+    assert ask.comments() == [{"id": "c1", "video": "v1", "kind": "followup", "text": "peki köpekler?",
                                "our_reply": "cevap t1"}]
-    assert second.posted == [("t1", "@ayse cevap t1.z")]
-    assert state["tracked"]["t1"]["reply"] == "@ayse cevap t1.z"
+    assert second.posted == [("t1", "@ayse cevap c1")]
+    assert state["tracked"]["t1"]["reply"] == "@ayse cevap c1"
     assert state["tracked"]["t1"]["n"] == 4
+
+
+def test_a_reply_to_our_reply_glued_to_our_handle_is_answered_without_the_handle():
+    # YouTube's own form: a zero-width space, our handle, the text glued to it (2026-10-23 replies in channel-data).
+    state = {"done": {}, "tracked": {"t1": {"at": round(NOW - 5 * HOUR), "n": 1, "reply": "İlk cevabımız"}}}
+    yt = FakeYouTube(threads=[thread("t1", "ayse", "Kediler neden mırlar?", hours_ago=6, count=4)],
+                     replies={"t1": [reply("t1.a", CH, "İlk cevabımız", hours_ago=5),
+                                     reply("t1.b", "ayse", "\u200b@zirveninkanunusağolun", hours_ago=3),
+                                     reply("t1.c", "mert", "\u200b@ZirveninKanunu kralsın 👑", hours_ago=2),
+                                     reply("t1.d", "can", "\u200b@ayse bence de", hours_ago=1)]})
+    ask = FakeGemini()
+    go(yt, ask, state)
+    # Newest first. Our handle is gone, even glued to the text; a reply to another viewer keeps its name as before.
+    assert [c["text"] for c in ask.comments()] == ["\u200b@ayse bence de", "kralsın 👑", "sağolun"]
+
+
+def test_a_comment_the_model_left_out_is_asked_once_more():
+    calls = []
+
+    def ask(prompt):
+        rows = json.loads(prompt.split("Comments:\n", 1)[1].split("\n\nAnswer with ONLY JSON", 1)[0])
+        calls.append([r["id"] for r in rows])
+        if len(calls) == 1:  # a garbled key for the second comment, as long YouTube ids came back garbled
+            return "m", json.dumps({"items": [{"id": "c1", "action": "reply", "reply": "Bir"},
+                                              {"id": "c 2", "action": "reply", "reply": "İki"}]})
+        return "m", json.dumps({"items": [{"id": "c1", "action": "reply", "reply": "İki"}]})
+
+    yt = FakeYouTube(threads=[thread("UgwYiII9NU9V4sQqpzR4AaABAg", "a", "İlk", hours_ago=1),
+                              thread("UgyU9EpFAp-8SNjndQ14AaABAg", "b", "Harika", hours_ago=2)])
+    state, _ = go(yt, ask)
+    assert calls == [["c1", "c2"], ["c1"]]
+    assert yt.posted == [("UgwYiII9NU9V4sQqpzR4AaABAg", "Bir"), ("UgyU9EpFAp-8SNjndQ14AaABAg", "İki")]
+
+
+def test_comments_closed_by_the_old_id_mixup_are_looked_at_again():
+    state = {"done": {"t1": [round(NOW) - HOUR, "s", "karar yok"], "t2": [round(NOW) - HOUR, "s", "reklam"],
+                      "t3.b": [round(NOW) - HOUR, "s", "karar yok"]},
+             "tracked": {"t3": {"at": round(NOW - 5 * HOUR), "n": 2, "reply": "Cevabımız"}}}
+    # t3's two replies were counted as seen when its reply was closed, so the unchanged thread is read again
+    yt = FakeYouTube(threads=[thread("t1", "a", "İlk", hours_ago=1), thread("t2", "b", "Satın al", hours_ago=2),
+                              thread("t3", "c", "Soru", hours_ago=6, count=2)],
+                     replies={"t3": [reply("t3.a", CH, "Cevabımız", hours_ago=5),
+                                     reply("t3.b", "c", "\u200b@zirveninkanunu teşekkürler", hours_ago=4)]})
+    state, _ = go(yt, state=state)
+    assert yt.posted == [("t1", "cevap c1"), ("t3", "@c cevap c2")] and state["done"]["t2"][2] == "reklam"
+    assert state["tracked"]["t3"]["n"] == 3
+
+
+def test_a_followed_thread_past_the_newest_pages_is_read_by_id():
+    state = {"done": {}, "tracked": {"old": {"at": round(NOW - 9 * 24 * HOUR), "n": 1, "reply": "Eski cevabımız"}}}
+    yt = FakeYouTube(threads=[thread("t1", "a", "Yeni yorum")],
+                     older=[thread("old", "ayse", "Eski soru", hours_ago=9 * 24 + 1, count=2)],
+                     replies={"old": [reply("old.a", CH, "Eski cevabımız", hours_ago=9 * 24),
+                                      reply("old.b", "ayse", "\u200b@zirveninkanunu peki ya köpekler?", hours_ago=2)]})
+    ask = FakeGemini()
+    state, _ = go(yt, ask, state)
+    assert yt.by_id == [["old"]] and yt.posted == [("t1", "cevap c1"), ("old", "@ayse cevap c2")]
+    assert ask.comments()[1] == {"id": "c2", "video": "v1", "kind": "followup", "text": "peki ya köpekler?",
+                                 "our_reply": "Eski cevabımız"}
 
 
 def test_daily_cap_leaves_the_rest_for_later_and_the_thread_is_read_again():
@@ -222,13 +287,13 @@ def test_daily_cap_leaves_the_rest_for_later_and_the_thread_is_read_again():
                      replies={"t2": [reply("t2.a", "mert", "Bir", hours_ago=1),
                                      reply("t2.b", "ece", "İki", hours_ago=2)]})
     state, report = go(yt, state={"done": dict(sent)})
-    assert report["room"] == 1 and yt.posted == [("t2", "@mert cevap t2.a")]
+    assert report["room"] == 1 and yt.posted == [("t2", "@mert cevap c1")]
     assert "t2.b" not in state["done"] and "t2" not in state["tracked"]
     tomorrow = NOW + 25 * HOUR
     state["done"] = {k: v for k, v in state["done"].items() if not k.startswith("old")}
     again = FakeYouTube(threads=yt.thread_items, replies=yt.reply_items)
     go(again, state=state, now=tomorrow)
-    assert again.reads == ["t2"] and again.posted == [("t2", "@ece cevap t2.b")]
+    assert again.reads == ["t2"] and again.posted == [("t2", "@ece cevap c1")]
     assert state["tracked"]["t2"]["n"] == 3
 
 
@@ -248,10 +313,12 @@ def test_skips_and_drafts_that_break_the_rules_are_closed_without_posting():
                  "memory": {"action": "reply", "reply": "O sahneyi hatırladım, haklısın!"},
                  "silent": {}}
     yt = FakeYouTube(threads=[thread(tid, tid, f"yorum {tid}", hours_ago=i + 1) for i, tid in enumerate(decisions)])
-    state, report = go(yt, FakeGemini(lambda c: decisions[c["id"]]))
+    ask = FakeGemini(lambda c: decisions[c["text"].split()[1]])
+    state, report = go(yt, ask)
     assert yt.posted == []
     assert {k: v[2] for k, v in state["done"].items()} == {"spam": "reklam", "link": "kural", "long": "kural",
-                                                          "memory": "kural", "silent": "karar yok"}
+                                                          "memory": "kural", "silent": "iki kez karar yok"}
+    assert len(ask.prompts) == 2 and [c["text"] for c in ask.comments()] == ["yorum silent"]  # asked once more
     assert {r["id"]: r["result"] for r in report["items"]}["link"] == "cevap kurala uymadı, atlandı"
 
 
@@ -263,7 +330,7 @@ def test_stock_praise_at_the_start_is_cut_and_praise_alone_is_not_posted():
               "t5": "Great question — cats do dream.",
               "t6": "Point mutations greatly increase diversity."}
     yt = FakeYouTube(threads=[thread(tid, tid, f"yorum {tid}", hours_ago=i + 1) for i, tid in enumerate(drafts)])
-    state, _ = go(yt, FakeGemini(lambda c: {"action": "reply", "reply": drafts[c["id"]]}))
+    state, _ = go(yt, FakeGemini(lambda c: {"action": "reply", "reply": drafts[c["text"].split()[1]]}))
     assert yt.posted == [("t1", "Tyler saatine bakar."),
                          ("t3", "Güzel video yorumun için sağ ol ama ahtapotun üç kalbi var."),
                          ("t4", "Octopuses have three hearts."),
@@ -279,7 +346,7 @@ def test_a_dry_run_posts_nothing_and_changes_nothing():
     assert yt.posted == []
     assert state["done"] == before["done"] and state["tracked"] == {}
     assert report["items"] == [{"id": "t1", "kind": "comment", "video": "v1", "comment": "Güzel video",
-                                "reply": "cevap t1", "result": "deneme, gönderilmedi"}]
+                                "reply": "cevap c1", "result": "deneme, gönderilmedi"}]
 
 
 def test_quota_or_a_passing_error_stops_the_run_and_a_gone_comment_is_not_retried():
@@ -343,6 +410,9 @@ def test_api_calls():
     assert yt.channel() == {"id": CH, "handle": "zirveninkanunu"}
     yt.threads(CH)
     assert "allThreadsRelatedToChannelId=UCzirve" in calls[-1]["url"] and "maxResults=100" in calls[-1]["url"]
+    yt.threads_by_id([f"t{i}" for i in range(60)])
+    assert "commentThreads?part=snippet%2Creplies&id=t50%2Ct51" in calls[-1]["url"]
+    assert "id=t0%2Ct1%2C" in calls[-2]["url"] and "t49" in calls[-2]["url"] and "t50" not in calls[-2]["url"]
     yt.replies("t1")
     assert "comments?part=snippet&parentId=t1" in calls[-1]["url"]
     assert [r["id"] for r in yt.replies("long")] == ["a", "b"]
