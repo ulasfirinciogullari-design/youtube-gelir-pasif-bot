@@ -443,6 +443,8 @@ def run(yt, ask, state: dict, videos: dict, report: dict, now: float, dry: bool 
     state["channel"] = channel
     for key in [k for k, v in done.items() if v[1:3] == ["s", "karar yok"]]:
         done.pop(key)  # closed by the id mix-up above (before 2026-10-23): looked at again once
+        if (tid := key.split(".")[0]) in tracked:  # a reply id is "<thread id>.<n>": its thread is read again
+            tracked[tid]["n"] = 0
     threads = yt.threads(channel["id"], now - MAX_AGE_DAYS * DAY)
     seen = {t.get("id") for t in threads}
     lost = [tid for tid in tracked if tid not in seen]

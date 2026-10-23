@@ -255,10 +255,17 @@ def test_a_comment_the_model_left_out_is_asked_once_more():
 
 
 def test_comments_closed_by_the_old_id_mixup_are_looked_at_again():
-    state = {"done": {"t1": [round(NOW) - HOUR, "s", "karar yok"], "t2": [round(NOW) - HOUR, "s", "reklam"]}}
-    yt = FakeYouTube(threads=[thread("t1", "a", "İlk"), thread("t2", "b", "Satın al")])
+    state = {"done": {"t1": [round(NOW) - HOUR, "s", "karar yok"], "t2": [round(NOW) - HOUR, "s", "reklam"],
+                      "t3.b": [round(NOW) - HOUR, "s", "karar yok"]},
+             "tracked": {"t3": {"at": round(NOW - 5 * HOUR), "n": 2, "reply": "Cevabımız"}}}
+    # t3's two replies were counted as seen when its reply was closed, so the unchanged thread is read again
+    yt = FakeYouTube(threads=[thread("t1", "a", "İlk", hours_ago=1), thread("t2", "b", "Satın al", hours_ago=2),
+                              thread("t3", "c", "Soru", hours_ago=6, count=2)],
+                     replies={"t3": [reply("t3.a", CH, "Cevabımız", hours_ago=5),
+                                     reply("t3.b", "c", "\u200b@zirveninkanunu teşekkürler", hours_ago=4)]})
     state, _ = go(yt, state=state)
-    assert yt.posted == [("t1", "cevap c1")] and state["done"]["t2"][2] == "reklam"
+    assert yt.posted == [("t1", "cevap c1"), ("t3", "@c cevap c2")] and state["done"]["t2"][2] == "reklam"
+    assert state["tracked"]["t3"]["n"] == 3
 
 
 def test_a_followed_thread_past_the_newest_pages_is_read_by_id():
