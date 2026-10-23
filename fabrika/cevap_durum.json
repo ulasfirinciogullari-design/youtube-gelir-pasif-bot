@@ -125,6 +125,11 @@
     1792653790,
     "r",
     "Ugzpdruu3qBGEa4z9dh4AaABAg.AcFwZ0e9VSXAcFwrZ0yELL"
+   ],
+   "UgwJddPnVZxYmlNDz4N4AaABAg": [
+    1792765458,
+    "r",
+    "UgwJddPnVZxYmlNDz4N4AaABAg.AcJGXeIrbofAcJGqv6yg7h"
    ]
   },
   "son": [
@@ -265,6 +270,12 @@
     "video": "CK03tB9BVyY",
     "comment": "Peki yuvarlak yıldırım nasıl oluşuyor?? 🥇⚡☠️💀",
     "reply": "Top Yildirim henuz tam olarak cozulememis nadir bir atmosfer olayidir ve laboratuvarda uzun sureli olusturulamamaktadir.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1792765458,
+    "video": "gEB2tRsHr5s",
+    "comment": "Işık hızından daha hızlı mi dönüyoruz ohaa",
+    "reply": "Dünya dönüyor ama ışık hızıyla yarışması imkansız! 🚀\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -358,10 +369,10 @@
  "nobet": {
   "basladi": "2026-10-23T12:19:14+00:00",
   "run": "39951171389",
-  "tur": 119,
+  "tur": 126,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-10-23T14:17:16+00:00"
+  "son_tur": "2026-10-23T14:24:18+00:00"
  }
 }

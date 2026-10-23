@@ -1,8 +1,8 @@
 {
- "started": "2026-10-22T07:23:06+00:00",
+ "started": "2026-10-23T14:24:15+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 22,
+ "threads": 23,
  "quiet": 0,
  "new": 1,
  "sent_last_24h": 0,
@@ -10,15 +10,15 @@
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "Ugzpdruu3qBGEa4z9dh4AaABAg",
-   "video": "CK03tB9BVyY",
-   "comment": "Peki yuvarlak yıldırım nasıl oluşuyor?? 🥇⚡☠️💀",
-   "reply": "Top Yildirim henuz tam olarak cozulememis nadir bir atmosfer olayidir ve laboratuvarda uzun sureli olusturulamamaktadir.\n— Profesör Pi 🔭",
+   "id": "UgwJddPnVZxYmlNDz4N4AaABAg",
+   "video": "gEB2tRsHr5s",
+   "comment": "Işık hızından daha hızlı mi dönüyoruz ohaa",
+   "reply": "Dünya dönüyor ama ışık hızıyla yarışması imkansız! 🚀\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-10-22T07:23:09+00:00"
+ "finished": "2026-10-23T14:24:18+00:00"
 }
