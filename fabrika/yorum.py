@@ -38,6 +38,7 @@ SIGN = {"pi": "— Profesör Pi 🔭", "bit": "— Bit 🤖"}
 LINK = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b", re.I)
 SKIP_LINK = "bağlantı içeriyor"
 MENTION = re.compile(r"^(?:@[\w.\-·]+[\s,:]*)+")
+INVISIBLE = re.compile(r"[\u200b-\u200f\u2060\ufeff]")  # YouTube puts a zero-width space before a reply's @name
 HANDLE = re.compile(r"^@?[\w.\-·]{1,60}$")
 PILOT = {"-7OxhWXxc8w": "Ay Yok Olsaydı Ne Olurdu?"}
 
@@ -200,7 +201,7 @@ def new_comments(threads, channel_id, done, more=None, counts=None):
 
 def strip_mentions(text):
     """An answer to our reply starts with "@yaolsaydibilim": that is addressing us, not tagging someone."""
-    return MENTION.sub("", text or "").strip()
+    return MENTION.sub("", INVISIBLE.sub("", text or "")).strip()
 
 
 def follow_ups(msgs, ours, done, limit):
@@ -233,9 +234,10 @@ def follow_ups(msgs, ours, done, limit):
 
 
 def relink(done, counts=None):
-    """Entries the old link rule skipped ("link içeriyor", often only an @name) are dropped so those comments are
-    judged again; a thread's cached reply count goes too, so its full reply list is read once more."""
-    for k in [k for k, v in done.items() if v[1] == "s" and v[2:3] == ["link içeriyor"]]:
+    """Entries the old link rule skipped ("link içeriyor", often only an @name) and the old one-try "karar yok"
+    entries are dropped so those comments are judged again; a thread's cached reply count goes too, so its full
+    reply list is read once more."""
+    for k in [k for k, v in done.items() if v[1] == "s" and v[2:3] in (["link içeriyor"], ["karar yok"])]:
         done.pop(k)
         if counts is not None:
             counts.pop(k.split(".")[0], None)
@@ -248,8 +250,32 @@ def mention(name, reply):
 
 
 def comments_json(batch):
-    return json.dumps([{"id": c["id"], "video": c["video"], "text": c["text"],
-                        **({"context": c["context"]} if c.get("context") else {})} for c in batch], ensure_ascii=False)
+    """Short ids ("c1", "c2", ...) stand in for the real ones: on 2026-10-23 the model returned a long YouTube reply
+    id ("Ugw...AaABAg.AcJ...") altered, so that reply had no verdict and went unanswered."""
+    return json.dumps([{"id": f"c{n}", "video": c["video"], "text": INVISIBLE.sub("", c["text"]),
+                        **({"context": c["context"]} if c.get("context") else {})}
+                       for n, c in enumerate(batch, 1)], ensure_ascii=False)
+
+
+def verdicts(batch, items):
+    """The model's items -> {real comment id: item}."""
+    real = {f"c{n}": c["id"] for n, c in enumerate(batch, 1)}
+    out = {}
+    for i in items:
+        if isinstance(i, dict):
+            k = str(i.get("id")).strip()
+            out[real.get(k, k)] = i
+    return out
+
+
+def retry_later(box, cid):
+    """No verdict: ask again on the next round, give up after the second time."""
+    tries = box.setdefault("karar_yok", {})
+    tries[cid] = tries.get(cid, 0) + 1
+    if tries[cid] < 2:
+        return True
+    tries.pop(cid)
+    return False
 
 
 def planned_questions(state):
@@ -266,8 +292,7 @@ def judge(batch, vids, planned):
     comments = comments_json(batch)
     prompt = PROMPT.format(videos="\n".join(vlines), planned="; ".join(planned[:150]) or "-", comments=comments)
     text, _ = yazar.call(prompt, search=True, temperature=0.6, cheap=True)
-    items = yazar.parse_json(text).get("items", [])
-    return {str(i.get("id")): i for i in items if isinstance(i, dict)}
+    return verdicts(batch, yazar.parse_json(text).get("items", []))
 
 
 def clean_reply(item):
@@ -358,9 +383,13 @@ def _reply(state, report, dry, yt, box, fresh, now):
             for i in c.get("also", []):
                 done[i] = [entry[0], "s", "aynı sohbette birlikte cevaplandı" if entry[1] == "r" else entry[2]]
         if not v:
-            row["result"] = "Gemini bu yoruma karar vermedi, atlandı"
+            if not dry and retry_later(box, c["id"]):
+                row["result"] = "Gemini bu yoruma karar vermedi, sonraki turda yeniden sorulacak"
+                out.append(row)
+                continue
+            row["result"] = "Gemini bu yoruma karar vermedi" + ("" if dry else " (iki kez), atlandı")
             if not dry:
-                mark([round(now), "s", "karar yok"])
+                mark([round(now), "s", "karar yok (2 kez)"])
             out.append(row)
             continue
         if v.get("action") != "reply":

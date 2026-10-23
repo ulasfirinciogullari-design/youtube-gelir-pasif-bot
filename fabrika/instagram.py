@@ -349,8 +349,7 @@ def judge(batch, vids, planned):
     comments = yorum.comments_json(batch)
     prompt = PROMPT.format(videos="\n".join(vlines) or "-", planned="; ".join(planned[:150]) or "-", comments=comments)
     text, _ = yazar.call(prompt, search=True, temperature=0.6, cheap=True)
-    items = yazar.parse_json(text).get("items", [])
-    return {str(i.get("id")): i for i in items if isinstance(i, dict)}
+    return yorum.verdicts(batch, yazar.parse_json(text).get("items", []))
 
 
 def subscribe(tok, report):
@@ -440,9 +439,12 @@ def _answer(state, report, dry, tok, box, batch, now):
             done[c["id"]] = entry
             for i in c.get("also", []):
                 done[i] = [entry[0], "s", "aynı sohbette birlikte cevaplandı" if entry[1] == "r" else entry[2]]
+        if not v and not dry and yorum.retry_later(box, c["id"]):
+            item["result"] = "karar yok, sonraki turda yeniden sorulacak"
+            continue
         if v.get("action") != "reply":
             item["result"] = f"atlandı: {v.get('why') or 'karar yok'}"
-            if not dry:  # no verdict counts too: asking Gemini again every minute would not change it
+            if not dry:  # a second missing verdict counts too: asking Gemini every minute would not change it
                 mark([now, "s", item["result"]])
             continue
         reply = yorum.clean_reply(v)
