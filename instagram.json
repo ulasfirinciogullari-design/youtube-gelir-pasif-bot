@@ -23,16 +23,17 @@
   "2026-10-22T10": "f3V2BKqQYbI https://www.instagram.com/reel/DeyuCeNCaFe/",
   "2026-10-22T14": "ZziBlIDkwWc https://www.instagram.com/reel/DezJiBcEYbt/",
   "2026-10-22T18": "CaqDaNCHfY0 https://www.instagram.com/reel/Dezk6OYCXqn/",
-  "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/"
+  "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/",
+  "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/"
  },
  "nobet": {
   "basladi": "2026-10-23T09:08:43+00:00",
   "run": "39928481717",
-  "tur": 265,
+  "tur": 293,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-10-23T13:32:45+00:00"
+  "son_tur": "2026-10-23T14:01:35+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -132,6 +133,13 @@
    "at": 1792749679,
    "title": "Zürafanın dili neden mor-siyah renkte? 🦒",
    "topic_id": "mk-c0012"
+  },
+  "PGBCfKuO8kI": {
+   "media_id": "18136629115655847",
+   "url": "https://www.instagram.com/reel/De1uUS8CjIH/",
+   "at": 1792764096,
+   "title": "Bebeklerin kemiği neden senden fazla? 👶",
+   "topic_id": "mk-c0022"
   }
  }
 }
