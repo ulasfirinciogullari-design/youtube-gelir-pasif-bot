@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 import importlib.util
 import json
 
+import pytest
+
 import original_factory
 
 _spec = importlib.util.spec_from_file_location("comment_replies",
@@ -13,6 +15,11 @@ _spec.loader.exec_module(comment_replies)
 CH = "UCzirve"
 NOW = datetime(2026, 10, 16, 21, 0, tzinfo=timezone.utc).timestamp()
 HOUR = 3600
+
+
+@pytest.fixture(autouse=True)
+def today_s_rules(monkeypatch):
+    monkeypatch.setattr(comment_replies, "RULES_AT", 0)  # NOW is before the rule change; only one test needs it
 
 
 def stamp(hours_ago: float, now: float = NOW) -> str:
@@ -266,6 +273,24 @@ def test_comments_closed_by_the_old_id_mixup_are_looked_at_again():
     state, _ = go(yt, state=state)
     assert yt.posted == [("t1", "cevap c1"), ("t3", "@c cevap c2")] and state["done"]["t2"][2] == "reklam"
     assert state["tracked"]["t3"]["n"] == 3
+
+
+def test_what_the_old_rules_closed_is_looked_at_again_once(monkeypatch):
+    monkeypatch.setattr(comment_replies, "RULES_AT", NOW - 2 * HOUR)
+    old = round(NOW) - 3 * HOUR
+    state = {"done": {"t1.b": [old, "s", "link veya etiket içeriyor"], "t2": [old, "s", "Gibberish/Ascii art"],
+                      "t3": [old, "s", "kanal zaten cevaplamış"], "t4": [round(NOW) - HOUR, "s", "reklam"]},
+             "tracked": {"t1": {"at": round(NOW - 5 * HOUR), "n": 2, "reply": "Cevabımız"}}}
+    yt = FakeYouTube(threads=[thread("t1", "ayse", "Soru", hours_ago=6, count=2), thread("t2", "b", "asdfgh"),
+                              thread("t3", "c", "Elle cevaplandı"), thread("t4", "d", "Satın al")],
+                     replies={"t1": [reply("t1.a", CH, "Cevabımız", hours_ago=5),
+                                     reply("t1.b", "ayse", "\u200b@zirveninkanunu teşekkürler", hours_ago=4)]})
+    state, _ = go(yt, state=state)
+    assert sorted(yt.posted) == [("t1", "@ayse cevap c2"), ("t2", "cevap c1")]
+    assert state["done"]["t3"][2] == "kanal zaten cevaplamış" and state["done"]["t4"][2] == "reklam"
+    yt.posted.clear()
+    go(yt, state=state)
+    assert yt.posted == []
 
 
 def test_a_followed_thread_past_the_newest_pages_is_read_by_id():
