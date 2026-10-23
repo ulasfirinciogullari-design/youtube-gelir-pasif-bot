@@ -50,11 +50,15 @@ MAX_AGE_DAYS = 14
 KEEP_DAYS = 60
 MAX_REPLY = 260
 MAX_PAGES = 10  # pages of 100 replies read from one thread
+MAX_THREAD_PAGES = 5  # pages of 100 threads: one page (the newest 100) no longer reached back MAX_AGE_DAYS
 DAY = 86400
 URL = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b", re.I)
 LINK = re.compile(URL.pattern + r"|@\w", re.I)  # what a reply of ours may not contain
 MENTION = re.compile(r"@([\w.\-]+)\s*")  # YouTube starts a reply to a reply with the other person's @handle
 TAG = re.compile(r"@[\w.\-]+")
+# YouTube writes a reply to our reply as "\u200b@zirveninkanunusagolun": a zero-width space, our handle and the text
+# glued to it, so MENTION never matched and the model saw an @name it is told to skip (Ya Olsaydı? lost replies so).
+INVISIBLE = "\u200b\u200c\u200d\u2060\ufeff"
 # The channel has no memories: Gemini wrote "O sahneyi hatırladım!" in the first preview despite the rule.
 MEMORY = re.compile(r"hatırl(ıyorum|adım)|izledim|\bI (remember|watched)\b", re.I)
 # The first live reply opened "Bu çok keskin bir gözlem! 🧐 O sahnedeki detayı fark etmen harika." despite the rule
@@ -168,10 +172,27 @@ class YouTube:
             raise RuntimeError("Bu hesapta kanal bulunamadı")
         return {"id": items[0]["id"], "handle": (items[0]["snippet"].get("customUrl") or "").lstrip("@").lower()}
 
-    def threads(self, channel_id: str) -> list[dict]:
-        return self._call("commentThreads", {"part": "snippet,replies", "allThreadsRelatedToChannelId": channel_id,
-                                             "maxResults": 100, "order": "time",
-                                             "textFormat": "plainText"}).get("items") or []
+    def threads(self, channel_id: str, oldest: float = 0.0) -> list[dict]:
+        """The channel's threads, newest first, 100 a page (1 unit a page) until a page reaches back to `oldest`."""
+        items, params = [], {"part": "snippet,replies", "allThreadsRelatedToChannelId": channel_id,
+                             "maxResults": 100, "order": "time", "textFormat": "plainText"}
+        for _ in range(MAX_THREAD_PAGES):
+            data = self._call("commentThreads", params)
+            page = data.get("items") or []
+            items += page
+            last = ((page[-1].get("snippet") or {}).get("topLevelComment") or {}).get("snippet") or {} if page else {}
+            if not data.get("nextPageToken") or (oldest and _at(last, oldest) < oldest):
+                break
+            params = {**params, "pageToken": data["nextPageToken"]}
+        return items
+
+    def threads_by_id(self, ids: list[str]) -> list[dict]:
+        """Threads we follow that fell out of the newest pages, 50 a call (1 unit a call)."""
+        items = []
+        for start in range(0, len(ids), 50):
+            items += self._call("commentThreads", {"part": "snippet,replies", "id": ",".join(ids[start:start + 50]),
+                                                   "textFormat": "plainText"}).get("items") or []
+        return items
 
     def replies(self, thread_id: str) -> list[dict]:
         """The thread's replies, 100 a page (1 unit a page)."""
@@ -286,6 +307,11 @@ def screen(text: str, handle: str, top: bool = False) -> tuple[str, str | None]:
     """-> (the comment without the @names in front of it, why it gets no answer or None). In a reply those names
     say who it is written to: another viewer's name means it is not for us. In front of a viewer's own comment
     they are friends tagged to see the video, and the rest still gets an answer."""
+    lead = text.lstrip(" ")
+    if handle and lead[:1] and lead[0] in INVISIBLE:  # only YouTube's own prefix: "@zirveninkanunufan" is someone else
+        bare = lead.lstrip(INVISIBLE + " ")
+        if bare.lower().startswith("@" + handle):
+            text = bare[len(handle) + 1:].lstrip(INVISIBLE + " ")
     names = []
     while match := MENTION.match(text):
         names.append(match.group(1).lower())
@@ -371,22 +397,32 @@ def collect(yt, threads: list[dict], channel: dict, state: dict, now: float, log
     return unique, quiet, read
 
 
-def judge(batch: list[dict], videos: dict, ask) -> tuple[str, dict]:
+def judge(batch: list[dict], videos: dict, ask, again: bool = True) -> tuple[str, dict]:
+    """-> (model, {comment id: verdict}); a comment the model left out is asked about once more on its own."""
     lines = []
     for vid in dict.fromkeys(c["video"] for c in batch):
         v = videos.get(vid)
         lines.append(f"- {vid}: {v['title']} | pinned question: {v['question'] or '-'} | narration: "
                      f"{v['narration'] or '-'}" if v else f"- {vid}: (no details)")
+    # Short keys: the model copied 26-50 character YouTube ids back with a character changed, and a comment whose id
+    # matched nothing was closed as "karar yok" (Ya Olsaydı?, 2026-10-23).
+    keys = {f"c{n}": c["id"] for n, c in enumerate(batch, start=1)}
     comments = []
-    for c in batch:
-        row = {"id": c["id"], "video": c["video"], "kind": c["kind"], "text": c["text"]}
+    for key, c in zip(keys, batch):
+        row = {"id": key, "video": c["video"], "kind": c["kind"], "text": c["text"]}
         if c["context"]:
             row["question" if c["kind"] == "answer" else "our_reply"] = c["context"]
         comments.append(row)
     model, text = ask(PROMPT.format(videos="\n".join(lines), comments=json.dumps(comments, ensure_ascii=False)))
     data = parse_json(text)
     items = data.get("items") if isinstance(data, dict) else data
-    return model, {str(i.get("id")): i for i in items or [] if isinstance(i, dict)}
+    verdicts = {keys[key]: i for i in items or []
+                if isinstance(i, dict) and (key := str(i.get("id") or "").strip()) in keys}
+    missing = [c for c in batch if c["id"] not in verdicts]
+    if again and missing:
+        model, more = judge(missing, videos, ask, again=False)
+        verdicts.update(more)
+    return model, verdicts
 
 
 def clean_reply(item: dict, mention: str = "") -> str | None:
@@ -405,7 +441,16 @@ def run(yt, ask, state: dict, videos: dict, report: dict, now: float, dry: bool 
     done, tracked = state.setdefault("done", {}), state.setdefault("tracked", {})
     channel = state.get("channel") or yt.channel()
     state["channel"] = channel
-    threads = yt.threads(channel["id"])
+    for key in [k for k, v in done.items() if v[1:3] == ["s", "karar yok"]]:
+        done.pop(key)  # closed by the id mix-up above (before 2026-10-23): looked at again once
+    threads = yt.threads(channel["id"], now - MAX_AGE_DAYS * DAY)
+    seen = {t.get("id") for t in threads}
+    lost = [tid for tid in tracked if tid not in seen]
+    if lost:  # a viewer writing back under an answer of ours on an older thread still gets a reply
+        try:
+            threads += yt.threads_by_id(lost)
+        except Exception as e:  # read again next run
+            log(f"⚠️ Takip edilen yorumlar okunamadı: {str(e)[:200]}")
     comments, quiet, read = collect(yt, threads, channel, state, now, log)
     report.update(threads=len(threads), reply_threads_read=len(read), new=len(comments), quiet=len(quiet))
 
@@ -444,8 +489,8 @@ def run(yt, ask, state: dict, videos: dict, report: dict, now: float, dry: bool 
             rows.append(row)
             verdict = verdicts.get(c["id"])
             if not verdict:
-                row["result"] = "Gemini bu yoruma karar vermedi, atlandı"
-                close(c["id"], "karar yok")
+                row["result"] = "Gemini iki kez sorulduğu halde bu yoruma karar vermedi, atlandı"
+                close(c["id"], "iki kez karar yok")
                 continue
             if verdict.get("action") != "reply":
                 row.update(result="atlandı", why=str(verdict.get("why") or "")[:120])
