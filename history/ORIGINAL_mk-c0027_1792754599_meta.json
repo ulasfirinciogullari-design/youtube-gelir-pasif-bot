@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0027",
+  "topic": "Kanguru aynı anda kaç yavruya bakabilir?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kangurunun aynı anda üç yavrusu olabilir 🦘",
+  "hook_text": "ÜÇÜNCÜ YAVRU NEREDE?",
+  "description": "Kanguru aynı anda kaç yavruya bakabilir, kangurular nasıl doğurur?\n\nBir dişi kangurunun aynı anda üç yavrusu olabilir: keseden çıkmış ama hâlâ emen bir yavru, kesede memeye tutunmuş bir yavru ve rahimde gelişimi askıya alınmış bir embriyo. Kese boşalınca embriyo yeniden gelişmeye başlar, tekrar çiftleşmek gerekmez. Anne iki ayrı memeden aynı anda iki farklı süt verir.\n\nSence hangisi daha tuhaf: rahimde bekleyen embriyo mu, aynı anda iki farklı süt mü?\n\n#kanguru #hayvanlar #vahşidoğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0027",
+  "tags": [
+    "kanguru",
+    "kangurular",
+    "kanguru yavrusu",
+    "kanguru kesesi",
+    "kanguru nasıl doğurur",
+    "kanguru kaç yavru yapar",
+    "embriyonik diyapoz",
+    "bekleyen embriyo",
+    "iki farklı süt",
+    "kanguru sütü",
+    "keseli hayvanlar",
+    "keseliler",
+    "Avustralya hayvanları",
+    "anne hayvanlar",
+    "memeliler",
+    "vahşi doğa",
+    "Avustralya",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "kangaroo",
+    "kangaroo joey",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "kanguru nasil dogurur",
+    "kanguru kac yavru yapar",
+    "iki farkli sut",
+    "kanguru sutu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A kangaroo can have three young at once 🦘",
+      "description": "A mother kangaroo can have a joey out of the pouch that still suckles, a joey in the pouch and a paused embryo waiting in her womb. When the pouch empties, the embryo resumes developing without another mating, and she makes two different milks at the same time from separate teats.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "es": {
+      "title": "Una canguro puede tener tres crías a la vez 🦘",
+      "description": "Una madre canguro puede tener una cría fuera de la bolsa que aún mama, otra dentro de la bolsa y un embrión en pausa esperando en el útero. Cuando la bolsa se vacía, el embrión retoma su desarrollo sin otro apareamiento, y la madre produce a la vez dos leches distintas en pezones separados.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "pt": {
+      "title": "Uma canguru pode ter três filhotes ao mesmo tempo 🦘",
+      "description": "A mãe canguru pode ter um filhote fora da bolsa que ainda mama, outro dentro da bolsa e um embrião em pausa esperando no útero. Quando a bolsa fica vazia, o embrião volta a se desenvolver sem novo acasalamento, e ela produz ao mesmo tempo dois leites diferentes em tetas separadas.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "de": {
+      "title": "Ein Känguru kann drei Junge gleichzeitig haben 🦘",
+      "description": "Eine Kängurumutter kann ein Junges haben, das den Beutel schon verlassen hat und noch trinkt, eines im Beutel und einen pausierenden Embryo in der Gebärmutter. Wird der Beutel frei, entwickelt sich der Embryo ohne neue Paarung weiter, und aus zwei Zitzen gibt sie gleichzeitig zwei verschiedene Milchsorten.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "fr": {
+      "title": "Une kangourou peut avoir trois petits en même temps 🦘",
+      "description": "Une mère kangourou peut avoir un petit sorti de la poche qui tète encore, un autre dans la poche et un embryon en pause qui attend dans l'utérus. Quand la poche se libère, l'embryon reprend son développement sans nouvel accouplement, et elle produit en même temps deux laits différents à deux tétines distinctes.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "it": {
+      "title": "Una mamma canguro può avere tre piccoli contemporaneamente 🦘",
+      "description": "Una mamma canguro può avere un piccolo già fuori dal marsupio che poppa ancora, uno nel marsupio e un embrione in pausa che aspetta nell'utero. Quando il marsupio si libera, l'embrione riprende a svilupparsi senza un nuovo accoppiamento, e lei produce allo stesso tempo due latti diversi da due capezzoli separati.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "ru": {
+      "title": "У кенгуру может быть сразу три детёныша 🦘",
+      "description": "У самки кенгуру одновременно может быть детёныш, который уже вылез из сумки, но ещё сосёт молоко, детёныш в сумке и эмбрион, чьё развитие приостановлено в матке. Когда сумка освобождается, эмбрион продолжает развиваться без нового спаривания, а из двух разных сосков мать даёт два разных молока.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "ar": {
+      "title": "قد يكون للكنغر ثلاثة صغار في الوقت نفسه 🦘",
+      "description": "قد يكون لأنثى الكنغر في وقت واحد صغير خرج من الجراب لكنه ما زال يرضع، وصغير آخر داخل الجراب، وجنين متوقف النمو ينتظر في الرحم. وعندما يفرغ الجراب يستأنف الجنين نموه دون تزاوج جديد، وتُدرّ الأم في الوقت نفسه نوعين مختلفين من الحليب من حلمتين منفصلتين.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "hi": {
+      "title": "कंगारू के एक साथ तीन बच्चे हो सकते हैं 🦘",
+      "description": "मादा कंगारू के पास एक साथ थैली से बाहर निकल चुका पर अब भी दूध पीने वाला बच्चा, थैली के अंदर एक बच्चा और गर्भ में रुके हुए विकास वाला एक भ्रूण हो सकता है। थैली खाली होते ही भ्रूण बिना दोबारा संभोग के बढ़ने लगता है, और माँ दो अलग थनों से एक ही समय में दो अलग तरह का दूध देती है।\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "id": {
+      "title": "Kanguru bisa punya tiga anak sekaligus 🦘",
+      "description": "Induk kanguru bisa sekaligus punya anak yang sudah keluar dari kantong tapi masih menyusu, anak di dalam kantong, dan embrio yang perkembangannya ditunda di rahim. Begitu kantong kosong, embrio itu tumbuh lagi tanpa perlu kawin ulang, dan sang induk memberi dua jenis susu berbeda dari puting yang terpisah.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "ja": {
+      "title": "カンガルーは同時に3匹の子をもつことがある 🦘",
+      "description": "母カンガルーは、袋から出てもまだ乳を飲む子、袋の中の子、そして子宮の中で発生を一時停止した胚を同時にもつことがあります。袋が空くと、胚は再び交尾しなくても発生を再開します。さらに2つの乳首から、成分の違う2種類の乳を同時に出せるのです。\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "ko": {
+      "title": "캥거루는 한 번에 새끼 셋을 둘 수 있다 🦘",
+      "description": "어미 캥거루는 주머니에서 나왔지만 아직 젖을 먹는 새끼, 주머니 속 새끼, 그리고 자궁에서 발달을 멈추고 기다리는 배아를 동시에 가질 수 있습니다. 주머니가 비면 배아는 다시 짝짓기하지 않아도 자라기 시작하고, 어미는 서로 다른 젖꼭지에서 두 가지 젖을 동시에 만듭니다.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "pl": {
+      "title": "Kangurzyca może mieć jednocześnie troje młodych 🦘",
+      "description": "Kangurzyca może mieć naraz młode, które opuściło już torbę, ale wciąż ssie, młode w torbie i zarodek, którego rozwój jest wstrzymany w macicy. Gdy torba się zwalnia, zarodek rozwija się dalej bez ponownej kopulacji, a z dwóch różnych sutków matka daje jednocześnie dwa rodzaje mleka.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "nl": {
+      "title": "Een kangoeroe kan drie jongen tegelijk hebben 🦘",
+      "description": "Een kangoeroemoeder kan tegelijk een jong hebben dat al uit de buidel is maar nog drinkt, een jong in de buidel en een gepauzeerd embryo dat in de baarmoeder wacht. Zodra de buidel vrij is, groeit het embryo verder zonder nieuwe paring, en uit twee aparte tepels geeft ze tegelijk twee verschillende soorten melk.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "uk": {
+      "title": "У кенгуру може бути одразу троє дитинчат 🦘",
+      "description": "У самиці кенгуру одночасно може бути дитинча, яке вже вилізло із сумки, але ще ссе молоко, дитинча в сумці та ембріон, розвиток якого призупинено в матці. Коли сумка звільняється, ембріон розвивається далі без нового парування, а з двох різних сосків мати дає два різні види молока.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "vi": {
+      "title": "Kangaroo mẹ có thể có ba con cùng lúc 🦘",
+      "description": "Một con kangaroo mẹ có thể cùng lúc có một con non đã ra khỏi túi nhưng vẫn bú, một con trong túi và một phôi tạm ngừng phát triển đang chờ trong tử cung. Khi túi trống, phôi tiếp tục phát triển mà không cần giao phối lại, và kangaroo mẹ tiết ra hai loại sữa khác nhau từ hai núm vú riêng.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "az": {
+      "title": "Kenqurunun eyni anda üç balası ola bilər 🦘",
+      "description": "Dişi kenqurunun eyni vaxtda kisədən çıxmış, amma hələ də əmən bir balası, kisədə bir balası və uşaqlıqda inkişafı dayandırılmış bir embrionu ola bilər. Kisə boşalanda embrion yenidən cütləşmə olmadan inkişaf etməyə başlayır, ana isə iki ayrı məmədən eyni anda iki fərqli süd verir.\n\n#shorts\n\nSeri: mk-c0027"
+    },
+    "ro": {
+      "title": "Un cangur poate avea trei pui în același timp 🦘",
+      "description": "O femelă de cangur poate avea simultan un pui ieșit din marsupiu care încă suge, un pui în marsupiu și un embrion cu dezvoltarea oprită, care așteaptă în uter. Când marsupiul se eliberează, embrionul își reia dezvoltarea fără o nouă împerechere, iar mama dă în același timp două tipuri de lapte din mameloane diferite.\n\n#shorts\n\nSeri: mk-c0027"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: rahimde bekleyen embriyo mu, aynı anda iki farklı süt mü?",
+  "scenes": [
+    {
+      "text": "Bu kangurunun aynı anda üç yavrusu olabiliyor.",
+      "visual": "mother kangaroo with a joey peeking out of her pouch",
+      "stock_query": "kangaroo joey",
+      "source": "stock",
+      "callout": "3 YAVRU"
+    },
+    {
+      "text": "Biri keseden çıkmış ama hâlâ emiyor; diğeri kesede memeye tutunmuş.",
+      "visual": "young kangaroo standing next to its mother, a smaller joey in her pouch",
+      "stock_query": "kangaroo pouch",
+      "source": "stock"
+    },
+    {
+      "text": "Üçüncüsü rahimde bekleyen, gelişimi askıya alınmış bir embriyo.",
+      "visual": "female kangaroo resting calmly in the grass",
+      "stock_query": "kangaroo mother",
+      "source": "stock",
+      "callout": "BEKLEYEN EMBRİYO"
+    },
+    {
+      "text": "Kese boşalınca embriyo yeniden gelişmeye başlar; tekrar çiftleşmek gerekmez.",
+      "visual": "kangaroo lying in the shade in the Australian bush",
+      "stock_query": "kangaroo resting",
+      "source": "stock"
+    },
+    {
+      "text": "Üstelik iki ayrı memeden aynı anda iki farklı süt veriyor.",
+      "visual": "baby kangaroo drinking from its mother while standing",
+      "stock_query": "kangaroo baby",
+      "source": "stock",
+      "callout": "2 FARKLI SÜT"
+    },
+    {
+      "text": "İki yavru da kendi yaşına uygun sütü kendi memesinden emiyor.",
+      "visual": "kangaroo family grazing together in a field",
+      "stock_query": "kangaroo family",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.19,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0027_1792754599_ig.mp4"
+}
