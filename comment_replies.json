@@ -103,9 +103,10 @@
    "UC6SEEInZYTnVGr8P063ES_Q"
   ],
   "UgwYiII9NU9V4sQqpzR4AaABAg": [
-   1792766714,
-   "s",
-   "karar yok"
+   1792790202,
+   "r",
+   "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAcK02siwwHd",
+   "UCpApOd1wUrglRk6Tw6dOObg"
   ]
  },
  "tracked": {
@@ -185,6 +186,11 @@
    "at": 1792697634,
    "n": 1,
    "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉"
+  },
+  "UgwYiII9NU9V4sQqpzR4AaABAg": {
+   "at": 1792790202,
+   "n": 1,
+   "reply": "Hızlı çıktın! İlk yorum senin olmuş. 😊"
   }
  },
  "channel": {
@@ -263,6 +269,12 @@
    "video": "qducKltyWbs",
    "comment": "İlk",
    "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉"
+  },
+  {
+   "at": 1792790202,
+   "video": "7xjRSwfX83E",
+   "comment": "İlk",
+   "reply": "Hızlı çıktın! İlk yorum senin olmuş. 😊"
   }
  ]
 }
