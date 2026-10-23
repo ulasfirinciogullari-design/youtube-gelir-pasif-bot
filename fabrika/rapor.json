@@ -1,18 +1,71 @@
 {
- "started": "2026-10-23T13:08:14+00:00",
- "mod": "igbolum",
- "gate": "instagram: o0009",
+ "started": "2026-10-23T14:08:22+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
- "chars": 264,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "18035608256892734",
-  "url": "https://www.instagram.com/reel/De1oXcQFOwY/",
-  "at": 1792760977.6077125
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "41",
+  "videos": "29"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/De1oXcQFOwY/"
+ "credits_before": [
+  15997,
+  613902
  ],
- "finished": "2026-10-23T13:09:37+00:00"
+ "kuyruk": {
+  "dosya": "20261023-1-g006.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "g006",
+  "series": "1 Gün Boyunca",
+  "q": "1 günde Dünya'ya ne kadar uzay tozu düşer?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 257,
+ "duration": 17.2,
+ "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+ "url": "https://youtube.com/shorts/2BcgVPgRmg8",
+ "recent_status": {
+  "o0009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "936",
+   "reason": null
+  },
+  "o0010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "808",
+   "reason": null
+  },
+  "n006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "442",
+   "reason": null
+  },
+  "y009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "375",
+   "reason": null
+  },
+  "g006": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  15997,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261023-1-g006.json 1 günde Dünya'ya ne kadar uzay tozu düşer? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-10-23T14:08:56+00:00"
 }

@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "931",
+    "views": "933",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1210",
+    "views": "1213",
     "reason": null
    }
   },
@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1304",
+    "views": "1305",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1519",
+    "views": "1523",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1347",
+    "views": "1352",
     "reason": null
    }
   },
@@ -626,7 +626,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "981",
+    "views": "984",
     "reason": null
    }
   },
@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1008",
+    "views": "1033",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1011",
+    "views": "1016",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "962",
     "reason": null
    }
   },
@@ -746,7 +746,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "933",
+    "views": "936",
     "reason": null
    }
   },
@@ -776,7 +776,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "784",
+    "views": "808",
     "reason": null
    }
   },
@@ -806,7 +806,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "294",
+    "views": "442",
     "reason": null
    }
   },
@@ -833,6 +833,36 @@
    "thumbnail": true,
    "at": 1792749862.6149557,
    "chars": 248,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "375",
+    "reason": null
+   }
+  },
+  {
+   "id": "g006",
+   "video_id": "2BcgVPgRmg8",
+   "url": "https://youtube.com/shorts/2BcgVPgRmg8",
+   "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "Is Space Dust Falling on Your Roof?",
+    "es": "¿Está cayendo polvo espacial sobre tu tejado?",
+    "pt": "Está caindo poeira espacial no seu telhado?",
+    "ar": "هل يتساقط غبار الفضاء على سطح بيتك؟",
+    "hi": "क्या आपकी छत पर अंतरिक्ष की धूल गिर रही है?",
+    "id": "Apakah Debu Luar Angkasa Jatuh ke Atap Rumahmu?",
+    "fr": "De la poussière de l'espace tombe-t-elle sur ton toit ?",
+    "de": "Fällt Weltraumstaub auf dein Dach?",
+    "ru": "Падает ли космическая пыль на твою крышу?",
+    "az": "Evinin Damına Kosmosdan Toz Yağırmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1792764535.2825317,
+   "chars": 257,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -869,7 +899,8 @@
   "o0009",
   "o0010",
   "n006",
-  "y009"
+  "y009",
+  "g006"
  ],
  "extra": [
   {
@@ -935,14 +966,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-16T05:10:36+00:00",
-   "mod": "zorla",
-   "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/8KoJ0-4fHyY",
-   "duration": 34.6,
-   "chars": 499
-  },
   {
    "finished": "2026-10-16T05:25:56+00:00",
    "mod": "zorla",
@@ -1348,6 +1371,14 @@
    "mod": "igbolum",
    "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
    "chars": 264
+  },
+  {
+   "finished": "2026-10-23T14:08:56+00:00",
+   "mod": "saatlik",
+   "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+   "url": "https://youtube.com/shorts/2BcgVPgRmg8",
+   "duration": 17.2,
+   "chars": 257
   }
  ],
  "last_fail": 1792487549.018023,
