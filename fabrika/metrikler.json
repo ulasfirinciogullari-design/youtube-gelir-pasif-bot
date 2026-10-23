@@ -1,5 +1,5 @@
 {
- "at": "2026-10-23T19:12:37+00:00",
+ "at": "2026-10-23T22:11:16+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,7 +15,7 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 42,
+  "subscriberCount": 43,
   "viewCount": 24045,
   "videoCount": 31
  },
@@ -86,7 +86,7 @@
    "comment": 0
   },
   "ZX3l0E9HzMw": {
-   "view": 987,
+   "view": 988,
    "like": 17,
    "comment": 2
   },
@@ -96,7 +96,7 @@
    "comment": 4
   },
   "ActwPx-yTCQ": {
-   "view": 942,
+   "view": 943,
    "like": 8,
    "comment": 4
   },
@@ -106,18 +106,18 @@
    "comment": 2
   },
   "hJaWCEzLO_4": {
-   "view": 1308,
+   "view": 1311,
    "like": 17,
    "comment": 0
   },
   "zkaODqXzaCo": {
-   "view": 1532,
-   "like": 10,
+   "view": 1541,
+   "like": 12,
    "comment": 0
   },
   "iKojt12DL_Y": {
-   "view": 1365,
-   "like": 7,
+   "view": 1377,
+   "like": 6,
    "comment": 0
   },
   "rijRRVfG0ZY": {
@@ -126,55 +126,55 @@
    "comment": 2
   },
   "kJHNXA1I-SU": {
-   "view": 1039,
+   "view": 1048,
    "like": 1,
    "comment": 0
   },
   "-Ob9VS2V1H4": {
-   "view": 1017,
+   "view": 1020,
    "like": 5,
    "comment": 0
   },
   "CK03tB9BVyY": {
-   "view": 1013,
+   "view": 1015,
    "like": 4,
    "comment": 2
   },
   "VMP8uC3O6jU": {
-   "view": 946,
+   "view": 943,
    "like": 6,
    "comment": 0
   },
   "LjCJ1NSbCQQ": {
-   "view": 895,
-   "like": 3,
+   "view": 894,
+   "like": 4,
    "comment": 0
   },
   "gEB2tRsHr5s": {
-   "view": 932,
+   "view": 1002,
    "like": 4,
-   "comment": 3
+   "comment": 4
   },
   "hf5CYGuKU8M": {
-   "view": 986,
-   "like": 8,
+   "view": 1014,
+   "like": 9,
    "comment": 0
   },
   "2BcgVPgRmg8": {
-   "view": 382,
-   "like": 5,
-   "comment": 0
+   "view": 661,
+   "like": 4,
+   "comment": 2
   },
   "fwDsy2Wq4S4": {
-   "view": 2,
-   "like": 0,
+   "view": 288,
+   "like": 5,
    "comment": 0
   }
  },
  "videos": {
   "bqFeef1QL08": {
-   "views": 1463,
-   "estimatedMinutesWatched": 356,
+   "views": 1475,
+   "estimatedMinutesWatched": 357,
    "averageViewDuration": 27,
    "averageViewPercentage": 72.49,
    "likes": 16,
@@ -194,8 +194,8 @@
    "devam_yuzde": 51.3
   },
   "4GSDZD52uI0": {
-   "views": 1417,
-   "estimatedMinutesWatched": 318,
+   "views": 1424,
+   "estimatedMinutesWatched": 319,
    "averageViewDuration": 23,
    "averageViewPercentage": 60.919999999999995,
    "likes": 18,
@@ -214,30 +214,8 @@
    "engagedViews": 775,
    "devam_yuzde": 54.7
   },
-  "RLuGUU-xaYE": {
-   "views": 1351,
-   "estimatedMinutesWatched": 234,
-   "averageViewDuration": 20,
-   "averageViewPercentage": 59.67,
-   "likes": 20,
-   "shares": 0,
-   "comments": 4,
-   "subscribersGained": 4,
-   "title": "1 Günde Kaç Kez Nefes Alırsın?",
-   "sources": {
-    "SHORTS": 1300,
-    "YT_CHANNEL": 23,
-    "YT_SEARCH": 22,
-    "YT_OTHER_PAGE": 3,
-    "SOUND_PAGE": 2,
-    "HASHTAGS": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 662,
-   "devam_yuzde": 49.0
-  },
   "pJPCpis147c": {
-   "views": 1351,
+   "views": 1361,
    "estimatedMinutesWatched": 178,
    "averageViewDuration": 17,
    "averageViewPercentage": 66.22,
@@ -256,6 +234,28 @@
    },
    "engagedViews": 573,
    "devam_yuzde": 42.4
+  },
+  "RLuGUU-xaYE": {
+   "views": 1360,
+   "estimatedMinutesWatched": 235,
+   "averageViewDuration": 20,
+   "averageViewPercentage": 59.67,
+   "likes": 20,
+   "shares": 0,
+   "comments": 4,
+   "subscribersGained": 4,
+   "title": "1 Günde Kaç Kez Nefes Alırsın?",
+   "sources": {
+    "SHORTS": 1300,
+    "YT_CHANNEL": 23,
+    "YT_SEARCH": 22,
+    "YT_OTHER_PAGE": 3,
+    "SOUND_PAGE": 2,
+    "HASHTAGS": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 662,
+   "devam_yuzde": 49.0
   },
   "zkaODqXzaCo": {
    "views": 1314,
@@ -279,7 +279,7 @@
    "devam_yuzde": 47.9
   },
   "8KoJ0-4fHyY": {
-   "views": 1292,
+   "views": 1293,
    "estimatedMinutesWatched": 213,
    "averageViewDuration": 19,
    "averageViewPercentage": 56.59,
@@ -362,7 +362,7 @@
    "devam_yuzde": 49.2
   },
   "0iq7G5-5dds": {
-   "views": 1141,
+   "views": 1145,
    "estimatedMinutesWatched": 137,
    "averageViewDuration": 17,
    "averageViewPercentage": 67.22,
@@ -382,7 +382,7 @@
    "devam_yuzde": 36.6
   },
   "oyPgO_oDYlU": {
-   "views": 1024,
+   "views": 1026,
    "estimatedMinutesWatched": 134,
    "averageViewDuration": 16,
    "averageViewPercentage": 70.08,
@@ -422,7 +422,7 @@
    "devam_yuzde": 30.5
   },
   "ZX3l0E9HzMw": {
-   "views": 985,
+   "views": 991,
    "estimatedMinutesWatched": 174,
    "averageViewDuration": 19,
    "averageViewPercentage": 73.75,
@@ -523,7 +523,7 @@
    "devam_yuzde": 45.7
   },
   "xMYUnZVVITU": {
-   "views": 547,
+   "views": 555,
    "estimatedMinutesWatched": 104,
    "averageViewDuration": 23,
    "averageViewPercentage": 68.06,
@@ -543,8 +543,8 @@
    "devam_yuzde": 47.2
   },
   "yHElVXfvdsw": {
-   "views": 389,
-   "estimatedMinutesWatched": 79,
+   "views": 390,
+   "estimatedMinutesWatched": 80,
    "averageViewDuration": 22,
    "averageViewPercentage": 58.97,
    "likes": 2,
@@ -565,7 +565,7 @@
    "devam_yuzde": 52.7
   },
   "f6WyXXJWASs": {
-   "views": 302,
+   "views": 311,
    "estimatedMinutesWatched": 55,
    "averageViewDuration": 20,
    "averageViewPercentage": 59.050000000000004,
@@ -591,7 +591,7 @@
    "likes": 6,
    "shares": 0,
    "comments": 3,
-   "subscribersGained": 2,
+   "subscribersGained": 1,
    "title": "",
    "sources": {
     "SHORTS": 200,
@@ -603,7 +603,7 @@
    "devam_yuzde": 42.1
   },
   "-PC7chCMp_s": {
-   "views": 117,
+   "views": 118,
    "estimatedMinutesWatched": 22,
    "averageViewDuration": 19,
    "averageViewPercentage": 51.85999999999999,
@@ -622,7 +622,7 @@
    "devam_yuzde": 55.6
   },
   "HdSKbp0rIz8": {
-   "views": 101,
+   "views": 102,
    "estimatedMinutesWatched": 15,
    "averageViewDuration": 20,
    "averageViewPercentage": 54.24,
@@ -699,8 +699,8 @@
   },
   {
    "day": "2026-10-18",
-   "views": 8175,
-   "estimatedMinutesWatched": 1436,
+   "views": 8104,
+   "estimatedMinutesWatched": 1432,
    "subscribersGained": 26
   },
   {
