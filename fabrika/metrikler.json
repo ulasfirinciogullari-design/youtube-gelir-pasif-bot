@@ -1,5 +1,5 @@
 {
- "at": "2026-10-23T10:02:59+00:00",
+ "at": "2026-10-23T13:07:18+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 41,
   "viewCount": 22881,
-  "videoCount": 28
+  "videoCount": 29
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -61,7 +61,7 @@
    "comment": 8
   },
   "RLuGUU-xaYE": {
-   "view": 1361,
+   "view": 1362,
    "like": 21,
    "comment": 8
   },
@@ -96,42 +96,42 @@
    "comment": 4
   },
   "ActwPx-yTCQ": {
-   "view": 931,
+   "view": 932,
    "like": 8,
    "comment": 4
   },
   "5NCDRT4b4M0": {
-   "view": 1210,
+   "view": 1213,
    "like": 14,
    "comment": 2
   },
   "hJaWCEzLO_4": {
-   "view": 1304,
+   "view": 1305,
    "like": 17,
    "comment": 0
   },
   "zkaODqXzaCo": {
-   "view": 1519,
+   "view": 1523,
    "like": 10,
    "comment": 0
   },
   "iKojt12DL_Y": {
-   "view": 1347,
+   "view": 1351,
    "like": 7,
    "comment": 0
   },
   "rijRRVfG0ZY": {
-   "view": 981,
+   "view": 983,
    "like": 10,
    "comment": 2
   },
   "kJHNXA1I-SU": {
-   "view": 1008,
+   "view": 1032,
    "like": 1,
    "comment": 0
   },
   "-Ob9VS2V1H4": {
-   "view": 1011,
+   "view": 1016,
    "like": 5,
    "comment": 0
   },
@@ -146,20 +146,25 @@
    "comment": 0
   },
   "LjCJ1NSbCQQ": {
-   "view": 784,
+   "view": 797,
    "like": 3,
    "comment": 0
   },
   "gEB2tRsHr5s": {
-   "view": 294,
+   "view": 387,
    "like": 1,
+   "comment": 0
+  },
+  "hf5CYGuKU8M": {
+   "view": 2,
+   "like": 0,
    "comment": 0
   }
  },
  "videos": {
   "bqFeef1QL08": {
-   "views": 1475,
-   "estimatedMinutesWatched": 357,
+   "views": 1463,
+   "estimatedMinutesWatched": 356,
    "averageViewDuration": 27,
    "averageViewPercentage": 72.49,
    "likes": 16,
@@ -175,12 +180,12 @@
     "YT_OTHER_PAGE": 4,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 753,
-   "devam_yuzde": 51.1
+   "engagedViews": 751,
+   "devam_yuzde": 51.3
   },
   "4GSDZD52uI0": {
-   "views": 1424,
-   "estimatedMinutesWatched": 319,
+   "views": 1417,
+   "estimatedMinutesWatched": 318,
    "averageViewDuration": 23,
    "averageViewPercentage": 60.919999999999995,
    "likes": 18,
@@ -196,12 +201,12 @@
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 776,
-   "devam_yuzde": 54.5
+   "engagedViews": 775,
+   "devam_yuzde": 54.7
   },
   "RLuGUU-xaYE": {
-   "views": 1360,
-   "estimatedMinutesWatched": 235,
+   "views": 1351,
+   "estimatedMinutesWatched": 234,
    "averageViewDuration": 20,
    "averageViewPercentage": 59.67,
    "likes": 20,
@@ -219,10 +224,10 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 662,
-   "devam_yuzde": 48.7
+   "devam_yuzde": 49.0
   },
   "pJPCpis147c": {
-   "views": 1316,
+   "views": 1306,
    "estimatedMinutesWatched": 169,
    "averageViewDuration": 17,
    "averageViewPercentage": 65.75,
@@ -239,11 +244,11 @@
     "EXT_URL": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 547,
-   "devam_yuzde": 41.6
+   "engagedViews": 546,
+   "devam_yuzde": 41.8
   },
   "8KoJ0-4fHyY": {
-   "views": 1289,
+   "views": 1288,
    "estimatedMinutesWatched": 212,
    "averageViewDuration": 19,
    "averageViewPercentage": 56.65,
@@ -260,8 +265,8 @@
     "PLAYLIST": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 604,
-   "devam_yuzde": 46.9
+   "engagedViews": 603,
+   "devam_yuzde": 46.8
   },
   "zkaODqXzaCo": {
    "views": 1203,
@@ -324,7 +329,7 @@
    "devam_yuzde": 49.5
   },
   "0iq7G5-5dds": {
-   "views": 1125,
+   "views": 1121,
    "estimatedMinutesWatched": 133,
    "averageViewDuration": 17,
    "averageViewPercentage": 67.11,
@@ -341,7 +346,7 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 405,
-   "devam_yuzde": 36.0
+   "devam_yuzde": 36.1
   },
   "5NCDRT4b4M0": {
    "views": 1088,
@@ -366,7 +371,7 @@
    "devam_yuzde": 48.3
   },
   "oyPgO_oDYlU": {
-   "views": 1018,
+   "views": 1016,
    "estimatedMinutesWatched": 133,
    "averageViewDuration": 16,
    "averageViewPercentage": 69.92,
@@ -383,10 +388,10 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 429,
-   "devam_yuzde": 42.1
+   "devam_yuzde": 42.2
   },
   "ZX3l0E9HzMw": {
-   "views": 969,
+   "views": 963,
    "estimatedMinutesWatched": 170,
    "averageViewDuration": 19,
    "averageViewPercentage": 73.54,
@@ -403,8 +408,8 @@
     "NO_LINK_OTHER": 0,
     "NOTIFICATION": 0
    },
-   "engagedViews": 508,
-   "devam_yuzde": 52.4
+   "engagedViews": 507,
+   "devam_yuzde": 52.6
   },
   "ActwPx-yTCQ": {
    "views": 878,
@@ -426,7 +431,7 @@
    "devam_yuzde": 57.1
   },
   "xMYUnZVVITU": {
-   "views": 554,
+   "views": 546,
    "estimatedMinutesWatched": 104,
    "averageViewDuration": 23,
    "averageViewPercentage": 68.06,
@@ -443,11 +448,11 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 258,
-   "devam_yuzde": 46.6
+   "devam_yuzde": 47.3
   },
   "yHElVXfvdsw": {
-   "views": 390,
-   "estimatedMinutesWatched": 80,
+   "views": 389,
+   "estimatedMinutesWatched": 79,
    "averageViewDuration": 22,
    "averageViewPercentage": 58.97,
    "likes": 2,
@@ -464,8 +469,8 @@
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 206,
-   "devam_yuzde": 52.8
+   "engagedViews": 205,
+   "devam_yuzde": 52.7
   },
   "rijRRVfG0ZY": {
    "views": 329,
@@ -487,7 +492,7 @@
    "devam_yuzde": 43.2
   },
   "f6WyXXJWASs": {
-   "views": 311,
+   "views": 302,
    "estimatedMinutesWatched": 55,
    "averageViewDuration": 20,
    "averageViewPercentage": 59.050000000000004,
@@ -502,8 +507,8 @@
     "YT_CHANNEL": 14,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 155,
-   "devam_yuzde": 49.8
+   "engagedViews": 154,
+   "devam_yuzde": 51.0
   },
   "-7OxhWXxc8w": {
    "views": 215,
@@ -513,7 +518,7 @@
    "likes": 6,
    "shares": 0,
    "comments": 3,
-   "subscribersGained": 1,
+   "subscribersGained": 2,
    "title": "",
    "sources": {
     "SHORTS": 200,
@@ -525,7 +530,7 @@
    "devam_yuzde": 42.3
   },
   "-PC7chCMp_s": {
-   "views": 117,
+   "views": 116,
    "estimatedMinutesWatched": 22,
    "averageViewDuration": 19,
    "averageViewPercentage": 51.85999999999999,
@@ -541,10 +546,10 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 65,
-   "devam_yuzde": 55.6
+   "devam_yuzde": 56.0
   },
   "HdSKbp0rIz8": {
-   "views": 102,
+   "views": 101,
    "estimatedMinutesWatched": 15,
    "averageViewDuration": 20,
    "averageViewPercentage": 54.24,
@@ -560,7 +565,7 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 44,
-   "devam_yuzde": 43.1
+   "devam_yuzde": 43.6
   },
   "X9ouBiGHD4Q": {
    "views": 41,

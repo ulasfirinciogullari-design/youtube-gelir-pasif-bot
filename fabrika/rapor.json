@@ -1,71 +1,18 @@
 {
- "started": "2026-10-23T10:03:38+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-10-23T13:08:14+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: o0009",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "41",
-  "videos": "28"
+ "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
+ "chars": 264,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "18035608256892734",
+  "url": "https://www.instagram.com/reel/De1oXcQFOwY/",
+  "at": 1792760977.6077125
  },
- "credits_before": [
-  15611,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261022-3-y009.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y009",
-  "series": "Ya Olsaydı?",
-  "q": "Uzayda kaskını çıkarsaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 248,
- "duration": 18.7,
- "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
- "url": "https://youtube.com/shorts/hf5CYGuKU8M",
- "recent_status": {
-  "g005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "928",
-   "reason": null
-  },
-  "o0009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "933",
-   "reason": null
-  },
-  "o0010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "784",
-   "reason": null
-  },
-  "n006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "294",
-   "reason": null
-  },
-  "y009": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  15611,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261022-3-y009.json Uzayda kaskını çıkarsaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/De1oXcQFOwY/"
  ],
- "finished": "2026-10-23T10:04:23+00:00"
+ "finished": "2026-10-23T13:09:37+00:00"
 }
