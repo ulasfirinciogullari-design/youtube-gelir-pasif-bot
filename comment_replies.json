@@ -20,21 +20,11 @@
    "s",
    "kanal zaten cevaplamış"
   ],
-  "UgyU9EpFAp-8SNjndQ14AaABAg.AboxICVLWhlAbpPSvk1WPX": [
-   1792274758,
-   "s",
-   "link veya etiket içeriyor"
-  ],
   "Ugyt440YW6MborsRWUZ4AaABAg": [
    1792274758,
    "r",
    "Ugyt440YW6MborsRWUZ4AaABAg.Ac1lF0ZLsrvAc4dwdPkEk_",
    "UCS1_leF0sEc80XuwA93H3KA"
-  ],
-  "Ugx4yuxzNIkQmVj4bkd4AaABAg": [
-   1792274758,
-   "s",
-   "Gibberish/Ascii art"
   ],
   "Ugy9r-eDkqcVbdPr_yV4AaABAg.AbowSuOLN8NAbsGGmykls5": [
    1792274758,
@@ -107,6 +97,18 @@
    "r",
    "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAcK02siwwHd",
    "UCpApOd1wUrglRk6Tw6dOObg"
+  ],
+  "Ugx4yuxzNIkQmVj4bkd4AaABAg": [
+   1792790774,
+   "r",
+   "Ugx4yuxzNIkQmVj4bkd4AaABAg.Ac0VWP-dVW9AcK19QZmeKb",
+   "UC0HBASdSFpU_QARZe5cJCbw"
+  ],
+  "UgyU9EpFAp-8SNjndQ14AaABAg.AboxICVLWhlAbpPSvk1WPX": [
+   1792790774,
+   "r",
+   "UgyU9EpFAp-8SNjndQ14AaABAg.AboxICVLWhlAcK19WTbgVm",
+   "UCSVduSLgy-CorFLZFEVDsog"
   ]
  },
  "tracked": {
@@ -129,7 +131,7 @@
   },
   "UgyU9EpFAp-8SNjndQ14AaABAg": {
    "at": 1792274758,
-   "n": 2
+   "n": 3
   },
   "Ugy9r-eDkqcVbdPr_yV4AaABAg": {
    "at": 1792274758,
@@ -191,6 +193,11 @@
    "at": 1792790202,
    "n": 1,
    "reply": "Hızlı çıktın! İlk yorum senin olmuş. 😊"
+  },
+  "Ugx4yuxzNIkQmVj4bkd4AaABAg": {
+   "at": 1792790774,
+   "n": 1,
+   "reply": "Vay canına, ne güzel bir sanat eseri bu! 🌸 Teşekkürler."
   }
  },
  "channel": {
@@ -275,6 +282,18 @@
    "video": "7xjRSwfX83E",
    "comment": "İlk",
    "reply": "Hızlı çıktın! İlk yorum senin olmuş. 😊"
+  },
+  {
+   "at": 1792790774,
+   "video": "kdEbtK5fwQQ",
+   "comment": "░░░░░░▄▄ ░░░░░█░░█ ▄▄▄▄▄█░░█▄▄▄ ▓▓▓▓█░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ███▀▀▀███████ ╱╱┏╮╱╱╱╱╱╱╱╱╱╱ ╱╱┃┃╱╱┳╱┓┳╭┛┳┓ ▉━╯┗━╮┃╱┃┣┻╮┣╱ ▉┈┈┈┈┃┻┛┛┻",
+   "reply": "Vay canına, ne güzel bir sanat eseri bu! 🌸 Teşekkürler."
+  },
+  {
+   "at": 1792790774,
+   "video": "RUyMb5fCIl4",
+   "comment": "evet doğru çünki zaman keçdikce ateşde söner",
+   "reply": "@KARANLIK55 Zamanın ateşi söndürmesi üzerine bu yorumun çok düşündürücü. 🔥 Zamanın aslında sadece ileri aktığı, geri dönmediği de bilinen bir gerçek!"
   }
  ]
 }
