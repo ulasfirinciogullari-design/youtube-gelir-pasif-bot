@@ -31,6 +31,9 @@ Kurallar:
   hareketi veya durumu en yakın gösteren, aynı özneye ait adaylar gelsin.
 - Cümleyle çelişen adayı seçme (cümle zıplamayı anlatırken uyuyan kedi gibi). Konuyla ilgisiz bir adayı (manzara, saat,
   insan iskeleti, alakasız nesne vb.) asla seçme. Uygun aday yetmiyorsa daha az seç.
+- Bir sahnede "bu sahnenin öznesi" yazıyorsa o sahne konunun hayvanını değil o özneyi gösterir (bebek videosunda iskelet
+  sahnesi gibi); o sahne için o özneyi gösteren adayları seç.
+- Konunun öznesine benzeyen başka bir türü seçme (dev panda anlatılırken kırmızı panda, kurbağa yerine timsah derisi gibi).
 - Yazı, logo, filigran, çizim/animasyon olan veya bulanık adayları seçme.
 - Bir aday yalnızca bir sahnede kullanılabilir. Adayları en uygun olandan başlayarak sırala.
 Sadece şu JSON'u döndür: {{"scenes": [{{"scene": 1, "clips": [4, 9]}}]}}"""
@@ -99,6 +102,7 @@ def match_clips(topic: str, scenes: list[dict], wanted: list[int], candidates: l
 
     scene_lines = "\n".join(
         f"{n}. ({wanted[n - 1]} aday) {s.get('text', '')} [aranan görüntü: {s.get('stock_query', '')}]"
+        + (f" [bu sahnenin öznesi: {', '.join(s['subject'])}]" if s.get("subject") else "")
         for n, s in enumerate(scenes, start=1)
     )
     parts: list[dict] = [{"text": MATCH_PROMPT.format(topic=topic, scenes=scene_lines)}]
