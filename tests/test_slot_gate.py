@@ -210,6 +210,9 @@ def test_workflow_matches_the_gate(monkeypatch):
     assert slot_gate.PRODUCE_STEP in names
     gate = names.index("🚦 Sıra Kontrolü")
     assert "id: gate" in steps[gate] and "python3 scripts/slot_gate.py" in steps[gate]
+    # Watch runs and slot=true manual runs (Claude's dispatcher) are gated like cron ticks, other manual runs are not.
+    assert "github.actor == 'github-actions[bot]' || inputs.slot) && 'schedule'" in steps[gate]
+    assert re.search(r"\n      slot:\n(        .*\n)*?        type: boolean\n", workflow)
     assert names[:gate] == ["📥 Repoyu Çek", "🧠 Kanal Hafızasını Getir"]
     # The watch restart runs on skipped ticks too: it is a few API calls and must never fail the job.
     watch = names.index("🫀 Nöbeti Kontrol Et")
