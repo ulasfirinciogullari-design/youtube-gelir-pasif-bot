@@ -1,5 +1,5 @@
 {
- "at": "2026-10-23T14:07:44+00:00",
+ "at": "2026-10-23T15:03:50+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 41,
   "viewCount": 22881,
-  "videoCount": 29
+  "videoCount": 30
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -96,7 +96,7 @@
    "comment": 4
   },
   "ActwPx-yTCQ": {
-   "view": 931,
+   "view": 932,
    "like": 8,
    "comment": 4
   },
@@ -121,12 +121,12 @@
    "comment": 0
   },
   "rijRRVfG0ZY": {
-   "view": 983,
+   "view": 984,
    "like": 10,
    "comment": 2
   },
   "kJHNXA1I-SU": {
-   "view": 1008,
+   "view": 1033,
    "like": 1,
    "comment": 0
   },
@@ -136,28 +136,33 @@
    "comment": 0
   },
   "CK03tB9BVyY": {
-   "view": 957,
+   "view": 955,
    "like": 4,
    "comment": 2
   },
   "VMP8uC3O6jU": {
-   "view": 936,
+   "view": 935,
    "like": 6,
    "comment": 0
   },
   "LjCJ1NSbCQQ": {
-   "view": 808,
+   "view": 800,
    "like": 3,
    "comment": 0
   },
   "gEB2tRsHr5s": {
-   "view": 442,
+   "view": 486,
    "like": 1,
-   "comment": 0
+   "comment": 3
   },
   "hf5CYGuKU8M": {
-   "view": 372,
-   "like": 2,
+   "view": 534,
+   "like": 4,
+   "comment": 0
+  },
+  "2BcgVPgRmg8": {
+   "view": 0,
+   "like": 0,
    "comment": 0
   }
  },
