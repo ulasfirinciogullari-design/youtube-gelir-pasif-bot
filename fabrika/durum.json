@@ -967,14 +967,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-16T05:25:56+00:00",
-   "mod": "zorla",
-   "title": "Güneş Gerçekte Ne Kadar Büyük?",
-   "url": "https://youtube.com/shorts/yHElVXfvdsw",
-   "duration": 37.5,
-   "chars": 556
-  },
-  {
    "finished": "2026-10-16T12:04:35+00:00",
    "mod": "saatlik",
    "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
@@ -1379,6 +1371,12 @@
    "url": "https://youtube.com/shorts/2BcgVPgRmg8",
    "duration": 17.2,
    "chars": 257
+  },
+  {
+   "finished": "2026-10-23T17:39:07+00:00",
+   "mod": "igbolum",
+   "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
+   "chars": 277
   }
  ],
  "last_fail": 1792487549.018023,
@@ -1498,6 +1496,11 @@
     "media_id": "18035608256892734",
     "url": "https://www.instagram.com/reel/De1oXcQFOwY/",
     "at": 1792760977.6077125
+   },
+   "o0010": {
+    "media_id": "18222019288357024",
+    "url": "https://www.instagram.com/reel/De2HMaOCQGj/",
+    "at": 1792777147.6942205
    }
   },
   "eski": [
