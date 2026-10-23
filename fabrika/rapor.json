@@ -1,18 +1,71 @@
 {
- "started": "2026-10-23T09:07:44+00:00",
- "mod": "igbolum",
- "gate": "instagram: o0007",
+ "started": "2026-10-23T10:03:38+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
- "chars": 371,
- "instagram": {
-  "anahtar_bitis": "2026-12-16T22:49+00:00",
-  "media_id": "17948176503314417",
-  "url": "https://www.instagram.com/reel/De1M56QF7Zc/",
-  "at": 1792746575.6692204
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "41",
+  "videos": "28"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/De1M56QF7Zc/"
+ "credits_before": [
+  15611,
+  613902
  ],
- "finished": "2026-10-23T09:09:35+00:00"
+ "kuyruk": {
+  "dosya": "20261022-3-y009.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y009",
+  "series": "Ya Olsaydı?",
+  "q": "Uzayda kaskını çıkarsaydın ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 248,
+ "duration": 18.7,
+ "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
+ "url": "https://youtube.com/shorts/hf5CYGuKU8M",
+ "recent_status": {
+  "g005": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "928",
+   "reason": null
+  },
+  "o0009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "933",
+   "reason": null
+  },
+  "o0010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "784",
+   "reason": null
+  },
+  "n006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "294",
+   "reason": null
+  },
+  "y009": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  15611,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261022-3-y009.json Uzayda kaskını çıkarsaydın ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-10-23T10:04:23+00:00"
 }
