@@ -83,6 +83,11 @@ on:
         required: false
         default: ''
         type: string
+      slot:
+        description: 'Slot nöbeti: işaretliyse sıra kontrolü zamanlanmış çalışmadaki gibi uygulanır, slot doluysa Short üretilmez'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: shorts-autopilot
@@ -115,12 +120,14 @@ jobs:
       # Runs on the runner's system Python before setup-python, apt and pip, so a skipped tick costs
       # seconds. Manual runs always get go=true; the reasons for a scheduled tick are printed here.
       # Runs the hourly watch dispatched (actor github-actions[bot]) are gated like cron ticks: a late cron
-      # run can fill the slot while the watch's run waits in the concurrency group.
+      # run can fill the slot while the watch's run waits in the concurrency group. So are manual runs with
+      # slot=true (Claude's slot dispatcher): on 2026-10-23 it and the watch dispatched 3 s apart, and the
+      # ungated manual run uploaded a second Short into the slot after the watch's run.
       - name: 🚦 Sıra Kontrolü
         id: gate
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          EVENT_NAME: ${{ (github.event_name == 'schedule' || github.actor == 'github-actions[bot]') && 'schedule' || github.event_name }}
+          EVENT_NAME: ${{ (github.event_name == 'schedule' || github.actor == 'github-actions[bot]' || inputs.slot) && 'schedule' || github.event_name }}
         run: python3 scripts/slot_gate.py
 
       # GitHub drops most cron ticks, so the hourly watch (slot_heartbeat.yml) starts the Shorts. Every run,

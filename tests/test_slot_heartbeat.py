@@ -254,7 +254,7 @@ def test_shorts_workflow_treats_watch_runs_like_cron_ticks():
     watch_run = f"github.actor == '{slot_heartbeat.BOT}'"
     env = dict(re.findall(r"^\s+([A-Z_]+): (\$\{\{.*\}\})", workflow, re.M))
     assert env["EVENT_NAME"] == ("${{ (github.event_name == 'schedule' || " + watch_run
-                                 + ") && 'schedule' || github.event_name }}")
+                                 + " || inputs.slot) && 'schedule' || github.event_name }}")
     assert env["PRIVACY"].startswith("${{ (github.event_name == 'schedule' || " + watch_run + ") && (vars.PUBLISH_PRIVACY")
     assert env["CONTENT_FORMAT"].startswith(f"${{{{ github.actor != '{slot_heartbeat.BOT}' && github.event.inputs.format")
     assert set(slot_heartbeat.SHORTS_INPUTS) == {"task"}
