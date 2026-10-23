@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0029",
+  "topic": "Güvercinler yürürken neden başını sallar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Güvercinin başı aslında hiç geri gitmiyor 🕊️",
+  "hook_text": "GÜVERCİN NEDEN BAŞINI SALLAR?",
+  "description": "Güvercinler yürürken neden başını ileri geri sallar?\n\nGüvercinin başı aslında hiç geri gitmez. Önce başını ileri iter, sonra havada sabit tutar; bu sırada gövde başın altından öne geçer. Baş sabitken görüntü bulanıklaşmaz, güvercin yemi ve tehlikeyi net görür. Koşu bandında yerinde yürüyen güvercinler ise başını hiç sallamadı; çünkü etrafları yerinden oynamıyordu.\n\nSence hangisi daha şaşırtıcı: başın havada sabit durması mı, koşu bandında hiç sallanmaması mı?\n\n#güvercin #kuşlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0029",
+  "tags": [
+    "güvercin",
+    "güvercinler",
+    "güvercin baş sallama",
+    "güvercin neden baş sallar",
+    "güvercin yürüyüşü",
+    "kuşlar neden baş sallar",
+    "güvercin başı",
+    "kuş görüşü",
+    "kuşlar nasıl görür",
+    "baş sallama",
+    "şehir kuşları",
+    "kumru",
+    "kuşlar",
+    "kuş davranışları",
+    "hayvan davranışları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "doğa",
+    "pigeon",
+    "pigeon head bobbing",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "guvercin",
+    "guvercinler",
+    "guvercin bas sallama",
+    "guvercin neden bas sallar",
+    "guvercin yuruyusu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A pigeon's head never actually moves backward 🕊️",
+      "description": "When a pigeon walks, it thrusts its head forward and then holds it still in space while its body catches up. The moment that looks like a backward bob is the head standing still, which keeps the view sharp. On a treadmill, where the surroundings don't move, pigeons stopped bobbing altogether.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "es": {
+      "title": "La cabeza de la paloma nunca va hacia atrás 🕊️",
+      "description": "Al caminar, la paloma adelanta la cabeza y luego la mantiene quieta en el aire mientras el cuerpo la alcanza. Ese momento que parece un cabeceo hacia atrás es la cabeza inmóvil, lo que mantiene la imagen nítida. En una cinta de correr, donde el entorno no se mueve, las palomas dejaron de cabecear.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "pt": {
+      "title": "A cabeça do pombo nunca vai para trás 🕊️",
+      "description": "Ao andar, o pombo empurra a cabeça para a frente e depois a mantém parada no ar enquanto o corpo a alcança. O momento que parece um balanço para trás é a cabeça imóvel, o que deixa a imagem nítida. Numa esteira, onde o ambiente não se move, os pombos pararam de balançar a cabeça.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "de": {
+      "title": "Der Kopf einer Taube bewegt sich nie nach hinten 🕊️",
+      "description": "Beim Gehen schiebt die Taube den Kopf nach vorn und hält ihn dann ruhig in der Luft, während der Körper nachkommt. Der Moment, der wie ein Nicken nach hinten aussieht, ist in Wahrheit ein stillstehender Kopf, der das Bild scharf hält. Auf einem Laufband, wo sich die Umgebung nicht bewegt, hörten Tauben mit dem Nicken ganz auf.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "fr": {
+      "title": "La tête du pigeon ne recule jamais vraiment 🕊️",
+      "description": "En marchant, le pigeon avance la tête puis la garde immobile dans l'espace pendant que son corps la rattrape. Ce qui ressemble à un mouvement vers l'arrière, c'est la tête qui reste fixe, ce qui garde l'image nette. Sur un tapis roulant, où le décor ne bouge pas, les pigeons ont cessé de hocher la tête.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "it": {
+      "title": "La testa del piccione non va mai davvero all'indietro 🕊️",
+      "description": "Quando cammina, il piccione spinge la testa in avanti e poi la tiene ferma nello spazio mentre il corpo la raggiunge. Quello che sembra un movimento all'indietro è la testa immobile, che mantiene l'immagine nitida. Su un tapis roulant, dove l'ambiente non si muove, i piccioni hanno smesso di muovere la testa.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "ru": {
+      "title": "Голова голубя на самом деле никогда не движется назад 🕊️",
+      "description": "При ходьбе голубь выбрасывает голову вперёд, а потом держит её неподвижно в пространстве, пока тело её догоняет. Момент, похожий на кивок назад, на самом деле неподвижная голова, благодаря которой картинка не смазывается. На беговой дорожке, где окружение не движется, голуби совсем перестали кивать.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "ar": {
+      "title": "رأس الحمامة لا يرجع إلى الخلف أبدًا في الحقيقة 🕊️",
+      "description": "حين تمشي الحمامة تدفع رأسها إلى الأمام ثم تثبّته في مكانه في الهواء بينما يلحق به جسمها. واللحظة التي تبدو كأنها هزّة إلى الخلف هي في الواقع رأس ثابت يبقي الرؤية واضحة. وعلى جهاز المشي، حيث لا يتحرك المحيط، توقفت الحمامات عن هزّ رؤوسها تمامًا.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "hi": {
+      "title": "कबूतर का सिर असल में कभी पीछे नहीं जाता 🕊️",
+      "description": "चलते समय कबूतर पहले सिर आगे धकेलता है, फिर उसे हवा में बिल्कुल स्थिर रखता है जबकि शरीर आगे आ जाता है। जो पल सिर के पीछे झटकने जैसा लगता है, उसमें सिर दरअसल रुका होता है, जिससे नज़ारा धुँधला नहीं होता। ट्रेडमिल पर, जहाँ आसपास कुछ नहीं हिलता, कबूतरों ने सिर हिलाना पूरी तरह छोड़ दिया।\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "id": {
+      "title": "Kepala merpati sebenarnya tidak pernah mundur 🕊️",
+      "description": "Saat berjalan, merpati mendorong kepalanya ke depan lalu menahannya diam di udara sementara tubuhnya menyusul. Momen yang tampak seperti kepala mundur sebenarnya adalah kepala yang diam, sehingga pandangannya tetap tajam. Di atas treadmill, saat sekelilingnya tidak bergerak, merpati berhenti menggerakkan kepala sama sekali.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "ja": {
+      "title": "ハトの頭は実は一度も後ろに下がっていない 🕊️",
+      "description": "ハトは歩くとき、頭を前に突き出し、体が追いつくまでその場で空中に静止させます。後ろに動いたように見える瞬間は、実は頭が止まっている瞬間で、そのおかげで景色がぶれません。周りの景色が動かないランニングマシンの上では、ハトは首振りをまったくしませんでした。\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "ko": {
+      "title": "비둘기의 머리는 사실 뒤로 가지 않는다 🕊️",
+      "description": "비둘기는 걸을 때 머리를 앞으로 내민 뒤, 몸이 따라올 때까지 공중에 그대로 고정합니다. 머리가 뒤로 가는 것처럼 보이는 순간은 사실 머리가 멈춰 있는 순간이고, 덕분에 시야가 흔들리지 않습니다. 주변이 움직이지 않는 러닝머신 위에서는 비둘기가 고개를 전혀 까딱이지 않았습니다.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "pl": {
+      "title": "Głowa gołębia tak naprawdę nigdy nie cofa się do tyłu 🕊️",
+      "description": "Idąc, gołąb wysuwa głowę do przodu, a potem trzyma ją nieruchomo w powietrzu, aż tułów ją dogoni. Moment, który wygląda jak ruch do tyłu, to w rzeczywistości nieruchoma głowa, dzięki której obraz się nie rozmazuje. Na bieżni, gdzie otoczenie stoi w miejscu, gołębie w ogóle przestały kiwać głową.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "nl": {
+      "title": "De kop van een duif gaat eigenlijk nooit naar achteren 🕊️",
+      "description": "Een lopende duif steekt haar kop naar voren en houdt hem dan stil in de lucht terwijl het lichaam bijkomt. Het moment dat op knikken naar achteren lijkt, is in werkelijkheid een kop die stilstaat, waardoor het beeld scherp blijft. Op een loopband, waar de omgeving niet beweegt, stopten duiven helemaal met knikken.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "uk": {
+      "title": "Голова голуба насправді ніколи не рухається назад 🕊️",
+      "description": "Під час ходьби голуб викидає голову вперед, а потім тримає її нерухомо в просторі, доки тіло її наздоганяє. Момент, схожий на кивок назад, насправді нерухома голова, завдяки якій картинка не розмивається. На біговій доріжці, де довкілля не рухається, голуби взагалі перестали кивати.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "vi": {
+      "title": "Đầu chim bồ câu thật ra chưa bao giờ lùi về sau 🕊️",
+      "description": "Khi bước đi, bồ câu đẩy đầu ra trước rồi giữ yên nó trong không trung trong lúc thân mình đuổi kịp. Khoảnh khắc trông như đầu giật lùi thực ra là lúc đầu đứng yên, giúp hình ảnh không bị nhòe. Trên máy chạy bộ, nơi cảnh vật xung quanh không chuyển động, bồ câu hoàn toàn ngừng gật đầu.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "az": {
+      "title": "Göyərçinin başı əslində heç vaxt geri getmir 🕊️",
+      "description": "Göyərçin yeriyəndə əvvəlcə başını irəli atır, sonra bədəni ona çatana qədər başını havada sabit saxlayır. Başın geri getdiyi kimi görünən an əslində başın dayandığı andır və bu, görüntünü net saxlayır. Ətrafın tərpənmədiyi qaçış trenajorunda isə göyərçinlər başlarını heç yelləmədi.\n\n#shorts\n\nSeri: mk-c0029"
+    },
+    "ro": {
+      "title": "Capul porumbelului nu merge niciodată, de fapt, înapoi 🕊️",
+      "description": "Când merge, porumbelul își împinge capul înainte și apoi îl ține nemișcat în aer până îl ajunge corpul din urmă. Momentul care pare o mișcare înapoi este de fapt capul stând pe loc, ceea ce păstrează imaginea clară. Pe o bandă de alergare, unde împrejurimile nu se mișcă, porumbeii au încetat complet să dea din cap.\n\n#shorts\n\nSeri: mk-c0029"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: başın havada sabit durması mı, koşu bandında hiç sallanmaması mı?",
+  "scenes": [
+    {
+      "text": "Bu güvercinin başı aslında hiç geri gitmiyor.",
+      "visual": "pigeon walking on a city sidewalk, head bobbing with each step",
+      "stock_query": "pigeon walking",
+      "source": "stock",
+      "callout": "GERİ GİTMİYOR"
+    },
+    {
+      "text": "Önce başını ileri itiyor, sonra onu havada sabit tutuyor.",
+      "visual": "side view of a pigeon walking slowly on pavement",
+      "stock_query": "pigeon street",
+      "source": "stock"
+    },
+    {
+      "text": "O sırada gövde yürümeye devam edip başın altından öne geçiyor.",
+      "visual": "group of pigeons walking in a city square",
+      "stock_query": "pigeons city",
+      "source": "stock"
+    },
+    {
+      "text": "Geri sallanma sandığın an, başın kıpırdamadan durduğu an.",
+      "visual": "close up of a pigeon head and eye, perfectly steady",
+      "stock_query": "pigeon closeup",
+      "source": "stock",
+      "callout": "SABİT BAŞ"
+    },
+    {
+      "text": "Baş sabitken görüntü bulanıklaşmaz; yemi ve tehlikeyi net görür.",
+      "visual": "pigeon pecking at seeds on the ground",
+      "stock_query": "pigeon eating",
+      "source": "stock"
+    },
+    {
+      "text": "Koşu bandında yerinde yürüyen güvercinler ise başını hiç sallamadı.",
+      "visual": "pigeon standing still and looking around",
+      "stock_query": "pigeon bird",
+      "source": "stock",
+      "callout": "KOŞU BANDI"
+    }
+  ],
+  "duration_seconds": 16.27,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0029_1792762180_ig.mp4"
+}
