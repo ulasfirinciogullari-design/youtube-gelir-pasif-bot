@@ -1,71 +1,18 @@
 {
- "started": "2026-10-22T19:31:57+00:00",
- "mod": "zorla",
- "gate": "zorla",
+ "started": "2026-10-23T09:07:44+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: o0007",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "41",
-  "videos": "27"
+ "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
+ "chars": 371,
+ "instagram": {
+  "anahtar_bitis": "2026-12-16T22:49+00:00",
+  "media_id": "17948176503314417",
+  "url": "https://www.instagram.com/reel/De1M56QF7Zc/",
+  "at": 1792746575.6692204
  },
- "credits_before": [
-  14988,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261022-2-n006.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "n006",
-  "series": "Ne Kadar Büyük?",
-  "q": "Samanyolu ne kadar büyük?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 384,
- "duration": 25.3,
- "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
- "url": "https://youtube.com/shorts/gEB2tRsHr5s",
- "recent_status": {
-  "o0008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1013",
-   "reason": null
-  },
-  "g005": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "936",
-   "reason": null
-  },
-  "o0009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "659",
-   "reason": null
-  },
-  "o0010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "462",
-   "reason": null
-  },
-  "n006": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  15081,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261022-2-n006.json Samanyolu ne kadar büyük? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/De1M56QF7Zc/"
  ],
- "finished": "2026-10-22T19:32:54+00:00"
+ "finished": "2026-10-23T09:09:35+00:00"
 }
