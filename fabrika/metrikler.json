@@ -1,5 +1,5 @@
 {
- "at": "2026-10-22T21:35:15+00:00",
+ "at": "2026-10-23T00:10:40+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -21,7 +21,7 @@
  },
  "canli": {
   "8KoJ0-4fHyY": {
-   "view": 1296,
+   "view": 1295,
    "like": 15,
    "comment": 1
   },
@@ -36,17 +36,17 @@
    "comment": 0
   },
   "53rXVX6QpA0": {
-   "view": 30,
+   "view": 31,
    "like": 2,
    "comment": 0
   },
   "f6WyXXJWASs": {
-   "view": 307,
+   "view": 310,
    "like": 4,
    "comment": 4
   },
   "xMYUnZVVITU": {
-   "view": 554,
+   "view": 555,
    "like": 12,
    "comment": 2
   },
@@ -91,7 +91,7 @@
    "comment": 2
   },
   "pJPCpis147c": {
-   "view": 1355,
+   "view": 1357,
    "like": 9,
    "comment": 4
   },
@@ -101,42 +101,42 @@
    "comment": 4
   },
   "5NCDRT4b4M0": {
-   "view": 1199,
+   "view": 1210,
    "like": 14,
    "comment": 2
   },
   "hJaWCEzLO_4": {
-   "view": 1299,
+   "view": 1304,
    "like": 17,
    "comment": 0
   },
   "zkaODqXzaCo": {
-   "view": 1463,
+   "view": 1515,
    "like": 10,
    "comment": 0
   },
   "iKojt12DL_Y": {
-   "view": 1319,
+   "view": 1336,
    "like": 7,
    "comment": 0
   },
   "rijRRVfG0ZY": {
-   "view": 980,
+   "view": 982,
    "like": 10,
    "comment": 2
   },
   "kJHNXA1I-SU": {
-   "view": 991,
+   "view": 1002,
    "like": 1,
    "comment": 0
   },
   "-Ob9VS2V1H4": {
-   "view": 1013,
+   "view": 1015,
    "like": 5,
    "comment": 0
   },
   "CK03tB9BVyY": {
-   "view": 936,
+   "view": 937,
    "like": 4,
    "comment": 2
   },
@@ -146,13 +146,13 @@
    "comment": 0
   },
   "LjCJ1NSbCQQ": {
-   "view": 632,
+   "view": 602,
    "like": 3,
    "comment": 0
   },
   "gEB2tRsHr5s": {
-   "view": 0,
-   "like": 0,
+   "view": 68,
+   "like": 1,
    "comment": 0
   }
  },
@@ -367,7 +367,7 @@
    "views": 1018,
    "estimatedMinutesWatched": 133,
    "averageViewDuration": 16,
-   "averageViewPercentage": 69.86,
+   "averageViewPercentage": 69.92,
    "likes": 9,
    "shares": 0,
    "comments": 0,
