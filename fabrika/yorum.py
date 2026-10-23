@@ -34,7 +34,9 @@ PER_RUN = int(os.environ.get("YO_YORUM_TUR") or 10)
 PER_CHAT = int(os.environ.get("YO_YORUM_SOHBET") or 10)  # our replies per thread per 24 h, so a chat (or a bot) cannot loop
 MAX_AGE_DAYS = 14
 SIGN = {"pi": "— Profesör Pi 🔭", "bit": "— Bit 🤖"}
-LINK = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b|@\w", re.I)
+# a web address; an @name is not a link (until 2026-10-23 it was, and replies that tagged someone went unanswered)
+LINK = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b", re.I)
+SKIP_LINK = "bağlantı içeriyor"
 MENTION = re.compile(r"^(?:@[\w.\-·]+[\s,:]*)+")
 HANDLE = re.compile(r"^@?[\w.\-·]{1,60}$")
 PILOT = {"-7OxhWXxc8w": "Ay Yok Olsaydı Ne Olurdu?"}
@@ -180,7 +182,7 @@ def new_comments(threads, channel_id, done, more=None, counts=None):
             quiet[tid] = "boş"
             continue
         if LINK.search(text):
-            quiet[tid] = "link içeriyor"
+            quiet[tid] = SKIP_LINK
             continue
         fresh.append({"id": tid, "video": video, "text": text[:500], "at": top["at"], "author": top["author"],
                       "likes": top["likes"]})
@@ -220,7 +222,7 @@ def follow_ups(msgs, ours, done, limit):
         ids = [m["id"] for m in ms]
         text = " / ".join(t for t in (strip_mentions(m["text"]) for m in ms) if t)
         why = ("eski" if ms[-1]["at"] < limit else f"bu sohbette günlük {PER_CHAT} cevap doldu"
-               if ours_today >= PER_CHAT else "boş" if not text else "link içeriyor" if LINK.search(text) else None)
+               if ours_today >= PER_CHAT else "boş" if not text else SKIP_LINK if LINK.search(text) else None)
         if why:
             quiet.update({i: why for i in ids})
             continue
@@ -228,6 +230,15 @@ def follow_ups(msgs, ours, done, limit):
                       "text": text[:500], "at": ms[-1]["at"],
                       "context": {"first": strip_mentions(msgs[0]["text"])[:300], "our_reply": last["text"][:300]}})
     return items, quiet
+
+
+def relink(done, counts=None):
+    """Entries the old link rule skipped ("link içeriyor", often only an @name) are dropped so those comments are
+    judged again; a thread's cached reply count goes too, so its full reply list is read once more."""
+    for k in [k for k, v in done.items() if v[1] == "s" and v[2:3] == ["link içeriyor"]]:
+        done.pop(k)
+        if counts is not None:
+            counts.pop(k.split(".")[0], None)
 
 
 def mention(name, reply):
@@ -304,6 +315,7 @@ def run(state, report, dry):
     threads = fetch_threads(yt, channel_id)
     report["threads"] = len(threads)
     counts = box.setdefault("sayilar", {})
+    relink(done, counts)
     fresh, quiet, seen = new_comments(threads, channel_id, done, lambda tid: fetch_replies(yt, tid), counts)
     now = time.time()
     report["quiet"] = len(quiet)

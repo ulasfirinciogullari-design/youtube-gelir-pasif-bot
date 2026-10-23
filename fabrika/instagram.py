@@ -297,7 +297,7 @@ def fresh_comments(tok, user, done, pending):
             elif not text:
                 quiet[cid] = "boş"
             elif yorum.LINK.search(text):
-                quiet[cid] = "link içeriyor"
+                quiet[cid] = yorum.SKIP_LINK
             else:
                 fresh.append({"id": cid, "kind": "yorum", "video": m["id"], "text": text[:500], "author": name,
                               "at": _ts(c.get("timestamp"))})
@@ -336,7 +336,7 @@ def fresh_dms(tok, user, done, pending):
         elif not text:
             quiet[mid] = "metin yok (fotoğraf, ses veya paylaşım)"
         elif yorum.LINK.search(text):
-            quiet[mid] = "link içeriyor"
+            quiet[mid] = yorum.SKIP_LINK
         else:
             fresh.append({"id": mid, "kind": "dm", "video": "dm", "to": frm.get("id"), "text": text[:500],
                           "author": frm.get("username") or frm.get("id"), "at": _ts(last.get("created_time"))})
@@ -380,6 +380,7 @@ def cevap(state, report, dry):
     subscribe(tok, report)
     box = state.setdefault("instagram", {}).setdefault("cevaplar", {"done": {}, "son": []})
     done = box["done"]
+    yorum.relink(done)
     now = time.time()
     recent = [v for v in done.values() if v[1] == "r" and now - v[0] < 86400]
     sent = len(recent)
