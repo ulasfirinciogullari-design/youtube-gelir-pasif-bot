@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0033",
+ "topic": "Koyunlar yüzleri ne kadar hatırlar?",
+ "kategori": "hayvan",
+ "subject": [
+  "sheep"
+ ],
+ "stock_hint": "sheep face meadow",
+ "script": {
+  "title": "Koyunlar 50 yüzü 2 yıl boyunca unutmaz 🐑",
+  "hook_text": "KOYUN YÜZ TANIR MI?",
+  "scenes": [
+   {
+    "text": "Bu koyun elli yüzü iki yıl boyunca hatırlayabilir.",
+    "visual": "close-up of a sheep's face in a green meadow looking at the camera",
+    "stock_query": "sheep face",
+    "source": "stock",
+    "callout": "50 YÜZ, 2 YIL"
+   },
+   {
+    "text": "Bilim insanları koyunlara başka koyunların yüz fotoğraflarını gösterdi.",
+    "visual": "flock of sheep grazing on a green hillside",
+    "stock_query": "sheep flock",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bu yüzleri iki yıl sonra da tanıdılar, üstelik yandan görünce bile.",
+    "visual": "side profile of a sheep's head in a pasture",
+    "stock_query": "sheep head",
+    "source": "stock",
+    "callout": "YANDAN BİLE"
+   },
+   {
+    "text": "Başka bir deneyde, ünlü insanların yüzlerini fotoğraftan tanımayı öğrendiler.",
+    "visual": "sheep looking curiously over a wooden fence",
+    "stock_query": "sheep looking",
+    "source": "stock",
+    "callout": "İNSAN YÜZÜ"
+   },
+   {
+    "text": "On denemenin sekizinde doğru yüzü seçtiler.",
+    "visual": "sheep walking toward the camera on a farm",
+    "stock_query": "sheep farm",
+    "source": "stock",
+    "callout": "10'DA 8"
+   },
+   {
+    "text": "Sürüde hepsi sana aynı görünür, ama onlar birbirini yüzünden tanır.",
+    "visual": "two sheep standing close together in a meadow",
+    "stock_query": "sheep meadow",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Koyunlar elli farklı koyun yüzünü iki yıldan uzun süre hatırlayabilir, hatta yandan görünce bile tanır. Başka bir deneyde ünlü insanların yüzlerini fotoğraftan tanımayı öğrenip on denemenin sekizinde doğru yüzü seçtiler.",
+  "tags": [
+   "koyun",
+   "koyunlar",
+   "koyun zekası",
+   "koyun hafızası",
+   "yüz tanıma",
+   "hayvan zekası",
+   "çiftlik hayvanları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: elli yüzü iki yıl hatırlaması mı, fotoğraftan insan yüzü tanıması mı?",
+  "en_title": "Sheep can remember 50 faces for more than two years 🐑",
+  "en_description": "Sheep are far better with faces than their reputation suggests. In a study published in Nature, sheep remembered 50 different sheep faces for more than two years, even in profile. In a later Cambridge experiment they learned to recognize famous human faces from photos and picked the right one 8 times out of 10.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Koyunlar yüz tanır mı, bir yüzü ne kadar süre hatırlar?\n\nKoyunlar elli farklı koyun yüzünü iki yıldan uzun süre hatırlayabilir ve bu yüzleri yandan görünce bile tanır. Cambridge'deki başka bir deneyde koyunlar ünlü insanların yüzlerini fotoğraftan tanımayı öğrendi ve on denemenin sekizinde doğru yüzü seçti.\n\nSence hangisi daha şaşırtıcı: elli yüzü iki yıl hatırlaması mı, fotoğraftan insan yüzü tanıması mı?",
+  "hashtags": [
+   "#koyun",
+   "#hayvanlar",
+   "#hayvanzekası",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "koyun",
+   "koyunlar",
+   "koyun zekası",
+   "koyunlar yüz tanır mı",
+   "koyun hafızası",
+   "koyunlar akıllı mı",
+   "koyun yüz tanıma",
+   "yüz tanıma",
+   "hayvan hafızası",
+   "hayvan zekası",
+   "zeki hayvanlar",
+   "kuzu",
+   "koyun sürüsü",
+   "çiftlik hayvanları",
+   "hayvan davranışları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "deney",
+   "merak",
+   "sheep",
+   "sheep face recognition"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Sheep can remember 50 faces for more than two years 🐑",
+    "description": "Sheep are far better with faces than their reputation suggests. In a study published in Nature, sheep remembered 50 different sheep faces for more than two years, even in profile. In a later Cambridge experiment they learned to recognize famous human faces from photos and picked the right one 8 times out of 10."
+   },
+   "es": {
+    "title": "Las ovejas recuerdan 50 caras durante más de dos años 🐑",
+    "description": "Las ovejas reconocen caras mucho mejor de lo que dice su fama. En un estudio publicado en Nature recordaron 50 caras de otras ovejas durante más de dos años, incluso de perfil. En otro experimento en Cambridge aprendieron a reconocer a famosos en fotos y acertaron 8 de cada 10 veces."
+   },
+   "pt": {
+    "title": "Ovelhas lembram 50 rostos por mais de dois anos 🐑",
+    "description": "As ovelhas são muito melhores com rostos do que a fama sugere. Num estudo publicado na Nature, elas se lembraram de 50 rostos de outras ovelhas por mais de dois anos, até de perfil. Em outro experimento, em Cambridge, aprenderam a reconhecer famosos em fotos e acertaram 8 em cada 10 vezes."
+   },
+   "de": {
+    "title": "Schafe merken sich 50 Gesichter – über zwei Jahre lang 🐑",
+    "description": "Schafe erkennen Gesichter viel besser, als ihr Ruf vermuten lässt. In einer in Nature veröffentlichten Studie erinnerten sie sich mehr als zwei Jahre lang an 50 Gesichter anderer Schafe, sogar im Profil. In einem späteren Versuch in Cambridge lernten sie, Prominente auf Fotos zu erkennen, und lagen 8 von 10 Mal richtig."
+   },
+   "fr": {
+    "title": "Les moutons se souviennent de 50 visages pendant plus de deux ans 🐑",
+    "description": "Les moutons reconnaissent les visages bien mieux que ne le laisse croire leur réputation. Dans une étude publiée dans Nature, ils se sont souvenus de 50 visages d'autres moutons pendant plus de deux ans, même de profil. Lors d'une autre expérience à Cambridge, ils ont appris à reconnaître des célébrités en photo et ont choisi le bon visage 8 fois sur 10."
+   },
+   "it": {
+    "title": "Le pecore ricordano 50 volti per più di due anni 🐑",
+    "description": "Le pecore riconoscono i volti molto meglio di quanto dica la loro fama. In uno studio pubblicato su Nature hanno ricordato 50 musi di altre pecore per oltre due anni, anche di profilo. In un altro esperimento a Cambridge hanno imparato a riconoscere personaggi famosi in foto, indovinando 8 volte su 10."
+   },
+   "ru": {
+    "title": "Овцы помнят 50 лиц больше двух лет 🐑",
+    "description": "Овцы различают лица гораздо лучше, чем принято думать. В исследовании, опубликованном в Nature, они помнили 50 разных овец в лицо больше двух лет и узнавали их даже в профиль. А в более позднем эксперименте в Кембридже овцы научились узнавать знаменитостей по фото и выбирали верное лицо в 8 случаях из 10."
+   },
+   "ar": {
+    "title": "الخراف تتذكر 50 وجهًا لأكثر من عامين 🐑",
+    "description": "الخراف أبرع في تمييز الوجوه مما توحي به سمعتها. ففي دراسة نُشرت في مجلة Nature تذكّرت الخراف وجوه 50 خروفًا آخر لأكثر من عامين، حتى عند رؤيتها من الجانب. وفي تجربة لاحقة في كامبريدج تعلّمت التعرف على وجوه مشاهير من الصور، واختارت الوجه الصحيح 8 مرات من كل 10."
+   },
+   "hi": {
+    "title": "भेड़ें 50 चेहरे दो साल से ज़्यादा याद रखती हैं 🐑",
+    "description": "चेहरे पहचानने में भेड़ें उतनी भोली नहीं जितना माना जाता है। Nature में छपे एक अध्ययन में भेड़ों ने 50 दूसरी भेड़ों के चेहरे दो साल से ज़्यादा समय तक याद रखे और उन्हें बगल से देखकर भी पहचान लिया। कैम्ब्रिज के एक और प्रयोग में उन्होंने तस्वीरों से मशहूर लोगों को पहचानना सीखा और 10 में से 8 बार सही चेहरा चुना।"
+   },
+   "id": {
+    "title": "Domba bisa mengingat 50 wajah selama lebih dari dua tahun 🐑",
+    "description": "Domba jauh lebih jago mengenali wajah daripada yang orang kira. Dalam studi yang terbit di Nature, domba mengingat 50 wajah domba lain selama lebih dari dua tahun, bahkan dari samping. Dalam eksperimen lain di Cambridge, mereka belajar mengenali selebritas dari foto dan memilih wajah yang benar 8 dari 10 kali."
+   },
+   "ja": {
+    "title": "ヒツジは50頭の顔を2年以上覚えている 🐑",
+    "description": "ヒツジは見かけによらず、顔を見分けるのが得意です。科学誌Natureに載った研究では、ほかのヒツジ50頭の顔を2年以上覚えていて、横顔でも見分けられました。ケンブリッジの別の実験では写真から有名人の顔を覚え、10回中8回正しい顔を選びました。"
+   },
+   "ko": {
+    "title": "양은 얼굴 50개를 2년 넘게 기억한다 🐑",
+    "description": "양은 생각보다 얼굴을 훨씬 잘 알아봅니다. 네이처에 실린 연구에서 양은 다른 양 50마리의 얼굴을 2년 넘게 기억했고, 옆모습만 보고도 알아봤습니다. 케임브리지의 다른 실험에서는 사진 속 유명인의 얼굴을 익혀 10번 중 8번 정확한 얼굴을 골랐습니다."
+   },
+   "pl": {
+    "title": "Owce pamiętają 50 twarzy przez ponad dwa lata 🐑",
+    "description": "Owce rozpoznają twarze o wiele lepiej, niż sugeruje ich reputacja. W badaniu opublikowanym w „Nature” zapamiętały twarze 50 innych owiec na ponad dwa lata, nawet z profilu. W późniejszym eksperymencie w Cambridge nauczyły się rozpoznawać znane osoby na zdjęciach i wskazywały właściwą twarz 8 razy na 10."
+   },
+   "nl": {
+    "title": "Schapen onthouden 50 gezichten, meer dan twee jaar lang 🐑",
+    "description": "Schapen zijn veel beter in gezichten dan hun reputatie doet vermoeden. In een studie in Nature onthielden ze 50 gezichten van andere schapen meer dan twee jaar, zelfs van opzij. In een later experiment in Cambridge leerden ze beroemdheden op foto's herkennen en kozen ze 8 van de 10 keer het juiste gezicht."
+   },
+   "uk": {
+    "title": "Вівці пам'ятають 50 облич понад два роки 🐑",
+    "description": "Вівці розрізняють обличчя набагато краще, ніж прийнято думати. У дослідженні, опублікованому в Nature, вони пам'ятали 50 облич інших овець понад два роки й упізнавали їх навіть у профіль. А в пізнішому експерименті в Кембриджі вівці навчилися впізнавати знаменитостей на фото й обирали правильне обличчя у 8 випадках із 10."
+   },
+   "vi": {
+    "title": "Cừu nhớ được 50 khuôn mặt suốt hơn hai năm 🐑",
+    "description": "Cừu nhận diện khuôn mặt giỏi hơn nhiều so với tiếng tăm của chúng. Trong một nghiên cứu đăng trên Nature, cừu nhớ được khuôn mặt của 50 con cừu khác suốt hơn hai năm, kể cả khi nhìn nghiêng. Ở một thí nghiệm khác tại Cambridge, chúng học cách nhận ra người nổi tiếng qua ảnh và chọn đúng 8 trên 10 lần."
+   },
+   "az": {
+    "title": "Qoyunlar 50 sifəti iki ildən çox yadda saxlayır 🐑",
+    "description": "Qoyunlar sifətləri düşündüyümüzdən qat-qat yaxşı tanıyır. Nature jurnalında dərc olunan araşdırmada qoyunlar 50 başqa qoyunun sifətini iki ildən çox yadda saxladı, hətta yandan baxanda belə. Kembricdəki başqa bir təcrübədə isə fotolardan məşhur insanları tanımağı öyrəndilər və 10 dəfədən 8-də düzgün sifəti seçdilər."
+   },
+   "ro": {
+    "title": "Oile își amintesc 50 de fețe timp de peste doi ani 🐑",
+    "description": "Oile recunosc fețele mult mai bine decât le-ar arăta reputația. Într-un studiu publicat în Nature, și-au amintit 50 de fețe ale altor oi timp de peste doi ani, chiar și din profil. Într-un experiment ulterior de la Cambridge, au învățat să recunoască vedete din fotografii și au ales fața corectă de 8 ori din 10."
+   }
+  }
+ }
+}
