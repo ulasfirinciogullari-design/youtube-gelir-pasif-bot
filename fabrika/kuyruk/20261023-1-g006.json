@@ -1,0 +1,264 @@
+{
+ "id": "g006",
+ "series": "1 Gün Boyunca",
+ "q": "1 günde Dünya'ya ne kadar uzay tozu düşer?",
+ "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+ "bar": {
+  "hi": "UZAY TOZU",
+  "rest": "ÇATINDA MI?"
+ },
+ "summary": "Evinin çatısında şu an uzaydan gelmiş toz olabilir! Her gün kaç ton uzay tozunun yere ulaştığını, nerede bulunduğunu ve nereden geldiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Evinin çatısında şu an uzay tozu olabilir!",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "🏠",
+     "label": "Senin Çatın"
+    },
+    "right": {
+     "e": "☄️",
+     "label": "Uzay Tozu"
+    },
+    "key": "uzay"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Çatımızda mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏠",
+    "do": "shake",
+    "key": "çatımızda",
+    "label": "Çatında Mı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her gün yaklaşık 14 ton uzay tozu yere ulaşıyor.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "☄️",
+    "value": "14",
+    "unit": "ton",
+    "label": "Her Gün Yere",
+    "key": "14"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Paris, Oslo ve Berlin'de çatı oluklarında 500 tane bulundu!",
+   "v": {
+    "t": "icons",
+    "bg": "city",
+    "items": [
+     {
+      "e": "🏠",
+      "label": "Çatı Oluğu"
+     },
+     {
+      "e": "🔬",
+      "label": "Mikroskop"
+     },
+     {
+      "e": "✨",
+      "label": "500 Uzay Tozu"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ve %80'i kuyrukluyıldızlardan geliyor!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "comet",
+      "size": "l",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "br"
+     }
+    ],
+    "do": "approach",
+    "target": 0,
+    "key": "kuyrukluyıldızlardan",
+    "label": "%80 Kuyrukluyıldız"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen çatına bakar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "☄️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "2021'de Earth and Planetary Science Letters dergisinde yayımlanan Antarktika çalışmasına göre her yıl yaklaşık 5.200 ton mikrometeorit yere ulaşıyor; bu, günde yaklaşık 14 ton eder.",
+   "source": "CNRS",
+   "url": "https://www.cnrs.fr/en/press/more-5000-tons-extraterrestrial-dust-fall-earth-each-year"
+  },
+  {
+   "text": "Bu rakam atmosfere giren tozun değil, yere kadar ulaşan 30-200 mikrometrelik tanelerin tahminidir; büyük meteoritlerin yıllık akışı 10 tonun altındadır.",
+   "source": "CNRS",
+   "url": "https://www.cnrs.fr/en/press/more-5000-tons-extraterrestrial-dust-fall-earth-each-year"
+  },
+  {
+   "text": "Paris, Oslo ve Berlin'deki çatı oluklarından toplanan 300 kilogram tortuda 500 uzay tozu tanesi bulundu.",
+   "source": "Imperial College London",
+   "url": "https://www.imperial.ac.uk/news/176236/imperial-researcher-amateur-science-sleuth-find/"
+  },
+  {
+   "text": "Bilim insanlarına göre yere ulaşan bu tozların yaklaşık %80'i kuyrukluyıldızlardan, kalanı asteroitlerden geliyor.",
+   "source": "CNRS",
+   "url": "https://www.cnrs.fr/en/press/more-5000-tons-extraterrestrial-dust-fall-earth-each-year"
+  }
+ ],
+ "tags": [
+  "uzay tozu",
+  "mikrometeorit",
+  "kuyrukluyıldız",
+  "meteor",
+  "göktaşı",
+  "çatı oluğu",
+  "antarktika",
+  "space dust",
+  "micrometeorites",
+  "cosmic dust",
+  "comet",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzaytozu",
+  "#mikrometeorit",
+  "#bilim"
+ ],
+ "cover": 2,
+ "sources": [
+  "https://www.cnrs.fr/en/press/more-5000-tons-extraterrestrial-dust-fall-earth-each-year",
+  "https://www.imperial.ac.uk/news/176236/imperial-researcher-amateur-science-sleuth-find/",
+  "https://www.space.com/34957-space-particles-comets-asteroids-rooftop-gutters-micrometeorites.html",
+  "https://www.smithsonianmag.com/smart-news/scientists-pull-cosmic-dust-out-city-gutters-180961339/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "Is Space Dust Falling on Your Roof?",
+   "summary": "There could be dust from space on your roof right now! Professor Pi explains how many tons of space dust reach the ground every day, where it has been found and where it comes from.",
+   "facts": [
+    "According to a 2021 Antarctic study in Earth and Planetary Science Letters, about 5,200 tons of micrometeorites reach the ground every year, roughly 14 tons a day.",
+    "This is an estimate of the 30 to 200 micrometre grains that make it all the way to the ground, not of the dust entering the atmosphere; the yearly flux of larger meteorites is under 10 tons.",
+    "In 300 kilograms of sediment from roof gutters in Paris, Oslo and Berlin, researchers found 500 grains of space dust.",
+    "According to scientists, about 80% of this dust comes from comets and the rest from asteroids."
+   ]
+  },
+  "es": {
+   "title": "¿Está cayendo polvo espacial sobre tu tejado?",
+   "summary": "¡Ahora mismo podría haber polvo del espacio en tu tejado! El Profesor Pi explica cuántas toneladas de polvo espacial llegan al suelo cada día, dónde se ha encontrado y de dónde viene.",
+   "facts": [
+    "Según un estudio antártico de 2021 publicado en Earth and Planetary Science Letters, cada año llegan al suelo unas 5.200 toneladas de micrometeoritos, unas 14 toneladas al día.",
+    "Es una estimación de los granos de 30 a 200 micrómetros que llegan hasta el suelo, no del polvo que entra en la atmósfera; el flujo anual de meteoritos grandes es inferior a 10 toneladas.",
+    "En 300 kilos de sedimento de canalones de tejados de París, Oslo y Berlín se encontraron 500 granos de polvo espacial.",
+    "Según los científicos, cerca del 80% de este polvo procede de cometas y el resto de asteroides."
+   ]
+  },
+  "pt": {
+   "title": "Está caindo poeira espacial no seu telhado?",
+   "summary": "Neste momento pode haver poeira do espaço no seu telhado! O Professor Pi explica quantas toneladas de poeira espacial chegam ao chão todos os dias, onde ela foi encontrada e de onde vem.",
+   "facts": [
+    "Segundo um estudo antártico de 2021 publicado na Earth and Planetary Science Letters, cerca de 5.200 toneladas de micrometeoritos chegam ao solo por ano, cerca de 14 toneladas por dia.",
+    "A estimativa é dos grãos de 30 a 200 micrômetros que chegam até o solo, não da poeira que entra na atmosfera; o fluxo anual de meteoritos grandes é inferior a 10 toneladas.",
+    "Em 300 quilos de sedimentos de calhas de telhados de Paris, Oslo e Berlim, pesquisadores encontraram 500 grãos de poeira espacial.",
+    "Segundo os cientistas, cerca de 80% dessa poeira vem de cometas e o restante de asteroides."
+   ]
+  },
+  "ar": {
+   "title": "هل يتساقط غبار الفضاء على سطح بيتك؟",
+   "summary": "قد يكون على سطح بيتك الآن غبار قادم من الفضاء! يشرح البروفيسور باي كم طنًا من غبار الفضاء يصل إلى الأرض كل يوم، وأين عُثر عليه، ومن أين يأتي.",
+   "facts": [
+    "وفقًا لدراسة أُجريت في القارة القطبية الجنوبية ونُشرت عام 2021 في مجلة Earth and Planetary Science Letters، يصل إلى سطح الأرض نحو 5200 طن من النيازك الدقيقة سنويًا، أي نحو 14 طنًا يوميًا.",
+    "هذا تقدير للحبيبات التي يتراوح حجمها بين 30 و200 ميكرومتر وتصل إلى الأرض فعلًا، لا للغبار الذي يدخل الغلاف الجوي؛ أما النيازك الكبيرة فيقل ما يسقط منها سنويًا عن 10 أطنان.",
+    "عثر الباحثون على 500 حبة من غبار الفضاء في 300 كيلوغرام من رواسب مزاريب أسطح المباني في باريس وأوسلو وبرلين.",
+    "بحسب العلماء، يأتي نحو 80% من هذا الغبار من المذنبات والباقي من الكويكبات."
+   ]
+  },
+  "hi": {
+   "title": "क्या आपकी छत पर अंतरिक्ष की धूल गिर रही है?",
+   "summary": "इस वक्त आपकी छत पर अंतरिक्ष से आई धूल हो सकती है! प्रोफेसर पाई बताते हैं कि रोज़ कितने टन अंतरिक्ष धूल ज़मीन तक पहुँचती है, यह कहाँ मिली है और कहाँ से आती है।",
+   "facts": [
+    "2021 में Earth and Planetary Science Letters में छपे अंटार्कटिका के एक अध्ययन के अनुसार हर साल लगभग 5,200 टन माइक्रोमीटियोराइट ज़मीन तक पहुँचते हैं, यानी रोज़ लगभग 14 टन।",
+    "यह अनुमान 30 से 200 माइक्रोमीटर के उन कणों का है जो ज़मीन तक पहुँचते हैं, वायुमंडल में आने वाली धूल का नहीं; बड़े उल्कापिंड साल में 10 टन से कम गिरते हैं।",
+    "पेरिस, ओस्लो और बर्लिन की छतों के परनालों से निकली 300 किलो गाद में शोधकर्ताओं को अंतरिक्ष धूल के 500 कण मिले।",
+    "वैज्ञानिकों के अनुसार इस धूल का लगभग 80% हिस्सा धूमकेतुओं से और बाकी क्षुद्रग्रहों से आता है।"
+   ]
+  },
+  "id": {
+   "title": "Apakah Debu Luar Angkasa Jatuh ke Atap Rumahmu?",
+   "summary": "Saat ini mungkin ada debu dari luar angkasa di atap rumahmu! Profesor Pi menjelaskan berapa ton debu luar angkasa yang sampai ke tanah setiap hari, di mana debu itu ditemukan, dan dari mana asalnya.",
+   "facts": [
+    "Menurut studi Antarktika tahun 2021 di jurnal Earth and Planetary Science Letters, sekitar 5.200 ton mikrometeorit sampai ke permukaan Bumi setiap tahun, atau sekitar 14 ton per hari.",
+    "Angka ini adalah perkiraan butiran berukuran 30 sampai 200 mikrometer yang benar-benar sampai ke tanah, bukan debu yang masuk ke atmosfer; meteorit besar yang jatuh kurang dari 10 ton per tahun.",
+    "Dalam 300 kilogram endapan dari talang atap di Paris, Oslo, dan Berlin, peneliti menemukan 500 butir debu luar angkasa.",
+    "Menurut para ilmuwan, sekitar 80% debu ini berasal dari komet dan sisanya dari asteroid."
+   ]
+  },
+  "fr": {
+   "title": "De la poussière de l'espace tombe-t-elle sur ton toit ?",
+   "summary": "Il y a peut-être en ce moment de la poussière venue de l'espace sur ton toit ! Le professeur Pi explique combien de tonnes de poussière spatiale atteignent le sol chaque jour, où on en a trouvé et d'où elle vient.",
+   "facts": [
+    "Selon une étude menée en Antarctique et publiée en 2021 dans Earth and Planetary Science Letters, environ 5 200 tonnes de micrométéorites atteignent le sol chaque année, soit environ 14 tonnes par jour.",
+    "Il s'agit d'une estimation des grains de 30 à 200 micromètres qui atteignent vraiment le sol, et non de la poussière qui entre dans l'atmosphère ; le flux annuel de grosses météorites est inférieur à 10 tonnes.",
+    "Dans 300 kilos de sédiments prélevés dans des gouttières de toits à Paris, Oslo et Berlin, des chercheurs ont trouvé 500 grains de poussière spatiale.",
+    "Selon les scientifiques, environ 80 % de cette poussière provient de comètes, le reste d'astéroïdes."
+   ]
+  },
+  "de": {
+   "title": "Fällt Weltraumstaub auf dein Dach?",
+   "summary": "Auf deinem Dach könnte gerade Staub aus dem Weltall liegen! Professor Pi erklärt, wie viele Tonnen Weltraumstaub jeden Tag den Boden erreichen, wo man ihn gefunden hat und woher er kommt.",
+   "facts": [
+    "Laut einer Antarktis-Studie von 2021 in Earth and Planetary Science Letters erreichen jedes Jahr rund 5.200 Tonnen Mikrometeoriten den Boden, also etwa 14 Tonnen pro Tag.",
+    "Die Schätzung gilt für 30 bis 200 Mikrometer große Körner, die tatsächlich den Boden erreichen, nicht für den Staub, der in die Atmosphäre eintritt; größere Meteoriten bringen weniger als 10 Tonnen pro Jahr.",
+    "In 300 Kilogramm Schlamm aus Dachrinnen in Paris, Oslo und Berlin fanden Forscher 500 Weltraumstaubkörner.",
+    "Laut Wissenschaftlern stammen etwa 80 % dieses Staubs von Kometen, der Rest von Asteroiden."
+   ]
+  },
+  "ru": {
+   "title": "Падает ли космическая пыль на твою крышу?",
+   "summary": "Прямо сейчас на твоей крыше может лежать пыль из космоса! Профессор Пи рассказывает, сколько тонн космической пыли каждый день достигает земли, где её нашли и откуда она берётся.",
+   "facts": [
+    "Согласно антарктическому исследованию 2021 года в журнале Earth and Planetary Science Letters, ежегодно до поверхности Земли долетает около 5200 тонн микрометеоритов — примерно 14 тонн в сутки.",
+    "Это оценка частиц размером от 30 до 200 микрометров, которые долетают до земли, а не пыли, входящей в атмосферу; крупных метеоритов падает меньше 10 тонн в год.",
+    "В 300 килограммах осадка из водостоков на крышах Парижа, Осло и Берлина исследователи нашли 500 частиц космической пыли.",
+    "По данным учёных, около 80% этой пыли приходит от комет, остальное — от астероидов."
+   ]
+  },
+  "az": {
+   "title": "Evinin Damına Kosmosdan Toz Yağırmı?",
+   "summary": "Bu an evinin damında kosmosdan gəlmiş toz ola bilər! Hər gün neçə ton kosmik tozun yerə çatdığını, harada tapıldığını və haradan gəldiyini Professor Pi izah edir.",
+   "facts": [
+    "2021-ci ildə Earth and Planetary Science Letters jurnalında dərc olunan Antarktida tədqiqatına görə hər il təxminən 5200 ton mikrometeorit yerə çatır, bu da gündə təxminən 14 ton deməkdir.",
+    "Bu, atmosferə daxil olan tozun deyil, yerə qədər çatan 30-200 mikrometrlik dənələrin təxminidir; böyük meteoritlərin illik axını 10 tondan azdır.",
+    "Paris, Oslo və Berlində dam novlarından yığılan 300 kiloqram çöküntüdə 500 kosmik toz dənəsi tapılıb.",
+    "Alimlərə görə bu tozun təxminən 80%-i kometlərdən, qalanı isə asteroidlərdən gəlir."
+   ]
+  }
+ }
+}

@@ -1,0 +1,280 @@
+{
+ "id": "y010",
+ "series": "Ya Olsaydı?",
+ "q": "Arılar yok olsaydı ne olurdu?",
+ "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
+ "bar": {
+  "hi": "ARILAR",
+  "rest": "YOK OLSAYDI?"
+ },
+ "summary": "Arılar ve diğer tozlayıcılar yok olsa ekmeğin kalırdı ama meyven, kuruyemişin ve kahven azalırdı! Bilim insanlarına göre bunun bedeli neden yılda 1,4 milyon can olabilirdi, Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Arılar ve öteki tozlayıcılar yok olsa, yılda 1,4 milyon kişi daha ölebilirdi.",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🐝",
+    "value": "1,4 milyon",
+    "label": "Yılda Ek Ölüm",
+    "key": "1,4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Açlıktan mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🍽️",
+    "do": "shake",
+    "key": "açlıktan",
+    "label": "Açlık Mı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ekmek kalırdı, buğdayı rüzgâr tozlar. Ama meyvenin %23'ü giderdi.",
+   "v": {
+    "t": "split",
+    "bg": "forest",
+    "left": {
+     "e": "🍞",
+     "label": "Ekmek Kalır"
+    },
+    "right": {
+     "e": "🍎",
+     "label": "Meyve -%23"
+    },
+    "key": "%23"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sabah kahven bile azalırdı: arılar kahve verimini %20'ye kadar artırıyor.",
+   "v": {
+    "t": "meter",
+    "bg": "forest",
+    "label": "Kahve Verimi",
+    "from": 0,
+    "to": 20,
+    "unit": "%",
+    "e": "☕",
+    "key": "%20"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kahvem mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "☕",
+    "do": "shrink",
+    "key": "kahvem",
+    "label": "Kahven Azalır"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Fiyatlar artardı. Ölümler ise açlıktan değil, kalp hastalığı ve felçten!",
+   "v": {
+    "t": "icons",
+    "bg": "body",
+    "items": [
+     {
+      "e": "💸",
+      "label": "Fiyat Artar"
+     },
+     {
+      "e": "🫀",
+      "label": "Kalp Hastalığı"
+     },
+     {
+      "e": "🧠",
+      "label": "Felç"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Senin tabağından ilk ne giderdi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "forest",
+    "e": "🐝"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "The Lancet'te yayımlanan bir modele göre tozlayıcılar tamamen yok olursa kalp hastalığı, felç ve beslenmeyle ilgili hastalıklardan ölümler yılda yaklaşık 1,42 milyon artabilir.",
+   "source": "The Lancet (Smith ve ark., 2015)",
+   "url": "https://scholar.harvard.edu/sites/scholar.harvard.edu/files/mattsmith/files/lancet_smith_et_al_2015.pdf"
+  },
+  {
+   "text": "Aynı modele göre küresel meyve arzı %22,9, sebze arzı %16,3, kuruyemiş ve tohum arzı %22,1 azalırdı.",
+   "source": "The Lancet (Smith ve ark., 2015)",
+   "url": "https://scholar.harvard.edu/sites/scholar.harvard.edu/files/mattsmith/files/lancet_smith_et_al_2015.pdf"
+  },
+  {
+   "text": "Britannica'ya göre insanların aldığı kalorinin çoğu, rüzgârla tozlanan tahıllardan gelir.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/story/what-would-happen-if-all-the-bees-died"
+  },
+  {
+   "text": "Kosta Rika'daki bir çalışmada ormanda yaşayan arılar, yakındaki çiftliklerde kahve verimini %20'ye kadar artırdı.",
+   "source": "Nature",
+   "url": "https://www.nature.com/news/2004/040802/full/news040802-4.html"
+  },
+  {
+   "text": "Lancet makalesine göre verimdeki düşüş bu ürünlerin fiyatlarını büyük olasılıkla artırırdı.",
+   "source": "The Lancet (Smith ve ark., 2015)",
+   "url": "https://scholar.harvard.edu/sites/scholar.harvard.edu/files/mattsmith/files/lancet_smith_et_al_2015.pdf"
+  }
+ ],
+ "tags": [
+  "arılar",
+  "arılar yok olsaydı",
+  "tozlaşma",
+  "tozlayıcılar",
+  "meyve",
+  "kahve",
+  "beslenme",
+  "bees",
+  "what if bees disappeared",
+  "pollinators",
+  "pollination",
+  "food",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#arılar",
+  "#tozlaşma",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://scholar.harvard.edu/sites/scholar.harvard.edu/files/mattsmith/files/lancet_smith_et_al_2015.pdf",
+  "https://www.britannica.com/story/what-would-happen-if-all-the-bees-died",
+  "https://www.nature.com/news/2004/040802/full/news040802-4.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Bees Disappeared, What Would Be Left on Your Plate?",
+   "summary": "If bees and other pollinators disappeared, you would still have bread, but your fruit, nuts and coffee would shrink! Professor Pi explains why scientists think the cost could be 1.4 million lives a year.",
+   "facts": [
+    "According to a model published in The Lancet, losing all pollinators could raise deaths from heart disease, stroke and diet-related illness by about 1.42 million a year.",
+    "The same model found that global fruit supply would fall by 22.9%, vegetables by 16.3%, and nuts and seeds by 22.1%.",
+    "According to Britannica, most human calories come from cereal grains, which are wind-pollinated.",
+    "In a study in Costa Rica, forest-dwelling bees raised coffee yields on nearby farms by up to 20%.",
+    "According to the Lancet paper, the drop in yields would likely push up the prices of these foods."
+   ]
+  },
+  "es": {
+   "title": "Si las abejas desaparecieran, ¿qué quedaría en tu plato?",
+   "summary": "Si desaparecieran las abejas y otros polinizadores, seguirías teniendo pan, ¡pero tendrías menos fruta, frutos secos y café! El Profesor Pi explica por qué, según los científicos, el precio podría ser de 1,4 millones de vidas al año.",
+   "facts": [
+    "Según un modelo publicado en The Lancet, la pérdida total de los polinizadores podría aumentar en unos 1,42 millones al año las muertes por cardiopatías, ictus y enfermedades relacionadas con la dieta.",
+    "Según el mismo modelo, el suministro mundial de fruta caería un 22,9%, el de verduras un 16,3% y el de frutos secos y semillas un 22,1%.",
+    "Según Britannica, la mayoría de las calorías humanas procede de los cereales, que se polinizan por el viento.",
+    "En un estudio en Costa Rica, las abejas del bosque aumentaron hasta un 20% el rendimiento del café en las fincas cercanas.",
+    "Según el artículo de The Lancet, la caída de las cosechas probablemente haría subir los precios de estos alimentos."
+   ]
+  },
+  "pt": {
+   "title": "Se as abelhas sumissem, o que sobraria no seu prato?",
+   "summary": "Se as abelhas e outros polinizadores sumissem, você ainda teria pão, mas teria menos frutas, castanhas e café! O Professor Pi explica por que, segundo os cientistas, o preço poderia ser de 1,4 milhão de vidas por ano.",
+   "facts": [
+    "Segundo um modelo publicado na The Lancet, a perda total dos polinizadores poderia aumentar em cerca de 1,42 milhão por ano as mortes por doenças cardíacas, AVC e doenças ligadas à alimentação.",
+    "Segundo o mesmo modelo, a oferta mundial de frutas cairia 22,9%, a de verduras e legumes 16,3% e a de castanhas e sementes 22,1%.",
+    "Segundo a Britannica, a maior parte das calorias humanas vem de cereais, que são polinizados pelo vento.",
+    "Em um estudo na Costa Rica, abelhas da floresta aumentaram em até 20% a produtividade do café em fazendas próximas.",
+    "Segundo o artigo da The Lancet, a queda na produção provavelmente faria subir os preços desses alimentos."
+   ]
+  },
+  "ar": {
+   "title": "لو اختفى النحل، ماذا سيبقى في طبقك؟",
+   "summary": "لو اختفى النحل وسائر الملقِّحات لبقي الخبز، لكن الفاكهة والمكسرات والقهوة ستقل! يشرح البروفيسور باي لماذا يرى العلماء أن الثمن قد يكون 1.4 مليون حياة كل عام.",
+   "facts": [
+    "وفقًا لنموذج نُشر في مجلة The Lancet، قد يؤدي فقدان جميع الملقِّحات إلى زيادة الوفيات الناجمة عن أمراض القلب والسكتة الدماغية والأمراض المرتبطة بالتغذية بنحو 1.42 مليون حالة سنويًا.",
+    "وبحسب النموذج نفسه، سينخفض المعروض العالمي من الفاكهة بنسبة 22.9%، ومن الخضروات بنسبة 16.3%، ومن المكسرات والبذور بنسبة 22.1%.",
+    "بحسب موسوعة بريتانيكا، تأتي معظم السعرات الحرارية التي يتناولها البشر من الحبوب التي تُلقَّح بالرياح.",
+    "في دراسة أُجريت في كوستاريكا، رفع نحل الغابات إنتاج القهوة في المزارع القريبة بنسبة تصل إلى 20%.",
+    "بحسب دراسة The Lancet، من المرجح أن يؤدي تراجع المحاصيل إلى ارتفاع أسعار هذه الأغذية."
+   ]
+  },
+  "hi": {
+   "title": "अगर मधुमक्खियाँ गायब हो जाएँ, तो आपकी थाली में क्या बचेगा?",
+   "summary": "अगर मधुमक्खियाँ और दूसरे परागणकर्ता गायब हो जाएँ, तो रोटी तो बचेगी, लेकिन फल, मेवे और कॉफ़ी कम हो जाएँगे! प्रोफेसर पाई बताते हैं कि वैज्ञानिकों के अनुसार इसकी कीमत हर साल 14 लाख जानें क्यों हो सकती है।",
+   "facts": [
+    "The Lancet में छपे एक मॉडल के अनुसार सभी परागणकर्ताओं के खत्म होने से दिल की बीमारी, स्ट्रोक और खान-पान से जुड़ी बीमारियों से होने वाली मौतें हर साल लगभग 14.2 लाख बढ़ सकती हैं।",
+    "उसी मॉडल के अनुसार दुनिया में फलों की आपूर्ति 22.9%, सब्ज़ियों की 16.3% और मेवों व बीजों की 22.1% घट जाएगी।",
+    "ब्रिटानिका के अनुसार इंसानों को मिलने वाली ज़्यादातर कैलोरी अनाज से आती है, जिनका परागण हवा से होता है।",
+    "कोस्टा रिका के एक अध्ययन में जंगल की मधुमक्खियों ने पास के खेतों में कॉफ़ी की पैदावार 20% तक बढ़ा दी।",
+    "The Lancet के शोधपत्र के अनुसार पैदावार घटने से इन खाद्य पदार्थों की कीमतें बढ़ने की संभावना है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Lebah Punah, Apa yang Tersisa di Piringmu?",
+   "summary": "Jika lebah dan penyerbuk lain hilang, roti masih ada, tetapi buah, kacang, dan kopimu akan berkurang! Profesor Pi menjelaskan mengapa menurut ilmuwan harganya bisa mencapai 1,4 juta nyawa per tahun.",
+   "facts": [
+    "Menurut model yang dimuat di The Lancet, hilangnya semua penyerbuk dapat menambah kematian akibat penyakit jantung, stroke, dan penyakit terkait gizi sekitar 1,42 juta per tahun.",
+    "Menurut model yang sama, pasokan buah dunia akan turun 22,9%, sayuran 16,3%, serta kacang dan biji-bijian 22,1%.",
+    "Menurut Britannica, sebagian besar kalori manusia berasal dari serealia yang diserbuki angin.",
+    "Dalam sebuah studi di Kosta Rika, lebah hutan meningkatkan hasil kopi di kebun terdekat hingga 20%.",
+    "Menurut makalah The Lancet, turunnya hasil panen kemungkinan besar akan menaikkan harga bahan pangan ini."
+   ]
+  },
+  "fr": {
+   "title": "Si les abeilles disparaissaient, que resterait-il dans ton assiette ?",
+   "summary": "Si les abeilles et les autres pollinisateurs disparaissaient, il te resterait du pain, mais moins de fruits, de noix et de café ! Le professeur Pi explique pourquoi, selon les scientifiques, le prix pourrait être de 1,4 million de vies par an.",
+   "facts": [
+    "Selon un modèle publié dans The Lancet, la disparition de tous les pollinisateurs pourrait augmenter d'environ 1,42 million par an les décès dus aux maladies cardiaques, aux AVC et aux maladies liées à l'alimentation.",
+    "Selon le même modèle, l'offre mondiale de fruits baisserait de 22,9 %, celle de légumes de 16,3 % et celle de noix et de graines de 22,1 %.",
+    "Selon Britannica, la plupart des calories consommées par les humains proviennent des céréales, pollinisées par le vent.",
+    "Dans une étude au Costa Rica, les abeilles de la forêt ont augmenté jusqu'à 20 % le rendement du café dans les plantations voisines.",
+    "Selon l'article du Lancet, la baisse des récoltes ferait probablement monter les prix de ces aliments."
+   ]
+  },
+  "de": {
+   "title": "Was bliebe auf deinem Teller, wenn die Bienen verschwänden?",
+   "summary": "Wenn Bienen und andere Bestäuber verschwänden, gäbe es noch Brot, aber weniger Obst, Nüsse und Kaffee! Professor Pi erklärt, warum das laut Forschern jedes Jahr 1,4 Millionen Menschenleben kosten könnte.",
+   "facts": [
+    "Laut einem in The Lancet veröffentlichten Modell könnte der Verlust aller Bestäuber die Todesfälle durch Herzkrankheiten, Schlaganfälle und ernährungsbedingte Krankheiten um etwa 1,42 Millionen pro Jahr erhöhen.",
+    "Nach demselben Modell würde das weltweite Angebot an Obst um 22,9 %, an Gemüse um 16,3 % und an Nüssen und Samen um 22,1 % sinken.",
+    "Laut Britannica stammen die meisten Kalorien der Menschen aus Getreide, das vom Wind bestäubt wird.",
+    "In einer Studie in Costa Rica steigerten Waldbienen die Kaffee-Erträge benachbarter Farmen um bis zu 20 %.",
+    "Laut der Lancet-Studie würden die geringeren Ernten die Preise dieser Lebensmittel wahrscheinlich steigen lassen."
+   ]
+  },
+  "ru": {
+   "title": "Что осталось бы в твоей тарелке, если бы исчезли пчёлы?",
+   "summary": "Если бы исчезли пчёлы и другие опылители, хлеб бы остался, но фруктов, орехов и кофе стало бы меньше! Профессор Пи объясняет, почему, по оценкам учёных, это могло бы стоить 1,4 миллиона жизней в год.",
+   "facts": [
+    "Согласно модели, опубликованной в The Lancet, полное исчезновение опылителей могло бы увеличить смертность от болезней сердца, инсульта и болезней, связанных с питанием, примерно на 1,42 миллиона человек в год.",
+    "По той же модели мировое предложение фруктов сократилось бы на 22,9%, овощей — на 16,3%, орехов и семян — на 22,1%.",
+    "По данным Britannica, большую часть калорий люди получают из зерновых, которые опыляются ветром.",
+    "В исследовании в Коста-Рике лесные пчёлы повысили урожай кофе на соседних фермах до 20%.",
+    "Согласно статье в The Lancet, падение урожаев, скорее всего, привело бы к росту цен на эти продукты."
+   ]
+  },
+  "az": {
+   "title": "Arılar Yox Olsaydı, Boşqabında Nə Qalardı?",
+   "summary": "Arılar və digər tozlayıcılar yox olsaydı, çörək qalardı, amma meyvə, qoz-fındıq və qəhvə azalardı! Alimlərə görə bunun bədəlinin niyə ildə 1,4 milyon can ola biləcəyini Professor Pi izah edir.",
+   "facts": [
+    "The Lancet jurnalında dərc olunan modelə görə bütün tozlayıcılar yox olsa, ürək xəstəlikləri, insult və qidalanma ilə bağlı xəstəliklərdən ölümlər ildə təxminən 1,42 milyon arta bilər.",
+    "Eyni modelə görə dünyada meyvə təklifi 22,9%, tərəvəz təklifi 16,3%, qoz-fındıq və toxum təklifi isə 22,1% azalardı.",
+    "Britannica-ya görə insanların aldığı kalorinin çoxu küləklə tozlanan taxıllardan gəlir.",
+    "Kosta-Rikada aparılan bir tədqiqatda meşə arıları yaxınlıqdakı fermalarda qəhvə məhsuldarlığını 20%-ə qədər artırıb.",
+    "The Lancet məqaləsinə görə məhsuldarlığın azalması böyük ehtimalla bu qidaların qiymətini artırardı."
+   ]
+  }
+ }
+}
