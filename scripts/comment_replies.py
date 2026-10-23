@@ -52,6 +52,10 @@ MAX_REPLY = 260
 MAX_PAGES = 10  # pages of 100 replies read from one thread
 MAX_THREAD_PAGES = 5  # pages of 100 threads: one page (the newest 100) no longer reached back MAX_AGE_DAYS
 DAY = 86400
+# Until "hiçbir şey cevapsız kalmasın" (2026-10-19) an @name, gibberish or a lone emoji got no answer. What was closed
+# so before then is looked at once more under today's rules; a comment answered by hand or deleted stays closed.
+RULES_AT = datetime(2026, 10, 19, 18, 0, tzinfo=timezone.utc).timestamp()
+STAY_CLOSED = ("kanal zaten cevaplamış", "gönderilemedi")
 URL = re.compile(r"https?://|www\.|\b[\w-]+\.(com|net|org|io|ly|me|tv|gg|co|xyz|tr)\b", re.I)
 LINK = re.compile(URL.pattern + r"|@\w", re.I)  # what a reply of ours may not contain
 MENTION = re.compile(r"@([\w.\-]+)\s*")  # YouTube starts a reply to a reply with the other person's @handle
@@ -441,8 +445,9 @@ def run(yt, ask, state: dict, videos: dict, report: dict, now: float, dry: bool 
     done, tracked = state.setdefault("done", {}), state.setdefault("tracked", {})
     channel = state.get("channel") or yt.channel()
     state["channel"] = channel
-    for key in [k for k, v in done.items() if v[1:3] == ["s", "karar yok"]]:
-        done.pop(key)  # closed by the id mix-up above (before 2026-10-23): looked at again once
+    for key in [k for k, v in done.items() if v[1] == "s" and (v[2] == "karar yok" or (
+            v[0] < RULES_AT and v[2] not in STAY_CLOSED))]:
+        done.pop(key)  # closed by the id mix-up above (before 2026-10-23) or under the old rules: looked at again once
         if (tid := key.split(".")[0]) in tracked:  # a reply id is "<thread id>.<n>": its thread is read again
             tracked[tid]["n"] = 0
     threads = yt.threads(channel["id"], now - MAX_AGE_DAYS * DAY)
