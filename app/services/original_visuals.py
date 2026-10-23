@@ -367,6 +367,10 @@ def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_d
         if picks is not None:
             paths = [download_pixabay_hit(pool[i], assets_dir, used_ids) for i in picks[idx]]
             assets = [("video", p) for p in paths if p]
+            if not assets and scene.get("subject"):
+                # an empty scene reuses the video's other clips, which show the topic, not this scene's subject
+                assets = [("video", p) for p in fetch_stock_with_fallbacks(
+                    scene.get("stock_query", ""), "", want, assets_dir, used_ids, scene["subject"])]
             print(f"       Sahne {idx + 1}: {len(assets)} eşleşen klip")
         else:
             assets = [("video", p) for p in fetch_stock_with_fallbacks(

@@ -395,6 +395,14 @@ def test_a_scene_with_its_own_subject_searches_for_that_subject(tmp_path, monkey
     assert searched[:2] == [("newborn baby", ("baby",)), ("human skeleton", ("skeleton",))]
     assert sent["tags"][:2] == ["baby", "skeleton"] and how == "gemini" and [len(a) for a in assets] == [1, 1]
 
+    # Gemini leaves the skeleton scene empty: it falls back to skeleton clips, not to the video's baby shots
+    fallback = []
+    monkeypatch.setattr(original_visuals, "fetch_stock_with_fallbacks",
+                        lambda q, fb, n, d, u, subject=None: fallback.append((q, fb, tuple(subject))) or [d / "s.mp4"] * n)
+    assets, _ = original_visuals.collect_matched_stock(scenes, [[1.6], [1.6]], tmp_path, set(), ["baby"],
+                                                       "newborn baby", "Bebek kemikleri", match=lambda *a: [[0], []])
+    assert fallback == [("human skeleton", "", ("skeleton",))] and [len(a) for a in assets] == [1, 1]
+
 
 def test_clip_matcher_names_a_scene_subject():
     from app.services import clip_matcher
