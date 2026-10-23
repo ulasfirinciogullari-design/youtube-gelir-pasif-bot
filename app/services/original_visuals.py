@@ -344,9 +344,10 @@ def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_d
 
     for scene in scenes:
         query = scene.get("stock_query", "")
-        hits = pexels_candidates(query, used_ids, subject, limit=3) + pixabay_candidates(query, used_ids, subject, limit=6)
+        own = scene.get("subject") or subject  # a skeleton shot in a baby video is filtered by "skeleton", not "baby"
+        hits = pexels_candidates(query, used_ids, own, limit=3) + pixabay_candidates(query, used_ids, own, limit=6)
         if len(hits) < 3 and len(query.split()) > 2:
-            hits += pixabay_candidates(" ".join(query.split()[:2]), used_ids, subject, limit=6)
+            hits += pixabay_candidates(" ".join(query.split()[:2]), used_ids, own, limit=6)
         add(hits)
     for q in [fallback_query, *(subject or [])]:
         if q:
@@ -369,7 +370,7 @@ def collect_matched_stock(scenes: list[dict], plans: list[list[float]], assets_d
             print(f"       Sahne {idx + 1}: {len(assets)} eşleşen klip")
         else:
             assets = [("video", p) for p in fetch_stock_with_fallbacks(
-                scene.get("stock_query", ""), fallback_query, want, assets_dir, used_ids, subject)]
+                scene.get("stock_query", ""), fallback_query, want, assets_dir, used_ids, scene.get("subject") or subject)]
         scene_assets.append(assets)
     return scene_assets, "gemini" if picks is not None else "anahtar kelime"
 
