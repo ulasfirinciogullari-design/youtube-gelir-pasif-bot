@@ -1,6 +1,7 @@
 """Checks every queued script the way the factory will read it, plus the SEO rules in YAZIM.md.
 python3 kontrol.py <path to a checkout of main>"""
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -9,6 +10,8 @@ from app.services import script_queue  # noqa: E402
 from app.services.seo_pack import LANGUAGES, clean_localizations  # noqa: E402
 
 QDIR = Path(__file__).parent / "kuyruk"
+# subject terms that also pass a different animal's clips (2026-10-22 panda Short showed a red panda)
+LOOKALIKE = {"panda": "giant panda", "bear": "brown bear / polar bear", "fox": "red fox / arctic fox"}
 files = sorted(QDIR.glob("*.json"))
 ids = {json.loads(f.read_text(encoding="utf-8")).get("id", f.stem) for f in files}
 bad = 0
@@ -34,6 +37,19 @@ for f in files:
         problems.append("callout 24 karakterden uzun")
     if sc.get("scenes") and sc["scenes"][0]["text"].strip().endswith("?"):
         problems.append("ilk cümle soru")
+    term = re.compile(r"[a-z]+( [a-z]+)*")
+    if not d.get("subject") or not all(term.fullmatch(str(t)) for t in d["subject"]):
+        problems.append("subject boş ya da sade İngilizce değil")
+    if any(t in LOOKALIKE for t in d.get("subject") or []):
+        problems.append(f"subject benzer türü de alır: {[LOOKALIKE[t] for t in d['subject'] if t in LOOKALIKE]}")
+    for n, s in enumerate(sc.get("scenes", []), start=1):
+        if "subject" not in s:
+            continue
+        own = s["subject"]
+        if not isinstance(own, list) or not 1 <= len(own) <= 3 or not all(term.fullmatch(str(t)) for t in own):
+            problems.append(f"sahne {n} subject 1-3 sade İngilizce terim değil")
+        elif not any(w in s.get("stock_query", "").lower().split() for t in own for w in t.split()):
+            problems.append(f"sahne {n} stock_query kendi subject kelimesini içermiyor")
     seo = d.get("seo", {})
     if len(seo.get("description", "")) < 120:
         problems.append("SEO açıklaması 120 karakterden kısa")

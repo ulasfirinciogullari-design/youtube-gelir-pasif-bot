@@ -43,14 +43,20 @@
     "visual": "glass of cold milk being poured on a kitchen table",
     "stock_query": "glass of milk",
     "source": "stock",
-    "callout": "SÜT"
+    "callout": "SÜT",
+    "subject": [
+     "milk"
+    ]
    },
    {
     "text": "Acı yediğinde gazlı içecek yerine bir bardak süt dene.",
     "visual": "person drinking a glass of milk after a spicy meal",
     "stock_query": "drinking milk",
     "source": "stock",
-    "callout": ""
+    "callout": "",
+    "subject": [
+     "milk"
+    ]
    }
   ],
   "description": "Acı biberdeki kapsaisin, ağızdaki sıcaklık alıcılarını tetikler; bu alıcılar normalde kırk üç derece civarında devreye girer ve beyin sinyali gerçek bir yanık sanır. Bir deneyde süt, yanmayı en çok azaltan içeceklerden biri çıktı.",

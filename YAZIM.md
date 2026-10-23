@@ -21,7 +21,8 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   "script": {
     "title": "...",
     "hook_text": "...",
-    "scenes": [{"text": "...", "visual": "...", "stock_query": "...", "source": "stock", "callout": "..."}],
+    "scenes": [{"text": "...", "visual": "...", "stock_query": "...", "source": "stock", "callout": "..."},
+               {"text": "...", "visual": "...", "stock_query": "human skeleton", "source": "stock", "subject": ["skeleton"]}],
     "description": "2-3 cümlelik Türkçe açıklama (yedek)",
     "tags": ["8-12 Türkçe etiket"],
     "pinned_comment": "...",
@@ -39,6 +40,19 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 ```
 
 `kategori`: hayvan, vücut, psikoloji, doğa veya bilim. `subject`: Pixabay'de aranacak 1-2 İngilizce özne kelimesi.
+
+## Görüntü öznesi (fabrika her klibi buna göre süzer)
+
+- Fabrika yalnızca etiketinde `subject` geçen klipleri alır. Çok kelimeli terimde her kelime gerekir, bu yüzden
+  benzer türü dışarıda bırakan terimi yaz: "panda" değil "giant panda" (panda Short'unda kırmızı panda çıktı),
+  "polar bear", "sea turtle".
+- Sahnenin görüntüsü konunun öznesi değilse (bebek videosunda iskelet, burun videosunda saat, koala videosunda
+  vombat, biber videosunda süt) o sahneye kendi öznesini ver: `"subject": ["skeleton"]`, en fazla 3 sade İngilizce
+  terim, ve `stock_query` o kelimeyi içersin. Vermezsen o sahne klip bulamaz ve önceki çekimler tekrar eder.
+- İnsan konularında yatak, iç çamaşırı, bel ölçme gibi ten gösteren stok çağıran sorgu yazma ("woman stretching
+  bed" gibi). Bu tür görüntülü "Sabahları akşamdan daha uzunsun" 97 izlenmede kaldı, diğerleri 1.000 civarı
+  (sebep tahmin: YouTube dağıtımı kısmış olabilir). El, yüz profili, yürüyen insanlar, tıbbi model gibi nötr
+  görüntüler seç.
 
 ## Metin kuralları (fabrika bunları kontrol eder, uymayan dosya atlanır)
 

@@ -26,10 +26,13 @@
    },
    {
     "text": "Oysa yakın akrabaları vombat ve kanguruda parmak izi yok.",
-    "visual": "koala climbing slowly up a eucalyptus trunk",
-    "stock_query": "koala climbing",
+    "visual": "a wombat walking on grass in australia",
+    "stock_query": "wombat",
     "source": "stock",
-    "callout": ""
+    "callout": "",
+    "subject": [
+     "wombat"
+    ]
    },
    {
     "text": "Bizimle son ortak atası yüz milyon yıldan da önce yaşadı.",
