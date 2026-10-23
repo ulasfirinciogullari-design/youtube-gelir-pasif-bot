@@ -1,24 +1,24 @@
 {
- "started": "2026-10-23T14:24:15+00:00",
+ "started": "2026-10-23T19:24:25+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 23,
+ "threads": 24,
  "quiet": 0,
  "new": 1,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgwJddPnVZxYmlNDz4N4AaABAg",
-   "video": "gEB2tRsHr5s",
-   "comment": "Işık hızından daha hızlı mi dönüyoruz ohaa",
-   "reply": "Dünya dönüyor ama ışık hızıyla yarışması imkansız! 🚀\n— Bit 🤖",
+   "id": "Ugy9XylwCHR4h2Cw_ut4AaABAg",
+   "video": "2BcgVPgRmg8",
+   "comment": "Neyyyyy",
+   "reply": "Evet evet, yanlış duymadın! Çatılara her yıl tonlarca uzay tozu yağıyor 🪐\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-10-23T14:24:18+00:00"
+ "finished": "2026-10-23T19:24:28+00:00"
 }
