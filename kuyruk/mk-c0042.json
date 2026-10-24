@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0042",
+ "topic": "Aslanın kükremesi neden bu kadar güçlü?",
+ "kategori": "hayvan",
+ "subject": [
+  "lion"
+ ],
+ "stock_hint": "lion roaring savanna",
+ "script": {
+  "title": "Aslanın kükremesi 8 kilometreden duyulur 🦁",
+  "hook_text": "ASLAN NASIL BU KADAR GÜR KÜKRER?",
+  "scenes": [
+   {
+    "text": "Bu aslanın kükremesi sekiz kilometreden duyulabilir.",
+    "visual": "male lion roaring with its mouth wide open",
+    "stock_query": "lion roaring",
+    "source": "stock",
+    "callout": "8 KİLOMETRE"
+   },
+   {
+    "text": "Yakınındaki biri için ses yüz on dört desibele ulaşır.",
+    "visual": "close-up of a lion's face mid-roar",
+    "stock_query": "lion roar",
+    "source": "stock",
+    "callout": "114 DESİBEL"
+   },
+   {
+    "text": "Sırrı ses tellerinde: çoğu hayvanda üçgen olan teller aslanda karedir.",
+    "visual": "close-up of a male lion's head and mane",
+    "stock_query": "lion face",
+    "source": "stock",
+    "callout": "KARE SES TELLERİ"
+   },
+   {
+    "text": "Bu şekli, tellerin derinindeki yağ dokusu verir.",
+    "visual": "male lion resting in golden grass",
+    "stock_query": "male lion",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Böylece aslan az nefes basıncıyla bile çok gür kükreyebilir.",
+    "visual": "lion standing on a rock in the savanna",
+    "stock_query": "lion savanna",
+    "source": "stock",
+    "callout": "AZ NEFES, GÜR SES"
+   },
+   {
+    "text": "Kükremesi rakiplere tek bir şey söyler: burası benim bölgem.",
+    "visual": "pride of lions walking across the savanna",
+    "stock_query": "lion pride",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Aslanın kükremesi sekiz kilometreden duyulabilir, yakındaki biri için 114 desibele ulaşır. Sırrı, çoğu hayvanda üçgen olan ses tellerinin aslanda yağ dokusu sayesinde kare biçimli olması; bu sayede az nefesle gür kükrer.",
+  "tags": [
+   "aslan",
+   "aslanlar",
+   "aslan kükremesi",
+   "kükreme",
+   "ses telleri",
+   "vahşi doğa",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha etkileyici: sekiz kilometreden duyulan kükreme mi, kare biçimli ses telleri mi?",
+  "en_title": "A lion's roar can be heard 8 kilometers away 🦁",
+  "en_description": "A lion's roar can carry up to 8 kilometers and reaches about 114 decibels for someone standing nearby. The secret is in its vocal folds: triangular in most animals, but flat and square in lions thanks to fat deep inside, so they can roar loudly with little lung pressure. The message to rivals is simple: this territory is taken.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Aslanın kükremesi neden bu kadar güçlü, kaç kilometreden duyulur?\n\nAslanın kükremesi sekiz kilometreden duyulabilir ve yakında duran biri için yaklaşık 114 desibele ulaşır. Sırrı ses tellerinde: çoğu hayvanda üçgen olan ses telleri aslanda, derinindeki yağ dokusu sayesinde kare biçimlidir. Bu yüzden aslan az nefes basıncıyla bile çok gür kükreyebilir.\n\nSence hangisi daha etkileyici: sekiz kilometreden duyulan kükreme mi, kare biçimli ses telleri mi?",
+  "hashtags": [
+   "#aslan",
+   "#vahşidoğa",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "aslan",
+   "aslanlar",
+   "aslan kükremesi",
+   "aslan sesi",
+   "aslan neden kükrer",
+   "kükreme kaç km duyulur",
+   "aslanın ses telleri",
+   "kükreyen aslan",
+   "büyük kediler",
+   "orman kralı",
+   "savan",
+   "afrika hayvanları",
+   "vahşi doğa",
+   "yırtıcı hayvanlar",
+   "hayvan sesleri",
+   "belgesel",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "biyoloji",
+   "merak",
+   "lion",
+   "lion roar"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A lion's roar can be heard 8 kilometers away 🦁",
+    "description": "A lion's roar can carry up to 8 kilometers and reaches about 114 decibels for someone standing nearby. The secret is in its vocal folds: triangular in most animals, but flat and square in lions thanks to fat deep inside, so they can roar loudly with little lung pressure. The message to rivals is simple: this territory is taken."
+   },
+   "es": {
+    "title": "El rugido del león se oye a 8 kilómetros 🦁",
+    "description": "El rugido de un león puede oírse hasta a 8 km y alcanza unos 114 decibelios para quien está cerca. Sus cuerdas vocales no son triangulares como en la mayoría de los animales, sino planas y cuadradas gracias a la grasa que tienen dentro, así que ruge con fuerza usando poco aire."
+   },
+   "pt": {
+    "title": "O rugido do leão pode ser ouvido a 8 quilômetros 🦁",
+    "description": "O rugido de um leão pode ser ouvido a até 8 km e chega a cerca de 114 decibéis para quem está perto. Suas pregas vocais não são triangulares como na maioria dos animais, mas planas e quadradas graças à gordura em seu interior, o que permite rugir alto com pouca pressão de ar."
+   },
+   "de": {
+    "title": "Das Brüllen eines Löwen ist 8 Kilometer weit zu hören 🦁",
+    "description": "Das Brüllen eines Löwen trägt bis zu 8 Kilometer weit und erreicht aus nächster Nähe etwa 114 Dezibel. Anders als die dreieckigen Stimmlippen der meisten Tiere sind seine dank Fett tief im Inneren flach und quadratisch, sodass er mit wenig Atemdruck gewaltig laut brüllen kann."
+   },
+   "fr": {
+    "title": "Le rugissement du lion s'entend à 8 kilomètres 🦁",
+    "description": "Le rugissement d'un lion porte jusqu'à 8 km et atteint environ 114 décibels pour quelqu'un qui se tient tout près. Ses cordes vocales ne sont pas triangulaires comme chez la plupart des animaux, mais plates et carrées grâce à la graisse qu'elles contiennent, ce qui lui permet de rugir très fort avec peu de souffle."
+   },
+   "it": {
+    "title": "Il ruggito del leone si sente a 8 chilometri 🦁",
+    "description": "Il ruggito di un leone arriva fino a 8 km di distanza e raggiunge circa 114 decibel per chi è vicino. Le sue corde vocali non sono triangolari come nella maggior parte degli animali, ma piatte e quadrate grazie al grasso al loro interno, così può ruggire fortissimo con poca pressione d'aria."
+   },
+   "ru": {
+    "title": "Рык льва слышно за 8 километров 🦁",
+    "description": "Рык льва разносится на расстояние до 8 км, а вблизи достигает примерно 114 децибел. В отличие от треугольных голосовых складок большинства животных, у льва они плоские и квадратные благодаря жиру внутри, поэтому он рычит оглушительно, почти не напрягая лёгкие."
+   },
+   "ar": {
+    "title": "زئير الأسد يُسمع من مسافة 8 كيلومترات 🦁",
+    "description": "يمكن سماع زئير الأسد من مسافة تصل إلى 8 كيلومترات، ويبلغ نحو 114 ديسيبل لمن يقف قريبًا. فأحباله الصوتية ليست مثلثة كمعظم الحيوانات، بل مسطحة ومربعة بفضل الدهون في داخلها، ما يتيح له الزئير بقوة بضغط هواء قليل."
+   },
+   "hi": {
+    "title": "शेर की दहाड़ 8 किलोमीटर दूर तक सुनाई देती है 🦁",
+    "description": "शेर की दहाड़ 8 किलोमीटर दूर तक सुनी जा सकती है और पास खड़े व्यक्ति के लिए लगभग 114 डेसिबल तक पहुँचती है। ज़्यादातर जानवरों की तिकोनी स्वर-रज्जुओं के उलट, शेर की स्वर-रज्जु अंदर की चर्बी की वजह से चपटी और चौकोर होती हैं, इसलिए वह कम साँस के दबाव में भी ज़ोर से दहाड़ता है।"
+   },
+   "id": {
+    "title": "Auman singa bisa terdengar sampai 8 kilometer 🦁",
+    "description": "Auman singa bisa terdengar hingga 8 km dan mencapai sekitar 114 desibel bagi orang yang berdiri di dekatnya. Pita suaranya tidak segitiga seperti kebanyakan hewan, melainkan pipih dan persegi berkat lemak di dalamnya, sehingga singa bisa mengaum keras dengan sedikit tekanan napas."
+   },
+   "ja": {
+    "title": "ライオンの咆哮は8キロ先まで届く 🦁",
+    "description": "ライオンの咆哮は最大8キロ先まで届き、近くにいる人には約114デシベルにもなります。多くの動物の声帯は三角形ですが、ライオンの声帯は内部の脂肪のおかげで平らな四角形をしており、少ない息の圧力でも大きな声でほえられるのです。"
+   },
+   "ko": {
+    "title": "사자의 포효는 8km 밖에서도 들린다 🦁",
+    "description": "사자의 포효는 최대 8km 밖까지 들리고, 가까이 선 사람에게는 약 114데시벨에 이릅니다. 대부분 동물의 성대는 삼각형이지만 사자의 성대는 안쪽의 지방 덕분에 납작한 사각형이라, 적은 폐 압력으로도 우렁차게 포효할 수 있습니다."
+   },
+   "pl": {
+    "title": "Ryk lwa słychać z odległości 8 kilometrów 🦁",
+    "description": "Ryk lwa niesie się nawet na 8 km, a z bliska osiąga około 114 decybeli. W przeciwieństwie do trójkątnych fałdów głosowych większości zwierząt, u lwa są one płaskie i kwadratowe dzięki tłuszczowi w środku, więc może ryczeć bardzo głośno przy niewielkim ciśnieniu powietrza."
+   },
+   "nl": {
+    "title": "Het gebrul van een leeuw is 8 kilometer ver te horen 🦁",
+    "description": "Het gebrul van een leeuw draagt tot 8 kilometer ver en haalt van dichtbij zo'n 114 decibel. Waar de meeste dieren driehoekige stembanden hebben, zijn die van een leeuw plat en vierkant door vet diep vanbinnen, zodat hij oorverdovend kan brullen met weinig longdruk."
+   },
+   "uk": {
+    "title": "Рик лева чути за 8 кілометрів 🦁",
+    "description": "Рик лева розноситься на відстань до 8 км, а зблизька сягає приблизно 114 децибелів. На відміну від трикутних голосових складок більшості тварин, у лева вони пласкі й квадратні завдяки жиру всередині, тож він гучно ричить, майже не напружуючи легені."
+   },
+   "vi": {
+    "title": "Tiếng gầm của sư tử có thể nghe thấy từ 8 km 🦁",
+    "description": "Tiếng gầm của sư tử có thể vang xa tới 8 km và đạt khoảng 114 decibel với người đứng gần. Khác với dây thanh hình tam giác ở hầu hết động vật, dây thanh của sư tử phẳng và vuông nhờ lớp mỡ bên trong, giúp nó gầm thật to mà không cần nhiều hơi."
+   },
+   "az": {
+    "title": "Aslanın nərəsi 8 kilometrdən eşidilir 🦁",
+    "description": "Aslanın nərəsi 8 kilometrə qədər məsafədən eşidilə bilər və yaxında duran adam üçün təxminən 114 desibelə çatır. Əksər heyvanlarda üçbucaq formalı olan səs telləri aslanda içindəki yağ sayəsində yastı və kvadrat formadadır, buna görə o, az nəfəs təzyiqi ilə belə gur nərə çəkə bilir."
+   },
+   "ro": {
+    "title": "Răgetul leului se aude de la 8 kilometri 🦁",
+    "description": "Răgetul unui leu se poate auzi de la până la 8 km și ajunge la aproximativ 114 decibeli pentru cineva aflat aproape. Spre deosebire de corzile vocale triunghiulare ale majorității animalelor, ale leului sunt plate și pătrate datorită grăsimii din interior, așa că poate rage foarte tare cu puțin aer."
+   }
+  }
+ }
+}

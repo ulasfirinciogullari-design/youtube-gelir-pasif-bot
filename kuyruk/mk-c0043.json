@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0043",
+ "topic": "Mısır taneleri neden patlar?",
+ "kategori": "bilim",
+ "subject": [
+  "popcorn"
+ ],
+ "stock_hint": "popcorn popping",
+ "script": {
+  "title": "Patlamış mısırı patlatan şey aslında su 🍿",
+  "hook_text": "MISIR NEDEN PATLAR?",
+  "scenes": [
+   {
+    "text": "Bu mısır tanelerini patlatan şey aslında su.",
+    "visual": "popcorn kernels bursting in a hot pot, slow motion",
+    "stock_query": "popcorn popping",
+    "source": "stock",
+    "callout": "PATLATAN SU"
+   },
+   {
+    "text": "Her tanenin yaklaşık yüzde on dördü sudur.",
+    "visual": "close-up of raw popcorn kernels in a bowl",
+    "stock_query": "popcorn kernels",
+    "source": "stock",
+    "callout": "%14 SU"
+   },
+   {
+    "text": "Isınınca bu su buhara dönüşür ama sert kabuktan kaçamaz.",
+    "visual": "popcorn kernels heating in a pan",
+    "stock_query": "popcorn pan",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Basınç artar ve yaklaşık yüz seksen derecede kabuk patlar.",
+    "visual": "popcorn machine popping kernels",
+    "stock_query": "popcorn machine",
+    "source": "stock",
+    "callout": "180°C"
+   },
+   {
+    "text": "Pat sesi bile kabuktan değil, dışarı kaçan buhardan gelir.",
+    "visual": "close-up of popcorn flakes jumping out of a pot",
+    "stock_query": "popcorn closeup",
+    "source": "stock",
+    "callout": "BUHARIN SESİ"
+   },
+   {
+    "text": "Patlamayan tanelerin ya kabuğu çatlaktır ya da içinde yeterli su kalmamıştır.",
+    "visual": "bowl of fresh popcorn with a few unpopped kernels",
+    "stock_query": "popcorn bowl",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Mısır tanesinin yaklaşık yüzde on dördü sudur. Isınınca bu su buhara dönüşür, sert kabuk basınca yaklaşık 180 derecede dayanamaz ve tane patlar; pat sesi de dışarı kaçan buhardan gelir.",
+  "tags": [
+   "patlamış mısır",
+   "mısır",
+   "mısır neden patlar",
+   "buhar",
+   "mutfak bilimi",
+   "gündelik bilim",
+   "fizik",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: mısırı suyun patlatması mı, pat sesinin buhardan gelmesi mi?",
+  "en_title": "What makes popcorn pop is actually water 🍿",
+  "en_description": "Each popcorn kernel is about 14 percent water. When heated, that water turns to steam that can't escape the hard hull, so pressure builds until the hull bursts at around 180°C. Even the pop sound comes from the escaping steam, not the cracking shell, and kernels that stay unpopped have either a cracked hull or too little water.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Patlamış mısır neden patlar, mısır tanesinin içinde ne var?\n\nHer mısır tanesinin yaklaşık yüzde on dördü sudur. Isınınca bu su buhara dönüşür ama sert kabuktan kaçamaz; basınç artar ve kabuk yaklaşık 180 derecede patlar. Pat sesi de kabuğun kırılmasından değil, dışarı kaçan buhardan gelir. Patlamayan tanelerin ya kabuğu çatlaktır ya da içinde yeterli su kalmamıştır.\n\nSence hangisi daha şaşırtıcı: mısırı suyun patlatması mı, pat sesinin buhardan gelmesi mi?",
+  "hashtags": [
+   "#patlamışmısır",
+   "#mutfakbilimi",
+   "#bilim",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "patlamış mısır",
+   "mısır",
+   "mısır neden patlar",
+   "patlamış mısır nasıl patlar",
+   "patlamayan mısır taneleri",
+   "mısır tanesi",
+   "patlamış mısır yapımı",
+   "buhar basıncı",
+   "mutfak bilimi",
+   "gündelik bilim",
+   "yemek bilimi",
+   "su buharı",
+   "fizik",
+   "kimya",
+   "deney",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "bilgi",
+   "eğitici video",
+   "popcorn",
+   "why popcorn pops"
+  ],
+  "localizations": {
+   "en": {
+    "title": "What makes popcorn pop is actually water 🍿",
+    "description": "Each popcorn kernel is about 14 percent water. When heated, that water turns to steam that can't escape the hard hull, so pressure builds until the hull bursts at around 180°C. Even the pop sound comes from the escaping steam, not the cracking shell, and kernels that stay unpopped have either a cracked hull or too little water."
+   },
+   "es": {
+    "title": "Lo que hace estallar las palomitas es el agua 🍿",
+    "description": "Cada grano de maíz para palomitas tiene alrededor de un 14 % de agua. Al calentarse, esa agua se convierte en vapor que no puede salir de la cáscara dura, y hacia los 180 °C la presión la revienta. Hasta el «pop» que oyes viene del vapor que escapa, no de la cáscara al romperse."
+   },
+   "pt": {
+    "title": "O que faz a pipoca estourar é a água 🍿",
+    "description": "Cada grão de milho de pipoca tem cerca de 14% de água. Quando esquenta, essa água vira vapor e fica presa na casca dura até que, por volta de 180 °C, a pressão faz o grão estourar. Até o barulho do estouro vem do vapor escapando, não da casca se partindo."
+   },
+   "de": {
+    "title": "Popcorn platzt eigentlich wegen Wasser 🍿",
+    "description": "Jedes Popcornkorn besteht zu etwa 14 Prozent aus Wasser. Beim Erhitzen wird daraus Dampf, der nicht durch die harte Schale entweichen kann, bis sie bei rund 180 °C aufplatzt. Sogar das Ploppen kommt vom austretenden Dampf und nicht vom Brechen der Schale."
+   },
+   "fr": {
+    "title": "Ce qui fait éclater le pop-corn, c'est l'eau 🍿",
+    "description": "Chaque grain de maïs à pop-corn contient environ 14 % d'eau. En chauffant, cette eau se transforme en vapeur prisonnière de l'enveloppe dure, jusqu'à ce que la pression la fasse éclater vers 180 °C. Même le « pop » vient de la vapeur qui s'échappe, et non de l'enveloppe qui se brise."
+   },
+   "it": {
+    "title": "A far scoppiare i popcorn è l'acqua 🍿",
+    "description": "Ogni chicco di mais da popcorn contiene circa il 14% di acqua. Scaldandosi, quell'acqua diventa vapore che non riesce a uscire dal guscio duro, finché verso i 180 °C la pressione lo fa esplodere. Persino il «pop» che senti viene dal vapore che fuoriesce, non dal guscio che si rompe."
+   },
+   "ru": {
+    "title": "Попкорн лопается из-за воды внутри зерна 🍿",
+    "description": "Каждое зерно кукурузы для попкорна примерно на 14% состоит из воды. При нагреве вода превращается в пар, который не может выйти через твёрдую оболочку, и примерно при 180 °C давление её разрывает. Даже характерный хлопок издаёт вырывающийся пар, а не треснувшая оболочка."
+   },
+   "ar": {
+    "title": "ما يجعل الفشار ينفجر هو الماء 🍿",
+    "description": "تحتوي كل حبة ذرة فشار على نحو 14% من الماء. عند التسخين يتحول هذا الماء إلى بخار يُحبس داخل القشرة الصلبة، وعند نحو 180 درجة مئوية يفجّرها الضغط. وحتى صوت الفرقعة يأتي من البخار المندفع، لا من تشقق القشرة."
+   },
+   "hi": {
+    "title": "पॉपकॉर्न को असल में पानी फोड़ता है 🍿",
+    "description": "पॉपकॉर्न के हर दाने में लगभग 14% पानी होता है। गर्म होने पर यह पानी भाप बन जाता है, जो सख़्त छिलके से बाहर नहीं निकल पाती, और लगभग 180°C पर दबाव से दाना फूट जाता है। 'पॉप' की आवाज़ भी छिलका टूटने से नहीं, बल्कि बाहर निकलती भाप से आती है।"
+   },
+   "id": {
+    "title": "Yang membuat popcorn meletus ternyata air 🍿",
+    "description": "Setiap biji jagung popcorn mengandung sekitar 14% air. Saat dipanaskan, air itu berubah menjadi uap yang terperangkap di kulit yang keras, lalu sekitar 180°C tekanannya membuat biji meletus. Bahkan bunyi 'pop' berasal dari uap yang keluar, bukan dari kulit yang pecah."
+   },
+   "ja": {
+    "title": "ポップコーンを弾けさせているのは水 🍿",
+    "description": "ポップコーン用のトウモロコシの粒には約14%の水分が含まれています。加熱するとこの水が水蒸気になって硬い皮の中に閉じ込められ、約180℃で圧力に耐えきれず弾けます。あの「ポン」という音も、皮が割れる音ではなく水蒸気が抜ける音なのです。"
+   },
+   "ko": {
+    "title": "팝콘을 터뜨리는 건 사실 물이다 🍿",
+    "description": "팝콘용 옥수수 알갱이에는 약 14%의 수분이 들어 있습니다. 가열하면 이 물이 수증기로 변하지만 단단한 껍질 밖으로 빠져나가지 못하고, 약 180°C에서 압력을 이기지 못해 터집니다. '펑' 소리도 껍질이 깨지는 소리가 아니라 수증기가 빠져나가는 소리입니다."
+   },
+   "pl": {
+    "title": "Popcorn wybucha tak naprawdę przez wodę 🍿",
+    "description": "Każde ziarno kukurydzy na popcorn to w około 14 procentach woda. Podczas podgrzewania zmienia się ona w parę, która nie może uciec przez twardą łupinę, aż przy około 180°C ciśnienie ją rozsadza. Nawet charakterystyczne „pyk” pochodzi od uciekającej pary, a nie od pękającej łupiny."
+   },
+   "nl": {
+    "title": "Wat popcorn laat knallen, is eigenlijk water 🍿",
+    "description": "Elk popcornkorreltje bestaat voor ongeveer 14 procent uit water. Bij verhitting wordt dat stoom die niet door de harde schil kan ontsnappen, tot de druk rond 180 °C de korrel laat openbarsten. Zelfs het ploppende geluid komt van de ontsnappende stoom, niet van de brekende schil."
+   },
+   "uk": {
+    "title": "Попкорн лопається через воду всередині зернятка 🍿",
+    "description": "Кожне зернятко кукурудзи для попкорну приблизно на 14% складається з води. Під час нагрівання вона перетворюється на пару, що не може вийти крізь тверду оболонку, і приблизно при 180 °C тиск її розриває. Навіть характерний хлопок видає пара, що виривається, а не тріснута оболонка."
+   },
+   "vi": {
+    "title": "Thứ làm bỏng ngô nổ bung thực ra là nước 🍿",
+    "description": "Mỗi hạt ngô làm bỏng chứa khoảng 14% nước. Khi được làm nóng, nước biến thành hơi bị giữ lại trong lớp vỏ cứng, và đến khoảng 180°C thì áp suất làm hạt nổ tung. Ngay cả tiếng 'bụp' cũng đến từ hơi nước thoát ra chứ không phải do vỏ nứt."
+   },
+   "az": {
+    "title": "Popkornu partladan əslində sudur 🍿",
+    "description": "Hər popkorn dənəsinin təxminən 14 faizi sudur. Qızdırılanda bu su buxara çevrilir, amma sərt qabıqdan çıxa bilmir və təxminən 180 dərəcədə təzyiq qabığı partladır. Hətta eşitdiyin 'pat' səsi də qabığın qırılmasından yox, çölə çıxan buxardan gəlir."
+   },
+   "ro": {
+    "title": "Ce face floricelele să pocnească este, de fapt, apa 🍿",
+    "description": "Fiecare bob de porumb pentru floricele conține aproximativ 14% apă. Când se încălzește, apa devine abur prins sub coaja tare, iar pe la 180 °C presiunea o face să plesnească. Chiar și „pocnetul” vine de la aburul care iese, nu de la coaja care se rupe."
+   }
+  }
+ }
+}

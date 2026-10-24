@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0046",
+ "topic": "Köpekler yavru köpek bakışını nasıl yapar?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog face eyes",
+ "script": {
+  "title": "Köpeklerin yavru köpek bakışı için özel bir kası var 🐶",
+  "hook_text": "O MASUM BAKIŞ NEREDEN GELİYOR?",
+  "scenes": [
+   {
+    "text": "Bu köpeğin yüzünde kurtlarda gelişmemiş bir kas var.",
+    "visual": "close-up of a dog's face looking up with big eyes",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": "ÖZEL BİR KAS"
+   },
+   {
+    "text": "Bu kas iç kaşı kaldırıp yavru köpek bakışını yaratıyor.",
+    "visual": "dog raising its eyebrows and looking at the camera",
+    "stock_query": "dog eyes",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kurtlarda aynı yerde yalnızca dağınık birkaç lif bulunuyor.",
+    "visual": "close-up of a grey wolf's face",
+    "stock_query": "wolf face",
+    "source": "stock",
+    "callout": "KURTTA BİRKAÇ LİF",
+    "subject": [
+     "wolf"
+    ]
+   },
+   {
+    "text": "Araştırmacılara göre kas, insanlar bu bakışı sevdiği için gelişmiş olabilir.",
+    "visual": "dog looking up at its owner with pleading eyes",
+    "stock_query": "dog looking up",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Barınakta kaşını sık kaldıran köpekler daha hızlı yuva buldu.",
+    "visual": "dog in an animal shelter looking through the fence",
+    "stock_query": "dog shelter",
+    "source": "stock",
+    "callout": "DAHA HIZLI YUVA"
+   },
+   {
+    "text": "Köpeğin sana öyle bakınca dayanamıyorsan, o kas işini yapıyor.",
+    "visual": "puppy tilting its head with big sad eyes",
+    "stock_query": "dog puppy",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeklerin yüzünde iç kaşı kaldıran ve yavru köpek bakışını yaratan bir kas var; kurtlarda bu kas yalnızca dağınık birkaç liften ibaret. Barınaklarda bu kası daha sık kullanan köpekler daha hızlı sahiplenildi.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "yavru köpek bakışı",
+   "köpek kaşları",
+   "kurt",
+   "evcilleşme",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Köpeğin bu bakışı en çok ne zaman yapıyor: yemek isterken mi, yaramazlık yaptıktan sonra mı?",
+  "en_title": "Dogs have a special muscle for puppy dog eyes 🐶",
+  "en_description": "Dogs have a facial muscle that raises the inner eyebrow and creates those puppy dog eyes; in wolves the same spot holds only a few scattered fibers. Researchers think the muscle may have evolved because humans love that look, and in one study shelter dogs that raised their eyebrows more often were rehomed faster.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler yavru köpek bakışını nasıl yapar, kurtlar neden yapamaz?\n\nKöpeklerin yüzünde iç kaşı kaldırıp o masum bakışı yaratan bir kas var. Kurtlarda aynı yerde yalnızca dağınık birkaç lif bulunuyor. Araştırmacılara göre bu kas, insanlar bu bakışı sevdiği için evcilleşme sürecinde gelişmiş olabilir; barınaklarda kaşını sık kaldıran köpekler de daha hızlı yuva buldu.\n\nKöpeğin bu bakışı en çok ne zaman yapıyor: yemek isterken mi, yaramazlık yaptıktan sonra mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "yavru köpek bakışı",
+   "köpek bakışı",
+   "köpek kaşları",
+   "köpekler neden öyle bakar",
+   "köpek yüz kası",
+   "köpek ve kurt farkı",
+   "kurt",
+   "evcilleşme",
+   "köpek davranışları",
+   "köpek sahiplenme",
+   "barınak köpekleri",
+   "sevimli köpekler",
+   "evcil hayvanlar",
+   "hayvan davranışları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "puppy dog eyes",
+   "dog"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Dogs have a special muscle for puppy dog eyes 🐶",
+    "description": "Dogs have a facial muscle that raises the inner eyebrow and creates those puppy dog eyes; in wolves the same spot holds only a few scattered fibers. Researchers think the muscle may have evolved because humans love that look, and in one study shelter dogs that raised their eyebrows more often were rehomed faster."
+   },
+   "es": {
+    "title": "Los perros tienen un músculo especial para poner ojitos 🐶",
+    "description": "Los perros tienen un músculo facial que levanta la parte interna de la ceja y crea esa mirada tierna de cachorro; en los lobos, en ese mismo lugar solo hay unas pocas fibras dispersas. Los investigadores creen que pudo surgir porque a los humanos nos encanta esa mirada, y en los refugios los perros que más la ponían fueron adoptados antes."
+   },
+   "pt": {
+    "title": "Cães têm um músculo especial para fazer olhar pidão 🐶",
+    "description": "Os cães têm um músculo no rosto que levanta a parte interna da sobrancelha e cria aquele olhar pidão de filhote; nos lobos, no mesmo lugar, há só algumas fibras soltas. Pesquisadores acham que ele pode ter surgido porque os humanos adoram esse olhar, e cães de abrigo que o faziam mais vezes foram adotados mais rápido."
+   },
+   "de": {
+    "title": "Hunde haben einen eigenen Muskel für den Hundeblick 🐶",
+    "description": "Hunde besitzen einen Gesichtsmuskel, der die inneren Augenbrauen hebt und den berühmten Hundeblick erzeugt; bei Wölfen finden sich an dieser Stelle nur ein paar verstreute Fasern. Forschende vermuten, dass er sich entwickelt hat, weil Menschen diesen Blick lieben, und Tierheimhunde, die ihn öfter zeigten, wurden schneller vermittelt."
+   },
+   "fr": {
+    "title": "Les chiens ont un muscle spécial pour faire les yeux doux 🐶",
+    "description": "Les chiens possèdent un muscle facial qui relève l'intérieur du sourcil et crée ce regard attendrissant de chiot ; chez le loup, au même endroit, on ne trouve que quelques fibres éparses. Selon les chercheurs, il serait apparu parce que les humains adorent ce regard, et en refuge, les chiens qui le faisaient le plus souvent ont été adoptés plus vite."
+   },
+   "it": {
+    "title": "I cani hanno un muscolo apposta per lo sguardo da cucciolo 🐶",
+    "description": "I cani hanno un muscolo facciale che solleva l'interno del sopracciglio e crea il classico sguardo da cucciolo; nei lupi, nello stesso punto, ci sono solo poche fibre sparse. Secondo i ricercatori potrebbe essersi evoluto perché agli esseri umani quello sguardo piace moltissimo, e nei canili i cani che lo facevano più spesso venivano adottati prima."
+   },
+   "ru": {
+    "title": "У собак есть особая мышца для «щенячьих глаз» 🐶",
+    "description": "У собак есть лицевая мышца, которая приподнимает внутренний край брови и создаёт тот самый жалобный щенячий взгляд, а у волков на этом месте лишь несколько разрозненных волокон. Исследователи считают, что она могла развиться, потому что людям нравится такой взгляд, а собак из приюта, которые чаще так смотрели, быстрее забирали домой."
+   },
+   "ar": {
+    "title": "للكلاب عضلة خاصة لنظرة الجرو البريئة 🐶",
+    "description": "لدى الكلاب عضلة في الوجه ترفع الطرف الداخلي للحاجب وتصنع تلك النظرة البريئة، بينما لا يوجد لدى الذئاب في المكان نفسه سوى بضع ألياف متناثرة. ويرى الباحثون أنها ربما تطورت لأن البشر يحبون هذه النظرة، وفي الملاجئ وجدت الكلاب التي تكثر منها بيتًا أسرع."
+   },
+   "hi": {
+    "title": "कुत्तों के पास 'मासूम नज़र' के लिए खास मांसपेशी होती है 🐶",
+    "description": "कुत्तों के चेहरे पर एक मांसपेशी होती है जो भौंह के अंदरूनी हिस्से को ऊपर उठाकर वह मासूम पिल्ले जैसी नज़र बनाती है, जबकि भेड़ियों में उसी जगह बस कुछ बिखरे रेशे होते हैं। शोधकर्ताओं के मुताबिक यह शायद इसलिए विकसित हुई क्योंकि इंसानों को यह नज़र बहुत पसंद है, और शेल्टर में इसे ज़्यादा करने वाले कुत्तों को जल्दी घर मिला।"
+   },
+   "id": {
+    "title": "Anjing punya otot khusus untuk tatapan memelas 🐶",
+    "description": "Anjing punya otot wajah yang mengangkat alis bagian dalam dan menciptakan tatapan memelas ala anak anjing, sedangkan serigala hanya punya beberapa serat tersebar di bagian yang sama. Peneliti menduga otot ini berkembang karena manusia menyukai tatapan itu, dan anjing penampungan yang lebih sering melakukannya lebih cepat diadopsi."
+   },
+   "ja": {
+    "title": "犬には「うるうる目」専用の筋肉がある 🐶",
+    "description": "犬の顔には眉の内側を持ち上げ、あのうるうるした子犬のような目をつくる筋肉があります。オオカミでは同じ場所にまばらな繊維が少しあるだけです。研究者は、人間がこの表情を好んだためにこの筋肉が発達したのではないかと考えており、保護施設ではこの表情をよくする犬ほど早く引き取られていました。"
+   },
+   "ko": {
+    "title": "개에게는 '애교 눈빛'을 위한 특별한 근육이 있다 🐶",
+    "description": "개의 얼굴에는 눈썹 안쪽을 들어 올려 그 애처로운 강아지 눈빛을 만드는 근육이 있지만, 늑대에게는 같은 자리에 흩어진 섬유 몇 가닥뿐입니다. 연구자들은 사람들이 이 눈빛을 좋아해서 이 근육이 발달했을 수 있다고 보며, 보호소에서 이 표정을 자주 지은 개일수록 더 빨리 입양됐습니다."
+   },
+   "pl": {
+    "title": "Psy mają specjalny mięsień do „szczenięcych oczu” 🐶",
+    "description": "Psy mają mięsień twarzy, który unosi wewnętrzną część brwi i tworzy to błagalne, szczenięce spojrzenie, a u wilków w tym miejscu jest tylko kilka rozproszonych włókien. Naukowcy uważają, że mógł się rozwinąć, bo ludzie uwielbiają to spojrzenie, a psy ze schroniska, które częściej tak patrzyły, szybciej znajdowały dom."
+   },
+   "nl": {
+    "title": "Honden hebben een speciale spier voor die puppyogen 🐶",
+    "description": "Honden hebben een gezichtsspier die de binnenkant van de wenkbrauw optilt en zo die smekende puppyblik maakt, terwijl wolven op die plek maar een paar losse vezels hebben. Onderzoekers denken dat de spier zich kan hebben ontwikkeld omdat mensen dol zijn op die blik, en asielhonden die hem vaker opzetten, vonden sneller een thuis."
+   },
+   "uk": {
+    "title": "У собак є особливий м'яз для «цуценячих очей» 🐶",
+    "description": "У собак є лицевий м'яз, що піднімає внутрішній край брови й створює той самий благальний цуценячий погляд, а у вовків на цьому місці лише кілька розрізнених волокон. Дослідники вважають, що він міг розвинутися, бо людям подобається такий погляд, а собак із притулку, які частіше так дивилися, швидше забирали додому."
+   },
+   "vi": {
+    "title": "Chó có một cơ đặc biệt để làm 'mắt cún con' 🐶",
+    "description": "Chó có một cơ trên mặt giúp nhướng phần trong của lông mày, tạo nên ánh mắt cún con đáng thương, trong khi ở sói chỗ đó chỉ có vài sợi cơ rời rạc. Các nhà nghiên cứu cho rằng cơ này có thể đã phát triển vì con người yêu ánh mắt ấy, và những chú chó ở trại cứu hộ làm vậy nhiều hơn thì được nhận nuôi nhanh hơn."
+   },
+   "az": {
+    "title": "İtlərin o məsum baxış üçün xüsusi əzələsi var 🐶",
+    "description": "İtlərin üzündə qaşın daxili hissəsini qaldırıb o məsum küçük baxışını yaradan bir əzələ var, canavarlarda isə həmin yerdə yalnız bir neçə dağınıq lif olur. Tədqiqatçılara görə bu əzələ insanlar bu baxışı sevdiyi üçün inkişaf etmiş ola bilər; sığınacaqlarda bunu tez-tez edən itlər də daha tez yuva tapıb."
+   },
+   "ro": {
+    "title": "Câinii au un mușchi special pentru privirea de cățeluș 🐶",
+    "description": "Câinii au un mușchi facial care ridică partea interioară a sprâncenei și creează acea privire rugătoare de cățeluș, în timp ce la lupi, în același loc, există doar câteva fibre răzlețe. Cercetătorii cred că s-ar fi putut dezvolta pentru că oamenii adoră această privire, iar câinii din adăposturi care o făceau mai des au fost adoptați mai repede."
+   }
+  }
+ }
+}

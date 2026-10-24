@@ -1,0 +1,193 @@
+{
+ "id": "mk-c0048",
+ "topic": "Buz neden suda yüzer?",
+ "kategori": "bilim",
+ "subject": [
+  "iceberg"
+ ],
+ "stock_hint": "iceberg ocean",
+ "script": {
+  "title": "Çoğu katı sıvısında batar, buz ise yüzer 🧊",
+  "hook_text": "BUZ NEDEN BATMIYOR?",
+  "scenes": [
+   {
+    "text": "Bu buzdağının yaklaşık onda dokuzu suyun altında.",
+    "visual": "large white iceberg floating in a dark ocean",
+    "stock_query": "iceberg ocean",
+    "source": "stock",
+    "callout": "%90 SUYUN ALTINDA"
+   },
+   {
+    "text": "Yine de batmıyor, oysa çoğu maddenin katısı kendi sıvısında batar.",
+    "visual": "iceberg drifting slowly in calm water",
+    "stock_query": "iceberg water",
+    "source": "stock",
+    "callout": "ÇOĞU KATI BATAR"
+   },
+   {
+    "text": "Su donarken molekülleri boşluklu bir kafes kurar.",
+    "visual": "macro shot of frost ice crystals forming",
+    "stock_query": "frost ice crystal",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "frost",
+     "ice crystal"
+    ]
+   },
+   {
+    "text": "Bu yüzden buz, sudan yaklaşık yüzde dokuz daha hafiftir.",
+    "visual": "ice cubes floating in a glass of water",
+    "stock_query": "ice cube water",
+    "source": "stock",
+    "callout": "%9 DAHA HAFİF",
+    "subject": [
+     "ice cube"
+    ]
+   },
+   {
+    "text": "Göller de üstten donar ve buz, alttaki suyu yalıtır.",
+    "visual": "frozen lake surface in winter",
+    "stock_query": "frozen lake",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "frozen lake"
+    ]
+   },
+   {
+    "text": "Buz batsaydı göller dipten donabilir, balıklar kışı zor atlatırdı.",
+    "visual": "wide shot of a frozen lake surrounded by snowy trees",
+    "stock_query": "frozen lake winter",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "frozen lake"
+    ]
+   }
+  ],
+  "description": "Bir buzdağının yaklaşık onda dokuzu suyun altındadır ama batmaz. Su donarken molekülleri boşluklu bir kafes kurduğu için buz, sudan yaklaşık yüzde dokuz daha hafiftir; göller de bu yüzden üstten donar.",
+  "tags": [
+   "buz",
+   "buzdağı",
+   "buz neden yüzer",
+   "su",
+   "yoğunluk",
+   "fizik",
+   "doğa",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: buzdağının onda dokuzunun suyun altında olması mı, buzun sudan hafif olması mı?",
+  "en_title": "Most solids sink in their own liquid, but ice floats 🧊",
+  "en_description": "About nine-tenths of an iceberg sits below the waterline, yet it floats, while most substances sink in their own liquid once they freeze. As water freezes, its molecules lock into an open lattice, making ice about 9 percent less dense than liquid water. That's why lakes freeze from the top, and the ice insulates the water below.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Buz neden suda yüzer, buzdağı neden batmaz?\n\nBir buzdağının yaklaşık onda dokuzu suyun altındadır ama yine de batmaz; oysa çoğu maddenin katısı kendi sıvısında batar. Su donarken molekülleri boşluklu bir kafes kurar, bu yüzden buz sudan yaklaşık yüzde dokuz daha hafiftir. Göller de bu sayede üstten donar ve buz, alttaki suyu yalıtır.\n\nSence hangisi daha şaşırtıcı: buzdağının onda dokuzunun suyun altında olması mı, buzun sudan hafif olması mı?",
+  "hashtags": [
+   "#buzdağı",
+   "#buz",
+   "#bilim",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "buz",
+   "buzdağı",
+   "buz neden yüzer",
+   "buz neden batmaz",
+   "buzdağı neden batmaz",
+   "buzdağının ne kadarı suda",
+   "su donunca genleşir",
+   "suyun yoğunluğu",
+   "yoğunluk",
+   "göller neden üstten donar",
+   "donmuş göl",
+   "buz kristali",
+   "fizik",
+   "kimya",
+   "doğa",
+   "gündelik bilim",
+   "ilginç bilgiler",
+   "bilim",
+   "merak",
+   "eğitici video",
+   "iceberg",
+   "why ice floats"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Most solids sink in their own liquid, but ice floats 🧊",
+    "description": "About nine-tenths of an iceberg sits below the waterline, yet it floats, while most substances sink in their own liquid once they freeze. As water freezes, its molecules lock into an open lattice, making ice about 9 percent less dense than liquid water. That's why lakes freeze from the top, and the ice insulates the water below."
+   },
+   "es": {
+    "title": "Casi todos los sólidos se hunden en su líquido, pero el hielo flota 🧊",
+    "description": "Cerca de nueve décimas partes de un iceberg están bajo el agua y aun así flota, aunque la mayoría de las sustancias sólidas se hunden en su propio líquido. Al congelarse, el agua forma una red con huecos que hace al hielo un 9 % menos denso, por eso los lagos se congelan desde arriba."
+   },
+   "pt": {
+    "title": "Quase todo sólido afunda no próprio líquido, mas o gelo flutua 🧊",
+    "description": "Cerca de nove décimos de um iceberg ficam debaixo d'água e, mesmo assim, ele flutua, embora a maioria das substâncias sólidas afunde no próprio líquido. Ao congelar, a água forma uma estrutura cheia de espaços que deixa o gelo cerca de 9% menos denso, e por isso os lagos congelam de cima para baixo."
+   },
+   "de": {
+    "title": "Fast jeder Feststoff sinkt in seiner Flüssigkeit, Eis aber schwimmt 🧊",
+    "description": "Rund neun Zehntel eines Eisbergs liegen unter Wasser, und trotzdem schwimmt er, obwohl die meisten Stoffe in fester Form in ihrer eigenen Flüssigkeit untergehen. Beim Gefrieren bildet Wasser ein lockeres Gitter, wodurch Eis etwa 9 Prozent weniger dicht ist; deshalb frieren Seen von oben zu."
+   },
+   "fr": {
+    "title": "Presque tous les solides coulent dans leur liquide, sauf la glace 🧊",
+    "description": "Environ neuf dixièmes d'un iceberg sont sous l'eau, et pourtant il flotte, alors que la plupart des substances solides coulent dans leur propre liquide. En gelant, l'eau forme un réseau plein de vides qui rend la glace environ 9 % moins dense : c'est pour cela que les lacs gèlent par la surface."
+   },
+   "it": {
+    "title": "Quasi tutti i solidi affondano nel loro liquido, il ghiaccio no 🧊",
+    "description": "Circa nove decimi di un iceberg stanno sott'acqua, eppure galleggia, mentre la maggior parte delle sostanze solide affonda nel proprio liquido. Congelando, l'acqua forma un reticolo pieno di spazi che rende il ghiaccio circa il 9% meno denso: per questo i laghi gelano dalla superficie."
+   },
+   "ru": {
+    "title": "Почти любое твёрдое вещество тонет в своей жидкости, а лёд нет 🧊",
+    "description": "Около девяти десятых айсберга скрыто под водой, и всё же он плавает, хотя большинство веществ в твёрдом виде тонут в собственной жидкости. Замерзая, вода выстраивается в рыхлую решётку, и лёд становится примерно на 9% менее плотным, поэтому озёра замерзают сверху."
+   },
+   "ar": {
+    "title": "معظم المواد الصلبة تغرق في سائلها إلا الجليد 🧊",
+    "description": "نحو تسعة أعشار الجبل الجليدي تحت الماء، ومع ذلك يطفو، رغم أن معظم المواد في حالتها الصلبة تغرق في سائلها. فعندما يتجمد الماء تترتب جزيئاته في شبكة مليئة بالفراغات تجعل الجليد أقل كثافة بنحو 9%، ولهذا تتجمد البحيرات من الأعلى."
+   },
+   "hi": {
+    "title": "ज़्यादातर ठोस अपने तरल में डूबते हैं, पर बर्फ़ तैरती है 🧊",
+    "description": "हिमखंड का लगभग नौ-दसवाँ हिस्सा पानी के नीचे होता है, फिर भी वह तैरता है, जबकि ज़्यादातर पदार्थ ठोस होकर अपने ही तरल में डूब जाते हैं। जमते समय पानी के अणु खुली जाली बना लेते हैं, जिससे बर्फ़ पानी से लगभग 9% कम घनी होती है, इसीलिए झीलें ऊपर से जमती हैं।"
+   },
+   "id": {
+    "title": "Kebanyakan benda padat tenggelam di cairannya, tapi es mengapung 🧊",
+    "description": "Sekitar sembilan per sepuluh bagian gunung es berada di bawah air, tetapi tetap mengapung, padahal sebagian besar zat padat tenggelam dalam cairannya sendiri. Saat membeku, molekul air membentuk kisi berongga sehingga es sekitar 9% kurang padat daripada air, itulah sebabnya danau membeku dari atas."
+   },
+   "ja": {
+    "title": "ほとんどの固体は液体に沈むのに、氷は浮かぶ 🧊",
+    "description": "氷山はおよそ9割が水面下にありますが、それでも浮かんでいます。多くの物質は固体になると自分の液体に沈むのに、水は凍るとすき間の多い結晶構造になり、氷は水より約9%密度が低くなるのです。だから湖は上から凍ります。"
+   },
+   "ko": {
+    "title": "대부분의 고체는 제 액체에 가라앉지만 얼음은 뜬다 🧊",
+    "description": "빙산은 약 10분의 9가 물속에 잠겨 있지만 그래도 물에 뜹니다. 대부분의 물질은 고체가 되면 자기 액체에 가라앉는데, 물은 얼면서 빈틈이 많은 격자 구조를 만들어 얼음의 밀도가 물보다 약 9% 낮아집니다. 그래서 호수는 위에서부터 업니다."
+   },
+   "pl": {
+    "title": "Prawie każde ciało stałe tonie we własnej cieczy, a lód pływa 🧊",
+    "description": "Około dziewięciu dziesiątych góry lodowej kryje się pod wodą, a mimo to ona pływa, choć większość substancji w stanie stałym tonie we własnej cieczy. Zamarzająca woda tworzy ażurową sieć, przez co lód ma o około 9 procent mniejszą gęstość, dlatego jeziora zamarzają od góry."
+   },
+   "nl": {
+    "title": "Bijna elke vaste stof zinkt in zijn eigen vloeistof, maar ijs drijft 🧊",
+    "description": "Zo'n negen tiende van een ijsberg ligt onder water en toch drijft hij, terwijl de meeste stoffen in vaste vorm zinken in hun eigen vloeistof. Bij het bevriezen vormt water een open rooster, waardoor ijs ongeveer 9 procent minder dicht is; daarom bevriezen meren van bovenaf."
+   },
+   "uk": {
+    "title": "Майже будь-яка тверда речовина тоне у своїй рідині, а лід ні 🧊",
+    "description": "Близько дев'яти десятих айсберга приховано під водою, і все ж він плаває, хоча більшість речовин у твердому стані тонуть у власній рідині. Замерзаючи, вода утворює пухку ґратку, тож лід приблизно на 9% менш щільний, тому озера замерзають згори."
+   },
+   "vi": {
+    "title": "Hầu hết chất rắn chìm trong chất lỏng của nó, riêng băng lại nổi 🧊",
+    "description": "Khoảng chín phần mười tảng băng trôi nằm dưới nước nhưng nó vẫn nổi, trong khi phần lớn các chất khi đông đặc lại chìm trong chính chất lỏng của mình. Khi đóng băng, các phân tử nước xếp thành mạng tinh thể nhiều khoảng trống, khiến băng nhẹ hơn nước khoảng 9%, vì vậy hồ đóng băng từ trên xuống."
+   },
+   "az": {
+    "title": "Bərk maddələrin çoxu öz mayesində batır, buz isə üzür 🧊",
+    "description": "Aysberqin təxminən onda doqquzu suyun altındadır, amma yenə də üzür; halbuki maddələrin çoxu bərk halda öz mayesində batır. Su donanda molekulları boşluqlu qəfəs qurur və buz sudan təxminən 9 faiz az sıx olur, buna görə göllər üstdən donur."
+   },
+   "ro": {
+    "title": "Aproape orice solid se scufundă în propriul lichid, dar gheața plutește 🧊",
+    "description": "Aproximativ nouă zecimi dintr-un aisberg se află sub apă și totuși plutește, deși majoritatea substanțelor solide se scufundă în propriul lichid. La îngheț, moleculele de apă formează o rețea plină de goluri, iar gheața devine cu aproximativ 9% mai puțin densă, de aceea lacurile îngheață de la suprafață."
+   }
+  }
+ }
+}
