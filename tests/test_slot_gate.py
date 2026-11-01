@@ -127,6 +127,18 @@ def test_quota_day_without_a_time_zone_database_assumes_the_winter_reset(monkeyp
     assert slot_gate.quota_day_start(at("07:30", day=15)) == at("08:00", day=14)
     assert slot_gate.quota_day_start(at("08:00", day=15)) == at("08:00", day=15)
 
+def test_an_episode_scheduled_for_a_later_slot_fills_only_that_slot():
+    # An animated episode uploaded at 02:00, set to go public at 17:00 and recorded with that time.
+    episode = upload(at("17:00"), "public", "anim")
+    for tick in ("07:07", "15:07", "16:37"):
+        go, reasons = slot_gate.decide(at(tick), [upload(at("05:10")), episode], [])
+        assert go, (tick, reasons)
+    go, reasons = slot_gate.decide(at("17:07"), [upload(at("15:10")), episode], [])
+    assert not go and any("Slot dolu" in r and "anim" in r for r in reasons)
+    # The next slot keeps its usual gap after the episode.
+    assert slot_gate.decide(at("18:07"), [episode], [])[0]
+
+
 def test_private_upload_neither_fills_the_slot_nor_delays_it():
     go, reasons = slot_gate.decide(at("10:37"), [upload(at("05:20")), upload(at("10:15"), "private")], [])
     assert go, reasons
