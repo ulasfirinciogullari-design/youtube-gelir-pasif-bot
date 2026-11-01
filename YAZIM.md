@@ -70,7 +70,8 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 - `stock_query`: Pixabay'de kesin bulunacak 2-3 basit İngilizce kelime, ana özne kelimesini içersin ("giraffe neck").
   Soyut kavram yazma. `source` hep "stock". `visual`: stok bulunamazsa üretilecek fotogerçekçi İngilizce tarif.
 - `callout`: 1-3 kelime ya da birimiyle bir sayı, en fazla 24 karakter, büyük harf ("7 OMUR"). En çarpıcı 3-4 sahne.
-- `title`: en fazla 60 karakter, merak uyandıran soru ya da şaşırtıcı iddia, sonda tek emoji. #shorts yok.
+- `title`: en fazla 60 karakter, şaşırtıcı bir iddia (soru değil), sonda tek emoji. #shorts yok. 1 Kasım verisi:
+  iddia başlıklı Claude Short'ları ortanca 2.328 izlenme, soru başlıklılar 1.377 (23'e 10 video).
 - `hook_text`: konunun sorusunu soran 3-7 kelimelik büyük yazı, emoji yok, ilk cümleyi tekrarlamasın.
 - `mood`: "belgesel" (vahşi doğa, okyanus, uzay), "eğlenceli" (sevimli/komik hayvan, gündelik tuhaflık) ya da
   "sakin" (insan vücudu, psikoloji, gündelik bilim).
@@ -90,8 +91,13 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 
 ## Konu seçimi
 
-- Kanalda tutan konular: görüntüsü kolay bulunan hayvanlar (zürafa 5.591, flamingo 3.153, köpek 2.796, zebra,
-  kedi, baykuş, fil izlenme). İnsan vücudu ve psikoloji ortalama 1.000 civarı.
+- En çok tutan kalıp (1 Kasım verisi, 20-23 Ekim'in 33 Short'u): herkesin tanıdığı bir canlı hakkında yanlış bilinen
+  ya da "senin hakkında" şaşırtıcı bir gerçek. Köpekler kırmızıyı göremez 15.723, bebeklerin kemiği senden fazla
+  9.437, kargalar yüzü unutmaz 8.139, geyik her yıl yeni boynuz 5.727, pandanın altıncı parmağı 4.024. Uzak ya da
+  az tanınan canlılar (deniz atı, kurbağa, kelebek) 1.100-1.400'de kalıyor.
+- İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
+  1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
+- Konuların yaklaşık 6'da 5'i hayvan, 6'da 1'i insan vücudu ya da gündelik bilim olsun.
 - Daha önce yüklenen başlıklara (`uploads.json`) ve kuyruktaki dosyalara bak, aynı konuyu tekrar yazma.
 - Kuyrukta her zaman en az 10 kullanılmamış metin olsun (günde 8 Short yükleniyor).
 
