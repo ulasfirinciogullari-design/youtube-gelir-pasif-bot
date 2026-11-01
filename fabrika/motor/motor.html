@@ -8,6 +8,7 @@
 <script src="ortak.js"></script>
 <script src="arkaplan.js"></script>
 <script src="bolum.js"></script>
+<script src="nasa/liste.js"></script>
 <script>
 // YA OLSAYDI? episode engine. bolum.js sets window.EP:
 //   {series, title: {hi, rest}, lines: [{who: 'pi'|'bit', text, v: {t: <visual type>, bg, ...}}]}
@@ -41,6 +42,12 @@ const LY = EP.layout === 'ig'
 // scene.
 // uret.py ACILIS sets EP.hook.
 const HOOK = EP.hook ? 1.6 : 0;
+// Real NASA photos (fabrika/nasa.py, test from 2026-11-01): with EP.foto the bodies and the space backdrop that have a
+// photo in nasa/liste.js are drawn from it; the rest stay drawn.
+const FOTO = {};
+const FOTO_READY = EP.foto && window.NASA ? Promise.all(Object.entries(window.NASA).map(([k, f]) => new Promise(res => {
+  const im = new Image(); im.onload = () => { FOTO[k] = im; res(); }; im.onerror = () => res(); im.src = 'nasa/' + f;
+}))) : Promise.resolve();
 let BGM = null;  // the backdrop always fills the frame, even when the 'ig' layout shrinks the scene
 const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
 // time of the first word in line L starting with prefix (fallback: a share of the line)
@@ -78,6 +85,13 @@ emoji = function (ch, x, y, size, alpha = 1, rot = 0) {
 function bg(name, t) {
   const f = BGS[name] || BGS.space;
   ctx.save(); if (BGM) ctx.setTransform(BGM);
+  const P = FOTO['bg_' + name];
+  if (P) {  // a slow push-in on the photo, darkened a little so the scene and the words stay readable
+    const z = 1.04 + t * .004;
+    ctx.drawImage(P, 540 - 540 * z, 960 - 960 * z, 1080 * z, 1920 * z);
+    ctx.fillStyle = 'rgba(5,7,25,.25)'; ctx.fillRect(0, 0, W, H);
+    ctx.restore(); return;
+  }
   if (f) f(t); else { vgrad(C.space1, C.space2); starfield(t); }
   ctx.restore();
 }
@@ -110,6 +124,14 @@ const FBCOL = { sun: ['#fff3a0', '#ffb300', 'rgba(255,180,40,.8)'], mars: ['#ff9
   blackhole: ['#000', '#000', 'rgba(255,140,40,.7)'], galaxy: ['#ffe9ff', '#7b4dff', 'rgba(170,120,255,.6)'] };
 function body(kind, x, y, r, t, opt) {
   if (r < .5) return;
+  const P = FOTO[kind];
+  if (P) {
+    const [, , gl] = FBCOL[kind] || ['', '', 'rgba(255,255,255,.3)'];
+    ctx.save(); if (opt && opt.alpha != null) ctx.globalAlpha *= opt.alpha;
+    glow(x, y, r * (kind === 'sun' || kind === 'star' ? 2.2 : 1.5), gl, .6);
+    ctx.drawImage(P, x - r, y - r, r * 2, r * 2);
+    ctx.restore(); return;
+  }
   const f = BODIES[kind];
   if (f) return f(x, y, r, t, opt);
   if (kind === 'earth') return fbEarth(x, y, r, t, opt && opt.tilt !== undefined ? opt.tilt : .41);
@@ -576,5 +598,6 @@ window.ready = document.fonts.load(`900 40px ${F}`).then(() => document.fonts.lo
     ['💬', '❄️', '🔥', '❓'].forEach(e => em.add(e));
     return Promise.all([...em].map(e => document.fonts.load(`100px ${EMOJI}`, e)));
   })
+  .then(() => FOTO_READY)
   .then(() => { draw(0); return true; });
 </script></body></html>

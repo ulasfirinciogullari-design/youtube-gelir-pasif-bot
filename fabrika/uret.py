@@ -38,6 +38,9 @@ MIN_CREDITS = 12000
 # On 2026-10-21 to 2026-11-01, then off: stayed-to-watch fell from 47.7% (10 Shorts before) to 38.5% (9 with it),
 # views 1,212 -> 1,097, and Reels lost views and watch time too. YO_ACILIS=1 turns it back on.
 ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
+# Real NASA photos for planets and the space backdrop (fabrika/nasa.py, motor.html FOTO). Off until Ulaş picks the
+# test on the 2026-11-01 card; "ornek <id>" always draws with them so the look can be judged first. YO_FOTO=1 turns it on.
+FOTO = (os.environ.get("YO_FOTO") or "0") == "1"
 
 
 def now():
@@ -224,13 +227,13 @@ def node(*args):
     return r.stdout
 
 
-def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None):
+def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, foto=None):
     """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY).
     hook: open on the cover line's moment with the question in big letters (motor.html HOOK); default ACILIS."""
     motor = HERE / "motor"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
         {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout, "cover": ep.get("cover", 1),
-         "hook": ACILIS if hook is None else hook},
+         "hook": ACILIS if hook is None else hook, "foto": FOTO if foto is None else foto},
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
@@ -249,8 +252,8 @@ def to_instagram(ep, timings_path, mix, state):
 
 
 def ornek(ep_id, report):
-    """A finished episode voiced again and drawn with the hook opening into fabrika/deneme/ornek-<id>.mp4, so a
-    change to the look can be seen before it goes live. Nothing is uploaded."""
+    """A finished episode voiced again and drawn with the NASA photos (and the current opening) into
+    fabrika/deneme/ornek-<id>.mp4, so a change to the look can be seen before it goes live. Nothing is uploaded."""
     import ses
     p = HERE / "bolumler" / f"{ep_id}.json"
     if not p.exists():
@@ -260,7 +263,7 @@ def ornek(ep_id, report):
     timings, mix, chars = ses.make(ep, WORK)
     video, cover = WORK / "video.mp4", WORK / "kapak.jpg"
     report.update({"title": ep["title"], "chars": chars})
-    report["duration"] = round(render(ep, WORK / "timings.json", mix, video, cover, hook=True), 1)
+    report["duration"] = round(render(ep, WORK / "timings.json", mix, video, cover, foto=True), 1)
     d = HERE / "deneme"
     d.mkdir(exist_ok=True)
     (d / f"ornek-{ep_id}.mp4").write_bytes(video.read_bytes())
