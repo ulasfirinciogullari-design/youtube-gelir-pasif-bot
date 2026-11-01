@@ -1,24 +1,32 @@
 {
- "started": "2026-10-23T20:58:38+00:00",
+ "started": "2026-11-01T21:01:28+00:00",
  "deneme": false,
- "threads": 24,
+ "mod": "nöbet",
+ "threads": 25,
  "quiet": 0,
- "new": 1,
- "sent_last_24h": 2,
+ "new": 2,
+ "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgwJddPnVZxYmlNDz4N4AaABAg.AcJGXeIrbofAcJH_jReXgx",
+   "id": "UgzyJaYToneXnOzA4_B4AaABAg",
+   "video": "fwDsy2Wq4S4",
+   "comment": "Peki yuvarlak yıldırım nasıl oluşuyor?? 🥇⚡☠️💀Tahmini?",
+   "reply": "Top yıldırım veya küresel şimşek, nadir görülen ve doğası tam olarak çözülememiş bir plazma olgusudur.\n— Profesör Pi 🔭",
+   "result": "gönderildi"
+  },
+  {
+   "id": "UgwJddPnVZxYmlNDz4N4AaABAg.AcJGXeIrbofAcL-1at4Fn4",
    "video": "gEB2tRsHr5s",
-   "comment": "saol bilgi için yaolsaydibilim🫶🏻 Ben aslında 828 bin km hızla dondugumuzu anlatmak istemistim yani ışık hızından daha mı fazla ? 🤔",
+   "comment": "Teşekkür ederimm ❤",
    "cevaba_cevap": true,
-   "reply": "Hayır, Güneş Sistemi'nin galaksi etrafındaki hızı saatte 828 bin kilometredir; bu, saniyede yaklaşık 230 kilometredir ve ışık hızının binde birinden bile azdır.\n— Profesör Pi 🔭",
+   "reply": "Rica ederim, bilim dolu günlerr! 🚀\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-10-23T20:58:40+00:00"
+ "finished": "2026-11-01T21:01:35+00:00"
 }
