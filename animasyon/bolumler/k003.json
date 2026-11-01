@@ -1,0 +1,82 @@
+{
+ "id": "k003",
+ "kanun": "III",
+ "title": {
+  "top": "Küçük bir şey isteyeceksen",
+  "hi": "önce büyüğünü iste"
+ },
+ "yt_title": "Önce Hayır Dedirt, Sonra Evet Al 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Birinden küçük bir şey isteyeceksen, önce ondan kocaman bir şey iste.",
+   "v": {"t": "usta", "no": "küçük", "yes": "kocaman", "no_label": "Hemen küçüğü isteme", "yes_label": "Önce büyüğü iste", "no_prop": "zooTicketProp", "yes_prop": "bigCalendarProp"}
+  },
+  {
+   "text": "1975'te Amerika'da araştırmacılar bir üniversitede yürüyen öğrencileri tek tek durdurdu.",
+   "v": {"t": "kampus", "year": "1975 · ABD", "key": "durdurdu", "sfx": [["durdurdu", 0.8, "whoosh", 0.35, -0.1]]}
+  },
+  {
+   "text": "Önce dev bir rica: iki yıl boyunca her hafta iki saat, suça karışmış gençlere gönüllü danışmanlık.",
+   "v": {"t": "dev", "key": "dev", "years": "iki", "week": "hafta", "label": "Büyük rica", "sfx": [["dev", 0.3, "impact", 0.4, 0.1], ["hafta", 0.5, "paper", 0.35, 0.0]]}
+  },
+  {
+   "text": "Bir kişi bile kabul etmedi.",
+   "v": {"t": "red", "key": "etmedi", "sfx": [["etmedi", 0.7, "stamp", 0.45, 0.05]]}
+  },
+  {
+   "text": "Hemen ardından küçüğünü istediler: aynı gençleri iki saatliğine hayvanat bahçesine götürmek.",
+   "v": {"t": "zoo", "key": "hayvanat", "small": "küçüğünü", "trip": "aynı", "label": "Küçük rica", "sfx": [["küçüğünü", 0.4, "pop", 0.35, 0.0], ["hayvanat", 0.7, "shimmer", 0.35, 0.0]]}
+  },
+  {
+   "text": "Önce dev ricayı reddedenlerin yarısı evet dedi.",
+   "v": {"t": "sonuc", "pct": 50, "lit": 12, "label": "Önce büyüğü reddedenler", "key": "evet", "sfx": [[null, 0.3, "tick", 0.3], [null, 0.45, "tick", 0.3], [null, 0.6, "tick", 0.3], [null, 0.75, "tick", 0.3], ["evet", 0.85, "shimmer", 0.45]]}
+  },
+  {
+   "text": "Sadece hayvanat bahçesini duyanlarda bu oran altıda birdi.",
+   "v": {"t": "kontrol", "pct": 17, "lit": 4, "label": "Sadece küçüğü duyanlar", "key": "altıda", "sfx": [[null, 0.5, "tick", 0.3], [null, 0.65, "tick", 0.3], ["altıda", 0.85, "stamp", 0.4]]}
+  },
+  {
+   "text": "Psikologlara göre sen geri adım atınca, karşındaki de sana bir adım atmak zorunda hissediyor.",
+   "v": {"t": "neden", "key": "geri", "back": "geri", "fwd": "sana", "sfx": [["geri", 0.4, "whoosh", 0.3, 0.0], ["sana", 0.7, "shimmer", 0.4, 0.1]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Robert Cialdini ve arkadaşları 1975'te ABD'de bir üniversite kampüsünde, yürüyüş yollarında tek başına yürüyen 72 kişiyi durdurdu (her grupta 24 kişi). Araştırmacılar Arizona State University'dendi.",
+  "Büyük rica: en az iki yıl boyunca haftada iki saat, suça karışmış gençlere ücretsiz, gönüllü danışmanlık (abla-ağabeylik) yapmak. Makaleye göre bu büyük ricayı kabul eden hiç olmadı.",
+  "Küçük rica: bir grup suça karışmış genci yaklaşık iki saatlik bir öğleden sonra ya da akşam hayvanat bahçesi gezisine götürmek (gönüllü, ücretsiz).",
+  "Önce büyük ricayı reddedenlerin %50'si küçük ricaya evet dedi. Sadece küçük ricayı duyanlarda bu oran %16,7 (altıda bir) idi. İki ricanın birlikte anlatılıp sadece küçüğünün sorulduğu grupta %25'ti.",
+  "Araştırmacılar etkiyi karşılıklı taviz kuralıyla açıkladı: rica eden büyük isteğinden vazgeçince, karşısındaki de bu tavize karşılık vermek zorunda hissediyor. Bu yönteme \"kapıyı yüzüne çarptırma tekniği\" (door-in-the-face) denir.",
+  "Bu kanun, Kanun II'nin (\"önce küçüğünü iste\") tam tersi: orada küçük bir evet büyük evete kapı açıyordu, burada büyük bir hayır küçük evete kapı açıyor."
+ ],
+ "sources": [
+  "https://doi.org/10.1037/h0076284",
+  "https://en.wikipedia.org/wiki/Door-in-the-face_technique"
+ ],
+ "summary": "Birinden küçük bir şey isteyeceksen, önce ondan kocaman bir şey iste. 1975'te ABD'de araştırmacılar bir üniversitede yürüyen öğrencileri durdurup önce dev bir rica yaptı: iki yıl boyunca her hafta iki saat, suça karışmış gençlere gönüllü danışmanlık. Kimse kabul etmedi. Hemen ardından küçüğünü istediler: aynı gençleri iki saatliğine hayvanat bahçesine götürmek. Önce dev ricayı reddedenlerin yarısı evet dedi; sadece küçük ricayı duyanlarda bu oran altıda birdi. Psikologlara göre sen geri adım atınca karşındaki de sana bir adım atmak zorunda hissediyor. Kanun II'nin tam tersi: bu kez önce büyüğünü iste.",
+ "tags": [
+  "kapıyı yüzüne çarptırma",
+  "door in the face",
+  "psikoloji",
+  "ikna",
+  "ikna teknikleri",
+  "güç psikolojisi",
+  "karanlık psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri",
+  "pazarlık",
+  "karşılıklılık",
+  "cialdini"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#iknasanatı",
+  "#zirveninkanunu"
+ ]
+}
