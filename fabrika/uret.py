@@ -35,8 +35,9 @@ IG_HOURS = [int(h) for h in (os.environ.get("YO_IG_SAATLER") or "9,13,17").split
 GAP_MIN = 35
 MIN_CREDITS = 12000
 # The hook opening (motor.html HOOK). Studio, 2026-10-20: only 48% of feed viewers stayed past the first seconds.
-# On from 2026-10-21 after the sample fabrika/deneme/ornek-o0006.mp4 (sent to Ulaş 2026-10-20); YO_ACILIS=0 turns it off.
-ACILIS = (os.environ.get("YO_ACILIS") or "1") == "1"
+# On 2026-10-21 to 2026-11-01, then off: stayed-to-watch fell from 47.7% (10 Shorts before) to 38.5% (9 with it),
+# views 1,212 -> 1,097, and Reels lost views and watch time too. YO_ACILIS=1 turns it back on.
+ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
 
 
 def now():
