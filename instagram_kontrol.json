@@ -1,11 +1,11 @@
 {
- "started": "2026-10-18T15:44:53+00:00",
- "anahtar_bitis": "2026-12-17T15:18",
+ "started": "2026-11-01T22:28:23+00:00",
+ "anahtar_bitis": "2026-12-31T21:02",
  "hesap": {
   "username": "zirveninkanunu",
   "account_type": "MEDIA_CREATOR",
-  "media_count": 0,
-  "followers_count": 0
+  "media_count": 16,
+  "followers_count": 5
  },
  "paylasim_hakki": {
   "data": [
@@ -29,7 +29,313 @@
   }
  ],
  "dm_konusmalari": 0,
- "medya": [],
- "bekleyen_short": [],
- "finished": "2026-10-18T15:44:55+00:00"
+ "medya": [
+  {
+   "link": "https://www.instagram.com/reel/De2J3oijWFD/",
+   "zaman": "2026-10-23T18:02:10+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 1609,
+    "reach": 1263,
+    "saved": 0,
+    "shares": 0,
+    "likes": 5,
+    "ig_reels_avg_watch_time": 8173
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/De1uUS8CjIH/",
+   "zaman": "2026-10-23T14:01:25+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 121,
+    "reach": 111,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 4414
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/De1S17XnECl/",
+   "zaman": "2026-10-23T10:01:08+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 2795,
+    "reach": 2030,
+    "saved": 0,
+    "shares": 2,
+    "likes": 7,
+    "ig_reels_avg_watch_time": 8094
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Dezk6OYCXqn/",
+   "zaman": "2026-10-22T18:00:46+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 3047,
+    "reach": 2426,
+    "saved": 7,
+    "shares": 18,
+    "likes": 34,
+    "ig_reels_avg_watch_time": 6478
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DezJiBcEYbt/",
+   "zaman": "2026-10-22T14:01:32+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 2836,
+    "reach": 2049,
+    "saved": 0,
+    "shares": 8,
+    "likes": 7,
+    "ig_reels_avg_watch_time": 8160
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeyuCeNCaFe/",
+   "zaman": "2026-10-22T10:01:17+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 148,
+    "reach": 114,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 7121
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DexALdnE0Vh/",
+   "zaman": "2026-10-21T18:01:23+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 1995,
+    "reach": 1370,
+    "saved": 0,
+    "shares": 0,
+    "likes": 4,
+    "ig_reels_avg_watch_time": 9503
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DewkruXHaNF/",
+   "zaman": "2026-10-21T14:01:09+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 151,
+    "reach": 119,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 7281
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DewJRmwiulP/",
+   "zaman": "2026-10-21T10:01:45+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 2459,
+    "reach": 1725,
+    "saved": 0,
+    "shares": 0,
+    "likes": 5,
+    "ig_reels_avg_watch_time": 9402
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DeubU14H1pN/",
+   "zaman": "2026-10-20T18:00:48+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 160,
+    "reach": 128,
+    "saved": 0,
+    "shares": 4,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 5325
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Det_3JklrHu/",
+   "zaman": "2026-10-20T14:00:50+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 1813,
+    "reach": 1206,
+    "saved": 0,
+    "shares": 0,
+    "likes": 3,
+    "ig_reels_avg_watch_time": 9946
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DetkehOjjBi/",
+   "zaman": "2026-10-20T10:01:34+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 158,
+    "reach": 119,
+    "saved": 0,
+    "shares": 0,
+    "likes": 1,
+    "ig_reels_avg_watch_time": 7297
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Der2oOEAaQ0/",
+   "zaman": "2026-10-19T18:01:51+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 1343,
+    "reach": 1096,
+    "saved": 0,
+    "shares": 0,
+    "likes": 3,
+    "ig_reels_avg_watch_time": 6958
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DerbKKWCqmm/",
+   "zaman": "2026-10-19T14:01:35+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 1718,
+    "reach": 1318,
+    "saved": 2,
+    "shares": 1,
+    "likes": 4,
+    "ig_reels_avg_watch_time": 7925
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/Deq_r3pmfyi/",
+   "zaman": "2026-10-19T10:01:35+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 302,
+    "reach": 267,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 3551
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DepRvq8kSjj/",
+   "zaman": "2026-10-18T18:00:56+0000",
+   "yorum_sayisi": 0,
+   "istatistik": {
+    "views": 139,
+    "reach": 112,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 7335
+   }
+  }
+ ],
+ "bekleyen_short": [
+  {
+   "video_id": "BBpEl1nzkPk",
+   "title": "Yılan dilini çıkarınca aslında koku alıyor 🐍"
+  },
+  {
+   "video_id": "Kpl4NAf8PXo",
+   "title": "Koyunlar 50 yüzü 2 yıl boyunca unutmaz 🐑"
+  },
+  {
+   "video_id": "v9Ob1P9LBws",
+   "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌"
+  },
+  {
+   "video_id": "39mCVI-1nlU",
+   "title": "Kaplumbağanın cinsiyetini kumun sıcaklığı seçer 🐢"
+  },
+  {
+   "video_id": "O4CmIhkONV0",
+   "title": "Koalanın parmak izi seninkine çok benziyor 🐨"
+  },
+  {
+   "video_id": "LzJyoVpzTyA",
+   "title": "Güvercinin başı aslında hiç geri gitmiyor 🕊️"
+  },
+  {
+   "video_id": "-7p9KlR5opY",
+   "title": "Acı biber ağzını yakar ama hiç sıcak değil 🌶️"
+  },
+  {
+   "video_id": "7xjRSwfX83E",
+   "title": "Kangurunun aynı anda üç yavrusu olabilir 🦘"
+  },
+  {
+   "video_id": "MQkEdpiR0M0",
+   "title": "Devekuşunun bir gözü beyninden büyük 👀"
+  },
+  {
+   "video_id": "3zBY2pSXkrE",
+   "title": "Keçi başını eğince gözlerini döndürür 🐐"
+  },
+  {
+   "video_id": "zmttqXweEzg",
+   "title": "Su aygırı kendi güneş kremini üretir 🦛"
+  },
+  {
+   "video_id": "XNKlvEZVztM",
+   "title": "Tavus kuşunun ünlü kuyruğu aslında kuyruk değil 🦚"
+  },
+  {
+   "video_id": "qducKltyWbs",
+   "title": "Atlar neden ağızdan nefes alamaz? 🐴"
+  },
+  {
+   "video_id": "fI8aO5_Nxug",
+   "title": "Burun deliklerin neden sırayla çalışır? 👃"
+  },
+  {
+   "video_id": "XqbS_t12yhc",
+   "title": "Kurbağalar gözleriyle yutkunur 🐸"
+  },
+  {
+   "video_id": "rostSoqICFM",
+   "title": "Kaplan geyiğin gözünde neden yeşil görünür? 🐯"
+  },
+  {
+   "video_id": "kHoLg3UdH18",
+   "title": "Sabahları akşamdan daha uzunsun 📏"
+  },
+  {
+   "video_id": "7j-kXv3xblQ",
+   "title": "Flamingonun ters bükülen yeri dizi değil 🦩"
+  },
+  {
+   "video_id": "_UkvlpfaqmY",
+   "title": "Baykuşlar neden neredeyse sessiz uçar? 🦉"
+  },
+  {
+   "video_id": "MiFpPs1bMs0",
+   "title": "Kelebekler tadı ayaklarıyla alır 🦋"
+  },
+  {
+   "video_id": "EfHhTnbNuBI",
+   "title": "Köpeğinin burnu parmak izi gibi eşsiz 🐶"
+  },
+  {
+   "video_id": "5x6d5uUvdoI",
+   "title": "Filler ayaklarıyla nasıl duyar? 🐘"
+  },
+  {
+   "video_id": "srJNIFHPEPE",
+   "title": "Su samurları uyurken neden el ele tutuşur? 🦦"
+  },
+  {
+   "video_id": "2xsROncVvew",
+   "title": "Denizatlarında yavruları babalar doğurur 🌊"
+  }
+ ],
+ "finished": "2026-11-01T22:28:46+00:00"
 }
