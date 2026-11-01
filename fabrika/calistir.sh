@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: metrics -> reply watcher check -> gate -> tools -> episode -> commit.
 # Replies run in the reply watcher (fabrika/nobet.py, ya_olsaydi_nobet.yml); the yorum modes answer once by hand.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igdmtest|igbolum|ornek
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igdmtest|igbolum|ornek|nasa
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -60,6 +60,12 @@ fi
 sudo apt-get update -qq || echo "apt-get update hata verdi, kuruluma yine de geçiliyor"  # one broken mirror must not stop it
 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null
 pip install -q numpy requests cryptography
+if [ "$MOD" = "nasa" ]; then  # tetik.txt "nasa ara" or "nasa al": NASA photos for the engine (fabrika/nasa.py)
+  pip install -q pillow
+  out=$(python3 fabrika/nasa.py "$(awk '{print $2}' fabrika/tetik.txt)" | tail -n 1); echo "$out"
+  git add -A fabrika/motor/nasa 2>/dev/null || true
+  push "$out"; exit 0
+fi
 [ -f package.json ] || npm init -y >/dev/null
 npm install -q --no-save playwright@1.55.0
 # 2026-10-20 ubuntu-latest became Ubuntu 26.04, which Playwright 1.55 refuses ("does not support chromium on
