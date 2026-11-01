@@ -1,30 +1,22 @@
 {
- "started": "2026-10-23T21:26:13+00:00",
+ "started": "2026-11-01T21:45:11+00:00",
  "deneme": false,
- "threads": 122,
+ "threads": 103,
  "reply_threads_read": 1,
- "new": 2,
+ "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugx4yuxzNIkQmVj4bkd4AaABAg",
-   "kind": "comment",
-   "video": "kdEbtK5fwQQ",
-   "comment": "░░░░░░▄▄ ░░░░░█░░█ ▄▄▄▄▄█░░█▄▄▄ ▓▓▓▓█░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ███▀▀▀███████ ╱╱┏╮╱╱╱╱╱╱╱╱╱╱ ╱╱┃┃╱╱┳╱┓┳╭┛┳┓ ▉━╯┗━╮┃╱┃┣┻╮┣╱ ▉┈┈┈┈┃┻┛┛┻",
-   "reply": "Vay canına, ne güzel bir sanat eseri bu! 🌸 Teşekkürler.",
-   "result": "gönderildi"
-  },
-  {
-   "id": "UgyU9EpFAp-8SNjndQ14AaABAg.AboxICVLWhlAbpPSvk1WPX",
-   "kind": "answer",
-   "video": "RUyMb5fCIl4",
-   "comment": "evet doğru çünki zaman keçdikce ateşde söner",
-   "reply": "@KARANLIK55 Zamanın ateşi söndürmesi üzerine bu yorumun çok düşündürücü. 🔥 Zamanın aslında sadece ileri aktığı, geri dönmediği de bilinen bir gerçek!",
+   "id": "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAcLyg2zfnYn",
+   "kind": "followup",
+   "video": "7xjRSwfX83E",
+   "comment": "❤😂🎉",
+   "reply": "@SerapYorğun-n6d Bu emojilerle günümüz şenlendi! Çok teşekkürler. 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-10-23T21:26:24+00:00"
+ "finished": "2026-11-01T21:45:16+00:00"
 }
