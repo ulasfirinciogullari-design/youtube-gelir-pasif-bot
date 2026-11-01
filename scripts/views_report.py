@@ -111,7 +111,7 @@ audit["subscribed_status"] = report(dimensions="subscribedStatus", metrics="view
 audit["age_gender"] = report(dimensions="ageGroup,gender", metrics="viewerPercentage")
 audit["countries"] = report(dimensions="country", metrics="views,subscribersGained", sort="-views", maxResults="15")
 audit["devices"] = report(dimensions="deviceType", metrics="views")
-audit["sources"] = report(dimensions="insightTrafficSourceType", metrics="views,subscribersGained", sort="-views")
+audit["sources"] = report(dimensions="insightTrafficSourceType", metrics="views,estimatedMinutesWatched", sort="-views")  # subscribersGained is not offered with traffic sources (400)
 # Retention curves: the share of viewers still watching at each 1 % of the video, for the 45 newest public videos.
 audit["retention"] = {}
 for v in [v for v in out["videos"] if v["privacy"] == "public"][:45]:
