@@ -62,5 +62,37 @@
   "title": "A Closer Hubble Encounter With Mars - Tharsis",
   "credit": "Steve Lee University of Colorado, Jim Bell Cornell University, Mike Wolff Space Science Institute, and NASA",
   "disk": true
+ },
+ "bg_night": {
+  "file": "bg_night.jpg",
+  "id": "iss073e0982679",
+  "center": "JSC",
+  "title": "The Milky Way spans the night sky above a bright orange-yellow airglow",
+  "credit": "NASA",
+  "disk": false
+ },
+ "bg_storm": {
+  "file": "bg_storm.jpg",
+  "id": "iss072e029590_alt",
+  "center": "JSC",
+  "title": "Hurricane Milton is pictured as a category 4 storm in the Gulf of Mexico",
+  "credit": "NASA",
+  "disk": false
+ },
+ "bg_ice": {
+  "file": "bg_ice.jpg",
+  "id": "GSFC_20171208_Archive_e000909",
+  "center": "GSFC",
+  "title": "Thurston Island Calving",
+  "credit": "NASA",
+  "disk": false
+ },
+ "galaxy": {
+  "file": "galaxy.png",
+  "id": "PIA15630",
+  "center": "JPL",
+  "title": "Pinwheel Galaxy Rainbow",
+  "credit": "NASA/JPL-Caltech/ESA/STScI/CXC",
+  "disk": true
  }
 }
