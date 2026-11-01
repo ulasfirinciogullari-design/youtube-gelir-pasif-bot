@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0034",
+  "topic": "Yılanlar neden dilini çıkarır, dili neden çatallı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yılan dilini çıkarınca aslında koku alıyor 🐍",
+  "hook_text": "YILAN DİLİNİ NEDEN ÇIKARIR?",
+  "description": "Yılanlar neden sürekli dilini çıkarır, yılanın dili neden çatallı?\n\nYılan dilini çıkarınca aslında koku alır: dil havadaki koku taneciklerini toplar ve ağzının tavanındaki Jacobson organına taşır. Dilin iki ucu ayrı yerlerden örnek alır; hangi uç daha güçlü koku getirirse av o taraftadır, tıpkı sesin yönünü iki kulakla bulmamız gibi.\n\nSence hangisi daha tuhaf: dille koku almak mı, kokunun yönünü bulmak mı?\n\n#yılan #sürüngenler #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0034",
+  "tags": [
+    "yılan",
+    "yılanlar",
+    "yılan dili",
+    "yılan neden dilini çıkarır",
+    "yılan dili neden çatallı",
+    "yılanlar nasıl koku alır",
+    "yılan koku alma",
+    "çatallı dil",
+    "jacobson organı",
+    "koku alma",
+    "hayvan duyuları",
+    "piton",
+    "sürüngenler",
+    "vahşi doğa",
+    "hayvan davranışları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "snake",
+    "snake tongue",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "yilan",
+    "yilanlar",
+    "yilan dili",
+    "yilan neden dilini cikarir",
+    "yilan dili neden catalli"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A snake's forked tongue lets it smell in stereo 🐍",
+      "description": "When a snake flicks its tongue, it isn't tasting the air, it's smelling it. The tongue collects scent molecules and delivers them to a special organ in the roof of the mouth, the Jacobson's organ. Because the tongue is forked, each tip samples a different spot, so the snake can tell which side a scent comes from, much like you locate a sound with two ears.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "es": {
+      "title": "La lengua bífida de la serpiente huele en estéreo 🐍",
+      "description": "Cuando una serpiente saca la lengua no está saboreando el aire, lo está oliendo. La lengua atrapa moléculas de olor y las lleva a un órgano especial en el techo de la boca, el órgano de Jacobson. Como es bífida, cada punta toma una muestra distinta y la serpiente sabe de qué lado viene el olor, igual que tú localizas un sonido con dos oídos.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "pt": {
+      "title": "A língua bifurcada da cobra sente cheiro em estéreo 🐍",
+      "description": "Quando a cobra põe a língua para fora, ela não está provando o ar, está cheirando. A língua captura moléculas de odor e as leva a um órgão especial no céu da boca, o órgão de Jacobson. Como é bifurcada, cada ponta colhe uma amostra diferente e a cobra descobre de que lado vem o cheiro, assim como você localiza um som com os dois ouvidos.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "de": {
+      "title": "Schlangen riechen mit ihrer gespaltenen Zunge in Stereo 🐍",
+      "description": "Wenn eine Schlange züngelt, schmeckt sie nicht die Luft, sie riecht sie. Die Zunge sammelt Duftmoleküle und bringt sie zu einem besonderen Organ im Gaumen, dem Jacobson-Organ. Weil die Zunge gespalten ist, nimmt jede Spitze eine eigene Probe, und die Schlange erkennt, von welcher Seite ein Geruch kommt, so wie du mit zwei Ohren hörst, woher ein Geräusch kommt.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "fr": {
+      "title": "La langue fourchue du serpent sent en stéréo 🐍",
+      "description": "Quand un serpent sort la langue, il ne goûte pas l'air, il le sent. Sa langue capte des molécules odorantes et les apporte à un organe spécial situé dans le palais, l'organe de Jacobson. Comme elle est fourchue, chaque pointe prélève un échantillon différent et le serpent sait de quel côté vient l'odeur, comme toi tu repères un son grâce à tes deux oreilles.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "it": {
+      "title": "La lingua biforcuta del serpente sente gli odori in stereo 🐍",
+      "description": "Quando un serpente tira fuori la lingua non sta assaggiando l'aria, la sta annusando. La lingua raccoglie le molecole odorose e le porta a un organo speciale nel palato, l'organo di Jacobson. Essendo biforcuta, ogni punta preleva un campione diverso e il serpente capisce da che lato arriva l'odore, proprio come tu capisci da dove viene un suono grazie alle due orecchie.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "ru": {
+      "title": "Раздвоенный язык помогает змее чуять запах в стерео 🐍",
+      "description": "Когда змея высовывает язык, она не пробует воздух на вкус, а нюхает его. Язык собирает пахучие молекулы и доставляет их к особому органу на нёбе, якобсонову органу. Поскольку язык раздвоен, каждый кончик берёт свою пробу, и змея понимает, с какой стороны идёт запах, так же как ты определяешь направление звука двумя ушами.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "ar": {
+      "title": "الأفعى تشمّ بلسانها المشقوق وتعرف اتجاه الرائحة 🐍",
+      "description": "حين تُخرج الأفعى لسانها فهي لا تتذوق الهواء بل تشمّه. يلتقط اللسان جزيئات الرائحة وينقلها إلى عضو خاص في سقف الفم يُسمّى عضو جاكوبسون. ولأن اللسان مشقوق، يأخذ كل طرف عيّنة من مكان مختلف، فتعرف الأفعى من أي جهة تأتي الرائحة، تمامًا كما تحدد أنت مصدر الصوت بأذنيك.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "hi": {
+      "title": "साँप अपनी दो नोक वाली जीभ से गंध की दिशा पहचानता है 🐍",
+      "description": "साँप जब जीभ लपलपाता है तो वह हवा चख नहीं रहा, सूँघ रहा होता है। जीभ गंध के कण इकट्ठा करके उन्हें मुँह की छत में मौजूद एक ख़ास अंग, जैकबसन अंग, तक पहुँचाती है। जीभ की दो नोकें अलग-अलग जगह से नमूना लेती हैं, इसलिए साँप जान जाता है कि गंध किस तरफ़ से आ रही है, ठीक वैसे ही जैसे आप दो कानों से आवाज़ की दिशा पहचानते हैं।\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "id": {
+      "title": "Lidah bercabang ular bisa mencium arah bau 🐍",
+      "description": "Saat ular menjulurkan lidah, ia bukan sedang mengecap udara, melainkan menciumnya. Lidah mengumpulkan molekul bau lalu membawanya ke organ khusus di langit-langit mulut, yaitu organ Jacobson. Karena lidahnya bercabang, tiap ujung mengambil sampel dari tempat berbeda sehingga ular tahu dari sisi mana bau datang, mirip caramu menentukan arah suara dengan dua telinga.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "ja": {
+      "title": "ヘビは先が割れた舌でにおいの方向を嗅ぎ分ける 🐍",
+      "description": "ヘビが舌をチロチロ出すのは、味見ではなくにおいを嗅ぐためです。舌はにおいの分子を集め、口の天井にあるヤコブソン器官という特別な器官に届けます。舌先が2つに分かれているので左右で別々にサンプルを取り、人が2つの耳で音の方向を聞き分けるように、においがどちらから来るかがわかります。\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "ko": {
+      "title": "뱀은 갈라진 혀로 냄새의 방향을 맡는다 🐍",
+      "description": "뱀이 혀를 날름거리는 건 맛을 보는 게 아니라 냄새를 맡는 겁니다. 혀가 냄새 분자를 모아 입천장에 있는 특별한 기관인 야콥슨 기관으로 옮기죠. 혀끝이 두 갈래라 양쪽에서 따로 샘플을 모으기 때문에, 우리가 두 귀로 소리의 방향을 알아내듯 냄새가 어느 쪽에서 오는지 알 수 있습니다.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "pl": {
+      "title": "Rozwidlony język pozwala wężowi wąchać w stereo 🐍",
+      "description": "Kiedy wąż wysuwa język, nie smakuje powietrza, tylko je wącha. Język zbiera cząsteczki zapachu i przenosi je do specjalnego narządu na podniebieniu, narządu Jacobsona. Ponieważ jest rozwidlony, każdy koniuszek pobiera próbkę z innego miejsca, więc wąż wie, z której strony dochodzi zapach, tak jak ty dzięki dwóm uszom wiesz, skąd dobiega dźwięk.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "nl": {
+      "title": "Met zijn gespleten tong ruikt een slang in stereo 🐍",
+      "description": "Als een slang zijn tong uitsteekt, proeft hij de lucht niet, hij ruikt eraan. De tong verzamelt geurdeeltjes en brengt ze naar een speciaal orgaan in het verhemelte, het orgaan van Jacobson. Omdat de tong gespleten is, neemt elke punt een eigen monster en weet de slang van welke kant een geur komt, net zoals jij met twee oren hoort waar een geluid vandaan komt.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "uk": {
+      "title": "Роздвоєний язик допомагає змії чути запах у стерео 🐍",
+      "description": "Коли змія висовує язик, вона не куштує повітря, а нюхає його. Язик збирає пахучі молекули й доставляє їх до особливого органу на піднебінні, якобсонового органу. Оскільки язик роздвоєний, кожен кінчик бере власну пробу, і змія розуміє, з якого боку йде запах, так само як ти визначаєш напрямок звуку двома вухами.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "vi": {
+      "title": "Lưỡi chẻ đôi giúp rắn ngửi ra hướng của mùi 🐍",
+      "description": "Khi rắn thè lưỡi, nó không nếm không khí mà đang ngửi. Lưỡi thu các phân tử mùi rồi đưa chúng tới một cơ quan đặc biệt trên vòm miệng, gọi là cơ quan Jacobson. Vì lưỡi chẻ đôi, mỗi đầu lấy mẫu ở một chỗ khác nhau nên rắn biết mùi đến từ phía nào, giống như bạn nhận ra hướng âm thanh nhờ hai tai.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "az": {
+      "title": "İlan çəngəlli dili ilə qoxunun istiqamətini tapır 🐍",
+      "description": "İlan dilini çıxaranda havanı dadmır, onu iyləyir. Dil qoxu molekullarını toplayıb ağzın tavanındakı xüsusi bir orqana, Yakobson orqanına aparır. Dil çəngəlli olduğu üçün hər ucu ayrı yerdən nümunə götürür və ilan qoxunun hansı tərəfdən gəldiyini anlayır, eynilə sənin iki qulaqla səsin istiqamətini tapdığın kimi.\n\n#shorts\n\nSeri: mk-c0034"
+    },
+    "ro": {
+      "title": "Limba despicată a șarpelui miroase în stereo 🐍",
+      "description": "Când un șarpe scoate limba, nu gustă aerul, ci îl miroase. Limba adună moleculele de miros și le duce la un organ special din cerul gurii, organul lui Jacobson. Fiind despicată, fiecare vârf ia o probă din alt loc, iar șarpele își dă seama din ce parte vine mirosul, la fel cum tu afli de unde vine un sunet cu ajutorul celor două urechi.\n\n#shorts\n\nSeri: mk-c0034"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: dille koku almak mı, kokunun yönünü bulmak mı?",
+  "scenes": [
+    {
+      "text": "Bu yılan dilinin iki ucuyla koku alıyor.",
+      "visual": "close-up of a snake flicking its forked tongue",
+      "stock_query": "snake tongue",
+      "source": "stock",
+      "callout": "DİLLE KOKU"
+    },
+    {
+      "text": "Ama dil kokuyu kendisi almaz, havadaki koku taneciklerini toplar.",
+      "visual": "snake slithering slowly across the ground",
+      "stock_query": "snake",
+      "source": "stock"
+    },
+    {
+      "text": "Sonra onları ağzının tavanındaki özel bir koku organına taşır.",
+      "visual": "close-up of a snake's head with its mouth closed",
+      "stock_query": "snake head",
+      "source": "stock",
+      "callout": "JACOBSON ORGANI"
+    },
+    {
+      "text": "Dilin çatallı olmasının sebebi ise yön bulmak.",
+      "visual": "macro shot of a snake's forked tongue tips",
+      "stock_query": "snake closeup",
+      "source": "stock"
+    },
+    {
+      "text": "Hangi uç daha güçlü koku getirirse, av o taraftadır.",
+      "visual": "snake moving through grass following a trail",
+      "stock_query": "snake grass",
+      "source": "stock",
+      "callout": "SAĞ MI, SOL MU?"
+    },
+    {
+      "text": "Sen sesin yönünü iki kulağınla bulursun; yılan da kokunun yönünü diliyle bulur.",
+      "visual": "python raising its head and flicking its tongue",
+      "stock_query": "python snake",
+      "source": "stock",
+      "callout": "STEREO KOKU"
+    }
+  ],
+  "duration_seconds": 15.71,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "instagram_video": "ORIGINAL_mk-c0034_1793567003_ig.mp4"
+}
