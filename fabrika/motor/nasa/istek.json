@@ -1,9 +1,6 @@
 {
  "ara": [],
  "al": {
-  "bg_night": {"id": "iss073e0982679", "disk": false},
-  "bg_storm": {"id": "iss072e029590_alt", "disk": false},
-  "bg_ice": {"id": "GSFC_20171208_Archive_e000909", "disk": false},
-  "galaxy": {"id": "PIA15630", "disk": true}
+  "bg_storm": {"id": "iss057e023128", "disk": false}
  }
 }
