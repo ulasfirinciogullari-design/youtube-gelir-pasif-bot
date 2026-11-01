@@ -7,7 +7,8 @@ const path = require('path');
 const fs = require('fs');
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
+  // --allow-file-access-from-files: the NASA photos (nasa/) load from file:// and would otherwise taint the canvas
+  const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined, args: ['--allow-file-access-from-files'] });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('page error:', e.message); process.exitCode = 1; });
   await page.goto('file://' + path.join(__dirname, 'motor.html'));
