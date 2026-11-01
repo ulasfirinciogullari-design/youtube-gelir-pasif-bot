@@ -1,8 +1,11 @@
 name: Zirvenin Kanunu animasyon (elle)
 
-# Voices, draws and (with "gizli") uploads one animated episode privately to Zirvenin Kanunu. Started by pushing a
-# change to animasyon/tetik.txt ("<bolum> deneme|gizli") on the zk-animasyon branch. The daily schedule does not
-# use this format until Ulaş approves the sample (2026-10-19, "Güç psikolojisi").
+# Voices, draws and uploads one animated episode to Zirvenin Kanunu. Started by pushing a change to
+# animasyon/tetik.txt on the zk-animasyon branch: "<bolum> deneme" (video and storyboard only), "<bolum> gizli"
+# (private upload) or "<bolum> zamanla <slot start UTC>" (private, public at that slot; animasyon/kayit.py records it
+# in channel-data's uploads.json so the merak Short of that slot is skipped). Since 2026-11-01 (Ulaş gave Claude
+# the decisions, card "Haftada 3") one episode goes out on Monday, Wednesday and Friday at 20:00 TR (17:00 UTC).
+# Push the trigger between slots: the Shorts workflow's channel-data push gives up on a conflicting uploads.json.
 on:
   push:
     branches: [zk-animasyon]

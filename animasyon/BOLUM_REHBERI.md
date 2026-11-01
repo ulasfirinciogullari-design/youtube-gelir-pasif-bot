@@ -43,3 +43,12 @@ and uses history only with well-known names.
 - Never use `ctx.filter`: it takes seconds per frame without a GPU. Use `drawSoft()`, `sepiaTone()` and
   `toned()` from `ortak.js` instead.
 - Keep plates and numbers above the subtitles (y < 1440) and below the title bar (y > 450).
+
+## Publishing (from 2026-11-02)
+
+One episode goes out on Monday, Wednesday and Friday at 20:00 TR (17:00 UTC), in place of that slot's merak Short.
+1. Write `bolumler/<id>.json` and `bolumler/<id>.js`, push `tetik.txt` with `<id> deneme`, and check
+   `cikti/<id>_story.jpg` (story clear to someone hearing it once, nothing covered by the subtitles).
+2. Push `tetik.txt` with `<id> zamanla <day>T17:00:00Z`, between slots (at an even UTC hour), at least 20 minutes
+   ahead. The episode is uploaded private with YouTube's scheduled publishing, `rapor.json` gets its link and
+   `publish_at`, and `kayit.py` adds it to channel-data's `uploads.json` with that time.

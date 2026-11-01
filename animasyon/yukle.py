@@ -45,13 +45,16 @@ def description(ep):
     return "\n\n".join(p for p in parts if p).replace("<", "‹").replace(">", "›")[:4900]
 
 
-def upload(ep, video, privacy="private"):
+def upload(ep, video, privacy="private", publish_at=None):
+    """publish_at (ISO 8601 UTC): upload private and let YouTube make it public at that moment."""
     s, channel = session()
     size = Path(video).stat().st_size
     meta = {"snippet": {"title": ep["yt_title"][:100], "description": description(ep), "tags": ep.get("tags", []),
                         "categoryId": "27", "defaultLanguage": "tr", "defaultAudioLanguage": "tr"},
             "status": {"privacyStatus": privacy, "selfDeclaredMadeForKids": False, "containsSyntheticMedia": False,
                        "embeddable": True, "license": "youtube"}}
+    if publish_at:
+        meta["status"].update(privacyStatus="private", publishAt=publish_at)
     r = s.post(f"{UPLOAD}/videos?uploadType=resumable&part=snippet,status", json=meta, timeout=60,
                headers={"X-Upload-Content-Type": "video/mp4", "X-Upload-Content-Length": str(size)})
     if not r.ok:
@@ -60,5 +63,9 @@ def upload(ep, video, privacy="private"):
         r = s.put(r.headers["Location"], data=f, timeout=900, headers={"Content-Type": "video/mp4", "Content-Length": str(size)})
     if not r.ok:
         raise RuntimeError(f"Video gönderilemedi ({r.status_code}): {r.text[:400]}")
-    vid = r.json()["id"]
-    return {"video_id": vid, "url": f"https://youtube.com/shorts/{vid}", "privacy": privacy, "channel": channel}
+    body = r.json()
+    vid = body["id"]
+    out = {"video_id": vid, "url": f"https://youtube.com/shorts/{vid}", "privacy": privacy, "channel": channel}
+    if publish_at:
+        out.update(privacy="private", publish_at=body.get("status", {}).get("publishAt") or publish_at)
+    return out

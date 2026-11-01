@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 BOLUM=$(head -n1 animasyon/tetik.txt | awk "{print \$1}")
 MOD=$(head -n1 animasyon/tetik.txt | awk "{print \$2}")
 MOD=${MOD:-deneme}
+ZAMAN=$(head -n1 animasyon/tetik.txt | awk "{print \$3}")  # zamanla: the slot start it goes public, e.g. 2026-11-02T17:00:00Z
 
 git config user.name "zk-animasyon-bot"
 git config user.email "zk-animasyon-bot@users.noreply.github.com"
@@ -28,8 +29,15 @@ sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpe
 [ -f package.json ] || npm init -y >/dev/null
 npm install -q --no-save playwright@1.55.0 && npx playwright install --with-deps chromium >/dev/null
 
-python animasyon/uret.py --bolum "$BOLUM" --mod "$MOD" --data channel-data
-status=$?
+if [ "$MOD" = "zamanla" ]; then
+  git show origin/channel-data:uploads.json > channel-data/uploads.json 2>/dev/null || true  # no episode twice
+  python animasyon/uret.py --bolum "$BOLUM" --mod "$MOD" --zaman "$ZAMAN" --data channel-data
+  status=$?
+  [ $status -eq 0 ] && { python animasyon/kayit.py animasyon/rapor.json "animasyon/bolumler/$BOLUM.json" || status=$?; }
+else
+  python animasyon/uret.py --bolum "$BOLUM" --mod "$MOD" --data channel-data
+  status=$?
+fi
 
 for d in animasyon/rapor.json animasyon/motor/tablolar animasyon/cikti animasyon/ses; do  # the repo ignores *.mp3
   [ -e "$d" ] && git add -f "$d"

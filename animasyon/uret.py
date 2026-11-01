@@ -2,6 +2,8 @@
 
   python animasyon/uret.py --bolum k001 --mod deneme   video and storyboard only, nothing uploaded
   python animasyon/uret.py --bolum k001 --mod gizli    and upload it private to Zirvenin Kanunu
+  python animasyon/uret.py --bolum k002 --mod zamanla --zaman 2026-11-02T17:00:00Z
+                                                       upload it private, set to go public at that slot start
   python animasyon/uret.py --bolum k001 --js           only write motor/bolum.js + motor/sahne.js for local stills
 
 The episode script is animasyon/bolumler/<id>.json and its own scenes animasyon/bolumler/<id>.js (both written by
@@ -78,10 +80,25 @@ def render(ep, timings, mix, video):
     return dur
 
 
+SLOTS_UTC = (7, 9, 11, 13, 15, 17, 19, 21)  # main's scripts/slot_gate.py: 10:00, 12:00, ... 24:00 in Turkey
+
+
+def publish_time(value, now=None):
+    """The --zaman of a scheduled episode, checked: a slot start, at least 20 minutes ahead. -> ISO with +00:00."""
+    moment = datetime.fromisoformat(value.strip().replace("Z", "+00:00")).astimezone(timezone.utc)
+    now = now or datetime.now(timezone.utc)
+    if moment.hour not in SLOTS_UTC or moment.minute or moment.second:
+        raise ValueError(f"{value} bir slot başlangıcı değil (UTC saatleri {SLOTS_UTC}, dakika 00)")
+    if (moment - now).total_seconds() < 20 * 60:
+        raise ValueError(f"{value} en az 20 dakika ileride olmalı")
+    return moment.isoformat(timespec="seconds")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--bolum", required=True)
-    ap.add_argument("--mod", choices=["deneme", "gizli"], default="deneme")
+    ap.add_argument("--mod", choices=["deneme", "gizli", "zamanla"], default="deneme")
+    ap.add_argument("--zaman", help="zamanla: the slot start it goes public, e.g. 2026-11-02T17:00:00Z")
     ap.add_argument("--data", default="channel-data")
     ap.add_argument("--js", action="store_true", help="only write motor/bolum.js and motor/sahne.js")
     a = ap.parse_args()
@@ -94,6 +111,12 @@ def main():
     try:
         import ses
         ep = json.loads((HERE / "bolumler" / f"{a.bolum}.json").read_text(encoding="utf-8"))
+        publish_at = publish_time(a.zaman or "") if a.mod == "zamanla" else None
+        if publish_at:
+            uploads = Path(a.data) / "uploads.json"
+            done = json.loads(uploads.read_text(encoding="utf-8")) if uploads.exists() else []
+            if any(u.get("topic_id") == ep["id"] for u in done if isinstance(u, dict)):
+                raise RuntimeError(f"{ep['id']} zaten yüklenmiş (uploads.json)")
         probs = validate(ep)
         if probs:
             raise RuntimeError("Senaryo kurallara uymuyor: " + "; ".join(probs))
@@ -114,6 +137,10 @@ def main():
         if a.mod == "gizli":
             import yukle
             report.update(yukle.upload(ep, video, "private"))
+        elif publish_at:
+            import yukle
+            report.update(yukle.upload(ep, video, "private", publish_at=publish_at))
+            report["publish_at"] = publish_at  # kayit.py records the episode in uploads.json with this time
         print(json.dumps(report, ensure_ascii=False))
         return 0
     except Exception as e:  # the report is the only thing the thread can read
