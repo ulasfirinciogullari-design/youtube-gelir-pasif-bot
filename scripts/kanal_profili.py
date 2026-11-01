@@ -6,6 +6,7 @@ the channel publishes animal, body and psychology Shorts plus power-psychology a
 
     python scripts/kanal_profili.py onizle                     # banner preview + photo candidates, nothing sent
     python scripts/kanal_profili.py uygula <pexels id> x4      # same, then the texts and the banner go to YouTube
+    python scripts/kanal_profili.py eski-listeler              # hide the old film/power playlists (Ulaş, 11-01)
 
 Everything lands in channel-data/profil/: the current profile as a backup before any change (yedek-<time>.json),
 banner.jpg, adaylar.jpg (numbered candidate photos) and sonuc.json. Stdlib plus Pillow; the channel title stays.
@@ -178,13 +179,39 @@ def token():
         "refresh_token": os.environ["YOUTUBE_REFRESH_TOKEN"], "grant_type": "refresh_token"})["access_token"]
 
 
+# The five playlists of the old channel. Ulaş chose "Gizle" for the old videos and playlists on 2026-11-01.
+OLD_PLAYLISTS = ("Worldwide Alpha Mindset", "Kozmik Dehşet", "Sinematik Yeraltı Dünyası", "Stoacılık & Çelik İrade",
+                 "48 Güç Yasası")
+
+
+def hide_old_playlists(tok, stamp):
+    """Old playlists go private (not deleted); the full playlist list is kept as a backup first."""
+    lists = call(YT + "playlists?part=snippet,status&mine=true&maxResults=50", tok).get("items", [])
+    (OUT / f"listeler-{stamp}.json").write_text(json.dumps(lists, ensure_ascii=False, indent=1))
+    done = []
+    for p in lists:
+        title = p["snippet"]["title"]
+        if p["status"]["privacyStatus"] == "private" or not any(o in title for o in OLD_PLAYLISTS):
+            continue
+        body = {"id": p["id"], "snippet": {"title": title, "description": p["snippet"].get("description", "")},
+                "status": {"privacyStatus": "private"}}
+        call(YT + "playlists?part=snippet,status", tok, body=body, method="PUT")
+        done.append(title)
+    return done
+
+
 def main(argv):
     mode = argv[0] if argv else "onizle"
-    if mode not in ("onizle", "uygula"):
-        sys.exit("kullanım: kanal_profili.py onizle | uygula <4 Pexels foto id>")
+    if mode not in ("onizle", "uygula", "eski-listeler"):
+        sys.exit("kullanım: kanal_profili.py onizle | uygula <4 Pexels foto id> | eski-listeler")
     OUT.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     tok = token()
+    if mode == "eski-listeler":
+        hidden = hide_old_playlists(tok, stamp)
+        (OUT / "listeler-sonuc.json").write_text(json.dumps({"at": stamp, "gizlendi": hidden}, ensure_ascii=False))
+        print("gizlenen listeler:", hidden)
+        return
     current = call(YT + "channels?part=snippet,brandingSettings,localizations&mine=true", tok)["items"][0]
     (OUT / f"yedek-{stamp}.json").write_text(json.dumps(current, ensure_ascii=False, indent=1))
 

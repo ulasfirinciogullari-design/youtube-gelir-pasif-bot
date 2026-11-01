@@ -22,7 +22,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir, profil = kanal açıklaması ve kapak görseli: video_ids onizle ya da uygula ve 4 Pexels foto numarası)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir, profil = kanal açıklaması ve kapak görseli: video_ids onizle, uygula ve 4 Pexels foto numarası ya da eski-listeler)'
         required: true
         default: 'video'
         type: choice
