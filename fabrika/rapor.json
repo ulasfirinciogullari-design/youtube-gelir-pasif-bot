@@ -1,12 +1,12 @@
 {
- "started": "2026-11-01T21:32:57+00:00",
+ "started": "2026-11-01T21:35:05+00:00",
  "mod": "ornek",
  "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
  "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
  "chars": 362,
- "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 420, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 266, in ornek\n    report[\"duration\"] = round(render(ep, WORK / \"timings.json\", mix, video, cover, foto=True), 1)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 238, in render\n    node(motor / \"render.js\", out_video, timings_path, mix)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 226, in node\n    raise RuntimeError(f\"çizim hatası ({r.returncode}): \" + (r.stderr.strip() or r.stdout.strip())[:500] + more)\nRuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a\n",
+ "duration": 24.1,
+ "deneme": "fabrika/deneme/ornek-o0006.mp4",
  "log": [],
- "finished": "2026-11-01T21:33:04+00:00"
+ "finished": "2026-11-01T21:35:53+00:00"
 }

@@ -995,16 +995,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 1,
+ "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-16T15:10:19+00:00",
-   "mod": "saatlik",
-   "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/f6WyXXJWASs",
-   "duration": 34.4,
-   "chars": 491
-  },
   {
    "finished": "2026-10-16T16:10:31+00:00",
    "mod": "saatlik",
@@ -1406,6 +1398,13 @@
    "mod": "ornek",
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
    "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a",
+   "chars": 362
+  },
+  {
+   "finished": "2026-11-01T21:35:53+00:00",
+   "mod": "ornek",
+   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+   "duration": 24.1,
    "chars": 362
   }
  ],
