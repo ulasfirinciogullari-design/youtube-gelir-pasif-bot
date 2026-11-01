@@ -1,8 +1,4 @@
 {
  "ara": [],
- "al": {
-  "bg_space": {"id": "GSFC_20171208_Archive_e000394", "disk": false},
-  "moon": {"id": "GSFC_20171208_Archive_e001861", "disk": true},
-  "mars": {"id": "PIA01590", "disk": true}
- }
+ "al": {}
 }
