@@ -1,0 +1,42 @@
+{
+ "jupiter": {
+  "file": "jupiter.png",
+  "id": "PIA01509",
+  "center": "JPL",
+  "title": "Jupiter Full Disk with Great Red Spot",
+  "credit": "NASA/JPL",
+  "disk": true
+ },
+ "earth": {
+  "file": "earth.png",
+  "id": "GSFC_20171208_Archive_e001386",
+  "center": "GSFC",
+  "title": "Most Amazing High Definition Image of Earth - Blue Marble 2012",
+  "credit": "NASA",
+  "disk": true
+ },
+ "sun": {
+  "file": "sun.png",
+  "id": "GSFC_20171208_Archive_e001770",
+  "center": "GSFC",
+  "title": "Amazing Hi-Def CME [full disk]",
+  "credit": "NASA",
+  "disk": true
+ },
+ "uranus": {
+  "file": "uranus.png",
+  "id": "PIA18182",
+  "center": "JPL",
+  "title": "Uranus as seen by NASA Voyager 2",
+  "credit": "NASA/JPL-Caltech",
+  "disk": true
+ },
+ "neptune": {
+  "file": "neptune.png",
+  "id": "PIA02210",
+  "center": "JPL",
+  "title": "Neptune",
+  "credit": "NASA/JPL",
+  "disk": true
+ }
+}
