@@ -22,7 +22,7 @@ on:
           - 'unlisted'
           - 'public'
       task:
-        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir)'
+        description: 'İş (video = Short üret, deneme = Short üret ama YouTube''a yükleme (video Artifact olarak kalır), rapor = kanal temizlik + rakip raporu, temizlik = verilen videoları gizle/sil, ses = seçilen formatın müziğini ElevenLabs ile yeniden üret (karisik = sadece eksik parçalar), referans = video_ids alanındaki örnek Shorts videolarını analiz et, sesornek = aynı kısa metni farklı anlatıcı sesleriyle seslendirip kanal hafızasına koy, tiktok = kod boşsa TikTok izin linkini kanal hafızasına yaz, kod doluysa TikTok hesabını bağla, yorum = yeni yorumlara yazılacak cevapları kanal hafızasına yaz ama gönderme; gerçek cevapları Yorum Cevaplayıcı iş akışı gönderir, profil = kanal açıklaması ve kapak görseli: video_ids onizle ya da uygula ve 4 Pexels foto numarası)'
         required: true
         default: 'video'
         type: choice
@@ -36,6 +36,7 @@ on:
           - 'sesornek'
           - 'tiktok'
           - 'yorum'
+          - 'profil'
       gorsel:
         description: 'AI görsel kalitesi (ucuz = Flux Schnell ~0,003 $/görsel, kaliteli = Flux Dev ~0,025 $/görsel)'
         required: false
@@ -221,6 +222,13 @@ jobs:
           IMAGE_MODEL: ${{ (github.event.inputs.gorsel || vars.IMAGE_QUALITY) == 'kaliteli' && 'fal-ai/flux/dev' || 'fal-ai/flux/schnell' }}
         run: |
           mkdir -p output
+          if [ "$TASK" = "profil" ]; then
+            # Channel page texts and banner (scripts/kanal_profili.py): video_ids "onizle" only previews, "uygula" and
+            # four Pexels photo ids also sends them to YouTube. The backup step commits channel-data/profil/.
+            pip install -q pillow
+            python scripts/kanal_profili.py $VIDEO_IDS
+            exit $?
+          fi
           if [ "$TASK" = "rapor" ]; then
             python channel_tools.py report
             exit 0
