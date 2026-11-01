@@ -126,6 +126,8 @@ def caption(ep):
     facts = [f.get("text", "") for f in ep.get("facts", []) if f.get("text")][:3]
     if facts:
         lines += ["Videodaki bilgiler:"] + [f"• {t}" for t in facts] + [""]
+    if ep.get("kredi"):
+        lines += [f"Görseller: {ep['kredi']}", ""]
     # no @handle: on Instagram it would link to someone else's account
     # shares were ~0 on every Reel until 2026-10-22: ask for one in plain words
     lines += ["Sen ne düşünüyorsun? Yorumlara yaz! 👇", "Bunu bilmeyen bir arkadaşına gönder 📤", "", "Tüm bölümler YouTube'da: Ya Olsaydı? (link profilde)", ""]

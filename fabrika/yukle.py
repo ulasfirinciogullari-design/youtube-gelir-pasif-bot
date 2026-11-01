@@ -38,6 +38,8 @@ def description(ep, lang, state, related):
     parts = [summary, FACTS[lang] + "\n" + "\n".join(f"• {f}" for f in facts)]
     if ep.get("sources"):
         parts.append(SOURCES[lang] + "\n" + "\n".join(ep["sources"]))
+    if ep.get("kredi"):  # NASA's own photos are public domain; credited all the same
+        parts.append(("Görseller: " if tr else "Images: ") + ep["kredi"])
     links = [f"▶ {r['title'] if tr else r.get('i18n', {}).get(lang, r['title'])}\n  https://youtube.com/shorts/{r['video_id']}"
              for r in related]
     pl = state.get("playlists", {}).get(ep["series"])

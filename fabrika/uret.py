@@ -38,9 +38,20 @@ MIN_CREDITS = 12000
 # On 2026-10-21 to 2026-11-01, then off: stayed-to-watch fell from 47.7% (10 Shorts before) to 38.5% (9 with it),
 # views 1,212 -> 1,097, and Reels lost views and watch time too. YO_ACILIS=1 turns it back on.
 ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
-# Real NASA photos for planets and the space backdrop (fabrika/nasa.py, motor.html FOTO). Off until Ulaş picks the
-# test on the 2026-11-01 card; "ornek <id>" always draws with them so the look can be judged first. YO_FOTO=1 turns it on.
-FOTO = (os.environ.get("YO_FOTO") or "0") == "1"
+# Real NASA photos for planets and backdrops (fabrika/nasa.py, motor.html FOTO). On from 2026-11-02: Ulaş preferred the
+# sample (fabrika/deneme/ornek-o0006.mp4) on 2026-11-01. Judged by devam_yuzde against the 47.7% of 10-17..10-20.
+# YO_FOTO=0 turns it off.
+FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
+
+
+def nasa_used(ep):
+    """Whether the episode draws any photo in motor/nasa/liste.json; its description and caption then credit NASA."""
+    p = HERE / "motor" / "nasa" / "liste.json"
+    if not p.exists():
+        return False
+    have = set(json.loads(p.read_text(encoding="utf-8")))
+    s = json.dumps([line.get("v") or {} for line in ep["lines"]], ensure_ascii=False)
+    return any(f'"b": "{k}"' in s for k in have) or any(f'"bg": "{k[3:]}"' in s for k in have if k.startswith("bg_"))
 
 
 def now():
@@ -231,9 +242,12 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
     """layout 'ig': Instagram's copy, title and subtitles kept clear of its overlays and crops (motor.html LY).
     hook: open on the cover line's moment with the question in big letters (motor.html HOOK); default ACILIS."""
     motor = HERE / "motor"
+    foto = FOTO if foto is None else foto
+    if foto and nasa_used(ep):
+        ep["kredi"] = "NASA"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
         {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout, "cover": ep.get("cover", 1),
-         "hook": ACILIS if hook is None else hook, "foto": FOTO if foto is None else foto},
+         "hook": ACILIS if hook is None else hook, "foto": foto},
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
