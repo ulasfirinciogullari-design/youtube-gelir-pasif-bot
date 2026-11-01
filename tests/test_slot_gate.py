@@ -137,6 +137,10 @@ def test_an_episode_scheduled_for_a_later_slot_fills_only_that_slot():
     assert not go and any("Slot dolu" in r and "anim" in r for r in reasons)
     # The next slot keeps its usual gap after the episode.
     assert slot_gate.decide(at("18:07"), [episode], [])[0]
+    # Its upload already happened, so it counts against the daily quota before it goes public.
+    private = [upload(at("09:00").replace(minute=m), "private", f"p{m}") for m in range(29)]
+    go, reasons = slot_gate.decide(at("15:07"), private + [episode], [])
+    assert not go and any("Kota" in r and "30 yükleme" in r for r in reasons)
 
 
 def test_private_upload_neither_fills_the_slot_nor_delays_it():
