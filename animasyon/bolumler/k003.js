@@ -203,11 +203,11 @@ Object.assign(SAHNE, {
     const tk = wordTime(L, V.key, .8), walk = prog(t, L.t0, tk - .15), stop = prog(t, tk - .35, tk + .1);
     cam(540, 1250, lerp(1.08, 1.2, prog(lt, 0, 5)), () => {
       campus(t);
-      const sx = lerp(1000, 690, eio(walk));
+      const sx = lerp(1000, 740, eio(walk));
       figure(K3.ali, sx, 1500, .52, t, { dir: -1, legs: walk < 1 ? 'walk' : 'stand', phase: walk * 16, expr: stop > .5 ? 'surprised' : 'calm',
         front: { sh: .45, el: 1.6, hand: 'hold', prop: () => books(0, 40, 120, t) }, back: { sh: .1, el: .3 }, seed: 9 });
       figure('arastirmaci', 360, 1480, .5, t, { expr: stop > .5 ? 'warm' : 'neutral', talk: t > tk ? talk(t, L) : 0,
-        front: stop > 0 ? { sh: lerp(.5, 1.7, eo(stop)), el: lerp(1.2, .2, eo(stop)), hand: 'palm' } : { sh: .5, el: 1.2, hand: 'hold', prop: () => clipboard(0, 60, 80, t, .2) },
+        front: stop > 0 ? { sh: lerp(.5, .95, eo(stop)), el: lerp(1.2, 1.7, eo(stop)), hand: 'palm' } : { sh: .5, el: 1.2, hand: 'hold', prop: () => clipboard(0, 60, 80, t, .2) },
         back: { sh: .15, el: .4 }, seed: 6 });
     });
     plate(V.year, 540, 520, 50, back(prog(t, L.t0 + .1, L.t0 + .45)));
@@ -233,15 +233,15 @@ Object.assign(SAHNE, {
   red(V, L, t, lt) {
     // five students in a row each shake their head; a red X over each, then the stamp
     K3.day();
-    const tk = wordTime(L, V.key, .7);
+    const tk = wordTime(L, V.stampAt, .55), tx = L.t0 + (L.t1 - L.t0) * .45;
     cam(540, 1200, 1.1, () => campus(t, { empty: true }));
     ctx.fillStyle = 'rgba(20,24,40,.35)'; ctx.fillRect(0, 0, W, H);
     K3.crowd.forEach((who, i) => {
-      const x = 140 + i * 200, at = lerp(L.t0 + .05, tk - .15, i / 4), k = prog(t, at, at + .25);
+      const x = 140 + i * 200, at = lerp(L.t0 - .1, tx, i / 4), k = prog(t, at, at + .25);
       const shake = k > 0 && k < 1 ? Math.sin(k * Math.PI * 4) * .12 : 0;
       figure(who, x, 1480, .44, t, { dir: i % 2 ? -1 : 1, expr: k > 0 ? 'displeased' : 'neutral', headTilt: shake,
         front: { sh: .1, el: .3 }, back: { sh: .1, el: .3 }, seed: 30 + i });
-      cross(x, 880, 120, prog(t, at + .05, at + .4));
+      cross(x, 880, 120, prog(t, at + .02, at + .25));
     });
     stamp('HAYIR', 540, 700, 110, prog(t, tk - .05, tk + .2));
     plate('Kabul eden: 0', 540, 520, 54, back(prog(t, tk - .1, tk + .2)), C.red);
@@ -283,16 +283,16 @@ Object.assign(SAHNE, {
     const rb = prog(t, tb - .1, tb + .6), sf = prog(t, tf - .1, tf + .6);
     cam(540, 1250, 1.15, () => {
       campus(t);
-      const rx = lerp(400, 260, eio(rb)), sx = lerp(700, 560, eio(sf));
+      const rx = lerp(370, 230, eio(rb)), sx = lerp(740, 610, eio(sf));
       figure('arastirmaci', rx, 1500, .52, t, { expr: 'warm', legs: rb > 0 && rb < 1 ? 'walk' : 'stand', phase: -rb * 10, talk: talk(t, L) * .3,
-        front: { sh: .9, el: .6, hand: 'palm' }, back: { sh: .1, el: .3 }, seed: 6 });
+        front: rb > .2 ? { sh: .35, el: 1.3, hand: 'palm' } : { sh: .12, el: .3 }, back: { sh: .1, el: .3 }, seed: 6 });
       figure(K3.ali, sx, 1500, .52, t, { dir: -1, expr: sf > .5 ? 'happy' : 'calm', legs: sf > 0 && sf < 1 ? 'walk' : 'stand', phase: sf * 10,
-        front: sf > .3 ? { sh: 1.2, el: .4, hand: 'palm' } : { sh: .45, el: 1.6, hand: 'hold', prop: () => books(0, 40, 120, t) }, back: { sh: .1, el: .3 }, seed: 9 });
-      stepArrow(300, 1540, -1, prog(t, tb, tb + .4));
-      stepArrow(640, 1540, -1, prog(t, tf, tf + .4));
+        front: sf > .3 ? { sh: .8, el: .7, hand: 'palm' } : { sh: .12, el: .3 }, back: { sh: .1, el: .3 }, seed: 9 });
+      stepArrow(270, 1540, -1, prog(t, tb, tb + .4));
+      stepArrow(680, 1540, -1, prog(t, tf, tf + .4));
     });
     plate('Taviz', 230, 1330, 44, back(prog(t, tb + .1, tb + .45)), C.gold);
-    plate('Karşılık', 600, 1330, 44, back(prog(t, tf + .1, tf + .45)), C.gold);
+    plate('Karşılık', 640, 1330, 44, back(prog(t, tf + .1, tf + .45)), C.gold);
     plate('Karşılıklı taviz', 540, 520, 56, back(prog(t, tf + .7, tf + 1.05)), C.gold);
     if (sf > .6) sparks(560, 980, t, 18, 160, prog(t, tf + .4, tf + 1.2));
   }
