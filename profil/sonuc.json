@@ -1,6 +1,6 @@
 {
- "mode": "onizle",
- "at": "20261101T220536Z",
+ "mode": "uygula",
+ "at": "20261101T220706Z",
  "photos": [
   {
    "id": 12376972,
@@ -146,5 +146,27 @@
   ]
  },
  "description": "Doğanın ve insan zihninin yazılmamış kanunları.\n\nHer gün hayvanlar, insan vücudu ve psikoloji hakkında yanlış bildiğin ya da hiç duymadığın bir gerçek. Her video 15-20 saniye, her bilgi yayından önce kaynaklardan kontrol ediliyor.\n\nHaftada üç gün güç psikolojisi animasyonları: insanları etkileyen, ikna eden ve yöneten görünmez kurallar; gerçek deneyler ve tarihten hikâyelerle.\n\nYeni Short'lar her gün saat 10:00 ile 24:00 arasında, iki saatte bir.\n\nYanlış bulduğun bir bilgi ya da merak ettiğin bir konu varsa yorumlara yaz, her yoruma cevap veriyoruz.",
- "keywords": "\"Zirvenin Kanunu\" \"ilginç bilgiler\" \"bilmediğin gerçekler\" hayvanlar \"hayvan bilgileri\" \"hayvanlar alemi\" \"insan vücudu\" psikoloji \"insan psikolojisi\" \"güç psikolojisi\" \"ikna psikolojisi\" bilim merak \"bilimsel gerçekler\" shorts"
+ "keywords": "\"Zirvenin Kanunu\" \"ilginç bilgiler\" \"bilmediğin gerçekler\" hayvanlar \"hayvan bilgileri\" \"hayvanlar alemi\" \"insan vücudu\" psikoloji \"insan psikolojisi\" \"güç psikolojisi\" \"ikna psikolojisi\" bilim merak \"bilimsel gerçekler\" shorts",
+ "branding": "Doğanın ve insan zihninin yazılmamış kanunları.\n\nHer gün hayvanlar, insan vücudu",
+ "localizations": [
+  "en_US",
+  "tr_TR"
+ ],
+ "after": {
+  "title": "Zirvenin Kanunu",
+  "description": "Doğanın ve insan zihninin yazılmamış kanunları.\n\nHer gün hayvanlar, insan vücudu ve psikoloji hakkında yanlış bildiğin y",
+  "banner": "https://yt3.googleusercontent.com/hUyWQ8n5rBB5bcOa5PKt72_ckIqkp7kb_XgyodyQ6Wn2iDBv9-AGRB83P_92WGK-SZOHCkZuHBA",
+  "localizations": [
+   "ar_EG",
+   "de_DE",
+   "en_US",
+   "es_ES",
+   "fr_FR",
+   "it_IT",
+   "ja_JP",
+   "pt_BR",
+   "ru_RU",
+   "tr_TR"
+  ]
+ }
 }
