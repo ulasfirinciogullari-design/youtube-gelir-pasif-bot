@@ -71,7 +71,7 @@ def ara(req):
         args = ["ffmpeg", "-v", "error", "-y"]
         for p in tiles:
             args += ["-i", str(p)]
-        f = "".join(f"[{i}:v]scale=300:300:force_original_aspect_ratio=decrease,pad=300:300:(ow-iw)/2:(oh-ih)/2:color=gray,"
+        f = "".join(f"[{i}:v]scale=300:300:force_original_aspect_ratio=decrease,pad=300:300:(ow-iw)/2:(oh-ih)/2:color=gray"
                     f"[v{i}];"
                     for i in range(len(tiles)))
         f += "".join(f"[v{i}]" for i in range(len(tiles))) + f"hstack=inputs={len(tiles)}[o]" if len(tiles) > 1 else ""
