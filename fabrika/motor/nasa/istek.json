@@ -1,20 +1,20 @@
 {
  "ara": [
-  "Jupiter full disk",
-  "Jupiter Hubble",
-  "Earth full disk EPIC",
-  "Blue Marble Earth",
-  "full moon",
-  "Sun SDO full disk",
-  "Mars full disk",
-  "Saturn Cassini rings",
-  "Uranus Voyager",
-  "Neptune Voyager",
-  "Venus Mariner",
-  "Mercury MESSENGER global",
-  "Milky Way galaxy",
-  "Hubble deep field",
-  "Pluto New Horizons"
+  "Hubble Ultra Deep Field",
+  "Hubble eXtreme Deep Field",
+  "star field Hubble",
+  "Moon full disk Lunar Reconnaissance Orbiter",
+  "Galileo Moon",
+  "Mars Hubble",
+  "Mars Viking mosaic",
+  "Saturn Cassini natural color",
+  "Venus Mariner 10"
  ],
- "al": {}
+ "al": {
+  "jupiter": {"id": "PIA01509", "disk": true},
+  "earth": {"id": "GSFC_20171208_Archive_e001386", "disk": true},
+  "sun": {"id": "GSFC_20171208_Archive_e001770", "disk": true},
+  "uranus": {"id": "PIA18182", "disk": true},
+  "neptune": {"id": "PIA02210", "disk": true}
+ }
 }
