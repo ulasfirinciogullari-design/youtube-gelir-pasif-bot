@@ -419,6 +419,14 @@ def _clip_refs(value) -> list[dict]:
     return refs[:4]
 
 
+def _scene_subject(value) -> list[str]:
+    """A scene's own stock subject (["skeleton"]) for a shot that is not the topic's animal or person. The baby
+    Short (2026-10-22) asked for a spine model, but the clips were filtered by "baby" and the scene reused baby
+    shots. Plain English terms only, at most three."""
+    terms = [" ".join(str(t).lower().split()) for t in value] if isinstance(value, list) else []
+    return [t for t in terms if re.fullmatch(r"[a-z]+( [a-z]+)*", t)][:3]
+
+
 def clean_mood(value) -> str:
     """One of MOODS whatever the spelling ("EĞLENCELİ" -> "eglenceli"); "" when the reply named none of them."""
     text = unicodedata.normalize("NFKD", str(value or "").strip().lower())
@@ -474,6 +482,8 @@ def validate_script(script: dict, character: dict | None = None, min_words: int 
         }
         if _clip_refs(raw.get("clips")):
             scene["clips"] = _clip_refs(raw.get("clips"))
+        if _scene_subject(raw.get("subject")):
+            scene["subject"] = _scene_subject(raw.get("subject"))
         callout = clean_callout(raw.get("callout"))
         if callout and sum(1 for s in scenes if s.get("callout")) < MAX_CALLOUTS:
             scene["callout"] = callout

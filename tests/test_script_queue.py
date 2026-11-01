@@ -68,6 +68,15 @@ def test_take_skips_a_script_too_long_for_a_short(tmp_path):
     assert script_queue.take(set(), tmp_path) is None
 
 
+def test_a_scene_keeps_its_own_stock_subject(tmp_path):
+    script = json.loads(json.dumps(OCTOPUS))
+    script["scenes"][1]["subject"] = ["Human Skeleton", "x-ray", "  gills  ", "fish", "coral"]
+    _write(tmp_path, "001.json", id="mk-c0001", topic="Ahtapotun kalbi", subject=["octopus"], script=script)
+    scenes = script_queue.take(set(), tmp_path)["script"]["scenes"]
+    # plain English words only, at most three; scenes without one fall back to the topic's subject
+    assert scenes[1]["subject"] == ["human skeleton", "gills", "fish"] and "subject" not in scenes[0]
+
+
 def test_queue_dir_needs_an_existing_folder(tmp_path, monkeypatch):
     monkeypatch.delenv(script_queue.QUEUE_ENV, raising=False)
     assert script_queue.queue_dir() is None and script_queue.take(set()) is None

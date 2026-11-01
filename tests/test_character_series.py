@@ -371,6 +371,49 @@ def test_matched_stock_downloads_only_the_clips_gemini_picked(tmp_path, monkeypa
     assert how == "anahtar kelime" and calls[0] == ("cat jumping", 2, ("cat",)) and [len(a) for a in assets] == [2, 1, 1]
 
 
+def test_a_scene_with_its_own_subject_searches_for_that_subject(tmp_path, monkeypatch):
+    from app.services import original_visuals
+    searched = []
+
+    def fake_candidates(query, used, subject=None, limit=50):
+        searched.append((query, tuple(subject or ())))
+        return [_hit(len(searched), "skeleton" if subject == ["skeleton"] else "baby")]
+
+    monkeypatch.setattr(original_visuals, "pixabay_candidates", fake_candidates)
+    monkeypatch.setattr(original_visuals, "pexels_candidates", lambda q, used, subject=None, limit=15: [])
+    monkeypatch.setattr(original_visuals, "download_pixabay_hit", lambda hit, d, used: d / f"{hit['id']}.mp4")
+    scenes = [{"text": "Bu bebeğin kemiği fazla.", "stock_query": "newborn baby"},
+              {"text": "Geriye 206 kemik kalır.", "stock_query": "human skeleton", "subject": ["skeleton"]}]
+    sent = {}
+
+    def fake_match(topic, sc, wanted, pool):
+        sent["tags"] = [h["tags"] for h in pool]
+        return [[0], [1]]
+
+    assets, how = original_visuals.collect_matched_stock(scenes, [[1.6], [1.6]], tmp_path, set(), ["baby"],
+                                                         "", "Bebek kemikleri", match=fake_match)
+    assert searched[:2] == [("newborn baby", ("baby",)), ("human skeleton", ("skeleton",))]
+    assert sent["tags"][:2] == ["baby", "skeleton"] and how == "gemini" and [len(a) for a in assets] == [1, 1]
+
+    # Gemini leaves the skeleton scene empty: it falls back to skeleton clips, not to the video's baby shots
+    fallback = []
+    monkeypatch.setattr(original_visuals, "fetch_stock_with_fallbacks",
+                        lambda q, fb, n, d, u, subject=None: fallback.append((q, fb, tuple(subject))) or [d / "s.mp4"] * n)
+    assets, _ = original_visuals.collect_matched_stock(scenes, [[1.6], [1.6]], tmp_path, set(), ["baby"],
+                                                       "newborn baby", "Bebek kemikleri", match=lambda *a: [[0], []])
+    assert fallback == [("human skeleton", "", ("skeleton",))] and [len(a) for a in assets] == [1, 1]
+
+
+def test_clip_matcher_names_a_scene_subject():
+    from app.services import clip_matcher
+    sent = []
+    scenes = [{"text": "Geriye 206 kemik kalır.", "stock_query": "human skeleton", "subject": ["skeleton"]}]
+    clip_matcher.match_clips("Bebek", scenes, [1], [_hit(1, "skeleton")],
+                             call=lambda parts: sent.append(parts) or json.dumps({"scenes": [{"scene": 1, "clips": [1]}]}),
+                             fetch=lambda url: (b"\xff\xd8\xff", "image/jpeg"))
+    assert "[bu sahnenin öznesi: skeleton]" in sent[0][0]["text"]
+
+
 def test_clip_matcher_reads_gemini_picks():
     from app.services import clip_matcher
     candidates = [_hit(i, "cat") for i in range(1, 6)] + [_hit(6, "cat", thumb=False)]
