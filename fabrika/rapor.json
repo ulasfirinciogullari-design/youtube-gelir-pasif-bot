@@ -1,71 +1,12 @@
 {
- "started": "2026-10-23T18:07:21+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-01T21:32:57+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "42",
-  "videos": "30"
- },
- "credits_before": [
-  16304,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261023-2-y010.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y010",
-  "series": "Ya Olsaydı?",
-  "q": "Arılar yok olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 387,
- "duration": 27.8,
- "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
- "url": "https://youtube.com/shorts/fwDsy2Wq4S4",
- "recent_status": {
-  "o0010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "895",
-   "reason": null
-  },
-  "n006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "895",
-   "reason": null
-  },
-  "y009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "955",
-   "reason": null
-  },
-  "g006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "276",
-   "reason": null
-  },
-  "y010": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  16397,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261023-2-y010.json Arılar yok olsaydı ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-10-23T18:08:14+00:00"
+ "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
+ "chars": 362,
+ "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 420, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 266, in ornek\n    report[\"duration\"] = round(render(ep, WORK / \"timings.json\", mix, video, cover, foto=True), 1)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 238, in render\n    node(motor / \"render.js\", out_video, timings_path, mix)\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 226, in node\n    raise RuntimeError(f\"çizim hatası ({r.returncode}): \" + (r.stderr.strip() or r.stdout.strip())[:500] + more)\nRuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a\n",
+ "log": [],
+ "finished": "2026-11-01T21:33:04+00:00"
 }
