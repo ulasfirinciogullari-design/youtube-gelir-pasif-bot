@@ -180,7 +180,9 @@ def cues(ep, timings):
 
 def make(ep, work, data):
     work, data = Path(work), Path(data)
-    cache = work / "audio"
+    # Kept in the branch (calistir.sh commits animasyon/ses): the scheduled upload ("zamanla") reuses the narration
+    # of the test run that was checked, so what goes public is exactly what was reviewed, and it is paid for once.
+    cache = LIB / "anlatim"
     cache.mkdir(parents=True, exist_ok=True)
     said, groups = [], []
     for line in ep["lines"]:
