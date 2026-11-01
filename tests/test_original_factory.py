@@ -291,6 +291,62 @@ def test_add_hook_overlay_inserts_style_and_event(tmp_path):
     assert "@zirveninkanunu" in events and "👑" not in content
 
 
+def test_series_label_sits_in_gold_above_the_hook(tmp_path):
+    from app.services.subtitle_engine import generate_shorts_ass_subtitles
+
+    ass = tmp_path / "s.ass"
+    generate_shorts_ass_subtitles([{"text": "bir iki üç", "start": 0.0, "end": 2.0}], ass)
+    original_factory.add_hook_overlay(ass, "kimse fark etmedi", 2.0, label="KANUN #88")
+    hook = [l for l in ass.read_text(encoding="utf-8").splitlines() if ",HookStyle," in l and l.startswith("Dialogue")]
+    assert len(hook) == 1
+    assert "\\c&H0000D7FF&}KANUN #88\\N{\\fs78\\c&H00FFFFFF&}KİMSE FARK ETMEDİ" in hook[0]
+
+    only_label = tmp_path / "l.ass"
+    generate_shorts_ass_subtitles([{"text": "bir", "start": 0.0, "end": 1.0}], only_label)
+    original_factory.add_hook_overlay(only_label, "", 1.0, label="KANUN #3")
+    assert only_label.read_text(encoding="utf-8").rstrip().endswith("}KANUN #3")
+
+
+def test_share_cta_fills_the_last_moments_in_a_box(tmp_path):
+    from app.services.subtitle_engine import generate_shorts_ass_subtitles
+
+    ass = tmp_path / "s.ass"
+    generate_shorts_ass_subtitles([{"text": "bir iki üç", "start": 0.0, "end": 20.0}], ass)
+    original_factory.add_share_cta(ass, 20.0)
+    header, events = ass.read_text(encoding="utf-8").split("[Events]")
+    style = next(l for l in header.splitlines() if l.startswith("Style: CtaStyle,")).split(",")
+    assert style[15] == "3"  # BorderStyle 3: an opaque box behind the words
+    cta = events.rstrip().splitlines()[-1]
+    assert cta.startswith("Dialogue: 3,0:00:18.20,0:00:20.00,CtaStyle,")
+    assert cta.endswith("BUNU BİLMEYEN\\NBİRİNE {\\c&H0000D7FF&}GÖNDER")
+
+
+def test_share_cta_arm_is_stable_and_takes_about_half():
+    ids = [f"mk-c{n:04d}" for n in range(1, 401)]
+    arms = [original_factory.share_cta_arm(i) for i in ids]
+    assert arms == [original_factory.share_cta_arm(i) for i in ids]
+    assert 160 <= sum(arms) <= 240
+    # Every fourth queue file is psychology; the hash must not put them all in one arm.
+    psych = [original_factory.share_cta_arm(f"mk-c{n:04d}") for n in range(37, 401, 4)]
+    assert 0 < sum(psych) < len(psych)
+
+
+def test_merak_label_number_counts_the_published_merak_shorts(tmp_path):
+    from app.services import channel_memory
+
+    assert original_factory.merak_label_number(tmp_path) == 1
+    channel_memory.record_upload(tmp_path, "v1", "mk-001", "Kedi", "merak")  # old records carry no privacy
+    channel_memory.record_upload(tmp_path, "v2", "mk-c0001", "Baykuş", "merak", privacy="public")
+    channel_memory.record_upload(tmp_path, "v3", "mk-c0002", "Deneme", "merak", privacy="private")
+    channel_memory.record_upload(tmp_path, "v4", "zk-001", "Tarih", "story", privacy="public")
+    channel_memory.record_upload(tmp_path, "v5", "mk-c0003", "Ahtapot", "merak", privacy="public",
+                                 extra={"series_label": "KANUN #3", "share_cta": True, "privacy": "private"})
+    assert original_factory.merak_label_number(tmp_path) == 4
+    last = channel_memory.load_uploads(tmp_path)[-1]
+    assert last["series_label"] == "KANUN #3" and last["share_cta"] is True
+    assert last["privacy"] == "public"  # extra never overrides the record's own fields
+
+
 def test_build_prompt_includes_style_examples():
     prompt = original_script.build_prompt("konu", ["Ordusu kaçarken geri dönüyor 😳"])
     assert "Ordusu kaçarken geri dönüyor 😳" in prompt
