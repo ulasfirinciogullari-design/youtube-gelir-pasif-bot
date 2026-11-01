@@ -1,178 +1,174 @@
 {
  "id": "mk-c0045",
- "topic": "Denizanası beyni ve kalbi olmadan nasıl yaşar?",
- "kategori": "hayvan",
+ "topic": "Gözümüzdeki kör noktayı neden görmeyiz?",
+ "kategori": "psikoloji",
  "subject": [
-  "jellyfish"
+  "eye"
  ],
- "stock_hint": "jellyfish underwater",
+ "stock_hint": "human eye close up",
  "script": {
-  "title": "Denizanasının beyni yok ama dinozorlardan eski 🌊",
-  "hook_text": "DENİZANASI BEYİNSİZ NASIL YAŞAR?",
+  "title": "Her gözünde bir kör nokta var, beynin orayı uyduruyor 👁️",
+  "hook_text": "GÖRMEDİĞİN DELİK NEREDE?",
   "scenes": [
    {
-    "text": "Bu canlının vücudunun yüzde doksan beşi su.",
-    "visual": "translucent jellyfish pulsing in dark blue water",
-    "stock_query": "jellyfish",
+    "text": "Her gözünün görüş alanında bir delik var ve sen onu görmüyorsun.",
+    "visual": "extreme close-up of a human eye",
+    "stock_query": "human eye",
     "source": "stock",
-    "callout": "%95 SU"
+    "callout": "KÖR NOKTA"
    },
    {
-    "text": "Denizanasının beyni, kalbi, hatta kanı bile yoktur.",
-    "visual": "jellyfish drifting in an aquarium with soft light",
-    "stock_query": "jellyfish aquarium",
+    "text": "Her gözde, görme sinirinin gözden çıktığı yerde ışık algılayan hücre yok.",
+    "visual": "macro shot of an eye iris and pupil",
+    "stock_query": "eye macro",
     "source": "stock",
-    "callout": "KALP YOK, KAN YOK"
+    "callout": "IŞIK HÜCRESİ YOK"
    },
    {
-    "text": "Işığı ve kokuyu basit bir sinir ağıyla algılar.",
-    "visual": "macro shot of jellyfish tentacles drifting",
-    "stock_query": "jellyfish closeup",
+    "text": "O nokta, baktığın yerin yaklaşık on beş derece yanında duruyor.",
+    "visual": "woman looking to the side",
+    "stock_query": "woman eye",
     "source": "stock",
-    "callout": ""
+    "callout": "15 DERECE",
+    "subject": [
+     "woman"
+    ]
    },
    {
-    "text": "Bilinen en eski yüzen denizanası fosili beş yüz beş milyon yıllık.",
-    "visual": "jellyfish swimming in the open ocean",
-    "stock_query": "jellyfish ocean",
+    "text": "Tek gözünü kapatsan bile orada bir delik görmezsin.",
+    "visual": "man covering one eye with his hand",
+    "stock_query": "man eye",
     "source": "stock",
-    "callout": "505 MİLYON YIL"
+    "callout": "",
+    "subject": [
+     "man"
+    ]
    },
    {
-    "text": "Bu, ilk dinozorlardan iki kat daha eski demek.",
-    "visual": "group of jellyfish swimming together",
-    "stock_query": "jellyfish swimming",
+    "text": "Beyin, deliği çevresindeki görüntüyle dolduruyor; gördüğün dünyanın bir parçasını beynin uyduruyor.",
+    "visual": "close-up of an eye blinking",
+    "stock_query": "eye blinking",
     "source": "stock",
-    "callout": "2 KAT ESKİ"
-   },
-   {
-    "text": "Beyni ve kalbi olmayan bu canlı, yarım milyar yıldır okyanusta süzülüyor.",
-    "visual": "jellyfish gliding through deep blue water",
-    "stock_query": "jellyfish underwater",
-    "source": "stock",
-    "callout": ""
+    "callout": "BEYİN UYDURUYOR"
    }
   ],
-  "description": "Denizanasının vücudunun yaklaşık yüzde doksan beşi sudur; beyni, kalbi ve kanı yoktur. Bilinen en eski yüzen denizanası fosili 505 milyon yıllık, yani ilk dinozorlardan iki kat daha eski.",
+  "description": "Her gözde, görme sinirinin gözden çıktığı yerde ışık algılayan hücre olmadığı için bir kör nokta var. Baktığın yerin yaklaşık on beş derece yanındaki bu deliği beyin çevresindeki görüntüyle dolduruyor.",
   "tags": [
-   "denizanası",
-   "denizanaları",
-   "deniz canlıları",
-   "okyanus",
-   "fosil",
-   "dinozorlar",
-   "hayvanlar",
+   "göz",
+   "kör nokta",
+   "beyin",
+   "görme",
+   "psikoloji",
    "ilginç bilgiler",
    "bilim"
   ],
-  "pinned_comment": "Sence hangisi daha şaşırtıcı: beyni olmadan yaşaması mı, dinozorlardan iki kat eski olması mı?",
-  "en_title": "Jellyfish have no brain, yet they're older than dinosaurs 🌊",
-  "en_description": "A jellyfish is about 95 percent water and has no brain, no heart and not even blood; a simple nerve net senses light and smells. The oldest known swimming jellyfish fossil is 505 million years old, about twice as old as the first dinosaurs.",
-  "mood": "belgesel"
+  "pinned_comment": "Sence hangisi daha tuhaf: gözünde bir delik olması mı, beynin onu fark ettirmeden doldurması mı?",
+  "en_title": "Each eye has a blind spot and your brain fills it in 👁️",
+  "en_description": "Each eye has a spot with no light-sensing cells, where the optic nerve leaves the eye. It sits about 15 degrees from where you look, yet you never notice the hole: your brain fills it in with the surrounding image.",
+  "mood": "sakin"
  },
  "seo": {
-  "description": "Denizanası beyni ve kalbi olmadan nasıl yaşar, ne zamandan beri var?\n\nDenizanasının vücudunun yaklaşık yüzde doksan beşi sudur; beyni, kalbi, hatta kanı bile yoktur. Işığı ve kokuyu basit bir sinir ağıyla algılar. Bilinen en eski yüzen denizanası fosili 505 milyon yıllık, yani yaklaşık 245 milyon yıl önce ortaya çıkan ilk dinozorlardan iki kat daha eski.\n\nSence hangisi daha şaşırtıcı: beyni olmadan yaşaması mı, dinozorlardan iki kat eski olması mı?",
+  "description": "Gözümüzdeki kör nokta nedir, neden onu hiç fark etmeyiz?\n\nHer gözde, görme sinirinin gözden çıktığı yerde ışık algılayan hücre yoktur; bu yüzden her gözün görüş alanında bir kör nokta vardır. Bu nokta baktığın yerin yaklaşık on beş derece yanında durur. Tek gözünü kapatsan bile orada bir delik görmezsin, çünkü beyin deliği çevresindeki görüntüyle doldurur. Yani gördüğün dünyanın küçük bir parçasını aslında beynin tamamlıyor.\n\nSence hangisi daha tuhaf: gözünde bir delik olması mı, beynin onu fark ettirmeden doldurması mı?",
   "hashtags": [
-   "#denizanası",
-   "#denizcanlıları",
-   "#okyanus",
+   "#göz",
+   "#beyin",
+   "#psikoloji",
    "#ilginçbilgiler"
   ],
   "tags": [
-   "denizanası",
-   "denizanaları",
-   "denizanası beyni",
-   "denizanasının kalbi var mı",
-   "denizanası nasıl yaşar",
-   "beyinsiz hayvanlar",
-   "en eski hayvanlar",
-   "denizanası fosili",
-   "dinozorlardan eski",
-   "deniz canlıları",
-   "okyanus",
-   "deniz altı",
-   "omurgasızlar",
-   "sinir ağı",
-   "vahşi doğa",
-   "hayvanlar",
-   "ilginç bilgiler",
+   "kör nokta",
+   "gözdeki kör nokta",
+   "kör nokta nedir",
+   "görme siniri",
+   "optik sinir",
+   "göz",
+   "görme",
+   "beyin",
+   "beyin nasıl görür",
+   "algı",
+   "görsel algı",
+   "beyin kandırır",
+   "insan vücudu",
+   "psikoloji",
    "bilim",
-   "biyoloji",
-   "merak",
-   "jellyfish"
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "göz testi",
+   "blind spot",
+   "optic nerve"
   ],
   "localizations": {
    "en": {
-    "title": "Jellyfish have no brain, yet they're older than dinosaurs 🌊",
-    "description": "A jellyfish is about 95 percent water and has no brain, no heart and not even blood; a simple nerve net senses light and smells. The oldest known swimming jellyfish fossil is 505 million years old, about twice as old as the first dinosaurs."
+    "title": "Each eye has a blind spot and your brain fills it in 👁️",
+    "description": "Where the optic nerve leaves each eye there are no light-sensing cells. The hole sits about 15 degrees from where you look, and your brain fills it in."
    },
    "es": {
-    "title": "Las medusas no tienen cerebro, pero son más antiguas que los dinosaurios 🌊",
-    "description": "Una medusa es agua en un 95 % y no tiene cerebro, ni corazón, ni siquiera sangre; percibe la luz y los olores con una red nerviosa sencilla. El fósil de medusa nadadora más antiguo que se conoce tiene 505 millones de años, unas dos veces la edad de los primeros dinosaurios."
+    "title": "Cada ojo tiene un punto ciego y tu cerebro lo rellena 👁️",
+    "description": "Donde el nervio óptico sale del ojo no hay células que detecten la luz. Ese hueco está a unos 15 grados de donde miras y tu cerebro lo rellena."
    },
    "pt": {
-    "title": "A água-viva não tem cérebro, mas é mais antiga que os dinossauros 🌊",
-    "description": "Uma água-viva é cerca de 95% água e não tem cérebro, coração nem sangue; ela percebe luz e cheiros com uma rede nervosa simples. O fóssil mais antigo conhecido de uma água-viva nadadora tem 505 milhões de anos, cerca do dobro da idade dos primeiros dinossauros."
+    "title": "Cada olho tem um ponto cego e o cérebro o preenche 👁️",
+    "description": "Onde o nervo óptico sai do olho não há células que captem luz. Esse buraco fica a cerca de 15 graus de onde você olha, e o cérebro o preenche."
    },
    "de": {
-    "title": "Quallen haben kein Gehirn und sind trotzdem älter als die Dinosaurier 🌊",
-    "description": "Eine Qualle besteht zu etwa 95 Prozent aus Wasser und hat weder Gehirn noch Herz, nicht einmal Blut; Licht und Gerüche nimmt sie über ein einfaches Nervennetz wahr. Das älteste bekannte Fossil einer schwimmenden Qualle ist 505 Millionen Jahre alt und damit etwa doppelt so alt wie die ersten Dinosaurier."
+    "title": "Jedes Auge hat einen blinden Fleck, dein Gehirn füllt ihn 👁️",
+    "description": "Wo der Sehnerv das Auge verlässt, gibt es keine Lichtsinneszellen. Die Lücke liegt etwa 15 Grad neben deinem Blickpunkt, und dein Gehirn füllt sie auf."
    },
    "fr": {
-    "title": "La méduse n'a pas de cerveau, mais elle est plus vieille que les dinosaures 🌊",
-    "description": "Une méduse est constituée d'environ 95 % d'eau et n'a ni cerveau, ni cœur, ni même de sang ; un simple réseau nerveux lui permet de percevoir la lumière et les odeurs. Le plus ancien fossile connu de méduse nageuse a 505 millions d'années, soit environ deux fois l'âge des premiers dinosaures."
+    "title": "Chaque œil a une tache aveugle que ton cerveau comble 👁️",
+    "description": "Là où le nerf optique quitte l'œil, il n'y a aucune cellule sensible à la lumière. Ce trou se trouve à environ 15 degrés de ton regard et ton cerveau le comble."
    },
    "it": {
-    "title": "La medusa non ha cervello, ma è più antica dei dinosauri 🌊",
-    "description": "Una medusa è fatta per circa il 95% di acqua e non ha cervello, cuore e nemmeno sangue; percepisce luce e odori con una semplice rete nervosa. Il più antico fossile conosciuto di medusa nuotatrice ha 505 milioni di anni, circa il doppio dell'età dei primi dinosauri."
+    "title": "Ogni occhio ha un punto cieco che il cervello riempie 👁️",
+    "description": "Dove il nervo ottico esce dall'occhio non ci sono cellule sensibili alla luce. Il buco si trova a circa 15 gradi da dove guardi e il cervello lo riempie."
    },
    "ru": {
-    "title": "У медузы нет мозга, но она старше динозавров 🌊",
-    "description": "Медуза примерно на 95% состоит из воды, у неё нет ни мозга, ни сердца, ни даже крови; свет и запахи она чувствует простой нервной сетью. Самой древней известной окаменелости плавающей медузы 505 миллионов лет, это примерно вдвое больше возраста первых динозавров."
+    "title": "В каждом глазу есть слепое пятно, и мозг его дорисовывает 👁️",
+    "description": "Там, где зрительный нерв выходит из глаза, нет светочувствительных клеток. Эта дыра примерно в 15 градусах от точки взгляда, и мозг её заполняет."
    },
    "ar": {
-    "title": "قنديل البحر بلا دماغ لكنه أقدم من الديناصورات 🌊",
-    "description": "يتكوّن قنديل البحر من الماء بنسبة 95% تقريبًا، وليس له دماغ ولا قلب ولا حتى دم، ويستشعر الضوء والروائح بشبكة عصبية بسيطة. ويبلغ عمر أقدم أحفورة معروفة لقنديل بحر سابح 505 ملايين سنة، أي نحو ضعف عمر أولى الديناصورات."
+    "title": "في كل عين نقطة عمياء ودماغك يملؤها 👁️",
+    "description": "حيث يخرج العصب البصري من العين لا توجد خلايا تستشعر الضوء. هذه الفجوة تبعد نحو 15 درجة عن مكان نظرك، ويملؤها الدماغ."
    },
    "hi": {
-    "title": "जेलीफ़िश के पास दिमाग नहीं, फिर भी यह डायनासोर से पुरानी है 🌊",
-    "description": "जेलीफ़िश का लगभग 95% शरीर पानी होता है और इसके पास न दिमाग है, न दिल, न ही खून; यह एक साधारण तंत्रिका जाल से रोशनी और गंध महसूस करती है। तैरने वाली जेलीफ़िश का सबसे पुराना ज्ञात जीवाश्म 50.5 करोड़ साल पुराना है, यानी पहले डायनासोर से लगभग दोगुना।"
+    "title": "हर आँख में एक ब्लाइंड स्पॉट है, दिमाग उसे भर देता है 👁️",
+    "description": "जहाँ ऑप्टिक नस आँख से निकलती है वहाँ रोशनी पहचानने वाली कोशिकाएँ नहीं होतीं। यह छेद आपकी नज़र से लगभग 15 डिग्री दूर है और दिमाग उसे भर देता है।"
    },
    "id": {
-    "title": "Ubur-ubur tak punya otak, tapi lebih tua dari dinosaurus 🌊",
-    "description": "Tubuh ubur-ubur sekitar 95% air, tanpa otak, tanpa jantung, bahkan tanpa darah; ia merasakan cahaya dan bau lewat jaringan saraf sederhana. Fosil ubur-ubur perenang tertua yang diketahui berusia 505 juta tahun, kira-kira dua kali usia dinosaurus pertama."
+    "title": "Setiap mata punya titik buta dan otakmu mengisinya 👁️",
+    "description": "Di tempat saraf optik keluar dari mata tidak ada sel penangkap cahaya. Lubang itu sekitar 15 derajat dari titik pandangmu, dan otak mengisinya."
    },
    "ja": {
-    "title": "クラゲには脳がないのに、恐竜より古い 🌊",
-    "description": "クラゲの体は約95%が水で、脳も心臓も、血液さえもありません。光やにおいは単純な神経網で感じ取ります。泳ぐクラゲの化石として知られる最古のものは5億500万年前のもので、最初の恐竜のおよそ2倍の古さです。"
+    "title": "どちらの目にも盲点があり、脳が埋めている 👁️",
+    "description": "視神経が目から出る場所には光を感じる細胞がありません。その穴は視線から約15度の位置にありますが、脳が周りの景色で埋めています。"
    },
    "ko": {
-    "title": "해파리는 뇌가 없지만 공룡보다 오래됐다 🌊",
-    "description": "해파리는 몸의 약 95%가 물이고 뇌도, 심장도, 심지어 피도 없습니다. 빛과 냄새는 단순한 신경망으로 감지합니다. 지금까지 알려진 가장 오래된 헤엄치는 해파리 화석은 5억 500만 년 전 것으로, 최초의 공룡보다 약 두 배나 오래됐습니다."
+    "title": "모든 눈에는 맹점이 있고 뇌가 그곳을 채운다 👁️",
+    "description": "시신경이 눈에서 나가는 자리에는 빛을 느끼는 세포가 없습니다. 이 구멍은 시선에서 약 15도 옆에 있지만 뇌가 주변 장면으로 채웁니다."
    },
    "pl": {
-    "title": "Meduza nie ma mózgu, ale jest starsza od dinozaurów 🌊",
-    "description": "Meduza w około 95 procentach składa się z wody i nie ma mózgu, serca ani nawet krwi; światło i zapachy wyczuwa prostą siecią nerwową. Najstarsza znana skamieniałość pływającej meduzy ma 505 milionów lat, czyli mniej więcej dwa razy więcej niż pierwsze dinozaury."
+    "title": "Każde oko ma plamkę ślepą, a mózg ją wypełnia 👁️",
+    "description": "Tam, gdzie nerw wzrokowy opuszcza oko, nie ma komórek wyczuwających światło. Ta dziura leży około 15 stopni od punktu patrzenia, a mózg ją uzupełnia."
    },
    "nl": {
-    "title": "Een kwal heeft geen hersenen, maar is ouder dan de dinosauriërs 🌊",
-    "description": "Een kwal bestaat voor zo'n 95 procent uit water en heeft geen hersenen, geen hart en zelfs geen bloed; licht en geuren neemt hij waar met een eenvoudig zenuwnet. Het oudst bekende fossiel van een zwemmende kwal is 505 miljoen jaar oud, ongeveer twee keer zo oud als de eerste dinosauriërs."
+    "title": "Elk oog heeft een blinde vlek die je brein invult 👁️",
+    "description": "Waar de oogzenuw het oog verlaat, zitten geen lichtgevoelige cellen. Dat gat ligt ongeveer 15 graden naast waar je kijkt, en je brein vult het in."
    },
    "uk": {
-    "title": "У медузи немає мозку, але вона старша за динозаврів 🌊",
-    "description": "Медуза приблизно на 95% складається з води, у неї немає ні мозку, ні серця, ні навіть крові; світло й запахи вона відчуває простою нервовою сіткою. Найдавнішій відомій скам'янілості плавучої медузи 505 мільйонів років, це приблизно вдвічі більше, ніж вік перших динозаврів."
+    "title": "У кожному оці є сліпа пляма, і мозок її домальовує 👁️",
+    "description": "Там, де зоровий нерв виходить з ока, немає світлочутливих клітин. Ця діра приблизно за 15 градусів від точки погляду, і мозок її заповнює."
    },
    "vi": {
-    "title": "Sứa không có não nhưng còn cổ xưa hơn khủng long 🌊",
-    "description": "Cơ thể sứa có khoảng 95% là nước, không có não, không có tim, thậm chí không có máu; chúng cảm nhận ánh sáng và mùi bằng một mạng lưới thần kinh đơn giản. Hóa thạch sứa bơi lâu đời nhất từng được biết có tuổi 505 triệu năm, gấp khoảng đôi tuổi của những con khủng long đầu tiên."
+    "title": "Mỗi mắt có một điểm mù và não bạn tự lấp đầy 👁️",
+    "description": "Nơi dây thần kinh thị giác rời mắt không có tế bào cảm nhận ánh sáng. Lỗ hổng này cách điểm nhìn khoảng 15 độ và não lấp đầy nó."
    },
    "az": {
-    "title": "Meduzanın beyni yoxdur, amma dinozavrlardan qədimdir 🌊",
-    "description": "Meduzanın bədəninin təxminən 95 faizi sudur, onun nə beyni, nə ürəyi, nə də qanı var; işığı və qoxunu sadə sinir şəbəkəsi ilə hiss edir. Üzən meduzanın məlum ən qədim fosili 505 milyon yaşındadır, yəni ilk dinozavrlardan təxminən iki dəfə qədimdir."
+    "title": "Hər gözdə kor nöqtə var, beyin orasını doldurur 👁️",
+    "description": "Görmə sinirinin gözdən çıxdığı yerdə işığı hiss edən hüceyrə yoxdur. Bu boşluq baxdığın yerdən təxminən 15 dərəcə kənardadır və beyin onu doldurur."
    },
    "ro": {
-    "title": "Meduza nu are creier, dar e mai veche decât dinozaurii 🌊",
-    "description": "O meduză este alcătuită în proporție de aproximativ 95% din apă și nu are creier, inimă și nici măcar sânge; simte lumina și mirosurile printr-o rețea nervoasă simplă. Cea mai veche fosilă cunoscută de meduză înotătoare are 505 milioane de ani, cam de două ori vârsta primilor dinozauri."
+    "title": "Fiecare ochi are un punct orb pe care creierul îl umple 👁️",
+    "description": "Acolo unde nervul optic iese din ochi nu există celule care simt lumina. Gaura se află la circa 15 grade de punctul în care privești, iar creierul o umple."
    }
   }
  }

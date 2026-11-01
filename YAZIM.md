@@ -59,7 +59,10 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 - Toplam 40-55 kelime, 4-6 sahne, her sahne 1-2 kısa cümle, sahne en fazla 230 karakter. 15-20 saniyelik Short.
 - İlk cümle soru değil, en fazla 8 kelimelik bir iddia: ekrandakini göstersin ("Bu zürafa...") ve bir sayı ya da
   şaşırtıcı bir çelişki içersin. "Biliyor muydun", "Merhaba", "Bugün" ile başlama. İlk sahnede mutlaka `callout`.
-- Akış: ekrandaki iddia, sorunun açılması, şaşırtıcı cevap, cevabı somutlaştıran örnek ya da sayı, son cümle.
+- Akış: ekrandaki iddia, sorunun açılması, ortada küçük bir ikinci şaşırtıcı detay, asıl cevap ("neden" ya da
+  "nasıl") son üçte birde, son cümle. İlk cümle iddiayı söyler ama nedenini söylemez; nedeni videonun ilk yarısında
+  verme. 1 Kasım izleyici eğrileri: en çok izlenen 4 Short'ta videonun yarısında izleyicinin %98'i hâlâ izliyordu,
+  1.000-1.400'de kalan 15 Short'ta %72'si. Kopuş baştan değil ortadan oluyor.
 - Son cümle şaşırtıcı sonucu ya da izleyicinin deneyebileceği somut bir şeyi versin; mümkünse ilk cümleye bağlansın
   (video başa sardığında tek cümle gibi okunsun). Son cümleye "Yani", "Böylece", "Kısacası", "Bu sayede", "Sonuç
   olarak", "Özetle" ile başlama; "doğa muhteşem" gibi genel bir lafla bitirme.
@@ -97,7 +100,16 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   az tanınan canlılar (deniz atı, kurbağa, kelebek) 1.100-1.400'de kalıyor.
 - İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
   1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
-- Konuların yaklaşık 6'da 5'i hayvan, 6'da 1'i insan vücudu ya da gündelik bilim olsun.
+- Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 1'i insan
+  vücudu, 5'i tanıdık hayvanlar. Kuyrukta bu sırayı koru: her 4 dosyadan biri psikoloji olsun.
+- Psikoloji konuları izleyicinin kendisi ya da tanıdığı biri hakkında olsun ("kendi sesini kayıtta neden sevmezsin",
+  "bir ricaya 'çünkü' eklemek"): beynin seni nasıl kandırdığı, insanların birbirini nasıl etkilediği, gündelik
+  davranışın arkasındaki deney. Kanalın adına ve güç psikolojisi animasyonlarına köprü bunlar.
+- Psikolojide sadece iyi tekrarlanmış bulgular. Tekrarlanamamış ya da tartışmalı deneyleri (güç pozu, ego tükenmesi,
+  Stanford hapishane deneyi, kapı eşiği unutkanlığı, Zeigarnik etkisi, "beynin %10'u") kesin bilgi gibi verme.
+  Tek bir deneye dayanıyorsa yılını ve "bir deneyde" diye söyle.
+- Psikoloji görüntüleri: yüz ifadesi, konuşan iki kişi, kalabalık, telefon, ayna, eller. Ünlü kişi, film sahnesi ya
+  da ten gösteren görüntü yok. `mood: "sakin"`.
 - Daha önce yüklenen başlıklara (`uploads.json`) ve kuyruktaki dosyalara bak, aynı konuyu tekrar yazma.
 - Kuyrukta her zaman en az 10 kullanılmamış metin olsun (günde 8 Short yükleniyor).
 

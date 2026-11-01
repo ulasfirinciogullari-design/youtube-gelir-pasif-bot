@@ -1,173 +1,185 @@
 {
  "id": "mk-c0041",
- "topic": "Kargalar sayı sayabilir mi?",
- "kategori": "hayvan",
+ "topic": "Bir ricaya 'çünkü' eklemek neden işe yarar?",
+ "kategori": "psikoloji",
  "subject": [
-  "crow"
+  "office",
+  "people"
  ],
- "stock_hint": "crow bird closeup",
+ "stock_hint": "office printer queue",
  "script": {
-  "title": "Kargalar dörde kadar sesli sayabiliyor 🐦",
-  "hook_text": "KARGALAR SAYI SAYABİLİR Mİ?",
+  "title": "Bir ricaya tek kelime eklemek evet diyenleri artırıyor 🤝",
+  "hook_text": "HANGİ KELİME EVET DEDİRTİR?",
   "scenes": [
    {
-    "text": "Bu kargalar dörde kadar sesli sayabiliyor.",
-    "visual": "close-up of a black crow calling with its beak open",
-    "stock_query": "crow calling",
+    "text": "Bir ricaya tek kelime eklemek, evet diyenleri artırıyor.",
+    "visual": "two coworkers talking in an office",
+    "stock_query": "office coworkers",
     "source": "stock",
-    "callout": "4'E KADAR SAYIYOR"
+    "callout": "TEK KELİME"
    },
    {
-    "text": "Almanya'da araştırmacılar kargalara ekranda bir ile dört arası rakamlar gösterdi.",
-    "visual": "black crow perched and looking intently ahead",
-    "stock_query": "crow closeup",
+    "text": "Fotokopi sırasında öne geçmek isteyen biri sebep söylemeyince yüzde altmış izin aldı.",
+    "visual": "office printer printing documents",
+    "stock_query": "office printer",
     "source": "stock",
-    "callout": ""
+    "callout": "%60",
+    "subject": [
+     "printer"
+    ]
    },
    {
-    "text": "Kargalar o sayı kadar gakladı, sonra bitirmek için bir tuşa gagaladı.",
-    "visual": "crow pecking with its beak",
-    "stock_query": "crow pecking",
+    "text": "'Çünkü fotokopi çekmem lazım' deyince yüzde doksan üç.",
+    "visual": "person waiting in a line at the office",
+    "stock_query": "people queue",
     "source": "stock",
-    "callout": "GAK GAK GAK"
+    "callout": "%93",
+    "subject": [
+     "people"
+    ]
    },
    {
-    "text": "Daha şaşırtıcısı, ilk gaklamanın sesi kaç kez gaklayacaklarını önceden ele veriyordu.",
-    "visual": "black crow cawing on a branch",
-    "stock_query": "crow branch",
+    "text": "Oysa sıradaki herkes zaten fotokopi çekiyordu; sebep hiçbir şey anlatmıyordu.",
+    "visual": "stack of papers coming out of a copier",
+    "stock_query": "printer paper",
     "source": "stock",
-    "callout": "ÖNCEDEN PLANLIYOR"
+    "callout": "BOŞ SEBEP",
+    "subject": [
+     "printer"
+    ]
    },
    {
-    "text": "Küçük çocuklar da saymayı ilk böyle öğrenir: her nesne için bir ses.",
-    "visual": "crow standing on a fence and looking around",
-    "stock_query": "crow bird",
+    "text": "Beyin 'çünkü' kelimesini duyunca sebebi tartmadan kabul ediyor.",
+    "visual": "woman nodding in agreement during a conversation",
+    "stock_query": "office conversation",
+    "source": "stock",
+    "callout": "ÇÜNKÜ"
+   },
+   {
+    "text": "Küçük bir rica edeceksen, tek kelime ekle.",
+    "visual": "smiling colleagues shaking hands in an office",
+    "stock_query": "office handshake",
     "source": "stock",
     "callout": ""
    }
   ],
-  "description": "Almanya'da yapılan bir deneyde leş kargaları ekranda gördükleri rakam kadar, bir ile dört arasında gakladı. İlk gaklamanın sesi kaç kez gaklayacaklarını önceden ele veriyordu; kargalar sayıyı baştan planlıyordu.",
+  "description": "Bir ricaya 'çünkü' eklemek evet diyenleri artırıyor. 1978'deki fotokopi deneyinde sebepsiz rica yüzde altmış, hiçbir şey açıklamayan 'çünkü fotokopi çekmem lazım' yüzde doksan üç evet aldı.",
   "tags": [
-   "karga",
-   "kargalar",
-   "leş kargası",
-   "kargalar sayabilir mi",
-   "hayvan zekası",
-   "kuşlar",
-   "hayvanlar",
+   "ikna",
+   "psikoloji",
+   "çünkü",
+   "rica",
    "ilginç bilgiler",
    "bilim"
   ],
-  "pinned_comment": "Sence hangisi daha akıllıca: dörde kadar sayan kargalar mı, yüzleri unutmayan kargalar mı?",
-  "en_title": "Crows can count out loud up to four 🐦",
-  "en_description": "Scientists in Germany showed carrion crows a number from one to four, and the birds cawed exactly that many times, then pecked a key to finish. The sound of the very first caw already gave away how many would follow, so the crows planned their count in advance, much like toddlers who count with one sound per object.",
-  "mood": "belgesel"
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: boş bir sebebin işe yaraması mı, beynin onu hiç tartmaması mı?",
+  "en_title": "One word makes people say yes more often 🤝",
+  "en_description": "In a 1978 Harvard study, a person asking to cut in line at a copy machine got a yes 60% of the time with no reason, but 93% of the time with an empty reason: because I have to make copies. Hearing 'because' makes us accept the request without weighing the reason, at least for small favors.",
+  "mood": "sakin"
  },
  "seo": {
-  "description": "Kargalar sayı sayabilir mi, kaça kadar sayabilir?\n\nAlmanya'daki Tübingen Üniversitesi'nde yapılan bir deneyde leş kargalarına ekranda bir ile dört arası rakamlar gösterildi. Kargalar o sayı kadar gakladı, sonra bitirmek için bir tuşa gagaladı. İlk gaklamanın sesi kaç kez gaklayacaklarını önceden ele veriyordu; küçük çocuklar da saymayı ilk böyle, her nesne için bir sesle öğrenir.\n\nSence hangisi daha akıllıca: dörde kadar sayan kargalar mı, yüzleri unutmayan kargalar mı?",
+  "description": "Bir ricaya 'çünkü' eklemek neden işe yarar, insanları evet demeye ne ikna eder?\n\n1978'de Harvard'dan psikolog Ellen Langer'ın ekibi fotokopi sırasındaki insanlardan öne geçmek için izin istedi. Sebep söylenmeyince yüzde altmışı izin verdi; hiçbir şey açıklamayan 'çünkü fotokopi çekmem lazım' denince oran yüzde doksan üçe çıktı. Beyin 'çünkü' kelimesini duyunca sebebi tartmadan kabul ediyor. Ama bu sadece küçük ricalarda işe yaradı: yirmi sayfalık büyük ricada boş sebep hiç fark yaratmadı.\n\nSence hangisi daha şaşırtıcı: boş bir sebebin işe yaraması mı, beynin onu hiç tartmaması mı?",
   "hashtags": [
-   "#karga",
-   "#kuşlar",
-   "#hayvanzekası",
+   "#psikoloji",
+   "#ikna",
+   "#iknapsikolojisi",
    "#ilginçbilgiler"
   ],
   "tags": [
-   "karga",
-   "kargalar",
-   "leş kargası",
-   "kargalar sayabilir mi",
-   "karga sayı sayıyor",
-   "karga zekası",
-   "akıllı kuşlar",
-   "en zeki kuş",
-   "hayvan zekası",
-   "hayvanlar sayabilir mi",
-   "sayı sayan hayvanlar",
-   "karga sesi",
-   "kuşlar",
-   "kuş zekası",
-   "hayvan davranışları",
-   "vahşi doğa",
-   "hayvanlar",
-   "ilginç bilgiler",
+   "çünkü kelimesi",
+   "ikna psikolojisi",
+   "ikna teknikleri",
+   "insanları ikna etmek",
+   "evet dedirtmek",
+   "rica etmek",
+   "fotokopi deneyi",
+   "ellen langer",
+   "langer deneyi",
+   "boş sebep",
+   "güç psikolojisi",
+   "sosyal psikoloji",
+   "insan psikolojisi",
+   "psikoloji",
+   "davranış",
+   "beyin",
    "bilim",
-   "biyoloji",
-   "merak",
-   "crow",
-   "crows counting"
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "persuasion",
+   "because study"
   ],
   "localizations": {
    "en": {
-    "title": "Crows can count out loud up to four 🐦",
-    "description": "Scientists in Germany showed carrion crows a number from one to four, and the birds cawed exactly that many times, then pecked a key to finish. The sound of the very first caw already gave away how many would follow, so the crows planned their count in advance, much like toddlers who count with one sound per object."
+    "title": "One word makes people say yes more often 🤝",
+    "description": "In a 1978 study, asking to cut in line at a copier worked 60% of the time with no reason and 93% with an empty one: because I have to make copies."
    },
    "es": {
-    "title": "Los cuervos saben contar en voz alta hasta cuatro 🐦",
-    "description": "Investigadores en Alemania mostraron a unas cornejas números del uno al cuatro, y las aves graznaron exactamente esas veces antes de picotear una tecla para terminar. El sonido del primer graznido ya delataba cuántos vendrían después: planeaban la cuenta de antemano."
+    "title": "Una sola palabra hace que más gente diga que sí 🤝",
+    "description": "En un estudio de 1978, pedir colarse en la fotocopiadora funcionó el 60 % de las veces sin motivo y el 93 % con uno vacío: porque tengo que hacer copias."
    },
    "pt": {
-    "title": "Corvos conseguem contar em voz alta até quatro 🐦",
-    "description": "Pesquisadores na Alemanha mostraram números de um a quatro a corvos, e as aves grasnaram exatamente essa quantidade de vezes antes de bicar uma tecla para encerrar. O som do primeiro grasnado já revelava quantos viriam depois, ou seja, eles planejavam a contagem com antecedência."
+    "title": "Uma palavra faz mais pessoas dizerem sim 🤝",
+    "description": "Num estudo de 1978, pedir para furar a fila da copiadora funcionou 60% das vezes sem motivo e 93% com um motivo vazio: porque preciso tirar cópias."
    },
    "de": {
-    "title": "Krähen können laut bis vier zählen 🐦",
-    "description": "Forschende in Tübingen zeigten Rabenkrähen Zahlen von eins bis vier – die Vögel krächzten genau so oft und pickten dann auf eine Taste, um fertig zu melden. Schon am Klang des ersten Rufs ließ sich erkennen, wie viele noch folgen würden: Die Krähen planten ihre Antwort im Voraus."
+    "title": "Ein einziges Wort bringt mehr Menschen zum Ja 🤝",
+    "description": "In einer Studie von 1978 klappte das Vordrängeln am Kopierer ohne Grund in 60 % der Fälle, mit einem leeren Grund in 93 %: weil ich Kopien machen muss."
    },
    "fr": {
-    "title": "Les corneilles savent compter à voix haute jusqu'à quatre 🐦",
-    "description": "Des chercheurs allemands ont montré à des corneilles noires des chiffres de un à quatre : les oiseaux ont croassé exactement autant de fois, puis ont donné un coup de bec sur une touche pour terminer. Le son du premier cri trahissait déjà le nombre de cris à venir, preuve qu'elles planifiaient leur réponse."
+    "title": "Un seul mot fait dire oui à plus de gens 🤝",
+    "description": "Dans une étude de 1978, demander à passer devant à la photocopieuse marchait 60 % du temps sans raison et 93 % avec une raison vide : parce que je dois faire des copies."
    },
    "it": {
-    "title": "Le cornacchie sanno contare ad alta voce fino a quattro 🐦",
-    "description": "In Germania alcuni ricercatori hanno mostrato a delle cornacchie nere numeri da uno a quattro, e gli uccelli hanno gracchiato esattamente quel numero di volte prima di beccare un tasto per finire. Già il suono del primo verso rivelava quanti ne sarebbero seguiti: le cornacchie pianificavano il conto."
+    "title": "Una sola parola fa dire di sì a più persone 🤝",
+    "description": "In uno studio del 1978, chiedere di passare avanti alla fotocopiatrice funzionava il 60% delle volte senza motivo e il 93% con un motivo vuoto: perché devo fare delle copie."
    },
    "ru": {
-    "title": "Вороны умеют считать вслух до четырёх 🐦",
-    "description": "Учёные в Германии показывали чёрным воронам цифры от одного до четырёх, и птицы каркали ровно столько раз, а потом клевали кнопку, чтобы закончить. Уже по звучанию первого «кар» можно было понять, сколько их будет дальше: вороны заранее планировали счёт."
+    "title": "Одно слово заставляет людей чаще говорить «да» 🤝",
+    "description": "В исследовании 1978 года просьба пропустить к ксероксу без причины срабатывала в 60% случаев, а с пустой причиной «потому что мне нужно сделать копии» — в 93%."
    },
    "ar": {
-    "title": "الغربان تستطيع العدّ بصوت عالٍ حتى أربعة 🐦",
-    "description": "عرض باحثون في ألمانيا على غربان أرقامًا من واحد إلى أربعة، فنعقت الطيور بعدد المرات نفسه ثم نقرت زرًا لتعلن انتهاءها. وكان صوت النعقة الأولى يكشف مسبقًا كم نعقة ستليها، أي أن الغربان كانت تخطط للعدّ قبل أن تبدأ."
+    "title": "كلمة واحدة تجعل الناس يقولون نعم أكثر 🤝",
+    "description": "في دراسة عام 1978 نجح طلب تجاوز الطابور عند آلة النسخ بنسبة 60٪ دون سبب و93٪ مع سبب فارغ: لأنني يجب أن أنسخ بعض الأوراق."
    },
    "hi": {
-    "title": "कौए ज़ोर से चार तक गिन सकते हैं 🐦",
-    "description": "जर्मनी में वैज्ञानिकों ने कौओं को स्क्रीन पर एक से चार तक के अंक दिखाए, और कौओं ने ठीक उतनी बार काँव-काँव की, फिर ख़त्म करने के लिए चोंच से एक बटन दबाया। पहली काँव की आवाज़ से ही पता चल जाता था कि आगे कितनी बार बोलेंगे, यानी कौए पहले से गिनती तय कर लेते थे।"
+    "title": "एक शब्द से ज़्यादा लोग हाँ कहते हैं 🤝",
+    "description": "1978 के एक अध्ययन में फोटोकॉपी की लाइन तोड़ने का अनुरोध बिना कारण 60% और खोखले कारण के साथ 93% बार माना गया: क्योंकि मुझे कॉपी करनी है।"
    },
    "id": {
-    "title": "Gagak bisa berhitung keras sampai empat 🐦",
-    "description": "Peneliti di Jerman menunjukkan angka satu sampai empat kepada burung gagak, lalu gagak itu berkoak tepat sebanyak angka tersebut sebelum mematuk tombol tanda selesai. Bunyi koakan pertama saja sudah menunjukkan berapa kali ia akan berkoak, artinya gagak merencanakan hitungannya sejak awal."
+    "title": "Satu kata membuat lebih banyak orang berkata ya 🤝",
+    "description": "Dalam studi tahun 1978, minta menyela antrean fotokopi berhasil 60% tanpa alasan dan 93% dengan alasan kosong: karena saya harus memfotokopi."
    },
    "ja": {
-    "title": "カラスは声に出して4まで数えられる 🐦",
-    "description": "ドイツの研究チームがハシボソガラスに1から4までの数字を見せると、カラスはその数だけ鳴き、最後にくちばしでキーをつついて終わりを伝えました。最初の一声の響きで何回鳴くつもりかが分かったことから、カラスは鳴く前に回数を決めていたと考えられています。"
+    "title": "たった一言で「いいよ」が増える 🤝",
+    "description": "1978年の研究では、コピー機の順番を譲ってもらう頼みは理由なしで60%、中身のない理由「コピーをとらなきゃいけないので」を付けると93%が応じました。"
    },
    "ko": {
-    "title": "까마귀는 소리 내어 넷까지 셀 수 있다 🐦",
-    "description": "독일 연구진이 까마귀에게 1부터 4까지의 숫자를 보여 주자, 까마귀는 정확히 그 횟수만큼 울고 부리로 버튼을 쪼아 끝을 알렸습니다. 첫 울음소리만 들어도 몇 번 울지 미리 알 수 있었는데, 까마귀가 울기 전에 횟수를 계획했다는 뜻입니다."
+    "title": "한 단어만 붙여도 승낙이 늘어난다 🤝",
+    "description": "1978년 연구에서 복사기 줄에 끼어들게 해 달라는 부탁은 이유 없이 60%, '복사를 해야 해서'라는 빈 이유를 붙이자 93%가 들어주었습니다."
    },
    "pl": {
-    "title": "Wrony potrafią liczyć na głos do czterech 🐦",
-    "description": "Naukowcy z Niemiec pokazywali czarnym wronom cyfry od jednego do czterech, a ptaki krakały dokładnie tyle razy, po czym dziobały przycisk na znak końca. Już po brzmieniu pierwszego krakania dało się poznać, ile ich będzie, czyli wrony planowały liczenie z góry."
+    "title": "Jedno słowo sprawia, że więcej osób mówi tak 🤝",
+    "description": "W badaniu z 1978 roku prośba o przepuszczenie do kserokopiarki bez powodu działała w 60%, a z pustym powodem „bo muszę zrobić kopie” w 93%."
    },
    "nl": {
-    "title": "Kraaien kunnen hardop tot vier tellen 🐦",
-    "description": "Onderzoekers in Duitsland lieten zwarte kraaien een cijfer van één tot vier zien, waarna de vogels precies zo vaak krasten en daarna op een knop pikten om af te ronden. Aan de klank van de eerste kras kon je al horen hoeveel er zouden volgen: de kraaien planden hun telling vooraf."
+    "title": "Eén woord laat meer mensen ja zeggen 🤝",
+    "description": "In een studie uit 1978 werkte voordringen bij het kopieerapparaat zonder reden in 60% van de gevallen en met een lege reden in 93%: omdat ik kopieën moet maken."
    },
    "uk": {
-    "title": "Ворони вміють рахувати вголос до чотирьох 🐦",
-    "description": "Науковці в Німеччині показували чорним воронам цифри від одного до чотирьох, і птахи каркали рівно стільки разів, а потім дзьобали кнопку, щоб завершити. Уже за звучанням першого «кар» можна було передбачити, скільки буде далі: ворони планували рахунок заздалегідь."
+    "title": "Одне слово змушує людей частіше казати «так» 🤝",
+    "description": "У дослідженні 1978 року прохання пропустити до ксерокса без причини спрацьовувало в 60% випадків, а з порожньою причиною «бо мені треба зробити копії» — у 93%."
    },
    "vi": {
-    "title": "Quạ có thể đếm thành tiếng đến bốn 🐦",
-    "description": "Các nhà khoa học ở Đức cho những con quạ xem các con số từ một đến bốn, và chúng kêu đúng bấy nhiêu tiếng rồi mổ vào một nút để báo xong. Chỉ cần nghe tiếng kêu đầu tiên là đoán được chúng sẽ kêu mấy lần, nghĩa là quạ đã tính trước con số."
+    "title": "Một từ khiến nhiều người đồng ý hơn 🤝",
+    "description": "Trong một nghiên cứu năm 1978, xin chen hàng máy photocopy thành công 60% khi không có lý do và 93% với một lý do rỗng: vì tôi cần photo tài liệu."
    },
    "az": {
-    "title": "Qarğalar səsli şəkildə dördə qədər saya bilir 🐦",
-    "description": "Almaniyada alimlər qarğalara ekranda birdən dördə qədər rəqəmlər göstərdi, quşlar da düz o qədər qarıldayıb sonra bitirmək üçün dimdikləri ilə düyməyə vurdu. İlk qarıltının səsi neçə dəfə qarıldayacaqlarını əvvəlcədən göstərirdi, yəni qarğalar saymağı qabaqcadan planlaşdırırdı."
+    "title": "Bir xahişə bir söz əlavə etmək razılığı artırır 🤝",
+    "description": "1978-ci il araşdırmasında surətçıxarma növbəsində qabağa keçmək xahişi səbəbsiz 60%, boş səbəblə isə 93% hallarda qəbul edildi: çünki surət çıxarmalıyam."
    },
    "ro": {
-    "title": "Ciorile pot număra cu voce tare până la patru 🐦",
-    "description": "Cercetători din Germania le-au arătat unor ciori numere de la unu la patru, iar păsările au croncănit exact de atâtea ori, apoi au ciocănit o tastă ca să încheie. Sunetul primului croncănit dezvăluia deja câte vor urma, deci ciorile își plănuiau numărătoarea dinainte."
+    "title": "Un singur cuvânt îi face pe oameni să spună da 🤝",
+    "description": "Într-un studiu din 1978, rugămintea de a trece primul la copiator a mers în 60% din cazuri fără motiv și în 93% cu un motiv gol: pentru că trebuie să fac copii."
    }
   }
  }

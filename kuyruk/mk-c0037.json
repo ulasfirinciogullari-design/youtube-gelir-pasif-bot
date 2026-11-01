@@ -1,180 +1,179 @@
 {
  "id": "mk-c0037",
- "topic": "Çitalar neden kükreyemez, nasıl ses çıkarır?",
- "kategori": "hayvan",
+ "topic": "Fotoğrafta kendini neden beğenmezsin?",
+ "kategori": "psikoloji",
  "subject": [
-  "cheetah"
+  "woman",
+  "man"
  ],
- "stock_hint": "cheetah savanna",
+ "stock_hint": "woman looking in mirror",
  "script": {
-  "title": "Çita kükreyemez ama kuş gibi cıvıldar 🐆",
-  "hook_text": "ÇİTA NASIL BİR SES ÇIKARIR?",
+  "title": "Aynadaki yüzünü fotoğraftakinden daha çok seversin 🪞",
+  "hook_text": "FOTOĞRAFTA NEDEN KÖTÜ ÇIKIYORSUN?",
   "scenes": [
    {
-    "text": "Bu çita kükreyemez ama kuş gibi cıvıldar.",
-    "visual": "cheetah sitting in tall savanna grass",
-    "stock_query": "cheetah",
+    "text": "Fotoğrafta kendini beğenmiyorsan sebebi yüzün değil.",
+    "visual": "woman frowning at a photo of herself on her phone",
+    "stock_query": "woman phone",
     "source": "stock",
-    "callout": "KÜKREYEMEZ"
+    "callout": "SEBEP YÜZÜN DEĞİL"
    },
    {
-    "text": "Dünyanın en hızlı kara memelisi bunun yerine mırlar, tıslar ve hırlar.",
-    "visual": "cheetah sprinting across the savanna",
-    "stock_query": "cheetah running",
+    "text": "Hayatın boyunca yüzünü aynada, yani ters haliyle gördün.",
+    "visual": "woman looking at herself in a bathroom mirror",
+    "stock_query": "woman mirror",
     "source": "stock",
-    "callout": ""
+    "callout": "TERS YÜZ",
+    "subject": [
+     "mirror"
+    ]
    },
    {
-    "text": "En şaşırtıcı sesi ise tiz bir cıvıltı.",
-    "visual": "close-up of a cheetah's face as it calls",
-    "stock_query": "cheetah face",
+    "text": "Arkadaşların ise hep gerçek halini gördü.",
+    "visual": "group of friends laughing together outdoors",
+    "stock_query": "friends laughing",
     "source": "stock",
-    "callout": "CIVILTI"
+    "callout": "",
+    "subject": [
+     "friends"
+    ]
    },
    {
-    "text": "Bu ses iri bir kedi için alışılmadık derecede incedir, kuş ötüşüne benzer.",
-    "visual": "cheetah looking around from a termite mound",
-    "stock_query": "cheetah closeup",
+    "text": "Bir deneyde insanlar kendi yüzlerinin ayna halini daha çok beğendi; arkadaşları ise gerçek halini seçti.",
+    "visual": "man taking a selfie with a smartphone",
+    "stock_query": "man selfie",
     "source": "stock",
-    "callout": "KUŞ SESİ GİBİ"
+    "callout": "AYNA HALİ"
    },
    {
-    "text": "Anne çita yavrularını çağırırken bu sesi kullanır.",
-    "visual": "cheetah mother with her cubs in the grass",
-    "stock_query": "cheetah cubs",
+    "text": "Beyin en sık gördüğünü sever; fotoğraftaki yüzün sana sadece alışmadığın için yabancı geliyor.",
+    "visual": "close-up of a man looking at his reflection",
+    "stock_query": "man mirror",
     "source": "stock",
-    "callout": "YAVRU ÇAĞRISI"
-   },
-   {
-    "text": "Savanada duyduğun o kuş sesi, bir çitaya ait olabilir.",
-    "visual": "cheetah walking through the savanna at sunset",
-    "stock_query": "cheetah savanna",
-    "source": "stock",
-    "callout": ""
+    "callout": "ALIŞKANLIK",
+    "subject": [
+     "mirror"
+    ]
    }
   ],
-  "description": "Dünyanın en hızlı kara memelisi çita, aslan ve kaplan gibi kükreyemez; mırlar, tıslar, hırlar ve kuş ötüşüne benzeyen tiz bir sesle cıvıldar. Anne çita yavrularını bu sesle çağırır.",
+  "description": "Fotoğrafta kendini beğenmemenin sebebi yüzün değil, alışkanlık. Yüzünü hep aynada ters haliyle gördüğün için beyin o hali sever; 1977'deki bir deneyde insanlar kendi ayna görüntülerini, arkadaşları ise gerçek hallerini daha çok beğendi.",
   "tags": [
-   "çita",
-   "çitalar",
-   "çita sesi",
-   "çita kükrer mi",
-   "en hızlı hayvan",
-   "büyük kediler",
-   "vahşi doğa",
-   "hayvanlar",
+   "fotoğraf",
+   "ayna",
+   "psikoloji",
+   "beyin",
+   "yüz",
    "ilginç bilgiler",
    "bilim"
   ],
-  "pinned_comment": "Sence hangisi daha tuhaf: çitanın kükreyememesi mi, kuş gibi cıvıldaması mı?",
-  "en_title": "Cheetahs can't roar, they chirp like birds 🐆",
-  "en_description": "The world's fastest land mammal can't roar like a lion or tiger. Instead, cheetahs purr, hiss, growl and chirp, and the chirp is so high-pitched that it sounds remarkably like a bird. Mothers use it to call their cubs.",
-  "mood": "belgesel"
+  "pinned_comment": "Sence hangisi daha tuhaf: kendi yüzünü hiç gerçek haliyle görmemek mi, beynin buna alışması mı?",
+  "en_title": "You like your mirror face more than your photo face 🪞",
+  "en_description": "If you dislike photos of yourself, blame habit, not your face. You have mostly seen your face flipped in the mirror, so your brain prefers that version. In a 1977 experiment people preferred their mirror image while their friends preferred their true image.",
+  "mood": "sakin"
  },
  "seo": {
-  "description": "Çitalar neden kükreyemez, çita nasıl bir ses çıkarır?\n\nDünyanın en hızlı kara memelisi olan çita, aslan ve kaplan gibi kükreyemez; bunun yerine mırlar, tıslar, hırlar ve cıvıldar. Cıvıltısı iri bir kedi için alışılmadık derecede incedir ve kuş ötüşüne benzer. Anne çita yavrularını çağırırken bu sesi kullanır.\n\nSence hangisi daha tuhaf: çitanın kükreyememesi mi, kuş gibi cıvıldaması mı?",
+  "description": "Fotoğrafta neden kötü çıkıyorum, aynadaki yüzüm neden daha güzel görünüyor?\n\nFotoğrafta kendini beğenmemenin sebebi yüzün değil, alışkanlık. Hayatın boyunca yüzünü aynada, yani ters haliyle gördün; arkadaşların ise hep gerçek halini gördü. 1977'de Wisconsin Üniversitesi'nde yapılan bir deneyde insanlar kendi yüzlerinin ayna halini, arkadaşları ise gerçek halini daha çok beğendi. Beyin en sık gördüğünü sever; psikolojide buna sadece maruz kalma etkisi denir.\n\nSence hangisi daha tuhaf: kendi yüzünü hiç gerçek haliyle görmemek mi, beynin buna alışması mı?",
   "hashtags": [
-   "#çita",
-   "#vahşidoğa",
-   "#hayvanlar",
+   "#psikoloji",
+   "#ayna",
+   "#fotoğraf",
    "#ilginçbilgiler"
   ],
   "tags": [
-   "çita",
-   "çitalar",
-   "çita sesi",
-   "çita kükrer mi",
-   "çita neden kükreyemez",
-   "çita cıvıltısı",
-   "çita yavrusu",
-   "en hızlı hayvan",
-   "en hızlı kara hayvanı",
-   "büyük kediler",
-   "aslan kükremesi",
-   "hayvan sesleri",
-   "savana",
-   "afrika hayvanları",
-   "vahşi doğa",
-   "hayvanlar",
-   "ilginç bilgiler",
+   "fotoğrafta kötü çıkmak",
+   "ayna yüzü",
+   "ayna görüntüsü",
+   "fotoğrafta kendini beğenmemek",
+   "aynada daha güzel görünmek",
+   "ters yüz",
+   "sadece maruz kalma etkisi",
+   "maruz kalma etkisi",
+   "psikoloji",
+   "insan psikolojisi",
+   "beyin",
+   "yüz algısı",
+   "selfie",
+   "fotoğraf",
+   "ayna",
    "bilim",
-   "merak",
-   "belgesel",
-   "cheetah",
-   "cheetah chirp"
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "mere exposure effect",
+   "mirror image",
+   "psychology"
   ],
   "localizations": {
    "en": {
-    "title": "Cheetahs can't roar, they chirp like birds 🐆",
-    "description": "The world's fastest land mammal can't roar like a lion or tiger. Instead, cheetahs purr, hiss, growl and chirp, and the chirp is so high-pitched that it sounds remarkably like a bird. Mothers use it to call their cubs."
+    "title": "You like your mirror face more than your photo face 🪞",
+    "description": "You mostly see your face flipped in the mirror, so your brain prefers that version. In a 1977 experiment people preferred their mirror image, while their friends preferred their true image."
    },
    "es": {
-    "title": "El guepardo no ruge: pía como un pájaro 🐆",
-    "description": "El mamífero terrestre más rápido del mundo no puede rugir como un león o un tigre. En cambio ronronea, bufa, gruñe y lanza un chirrido tan agudo que se parece muchísimo al canto de un pájaro. Las madres lo usan para llamar a sus crías."
+    "title": "Prefieres tu cara del espejo a la de las fotos 🪞",
+    "description": "Casi siempre ves tu cara invertida en el espejo, así que tu cerebro prefiere esa versión. En un experimento de 1977, la gente prefirió su imagen de espejo y sus amigos, la imagen real."
    },
    "pt": {
-    "title": "O guepardo não ruge: ele pia como um passarinho 🐆",
-    "description": "O mamífero terrestre mais rápido do mundo não consegue rugir como o leão ou o tigre. Em vez disso, o guepardo ronrona, bufa, rosna e solta um chilreio tão agudo que lembra muito o canto de um pássaro. As mães usam esse som para chamar os filhotes."
+    "title": "Você gosta mais do seu rosto no espelho do que nas fotos 🪞",
+    "description": "Você quase sempre vê seu rosto invertido no espelho, e o cérebro prefere essa versão. Num experimento de 1977, as pessoas preferiram a imagem espelhada e os amigos, a imagem real."
    },
    "de": {
-    "title": "Geparden können nicht brüllen – sie zwitschern wie Vögel 🐆",
-    "description": "Das schnellste Landsäugetier der Welt kann nicht brüllen wie Löwe oder Tiger. Stattdessen schnurren, fauchen, knurren und zwitschern Geparden, und ihr Zwitschern ist so hoch, dass es erstaunlich nach Vogel klingt. Mütter rufen damit ihre Jungen."
+    "title": "Dein Spiegelgesicht gefällt dir besser als dein Foto 🪞",
+    "description": "Du siehst dein Gesicht fast immer gespiegelt, deshalb mag dein Gehirn diese Version lieber. In einem Experiment von 1977 bevorzugten Menschen ihr Spiegelbild, ihre Freunde dagegen das echte Bild."
    },
    "fr": {
-    "title": "Le guépard ne rugit pas, il pépie comme un oiseau 🐆",
-    "description": "Le mammifère terrestre le plus rapide du monde est incapable de rugir comme un lion ou un tigre. À la place, le guépard ronronne, crache, grogne et lance un pépiement si aigu qu'on dirait un oiseau. Les mères s'en servent pour appeler leurs petits."
+    "title": "Tu préfères ton visage dans le miroir à celui des photos 🪞",
+    "description": "Tu vois presque toujours ton visage inversé dans le miroir, alors ton cerveau préfère cette version. Dans une expérience de 1977, les gens préféraient leur reflet, leurs amis leur vraie image."
    },
    "it": {
-    "title": "Il ghepardo non ruggisce: cinguetta come un uccello 🐆",
-    "description": "Il mammifero terrestre più veloce del mondo non sa ruggire come il leone o la tigre. Al suo posto fa le fusa, soffia, ringhia e cinguetta, con un verso così acuto da sembrare proprio quello di un uccello. Le madri lo usano per richiamare i cuccioli."
+    "title": "Ti piace più il tuo volto allo specchio che in foto 🪞",
+    "description": "Vedi quasi sempre il tuo volto rovesciato allo specchio, quindi il cervello preferisce quella versione. In un esperimento del 1977 le persone preferivano il riflesso, gli amici l'immagine reale."
    },
    "ru": {
-    "title": "Гепард не умеет рычать, как лев, зато щебечет, как птица 🐆",
-    "description": "Самое быстрое наземное млекопитающее не может рычать, как лев или тигр. Вместо этого гепард мурлычет, шипит, ворчит и щебечет, причём его щебет такой высокий, что удивительно похож на птичий. Так самки подзывают детёнышей."
+    "title": "Своё лицо в зеркале ты любишь больше, чем на фото 🪞",
+    "description": "Ты почти всегда видишь своё лицо отражённым, поэтому мозг предпочитает эту версию. В эксперименте 1977 года люди выбирали своё зеркальное отражение, а их друзья — настоящее лицо."
    },
    "ar": {
-    "title": "الفهد الصياد لا يزأر… بل يزقزق كالطيور 🐆",
-    "description": "أسرع حيوان ثديي بري في العالم لا يستطيع الزئير مثل الأسد أو النمر. بدلًا من ذلك يخرخر الفهد الصياد ويفحّ ويزمجر ويُصدر زقزقة حادة تشبه صوت الطيور إلى حد مدهش. وتستخدمها الأم لتنادي صغارها."
+    "title": "تحب وجهك في المرآة أكثر من صورتك 🪞",
+    "description": "ترى وجهك غالبًا معكوسًا في المرآة، لذلك يفضّل دماغك تلك النسخة. في تجربة عام 1977 فضّل الناس صورتهم المعكوسة بينما فضّل أصدقاؤهم صورتهم الحقيقية."
    },
    "hi": {
-    "title": "चीता दहाड़ नहीं सकता, वह चिड़िया की तरह चहचहाता है 🐆",
-    "description": "दुनिया का सबसे तेज़ ज़मीनी स्तनधारी शेर या बाघ की तरह दहाड़ नहीं सकता। इसके बजाय चीता घुरघुराता, फुफकारता, गुर्राता और चहचहाता है, और उसकी चहचहाहट इतनी पतली होती है कि हैरानी की हद तक चिड़िया जैसी लगती है। माँ चीता इसी आवाज़ से अपने बच्चों को बुलाती है।"
+    "title": "आईने वाला चेहरा आपको फोटो से ज़्यादा पसंद आता है 🪞",
+    "description": "आप अपना चेहरा ज़्यादातर आईने में उल्टा देखते हैं, इसलिए दिमाग उसी को पसंद करता है। 1977 के एक प्रयोग में लोगों ने अपनी आईने वाली छवि और उनके दोस्तों ने असली छवि चुनी।"
    },
    "id": {
-    "title": "Cheetah tidak bisa mengaum, tapi bercicit seperti burung 🐆",
-    "description": "Mamalia darat tercepat di dunia ini tidak bisa mengaum seperti singa atau harimau. Sebagai gantinya, cheetah mendengkur, mendesis, menggeram, dan bercicit dengan suara yang begitu tinggi sehingga mirip sekali dengan suara burung. Induk cheetah memakai suara ini untuk memanggil anak-anaknya."
+    "title": "Kamu lebih suka wajahmu di cermin daripada di foto 🪞",
+    "description": "Kamu hampir selalu melihat wajahmu terbalik di cermin, jadi otakmu menyukai versi itu. Dalam percobaan tahun 1977, orang memilih bayangan cermin mereka, sedangkan teman mereka memilih wajah asli."
    },
    "ja": {
-    "title": "チーターはほえられない、鳥のように鳴く 🐆",
-    "description": "陸上最速の哺乳類チーターは、ライオンやトラのようにほえることができません。そのかわりゴロゴロとのどを鳴らし、シャーと威嚇し、うなり、鳥のさえずりにそっくりな高い声で鳴きます。母親はこの声で子どもを呼びます。"
+    "title": "写真より鏡の自分の顔が好きなのはなぜ 🪞",
+    "description": "私たちは鏡で左右反転した顔ばかり見ているので、脳はそちらを好みます。1977年の実験では、本人は鏡像を、友人は本当の顔を好みました。"
    },
    "ko": {
-    "title": "치타는 포효하지 못하고 새처럼 지저귄다 🐆",
-    "description": "세상에서 가장 빠른 육상 포유류인 치타는 사자나 호랑이처럼 포효하지 못합니다. 대신 가르랑거리고, 쉿 소리를 내고, 으르렁거리고, 새소리와 놀랄 만큼 닮은 높은 소리로 지저귑니다. 어미는 이 소리로 새끼를 부릅니다."
+    "title": "사진보다 거울 속 내 얼굴이 더 좋은 이유 🪞",
+    "description": "우리는 거울로 좌우가 뒤집힌 얼굴을 주로 보기 때문에 뇌가 그 모습을 더 좋아합니다. 1977년 실험에서 본인은 거울 속 모습을, 친구들은 실제 모습을 더 좋아했습니다."
    },
    "pl": {
-    "title": "Gepard nie umie ryczeć – ćwierka jak ptak 🐆",
-    "description": "Najszybszy lądowy ssak świata nie potrafi ryczeć jak lew czy tygrys. Zamiast tego gepard mruczy, syczy, warczy i ćwierka, a jego ćwierkanie jest tak wysokie, że zaskakująco przypomina ptaka. Matki przywołują nim młode."
+    "title": "Wolisz swoją twarz w lustrze niż na zdjęciu 🪞",
+    "description": "Prawie zawsze widzisz swoją twarz odwróconą w lustrze, więc mózg woli tę wersję. W eksperymencie z 1977 roku ludzie wybierali swoje odbicie, a ich przyjaciele prawdziwą twarz."
    },
    "nl": {
-    "title": "Jachtluipaarden kunnen niet brullen, ze tjilpen als een vogel 🐆",
-    "description": "Het snelste landzoogdier ter wereld kan niet brullen zoals een leeuw of tijger. In plaats daarvan spint, blaast, gromt en tjilpt het jachtluipaard, en dat tjilpen is zo hoog dat het verrassend veel op een vogel lijkt. Moeders roepen er hun jongen mee."
+    "title": "Je vindt je spiegelgezicht mooier dan je foto 🪞",
+    "description": "Je ziet je gezicht bijna altijd gespiegeld, dus je brein verkiest die versie. In een experiment uit 1977 kozen mensen hun spiegelbeeld, terwijl hun vrienden het echte beeld kozen."
    },
    "uk": {
-    "title": "Гепард не вміє рикати, як лев, зате щебече, як птах 🐆",
-    "description": "Найшвидший наземний ссавець світу не може рикати, як лев чи тигр. Натомість гепард муркоче, шипить, гарчить і щебече, а його щебет такий високий, що напрочуд схожий на пташиний. Так самиці кличуть малят."
+    "title": "Своє обличчя в дзеркалі ти любиш більше, ніж на фото 🪞",
+    "description": "Ти майже завжди бачиш своє обличчя віддзеркаленим, тому мозок віддає перевагу цій версії. В експерименті 1977 року люди обирали своє дзеркальне відображення, а їхні друзі — справжнє обличчя."
    },
    "vi": {
-    "title": "Báo săn không gầm được mà kêu ríu rít như chim 🐆",
-    "description": "Loài thú trên cạn nhanh nhất thế giới lại không thể gầm như sư tử hay hổ. Thay vào đó, báo săn kêu gừ gừ, rít, gầm gừ và phát ra tiếng ríu rít cao đến mức nghe giống tiếng chim đến bất ngờ. Báo mẹ dùng tiếng này để gọi con."
+    "title": "Bạn thích gương mặt trong gương hơn trong ảnh 🪞",
+    "description": "Bạn hầu như luôn nhìn thấy gương mặt bị lật ngược trong gương nên não thích phiên bản đó hơn. Trong một thí nghiệm năm 1977, người ta chọn ảnh phản chiếu còn bạn bè họ chọn ảnh thật."
    },
    "az": {
-    "title": "Gepard nərə çəkə bilmir, quş kimi civildəyir 🐆",
-    "description": "Dünyanın ən sürətli quru məməlisi aslan və ya pələng kimi nərə çəkə bilmir. Bunun əvəzinə gepard mırıldayır, fısıldayır, hırıldayır və elə incə səslə civildəyir ki, quş səsinə təəccüblü dərəcədə bənzəyir. Ana gepard balalarını bu səslə çağırır."
+    "title": "Güzgüdəki üzünü fotodakından çox sevirsən 🪞",
+    "description": "Üzünü demək olar ki, həmişə güzgüdə tərs görürsən, ona görə beyin həmin versiyanı sevir. 1977-ci ildə aparılan təcrübədə insanlar güzgü görüntülərini, dostları isə əsl görüntünü seçdi."
    },
    "ro": {
-    "title": "Ghepardul nu poate rage, ciripește ca o pasăre 🐆",
-    "description": "Cel mai rapid mamifer terestru din lume nu poate rage ca leul sau tigrul. În schimb, ghepardul toarce, șuieră, mârâie și ciripește, iar ciripitul lui e atât de ascuțit încât seamănă surprinzător de mult cu al unei păsări. Mamele îl folosesc ca să-și cheme puii."
+    "title": "Îți place mai mult fața din oglindă decât cea din poze 🪞",
+    "description": "Îți vezi fața aproape mereu inversată în oglindă, așa că creierul preferă acea versiune. Într-un experiment din 1977, oamenii și-au preferat imaginea din oglindă, iar prietenii lor imaginea reală."
    }
   }
  }
