@@ -1,0 +1,2 @@
+# Bölümler: test videosu (deneme) incelenip geçen, zamanlanmaya hazır. Bölüm görevi en küçük numarayı alır.
+k003
