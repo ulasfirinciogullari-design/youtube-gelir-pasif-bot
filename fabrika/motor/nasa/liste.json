@@ -38,5 +38,29 @@
   "title": "Neptune",
   "credit": "NASA/JPL",
   "disk": true
+ },
+ "bg_space": {
+  "file": "bg_space.jpg",
+  "id": "GSFC_20171208_Archive_e000394",
+  "center": "GSFC",
+  "title": "Hubble Sees a Legion of Galaxies",
+  "credit": "NASA",
+  "disk": false
+ },
+ "moon": {
+  "file": "moon.png",
+  "id": "GSFC_20171208_Archive_e001861",
+  "center": "GSFC",
+  "title": "Full Moon",
+  "credit": "NASA",
+  "disk": true
+ },
+ "mars": {
+  "file": "mars.png",
+  "id": "PIA01590",
+  "center": "JPL",
+  "title": "A Closer Hubble Encounter With Mars - Tharsis",
+  "credit": "Steve Lee University of Colorado, Jim Bell Cornell University, Mike Wolff Space Science Institute, and NASA",
+  "disk": true
  }
 }
