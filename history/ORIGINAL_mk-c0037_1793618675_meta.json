@@ -1,0 +1,181 @@
+{
+  "topic_id": "mk-c0037",
+  "topic": "Fotoğrafta kendini neden beğenmezsin?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Aynadaki yüzünü fotoğraftakinden daha çok seversin 🪞",
+  "hook_text": "FOTOĞRAFTA NEDEN KÖTÜ ÇIKIYORSUN?",
+  "description": "Fotoğrafta neden kötü çıkıyorum, aynadaki yüzüm neden daha güzel görünüyor?\n\nFotoğrafta kendini beğenmemenin sebebi yüzün değil, alışkanlık. Hayatın boyunca yüzünü aynada, yani ters haliyle gördün; arkadaşların ise hep gerçek halini gördü. 1977'de Wisconsin Üniversitesi'nde yapılan bir deneyde insanlar kendi yüzlerinin ayna halini, arkadaşları ise gerçek halini daha çok beğendi. Beyin en sık gördüğünü sever; psikolojide buna sadece maruz kalma etkisi denir.\n\nSence hangisi daha tuhaf: kendi yüzünü hiç gerçek haliyle görmemek mi, beynin buna alışması mı?\n\n#psikoloji #ayna #fotoğraf #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0037",
+  "tags": [
+    "fotoğrafta kötü çıkmak",
+    "ayna yüzü",
+    "ayna görüntüsü",
+    "fotoğrafta kendini beğenmemek",
+    "aynada daha güzel görünmek",
+    "ters yüz",
+    "sadece maruz kalma etkisi",
+    "maruz kalma etkisi",
+    "psikoloji",
+    "insan psikolojisi",
+    "beyin",
+    "yüz algısı",
+    "selfie",
+    "fotoğraf",
+    "ayna",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "mere exposure effect",
+    "mirror image",
+    "psychology",
+    "yüz",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "fotografta kotu cikmak",
+    "ayna yuzu",
+    "ayna goruntusu",
+    "fotografta kendini begenmemek"
+  ],
+  "localizations": {
+    "en": {
+      "title": "You like your mirror face more than your photo face 🪞",
+      "description": "You mostly see your face flipped in the mirror, so your brain prefers that version. In a 1977 experiment people preferred their mirror image, while their friends preferred their true image.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "es": {
+      "title": "Prefieres tu cara del espejo a la de las fotos 🪞",
+      "description": "Casi siempre ves tu cara invertida en el espejo, así que tu cerebro prefiere esa versión. En un experimento de 1977, la gente prefirió su imagen de espejo y sus amigos, la imagen real.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "pt": {
+      "title": "Você gosta mais do seu rosto no espelho do que nas fotos 🪞",
+      "description": "Você quase sempre vê seu rosto invertido no espelho, e o cérebro prefere essa versão. Num experimento de 1977, as pessoas preferiram a imagem espelhada e os amigos, a imagem real.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "de": {
+      "title": "Dein Spiegelgesicht gefällt dir besser als dein Foto 🪞",
+      "description": "Du siehst dein Gesicht fast immer gespiegelt, deshalb mag dein Gehirn diese Version lieber. In einem Experiment von 1977 bevorzugten Menschen ihr Spiegelbild, ihre Freunde dagegen das echte Bild.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "fr": {
+      "title": "Tu préfères ton visage dans le miroir à celui des photos 🪞",
+      "description": "Tu vois presque toujours ton visage inversé dans le miroir, alors ton cerveau préfère cette version. Dans une expérience de 1977, les gens préféraient leur reflet, leurs amis leur vraie image.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "it": {
+      "title": "Ti piace più il tuo volto allo specchio che in foto 🪞",
+      "description": "Vedi quasi sempre il tuo volto rovesciato allo specchio, quindi il cervello preferisce quella versione. In un esperimento del 1977 le persone preferivano il riflesso, gli amici l'immagine reale.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "ru": {
+      "title": "Своё лицо в зеркале ты любишь больше, чем на фото 🪞",
+      "description": "Ты почти всегда видишь своё лицо отражённым, поэтому мозг предпочитает эту версию. В эксперименте 1977 года люди выбирали своё зеркальное отражение, а их друзья — настоящее лицо.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "ar": {
+      "title": "تحب وجهك في المرآة أكثر من صورتك 🪞",
+      "description": "ترى وجهك غالبًا معكوسًا في المرآة، لذلك يفضّل دماغك تلك النسخة. في تجربة عام 1977 فضّل الناس صورتهم المعكوسة بينما فضّل أصدقاؤهم صورتهم الحقيقية.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "hi": {
+      "title": "आईने वाला चेहरा आपको फोटो से ज़्यादा पसंद आता है 🪞",
+      "description": "आप अपना चेहरा ज़्यादातर आईने में उल्टा देखते हैं, इसलिए दिमाग उसी को पसंद करता है। 1977 के एक प्रयोग में लोगों ने अपनी आईने वाली छवि और उनके दोस्तों ने असली छवि चुनी।\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "id": {
+      "title": "Kamu lebih suka wajahmu di cermin daripada di foto 🪞",
+      "description": "Kamu hampir selalu melihat wajahmu terbalik di cermin, jadi otakmu menyukai versi itu. Dalam percobaan tahun 1977, orang memilih bayangan cermin mereka, sedangkan teman mereka memilih wajah asli.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "ja": {
+      "title": "写真より鏡の自分の顔が好きなのはなぜ 🪞",
+      "description": "私たちは鏡で左右反転した顔ばかり見ているので、脳はそちらを好みます。1977年の実験では、本人は鏡像を、友人は本当の顔を好みました。\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "ko": {
+      "title": "사진보다 거울 속 내 얼굴이 더 좋은 이유 🪞",
+      "description": "우리는 거울로 좌우가 뒤집힌 얼굴을 주로 보기 때문에 뇌가 그 모습을 더 좋아합니다. 1977년 실험에서 본인은 거울 속 모습을, 친구들은 실제 모습을 더 좋아했습니다.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "pl": {
+      "title": "Wolisz swoją twarz w lustrze niż na zdjęciu 🪞",
+      "description": "Prawie zawsze widzisz swoją twarz odwróconą w lustrze, więc mózg woli tę wersję. W eksperymencie z 1977 roku ludzie wybierali swoje odbicie, a ich przyjaciele prawdziwą twarz.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "nl": {
+      "title": "Je vindt je spiegelgezicht mooier dan je foto 🪞",
+      "description": "Je ziet je gezicht bijna altijd gespiegeld, dus je brein verkiest die versie. In een experiment uit 1977 kozen mensen hun spiegelbeeld, terwijl hun vrienden het echte beeld kozen.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "uk": {
+      "title": "Своє обличчя в дзеркалі ти любиш більше, ніж на фото 🪞",
+      "description": "Ти майже завжди бачиш своє обличчя віддзеркаленим, тому мозок віддає перевагу цій версії. В експерименті 1977 року люди обирали своє дзеркальне відображення, а їхні друзі — справжнє обличчя.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "vi": {
+      "title": "Bạn thích gương mặt trong gương hơn trong ảnh 🪞",
+      "description": "Bạn hầu như luôn nhìn thấy gương mặt bị lật ngược trong gương nên não thích phiên bản đó hơn. Trong một thí nghiệm năm 1977, người ta chọn ảnh phản chiếu còn bạn bè họ chọn ảnh thật.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "az": {
+      "title": "Güzgüdəki üzünü fotodakından çox sevirsən 🪞",
+      "description": "Üzünü demək olar ki, həmişə güzgüdə tərs görürsən, ona görə beyin həmin versiyanı sevir. 1977-ci ildə aparılan təcrübədə insanlar güzgü görüntülərini, dostları isə əsl görüntünü seçdi.\n\n#shorts\n\nSeri: mk-c0037"
+    },
+    "ro": {
+      "title": "Îți place mai mult fața din oglindă decât cea din poze 🪞",
+      "description": "Îți vezi fața aproape mereu inversată în oglindă, așa că creierul preferă acea versiune. Într-un experiment din 1977, oamenii și-au preferat imaginea din oglindă, iar prietenii lor imaginea reală.\n\n#shorts\n\nSeri: mk-c0037"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: kendi yüzünü hiç gerçek haliyle görmemek mi, beynin buna alışması mı?",
+  "scenes": [
+    {
+      "text": "Fotoğrafta kendini beğenmiyorsan sebebi yüzün değil.",
+      "visual": "woman frowning at a photo of herself on her phone",
+      "stock_query": "woman phone",
+      "source": "stock",
+      "callout": "SEBEP YÜZÜN DEĞİL"
+    },
+    {
+      "text": "Hayatın boyunca yüzünü aynada, yani ters haliyle gördün.",
+      "visual": "woman looking at herself in a bathroom mirror",
+      "stock_query": "woman mirror",
+      "source": "stock",
+      "subject": [
+        "mirror"
+      ],
+      "callout": "TERS YÜZ"
+    },
+    {
+      "text": "Arkadaşların ise hep gerçek halini gördü.",
+      "visual": "group of friends laughing together outdoors",
+      "stock_query": "friends laughing",
+      "source": "stock",
+      "subject": [
+        "friends"
+      ]
+    },
+    {
+      "text": "Bir deneyde insanlar kendi yüzlerinin ayna halini daha çok beğendi; arkadaşları ise gerçek halini seçti.",
+      "visual": "man taking a selfie with a smartphone",
+      "stock_query": "man selfie",
+      "source": "stock",
+      "callout": "AYNA HALİ"
+    },
+    {
+      "text": "Beyin en sık gördüğünü sever; fotoğraftaki yüzün sana sadece alışmadığın için yabancı geliyor.",
+      "visual": "close-up of a man looking at his reflection",
+      "stock_query": "man mirror",
+      "source": "stock",
+      "subject": [
+        "mirror"
+      ],
+      "callout": "ALIŞKANLIK"
+    }
+  ],
+  "duration_seconds": 16.71,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #90",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0037_1793618675_ig.mp4"
+}
