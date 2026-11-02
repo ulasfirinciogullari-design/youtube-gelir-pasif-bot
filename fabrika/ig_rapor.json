@@ -1,5 +1,5 @@
 {
- "started": "2026-11-01T21:10:37+00:00",
+ "started": "2026-11-02T07:32:14+00:00",
  "mod": "kontrol",
  "anahtar_bitis": "2026-12-31T21:10+00:00",
  "hesap": {
@@ -83,7 +83,7 @@
     "saved": 0,
     "shares": 0,
     "likes": 5,
-    "ig_reels_avg_watch_time": 8397
+    "ig_reels_avg_watch_time": 8391
    }
   },
   {
@@ -288,12 +288,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 2063,
-    "reach": 1793,
+    "views": 2064,
+    "reach": 1794,
     "saved": 0,
     "shares": 1,
     "likes": 16,
-    "ig_reels_avg_watch_time": 14610
+    "ig_reels_avg_watch_time": 14603
    }
   },
   {
@@ -381,5 +381,5 @@
    }
   }
  ],
- "finished": "2026-11-01T21:11:05+00:00"
+ "finished": "2026-11-02T07:32:36+00:00"
 }
