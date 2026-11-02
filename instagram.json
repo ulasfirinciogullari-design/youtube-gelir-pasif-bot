@@ -25,16 +25,17 @@
   "2026-10-22T18": "CaqDaNCHfY0 https://www.instagram.com/reel/Dezk6OYCXqn/",
   "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/",
   "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/",
-  "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/"
+  "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
+  "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/"
  },
  "nobet": {
   "basladi": "2026-11-02T08:22:29+00:00",
   "run": "41411324365",
-  "tur": 92,
+  "tur": 99,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-02T09:53:30+00:00"
+  "son_tur": "2026-11-02T10:01:19+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -148,6 +149,13 @@
    "at": 1792778539,
    "title": "Pandanın altıncı parmağı aslında bilek kemiği 🐼",
    "topic_id": "mk-c0020"
+  },
+  "v9Ob1P9LBws": {
+   "media_id": "18109645196245269",
+   "url": "https://www.instagram.com/reel/DfPCxGuAFrt/",
+   "at": 1793613680,
+   "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌",
+   "topic_id": "mk-c0032"
   }
  }
 }
