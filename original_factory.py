@@ -120,6 +120,16 @@ CALLOUT_DELAY = 0.25  # a key fact appears just after its sentence starts (the f
 CALLOUT_SECONDS = 1.6
 CALLOUT_SIZE = 118
 CALLOUT_LINE_CHARS = 14  # characters that fit one line at CALLOUT_SIZE; longer key facts get a smaller font
+# Every merak Short carries its place in the channel's running list ("KANUN #88") in gold above the hook, so a viewer
+# sees a series to follow rather than a one-off fact (an experiment from 2026-11-02).
+SERIES_LABEL = "KANUN #{n}"
+SERIES_LABEL_SIZE = 46
+# Claude's first 34 Shorts got 9 shares in about 98,600 views (0.09 per 1,000). Half the merak Shorts ask for one in
+# their last moments; share_cta_arm picks them by a hash of the topic id, so the every-4th-file psychology topics do
+# not all land in one arm. Two short lines keep the box clear of Instagram's buttons on the right.
+SHARE_CTA_TEXT = r"BUNU BİLMEYEN\NBİRİNE {\c&H0000D7FF&}GÖNDER"
+SHARE_CTA_SECONDS = 1.8
+SHARE_CTA_POS = (540, 1040)  # between a key fact (centred at y 860) and the captions (bottom margin 620)
 SKIPPED_TOPICS_FILE = "skipped_topics.json"  # curiosity topics free footage could not show
 SUBTITLE_MARGIN_V = 620  # lower third, above the Shorts title/channel overlay
 # The Instagram copy of a Short (instagram_subtitles): Instagram shows a Reel cropped to 4:5 (y 285-1635) in the feed
@@ -743,13 +753,15 @@ def mix_soundtrack(voice: Path, out: Path, duration: float, scene_cuts: list[flo
     return out
 
 
-def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float) -> None:
+def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float, label: str = "") -> None:
     """The hook question stays at the top of the frame for the whole video, like a title banner:
-    every reference Short does this, so a viewer who joins mid-video still knows the question."""
+    every reference Short does this, so a viewer who joins mid-video still knows the question.
+    `label` (the series number, "KANUN #88") sits in small gold letters on its own line above it."""
     from app.services.subtitle_engine import _format_ass_time, _upper_tr
 
     text = re.sub(r"[{}\\]", "", hook_text or "").strip()
-    if not text:
+    label = re.sub(r"[{}\\]", "", label or "").strip()
+    if not text and not label:
         return
     content = ass_path.read_text(encoding="utf-8")
     style = (
@@ -758,8 +770,36 @@ def add_hook_overlay(ass_path: Path, hook_text: str, seconds: float) -> None:
     )
     content = content.replace("\n[Events]", f"{style}\n[Events]", 1)
     pop = r"{\fad(0,250)\fscx125\fscy125\t(0,180,\fscx100\fscy100)}"
-    content += f"Dialogue: 1,0:00:00.00,{_format_ass_time(seconds)},HookStyle,,0,0,0,,{pop}{_upper_tr(text)}\n"
+    if label:
+        label = rf"{{\fs{SERIES_LABEL_SIZE}\c&H0000D7FF&}}{label}" + (r"\N{\fs78\c&H00FFFFFF&}" if text else "")
+    content += f"Dialogue: 1,0:00:00.00,{_format_ass_time(seconds)},HookStyle,,0,0,0,,{pop}{label}{_upper_tr(text)}\n"
     ass_path.write_text(content, encoding="utf-8")
+
+
+def add_share_cta(ass_path: Path, seconds: float) -> None:
+    """Asks for a share ("BUNU BİLMEYEN BİRİNE GÖNDER") in a dark box over the Short's last SHARE_CTA_SECONDS."""
+    from app.services.subtitle_engine import _format_ass_time
+
+    begin = max(0.0, seconds - SHARE_CTA_SECONDS)
+    style = (f"Style: CtaStyle,{FONT},56,&H00FFFFFF,&H000000FF,&H40000000,&H40000000,"
+             "-1,0,0,0,100,100,1,0,3,18,0,5,60,60,0,1\n")
+    content = ass_path.read_text(encoding="utf-8").replace("\n[Events]", f"{style}\n[Events]", 1)
+    x, y = SHARE_CTA_POS
+    anim = rf"\pos({x},{y})\fad(150,0)\fscx80\fscy80\t(0,150,\fscx100\fscy100)"
+    content += (f"Dialogue: 3,{_format_ass_time(begin)},{_format_ass_time(seconds)},CtaStyle,,0,0,0,,"
+                f"{{{anim}}}{SHARE_CTA_TEXT}\n")
+    ass_path.write_text(content, encoding="utf-8")
+
+
+def share_cta_arm(topic_id: str) -> bool:
+    """True for the Shorts that ask to be shared: a stable half of the topic ids."""
+    return hashlib.sha1(str(topic_id).encode("utf-8")).digest()[0] % 2 == 0
+
+
+def merak_label_number(data_dir: Path = DATA_DIR) -> int:
+    """The next merak Short's number: the merak Shorts already published on the channel, plus one."""
+    return 1 + sum(1 for u in load_uploads(data_dir)
+                   if u.get("format") == "merak" and u.get("privacy", "public") != "private")
 
 
 def add_callouts(ass_path: Path, scenes: list[dict], durations: list[float]) -> list[float]:
@@ -868,7 +908,7 @@ def render_final(segments: list[Path], audio: Path, subtitles_file: Path, durati
 # ---------------------------------------------------------------------------
 
 def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line, series: str = "story",
-            clip_pool: list[dict] | None = None) -> dict:
+            clip_pool: list[dict] | None = None, label_no: int | None = None) -> dict:
     from app.services.subtitle_engine import generate_shorts_ass_subtitles
 
     stamp = int(time.time())
@@ -902,8 +942,12 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         sentences=subtitle_events, output_path=subs, font_name=FONT, font_size=74,
         highlight_color="&H0000D7FF", outline_width=8, margin_v=SUBTITLE_MARGIN_V,
     )
-    add_hook_overlay(subs, script.get("hook_text", ""), duration)
+    label = SERIES_LABEL.format(n=label_no) if label_no else ""
+    add_hook_overlay(subs, script.get("hook_text", ""), duration, label=label)
     accents = add_callouts(subs, scenes, durations)
+    share_cta = series == "merak" and share_cta_arm(topic["id"])
+    if share_cta:
+        add_share_cta(subs, duration)
     mood = script.get("mood", "")
     music = pick_music(topic["id"], series, mood=mood)
     print(f"       Müzik: {(music or Path('-')).name}{f' ({mood})' if mood else ''}")
@@ -975,6 +1019,8 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
         "stock_videos": visuals["stock_videos"],
         "clip_match": visuals.get("clip_match"),
         "contains_synthetic_media": visuals["ai_images"] > 0,
+        "series_label": label,
+        "share_cta": share_cta,
     }
     if ig_mp4.exists():
         meta["instagram_video"] = ig_mp4.name
@@ -1107,11 +1153,14 @@ def main(argv=None) -> int:
                                         character=character)
     print(f"🧠 Senaryo ({provider}): {script['title']}")
 
-    result = produce(topic, script, provider, series=series, clip_pool=clip_pool)
+    label_no = merak_label_number(DATA_DIR) if series == "merak" else None
+    result = produce(topic, script, provider, series=series, clip_pool=clip_pool, label_no=label_no)
     if youtube is not None:
         video_id = upload(youtube, result, args.privacy)
+        # The two experiment fields let the daily analysis compare the Shorts that asked for a share with the rest.
+        extra = {k: result["meta"][k] for k in ("series_label", "share_cta") if result["meta"].get(k) is not None}
         record_upload(DATA_DIR, video_id, topic["id"], result["meta"]["title"], SERIES[series]["format"],
-                      privacy=args.privacy)
+                      privacy=args.privacy, extra=extra)
         if args.privacy == "public":
             tiktok.share(result, video_id, DATA_DIR)
     return 0

@@ -115,7 +115,7 @@ def test_main_uses_a_queued_script_before_gemini(tmp_path, monkeypatch):
         raise AssertionError("Gemini akışı çalışmamalı")
 
     def produce(topic, script, provider, **kwargs):
-        produced.append((topic["id"], script["seo"], provider, kwargs.get("clip_pool")))
+        produced.append((topic["id"], script["seo"], provider, kwargs.get("clip_pool"), kwargs.get("label_no")))
         return {"meta": {"title": script["title"]}}
 
     monkeypatch.setenv(script_queue.QUEUE_ENV, str(qdir))
@@ -127,7 +127,7 @@ def test_main_uses_a_queued_script_before_gemini(tmp_path, monkeypatch):
     monkeypatch.setattr(original_factory, "merak_script", no_gemini)
     monkeypatch.setattr(original_factory, "produce", produce)
     assert original_factory.main(["--series", "merak", "--no-upload"]) == 0
-    assert produced == [("mk-c0001", SEO, script_queue.PROVIDER, None)]
+    assert produced == [("mk-c0001", SEO, script_queue.PROVIDER, None, 1)]  # the channel's first merak Short
 
 
 def test_main_keeps_the_gemini_flow_without_a_queue(tmp_path, monkeypatch):

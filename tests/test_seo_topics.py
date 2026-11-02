@@ -207,6 +207,9 @@ def test_produce_title_has_no_shorts_hashtag(tmp_path, monkeypatch):
     monkeypatch.setattr(subtitle_engine, "generate_shorts_ass_subtitles", lambda *a, **k: None)
     monkeypatch.setattr(original_factory, "add_hook_overlay", lambda *a, **k: None)
     monkeypatch.setattr(original_factory, "add_callouts", lambda *a, **k: [])
+    ctas = []
+    monkeypatch.setattr(original_factory, "add_share_cta", lambda *a, **k: ctas.append(a))
+    monkeypatch.setattr(original_factory, "share_cta_arm", lambda topic_id: True)
     monkeypatch.setattr(original_factory, "pick_music", lambda *a, **k: None)
     monkeypatch.setattr(original_factory, "mix_soundtrack", lambda *a, **k: voice)
     monkeypatch.setattr(original_factory, "render_final", lambda *a, **k: None)
@@ -216,7 +219,8 @@ def test_produce_title_has_no_shorts_hashtag(tmp_path, monkeypatch):
                         lambda *a, **k: seo_calls.append(k) or real_seo(*a, **k))
 
     result = original_factory.produce({"id": "mk-028", "topic": "Baykuşlar", "stock_hint": "owl", "subject": ["owl"]},
-                                      dict(OWL_SCRIPT), "test", series="merak")
+                                      dict(OWL_SCRIPT), "test", series="merak", label_no=88)
+    assert result["meta"]["series_label"] == "KANUN #88" and result["meta"]["share_cta"] is True and len(ctas) == 1
     assert result["meta"]["title"] == OWL_SCRIPT["title"] and "#shorts" not in result["meta"]["title"]
     assert seo_calls[0]["series"] == "merak"
     assert "#shorts" in result["meta"]["description"]

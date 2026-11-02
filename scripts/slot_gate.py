@@ -30,6 +30,11 @@ A scheduled tick goes ahead only when all of these hold:
 Private uploads (Ulaş's test runs) neither fill a slot nor delay the next one,
 but they do spend quota. Manual runs (workflow_dispatch) always go ahead.
 
+An animated episode is uploaded ahead of time and scheduled to go public at a
+slot start (animasyon/kayit.py on the zk-animasyon branch records it with that
+time). A record dated in the future is ignored until its time comes, so it
+fills only its own slot and the merak Short of that slot is skipped.
+
 The gate runs on the runner's system Python before setup-python and pip, so it
 uses the standard library only and a skipped tick costs seconds. It always
 exits 0 because a gate bug must never turn the job red; on an unexpected error
@@ -141,7 +146,10 @@ def decide(now: datetime, uploads: list[dict], runs: list[dict] | None, run_id=N
         return False, reasons
 
     go = True
-    stamped = [(t, u) for u in uploads if isinstance(u, dict) and (t := parse_time(u.get("uploaded_at"))) is not None]
+    every = [(t, u) for u in uploads if isinstance(u, dict) and (t := parse_time(u.get("uploaded_at"))) is not None]
+    # A scheduled episode is recorded with the time it goes public: it fills nothing before then, but its upload
+    # already happened, so the quota below still counts it.
+    stamped = [(t, u) for t, u in every if t <= now]
     public = sorted(((t, u) for t, u in stamped if is_public(u)), key=lambda pair: pair[0])
     in_slot = [u for t, u in public if t >= slot]
     if in_slot:
@@ -159,7 +167,7 @@ def decide(now: datetime, uploads: list[dict], runs: list[dict] | None, run_id=N
         reasons.append("✅ Slot boş, kayıtlı herkese açık yükleme yok")
 
     reset = quota_day_start(now)
-    used = sum(1 for t, _ in stamped if t >= reset)
+    used = sum(1 for t, _ in every if t >= reset)
     if used >= MAX_PER_QUOTA_DAY:
         go = False
         reasons.append(f"⛔ Kota: {_clock(reset)} sıfırlamasından beri {used} yükleme var (sınır {MAX_PER_QUOTA_DAY})")
