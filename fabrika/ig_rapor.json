@@ -1,5 +1,5 @@
 {
- "started": "2026-11-02T10:00:02+00:00",
+ "started": "2026-11-02T10:49:02+00:00",
  "mod": "nöbet",
  "anahtar_bitis": "2026-12-31T21:10+00:00",
  "new": 1,
@@ -9,12 +9,13 @@
  "later": 0,
  "items": [
   {
-   "id": "18107771135206419",
+   "id": "18216804106316735",
    "kind": "yorum",
    "author": "dc937b598926",
-   "text": "Napıyım yardım mı istiyim amk",
-   "result": "atlandı: profanity and insults"
+   "text": "Ölürdüm ben düz mantık bi adamım",
+   "reply": "Yok yahu, hemen pes etme! İlk 15 saniyede bilincini kaybetsen de akıllı bir kaskla kurtulabilirdin 😉\n— Bit 🤖",
+   "result": "gönderildi"
   }
  ],
- "finished": "2026-11-02T10:00:05+00:00"
+ "finished": "2026-11-02T10:49:06+00:00"
 }

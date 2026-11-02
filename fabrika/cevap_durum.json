@@ -388,6 +388,12 @@
     1793613603.244645,
     "s",
     "atlandı: profanity and insults"
+   ],
+   "18216804106316735": [
+    1793616543.2431002,
+    "r",
+    "Yok yahu, hemen pes etme! İlk 15 saniyede bilincini kaybetsen de akıllı bir kask",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -414,6 +420,12 @@
     "kind": "yorum",
     "text": "Bir damla suda yaklaşık 4.8 sextrilyon atom var",
     "reply": "Tek bir su molekülü iki hidrojen ve bir oksijen atomundan oluşur, yani bir damla suda milyarlarca milyar atom vardır.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1793616543.2431002,
+    "kind": "yorum",
+    "text": "Ölürdüm ben düz mantık bi adamım",
+    "reply": "Yok yahu, hemen pes etme! İlk 15 saniyede bilincini kaybetsen de akıllı bir kaskla kurtulabilirdin 😉\n— Bit 🤖"
    }
   ]
  },
@@ -421,10 +433,10 @@
  "nobet": {
   "basladi": "2026-11-02T08:22:02+00:00",
   "run": "41411253230",
-  "tur": 141,
-  "ig_cevap": 0,
+  "tur": 148,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-02T10:42:04+00:00"
+  "son_tur": "2026-11-02T10:49:06+00:00"
  }
 }
