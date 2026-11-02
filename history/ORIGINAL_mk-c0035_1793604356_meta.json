@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0035",
+  "topic": "Tavşanlar ne kadar geniş görür?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Tavşan arkasını görür ama burnunun dibini göremez 🐰",
+  "hook_text": "TAVŞAN NEREYİ GÖREMEZ?",
+  "description": "Tavşanlar ne kadar geniş görür, arkasını görebilir mi?\n\nTavşanın gözleri başının iki yanında ve yukarıda olduğu için neredeyse üç yüz altmış derece görür; arkasını, hatta başının üstünü bile görebilir. Ama yüzünün tam önünde küçük bir kör nokta vardır ve tavşan bu boşluğu burnu ve kulaklarıyla kapatır.\n\nSence hangisi daha kullanışlı: arkanı görebilmek mi, önünü net görmek mi?\n\n#tavşan #sevimlihayvanlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0035",
+  "tags": [
+    "tavşan",
+    "tavşanlar",
+    "tavşan gözü",
+    "tavşan görüşü",
+    "tavşanlar nasıl görür",
+    "tavşan arkasını görür mü",
+    "tavşan kör nokta",
+    "360 derece görüş",
+    "kör nokta",
+    "hayvan gözleri",
+    "hayvanların görüşü",
+    "av hayvanları",
+    "evcil tavşan",
+    "sevimli hayvanlar",
+    "hayvan duyuları",
+    "evcil hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "rabbit",
+    "rabbit vision",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "tavsan",
+    "tavsanlar",
+    "tavsan gozu",
+    "tavsan gorusu",
+    "tavsanlar nasil gorur"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Rabbits can see behind them, but not right under their nose 🐰",
+      "description": "A rabbit's eyes sit high on the sides of its head, giving it a field of view of almost 360 degrees, even above its head. For a prey animal, that means spotting danger from nearly every direction. The catch is a small blind spot right in front of its face, which it covers with its nose and ears.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "es": {
+      "title": "El conejo ve lo que tiene detrás, pero no justo delante del hocico 🐰",
+      "description": "Los ojos del conejo están altos y a los lados de la cabeza, así que su campo de visión abarca casi 360 grados, incluso por encima de su cabeza. Para un animal que es presa, eso significa ver venir el peligro desde casi cualquier dirección. Su punto débil es un pequeño punto ciego justo delante de la cara, que compensa con el olfato y las orejas.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "pt": {
+      "title": "O coelho enxerga atrás de si, mas não bem na frente do focinho 🐰",
+      "description": "Os olhos do coelho ficam no alto e nas laterais da cabeça, o que dá a ele um campo de visão de quase 360 graus, inclusive acima da cabeça. Para um animal que é presa, isso significa ver o perigo chegando de quase todas as direções. O detalhe é um pequeno ponto cego bem na frente do rosto, que ele compensa com o nariz e as orelhas.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "de": {
+      "title": "Kaninchen sehen, was hinter ihnen ist – aber nicht direkt vor der Nase 🐰",
+      "description": "Die Augen des Kaninchens sitzen hoch und seitlich am Kopf, deshalb überblickt es fast 360 Grad, sogar über sich. Für ein Beutetier heißt das, Gefahr aus fast jeder Richtung früh zu erkennen. Der Haken ist ein kleiner toter Winkel direkt vor dem Gesicht, den es mit Nase und Ohren ausgleicht.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "fr": {
+      "title": "Le lapin voit derrière lui, mais pas juste devant son nez 🐰",
+      "description": "Les yeux du lapin sont placés haut, sur les côtés de la tête, ce qui lui donne un champ de vision de presque 360 degrés, jusqu'au-dessus de sa tête. Pour une proie, c'est voir le danger arriver de presque partout. Seul hic : un petit angle mort juste devant son museau, qu'il compense avec son nez et ses oreilles.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "it": {
+      "title": "Il coniglio vede dietro di sé, ma non proprio davanti al naso 🐰",
+      "description": "Gli occhi del coniglio stanno in alto, ai lati della testa, e gli regalano un campo visivo di quasi 360 gradi, perfino sopra di sé. Per una preda significa vedere il pericolo arrivare da quasi ogni direzione. Il punto debole è un piccolo angolo cieco proprio davanti al muso, che compensa con naso e orecchie.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "ru": {
+      "title": "Кролик видит, что у него за спиной, но не видит прямо перед носом 🐰",
+      "description": "Глаза кролика расположены высоко по бокам головы, поэтому его обзор охватывает почти 360 градусов, включая пространство над головой. Для добычи это значит заметить опасность почти с любой стороны. Но прямо перед мордой у него есть небольшая слепая зона, и её он восполняет носом и ушами.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "ar": {
+      "title": "الأرنب يرى ما خلفه… لكنه لا يرى ما أمام أنفه مباشرة 🐰",
+      "description": "عينا الأرنب مرتفعتان على جانبي رأسه، فيمتد مجال رؤيته إلى نحو 360 درجة، حتى فوق رأسه. وبالنسبة لحيوان مُفترَس، هذا يعني رؤية الخطر من كل اتجاه تقريبًا. لكن أمام وجهه مباشرة توجد نقطة عمياء صغيرة، يعوّضها بأنفه وأذنيه.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "hi": {
+      "title": "खरगोश पीछे तक देख लेता है, पर अपनी नाक के ठीक सामने नहीं 🐰",
+      "description": "खरगोश की आँखें सिर के दोनों तरफ़ ऊपर की ओर होती हैं, इसलिए वह लगभग 360 डिग्री तक देख सकता है, सिर के ऊपर तक भी। शिकार बनने वाले जानवर के लिए इसका मतलब है लगभग हर दिशा से ख़तरा देख लेना। बस चेहरे के ठीक सामने एक छोटी-सी अंधी जगह होती है, जिसकी कमी वह नाक और कानों से पूरी करता है।\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "id": {
+      "title": "Kelinci bisa melihat ke belakang, tapi tidak tepat di depan hidungnya 🐰",
+      "description": "Mata kelinci terletak tinggi di kedua sisi kepala, jadi bidang pandangnya hampir 360 derajat, bahkan sampai ke atas kepalanya. Bagi hewan mangsa, artinya bahaya bisa terlihat dari hampir segala arah. Kekurangannya, ada titik buta kecil tepat di depan wajahnya, yang ia tutupi dengan hidung dan telinganya.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "ja": {
+      "title": "ウサギは後ろまで見えるのに、鼻の先は見えない 🐰",
+      "description": "ウサギの目は頭の横の高い位置にあり、視野はほぼ360度、頭の上まで届きます。狙われる側の動物にとって、ほぼどの方向からの危険にも気づけるということです。ただし顔のすぐ前には小さな死角があり、そこは鼻と耳でカバーしています。\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "ko": {
+      "title": "토끼는 뒤까지 보지만 코앞은 못 본다 🐰",
+      "description": "토끼의 눈은 머리 양옆 높은 곳에 있어서 시야가 거의 360도, 머리 위까지 닿습니다. 잡아먹히는 쪽인 동물에게는 거의 모든 방향의 위험을 볼 수 있다는 뜻이죠. 다만 얼굴 바로 앞에 작은 사각지대가 있어서, 그곳은 코와 귀로 보완합니다.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "pl": {
+      "title": "Królik widzi to, co za nim, ale nie to, co tuż przed nosem 🐰",
+      "description": "Oczy królika są osadzone wysoko po bokach głowy, dlatego jego pole widzenia obejmuje prawie 360 stopni, nawet nad głową. Dla zwierzęcia, na które się poluje, to szansa, by dostrzec zagrożenie z niemal każdej strony. Haczyk to mały martwy punkt tuż przed pyszczkiem, który królik nadrabia nosem i uszami.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "nl": {
+      "title": "Een konijn ziet achter zich, maar niet recht voor zijn neus 🐰",
+      "description": "De ogen van een konijn zitten hoog aan de zijkanten van de kop, waardoor het bijna 360 graden om zich heen ziet, zelfs boven zich. Voor een prooidier betekent dat gevaar uit bijna elke richting zien aankomen. Het addertje: een kleine dode hoek recht voor de snuit, die het opvangt met neus en oren.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "uk": {
+      "title": "Кролик бачить, що позаду, але не бачить просто перед носом 🐰",
+      "description": "Очі кролика розташовані високо з боків голови, тому його огляд охоплює майже 360 градусів, навіть простір над головою. Для здобичі це означає помітити небезпеку майже з будь-якого боку. Але просто перед мордочкою є невелика сліпа зона, яку він компенсує носом і вухами.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "vi": {
+      "title": "Thỏ nhìn được phía sau nhưng không thấy ngay trước mũi 🐰",
+      "description": "Mắt thỏ nằm cao ở hai bên đầu nên tầm nhìn của nó rộng gần 360 độ, nhìn được cả phía trên đầu. Với một loài con mồi, điều đó có nghĩa là thấy nguy hiểm từ gần như mọi hướng. Điểm yếu duy nhất là một điểm mù nhỏ ngay trước mặt, được bù lại bằng mũi và đôi tai.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "az": {
+      "title": "Dovşan arxasını görür, amma burnunun dibini görmür 🐰",
+      "description": "Dovşanın gözləri başının yanlarında, yuxarıda yerləşir, ona görə də təxminən 360 dərəcə görür, hətta başının üstünü də. Ov olan heyvan üçün bu, təhlükəni demək olar ki, hər tərəfdən görmək deməkdir. Yalnız üzünün düz qarşısında kiçik bir kor nöqtə var və dovşan bu boşluğu burnu və qulaqları ilə doldurur.\n\n#shorts\n\nSeri: mk-c0035"
+    },
+    "ro": {
+      "title": "Iepurele vede în spatele lui, dar nu chiar în fața nasului 🐰",
+      "description": "Ochii iepurelui sunt așezați sus, pe lateralele capului, așa că vede aproape 360 de grade, chiar și deasupra capului. Pentru un animal pradă, asta înseamnă să observe pericolul din aproape orice direcție. Singura slăbiciune e un mic unghi mort chiar în fața botului, pe care îl compensează cu nasul și urechile.\n\n#shorts\n\nSeri: mk-c0035"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha kullanışlı: arkanı görebilmek mi, önünü net görmek mi?",
+  "scenes": [
+    {
+      "text": "Bu tavşan neredeyse üç yüz altmış derece görüyor.",
+      "visual": "rabbit sitting in grass with its large eye visible on the side of its head",
+      "stock_query": "rabbit",
+      "source": "stock",
+      "callout": "NEREDEYSE 360°"
+    },
+    {
+      "text": "Gözleri başının iki yanında, yukarıda durur.",
+      "visual": "close-up of a rabbit's eye on the side of its head",
+      "stock_query": "rabbit eye",
+      "source": "stock"
+    },
+    {
+      "text": "Bu sayede arkasını, hatta başının üstünü bile görebilir.",
+      "visual": "rabbit sitting still in a meadow, alert",
+      "stock_query": "rabbit grass",
+      "source": "stock",
+      "callout": "ARKASINI GÖRÜR"
+    },
+    {
+      "text": "Bir av hayvanı için bu, tehlikeyi neredeyse her yönden görmek demek.",
+      "visual": "wild rabbit alert in an open field",
+      "stock_query": "wild rabbit",
+      "source": "stock"
+    },
+    {
+      "text": "Ama yüzünün tam önünde küçük bir kör nokta var.",
+      "visual": "front view of a rabbit's face and nose",
+      "stock_query": "rabbit face",
+      "source": "stock",
+      "callout": "KÖR NOKTA"
+    },
+    {
+      "text": "O küçük boşluğu gözüyle değil, burnu ve kulaklarıyla kapatır.",
+      "visual": "rabbit twitching its nose and turning its ears",
+      "stock_query": "rabbit ears",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.03,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #88",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0035_1793604356_ig.mp4"
+}
