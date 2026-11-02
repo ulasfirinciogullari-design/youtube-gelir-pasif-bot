@@ -1,0 +1,190 @@
+{
+  "topic_id": "mk-c0041",
+  "topic": "Bir ricaya 'çünkü' eklemek neden işe yarar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Bir ricaya tek kelime eklemek evet diyenleri artırıyor 🤝",
+  "hook_text": "HANGİ KELİME EVET DEDİRTİR?",
+  "description": "Bir ricaya 'çünkü' eklemek neden işe yarar, insanları evet demeye ne ikna eder?\n\n1978'de Harvard'dan psikolog Ellen Langer'ın ekibi fotokopi sırasındaki insanlardan öne geçmek için izin istedi. Sebep söylenmeyince yüzde altmışı izin verdi; hiçbir şey açıklamayan 'çünkü fotokopi çekmem lazım' denince oran yüzde doksan üçe çıktı. Beyin 'çünkü' kelimesini duyunca sebebi tartmadan kabul ediyor. Ama bu sadece küçük ricalarda işe yaradı: yirmi sayfalık büyük ricada boş sebep hiç fark yaratmadı.\n\nSence hangisi daha şaşırtıcı: boş bir sebebin işe yaraması mı, beynin onu hiç tartmaması mı?\n\n#psikoloji #ikna #iknapsikolojisi #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0041",
+  "tags": [
+    "çünkü kelimesi",
+    "ikna psikolojisi",
+    "ikna teknikleri",
+    "insanları ikna etmek",
+    "evet dedirtmek",
+    "rica etmek",
+    "fotokopi deneyi",
+    "ellen langer",
+    "langer deneyi",
+    "boş sebep",
+    "güç psikolojisi",
+    "sosyal psikoloji",
+    "insan psikolojisi",
+    "psikoloji",
+    "davranış",
+    "beyin",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "persuasion",
+    "because study",
+    "ikna",
+    "çünkü",
+    "rica",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "cunku kelimesi",
+    "insanlari ikna etmek",
+    "bos sebep",
+    "guc psikolojisi",
+    "davranis"
+  ],
+  "localizations": {
+    "en": {
+      "title": "One word makes people say yes more often 🤝",
+      "description": "In a 1978 study, asking to cut in line at a copier worked 60% of the time with no reason and 93% with an empty one: because I have to make copies.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "es": {
+      "title": "Una sola palabra hace que más gente diga que sí 🤝",
+      "description": "En un estudio de 1978, pedir colarse en la fotocopiadora funcionó el 60 % de las veces sin motivo y el 93 % con uno vacío: porque tengo que hacer copias.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "pt": {
+      "title": "Uma palavra faz mais pessoas dizerem sim 🤝",
+      "description": "Num estudo de 1978, pedir para furar a fila da copiadora funcionou 60% das vezes sem motivo e 93% com um motivo vazio: porque preciso tirar cópias.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "de": {
+      "title": "Ein einziges Wort bringt mehr Menschen zum Ja 🤝",
+      "description": "In einer Studie von 1978 klappte das Vordrängeln am Kopierer ohne Grund in 60 % der Fälle, mit einem leeren Grund in 93 %: weil ich Kopien machen muss.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "fr": {
+      "title": "Un seul mot fait dire oui à plus de gens 🤝",
+      "description": "Dans une étude de 1978, demander à passer devant à la photocopieuse marchait 60 % du temps sans raison et 93 % avec une raison vide : parce que je dois faire des copies.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "it": {
+      "title": "Una sola parola fa dire di sì a più persone 🤝",
+      "description": "In uno studio del 1978, chiedere di passare avanti alla fotocopiatrice funzionava il 60% delle volte senza motivo e il 93% con un motivo vuoto: perché devo fare delle copie.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "ru": {
+      "title": "Одно слово заставляет людей чаще говорить «да» 🤝",
+      "description": "В исследовании 1978 года просьба пропустить к ксероксу без причины срабатывала в 60% случаев, а с пустой причиной «потому что мне нужно сделать копии» — в 93%.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "ar": {
+      "title": "كلمة واحدة تجعل الناس يقولون نعم أكثر 🤝",
+      "description": "في دراسة عام 1978 نجح طلب تجاوز الطابور عند آلة النسخ بنسبة 60٪ دون سبب و93٪ مع سبب فارغ: لأنني يجب أن أنسخ بعض الأوراق.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "hi": {
+      "title": "एक शब्द से ज़्यादा लोग हाँ कहते हैं 🤝",
+      "description": "1978 के एक अध्ययन में फोटोकॉपी की लाइन तोड़ने का अनुरोध बिना कारण 60% और खोखले कारण के साथ 93% बार माना गया: क्योंकि मुझे कॉपी करनी है।\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "id": {
+      "title": "Satu kata membuat lebih banyak orang berkata ya 🤝",
+      "description": "Dalam studi tahun 1978, minta menyela antrean fotokopi berhasil 60% tanpa alasan dan 93% dengan alasan kosong: karena saya harus memfotokopi.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "ja": {
+      "title": "たった一言で「いいよ」が増える 🤝",
+      "description": "1978年の研究では、コピー機の順番を譲ってもらう頼みは理由なしで60%、中身のない理由「コピーをとらなきゃいけないので」を付けると93%が応じました。\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "ko": {
+      "title": "한 단어만 붙여도 승낙이 늘어난다 🤝",
+      "description": "1978년 연구에서 복사기 줄에 끼어들게 해 달라는 부탁은 이유 없이 60%, '복사를 해야 해서'라는 빈 이유를 붙이자 93%가 들어주었습니다.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "pl": {
+      "title": "Jedno słowo sprawia, że więcej osób mówi tak 🤝",
+      "description": "W badaniu z 1978 roku prośba o przepuszczenie do kserokopiarki bez powodu działała w 60%, a z pustym powodem „bo muszę zrobić kopie” w 93%.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "nl": {
+      "title": "Eén woord laat meer mensen ja zeggen 🤝",
+      "description": "In een studie uit 1978 werkte voordringen bij het kopieerapparaat zonder reden in 60% van de gevallen en met een lege reden in 93%: omdat ik kopieën moet maken.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "uk": {
+      "title": "Одне слово змушує людей частіше казати «так» 🤝",
+      "description": "У дослідженні 1978 року прохання пропустити до ксерокса без причини спрацьовувало в 60% випадків, а з порожньою причиною «бо мені треба зробити копії» — у 93%.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "vi": {
+      "title": "Một từ khiến nhiều người đồng ý hơn 🤝",
+      "description": "Trong một nghiên cứu năm 1978, xin chen hàng máy photocopy thành công 60% khi không có lý do và 93% với một lý do rỗng: vì tôi cần photo tài liệu.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "az": {
+      "title": "Bir xahişə bir söz əlavə etmək razılığı artırır 🤝",
+      "description": "1978-ci il araşdırmasında surətçıxarma növbəsində qabağa keçmək xahişi səbəbsiz 60%, boş səbəblə isə 93% hallarda qəbul edildi: çünki surət çıxarmalıyam.\n\n#shorts\n\nSeri: mk-c0041"
+    },
+    "ro": {
+      "title": "Un singur cuvânt îi face pe oameni să spună da 🤝",
+      "description": "Într-un studiu din 1978, rugămintea de a trece primul la copiator a mers în 60% din cazuri fără motiv și în 93% cu un motiv gol: pentru că trebuie să fac copii.\n\n#shorts\n\nSeri: mk-c0041"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: boş bir sebebin işe yaraması mı, beynin onu hiç tartmaması mı?",
+  "scenes": [
+    {
+      "text": "Bir ricaya tek kelime eklemek, evet diyenleri artırıyor.",
+      "visual": "two coworkers talking in an office",
+      "stock_query": "office coworkers",
+      "source": "stock",
+      "callout": "TEK KELİME"
+    },
+    {
+      "text": "Fotokopi sırasında öne geçmek isteyen biri sebep söylemeyince yüzde altmış izin aldı.",
+      "visual": "office printer printing documents",
+      "stock_query": "office printer",
+      "source": "stock",
+      "subject": [
+        "printer"
+      ],
+      "callout": "%60"
+    },
+    {
+      "text": "'Çünkü fotokopi çekmem lazım' deyince yüzde doksan üç.",
+      "visual": "person waiting in a line at the office",
+      "stock_query": "people queue",
+      "source": "stock",
+      "subject": [
+        "people"
+      ],
+      "callout": "%93"
+    },
+    {
+      "text": "Oysa sıradaki herkes zaten fotokopi çekiyordu; sebep hiçbir şey anlatmıyordu.",
+      "visual": "stack of papers coming out of a copier",
+      "stock_query": "printer paper",
+      "source": "stock",
+      "subject": [
+        "printer"
+      ],
+      "callout": "BOŞ SEBEP"
+    },
+    {
+      "text": "Beyin 'çünkü' kelimesini duyunca sebebi tartmadan kabul ediyor.",
+      "visual": "woman nodding in agreement during a conversation",
+      "stock_query": "office conversation",
+      "source": "stock"
+    },
+    {
+      "text": "Küçük bir rica edeceksen, tek kelime ekle.",
+      "visual": "smiling colleagues shaking hands in an office",
+      "stock_query": "office handshake",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.43,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #94",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0041_1793654576_ig.mp4"
+}
