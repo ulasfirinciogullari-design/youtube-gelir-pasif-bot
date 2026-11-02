@@ -998,14 +998,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-16T16:10:31+00:00",
-   "mod": "saatlik",
-   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
-   "url": "https://youtube.com/shorts/xMYUnZVVITU",
-   "duration": 33.4,
-   "chars": 475
-  },
-  {
    "finished": "2026-10-16T17:10:31+00:00",
    "mod": "saatlik",
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
@@ -1406,6 +1398,12 @@
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
    "duration": 24.1,
    "chars": 362
+  },
+  {
+   "finished": "2026-11-02T09:09:12+00:00",
+   "mod": "igbolum",
+   "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
+   "chars": 248
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1530,6 +1528,11 @@
     "media_id": "18222019288357024",
     "url": "https://www.instagram.com/reel/De2HMaOCQGj/",
     "at": 1792777147.6942205
+   },
+   "y009": {
+    "media_id": "17955890955038960",
+    "url": "https://www.instagram.com/reel/DfO8zwoncSF/",
+    "at": 1793610552.5168965
    }
   },
   "eski": [

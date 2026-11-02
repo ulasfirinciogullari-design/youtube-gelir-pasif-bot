@@ -1,12 +1,18 @@
 {
- "started": "2026-11-01T21:35:05+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-02T09:07:45+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y009",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
- "chars": 362,
- "duration": 24.1,
- "deneme": "fabrika/deneme/ornek-o0006.mp4",
- "log": [],
- "finished": "2026-11-01T21:35:53+00:00"
+ "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
+ "chars": 248,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17955890955038960",
+  "url": "https://www.instagram.com/reel/DfO8zwoncSF/",
+  "at": 1793610552.5168965
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfO8zwoncSF/"
+ ],
+ "finished": "2026-11-02T09:09:12+00:00"
 }
