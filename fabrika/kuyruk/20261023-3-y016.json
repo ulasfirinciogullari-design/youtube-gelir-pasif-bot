@@ -7,74 +7,97 @@
   "hi": "48 SAATLİK",
   "rest": "GÜN OLSAYDI?"
  },
- "summary": "Bir gün 48 saat sürseydi her iki uyanışından biri gece karanlığına denk gelirdi! İç saatinin neden 24 saatte kaldığını ve uzun gündüzlerle gecelerin neler getireceğini Profesör Pi anlatıyor.",
+ "summary": "Bir gün 48 saat sürseydi iç saatin 24 saatte kalır, her iki uykundan biri güpegündüz olurdu! Harvard deneyinde iç saatine ters yaşayan gönüllülerin kan şekerine ne olduğunu ve ekinleri neyin beklediğini Profesör Pi anlatıyor.",
  "lines": [
   {
    "who": "pi",
-   "text": "Her iki uyanışından biri gece karanlığında olurdu!",
+   "text": "Kan şekerin, diyabet öncesi seviyeye fırlayabilirdi!",
    "v": {
-    "t": "split",
-    "bg": "night",
-    "left": {
-     "e": "☀️",
-     "label": "1. Uyanış"
-    },
-    "right": {
-     "e": "🌑",
-     "label": "2. Uyanış"
-    },
-    "key": "gece"
+    "t": "icon",
+    "bg": "body",
+    "e": "🩸",
+    "do": "rise",
+    "key": "fırlayabilirdi",
+    "label": "Kan Şekeri"
    }
   },
   {
    "who": "bit",
-   "text": "Karanlıkta kahvaltı mı?!",
+   "text": "Kan şekerim mi?!",
    "v": {
     "t": "icon",
-    "bg": "night",
-    "e": "🍳",
+    "bg": "body",
+    "e": "🍭",
     "do": "shake",
-    "key": "kahvaltı",
-    "label": "Gece Kahvaltısı"
+    "key": "şekerim",
+    "label": "Şeker Alarmı"
    }
   },
   {
    "who": "pi",
-   "text": "İç saatimiz 24 saatlik; Harvard'da 28 saatlik güne bile uymadı.",
+   "text": "Harvard'da 28 saatlik güne zorlanan 8 kişiden 3'ünde, 10 günde bu oldu!",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🧪",
+    "value": "3/8",
+    "unit": "kişi",
+    "label": "10 Günde",
+    "key": "3'ünde"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İç saatin 24 saatte kalır; her iki uykundan biri güpegündüz olurdu.",
    "v": {
     "t": "compare",
-    "bg": "lab",
+    "bg": "night",
     "a": {
      "e": "🧠",
-     "label": "İç Saat",
+     "label": "İç Saatin",
      "value": 24
     },
     "b": {
-     "e": "🧪",
-     "label": "Deney Günü",
-     "value": 28
+     "e": "🌍",
+     "label": "Yeni Gün",
+     "value": 48
     },
     "mode": "bar",
-    "key": "28"
-   }
-  },
-  {
-   "who": "pi",
-   "text": "Gündüz de gece de 24 saat: öğlen daha sıcak, gece daha soğuk!",
-   "v": {
-    "t": "meter",
-    "bg": "desert",
-    "label": "Gündüz Süresi",
-    "from": 12,
-    "to": 24,
-    "unit": "saat",
-    "e": "☀️",
     "key": "24"
    }
   },
   {
    "who": "bit",
-   "text": "24 saatlik gecede ne yapardın? Yorumlara yaz!",
+   "text": "Öğlen güneşinde uyku mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "😴",
+    "do": "float",
+    "key": "uyku",
+    "label": "Öğlen Uykusu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uzun gecelerde toprak iyice soğur, saati şaşan ekinler daha az büyürdü.",
+   "v": {
+    "t": "split",
+    "bg": "night",
+    "left": {
+     "e": "🌾",
+     "label": "Saati Uyan Ekin"
+    },
+    "right": {
+     "e": "🥀",
+     "label": "Saati Şaşan Ekin"
+    },
+    "key": "ekinler"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "24 saatlik gecede sen ne yapardın? Yorumlara yaz!",
    "v": {
     "t": "outro",
     "bg": "night",
@@ -84,27 +107,27 @@
  ],
  "facts": [
   {
-   "text": "Harvard araştırmacılarına göre insanın iç saati 24 saat 11 dakikalık bir döngüyle işler.",
+   "text": "Brigham and Women's Hospital ve Harvard'ın 10 günlük deneyinde gönüllüler 28 saatlik 'günlerle' yaşadı; iç saatlerine ters yiyip uyurken 8 kişiden 3'ünün yemek sonrası kan şekeri diyabet öncesi seviyeye çıktı.",
+   "source": "PNAS (Scheer ve ark., 2009) / Harvard Gazette",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/19255424/"
+  },
+  {
+   "text": "Aynı deneyde iç saate ters yaşamak kan şekerini ortalama %6 artırdı, tokluk hormonu leptini %17 düşürdü ve uyku verimini %20 azalttı.",
+   "source": "PNAS (Scheer ve ark., 2009)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/19255424/"
+  },
+  {
+   "text": "Harvard araştırmacılarına göre insanın iç saati 24 saat 11 dakikalık bir döngüyle işler ve 28 saatlik güne bile uymaz; 48 saatlik bir günde gündüz ve gece 24'er saat sürer, bu yüzden her iki uykudan biri gündüze denk gelir.",
    "source": "Harvard Gazette",
-   "url": "https://news.harvard.edu/gazette/story/1999/07/human-biological-clock-set-back-an-hour"
+   "url": "https://news.harvard.edu/gazette/story/1999/07/human-biological-clock-set-back-an-hour/"
   },
   {
-   "text": "Aynı çalışmada 28 saatlik günlerle yaşayan deneklerin vücut ısısı ve hormonları yine yaklaşık 24 saatlik kendi döngüsünü izledi.",
-   "source": "Harvard Gazette",
-   "url": "https://news.harvard.edu/gazette/story/1999/07/human-biological-clock-set-back-an-hour"
+   "text": "Science dergisindeki bir çalışmaya göre iç saati gün uzunluğuna uyan bitkiler daha çok klorofil içerir, daha çok karbon bağlar, daha hızlı büyür ve daha iyi hayatta kalır.",
+   "source": "Science (Dodd ve ark., 2005) / John Innes Centre",
+   "url": "https://jic.ac.uk/research-impact/publications/plant-circadian-clocks-increase-photosynthesis-growth-survival-and-competitive-advantage/"
   },
   {
-   "text": "Basit hesap: 48 saatlik bir günde gündüz ve gece ortalama yaklaşık 24'er saat sürer; 24 saatlik iç saatle her iki uyanıştan biri geceye denk gelir.",
-   "source": "Hesap (48 ÷ 2 = 24)",
-   "url": ""
-  },
-  {
-   "text": "NASA JPL'den Marc Rayman'a göre Dünya'nın 24 saatlik dönüşü, gezegenin çoğu yerinin aydınlık ile karanlık arasında gidip gelirken ılıman bir sıcaklıkta kalmasını sağlar.",
-   "source": "NASA JPL",
-   "url": "https://jpl.nasa.gov/nmp/podcasts/transcripts/061030_earth_rotation.html"
-  },
-  {
-   "text": "Space.com'a göre Dünya dönmeyi bırakıp gündüz ve gece aylarca sürse, yüzey gündüzleri çok daha fazla ısınır, geceleri çok daha fazla soğurdu.",
+   "text": "Space.com'a göre gündüz ve gece çok daha uzun sürseydi, yüzey gündüzleri çok daha fazla ısınır, geceleri çok daha fazla soğurdu.",
    "source": "Space.com",
    "url": "https://www.space.com/what-if-earth-stopped-spinning"
   }
@@ -115,12 +138,13 @@
   "iç saat",
   "biyolojik saat",
   "sirkadiyen ritim",
-  "gece gündüz",
+  "kan şekeri",
+  "uyku",
   "dünyanın dönüşü",
   "48 hour day",
   "circadian rhythm",
   "body clock",
-  "earth rotation",
+  "circadian misalignment",
   "ya olsaydı",
   "bilim",
   "animasyon",
@@ -134,119 +158,120 @@
  ],
  "cover": 0,
  "sources": [
-  "https://news.harvard.edu/gazette/story/1999/07/human-biological-clock-set-back-an-hour",
-  "https://jpl.nasa.gov/nmp/podcasts/transcripts/061030_earth_rotation.html",
-  "https://www.space.com/what-if-earth-stopped-spinning"
+  "https://news.harvard.edu/gazette/story/2009/03/researchers-find-potential-cause-of-heart-risks-for-shift-workers/",
+  "https://pubmed.ncbi.nlm.nih.gov/19255424/",
+  "https://news.harvard.edu/gazette/story/1999/07/human-biological-clock-set-back-an-hour/",
+  "https://jic.ac.uk/research-impact/publications/plant-circadian-clocks-increase-photosynthesis-growth-survival-and-competitive-advantage/"
  ],
  "i18n": {
   "en": {
    "title": "What Would a 48-Hour Day Do to Your Body?",
-   "summary": "If a day lasted 48 hours, every other time you woke up it would be dark outside! Professor Pi explains why your body clock is stuck at about 24 hours and what long days and nights would bring.",
+   "summary": "If a day lasted 48 hours, your body clock would stay at 24 hours and every other sleep would fall in broad daylight! Professor Pi explains what happened to the blood sugar of volunteers living against their body clock in a Harvard experiment, and what would await crops.",
    "facts": [
-    "According to Harvard researchers, the human internal clock runs on a cycle of 24 hours and 11 minutes.",
-    "In the same study, people living on 28-hour days still had body temperature and hormone rhythms that followed their own roughly 24-hour cycle.",
-    "Simple calculation: in a 48-hour day, daylight and night would each last about 24 hours on average, so with a 24-hour body clock every other wake-up would fall at night.",
-    "According to NASA JPL's Marc Rayman, Earth's 24-hour rotation lets most of the planet stay at a comfortable temperature as it moves between sunlight and darkness.",
-    "According to Space.com, if Earth stopped spinning and days and nights lasted months, the surface would warm up much more during the day and cool down much more at night."
+    "In a 10-day experiment by Brigham and Women's Hospital and Harvard, volunteers lived on 28-hour 'days'; when they ate and slept out of sync with their body clock, 3 of 8 had after-meal blood sugar in the prediabetic range.",
+    "In the same experiment, living out of sync raised blood sugar by 6% on average, cut the satiety hormone leptin by 17% and reduced sleep efficiency by 20%.",
+    "According to Harvard researchers, the human body clock runs on a 24-hour, 11-minute cycle and does not adapt even to a 28-hour day; in a 48-hour day, daylight and night would last 24 hours each, so every other sleep would fall in daylight.",
+    "According to a study in Science, plants whose clock matches the length of the day contain more chlorophyll, fix more carbon, grow faster and survive better.",
+    "According to Space.com, if days and nights lasted much longer, the surface would warm up much more during the day and cool down much more at night."
    ]
   },
   "es": {
-   "title": "¿Qué le pasaría a tu cuerpo si un día durara 48 horas?",
-   "summary": "Si un día durara 48 horas, ¡una de cada dos veces que te despertaras sería de noche! El Profesor Pi explica por qué tu reloj biológico se queda en unas 24 horas y qué traerían los días y las noches tan largos.",
+   "title": "¿Qué Le Haría un Día de 48 Horas a Tu Cuerpo?",
+   "summary": "Si un día durara 48 horas, tu reloj interno seguiría en 24 horas y uno de cada dos sueños caería en pleno día. El profesor Pi explica qué le pasó al azúcar en sangre de voluntarios que vivieron contra su reloj interno en un experimento de Harvard y qué les esperaría a los cultivos.",
    "facts": [
-    "Según investigadores de Harvard, el reloj interno humano funciona con un ciclo de 24 horas y 11 minutos.",
-    "En el mismo estudio, las personas que vivieron días de 28 horas mantuvieron una temperatura corporal y unas hormonas que seguían su propio ciclo de unas 24 horas.",
-    "Cálculo sencillo: en un día de 48 horas, el día y la noche durarían de media unas 24 horas cada uno; con un reloj interno de 24 horas, uno de cada dos despertares caería de noche.",
-    "Según Marc Rayman, del JPL de la NASA, la rotación de 24 horas de la Tierra permite que la mayor parte del planeta mantenga una temperatura agradable al pasar de la luz a la oscuridad.",
-    "Según Space.com, si la Tierra dejara de girar y los días y las noches duraran meses, la superficie se calentaría mucho más de día y se enfriaría mucho más de noche."
+    "En un experimento de 10 días del Brigham and Women's Hospital y Harvard, los voluntarios vivieron con 'días' de 28 horas; al comer y dormir desfasados de su reloj interno, 3 de 8 tuvieron un azúcar en sangre tras las comidas en rango de prediabetes.",
+    "En el mismo experimento, vivir desfasado subió el azúcar en sangre un 6% de media, bajó un 17% la leptina, la hormona de la saciedad, y redujo un 20% la eficiencia del sueño.",
+    "Según investigadores de Harvard, el reloj interno humano funciona con un ciclo de 24 horas y 11 minutos y no se adapta ni a un día de 28 horas; en un día de 48 horas, el día y la noche durarían 24 horas cada uno, así que uno de cada dos sueños caería de día.",
+    "Según un estudio publicado en Science, las plantas cuyo reloj coincide con la duración del día tienen más clorofila, fijan más carbono, crecen más rápido y sobreviven mejor.",
+    "Según Space.com, si los días y las noches duraran mucho más, la superficie se calentaría mucho más de día y se enfriaría mucho más de noche."
    ]
   },
   "pt": {
-   "title": "O que aconteceria com seu corpo se um dia durasse 48 horas?",
-   "summary": "Se um dia durasse 48 horas, metade das vezes em que você acordasse seria noite! O Professor Pi explica por que seu relógio biológico fica preso em cerca de 24 horas e o que dias e noites tão longos trariam.",
+   "title": "O Que um Dia de 48 Horas Faria com Seu Corpo?",
+   "summary": "Se um dia durasse 48 horas, seu relógio biológico continuaria em 24 horas e um a cada dois sonos cairia em plena luz do dia! O professor Pi explica o que aconteceu com o açúcar no sangue de voluntários que viveram contra o relógio biológico num experimento de Harvard e o que esperaria as plantações.",
    "facts": [
-    "Segundo pesquisadores de Harvard, o relógio interno humano funciona em um ciclo de 24 horas e 11 minutos.",
-    "No mesmo estudo, pessoas que viveram dias de 28 horas mantiveram temperatura corporal e hormônios seguindo o próprio ciclo de cerca de 24 horas.",
-    "Cálculo simples: em um dia de 48 horas, o dia claro e a noite durariam em média cerca de 24 horas cada; com um relógio interno de 24 horas, um em cada dois despertares cairia à noite.",
-    "Segundo Marc Rayman, do JPL da NASA, a rotação de 24 horas da Terra permite que a maior parte do planeta fique numa temperatura agradável ao passar da luz para a escuridão.",
-    "Segundo o Space.com, se a Terra parasse de girar e dias e noites durassem meses, a superfície esquentaria muito mais de dia e esfriaria muito mais à noite."
+    "Num experimento de 10 dias do Brigham and Women's Hospital e de Harvard, voluntários viveram com 'dias' de 28 horas; ao comer e dormir fora de sincronia com o relógio biológico, 3 de 8 tiveram açúcar no sangue após as refeições na faixa de pré-diabetes.",
+    "No mesmo experimento, viver fora de sincronia aumentou o açúcar no sangue em 6% em média, reduziu em 17% a leptina, o hormônio da saciedade, e diminuiu em 20% a eficiência do sono.",
+    "Segundo pesquisadores de Harvard, o relógio biológico humano funciona num ciclo de 24 horas e 11 minutos e não se adapta nem a um dia de 28 horas; num dia de 48 horas, o dia e a noite durariam 24 horas cada, então um a cada dois sonos cairia de dia.",
+    "Segundo um estudo publicado na Science, plantas cujo relógio combina com a duração do dia têm mais clorofila, fixam mais carbono, crescem mais rápido e sobrevivem melhor.",
+    "Segundo o Space.com, se os dias e as noites durassem muito mais, a superfície esquentaria muito mais de dia e esfriaria muito mais à noite."
    ]
   },
   "ar": {
    "title": "ماذا سيحدث لجسمك لو كان اليوم 48 ساعة؟",
-   "summary": "لو كان اليوم 48 ساعة، لاستيقظت مرة من كل مرتين والدنيا ظلام! يشرح البروفيسور باي لماذا تبقى ساعتك البيولوجية عند نحو 24 ساعة، وماذا ستجلب الأيام والليالي الطويلة.",
+   "summary": "لو استمر اليوم 48 ساعة لبقيت ساعتك البيولوجية على 24 ساعة، ولوقعت نومة من كل نومتين في وضح النهار! يشرح البروفيسور باي ما حدث لسكر الدم لدى متطوعين عاشوا عكس ساعتهم البيولوجية في تجربة بهارفارد، وما الذي كان سينتظر المحاصيل.",
    "facts": [
-    "بحسب باحثين في جامعة هارفارد، تعمل الساعة الداخلية للإنسان بدورة مدتها 24 ساعة و11 دقيقة.",
-    "في الدراسة نفسها، ظلت حرارة الجسم والهرمونات لدى من عاشوا أيامًا من 28 ساعة تتبع دورتها الخاصة البالغة نحو 24 ساعة.",
-    "حساب بسيط: في يوم من 48 ساعة يستمر النهار والليل نحو 24 ساعة لكل منهما في المتوسط، لذلك مع ساعة داخلية من 24 ساعة سيقع استيقاظ من كل اثنين في الليل.",
-    "بحسب مارك رايمان من مختبر الدفع النفاث التابع لناسا، يتيح دوران الأرض كل 24 ساعة لمعظم أنحاء الكوكب البقاء في درجة حرارة معتدلة أثناء تنقلها بين الضوء والظلام.",
-    "بحسب موقع Space.com، لو توقفت الأرض عن الدوران وامتد النهار والليل لأشهر، لسخن السطح أكثر بكثير نهارًا وبرد أكثر بكثير ليلًا."
+    "في تجربة استمرت 10 أيام أجراها مستشفى بريغهام والنساء وجامعة هارفارد، عاش متطوعون بـ'أيام' طولها 28 ساعة؛ وعندما أكلوا وناموا بعكس ساعتهم البيولوجية، ارتفع سكر الدم بعد الوجبات لدى 3 من أصل 8 إلى مستوى ما قبل السكري.",
+    "في التجربة نفسها، رفع العيش بعكس الساعة البيولوجية سكر الدم بنسبة 6% في المتوسط، وخفض هرمون الشبع اللبتين بنسبة 17%، وقلل كفاءة النوم بنسبة 20%.",
+    "وفقًا لباحثين في هارفارد، تعمل الساعة البيولوجية للإنسان بدورة مدتها 24 ساعة و11 دقيقة ولا تتكيف حتى مع يوم من 28 ساعة؛ وفي يوم من 48 ساعة سيستمر النهار والليل 24 ساعة لكل منهما، فتقع نومة من كل نومتين في النهار.",
+    "وفقًا لدراسة في مجلة Science، تحتوي النباتات التي تتوافق ساعتها مع طول اليوم على كلوروفيل أكثر، وتثبت كربونًا أكثر، وتنمو أسرع، وتعيش بشكل أفضل.",
+    "وفقًا لموقع Space.com، لو طال النهار والليل كثيرًا، لارتفعت حرارة السطح أكثر بكثير نهارًا وانخفضت أكثر بكثير ليلًا."
    ]
   },
   "hi": {
-   "title": "अगर एक दिन 48 घंटे का हो, तो आपके शरीर का क्या होगा?",
-   "summary": "अगर एक दिन 48 घंटे का होता, तो हर दूसरी बार जब आप जागते, बाहर अंधेरा होता! प्रोफेसर पाई बताते हैं कि आपकी बॉडी क्लॉक लगभग 24 घंटे पर क्यों टिकी रहती है और लंबे दिन-रात क्या लेकर आएँगे।",
+   "title": "अगर एक दिन 48 घंटे का होता, तो आपके शरीर का क्या होता?",
+   "summary": "अगर एक दिन 48 घंटे का होता, तो आपकी अंदरूनी घड़ी 24 घंटे पर ही रहती और हर दूसरी नींद दिन के उजाले में पड़ती! प्रोफेसर पाई बताते हैं कि हार्वर्ड के एक प्रयोग में अपनी अंदरूनी घड़ी के उलट जीने वाले स्वयंसेवकों के ब्लड शुगर का क्या हुआ और फसलों का क्या होता।",
    "facts": [
-    "हार्वर्ड के शोधकर्ताओं के अनुसार इंसान की अंदरूनी घड़ी 24 घंटे 11 मिनट के चक्र पर चलती है।",
-    "उसी अध्ययन में 28 घंटे के दिनों में रहने वाले लोगों के शरीर का तापमान और हार्मोन फिर भी अपने लगभग 24 घंटे के चक्र पर चलते रहे।",
-    "सीधा हिसाब: 48 घंटे के दिन में दिन और रात औसतन लगभग 24-24 घंटे के होंगे, इसलिए 24 घंटे की अंदरूनी घड़ी के साथ हर दूसरी बार जागना रात में होगा।",
-    "नासा JPL के मार्क रेमन के अनुसार पृथ्वी का 24 घंटे का घूमना ग्रह के ज़्यादातर हिस्सों को रोशनी और अंधेरे के बीच आरामदायक तापमान पर रखता है।",
-    "Space.com के अनुसार अगर पृथ्वी घूमना बंद कर दे और दिन-रात महीनों लंबे हो जाएँ, तो सतह दिन में बहुत ज़्यादा गर्म और रात में बहुत ज़्यादा ठंडी हो जाएगी।"
+    "ब्रिघम एंड विमेंस हॉस्पिटल और हार्वर्ड के 10 दिन के प्रयोग में स्वयंसेवक 28 घंटे के 'दिनों' पर रहे; जब उन्होंने अपनी अंदरूनी घड़ी के उलट खाया और सोए, तो 8 में से 3 का खाने के बाद का ब्लड शुगर प्री-डायबिटीज़ के स्तर तक पहुंच गया।",
+    "उसी प्रयोग में घड़ी के उलट जीने से ब्लड शुगर औसतन 6% बढ़ा, पेट भरने का एहसास देने वाला हार्मोन लेप्टिन 17% घटा और नींद की दक्षता 20% कम हुई।",
+    "हार्वर्ड के शोधकर्ताओं के अनुसार इंसान की अंदरूनी घड़ी 24 घंटे 11 मिनट के चक्र पर चलती है और 28 घंटे के दिन के साथ भी तालमेल नहीं बिठाती; 48 घंटे के दिन में दिन और रात 24-24 घंटे के होते, इसलिए हर दूसरी नींद दिन में पड़ती।",
+    "Science पत्रिका के एक अध्ययन के अनुसार जिन पौधों की घड़ी दिन की लंबाई से मेल खाती है, उनमें ज़्यादा क्लोरोफिल होता है, वे ज़्यादा कार्बन सोखते हैं, तेज़ी से बढ़ते हैं और बेहतर जीवित रहते हैं।",
+    "Space.com के अनुसार अगर दिन और रात बहुत लंबे होते, तो सतह दिन में कहीं ज़्यादा गर्म और रात में कहीं ज़्यादा ठंडी हो जाती।"
    ]
   },
   "id": {
    "title": "Apa yang Terjadi pada Tubuhmu Jika Sehari 48 Jam?",
-   "summary": "Jika sehari berlangsung 48 jam, satu dari dua kali kamu bangun akan terjadi saat malam gelap! Profesor Pi menjelaskan mengapa jam biologismu tetap di sekitar 24 jam dan apa yang dibawa oleh siang dan malam yang sangat panjang.",
+   "summary": "Jika sehari 48 jam, jam biologismu tetap 24 jam dan satu dari setiap dua tidurmu jatuh di siang bolong! Profesor Pi menjelaskan apa yang terjadi pada gula darah relawan yang hidup melawan jam biologisnya dalam eksperimen Harvard, dan apa yang menanti tanaman pangan.",
    "facts": [
-    "Menurut peneliti Harvard, jam internal manusia berjalan dengan siklus 24 jam 11 menit.",
-    "Dalam studi yang sama, orang yang menjalani hari 28 jam tetap memiliki suhu tubuh dan hormon yang mengikuti siklus mereka sendiri sekitar 24 jam.",
-    "Hitungan sederhana: dalam sehari 48 jam, siang dan malam rata-rata masing-masing berlangsung sekitar 24 jam, sehingga dengan jam tubuh 24 jam, satu dari dua kali bangun akan jatuh pada malam hari.",
-    "Menurut Marc Rayman dari JPL NASA, rotasi Bumi 24 jam membuat sebagian besar planet tetap bersuhu nyaman saat bergantian antara terang dan gelap.",
-    "Menurut Space.com, jika Bumi berhenti berputar dan siang serta malam berlangsung berbulan-bulan, permukaan akan jauh lebih panas di siang hari dan jauh lebih dingin di malam hari."
+    "Dalam eksperimen 10 hari oleh Brigham and Women's Hospital dan Harvard, relawan hidup dengan 'hari' 28 jam; saat makan dan tidur tidak selaras dengan jam biologisnya, gula darah setelah makan pada 3 dari 8 orang masuk kisaran pradiabetes.",
+    "Dalam eksperimen yang sama, hidup tidak selaras menaikkan gula darah rata-rata 6%, menurunkan hormon kenyang leptin 17%, dan mengurangi efisiensi tidur 20%.",
+    "Menurut peneliti Harvard, jam biologis manusia berjalan dengan siklus 24 jam 11 menit dan tidak bisa menyesuaikan diri bahkan dengan hari 28 jam; dalam hari 48 jam, siang dan malam masing-masing 24 jam, sehingga satu dari dua tidur jatuh di siang hari.",
+    "Menurut sebuah studi di jurnal Science, tanaman yang jam biologisnya cocok dengan panjang hari mengandung lebih banyak klorofil, mengikat lebih banyak karbon, tumbuh lebih cepat, dan bertahan hidup lebih baik.",
+    "Menurut Space.com, jika siang dan malam jauh lebih panjang, permukaan akan jauh lebih panas di siang hari dan jauh lebih dingin di malam hari."
    ]
   },
   "fr": {
-   "title": "Que ferait une journée de 48 heures à ton corps ?",
-   "summary": "Si une journée durait 48 heures, une fois sur deux, il ferait nuit à ton réveil ! Le professeur Pi explique pourquoi ton horloge biologique reste calée sur environ 24 heures et ce qu'apporteraient des jours et des nuits aussi longs.",
+   "title": "Que Ferait une Journée de 48 Heures à Ton Corps ?",
+   "summary": "Si une journée durait 48 heures, ton horloge interne resterait sur 24 heures et un sommeil sur deux tomberait en plein jour ! Le professeur Pi explique ce qui est arrivé à la glycémie de volontaires vivant à contretemps de leur horloge lors d'une expérience à Harvard, et ce qui attendrait les cultures.",
    "facts": [
-    "Selon des chercheurs de Harvard, l'horloge interne humaine fonctionne sur un cycle de 24 heures et 11 minutes.",
-    "Dans la même étude, les personnes vivant des journées de 28 heures ont gardé une température corporelle et des hormones qui suivaient leur propre cycle d'environ 24 heures.",
-    "Calcul simple : dans une journée de 48 heures, le jour et la nuit dureraient en moyenne environ 24 heures chacun ; avec une horloge interne de 24 heures, un réveil sur deux tomberait la nuit.",
-    "Selon Marc Rayman, du JPL de la NASA, la rotation de la Terre en 24 heures permet à la plupart des régions de garder une température agréable en passant de la lumière à l'obscurité.",
-    "Selon Space.com, si la Terre cessait de tourner et que les jours et les nuits duraient des mois, la surface se réchaufferait beaucoup plus le jour et se refroidirait beaucoup plus la nuit."
+    "Lors d'une expérience de 10 jours menée par le Brigham and Women's Hospital et Harvard, des volontaires ont vécu des « journées » de 28 heures ; en mangeant et dormant à contretemps de leur horloge interne, 3 sur 8 ont eu une glycémie après repas typique du prédiabète.",
+    "Dans la même expérience, vivre à contretemps a augmenté la glycémie de 6 % en moyenne, fait baisser de 17 % la leptine, l'hormone de la satiété, et réduit de 20 % l'efficacité du sommeil.",
+    "Selon des chercheurs de Harvard, l'horloge interne humaine suit un cycle de 24 heures et 11 minutes et ne s'adapte même pas à une journée de 28 heures ; dans une journée de 48 heures, le jour et la nuit dureraient 24 heures chacun, donc un sommeil sur deux tomberait en plein jour.",
+    "Selon une étude publiée dans Science, les plantes dont l'horloge correspond à la durée du jour contiennent plus de chlorophylle, fixent plus de carbone, poussent plus vite et survivent mieux.",
+    "Selon Space.com, si les jours et les nuits duraient beaucoup plus longtemps, la surface se réchaufferait beaucoup plus le jour et se refroidirait beaucoup plus la nuit."
    ]
   },
   "de": {
-   "title": "Was würde ein 48-Stunden-Tag mit deinem Körper machen?",
-   "summary": "Wenn ein Tag 48 Stunden dauern würde, wäre es bei jedem zweiten Aufwachen draußen dunkel! Professor Pi erklärt, warum deine innere Uhr bei etwa 24 Stunden bleibt und was so lange Tage und Nächte bringen würden.",
+   "title": "Was Würde ein 48-Stunden-Tag mit Deinem Körper Machen?",
+   "summary": "Würde ein Tag 48 Stunden dauern, bliebe deine innere Uhr bei 24 Stunden und jeder zweite Schlaf fiele in den hellen Tag! Professor Pi erklärt, was in einem Harvard-Experiment mit dem Blutzucker von Freiwilligen geschah, die gegen ihre innere Uhr lebten, und was Nutzpflanzen erwarten würde.",
    "facts": [
-    "Laut Harvard-Forschern läuft die innere Uhr des Menschen in einem Zyklus von 24 Stunden und 11 Minuten.",
-    "In derselben Studie folgten Körpertemperatur und Hormone von Menschen, die 28-Stunden-Tage lebten, weiter ihrem eigenen Zyklus von etwa 24 Stunden.",
-    "Einfache Rechnung: An einem 48-Stunden-Tag dauern Tag und Nacht im Schnitt jeweils etwa 24 Stunden; mit einer 24-Stunden-Uhr fiele also jedes zweite Aufwachen in die Nacht.",
-    "Laut Marc Rayman vom NASA-JPL sorgt die 24-stündige Erdrotation dafür, dass die meisten Orte der Erde beim Wechsel zwischen Licht und Dunkelheit angenehm temperiert bleiben.",
-    "Laut Space.com würde sich die Oberfläche, wenn die Erde aufhörte, sich zu drehen, und Tage und Nächte Monate dauerten, tagsüber viel stärker erwärmen und nachts viel stärker abkühlen."
+    "In einem 10-tägigen Experiment des Brigham and Women's Hospital und der Harvard University lebten Freiwillige mit 28-Stunden-„Tagen“; aßen und schliefen sie gegen ihre innere Uhr, lag bei 3 von 8 der Blutzucker nach dem Essen im Bereich eines Prädiabetes.",
+    "Im selben Experiment stieg der Blutzucker durch das Leben gegen die innere Uhr im Schnitt um 6 %, das Sättigungshormon Leptin sank um 17 % und die Schlafeffizienz um 20 %.",
+    "Laut Harvard-Forschern läuft die innere Uhr des Menschen in einem Zyklus von 24 Stunden und 11 Minuten und passt sich nicht einmal an einen 28-Stunden-Tag an; an einem 48-Stunden-Tag dauerten Tag und Nacht je 24 Stunden, also fiele jeder zweite Schlaf in den Tag.",
+    "Laut einer Studie in Science enthalten Pflanzen, deren innere Uhr zur Tageslänge passt, mehr Chlorophyll, binden mehr Kohlenstoff, wachsen schneller und überleben besser.",
+    "Laut Space.com würde sich die Oberfläche bei viel längeren Tagen und Nächten tagsüber viel stärker erwärmen und nachts viel stärker abkühlen."
    ]
   },
   "ru": {
-   "title": "Что стало бы с твоим телом, если бы сутки длились 48 часов?",
-   "summary": "Если бы сутки длились 48 часов, каждое второе твоё пробуждение приходилось бы на ночь! Профессор Пи объясняет, почему твои внутренние часы остаются на отметке около 24 часов и что принесли бы такие длинные дни и ночи.",
+   "title": "Что 48-часовые сутки сделали бы с твоим телом?",
+   "summary": "Если бы сутки длились 48 часов, твои внутренние часы остались бы на 24 часах, и каждый второй сон приходился бы на белый день! Профессор Пи рассказывает, что случилось с сахаром в крови добровольцев, живших вразрез со своими внутренними часами в эксперименте Гарварда, и что ждало бы урожай.",
    "facts": [
-    "По данным исследователей из Гарварда, внутренние часы человека работают по циклу в 24 часа 11 минут.",
-    "В том же исследовании у людей, живших по 28-часовым суткам, температура тела и гормоны продолжали следовать собственному циклу примерно в 24 часа.",
-    "Простой расчёт: в 48-часовых сутках день и ночь длились бы в среднем примерно по 24 часа, поэтому при 24-часовых внутренних часах каждое второе пробуждение приходилось бы на ночь.",
-    "По словам Марка Реймана из JPL NASA, 24-часовое вращение Земли позволяет большей части планеты сохранять комфортную температуру при смене света и темноты.",
-    "По данным Space.com, если бы Земля перестала вращаться и дни и ночи длились месяцами, поверхность днём нагревалась бы намного сильнее, а ночью намного сильнее остывала бы."
+    "В 10-дневном эксперименте больницы Brigham and Women's и Гарварда добровольцы жили по 28-часовым «суткам»; когда они ели и спали вразрез со своими внутренними часами, у 3 из 8 сахар в крови после еды достигал уровня преддиабета.",
+    "В том же эксперименте жизнь вразрез с внутренними часами повысила сахар в крови в среднем на 6%, снизила гормон сытости лептин на 17% и эффективность сна на 20%.",
+    "По данным исследователей Гарварда, внутренние часы человека работают по циклу 24 часа 11 минут и не подстраиваются даже под 28-часовые сутки; в 48-часовых сутках день и ночь длились бы по 24 часа, поэтому каждый второй сон приходился бы на день.",
+    "Согласно исследованию в журнале Science, растения, чьи часы совпадают с длиной суток, содержат больше хлорофилла, связывают больше углерода, растут быстрее и лучше выживают.",
+    "По данным Space.com, если бы дни и ночи длились намного дольше, поверхность днём нагревалась бы намного сильнее, а ночью сильнее остывала."
    ]
   },
   "az": {
    "title": "Bir Gün 48 Saat Olsaydı, Bədəninə Nə Olardı?",
-   "summary": "Bir gün 48 saat çəksəydi, hər iki oyanışından biri gecə qaranlığına düşərdi! Bioloji saatının niyə təxminən 24 saatda qaldığını və uzun gündüzlərlə gecələrin nələr gətirəcəyini Professor Pi izah edir.",
+   "summary": "Bir gün 48 saat sürsəydi, daxili saatın 24 saatda qalar, hər iki yuxundan biri gündüzə düşərdi! Professor Pi Harvard təcrübəsində daxili saatına zidd yaşayan könüllülərin qan şəkərinə nə olduğunu və əkinləri nəyin gözlədiyini izah edir.",
    "facts": [
-    "Harvard tədqiqatçılarına görə insanın daxili saatı 24 saat 11 dəqiqəlik dövrlə işləyir.",
-    "Eyni tədqiqatda 28 saatlıq günlərlə yaşayan insanların bədən temperaturu və hormonları yenə də təxminən 24 saatlıq öz dövrünü izlədi.",
-    "Sadə hesab: 48 saatlıq bir gündə gündüz və gecə orta hesabla təxminən 24 saat çəkər; 24 saatlıq daxili saatla hər iki oyanışdan biri gecəyə düşər.",
-    "NASA JPL-dən Mark Reymana görə Yerin 24 saatlıq fırlanması planetin əksər yerlərinin işıqla qaranlıq arasında keçərkən mülayim temperaturda qalmasını təmin edir.",
-    "Space.com-a görə Yer fırlanmanı dayandırsa və gündüzlə gecə aylarla çəksə, səth gündüzlər daha çox qızar, gecələr isə daha çox soyuyardı."
+    "Brigham and Women's Hospital və Harvardın 10 günlük təcrübəsində könüllülər 28 saatlıq 'günlərlə' yaşadı; daxili saata zidd yeyib yatanda 8 nəfərdən 3-ündə yeməkdən sonrakı qan şəkəri diabetdən əvvəlki səviyyəyə çatdı.",
+    "Eyni təcrübədə daxili saata zidd yaşamaq qan şəkərini orta hesabla 6% artırdı, toxluq hormonu leptini 17% azaltdı və yuxu səmərəliliyini 20% aşağı saldı.",
+    "Harvard tədqiqatçılarına görə insanın daxili saatı 24 saat 11 dəqiqəlik dövrlə işləyir və hətta 28 saatlıq günə də uyğunlaşmır; 48 saatlıq gündə gündüz və gecə 24 saat sürərdi, ona görə də hər iki yuxudan biri gündüzə düşərdi.",
+    "Science jurnalındakı bir araşdırmaya görə daxili saatı gün uzunluğuna uyğun gələn bitkilər daha çox xlorofil saxlayır, daha çox karbon bağlayır, daha sürətlə böyüyür və daha yaxşı yaşayır.",
+    "Space.com-a görə gündüz və gecələr çox daha uzun sürsəydi, səth gündüz daha çox qızar, gecə isə daha çox soyuyardı."
    ]
   }
  }

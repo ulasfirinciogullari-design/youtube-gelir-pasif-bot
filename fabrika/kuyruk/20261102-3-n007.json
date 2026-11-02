@@ -1,0 +1,323 @@
+{
+ "id": "n007",
+ "series": "Ne Kadar Büyük?",
+ "q": "Ay gerçekte ne kadar uzak?",
+ "title": "Ay Gerçekte Ne Kadar Uzak?",
+ "bar": {
+  "hi": "AY",
+  "rest": "NE KADAR UZAK?"
+ },
+ "summary": "Bütün gezegenleri yan yana dizsen, Ay en uzaktayken hepsi Ay'la aramıza sığar! 384.400 km'nin gerçekte ne kadar uzak olduğunu ve Ay'ın neden tırnaklarının uzama hızıyla kaçtığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bütün gezegenler, Ay en uzaktayken Ay'la aramıza sığar!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "l"
+     },
+     {
+      "b": "jupiter",
+      "size": "s",
+      "at": "c"
+     },
+     {
+      "b": "moon",
+      "size": "xs",
+      "at": "r"
+     }
+    ],
+    "do": "none",
+    "target": 1,
+    "key": "sığar",
+    "label": "Hepsi Sığar"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Jüpiter bile mi?!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "jupiter",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "Jüpiter",
+    "label": "Jüpiter Bile"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ortalama 384.400 km: araya 30 Dünya dizilir.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "earth",
+     "label": "Dünya Çapı",
+     "value": "12.742"
+    },
+    "b": {
+     "b": "moon",
+     "label": "Ay'a Uzaklık",
+     "value": "384.400"
+    },
+    "mode": "bar",
+    "key": "384.400"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Saatte 100'le durmadan sürsen, Ay'a 160 günde varırdın.",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "🚗",
+    "value": "160",
+    "unit": "gün",
+    "label": "Saatte 100 km",
+    "key": "160"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Benzin yetmez!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "⛽",
+    "do": "shake",
+    "key": "Benzin",
+    "label": "Benzin Yetmez"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ay'a bakınca 1,3 saniye önceki halini görürsün.",
+   "v": {
+    "t": "meter",
+    "bg": "night",
+    "label": "Ay Işığının Yolu",
+    "from": 0,
+    "to": 1.3,
+    "unit": "saniye",
+    "e": "🌕",
+    "key": "1,3"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her yıl tırnağının uzama hızıyla 3,8 cm kaçıyor; tam Güneş tutulmaları bir gün bitecek!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "bl"
+     },
+     {
+      "b": "moon",
+      "size": "s",
+      "at": "tr"
+     }
+    ],
+    "do": "recede",
+    "target": 1,
+    "key": "kaçıyor",
+    "label": "Yılda 3,8 cm"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ay bizi terk eder mi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🌕"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre Ay en uzak noktasındayken (yaklaşık 405.600 km), diğer 7 gezegenin ortalama çapları toplamı olan 380.016 km bu aralığa sığar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/the-moon/how-far-away-is-the-moon"
+  },
+  {
+   "text": "NASA'ya göre Ay, Dünya'dan ortalama 384.400 km uzaktadır; bu, yan yana dizilmiş 30 Dünya'ya eşittir. Saatte 100 km hızla bu yol yaklaşık 3.844 saat, yani 160 gün sürer.",
+   "source": "NASA Space Place",
+   "url": "https://spaceplace.nasa.gov/moon-distance/en/"
+  },
+  {
+   "text": "NASA'ya göre lazer ışığının Ay'daki yansıtıcılara gidip dönmesi ortalama yaklaşık 2,5 saniye sürer; yani Ay'dan gelen ışık bize yaklaşık 1,3 saniyede ulaşır.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/"
+  },
+  {
+   "text": "NASA'ya göre Dünya ile Ay, tırnakların uzama hızıyla, yılda yaklaşık 3,8 cm birbirinden uzaklaşıyor.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/"
+  },
+  {
+   "text": "Sky & Telescope'a göre Ay uzaklaştıkça tam Güneş tutulmaları yaklaşık 620 milyon yıl sonra seyrekleşmeye başlayacak ve yaklaşık 1,2 milyar yıl sonra tamamen sona erecek.",
+   "source": "Sky & Telescope",
+   "url": "https://skyandtelescope.org/astronomy-resources/astronomy-questions-answers/when-will-the-last-total-solar-eclipse-occur/"
+  }
+ ],
+ "tags": [
+  "ay",
+  "ay ne kadar uzak",
+  "ay dünya arası mesafe",
+  "ay'a uzaklık",
+  "ay uzaklaşıyor",
+  "güneş tutulması",
+  "gezegenler",
+  "ne kadar büyük",
+  "moon distance",
+  "how far is the moon",
+  "moon drifting away",
+  "planets between earth and moon",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://spaceplace.nasa.gov/moon-distance/en/",
+  "https://www.livescience.com/space/the-moon/how-far-away-is-the-moon",
+  "https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/",
+  "https://skyandtelescope.org/astronomy-resources/astronomy-questions-answers/when-will-the-last-total-solar-eclipse-occur/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Far Away Is the Moon Really?",
+   "summary": "Line up all the planets and, when the Moon is farthest away, they fit between us and the Moon! Professor Pi explains how far 384,400 km really is and why the Moon is slipping away at the speed your fingernails grow.",
+   "facts": [
+    "According to Live Science, when the Moon is at its farthest point (about 405,600 km), the 7 other planets, whose average diameters add up to 380,016 km, fit in the gap.",
+    "According to NASA, the Moon is on average 384,400 km from Earth, equal to 30 Earths lined up side by side. At 100 km per hour, that trip would take about 3,844 hours, or 160 days.",
+    "According to NASA, laser light takes about 2.5 seconds on average to reach the reflectors on the Moon and come back, so moonlight reaches us in about 1.3 seconds.",
+    "According to NASA, Earth and the Moon are drifting apart by about 3.8 cm a year, the rate at which fingernails grow.",
+    "According to Sky & Telescope, as the Moon drifts away, total solar eclipses will start becoming rare in about 620 million years and will end completely in about 1.2 billion years."
+   ]
+  },
+  "es": {
+   "title": "¿A Qué Distancia Está Realmente la Luna?",
+   "summary": "Si pusieras en fila todos los planetas, cuando la Luna está más lejos cabrían entre nosotros y ella. El profesor Pi explica lo lejos que están de verdad 384.400 km y por qué la Luna se aleja a la velocidad a la que crecen tus uñas.",
+   "facts": [
+    "Según Live Science, cuando la Luna está en su punto más lejano (unos 405.600 km), los otros 7 planetas, cuyos diámetros medios suman 380.016 km, caben en ese espacio.",
+    "Según la NASA, la Luna está en promedio a 384.400 km de la Tierra, lo que equivale a 30 Tierras en fila. A 100 km por hora, el viaje duraría unas 3.844 horas, es decir, 160 días.",
+    "Según la NASA, la luz de un láser tarda en promedio unos 2,5 segundos en llegar a los reflectores de la Luna y volver, así que la luz de la Luna nos llega en unos 1,3 segundos.",
+    "Según la NASA, la Tierra y la Luna se separan unos 3,8 cm al año, al ritmo al que crecen las uñas.",
+    "Según Sky & Telescope, al alejarse la Luna, los eclipses totales de Sol empezarán a escasear dentro de unos 620 millones de años y desaparecerán del todo en unos 1.200 millones de años."
+   ]
+  },
+  "pt": {
+   "title": "A Que Distância a Lua Está de Verdade?",
+   "summary": "Se você enfileirasse todos os planetas, quando a Lua está mais longe eles caberiam entre nós e ela! O professor Pi explica quão longe 384.400 km realmente são e por que a Lua se afasta na velocidade em que suas unhas crescem.",
+   "facts": [
+    "Segundo a Live Science, quando a Lua está no ponto mais distante (cerca de 405.600 km), os outros 7 planetas, cujos diâmetros médios somam 380.016 km, cabem nesse espaço.",
+    "Segundo a NASA, a Lua fica em média a 384.400 km da Terra, o equivalente a 30 Terras enfileiradas. A 100 km por hora, a viagem levaria cerca de 3.844 horas, ou seja, 160 dias.",
+    "Segundo a NASA, a luz de um laser leva em média cerca de 2,5 segundos para ir até os refletores na Lua e voltar, então a luz da Lua chega até nós em cerca de 1,3 segundo.",
+    "Segundo a NASA, a Terra e a Lua se afastam cerca de 3,8 cm por ano, a velocidade em que as unhas crescem.",
+    "Segundo a Sky & Telescope, com o afastamento da Lua, os eclipses solares totais vão começar a ficar raros daqui a cerca de 620 milhões de anos e acabarão de vez em cerca de 1,2 bilhão de anos."
+   ]
+  },
+  "ar": {
+   "title": "كم يبعد القمر عنا حقًا؟",
+   "summary": "لو صففت كل الكواكب، فإنها تتسع بيننا وبين القمر حين يكون في أبعد نقطة! يشرح البروفيسور باي كم تبلغ مسافة 384,400 كم حقًا، ولماذا يبتعد القمر بسرعة نمو أظافرك.",
+   "facts": [
+    "وفقًا لموقع Live Science، عندما يكون القمر في أبعد نقطة (نحو 405,600 كم)، تتسع الفجوة للكواكب السبعة الأخرى التي يبلغ مجموع متوسط أقطارها 380,016 كم.",
+    "وفقًا لناسا، يبعد القمر عن الأرض في المتوسط 384,400 كم، أي ما يعادل 30 أرضًا مصفوفة جنبًا إلى جنب. وبسرعة 100 كم في الساعة تستغرق الرحلة نحو 3,844 ساعة، أي 160 يومًا.",
+    "وفقًا لناسا، يستغرق ضوء الليزر في المتوسط نحو 2.5 ثانية للوصول إلى العواكس على القمر والعودة، لذا يصلنا ضوء القمر في نحو 1.3 ثانية.",
+    "وفقًا لناسا، تبتعد الأرض والقمر عن بعضهما بنحو 3.8 سم سنويًا، وهي سرعة نمو الأظافر.",
+    "وفقًا لمجلة Sky & Telescope، مع ابتعاد القمر ستبدأ الكسوفات الكلية للشمس في الندرة بعد نحو 620 مليون سنة، وستنتهي تمامًا بعد نحو 1.2 مليار سنة."
+   ]
+  },
+  "hi": {
+   "title": "चांद असल में कितनी दूर है?",
+   "summary": "अगर सारे ग्रहों को एक कतार में रखें, तो चांद के सबसे दूर होने पर वे हमारे और चांद के बीच समा जाते हैं! प्रोफेसर पाई बताते हैं कि 3,84,400 किमी असल में कितना दूर है और चांद आपके नाखून बढ़ने की रफ्तार से क्यों दूर जा रहा है।",
+   "facts": [
+    "Live Science के अनुसार जब चांद सबसे दूर (लगभग 4,05,600 किमी) होता है, तब बाकी 7 ग्रह, जिनके औसत व्यासों का जोड़ 3,80,016 किमी है, इस दूरी में समा जाते हैं।",
+    "NASA के अनुसार चांद धरती से औसतन 3,84,400 किमी दूर है, जो कतार में रखी 30 धरतियों के बराबर है। 100 किमी प्रति घंटे की रफ्तार से यह सफर लगभग 3,844 घंटे, यानी 160 दिन लेता।",
+    "NASA के अनुसार लेज़र की रोशनी को चांद पर लगे रिफ्लेक्टर तक जाकर लौटने में औसतन लगभग 2.5 सेकंड लगते हैं, यानी चांद की रोशनी हम तक लगभग 1.3 सेकंड में पहुंचती है।",
+    "NASA के अनुसार धरती और चांद हर साल लगभग 3.8 सेमी दूर हो रहे हैं, उसी रफ्तार से जिससे नाखून बढ़ते हैं।",
+    "Sky & Telescope के अनुसार चांद के दूर जाने से लगभग 62 करोड़ साल बाद पूर्ण सूर्य ग्रहण दुर्लभ होने लगेंगे और लगभग 1.2 अरब साल बाद पूरी तरह खत्म हो जाएंगे।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Jauh Bulan Sebenarnya?",
+   "summary": "Jika semua planet dijajarkan, saat Bulan berada di titik terjauhnya, semuanya muat di antara kita dan Bulan! Profesor Pi menjelaskan seberapa jauh 384.400 km sebenarnya dan mengapa Bulan menjauh secepat kukumu tumbuh.",
+   "facts": [
+    "Menurut Live Science, saat Bulan berada di titik terjauhnya (sekitar 405.600 km), 7 planet lainnya, yang jumlah diameter rata-ratanya 380.016 km, muat di celah itu.",
+    "Menurut NASA, Bulan rata-rata berjarak 384.400 km dari Bumi, setara 30 Bumi yang dijajarkan. Dengan kecepatan 100 km per jam, perjalanan itu butuh sekitar 3.844 jam, atau 160 hari.",
+    "Menurut NASA, sinar laser butuh rata-rata sekitar 2,5 detik untuk mencapai reflektor di Bulan dan kembali, jadi cahaya Bulan sampai ke kita dalam sekitar 1,3 detik.",
+    "Menurut NASA, Bumi dan Bulan saling menjauh sekitar 3,8 cm per tahun, secepat kuku tumbuh.",
+    "Menurut Sky & Telescope, karena Bulan menjauh, gerhana matahari total akan mulai jarang terjadi sekitar 620 juta tahun lagi dan berakhir sepenuhnya sekitar 1,2 miliar tahun lagi."
+   ]
+  },
+  "fr": {
+   "title": "À Quelle Distance Se Trouve Vraiment la Lune ?",
+   "summary": "Aligne toutes les planètes : quand la Lune est au plus loin, elles tiennent entre elle et nous ! Le professeur Pi explique à quel point 384 400 km sont loin et pourquoi la Lune s'éloigne à la vitesse à laquelle poussent tes ongles.",
+   "facts": [
+    "Selon Live Science, quand la Lune est à son point le plus éloigné (environ 405 600 km), les 7 autres planètes, dont les diamètres moyens totalisent 380 016 km, tiennent dans cet espace.",
+    "Selon la NASA, la Lune est en moyenne à 384 400 km de la Terre, soit 30 Terres alignées. À 100 km/h, le trajet durerait environ 3 844 heures, soit 160 jours.",
+    "Selon la NASA, la lumière d'un laser met en moyenne environ 2,5 secondes pour atteindre les réflecteurs sur la Lune et revenir ; la lumière de la Lune nous parvient donc en environ 1,3 seconde.",
+    "Selon la NASA, la Terre et la Lune s'éloignent d'environ 3,8 cm par an, au rythme de la pousse des ongles.",
+    "Selon Sky & Telescope, à mesure que la Lune s'éloigne, les éclipses totales de Soleil commenceront à se raréfier dans environ 620 millions d'années et disparaîtront complètement dans environ 1,2 milliard d'années."
+   ]
+  },
+  "de": {
+   "title": "Wie Weit Ist der Mond Wirklich Entfernt?",
+   "summary": "Reih alle Planeten auf: Wenn der Mond am weitesten entfernt ist, passen sie zwischen uns und ihn! Professor Pi erklärt, wie weit 384.400 km wirklich sind und warum sich der Mond so schnell entfernt, wie deine Fingernägel wachsen.",
+   "facts": [
+    "Laut Live Science passen die 7 anderen Planeten, deren mittlere Durchmesser zusammen 380.016 km ergeben, in die Lücke, wenn der Mond am weitesten entfernt ist (etwa 405.600 km).",
+    "Laut NASA ist der Mond im Durchschnitt 384.400 km von der Erde entfernt, das entspricht 30 aneinandergereihten Erden. Mit 100 km pro Stunde würde die Fahrt etwa 3.844 Stunden dauern, also 160 Tage.",
+    "Laut NASA braucht Laserlicht im Durchschnitt etwa 2,5 Sekunden zu den Reflektoren auf dem Mond und zurück; das Mondlicht erreicht uns also in etwa 1,3 Sekunden.",
+    "Laut NASA entfernen sich Erde und Mond jedes Jahr um etwa 3,8 cm voneinander, so schnell, wie Fingernägel wachsen.",
+    "Laut Sky & Telescope werden totale Sonnenfinsternisse, weil sich der Mond entfernt, in etwa 620 Millionen Jahren seltener und in etwa 1,2 Milliarden Jahren ganz verschwinden."
+   ]
+  },
+  "ru": {
+   "title": "Как далеко на самом деле Луна?",
+   "summary": "Выстрой все планеты в ряд — когда Луна дальше всего, они поместятся между нами и ней! Профессор Пи объясняет, насколько далеко на самом деле 384 400 км и почему Луна удаляется со скоростью роста твоих ногтей.",
+   "facts": [
+    "По данным Live Science, когда Луна в самой дальней точке (около 405 600 км), в этот промежуток помещаются 7 других планет, сумма средних диаметров которых составляет 380 016 км.",
+    "По данным NASA, Луна находится в среднем в 384 400 км от Земли — это 30 Земель, выстроенных в ряд. Со скоростью 100 км/ч дорога заняла бы около 3844 часов, то есть 160 дней.",
+    "По данным NASA, лазерному лучу нужно в среднем около 2,5 секунды, чтобы долететь до отражателей на Луне и вернуться, поэтому свет Луны доходит до нас примерно за 1,3 секунды.",
+    "По данным NASA, Земля и Луна отдаляются друг от друга примерно на 3,8 см в год — с той же скоростью, с какой растут ногти.",
+    "По данным Sky & Telescope, из-за удаления Луны полные солнечные затмения начнут становиться редкими примерно через 620 миллионов лет и полностью прекратятся примерно через 1,2 миллиарда лет."
+   ]
+  },
+  "az": {
+   "title": "Ay Əslində Nə Qədər Uzaqdır?",
+   "summary": "Bütün planetləri yan-yana düzsən, Ay ən uzaqda olanda hamısı bizimlə Ayın arasına sığar! Professor Pi 384.400 km-in əslində nə qədər uzaq olduğunu və Ayın niyə dırnaqlarının uzanma sürətiylə uzaqlaşdığını izah edir.",
+   "facts": [
+    "Live Science-ə görə Ay ən uzaq nöqtədə (təxminən 405.600 km) olanda orta diametrləri cəmi 380.016 km olan digər 7 planet bu aralığa sığır.",
+    "NASA-ya görə Ay Yerdən orta hesabla 384.400 km uzaqdadır; bu, yan-yana düzülmüş 30 Yerə bərabərdir. Saatda 100 km sürətlə bu yol təxminən 3.844 saat, yəni 160 gün çəkərdi.",
+    "NASA-ya görə lazer işığının Aydakı əks etdiricilərə çatıb geri qayıtması orta hesabla təxminən 2,5 saniyə çəkir; yəni Ayın işığı bizə təxminən 1,3 saniyəyə çatır.",
+    "NASA-ya görə Yer və Ay hər il təxminən 3,8 sm bir-birindən uzaqlaşır, dırnaqların uzanma sürətiylə.",
+    "Sky & Telescope-a görə Ay uzaqlaşdıqca tam Günəş tutulmaları təxminən 620 milyon ildən sonra seyrəkləşməyə başlayacaq və təxminən 1,2 milyard ildən sonra tamamilə bitəcək."
+   ]
+  }
+ }
+}

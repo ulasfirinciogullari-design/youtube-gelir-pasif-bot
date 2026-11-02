@@ -1,0 +1,275 @@
+{
+ "id": "y011",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'nın etrafında Satürn gibi halka olsaydı?",
+ "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+ "bar": {
+  "hi": "HALKALI",
+  "rest": "DÜNYA OLSAYDI?"
+ },
+ "summary": "Dünya'nın Satürn gibi halkası olsaydı, kışın gölgesi üstümüze düşer ve kışlar çok daha sert geçebilirdi! Üstelik bilim insanlarına göre Dünya'nın 466 milyon yıl önce gerçekten bir halkası olmuş olabilir; Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Kışın halka güneşini perdeler; kışlar çok sertleşebilirdi!",
+   "v": {
+    "t": "split",
+    "bg": "ice",
+    "left": {
+     "e": "☀️",
+     "label": "Bugünkü Kış"
+    },
+    "right": {
+     "e": "🥶",
+     "label": "Halkalı Kış"
+    },
+    "key": "kışlar"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Atkımı hiç çıkaramam mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🧣",
+    "do": "shake",
+    "key": "Atkımı",
+    "label": "Atkı Şart"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Türkiye'den gökte dev bir kemer gibi görünür, hiç batmazdı.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🌈",
+    "do": "rise",
+    "key": "kemer",
+    "label": "Gökte Dev Kemer"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl şok: 466 milyon yıl önce Dünya'nın halkası olmuş olabilir!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🪐",
+    "value": "466 milyon",
+    "unit": "yıl önce",
+    "label": "Dünya'nın Halkası",
+    "key": "466"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Dinozorlardan önce mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "🦕",
+    "do": "shake",
+    "key": "Dinozorlardan",
+    "label": "Dinozorlar Yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gölgesi, son 500 milyon yılın en soğuk dönemlerinden birine katkı yapmış olabilir.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "freeze",
+    "target": 0,
+    "key": "soğuk",
+    "label": "Buz Çağı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Halkalı Dünya'da yaşar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🪐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre Dünya'nın halkaları olsaydı kışı yaşayan yarımküreye gölge düşürür, iki yarımkürede de kışlar daha soğuk ve sert geçebilirdi.",
+   "source": "Live Science",
+   "url": "https://livescience.com/what-if-earth-had-rings.html"
+  },
+  {
+   "text": "Live Science'a göre halkalar ekvatorun üzerinde durur; ılıman enlemlerden gökte dev bir kemer gibi görünür, doğup batmadan gece gündüz görülürdü.",
+   "source": "Live Science",
+   "url": "https://livescience.com/what-if-earth-had-rings.html"
+  },
+  {
+   "text": "Monash Üniversitesi'nin çalışmasına göre Dünya'nın yaklaşık 466 milyon yıl önce, parçalanan bir asteroitin enkazından oluşan bir halkası olmuş olabilir.",
+   "source": "Monash University",
+   "url": "https://www.monash.edu/science/news-events/news/2024/earth-may-have-had-a-ring-system-466-million-years-ago"
+  },
+  {
+   "text": "Araştırmacılara göre bu halkanın gölgesi, son 500 milyon yılın en soğuk dönemlerinden biri olan Hirnant buzul dönemine katkı yapmış olabilir.",
+   "source": "Monash University",
+   "url": "https://www.monash.edu/science/news-events/news/2024/earth-may-have-had-a-ring-system-466-million-years-ago"
+  },
+  {
+   "text": "Space.com'a göre o döneme ait 21 çarpma kraterinin hepsi, ekvatorun 30 derece yakınındaki kıtalarda oluşmuştu.",
+   "source": "Space.com",
+   "url": "https://www.space.com/ancient-earth-ring-system-asteroid-breakup"
+  }
+ ],
+ "tags": [
+  "dünyanın halkası",
+  "dünyanın halkası olsaydı",
+  "satürn halkası",
+  "satürn",
+  "halkalı dünya",
+  "buz çağı",
+  "466 milyon yıl önce",
+  "earth rings",
+  "what if earth had rings",
+  "saturn rings",
+  "earth ring 466 million years",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#satürn",
+  "#dünya",
+  "#bilim"
+ ],
+ "cover": 5,
+ "sources": [
+  "https://livescience.com/what-if-earth-had-rings.html",
+  "https://www.monash.edu/science/news-events/news/2024/earth-may-have-had-a-ring-system-466-million-years-ago",
+  "https://www.space.com/ancient-earth-ring-system-asteroid-breakup"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen to You If Earth Had Rings Like Saturn?",
+   "summary": "If Earth had rings like Saturn, their shadow would fall on us in winter and winters could get much harsher! And scientists think Earth may really have had a ring 466 million years ago; Professor Pi explains.",
+   "facts": [
+    "According to Live Science, if Earth had rings they would cast shadows on the winter hemisphere, so winters in both hemispheres could be colder and more severe.",
+    "According to Live Science, the rings would sit above the equator; from temperate latitudes they would look like a giant arch in the sky, visible day and night without rising or setting.",
+    "According to a Monash University study, Earth may have had a ring about 466 million years ago, formed from the debris of a broken-up asteroid.",
+    "The researchers say the ring's shadow may have contributed to the Hirnantian Icehouse, one of the coldest periods of the last 500 million years.",
+    "According to Space.com, all 21 impact craters from that period formed on continents within 30 degrees of the equator."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Te Pasaría si la Tierra Tuviera Anillos Como Saturno?",
+   "summary": "Si la Tierra tuviera anillos como Saturno, su sombra caería sobre nosotros en invierno y los inviernos podrían ser mucho más duros. Y según los científicos, la Tierra pudo tener un anillo de verdad hace 466 millones de años; el profesor Pi lo explica.",
+   "facts": [
+    "Según Live Science, si la Tierra tuviera anillos, proyectarían sombra sobre el hemisferio que está en invierno, y los inviernos de ambos hemisferios podrían ser más fríos y duros.",
+    "Según Live Science, los anillos estarían sobre el ecuador; desde latitudes templadas se verían como un arco gigante en el cielo, de día y de noche, sin salir ni ponerse.",
+    "Según un estudio de la Universidad Monash, la Tierra pudo tener un anillo hace unos 466 millones de años, formado por los restos de un asteroide destrozado.",
+    "Los investigadores creen que la sombra del anillo pudo contribuir a la glaciación hirnantiense, uno de los periodos más fríos de los últimos 500 millones de años.",
+    "Según Space.com, los 21 cráteres de impacto de esa época se formaron en continentes situados a menos de 30 grados del ecuador."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria com Você se a Terra Tivesse Anéis Como Saturno?",
+   "summary": "Se a Terra tivesse anéis como Saturno, a sombra deles cairia sobre nós no inverno e os invernos poderiam ficar bem mais rigorosos! E, segundo os cientistas, a Terra pode ter tido um anel de verdade há 466 milhões de anos; o professor Pi explica.",
+   "facts": [
+    "Segundo a Live Science, se a Terra tivesse anéis, eles projetariam sombra sobre o hemisfério que está no inverno, e os invernos dos dois hemisférios poderiam ser mais frios e rigorosos.",
+    "Segundo a Live Science, os anéis ficariam sobre o equador; de latitudes temperadas, pareceriam um arco gigante no céu, visível dia e noite, sem nascer nem se pôr.",
+    "Segundo um estudo da Universidade Monash, a Terra pode ter tido um anel há cerca de 466 milhões de anos, formado pelos destroços de um asteroide despedaçado.",
+    "Os pesquisadores dizem que a sombra do anel pode ter contribuído para a glaciação hirnantiana, um dos períodos mais frios dos últimos 500 milhões de anos.",
+    "Segundo o Space.com, todas as 21 crateras de impacto daquela época se formaram em continentes a menos de 30 graus do equador."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لك لو كان للأرض حلقات مثل زحل؟",
+   "summary": "لو كان للأرض حلقات مثل زحل، لسقط ظلها علينا في الشتاء وقد يصبح الشتاء أقسى بكثير! ويرى العلماء أن الأرض ربما امتلكت حلقة حقيقية قبل 466 مليون سنة؛ يشرح البروفيسور باي القصة.",
+   "facts": [
+    "وفقًا لموقع Live Science، لو كان للأرض حلقات لألقت بظلها على نصف الكرة الذي يعيش فصل الشتاء، فقد يصبح الشتاء في نصفي الكرة أبرد وأقسى.",
+    "وفقًا لموقع Live Science، ستقع الحلقات فوق خط الاستواء، وستبدو من خطوط العرض المعتدلة كقوس عملاق في السماء يُرى ليلًا ونهارًا دون أن يشرق أو يغرب.",
+    "وفقًا لدراسة من جامعة موناش، ربما امتلكت الأرض حلقة قبل نحو 466 مليون سنة، تكونت من حطام كويكب تفتت.",
+    "يقول الباحثون إن ظل هذه الحلقة ربما أسهم في العصر الجليدي الهيرنانتي، وهو من أبرد الفترات خلال آخر 500 مليون سنة.",
+    "وفقًا لموقع Space.com، تكونت جميع فوهات الاصطدام الـ21 من تلك الفترة على قارات تقع ضمن 30 درجة من خط الاستواء."
+   ]
+  },
+  "hi": {
+   "title": "अगर धरती के पास शनि जैसे छल्ले होते, तो आपका क्या होता?",
+   "summary": "अगर धरती के पास शनि जैसे छल्ले होते, तो सर्दियों में उनकी छाया हम पर पड़ती और सर्दियां कहीं ज़्यादा कड़ी हो सकती थीं! वैज्ञानिकों के अनुसार 46.6 करोड़ साल पहले धरती के पास सच में एक छल्ला रहा हो सकता है; प्रोफेसर पाई बताते हैं।",
+   "facts": [
+    "Live Science के अनुसार अगर धरती के छल्ले होते, तो वे सर्दी वाले गोलार्ध पर छाया डालते, जिससे दोनों गोलार्धों में सर्दियां ज़्यादा ठंडी और कड़ी हो सकती थीं।",
+    "Live Science के अनुसार छल्ले भूमध्य रेखा के ऊपर होते; समशीतोष्ण अक्षांशों से वे आसमान में एक विशाल मेहराब जैसे दिखते, जो बिना उगे या डूबे दिन-रात दिखाई देते।",
+    "मोनाश यूनिवर्सिटी के एक अध्ययन के अनुसार लगभग 46.6 करोड़ साल पहले धरती के पास एक टूटे हुए क्षुद्रग्रह के मलबे से बना छल्ला रहा हो सकता है।",
+    "शोधकर्ताओं के अनुसार इस छल्ले की छाया ने हिरनैंटियन हिमयुग में योगदान दिया हो सकता है, जो पिछले 50 करोड़ वर्षों के सबसे ठंडे दौरों में से एक था।",
+    "Space.com के अनुसार उस दौर के सभी 21 टक्कर क्रेटर भूमध्य रेखा से 30 डिग्री के भीतर स्थित महाद्वीपों पर बने थे।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi padamu Jika Bumi Punya Cincin Seperti Saturnus?",
+   "summary": "Jika Bumi punya cincin seperti Saturnus, bayangannya akan jatuh ke atas kita saat musim dingin dan musim dingin bisa jauh lebih keras! Menurut ilmuwan, Bumi mungkin benar-benar pernah punya cincin 466 juta tahun lalu; Profesor Pi menjelaskannya.",
+   "facts": [
+    "Menurut Live Science, jika Bumi punya cincin, cincin itu akan menaungi belahan Bumi yang sedang musim dingin, sehingga musim dingin di kedua belahan bisa lebih dingin dan keras.",
+    "Menurut Live Science, cincin akan berada di atas khatulistiwa; dari lintang sedang, cincin tampak seperti lengkungan raksasa di langit, terlihat siang dan malam tanpa terbit atau terbenam.",
+    "Menurut studi Universitas Monash, Bumi mungkin pernah punya cincin sekitar 466 juta tahun lalu, yang terbentuk dari puing asteroid yang hancur.",
+    "Para peneliti menyebut bayangan cincin itu mungkin ikut memicu Zaman Es Hirnantian, salah satu periode terdingin dalam 500 juta tahun terakhir.",
+    "Menurut Space.com, ke-21 kawah tumbukan dari periode itu semuanya terbentuk di benua yang berada dalam 30 derajat dari khatulistiwa."
+   ]
+  },
+  "fr": {
+   "title": "Que T'arriverait-il si la Terre Avait des Anneaux Comme Saturne ?",
+   "summary": "Si la Terre avait des anneaux comme Saturne, leur ombre tomberait sur nous en hiver et les hivers pourraient devenir bien plus rudes ! Et selon les scientifiques, la Terre a peut-être vraiment eu un anneau il y a 466 millions d'années ; le professeur Pi explique.",
+   "facts": [
+    "Selon Live Science, si la Terre avait des anneaux, ils projetteraient leur ombre sur l'hémisphère en hiver, et les hivers des deux hémisphères pourraient être plus froids et plus rudes.",
+    "Selon Live Science, les anneaux se trouveraient au-dessus de l'équateur ; depuis les latitudes tempérées, ils ressembleraient à une arche géante dans le ciel, visible jour et nuit sans se lever ni se coucher.",
+    "Selon une étude de l'université Monash, la Terre a peut-être eu un anneau il y a environ 466 millions d'années, formé par les débris d'un astéroïde disloqué.",
+    "Selon les chercheurs, l'ombre de cet anneau a pu contribuer à la glaciation hirnantienne, l'une des périodes les plus froides des 500 derniers millions d'années.",
+    "Selon Space.com, les 21 cratères d'impact de cette époque se sont tous formés sur des continents situés à moins de 30 degrés de l'équateur."
+   ]
+  },
+  "de": {
+   "title": "Was Würde Dir Passieren, Wenn die Erde Ringe Wie Saturn Hätte?",
+   "summary": "Hätte die Erde Ringe wie Saturn, würde ihr Schatten im Winter auf uns fallen und die Winter könnten viel härter werden! Und laut Forschern hatte die Erde vor 466 Millionen Jahren vielleicht wirklich einen Ring; Professor Pi erklärt es.",
+   "facts": [
+    "Laut Live Science würden Ringe um die Erde Schatten auf die Hemisphäre werfen, in der gerade Winter ist; die Winter auf beiden Hälften könnten kälter und härter werden.",
+    "Laut Live Science lägen die Ringe über dem Äquator; aus gemäßigten Breiten sähen sie wie ein riesiger Bogen am Himmel aus, Tag und Nacht sichtbar, ohne auf- oder unterzugehen.",
+    "Laut einer Studie der Monash University hatte die Erde vor etwa 466 Millionen Jahren vielleicht einen Ring aus den Trümmern eines zerbrochenen Asteroiden.",
+    "Die Forscher vermuten, dass der Schatten des Rings zur Hirnantischen Eiszeit beigetragen haben könnte, einer der kältesten Phasen der letzten 500 Millionen Jahre.",
+    "Laut Space.com entstanden alle 21 Einschlagkrater aus dieser Zeit auf Kontinenten innerhalb von 30 Grad um den Äquator."
+   ]
+  },
+  "ru": {
+   "title": "Что было бы с тобой, если бы у Земли были кольца, как у Сатурна?",
+   "summary": "Если бы у Земли были кольца, как у Сатурна, их тень зимой падала бы на нас, и зимы могли бы стать намного суровее! А по мнению учёных, 466 миллионов лет назад у Земли, возможно, действительно было кольцо; профессор Пи рассказывает.",
+   "facts": [
+    "По данным Live Science, кольца Земли отбрасывали бы тень на полушарие, где сейчас зима, и зимы в обоих полушариях могли бы стать холоднее и суровее.",
+    "По данным Live Science, кольца располагались бы над экватором; из умеренных широт они выглядели бы как гигантская арка в небе, видимая днём и ночью, не восходя и не заходя.",
+    "Согласно исследованию Университета Монаша, около 466 миллионов лет назад у Земли, возможно, было кольцо из обломков разрушенного астероида.",
+    "По мнению исследователей, тень этого кольца могла способствовать хирнантскому оледенению — одному из самых холодных периодов за последние 500 миллионов лет.",
+    "По данным Space.com, все 21 ударный кратер того периода образовались на континентах в пределах 30 градусов от экватора."
+   ]
+  },
+  "az": {
+   "title": "Yerin Saturn Kimi Halqası Olsaydı, Sənə Nə Olardı?",
+   "summary": "Yerin Saturn kimi halqası olsaydı, qışda onun kölgəsi üstümüzə düşər və qışlar daha sərt keçə bilərdi! Alimlərə görə isə Yerin 466 milyon il əvvəl həqiqətən halqası olmuş ola bilər; Professor Pi izah edir.",
+   "facts": [
+    "Live Science-ə görə Yerin halqaları olsaydı, qış yaşayan yarımkürəyə kölgə salar, hər iki yarımkürədə qışlar daha soyuq və sərt keçə bilərdi.",
+    "Live Science-ə görə halqalar ekvatorun üzərində yerləşərdi; mülayim enliklərdən səmada nəhəng bir tağ kimi görünər, doğub-batmadan gecə-gündüz görünərdi.",
+    "Monash Universitetinin araşdırmasına görə Yerin təxminən 466 milyon il əvvəl parçalanmış bir asteroidin qırıntılarından yaranmış halqası olmuş ola bilər.",
+    "Tədqiqatçılara görə bu halqanın kölgəsi son 500 milyon ilin ən soyuq dövrlərindən biri olan Hirnant buzlaşmasına töhfə vermiş ola bilər.",
+    "Space.com-a görə həmin dövrə aid 21 zərbə kraterinin hamısı ekvatordan 30 dərəcə məsafədə olan qitələrdə yaranıb."
+   ]
+  }
+ }
+}

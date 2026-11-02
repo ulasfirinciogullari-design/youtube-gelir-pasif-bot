@@ -1,0 +1,261 @@
+{
+ "id": "g007",
+ "series": "1 Gün Boyunca",
+ "q": "Beynin 1 günde ne kadar enerji harcar?",
+ "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+ "bar": {
+  "hi": "BEYİN",
+  "rest": "KAÇ KALORİ YAKAR?"
+ },
+ "summary": "Şu an beynin, yediğin her 5 lokmadan birini yakıyor! Ağırlığının sadece %2'si olan bu organın neden günde 450 kaloriye kadar yaktığını ve 4 yaşındayken boyunu neden yavaşlattığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Şu an beynin, yediğin her 5 lokmadan birini yakıyor!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧠",
+    "do": "burn",
+    "key": "yakıyor",
+    "label": "5 Lokmadan 1'i"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ben sadece video izliyorum!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "📱",
+    "do": "shake",
+    "key": "video",
+    "label": "Sadece İzliyorum"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kilonun %2'si, enerjinin %20'si: günde 450 kaloriye kadar!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "⚖️",
+     "label": "Ağırlık Payı %",
+     "value": 2
+    },
+    "b": {
+     "e": "⚡",
+     "label": "Enerji Payı %",
+     "value": 20
+    },
+    "mode": "bar",
+    "key": "%20'si"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Oksijensiz kalırsa 5 dakika dolmadan hücreleri ölmeye başlar.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "⏱️",
+    "value": "5",
+    "unit": "dakika",
+    "label": "Oksijensiz Beyin",
+    "key": "5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "5 dakika bile değil mi?!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "⏱️",
+    "value": "5",
+    "unit": "dakika",
+    "label": "Oksijensiz Beyin",
+    "key": "5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "4 yaşında beynin, dinlenme enerjinin %66'sını yiyordu; boyun bu yüzden yavaş uzadı!",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "4 Yaşında Beyin",
+    "from": 0,
+    "to": 66,
+    "unit": "%",
+    "e": "🧒",
+    "key": "%66'sını"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Beynin en çok ne zaman acıkıyor? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🧠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Beyin vücut ağırlığının yalnızca yaklaşık %2'si olsa da dinlenme metabolizmasının yaklaşık %20'sini kullanır.",
+   "source": "Scientific American",
+   "url": "https://www.scientificamerican.com/article/thinking-hard-calories/"
+  },
+  {
+   "text": "Live Science'a göre beyin dinlenirken vücudun enerjisinin %20-25'ini harcar; bu, ortalama bir kadında günde yaklaşık 350, bir erkekte yaklaşık 450 kaloridir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/burn-calories-brain.html"
+  },
+  {
+   "text": "Beyin hücreleri oksijen eksikliğine çok duyarlıdır; bazıları oksijen kesildikten 5 dakikadan kısa süre sonra ölmeye başlar.",
+   "source": "MedlinePlus (ABD Ulusal Tıp Kütüphanesi, NIH)",
+   "url": "https://medlineplus.gov/ency/article/001435.htm"
+  },
+  {
+   "text": "Northwestern Üniversitesi araştırmasına göre 4 yaşında beyin, vücudun dinlenme metabolizmasının %66'sına denk gelen hızda glikoz tüketir; bu yaşta vücudun büyümesi en yavaş haline iner.",
+   "source": "Northwestern University",
+   "url": "https://news.northwestern.edu/stories/2014/08/a-long-childhood-feeds-the-hungry-human-brain"
+  }
+ ],
+ "tags": [
+  "beyin",
+  "beyin kaç kalori yakar",
+  "beynin enerjisi",
+  "beyin enerji tüketimi",
+  "kalori",
+  "metabolizma",
+  "insan vücudu",
+  "1 gün boyunca",
+  "brain calories",
+  "how many calories does the brain burn",
+  "brain energy",
+  "human body",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#beyin",
+  "#vücut",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/burn-calories-brain.html",
+  "https://www.scientificamerican.com/article/thinking-hard-calories/",
+  "https://medlineplus.gov/ency/article/001435.htm",
+  "https://news.northwestern.edu/stories/2014/08/a-long-childhood-feeds-the-hungry-human-brain"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Calories Does Your Brain Burn in 1 Day?",
+   "summary": "Right now your brain is burning one of every 5 bites you eat! Professor Pi explains why this organ, just 2% of your weight, burns up to 450 calories a day and why it slowed your growth when you were 4.",
+   "facts": [
+    "The brain is only about 2% of body weight but uses about 20% of the body's resting metabolic rate.",
+    "According to Live Science, the resting brain uses 20% to 25% of the body's energy, about 350 calories a day for an average woman and 450 for an average man.",
+    "Brain cells are very sensitive to a lack of oxygen; some start dying less than 5 minutes after their oxygen supply stops.",
+    "According to Northwestern University research, at age 4 the brain consumes glucose at a rate equal to 66% of the body's resting metabolic rate, while body growth slows to its minimum."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas Calorías Quema Tu Cerebro en 1 Día?",
+   "summary": "¡Ahora mismo tu cerebro quema uno de cada 5 bocados que comes! El profesor Pi explica por qué este órgano, solo el 2% de tu peso, quema hasta 450 calorías al día y por qué frenó tu crecimiento a los 4 años.",
+   "facts": [
+    "El cerebro es solo cerca del 2% del peso corporal, pero usa alrededor del 20% del metabolismo en reposo.",
+    "Según Live Science, el cerebro en reposo usa entre el 20% y el 25% de la energía del cuerpo, unas 350 calorías al día en una mujer promedio y 450 en un hombre promedio.",
+    "Las células cerebrales son muy sensibles a la falta de oxígeno; algunas empiezan a morir menos de 5 minutos después de quedarse sin él.",
+    "Según una investigación de la Universidad Northwestern, a los 4 años el cerebro consume glucosa a un ritmo equivalente al 66% del metabolismo en reposo del cuerpo, mientras el crecimiento corporal llega a su punto más lento."
+   ]
+  },
+  "pt": {
+   "title": "Quantas Calorias Seu Cérebro Queima em 1 Dia?",
+   "summary": "Agora mesmo seu cérebro está queimando uma de cada 5 mordidas que você come! O professor Pi explica por que esse órgão, só 2% do seu peso, queima até 450 calorias por dia e por que ele freou seu crescimento aos 4 anos.",
+   "facts": [
+    "O cérebro é só cerca de 2% do peso do corpo, mas usa cerca de 20% do metabolismo em repouso.",
+    "Segundo a Live Science, o cérebro em repouso usa de 20% a 25% da energia do corpo, cerca de 350 calorias por dia numa mulher média e 450 num homem médio.",
+    "As células do cérebro são muito sensíveis à falta de oxigênio; algumas começam a morrer menos de 5 minutos depois que o oxigênio acaba.",
+    "Segundo uma pesquisa da Universidade Northwestern, aos 4 anos o cérebro consome glicose num ritmo equivalente a 66% do metabolismo em repouso do corpo, enquanto o crescimento do corpo fica no ponto mais lento."
+   ]
+  },
+  "ar": {
+   "title": "كم سعرة حرارية يحرق دماغك في يوم واحد؟",
+   "summary": "دماغك الآن يحرق لقمة من كل 5 لقمات تأكلها! يشرح البروفيسور باي لماذا يحرق هذا العضو، الذي لا يتجاوز 2% من وزنك، ما يصل إلى 450 سعرة حرارية يوميًا، ولماذا أبطأ نموك وأنت في الرابعة.",
+   "facts": [
+    "يشكل الدماغ نحو 2% فقط من وزن الجسم، لكنه يستهلك نحو 20% من معدل الأيض أثناء الراحة.",
+    "وفقًا لموقع Live Science، يستهلك الدماغ أثناء الراحة ما بين 20% و25% من طاقة الجسم، أي نحو 350 سعرة حرارية يوميًا لدى المرأة المتوسطة و450 لدى الرجل المتوسط.",
+    "خلايا الدماغ شديدة الحساسية لنقص الأكسجين، ويبدأ بعضها في الموت بعد أقل من 5 دقائق من انقطاعه.",
+    "وفقًا لبحث من جامعة نورث وسترن، يستهلك الدماغ في سن 4 سنوات الغلوكوز بمعدل يعادل 66% من معدل الأيض أثناء الراحة، بينما يصل نمو الجسم إلى أبطأ مستوياته."
+   ]
+  },
+  "hi": {
+   "title": "आपका दिमाग 1 दिन में कितनी कैलोरी जलाता है?",
+   "summary": "इस वक्त आपका दिमाग आपके खाए हर 5 कौर में से एक जला रहा है! प्रोफेसर पाई बताते हैं कि आपके वज़न का सिर्फ 2% होकर भी यह अंग रोज़ 450 कैलोरी तक क्यों जलाता है और 4 साल की उम्र में इसने आपकी बढ़त क्यों धीमी कर दी।",
+   "facts": [
+    "दिमाग शरीर के वज़न का सिर्फ लगभग 2% होता है, लेकिन आराम की अवस्था में शरीर की लगभग 20% ऊर्जा इस्तेमाल करता है।",
+    "Live Science के अनुसार आराम करता दिमाग शरीर की 20% से 25% ऊर्जा खर्च करता है, यानी औसत महिला में रोज़ लगभग 350 और औसत पुरुष में 450 कैलोरी।",
+    "दिमाग की कोशिकाएं ऑक्सीजन की कमी के प्रति बहुत संवेदनशील होती हैं; कुछ कोशिकाएं ऑक्सीजन रुकने के 5 मिनट से भी कम समय में मरने लगती हैं।",
+    "नॉर्थवेस्टर्न यूनिवर्सिटी के शोध के अनुसार 4 साल की उम्र में दिमाग शरीर की आराम की चयापचय दर के 66% के बराबर ग्लूकोज़ खर्च करता है, जबकि शरीर की बढ़त सबसे धीमी होती है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Kalori yang Dibakar Otakmu dalam 1 Hari?",
+   "summary": "Saat ini otakmu membakar satu dari setiap 5 suapan yang kamu makan! Profesor Pi menjelaskan mengapa organ yang hanya 2% dari berat badanmu ini membakar hingga 450 kalori sehari dan mengapa ia memperlambat pertumbuhanmu saat berusia 4 tahun.",
+   "facts": [
+    "Otak hanya sekitar 2% dari berat badan, tetapi memakai sekitar 20% dari laju metabolisme saat istirahat.",
+    "Menurut Live Science, otak yang beristirahat memakai 20% hingga 25% energi tubuh, sekitar 350 kalori sehari pada perempuan rata-rata dan 450 pada laki-laki rata-rata.",
+    "Sel otak sangat peka terhadap kekurangan oksigen; sebagian mulai mati kurang dari 5 menit setelah pasokan oksigennya terhenti.",
+    "Menurut penelitian Northwestern University, pada usia 4 tahun otak memakai glukosa dengan laju setara 66% laju metabolisme istirahat tubuh, sementara pertumbuhan badan melambat ke titik terendahnya."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Calories Ton Cerveau Brûle-t-il en 1 Jour ?",
+   "summary": "En ce moment, ton cerveau brûle une bouchée sur 5 de ce que tu manges ! Le professeur Pi explique pourquoi cet organe, seulement 2 % de ton poids, brûle jusqu'à 450 calories par jour et pourquoi il a ralenti ta croissance à 4 ans.",
+   "facts": [
+    "Le cerveau ne représente qu'environ 2 % du poids du corps, mais il utilise environ 20 % du métabolisme de repos.",
+    "Selon Live Science, le cerveau au repos utilise 20 à 25 % de l'énergie du corps, soit environ 350 calories par jour pour une femme moyenne et 450 pour un homme moyen.",
+    "Les cellules du cerveau sont très sensibles au manque d'oxygène ; certaines commencent à mourir moins de 5 minutes après l'arrêt de l'apport en oxygène.",
+    "Selon une étude de l'université Northwestern, à 4 ans le cerveau consomme du glucose à un rythme équivalant à 66 % du métabolisme de repos du corps, alors que la croissance du corps est à son plus lent."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Kalorien Verbrennt Dein Gehirn an 1 Tag?",
+   "summary": "Gerade jetzt verbrennt dein Gehirn jeden 5. Bissen, den du isst! Professor Pi erklärt, warum dieses Organ mit nur 2 % deines Gewichts bis zu 450 Kalorien am Tag verbrennt und warum es mit 4 Jahren dein Wachstum gebremst hat.",
+   "facts": [
+    "Das Gehirn macht nur etwa 2 % des Körpergewichts aus, verbraucht aber etwa 20 % des Ruheumsatzes.",
+    "Laut Live Science verbraucht das ruhende Gehirn 20 bis 25 % der Körperenergie, etwa 350 Kalorien pro Tag bei einer durchschnittlichen Frau und 450 bei einem durchschnittlichen Mann.",
+    "Gehirnzellen reagieren sehr empfindlich auf Sauerstoffmangel; manche beginnen schon weniger als 5 Minuten nach dem Ausfall der Sauerstoffversorgung abzusterben.",
+    "Laut einer Studie der Northwestern University verbraucht das Gehirn mit 4 Jahren Glukose in einem Tempo, das 66 % des Ruheumsatzes des Körpers entspricht, während das Körperwachstum am langsamsten ist."
+   ]
+  },
+  "ru": {
+   "title": "Сколько калорий сжигает твой мозг за 1 день?",
+   "summary": "Прямо сейчас твой мозг сжигает каждый 5-й кусок, который ты съедаешь! Профессор Пи объясняет, почему этот орган, всего 2% твоего веса, сжигает до 450 калорий в день и почему в 4 года он замедлил твой рост.",
+   "facts": [
+    "Мозг составляет лишь около 2% массы тела, но расходует около 20% энергии покоя.",
+    "По данным Live Science, мозг в покое расходует 20–25% энергии тела — около 350 калорий в день у средней женщины и 450 у среднего мужчины.",
+    "Клетки мозга очень чувствительны к нехватке кислорода: некоторые начинают погибать меньше чем через 5 минут после прекращения его поступления.",
+    "По данным исследования Северо-Западного университета, в 4 года мозг потребляет глюкозу со скоростью, равной 66% энергии покоя тела, а рост тела в это время замедляется сильнее всего."
+   ]
+  },
+  "az": {
+   "title": "Beynin 1 Gündə Neçə Kalori Yandırır?",
+   "summary": "Elə indi beynin yediyin hər 5 tikədən birini yandırır! Professor Pi izah edir ki, çəkinin cəmi 2%-i olan bu orqan niyə gündə 450 kaloriyə qədər yandırır və 4 yaşında boyunun artmasını niyə yavaşladıb.",
+   "facts": [
+    "Beyin bədən çəkisinin cəmi təxminən 2%-ni təşkil edir, amma istirahət metabolizminin təxminən 20%-ni istifadə edir.",
+    "Live Science-ə görə istirahətdə olan beyin bədən enerjisinin 20-25%-ni sərf edir; bu, orta qadında gündə təxminən 350, orta kişidə isə 450 kaloridir.",
+    "Beyin hüceyrələri oksigen çatışmazlığına çox həssasdır; bəziləri oksigen kəsildikdən 5 dəqiqədən az sonra ölməyə başlayır.",
+    "Northwestern Universitetinin araşdırmasına görə 4 yaşında beyin bədənin istirahət metabolizminin 66%-nə bərabər sürətlə qlükoza sərf edir, bu yaşda bədənin böyüməsi isə ən yavaş həddə olur."
+   ]
+  }
+ }
+}
