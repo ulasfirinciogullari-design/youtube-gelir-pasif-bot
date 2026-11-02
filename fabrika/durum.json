@@ -1029,14 +1029,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-16T18:11:39+00:00",
-   "mod": "saatlik",
-   "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/bqFeef1QL08",
-   "duration": 37.9,
-   "chars": 562
-  },
-  {
    "finished": "2026-10-16T19:10:34+00:00",
    "mod": "saatlik",
    "title": "1 Günde Kaç Kez Nefes Alırsın?",
@@ -1435,6 +1427,12 @@
    "url": "https://youtube.com/shorts/E9dsm0cEDnM",
    "duration": 27.1,
    "chars": 380
+  },
+  {
+   "finished": "2026-11-02T13:22:58+00:00",
+   "mod": "igbolum",
+   "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
+   "chars": 384
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1564,6 +1562,11 @@
     "media_id": "17955890955038960",
     "url": "https://www.instagram.com/reel/DfO8zwoncSF/",
     "at": 1793610552.5168965
+   },
+   "n006": {
+    "media_id": "18076747649472675",
+    "url": "https://www.instagram.com/reel/DfPZ2Vvjgih/",
+    "at": 1793625778.7800748
    }
   },
   "eski": [
