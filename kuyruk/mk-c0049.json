@@ -1,0 +1,190 @@
+{
+ "id": "mk-c0049",
+ "topic": "Utandığın anı insanlar gerçekten ne kadar fark eder?",
+ "kategori": "psikoloji",
+ "subject": [
+  "woman",
+  "man"
+ ],
+ "stock_hint": "woman embarrassed",
+ "script": {
+  "title": "Utandığın anı insanlar sandığın kadar fark etmiyor 😳",
+  "hook_text": "HERKES SANA MI BAKIYOR?",
+  "scenes": [
+   {
+    "text": "Utandığın anı insanlar sandığın kadar fark etmez.",
+    "visual": "young woman covering her face with her hands in embarrassment on a busy street",
+    "stock_query": "woman embarrassed",
+    "source": "stock",
+    "callout": "SANDIĞINDAN AZ"
+   },
+   {
+    "text": "Bir deneyde öğrenciler utanç verici bir tişörtle odaya girdi.",
+    "visual": "student in a printed t-shirt walking into a classroom",
+    "stock_query": "student classroom",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "student"
+    ]
+   },
+   {
+    "text": "Odadakilerin neredeyse yarısının fark ettiğini sandılar; dörtte biri bile fark etmedi.",
+    "visual": "small group of people sitting around a table, glancing up briefly",
+    "stock_query": "people sitting table",
+    "source": "stock",
+    "callout": "TAHMİN %46, GERÇEK %23",
+    "subject": [
+     "people"
+    ]
+   },
+   {
+    "text": "Sevdikleri bir tişörtte bile tahmin, gerçeğin altı katıydı.",
+    "visual": "smiling young man in a casual t-shirt walking confidently",
+    "stock_query": "man smiling",
+    "source": "stock",
+    "callout": "6 KAT"
+   },
+   {
+    "text": "Çünkü başkalarının ne gördüğünü, kendi hissinden yola çıkarak tahmin ediyorsun.",
+    "visual": "close-up of a thoughtful woman looking down",
+    "stock_query": "woman thinking",
+    "source": "stock",
+    "callout": "KENDİ HİSSİN"
+   },
+   {
+    "text": "O spot ışığını en çok sen görüyorsun.",
+    "visual": "single spotlight beam shining on an empty stage",
+    "stock_query": "spotlight stage",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "spotlight"
+    ]
+   }
+  ],
+  "description": "Utandığın anı insanlar sandığın kadar fark etmez. 2000'deki bir deneyde utanç verici bir tişört giyen öğrenciler odadakilerin neredeyse yarısının fark ettiğini sandı; gerçekte dörtte biri bile fark etmedi. Sebep: başkalarının ne gördüğünü kendi hissimizden yola çıkarak tahmin ederiz.",
+  "tags": [
+   "spot ışığı etkisi",
+   "utanç",
+   "özgüven",
+   "psikoloji",
+   "sosyal psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha çok aklında kalır: başkasının utandığı an mı, kendi utandığın an mı?",
+  "en_title": "People notice your embarrassing moments far less than you think 😳",
+  "en_description": "In a 2000 Cornell study, students wearing an embarrassing T-shirt guessed that nearly half the room had noticed it; fewer than a quarter had. With a shirt they liked, their guess was six times the real number. We judge what others see from our own feelings: the spotlight effect.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Herkes bana bakıyor gibi hissetmek neden olur, utandığım anı insanlar gerçekten fark ediyor mu?\n\n2000 yılında Cornell Üniversitesi'nden psikolog Thomas Gilovich ve ekibi, öğrencilere pek sevilmeyen bir şarkıcının yüzü basılı bir tişört giydirip onları başka öğrencilerin olduğu bir odaya gönderdi. Tişörtü giyenler odadakilerin yüzde kırk altısının fark ettiğini sandı; gerçekte yüzde yirmi üçü fark etti. Sevdikleri bir tişörtle yapılan denemede tahmin, gerçeğin altı katı çıktı. Psikolojide buna spot ışığı etkisi denir: başkalarının ne gördüğünü kendi hissimizden yola çıkarak tahmin ederiz.\n\nSence hangisi daha çok aklında kalır: başkasının utandığı an mı, kendi utandığın an mı?",
+  "hashtags": [
+   "#utanç",
+   "#psikoloji",
+   "#spotışığıetkisi",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "spot ışığı etkisi",
+   "herkes bana bakıyor",
+   "insanlar beni fark ediyor mu",
+   "utandığın an",
+   "utanç duygusu",
+   "rezil olmak",
+   "başkaları ne düşünür",
+   "insanların ne düşündüğü",
+   "tişört deneyi",
+   "thomas gilovich",
+   "sosyal kaygı",
+   "utangaçlık",
+   "özgüven",
+   "sosyal psikoloji",
+   "insan psikolojisi",
+   "güç psikolojisi",
+   "psikoloji",
+   "beyin",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "spotlight effect",
+   "psychology"
+  ],
+  "localizations": {
+   "en": {
+    "title": "People notice your embarrassing moments far less than you think 😳",
+    "description": "In a 2000 study, students in an embarrassing T-shirt guessed that nearly half the room had noticed it; fewer than a quarter had. We judge what others see from our own feelings. It's called the spotlight effect."
+   },
+   "es": {
+    "title": "La gente nota tus momentos vergonzosos mucho menos de lo que crees 😳",
+    "description": "En un estudio de 2000, unos estudiantes con una camiseta vergonzosa creyeron que casi la mitad de la sala se había fijado; no llegó ni a una cuarta parte. Juzgamos lo que ven los demás a partir de lo que sentimos: es el efecto foco."
+   },
+   "pt": {
+    "title": "As pessoas notam seus momentos constrangedores bem menos do que você pensa 😳",
+    "description": "Num estudo de 2000, estudantes com uma camiseta constrangedora acharam que quase metade da sala tinha reparado; nem um quarto reparou. Julgamos o que os outros veem pelo que nós sentimos: é o efeito holofote."
+   },
+   "de": {
+    "title": "Peinliche Momente fallen anderen viel weniger auf, als du denkst 😳",
+    "description": "In einer Studie von 2000 glaubten Studierende in einem peinlichen T-Shirt, fast die Hälfte des Raums habe es bemerkt; nicht einmal ein Viertel tat es. Wir schließen von unserem eigenen Gefühl auf andere, das nennt man Spotlight-Effekt."
+   },
+   "fr": {
+    "title": "Les autres remarquent tes moments gênants bien moins que tu ne le crois 😳",
+    "description": "Dans une étude de 2000, des étudiants portant un T-shirt gênant pensaient que près de la moitié de la salle l'avait remarqué ; moins d'un quart l'avait vu. On juge ce que voient les autres d'après ce qu'on ressent : c'est l'effet projecteur."
+   },
+   "it": {
+    "title": "Gli altri notano i tuoi momenti imbarazzanti molto meno di quanto pensi 😳",
+    "description": "In uno studio del 2000, alcuni studenti con una maglietta imbarazzante pensavano che quasi metà della stanza l'avesse notata; nemmeno un quarto se n'era accorto. Giudichiamo ciò che vedono gli altri in base a ciò che proviamo noi: è l'effetto riflettore."
+   },
+   "ru": {
+    "title": "Твои неловкие моменты замечают гораздо реже, чем тебе кажется 😳",
+    "description": "В исследовании 2000 года студенты в нелепой футболке думали, что её заметила почти половина комнаты; на деле заметили меньше четверти. Мы судим о том, что видят другие, по собственным ощущениям — это эффект прожектора."
+   },
+   "ar": {
+    "title": "الناس يلاحظون لحظاتك المحرجة أقل بكثير مما تظن 😳",
+    "description": "في دراسة عام 2000 ظن طلاب يرتدون قميصًا محرجًا أن نصف من في الغرفة تقريبًا لاحظوه، لكن أقل من الربع لاحظوه فعلًا. نحن نحكم على ما يراه الآخرون من خلال مشاعرنا، ويسمى ذلك تأثير بقعة الضوء."
+   },
+   "hi": {
+    "title": "लोग आपके शर्मिंदगी वाले पलों को आपकी सोच से बहुत कम नोटिस करते हैं 😳",
+    "description": "2000 के एक अध्ययन में अजीब टी-शर्ट पहने छात्रों को लगा कि कमरे के लगभग आधे लोगों ने उसे देखा, पर असल में एक चौथाई से भी कम ने देखा। हम दूसरों की नज़र का अंदाज़ा अपनी भावनाओं से लगाते हैं, इसे स्पॉटलाइट इफ़ेक्ट कहते हैं।"
+   },
+   "id": {
+    "title": "Momen memalukanmu jauh lebih jarang diperhatikan orang daripada yang kamu kira 😳",
+    "description": "Dalam studi tahun 2000, mahasiswa berkaus memalukan mengira hampir separuh ruangan memperhatikannya; ternyata kurang dari seperempat. Kita menilai apa yang dilihat orang lain dari perasaan kita sendiri, inilah yang disebut efek sorotan."
+   },
+   "ja": {
+    "title": "恥ずかしい瞬間は、思っているほど人に見られていない 😳",
+    "description": "2000年の研究で、恥ずかしいTシャツを着た学生は部屋のほぼ半数が気づいたと予想しましたが、実際に気づいたのは4分の1未満でした。私たちは自分の感覚をもとに他人の目を見積もってしまいます。これをスポットライト効果と呼びます。"
+   },
+   "ko": {
+    "title": "창피한 순간, 남들은 생각보다 훨씬 덜 알아챈다 😳",
+    "description": "2000년 연구에서 민망한 티셔츠를 입은 학생들은 방 안의 절반 가까이가 알아챘을 거라 예상했지만, 실제로는 4분의 1도 안 됐습니다. 우리는 내 느낌을 기준으로 남의 시선을 짐작하는데, 이를 스포트라이트 효과라고 합니다."
+   },
+   "pl": {
+    "title": "Inni zauważają twoje wpadki dużo rzadziej, niż myślisz 😳",
+    "description": "W badaniu z 2000 roku studenci w żenującej koszulce sądzili, że zauważyła ją prawie połowa sali; w rzeczywistości mniej niż jedna czwarta. Oceniamy, co widzą inni, na podstawie własnych odczuć – to efekt reflektora."
+   },
+   "nl": {
+    "title": "Anderen merken je gênante momenten veel minder op dan je denkt 😳",
+    "description": "In een studie uit 2000 dachten studenten in een gênant T-shirt dat bijna de helft van de zaal het had gezien; nog geen kwart had het opgemerkt. We schatten wat anderen zien in vanuit ons eigen gevoel: het spotlighteffect."
+   },
+   "uk": {
+    "title": "Твої незручні моменти помічають набагато рідше, ніж тобі здається 😳",
+    "description": "У дослідженні 2000 року студенти в незграбній футболці думали, що її помітила майже половина кімнати; насправді помітили менше чверті. Ми оцінюємо, що бачать інші, за власними відчуттями — це ефект прожектора."
+   },
+   "vi": {
+    "title": "Người khác ít để ý khoảnh khắc ngượng ngùng của bạn hơn bạn nghĩ rất nhiều 😳",
+    "description": "Trong một nghiên cứu năm 2000, sinh viên mặc áo phông gây ngượng nghĩ rằng gần một nửa căn phòng đã để ý; thực tế chưa tới một phần tư. Chúng ta đoán điều người khác thấy dựa trên cảm giác của chính mình, gọi là hiệu ứng ánh đèn sân khấu."
+   },
+   "az": {
+    "title": "Utandığın anı insanlar düşündüyün qədər fərq etmir 😳",
+    "description": "2000-ci ildə aparılan araşdırmada utandırıcı futbolka geyinən tələbələr otaqdakıların təxminən yarısının bunu fərq etdiyini düşündü; əslində dörddə biri belə fərq etmədi. Biz başqalarının nə gördüyünü öz hisslərimizə görə təxmin edirik."
+   },
+   "ro": {
+    "title": "Ceilalți îți observă momentele jenante mult mai rar decât crezi 😳",
+    "description": "Într-un studiu din 2000, studenții cu un tricou jenant credeau că aproape jumătate din sală l-a observat; în realitate, nici măcar un sfert. Judecăm ce văd ceilalți după propriile senzații: este efectul reflectorului."
+   }
+  }
+ }
+}

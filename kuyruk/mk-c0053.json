@@ -1,0 +1,193 @@
+{
+ "id": "mk-c0053",
+ "topic": "Neden daha uzun süren acıyı daha hafif hatırlarız?",
+ "kategori": "psikoloji",
+ "subject": [
+  "hand"
+ ],
+ "stock_hint": "hand cold water",
+ "script": {
+  "title": "Hafızan bazen daha uzun acıyı daha hafif hatırlar 🧊",
+  "hook_text": "UZUN ACI NEDEN DAHA HAFİF GELİR?",
+  "scenes": [
+   {
+    "text": "Üç kişiden ikisi, daha uzun acıyı tekrarlamayı seçti.",
+    "visual": "close-up of a hand submerged in a bowl of cold water",
+    "stock_query": "hand water",
+    "source": "stock",
+    "callout": "3 KİŞİDEN 2'Sİ"
+   },
+   {
+    "text": "Bir deneyde elini bir dakika acıtan soğuk suda tuttular.",
+    "visual": "person dipping a hand into a basin of icy water",
+    "stock_query": "hand cold water",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Diğer turda otuz saniye daha tuttular; su yalnızca bir derece ısındı.",
+    "visual": "clock second hand ticking",
+    "stock_query": "clock ticking",
+    "source": "stock",
+    "callout": "+30 SANİYE",
+    "subject": [
+     "clock"
+    ]
+   },
+   {
+    "text": "Üstelik çoğu, uzun turu daha hafif hatırladı.",
+    "visual": "woman smiling softly while remembering something",
+    "stock_query": "woman thinking",
+    "source": "stock",
+    "callout": "DAHA HAFİF",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Çünkü hafıza süreye pek bakmaz; en kötü anla son anı tartar.",
+    "visual": "close-up of a man's face deep in thought",
+    "stock_query": "man thinking",
+    "source": "stock",
+    "callout": "EN KÖTÜ AN + SON AN",
+    "subject": [
+     "man"
+    ]
+   },
+   {
+    "text": "Bir şeyin iyi hatırlanmasını istiyorsan, iyi bitir.",
+    "visual": "group of friends laughing together outdoors",
+    "stock_query": "friends laughing",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "friends"
+    ]
+   }
+  ],
+  "description": "Daha uzun süren bir acıyı bazen daha hafif hatırlarız. 1993'teki soğuk su deneyinde otuz iki kişiden yirmi ikisi, sonuna su yalnızca bir derece ısınırken otuz saniye eklenen uzun turu tekrarlamayı seçti. Hafıza süreye pek bakmaz; en kötü anla son anı tartar.",
+  "tags": [
+   "zirve-son kuralı",
+   "hafıza",
+   "acı",
+   "soğuk su deneyi",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha çok aklında kalır: bir tatilin en güzel günü mü, son günü mü?",
+  "en_title": "Your memory can make a longer pain feel milder 🧊",
+  "en_description": "In a 1993 experiment, 22 of 32 people chose to repeat the longer cold-water trial, even though its extra 30 seconds were only about one degree warmer. Memory barely tracks duration; it weighs the worst moment and the end. This is the peak-end rule.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Neden daha uzun süren bir acıyı daha hafif hatırlarız, hafıza kötü bir deneyimi nasıl kaydeder?\n\n1993'te psikolog Daniel Kahneman ve ekibinin deneyinde katılımcılar bir elini on dört derecelik suda altmış saniye tuttu. Diğer turda aynı altmış saniyenin üstüne otuz saniye daha eklendi; bu sırada su yalnızca bir derece kadar ısındı ve hâlâ acıtıyordu. Hangisini tekrarlamak istedikleri sorulunca otuz iki kişiden yirmi ikisi uzun turu seçti ve çoğu onu daha az rahatsız edici hatırladı. Hafıza süreye pek bakmaz, en kötü anla son anı tartar; psikolojide buna zirve-son kuralı denir.\n\nSence hangisi daha çok aklında kalır: bir tatilin en güzel günü mü, son günü mü?",
+  "hashtags": [
+   "#hafıza",
+   "#psikoloji",
+   "#zirvesonkuralı",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "zirve son kuralı",
+   "doruk son kuralı",
+   "hafıza nasıl çalışır",
+   "acıyı nasıl hatırlarız",
+   "soğuk su deneyi",
+   "daniel kahneman",
+   "kahneman deneyi",
+   "süre ihmali",
+   "anılar",
+   "hafıza yanılgısı",
+   "iyi bitirmek",
+   "tatil anıları",
+   "beyin bizi kandırıyor",
+   "davranışsal ekonomi",
+   "karar verme psikolojisi",
+   "insan psikolojisi",
+   "psikoloji",
+   "hafıza",
+   "beyin",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "peak end rule",
+   "psychology"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your memory can make a longer pain feel milder 🧊",
+    "description": "In a 1993 study, 22 of 32 people chose to repeat the longer cold-water trial, though its extra 30 seconds were only about one degree warmer. Memory barely tracks duration: it weighs the worst moment and the end."
+   },
+   "es": {
+    "title": "Tu memoria puede recordar un dolor más largo como más leve 🧊",
+    "description": "En un estudio de 1993, 22 de 32 personas eligieron repetir la prueba de agua fría más larga, aunque sus 30 segundos extra solo eran un grado más templados. La memoria apenas mide la duración: pesa el peor momento y el final."
+   },
+   "pt": {
+    "title": "Sua memória pode lembrar uma dor mais longa como mais leve 🧊",
+    "description": "Num estudo de 1993, 22 de 32 pessoas escolheram repetir a prova de água fria mais longa, embora os 30 segundos extras fossem só um grau mais quentes. A memória quase não conta a duração: pesa o pior momento e o final."
+   },
+   "de": {
+    "title": "Längerer Schmerz kann dir im Nachhinein milder vorkommen 🧊",
+    "description": "In einer Studie von 1993 wählten 22 von 32 Personen die längere Runde im kalten Wasser zur Wiederholung, obwohl die zusätzlichen 30 Sekunden nur etwa ein Grad wärmer waren. Das Gedächtnis achtet kaum auf die Dauer, sondern auf den schlimmsten Moment und das Ende."
+   },
+   "fr": {
+    "title": "Ta mémoire peut retenir une douleur plus longue comme plus légère 🧊",
+    "description": "Dans une étude de 1993, 22 personnes sur 32 ont choisi de refaire l'épreuve d'eau froide la plus longue, alors que ses 30 secondes en plus n'étaient qu'un degré plus chaudes. La mémoire tient peu compte de la durée : elle retient le pire moment et la fin."
+   },
+   "it": {
+    "title": "La memoria può ricordare un dolore più lungo come più lieve 🧊",
+    "description": "In uno studio del 1993, 22 persone su 32 hanno scelto di ripetere la prova in acqua fredda più lunga, anche se i 30 secondi in più erano solo un grado più caldi. La memoria bada poco alla durata: pesa il momento peggiore e la fine."
+   },
+   "ru": {
+    "title": "Память может запомнить более долгую боль как более лёгкую 🧊",
+    "description": "В исследовании 1993 года 22 из 32 человек выбрали повторить более долгое испытание холодной водой, хотя в лишние 30 секунд вода была теплее всего на градус. Память почти не учитывает длительность: она взвешивает самый тяжёлый момент и конец."
+   },
+   "ar": {
+    "title": "قد تتذكر الألم الأطول على أنه الأخف 🧊",
+    "description": "في دراسة عام 1993 اختار 22 من أصل 32 شخصًا تكرار تجربة الماء البارد الأطول، مع أن الثواني الثلاثين الإضافية كانت أدفأ بدرجة واحدة تقريبًا. الذاكرة لا تكاد تحسب المدة، بل تزن أسوأ لحظة واللحظة الأخيرة."
+   },
+   "hi": {
+    "title": "लंबा दर्द भी याद में हल्का लग सकता है 🧊",
+    "description": "1993 के एक अध्ययन में 32 में से 22 लोगों ने ठंडे पानी वाला लंबा प्रयोग दोबारा करना चुना, जबकि उसके अतिरिक्त 30 सेकंड में पानी सिर्फ़ लगभग एक डिग्री गर्म था। याददाश्त अवधि पर ज़्यादा ध्यान नहीं देती, वह सबसे बुरे पल और आख़िरी पल को तौलती है।"
+   },
+   "id": {
+    "title": "Rasa sakit yang lebih lama bisa diingat sebagai yang lebih ringan 🧊",
+    "description": "Dalam studi tahun 1993, 22 dari 32 orang memilih mengulang uji air dingin yang lebih lama, padahal 30 detik tambahannya hanya sekitar satu derajat lebih hangat. Ingatan hampir tidak menghitung durasi; yang ditimbang adalah momen terburuk dan akhirnya."
+   },
+   "ja": {
+    "title": "長く続いた痛みのほうが軽く記憶されることがある 🧊",
+    "description": "1993年の研究では、32人中22人が、より長い冷水の試行をもう一度選びました。延長された30秒間、水温は約1度上がっただけでした。記憶は長さをほとんど気にせず、最もつらい瞬間と最後の瞬間で評価します。"
+   },
+   "ko": {
+    "title": "더 길었던 고통을 더 가볍게 기억할 수 있다 🧊",
+    "description": "1993년 연구에서 32명 중 22명이 더 긴 찬물 실험을 다시 하겠다고 골랐습니다. 늘어난 30초 동안 물은 겨우 1도 정도 따뜻해졌을 뿐입니다. 기억은 길이를 거의 따지지 않고 가장 힘든 순간과 마지막 순간으로 평가합니다."
+   },
+   "pl": {
+    "title": "Pamięć może zapisać dłuższy ból jako łagodniejszy 🧊",
+    "description": "W badaniu z 1993 roku 22 z 32 osób wybrały powtórkę dłuższej próby w zimnej wodzie, choć dodatkowe 30 sekund było cieplejsze tylko o mniej więcej stopień. Pamięć prawie nie liczy czasu trwania: waży najgorszy moment i koniec."
+   },
+   "nl": {
+    "title": "Je geheugen kan langere pijn als mildere onthouden 🧊",
+    "description": "In een studie uit 1993 kozen 22 van de 32 mensen ervoor de langere koudwaterproef te herhalen, terwijl de extra 30 seconden maar zo'n graad warmer waren. Het geheugen let nauwelijks op de duur: het weegt het ergste moment en het einde."
+   },
+   "uk": {
+    "title": "Пам'ять може запам'ятати довший біль як легший 🧊",
+    "description": "У дослідженні 1993 року 22 з 32 людей обрали повторити довше випробування холодною водою, хоча в додаткові 30 секунд вода була теплішою лише на градус. Пам'ять майже не зважає на тривалість: вона зважує найгірший момент і кінець."
+   },
+   "vi": {
+    "title": "Cơn đau kéo dài hơn có thể được nhớ là nhẹ hơn 🧊",
+    "description": "Trong một nghiên cứu năm 1993, 22 trên 32 người chọn lặp lại lần ngâm nước lạnh dài hơn, dù 30 giây thêm chỉ ấm hơn khoảng một độ. Trí nhớ hầu như không tính thời lượng mà cân nhắc khoảnh khắc tệ nhất và lúc kết thúc."
+   },
+   "az": {
+    "title": "Yaddaş daha uzun ağrını daha yüngül xatırlaya bilər 🧊",
+    "description": "1993-cü ildə aparılan araşdırmada 32 nəfərdən 22-si soyuq suda daha uzun sınağı təkrarlamağı seçdi, halbuki əlavə 30 saniyədə su cəmi bir dərəcə qədər isinmişdi. Yaddaş müddətə demək olar ki, baxmır: ən pis anı və sonu ölçür."
+   },
+   "ro": {
+    "title": "Memoria poate ține minte o durere mai lungă ca fiind mai ușoară 🧊",
+    "description": "Într-un studiu din 1993, 22 din 32 de oameni au ales să repete proba mai lungă în apă rece, deși cele 30 de secunde în plus erau doar cu un grad mai calde. Memoria aproape că ignoră durata: cântărește cel mai rău moment și finalul."
+   }
+  }
+ }
+}
