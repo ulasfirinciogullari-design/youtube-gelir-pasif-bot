@@ -383,6 +383,11 @@
     "r",
     "Tek bir su molekülü iki hidrojen ve bir oksijen atomundan oluşur, yani bir damla",
     "dc937b598926"
+   ],
+   "18107771135206419": [
+    1793613603.244645,
+    "s",
+    "atlandı: profanity and insults"
    ]
   },
   "son": [
@@ -416,10 +421,10 @@
  "nobet": {
   "basladi": "2026-11-02T08:22:02+00:00",
   "run": "41411253230",
-  "tur": 97,
+  "tur": 99,
   "ig_cevap": 0,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-02T09:58:05+00:00"
+  "son_tur": "2026-11-02T10:00:05+00:00"
  }
 }
