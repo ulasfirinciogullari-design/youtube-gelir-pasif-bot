@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0036",
+  "topic": "Japon balığının hafızası gerçekten üç saniye mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Japon balığı 3 saniyede unutmaz, aylarca hatırlar 🐟",
+  "hook_text": "BALIK NE KADAR HATIRLAR?",
+  "description": "Japon balığının hafızası gerçekten üç saniye mi?\n\nHayır, bu bir efsane: araştırmalar Japon balıklarının öğrendiklerini haftalarca, hatta aylarca hatırladığını gösteriyor. İngiltere'deki bir deneyde balıklar bir çubuğa basınca yem geldiğini öğrendi; makine günde yalnızca bir saat, hep aynı saatte yem verince o saati öğrenip vakit yaklaşınca çubuğun başında toplandılar.\n\nSence hangisi daha şaşırtıcı: aylarca hatırlaması mı, yem saatini bilmesi mi?\n\n#japonbalığı #akvaryum #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0036",
+  "tags": [
+    "japon balığı",
+    "japon balığı hafızası",
+    "balık hafızası",
+    "balık hafızası 3 saniye mi",
+    "japon balığı 3 saniye",
+    "balıklar unutur mu",
+    "balıklar ne kadar hatırlar",
+    "akvaryum",
+    "akvaryum balığı",
+    "balık",
+    "balıklar",
+    "hafıza",
+    "hayvan hafızası",
+    "hayvan zekası",
+    "yanlış bilinenler",
+    "evcil hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "goldfish",
+    "goldfish memory",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "japon baligi",
+    "japon baligi hafizasi",
+    "balik hafizasi",
+    "balik hafizasi 3 saniye mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Goldfish don't have a 3-second memory, they remember for months 🐟",
+      "description": "The three-second goldfish memory is a myth: research shows goldfish remember what they learn for weeks, even months. In one experiment in England, goldfish learned to press a lever for food, and when the feeder worked for only one hour a day, always at the same time, they learned the schedule and gathered at the lever as feeding time approached.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "es": {
+      "title": "El pez dorado no tiene memoria de 3 segundos: recuerda durante meses 🐟",
+      "description": "La memoria de tres segundos del pez dorado es un mito: las investigaciones muestran que recuerda lo aprendido durante semanas e incluso meses. En un experimento en Inglaterra aprendieron a empujar una palanca para recibir comida y, cuando el comedero funcionaba solo una hora al día, siempre a la misma hora, se aprendieron el horario y se juntaban junto a la palanca cuando se acercaba el momento.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "pt": {
+      "title": "O peixinho-dourado não tem memória de 3 segundos: lembra por meses 🐟",
+      "description": "A memória de três segundos do peixinho-dourado é um mito: pesquisas mostram que ele lembra o que aprendeu por semanas e até meses. Num experimento na Inglaterra, os peixes aprenderam a empurrar uma alavanca para ganhar comida e, quando o alimentador passou a funcionar só uma hora por dia, sempre no mesmo horário, aprenderam a hora e se juntavam perto da alavanca quando ela se aproximava.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "de": {
+      "title": "Goldfische haben kein 3-Sekunden-Gedächtnis – sie erinnern sich monatelang 🐟",
+      "description": "Das Drei-Sekunden-Gedächtnis des Goldfischs ist ein Mythos: Studien zeigen, dass Goldfische Gelerntes wochen- oder sogar monatelang behalten. In einem Versuch in England lernten sie, für Futter einen Hebel zu drücken, und als der Automat nur noch eine Stunde am Tag fütterte, immer zur selben Zeit, merkten sie sich den Zeitplan und versammelten sich kurz vorher am Hebel.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "fr": {
+      "title": "Le poisson rouge n'a pas 3 secondes de mémoire : il se souvient des mois 🐟",
+      "description": "La mémoire de trois secondes du poisson rouge est un mythe : les études montrent qu'il retient ce qu'il apprend pendant des semaines, voire des mois. Lors d'une expérience en Angleterre, des poissons rouges ont appris à appuyer sur un levier pour être nourris, et quand le distributeur n'a plus fonctionné qu'une heure par jour, toujours à la même heure, ils ont retenu l'horaire et se regroupaient près du levier à l'approche du repas.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "it": {
+      "title": "Il pesce rosso non ha 3 secondi di memoria: ricorda per mesi 🐟",
+      "description": "La memoria di tre secondi del pesce rosso è un mito: le ricerche mostrano che ricorda ciò che impara per settimane e perfino mesi. In un esperimento in Inghilterra i pesci hanno imparato a premere una leva per avere cibo e, quando il distributore funzionava solo un'ora al giorno, sempre alla stessa ora, hanno imparato l'orario e si radunavano vicino alla leva quando si avvicinava il momento.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "ru": {
+      "title": "У золотой рыбки память не 3 секунды: она помнит месяцами 🐟",
+      "description": "Трёхсекундная память золотой рыбки — миф: исследования показывают, что она помнит выученное неделями и даже месяцами. В одном эксперименте в Англии рыбки научились нажимать на рычаг, чтобы получить корм, а когда кормушка стала работать всего час в день, всегда в одно и то же время, они запомнили расписание и собирались у рычага, когда подходил срок.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "ar": {
+      "title": "ذاكرة السمكة الذهبية ليست 3 ثوانٍ… بل تتذكر لأشهر 🐟",
+      "description": "ذاكرة الثواني الثلاث عند السمكة الذهبية خرافة، فالأبحاث تُظهر أنها تتذكر ما تتعلمه لأسابيع بل لأشهر. وفي تجربة في إنجلترا تعلّمت الأسماك الضغط على ذراع للحصول على الطعام، وعندما صارت الآلة تعمل ساعة واحدة فقط في اليوم وفي الموعد نفسه، حفظت الموعد وتجمّعت عند الذراع مع اقترابه.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "hi": {
+      "title": "गोल्डफ़िश की याददाश्त 3 सेकंड नहीं, महीनों की होती है 🐟",
+      "description": "गोल्डफ़िश की तीन सेकंड वाली याददाश्त एक मिथक है: शोध बताते हैं कि वह सीखी हुई चीज़ें हफ़्तों, यहाँ तक कि महीनों तक याद रखती है। इंग्लैंड के एक प्रयोग में मछलियों ने लीवर दबाकर खाना पाना सीखा, और जब मशीन दिन में सिर्फ़ एक घंटे, हमेशा एक ही समय पर खाना देने लगी, तो उन्होंने वह समय याद कर लिया और समय पास आते ही लीवर के पास जमा होने लगीं।\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "id": {
+      "title": "Ikan mas koki tidak punya ingatan 3 detik, ia ingat berbulan-bulan 🐟",
+      "description": "Ingatan tiga detik ikan mas koki hanyalah mitos: penelitian menunjukkan ikan ini bisa mengingat apa yang dipelajarinya selama berminggu-minggu, bahkan berbulan-bulan. Dalam sebuah eksperimen di Inggris, ikan belajar menekan tuas untuk mendapat makanan, dan saat mesin hanya memberi makan satu jam sehari di jam yang sama, mereka hafal jadwalnya dan berkumpul di dekat tuas menjelang waktu makan.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "ja": {
+      "title": "金魚の記憶は3秒じゃない、何か月も覚えている 🐟",
+      "description": "金魚の記憶は3秒というのは俗説で、研究では覚えたことを何週間、さらには何か月も覚えていることがわかっています。イギリスの実験では、金魚がレバーを押してエサをもらうことを覚えました。エサが1日1時間、毎日同じ時刻にしか出なくなると、金魚はその時刻を覚え、時間が近づくとレバーの周りに集まりました。\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "ko": {
+      "title": "금붕어 기억력은 3초가 아니라 몇 달이다 🐟",
+      "description": "금붕어 기억력이 3초라는 건 속설로, 연구에 따르면 금붕어는 배운 것을 몇 주, 길게는 몇 달 동안 기억합니다. 영국의 한 실험에서 금붕어는 레버를 눌러 먹이를 받는 법을 익혔습니다. 먹이가 하루 한 시간, 매일 같은 시각에만 나오자 금붕어는 그 시간을 익혀 때가 되면 레버 주변으로 모여들었습니다.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "pl": {
+      "title": "Złota rybka nie ma 3-sekundowej pamięci, pamięta przez miesiące 🐟",
+      "description": "Trzysekundowa pamięć złotej rybki to mit: badania pokazują, że pamięta to, czego się nauczyła, przez tygodnie, a nawet miesiące. W eksperymencie w Anglii rybki nauczyły się naciskać dźwignię, by dostać jedzenie, a gdy karmnik działał tylko przez godzinę dziennie, zawsze o tej samej porze, zapamiętały ten czas i zbierały się przy dźwigni, gdy się zbliżał.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "nl": {
+      "title": "Een goudvis heeft geen geheugen van 3 seconden, maar van maanden 🐟",
+      "description": "Het drie-secondengeheugen van de goudvis is een fabel: onderzoek laat zien dat goudvissen wat ze leren weken- en zelfs maandenlang onthouden. In een experiment in Engeland leerden goudvissen op een hendel te drukken voor voer, en toen de automaat nog maar één uur per dag werkte, steeds op hetzelfde tijdstip, leerden ze dat schema en verzamelden ze zich bij de hendel als het bijna zover was.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "uk": {
+      "title": "У золотої рибки пам'ять не 3 секунди: вона пам'ятає місяцями 🐟",
+      "description": "Трисекундна пам'ять золотої рибки — міф: дослідження показують, що вона пам'ятає вивчене тижнями і навіть місяцями. В одному експерименті в Англії рибки навчилися натискати на важіль, щоб отримати корм, а коли годівниця почала працювати лише годину на день, завжди в той самий час, вони запам'ятали розклад і збиралися біля важеля, коли наближався час.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "vi": {
+      "title": "Cá vàng không hề có trí nhớ 3 giây, chúng nhớ hàng tháng 🐟",
+      "description": "Trí nhớ ba giây của cá vàng chỉ là lời đồn: nghiên cứu cho thấy cá vàng nhớ những gì đã học trong nhiều tuần, thậm chí nhiều tháng. Trong một thí nghiệm ở Anh, cá học cách đẩy cần gạt để nhận thức ăn, và khi máy chỉ cho ăn một giờ mỗi ngày, luôn vào cùng một giờ, chúng nhớ được giờ đó và tụ lại quanh cần gạt khi sắp đến giờ.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "az": {
+      "title": "Qızıl balığın yaddaşı 3 saniyə deyil, aylarla xatırlayır 🐟",
+      "description": "Qızıl balığın üç saniyəlik yaddaşı mifdir: araşdırmalar göstərir ki, o, öyrəndiklərini həftələrlə, hətta aylarla yadda saxlayır. İngiltərədəki bir təcrübədə balıqlar qolu basıb yem almağı öyrəndi, qurğu gündə cəmi bir saat, həmişə eyni vaxtda işləməyə başlayanda isə həmin saatı öyrənib vaxt yaxınlaşanda qolun yanına toplaşdılar.\n\n#shorts\n\nSeri: mk-c0036"
+    },
+    "ro": {
+      "title": "Peștișorul auriu nu are memorie de 3 secunde, ține minte luni întregi 🐟",
+      "description": "Memoria de trei secunde a peștișorului auriu e un mit: studiile arată că își amintește ce a învățat săptămâni și chiar luni. Într-un experiment din Anglia, peștii au învățat să apese o pârghie ca să primească hrană, iar când hrănitorul a funcționat doar o oră pe zi, mereu la aceeași oră, au învățat programul și se adunau lângă pârghie când se apropia momentul.\n\n#shorts\n\nSeri: mk-c0036"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: aylarca hatırlaması mı, yem saatini bilmesi mi?",
+  "scenes": [
+    {
+      "text": "Bu Japon balığının hafızası üç saniye değil.",
+      "visual": "orange goldfish swimming in a clear aquarium",
+      "stock_query": "goldfish",
+      "source": "stock",
+      "callout": "3 SANİYE DEĞİL"
+    },
+    {
+      "text": "Araştırmalara göre öğrendiklerini haftalarca, hatta aylarca hatırlayabiliyor.",
+      "visual": "several goldfish swimming among aquarium plants",
+      "stock_query": "goldfish aquarium",
+      "source": "stock",
+      "callout": "AYLARCA"
+    },
+    {
+      "text": "İngiltere'de bir deneyde balıklar, bir çubuğa basınca yem geldiğini öğrendi.",
+      "visual": "goldfish swimming close to a small rod in a fish tank",
+      "stock_query": "goldfish tank",
+      "source": "stock"
+    },
+    {
+      "text": "Sonra yem makinesi günde yalnızca bir saat, hep aynı saatte çalıştı.",
+      "visual": "fish food flakes falling into an aquarium with goldfish",
+      "stock_query": "goldfish food",
+      "source": "stock",
+      "callout": "GÜNDE 1 SAAT"
+    },
+    {
+      "text": "Balıklar o saati öğrendi ve vakit yaklaşınca çubuğun başında toplandı.",
+      "visual": "group of goldfish gathering at one spot in the tank",
+      "stock_query": "goldfish swimming",
+      "source": "stock",
+      "callout": "SAATİ BİLDİLER"
+    },
+    {
+      "text": "Akvaryumdaki balığın yem saatinde seni beklemesi tesadüf değil.",
+      "visual": "goldfish swimming up to the front glass of a home aquarium",
+      "stock_query": "goldfish bowl",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.88,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #89",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0036_1793611358_ig.mp4"
+}
