@@ -1,183 +1,180 @@
 {
- "id": "mk-c0038",
- "topic": "Aynada gözümüzün hareket ettiğini neden göremeyiz?",
- "kategori": "vücut",
- "subject": [
-  "eye",
-  "mirror"
- ],
- "stock_hint": "woman mirror eyes",
- "script": {
-  "title": "Aynada kendi gözünün kaydığını asla göremezsin 🪞",
-  "hook_text": "GÖZÜNÜ NEDEN YAKALAYAMIYORSUN?",
-  "scenes": [
-   {
-    "text": "Aynada gözünün hareket ettiğini asla göremezsin.",
-    "visual": "woman looking closely at her eyes in a bathroom mirror",
-    "stock_query": "woman mirror",
-    "source": "stock",
-    "callout": "ASLA GÖREMEZSİN"
-   },
-   {
-    "text": "Bir sol gözüne, bir sağ gözüne bak.",
-    "visual": "extreme close-up of a human eye",
-    "stock_query": "eye closeup",
-    "source": "stock",
-    "callout": ""
-   },
-   {
-    "text": "Bakışın değişir ama gözünün kaydığı anı hiç yakalayamazsın.",
-    "visual": "close-up of a woman's eyes looking straight ahead",
-    "stock_query": "woman eyes",
-    "source": "stock",
-    "callout": ""
-   },
-   {
-    "text": "Yanındaki biri ise gözlerinin hareketini rahatça görür.",
-    "visual": "two friends facing each other and talking, eyes in focus",
-    "stock_query": "people eyes",
-    "source": "stock",
-    "callout": "O GÖRÜR"
-   },
-   {
-    "text": "Çünkü göz her hızla kaydığında, beyin görmeyi bir anlığına bastırır.",
-    "visual": "close-up of an eye quickly glancing left and right",
-    "stock_query": "human eye",
-    "source": "stock",
-    "callout": "GÖRME BASTIRILIR"
-   },
-   {
-    "text": "Gözlerin bunu saniyede yaklaşık üç kez yapar ve sen hiç fark etmezsin.",
-    "visual": "macro shot of a human iris and pupil",
-    "stock_query": "eye iris",
-    "source": "stock",
-    "callout": "SANİYEDE ~3 KEZ"
-   }
+  "id": "mk-c0038",
+  "topic": "Mısır taneleri neden patlar?",
+  "kategori": "bilim",
+  "subject": [
+    "popcorn"
   ],
-  "description": "Aynada bir gözünden diğerine baktığında gözünün kaydığı anı göremezsin, ama yanındaki biri görür. Çünkü göz her hızla kaydığında beyin görüşü bir anlığına bastırır; bu, saniyede yaklaşık üç kez olur.",
-  "tags": [
-   "göz",
-   "gözler",
-   "ayna",
-   "göz hareketleri",
-   "beyin",
-   "görme",
-   "algı",
-   "insan vücudu",
-   "ilginç bilgiler",
-   "bilim"
-  ],
-  "pinned_comment": "Sence hangisi daha şaşırtıcı: gözünü aynada yakalayamaman mı, bunun saniyede üç kez olması mı?",
-  "en_title": "You can never see your own eyes move in a mirror 🪞",
-  "en_description": "Look at your left eye in a mirror, then your right: your gaze shifts, but you never catch your eyes moving, even though someone next to you can see it clearly. This is saccadic suppression, your brain dampening vision just before and during each quick eye movement. Your eyes make these jumps about three times a second, and you never notice.",
-  "mood": "sakin"
- },
- "seo": {
-  "description": "Aynada kendi gözümüzün hareket ettiğini neden göremeyiz?\n\nAynada bir sol gözüne bir sağ gözüne baktığında bakışın değişir ama gözünün kaydığı anı göremezsin; yanındaki biri ise bunu rahatça görür. Bunun sebebi, göz her hızla kaydığında beynin görüşü bir anlığına bastırması. Gözlerin bunu saniyede yaklaşık üç kez yapar.\n\nSence hangisi daha şaşırtıcı: gözünü aynada yakalayamaman mı, bunun saniyede üç kez olması mı?",
-  "hashtags": [
-   "#göz",
-   "#insanvücudu",
-   "#bilim",
-   "#ilginçbilgiler"
-  ],
-  "tags": [
-   "göz",
-   "gözler",
-   "ayna",
-   "aynada göz hareketi",
-   "aynada gözünü görmek",
-   "göz hareketleri",
-   "sakkad",
-   "sakkadik baskılama",
-   "beyin",
-   "görme",
-   "algı",
-   "göz yanılması",
-   "beyin nasıl çalışır",
-   "insan vücudu",
-   "vücut bilgileri",
-   "kendin dene",
-   "deney",
-   "psikoloji",
-   "ilginç bilgiler",
-   "bilim",
-   "merak",
-   "saccade",
-   "saccadic suppression"
-  ],
-  "localizations": {
-   "en": {
-    "title": "You can never see your own eyes move in a mirror 🪞",
-    "description": "Look at your left eye in a mirror, then your right: your gaze shifts, but you never catch your eyes moving, even though someone next to you can see it clearly. This is saccadic suppression, your brain dampening vision just before and during each quick eye movement. Your eyes make these jumps about three times a second, and you never notice."
-   },
-   "es": {
-    "title": "Nunca puedes ver tus propios ojos moverse en un espejo 🪞",
-    "description": "Mírate el ojo izquierdo en el espejo y luego el derecho: tu mirada cambia, pero nunca ves tus ojos moverse, aunque alguien a tu lado lo vea con claridad. Es la supresión sacádica: el cerebro atenúa la visión justo antes y durante cada movimiento rápido del ojo. Tus ojos dan estos saltos unas tres veces por segundo y ni te enteras."
-   },
-   "pt": {
-    "title": "Você nunca consegue ver seus olhos se mexendo no espelho 🪞",
-    "description": "Olhe para o seu olho esquerdo no espelho e depois para o direito: o olhar muda, mas você nunca vê os olhos se mexendo, embora alguém ao seu lado veja com clareza. É a supressão sacádica: o cérebro abafa a visão logo antes e durante cada movimento rápido dos olhos. Seus olhos dão esses saltos cerca de três vezes por segundo, e você nem percebe."
-   },
-   "de": {
-    "title": "Im Spiegel siehst du nie, wie sich deine Augen bewegen 🪞",
-    "description": "Schau im Spiegel auf dein linkes Auge, dann auf dein rechtes: Dein Blick springt, aber du siehst deine Augen nie wandern, obwohl jemand neben dir es deutlich sieht. Das ist die sakkadische Suppression: Das Gehirn dämpft das Sehen kurz vor und während jeder schnellen Augenbewegung. Deine Augen springen etwa dreimal pro Sekunde, und du merkst nichts davon."
-   },
-   "fr": {
-    "title": "Dans un miroir, tu ne verras jamais tes yeux bouger 🪞",
-    "description": "Regarde ton œil gauche dans un miroir, puis le droit : ton regard change, mais tu ne vois jamais tes yeux bouger, alors que quelqu'un à côté de toi le voit très bien. C'est la suppression saccadique : le cerveau atténue la vision juste avant et pendant chaque mouvement rapide de l'œil. Tes yeux font ces sauts environ trois fois par seconde, sans que tu t'en rendes compte."
-   },
-   "it": {
-    "title": "Allo specchio non vedrai mai i tuoi occhi muoversi 🪞",
-    "description": "Guarda il tuo occhio sinistro allo specchio, poi il destro: lo sguardo cambia, ma non vedi mai gli occhi muoversi, anche se chi ti sta accanto lo vede benissimo. È la soppressione saccadica: il cervello attenua la vista subito prima e durante ogni movimento rapido dell'occhio. I tuoi occhi fanno questi scatti circa tre volte al secondo e tu non te ne accorgi."
-   },
-   "ru": {
-    "title": "В зеркале ты никогда не увидишь, как двигаются твои глаза 🪞",
-    "description": "Посмотри в зеркале на левый глаз, потом на правый: взгляд переключается, но движения глаз ты не видишь, хотя человек рядом видит его отлично. Это саккадическое подавление: мозг приглушает зрение прямо перед каждым быстрым движением глаз и во время него. Глаза делают такие скачки примерно три раза в секунду, а ты этого не замечаешь."
-   },
-   "ar": {
-    "title": "لن ترى عينيك تتحركان في المرآة أبدًا 🪞",
-    "description": "انظر إلى عينك اليسرى في المرآة ثم إلى اليمنى: تتبدل نظرتك لكنك لا ترى عينيك تتحركان أبدًا، مع أن من يقف بجانبك يرى ذلك بوضوح. والسبب أن الدماغ يُخفت الرؤية قبيل كل حركة سريعة للعين وفي أثنائها. وتقوم عيناك بهذه القفزات نحو ثلاث مرات في الثانية دون أن تلاحظ."
-   },
-   "hi": {
-    "title": "आईने में आप अपनी आँखों को हिलते हुए कभी नहीं देख सकते 🪞",
-    "description": "आईने में पहले अपनी बाईं आँख देखिए, फिर दाईं: नज़र बदल जाती है, पर आँखें हिलती हुई कभी नहीं दिखतीं, जबकि पास खड़ा व्यक्ति इसे साफ़ देख लेता है। वजह यह है कि आँख की हर तेज़ हरकत से ठीक पहले और उसके दौरान दिमाग देखने की क्षमता को दबा देता है। आपकी आँखें ऐसी छलाँग सेकंड में लगभग तीन बार लगाती हैं और आपको पता भी नहीं चलता।"
-   },
-   "id": {
-    "title": "Kamu tidak akan pernah melihat matamu bergerak di cermin 🪞",
-    "description": "Lihat mata kirimu di cermin, lalu mata kanan: arah pandangmu berubah, tapi kamu tak pernah melihat matamu bergerak, padahal orang di sebelahmu bisa melihatnya dengan jelas. Ini disebut supresi sakadik: otak meredam penglihatan sesaat sebelum dan selama setiap gerakan cepat mata. Matamu melakukan lompatan ini sekitar tiga kali per detik tanpa kamu sadari."
-   },
-   "ja": {
-    "title": "鏡で自分の目が動く瞬間は絶対に見えない 🪞",
-    "description": "鏡で左目と右目を交互に見ても、自分の目が動く瞬間は見えませんが、隣の人にははっきり見えています。目がすばやく動く直前から動いている間、脳が視覚を弱めているためで、これをサッカード抑制と呼びます。目はこの動きを1秒に約3回しているのに、私たちは気づきません。"
-   },
-   "ko": {
-    "title": "거울 속 내 눈이 움직이는 모습은 절대 볼 수 없다 🪞",
-    "description": "거울로 왼쪽 눈과 오른쪽 눈을 번갈아 봐도 내 눈이 움직이는 순간은 안 보이지만, 옆 사람에게는 또렷이 보입니다. 눈이 빠르게 움직이기 직전과 움직이는 동안 뇌가 시각을 약하게 누르기 때문이죠. 눈은 이런 움직임을 1초에 약 3번이나 하지만 우리는 전혀 알아채지 못합니다."
-   },
-   "pl": {
-    "title": "W lustrze nigdy nie zobaczysz, jak ruszają się twoje oczy 🪞",
-    "description": "Spójrz w lustrze na lewe oko, potem na prawe: wzrok się przenosi, ale ruchu oczu nie widzisz, choć osoba obok widzi go wyraźnie. To tłumienie sakadowe: mózg przygasza widzenie tuż przed każdym szybkim ruchem oka i w jego trakcie. Twoje oczy wykonują takie skoki około trzech razy na sekundę, a ty w ogóle tego nie zauważasz."
-   },
-   "nl": {
-    "title": "In de spiegel zie je je eigen ogen nooit bewegen 🪞",
-    "description": "Kijk in de spiegel naar je linkeroog en dan naar je rechteroog: je blik verspringt, maar je ziet je ogen nooit bewegen, terwijl iemand naast je het duidelijk ziet. Dat heet saccadische suppressie: je hersenen dempen het zicht vlak voor en tijdens elke snelle oogbeweging. Je ogen maken zulke sprongetjes zo'n drie keer per seconde, zonder dat je het merkt."
-   },
-   "uk": {
-    "title": "У дзеркалі ти ніколи не побачиш, як рухаються твої очі 🪞",
-    "description": "Подивися в дзеркалі на ліве око, потім на праве: погляд перемикається, але руху очей ти не бачиш, хоча людина поруч бачить його чітко. Це сакадичне придушення: мозок приглушує зір просто перед кожним швидким рухом ока і під час нього. Очі роблять такі стрибки приблизно тричі на секунду, а ти цього не помічаєш."
-   },
-   "vi": {
-    "title": "Bạn không bao giờ thấy mắt mình chuyển động trong gương 🪞",
-    "description": "Nhìn mắt trái trong gương rồi chuyển sang mắt phải: ánh nhìn thay đổi nhưng bạn không bao giờ thấy mắt mình di chuyển, dù người bên cạnh thấy rất rõ. Đó là vì não làm mờ thị giác ngay trước và trong mỗi lần mắt đảo nhanh. Mắt bạn làm những cú nhảy như vậy khoảng ba lần mỗi giây mà bạn chẳng hề hay biết."
-   },
-   "az": {
-    "title": "Güzgüdə gözlərinin hərəkət etdiyini heç vaxt görə bilməzsən 🪞",
-    "description": "Güzgüdə əvvəl sol gözünə, sonra sağ gözünə bax: baxışın dəyişir, amma gözlərinin hərəkətini görmürsən, halbuki yanındakı adam bunu aydın görür. Səbəb budur ki, göz hər dəfə sürətlə sıçrayanda beyin həmin an görməni zəiflədir. Gözlərin bunu saniyədə təxminən üç dəfə edir, sən isə heç fərqinə varmırsan."
-   },
-   "ro": {
-    "title": "În oglindă nu-ți vei vedea niciodată ochii mișcându-se 🪞",
-    "description": "Uită-te în oglindă la ochiul stâng, apoi la cel drept: privirea se mută, dar nu-ți vezi niciodată ochii mișcându-se, deși cineva de lângă tine vede asta clar. E suprimarea sacadică: creierul atenuează vederea chiar înainte și în timpul fiecărei mișcări rapide a ochilor. Ochii tăi fac astfel de salturi de aproximativ trei ori pe secundă, iar tu nu observi nimic."
-   }
+  "stock_hint": "popcorn popping",
+  "script": {
+    "title": "Patlamış mısırı patlatan şey aslında su 🍿",
+    "hook_text": "MISIR NEDEN PATLAR?",
+    "scenes": [
+      {
+        "text": "Bu mısır tanelerini patlatan şey aslında su.",
+        "visual": "popcorn kernels bursting in a hot pot, slow motion",
+        "stock_query": "popcorn popping",
+        "source": "stock",
+        "callout": "PATLATAN SU"
+      },
+      {
+        "text": "Her tanenin yaklaşık yüzde on dördü sudur.",
+        "visual": "close-up of raw popcorn kernels in a bowl",
+        "stock_query": "popcorn kernels",
+        "source": "stock",
+        "callout": "%14 SU"
+      },
+      {
+        "text": "Isınınca bu su buhara dönüşür ama sert kabuktan kaçamaz.",
+        "visual": "popcorn kernels heating in a pan",
+        "stock_query": "popcorn pan",
+        "source": "stock",
+        "callout": ""
+      },
+      {
+        "text": "Basınç artar ve yaklaşık yüz seksen derecede kabuk patlar.",
+        "visual": "popcorn machine popping kernels",
+        "stock_query": "popcorn machine",
+        "source": "stock",
+        "callout": "180°C"
+      },
+      {
+        "text": "Pat sesi bile kabuktan değil, dışarı kaçan buhardan gelir.",
+        "visual": "close-up of popcorn flakes jumping out of a pot",
+        "stock_query": "popcorn closeup",
+        "source": "stock",
+        "callout": "BUHARIN SESİ"
+      },
+      {
+        "text": "Patlamayan tanelerin ya kabuğu çatlaktır ya da içinde yeterli su kalmamıştır.",
+        "visual": "bowl of fresh popcorn with a few unpopped kernels",
+        "stock_query": "popcorn bowl",
+        "source": "stock",
+        "callout": ""
+      }
+    ],
+    "description": "Mısır tanesinin yaklaşık yüzde on dördü sudur. Isınınca bu su buhara dönüşür, sert kabuk basınca yaklaşık 180 derecede dayanamaz ve tane patlar; pat sesi de dışarı kaçan buhardan gelir.",
+    "tags": [
+      "patlamış mısır",
+      "mısır",
+      "mısır neden patlar",
+      "buhar",
+      "mutfak bilimi",
+      "gündelik bilim",
+      "fizik",
+      "ilginç bilgiler",
+      "bilim"
+    ],
+    "pinned_comment": "Sence hangisi daha şaşırtıcı: mısırı suyun patlatması mı, pat sesinin buhardan gelmesi mi?",
+    "en_title": "What makes popcorn pop is actually water 🍿",
+    "en_description": "Each popcorn kernel is about 14 percent water. When heated, that water turns to steam that can't escape the hard hull, so pressure builds until the hull bursts at around 180°C. Even the pop sound comes from the escaping steam, not the cracking shell, and kernels that stay unpopped have either a cracked hull or too little water.",
+    "mood": "eğlenceli"
+  },
+  "seo": {
+    "description": "Patlamış mısır neden patlar, mısır tanesinin içinde ne var?\n\nHer mısır tanesinin yaklaşık yüzde on dördü sudur. Isınınca bu su buhara dönüşür ama sert kabuktan kaçamaz; basınç artar ve kabuk yaklaşık 180 derecede patlar. Pat sesi de kabuğun kırılmasından değil, dışarı kaçan buhardan gelir. Patlamayan tanelerin ya kabuğu çatlaktır ya da içinde yeterli su kalmamıştır.\n\nSence hangisi daha şaşırtıcı: mısırı suyun patlatması mı, pat sesinin buhardan gelmesi mi?",
+    "hashtags": [
+      "#patlamışmısır",
+      "#mutfakbilimi",
+      "#bilim",
+      "#ilginçbilgiler"
+    ],
+    "tags": [
+      "patlamış mısır",
+      "mısır",
+      "mısır neden patlar",
+      "patlamış mısır nasıl patlar",
+      "patlamayan mısır taneleri",
+      "mısır tanesi",
+      "patlamış mısır yapımı",
+      "buhar basıncı",
+      "mutfak bilimi",
+      "gündelik bilim",
+      "yemek bilimi",
+      "su buharı",
+      "fizik",
+      "kimya",
+      "deney",
+      "ilginç bilgiler",
+      "bilim",
+      "merak",
+      "bilgi",
+      "eğitici video",
+      "popcorn",
+      "why popcorn pops"
+    ],
+    "localizations": {
+      "en": {
+        "title": "What makes popcorn pop is actually water 🍿",
+        "description": "Each popcorn kernel is about 14 percent water. When heated, that water turns to steam that can't escape the hard hull, so pressure builds until the hull bursts at around 180°C. Even the pop sound comes from the escaping steam, not the cracking shell, and kernels that stay unpopped have either a cracked hull or too little water."
+      },
+      "es": {
+        "title": "Lo que hace estallar las palomitas es el agua 🍿",
+        "description": "Cada grano de maíz para palomitas tiene alrededor de un 14 % de agua. Al calentarse, esa agua se convierte en vapor que no puede salir de la cáscara dura, y hacia los 180 °C la presión la revienta. Hasta el «pop» que oyes viene del vapor que escapa, no de la cáscara al romperse."
+      },
+      "pt": {
+        "title": "O que faz a pipoca estourar é a água 🍿",
+        "description": "Cada grão de milho de pipoca tem cerca de 14% de água. Quando esquenta, essa água vira vapor e fica presa na casca dura até que, por volta de 180 °C, a pressão faz o grão estourar. Até o barulho do estouro vem do vapor escapando, não da casca se partindo."
+      },
+      "de": {
+        "title": "Popcorn platzt eigentlich wegen Wasser 🍿",
+        "description": "Jedes Popcornkorn besteht zu etwa 14 Prozent aus Wasser. Beim Erhitzen wird daraus Dampf, der nicht durch die harte Schale entweichen kann, bis sie bei rund 180 °C aufplatzt. Sogar das Ploppen kommt vom austretenden Dampf und nicht vom Brechen der Schale."
+      },
+      "fr": {
+        "title": "Ce qui fait éclater le pop-corn, c'est l'eau 🍿",
+        "description": "Chaque grain de maïs à pop-corn contient environ 14 % d'eau. En chauffant, cette eau se transforme en vapeur prisonnière de l'enveloppe dure, jusqu'à ce que la pression la fasse éclater vers 180 °C. Même le « pop » vient de la vapeur qui s'échappe, et non de l'enveloppe qui se brise."
+      },
+      "it": {
+        "title": "A far scoppiare i popcorn è l'acqua 🍿",
+        "description": "Ogni chicco di mais da popcorn contiene circa il 14% di acqua. Scaldandosi, quell'acqua diventa vapore che non riesce a uscire dal guscio duro, finché verso i 180 °C la pressione lo fa esplodere. Persino il «pop» che senti viene dal vapore che fuoriesce, non dal guscio che si rompe."
+      },
+      "ru": {
+        "title": "Попкорн лопается из-за воды внутри зерна 🍿",
+        "description": "Каждое зерно кукурузы для попкорна примерно на 14% состоит из воды. При нагреве вода превращается в пар, который не может выйти через твёрдую оболочку, и примерно при 180 °C давление её разрывает. Даже характерный хлопок издаёт вырывающийся пар, а не треснувшая оболочка."
+      },
+      "ar": {
+        "title": "ما يجعل الفشار ينفجر هو الماء 🍿",
+        "description": "تحتوي كل حبة ذرة فشار على نحو 14% من الماء. عند التسخين يتحول هذا الماء إلى بخار يُحبس داخل القشرة الصلبة، وعند نحو 180 درجة مئوية يفجّرها الضغط. وحتى صوت الفرقعة يأتي من البخار المندفع، لا من تشقق القشرة."
+      },
+      "hi": {
+        "title": "पॉपकॉर्न को असल में पानी फोड़ता है 🍿",
+        "description": "पॉपकॉर्न के हर दाने में लगभग 14% पानी होता है। गर्म होने पर यह पानी भाप बन जाता है, जो सख़्त छिलके से बाहर नहीं निकल पाती, और लगभग 180°C पर दबाव से दाना फूट जाता है। 'पॉप' की आवाज़ भी छिलका टूटने से नहीं, बल्कि बाहर निकलती भाप से आती है।"
+      },
+      "id": {
+        "title": "Yang membuat popcorn meletus ternyata air 🍿",
+        "description": "Setiap biji jagung popcorn mengandung sekitar 14% air. Saat dipanaskan, air itu berubah menjadi uap yang terperangkap di kulit yang keras, lalu sekitar 180°C tekanannya membuat biji meletus. Bahkan bunyi 'pop' berasal dari uap yang keluar, bukan dari kulit yang pecah."
+      },
+      "ja": {
+        "title": "ポップコーンを弾けさせているのは水 🍿",
+        "description": "ポップコーン用のトウモロコシの粒には約14%の水分が含まれています。加熱するとこの水が水蒸気になって硬い皮の中に閉じ込められ、約180℃で圧力に耐えきれず弾けます。あの「ポン」という音も、皮が割れる音ではなく水蒸気が抜ける音なのです。"
+      },
+      "ko": {
+        "title": "팝콘을 터뜨리는 건 사실 물이다 🍿",
+        "description": "팝콘용 옥수수 알갱이에는 약 14%의 수분이 들어 있습니다. 가열하면 이 물이 수증기로 변하지만 단단한 껍질 밖으로 빠져나가지 못하고, 약 180°C에서 압력을 이기지 못해 터집니다. '펑' 소리도 껍질이 깨지는 소리가 아니라 수증기가 빠져나가는 소리입니다."
+      },
+      "pl": {
+        "title": "Popcorn wybucha tak naprawdę przez wodę 🍿",
+        "description": "Każde ziarno kukurydzy na popcorn to w około 14 procentach woda. Podczas podgrzewania zmienia się ona w parę, która nie może uciec przez twardą łupinę, aż przy około 180°C ciśnienie ją rozsadza. Nawet charakterystyczne „pyk” pochodzi od uciekającej pary, a nie od pękającej łupiny."
+      },
+      "nl": {
+        "title": "Wat popcorn laat knallen, is eigenlijk water 🍿",
+        "description": "Elk popcornkorreltje bestaat voor ongeveer 14 procent uit water. Bij verhitting wordt dat stoom die niet door de harde schil kan ontsnappen, tot de druk rond 180 °C de korrel laat openbarsten. Zelfs het ploppende geluid komt van de ontsnappende stoom, niet van de brekende schil."
+      },
+      "uk": {
+        "title": "Попкорн лопається через воду всередині зернятка 🍿",
+        "description": "Кожне зернятко кукурудзи для попкорну приблизно на 14% складається з води. Під час нагрівання вона перетворюється на пару, що не може вийти крізь тверду оболонку, і приблизно при 180 °C тиск її розриває. Навіть характерний хлопок видає пара, що виривається, а не тріснута оболонка."
+      },
+      "vi": {
+        "title": "Thứ làm bỏng ngô nổ bung thực ra là nước 🍿",
+        "description": "Mỗi hạt ngô làm bỏng chứa khoảng 14% nước. Khi được làm nóng, nước biến thành hơi bị giữ lại trong lớp vỏ cứng, và đến khoảng 180°C thì áp suất làm hạt nổ tung. Ngay cả tiếng 'bụp' cũng đến từ hơi nước thoát ra chứ không phải do vỏ nứt."
+      },
+      "az": {
+        "title": "Popkornu partladan əslində sudur 🍿",
+        "description": "Hər popkorn dənəsinin təxminən 14 faizi sudur. Qızdırılanda bu su buxara çevrilir, amma sərt qabıqdan çıxa bilmir və təxminən 180 dərəcədə təzyiq qabığı partladır. Hətta eşitdiyin 'pat' səsi də qabığın qırılmasından yox, çölə çıxan buxardan gəlir."
+      },
+      "ro": {
+        "title": "Ce face floricelele să pocnească este, de fapt, apa 🍿",
+        "description": "Fiecare bob de porumb pentru floricele conține aproximativ 14% apă. Când se încălzește, apa devine abur prins sub coaja tare, iar pe la 180 °C presiunea o face să plesnească. Chiar și „pocnetul” vine de la aburul care iese, nu de la coaja care se rupe."
+      }
+    }
   }
- }
 }
