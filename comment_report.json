@@ -1,22 +1,22 @@
 {
- "started": "2026-11-01T21:45:11+00:00",
+ "started": "2026-11-02T15:45:18+00:00",
  "deneme": false,
- "threads": 103,
+ "threads": 88,
  "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAcLyg2zfnYn",
+   "id": "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAci7LmmisU6",
    "kind": "followup",
    "video": "7xjRSwfX83E",
-   "comment": "❤😂🎉",
-   "reply": "@SerapYorğun-n6d Bu emojilerle günümüz şenlendi! Çok teşekkürler. 😊",
+   "comment": "ne demek❤",
+   "reply": "@SerapYorğun-n6d Rica ederiz, asıl biz teşekkür ederiz! 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-01T21:45:16+00:00"
+ "finished": "2026-11-02T15:45:24+00:00"
 }
