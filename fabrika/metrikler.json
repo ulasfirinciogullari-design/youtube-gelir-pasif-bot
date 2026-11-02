@@ -1,5 +1,5 @@
 {
- "at": "2026-11-02T17:29:13+00:00",
+ "at": "2026-11-02T18:07:25+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -171,12 +171,12 @@
    "comment": 2
   },
   "E9dsm0cEDnM": {
-   "view": 348,
+   "view": 380,
    "like": 4,
    "comment": 0
   },
   "QuUL5G3usPE": {
-   "view": 445,
+   "view": 513,
    "like": 4,
    "comment": 0
   }
@@ -265,27 +265,6 @@
    "engagedViews": 780,
    "devam_yuzde": 54.8
   },
-  "pJPCpis147c": {
-   "views": 1363,
-   "estimatedMinutesWatched": 179,
-   "averageViewDuration": 17,
-   "averageViewPercentage": 66.07,
-   "likes": 9,
-   "shares": 0,
-   "comments": 2,
-   "subscribersGained": 3,
-   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1240,
-    "YT_SEARCH": 101,
-    "YT_CHANNEL": 20,
-    "YT_OTHER_PAGE": 1,
-    "EXT_URL": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 578,
-   "devam_yuzde": 42.4
-  },
   "RLuGUU-xaYE": {
    "views": 1363,
    "estimatedMinutesWatched": 235,
@@ -307,6 +286,27 @@
    },
    "engagedViews": 665,
    "devam_yuzde": 48.8
+  },
+  "pJPCpis147c": {
+   "views": 1363,
+   "estimatedMinutesWatched": 179,
+   "averageViewDuration": 17,
+   "averageViewPercentage": 66.07,
+   "likes": 9,
+   "shares": 0,
+   "comments": 2,
+   "subscribersGained": 3,
+   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1240,
+    "YT_SEARCH": 101,
+    "YT_CHANNEL": 20,
+    "YT_OTHER_PAGE": 1,
+    "EXT_URL": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 578,
+   "devam_yuzde": 42.4
   },
   "hf5CYGuKU8M": {
    "views": 1326,

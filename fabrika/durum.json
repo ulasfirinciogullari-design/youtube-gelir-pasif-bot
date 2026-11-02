@@ -746,7 +746,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1005",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "174",
+    "views": "380",
     "reason": null
    }
   },
@@ -953,6 +953,36 @@
    "thumbnail": true,
    "at": 1793629004.401593,
    "chars": 376,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "513",
+    "reason": null
+   }
+  },
+  {
+   "id": "g007",
+   "video_id": "ExIn5xWxSkY",
+   "url": "https://youtube.com/shorts/ExIn5xWxSkY",
+   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Calories Does Your Brain Burn in 1 Day?",
+    "es": "¿Cuántas Calorías Quema Tu Cerebro en 1 Día?",
+    "pt": "Quantas Calorias Seu Cérebro Queima em 1 Dia?",
+    "ar": "كم سعرة حرارية يحرق دماغك في يوم واحد؟",
+    "hi": "आपका दिमाग 1 दिन में कितनी कैलोरी जलाता है?",
+    "id": "Berapa Kalori yang Dibakar Otakmu dalam 1 Hari?",
+    "fr": "Combien de Calories Ton Cerveau Brûle-t-il en 1 Jour ?",
+    "de": "Wie Viele Kalorien Verbrennt Dein Gehirn an 1 Tag?",
+    "ru": "Сколько калорий сжигает твой мозг за 1 день?",
+    "az": "Beynin 1 Gündə Neçə Kalori Yandırır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793642935.5171986,
+   "chars": 397,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -993,7 +1023,8 @@
   "g006",
   "y010",
   "y016",
-  "y011"
+  "y011",
+  "g007"
  ],
  "extra": [
   {
@@ -1059,14 +1090,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-16T21:09:47+00:00",
-   "mod": "saatlik",
-   "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/X9ouBiGHD4Q",
-   "duration": 37.1,
-   "chars": 554
-  },
   {
    "finished": "2026-10-16T21:15:46+00:00",
    "mod": "deneme",
@@ -1462,6 +1485,14 @@
    "mod": "igbolum",
    "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
    "chars": 257
+  },
+  {
+   "finished": "2026-11-02T18:08:56+00:00",
+   "mod": "saatlik",
+   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+   "url": "https://youtube.com/shorts/ExIn5xWxSkY",
+   "duration": 27.4,
+   "chars": 397
   }
  ],
  "last_fail": 1793568784.6201334,

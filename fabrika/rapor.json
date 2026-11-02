@@ -1,18 +1,71 @@
 {
- "started": "2026-11-02T17:27:20+00:00",
- "mod": "igbolum",
- "gate": "instagram: g006",
+ "started": "2026-11-02T18:08:10+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
- "chars": 257,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18022348226935388",
-  "url": "https://www.instagram.com/reel/DfP18XUj5xR/",
-  "at": 1793640509.7693188
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "48",
+  "videos": "33"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfP18XUj5xR/"
+ "credits_before": [
+  63555,
+  613902
  ],
- "finished": "2026-11-02T17:28:29+00:00"
+ "kuyruk": {
+  "dosya": "20261102-2-g007.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "g007",
+  "series": "1 Gün Boyunca",
+  "q": "Beynin 1 günde ne kadar enerji harcar?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 397,
+ "duration": 27.4,
+ "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+ "url": "https://youtube.com/shorts/ExIn5xWxSkY",
+ "recent_status": {
+  "g006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1128",
+   "reason": null
+  },
+  "y010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1025",
+   "reason": null
+  },
+  "y016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "380",
+   "reason": null
+  },
+  "y011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "513",
+   "reason": null
+  },
+  "g007": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  63651,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261102-2-g007.json Beynin 1 günde ne kadar enerji harcar? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-11-02T18:08:56+00:00"
 }
