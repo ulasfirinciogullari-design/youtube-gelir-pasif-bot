@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0039",
+  "topic": "Sincaplar neden boş çukur kazar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Sincaplar hırsızları boş çukurlarla kandırır 🐿️",
+  "hook_text": "SİNCAP ÇUKURA NE GÖMDÜ?",
+  "description": "Sincaplar neden boş çukur kazar, fındık gömüyormuş gibi neden yapar?\n\nGri sincaplar, yakında başka bir sincap varken bazen sahte gömme yapar: çukuru kazar, üstünü örter ama yiyeceği ağzından bırakmaz ve bunu art arda birkaç kez tekrarlayabilir. Hırsız rolündeki araştırmacılar bile gerçek zulayı çoğu zaman bulamadı.\n\nSence hangisi daha kurnaz: sincap mı, karga mı?\n\n#sincap #hayvanzekası #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0039",
+  "tags": [
+    "sincap",
+    "sincaplar",
+    "gri sincap",
+    "sincap fındık gömme",
+    "sincaplar neden gömer",
+    "sincaplar boş çukur kazar mı",
+    "sahte gömme",
+    "sincap zekası",
+    "sincap kurnazlığı",
+    "zeki hayvanlar",
+    "hayvan zekası",
+    "hayvan davranışları",
+    "kış hazırlığı",
+    "orman hayvanları",
+    "sevimli hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "squirrel",
+    "squirrel deception",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "sincap findik gomme",
+    "sincaplar neden gomer",
+    "sincaplar bos cukur kazar mi",
+    "sahte gomme"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Squirrels fool thieves with fake burials 🐿️",
+      "description": "When another squirrel is nearby, gray squirrels sometimes fake it: they dig a hole, pretend to bury their food, cover it up and walk away with it still in their mouth. Researchers found these empty caches made the real stash much harder to find, even for the people playing the thief.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "es": {
+      "title": "Las ardillas engañan a los ladrones con entierros falsos 🐿️",
+      "description": "Cuando hay otra ardilla cerca, las ardillas grises a veces fingen: cavan un hoyo, hacen como que entierran la comida, lo tapan y se van con ella todavía en la boca. Los investigadores vieron que estos escondites vacíos hacían mucho más difícil encontrar el verdadero, incluso para las personas que hacían de ladrón.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "pt": {
+      "title": "Esquilos enganam ladrões com enterros de mentira 🐿️",
+      "description": "Quando há outro esquilo por perto, os esquilos-cinzentos às vezes fingem: cavam um buraco, fazem de conta que enterram a comida, tapam tudo e vão embora com ela ainda na boca. Pesquisadores viram que esses esconderijos vazios dificultavam muito achar o verdadeiro, até para as pessoas que faziam papel de ladrão.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "de": {
+      "title": "Grauhörnchen täuschen Diebe mit leeren Verstecken 🐿️",
+      "description": "Ist ein anderes Hörnchen in der Nähe, tun Grauhörnchen manchmal nur so: Sie graben ein Loch, mimen das Vergraben, schütten es zu und gehen mit dem Futter noch im Maul davon. Forschende stellten fest, dass diese leeren Verstecke das echte viel schwerer auffindbar machten, selbst für Menschen in der Rolle des Diebes.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "fr": {
+      "title": "Les écureuils trompent les voleurs avec de fausses cachettes 🐿️",
+      "description": "Quand un autre écureuil est dans les parages, l'écureuil gris fait parfois semblant : il creuse un trou, mime l'enfouissement, le rebouche et repart avec la nourriture toujours dans la gueule. Les chercheurs ont constaté que ces cachettes vides rendaient la vraie bien plus difficile à trouver, même pour les humains qui jouaient les voleurs.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "it": {
+      "title": "Gli scoiattoli ingannano i ladri con finte buche 🐿️",
+      "description": "Quando c'è un altro scoiattolo nei paraggi, lo scoiattolo grigio a volte finge: scava una buca, mima il gesto di sotterrare il cibo, la ricopre e se ne va con il boccone ancora in bocca. I ricercatori hanno visto che queste buche vuote rendevano molto più difficile trovare la scorta vera, perfino alle persone che facevano la parte dei ladri.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "ru": {
+      "title": "Белки обманывают воров фальшивыми тайниками 🐿️",
+      "description": "Если рядом другая белка, серые белки иногда только делают вид: выкапывают ямку, изображают, что прячут еду, засыпают её и уходят с добычей во рту. Исследователи выяснили, что такие пустые тайники сильно мешают найти настоящий, даже людям, игравшим роль воров.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "ar": {
+      "title": "السناجب تخدع اللصوص بحُفر فارغة 🐿️",
+      "description": "حين يكون سنجاب آخر قريبًا، يتظاهر السنجاب الرمادي أحيانًا بالدفن: يحفر حفرة ويمثّل أنه يخبّئ الطعام ثم يغطيها ويمضي والطعام ما زال في فمه. ووجد الباحثون أن هذه المخابئ الفارغة صعّبت العثور على المخبأ الحقيقي كثيرًا، حتى على البشر الذين أدّوا دور اللص.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "hi": {
+      "title": "गिलहरियाँ चोरों को नकली गड्ढों से चकमा देती हैं 🐿️",
+      "description": "जब पास में कोई दूसरी गिलहरी हो, तो ग्रे गिलहरियाँ कभी-कभी नाटक करती हैं: गड्ढा खोदती हैं, खाना गाड़ने का दिखावा करती हैं, उसे ढक देती हैं और खाना मुँह में ही लिए चली जाती हैं। शोधकर्ताओं ने पाया कि इन खाली गड्ढों की वजह से असली ठिकाना ढूँढना बहुत मुश्किल हो गया, चोर बने इंसानों के लिए भी।\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "id": {
+      "title": "Tupai mengecoh pencuri dengan lubang palsu 🐿️",
+      "description": "Saat ada tupai lain di dekatnya, tupai abu-abu kadang berpura-pura: menggali lubang, seolah-olah mengubur makanan, menutupnya, lalu pergi dengan makanan masih di mulut. Peneliti menemukan bahwa lubang kosong ini membuat simpanan yang asli jauh lebih sulit ditemukan, bahkan oleh manusia yang berperan sebagai pencuri.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "ja": {
+      "title": "リスは空っぽの穴で泥棒をだます 🐿️",
+      "description": "近くにほかのリスがいると、ハイイロリスはときどき埋めるふりをします。穴を掘り、食べ物を埋めるしぐさをして土をかぶせますが、食べ物は口にくわえたまま立ち去るのです。研究では、この空っぽの隠し場所のせいで、泥棒役の人間でさえ本物を見つけにくくなりました。\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "ko": {
+      "title": "청설모는 가짜 구덩이로 도둑을 속인다 🐿️",
+      "description": "근처에 다른 청설모가 있으면 회색청설모는 가끔 묻는 척을 합니다. 구덩이를 파고 먹이를 묻는 시늉을 한 뒤 흙을 덮지만, 먹이는 입에 문 채 그대로 떠나죠. 연구진은 이런 빈 구덩이 때문에 도둑 역할을 맡은 사람조차 진짜 먹이를 찾기가 훨씬 어려워졌다는 사실을 확인했습니다.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "pl": {
+      "title": "Wiewiórki oszukują złodziei fałszywymi kryjówkami 🐿️",
+      "description": "Gdy w pobliżu jest inna wiewiórka, wiewiórki szare czasem tylko udają: kopią dołek, markują zakopywanie, zasypują go i odchodzą z jedzeniem wciąż w pyszczku. Badacze odkryli, że takie puste kryjówki bardzo utrudniały znalezienie prawdziwej, nawet ludziom grającym rolę złodzieja.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "nl": {
+      "title": "Eekhoorns misleiden dieven met nepschuilplaatsen 🐿️",
+      "description": "Als er een andere eekhoorn in de buurt is, doen grijze eekhoorns soms alsof: ze graven een kuiltje, doen alsof ze voedsel begraven, gooien het dicht en lopen weg met het eten nog in hun bek. Onderzoekers zagen dat die lege bergplaatsen het veel moeilijker maakten om de echte te vinden, zelfs voor mensen die voor dief speelden.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "uk": {
+      "title": "Білки обманюють злодіїв фальшивими схованками 🐿️",
+      "description": "Коли поруч інша білка, сірі білки іноді лише вдають: викопують ямку, імітують, що ховають їжу, засипають її й ідуть зі здобиччю в роті. Дослідники з'ясували, що такі порожні схованки дуже ускладнювали пошук справжньої, навіть для людей, які грали роль злодіїв.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "vi": {
+      "title": "Sóc lừa kẻ trộm bằng những cái hố rỗng 🐿️",
+      "description": "Khi có một con sóc khác ở gần, sóc xám đôi khi giả vờ: đào hố, làm bộ chôn thức ăn, lấp lại rồi bỏ đi trong khi thức ăn vẫn ngậm trong miệng. Các nhà nghiên cứu thấy những chỗ giấu rỗng này khiến việc tìm ra kho thật khó hơn nhiều, kể cả với những người đóng vai kẻ trộm.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "az": {
+      "title": "Dələlər oğruları boş çuxurlarla aldadır 🐿️",
+      "description": "Yaxınlıqda başqa dələ olanda boz dələlər bəzən yemi basdırırmış kimi edir: çuxur qazır, üstünü örtür, amma yemi ağzında saxlayıb uzaqlaşırlar. Tədqiqatçılar gördü ki, bu boş gizlənclər əsl ehtiyatı tapmağı xeyli çətinləşdirir, hətta oğru rolunu oynayan insanlar üçün belə.\n\n#shorts\n\nSeri: mk-c0039"
+    },
+    "ro": {
+      "title": "Veverițele păcălesc hoții cu ascunzători false 🐿️",
+      "description": "Când e o altă veveriță prin preajmă, veverițele cenușii se prefac uneori: sapă o groapă, mimează îngroparea hranei, o acoperă și pleacă cu mâncarea încă în gură. Cercetătorii au văzut că aceste ascunzători goale făceau mult mai greu de găsit rezerva adevărată, chiar și pentru oamenii care jucau rolul hoților.\n\n#shorts\n\nSeri: mk-c0039"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha kurnaz: sincap mı, karga mı?",
+  "scenes": [
+    {
+      "text": "Bu sincabın az önce kapattığı çukur bomboş.",
+      "visual": "grey squirrel digging a small hole in the grass",
+      "stock_query": "squirrel digging",
+      "source": "stock",
+      "callout": "BOMBOŞ ÇUKUR"
+    },
+    {
+      "text": "Gri sincaplar, yakında başka bir sincap varken bazen gömüyormuş gibi yapar.",
+      "visual": "two grey squirrels on a park lawn",
+      "stock_query": "grey squirrel",
+      "source": "stock",
+      "callout": "SAHTE GÖMME"
+    },
+    {
+      "text": "Çukuru kazar, üstünü örter ama yiyeceği ağzından hiç bırakmaz.",
+      "visual": "squirrel holding a nut in its mouth",
+      "stock_query": "squirrel nut",
+      "source": "stock"
+    },
+    {
+      "text": "Bu numarayı art arda birkaç kez yapabilir.",
+      "visual": "squirrel hopping across a park and digging again",
+      "stock_query": "squirrel park",
+      "source": "stock"
+    },
+    {
+      "text": "Hırsız rolündeki araştırmacılar bile gerçek zulayı çoğu zaman bulamadı.",
+      "visual": "squirrel sitting upright in the grass looking around",
+      "stock_query": "squirrel grass",
+      "source": "stock",
+      "callout": "ZULA NEREDE?"
+    },
+    {
+      "text": "Parkta bir sincap bir şey gömüyorsa, o çukur boş olabilir.",
+      "visual": "squirrel running across a park lawn in autumn",
+      "stock_query": "squirrel autumn",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.17,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #92",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0039_1793633171_ig.mp4"
+}
