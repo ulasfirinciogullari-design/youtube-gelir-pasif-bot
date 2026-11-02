@@ -924,6 +924,36 @@
    "at": 1793614140.1460216,
    "chars": 380,
    "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "174",
+    "reason": null
+   }
+  },
+  {
+   "id": "y011",
+   "video_id": "QuUL5G3usPE",
+   "url": "https://youtube.com/shorts/QuUL5G3usPE",
+   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen to You If Earth Had Rings Like Saturn?",
+    "es": "¿Qué Te Pasaría si la Tierra Tuviera Anillos Como Saturno?",
+    "pt": "O Que Aconteceria com Você se a Terra Tivesse Anéis Como Saturno?",
+    "ar": "ماذا سيحدث لك لو كان للأرض حلقات مثل زحل؟",
+    "hi": "अगर धरती के पास शनि जैसे छल्ले होते, तो आपका क्या होता?",
+    "id": "Apa yang Terjadi padamu Jika Bumi Punya Cincin Seperti Saturnus?",
+    "fr": "Que T'arriverait-il si la Terre Avait des Anneaux Comme Saturne ?",
+    "de": "Was Würde Dir Passieren, Wenn die Erde Ringe Wie Saturn Hätte?",
+    "ru": "Что было бы с тобой, если бы у Земли были кольца, как у Сатурна?",
+    "az": "Yerin Saturn Kimi Halqası Olsaydı, Sənə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793629004.401593,
+   "chars": 376,
+   "status": {
     "upload": "uploaded",
     "privacy": "public",
     "views": "0",
@@ -962,7 +992,8 @@
   "y009",
   "g006",
   "y010",
-  "y016"
+  "y016",
+  "y011"
  ],
  "extra": [
   {
@@ -1028,14 +1059,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-16T19:10:34+00:00",
-   "mod": "saatlik",
-   "title": "1 Günde Kaç Kez Nefes Alırsın?",
-   "url": "https://youtube.com/shorts/RLuGUU-xaYE",
-   "duration": 34.0,
-   "chars": 518
-  },
   {
    "finished": "2026-10-16T20:09:58+00:00",
    "mod": "saatlik",
@@ -1433,6 +1456,14 @@
    "mod": "igbolum",
    "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
    "chars": 384
+  },
+  {
+   "finished": "2026-11-02T14:16:45+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+   "url": "https://youtube.com/shorts/QuUL5G3usPE",
+   "duration": 25.4,
+   "chars": 376
   }
  ],
  "last_fail": 1793568784.6201334,
