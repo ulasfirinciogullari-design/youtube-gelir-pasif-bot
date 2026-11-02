@@ -1060,14 +1060,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-16T20:09:58+00:00",
-   "mod": "saatlik",
-   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
-   "url": "https://youtube.com/shorts/-PC7chCMp_s",
-   "duration": 37.3,
-   "chars": 538
-  },
-  {
    "finished": "2026-10-16T21:09:47+00:00",
    "mod": "saatlik",
    "title": "İnsanlar Hiç Uyumasaydı Ne Olurdu?",
@@ -1464,6 +1456,12 @@
    "url": "https://youtube.com/shorts/QuUL5G3usPE",
    "duration": 25.4,
    "chars": 376
+  },
+  {
+   "finished": "2026-11-02T17:28:29+00:00",
+   "mod": "igbolum",
+   "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+   "chars": 257
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1598,6 +1596,11 @@
     "media_id": "18076747649472675",
     "url": "https://www.instagram.com/reel/DfPZ2Vvjgih/",
     "at": 1793625778.7800748
+   },
+   "g006": {
+    "media_id": "18022348226935388",
+    "url": "https://www.instagram.com/reel/DfP18XUj5xR/",
+    "at": 1793640509.7693188
    }
   },
   "eski": [

@@ -1,71 +1,18 @@
 {
- "started": "2026-11-02T14:15:33+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-02T17:27:20+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g006",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "45",
-  "videos": "32"
+ "title": "Evinin Çatısına Uzaydan Toz Mu Yağıyor?",
+ "chars": 257,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18022348226935388",
+  "url": "https://www.instagram.com/reel/DfP18XUj5xR/",
+  "at": 1793640509.7693188
  },
- "credits_before": [
-  49588,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261102-1-y011.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y011",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'nın etrafında Satürn gibi halka olsaydı?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 376,
- "duration": 25.4,
- "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
- "url": "https://youtube.com/shorts/QuUL5G3usPE",
- "recent_status": {
-  "y009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1326",
-   "reason": null
-  },
-  "g006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1128",
-   "reason": null
-  },
-  "y010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1025",
-   "reason": null
-  },
-  "y016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "174",
-   "reason": null
-  },
-  "y011": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  49679,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261102-1-y011.json Dünya'nın etrafında Satürn gibi halka olsaydı? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfP18XUj5xR/"
  ],
- "finished": "2026-11-02T14:16:45+00:00"
+ "finished": "2026-11-02T17:28:29+00:00"
 }
