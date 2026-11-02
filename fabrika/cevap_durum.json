@@ -384,15 +384,16 @@
     "Tek bir su molekülü iki hidrojen ve bir oksijen atomundan oluşur, yani bir damla",
     "dc937b598926"
    ],
-   "18107771135206419": [
-    1793613603.244645,
-    "s",
-    "atlandı: profanity and insults"
-   ],
    "18216804106316735": [
     1793616543.2431002,
     "r",
     "Yok yahu, hemen pes etme! İlk 15 saniyede bilincini kaybetsen de akıllı bir kask",
+    "dc937b598926"
+   ],
+   "18107771135206419": [
+    1793616642.9784203,
+    "r",
+    "Kahveni alıp rahatla, uzayda kaskı çıkarmak gibi tehlikeli işlerden uzak duruyor",
     "dc937b598926"
    ]
   },
@@ -426,6 +427,12 @@
     "kind": "yorum",
     "text": "Ölürdüm ben düz mantık bi adamım",
     "reply": "Yok yahu, hemen pes etme! İlk 15 saniyede bilincini kaybetsen de akıllı bir kaskla kurtulabilirdin 😉\n— Bit 🤖"
+   },
+   {
+    "at": 1793616642.9784203,
+    "kind": "yorum",
+    "text": "Napıyım yardım mı istiyim amk",
+    "reply": "Kahveni alıp rahatla, uzayda kaskı çıkarmak gibi tehlikeli işlerden uzak duruyoruz sadece, buradayız yardım etmeye\n— Bit 🤖"
    }
   ]
  },
