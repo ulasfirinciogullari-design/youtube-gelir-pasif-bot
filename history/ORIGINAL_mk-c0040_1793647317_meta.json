@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0040",
+  "topic": "Deniz yıldızının gözleri nerede?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Deniz yıldızının beyni yok ama her kolunda göz var 🌊",
+  "hook_text": "DENİZ YILDIZININ GÖZÜ NEREDE?",
+  "description": "Deniz yıldızının gözü var mı, beyni olmadan nasıl görür?\n\nDeniz yıldızının beyni yoktur ama çoğu türün her kolunun ucunda küçük bir göz bulunur. Bu gözlerin merceği yoktur ve ayrıntıları göremez, ama mercan resifi gibi büyük şekilleri seçmeye yeter. Bir deneyde resiften bir metre uzağa bırakılan deniz yıldızları doğruca resife yürüdü, gözleri alınanlar ise rastgele dolaştı.\n\nSence hangisi daha tuhaf: beyni olmaması mı, gözlerinin kollarının ucunda olması mı?\n\n#denizyıldızı #denizcanlıları #okyanus #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0040",
+  "tags": [
+    "deniz yıldızı",
+    "deniz yıldızları",
+    "deniz yıldızının gözü",
+    "deniz yıldızı beyni",
+    "deniz yıldızı nasıl görür",
+    "deniz yıldızının gözü var mı",
+    "beyinsiz hayvanlar",
+    "hayvan gözleri",
+    "mercan resifi",
+    "deniz canlıları",
+    "okyanus",
+    "deniz altı",
+    "omurgasızlar",
+    "hayvan duyuları",
+    "vahşi doğa",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "starfish",
+    "sea star",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "deniz yildizi",
+    "deniz yildizlari",
+    "deniz yildizinin gozu",
+    "deniz yildizi beyni"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Starfish have no brain, but there's an eye on every arm 🌊",
+      "description": "Sea stars have no brain, yet most species have a small eye at the tip of each arm. The eyes have no lens and can't see detail, but they're enough to make out big shapes like a coral reef. In an experiment, sea stars placed one meter from a reef walked straight to it, while those without eyes wandered at random.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "es": {
+      "title": "La estrella de mar no tiene cerebro, pero sí un ojo en cada brazo 🌊",
+      "description": "Las estrellas de mar no tienen cerebro, pero la mayoría tiene un pequeño ojo en la punta de cada brazo. Esos ojos no tienen cristalino ni ven detalles, aunque bastan para distinguir formas grandes como un arrecife. En un experimento, las estrellas colocadas a un metro del arrecife fueron directas hacia él, y las que no tenían ojos deambularon al azar.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "pt": {
+      "title": "A estrela-do-mar não tem cérebro, mas tem um olho em cada braço 🌊",
+      "description": "As estrelas-do-mar não têm cérebro, mas a maioria tem um pequeno olho na ponta de cada braço. Esses olhos não têm cristalino e não enxergam detalhes, mas bastam para distinguir formas grandes, como um recife de coral. Num experimento, as estrelas colocadas a um metro do recife foram direto até ele, enquanto as que estavam sem olhos vagaram sem rumo.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "de": {
+      "title": "Seesterne haben kein Gehirn, aber an jedem Arm ein Auge 🌊",
+      "description": "Seesterne haben kein Gehirn, doch die meisten Arten tragen an jeder Armspitze ein kleines Auge. Diese Augen haben keine Linse und sehen keine Details, reichen aber, um große Formen wie ein Korallenriff zu erkennen. In einem Experiment liefen Seesterne, die einen Meter vor dem Riff ausgesetzt wurden, direkt darauf zu, während Tiere ohne Augen ziellos umherwanderten.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "fr": {
+      "title": "L'étoile de mer n'a pas de cerveau, mais un œil au bout de chaque bras 🌊",
+      "description": "Les étoiles de mer n'ont pas de cerveau, mais la plupart des espèces ont un petit œil au bout de chaque bras. Ces yeux n'ont pas de cristallin et ne voient pas les détails, mais ils suffisent à distinguer de grandes formes comme un récif de corail. Lors d'une expérience, des étoiles de mer posées à un mètre d'un récif l'ont rejoint en ligne droite, tandis que celles privées d'yeux erraient au hasard.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "it": {
+      "title": "La stella marina non ha cervello, ma ha un occhio su ogni braccio 🌊",
+      "description": "Le stelle marine non hanno un cervello, ma la maggior parte delle specie ha un piccolo occhio sulla punta di ogni braccio. Questi occhi non hanno cristallino e non vedono i dettagli, ma bastano per distinguere grandi forme come una barriera corallina. In un esperimento, le stelle marine poste a un metro dalla barriera ci sono andate dritte, mentre quelle senza occhi vagavano a caso.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "ru": {
+      "title": "У морской звезды нет мозга, зато на каждом луче есть глаз 🌊",
+      "description": "У морских звёзд нет мозга, но у большинства видов на кончике каждого луча есть маленький глаз. У этих глаз нет хрусталика, и деталей они не различают, но крупные очертания вроде кораллового рифа видят. В эксперименте звёзды, оставленные в метре от рифа, ползли прямо к нему, а звёзды без глаз бродили наугад.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "ar": {
+      "title": "نجم البحر بلا دماغ… لكن في طرف كل ذراع عين 🌊",
+      "description": "ليس لنجم البحر دماغ، لكن معظم أنواعه تملك عينًا صغيرة في طرف كل ذراع. هذه العيون بلا عدسة ولا ترى التفاصيل، لكنها تكفي لتمييز الأشكال الكبيرة مثل الشعاب المرجانية. وفي تجربة اتجهت نجوم البحر الموضوعة على بُعد متر من الشعاب إليها مباشرة، بينما تاهت تلك التي أُزيلت عيونها.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "hi": {
+      "title": "स्टारफ़िश के पास दिमाग नहीं, फिर भी हर भुजा पर एक आँख 🌊",
+      "description": "स्टारफ़िश के पास दिमाग नहीं होता, फिर भी ज़्यादातर प्रजातियों की हर भुजा के सिरे पर एक छोटी आँख होती है। इन आँखों में लेंस नहीं होता और ये बारीकियाँ नहीं देख पातीं, पर मूँगे की चट्टान जैसी बड़ी आकृतियाँ पहचानने के लिए काफ़ी हैं। एक प्रयोग में चट्टान से एक मीटर दूर छोड़ी गई स्टारफ़िश सीधे उसकी ओर गईं, जबकि बिना आँखों वाली यूँ ही भटकती रहीं।\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "id": {
+      "title": "Bintang laut tak punya otak, tapi ada mata di setiap lengannya 🌊",
+      "description": "Bintang laut tidak punya otak, tetapi sebagian besar spesiesnya punya mata kecil di ujung setiap lengan. Mata ini tidak berlensa dan tidak bisa melihat detail, tapi cukup untuk mengenali bentuk besar seperti terumbu karang. Dalam sebuah eksperimen, bintang laut yang diletakkan satu meter dari terumbu langsung bergerak ke arahnya, sedangkan yang matanya dihilangkan berkeliaran tanpa arah.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "ja": {
+      "title": "ヒトデには脳がないのに、腕の先に目がある 🌊",
+      "description": "ヒトデには脳がありませんが、多くの種では腕の先それぞれに小さな目があります。この目にはレンズがなく細かいものは見えませんが、サンゴ礁のような大きな形なら見分けられます。実験では、サンゴ礁から1メートル離して置いたヒトデはまっすぐサンゴ礁へ向かい、目を取り除いたヒトデはあてもなくさまよいました。\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "ko": {
+      "title": "불가사리는 뇌가 없지만 팔마다 눈이 있다 🌊",
+      "description": "불가사리는 뇌가 없지만, 대부분의 종은 팔 끝마다 작은 눈이 하나씩 있습니다. 이 눈은 수정체가 없어 세세한 것은 못 보지만, 산호초 같은 큰 형태는 알아볼 수 있습니다. 한 실험에서 산호초에서 1미터 떨어진 곳에 놓인 불가사리는 곧장 산호초로 향했고, 눈을 없앤 불가사리는 이리저리 헤맸습니다.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "pl": {
+      "title": "Rozgwiazda nie ma mózgu, ale na każdym ramieniu ma oko 🌊",
+      "description": "Rozgwiazdy nie mają mózgu, ale większość gatunków ma na końcu każdego ramienia małe oko. Te oczy nie mają soczewki i nie widzą szczegółów, ale wystarczają, by rozpoznać duże kształty, takie jak rafa koralowa. W eksperymencie rozgwiazdy położone metr od rafy szły prosto do niej, a te pozbawione oczu błąkały się bez celu.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "nl": {
+      "title": "Een zeester heeft geen hersenen, maar wel een oog op elke arm 🌊",
+      "description": "Zeesterren hebben geen hersenen, maar de meeste soorten hebben aan het puntje van elke arm een klein oog. Die ogen hebben geen lens en zien geen details, maar ze zijn genoeg om grote vormen zoals een koraalrif te onderscheiden. In een experiment liepen zeesterren die een meter van een rif werden neergezet er recht op af, terwijl dieren zonder ogen doelloos rondzwierven.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "uk": {
+      "title": "У морської зірки немає мозку, зате на кожному промені є око 🌊",
+      "description": "У морських зірок немає мозку, але в більшості видів на кінчику кожного променя є маленьке око. Ці очі не мають кришталика й не розрізняють деталей, але великі обриси, як-от кораловий риф, бачать. В експерименті зірки, залишені за метр від рифу, повзли просто до нього, а зірки без очей блукали навмання.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "vi": {
+      "title": "Sao biển không có não nhưng mỗi cánh lại có một con mắt 🌊",
+      "description": "Sao biển không có não, nhưng hầu hết các loài đều có một con mắt nhỏ ở đầu mỗi cánh. Những con mắt này không có thủy tinh thể và không nhìn rõ chi tiết, nhưng đủ để nhận ra những hình khối lớn như rạn san hô. Trong một thí nghiệm, sao biển được đặt cách rạn một mét đã bò thẳng tới đó, còn những con bị bỏ mắt thì đi lang thang vô định.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "az": {
+      "title": "Dəniz ulduzunun beyni yoxdur, amma hər qolunda bir göz var 🌊",
+      "description": "Dəniz ulduzlarının beyni yoxdur, amma növlərin çoxunda hər qolun ucunda kiçik bir göz olur. Bu gözlərin linzası yoxdur və xırda detalları görmür, amma mərcan rifi kimi böyük formaları seçməyə kifayət edir. Bir təcrübədə rifdən bir metr aralıda buraxılan dəniz ulduzları düz rifə doğru getdi, gözləri götürülənlər isə məqsədsiz dolaşdı.\n\n#shorts\n\nSeri: mk-c0040"
+    },
+    "ro": {
+      "title": "Steaua de mare nu are creier, dar are un ochi pe fiecare braț 🌊",
+      "description": "Stelele de mare nu au creier, dar majoritatea speciilor au un ochi mic în vârful fiecărui braț. Acești ochi nu au cristalin și nu văd detalii, dar sunt suficienți ca să deosebească forme mari, cum ar fi un recif de corali. Într-un experiment, stelele de mare puse la un metru de recif au mers direct spre el, în timp ce cele fără ochi au rătăcit la întâmplare.\n\n#shorts\n\nSeri: mk-c0040"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: beyni olmaması mı, gözlerinin kollarının ucunda olması mı?",
+  "scenes": [
+    {
+      "text": "Bu deniz yıldızının beyni yok ama gözleri var.",
+      "visual": "orange starfish resting on the sandy sea floor",
+      "stock_query": "starfish",
+      "source": "stock",
+      "callout": "BEYİN YOK"
+    },
+    {
+      "text": "Çoğu deniz yıldızının her kolunun ucunda küçük bir göz bulunur.",
+      "visual": "starfish slowly moving underwater, arm tips raised",
+      "stock_query": "starfish underwater",
+      "source": "stock",
+      "callout": "HER KOLDA 1 GÖZ"
+    },
+    {
+      "text": "Bu gözlerin merceği yoktur, ayrıntıları göremez.",
+      "visual": "macro close-up of the tip of a starfish arm",
+      "stock_query": "starfish closeup",
+      "source": "stock"
+    },
+    {
+      "text": "Ama mercan resifi gibi büyük şekilleri seçmeye yeter.",
+      "visual": "blue starfish near a colorful coral reef",
+      "stock_query": "starfish reef",
+      "source": "stock",
+      "callout": "MERCEKSİZ GÖZ"
+    },
+    {
+      "text": "Bir deneyde, resiften bir metre uzağa bırakılan deniz yıldızları doğruca resife yürüdü.",
+      "visual": "starfish crawling across sand toward a reef",
+      "stock_query": "starfish sand",
+      "source": "stock",
+      "callout": "1 METRE"
+    },
+    {
+      "text": "Gözleri alınanlar ise yolunu bulamadan rastgele dolaştı.",
+      "visual": "starfish on the ocean floor in clear blue water",
+      "stock_query": "starfish ocean",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.81,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #93",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0040_1793647317_ig.mp4"
+}
