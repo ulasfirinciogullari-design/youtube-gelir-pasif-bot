@@ -26,16 +26,17 @@
   "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/",
   "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/",
   "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
-  "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/"
+  "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
+  "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/"
  },
  "nobet": {
   "basladi": "2026-11-02T08:22:29+00:00",
   "run": "41411324365",
-  "tur": 315,
+  "tur": 339,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-02T13:36:30+00:00"
+  "son_tur": "2026-11-02T14:01:19+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -156,6 +157,13 @@
    "at": 1793613680,
    "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌",
    "topic_id": "mk-c0032"
+  },
+  "MQkEdpiR0M0": {
+   "media_id": "18117780569038915",
+   "url": "https://www.instagram.com/reel/DfPePBGEtae/",
+   "at": 1793628080,
+   "title": "Devekuşunun bir gözü beyninden büyük 👀",
+   "topic_id": "mk-c0026"
   }
  }
 }
