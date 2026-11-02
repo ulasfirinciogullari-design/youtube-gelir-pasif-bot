@@ -1,18 +1,71 @@
 {
- "started": "2026-11-02T09:07:45+00:00",
- "mod": "igbolum",
- "gate": "instagram: y009",
+ "started": "2026-11-02T10:07:50+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
- "chars": 248,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17955890955038960",
-  "url": "https://www.instagram.com/reel/DfO8zwoncSF/",
-  "at": 1793610552.5168965
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "45",
+  "videos": "31"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfO8zwoncSF/"
+ "credits_before": [
+  27916,
+  613902
  ],
- "finished": "2026-11-02T09:09:12+00:00"
+ "kuyruk": {
+  "dosya": "20261023-3-y016.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y016",
+  "series": "Ya Olsaydı?",
+  "q": "Bir gün 48 saat olsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 380,
+ "duration": 27.1,
+ "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
+ "url": "https://youtube.com/shorts/E9dsm0cEDnM",
+ "recent_status": {
+  "n006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1180",
+   "reason": null
+  },
+  "y009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1326",
+   "reason": null
+  },
+  "g006": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1128",
+   "reason": null
+  },
+  "y010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1025",
+   "reason": null
+  },
+  "y016": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  28297,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261023-3-y016.json Bir gün 48 saat olsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-02T10:09:01+00:00"
 }

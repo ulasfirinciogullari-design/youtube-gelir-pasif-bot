@@ -386,7 +386,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1146",
+    "views": "1147",
     "reason": null
    }
   },
@@ -416,7 +416,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "987",
+    "views": "990",
     "reason": null
    }
   },
@@ -446,7 +446,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1358",
+    "views": "1364",
     "reason": null
    }
   },
@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "940",
+    "views": "972",
     "reason": null
    }
   },
@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1214",
+    "views": "1221",
     "reason": null
    }
   },
@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1307",
+    "views": "1313",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1530",
+    "views": "1634",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1357",
+    "views": "1456",
     "reason": null
    }
   },
@@ -626,7 +626,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "988",
+    "views": "999",
     "reason": null
    }
   },
@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1039",
+    "views": "1109",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1019",
+    "views": "1087",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1014",
+    "views": "1018",
     "reason": null
    }
   },
@@ -746,7 +746,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "943",
+    "views": "1003",
     "reason": null
    }
   },
@@ -776,7 +776,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "895",
+    "views": "995",
     "reason": null
    }
   },
@@ -806,7 +806,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "895",
+    "views": "1180",
     "reason": null
    }
   },
@@ -836,7 +836,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "955",
+    "views": "1326",
     "reason": null
    }
   },
@@ -866,7 +866,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "276",
+    "views": "1128",
     "reason": null
    }
   },
@@ -893,6 +893,36 @@
    "thumbnail": true,
    "at": 1792778892.7412817,
    "chars": 387,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "1025",
+    "reason": null
+   }
+  },
+  {
+   "id": "y016",
+   "video_id": "E9dsm0cEDnM",
+   "url": "https://youtube.com/shorts/E9dsm0cEDnM",
+   "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would a 48-Hour Day Do to Your Body?",
+    "es": "¿Qué Le Haría un Día de 48 Horas a Tu Cuerpo?",
+    "pt": "O Que um Dia de 48 Horas Faria com Seu Corpo?",
+    "ar": "ماذا سيحدث لجسمك لو كان اليوم 48 ساعة؟",
+    "hi": "अगर एक दिन 48 घंटे का होता, तो आपके शरीर का क्या होता?",
+    "id": "Apa yang Terjadi pada Tubuhmu Jika Sehari 48 Jam?",
+    "fr": "Que Ferait une Journée de 48 Heures à Ton Corps ?",
+    "de": "Was Würde ein 48-Stunden-Tag mit Deinem Körper Machen?",
+    "ru": "Что 48-часовые сутки сделали бы с твоим телом?",
+    "az": "Bir Gün 48 Saat Olsaydı, Bədəninə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793614140.1460216,
+   "chars": 380,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -931,7 +961,8 @@
   "n006",
   "y009",
   "g006",
-  "y010"
+  "y010",
+  "y016"
  ],
  "extra": [
   {
@@ -997,14 +1028,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-16T17:10:31+00:00",
-   "mod": "saatlik",
-   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
-   "url": "https://youtube.com/shorts/4GSDZD52uI0",
-   "duration": 38.6,
-   "chars": 574
-  },
   {
    "finished": "2026-10-16T18:11:39+00:00",
    "mod": "saatlik",
@@ -1404,6 +1427,14 @@
    "mod": "igbolum",
    "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
    "chars": 248
+  },
+  {
+   "finished": "2026-11-02T10:09:01+00:00",
+   "mod": "saatlik",
+   "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
+   "url": "https://youtube.com/shorts/E9dsm0cEDnM",
+   "duration": 27.1,
+   "chars": 380
   }
  ],
  "last_fail": 1793568784.6201334,
