@@ -395,6 +395,12 @@
     "r",
     "Kahveni alıp rahatla, uzayda kaskı çıkarmak gibi tehlikeli işlerden uzak duruyor",
     "dc937b598926"
+   ],
+   "18088210718309370": [
+    1793617203.2790031,
+    "r",
+    "En garantisi! Uzayda işi şansa bırakmamak en iyisi. 👩‍🚀\n— Bit 🤖",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -433,6 +439,12 @@
     "kind": "yorum",
     "text": "Napıyım yardım mı istiyim amk",
     "reply": "Kahveni alıp rahatla, uzayda kaskı çıkarmak gibi tehlikeli işlerden uzak duruyoruz sadece, buradayız yardım etmeye\n— Bit 🤖"
+   },
+   {
+    "at": 1793617203.2790031,
+    "kind": "yorum",
+    "text": "Kaskımı takardım",
+    "reply": "En garantisi! Uzayda işi şansa bırakmamak en iyisi. 👩‍🚀\n— Bit 🤖"
    }
   ]
  },
@@ -440,10 +452,10 @@
  "nobet": {
   "basladi": "2026-11-02T08:22:02+00:00",
   "run": "41411253230",
-  "tur": 148,
-  "ig_cevap": 1,
+  "tur": 159,
+  "ig_cevap": 2,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-02T10:49:06+00:00"
+  "son_tur": "2026-11-02T11:00:06+00:00"
  }
 }
