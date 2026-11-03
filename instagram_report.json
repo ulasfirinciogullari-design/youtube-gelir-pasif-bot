@@ -1,14 +1,7 @@
 {
- "started": "2026-11-02T18:00:44+00:00",
+ "started": "2026-11-03T05:55:11+00:00",
  "mod": "nöbet",
  "anahtar_bitis": "2026-12-31T21:02",
- "new": 0,
- "quiet": 0,
- "room": 20,
- "sent_last_24h": 0,
- "later": 0,
- "reel": {
-  "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/"
- },
- "finished": "2026-11-02T18:01:54+00:00"
+ "error": "URLError: <urlopen error [Errno 101] Network is unreachable>",
+ "finished": "2026-11-03T05:56:11+00:00"
 }
