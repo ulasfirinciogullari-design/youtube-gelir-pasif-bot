@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1634",
+    "views": "1635",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "681",
+    "views": "713",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "942",
+    "views": "994",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1106",
+    "views": "1121",
     "reason": null
    }
   },
@@ -1013,6 +1013,36 @@
    "thumbnail": true,
    "at": 1793700486.4059703,
    "chars": 420,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "472",
+    "reason": null
+   }
+  },
+  {
+   "id": "y017",
+   "video_id": "wvA035c4dvw",
+   "url": "https://youtube.com/shorts/wvA035c4dvw",
+   "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Your Heart Stopped, How Many Seconds Until You Pass Out?",
+    "es": "Si Tu Corazón Se Detuviera, ¿En Cuántos Segundos Te Desmayarías?",
+    "pt": "Se Seu Coração Parasse, em Quantos Segundos Você Desmaiaria?",
+    "ar": "لو توقف قلبك، بعد كم ثانية ستفقد وعيك؟",
+    "hi": "अगर आपका दिल रुक जाए, तो कितने सेकंड में आप बेहोश हो जाएंगे?",
+    "id": "Jika Jantungmu Berhenti, Berapa Detik Sampai Kamu Pingsan?",
+    "fr": "Si Ton Cœur S'arrêtait, en Combien de Secondes T'évanouirais-tu ?",
+    "de": "Wenn Dein Herz Stoppt: Nach Wie Vielen Sekunden Wirst Du Ohnmächtig?",
+    "ru": "Если сердце остановится, через сколько секунд ты потеряешь сознание?",
+    "az": "Ürəyin Dayansa, Neçə Saniyəyə Huşunu İtirərsən?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793715029.3026657,
+   "chars": 351,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1055,7 +1085,8 @@
   "y016",
   "y011",
   "g007",
-  "n007"
+  "n007",
+  "y017"
  ],
  "extra": [
   {
@@ -1121,11 +1152,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-17T09:21:31+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
   {
    "finished": "2026-10-17T12:07:44+00:00",
    "mod": "saatlik",
@@ -1525,6 +1551,14 @@
    "mod": "igbolum",
    "title": "Beynin 1 Günde Kaç Kalori Yakar?",
    "chars": 397
+  },
+  {
+   "finished": "2026-11-03T14:10:30+00:00",
+   "mod": "saatlik",
+   "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
+   "url": "https://youtube.com/shorts/wvA035c4dvw",
+   "duration": 24.2,
+   "chars": 351
   }
  ],
  "last_fail": 1793568784.6201334,
