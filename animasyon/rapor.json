@@ -1,9 +1,9 @@
 {
- "started": "2026-11-03T22:26:35+00:00",
- "bolum": "k003",
- "mod": "zamanla",
+ "started": "2026-11-03T22:47:40+00:00",
+ "bolum": "k004",
+ "mod": "deneme",
  "tablolar": {},
- "chars": 616,
+ "chars": 596,
  "voice": {
   "model": "eleven_flash_v2_5",
   "speed": 1.1,
@@ -11,16 +11,8 @@
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 32.89,
- "render_seconds": 105,
- "title": "Önce Hayır Dedirt, Sonra Evet Al 🤯 #psikoloji",
- "video_id": "b61FG85DVCY",
- "url": "https://youtube.com/shorts/b61FG85DVCY",
- "privacy": "private",
- "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu"
- },
- "publish_at": "2026-11-04T17:00:00+00:00",
- "finished": "2026-11-03T22:28:27+00:00"
+ "duration": 33.73,
+ "render_seconds": 79,
+ "title": "Pazarlıkta İlk Sayıyı Neden Sen Söylemelisin? 🤯 #psikoloji",
+ "finished": "2026-11-03T22:49:04+00:00"
 }
