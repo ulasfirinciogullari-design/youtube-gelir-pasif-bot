@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0045",
+  "topic": "Gözümüzdeki kör noktayı neden görmeyiz?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Her gözünde bir kör nokta var, beynin orayı uyduruyor 👁️",
+  "hook_text": "GÖRMEDİĞİN DELİK NEREDE?",
+  "description": "Gözümüzdeki kör nokta nedir, neden onu hiç fark etmeyiz?\n\nHer gözde, görme sinirinin gözden çıktığı yerde ışık algılayan hücre yoktur; bu yüzden her gözün görüş alanında bir kör nokta vardır. Bu nokta baktığın yerin yaklaşık on beş derece yanında durur. Tek gözünü kapatsan bile orada bir delik görmezsin, çünkü beyin deliği çevresindeki görüntüyle doldurur. Yani gördüğün dünyanın küçük bir parçasını aslında beynin tamamlıyor.\n\nSence hangisi daha tuhaf: gözünde bir delik olması mı, beynin onu fark ettirmeden doldurması mı?\n\n#göz #beyin #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0045",
+  "tags": [
+    "kör nokta",
+    "gözdeki kör nokta",
+    "kör nokta nedir",
+    "görme siniri",
+    "optik sinir",
+    "göz",
+    "görme",
+    "beyin",
+    "beyin nasıl görür",
+    "algı",
+    "görsel algı",
+    "beyin kandırır",
+    "insan vücudu",
+    "psikoloji",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "göz testi",
+    "blind spot",
+    "optic nerve",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kor nokta",
+    "gozdeki kor nokta",
+    "kor nokta nedir",
+    "gorme siniri",
+    "goz"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Each eye has a blind spot and your brain fills it in 👁️",
+      "description": "Where the optic nerve leaves each eye there are no light-sensing cells. The hole sits about 15 degrees from where you look, and your brain fills it in.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "es": {
+      "title": "Cada ojo tiene un punto ciego y tu cerebro lo rellena 👁️",
+      "description": "Donde el nervio óptico sale del ojo no hay células que detecten la luz. Ese hueco está a unos 15 grados de donde miras y tu cerebro lo rellena.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "pt": {
+      "title": "Cada olho tem um ponto cego e o cérebro o preenche 👁️",
+      "description": "Onde o nervo óptico sai do olho não há células que captem luz. Esse buraco fica a cerca de 15 graus de onde você olha, e o cérebro o preenche.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "de": {
+      "title": "Jedes Auge hat einen blinden Fleck, dein Gehirn füllt ihn 👁️",
+      "description": "Wo der Sehnerv das Auge verlässt, gibt es keine Lichtsinneszellen. Die Lücke liegt etwa 15 Grad neben deinem Blickpunkt, und dein Gehirn füllt sie auf.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "fr": {
+      "title": "Chaque œil a une tache aveugle que ton cerveau comble 👁️",
+      "description": "Là où le nerf optique quitte l'œil, il n'y a aucune cellule sensible à la lumière. Ce trou se trouve à environ 15 degrés de ton regard et ton cerveau le comble.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "it": {
+      "title": "Ogni occhio ha un punto cieco che il cervello riempie 👁️",
+      "description": "Dove il nervo ottico esce dall'occhio non ci sono cellule sensibili alla luce. Il buco si trova a circa 15 gradi da dove guardi e il cervello lo riempie.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "ru": {
+      "title": "В каждом глазу есть слепое пятно, и мозг его дорисовывает 👁️",
+      "description": "Там, где зрительный нерв выходит из глаза, нет светочувствительных клеток. Эта дыра примерно в 15 градусах от точки взгляда, и мозг её заполняет.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "ar": {
+      "title": "في كل عين نقطة عمياء ودماغك يملؤها 👁️",
+      "description": "حيث يخرج العصب البصري من العين لا توجد خلايا تستشعر الضوء. هذه الفجوة تبعد نحو 15 درجة عن مكان نظرك، ويملؤها الدماغ.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "hi": {
+      "title": "हर आँख में एक ब्लाइंड स्पॉट है, दिमाग उसे भर देता है 👁️",
+      "description": "जहाँ ऑप्टिक नस आँख से निकलती है वहाँ रोशनी पहचानने वाली कोशिकाएँ नहीं होतीं। यह छेद आपकी नज़र से लगभग 15 डिग्री दूर है और दिमाग उसे भर देता है।\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "id": {
+      "title": "Setiap mata punya titik buta dan otakmu mengisinya 👁️",
+      "description": "Di tempat saraf optik keluar dari mata tidak ada sel penangkap cahaya. Lubang itu sekitar 15 derajat dari titik pandangmu, dan otak mengisinya.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "ja": {
+      "title": "どちらの目にも盲点があり、脳が埋めている 👁️",
+      "description": "視神経が目から出る場所には光を感じる細胞がありません。その穴は視線から約15度の位置にありますが、脳が周りの景色で埋めています。\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "ko": {
+      "title": "모든 눈에는 맹점이 있고 뇌가 그곳을 채운다 👁️",
+      "description": "시신경이 눈에서 나가는 자리에는 빛을 느끼는 세포가 없습니다. 이 구멍은 시선에서 약 15도 옆에 있지만 뇌가 주변 장면으로 채웁니다.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "pl": {
+      "title": "Każde oko ma plamkę ślepą, a mózg ją wypełnia 👁️",
+      "description": "Tam, gdzie nerw wzrokowy opuszcza oko, nie ma komórek wyczuwających światło. Ta dziura leży około 15 stopni od punktu patrzenia, a mózg ją uzupełnia.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "nl": {
+      "title": "Elk oog heeft een blinde vlek die je brein invult 👁️",
+      "description": "Waar de oogzenuw het oog verlaat, zitten geen lichtgevoelige cellen. Dat gat ligt ongeveer 15 graden naast waar je kijkt, en je brein vult het in.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "uk": {
+      "title": "У кожному оці є сліпа пляма, і мозок її домальовує 👁️",
+      "description": "Там, де зоровий нерв виходить з ока, немає світлочутливих клітин. Ця діра приблизно за 15 градусів від точки погляду, і мозок її заповнює.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "vi": {
+      "title": "Mỗi mắt có một điểm mù và não bạn tự lấp đầy 👁️",
+      "description": "Nơi dây thần kinh thị giác rời mắt không có tế bào cảm nhận ánh sáng. Lỗ hổng này cách điểm nhìn khoảng 15 độ và não lấp đầy nó.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "az": {
+      "title": "Hər gözdə kor nöqtə var, beyin orasını doldurur 👁️",
+      "description": "Görmə sinirinin gözdən çıxdığı yerdə işığı hiss edən hüceyrə yoxdur. Bu boşluq baxdığın yerdən təxminən 15 dərəcə kənardadır və beyin onu doldurur.\n\n#shorts\n\nSeri: mk-c0045"
+    },
+    "ro": {
+      "title": "Fiecare ochi are un punct orb pe care creierul îl umple 👁️",
+      "description": "Acolo unde nervul optic iese din ochi nu există celule care simt lumina. Gaura se află la circa 15 grade de punctul în care privești, iar creierul o umple.\n\n#shorts\n\nSeri: mk-c0045"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: gözünde bir delik olması mı, beynin onu fark ettirmeden doldurması mı?",
+  "scenes": [
+    {
+      "text": "Her gözünün görüş alanında bir delik var ve sen onu görmüyorsun.",
+      "visual": "extreme close-up of a human eye",
+      "stock_query": "human eye",
+      "source": "stock",
+      "callout": "KÖR NOKTA"
+    },
+    {
+      "text": "Her gözde, görme sinirinin gözden çıktığı yerde ışık algılayan hücre yok.",
+      "visual": "macro shot of an eye iris and pupil",
+      "stock_query": "eye macro",
+      "source": "stock",
+      "callout": "IŞIK HÜCRESİ YOK"
+    },
+    {
+      "text": "O nokta, baktığın yerin yaklaşık on beş derece yanında duruyor.",
+      "visual": "woman looking to the side",
+      "stock_query": "woman eye",
+      "source": "stock",
+      "subject": [
+        "woman"
+      ],
+      "callout": "15 DERECE"
+    },
+    {
+      "text": "Tek gözünü kapatsan bile orada bir delik görmezsin.",
+      "visual": "man covering one eye with his hand",
+      "stock_query": "man eye",
+      "source": "stock",
+      "subject": [
+        "man"
+      ]
+    },
+    {
+      "text": "Beyin, deliği çevresindeki görüntüyle dolduruyor; gördüğün dünyanın bir parçasını beynin uyduruyor.",
+      "visual": "close-up of an eye blinking",
+      "stock_query": "eye blinking",
+      "source": "stock",
+      "callout": "BEYİN UYDURUYOR"
+    }
+  ],
+  "duration_seconds": 15.88,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "anahtar kelime",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #98",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0045_1793712233_ig.mp4"
+}
