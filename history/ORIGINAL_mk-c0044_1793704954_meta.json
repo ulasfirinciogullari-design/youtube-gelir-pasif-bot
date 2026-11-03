@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0044",
+  "topic": "Kediler yavaşça göz kırparak ne anlatır?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kediler ağızla değil, gözle gülümser 🐱",
+  "hook_text": "KEDİN SANA NEDEN GÖZ KIRPIYOR?",
+  "description": "Kediler neden yavaşça göz kırpar, kedinin göz kırpması ne anlama gelir?\n\nKedilerin gözlerini yavaşça kısıp kapatmasına bilim insanları kedi gülümsemesi diyor. İngiltere'deki Sussex ve Portsmouth üniversitelerinin deneyinde sahipleri yavaşça göz kırpınca kediler daha sık aynı şekilde karşılık verdi. Hiç tanımadıkları biri bunu yaptığında bile ona daha kolay yaklaştılar.\n\nKedin sana yavaşça göz kırpınca sence ne diyor: 'seni seviyorum' mu, 'sana güveniyorum' mu?\n\n#kedi #kediler #evcilhayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0044",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kedi göz kırpma",
+    "kedi yavaş göz kırpma",
+    "kedi gülümsemesi",
+    "kediler neden göz kırpar",
+    "kedi göz kırpması anlamı",
+    "kedi dili",
+    "kediyle iletişim",
+    "kedi davranışları",
+    "kedi sevgisi",
+    "kediler gülümser mi",
+    "kedi sahipleri",
+    "sevimli kediler",
+    "evcil hayvanlar",
+    "hayvan davranışları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "cat slow blink",
+    "cat",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi goz kirpma",
+    "kedi yavas goz kirpma",
+    "kedi gulumsemesi",
+    "kediler neden goz kirpar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cats smile with their eyes, not their mouths 🐱",
+      "description": "When a cat slowly narrows and closes its eyes, scientists call it a cat smile. In a UK study, cats slow-blinked back more often after their owners slow-blinked at them, and they were even more willing to approach a stranger who did it. Try slowly narrowing your eyes at your cat and it may smile back.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "es": {
+      "title": "Los gatos sonríen con los ojos, no con la boca 🐱",
+      "description": "Cuando un gato entrecierra y cierra los ojos despacio, los científicos lo llaman la sonrisa felina. En un estudio británico, los gatos respondían con el mismo parpadeo lento cuando sus dueños se lo hacían primero, e incluso se acercaban más a desconocidos que parpadeaban así.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "pt": {
+      "title": "Os gatos sorriem com os olhos, não com a boca 🐱",
+      "description": "Quando um gato aperta e fecha os olhos devagar, os cientistas chamam isso de sorriso felino. Num estudo britânico, os gatos devolviam a piscada lenta com mais frequência quando os tutores piscavam primeiro, e até se aproximavam mais facilmente de estranhos que faziam o mesmo.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "de": {
+      "title": "Katzen lächeln mit den Augen, nicht mit dem Mund 🐱",
+      "description": "Wenn eine Katze die Augen langsam zusammenkneift und schließt, sprechen Forschende von einem Katzenlächeln. In einer britischen Studie blinzelten Katzen häufiger langsam zurück, wenn ihre Halter es vormachten, und gingen sogar eher auf Fremde zu, die ihnen so zublinzelten.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "fr": {
+      "title": "Les chats sourient avec les yeux, pas avec la bouche 🐱",
+      "description": "Quand un chat plisse et ferme lentement les yeux, les scientifiques parlent de sourire félin. Dans une étude britannique, les chats répondaient plus souvent par un clignement lent quand leur maître commençait, et ils approchaient même plus volontiers un inconnu qui le faisait.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "it": {
+      "title": "I gatti sorridono con gli occhi, non con la bocca 🐱",
+      "description": "Quando un gatto socchiude e chiude lentamente gli occhi, i ricercatori lo chiamano sorriso felino. In uno studio britannico i gatti ricambiavano più spesso con un battito lento quando era il padrone a iniziare, e si avvicinavano più volentieri persino a uno sconosciuto che lo faceva.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "ru": {
+      "title": "Кошки улыбаются глазами, а не ртом 🐱",
+      "description": "Когда кошка медленно прищуривается и закрывает глаза, учёные называют это кошачьей улыбкой. В британском исследовании кошки чаще отвечали таким же медленным морганием, если хозяин начинал первым, и даже охотнее подходили к незнакомцу, который моргал им так же.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "ar": {
+      "title": "القطط تبتسم بعيونها لا بأفواهها 🐱",
+      "description": "عندما تضيّق القطة عينيها وتغمضهما ببطء، يسمي العلماء ذلك ابتسامة القطط. وفي دراسة بريطانية كانت القطط ترد بالرمش البطيء أكثر حين يبدأ أصحابها به، بل واقتربت بسهولة أكبر من غرباء فعلوا الشيء نفسه.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "hi": {
+      "title": "बिल्लियाँ मुँह से नहीं, आँखों से मुस्कुराती हैं 🐱",
+      "description": "जब बिल्ली धीरे-धीरे आँखें सिकोड़कर बंद करती है, तो वैज्ञानिक इसे बिल्ली की मुस्कान कहते हैं। ब्रिटेन के एक अध्ययन में मालिकों के ऐसा करने पर बिल्लियों ने भी ज़्यादा बार धीमी पलक झपकाकर जवाब दिया, और अजनबी के ऐसा करने पर भी वे उसके पास आसानी से गईं।\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "id": {
+      "title": "Kucing tersenyum dengan matanya, bukan mulutnya 🐱",
+      "description": "Saat kucing menyipitkan lalu memejamkan mata perlahan, ilmuwan menyebutnya senyuman kucing. Dalam sebuah studi di Inggris, kucing lebih sering membalas kedipan lambat pemiliknya, bahkan lebih mudah mendekati orang asing yang melakukan hal yang sama.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "ja": {
+      "title": "猫は口ではなく目で笑う 🐱",
+      "description": "猫がゆっくり目を細めて閉じるしぐさを、研究者は「猫の笑顔」と呼びます。イギリスの研究では、飼い主がゆっくりまばたきをすると猫も同じようにまばたきを返すことが多く、初対面の人がそうしたときでも近づきやすくなりました。\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "ko": {
+      "title": "고양이는 입이 아니라 눈으로 웃는다 🐱",
+      "description": "고양이가 눈을 천천히 가늘게 뜨다가 감는 행동을 과학자들은 '고양이 미소'라고 부릅니다. 영국의 한 연구에서 보호자가 먼저 천천히 눈을 깜빡이자 고양이도 더 자주 똑같이 답했고, 처음 보는 사람이 그렇게 했을 때도 더 쉽게 다가갔습니다.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "pl": {
+      "title": "Koty uśmiechają się oczami, a nie pyskiem 🐱",
+      "description": "Gdy kot powoli mruży i zamyka oczy, naukowcy nazywają to kocim uśmiechem. W brytyjskim badaniu koty częściej odpowiadały powolnym mrugnięciem, gdy opiekun zrobił to pierwszy, a nawet chętniej podchodziły do obcej osoby, która tak mrugała.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "nl": {
+      "title": "Katten lachen met hun ogen, niet met hun mond 🐱",
+      "description": "Als een kat langzaam haar ogen samenknijpt en sluit, noemen onderzoekers dat een kattenglimlach. In een Brits onderzoek knipperden katten vaker langzaam terug als hun baasje begon, en liepen ze zelfs makkelijker naar een vreemde toe die het deed.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "uk": {
+      "title": "Коти усміхаються очима, а не ротом 🐱",
+      "description": "Коли кіт повільно мружиться й заплющує очі, науковці називають це котячою усмішкою. У британському дослідженні коти частіше відповідали таким самим повільним кліпанням, якщо господар починав першим, і навіть охочіше підходили до незнайомця, який так робив.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "vi": {
+      "title": "Mèo cười bằng mắt chứ không phải bằng miệng 🐱",
+      "description": "Khi mèo từ từ nheo rồi nhắm mắt, các nhà khoa học gọi đó là nụ cười của mèo. Trong một nghiên cứu ở Anh, mèo thường chớp mắt chậm đáp lại khi chủ làm trước, và thậm chí dễ đến gần người lạ hơn nếu người đó cũng làm vậy.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "az": {
+      "title": "Pişiklər ağızla yox, gözlə gülümsəyir 🐱",
+      "description": "Pişik gözlərini yavaş-yavaş qıyıb yumanda alimlər buna pişik təbəssümü deyir. Britaniyada aparılan bir araşdırmada sahibləri belə edəndə pişiklər daha tez-tez eyni yavaş qırpımla cavab verdi, hətta bunu edən tanımadıqları adama da daha asan yaxınlaşdılar.\n\n#shorts\n\nSeri: mk-c0044"
+    },
+    "ro": {
+      "title": "Pisicile zâmbesc cu ochii, nu cu gura 🐱",
+      "description": "Când o pisică își îngustează și își închide încet ochii, cercetătorii numesc asta zâmbetul pisicii. Într-un studiu britanic, pisicile răspundeau mai des cu un clipit lent atunci când stăpânul începea primul și se apropiau chiar mai ușor de un străin care făcea la fel.\n\n#shorts\n\nSeri: mk-c0044"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Kedin sana yavaşça göz kırpınca sence ne diyor: 'seni seviyorum' mu, 'sana güveniyorum' mu?",
+  "scenes": [
+    {
+      "text": "Bu kedi ağzıyla değil, gözleriyle gülümsüyor.",
+      "visual": "close-up of a relaxed cat slowly narrowing its eyes",
+      "stock_query": "cat eyes",
+      "source": "stock",
+      "callout": "GÖZLE GÜLÜMSEME"
+    },
+    {
+      "text": "Gözlerini yavaşça kısıp kapatmasına bilim insanları kedi gülümsemesi diyor.",
+      "visual": "cat face close-up with half-closed eyes",
+      "stock_query": "cat face",
+      "source": "stock"
+    },
+    {
+      "text": "İngiltere'de bir deneyde sahipler kedilerine yavaşça göz kırptı.",
+      "visual": "cat sitting on a sofa and looking at the camera",
+      "stock_query": "cat sofa",
+      "source": "stock"
+    },
+    {
+      "text": "Kediler de daha sık yavaş kırpışla karşılık verdi.",
+      "visual": "cat looking at the camera and blinking slowly",
+      "stock_query": "cat looking",
+      "source": "stock",
+      "callout": "KARŞILIK VERDİ"
+    },
+    {
+      "text": "Bunu hiç tanımadıkları biri yapınca bile ona daha kolay yaklaştılar.",
+      "visual": "cat walking toward the camera at home",
+      "stock_query": "cat walking",
+      "source": "stock",
+      "callout": "YABANCIYA BİLE"
+    },
+    {
+      "text": "Kedine bakıp gözlerini yavaşça kıs, o da sana gülümseyebilir.",
+      "visual": "calm cat lying down with soft half-closed eyes",
+      "stock_query": "cat relaxing",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.36,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #97",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0044_1793704954_ig.mp4"
+}
