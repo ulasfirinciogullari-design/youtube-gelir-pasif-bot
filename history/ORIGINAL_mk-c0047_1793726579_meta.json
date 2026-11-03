@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0047",
+  "topic": "Uğur böcekleri kendini nasıl korur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Uğur böceği tehlikede dizlerinden kan sızdırır 🐞",
+  "hook_text": "UĞUR BÖCEĞİ NASIL KORUNUR?",
+  "description": "Uğur böcekleri kendini nasıl korur, elimizde bıraktığı sarı leke nedir?\n\nUğur böcekleri tehlike anında dizlerinden, yani bacak eklemlerinden sarı bir sıvı sızdırır. Bu sıvı, böceğin hemolenf denen kanıdır; acı tadı ve keskin kokusu saldırana bir uyarıdır. Yedi noktalı uğur böceğinin bu kimyasalı yavru kuşlar için çok zehirlidir, parlak kırmızı renk de avcılara 'beni yeme' der.\n\nSence hangisi daha tuhaf: dizlerinden kan sızdırması mı, kanının sarı olması mı?\n\n#uğurböceği #böcekler #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0047",
+  "tags": [
+    "uğur böceği",
+    "uğur böcekleri",
+    "uğur böceği kanı",
+    "uğur böceği sarı sıvı",
+    "uğur böceği zehirli mi",
+    "uğur böceği nasıl korunur",
+    "refleks kanama",
+    "hemolenf",
+    "böcek kanı",
+    "yedi noktalı uğur böceği",
+    "böcekler",
+    "böceklerin savunması",
+    "uyarı renkleri",
+    "doğa",
+    "vahşi doğa",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "ladybug",
+    "ladybird",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "ugur bocegi",
+    "ugur bocekleri",
+    "ugur bocegi kani",
+    "ugur bocegi sari sivi",
+    "ugur bocegi zehirli mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Ladybugs bleed from their knees when threatened 🐞",
+      "description": "When attacked, a ladybug oozes a yellow fluid from its leg joints: its own blood, called hemolymph. Its bitter taste and sharp smell warn the attacker, and the chemical in seven-spot ladybugs is highly toxic to nestling birds. If a ladybug leaves a yellow stain on your hand, that's its blood.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "es": {
+      "title": "Las mariquitas sangran por las rodillas cuando se sienten en peligro 🐞",
+      "description": "Cuando una mariquita se ve atacada, suelta un líquido amarillo por las articulaciones de las patas: es su propia sangre, la hemolinfa. Su sabor amargo y su olor fuerte avisan al depredador, y la sustancia de la mariquita de siete puntos es muy tóxica para los polluelos.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "pt": {
+      "title": "Joaninhas sangram pelos joelhos quando se sentem ameaçadas 🐞",
+      "description": "Quando é atacada, a joaninha solta um líquido amarelo pelas articulações das patas: é o próprio sangue dela, a hemolinfa. O gosto amargo e o cheiro forte servem de aviso ao predador, e a substância da joaninha-de-sete-pintas é muito tóxica para filhotes de aves.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "de": {
+      "title": "Marienkäfer bluten bei Gefahr aus den Knien 🐞",
+      "description": "Wird ein Marienkäfer angegriffen, sondert er aus den Beingelenken eine gelbe Flüssigkeit ab: sein eigenes Blut, die Hämolymphe. Der bittere Geschmack und der scharfe Geruch warnen Angreifer, und der Wirkstoff des Siebenpunkt-Marienkäfers ist für Vogelküken hochgiftig.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "fr": {
+      "title": "Les coccinelles saignent des genoux quand elles sont menacées 🐞",
+      "description": "Attaquée, la coccinelle laisse perler un liquide jaune au niveau des articulations de ses pattes : c'est son propre sang, l'hémolymphe. Son goût amer et son odeur forte avertissent le prédateur, et la substance de la coccinelle à sept points est très toxique pour les oisillons.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "it": {
+      "title": "Le coccinelle sanguinano dalle ginocchia quando sono in pericolo 🐞",
+      "description": "Quando viene attaccata, la coccinella rilascia un liquido giallo dalle articolazioni delle zampe: è il suo sangue, l'emolinfa. Il sapore amaro e l'odore pungente avvisano il predatore, e la sostanza della coccinella a sette punti è molto tossica per i pulcini degli uccelli.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "ru": {
+      "title": "Божьи коровки при опасности выделяют кровь из «коленей» 🐞",
+      "description": "Когда на божью коровку нападают, она выделяет из суставов ног жёлтую жидкость: собственную кровь, гемолимфу. Горький вкус и резкий запах предупреждают хищника, а вещество семиточечной божьей коровки очень ядовито для птенцов.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "ar": {
+      "title": "الدعسوقة تنزف من ركبتيها عندما تشعر بالخطر 🐞",
+      "description": "عندما تتعرض الدعسوقة للهجوم تفرز سائلًا أصفر من مفاصل أرجلها، وهو دمها نفسه ويسمى اللمف الدموي. طعمه المر ورائحته النفاذة تحذير للمفترس، والمادة التي تحملها الدعسوقة ذات النقاط السبع شديدة السمية لفراخ الطيور.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "hi": {
+      "title": "लेडीबग ख़तरे में घुटनों से खून छोड़ती है 🐞",
+      "description": "हमला होने पर लेडीबग अपनी टाँगों के जोड़ों से पीला तरल छोड़ती है, जो उसका अपना खून यानी हीमोलिम्फ होता है। इसका कड़वा स्वाद और तीखी गंध शिकारी को चेतावनी देती है, और सात धब्बों वाली लेडीबग का यह रसायन चिड़ियों के बच्चों के लिए बेहद ज़हरीला है।\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "id": {
+      "title": "Kepik mengeluarkan darah dari lututnya saat terancam 🐞",
+      "description": "Saat diserang, kepik mengeluarkan cairan kuning dari sendi kakinya, yaitu darahnya sendiri yang disebut hemolimfa. Rasa pahit dan baunya yang tajam menjadi peringatan bagi pemangsa, dan zat pada kepik tujuh bintik sangat beracun bagi anak burung.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "ja": {
+      "title": "テントウムシは危険を感じると「ひざ」から血を出す 🐞",
+      "description": "テントウムシは襲われると、脚の関節から黄色い液体を出します。これは血リンパと呼ばれる自分の血液です。苦い味と強いにおいが敵への警告になり、ナナホシテントウの持つ物質はひな鳥にとって強い毒になります。\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "ko": {
+      "title": "무당벌레는 위험할 때 무릎에서 피를 흘린다 🐞",
+      "description": "무당벌레는 공격을 받으면 다리 관절에서 노란 액체를 내보내는데, 이것이 혈림프라고 불리는 자신의 피입니다. 쓴맛과 강한 냄새는 포식자에게 보내는 경고이고, 칠성무당벌레가 가진 이 물질은 새끼 새에게 매우 독합니다.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "pl": {
+      "title": "Biedronki krwawią z kolan, gdy coś im grozi 🐞",
+      "description": "Zaatakowana biedronka wydziela ze stawów nóg żółty płyn: to jej własna krew, czyli hemolimfa. Gorzki smak i ostry zapach ostrzegają drapieżnika, a substancja biedronki siedmiokropki jest silnie trująca dla piskląt.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "nl": {
+      "title": "Lieveheersbeestjes bloeden uit hun knieën bij gevaar 🐞",
+      "description": "Wordt een lieveheersbeestje aangevallen, dan scheidt het uit de gewrichten van zijn poten een geel vocht af: zijn eigen bloed, hemolymfe. De bittere smaak en scherpe geur waarschuwen aanvallers, en de stof van het zevenstippelig lieveheersbeestje is zeer giftig voor jonge vogels.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "uk": {
+      "title": "Сонечка в небезпеці виділяють кров із «колін» 🐞",
+      "description": "Коли на сонечко нападають, воно виділяє із суглобів ніг жовту рідину: власну кров, гемолімфу. Гіркий смак і різкий запах попереджають хижака, а речовина семикрапкового сонечка дуже отруйна для пташенят.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "vi": {
+      "title": "Bọ rùa tiết máu từ đầu gối khi gặp nguy hiểm 🐞",
+      "description": "Khi bị tấn công, bọ rùa tiết ra một chất lỏng màu vàng từ các khớp chân, đó chính là máu của nó. Vị đắng và mùi hăng là lời cảnh báo cho kẻ săn mồi, và chất này ở bọ rùa bảy chấm rất độc với chim non.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "az": {
+      "title": "Parabüzən təhlükədə dizlərindən qan sızdırır 🐞",
+      "description": "Hücuma məruz qalanda parabüzən ayaq oynaqlarından sarı maye ifraz edir; bu, onun hemolimfa adlanan öz qanıdır. Acı dadı və kəskin qoxusu yırtıcıya xəbərdarlıqdır, yeddinöqtəli parabüzənin bu maddəsi isə quş balaları üçün çox zəhərlidir.\n\n#shorts\n\nSeri: mk-c0047"
+    },
+    "ro": {
+      "title": "Buburuzele sângerează din genunchi când sunt în pericol 🐞",
+      "description": "Când este atacată, buburuza eliberează un lichid galben din încheieturile picioarelor: propriul sânge, numit hemolimfă. Gustul amar și mirosul puternic îl avertizează pe prădător, iar substanța buburuzei cu șapte puncte este foarte toxică pentru puii de pasăre.\n\n#shorts\n\nSeri: mk-c0047"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: dizlerinden kan sızdırması mı, kanının sarı olması mı?",
+  "scenes": [
+    {
+      "text": "Bu uğur böceği tehlikede dizlerinden kan sızdırır.",
+      "visual": "red ladybug crawling on a green leaf, macro",
+      "stock_query": "ladybug leaf",
+      "source": "stock",
+      "callout": "DİZDEN KAN"
+    },
+    {
+      "text": "Bu sarı sıvı, böceğin kanı olan hemolenftir.",
+      "visual": "macro close-up of a ladybug's legs on a stem",
+      "stock_query": "ladybug macro",
+      "source": "stock"
+    },
+    {
+      "text": "Acı tadı ve keskin kokusu saldırana bir uyarıdır.",
+      "visual": "ladybug walking on a flower petal",
+      "stock_query": "ladybug flower",
+      "source": "stock",
+      "callout": "ACI VE KOKULU"
+    },
+    {
+      "text": "Yedi noktalı türün bu kimyasalı yavru kuşlar için çok zehirli.",
+      "visual": "seven-spot ladybug on a blade of grass",
+      "stock_query": "ladybug grass",
+      "source": "stock",
+      "callout": "KUŞLARA ZEHİRLİ"
+    },
+    {
+      "text": "Parlak kırmızı rengi de avcılara 'beni yeme' der.",
+      "visual": "bright red ladybug opening its wings",
+      "stock_query": "ladybug red",
+      "source": "stock",
+      "callout": "BENİ YEME"
+    },
+    {
+      "text": "Uğur böceğini tutunca elinde sarı leke kalırsa, o onun kanıdır.",
+      "visual": "ladybug crawling on a person's finger",
+      "stock_query": "ladybug hand",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.57,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #100",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0047_1793726579_ig.mp4"
+}
