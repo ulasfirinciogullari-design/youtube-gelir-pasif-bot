@@ -1,5 +1,5 @@
 {
- "started": "2026-11-03T18:07:41+00:00",
+ "started": "2026-11-03T20:07:17+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -7,53 +7,53 @@
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
-  "subscribers": "51",
-  "videos": "36"
+  "subscribers": "50",
+  "videos": "37"
  },
  "credits_before": [
-  82359,
+  82529,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261103-2-n008.json",
-  "kalan": 1
+  "dosya": "20261103-3-y012.json",
+  "kalan": 0
  },
  "topic": {
-  "id": "n008",
-  "series": "Ne Kadar Büyük?",
-  "q": "Jüpiter ne kadar büyük?"
+  "id": "y012",
+  "series": "Ya Olsaydı?",
+  "q": "Dünya'nın manyetik alanı kaybolsaydı ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 370,
- "duration": 26.3,
- "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
- "url": "https://youtube.com/shorts/9j_jigCDW7s",
+ "chars": 353,
+ "duration": 24.0,
+ "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+ "url": "https://youtube.com/shorts/sKXUwUMgkt0",
  "recent_status": {
-  "y011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1085",
-   "reason": null
-  },
   "g007": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1125",
+   "views": "1129",
    "reason": null
   },
   "n007": {
    "upload": "processed",
    "privacy": "public",
-   "views": "685",
+   "views": "864",
    "reason": null
   },
   "y017": {
    "upload": "processed",
    "privacy": "public",
-   "views": "738",
+   "views": "1008",
    "reason": null
   },
   "n008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "212",
+   "reason": null
+  },
+  "y012": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  82359,
+  82616,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261103-2-n008.json Jüpiter ne kadar büyük? (Ne Kadar Büyük?)"
+  "Kuyruktan: 20261103-3-y012.json Dünya'nın manyetik alanı kaybolsaydı ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-03T18:08:49+00:00"
+ "finished": "2026-11-03T20:08:26+00:00"
 }

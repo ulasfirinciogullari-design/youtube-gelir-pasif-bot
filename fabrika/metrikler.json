@@ -1,5 +1,5 @@
 {
- "at": "2026-11-03T18:06:47+00:00",
+ "at": "2026-11-03T20:06:36+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,9 +15,9 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 51,
+  "subscriberCount": 50,
   "viewCount": 31733,
-  "videoCount": 36
+  "videoCount": 37
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -31,12 +31,12 @@
    "comment": 4
   },
   "HdSKbp0rIz8": {
-   "view": 114,
+   "view": 116,
    "like": 2,
    "comment": 0
   },
   "53rXVX6QpA0": {
-   "view": 32,
+   "view": 34,
    "like": 2,
    "comment": 0
   },
@@ -66,12 +66,12 @@
    "comment": 8
   },
   "-PC7chCMp_s": {
-   "view": 121,
+   "view": 122,
    "like": 2,
    "comment": 0
   },
   "X9ouBiGHD4Q": {
-   "view": 45,
+   "view": 46,
    "like": 2,
    "comment": 0
   },
@@ -81,12 +81,12 @@
    "comment": 0
   },
   "0iq7G5-5dds": {
-   "view": 1147,
+   "view": 1148,
    "like": 7,
    "comment": 0
   },
   "ZX3l0E9HzMw": {
-   "view": 990,
+   "view": 991,
    "like": 17,
    "comment": 2
   },
@@ -101,22 +101,22 @@
    "comment": 4
   },
   "5NCDRT4b4M0": {
-   "view": 1222,
+   "view": 1234,
    "like": 14,
    "comment": 2
   },
   "hJaWCEzLO_4": {
-   "view": 1313,
+   "view": 1314,
    "like": 17,
    "comment": 0
   },
   "zkaODqXzaCo": {
-   "view": 1635,
+   "view": 1636,
    "like": 10,
    "comment": 0
   },
   "iKojt12DL_Y": {
-   "view": 1456,
+   "view": 1457,
    "like": 7,
    "comment": 0
   },
@@ -131,22 +131,22 @@
    "comment": 0
   },
   "-Ob9VS2V1H4": {
-   "view": 1088,
+   "view": 1089,
    "like": 5,
    "comment": 0
   },
   "CK03tB9BVyY": {
-   "view": 1018,
+   "view": 1019,
    "like": 4,
    "comment": 2
   },
   "VMP8uC3O6jU": {
-   "view": 1005,
+   "view": 1007,
    "like": 6,
    "comment": 0
   },
   "LjCJ1NSbCQQ": {
-   "view": 995,
+   "view": 996,
    "like": 4,
    "comment": 0
   },
@@ -156,7 +156,7 @@
    "comment": 6
   },
   "hf5CYGuKU8M": {
-   "view": 1326,
+   "view": 1327,
    "like": 11,
    "comment": 0
   },
@@ -171,29 +171,34 @@
    "comment": 2
   },
   "E9dsm0cEDnM": {
-   "view": 780,
+   "view": 774,
    "like": 6,
    "comment": 2
   },
   "QuUL5G3usPE": {
-   "view": 994,
-   "like": 5,
+   "view": 1089,
+   "like": 6,
    "comment": 0
   },
   "ExIn5xWxSkY": {
-   "view": 1125,
+   "view": 1129,
    "like": 8,
    "comment": 0
   },
   "kzDr9prfHSw": {
-   "view": 685,
+   "view": 864,
    "like": 8,
    "comment": 0
   },
   "wvA035c4dvw": {
-   "view": 738,
-   "like": 8,
+   "view": 1008,
+   "like": 7,
    "comment": 2
+  },
+  "9j_jigCDW7s": {
+   "view": 208,
+   "like": 2,
+   "comment": 0
   }
  },
  "videos": {
@@ -240,7 +245,7 @@
    "devam_yuzde": 51.4
   },
   "iKojt12DL_Y": {
-   "views": 1455,
+   "views": 1456,
    "estimatedMinutesWatched": 228,
    "averageViewDuration": 17,
    "averageViewPercentage": 70.77,
@@ -251,7 +256,7 @@
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
    "sources": {
     "SHORTS": 1367,
-    "YT_SEARCH": 82,
+    "YT_SEARCH": 83,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 1,
     "YT_OTHER_PAGE": 1
@@ -260,7 +265,7 @@
    "devam_yuzde": 50.0
   },
   "4GSDZD52uI0": {
-   "views": 1424,
+   "views": 1425,
    "estimatedMinutesWatched": 320,
    "averageViewDuration": 23,
    "averageViewPercentage": 60.74,
@@ -271,14 +276,14 @@
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
    "sources": {
     "SHORTS": 1221,
-    "YT_SEARCH": 185,
+    "YT_SEARCH": 186,
     "YT_CHANNEL": 14,
     "YT_OTHER_PAGE": 3,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 780,
-   "devam_yuzde": 54.8
+   "devam_yuzde": 54.7
   },
   "pJPCpis147c": {
    "views": 1364,
@@ -366,7 +371,7 @@
    "devam_yuzde": 50.3
   },
   "8KoJ0-4fHyY": {
-   "views": 1296,
+   "views": 1297,
    "estimatedMinutesWatched": 213,
    "averageViewDuration": 19,
    "averageViewPercentage": 56.65,
@@ -377,7 +382,7 @@
    "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
    "sources": {
     "SHORTS": 1242,
-    "YT_SEARCH": 28,
+    "YT_SEARCH": 29,
     "YT_CHANNEL": 19,
     "YT_OTHER_PAGE": 5,
     "PLAYLIST": 2,
@@ -491,10 +496,10 @@
    "devam_yuzde": 52.9
   },
   "-Ob9VS2V1H4": {
-   "views": 1085,
-   "estimatedMinutesWatched": 87,
+   "views": 1087,
+   "estimatedMinutesWatched": 88,
    "averageViewDuration": 12,
-   "averageViewPercentage": 75.98,
+   "averageViewPercentage": 75.67,
    "likes": 5,
    "shares": 0,
    "comments": 0,
@@ -502,13 +507,13 @@
    "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
    "sources": {
     "SHORTS": 986,
-    "YT_SEARCH": 92,
+    "YT_SEARCH": 94,
     "YT_CHANNEL": 6,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 347,
-   "devam_yuzde": 32.0
+   "engagedViews": 349,
+   "devam_yuzde": 32.1
   },
   "oyPgO_oDYlU": {
    "views": 1027,
@@ -635,7 +640,7 @@
    "devam_yuzde": 32.7
   },
   "ZX3l0E9HzMw": {
-   "views": 989,
+   "views": 990,
    "estimatedMinutesWatched": 174,
    "averageViewDuration": 19,
    "averageViewPercentage": 73.83,
@@ -646,19 +651,19 @@
    "title": "1 Günde Kaç Kez Göz Kırparsın?",
    "sources": {
     "SHORTS": 942,
-    "YT_SEARCH": 33,
+    "YT_SEARCH": 34,
     "YT_CHANNEL": 13,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 519,
-   "devam_yuzde": 52.5
+   "devam_yuzde": 52.4
   },
   "ActwPx-yTCQ": {
-   "views": 971,
+   "views": 972,
    "estimatedMinutesWatched": 185,
    "averageViewDuration": 19,
-   "averageViewPercentage": 80.16,
+   "averageViewPercentage": 80.15,
    "likes": 8,
    "shares": 0,
    "comments": 2,
@@ -666,12 +671,12 @@
    "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
    "sources": {
     "SHORTS": 888,
-    "YT_SEARCH": 69,
+    "YT_SEARCH": 70,
     "YT_CHANNEL": 13,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 555,
+   "engagedViews": 556,
    "devam_yuzde": 57.2
   },
   "xMYUnZVVITU": {
@@ -695,10 +700,10 @@
    "devam_yuzde": 46.9
   },
   "yHElVXfvdsw": {
-   "views": 395,
+   "views": 397,
    "estimatedMinutesWatched": 81,
    "averageViewDuration": 22,
-   "averageViewPercentage": 59.41,
+   "averageViewPercentage": 59.39,
    "likes": 3,
    "shares": 0,
    "comments": 2,
@@ -706,15 +711,15 @@
    "title": "Güneş Gerçekte Ne Kadar Büyük?",
    "sources": {
     "SHORTS": 326,
-    "YT_SEARCH": 43,
+    "YT_SEARCH": 45,
     "YT_CHANNEL": 19,
     "PLAYLIST": 5,
     "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 208,
-   "devam_yuzde": 52.7
+   "engagedViews": 209,
+   "devam_yuzde": 52.6
   },
   "f6WyXXJWASs": {
    "views": 329,
@@ -932,6 +937,12 @@
    "day": "2026-10-31",
    "views": 23,
    "estimatedMinutesWatched": 2,
+   "subscribersGained": 0
+  },
+  {
+   "day": "2026-11-01",
+   "views": 9,
+   "estimatedMinutesWatched": 0,
    "subscribersGained": 0
   }
  ]

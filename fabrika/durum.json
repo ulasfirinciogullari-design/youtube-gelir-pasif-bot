@@ -536,7 +536,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1313",
+    "views": "1314",
     "reason": null
    }
   },
@@ -566,7 +566,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1635",
+    "views": "1636",
     "reason": null
    }
   },
@@ -596,7 +596,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1456",
+    "views": "1457",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1088",
+    "views": "1089",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1018",
+    "views": "1019",
     "reason": null
    }
   },
@@ -746,7 +746,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1005",
+    "views": "1007",
     "reason": null
    }
   },
@@ -776,7 +776,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "995",
+    "views": "996",
     "reason": null
    }
   },
@@ -836,7 +836,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1326",
+    "views": "1327",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "780",
+    "views": "774",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1085",
+    "views": "1089",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1125",
+    "views": "1129",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "685",
+    "views": "864",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "738",
+    "views": "1008",
     "reason": null
    }
   },
@@ -1073,6 +1073,36 @@
    "thumbnail": true,
    "at": 1793729327.7162673,
    "chars": 370,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "212",
+    "reason": null
+   }
+  },
+  {
+   "id": "y012",
+   "video_id": "sKXUwUMgkt0",
+   "url": "https://youtube.com/shorts/sKXUwUMgkt0",
+   "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Earth's Magnetic Field Disappeared, What Would Happen to You?",
+    "es": "Si Desapareciera el Campo Magnético de la Tierra, ¿Qué Te Pasaría?",
+    "pt": "Se o Campo Magnético da Terra Sumisse, o Que Aconteceria com Você?",
+    "ar": "لو اختفى المجال المغناطيسي للأرض، ماذا سيحدث لك؟",
+    "hi": "अगर धरती का चुंबकीय क्षेत्र गायब हो जाए, तो आपका क्या होगा?",
+    "id": "Jika Medan Magnet Bumi Hilang, Apa yang Terjadi Padamu?",
+    "fr": "Si la Terre Perdait Son Champ Magnétique, Que T'arriverait-il ?",
+    "de": "Wenn das Erdmagnetfeld Verschwände, Was Würde Dir Passieren?",
+    "ru": "Если бы магнитное поле Земли исчезло, что стало бы с тобой?",
+    "az": "Yerin Maqnit Sahəsi Yox Olsaydı, Sənə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793736505.5165808,
+   "chars": 353,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1117,7 +1147,8 @@
   "g007",
   "n007",
   "y017",
-  "n008"
+  "n008",
+  "y012"
  ],
  "extra": [
   {
@@ -1183,11 +1214,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-17T17:07:08+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
   {
    "finished": "2026-10-17T19:06:58+00:00",
    "mod": "saatlik",
@@ -1594,6 +1620,14 @@
    "url": "https://youtube.com/shorts/9j_jigCDW7s",
    "duration": 26.3,
    "chars": 370
+  },
+  {
+   "finished": "2026-11-03T20:08:26+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+   "url": "https://youtube.com/shorts/sKXUwUMgkt0",
+   "duration": 24.0,
+   "chars": 353
   }
  ],
  "last_fail": 1793568784.6201334,
