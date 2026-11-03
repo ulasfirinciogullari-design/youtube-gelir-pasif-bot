@@ -1122,11 +1122,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-17T09:06:57+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
-  {
    "finished": "2026-10-17T09:21:31+00:00",
    "mod": "saatlik",
    "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
@@ -1524,6 +1519,12 @@
    "url": "https://youtube.com/shorts/kzDr9prfHSw",
    "duration": 28.4,
    "chars": 420
+  },
+  {
+   "finished": "2026-11-03T13:08:55+00:00",
+   "mod": "igbolum",
+   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+   "chars": 397
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1668,6 +1669,11 @@
     "media_id": "17921617560451098",
     "url": "https://www.instagram.com/reel/DfRhd6xDray/",
     "at": 1793696883.2752528
+   },
+   "g007": {
+    "media_id": "17988901398086781",
+    "url": "https://www.instagram.com/reel/DfR9CPigQlJ/",
+    "at": 1793711335.1860983
    }
   },
   "eski": [

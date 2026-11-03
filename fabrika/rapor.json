@@ -1,71 +1,18 @@
 {
- "started": "2026-11-03T10:06:46+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-03T13:07:21+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g007",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "48",
-  "videos": "34"
+ "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+ "chars": 397,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17988901398086781",
+  "url": "https://www.instagram.com/reel/DfR9CPigQlJ/",
+  "at": 1793711335.1860983
  },
- "credits_before": [
-  81634,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261102-3-n007.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "n007",
-  "series": "Ne Kadar Büyük?",
-  "q": "Ay gerçekte ne kadar uzak?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 420,
- "duration": 28.4,
- "title": "Ay Gerçekte Ne Kadar Uzak?",
- "url": "https://youtube.com/shorts/kzDr9prfHSw",
- "recent_status": {
-  "y010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1025",
-   "reason": null
-  },
-  "y016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "681",
-   "reason": null
-  },
-  "y011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "942",
-   "reason": null
-  },
-  "g007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1106",
-   "reason": null
-  },
-  "n007": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  81736,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261102-3-n007.json Ay gerçekte ne kadar uzak? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/DfR9CPigQlJ/"
  ],
- "finished": "2026-11-03T10:08:07+00:00"
+ "finished": "2026-11-03T13:08:55+00:00"
 }
