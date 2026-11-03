@@ -31,13 +31,13 @@
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/"
  },
  "nobet": {
-  "basladi": "2026-11-03T01:23:11+00:00",
-  "run": "41558250129",
-  "tur": 334,
+  "basladi": "2026-11-03T07:03:34+00:00",
+  "run": "41592713150",
+  "tur": 1,
   "cevap": 0,
   "reel": 0,
-  "son_hata": "2026-11-03T05:55:11+00:00 URLError: <urlopen error [Errno 101] Network is unreachable>",
-  "son_tur": "2026-11-03T06:56:14+00:00"
+  "son_hata": null,
+  "son_tur": "2026-11-03T07:03:37+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
