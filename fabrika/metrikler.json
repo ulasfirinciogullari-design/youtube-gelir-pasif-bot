@@ -1,5 +1,5 @@
 {
- "at": "2026-11-03T14:08:12+00:00",
+ "at": "2026-11-03T15:11:32+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,9 +15,9 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 49,
+  "subscriberCount": 50,
   "viewCount": 31733,
-  "videoCount": 35
+  "videoCount": 36
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -186,8 +186,13 @@
    "comment": 0
   },
   "kzDr9prfHSw": {
-   "view": 472,
+   "view": 584,
    "like": 8,
+   "comment": 0
+  },
+  "wvA035c4dvw": {
+   "view": 0,
+   "like": 0,
    "comment": 0
   }
  },
