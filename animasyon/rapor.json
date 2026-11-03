@@ -1,7 +1,7 @@
 {
- "started": "2026-11-01T22:44:18+00:00",
+ "started": "2026-11-03T22:26:35+00:00",
  "bolum": "k003",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 616,
  "voice": {
@@ -12,7 +12,15 @@
   "similarity_boost": 0.8
  },
  "duration": 32.89,
- "render_seconds": 140,
+ "render_seconds": 105,
  "title": "Önce Hayır Dedirt, Sonra Evet Al 🤯 #psikoloji",
- "finished": "2026-11-01T22:46:44+00:00"
+ "video_id": "b61FG85DVCY",
+ "url": "https://youtube.com/shorts/b61FG85DVCY",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-04T17:00:00+00:00",
+ "finished": "2026-11-03T22:28:27+00:00"
 }
