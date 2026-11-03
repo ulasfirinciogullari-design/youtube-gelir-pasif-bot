@@ -476,7 +476,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "972",
+    "views": "977",
     "reason": null
    }
   },
@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1109",
+    "views": "1110",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1087",
+    "views": "1089",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "380",
+    "views": "681",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "513",
+    "views": "942",
     "reason": null
    }
   },
@@ -983,6 +983,36 @@
    "thumbnail": true,
    "at": 1793642935.5171986,
    "chars": 397,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "1106",
+    "reason": null
+   }
+  },
+  {
+   "id": "n007",
+   "video_id": "kzDr9prfHSw",
+   "url": "https://youtube.com/shorts/kzDr9prfHSw",
+   "title": "Ay Gerçekte Ne Kadar Uzak?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Far Away Is the Moon Really?",
+    "es": "¿A Qué Distancia Está Realmente la Luna?",
+    "pt": "A Que Distância a Lua Está de Verdade?",
+    "ar": "كم يبعد القمر عنا حقًا؟",
+    "hi": "चांद असल में कितनी दूर है?",
+    "id": "Seberapa Jauh Bulan Sebenarnya?",
+    "fr": "À Quelle Distance Se Trouve Vraiment la Lune ?",
+    "de": "Wie Weit Ist der Mond Wirklich Entfernt?",
+    "ru": "Как далеко на самом деле Луна?",
+    "az": "Ay Əslində Nə Qədər Uzaqdır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793700486.4059703,
+   "chars": 420,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1024,7 +1054,8 @@
   "y010",
   "y016",
   "y011",
-  "g007"
+  "g007",
+  "n007"
  ],
  "extra": [
   {
@@ -1090,13 +1121,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-17T06:32:35+00:00",
-   "mod": "saatlik",
-   "title": "En Büyük Yıldız Ne Kadar Büyük?",
-   "duration": 23.9,
-   "chars": 362
-  },
   {
    "finished": "2026-10-17T09:06:57+00:00",
    "mod": "saatlik",
@@ -1492,6 +1516,14 @@
    "mod": "igbolum",
    "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
    "chars": 387
+  },
+  {
+   "finished": "2026-11-03T10:08:07+00:00",
+   "mod": "saatlik",
+   "title": "Ay Gerçekte Ne Kadar Uzak?",
+   "url": "https://youtube.com/shorts/kzDr9prfHSw",
+   "duration": 28.4,
+   "chars": 420
   }
  ],
  "last_fail": 1793568784.6201334,

@@ -1,18 +1,71 @@
 {
- "started": "2026-11-03T09:06:42+00:00",
- "mod": "igbolum",
- "gate": "instagram: y010",
+ "started": "2026-11-03T10:06:46+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
- "chars": 387,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17921617560451098",
-  "url": "https://www.instagram.com/reel/DfRhd6xDray/",
-  "at": 1793696883.2752528
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "48",
+  "videos": "34"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfRhd6xDray/"
+ "credits_before": [
+  81634,
+  613902
  ],
- "finished": "2026-11-03T09:08:03+00:00"
+ "kuyruk": {
+  "dosya": "20261102-3-n007.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "n007",
+  "series": "Ne Kadar Büyük?",
+  "q": "Ay gerçekte ne kadar uzak?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 420,
+ "duration": 28.4,
+ "title": "Ay Gerçekte Ne Kadar Uzak?",
+ "url": "https://youtube.com/shorts/kzDr9prfHSw",
+ "recent_status": {
+  "y010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1025",
+   "reason": null
+  },
+  "y016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "681",
+   "reason": null
+  },
+  "y011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "942",
+   "reason": null
+  },
+  "g007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1106",
+   "reason": null
+  },
+  "n007": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  81736,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261102-3-n007.json Ay gerçekte ne kadar uzak? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-03T10:08:07+00:00"
 }
