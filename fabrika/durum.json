@@ -1091,13 +1091,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-16T21:15:46+00:00",
-   "mod": "deneme",
-   "title": "Bilinen En Büyük Yıldız Ne Kadar Büyük?",
-   "duration": 24.2,
-   "chars": 378
-  },
-  {
    "finished": "2026-10-17T06:32:35+00:00",
    "mod": "saatlik",
    "title": "En Büyük Yıldız Ne Kadar Büyük?",
@@ -1493,6 +1486,12 @@
    "url": "https://youtube.com/shorts/ExIn5xWxSkY",
    "duration": 27.4,
    "chars": 397
+  },
+  {
+   "finished": "2026-11-03T09:08:03+00:00",
+   "mod": "igbolum",
+   "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
+   "chars": 387
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1632,6 +1631,11 @@
     "media_id": "18022348226935388",
     "url": "https://www.instagram.com/reel/DfP18XUj5xR/",
     "at": 1793640509.7693188
+   },
+   "y010": {
+    "media_id": "17921617560451098",
+    "url": "https://www.instagram.com/reel/DfRhd6xDray/",
+    "at": 1793696883.2752528
    }
   },
   "eski": [

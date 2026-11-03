@@ -1,71 +1,18 @@
 {
- "started": "2026-11-02T18:08:10+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-03T09:06:42+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y010",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "48",
-  "videos": "33"
+ "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
+ "chars": 387,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17921617560451098",
+  "url": "https://www.instagram.com/reel/DfRhd6xDray/",
+  "at": 1793696883.2752528
  },
- "credits_before": [
-  63555,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261102-2-g007.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "g007",
-  "series": "1 Gün Boyunca",
-  "q": "Beynin 1 günde ne kadar enerji harcar?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 397,
- "duration": 27.4,
- "title": "Beynin 1 Günde Kaç Kalori Yakar?",
- "url": "https://youtube.com/shorts/ExIn5xWxSkY",
- "recent_status": {
-  "g006": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1128",
-   "reason": null
-  },
-  "y010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1025",
-   "reason": null
-  },
-  "y016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "380",
-   "reason": null
-  },
-  "y011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "513",
-   "reason": null
-  },
-  "g007": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  63651,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261102-2-g007.json Beynin 1 günde ne kadar enerji harcar? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/DfRhd6xDray/"
  ],
- "finished": "2026-11-02T18:08:56+00:00"
+ "finished": "2026-11-03T09:08:03+00:00"
 }
