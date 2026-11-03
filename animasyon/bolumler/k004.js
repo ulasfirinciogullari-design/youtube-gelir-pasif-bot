@@ -219,7 +219,7 @@ function k4Gauge(cx, anchorV, guessV, k, accent, t) {
   ctx.save(); ctx.beginPath(); rr(cx - 34, K4G.top - 14, 68, K4G.bot - K4G.top + 28, 34); ctx.clip();
   const fg = ctx.createLinearGradient(0, y, 0, K4G.bot + 14); fg.addColorStop(0, accent === C.red ? C.red2 : C.gold2); fg.addColorStop(1, accent === C.red ? C.redDim : C.goldDim);
   ctx.fillStyle = fg; ctx.fillRect(cx - 34, y, 68, K4G.bot + 14 - y);
-  ctx.globalAlpha = .35; ctx.fillStyle = '#ffffff'; ctx.fillRect(cx - 22, y + 6, 10, K4G.bot - y);
+  ctx.globalAlpha *= .35; ctx.fillStyle = '#ffffff'; ctx.fillRect(cx - 22, y + 6, 10, K4G.bot - y);
   ctx.restore();
   for (let v = 0; v <= 100; v += 10) { ctx.strokeStyle = rgba(C.ivory, v % 50 ? .35 : .7); ctx.lineWidth = v % 50 ? 2 : 3; ctx.beginPath(); ctx.moveTo(cx + 18, k4Y(v)); ctx.lineTo(cx + 34, k4Y(v)); ctx.stroke(); }
   text('100', cx, K4G.top - 52, 24, rgba(C.ivory, .75), SANS, 800);
@@ -422,7 +422,8 @@ Object.assign(SAHNE, {
     plate(V.label, 770, 560, 30, 1, C.red, 400);
     k4Gauge(750, V.anchor, V.pct, k, C.red, t);
     ctx.restore();
-    if (slide < 1) figure(K4.ali, lerp(130, -260, slide), 2000, .92, t, { expr: 'happy', legs: 'hide', front: { sh: lerp(2.0, .3, slide), el: .25, hand: 'hold' }, back: { sh: .1, el: .3 }, seed: 9 });
+    const out = eio(prog(lt, 0, .35));
+    if (out < 1) figure(K4.ali, lerp(130, -320, out), 2000, .92, t, { expr: 'happy', legs: 'hide', front: { sh: .3, el: .3 }, back: { sh: .1, el: .3 }, seed: 9 });
     figure(K4.ayse, lerp(1250, 990, eo(prog(lt, .2, .8))), 1930, .8, t, { dir: -1, expr: k >= 1 ? 'happy' : { ...EXPR.calm, look: [.5, -.4] },
       front: { sh: 1.2, el: .9, hand: 'hold', prop: k4Card('ayse', V.anchor, 1) }, back: { sh: .1, el: .3 }, legs: 'hide', seed: 5, nod: k >= 1 ? Math.sin(t * 8) * .03 : 0 });
   },
@@ -481,7 +482,7 @@ Object.assign(SAHNE, {
     // a rug stall: the buyer means to offer 300; the seller says 1.000 first; the buyer ends up asking "800?"
     K4.day();
     const ti = wordTime(L, V.key, .3), ts = wordTime(L, V.said, .45), tb = wordTime(L, 'bütün', .6), ta = wordTime(L, V.anchor, .8);
-    const sell = prog(t, ti - .05, ti + .3), cross1 = prog(t, ts, ts + .35), say = prog(t, tb - .05, tb + .3), anc = prog(t, ta - .15, ta + .3);
+    const sell = prog(t, ti - .05, ti + .3), cross1 = prog(t, ts, ts + .35), say = prog(t, tb - .05, tb + .3), anc = prog(t, ta - .4, ta + .05);
     cam(540, 930, lerp(1.0, 1.05, eio(prog(lt, 0, 3.5))), () => {
       k4Bazaar(t);
       figure(K4.seller, 820, 1720, .72, t, { dir: -1, expr: sell > .5 ? 'sly' : 'warm', talk: sell > 0 && say < .5 ? talk(t, L) : 0, legs: 'hide',
@@ -507,6 +508,6 @@ Object.assign(SAHNE, {
         k4AnchorIcon(770, ay, .9, C.gold, Math.sin(t * 3) * .06);
       }
     });
-    plate('İlk fiyat = çapa', 540, 560, 52, back(prog(t, ta - .05, ta + .3)), C.gold);
+    plate('İlk fiyat = çapa', 540, 560, 52, back(prog(t, ta - .4, ta - .05)), C.gold);
   }
 });
