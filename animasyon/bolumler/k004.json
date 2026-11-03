@@ -1,0 +1,87 @@
+{
+ "id": "k004",
+ "kanun": "IV",
+ "title": {
+  "top": "Pazarlıkta ilk sayıyı",
+  "hi": "önce sen söyle"
+ },
+ "yt_title": "Pazarlıkta İlk Sayıyı Neden Sen Söylemelisin? 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Pazarlıkta ilk sayıyı karşındakine bırakma, önce sen söyle.",
+   "v": {"t": "usta", "no": "karşındakine", "yes": "sen", "no_label": "İlk sayıyı ona bırakma", "yes_label": "Önce sen söyle", "no_prop": "k4TagProp", "yes_prop": "k4AnchorProp"}
+  },
+  {
+   "text": "Bin dokuz yüz yetmiş dörtte yayımlanan bir deneyde, psikologlar insanların gözü önünde bir şans çarkı çevirdi.",
+   "keys": ["bin", "dokuz", "yüz", "yetmiş", "dörtte"],
+   "v": {"t": "cark", "year": "1974 · Bir deney", "key": "çevirdi", "wheel": "şans", "sfx": [["şans", 0.6, "pop", 0.25, 0.0], ["çevirdi", 0.8, "whoosh", 0.4, -0.05], ["çevirdi", 0.9, "tick", 0.3, 0.2], ["çevirdi", 0.9, "tick", 0.3, 0.32]]}
+  },
+  {
+   "text": "Ama çark hileliydi: sadece onda ya da altmış beşte duruyordu.",
+   "keys": ["onda", "altmış", "beşte"],
+   "v": {"t": "hile", "key": "hileliydi", "a": "onda", "b": "altmış", "sfx": [[null, 0.0, "tick", 0.3, 0.0], [null, 0.0, "tick", 0.3, 0.13], [null, 0.0, "tick", 0.3, 0.28], ["hileliydi", 0.3, "stamp", 0.45, 0.05], [null, 0.0, "tick", 0.28, 0.46], ["onda", 0.5, "tick", 0.3, -0.25], ["onda", 0.5, "pop", 0.4, 0.0], ["altmış", 0.7, "whoosh", 0.25, -0.3], ["altmış", 0.7, "pop", 0.4, 0.3]]}
+  },
+  {
+   "text": "Sonra sordular: Birleşmiş Milletler'deki ülkelerin yüzde kaçı Afrika'dan?",
+   "v": {"t": "soru", "key": "Afrika'dan", "un": "Birleşmiş", "pct": "yüzde", "sfx": [["Birleşmiş", 0.4, "paper", 0.3, 0.0], ["yüzde", 0.6, "pop", 0.35, 0.05], ["Afrika'dan", 0.85, "shimmer", 0.3, 0.1]]}
+  },
+  {
+   "text": "Çarkta on görenlerin tahmini yüzde yirmi beşti.",
+   "keys": ["on", "yüzde", "yirmi", "beşti"],
+   "v": {"t": "sonuc", "anchor": 10, "pct": 25, "key": "yirmi", "label": "Çarkta 10 görenler", "sfx": [[null, 0.3, "tick", 0.28], [null, 0.42, "tick", 0.28], [null, 0.54, "tick", 0.28], [null, 0.66, "tick", 0.28], ["yirmi", 0.8, "shimmer", 0.45, 0.1]]}
+  },
+  {
+   "text": "Altmış beş görenlerin tahmini ise yüzde kırk beşti.",
+   "keys": ["altmış", "beş", "yüzde", "kırk"],
+   "v": {"t": "kontrol", "anchor": 65, "pct": 45, "key": "kırk", "label": "Çarkta 65 görenler", "sfx": [[null, 0.35, "tick", 0.28], [null, 0.47, "tick", 0.28], [null, 0.59, "tick", 0.28], [null, 0.71, "tick", 0.28], ["kırk", 0.85, "stamp", 0.4, 0.1]]}
+  },
+  {
+   "text": "Çarkın soruyla hiçbir ilgisi yoktu. Ama zihin, duyduğu ilk sayıya çapa atar ve ondan yeterince uzaklaşamaz.",
+   "v": {"t": "neden", "cut": "Ama", "key": "çapa", "far": "uzaklaşamaz", "sfx": [["hiçbir", 0.2, "stamp", 0.4, 0.1], ["çapa", 0.6, "impact", 0.4, 0.15], ["uzaklaşamaz", 0.85, "whoosh", 0.3, 0.0], ["uzaklaşamaz", 0.85, "knock", 0.25, 0.45]]}
+  },
+  {
+   "text": "Pazarlıkta da ilk söylenen fiyat, bütün konuşmanın çapası olur.",
+   "v": {"t": "pazar", "key": "ilk", "said": "fiyat", "anchor": "çapası", "sfx": [["ilk", 0.3, "pop", 0.35, 0.1], ["bütün", 0.6, "pop", 0.3, 0.0], ["çapası", 0.8, "impact", 0.35, 0.0], ["çapası", 0.8, "shimmer", 0.4, 0.2]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Amos Tversky ve Daniel Kahneman, deneyi 1974'te Science dergisindeki \"Judgment under Uncertainty: Heuristics and Biases\" makalesinde anlattı: katılımcıların gözü önünde 0-100 arası sayılar taşıyan bir şans çarkı çevrildi, sonra önce aranan oranın bu sayıdan büyük mü küçük mü olduğu, ardından tahminleri soruldu.",
+  "Kahneman'ın \"Hızlı ve Yavaş Düşünme\" kitabına göre çark hileliydi: 0'dan 100'e kadar numaralıydı ama yalnızca 10'da ya da 65'te duruyordu.",
+  "Soru: Birleşmiş Milletler'e üye ülkelerin yüzde kaçı Afrika ülkesi? Çarkta 10 gören grubun ortanca (medyan) tahmini %25, 65 gören grubunki %45'ti. Makaleye göre doğru tahmine para ödülü vermek de çapa etkisini azaltmadı.",
+  "Bu tek bir deney, ama çapa etkisi psikolojinin en sağlam tekrarlanan bulgularından biri: 2014'teki Many Labs projesinde 36 örneklem ve 6.344 katılımcıyla dört çapa sorusunun hepsi tekrarlandı, etki orijinalinden de büyük çıktı.",
+  "Pazarlıkta: Galinsky ve Mussweiler'in (2001) üç deneyinde ilk teklifi yapan taraf, alıcı da olsa satıcı da olsa daha iyi bir sonuç aldı ve ilk teklif son fiyatı güçlü biçimde öngördü. Karşı taraf kendi hedefine ya da teklif edenin alternatiflerine odaklandığında bu üstünlük kayboldu."
+ ],
+ "sources": [
+  "https://doi.org/10.1126/science.185.4157.1124",
+  "https://www.chronicle.com/article/the-anatomy-of-influence/",
+  "https://doi.org/10.1027/1864-9335/a000178",
+  "https://pubmed.ncbi.nlm.nih.gov/11642352"
+ ],
+ "summary": "Pazarlıkta ilk sayıyı karşındakine bırakma, önce sen söyle. 1974'te yayımlanan bir deneyde psikologlar Amos Tversky ve Daniel Kahneman, insanların gözü önünde bir şans çarkı çevirdi. Çark hileliydi: yalnızca 10'da ya da 65'te duruyordu. Sonra sordular: Birleşmiş Milletler'deki ülkelerin yüzde kaçı Afrika'dan? Çarkta 10 görenlerin tahmini %25, 65 görenlerinki %45'ti. Çarkın soruyla hiçbir ilgisi yoktu; ama zihin duyduğu ilk sayıya çapa atar ve ondan yeterince uzaklaşamaz. Pazarlıkta da ilk söylenen fiyat bütün konuşmanın çapası olur: araştırmalarda ilk teklifi yapan taraf genellikle daha iyi bir sonuç alıyor.",
+ "tags": [
+  "çapa etkisi",
+  "anchoring",
+  "pazarlık",
+  "pazarlık taktikleri",
+  "psikoloji",
+  "ikna",
+  "ikna teknikleri",
+  "güç psikolojisi",
+  "karanlık psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri",
+  "kahneman"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#pazarlık",
+  "#zirveninkanunu"
+ ]
+}
