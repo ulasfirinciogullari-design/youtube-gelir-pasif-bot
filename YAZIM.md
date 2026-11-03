@@ -63,8 +63,11 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   "nasıl") son üçte birde, son cümle. İlk cümle iddiayı söyler ama nedenini söylemez; nedeni videonun ilk yarısında
   verme. 1 Kasım izleyici eğrileri: en çok izlenen 4 Short'ta videonun yarısında izleyicinin %98'i hâlâ izliyordu,
   1.000-1.400'de kalan 15 Short'ta %72'si. Kopuş baştan değil ortadan oluyor.
-- Son cümle şaşırtıcı sonucu ya da izleyicinin deneyebileceği somut bir şeyi versin; mümkünse ilk cümleye bağlansın
-  (video başa sardığında tek cümle gibi okunsun). Son cümleye "Yani", "Böylece", "Kısacası", "Bu sayede", "Sonuç
+- Son cümle şaşırtıcı sonucu ya da izleyicinin deneyebileceği somut bir şeyi versin ve **ilk cümleye bağlansın**:
+  video başa sardığında son cümle ile ilk cümle tek bir düşünce gibi okunmalı. Örnek: son cümle "Peki şu an
+  senin köpeğin seni hangi renkte görüyor?", ilk cümle "Köpekler kırmızıyı göremez." 3 Kasım: en çok izlenen 3
+  Short'umuzda ortalama izleme %92-109 arasındaydı. İzleyici videoyu bitirip başa sarmıştı. 1.000'de kalanlarda
+  bu oran %70-80. Döngü olmayan son cümle yazma. Son cümleye "Yani", "Böylece", "Kısacası", "Bu sayede", "Sonuç
   olarak", "Özetle" ile başlama; "doğa muhteşem" gibi genel bir lafla bitirme.
 - Sadece doğrulanmış bilgi. Her sayıyı ve iddiayı web'de en az bir güvenilir kaynakla kontrol et; emin değilsen
   sayı verme. Tartışmalıysa "bir görüşe göre" de. Kaynakları dosyaya değil, commit mesajına yaz.
@@ -75,6 +78,7 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 - `callout`: 1-3 kelime ya da birimiyle bir sayı, en fazla 24 karakter, büyük harf ("7 OMUR"). En çarpıcı 3-4 sahne.
 - `title`: en fazla 60 karakter, şaşırtıcı bir iddia (soru değil), sonda tek emoji. #shorts yok. 1 Kasım verisi:
   iddia başlıklı Claude Short'ları ortanca 2.328 izlenme, soru başlıklılar 1.377 (23'e 10 video).
+  İstisna: "mümkün mü?" biçimindeki dosyalarda başlık o soru olur ("Kedi yedinci kattan düşüp yaşayabilir mi? 🐱").
 - `hook_text`: konunun sorusunu soran 3-7 kelimelik büyük yazı, emoji yok, ilk cümleyi tekrarlamasın.
 - `mood`: "belgesel" (vahşi doğa, okyanus, uzay), "eğlenceli" (sevimli/komik hayvan, gündelik tuhaflık) ya da
   "sakin" (insan vücudu, psikoloji, gündelik bilim).
@@ -100,8 +104,28 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   az tanınan canlılar (deniz atı, kurbağa, kelebek) 1.100-1.400'de kalıyor.
 - İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
   1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
-- Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 1'i insan
-  vücudu, 5'i tanıdık hayvanlar. Kuyrukta bu sırayı koru: her 4 dosyadan biri psikoloji olsun.
+- Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 2'si
+  "mümkün mü?" biçimi (aşağıda, 4 Kasım'dan itibaren deneme), 1'i insan vücudu, 3'ü tanıdık hayvanlar. Kuyrukta bu
+  sırayı koru: her 4 dosyadan biri psikoloji, biri "mümkün mü?" olsun. Aynı biçim ya da aynı canlı art arda gelmesin.
+
+## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
+
+Hedef (Ulaş, 3 Kasım): 31 Ocak'a kadar 90 günde 10 milyon izlenme. Bunun için Short başına 1.200'den çok daha
+fazlası lazım. Türkiye'de en hızlı büyüyen merak kanalı VULRAN neredeyse yalnızca "... mümkün mü?" Short'larıyla
+Short başına ortanca ~890 bin izlenme alıyor ("Mermiden kaçmak mümkün mü?", "Bir posta pulu helikopteri düşürebilir
+mi?"). Bizim sürümümüz kendi konularımızda kalır: tanıdık canlılar, insan vücudu, gündelik psikoloji.
+
+- Dosyaya `"bicim": "mumkun-mu"` alanını ekle (diğer dosyalarda alan yok; analiz bununla gruplar).
+- Konu, izleyicinin "olur mu acaba?" diye merak edeceği uç bir durum olsun ve kesin, kaynaklı bir cevabı olsun:
+  "Kedi yedinci kattan düşüp yaşayabilir mi?", "İnsan kendini gıdıklayabilir mi?", "Fil zıplayabilir mi?",
+  "İnsan kaç gün uyumadan durabilir?". Cevabı tartışmalı ya da tehlikeli bir denemeye çağıran konu seçme.
+  "Ya olsaydı" tarzı uzay ve fizik senaryoları yazma; onlar Ulaş'ın öbür kanalının konusu.
+- `title` soru: "... mümkün mü?" ya da "... -ebilir mi?", en fazla 60 karakter, sonda tek emoji.
+  `hook_text` aynı soruyu kısaltır ("FİL ZIPLAYABİLİR Mİ?").
+- İlk cümle yine soru değil, ekrandakini anlatan bir iddia ("Bu kedi yedinci kattan düştü."). Cevap (evet ya da
+  hayır ve nedeni) son üçte birde. Ortada yanlış bir tahmini çürüten küçük bir detay olsun. Son cümle ilk cümleye
+  dönsün.
+- Uzunluk, sahne sayısı ve diğer bütün kurallar aynı (40-55 kelime). Ses harcaması artmasın.
 - Psikoloji konuları izleyicinin kendisi ya da tanıdığı biri hakkında olsun ("kendi sesini kayıtta neden sevmezsin",
   "bir ricaya 'çünkü' eklemek"): beynin seni nasıl kandırdığı, insanların birbirini nasıl etkilediği, gündelik
   davranışın arkasındaki deney. Kanalın adına ve güç psikolojisi animasyonlarına köprü bunlar.
