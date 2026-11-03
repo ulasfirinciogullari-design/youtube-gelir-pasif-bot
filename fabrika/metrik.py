@@ -71,11 +71,12 @@ def live(access, ids):
     """Public views, likes and comments of these videos right now (the Data API, no analytics delay)."""
     out = {}
     for i in range(0, len(ids), 50):
-        r = requests.get(f"{Y.API}/videos", params={"part": "statistics", "id": ",".join(ids[i:i + 50])}, timeout=30,
-                         headers={"Authorization": f"Bearer {access}"})
+        r = requests.get(f"{Y.API}/videos", params={"part": "statistics,snippet", "id": ",".join(ids[i:i + 50])},
+                         timeout=30, headers={"Authorization": f"Bearer {access}"})
         for v in r.json().get("items", []) if r.ok else []:
             st = v.get("statistics", {})
             out[v["id"]] = {k: int(st.get(k + "Count", 0)) for k in ("view", "like", "comment")}
+            out[v["id"]]["baslik"] = v.get("snippet", {}).get("title")  # the title as YouTube shows it (with emoji)
     return out
 
 
