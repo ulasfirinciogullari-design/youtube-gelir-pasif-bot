@@ -506,7 +506,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1221",
+    "views": "1222",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1089",
+    "views": "1088",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "713",
+    "views": "780",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "994",
+    "views": "1085",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1121",
+    "views": "1125",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "472",
+    "views": "685",
     "reason": null
    }
   },
@@ -1043,6 +1043,36 @@
    "thumbnail": true,
    "at": 1793715029.3026657,
    "chars": 351,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "738",
+    "reason": null
+   }
+  },
+  {
+   "id": "n008",
+   "video_id": "9j_jigCDW7s",
+   "url": "https://youtube.com/shorts/9j_jigCDW7s",
+   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Big Is Jupiter Really?",
+    "es": "¿Qué Tan Grande Es Júpiter en Realidad?",
+    "pt": "Qual É o Tamanho Real de Júpiter?",
+    "ar": "ما حجم المشتري حقًا؟",
+    "hi": "बृहस्पति असल में कितना बड़ा है?",
+    "id": "Seberapa Besar Jupiter Sebenarnya?",
+    "fr": "Quelle Est la Vraie Taille de Jupiter ?",
+    "de": "Wie Groß Ist Jupiter Wirklich?",
+    "ru": "Насколько велик Юпитер на самом деле?",
+    "az": "Yupiter Əslində Nə Qədər Böyükdür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793729327.7162673,
+   "chars": 370,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1086,7 +1116,8 @@
   "y011",
   "g007",
   "n007",
-  "y017"
+  "y017",
+  "n008"
  ],
  "extra": [
   {
@@ -1152,11 +1183,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-17T15:07:17+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
   {
    "finished": "2026-10-17T17:07:08+00:00",
    "mod": "saatlik",
@@ -1560,6 +1586,14 @@
    "mod": "igbolum",
    "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
    "chars": 376
+  },
+  {
+   "finished": "2026-11-03T18:08:49+00:00",
+   "mod": "saatlik",
+   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+   "url": "https://youtube.com/shorts/9j_jigCDW7s",
+   "duration": 26.3,
+   "chars": 370
   }
  ],
  "last_fail": 1793568784.6201334,

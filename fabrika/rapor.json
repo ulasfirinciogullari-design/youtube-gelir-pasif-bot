@@ -1,18 +1,71 @@
 {
- "started": "2026-11-03T17:08:29+00:00",
- "mod": "igbolum",
- "gate": "instagram: y011",
+ "started": "2026-11-03T18:07:41+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
- "chars": 376,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18098465333546432",
-  "url": "https://www.instagram.com/reel/DfSYpcjjDmA/",
-  "at": 1793725815.9544365
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "51",
+  "videos": "36"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfSYpcjjDmA/"
+ "credits_before": [
+  82359,
+  613902
  ],
- "finished": "2026-11-03T17:10:15+00:00"
+ "kuyruk": {
+  "dosya": "20261103-2-n008.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "n008",
+  "series": "Ne Kadar Büyük?",
+  "q": "Jüpiter ne kadar büyük?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 370,
+ "duration": 26.3,
+ "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+ "url": "https://youtube.com/shorts/9j_jigCDW7s",
+ "recent_status": {
+  "y011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1085",
+   "reason": null
+  },
+  "g007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1125",
+   "reason": null
+  },
+  "n007": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "685",
+   "reason": null
+  },
+  "y017": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "738",
+   "reason": null
+  },
+  "n008": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  82359,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261103-2-n008.json Jüpiter ne kadar büyük? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-03T18:08:49+00:00"
 }
