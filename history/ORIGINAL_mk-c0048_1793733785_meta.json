@@ -1,0 +1,180 @@
+{
+  "topic_id": "mk-c0048",
+  "topic": "Kayıttaki sesimiz neden farklı gelir?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kayıttaki o yabancı ses, herkesin duyduğu sesin 🎙️",
+  "hook_text": "SESİN KAYITTA NEDEN FARKLI?",
+  "description": "Kayıttaki sesimiz neden farklı gelir, kendi sesimizi neden sevmeyiz?\n\nSen konuşurken sesini iki yoldan duyarsın: havadan kulağına gelen sesle ve kafatası kemiklerinden doğrudan iç kulağa giden titreşimle. Kemik iletimi kalın tonları güçlendirir, bu yüzden kafandaki sesin daha tok ve kalın gelir. Çevrendeki insanlar ve mikrofon ise sadece havadan gelen sesi duyar; kayıttaki o yabancı ses, herkesin her gün duyduğu gerçek sesin.\n\nSence hangisi daha tuhaf: kendi gerçek sesini hiç duyamamak mı, herkesin onu her gün duyması mı?\n\n#ses #insanvücudu #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0048",
+  "tags": [
+    "kayıttaki sesim neden farklı",
+    "kendi sesimi sevmiyorum",
+    "ses kaydı",
+    "kendi sesi",
+    "gerçek sesim",
+    "kemik iletimi",
+    "hava iletimi",
+    "kafatası",
+    "iç kulak",
+    "kulak",
+    "ses",
+    "insan vücudu",
+    "psikoloji",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "sesimiz neden farklı",
+    "mikrofon",
+    "bone conduction",
+    "recorded voice",
+    "kayıt",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kayittaki sesim neden farkli",
+    "ses kaydi",
+    "gercek sesim",
+    "kafatasi",
+    "ic kulak"
+  ],
+  "localizations": {
+    "en": {
+      "title": "That strange voice on the recording is your real voice 🎙️",
+      "description": "You hear yourself through the air and through your skull bones, which boost the low tones. Everyone else, and every microphone, only hears the air.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "es": {
+      "title": "Esa voz extraña de la grabación es tu voz real 🎙️",
+      "description": "Te oyes a ti mismo por el aire y por los huesos del cráneo, que refuerzan los tonos graves. Los demás y los micrófonos solo oyen el aire.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "pt": {
+      "title": "Aquela voz estranha na gravação é a sua voz real 🎙️",
+      "description": "Você se ouve pelo ar e pelos ossos do crânio, que reforçam os tons graves. Os outros e os microfones só ouvem o ar.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "de": {
+      "title": "Die fremde Stimme auf der Aufnahme ist deine echte 🎙️",
+      "description": "Du hörst dich über die Luft und über die Schädelknochen, die tiefe Töne verstärken. Alle anderen und jedes Mikrofon hören nur die Luft.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "fr": {
+      "title": "Cette voix étrange sur l'enregistrement est ta vraie voix 🎙️",
+      "description": "Tu t'entends par l'air et par les os du crâne, qui renforcent les graves. Les autres et les micros n'entendent que l'air.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "it": {
+      "title": "Quella voce strana nella registrazione è la tua vera voce 🎙️",
+      "description": "Ti senti attraverso l'aria e le ossa del cranio, che rinforzano i toni bassi. Gli altri e i microfoni sentono solo l'aria.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "ru": {
+      "title": "Тот странный голос на записи — твой настоящий голос 🎙️",
+      "description": "Ты слышишь себя через воздух и через кости черепа, которые усиливают низкие тона. Остальные и микрофоны слышат только воздух.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "ar": {
+      "title": "ذلك الصوت الغريب في التسجيل هو صوتك الحقيقي 🎙️",
+      "description": "تسمع نفسك عبر الهواء وعبر عظام الجمجمة التي تقوي النغمات المنخفضة. أما الآخرون والميكروفون فيسمعون الهواء فقط.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "hi": {
+      "title": "रिकॉर्डिंग वाली अजीब आवाज़ ही आपकी असली आवाज़ है 🎙️",
+      "description": "आप अपनी आवाज़ हवा और खोपड़ी की हड्डियों से सुनते हैं, जो भारी सुरों को बढ़ाती हैं। बाकी लोग और माइक सिर्फ हवा वाली आवाज़ सुनते हैं।\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "id": {
+      "title": "Suara aneh di rekaman itu adalah suara aslimu 🎙️",
+      "description": "Kamu mendengar dirimu lewat udara dan tulang tengkorak yang memperkuat nada rendah. Orang lain dan mikrofon hanya mendengar lewat udara.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "ja": {
+      "title": "録音の変な声こそ本当のあなたの声 🎙️",
+      "description": "話すとき、自分の声は空気と頭蓋骨の両方から聞こえ、骨は低い音を強めます。他の人やマイクには空気の音しか届きません。\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "ko": {
+      "title": "녹음 속 낯선 목소리가 진짜 내 목소리 🎙️",
+      "description": "말할 때 내 목소리는 공기와 두개골 뼈 두 경로로 들리고, 뼈는 낮은 음을 키웁니다. 다른 사람과 마이크는 공기로 전해진 소리만 듣습니다.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "pl": {
+      "title": "Ten dziwny głos na nagraniu to twój prawdziwy głos 🎙️",
+      "description": "Słyszysz się przez powietrze i przez kości czaszki, które wzmacniają niskie tony. Inni i mikrofony słyszą tylko powietrze.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "nl": {
+      "title": "Die vreemde stem op de opname is je echte stem 🎙️",
+      "description": "Je hoort jezelf via de lucht en via je schedelbotten, die lage tonen versterken. Anderen en microfoons horen alleen de lucht.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "uk": {
+      "title": "Той дивний голос на записі — твій справжній голос 🎙️",
+      "description": "Ти чуєш себе через повітря і через кістки черепа, які підсилюють низькі тони. Інші та мікрофони чують лише повітря.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "vi": {
+      "title": "Giọng lạ trong bản ghi âm chính là giọng thật của bạn 🎙️",
+      "description": "Bạn nghe giọng mình qua không khí và qua xương sọ, nơi khuếch đại âm trầm. Người khác và micro chỉ nghe qua không khí.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "az": {
+      "title": "Səs yazısındakı o yad səs sənin əsl səsindir 🎙️",
+      "description": "Danışarkən səsini həm havadan, həm də kəllə sümüklərindən eşidirsən; sümüklər qalın tonları gücləndirir. Başqaları və mikrofon isə yalnız havanı eşidir.\n\n#shorts\n\nSeri: mk-c0048"
+    },
+    "ro": {
+      "title": "Vocea ciudată din înregistrare este vocea ta reală 🎙️",
+      "description": "Te auzi prin aer și prin oasele craniului, care întăresc tonurile joase. Ceilalți și microfoanele aud doar aerul.\n\n#shorts\n\nSeri: mk-c0048"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: kendi gerçek sesini hiç duyamamak mı, herkesin onu her gün duyması mı?",
+  "scenes": [
+    {
+      "text": "Kayıttaki o yabancı ses, herkesin duyduğu gerçek sesin.",
+      "visual": "woman listening to a voice message on her phone",
+      "stock_query": "woman phone",
+      "source": "stock",
+      "callout": "GERÇEK SESİN"
+    },
+    {
+      "text": "Sen konuşurken sesini iki yoldan duyarsın: havadan ve kafatası kemiklerinden.",
+      "visual": "man speaking into a microphone",
+      "stock_query": "man microphone",
+      "source": "stock",
+      "subject": [
+        "microphone"
+      ],
+      "callout": "2 YOL"
+    },
+    {
+      "text": "Çevrendeki herkes ise sadece havadan gelen sesi duyar.",
+      "visual": "group of people listening to a speaker",
+      "stock_query": "people listening",
+      "source": "stock",
+      "subject": [
+        "people"
+      ]
+    },
+    {
+      "text": "Kemikler kalın tonları güçlendirir; kafandaki sesin bu yüzden daha tok ve kalın gelir.",
+      "visual": "close-up of a person talking",
+      "stock_query": "man talking",
+      "source": "stock",
+      "callout": "KALIN TON"
+    },
+    {
+      "text": "Mikrofon da sadece havayı duyar, tıpkı onlar gibi.",
+      "visual": "close-up of a studio microphone",
+      "stock_query": "studio microphone",
+      "source": "stock",
+      "subject": [
+        "microphone"
+      ]
+    }
+  ],
+  "duration_seconds": 15.56,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #101",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0048_1793733785_ig.mp4"
+}
