@@ -1,24 +1,24 @@
 {
- "started": "2026-11-03T11:19:15+00:00",
+ "started": "2026-11-03T16:24:28+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 26,
+ "threads": 27,
  "quiet": 0,
  "new": 1,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgxQnwxVd7_3_j30Pn94AaABAg",
-   "video": "E9dsm0cEDnM",
-   "comment": "İlk",
-   "reply": "İlk yorum madalyasını kaptın, tebrikler! 🏅\n— Bit 🤖",
+   "id": "UgzTXltj9anGNH_LkMd4AaABAg",
+   "video": "wvA035c4dvw",
+   "comment": "--------------------------+++++++++++++++**********",
+   "reply": "Klavyen biraz coşmuş galiba! Merhaba!\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-03T11:19:18+00:00"
+ "finished": "2026-11-03T16:24:31+00:00"
 }
