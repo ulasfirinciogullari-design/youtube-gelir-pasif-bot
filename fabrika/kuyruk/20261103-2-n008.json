@@ -1,0 +1,313 @@
+{
+ "id": "n008",
+ "series": "Ne Kadar Büyük?",
+ "q": "Jüpiter ne kadar büyük?",
+ "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+ "bar": {
+  "hi": "JÜPİTER",
+  "rest": "NE KADAR BÜYÜK?"
+ },
+ "summary": "Jüpiter'in içine 1.000 Dünya sığar, tek bir fırtınası bile Dünya'dan geniştir! Jüpiter'de tartıya çıksan kaç kilo gelirdin ve görünmez manyetik alanı gökte neden Ay'dan büyük dururdu, Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Jüpiter'in içine 1.000 Dünya sığar!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "jupiter",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "xs",
+      "at": "t"
+     }
+    ],
+    "do": "none",
+    "target": 0,
+    "key": "sığar",
+    "label": "1.000 Dünya"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Evimiz misket mi kalıyor?!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "misket",
+    "label": "Minicik Dünya"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dünya üzüm olsa, Jüpiter basketbol topu olurdu.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "🍇",
+     "label": "Dünya",
+     "value": "12.742"
+    },
+    "b": {
+     "e": "🏀",
+     "label": "Jüpiter",
+     "value": "139.822"
+    },
+    "mode": "size",
+    "key": "basketbol"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tek fırtınası bile Dünya'dan geniş: Büyük Kırmızı Leke!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "earth",
+     "label": "Dünya (km)",
+     "value": "12.742"
+    },
+    "b": {
+     "e": "🌀",
+     "label": "Kırmızı Leke (km)",
+     "value": "16.350"
+    },
+    "mode": "bar",
+    "key": "geniş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kilonu 2,4'le çarp: Jüpiter'in bulutlarında tartın bunu gösterirdi.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⚖️",
+    "value": "2,4",
+    "unit": "kat",
+    "label": "Jüpiter'de Kilon",
+    "key": "2,4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Diyet bile kurtarmaz!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🍩",
+    "do": "shake",
+    "key": "Diyet",
+    "label": "Diyet Yetmez"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Manyetik alanı parlasa, gökte Ay'dan 2-3 kat büyük dururdu!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🧲",
+    "do": "grow",
+    "key": "parlasa",
+    "label": "Ay'ın 2-3 Katı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Jüpiter'de kaç kilo gelirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🪐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Jüpiter içi boş bir kabuk olsaydı içine 1.000 Dünya sığardı; 69.911 km'lik yarıçapıyla Dünya'dan 11 kat geniştir.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/jupiter/jupiter-facts/"
+  },
+  {
+   "text": "NASA'ya göre Dünya bir üzüm tanesi büyüklüğünde olsaydı Jüpiter aşağı yukarı bir basketbol topu kadar olurdu.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/jupiter/jupiter-facts/"
+  },
+  {
+   "text": "NASA JPL'e göre Juno'nun Nisan 2017 ölçümünde Büyük Kırmızı Leke 16.350 km genişliğindeydi, yani Dünya'nın 1,3 katı.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/news/nasas-juno-spacecraft-completes-flyby-over-jupiters-great-red-spot/"
+  },
+  {
+   "text": "NASA'nın Jüpiter bilgi sayfasına göre Jüpiter'in 1 bar basınç seviyesindeki (bulut tepeleri) ekvator yerçekimi 23,12 m/s², yani Dünya'nınkinin yaklaşık 2,4 katıdır.",
+   "source": "NASA NSSDC Jupiter Fact Sheet",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html"
+  },
+  {
+   "text": "NASA JPL'e göre Jüpiter'in manyetosferi Güneş Sistemi'ndeki en büyük yapıdır; gözle görülen ışıkta parlasaydı Dünya'dan Güneş ya da Ay'ın 2-3 katı büyüklükte görünürdü.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/images/pia03476-jupiters-magnetosphere-made-visible/"
+  }
+ ],
+ "tags": [
+  "jüpiter",
+  "jüpiter ne kadar büyük",
+  "jüpiter gerçekte ne kadar büyük",
+  "büyük kırmızı leke",
+  "jüpiter'de kaç kilo gelirim",
+  "gezegenler",
+  "güneş sistemi",
+  "ne kadar büyük",
+  "how big is jupiter",
+  "jupiter size",
+  "great red spot",
+  "jupiter magnetosphere",
+  "weight on jupiter",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#jüpiter",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/jupiter/jupiter-facts/",
+  "https://www.jpl.nasa.gov/news/nasas-juno-spacecraft-completes-flyby-over-jupiters-great-red-spot/",
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html",
+  "https://www.jpl.nasa.gov/images/pia03476-jupiters-magnetosphere-made-visible/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Big Is Jupiter Really?",
+   "summary": "1,000 Earths could fit inside Jupiter, and even a single storm on it is wider than Earth! Professor Pi explains how much you would weigh on Jupiter and why its invisible magnetic field would look bigger than the Moon in our sky.",
+   "facts": [
+    "According to NASA, if Jupiter were a hollow shell, 1,000 Earths could fit inside; with a radius of 69,911 km, it is 11 times wider than Earth.",
+    "According to NASA, if Earth were the size of a grape, Jupiter would be about as big as a basketball.",
+    "According to NASA JPL, Juno measured the Great Red Spot at 16,350 km wide in April 2017, 1.3 times as wide as Earth.",
+    "According to NASA's Jupiter fact sheet, gravity at Jupiter's equator at the 1 bar pressure level (the cloud tops) is 23.12 m/s², about 2.4 times Earth's.",
+    "According to NASA JPL, Jupiter's magnetosphere is the largest object in the solar system; if it glowed in visible light, it would appear 2 to 3 times the size of the Sun or Moon from Earth."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Grande Es Júpiter en Realidad?",
+   "summary": "¡Dentro de Júpiter cabrían 1.000 Tierras, y hasta una sola de sus tormentas es más ancha que la Tierra! El profesor Pi explica cuánto pesarías en Júpiter y por qué su campo magnético invisible se vería en el cielo más grande que la Luna.",
+   "facts": [
+    "Según la NASA, si Júpiter fuera una esfera hueca, dentro cabrían 1.000 Tierras; con un radio de 69.911 km, es 11 veces más ancho que la Tierra.",
+    "Según la NASA, si la Tierra fuera del tamaño de una uva, Júpiter sería más o menos como un balón de baloncesto.",
+    "Según el JPL de la NASA, la sonda Juno midió la Gran Mancha Roja en abril de 2017: tenía 16.350 km de ancho, 1,3 veces el ancho de la Tierra.",
+    "Según la ficha técnica de Júpiter de la NASA, la gravedad en el ecuador de Júpiter al nivel de presión de 1 bar (la cima de las nubes) es de 23,12 m/s², unas 2,4 veces la de la Tierra.",
+    "Según el JPL de la NASA, la magnetosfera de Júpiter es el objeto más grande del sistema solar; si brillara en luz visible, desde la Tierra se vería 2 a 3 veces más grande que el Sol o la Luna."
+   ]
+  },
+  "pt": {
+   "title": "Qual É o Tamanho Real de Júpiter?",
+   "summary": "Dentro de Júpiter caberiam 1.000 Terras, e até uma única tempestade dele é mais larga que a Terra! O professor Pi explica quanto você pesaria em Júpiter e por que o campo magnético invisível dele pareceria maior que a Lua no céu.",
+   "facts": [
+    "Segundo a NASA, se Júpiter fosse uma casca oca, caberiam 1.000 Terras dentro dele; com um raio de 69.911 km, ele é 11 vezes mais largo que a Terra.",
+    "Segundo a NASA, se a Terra fosse do tamanho de uma uva, Júpiter seria mais ou menos do tamanho de uma bola de basquete.",
+    "Segundo o JPL da NASA, a sonda Juno mediu a Grande Mancha Vermelha em abril de 2017: ela tinha 16.350 km de largura, 1,3 vez a largura da Terra.",
+    "Segundo a ficha técnica de Júpiter da NASA, a gravidade no equador de Júpiter no nível de pressão de 1 bar (o topo das nuvens) é de 23,12 m/s², cerca de 2,4 vezes a da Terra.",
+    "Segundo o JPL da NASA, a magnetosfera de Júpiter é o maior objeto do Sistema Solar; se brilhasse em luz visível, vista da Terra pareceria 2 a 3 vezes maior que o Sol ou a Lua."
+   ]
+  },
+  "ar": {
+   "title": "ما حجم المشتري حقًا؟",
+   "summary": "يتسع المشتري لـ 1,000 كوكب بحجم الأرض، وحتى عاصفة واحدة فيه أعرض من الأرض! يشرح البروفيسور باي كم سيكون وزنك على المشتري، ولماذا سيبدو مجاله المغناطيسي الخفي في سمائنا أكبر من القمر.",
+   "facts": [
+    "وفقًا لناسا، لو كان المشتري قشرة مجوفة لاتسع لـ 1,000 أرض؛ ويبلغ نصف قطره 69,911 كم، أي أنه أعرض من الأرض 11 مرة.",
+    "وفقًا لناسا، لو كانت الأرض بحجم حبة عنب، لكان المشتري تقريبًا بحجم كرة سلة.",
+    "وفقًا لمختبر الدفع النفاث التابع لناسا، قاس المسبار جونو عرض البقعة الحمراء العظيمة في أبريل 2017 بـ 16,350 كم، أي 1.3 مرة عرض الأرض.",
+    "وفقًا لصفحة بيانات المشتري لدى ناسا، تبلغ الجاذبية عند خط استواء المشتري على مستوى ضغط 1 بار (قمم السحب) 23.12 م/ث²، أي نحو 2.4 مرة جاذبية الأرض.",
+    "وفقًا لمختبر الدفع النفاث التابع لناسا، الغلاف المغناطيسي للمشتري هو أكبر جسم في المجموعة الشمسية؛ ولو توهج بضوء مرئي لبدا من الأرض أكبر من الشمس أو القمر بـ 2 إلى 3 مرات."
+   ]
+  },
+  "hi": {
+   "title": "बृहस्पति असल में कितना बड़ा है?",
+   "summary": "बृहस्पति के अंदर 1,000 धरतियां समा सकती हैं, और उसका एक अकेला तूफान भी धरती से चौड़ा है! प्रोफेसर पाई बताते हैं कि बृहस्पति पर आपका वज़न कितना होता और उसका अदृश्य चुंबकीय क्षेत्र हमारे आसमान में चांद से बड़ा क्यों दिखता।",
+   "facts": [
+    "NASA के अनुसार, अगर बृहस्पति एक खोखला गोला होता, तो उसमें 1,000 धरतियां समा जातीं; 69,911 किलोमीटर की त्रिज्या के साथ वह धरती से 11 गुना चौड़ा है।",
+    "NASA के अनुसार, अगर धरती एक अंगूर जितनी होती, तो बृहस्पति लगभग एक बास्केटबॉल जितना बड़ा होता।",
+    "NASA JPL के अनुसार, अप्रैल 2017 में जूनो यान ने ग्रेट रेड स्पॉट की चौड़ाई 16,350 किलोमीटर मापी, यानी धरती की 1.3 गुना।",
+    "NASA की बृहस्पति फैक्ट शीट के अनुसार, 1 बार दबाव वाले स्तर (बादलों की ऊपरी परत) पर बृहस्पति की भूमध्य रेखा पर गुरुत्व 23.12 मीटर/सेकंड² है, यानी धरती का लगभग 2.4 गुना।",
+    "NASA JPL के अनुसार, बृहस्पति का मैग्नेटोस्फीयर सौर मंडल की सबसे बड़ी चीज़ है; अगर यह दिखाई देने वाली रोशनी में चमकता, तो धरती से सूरज या चांद से 2 से 3 गुना बड़ा दिखता।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Besar Jupiter Sebenarnya?",
+   "summary": "1.000 Bumi bisa muat di dalam Jupiter, dan satu badainya saja lebih lebar dari Bumi! Profesor Pi menjelaskan berapa berat badanmu di Jupiter dan kenapa medan magnetnya yang tak terlihat akan tampak lebih besar dari Bulan di langit kita.",
+   "facts": [
+    "Menurut NASA, jika Jupiter berupa cangkang kosong, 1.000 Bumi bisa muat di dalamnya; dengan jari-jari 69.911 km, Jupiter 11 kali lebih lebar dari Bumi.",
+    "Menurut NASA, jika Bumi seukuran sebutir anggur, Jupiter kira-kira sebesar bola basket.",
+    "Menurut NASA JPL, wahana Juno mengukur lebar Bintik Merah Besar 16.350 km pada April 2017, atau 1,3 kali lebar Bumi.",
+    "Menurut lembar fakta Jupiter NASA, gravitasi di khatulistiwa Jupiter pada tingkat tekanan 1 bar (puncak awan) adalah 23,12 m/s², sekitar 2,4 kali gravitasi Bumi.",
+    "Menurut NASA JPL, magnetosfer Jupiter adalah objek terbesar di Tata Surya; jika bersinar dalam cahaya tampak, dari Bumi ia akan terlihat 2 sampai 3 kali lebih besar dari Matahari atau Bulan."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Taille de Jupiter ?",
+   "summary": "1 000 Terres pourraient tenir dans Jupiter, et même une seule de ses tempêtes est plus large que la Terre ! Le professeur Pi explique combien tu pèserais sur Jupiter et pourquoi son champ magnétique invisible paraîtrait plus grand que la Lune dans notre ciel.",
+   "facts": [
+    "Selon la NASA, si Jupiter était une coquille creuse, 1 000 Terres pourraient y tenir ; avec un rayon de 69 911 km, elle est 11 fois plus large que la Terre.",
+    "Selon la NASA, si la Terre avait la taille d'un grain de raisin, Jupiter serait à peu près aussi grosse qu'un ballon de basket.",
+    "Selon le JPL de la NASA, la sonde Juno a mesuré la Grande Tache rouge en avril 2017 : 16 350 km de large, soit 1,3 fois la largeur de la Terre.",
+    "Selon la fiche technique de Jupiter de la NASA, la gravité à l'équateur de Jupiter au niveau de pression de 1 bar (le sommet des nuages) est de 23,12 m/s², environ 2,4 fois celle de la Terre.",
+    "Selon le JPL de la NASA, la magnétosphère de Jupiter est le plus grand objet du système solaire ; si elle brillait en lumière visible, elle paraîtrait depuis la Terre 2 à 3 fois plus grande que le Soleil ou la Lune."
+   ]
+  },
+  "de": {
+   "title": "Wie Groß Ist Jupiter Wirklich?",
+   "summary": "In Jupiter würden 1.000 Erden passen, und schon ein einziger Sturm auf ihm ist breiter als die Erde! Professor Pi erklärt, wie viel du auf Jupiter wiegen würdest und warum sein unsichtbares Magnetfeld an unserem Himmel größer als der Mond aussähe.",
+   "facts": [
+    "Laut NASA würden 1.000 Erden in Jupiter passen, wenn er eine hohle Kugel wäre; mit einem Radius von 69.911 km ist er 11-mal so breit wie die Erde.",
+    "Laut NASA wäre Jupiter ungefähr so groß wie ein Basketball, wenn die Erde so groß wie eine Weintraube wäre.",
+    "Laut NASA JPL maß die Sonde Juno den Großen Roten Fleck im April 2017 mit 16.350 km Breite, dem 1,3-Fachen der Erdbreite.",
+    "Laut dem Jupiter-Datenblatt der NASA beträgt die Schwerkraft am Jupiteräquator auf Höhe des Drucks von 1 bar (den Wolkenobergrenzen) 23,12 m/s², etwa das 2,4-Fache der Erdschwerkraft.",
+    "Laut NASA JPL ist Jupiters Magnetosphäre das größte Objekt im Sonnensystem; würde sie in sichtbarem Licht leuchten, erschiene sie von der Erde aus 2- bis 3-mal so groß wie Sonne oder Mond."
+   ]
+  },
+  "ru": {
+   "title": "Насколько велик Юпитер на самом деле?",
+   "summary": "Внутри Юпитера поместилась бы 1000 Земель, а даже одна его буря шире Земли! Профессор Пи объясняет, сколько бы ты весил на Юпитере и почему его невидимое магнитное поле казалось бы на нашем небе больше Луны.",
+   "facts": [
+    "По данным NASA, если бы Юпитер был полой оболочкой, внутри поместилась бы 1000 Земель; при радиусе 69 911 км он в 11 раз шире Земли.",
+    "По данным NASA, если бы Земля была размером с виноградину, Юпитер был бы примерно с баскетбольный мяч.",
+    "По данным JPL NASA, в апреле 2017 года зонд «Юнона» измерил ширину Большого красного пятна: 16 350 км, в 1,3 раза шире Земли.",
+    "Согласно справочным данным NASA о Юпитере, сила тяжести на экваторе Юпитера на уровне давления 1 бар (верхняя граница облаков) составляет 23,12 м/с², примерно в 2,4 раза больше земной.",
+    "По данным JPL NASA, магнитосфера Юпитера — самый большой объект в Солнечной системе; если бы она светилась в видимом свете, с Земли она казалась бы в 2-3 раза больше Солнца или Луны."
+   ]
+  },
+  "az": {
+   "title": "Yupiter Əslində Nə Qədər Böyükdür?",
+   "summary": "Yupiterin içinə 1.000 Yer sığar, onun tək bir fırtınası belə Yerdən genişdir! Professor Pi izah edir ki, Yupiterdə neçə kilo gələrdin və onun görünməz maqnit sahəsi səmamızda niyə Aydan böyük görünərdi.",
+   "facts": [
+    "NASA-ya görə Yupiter içi boş bir qabıq olsaydı, içinə 1.000 Yer sığardı; 69.911 km radiusu ilə Yerdən 11 dəfə genişdir.",
+    "NASA-ya görə Yer bir üzüm dənəsi boyda olsaydı, Yupiter təxminən basketbol topu boyda olardı.",
+    "NASA JPL-ə görə Juno zondu 2017-ci ilin aprelində Böyük Qırmızı Ləkənin enini 16.350 km ölçüb, yəni Yerin 1,3 qatı.",
+    "NASA-nın Yupiter məlumat cədvəlinə görə Yupiterin ekvatorunda 1 bar təzyiq səviyyəsində (bulud zirvələri) cazibə 23,12 m/s²-dir, yəni Yerinkindən təxminən 2,4 dəfə çox.",
+    "NASA JPL-ə görə Yupiterin maqnitosferi Günəş sistemindəki ən böyük obyektdir; görünən işıqda parlasaydı, Yerdən Günəş və ya Aydan 2-3 dəfə böyük görünərdi."
+   ]
+  }
+ }
+}

@@ -1,0 +1,270 @@
+{
+ "id": "y017",
+ "series": "Ya Olsaydı?",
+ "q": "Kalbin 1 saniyeliğine dursaydı ne olurdu?",
+ "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
+ "bar": {
+  "hi": "KALP DURURSA",
+  "rest": "KAÇ SANİYE?"
+ },
+ "summary": "Kalbin durursa son atıştan yaklaşık 8 saniye sonra bayılırsın, 30 saniye dolmadan da beyin dalgaların düzleşir! Hızlı ayağa kalkınca gözünün neden karardığını ve 4 dakikanın neden hayati olduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Son kalp atışından yaklaşık 8 saniye sonra bayılırsın!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🫀",
+    "value": "8",
+    "unit": "saniye",
+    "label": "Son Atıştan Sonra",
+    "key": "kalp"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bu videodan bile kısa!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "📱",
+    "do": "shake",
+    "key": "videodan",
+    "label": "Video Daha Uzun"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hızlı kalkınca gözün kararıyor ya? Kan bacağına kaçar, beynin bir an aç kalır.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🪑",
+     "label": "Otururken"
+    },
+    "right": {
+     "e": "😵‍💫",
+     "label": "Göz Kararır"
+    },
+    "key": "kararıyor"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kalp durunca 30 saniye dolmadan beyin dalgaların düzleşir.",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "Beyin Susuyor",
+    "from": 0,
+    "to": 30,
+    "unit": "saniye",
+    "e": "🧠",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Beynim fişten mi çekiliyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🔌",
+    "do": "shake",
+    "key": "fişten",
+    "label": "Fiş Çekildi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "4 dakika içinde beyninde kalıcı hasar başlayabilir!",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "8. SANİYE",
+      "e": "😵",
+      "label": "Bayılma"
+     },
+     {
+      "when": "30. SANİYE",
+      "e": "🧠",
+      "label": "Dalgalar Düz"
+     },
+     {
+      "when": "4. DAKİKA",
+      "e": "⚠️",
+      "label": "Kalıcı Hasar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ayağa kalkınca gözün hiç karardı mı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "❤️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Leiden Üniversitesi Tıp Merkezi araştırmacılarının Frontiers in Cardiovascular Medicine'deki incelemesine göre bilinç kaybı, son kalp atışından yaklaşık 8 saniye sonra başlar.",
+   "source": "Frontiers in Cardiovascular Medicine (van Dijk ve ark., 2020) / NIH PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7082775/"
+  },
+  {
+   "text": "Live Science'a göre hızlı ayağa kalkınca yaklaşık 300-800 ml kan bacaklara çekilir; beyin bir an yeterince kan ve oksijen alamaz ve görme birkaç saniye bozulur.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/heart-circulation/why-do-you-get-dizzy-if-you-stand-up-too-fast"
+  },
+  {
+   "text": "Live Science'a göre beyne kan akışı durunca beyin yüzeyindeki kendiliğinden elektriksel etkinlik 10-30 saniye içinde kaybolur.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/neuroscience/how-long-can-the-brain-survive-without-oxygen"
+  },
+  {
+   "text": "Live Science'a göre kan akışı durursa kalıcı beyin hasarı 4 dakika içinde başlayabilir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/neuroscience/how-long-can-the-brain-survive-without-oxygen"
+  }
+ ],
+ "tags": [
+  "kalp durması",
+  "kalbin durursa",
+  "kalp durunca ne olur",
+  "kaç saniyede bayılırsın",
+  "bayılma",
+  "ani kalp durması",
+  "beyin",
+  "göz kararması",
+  "hızlı ayağa kalkınca baş dönmesi",
+  "cardiac arrest",
+  "what happens when your heart stops",
+  "fainting",
+  "head rush",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#kalp",
+  "#beyin",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC7082775/",
+  "https://www.livescience.com/health/neuroscience/how-long-can-the-brain-survive-without-oxygen",
+  "https://www.livescience.com/health/heart-circulation/why-do-you-get-dizzy-if-you-stand-up-too-fast"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Your Heart Stopped, How Many Seconds Until You Pass Out?",
+   "summary": "If your heart stops, you pass out about 8 seconds after the last beat, and within 30 seconds your brain waves go flat! Professor Pi explains why your vision goes dark when you stand up too fast and why 4 minutes are vital.",
+   "facts": [
+    "According to a review by researchers at Leiden University Medical Centre in Frontiers in Cardiovascular Medicine, loss of consciousness starts about 8 seconds after the last heartbeat.",
+    "According to Live Science, when you stand up quickly about 300-800 ml of blood is pulled into the legs; for a moment the brain does not get enough blood and oxygen, and vision is disturbed for a few seconds.",
+    "According to Live Science, once blood flow to the brain stops, spontaneous electrical activity on the surface of the brain disappears within 10 to 30 seconds.",
+    "According to Live Science, if blood flow stops, permanent brain damage can begin within 4 minutes."
+   ]
+  },
+  "es": {
+   "title": "Si Tu Corazón Se Detuviera, ¿En Cuántos Segundos Te Desmayarías?",
+   "summary": "Si tu corazón se detiene, te desmayas unos 8 segundos después del último latido, ¡y en menos de 30 segundos tus ondas cerebrales se aplanan! El profesor Pi explica por qué se te nubla la vista al levantarte rápido y por qué 4 minutos son vitales.",
+   "facts": [
+    "Según una revisión de investigadores del Centro Médico de la Universidad de Leiden publicada en Frontiers in Cardiovascular Medicine, la pérdida de conciencia comienza unos 8 segundos después del último latido.",
+    "Según Live Science, al levantarte rápido unos 300-800 ml de sangre se desplazan hacia las piernas; por un momento el cerebro no recibe suficiente sangre ni oxígeno y la vista se altera durante unos segundos.",
+    "Según Live Science, cuando se detiene el flujo de sangre al cerebro, la actividad eléctrica espontánea de su superficie desaparece en 10 a 30 segundos.",
+    "Según Live Science, si el flujo de sangre se detiene, el daño cerebral permanente puede comenzar en 4 minutos."
+   ]
+  },
+  "pt": {
+   "title": "Se Seu Coração Parasse, em Quantos Segundos Você Desmaiaria?",
+   "summary": "Se o seu coração parar, você desmaia cerca de 8 segundos depois do último batimento, e em menos de 30 segundos suas ondas cerebrais ficam planas! O professor Pi explica por que a vista escurece quando você levanta rápido e por que 4 minutos são vitais.",
+   "facts": [
+    "Segundo uma revisão de pesquisadores do Centro Médico da Universidade de Leiden publicada na Frontiers in Cardiovascular Medicine, a perda de consciência começa cerca de 8 segundos após o último batimento cardíaco.",
+    "Segundo a Live Science, ao levantar rápido cerca de 300-800 ml de sangue descem para as pernas; por um momento o cérebro não recebe sangue e oxigênio suficientes, e a visão fica prejudicada por alguns segundos.",
+    "Segundo a Live Science, quando o fluxo de sangue para o cérebro é interrompido, a atividade elétrica espontânea na superfície do cérebro desaparece em 10 a 30 segundos.",
+    "Segundo a Live Science, se o fluxo de sangue parar, danos cerebrais permanentes podem começar em 4 minutos."
+   ]
+  },
+  "ar": {
+   "title": "لو توقف قلبك، بعد كم ثانية ستفقد وعيك؟",
+   "summary": "لو توقف قلبك، تفقد وعيك بعد نحو 8 ثوانٍ من آخر نبضة، وخلال أقل من 30 ثانية تصبح موجات دماغك مسطحة! يشرح البروفيسور باي لماذا تظلم الرؤية عندما تقف بسرعة، ولماذا تعد 4 دقائق حاسمة.",
+   "facts": [
+    "وفقًا لمراجعة أجراها باحثون في المركز الطبي لجامعة لايدن ونُشرت في مجلة Frontiers in Cardiovascular Medicine، يبدأ فقدان الوعي بعد نحو 8 ثوانٍ من آخر نبضة قلب.",
+    "وفقًا لموقع Live Science، عند الوقوف بسرعة ينسحب نحو 300-800 مل من الدم إلى الساقين؛ فلا يحصل الدماغ للحظة على ما يكفي من الدم والأكسجين، وتضطرب الرؤية لبضع ثوانٍ.",
+    "وفقًا لموقع Live Science، عندما يتوقف تدفق الدم إلى الدماغ، يختفي النشاط الكهربائي التلقائي على سطح الدماغ خلال 10 إلى 30 ثانية.",
+    "وفقًا لموقع Live Science، إذا توقف تدفق الدم فقد يبدأ تلف دائم في الدماغ خلال 4 دقائق."
+   ]
+  },
+  "hi": {
+   "title": "अगर आपका दिल रुक जाए, तो कितने सेकंड में आप बेहोश हो जाएंगे?",
+   "summary": "अगर आपका दिल रुक जाए, तो आखिरी धड़कन के करीब 8 सेकंड बाद आप बेहोश हो जाएंगे, और 30 सेकंड के अंदर आपकी दिमागी तरंगें सपाट हो जाएंगी! प्रोफेसर पाई बताते हैं कि तेज़ी से खड़े होने पर आंखों के आगे अंधेरा क्यों छाता है और 4 मिनट इतने अहम क्यों हैं।",
+   "facts": [
+    "फ्रंटियर्स इन कार्डियोवैस्कुलर मेडिसिन में छपी लाइडन यूनिवर्सिटी मेडिकल सेंटर के शोधकर्ताओं की समीक्षा के अनुसार, आखिरी धड़कन के करीब 8 सेकंड बाद बेहोशी शुरू हो जाती है।",
+    "Live Science के अनुसार, तेज़ी से खड़े होने पर करीब 300-800 मिलीलीटर खून पैरों की ओर खिंच जाता है; एक पल के लिए दिमाग को पर्याप्त खून और ऑक्सीजन नहीं मिलती और कुछ सेकंड तक देखने में दिक्कत होती है।",
+    "Live Science के अनुसार, दिमाग तक खून का बहाव रुकने पर उसकी सतह की अपने-आप होने वाली विद्युत गतिविधि 10 से 30 सेकंड के भीतर गायब हो जाती है।",
+    "Live Science के अनुसार, अगर खून का बहाव रुक जाए, तो 4 मिनट के भीतर दिमाग को स्थायी नुकसान शुरू हो सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Jantungmu Berhenti, Berapa Detik Sampai Kamu Pingsan?",
+   "summary": "Jika jantungmu berhenti, kamu pingsan sekitar 8 detik setelah detak terakhir, dan dalam 30 detik gelombang otakmu menjadi datar! Profesor Pi menjelaskan kenapa pandanganmu gelap saat berdiri terlalu cepat dan kenapa 4 menit sangat menentukan.",
+   "facts": [
+    "Menurut tinjauan para peneliti Leiden University Medical Centre di jurnal Frontiers in Cardiovascular Medicine, kehilangan kesadaran dimulai sekitar 8 detik setelah detak jantung terakhir.",
+    "Menurut Live Science, saat berdiri dengan cepat sekitar 300-800 ml darah tertarik ke kaki; sesaat otak tidak mendapat cukup darah dan oksigen, dan penglihatan terganggu selama beberapa detik.",
+    "Menurut Live Science, begitu aliran darah ke otak berhenti, aktivitas listrik spontan di permukaan otak hilang dalam 10 hingga 30 detik.",
+    "Menurut Live Science, jika aliran darah berhenti, kerusakan otak permanen dapat dimulai dalam 4 menit."
+   ]
+  },
+  "fr": {
+   "title": "Si Ton Cœur S'arrêtait, en Combien de Secondes T'évanouirais-tu ?",
+   "summary": "Si ton cœur s'arrête, tu t'évanouis environ 8 secondes après le dernier battement, et en moins de 30 secondes tes ondes cérébrales deviennent plates ! Le professeur Pi explique pourquoi ta vue se brouille quand tu te lèves trop vite et pourquoi 4 minutes sont vitales.",
+   "facts": [
+    "Selon une revue de chercheurs du Centre médical universitaire de Leyde parue dans Frontiers in Cardiovascular Medicine, la perte de conscience commence environ 8 secondes après le dernier battement de cœur.",
+    "Selon Live Science, quand on se lève vite, environ 300 à 800 ml de sang descendent dans les jambes ; pendant un instant, le cerveau ne reçoit pas assez de sang ni d'oxygène et la vue se trouble quelques secondes.",
+    "Selon Live Science, une fois que le sang n'arrive plus au cerveau, l'activité électrique spontanée à sa surface disparaît en 10 à 30 secondes.",
+    "Selon Live Science, si la circulation sanguine s'arrête, des lésions cérébrales permanentes peuvent commencer en 4 minutes."
+   ]
+  },
+  "de": {
+   "title": "Wenn Dein Herz Stoppt: Nach Wie Vielen Sekunden Wirst Du Ohnmächtig?",
+   "summary": "Bleibt dein Herz stehen, wirst du etwa 8 Sekunden nach dem letzten Schlag ohnmächtig, und in weniger als 30 Sekunden werden deine Hirnströme flach! Professor Pi erklärt, warum dir beim schnellen Aufstehen schwarz vor Augen wird und warum 4 Minuten entscheidend sind.",
+   "facts": [
+    "Laut einer Übersichtsarbeit von Forschenden des Leiden University Medical Centre in Frontiers in Cardiovascular Medicine beginnt die Bewusstlosigkeit etwa 8 Sekunden nach dem letzten Herzschlag.",
+    "Laut Live Science sacken beim schnellen Aufstehen etwa 300-800 ml Blut in die Beine; für einen Moment bekommt das Gehirn nicht genug Blut und Sauerstoff, und das Sehen ist einige Sekunden gestört.",
+    "Laut Live Science verschwindet die spontane elektrische Aktivität an der Oberfläche des Gehirns innerhalb von 10 bis 30 Sekunden, sobald kein Blut mehr ins Gehirn fließt.",
+    "Laut Live Science können bleibende Hirnschäden innerhalb von 4 Minuten beginnen, wenn der Blutfluss stoppt."
+   ]
+  },
+  "ru": {
+   "title": "Если сердце остановится, через сколько секунд ты потеряешь сознание?",
+   "summary": "Если сердце остановится, ты потеряешь сознание примерно через 8 секунд после последнего удара, а меньше чем за 30 секунд волны мозга станут плоскими! Профессор Пи объясняет, почему темнеет в глазах, когда резко встаёшь, и почему 4 минуты так важны.",
+   "facts": [
+    "Согласно обзору исследователей Медицинского центра Лейденского университета в журнале Frontiers in Cardiovascular Medicine, потеря сознания начинается примерно через 8 секунд после последнего удара сердца.",
+    "По данным Live Science, когда резко встаёшь, около 300-800 мл крови оттекает к ногам; на мгновение мозг не получает достаточно крови и кислорода, и на несколько секунд нарушается зрение.",
+    "По данным Live Science, после остановки кровотока в мозге спонтанная электрическая активность на его поверхности исчезает за 10-30 секунд.",
+    "По данным Live Science, если кровоток останавливается, необратимое повреждение мозга может начаться в течение 4 минут."
+   ]
+  },
+  "az": {
+   "title": "Ürəyin Dayansa, Neçə Saniyəyə Huşunu İtirərsən?",
+   "summary": "Ürəyin dayansa, son döyüntüdən təxminən 8 saniyə sonra huşunu itirərsən, 30 saniyə keçmədən isə beyin dalğaların düzləşər! Professor Pi izah edir ki, cəld ayağa qalxanda gözlərin niyə qaralır və 4 dəqiqə niyə həyati önəm daşıyır.",
+   "facts": [
+    "Leyden Universiteti Tibb Mərkəzinin tədqiqatçılarının Frontiers in Cardiovascular Medicine jurnalındakı icmalına görə huşun itməsi son ürək döyüntüsündən təxminən 8 saniyə sonra başlayır.",
+    "Live Science-ə görə cəld ayağa qalxanda təxminən 300-800 ml qan ayaqlara çəkilir; bir anlıq beyin kifayət qədər qan və oksigen almır və bir neçə saniyəlik görmə pozulur.",
+    "Live Science-ə görə beynə qan axını dayandıqdan sonra beyin səthindəki öz-özünə yaranan elektrik fəallığı 10-30 saniyə ərzində yox olur.",
+    "Live Science-ə görə qan axını dayanarsa, beyində daimi zədə 4 dəqiqə ərzində başlaya bilər."
+   ]
+  }
+ }
+}

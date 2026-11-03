@@ -1,0 +1,279 @@
+{
+ "id": "y012",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'nın manyetik alanı kaybolsaydı ne olurdu?",
+ "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+ "bar": {
+  "hi": "MANYETİK ALAN",
+  "rest": "KAYBOLSA?"
+ },
+ "summary": "Dünya'nın manyetik alanı kaybolsaydı, Güneş rüzgârı soluduğun havayı yavaş yavaş uzaya süpürür, telefonundaki pusula şaşardı! Mars'ın havasını nasıl kaybettiğini ve 41.000 yıl önce alan zayıfladığında atalarımızın ne yapmış olabileceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Soluduğun havayı Güneş rüzgârı yavaş yavaş uzaya süpürürdü!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "l",
+      "at": "tl"
+     },
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "br"
+     }
+    ],
+    "do": "shake",
+    "target": 1,
+    "key": "süpürürdü",
+    "label": "Hava Kaçıyor"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Nefesimi Güneş mi çalacak?!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🫁",
+    "do": "shrink",
+    "key": "çalacak",
+    "label": "Nefesim Gidiyor"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kalkansız Mars, saniyede 100 gram havasını böyle kaybediyor.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "s",
+      "at": "tl"
+     },
+     {
+      "b": "mars",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 1,
+    "key": "100",
+    "label": "Saniyede 100 Gram"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Telefonundaki pusula da şaşardı!",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "🧭",
+     "label": "Bugün: Kuzey"
+    },
+    "right": {
+     "e": "😵‍💫",
+     "label": "Alansız: Şaşkın"
+    },
+    "key": "şaşardı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "41.000 yıl önce alan %10'a inince, atalarımız aşı boyasını güneş kremi yapmış olabilir!",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "🧲",
+    "value": "%10",
+    "label": "41.000 Yıl Önce",
+    "key": "%10"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Taş devrinde güneş kremi mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "🧴",
+    "do": "shake",
+    "key": "kremi",
+    "label": "Taş Devri Kremi"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen pusulasız yolunu bulur muydun? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🧭"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre manyetosfer, atmosferimizi Güneş rüzgârının aşındırmasından ve uzaydan gelen kozmik ışınlardan korur; Venüs ve Mars'ın böyle küresel bir manyetik kalkanı yoktur.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/science-research/earth-science/earths-magnetosphere-protecting-our-planet-from-harmful-space-energy/"
+  },
+  {
+   "text": "NASA'nın MAVEN aracının ölçümlerine göre Güneş rüzgârı Mars atmosferinden saniyede yaklaşık 100 gram gaz koparıyor; güneş fırtınalarında bu kayıp belirgin biçimde artıyor.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/news-release/nasa-mission-reveals-speed-of-solar-wind-stripping-martian-atmosphere"
+  },
+  {
+   "text": "NASA'ya göre manyetik alan pusulayla yön bulmanın temelidir; NOAA'ya göre akıllı telefon üreticileri pusula uygulamaları için Dünya Manyetik Modeli'ne dayanır.",
+   "source": "NASA / NOAA NCEI",
+   "url": "https://www.ncei.noaa.gov/news/world-magnetic-model-2025-released"
+  },
+  {
+   "text": "Smithsonian'a göre yaklaşık 41.000 yıl önceki Laschamps olayında manyetik alan bugünkünün yaklaşık %10'una inmiş, yere daha çok kozmik ışın ulaşmış; araştırmacılara göre insanlar aşı boyasını güneş kremi gibi kullanmış olabilir.",
+   "source": "Smithsonian Magazine (Michigan Üniversitesi araştırması)",
+   "url": "https://www.smithsonianmag.com/smart-news/sunscreen-clothing-and-caves-may-have-given-modern-humans-an-edge-over-neanderthals-when-earths-magnetic-field-wandered-180986462/"
+  }
+ ],
+ "tags": [
+  "manyetik alan",
+  "dünyanın manyetik alanı",
+  "manyetik alan kaybolsaydı",
+  "manyetosfer",
+  "güneş rüzgarı",
+  "pusula",
+  "mars atmosferi",
+  "laschamps",
+  "kutup ışıkları",
+  "earth magnetic field",
+  "what if earth lost its magnetic field",
+  "solar wind",
+  "magnetosphere",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#manyetikalan",
+  "#dünya",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/science-research/earth-science/earths-magnetosphere-protecting-our-planet-from-harmful-space-energy/",
+  "https://www.nasa.gov/news-release/nasa-mission-reveals-speed-of-solar-wind-stripping-martian-atmosphere",
+  "https://www.smithsonianmag.com/smart-news/sunscreen-clothing-and-caves-may-have-given-modern-humans-an-edge-over-neanderthals-when-earths-magnetic-field-wandered-180986462/",
+  "https://www.ncei.noaa.gov/news/world-magnetic-model-2025-released"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Earth's Magnetic Field Disappeared, What Would Happen to You?",
+   "summary": "If Earth's magnetic field disappeared, the solar wind would slowly sweep the air you breathe into space, and the compass in your phone would go haywire! Professor Pi explains how Mars lost its air and what our ancestors may have done when the field weakened 41,000 years ago.",
+   "facts": [
+    "According to NASA, the magnetosphere shields our atmosphere from erosion by the solar wind and from cosmic rays; Venus and Mars have no such global magnetic shield.",
+    "According to measurements by NASA's MAVEN spacecraft, the solar wind strips gas from Mars' atmosphere at about 100 grams per second, and the loss rises significantly during solar storms.",
+    "According to NASA, the magnetic field is the basis of navigation with a compass; according to NOAA, smartphone makers rely on the World Magnetic Model for compass apps.",
+    "According to Smithsonian, during the Laschamps excursion about 41,000 years ago the magnetic field fell to about 10% of today's strength and more cosmic radiation reached the ground; researchers suggest humans may have used ochre as sunscreen."
+   ]
+  },
+  "es": {
+   "title": "Si Desapareciera el Campo Magnético de la Tierra, ¿Qué Te Pasaría?",
+   "summary": "Si desapareciera el campo magnético de la Tierra, el viento solar barrería poco a poco al espacio el aire que respiras, ¡y la brújula de tu móvil se volvería loca! El profesor Pi explica cómo Marte perdió su aire y qué pudieron hacer nuestros antepasados cuando el campo se debilitó hace 41.000 años.",
+   "facts": [
+    "Según la NASA, la magnetosfera protege nuestra atmósfera de la erosión del viento solar y de los rayos cósmicos; Venus y Marte no tienen un escudo magnético global así.",
+    "Según las mediciones de la sonda MAVEN de la NASA, el viento solar arranca gas de la atmósfera de Marte a unos 100 gramos por segundo, y la pérdida aumenta mucho durante las tormentas solares.",
+    "Según la NASA, el campo magnético es la base de la orientación con brújula; según la NOAA, los fabricantes de teléfonos inteligentes usan el Modelo Magnético Mundial para sus aplicaciones de brújula.",
+    "Según Smithsonian, durante la excursión de Laschamps, hace unos 41.000 años, el campo magnético bajó a cerca del 10% de su fuerza actual y llegó más radiación cósmica al suelo; los investigadores sugieren que los humanos pudieron usar ocre como protector solar."
+   ]
+  },
+  "pt": {
+   "title": "Se o Campo Magnético da Terra Sumisse, o Que Aconteceria com Você?",
+   "summary": "Se o campo magnético da Terra sumisse, o vento solar varreria aos poucos para o espaço o ar que você respira, e a bússola do seu celular ficaria maluca! O professor Pi explica como Marte perdeu seu ar e o que nossos ancestrais podem ter feito quando o campo enfraqueceu há 41.000 anos.",
+   "facts": [
+    "Segundo a NASA, a magnetosfera protege nossa atmosfera da erosão causada pelo vento solar e dos raios cósmicos; Vênus e Marte não têm um escudo magnético global assim.",
+    "Segundo medições da sonda MAVEN da NASA, o vento solar arranca gás da atmosfera de Marte a cerca de 100 gramas por segundo, e a perda aumenta bastante durante tempestades solares.",
+    "Segundo a NASA, o campo magnético é a base da navegação com bússola; segundo a NOAA, os fabricantes de smartphones dependem do Modelo Magnético Mundial para os aplicativos de bússola.",
+    "Segundo a Smithsonian, durante a excursão de Laschamps, há cerca de 41.000 anos, o campo magnético caiu para cerca de 10% da força atual e mais radiação cósmica chegou ao solo; pesquisadores sugerem que os humanos podem ter usado ocre como protetor solar."
+   ]
+  },
+  "ar": {
+   "title": "لو اختفى المجال المغناطيسي للأرض، ماذا سيحدث لك؟",
+   "summary": "لو اختفى المجال المغناطيسي للأرض، لكنست الرياح الشمسية الهواء الذي تتنفسه ببطء نحو الفضاء، ولاضطربت البوصلة في هاتفك! يشرح البروفيسور باي كيف فقد المريخ هواءه، وماذا ربما فعل أسلافنا حين ضعف المجال قبل 41,000 عام.",
+   "facts": [
+    "وفقًا لناسا، يحمي الغلاف المغناطيسي غلافنا الجوي من تآكل الرياح الشمسية ومن الأشعة الكونية؛ وليس للزهرة والمريخ درع مغناطيسي شامل كهذا.",
+    "وفقًا لقياسات مسبار مافن التابع لناسا، تنتزع الرياح الشمسية الغاز من غلاف المريخ الجوي بمعدل نحو 100 غرام في الثانية، ويزداد هذا الفقد كثيرًا خلال العواصف الشمسية.",
+    "وفقًا لناسا، المجال المغناطيسي هو أساس الملاحة بالبوصلة؛ ووفقًا للإدارة الوطنية للمحيطات والغلاف الجوي (NOAA)، تعتمد شركات الهواتف الذكية على النموذج المغناطيسي العالمي في تطبيقات البوصلة.",
+    "وفقًا لمجلة سميثسونيان، خلال حدث لاشامب قبل نحو 41,000 عام انخفض المجال المغناطيسي إلى نحو 10% من قوته الحالية ووصل مزيد من الإشعاع الكوني إلى الأرض؛ ويرى باحثون أن البشر ربما استخدموا المغرة كواقٍ من الشمس."
+   ]
+  },
+  "hi": {
+   "title": "अगर धरती का चुंबकीय क्षेत्र गायब हो जाए, तो आपका क्या होगा?",
+   "summary": "अगर धरती का चुंबकीय क्षेत्र गायब हो जाए, तो सौर हवा आपकी सांस वाली हवा को धीरे-धीरे अंतरिक्ष में बहा ले जाएगी और आपके फोन का कंपास भटक जाएगा! प्रोफेसर पाई बताते हैं कि मंगल ने अपनी हवा कैसे खोई और 41,000 साल पहले यह क्षेत्र कमज़ोर होने पर हमारे पूर्वजों ने शायद क्या किया।",
+   "facts": [
+    "NASA के अनुसार, मैग्नेटोस्फीयर हमारे वायुमंडल को सौर हवा से होने वाले क्षरण और ब्रह्मांडीय किरणों से बचाता है; शुक्र और मंगल के पास ऐसा वैश्विक चुंबकीय कवच नहीं है।",
+    "NASA के MAVEN यान के मापों के अनुसार, सौर हवा मंगल के वायुमंडल से हर सेकंड लगभग 100 ग्राम गैस उड़ा ले जाती है, और सौर तूफानों के दौरान यह नुकसान काफी बढ़ जाता है।",
+    "NASA के अनुसार, चुंबकीय क्षेत्र कंपास से दिशा पहचानने का आधार है; NOAA के अनुसार, स्मार्टफोन कंपनियां कंपास ऐप के लिए वर्ल्ड मैग्नेटिक मॉडल पर निर्भर करती हैं।",
+    "स्मिथसोनियन के अनुसार, करीब 41,000 साल पहले लाशैम्प्स घटना के दौरान चुंबकीय क्षेत्र आज की ताकत के लगभग 10% तक गिर गया और ज़मीन तक ज़्यादा ब्रह्मांडीय विकिरण पहुंचा; शोधकर्ताओं के अनुसार इंसानों ने शायद गेरू को सनस्क्रीन की तरह इस्तेमाल किया।"
+   ]
+  },
+  "id": {
+   "title": "Jika Medan Magnet Bumi Hilang, Apa yang Terjadi Padamu?",
+   "summary": "Jika medan magnet Bumi hilang, angin matahari akan perlahan menyapu udara yang kamu hirup ke luar angkasa, dan kompas di ponselmu akan kacau! Profesor Pi menjelaskan bagaimana Mars kehilangan udaranya dan apa yang mungkin dilakukan nenek moyang kita saat medan itu melemah 41.000 tahun lalu.",
+   "facts": [
+    "Menurut NASA, magnetosfer melindungi atmosfer kita dari pengikisan oleh angin matahari dan dari sinar kosmik; Venus dan Mars tidak punya perisai magnet global seperti itu.",
+    "Menurut pengukuran wahana MAVEN milik NASA, angin matahari mengikis gas dari atmosfer Mars sekitar 100 gram per detik, dan kehilangan ini meningkat tajam saat badai matahari.",
+    "Menurut NASA, medan magnet adalah dasar navigasi dengan kompas; menurut NOAA, produsen ponsel pintar mengandalkan Model Magnetik Dunia untuk aplikasi kompas.",
+    "Menurut Smithsonian, saat ekskursi Laschamps sekitar 41.000 tahun lalu, medan magnet turun hingga sekitar 10% dari kekuatannya sekarang dan lebih banyak radiasi kosmik mencapai permukaan; para peneliti menduga manusia mungkin memakai oker sebagai tabir surya."
+   ]
+  },
+  "fr": {
+   "title": "Si la Terre Perdait Son Champ Magnétique, Que T'arriverait-il ?",
+   "summary": "Si le champ magnétique terrestre disparaissait, le vent solaire balaierait peu à peu dans l'espace l'air que tu respires, et la boussole de ton téléphone s'affolerait ! Le professeur Pi explique comment Mars a perdu son air et ce que nos ancêtres ont peut-être fait quand le champ s'est affaibli il y a 41 000 ans.",
+   "facts": [
+    "Selon la NASA, la magnétosphère protège notre atmosphère de l'érosion par le vent solaire et des rayons cosmiques ; Vénus et Mars n'ont pas de tel bouclier magnétique global.",
+    "Selon les mesures de la sonde MAVEN de la NASA, le vent solaire arrache du gaz à l'atmosphère de Mars au rythme d'environ 100 grammes par seconde, et cette perte augmente nettement pendant les tempêtes solaires.",
+    "Selon la NASA, le champ magnétique est la base de l'orientation à la boussole ; selon la NOAA, les fabricants de smartphones s'appuient sur le Modèle magnétique mondial pour les applications de boussole.",
+    "Selon Smithsonian, lors de l'excursion de Laschamp, il y a environ 41 000 ans, le champ magnétique est tombé à environ 10 % de sa force actuelle et davantage de rayonnement cosmique a atteint le sol ; des chercheurs suggèrent que les humains ont peut-être utilisé l'ocre comme crème solaire."
+   ]
+  },
+  "de": {
+   "title": "Wenn das Erdmagnetfeld Verschwände, Was Würde Dir Passieren?",
+   "summary": "Würde das Magnetfeld der Erde verschwinden, fegte der Sonnenwind die Luft, die du atmest, langsam ins All, und der Kompass in deinem Handy spielte verrückt! Professor Pi erklärt, wie der Mars seine Luft verlor und was unsere Vorfahren vielleicht taten, als das Feld vor 41.000 Jahren schwächer wurde.",
+   "facts": [
+    "Laut NASA schützt die Magnetosphäre unsere Atmosphäre vor der Abtragung durch den Sonnenwind und vor kosmischer Strahlung; Venus und Mars haben keinen solchen globalen Magnetschild.",
+    "Laut Messungen der NASA-Sonde MAVEN reißt der Sonnenwind etwa 100 Gramm Gas pro Sekunde aus der Marsatmosphäre, und bei Sonnenstürmen steigt der Verlust deutlich an.",
+    "Laut NASA ist das Magnetfeld die Grundlage der Navigation mit dem Kompass; laut NOAA stützen sich Smartphone-Hersteller bei Kompass-Apps auf das World Magnetic Model.",
+    "Laut Smithsonian sank das Magnetfeld während des Laschamp-Ereignisses vor etwa 41.000 Jahren auf etwa 10 % seiner heutigen Stärke, und mehr kosmische Strahlung erreichte den Boden; Forschende vermuten, dass Menschen Ocker möglicherweise als Sonnenschutz nutzten."
+   ]
+  },
+  "ru": {
+   "title": "Если бы магнитное поле Земли исчезло, что стало бы с тобой?",
+   "summary": "Если бы магнитное поле Земли исчезло, солнечный ветер постепенно сдувал бы в космос воздух, которым ты дышишь, а компас в твоём телефоне сошёл бы с ума! Профессор Пи объясняет, как Марс потерял свой воздух и что, возможно, делали наши предки, когда поле ослабло 41 000 лет назад.",
+   "facts": [
+    "По данным NASA, магнитосфера защищает нашу атмосферу от разрушения солнечным ветром и от космических лучей; у Венеры и Марса такого глобального магнитного щита нет.",
+    "По измерениям аппарата NASA MAVEN, солнечный ветер срывает с атмосферы Марса около 100 граммов газа в секунду, а во время солнечных бурь потери заметно растут.",
+    "По данным NASA, магнитное поле лежит в основе навигации по компасу; по данным NOAA, производители смартфонов используют Всемирную магнитную модель для приложений-компасов.",
+    "По данным Smithsonian, во время экскурса Лашамп около 41 000 лет назад магнитное поле ослабло примерно до 10% от нынешней силы, и до поверхности доходило больше космического излучения; исследователи предполагают, что люди могли использовать охру как солнцезащитное средство."
+   ]
+  },
+  "az": {
+   "title": "Yerin Maqnit Sahəsi Yox Olsaydı, Sənə Nə Olardı?",
+   "summary": "Yerin maqnit sahəsi yox olsaydı, Günəş küləyi nəfəs aldığın havanı yavaş-yavaş kosmosa süpürər, telefonundakı kompas çaşardı! Professor Pi izah edir ki, Mars havasını necə itirib və 41.000 il əvvəl sahə zəiflədikdə əcdadlarımız nə etmiş ola bilər.",
+   "facts": [
+    "NASA-ya görə maqnitosfer atmosferimizi Günəş küləyinin aşındırmasından və kosmik şüalardan qoruyur; Venera və Marsın belə qlobal maqnit qalxanı yoxdur.",
+    "NASA-nın MAVEN aparatının ölçmələrinə görə Günəş küləyi Mars atmosferindən saniyədə təxminən 100 qram qaz qoparır, Günəş fırtınaları zamanı isə bu itki xeyli artır.",
+    "NASA-ya görə maqnit sahəsi kompasla istiqamət tapmağın əsasıdır; NOAA-ya görə smartfon istehsalçıları kompas tətbiqləri üçün Dünya Maqnit Modelinə əsaslanır.",
+    "Smithsonian-a görə təxminən 41.000 il əvvəlki Laşamp hadisəsində maqnit sahəsi bugünkü gücünün təxminən 10%-nə enib və yerə daha çox kosmik şüalanma çatıb; tədqiqatçılara görə insanlar oxranı günəşdən qoruyucu krem kimi istifadə etmiş ola bilər."
+   ]
+  }
+ }
+}
