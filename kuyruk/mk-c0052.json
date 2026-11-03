@@ -1,0 +1,189 @@
+{
+ "id": "mk-c0052",
+ "topic": "Filler zıplayabilir mi, fil neden zıplayamaz?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "elephant"
+ ],
+ "stock_hint": "elephant running",
+ "script": {
+  "title": "Tonlarca ağırlıktaki fil zıplayabilir mi? 🐘",
+  "hook_text": "FİL ZIPLAYABİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu fil saatte yirmi beş kilometreye kadar hızlanabiliyor.",
+    "visual": "an elephant running fast across a dusty savanna",
+    "stock_query": "elephant running",
+    "source": "stock",
+    "callout": "25 KM/SAAT"
+   },
+   {
+    "text": "Peki bu dev hiç zıplayabilir mi?",
+    "visual": "low angle shot of a huge elephant walking toward the camera",
+    "stock_query": "elephant walking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Mesele sadece ağırlık değil; kocaman gergedan bile koşarken dört ayağını birden yerden kesebiliyor.",
+    "visual": "a rhinoceros running across grassland",
+    "stock_query": "rhino running",
+    "source": "stock",
+    "callout": "GERGEDAN HAVALANIR",
+    "subject": [
+     "rhino",
+     "rhinoceros"
+    ]
+   },
+   {
+    "text": "Fil ise zıplayamaz; en hızlı anında bile bir ayağı hep yerdedir.",
+    "visual": "close-up of an elephant's feet stepping on dry ground",
+    "stock_query": "elephant feet",
+    "source": "stock",
+    "callout": "BİR AYAK HEP YERDE"
+   },
+   {
+    "text": "Muhtemel sebep: bilekleri pek esnemez, baldır kasları da zayıftır.",
+    "visual": "close-up of an elephant's thick legs as it walks slowly",
+    "stock_query": "elephant legs",
+    "source": "stock",
+    "callout": "ESNEMEYEN BİLEK"
+   },
+   {
+    "text": "Bir kez bile zıplayamasa da...",
+    "visual": "an elephant herd walking across the savanna at sunset",
+    "stock_query": "elephant herd",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Filler saatte yirmi beş kilometreye kadar hızlanabilir ama zıplayamaz: en hızlı anlarında bile bir ayakları hep yerdedir. Kocaman gergedan ise koşarken dört ayağını birden yerden kesebilir. Bir biyomekanik uzmanına göre muhtemel sebep, filin pek esnemeyen bilekleri ve zayıf baldır kasları.",
+  "tags": [
+   "fil",
+   "filler",
+   "fil zıplayabilir mi",
+   "fil neden zıplayamaz",
+   "gergedan",
+   "asya fili",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: filin hiç zıplayamaması mı, gergedanın havalanması mı?",
+  "en_title": "Can a multi-ton elephant jump? 🐘",
+  "en_description": "Elephants can reach about 25 km/h, yet even at top speed they always keep at least one foot on the ground. A rhino, by contrast, can get all four feet off the ground while running. The likely reason elephants can't jump: stiff ankles and weak lower-leg muscles.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Filler zıplayabilir mi, fil neden zıplayamaz?\n\nFiller saatte yaklaşık yirmi beş kilometreye kadar hızlanabilir. Ama Tayland'da kırk iki Asya filiyle yapılan ölçümlerde filler en hızlı anlarında bile her zaman en az bir ayağını yerde tuttu; kocaman gergedan ise koşarken dört ayağını birden yerden kesebiliyor. Biyomekanik uzmanı John Hutchinson'a göre muhtemel sebep, filin pek esnemeyen bilekleri ve zayıf baldır kasları.\n\nSence hangisi daha şaşırtıcı: filin hiç zıplayamaması mı, gergedanın havalanması mı?",
+  "hashtags": [
+   "#fil",
+   "#filler",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "fil",
+   "filler",
+   "fil zıplayabilir mi",
+   "filler zıplayabilir mi",
+   "fil neden zıplayamaz",
+   "fil zıplar mı",
+   "fil ne kadar hızlı koşar",
+   "fil hızı",
+   "filler koşabilir mi",
+   "gergedan",
+   "gergedan koşarken",
+   "asya fili",
+   "afrika fili",
+   "zıplayamayan hayvanlar",
+   "hayvan biyomekaniği",
+   "vahşi yaşam",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "can elephants jump",
+   "elephant facts"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a multi-ton elephant jump? 🐘",
+    "description": "Elephants can reach about 25 km/h, yet even at top speed they always keep at least one foot on the ground. A rhino, by contrast, can get all four feet off the ground while running. The likely reason: stiff ankles and weak lower-leg muscles."
+   },
+   "es": {
+    "title": "¿Puede saltar un elefante de varias toneladas? 🐘",
+    "description": "Los elefantes pueden alcanzar unos 25 km/h, pero incluso a toda velocidad siempre mantienen al menos una pata en el suelo. El rinoceronte, en cambio, sí despega las cuatro patas al correr. La explicación más probable: tobillos poco flexibles y músculos débiles en la parte baja de las patas."
+   },
+   "pt": {
+    "title": "Um elefante de várias toneladas consegue pular? 🐘",
+    "description": "Elefantes chegam a uns 25 km/h, mas mesmo na velocidade máxima mantêm sempre pelo menos uma pata no chão. Já o rinoceronte consegue tirar as quatro patas do chão ao correr. A explicação mais provável: tornozelos pouco flexíveis e músculos fracos na parte de baixo das pernas."
+   },
+   "de": {
+    "title": "Kann ein tonnenschwerer Elefant springen? 🐘",
+    "description": "Elefanten schaffen rund 25 km/h, doch selbst bei Höchsttempo bleibt immer mindestens ein Fuß am Boden. Ein Nashorn dagegen hebt beim Rennen mit allen vier Füßen gleichzeitig ab. Der wahrscheinliche Grund: steife Fußgelenke und schwache Unterschenkelmuskeln."
+   },
+   "fr": {
+    "title": "Un éléphant de plusieurs tonnes peut-il sauter ? 🐘",
+    "description": "Les éléphants peuvent atteindre environ 25 km/h, mais même à pleine vitesse, ils gardent toujours au moins une patte au sol. Le rhinocéros, lui, décolle des quatre pattes en courant. L'explication la plus probable : des chevilles peu souples et des muscles du bas des pattes très faibles."
+   },
+   "it": {
+    "title": "Un elefante di diverse tonnellate può saltare? 🐘",
+    "description": "Gli elefanti arrivano a circa 25 km/h, ma anche alla massima velocità tengono sempre almeno una zampa a terra. Il rinoceronte invece, correndo, stacca da terra tutte e quattro le zampe. Il motivo più probabile: caviglie poco flessibili e muscoli deboli nella parte bassa delle zampe."
+   },
+   "ru": {
+    "title": "Может ли многотонный слон прыгнуть? 🐘",
+    "description": "Слоны разгоняются примерно до 25 км/ч, но даже на максимальной скорости хотя бы одна нога у них всегда остаётся на земле. А вот носорог на бегу может оторвать от земли все четыре ноги. Вероятная причина — негибкие голеностопы и слабые мышцы голени."
+   },
+   "ar": {
+    "title": "هل يستطيع فيل يزن عدة أطنان أن يقفز؟ 🐘",
+    "description": "يمكن للفيلة أن تصل إلى نحو 25 كم في الساعة، لكنها حتى في أقصى سرعتها تُبقي قدمًا واحدة على الأقل على الأرض. أما وحيد القرن فيرفع أقدامه الأربع عن الأرض أثناء الركض. والسبب المرجّح: كواحل قليلة المرونة وعضلات ضعيفة في أسفل الساقين."
+   },
+   "hi": {
+    "title": "क्या कई टन वज़नी हाथी कूद सकता है? 🐘",
+    "description": "हाथी लगभग 25 किमी प्रति घंटे तक की रफ़्तार पकड़ सकते हैं, फिर भी सबसे तेज़ दौड़ते समय भी उनका कम से कम एक पैर ज़मीन पर रहता है। वहीं गैंडा दौड़ते हुए चारों पैर एक साथ ज़मीन से उठा सकता है। संभावित वजह: हाथी के टखने ज़्यादा लचीले नहीं होते और पिंडली की मांसपेशियाँ कमज़ोर होती हैं।"
+   },
+   "id": {
+    "title": "Bisakah gajah yang beratnya berton-ton melompat? 🐘",
+    "description": "Gajah bisa melaju sampai sekitar 25 km/jam, tetapi bahkan saat paling cepat, setidaknya satu kakinya selalu menapak tanah. Badak justru bisa mengangkat keempat kakinya sekaligus saat berlari. Penyebab yang paling mungkin: pergelangan kaki gajah kaku dan otot betisnya lemah."
+   },
+   "ja": {
+    "title": "何トンもあるゾウはジャンプできる? 🐘",
+    "description": "ゾウは時速約25キロまで出せますが、いちばん速いときでも少なくとも1本の足は必ず地面についています。一方、サイは走るときに4本の足すべてが地面から離れることがあります。考えられる理由は、足首が硬く、ふくらはぎの筋肉が弱いことです。"
+   },
+   "ko": {
+    "title": "몇 톤짜리 코끼리도 점프할 수 있을까? 🐘",
+    "description": "코끼리는 시속 약 25km까지 달릴 수 있지만, 가장 빠를 때도 적어도 한 발은 늘 땅에 닿아 있습니다. 반면 코뿔소는 달릴 때 네 발이 모두 땅에서 떨어지기도 합니다. 가장 유력한 이유는 잘 굽혀지지 않는 발목과 약한 종아리 근육입니다."
+   },
+   "pl": {
+    "title": "Czy ważący kilka ton słoń potrafi skoczyć? 🐘",
+    "description": "Słonie rozpędzają się do około 25 km/h, ale nawet przy najwyższej prędkości zawsze mają co najmniej jedną nogę na ziemi. Nosorożec natomiast w biegu potrafi oderwać od ziemi wszystkie cztery nogi. Najbardziej prawdopodobny powód: mało elastyczne stawy skokowe i słabe mięśnie łydek."
+   },
+   "nl": {
+    "title": "Kan een olifant van een paar ton springen? 🐘",
+    "description": "Olifanten halen zo'n 25 km/u, maar zelfs op topsnelheid staat er altijd minstens één voet op de grond. Een neushoorn komt bij het rennen wel met alle vier de poten tegelijk los. De waarschijnlijke reden: stijve enkels en zwakke kuitspieren."
+   },
+   "uk": {
+    "title": "Чи може багатотонний слон стрибнути? 🐘",
+    "description": "Слони розганяються приблизно до 25 км/год, але навіть на найвищій швидкості щонайменше одна нога в них завжди на землі. А от носоріг на бігу може відірвати від землі всі чотири ноги. Імовірна причина — негнучкі гомілковостопні суглоби й слабкі литкові м'язи."
+   },
+   "vi": {
+    "title": "Con voi nặng nhiều tấn có nhảy được không? 🐘",
+    "description": "Voi có thể chạy tới khoảng 25 km/h, nhưng ngay cả khi nhanh nhất, chúng vẫn luôn giữ ít nhất một chân chạm đất. Trong khi đó, tê giác có thể nhấc cả bốn chân khỏi mặt đất khi chạy. Lý do nhiều khả năng nhất: cổ chân voi kém linh hoạt và cơ bắp chân khá yếu."
+   },
+   "az": {
+    "title": "Çəkisi tonlarla olan fil tullana bilərmi? 🐘",
+    "description": "Fillər saatda təxminən 25 kilometrə qədər sürətlənə bilir, amma ən sürətli anlarında belə ən azı bir ayaqları həmişə yerdə qalır. Kərgədan isə qaçarkən dörd ayağını birdən yerdən üzə bilir. Ehtimal olunan səbəb: filin topuqları az elastikdir, baldır əzələləri də zəifdir."
+   },
+   "ro": {
+    "title": "Poate sări un elefant de câteva tone? 🐘",
+    "description": "Elefanții pot ajunge la aproximativ 25 km/h, dar chiar și la viteză maximă păstrează mereu cel puțin un picior pe pământ. Rinocerul, în schimb, își poate desprinde de la sol toate cele patru picioare când aleargă. Motivul probabil: glezne puțin flexibile și mușchi slabi ai gambelor."
+   }
+  }
+ }
+}

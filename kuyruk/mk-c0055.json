@@ -1,0 +1,191 @@
+{
+ "id": "mk-c0055",
+ "topic": "Gözü açık hapşırmak mümkün mü, hapşırırken gözünü açarsan gözün yerinden fırlar mı?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "sneeze",
+  "sneezing"
+ ],
+ "stock_hint": "woman sneezing tissue",
+ "script": {
+  "title": "Gözü açık hapşırmak mümkün mü? 🤧",
+  "hook_text": "GÖZÜ AÇIK HAPŞIRILIR MI?",
+  "scenes": [
+   {
+    "text": "Hapşırırken gözlerin, sen emir vermeden kapanır.",
+    "visual": "a woman sneezing into a tissue with her eyes squeezed shut",
+    "stock_query": "woman sneezing",
+    "source": "stock",
+    "callout": "İSTEMSİZ KAPANIR"
+   },
+   {
+    "text": "Peki açık tutarsan gözün yerinden fırlar mı?",
+    "visual": "extreme close-up of a wide open human eye",
+    "stock_query": "eye closeup",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Gözler basınçtan değil, beyin sapından gelen bir emirle kapanır.",
+    "visual": "a man sneezing in slow motion, eyes closing",
+    "stock_query": "man sneezing",
+    "source": "stock",
+    "callout": "BEYİN SAPI EMRİ"
+   },
+   {
+    "text": "Göz de fırlamaz; bir alerji uzmanına göre bu, kanıtı olmayan eski bir efsane.",
+    "visual": "close-up of a human eye blinking",
+    "stock_query": "eye blinking",
+    "source": "stock",
+    "callout": "GÖZ FIRLAMAZ",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Gözü açık hapşırmak da mümkün; bu refleks zorunlu değil.",
+    "visual": "a young man sneezing outdoors in spring",
+    "stock_query": "sneezing allergy",
+    "source": "stock",
+    "callout": "AÇIK GÖZLE MÜMKÜN"
+   },
+   {
+    "text": "Bir dahaki hapşırıkta açık tutmayı dene; kolay değil, çünkü...",
+    "visual": "a person holding a tissue to the nose, about to sneeze",
+    "stock_query": "sneeze tissue",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Hapşırırken gözlerimiz kendiliğinden kapanır, çünkü bu kapanmayı beyin sapındaki hapşırık merkezi yönetir. Bir alerji uzmanına göre gözü açık hapşırmak zor ama mümkündür ve hapşırık yüzünden gözün yerinden fırlaması kanıtı olmayan eski bir efsanedir.",
+  "tags": [
+   "hapşırık",
+   "hapşırmak",
+   "gözü açık hapşırmak",
+   "hapşırırken göz fırlar mı",
+   "hapşırık refleksi",
+   "beyin sapı",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen hiç gözün açıkken hapşırabildin mi: evet mi, hayır mı?",
+  "en_title": "Can you sneeze with your eyes open? 🤧",
+  "en_description": "Your eyelids shut during a sneeze on orders from the sneeze center in your brainstem, not because of air pressure. According to allergist David Huston, keeping your eyes open is hard but possible, and the idea that your eyeballs could pop out is an old myth with no evidence.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Gözü açık hapşırmak mümkün mü, hapşırırken gözünü açarsan gözün yerinden fırlar mı?\n\nHapşırık bir reflekstir: beyin sapındaki hapşırık merkezi yemek borusundan göz kapaklarına kadar pek çok kasa kasılma emri verir, gözlerin kapanması da bunun parçasıdır. Texas A&M Üniversitesi'nden alerji uzmanı David Huston'a göre gözü açık hapşırmak zor ama mümkündür; hapşırığın basıncının gözü yerinden çıkarması ise son derece düşük bir ihtimaldir ve bu iddiayı destekleyen kanıt yok denecek kadar azdır. Gözlerin neden kapandığı kesin bilinmiyor; muhtemelen gözü saçılan taneciklerden korur.\n\nSen hiç gözün açıkken hapşırabildin mi: evet mi, hayır mı?",
+  "hashtags": [
+   "#hapşırık",
+   "#göz",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "hapşırık",
+   "hapşırmak",
+   "gözü açık hapşırmak",
+   "gözü açık hapşırılır mı",
+   "hapşırırken göz fırlar mı",
+   "hapşırırken göz neden kapanır",
+   "hapşırık refleksi",
+   "hapşırık merkezi",
+   "beyin sapı",
+   "göz kapağı",
+   "refleks",
+   "göz",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "efsane mi gerçek mi",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "sağlık",
+   "sneeze eyes open",
+   "sneezing reflex"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can you sneeze with your eyes open? 🤧",
+    "description": "Your eyelids shut during a sneeze on orders from the sneeze center in your brainstem, not because of air pressure. According to allergist David Huston, keeping your eyes open is hard but possible, and the idea that your eyeballs could pop out is an old myth with no evidence."
+   },
+   "es": {
+    "title": "¿Se puede estornudar con los ojos abiertos? 🤧",
+    "description": "Al estornudar, los párpados se cierran por orden del centro del estornudo en el tronco encefálico, no por la presión del aire. Según el alergólogo David Huston, mantener los ojos abiertos es difícil pero posible, y lo de que los ojos se salgan es un mito sin pruebas."
+   },
+   "pt": {
+    "title": "Dá para espirrar de olhos abertos? 🤧",
+    "description": "Quando você espirra, as pálpebras se fecham por ordem do centro do espirro no tronco encefálico, e não pela pressão do ar. Segundo o alergista David Huston, manter os olhos abertos é difícil, mas possível, e a ideia de que os olhos saltariam para fora é um mito sem provas."
+   },
+   "de": {
+    "title": "Kann man mit offenen Augen niesen? 🤧",
+    "description": "Beim Niesen schließen sich die Lider auf Befehl des Nieszentrums im Hirnstamm, nicht wegen des Luftdrucks. Laut dem Allergologen David Huston ist Niesen mit offenen Augen schwierig, aber möglich, und dass dabei die Augen herausspringen, ist ein Mythos ohne Belege."
+   },
+   "fr": {
+    "title": "Peut-on éternuer les yeux ouverts ? 🤧",
+    "description": "Quand on éternue, les paupières se ferment sur ordre du centre de l'éternuement, dans le tronc cérébral, et non à cause de la pression de l'air. Selon l'allergologue David Huston, garder les yeux ouverts est difficile mais possible, et l'idée que les yeux puissent sortir de leurs orbites est un mythe sans preuve."
+   },
+   "it": {
+    "title": "Si può starnutire con gli occhi aperti? 🤧",
+    "description": "Quando starnutisci, le palpebre si chiudono su comando del centro dello starnuto nel tronco encefalico, non per la pressione dell'aria. Secondo l'allergologo David Huston, tenere gli occhi aperti è difficile ma possibile, e l'idea che gli occhi possano schizzare fuori è un mito senza prove."
+   },
+   "ru": {
+    "title": "Можно ли чихнуть с открытыми глазами? 🤧",
+    "description": "Когда мы чихаем, веки закрываются по команде центра чихания в стволе мозга, а не из-за давления воздуха. По словам аллерголога Дэвида Хьюстона, чихнуть с открытыми глазами трудно, но возможно, а страшилка о выскакивающих глазах — миф без доказательств."
+   },
+   "ar": {
+    "title": "هل يمكن أن تعطس وعيناك مفتوحتان؟ 🤧",
+    "description": "عند العطس تُغلق الجفون بأمر من مركز العطس في جذع الدماغ، لا بسبب ضغط الهواء. ووفقًا لطبيب الحساسية ديفيد هيوستن، فإن إبقاء العينين مفتوحتين صعب لكنه ممكن، أما خروج العين من مكانها فخرافة لا دليل عليها."
+   },
+   "hi": {
+    "title": "क्या आँखें खोलकर छींका जा सकता है? 🤧",
+    "description": "छींकते समय पलकें हवा के दबाव से नहीं, बल्कि ब्रेनस्टेम में मौजूद छींक केंद्र के आदेश से बंद होती हैं। एलर्जी विशेषज्ञ डेविड ह्यूस्टन के मुताबिक आँखें खुली रखकर छींकना मुश्किल है, पर मुमकिन है, और आँखें बाहर निकल आने वाली बात एक बेबुनियाद मिथक है।"
+   },
+   "id": {
+    "title": "Bisakah bersin dengan mata terbuka? 🤧",
+    "description": "Saat bersin, kelopak mata menutup karena perintah dari pusat bersin di batang otak, bukan karena tekanan udara. Menurut ahli alergi David Huston, bersin dengan mata terbuka memang sulit tetapi mungkin, dan anggapan bahwa bola mata bisa copot hanyalah mitos tanpa bukti."
+   },
+   "ja": {
+    "title": "目を開けたままくしゃみはできる? 🤧",
+    "description": "くしゃみのときにまぶたが閉じるのは、空気の圧力のせいではなく、脳幹にあるくしゃみ中枢の命令によるものです。アレルギー専門医のデビッド・ヒューストン氏によると、目を開けたままくしゃみをするのは難しいものの可能で、目玉が飛び出すという話は根拠のない俗説です。"
+   },
+   "ko": {
+    "title": "눈을 뜬 채로 재채기할 수 있을까? 🤧",
+    "description": "재채기할 때 눈꺼풀이 감기는 것은 공기 압력 때문이 아니라 뇌간에 있는 재채기 중추의 명령 때문입니다. 알레르기 전문의 데이비드 휴스턴에 따르면 눈을 뜨고 재채기하기는 어렵지만 가능하며, 눈알이 튀어나온다는 말은 근거 없는 속설입니다."
+   },
+   "pl": {
+    "title": "Czy można kichnąć z otwartymi oczami? 🤧",
+    "description": "Podczas kichania powieki zamykają się na polecenie ośrodka kichania w pniu mózgu, a nie przez ciśnienie powietrza. Według alergologa Davida Hustona kichnięcie z otwartymi oczami jest trudne, ale możliwe, a opowieści o wyskakujących oczach to mit bez dowodów."
+   },
+   "nl": {
+    "title": "Kun je niezen met je ogen open? 🤧",
+    "description": "Bij een nies gaan je oogleden dicht op bevel van het niescentrum in je hersenstam, niet door de luchtdruk. Volgens allergoloog David Huston is niezen met open ogen lastig maar mogelijk, en dat je ogen eruit zouden springen is een fabel zonder bewijs."
+   },
+   "uk": {
+    "title": "Чи можна чхнути з розплющеними очима? 🤧",
+    "description": "Коли ми чхаємо, повіки заплющуються за командою центру чхання в стовбурі мозку, а не через тиск повітря. За словами алерголога Девіда Г'юстона, чхнути з розплющеними очима важко, але можливо, а страшилка про очі, що вискакують, — міф без доказів."
+   },
+   "vi": {
+    "title": "Có thể hắt hơi khi đang mở mắt không? 🤧",
+    "description": "Khi hắt hơi, mí mắt nhắm lại theo lệnh của trung tâm hắt hơi ở thân não chứ không phải do áp lực không khí. Theo bác sĩ dị ứng David Huston, hắt hơi khi mở mắt tuy khó nhưng vẫn làm được, còn chuyện mắt bị bật ra ngoài chỉ là lời đồn không có bằng chứng."
+   },
+   "az": {
+    "title": "Gözlər açıq halda asqırmaq mümkündürmü? 🤧",
+    "description": "Asqıranda göz qapaqları hava təzyiqinə görə yox, beyin sütunundakı asqırma mərkəzinin əmri ilə bağlanır. Allerqoloq David Hyustonun sözlərinə görə, gözlər açıq halda asqırmaq çətindir, amma mümkündür, gözün yerindən çıxması isə heç bir sübutu olmayan köhnə bir əfsanədir."
+   },
+   "ro": {
+    "title": "Poți strănuta cu ochii deschiși? 🤧",
+    "description": "Când strănuți, pleoapele se închid la comanda centrului strănutului din trunchiul cerebral, nu din cauza presiunii aerului. Potrivit alergologului David Huston, să strănuți cu ochii deschiși e greu, dar posibil, iar ideea că ochii ar putea sări din orbite e un mit fără dovezi."
+   }
+  }
+ }
+}
