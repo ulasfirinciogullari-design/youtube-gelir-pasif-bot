@@ -1,32 +1,24 @@
 {
- "started": "2026-11-01T21:01:28+00:00",
+ "started": "2026-11-03T11:19:15+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 25,
+ "threads": 26,
  "quiet": 0,
- "new": 2,
+ "new": 1,
  "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgzyJaYToneXnOzA4_B4AaABAg",
-   "video": "fwDsy2Wq4S4",
-   "comment": "Peki yuvarlak yıldırım nasıl oluşuyor?? 🥇⚡☠️💀Tahmini?",
-   "reply": "Top yıldırım veya küresel şimşek, nadir görülen ve doğası tam olarak çözülememiş bir plazma olgusudur.\n— Profesör Pi 🔭",
-   "result": "gönderildi"
-  },
-  {
-   "id": "UgwJddPnVZxYmlNDz4N4AaABAg.AcJGXeIrbofAcL-1at4Fn4",
-   "video": "gEB2tRsHr5s",
-   "comment": "Teşekkür ederimm ❤",
-   "cevaba_cevap": true,
-   "reply": "Rica ederim, bilim dolu günlerr! 🚀\n— Bit 🤖",
+   "id": "UgxQnwxVd7_3_j30Pn94AaABAg",
+   "video": "E9dsm0cEDnM",
+   "comment": "İlk",
+   "reply": "İlk yorum madalyasını kaptın, tebrikler! 🏅\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-01T21:01:35+00:00"
+ "finished": "2026-11-03T11:19:18+00:00"
 }

@@ -150,6 +150,11 @@
     1793566895,
     "r",
     "UgwJddPnVZxYmlNDz4N4AaABAg.AcJGXeIrbofAcg9Tb6az_M"
+   ],
+   "UgxQnwxVd7_3_j30Pn94AaABAg": [
+    1793704758,
+    "r",
+    "UgxQnwxVd7_3_j30Pn94AaABAg.AckFsTg-HkpAckGQ_4OB2t"
    ]
   },
   "son": [
@@ -320,6 +325,12 @@
     "video": "gEB2tRsHr5s",
     "comment": "Teşekkür ederimm ❤",
     "reply": "Rica ederim, bilim dolu günlerr! 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1793704758,
+    "video": "E9dsm0cEDnM",
+    "comment": "İlk",
+    "reply": "İlk yorum madalyasını kaptın, tebrikler! 🏅\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -452,10 +463,10 @@
  "nobet": {
   "basladi": "2026-11-03T07:04:15+00:00",
   "run": "41592802467",
-  "tur": 245,
+  "tur": 256,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-03T11:08:17+00:00"
+  "son_tur": "2026-11-03T11:19:18+00:00"
  }
 }
