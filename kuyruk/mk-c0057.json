@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0057",
+ "topic": "Gözümüzün önündeki bir şeyi neden fark etmeyiz? Görünmez goril deneyi",
+ "kategori": "psikoloji",
+ "subject": [
+  "gorilla"
+ ],
+ "stock_hint": "gorilla walking",
+ "script": {
+  "title": "Gözünün önünden geçen bir gorili görmeyebilirsin 🦍",
+  "hook_text": "GORİLİ NEDEN GÖREMEDİLER?",
+  "scenes": [
+   {
+    "text": "İzleyenlerin yarısı bu gorili hiç görmedi.",
+    "visual": "a gorilla walking slowly across the frame",
+    "stock_query": "gorilla walking",
+    "source": "stock",
+    "callout": "YARISI GÖRMEDİ"
+   },
+   {
+    "text": "Bir deneyde basketbol paslarını saydılar; goril kılığında biri oyuncuların arasından geçti.",
+    "visual": "young people passing a basketball to each other on an indoor court",
+    "stock_query": "basketball players passing",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "basketball"
+    ]
+   },
+   {
+    "text": "Radyologların yüzde seksen üçü de akciğer taramasındaki gorili kaçırdı; çoğu tam ona bakmıştı.",
+    "visual": "doctor examining a lung CT scan on a monitor",
+    "stock_query": "doctor x-ray",
+    "source": "stock",
+    "callout": "%83 RADYOLOG",
+    "subject": [
+     "doctor"
+    ]
+   },
+   {
+    "text": "Çünkü dikkat bir işe kilitlenince beyin, gözün gördüğü beklenmedik şeyi fark etmeyebilir.",
+    "visual": "extreme close-up of a human eye focusing",
+    "stock_query": "human eye closeup",
+    "source": "stock",
+    "callout": "GÖZ GÖRÜR, BEYİN ATLAR",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Belki şu an da bir gorili kaçırıyorsun.",
+    "visual": "close-up of a gorilla's face staring at the camera",
+    "stock_query": "gorilla face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Gözünün önünden geçen bir gorili görmeyebilirsin. 1999'daki bir deneyde basketbol paslarını sayan izleyicilerin yaklaşık yarısı, oyuncuların arasından geçen goril kılığındaki kişiyi görmedi; 2013'te radyologların yüzde seksen üçü akciğer taramasına gizlenen gorili kaçırdı. Dikkat bir işe kilitlenince beyin beklenmedik olanı fark etmeyebilir.",
+  "tags": [
+   "görünmez goril",
+   "dikkatsizlik körlüğü",
+   "seçici dikkat",
+   "dikkat",
+   "algı",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence sen o gorili fark eder miydin: evet mi, hayır mı?",
+  "en_title": "You could miss a gorilla walking right in front of you 🦍",
+  "en_description": "In a 1999 experiment, about half of the people counting basketball passes never noticed a person in a gorilla suit walking through the players. In 2013, 83% of radiologists missed a gorilla hidden in a lung scan, and most of those who missed it had looked right at it. When attention locks onto a task, the brain can miss what it doesn't expect: inattentional blindness.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Gözümüzün önündeki bir şeyi neden fark etmeyiz, görünmez goril deneyi nedir?\n\n1999'da psikologlar Daniel Simons ve Christopher Chabris, izleyicilerden bir videoda bir takımın basketbol paslarını saymalarını istedi. Bu sırada goril kostümlü biri oyuncuların arasından geçti; izleyenlerin yaklaşık yarısı onu hiç görmedi. 2013'te Boston'daki bir çalışmada yirmi dört radyoloğun yüzde seksen üçü, akciğer taramasına yerleştirilen ve ortalama bir nodülden kırk sekiz kat büyük gorili kaçırdı; göz takibi, kaçıranların çoğunun tam ona baktığını gösterdi. Psikolojide buna dikkatsizlik körlüğü denir: dikkat bir işe kilitlenince beyin beklenmedik olanı fark etmeyebilir.\n\nSence sen o gorili fark eder miydin: evet mi, hayır mı?",
+  "hashtags": [
+   "#goril",
+   "#dikkat",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "görünmez goril",
+   "görünmez goril deneyi",
+   "goril deneyi",
+   "dikkatsizlik körlüğü",
+   "dikkat körlüğü",
+   "seçici dikkat",
+   "dikkat testi",
+   "basketbol pas sayma",
+   "daniel simons",
+   "radyologlar gorili görmedi",
+   "göz önündekini görmemek",
+   "beyin bizi kandırıyor",
+   "algı yanılgısı",
+   "dikkat nasıl çalışır",
+   "bilişsel psikoloji",
+   "insan psikolojisi",
+   "psikoloji",
+   "beyin",
+   "dikkat",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "invisible gorilla",
+   "inattentional blindness"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You could miss a gorilla walking right in front of you 🦍",
+    "description": "In a 1999 experiment, about half of the people counting basketball passes never noticed a person in a gorilla suit walking through the players. In 2013, 83% of radiologists missed a gorilla hidden in a lung scan, and most of those who missed it had looked right at it. When attention locks onto a task, the brain can miss what it doesn't expect."
+   },
+   "es": {
+    "title": "Podrías no ver un gorila que pasa justo delante de ti 🦍",
+    "description": "En un experimento de 1999, cerca de la mitad de quienes contaban pases de baloncesto no vio a una persona disfrazada de gorila que cruzaba entre los jugadores. En 2013, el 83 % de los radiólogos de un estudio pasó por alto un gorila escondido en un TAC de pulmón, y la mayoría lo había mirado directamente. Cuando la atención se fija en una tarea, el cerebro puede ignorar lo inesperado."
+   },
+   "pt": {
+    "title": "Você pode não ver um gorila passando bem na sua frente 🦍",
+    "description": "Num experimento de 1999, cerca de metade das pessoas que contavam passes de basquete não notou alguém fantasiado de gorila andando entre os jogadores. Em 2013, 83% dos radiologistas de um estudo deixaram passar um gorila escondido numa tomografia de pulmão, e a maioria tinha olhado direto para ele. Quando a atenção trava numa tarefa, o cérebro pode ignorar o inesperado."
+   },
+   "de": {
+    "title": "Ein Gorilla direkt vor deinen Augen kann dir entgehen 🦍",
+    "description": "In einem Experiment von 1999 bemerkte etwa die Hälfte der Leute, die Basketballpässe zählten, eine Person im Gorillakostüm nicht, die mitten durch die Spieler lief. 2013 übersahen 83 % der Radiologen einer Studie einen Gorilla in einem Lungen-CT, obwohl die meisten direkt hingeschaut hatten. Ist die Aufmerksamkeit auf eine Aufgabe fixiert, kann das Gehirn Unerwartetes einfach übergehen."
+   },
+   "fr": {
+    "title": "Tu pourrais rater un gorille qui passe juste sous tes yeux 🦍",
+    "description": "Lors d'une expérience de 1999, environ la moitié des personnes qui comptaient des passes de basket n'ont pas vu quelqu'un déguisé en gorille traverser le groupe de joueurs. En 2013, 83 % des radiologues d'une étude ont raté un gorille caché dans un scanner pulmonaire, alors que la plupart l'avaient regardé en face. Quand l'attention se fixe sur une tâche, le cerveau peut passer à côté de l'inattendu."
+   },
+   "it": {
+    "title": "Potresti non vedere un gorilla che ti passa davanti 🦍",
+    "description": "In un esperimento del 1999 circa metà delle persone che contavano i passaggi di basket non ha notato qualcuno travestito da gorilla che passava tra i giocatori. Nel 2013 l'83% dei radiologi di uno studio non ha visto un gorilla nascosto in una TAC ai polmoni, e la maggior parte lo aveva guardato dritto. Quando l'attenzione si blocca su un compito, il cervello può ignorare ciò che non si aspetta."
+   },
+   "ru": {
+    "title": "Ты можешь не заметить гориллу прямо перед глазами 🦍",
+    "description": "В эксперименте 1999 года примерно половина людей, считавших передачи в баскетболе, не заметила человека в костюме гориллы, прошедшего между игроками. В 2013 году 83% рентгенологов в исследовании пропустили гориллу на КТ лёгких, хотя большинство из них смотрели прямо на неё. Когда внимание занято задачей, мозг может не заметить неожиданное."
+   },
+   "ar": {
+    "title": "قد لا ترى غوريلا تمرّ أمام عينيك مباشرة 🦍",
+    "description": "في تجربة عام 1999 لم يلاحظ نحو نصف من كانوا يعدّون تمريرات كرة السلة شخصًا يرتدي زي غوريلا يمرّ بين اللاعبين. وفي عام 2013 فات 83% من أطباء الأشعة في إحدى الدراسات غوريلا مخفية في صورة مقطعية للرئة، مع أن معظمهم نظروا إليها مباشرة. فعندما ينشغل الانتباه بمهمة واحدة، قد يغفل الدماغ عما لا يتوقعه."
+   },
+   "hi": {
+    "title": "आँखों के सामने से गुज़रता गोरिल्ला भी आपसे छूट सकता है 🦍",
+    "description": "1999 के एक प्रयोग में बास्केटबॉल के पास गिन रहे लगभग आधे लोगों ने खिलाड़ियों के बीच से गुज़रते गोरिल्ला की पोशाक वाले व्यक्ति को देखा ही नहीं। 2013 के एक अध्ययन में 83% रेडियोलॉजिस्ट फेफड़ों के स्कैन में छिपा गोरिल्ला नहीं पकड़ पाए, जबकि उनमें से ज़्यादातर ने सीधे उसी जगह देखा था। जब ध्यान किसी एक काम पर टिका होता है, तो दिमाग़ अनपेक्षित चीज़ को नज़रअंदाज़ कर सकता है।"
+   },
+   "id": {
+    "title": "Kamu bisa tidak melihat gorila yang lewat tepat di depanmu 🦍",
+    "description": "Dalam eksperimen tahun 1999, sekitar separuh orang yang menghitung operan bola basket tidak melihat seseorang berkostum gorila berjalan di antara para pemain. Pada 2013, 83% ahli radiologi dalam sebuah studi melewatkan gorila yang disisipkan di hasil CT paru-paru, padahal sebagian besar menatap langsung ke arahnya. Saat perhatian terkunci pada satu tugas, otak bisa melewatkan hal yang tak terduga."
+   },
+   "ja": {
+    "title": "目の前を通るゴリラに気づかないことがある 🦍",
+    "description": "1999年の実験では、バスケットボールのパスを数えていた人の約半数が、選手の間を通り抜けるゴリラの着ぐるみの人物に気づきませんでした。2013年の研究では放射線科医の83%が肺のCT画像に隠されたゴリラを見落とし、その多くは視線をゴリラに向けていました。注意が一つの作業に集中すると、脳は予想外のものを見逃すことがあるのです。"
+   },
+   "ko": {
+    "title": "눈앞을 지나가는 고릴라도 못 볼 수 있다 🦍",
+    "description": "1999년 실험에서 농구 패스 횟수를 세던 사람의 절반가량이 선수들 사이를 지나가는 고릴라 옷을 입은 사람을 보지 못했습니다. 2013년 연구에서는 영상의학과 의사의 83%가 폐 CT에 숨겨진 고릴라를 놓쳤는데, 대부분은 그 자리를 똑바로 보고 있었습니다. 주의가 한 가지 일에 묶이면 뇌는 예상치 못한 것을 놓칠 수 있습니다."
+   },
+   "pl": {
+    "title": "Możesz nie zauważyć goryla, który przechodzi tuż przed tobą 🦍",
+    "description": "W eksperymencie z 1999 roku mniej więcej połowa osób liczących podania w koszykówce nie dostrzegła człowieka w stroju goryla, który przeszedł między zawodnikami. W badaniu z 2013 roku 83% radiologów przeoczyło goryla ukrytego w tomografii płuc, choć większość patrzyła prosto na niego. Gdy uwaga skupia się na jednym zadaniu, mózg potrafi pominąć to, czego się nie spodziewa."
+   },
+   "nl": {
+    "title": "Je kunt een gorilla vlak voor je neus over het hoofd zien 🦍",
+    "description": "In een experiment uit 1999 zag ongeveer de helft van de mensen die basketbalpasses telden iemand in een gorillapak niet, terwijl die tussen de spelers door liep. In een studie uit 2013 miste 83% van de radiologen een gorilla in een longscan, hoewel de meesten er recht naar keken. Als je aandacht op één taak vastzit, kan je brein het onverwachte gewoon missen."
+   },
+   "uk": {
+    "title": "Ти можеш не помітити горилу просто перед очима 🦍",
+    "description": "В експерименті 1999 року приблизно половина людей, які рахували передачі в баскетболі, не помітила людину в костюмі горили, що пройшла між гравцями. У дослідженні 2013 року 83% рентгенологів пропустили горилу на КТ легень, хоча більшість дивилися просто на неї. Коли увага зосереджена на одному завданні, мозок може не помітити несподіване."
+   },
+   "vi": {
+    "title": "Bạn có thể không thấy con khỉ đột đi ngay trước mắt 🦍",
+    "description": "Trong một thí nghiệm năm 1999, khoảng một nửa số người đang đếm đường chuyền bóng rổ không hề thấy một người mặc đồ khỉ đột đi giữa các cầu thủ. Trong một nghiên cứu năm 2013, 83% bác sĩ chẩn đoán hình ảnh bỏ sót một con khỉ đột được chèn vào ảnh CT phổi, dù phần lớn đã nhìn thẳng vào nó. Khi sự chú ý bị khóa vào một việc, não có thể bỏ qua điều không ngờ tới."
+   },
+   "az": {
+    "title": "Gözünün önündən keçən qorillanı görməyə bilərsən 🦍",
+    "description": "1999-cu ildə aparılan təcrübədə basketbol paslarını sayan insanların təxminən yarısı oyunçuların arasından keçən qorilla kostyumlu adamı ümumiyyətlə görmədi. 2013-cü ildəki bir araşdırmada radioloqların 83 faizi ağciyər tomoqrafiyasına gizlədilmiş qorillanı qaçırdı, halbuki çoxu düz ona baxırdı. Diqqət bir işə kilidlənəndə beyin gözlənilməz olanı fərq etməyə bilər."
+   },
+   "ro": {
+    "title": "Ai putea să nu vezi o gorilă care trece chiar prin fața ta 🦍",
+    "description": "Într-un experiment din 1999, cam jumătate dintre cei care numărau pasele de baschet nu au observat o persoană costumată în gorilă care a trecut printre jucători. Într-un studiu din 2013, 83% dintre radiologi au ratat o gorilă ascunsă într-o tomografie pulmonară, deși majoritatea se uitaseră direct la ea. Când atenția e prinsă de o sarcină, creierul poate scăpa din vedere neprevăzutul."
+   }
+  }
+ }
+}
