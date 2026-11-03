@@ -22,7 +22,7 @@ import yazar  # noqa: E402
 
 DIR = HERE / "kuyruk"
 BAD = DIR / "bozuk"
-TARGET = int(os.environ.get("YO_KUYRUK") or 4)  # 3 episodes a day plus one spare for a morning that fails
+TARGET = int(os.environ.get("YO_KUYRUK") or 5)  # 4 episodes a day plus one spare for a morning that fails
 
 
 def files():

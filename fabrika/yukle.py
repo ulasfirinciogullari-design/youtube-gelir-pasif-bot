@@ -54,13 +54,23 @@ def description(ep, lang, state, related):
     return text.replace("<", "‹").replace(">", "›")[:4900]  # YouTube refuses < and > in descriptions
 
 
+# 2026-11-03: nearly every Turkish science Short with 1M+ views in fabrika/rakip.json ends its title with an emoji
+# ("... Ne Olurdu? 😳"); ours had none. Only the YouTube title gets it; the on-screen title ("bar") stays plain.
+EMOJI = {"Ya Olsaydı?": "😳", "Ne Kadar Büyük?": "🤯", "1 Gün Boyunca": "😮"}
+
+
+def with_emoji(title, ep):
+    e = ep.get("emoji") or EMOJI.get(ep.get("series"), "")
+    return f"{title} {e}" if e and e not in title else title
+
+
 def upload(yt, ep, video, cover, state, report, privacy="public"):
     """-> record with the video id. Related links: the 3 newest public episodes, same series first."""
     done = state.get("fabrika", [])
     rel = sorted(done, key=lambda r: (r.get("series") != ep["series"], -r.get("at", 0)))[:3]
-    snippet = {"title": ep["title"][:100], "description": description(ep, "tr", state, rel), "tags": ep["tags"],
+    snippet = {"title": with_emoji(ep["title"][:97], ep), "description": description(ep, "tr", state, rel), "tags": ep["tags"],
                "categoryId": "27", "defaultLanguage": "tr", "defaultAudioLanguage": "tr"}
-    loc = {l: {"title": ep["i18n"][l]["title"][:100], "description": description(ep, l, state, rel)}
+    loc = {l: {"title": with_emoji(ep["i18n"][l]["title"][:97], ep), "description": description(ep, l, state, rel)}
            for l in Y.LANGS if l in ep.get("i18n", {})}
     size = Path(video).stat().st_size
     meta = {"snippet": snippet, "localizations": loc,
