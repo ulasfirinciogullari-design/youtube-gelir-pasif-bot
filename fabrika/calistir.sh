@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: metrics -> reply watcher check -> gate -> tools -> episode -> commit.
 # Replies run in the reply watcher (fabrika/nobet.py, ya_olsaydi_nobet.yml); the yorum modes answer once by hand.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|instagram|igdeneme|igdmtest|igbolum|ornek|nasa
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|rakip|instagram|igdeneme|igdmtest|igbolum|ornek|nasa
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -26,6 +26,13 @@ case "$MOD" in instagram|igdeneme|igdmtest)
   out=$(python3 fabrika/instagram.py $flag | tail -n 1); echo "$out"
   push "$out"; exit 0
 esac
+
+if [ "$MOD" = "rakip" ]; then  # most-viewed Turkish science Shorts of the last months (fabrika/rakip.py)
+  pip install -q requests
+  out=$(python3 fabrika/rakip.py | tail -n 1); echo "$out"
+  git add fabrika/rakip.json 2>/dev/null || true
+  push "$out"; exit 0
+fi
 
 if [ "$MOD" = "metrik" ]; then
   pip install -q requests
