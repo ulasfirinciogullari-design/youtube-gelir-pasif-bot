@@ -44,3 +44,10 @@ jobs:
           YO_IG_KAPALI: ${{ vars.YO_IG_KAPALI }}
           GITHUB_TOKEN: ${{ github.token }}
         run: bash fabrika/calistir.sh "$(head -c 20 fabrika/tetik.txt | awk '{print $1}')"
+      - name: Rakip kapakları (yalnız "rakip kapak" turunda)
+        if: always() && hashFiles('fabrika/_kapak/*') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: rakip-kapak
+          path: fabrika/_kapak
+          retention-days: 2

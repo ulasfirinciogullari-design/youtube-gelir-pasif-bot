@@ -1,6 +1,8 @@
 """Which Turkish science / "what if" Shorts got the most views in the last months, from the YouTube Data API.
 
-  python fabrika/rakip.py      writes fabrika/rakip.json
+  python fabrika/rakip.py         writes fabrika/rakip.json
+  python fabrika/rakip.py kapak   saves the public cover images of the videos listed in fabrika/rakip_sec.txt to
+                                  fabrika/_kapak/ (never committed; the workflow keeps them as a 2-day run artifact)
 
 Searches a fixed list of Turkish queries for short videos (order=viewCount, Turkish region and language),
 then reads each hit's views, likes, comments, length and channel size. The point is to see which topics,
@@ -79,5 +81,20 @@ def main():
     print(f"Rakip: {len(videos)} video, {len(subs)} kanal, {len(errors)} hata")
 
 
+def covers():
+    out = HERE / "_kapak"
+    out.mkdir(exist_ok=True)
+    ids = [i for i in (HERE / "rakip_sec.txt").read_text().replace(",", " ").split() if i]
+    got = 0
+    for n, vid in enumerate(ids, 1):
+        for name in ("oar2", "hq720", "hqdefault"):  # oar2 is the upright Shorts frame when YouTube has one
+            r = requests.get(f"https://i.ytimg.com/vi/{vid}/{name}.jpg", timeout=30)
+            if r.ok and len(r.content) > 2000:
+                (out / f"{n:02d}_{vid}.jpg").write_bytes(r.content)
+                got += 1
+                break
+    print(f"Rakip kapak: {got}/{len(ids)}")
+
+
 if __name__ == "__main__":
-    main()
+    covers() if sys.argv[1:2] == ["kapak"] else main()
