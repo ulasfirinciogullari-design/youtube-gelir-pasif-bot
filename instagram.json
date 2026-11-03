@@ -29,16 +29,17 @@
   "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
   "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
-  "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/"
+  "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/",
+  "2026-11-03T14": "7xjRSwfX83E https://www.instagram.com/reel/DfSDDsGEquO/"
  },
  "nobet": {
   "basladi": "2026-11-03T12:43:47+00:00",
   "run": "41636734332",
-  "tur": 63,
+  "tur": 78,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-03T13:45:48+00:00"
+  "son_tur": "2026-11-03T14:01:31+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -180,6 +181,13 @@
    "at": 1793700088,
    "title": "Tavus kuşunun ünlü kuyruğu aslında kuyruk değil 🦚",
    "topic_id": "mk-c0023"
+  },
+  "7xjRSwfX83E": {
+   "media_id": "18116237099162264",
+   "url": "https://www.instagram.com/reel/DfSDDsGEquO/",
+   "at": 1793714491,
+   "title": "Kangurunun aynı anda üç yavrusu olabilir 🦘",
+   "topic_id": "mk-c0027"
   }
  }
 }
