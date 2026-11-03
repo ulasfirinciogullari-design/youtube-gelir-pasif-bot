@@ -30,16 +30,17 @@
   "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
   "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/",
-  "2026-11-03T14": "7xjRSwfX83E https://www.instagram.com/reel/DfSDDsGEquO/"
+  "2026-11-03T14": "7xjRSwfX83E https://www.instagram.com/reel/DfSDDsGEquO/",
+  "2026-11-03T18": "LzJyoVpzTyA https://www.instagram.com/reel/DfSeiKagEQb/"
  },
  "nobet": {
   "basladi": "2026-11-03T12:43:47+00:00",
   "run": "41636734332",
-  "tur": 291,
+  "tur": 318,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-03T17:33:50+00:00"
+  "son_tur": "2026-11-03T18:01:40+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -188,6 +189,13 @@
    "at": 1793714491,
    "title": "Kangurunun aynı anda üç yavrusu olabilir 🦘",
    "topic_id": "mk-c0027"
+  },
+  "LzJyoVpzTyA": {
+   "media_id": "18077476679725383",
+   "url": "https://www.instagram.com/reel/DfSeiKagEQb/",
+   "at": 1793728900,
+   "title": "Güvercinin başı aslında hiç geri gitmiyor 🕊️",
+   "topic_id": "mk-c0029"
   }
  }
 }
