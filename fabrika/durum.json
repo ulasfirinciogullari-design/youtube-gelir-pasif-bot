@@ -1153,11 +1153,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-17T12:07:44+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
-  {
    "finished": "2026-10-17T15:07:17+00:00",
    "mod": "saatlik",
    "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
@@ -1559,6 +1554,12 @@
    "url": "https://youtube.com/shorts/wvA035c4dvw",
    "duration": 24.2,
    "chars": 351
+  },
+  {
+   "finished": "2026-11-03T17:10:15+00:00",
+   "mod": "igbolum",
+   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+   "chars": 376
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1708,6 +1709,11 @@
     "media_id": "17988901398086781",
     "url": "https://www.instagram.com/reel/DfR9CPigQlJ/",
     "at": 1793711335.1860983
+   },
+   "y011": {
+    "media_id": "18098465333546432",
+    "url": "https://www.instagram.com/reel/DfSYpcjjDmA/",
+    "at": 1793725815.9544365
    }
   },
   "eski": [

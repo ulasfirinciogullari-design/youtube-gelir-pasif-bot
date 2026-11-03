@@ -1,71 +1,18 @@
 {
- "started": "2026-11-03T14:09:30+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-03T17:08:29+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y011",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "49",
-  "videos": "35"
+ "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+ "chars": 376,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18098465333546432",
+  "url": "https://www.instagram.com/reel/DfSYpcjjDmA/",
+  "at": 1793725815.9544365
  },
- "credits_before": [
-  82012,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261103-1-y017.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y017",
-  "series": "Ya Olsaydı?",
-  "q": "Kalbin 1 saniyeliğine dursaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 351,
- "duration": 24.2,
- "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
- "url": "https://youtube.com/shorts/wvA035c4dvw",
- "recent_status": {
-  "y016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "713",
-   "reason": null
-  },
-  "y011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "994",
-   "reason": null
-  },
-  "g007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1121",
-   "reason": null
-  },
-  "n007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "472",
-   "reason": null
-  },
-  "y017": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  82097,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261103-1-y017.json Kalbin 1 saniyeliğine dursaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfSYpcjjDmA/"
  ],
- "finished": "2026-11-03T14:10:30+00:00"
+ "finished": "2026-11-03T17:10:15+00:00"
 }
