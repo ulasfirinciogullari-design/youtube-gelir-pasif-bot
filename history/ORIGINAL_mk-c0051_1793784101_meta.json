@@ -1,0 +1,172 @@
+{
+  "topic_id": "mk-c0051",
+  "topic": "Kargalar sayı sayabilir mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kargalar dörde kadar sesli sayabiliyor 🐦",
+  "hook_text": "KARGALAR SAYI SAYABİLİR Mİ?",
+  "description": "Kargalar sayı sayabilir mi, kaça kadar sayabilir?\n\nAlmanya'daki Tübingen Üniversitesi'nde yapılan bir deneyde leş kargalarına ekranda bir ile dört arası rakamlar gösterildi. Kargalar o sayı kadar gakladı, sonra bitirmek için bir tuşa gagaladı. İlk gaklamanın sesi kaç kez gaklayacaklarını önceden ele veriyordu; küçük çocuklar da saymayı ilk böyle, her nesne için bir sesle öğrenir.\n\nSence hangisi daha akıllıca: dörde kadar sayan kargalar mı, yüzleri unutmayan kargalar mı?\n\n#karga #kuşlar #hayvanzekası #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0051",
+  "tags": [
+    "karga",
+    "kargalar",
+    "leş kargası",
+    "kargalar sayabilir mi",
+    "karga sayı sayıyor",
+    "karga zekası",
+    "akıllı kuşlar",
+    "en zeki kuş",
+    "hayvan zekası",
+    "hayvanlar sayabilir mi",
+    "sayı sayan hayvanlar",
+    "karga sesi",
+    "kuşlar",
+    "kuş zekası",
+    "hayvan davranışları",
+    "vahşi doğa",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "biyoloji",
+    "merak",
+    "crow",
+    "crows counting",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "les kargasi",
+    "karga sayi sayiyor",
+    "karga zekasi",
+    "akilli kuslar",
+    "en zeki kus"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Crows can count out loud up to four 🐦",
+      "description": "Scientists in Germany showed carrion crows a number from one to four, and the birds cawed exactly that many times, then pecked a key to finish. The sound of the very first caw already gave away how many would follow, so the crows planned their count in advance, much like toddlers who count with one sound per object.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "es": {
+      "title": "Los cuervos saben contar en voz alta hasta cuatro 🐦",
+      "description": "Investigadores en Alemania mostraron a unas cornejas números del uno al cuatro, y las aves graznaron exactamente esas veces antes de picotear una tecla para terminar. El sonido del primer graznido ya delataba cuántos vendrían después: planeaban la cuenta de antemano.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "pt": {
+      "title": "Corvos conseguem contar em voz alta até quatro 🐦",
+      "description": "Pesquisadores na Alemanha mostraram números de um a quatro a corvos, e as aves grasnaram exatamente essa quantidade de vezes antes de bicar uma tecla para encerrar. O som do primeiro grasnado já revelava quantos viriam depois, ou seja, eles planejavam a contagem com antecedência.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "de": {
+      "title": "Krähen können laut bis vier zählen 🐦",
+      "description": "Forschende in Tübingen zeigten Rabenkrähen Zahlen von eins bis vier – die Vögel krächzten genau so oft und pickten dann auf eine Taste, um fertig zu melden. Schon am Klang des ersten Rufs ließ sich erkennen, wie viele noch folgen würden: Die Krähen planten ihre Antwort im Voraus.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "fr": {
+      "title": "Les corneilles savent compter à voix haute jusqu'à quatre 🐦",
+      "description": "Des chercheurs allemands ont montré à des corneilles noires des chiffres de un à quatre : les oiseaux ont croassé exactement autant de fois, puis ont donné un coup de bec sur une touche pour terminer. Le son du premier cri trahissait déjà le nombre de cris à venir, preuve qu'elles planifiaient leur réponse.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "it": {
+      "title": "Le cornacchie sanno contare ad alta voce fino a quattro 🐦",
+      "description": "In Germania alcuni ricercatori hanno mostrato a delle cornacchie nere numeri da uno a quattro, e gli uccelli hanno gracchiato esattamente quel numero di volte prima di beccare un tasto per finire. Già il suono del primo verso rivelava quanti ne sarebbero seguiti: le cornacchie pianificavano il conto.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "ru": {
+      "title": "Вороны умеют считать вслух до четырёх 🐦",
+      "description": "Учёные в Германии показывали чёрным воронам цифры от одного до четырёх, и птицы каркали ровно столько раз, а потом клевали кнопку, чтобы закончить. Уже по звучанию первого «кар» можно было понять, сколько их будет дальше: вороны заранее планировали счёт.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "ar": {
+      "title": "الغربان تستطيع العدّ بصوت عالٍ حتى أربعة 🐦",
+      "description": "عرض باحثون في ألمانيا على غربان أرقامًا من واحد إلى أربعة، فنعقت الطيور بعدد المرات نفسه ثم نقرت زرًا لتعلن انتهاءها. وكان صوت النعقة الأولى يكشف مسبقًا كم نعقة ستليها، أي أن الغربان كانت تخطط للعدّ قبل أن تبدأ.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "hi": {
+      "title": "कौए ज़ोर से चार तक गिन सकते हैं 🐦",
+      "description": "जर्मनी में वैज्ञानिकों ने कौओं को स्क्रीन पर एक से चार तक के अंक दिखाए, और कौओं ने ठीक उतनी बार काँव-काँव की, फिर ख़त्म करने के लिए चोंच से एक बटन दबाया। पहली काँव की आवाज़ से ही पता चल जाता था कि आगे कितनी बार बोलेंगे, यानी कौए पहले से गिनती तय कर लेते थे।\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "id": {
+      "title": "Gagak bisa berhitung keras sampai empat 🐦",
+      "description": "Peneliti di Jerman menunjukkan angka satu sampai empat kepada burung gagak, lalu gagak itu berkoak tepat sebanyak angka tersebut sebelum mematuk tombol tanda selesai. Bunyi koakan pertama saja sudah menunjukkan berapa kali ia akan berkoak, artinya gagak merencanakan hitungannya sejak awal.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "ja": {
+      "title": "カラスは声に出して4まで数えられる 🐦",
+      "description": "ドイツの研究チームがハシボソガラスに1から4までの数字を見せると、カラスはその数だけ鳴き、最後にくちばしでキーをつついて終わりを伝えました。最初の一声の響きで何回鳴くつもりかが分かったことから、カラスは鳴く前に回数を決めていたと考えられています。\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "ko": {
+      "title": "까마귀는 소리 내어 넷까지 셀 수 있다 🐦",
+      "description": "독일 연구진이 까마귀에게 1부터 4까지의 숫자를 보여 주자, 까마귀는 정확히 그 횟수만큼 울고 부리로 버튼을 쪼아 끝을 알렸습니다. 첫 울음소리만 들어도 몇 번 울지 미리 알 수 있었는데, 까마귀가 울기 전에 횟수를 계획했다는 뜻입니다.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "pl": {
+      "title": "Wrony potrafią liczyć na głos do czterech 🐦",
+      "description": "Naukowcy z Niemiec pokazywali czarnym wronom cyfry od jednego do czterech, a ptaki krakały dokładnie tyle razy, po czym dziobały przycisk na znak końca. Już po brzmieniu pierwszego krakania dało się poznać, ile ich będzie, czyli wrony planowały liczenie z góry.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "nl": {
+      "title": "Kraaien kunnen hardop tot vier tellen 🐦",
+      "description": "Onderzoekers in Duitsland lieten zwarte kraaien een cijfer van één tot vier zien, waarna de vogels precies zo vaak krasten en daarna op een knop pikten om af te ronden. Aan de klank van de eerste kras kon je al horen hoeveel er zouden volgen: de kraaien planden hun telling vooraf.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "uk": {
+      "title": "Ворони вміють рахувати вголос до чотирьох 🐦",
+      "description": "Науковці в Німеччині показували чорним воронам цифри від одного до чотирьох, і птахи каркали рівно стільки разів, а потім дзьобали кнопку, щоб завершити. Уже за звучанням першого «кар» можна було передбачити, скільки буде далі: ворони планували рахунок заздалегідь.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "vi": {
+      "title": "Quạ có thể đếm thành tiếng đến bốn 🐦",
+      "description": "Các nhà khoa học ở Đức cho những con quạ xem các con số từ một đến bốn, và chúng kêu đúng bấy nhiêu tiếng rồi mổ vào một nút để báo xong. Chỉ cần nghe tiếng kêu đầu tiên là đoán được chúng sẽ kêu mấy lần, nghĩa là quạ đã tính trước con số.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "az": {
+      "title": "Qarğalar səsli şəkildə dördə qədər saya bilir 🐦",
+      "description": "Almaniyada alimlər qarğalara ekranda birdən dördə qədər rəqəmlər göstərdi, quşlar da düz o qədər qarıldayıb sonra bitirmək üçün dimdikləri ilə düyməyə vurdu. İlk qarıltının səsi neçə dəfə qarıldayacaqlarını əvvəlcədən göstərirdi, yəni qarğalar saymağı qabaqcadan planlaşdırırdı.\n\n#shorts\n\nSeri: mk-c0051"
+    },
+    "ro": {
+      "title": "Ciorile pot număra cu voce tare până la patru 🐦",
+      "description": "Cercetători din Germania le-au arătat unor ciori numere de la unu la patru, iar păsările au croncănit exact de atâtea ori, apoi au ciocănit o tastă ca să încheie. Sunetul primului croncănit dezvăluia deja câte vor urma, deci ciorile își plănuiau numărătoarea dinainte.\n\n#shorts\n\nSeri: mk-c0051"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha akıllıca: dörde kadar sayan kargalar mı, yüzleri unutmayan kargalar mı?",
+  "scenes": [
+    {
+      "text": "Bu kargalar dörde kadar sesli sayabiliyor.",
+      "visual": "close-up of a black crow calling with its beak open",
+      "stock_query": "crow calling",
+      "source": "stock",
+      "callout": "4'E KADAR SAYIYOR"
+    },
+    {
+      "text": "Almanya'da araştırmacılar kargalara ekranda bir ile dört arası rakamlar gösterdi.",
+      "visual": "black crow perched and looking intently ahead",
+      "stock_query": "crow closeup",
+      "source": "stock"
+    },
+    {
+      "text": "Kargalar o sayı kadar gakladı, sonra bitirmek için bir tuşa gagaladı.",
+      "visual": "crow pecking with its beak",
+      "stock_query": "crow pecking",
+      "source": "stock",
+      "callout": "GAK GAK GAK"
+    },
+    {
+      "text": "Daha şaşırtıcısı, ilk gaklamanın sesi kaç kez gaklayacaklarını önceden ele veriyordu.",
+      "visual": "black crow cawing on a branch",
+      "stock_query": "crow branch",
+      "source": "stock",
+      "callout": "ÖNCEDEN PLANLIYOR"
+    },
+    {
+      "text": "Küçük çocuklar da saymaya böyle başlar: her nesne için bir ses. Peki karga kaça kadar sayar?",
+      "visual": "crow standing on a fence and looking around",
+      "stock_query": "crow bird",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.21,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #104",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0051_1793784101_ig.mp4"
+}
