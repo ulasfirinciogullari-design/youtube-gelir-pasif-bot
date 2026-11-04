@@ -1,0 +1,183 @@
+{
+ "id": "mk-c0061",
+ "topic": "Neden herkes kendini iyi sürücü sanır? Ortalamanın üstünde etkisi",
+ "kategori": "psikoloji",
+ "subject": [
+  "driving",
+  "car"
+ ],
+ "stock_hint": "man driving car",
+ "script": {
+  "title": "Sürücülerin çoğu kendini ortalamanın üstünde sanıyor 🚗",
+  "hook_text": "SEN İYİ SÜRÜCÜ MÜSÜN?",
+  "scenes": [
+   {
+    "text": "Bu sürücülerin çoğu kendini ortalamanın üstünde sanıyor.",
+    "visual": "busy city traffic with many cars seen from above",
+    "stock_query": "car traffic",
+    "source": "stock",
+    "callout": "ÇOĞU ORTALAMA ÜSTÜ"
+   },
+   {
+    "text": "Bir deneyde Amerikalı öğrencilerin yüzde doksan üçü kendini ortalama sürücüden daha becerikli saydı.",
+    "visual": "university students sitting in a lecture hall",
+    "stock_query": "university students",
+    "source": "stock",
+    "callout": "%93",
+    "subject": [
+     "students"
+    ]
+   },
+   {
+    "text": "Başka bir çalışmada, kazada yaralanıp hastaneye kaldırılan sürücüler bile kendini ustaya yakın gördü.",
+    "visual": "an ambulance driving through city streets with its lights on",
+    "stock_query": "ambulance city",
+    "source": "stock",
+    "callout": "KAZAZEDELER BİLE",
+    "subject": [
+     "ambulance"
+    ]
+   },
+   {
+    "text": "Sebeplerinden biri: herkes iyi sürücülüğü kendi güçlü yanına göre tanımlar; biri hız der, biri dikkat.",
+    "visual": "close-up of hands on a steering wheel while driving",
+    "stock_query": "driving steering wheel",
+    "source": "stock",
+    "callout": "HERKESİN TANIMI FARKLI"
+   },
+   {
+    "text": "Peki sen direksiyonda ortalamanın üstünde misin?",
+    "visual": "a young man driving a car and smiling confidently",
+    "stock_query": "man driving car",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Sürücülerin çoğu kendini ortalamanın üstünde sanıyor. 1981'deki bir çalışmada Amerikalı öğrencilerin yüzde doksan üçü kendini ortadaki sürücüden daha becerikli saydı; 1965'te kazada yaralanıp hastaneye kaldırılan sürücüler bile kendini ustaya yakın gördü. Sebeplerinden biri, herkesin iyi sürücülüğü kendi güçlü yanına göre tanımlaması.",
+  "tags": [
+   "iyi sürücü",
+   "ortalamanın üstünde etkisi",
+   "sürücü psikolojisi",
+   "trafik",
+   "aşırı özgüven",
+   "bilişsel yanılgı",
+   "psikoloji",
+   "insan psikolojisi",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen kendini nasıl bir sürücü görüyorsun: ortalamanın üstünde mi, altında mı?",
+  "en_title": "Most drivers think they're better than average 🚗",
+  "en_description": "In a 1981 study, 93% of American students rated themselves as more skillful than the median driver, which is mathematically impossible. In 1965, even drivers hospitalized after crashes described themselves as closer to expert than to very poor. One reason: everyone defines a good driver by their own strengths.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Neden herkes kendini iyi sürücü sanır, insanlar neden kendini ortalamanın üstünde görür?\n\nPsikolog Ola Svenson'un 1981'deki çalışmasında Amerikalı öğrencilerin yüzde doksan üçü kendini ortadaki sürücüden daha becerikli, yüzde seksen sekizi daha güvenli saydı; oysa ortanın üstünde en fazla yarısı olabilir. 1965'teki bir çalışmada kazada yaralanıp hastaneye kaldırılan sürücüler bile kendini kötü sürücüden çok ustaya yakın gördü. Bu ortalamanın üstünde etkisi 2023'te bin iki yüzü aşkın kişiyle yeniden doğrulandı; sebeplerinden biri, herkesin iyi sürücülüğü kendi güçlü yanına göre tanımlaması.\n\nSen kendini nasıl bir sürücü görüyorsun: ortalamanın üstünde mi, altında mı?",
+  "hashtags": [
+   "#sürücü",
+   "#trafik",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "iyi sürücü",
+   "ortalamanın üstünde etkisi",
+   "kendini iyi sürücü sanmak",
+   "sürücü psikolojisi",
+   "trafik psikolojisi",
+   "ortalamadan iyi olma yanılgısı",
+   "aşırı özgüven",
+   "özgüven yanılgısı",
+   "kendini beğenmek",
+   "bilişsel yanılgı",
+   "bilişsel önyargı",
+   "ola svenson",
+   "direksiyon",
+   "araba kullanmak",
+   "trafik",
+   "insan psikolojisi",
+   "sosyal psikoloji",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "better than average effect",
+   "illusory superiority"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Most drivers think they're better than average 🚗",
+    "description": "In a 1981 study, 93% of American students rated themselves as more skillful than the median driver, which is mathematically impossible. In 1965, even drivers hospitalized after crashes described themselves as closer to expert than to very poor. One reason: everyone defines a good driver by their own strengths."
+   },
+   "es": {
+    "title": "Casi todos los conductores se creen mejores que la media 🚗",
+    "description": "En un estudio de 1981, el 93 % de los estudiantes estadounidenses se consideró más hábil al volante que el conductor promedio, algo matemáticamente imposible. En 1965, incluso conductores hospitalizados tras un accidente se describieron más cerca de expertos que de pésimos. Una razón: cada uno define a un buen conductor según sus propios puntos fuertes."
+   },
+   "pt": {
+    "title": "A maioria dos motoristas se acha acima da média 🚗",
+    "description": "Num estudo de 1981, 93% dos estudantes americanos se disseram mais habilidosos que o motorista médio, o que é matematicamente impossível. Em 1965, até motoristas hospitalizados depois de acidentes se descreveram mais perto de experientes do que de péssimos. Um dos motivos: cada um define bom motorista pelos próprios pontos fortes."
+   },
+   "de": {
+    "title": "Die meisten Autofahrer halten sich für überdurchschnittlich 🚗",
+    "description": "In einer Studie von 1981 hielten sich 93 % der befragten US-Studierenden für geschicktere Fahrer als der Durchschnitt, was rechnerisch unmöglich ist. 1965 sahen sich sogar Fahrer, die nach einem Unfall im Krankenhaus lagen, näher am Experten als am sehr schlechten Fahrer. Ein Grund: Jeder definiert einen guten Fahrer über die eigenen Stärken."
+   },
+   "fr": {
+    "title": "La plupart des conducteurs se croient meilleurs que la moyenne 🚗",
+    "description": "Dans une étude de 1981, 93 % des étudiants américains se jugeaient plus habiles que le conducteur moyen, ce qui est mathématiquement impossible. En 1965, même des conducteurs hospitalisés après un accident se décrivaient plus proches de l'expert que du très mauvais conducteur. Une raison : chacun définit le bon conducteur selon ses propres points forts."
+   },
+   "it": {
+    "title": "Quasi tutti gli automobilisti si credono sopra la media 🚗",
+    "description": "In uno studio del 1981, il 93% degli studenti americani si riteneva più abile alla guida del conducente medio, cosa matematicamente impossibile. Nel 1965 perfino automobilisti ricoverati dopo un incidente si descrivevano più vicini all'esperto che al pessimo guidatore. Un motivo: ognuno definisce il buon guidatore in base ai propri punti di forza."
+   },
+   "ru": {
+    "title": "Большинство водителей считают себя лучше среднего 🚗",
+    "description": "В исследовании 1981 года 93% американских студентов оценили себя как более умелых водителей, чем средний, что математически невозможно. В 1965 году даже водители, попавшие в больницу после аварии, описывали себя ближе к «мастеру», чем к «очень плохому» водителю. Одна из причин: каждый определяет хорошего водителя по своим сильным сторонам."
+   },
+   "ar": {
+    "title": "معظم السائقين يظنون أنهم أفضل من المتوسط 🚗",
+    "description": "في دراسة عام 1981 اعتبر 93% من الطلاب الأمريكيين أنفسهم أمهر من السائق المتوسط، وهذا مستحيل حسابيًا. وفي عام 1965 وصف حتى سائقون نُقلوا إلى المستشفى بعد حوادث أنفسهم بأنهم أقرب إلى الخبراء منهم إلى السائقين السيئين جدًا. من الأسباب أن كل شخص يعرّف السائق الجيد بحسب نقاط قوته هو."
+   },
+   "hi": {
+    "title": "ज़्यादातर ड्राइवर ख़ुद को औसत से बेहतर मानते हैं 🚗",
+    "description": "1981 के एक अध्ययन में 93% अमेरिकी छात्रों ने ख़ुद को औसत ड्राइवर से ज़्यादा कुशल बताया, जो गणित के हिसाब से असंभव है। 1965 में तो दुर्घटना के बाद अस्पताल पहुँचे ड्राइवरों ने भी ख़ुद को बहुत ख़राब के बजाय माहिर के क़रीब बताया। एक वजह: हर कोई अच्छे ड्राइवर की परिभाषा अपनी ख़ूबियों के हिसाब से तय करता है।"
+   },
+   "id": {
+    "title": "Kebanyakan pengemudi merasa dirinya di atas rata-rata 🚗",
+    "description": "Dalam studi tahun 1981, 93% mahasiswa Amerika menilai dirinya lebih terampil daripada pengemudi rata-rata, padahal secara matematis itu mustahil. Pada 1965, bahkan pengemudi yang dirawat di rumah sakit setelah kecelakaan menggambarkan dirinya lebih dekat ke ahli daripada ke sangat buruk. Salah satu sebabnya: setiap orang mendefinisikan pengemudi yang baik menurut kelebihannya sendiri."
+   },
+   "ja": {
+    "title": "ほとんどのドライバーは自分を平均以上だと思っている 🚗",
+    "description": "1981年の研究では、アメリカの学生の93%が自分は平均的なドライバーより運転がうまいと答えました。数学的にはありえない数字です。1965年には、事故で入院したドライバーでさえ、自分を「とても下手」より「達人」に近いと評価しました。理由のひとつは、誰もが自分の得意な点を基準に「運転がうまい」を定義することです。"
+   },
+   "ko": {
+    "title": "운전자 대부분은 자신이 평균 이상이라고 생각한다 🚗",
+    "description": "1981년 연구에서 미국 대학생의 93%가 자신이 평균적인 운전자보다 운전을 잘한다고 답했는데, 이는 수학적으로 불가능합니다. 1965년에는 사고로 입원한 운전자들조차 자신을 '아주 못하는 운전자'보다 '전문가'에 가깝다고 평가했습니다. 이유 중 하나는 누구나 좋은 운전자의 기준을 자기 강점에 맞춰 정하기 때문입니다."
+   },
+   "pl": {
+    "title": "Większość kierowców uważa się za lepszych od przeciętnej 🚗",
+    "description": "W badaniu z 1981 roku 93% amerykańskich studentów oceniło się jako sprawniejszych od przeciętnego kierowcy, co matematycznie jest niemożliwe. W 1965 roku nawet kierowcy hospitalizowani po wypadkach opisywali się jako bliżsi ekspertom niż bardzo słabym kierowcom. Jeden z powodów: każdy definiuje dobrego kierowcę według własnych mocnych stron."
+   },
+   "nl": {
+    "title": "De meeste automobilisten vinden zichzelf beter dan gemiddeld 🚗",
+    "description": "In een studie uit 1981 vond 93% van de Amerikaanse studenten zichzelf een betere chauffeur dan de gemiddelde, wat wiskundig onmogelijk is. In 1965 beschreven zelfs bestuurders die na een ongeluk in het ziekenhuis lagen zichzelf als dichter bij expert dan bij heel slecht. Eén verklaring: iedereen definieert een goede chauffeur aan de hand van de eigen sterke punten."
+   },
+   "uk": {
+    "title": "Більшість водіїв вважають себе кращими за середнього 🚗",
+    "description": "У дослідженні 1981 року 93% американських студентів оцінили себе як вправніших за середнього водія, що математично неможливо. У 1965 році навіть водії, які потрапили до лікарні після аварії, описували себе ближчими до «майстра», ніж до «дуже поганого» водія. Одна з причин: кожен визначає хорошого водія за власними сильними сторонами."
+   },
+   "vi": {
+    "title": "Hầu hết tài xế đều nghĩ mình giỏi hơn mức trung bình 🚗",
+    "description": "Trong một nghiên cứu năm 1981, 93% sinh viên Mỹ tự đánh giá mình lái xe khéo hơn tài xế trung bình, điều không thể xảy ra về mặt toán học. Năm 1965, ngay cả những tài xế phải nhập viện sau tai nạn cũng tự cho mình gần với 'chuyên gia' hơn là 'rất tệ'. Một lý do: ai cũng định nghĩa tài xế giỏi theo điểm mạnh của chính mình."
+   },
+   "az": {
+    "title": "Sürücülərin çoxu özünü ortadan yaxşı sanır 🚗",
+    "description": "1981-ci ildəki bir araşdırmada amerikalı tələbələrin 93 faizi özünü orta sürücüdən daha bacarıqlı saydı, halbuki riyazi baxımdan bu mümkün deyil. 1965-ci ildə hətta qəzadan sonra xəstəxanaya düşən sürücülər belə özlərini çox pis sürücüdən çox ustaya yaxın gördü. Səbəblərdən biri: hər kəs yaxşı sürücünü öz güclü tərəfinə görə tərif edir."
+   },
+   "ro": {
+    "title": "Majoritatea șoferilor se cred peste medie 🚗",
+    "description": "Într-un studiu din 1981, 93% dintre studenții americani s-au considerat mai pricepuți decât șoferul mediu, ceea ce e imposibil matematic. În 1965, chiar și șoferi internați în spital după accidente s-au descris mai aproape de expert decât de foarte slab. Un motiv: fiecare definește un șofer bun după propriile puncte forte."
+   }
+  }
+ }
+}

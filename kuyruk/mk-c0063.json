@@ -1,0 +1,177 @@
+{
+ "id": "mk-c0063",
+ "topic": "Köpek yaşı insan yaşına nasıl çevrilir, bir köpek yılı gerçekten yedi insan yılı mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog portrait",
+ "script": {
+  "title": "Köpeğinin yaşını yediyle çarpmak yanlış 🐶",
+  "hook_text": "KÖPEK YAŞI NASIL HESAPLANIR?",
+  "scenes": [
+   {
+    "text": "Bu köpeğin yaşını yediyle çarpmak yanlış.",
+    "visual": "a happy young dog looking at the camera in a park",
+    "stock_query": "dog portrait",
+    "source": "stock",
+    "callout": "×7 YANLIŞ"
+   },
+   {
+    "text": "Bir yaşındaki köpek yedi değil, en az on beş yaşındaki bir insan gibi.",
+    "visual": "a young dog running energetically across the grass",
+    "stock_query": "young dog running",
+    "source": "stock",
+    "callout": "1 YAŞ = 15+"
+   },
+   {
+    "text": "Üstelik büyük köpekler küçüklerden hızlı yaşlanır; oysa doğada iri memeliler genelde daha uzun yaşar.",
+    "visual": "a big dog and a small dog walking side by side",
+    "stock_query": "big dog small dog",
+    "source": "stock",
+    "callout": "İRİ OLAN HIZLI YAŞLANIR"
+   },
+   {
+    "text": "Yedi kuralı tutmaz, çünkü köpek dokuz aylıkken yavru yapabilir; önce hızla yaşlanır, sonra yavaşlar.",
+    "visual": "a mother dog lying with her newborn puppies",
+    "stock_query": "dog puppies",
+    "source": "stock",
+    "callout": "9 AYDA YAVRU"
+   },
+   {
+    "text": "Peki senin köpeğin aslında kaç yaşında?",
+    "visual": "an older dog resting its head and looking up at its owner",
+    "stock_query": "old dog",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeğin yaşını yediyle çarpmak yanlış. Amerikan Veteriner Hekimleri Birliği'ne göre orta boy bir köpeğin ilk yılı yaklaşık on beş insan yılına denk gelir; bir DNA çalışması ise bir yaşındaki köpeği otuz yaşındaki bir insana benzetiyor. Köpekler dokuz aylıkken yavru yapabilir, ilk yıllarında hızla yaşlanıp sonra yavaşlar; büyük köpekler de küçüklerden hızlı yaşlanır.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpek yaşı",
+   "köpek yaşı hesaplama",
+   "köpek yılı",
+   "köpek ömrü",
+   "yavru köpek",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin hangisi: küçük cins mi, büyük cins mi?",
+  "en_title": "Multiplying your dog's age by seven is wrong 🐶",
+  "en_description": "The seven-year rule doesn't work. According to the AVMA, a medium-sized dog's first year equals about 15 human years, and a DNA study compared a one-year-old dog to a 30-year-old human. Dogs can have puppies at nine months, age fast early and then slow down, and big dogs age faster than small ones.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpek yaşı insan yaşına nasıl çevrilir, bir köpek yılı gerçekten yedi insan yılı mı?\n\nHayır, yediyle çarpmak yanlış. Amerikan Veteriner Hekimleri Birliği'ne göre orta boy bir köpeğin ilk yılı yaklaşık on beş, ikinci yılı yaklaşık dokuz insan yılına denk gelir, sonrasında her yıl yaklaşık beş yıl eklenir. UC San Diego'nun Labradorlarla yaptığı DNA çalışması ise bir yaşındaki köpeği otuz yaşındaki bir insana benzetiyor; çünkü köpek dokuz aylıkken yavru yapabilir, ilk yıllarında hızla yaşlanıp sonra yavaşlar. Üstelik büyük köpekler küçüklerden hızlı yaşlanır; oysa türler arasında iri memeliler genelde daha uzun yaşar.\n\nSenin köpeğin hangisi: küçük cins mi, büyük cins mi?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpek yaşı",
+   "köpek yaşı hesaplama",
+   "köpek yaşı insan yaşı",
+   "köpek yılı",
+   "köpek yaşı kaç insan yılı",
+   "köpekler kaç yıl yaşar",
+   "köpek ömrü",
+   "büyük köpekler",
+   "küçük köpekler",
+   "yavru köpek",
+   "yaşlı köpek",
+   "köpek bakımı",
+   "köpek sahipleri",
+   "evcil hayvanlar",
+   "efsane mi gerçek mi",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "dog years",
+   "dog age"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Multiplying your dog's age by seven is wrong 🐶",
+    "description": "The seven-year rule doesn't work. According to the AVMA, a medium-sized dog's first year equals about 15 human years, and a DNA study compared a one-year-old dog to a 30-year-old human. Dogs can have puppies at nine months, age fast early and then slow down, and big dogs age faster than small ones."
+   },
+   "es": {
+    "title": "Multiplicar la edad de tu perro por siete es un error 🐶",
+    "description": "La regla de los siete años no funciona. Según la Asociación Médica Veterinaria de Estados Unidos, el primer año de un perro mediano equivale a unos 15 años humanos, y un estudio de ADN comparó a un perro de un año con una persona de 30. Los perros pueden tener crías a los nueve meses, envejecen rápido al principio y luego más despacio, y los grandes envejecen antes que los pequeños."
+   },
+   "pt": {
+    "title": "Multiplicar a idade do seu cachorro por sete está errado 🐶",
+    "description": "A regra dos sete anos não funciona. Segundo a Associação Médica Veterinária Americana, o primeiro ano de um cão de porte médio equivale a uns 15 anos humanos, e um estudo de DNA comparou um cão de um ano a uma pessoa de 30. Cães podem ter filhotes aos nove meses, envelhecem rápido no começo e depois desaceleram, e os grandes envelhecem mais rápido que os pequenos."
+   },
+   "de": {
+    "title": "Das Alter deines Hundes mal sieben zu rechnen ist falsch 🐶",
+    "description": "Die Siebener-Regel stimmt nicht. Laut dem US-Tierärzteverband AVMA entspricht das erste Jahr eines mittelgroßen Hundes etwa 15 Menschenjahren, und eine DNA-Studie verglich einen einjährigen Hund mit einem 30-jährigen Menschen. Hunde können mit neun Monaten Welpen bekommen, altern anfangs schnell und dann langsamer, und große Hunde altern schneller als kleine."
+   },
+   "fr": {
+    "title": "Multiplier l'âge de ton chien par sept, c'est faux 🐶",
+    "description": "La règle des sept ans ne tient pas. Selon l'association vétérinaire américaine AVMA, la première année d'un chien de taille moyenne équivaut à environ 15 ans humains, et une étude ADN a comparé un chien d'un an à un humain de 30 ans. Un chien peut avoir des petits dès neuf mois, vieillit vite au début puis ralentit, et les grands chiens vieillissent plus vite que les petits."
+   },
+   "it": {
+    "title": "Moltiplicare l'età del tuo cane per sette è sbagliato 🐶",
+    "description": "La regola del sette non funziona. Secondo l'associazione veterinaria americana AVMA, il primo anno di un cane di taglia media vale circa 15 anni umani, e uno studio sul DNA ha paragonato un cane di un anno a una persona di 30. I cani possono avere cuccioli a nove mesi, invecchiano in fretta all'inizio e poi rallentano, e quelli grandi invecchiano prima dei piccoli."
+   },
+   "ru": {
+    "title": "Умножать возраст собаки на семь неправильно 🐶",
+    "description": "Правило «один к семи» не работает. По данным Американской ветеринарной медицинской ассоциации, первый год жизни собаки средних размеров равен примерно 15 человеческим годам, а исследование ДНК сравнило годовалую собаку с 30-летним человеком. Собаки могут приносить потомство уже в девять месяцев, быстро стареют в начале жизни и потом замедляются, а крупные стареют быстрее мелких."
+   },
+   "ar": {
+    "title": "ضرب عمر كلبك في سبعة خطأ 🐶",
+    "description": "قاعدة السنوات السبع غير صحيحة. فبحسب الجمعية الأمريكية للطب البيطري، تعادل السنة الأولى من عمر كلب متوسط الحجم نحو 15 سنة بشرية، وقارنت دراسة للحمض النووي كلبًا عمره سنة بإنسان في الثلاثين. يمكن للكلب أن ينجب في عمر تسعة أشهر، ويشيخ بسرعة في البداية ثم يتباطأ، والكلاب الكبيرة تشيخ أسرع من الصغيرة."
+   },
+   "hi": {
+    "title": "कुत्ते की उम्र को सात से गुणा करना ग़लत है 🐶",
+    "description": "सात साल वाला नियम सही नहीं है। अमेरिकन वेटरिनरी मेडिकल एसोसिएशन के अनुसार मध्यम आकार के कुत्ते का पहला साल लगभग 15 इंसानी सालों के बराबर होता है, और एक डीएनए अध्ययन ने एक साल के कुत्ते की तुलना 30 साल के इंसान से की। कुत्ते नौ महीने की उम्र में बच्चे पैदा कर सकते हैं, शुरुआत में तेज़ी से बूढ़े होते हैं और फिर धीमे पड़ जाते हैं, और बड़े कुत्ते छोटे कुत्तों से जल्दी बूढ़े होते हैं।"
+   },
+   "id": {
+    "title": "Mengalikan umur anjingmu dengan tujuh itu salah 🐶",
+    "description": "Aturan tujuh tahun tidak berlaku. Menurut asosiasi dokter hewan Amerika (AVMA), tahun pertama anjing berukuran sedang setara sekitar 15 tahun manusia, dan sebuah studi DNA menyamakan anjing berumur satu tahun dengan manusia berumur 30. Anjing bisa punya anak di usia sembilan bulan, menua cepat di awal lalu melambat, dan anjing besar menua lebih cepat daripada anjing kecil."
+   },
+   "ja": {
+    "title": "犬の年齢を7倍するのは間違い 🐶",
+    "description": "「犬の1年は人の7年」というルールは正しくありません。米国獣医師会によると、中型犬の最初の1年は人間の約15年に相当し、あるDNA研究は1歳の犬を30歳の人間にたとえています。犬は生後9か月で子どもを産めるほど早く成熟し、最初は急速に、その後はゆっくり年をとります。しかも大型犬は小型犬より早く老けます。"
+   },
+   "ko": {
+    "title": "강아지 나이에 7을 곱하는 건 틀렸다 🐶",
+    "description": "'개의 1년은 사람의 7년'이라는 공식은 맞지 않습니다. 미국수의사회에 따르면 중형견의 첫 1년은 사람의 약 15년에 해당하고, 한 DNA 연구는 1살 개를 30살 사람에 비유했습니다. 개는 생후 9개월이면 새끼를 낳을 수 있고, 초반에 빠르게 늙다가 이후 느려지며, 큰 개가 작은 개보다 더 빨리 늙습니다."
+   },
+   "pl": {
+    "title": "Mnożenie wieku psa przez siedem to błąd 🐶",
+    "description": "Zasada siedmiu lat nie działa. Według Amerykańskiego Stowarzyszenia Lekarzy Weterynarii pierwszy rok życia średniego psa to około 15 lat ludzkich, a badanie DNA porównało rocznego psa do 30-letniego człowieka. Psy mogą mieć szczenięta już w wieku dziewięciu miesięcy, na początku starzeją się szybko, potem wolniej, a duże psy starzeją się szybciej niż małe."
+   },
+   "nl": {
+    "title": "De leeftijd van je hond keer zeven doen klopt niet 🐶",
+    "description": "De regel van zeven jaar werkt niet. Volgens de Amerikaanse dierenartsenvereniging AVMA staat het eerste jaar van een middelgrote hond gelijk aan zo'n 15 mensenjaren, en een DNA-studie vergeleek een hond van één met een mens van 30. Honden kunnen met negen maanden pups krijgen, verouderen eerst snel en daarna langzamer, en grote honden verouderen sneller dan kleine."
+   },
+   "uk": {
+    "title": "Множити вік собаки на сім неправильно 🐶",
+    "description": "Правило «один до семи» не працює. За даними Американської ветеринарної медичної асоціації, перший рік життя собаки середнього розміру дорівнює приблизно 15 людським рокам, а дослідження ДНК порівняло однорічного пса з 30-річною людиною. Собаки можуть мати цуценят уже в дев'ять місяців, спершу старіють швидко, а потім повільніше, і великі собаки старіють швидше за малих."
+   },
+   "vi": {
+    "title": "Nhân tuổi chó với bảy là sai 🐶",
+    "description": "Quy tắc bảy năm không đúng. Theo Hiệp hội Thú y Hoa Kỳ, năm đầu tiên của một chú chó cỡ vừa tương đương khoảng 15 năm của người, còn một nghiên cứu ADN so sánh chó một tuổi với người 30 tuổi. Chó có thể sinh con khi mới chín tháng tuổi, già đi rất nhanh lúc đầu rồi chậm lại, và chó lớn già nhanh hơn chó nhỏ."
+   },
+   "az": {
+    "title": "İtinin yaşını yeddiyə vurmaq səhvdir 🐶",
+    "description": "Yeddi il qaydası doğru deyil. Amerika Baytarlıq Tibb Assosiasiyasına görə orta ölçülü itin ilk ili təxminən 15 insan ilinə bərabərdir, bir DNT araşdırması isə bir yaşlı iti 30 yaşlı insana bənzədir. İtlər doqquz aylıqkən bala verə bilir, ilk illərində sürətlə qocalır, sonra yavaşlayır, iri itlər də kiçiklərdən tez qocalır."
+   },
+   "ro": {
+    "title": "Să înmulțești vârsta câinelui cu șapte e greșit 🐶",
+    "description": "Regula celor șapte ani nu funcționează. Potrivit asociației medicilor veterinari din SUA, primul an al unui câine de talie medie echivalează cu circa 15 ani umani, iar un studiu ADN a comparat un câine de un an cu un om de 30. Câinii pot avea pui la nouă luni, îmbătrânesc repede la început și apoi mai încet, iar cei mari îmbătrânesc mai repede decât cei mici."
+   }
+  }
+ }
+}

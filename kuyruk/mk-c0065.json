@@ -1,0 +1,185 @@
+{
+ "id": "mk-c0065",
+ "topic": "Neden kendi adımızdaki harfleri daha çok severiz? Ad-harf etkisi",
+ "kategori": "psikoloji",
+ "subject": [
+  "alphabet",
+  "letters"
+ ],
+ "stock_hint": "alphabet letters",
+ "script": {
+  "title": "Adındaki harfleri öbürlerinden daha çok seversin 🔤",
+  "hook_text": "EN SEVDİĞİN HARF HANGİSİ?",
+  "scenes": [
+   {
+    "text": "Bu harflerden adındakileri daha çok seversin.",
+    "visual": "colorful wooden alphabet letters scattered on a table",
+    "stock_query": "alphabet letters",
+    "source": "stock",
+    "callout": "ADINDAKİ HARFLER"
+   },
+   {
+    "text": "Bir deneyde on iki dilde öğrencilere en sevdikleri harfler soruldu.",
+    "visual": "university students writing in notebooks in a classroom",
+    "stock_query": "students writing",
+    "source": "stock",
+    "callout": "12 DİL",
+    "subject": [
+     "students"
+    ]
+   },
+   {
+    "text": "Kendi adlarındaki harfleri daha sık seçtiler; en çok da baş harflerini.",
+    "visual": "close-up of a hand signing a name with a pen on paper",
+    "stock_query": "signature pen",
+    "source": "stock",
+    "callout": "EN ÇOK BAŞ HARFLER",
+    "subject": [
+     "signature"
+    ]
+   },
+   {
+    "text": "Üstelik bunu fark etmeden yaparsın: beyin, sana ait olana biraz daha fazla değer verir.",
+    "visual": "a thoughtful young woman looking off to the side",
+    "stock_query": "woman thinking",
+    "source": "stock",
+    "callout": "FARK ETMEDEN",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Şimdi en sevdiğin harfi düşün; adında var mı?",
+    "visual": "hands arranging wooden alphabet blocks on a table",
+    "stock_query": "alphabet blocks",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "İnsanlar kendi adlarındaki harfleri diğer harflerden daha çok sever; en güçlü etki baş harflerde görülür. Psikolog Jozef Nuttin'in 1987'de on iki Avrupa dilinde yaptığı deneyde öğrenciler kendi adlarındaki harfleri daha sık seçti ve bunu fark etmeden yaptı. Ad-harf etkisi pek çok dilde ve alfabede tekrarlandı; sebebi, beynin sana ait olana biraz daha fazla değer vermesi.",
+  "tags": [
+   "ad harf etkisi",
+   "en sevdiğin harf",
+   "adındaki harfler",
+   "baş harfler",
+   "isim psikolojisi",
+   "örtük benlik saygısı",
+   "psikoloji",
+   "insan psikolojisi",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin en sevdiğin harf adında var mı: evet mi, hayır mı?",
+  "en_title": "You like the letters in your name more than the rest 🔤",
+  "en_description": "In a 1987 experiment across twelve European languages, students picked the letters of their own names as favorites more often than other letters, especially their initials, without realizing why. This name-letter effect has been replicated in many languages and alphabets: the brain gives a little extra value to whatever belongs to you.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Neden kendi adımızdaki harfleri daha çok severiz, en sevdiğin harf neden adında var?\n\nBelçikalı psikolog Jozef Nuttin 1985'te insanların kendi adlarındaki harfleri öbür harflerden daha çok beğendiğini buldu; 1987'de on iki Avrupa dilinde yapılan deneyde öğrenciler en sevdikleri harfler arasında kendi adlarındaki harfleri daha sık seçti, en çok da baş harflerini. Katılımcılar bunu fark etmeden yaptı. Ad-harf etkisi o zamandan beri pek çok dilde ve farklı alfabelerde tekrarlandı, 2020'de yapılan bir tekrar çalışmasında da doğrulandı. Nuttin'e göre sebebi basit: beyin, sana ait olan şeylere biraz daha fazla değer verir.\n\nSenin en sevdiğin harf adında var mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#isim",
+   "#harfler",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "ad harf etkisi",
+   "isim harf etkisi",
+   "en sevdiğin harf",
+   "adındaki harfler",
+   "baş harfler",
+   "isim baş harfi",
+   "harf tercihi",
+   "isim psikolojisi",
+   "örtük benlik saygısı",
+   "benlik saygısı",
+   "sahiplik etkisi",
+   "bilinçdışı tercihler",
+   "beyin bizi kandırıyor",
+   "jozef nuttin",
+   "insan psikolojisi",
+   "sosyal psikoloji",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "name letter effect",
+   "mere ownership effect"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You like the letters in your name more than the rest 🔤",
+    "description": "In a 1987 experiment across twelve European languages, students picked the letters of their own names as favorites more often than other letters, especially their initials, without realizing why. This name-letter effect has been replicated in many languages and alphabets: the brain gives a little extra value to whatever belongs to you."
+   },
+   "es": {
+    "title": "Te gustan más las letras de tu nombre que las demás 🔤",
+    "description": "En un experimento de 1987 en doce idiomas europeos, los estudiantes eligieron como favoritas las letras de su propio nombre con más frecuencia que las demás, sobre todo sus iniciales, sin darse cuenta del motivo. Este efecto de la letra del nombre se ha repetido en muchos idiomas y alfabetos: el cerebro valora un poco más lo que es tuyo."
+   },
+   "pt": {
+    "title": "Você gosta mais das letras do seu nome do que das outras 🔤",
+    "description": "Num experimento de 1987 em doze línguas europeias, os estudantes escolheram como favoritas as letras do próprio nome com mais frequência que as outras, principalmente as iniciais, sem perceber por quê. Esse efeito já foi repetido em muitas línguas e alfabetos: o cérebro dá um pouco mais de valor ao que é seu."
+   },
+   "de": {
+    "title": "Die Buchstaben deines Namens magst du lieber als den Rest 🔤",
+    "description": "In einem Experiment von 1987 in zwölf europäischen Sprachen wählten Studierende die Buchstaben ihres eigenen Namens häufiger als Lieblingsbuchstaben, vor allem ihre Initialen, ohne zu merken, warum. Dieser Namensbuchstaben-Effekt wurde in vielen Sprachen und Alphabeten bestätigt: Das Gehirn schätzt alles ein bisschen mehr, was zu dir gehört."
+   },
+   "fr": {
+    "title": "Tu préfères les lettres de ton prénom aux autres 🔤",
+    "description": "Lors d'une expérience menée en 1987 dans douze langues européennes, des étudiants ont choisi plus souvent comme lettres préférées celles de leur propre nom, surtout leurs initiales, sans s'en rendre compte. Cet effet a été retrouvé dans de nombreuses langues et alphabets : le cerveau accorde un peu plus de valeur à ce qui t'appartient."
+   },
+   "it": {
+    "title": "Le lettere del tuo nome ti piacciono più delle altre 🔤",
+    "description": "In un esperimento del 1987 in dodici lingue europee, gli studenti hanno scelto come preferite le lettere del proprio nome più spesso delle altre, soprattutto le iniziali, senza accorgersene. Questo effetto è stato replicato in molte lingue e alfabeti: il cervello dà un po' più di valore a ciò che ti appartiene."
+   },
+   "ru": {
+    "title": "Буквы своего имени тебе нравятся больше остальных 🔤",
+    "description": "В эксперименте 1987 года на двенадцати европейских языках студенты чаще выбирали любимыми буквы из собственного имени, особенно свои инициалы, и сами этого не замечали. Этот эффект с тех пор подтвердился во многих языках и алфавитах: мозг чуть выше ценит то, что принадлежит тебе."
+   },
+   "ar": {
+    "title": "تحب حروف اسمك أكثر من بقية الحروف 🔤",
+    "description": "في تجربة أُجريت عام 1987 في اثنتي عشرة لغة أوروبية، اختار الطلاب حروف أسمائهم كحروف مفضلة أكثر من غيرها، وخاصة الحروف الأولى من أسمائهم، من دون أن ينتبهوا إلى السبب. وتكرر هذا التأثير في لغات وأبجديات كثيرة: الدماغ يعطي قيمة أكبر قليلًا لكل ما يخصك."
+   },
+   "hi": {
+    "title": "आपको अपने नाम के अक्षर बाक़ी अक्षरों से ज़्यादा पसंद हैं 🔤",
+    "description": "1987 में बारह यूरोपीय भाषाओं में हुए एक प्रयोग में छात्रों ने अपने नाम के अक्षरों को बाक़ी अक्षरों से ज़्यादा बार पसंदीदा चुना, ख़ासकर अपने नाम के पहले अक्षर, और उन्हें इसका एहसास तक नहीं हुआ। यह असर कई भाषाओं और लिपियों में दोहराया जा चुका है: दिमाग़ आपसे जुड़ी हर चीज़ को थोड़ा ज़्यादा महत्व देता है।"
+   },
+   "id": {
+    "title": "Kamu lebih suka huruf di namamu daripada huruf lain 🔤",
+    "description": "Dalam eksperimen tahun 1987 di dua belas bahasa Eropa, para mahasiswa lebih sering memilih huruf-huruf dari nama mereka sendiri sebagai huruf favorit, terutama inisial mereka, tanpa menyadarinya. Efek huruf nama ini sudah terulang di banyak bahasa dan aksara: otak memberi nilai sedikit lebih tinggi pada apa pun yang menjadi milikmu."
+   },
+   "ja": {
+    "title": "自分の名前の文字はほかの文字より好きになる 🔤",
+    "description": "1987年にヨーロッパの12言語で行われた実験では、学生たちは好きな文字として自分の名前に含まれる文字、特にイニシャルをより多く選びましたが、本人はそれに気づいていませんでした。この「ネームレター効果」は多くの言語や文字で再現されています。脳は自分に属するものを少しだけ高く評価するのです。"
+   },
+   "ko": {
+    "title": "내 이름에 든 글자를 다른 글자보다 더 좋아한다 🔤",
+    "description": "1987년 유럽 12개 언어로 진행된 실험에서 학생들은 좋아하는 글자로 자기 이름에 든 글자, 특히 이니셜을 더 자주 골랐지만 스스로는 알아차리지 못했습니다. 이 '이름 글자 효과'는 여러 언어와 문자에서 반복 확인됐습니다. 뇌는 나에게 속한 것을 조금 더 높이 평가합니다."
+   },
+   "pl": {
+    "title": "Litery z twojego imienia lubisz bardziej niż inne 🔤",
+    "description": "W eksperymencie z 1987 roku w dwunastu językach europejskich studenci częściej wybierali jako ulubione litery z własnego imienia i nazwiska, zwłaszcza inicjały, nie zdając sobie z tego sprawy. Ten efekt powtórzono w wielu językach i alfabetach: mózg ceni nieco bardziej to, co należy do ciebie."
+   },
+   "nl": {
+    "title": "De letters van je eigen naam vind je mooier dan de rest 🔤",
+    "description": "In een experiment uit 1987 in twaalf Europese talen kozen studenten de letters van hun eigen naam vaker als favoriet dan andere letters, vooral hun initialen, zonder dat ze het doorhadden. Dit naamlettereffect is in veel talen en alfabetten herhaald: je brein hecht net iets meer waarde aan wat van jou is."
+   },
+   "uk": {
+    "title": "Літери свого імені тобі подобаються більше за інші 🔤",
+    "description": "В експерименті 1987 року дванадцятьма європейськими мовами студенти частіше обирали улюбленими літери з власного імені, особливо свої ініціали, і самі цього не помічали. Цей ефект відтоді підтвердився в багатьох мовах і абетках: мозок трохи вище цінує те, що належить тобі."
+   },
+   "vi": {
+    "title": "Bạn thích các chữ cái trong tên mình hơn những chữ khác 🔤",
+    "description": "Trong một thí nghiệm năm 1987 với mười hai ngôn ngữ châu Âu, sinh viên chọn các chữ cái trong tên mình làm chữ yêu thích thường xuyên hơn, nhất là chữ cái đầu, mà không hề nhận ra. Hiệu ứng này đã được lặp lại ở nhiều ngôn ngữ và bảng chữ cái: não đánh giá cao hơn một chút những gì thuộc về bạn."
+   },
+   "az": {
+    "title": "Adındakı hərfləri digərlərindən çox sevirsən 🔤",
+    "description": "1987-ci ildə on iki Avropa dilində aparılan təcrübədə tələbələr sevimli hərf kimi öz adlarındakı hərfləri, xüsusilə baş hərflərini daha tez-tez seçdilər və bunu fərq etmədilər. Bu təsir o vaxtdan bəri bir çox dildə və əlifbada təkrarlanıb: beyin sənə aid olana bir az daha çox dəyər verir."
+   },
+   "ro": {
+    "title": "Literele din numele tău îți plac mai mult decât celelalte 🔤",
+    "description": "Într-un experiment din 1987 în douăsprezece limbi europene, studenții și-au ales mai des ca litere preferate pe cele din propriul nume, mai ales inițialele, fără să-și dea seama. Efectul a fost confirmat în multe limbi și alfabete: creierul dă puțin mai multă valoare la tot ce îți aparține."
+   }
+  }
+ }
+}
