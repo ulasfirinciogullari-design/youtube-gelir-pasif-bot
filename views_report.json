@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-04T08:49:33+00:00",
+ "checked_at": "2026-11-04T08:52:02+00:00",
  "channel": {
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
   "viewCount": "165630",
@@ -34,7 +34,7 @@
    "title": "Utandığın anı insanlar sandığın kadar fark etmiyor 😳",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 774,
+   "views": 983,
    "likes": 9,
    "comments": 1
   },
@@ -54,7 +54,7 @@
    "title": "Uğur böceği tehlikede dizlerinden kan sızdırır 🐞",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1078,
+   "views": 1076,
    "likes": 7,
    "comments": 1
   },
@@ -74,7 +74,7 @@
    "title": "Her gözünde bir kör nokta var, beynin orayı uyduruyor 👁️",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1231,
+   "views": 1233,
    "likes": 4,
    "comments": 1
   },
@@ -84,7 +84,7 @@
    "title": "Kediler ağızla değil, gözle gülümser 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1199,
+   "views": 1206,
    "likes": 9,
    "comments": 1
   },
@@ -94,7 +94,7 @@
    "title": "Aynada kendi gözünün kaydığını asla göremezsin 🪞",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1168,
+   "views": 1281,
    "likes": 11,
    "comments": 1
   },
@@ -104,7 +104,7 @@
    "title": "Aslanın kükremesi 8 kilometreden duyulur 🦁",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1314,
+   "views": 1229,
    "likes": 10,
    "comments": 1
   },
@@ -114,7 +114,7 @@
    "title": "Bir ricaya tek kelime eklemek evet diyenleri artırıyor 🤝",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 979,
+   "views": 985,
    "likes": 9,
    "comments": 1
   },
@@ -124,7 +124,7 @@
    "title": "Deniz yıldızının beyni yok ama her kolunda göz var 🌊",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1034,
+   "views": 1038,
    "likes": 7,
    "comments": 1
   },
@@ -164,7 +164,7 @@
    "title": "Aynadaki yüzünü fotoğraftakinden daha çok seversin 🪞",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1137,
+   "views": 1138,
    "likes": 2,
    "comments": 1
   },
@@ -174,7 +174,7 @@
    "title": "Japon balığı 3 saniyede unutmaz, aylarca hatırlar 🐟",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1166,
+   "views": 1168,
    "likes": 5,
    "comments": 1
   },
@@ -184,7 +184,7 @@
    "title": "Tavşan arkasını görür ama burnunun dibini göremez 🐰",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1473,
+   "views": 1596,
    "likes": 12,
    "comments": 1
   },
@@ -194,7 +194,7 @@
    "title": "Yılan dilini çıkarınca aslında koku alıyor 🐍",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1309,
+   "views": 1305,
    "likes": 5,
    "comments": 1
   },
@@ -494,7 +494,7 @@
    "title": "Kargalar kötü davranan insanın yüzünü unutmaz 🐦",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 8148,
+   "views": 8149,
    "likes": 45,
    "comments": 1
   },
@@ -4107,6 +4107,208 @@
     "2026-11-01",
     "shorts",
     1199
+   ]
+  ]
+ },
+ "daily_content_type_engaged": {
+  "columns": [
+   "day",
+   "creatorContentType",
+   "views",
+   "engagedViews"
+  ],
+  "rows": [
+   [
+    "2026-10-07",
+    "shorts",
+    1,
+    0
+   ],
+   [
+    "2026-10-08",
+    "shorts",
+    8184,
+    3427
+   ],
+   [
+    "2026-10-09",
+    "shorts",
+    8491,
+    3461
+   ],
+   [
+    "2026-10-10",
+    "shorts",
+    7542,
+    2744
+   ],
+   [
+    "2026-10-10",
+    "videoOnDemand",
+    1,
+    0
+   ],
+   [
+    "2026-10-11",
+    "liveStream",
+    63,
+    15
+   ],
+   [
+    "2026-10-11",
+    "shorts",
+    11587,
+    3757
+   ],
+   [
+    "2026-10-12",
+    "liveStream",
+    16,
+    11
+   ],
+   [
+    "2026-10-12",
+    "shorts",
+    10447,
+    3867
+   ],
+   [
+    "2026-10-12",
+    "videoOnDemand",
+    1,
+    0
+   ],
+   [
+    "2026-10-13",
+    "liveStream",
+    9,
+    4
+   ],
+   [
+    "2026-10-13",
+    "shorts",
+    11823,
+    4726
+   ],
+   [
+    "2026-10-13",
+    "videoOnDemand",
+    2,
+    2
+   ],
+   [
+    "2026-10-14",
+    "shorts",
+    6765,
+    2364
+   ],
+   [
+    "2026-10-15",
+    "shorts",
+    9292,
+    3696
+   ],
+   [
+    "2026-10-16",
+    "shorts",
+    15983,
+    7037
+   ],
+   [
+    "2026-10-17",
+    "shorts",
+    3445,
+    1680
+   ],
+   [
+    "2026-10-18",
+    "shorts",
+    7565,
+    2947
+   ],
+   [
+    "2026-10-19",
+    "shorts",
+    9310,
+    3314
+   ],
+   [
+    "2026-10-20",
+    "shorts",
+    11698,
+    4430
+   ],
+   [
+    "2026-10-21",
+    "shorts",
+    18189,
+    7942
+   ],
+   [
+    "2026-10-22",
+    "shorts",
+    20349,
+    9168
+   ],
+   [
+    "2026-10-23",
+    "shorts",
+    29478,
+    14466
+   ],
+   [
+    "2026-10-24",
+    "shorts",
+    17281,
+    8677
+   ],
+   [
+    "2026-10-25",
+    "shorts",
+    4440,
+    2168
+   ],
+   [
+    "2026-10-26",
+    "shorts",
+    1745,
+    869
+   ],
+   [
+    "2026-10-27",
+    "shorts",
+    898,
+    340
+   ],
+   [
+    "2026-10-28",
+    "shorts",
+    410,
+    106
+   ],
+   [
+    "2026-10-29",
+    "shorts",
+    308,
+    91
+   ],
+   [
+    "2026-10-30",
+    "shorts",
+    83,
+    29
+   ],
+   [
+    "2026-10-31",
+    "shorts",
+    60,
+    26
+   ],
+   [
+    "2026-11-01",
+    "shorts",
+    1199,
+    495
    ]
   ]
  }
