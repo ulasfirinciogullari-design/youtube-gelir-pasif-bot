@@ -1,21 +1,41 @@
 {
- "checked_at": "2026-11-04T08:52:02+00:00",
+ "checked_at": "2026-11-04T12:36:23+00:00",
  "channel": {
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
   "viewCount": "165630",
-  "subscriberCount": "86",
+  "subscriberCount": "88",
   "hiddenSubscriberCount": false,
-  "videoCount": "97"
+  "videoCount": "99"
  },
  "videos": [
+  {
+   "id": "p0eTpBxbXkc",
+   "published": "2026-11-04T11:25:40Z",
+   "title": "Tonlarca ağırlıktaki fil zıplayabilir mi? 🐘",
+   "privacy": "public",
+   "duration": "PT17S",
+   "views": 213,
+   "likes": 0,
+   "comments": 1
+  },
+  {
+   "id": "ulYVGl9guJk",
+   "published": "2026-11-04T09:24:59Z",
+   "title": "Kargalar dörde kadar sesli sayabiliyor 🐦",
+   "privacy": "public",
+   "duration": "PT18S",
+   "views": 864,
+   "likes": 9,
+   "comments": 1
+  },
   {
    "id": "DshtAoWYhn8",
    "published": "2026-11-04T07:26:22Z",
    "title": "Çita kükreyemez ama kuş gibi cıvıldar 🐆",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1,
-   "likes": 0,
+   "views": 721,
+   "likes": 11,
    "comments": 1
   },
   {
@@ -34,8 +54,8 @@
    "title": "Utandığın anı insanlar sandığın kadar fark etmiyor 😳",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 983,
-   "likes": 9,
+   "views": 992,
+   "likes": 10,
    "comments": 1
   },
   {
@@ -44,7 +64,7 @@
    "title": "Kayıttaki o yabancı ses, herkesin duyduğu sesin 🎙️",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 941,
+   "views": 948,
    "likes": 3,
    "comments": 1
   },
@@ -54,7 +74,7 @@
    "title": "Uğur böceği tehlikede dizlerinden kan sızdırır 🐞",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1076,
+   "views": 1106,
    "likes": 7,
    "comments": 1
   },
@@ -64,7 +84,7 @@
    "title": "Köpeklerin yavru köpek bakışı için özel bir kası var 🐶",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1117,
+   "views": 1118,
    "likes": 4,
    "comments": 1
   },
@@ -74,7 +94,7 @@
    "title": "Her gözünde bir kör nokta var, beynin orayı uyduruyor 👁️",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1233,
+   "views": 1241,
    "likes": 4,
    "comments": 1
   },
@@ -84,8 +104,8 @@
    "title": "Kediler ağızla değil, gözle gülümser 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1206,
-   "likes": 9,
+   "views": 1237,
+   "likes": 10,
    "comments": 1
   },
   {
@@ -94,8 +114,8 @@
    "title": "Aynada kendi gözünün kaydığını asla göremezsin 🪞",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1281,
-   "likes": 11,
+   "views": 1455,
+   "likes": 10,
    "comments": 1
   },
   {
@@ -104,8 +124,8 @@
    "title": "Aslanın kükremesi 8 kilometreden duyulur 🦁",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1229,
-   "likes": 10,
+   "views": 1559,
+   "likes": 12,
    "comments": 1
   },
   {
@@ -114,7 +134,7 @@
    "title": "Bir ricaya tek kelime eklemek evet diyenleri artırıyor 🤝",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 985,
+   "views": 1005,
    "likes": 9,
    "comments": 1
   },
@@ -124,7 +144,7 @@
    "title": "Deniz yıldızının beyni yok ama her kolunda göz var 🌊",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1038,
+   "views": 1059,
    "likes": 7,
    "comments": 1
   },
@@ -134,7 +154,7 @@
    "title": "İnsanlara Hayır Dedirtmeyen Küçük Hile 🤫 #psikoloji",
    "privacy": "public",
    "duration": "PT36S",
-   "views": 1203,
+   "views": 1213,
    "likes": 9,
    "comments": 0
   },
@@ -154,7 +174,7 @@
    "title": "Patlamış mısırı patlatan şey aslında su 🍿",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1301,
+   "views": 1310,
    "likes": 11,
    "comments": 1
   },
@@ -174,7 +194,7 @@
    "title": "Japon balığı 3 saniyede unutmaz, aylarca hatırlar 🐟",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1168,
+   "views": 1181,
    "likes": 5,
    "comments": 1
   },
@@ -184,8 +204,8 @@
    "title": "Tavşan arkasını görür ama burnunun dibini göremez 🐰",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1596,
-   "likes": 12,
+   "views": 2175,
+   "likes": 13,
    "comments": 1
   },
   {
@@ -194,7 +214,7 @@
    "title": "Yılan dilini çıkarınca aslında koku alıyor 🐍",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1305,
+   "views": 1322,
    "likes": 5,
    "comments": 1
   },
@@ -214,7 +234,7 @@
    "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5727,
+   "views": 5728,
    "likes": 19,
    "comments": 1
   },
@@ -274,7 +294,7 @@
    "title": "Devekuşunun bir gözü beyninden büyük 👀",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 3274,
+   "views": 3275,
    "likes": 14,
    "comments": 1
   },
@@ -434,7 +454,7 @@
    "title": "Zürafanın dili neden mor-siyah renkte? 🦒",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 3773,
+   "views": 3777,
    "likes": 11,
    "comments": 1
   },
@@ -499,22 +519,22 @@
    "comments": 1
   },
   {
-   "id": "syjCIdu7idw",
-   "published": "2026-10-20T15:27:16Z",
-   "title": "Flamingolar neden tek ayak üstünde durur? 🦩",
-   "privacy": "public",
-   "duration": "PT15S",
-   "views": 2125,
-   "likes": 10,
-   "comments": 1
-  },
-  {
    "id": "srJNIFHPEPE",
    "published": "2026-10-20T13:28:10Z",
    "title": "Su samurları uyurken neden el ele tutuşur? 🦦",
    "privacy": "public",
    "duration": "PT17S",
    "views": 1119,
+   "likes": 4,
+   "comments": 1
+  },
+  {
+   "id": "2xsROncVvew",
+   "published": "2026-10-20T11:25:31Z",
+   "title": "Denizatlarında yavruları babalar doğurur 🌊",
+   "privacy": "public",
+   "duration": "PT15S",
+   "views": 1085,
    "likes": 4,
    "comments": 1
   },
@@ -694,7 +714,7 @@
    "title": "Deniz Neden Tuzlu? Nehirler Neden Tatlı? İşte Cevabı! 🌊",
    "privacy": "public",
    "duration": "PT14S",
-   "views": 1199,
+   "views": 1200,
    "likes": 7,
    "comments": 1
   },
@@ -1486,26 +1506,6 @@
    "duration": "PT39S",
    "views": 202,
    "likes": 2,
-   "comments": 0
-  },
-  {
-   "id": "qAyQa84-g60",
-   "published": "2026-09-24T22:48:47Z",
-   "title": "Why Amazon Built Robots With a Sense of Touch (1/1)",
-   "privacy": "private",
-   "duration": "PT31S",
-   "views": 295,
-   "likes": 5,
-   "comments": 0
-  },
-  {
-   "id": "mYX-Gg1phIo",
-   "published": "2026-09-24T22:01:14Z",
-   "title": "How Amazon Solved City Delivery (1/1)",
-   "privacy": "private",
-   "duration": "PT35S",
-   "views": 469,
-   "likes": 4,
    "comments": 0
   }
  ],
@@ -3428,19 +3428,19 @@
     0
    ],
    [
-    "Q7Fdwf2i1KI",
-    1040,
-    94.82,
-    19,
-    10,
-    0
-   ],
-   [
     "reGyMTFBXkY",
     1040,
     39,
     13,
     7,
+    0
+   ],
+   [
+    "Q7Fdwf2i1KI",
+    1040,
+    94.82,
+    19,
+    10,
     0
    ],
    [
