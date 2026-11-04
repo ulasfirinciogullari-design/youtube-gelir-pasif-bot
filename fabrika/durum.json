@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1094",
+    "views": "1142",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1162",
+    "views": "1289",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "992",
+    "views": "1017",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1055",
+    "views": "1111",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "972",
+    "views": "976",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "493",
+    "views": "941",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "807",
+    "views": "993",
     "reason": null
    }
   },
@@ -1163,6 +1163,36 @@
    "thumbnail": true,
    "at": 1793801552.5509245,
    "chars": 407,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "315",
+    "reason": null
+   }
+  },
+  {
+   "id": "y027",
+   "video_id": "F9Hkco1HKiA",
+   "url": "https://youtube.com/shorts/F9Hkco1HKiA",
+   "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If the Oceans Dried Up in One Day, What Would Happen to You?",
+    "es": "Si los Océanos se Secaran en un Día, ¿Qué Te Pasaría?",
+    "pt": "Se os Oceanos Secassem em um Dia, o Que Aconteceria com Você?",
+    "ar": "لو جفّت المحيطات في يوم واحد، ماذا سيحدث لك؟",
+    "hi": "अगर महासागर एक दिन में सूख जाएँ, तो आपका क्या होगा?",
+    "id": "Jika Lautan Mengering dalam Sehari, Apa yang Terjadi Padamu?",
+    "fr": "Si les Océans S'asséchaient en un Jour, Que T'arriverait-il ?",
+    "de": "Wenn die Ozeane an Einem Tag Austrockneten, Was Würde Dir Passieren?",
+    "ru": "Если бы Океаны Высохли за Один День, Что Стало Бы с Тобой?",
+    "az": "Okeanlar Bir Gündə Qurusaydı Sənə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793815946.8358955,
+   "chars": 392,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1210,7 +1240,8 @@
   "n008",
   "y012",
   "y061",
-  "g009"
+  "g009",
+  "y027"
  ],
  "extra": [
   {
@@ -1276,14 +1307,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-18T09:11:34+00:00",
-   "mod": "saatlik",
-   "title": "1 Günde Kaç Kez Göz Kırparsın?",
-   "url": "https://youtube.com/shorts/ZX3l0E9HzMw",
-   "duration": 25.7,
-   "chars": 408
-  },
   {
    "finished": "2026-10-18T12:10:25+00:00",
    "mod": "saatlik",
@@ -1692,6 +1715,14 @@
    "mod": "igbolum",
    "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
    "chars": 370
+  },
+  {
+   "finished": "2026-11-04T18:12:28+00:00",
+   "mod": "saatlik",
+   "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
+   "url": "https://youtube.com/shorts/F9Hkco1HKiA",
+   "duration": 26.7,
+   "chars": 392
   }
  ],
  "last_fail": 1793568784.6201334,
