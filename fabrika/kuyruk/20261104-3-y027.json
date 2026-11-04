@@ -1,0 +1,264 @@
+{
+ "id": "y027",
+ "series": "Ya Olsaydı?",
+ "q": "Okyanuslar bir günde kurusaydı ne olurdu?",
+ "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
+ "bar": {
+  "hi": "OKYANUSLAR",
+  "rest": "KURUSAYDI?"
+ },
+ "summary": "Okyanuslar bir günde kurusa geride bütün karaları 166 metre gömecek kadar tuz kalırdı! Yağmurların neden neredeyse biteceğini ve her 5 nefesinden 1'ini hangi minik canlıya borçlu olduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Geriye kalan tuz, bütün karaları 166 metre gömmeye yeterdi!",
+   "v": {
+    "t": "number",
+    "bg": "desert",
+    "e": "🧂",
+    "value": "166",
+    "unit": "metre",
+    "label": "Tuz Tabakası",
+    "key": "166"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "50 katlı bina boyu tuz mu?!",
+   "v": {
+    "t": "compare",
+    "bg": "desert",
+    "a": {
+     "e": "🧍",
+     "label": "Sen",
+     "value": "1,7"
+    },
+    "b": {
+     "e": "🏢",
+     "label": "166 Metre Tuz",
+     "value": "166"
+    },
+    "mode": "size",
+    "key": "bina"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir günde Dünya'daki suyun %97'si yok olurdu.",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "🌊",
+     "label": "Okyanus"
+    },
+    "right": {
+     "e": "🏜️",
+     "label": "Tuz Çölü"
+    },
+    "key": "yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl felaket gökyüzünde: yağmur neredeyse biterdi, buharın %86'sı okyanustan!",
+   "v": {
+    "t": "number",
+    "bg": "storm",
+    "e": "🌧️",
+    "value": "%86",
+    "label": "Buhar Okyanustan",
+    "key": "%86'sı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Musluklar da mı kurur?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🚰",
+    "do": "shake",
+    "key": "Musluklar",
+    "label": "Musluk Kurur"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ve her 5 nefesinden 1'ini borçlu olduğun okyanus bakterisi de ölürdü!",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🦠",
+    "do": "vanish",
+    "key": "ölürdü",
+    "label": "5 Nefesten 1'i"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen en son ne zaman denize girdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "🌊"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "ABD Jeoloji Araştırmaları Kurumu'na (USGS) göre okyanuslardaki tuz karalara eşit yayılsaydı 166 metreden kalın bir tabaka oluştururdu.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/faqs/why-ocean-salty"
+  },
+  {
+   "text": "NASA'ya göre okyanuslar Dünya'daki serbest suyun %97'sini tutar ve küresel buharlaşmanın %86'sını sağlar.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/blogs/notes-from-the-field/2012/09/19/an-oceanographer-and-the-water-cycle/"
+  },
+  {
+   "text": "Smithsonian'a göre aldığın her 5 nefesten 1'ini okyanustaki Prochlorococcus bakterisine borçlusun; bu bakteri atmosferdeki oksijenin %20'sini üretir.",
+   "source": "Smithsonian Ocean",
+   "url": "https://ocean.si.edu/ocean-life/plankton/meet-obscure-microbe-influences-climate-ocean-ecosystems-and-perhaps-even"
+  },
+  {
+   "text": "NOAA'ya göre Dünya'daki oksijen üretiminin kabaca yarısı okyanustan gelir.",
+   "source": "NOAA National Ocean Service",
+   "url": "https://oceanservice.noaa.gov/facts/ocean-oxygen.html"
+  }
+ ],
+ "tags": [
+  "okyanuslar kurusaydı",
+  "okyanuslar yok olsaydı",
+  "denizler kurusaydı",
+  "okyanus",
+  "deniz tuzu",
+  "yağmur",
+  "oksijen",
+  "prochlorococcus",
+  "su döngüsü",
+  "what if the oceans dried up",
+  "ocean",
+  "sea salt",
+  "water cycle",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#okyanus",
+  "#deniz",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.usgs.gov/faqs/why-ocean-salty",
+  "https://science.nasa.gov/blogs/notes-from-the-field/2012/09/19/an-oceanographer-and-the-water-cycle/",
+  "https://ocean.si.edu/ocean-life/plankton/meet-obscure-microbe-influences-climate-ocean-ecosystems-and-perhaps-even",
+  "https://oceanservice.noaa.gov/facts/ocean-oxygen.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If the Oceans Dried Up in One Day, What Would Happen to You?",
+   "summary": "If the oceans dried up in a single day, they would leave behind enough salt to bury every continent 166 meters deep! Professor Pi explains why rain would nearly stop and which tiny ocean microbe you owe 1 in every 5 breaths to.",
+   "facts": [
+    "According to the USGS, if the salt in the ocean were spread evenly over Earth's land, it would form a layer more than 166 meters thick.",
+    "According to NASA, the oceans hold 97% of Earth's free water and provide 86% of global evaporation.",
+    "According to the Smithsonian, you owe 1 in every 5 breaths to the ocean bacterium Prochlorococcus, which produces 20% of the oxygen in the atmosphere.",
+    "According to NOAA, roughly half of the oxygen production on Earth comes from the ocean."
+   ]
+  },
+  "es": {
+   "title": "Si los Océanos se Secaran en un Día, ¿Qué Te Pasaría?",
+   "summary": "¡Si los océanos se secaran en un solo día, dejarían sal suficiente para enterrar todos los continentes bajo 166 metros! El profesor Pi explica por qué casi dejaría de llover y a qué diminuto microbio marino le debes 1 de cada 5 respiraciones.",
+   "facts": [
+    "Según el USGS, si la sal del océano se repartiera de forma uniforme sobre la tierra firme, formaría una capa de más de 166 metros de espesor.",
+    "Según la NASA, los océanos contienen el 97% del agua libre de la Tierra y aportan el 86% de la evaporación mundial.",
+    "Según el Smithsonian, le debes 1 de cada 5 respiraciones a la bacteria marina Prochlorococcus, que produce el 20% del oxígeno de la atmósfera.",
+    "Según la NOAA, aproximadamente la mitad de la producción de oxígeno de la Tierra proviene del océano."
+   ]
+  },
+  "pt": {
+   "title": "Se os Oceanos Secassem em um Dia, o Que Aconteceria com Você?",
+   "summary": "Se os oceanos secassem em um só dia, deixariam sal suficiente para enterrar todos os continentes sob 166 metros! O professor Pi explica por que a chuva quase acabaria e a qual micróbio marinho minúsculo você deve 1 em cada 5 respirações.",
+   "facts": [
+    "Segundo o USGS, se o sal do oceano fosse espalhado por igual sobre a terra firme, formaria uma camada de mais de 166 metros de espessura.",
+    "Segundo a NASA, os oceanos guardam 97% da água livre da Terra e fornecem 86% da evaporação global.",
+    "Segundo o Smithsonian, você deve 1 em cada 5 respirações à bactéria marinha Prochlorococcus, que produz 20% do oxigênio da atmosfera.",
+    "Segundo a NOAA, cerca de metade da produção de oxigênio da Terra vem do oceano."
+   ]
+  },
+  "ar": {
+   "title": "لو جفّت المحيطات في يوم واحد، ماذا سيحدث لك؟",
+   "summary": "لو جفّت المحيطات في يوم واحد لتركت خلفها من الملح ما يكفي لدفن كل القارات تحت 166 مترًا! يشرح البروفيسور باي لماذا سيكاد المطر يتوقف، ولأيّ ميكروب بحري صغير تدين بنَفَس واحد من كل 5 أنفاس.",
+   "facts": [
+    "وفقًا لهيئة المسح الجيولوجي الأمريكية (USGS)، لو نُشر ملح المحيط بالتساوي فوق اليابسة لشكّل طبقة يزيد سمكها على 166 مترًا.",
+    "وفقًا لناسا، تحتوي المحيطات على 97% من المياه الحرة على الأرض، وتوفّر 86% من التبخر في العالم.",
+    "وفقًا لمؤسسة سميثسونيان، أنت مدين بنَفَس واحد من كل 5 أنفاس لبكتيريا بروكلوروكوكس البحرية، التي تنتج 20% من أكسجين الغلاف الجوي.",
+    "وفقًا للإدارة الوطنية للمحيطات والغلاف الجوي (NOAA)، يأتي نحو نصف إنتاج الأكسجين على الأرض من المحيط."
+   ]
+  },
+  "hi": {
+   "title": "अगर महासागर एक दिन में सूख जाएँ, तो आपका क्या होगा?",
+   "summary": "अगर महासागर एक ही दिन में सूख जाएँ, तो पीछे इतना नमक बचेगा कि सारे महाद्वीप 166 मीटर नीचे दब जाएँ! प्रोफ़ेसर पाई बताते हैं कि बारिश लगभग क्यों रुक जाएगी और अपनी हर 5 में से 1 साँस के लिए आप किस नन्हे समुद्री जीव के कर्ज़दार हैं।",
+   "facts": [
+    "USGS के अनुसार, अगर समुद्र का नमक ज़मीन पर बराबर फैला दिया जाए, तो 166 मीटर से ज़्यादा मोटी परत बन जाएगी।",
+    "NASA के अनुसार, धरती के मुक्त पानी का 97% महासागरों में है और दुनिया के कुल वाष्पीकरण का 86% वहीं से होता है।",
+    "स्मिथसोनियन के अनुसार, आपकी हर 5 में से 1 साँस समुद्री बैक्टीरिया प्रोक्लोरोकोकस की देन है, जो वायुमंडल की 20% ऑक्सीजन बनाता है।",
+    "NOAA के अनुसार, धरती पर बनने वाली ऑक्सीजन का लगभग आधा हिस्सा महासागर से आता है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Lautan Mengering dalam Sehari, Apa yang Terjadi Padamu?",
+   "summary": "Jika lautan mengering dalam sehari, akan tersisa cukup garam untuk mengubur semua daratan setebal 166 meter! Profesor Pi menjelaskan kenapa hujan hampir berhenti dan mikroba laut mungil mana yang berjasa atas 1 dari setiap 5 napasmu.",
+   "facts": [
+    "Menurut USGS, jika garam di lautan disebarkan merata di seluruh daratan, lapisannya akan lebih tebal dari 166 meter.",
+    "Menurut NASA, lautan menyimpan 97% air bebas di Bumi dan menyumbang 86% penguapan global.",
+    "Menurut Smithsonian, 1 dari setiap 5 napasmu berasal dari bakteri laut Prochlorococcus, yang menghasilkan 20% oksigen di atmosfer.",
+    "Menurut NOAA, kira-kira separuh produksi oksigen di Bumi berasal dari lautan."
+   ]
+  },
+  "fr": {
+   "title": "Si les Océans S'asséchaient en un Jour, Que T'arriverait-il ?",
+   "summary": "Si les océans s'asséchaient en une seule journée, il resterait assez de sel pour enfouir tous les continents sous 166 mètres ! Le professeur Pi explique pourquoi la pluie s'arrêterait presque et à quel minuscule microbe marin tu dois 1 respiration sur 5.",
+   "facts": [
+    "Selon l'USGS, si le sel de l'océan était réparti uniformément sur les terres émergées, il formerait une couche de plus de 166 mètres d'épaisseur.",
+    "Selon la NASA, les océans contiennent 97 % de l'eau libre de la Terre et fournissent 86 % de l'évaporation mondiale.",
+    "Selon la Smithsonian, tu dois 1 respiration sur 5 à la bactérie marine Prochlorococcus, qui produit 20 % de l'oxygène de l'atmosphère.",
+    "Selon la NOAA, environ la moitié de la production d'oxygène sur Terre provient de l'océan."
+   ]
+  },
+  "de": {
+   "title": "Wenn die Ozeane an Einem Tag Austrockneten, Was Würde Dir Passieren?",
+   "summary": "Würden die Ozeane an einem einzigen Tag austrocknen, bliebe genug Salz übrig, um alle Kontinente 166 Meter tief zu begraben! Professor Pi erklärt, warum es fast nicht mehr regnen würde und welcher winzigen Meeresmikrobe du jeden 5. Atemzug verdankst.",
+   "facts": [
+    "Laut USGS würde das Salz der Ozeane, gleichmäßig über das Festland verteilt, eine mehr als 166 Meter dicke Schicht bilden.",
+    "Laut NASA enthalten die Ozeane 97 % des freien Wassers der Erde und liefern 86 % der weltweiten Verdunstung.",
+    "Laut Smithsonian verdankst du jeden 5. Atemzug dem Meeresbakterium Prochlorococcus, das 20 % des Sauerstoffs in der Atmosphäre erzeugt.",
+    "Laut NOAA stammt etwa die Hälfte der Sauerstoffproduktion der Erde aus dem Ozean."
+   ]
+  },
+  "ru": {
+   "title": "Если бы Океаны Высохли за Один День, Что Стало Бы с Тобой?",
+   "summary": "Если бы океаны высохли за один день, после них осталось бы столько соли, что ею можно было бы засыпать все материки слоем в 166 метров! Профессор Пи объясняет, почему почти прекратились бы дожди и какому крошечному морскому микробу ты обязан каждым 5-м вдохом.",
+   "facts": [
+    "По данным USGS, если бы соль из океана равномерно распределить по суше, получился бы слой толщиной более 166 метров.",
+    "По данным NASA, в океанах находится 97% свободной воды Земли, и они дают 86% мирового испарения.",
+    "По данным Смитсоновского института, каждым 5-м вдохом ты обязан морской бактерии Prochlorococcus, которая производит 20% кислорода атмосферы.",
+    "По данным NOAA, примерно половина производства кислорода на Земле приходится на океан."
+   ]
+  },
+  "az": {
+   "title": "Okeanlar Bir Gündə Qurusaydı Sənə Nə Olardı?",
+   "summary": "Okeanlar bir gündə qurusaydı, geridə bütün qitələri 166 metr basdıracaq qədər duz qalardı! Yağışların niyə demək olar ki, kəsiləcəyini və hər 5 nəfəsindən 1-ni hansı kiçik okean canlısına borclu olduğunu Professor Pi danışır.",
+   "facts": [
+    "ABŞ Geoloji Xidmətinə (USGS) görə, okeandakı duz quru ərazilərə bərabər səpilsəydi, qalınlığı 166 metrdən çox olan təbəqə yaranardı.",
+    "NASA-ya görə, okeanlar Yerdəki sərbəst suyun 97%-ni saxlayır və qlobal buxarlanmanın 86%-ni təmin edir.",
+    "Smithsonian-a görə, hər 5 nəfəsindən 1-ni okeandakı Prochlorococcus bakteriyasına borclusan; bu bakteriya atmosferdəki oksigenin 20%-ni istehsal edir.",
+    "NOAA-ya görə, Yerdəki oksigen istehsalının təxminən yarısı okeandan gəlir."
+   ]
+  }
+ }
+}

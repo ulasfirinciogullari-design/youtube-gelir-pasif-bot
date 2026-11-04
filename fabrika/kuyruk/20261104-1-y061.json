@@ -1,0 +1,282 @@
+{
+ "id": "y061",
+ "series": "Ya Olsaydı?",
+ "q": "Ay hiç olmasaydı ne olurdu?",
+ "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
+ "bar": {
+  "hi": "AY",
+  "rest": "HİÇ OLMASAYDI?"
+ },
+ "summary": "Ay hiç olmasaydı günün sadece 6 ila 12 saat sürebilir, sen uyurken güneş doğup batabilirdi! Dinozorların gününün neden 23,5 saat olduğunu ve Ay'sız bir Dünya'da eksenin ne kadar sallanacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Günün sadece 6 ila 12 saat sürebilirdi!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "m",
+      "at": "tl"
+     },
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "spin",
+    "target": 1,
+    "key": "6",
+    "label": "6-12 Saatlik Gün"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uyurken güneş doğup batar mı?!",
+   "v": {
+    "t": "icons",
+    "bg": "night",
+    "items": [
+     {
+      "e": "😴",
+      "label": "Uyku"
+     },
+     {
+      "e": "🌅",
+      "label": "Güneş Doğar"
+     },
+     {
+      "e": "🌇",
+      "label": "Güneş Batar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü Ay, Dünya'yı frenliyor: dinozorların günü 23,5 saatti.",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🦖",
+    "value": "23,5",
+    "unit": "saat",
+    "label": "Dinozorların Günü",
+    "key": "23,5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tehlike: bilim insanlarına göre eksen 20 dereceye kadar sallanabilirdi!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "moon",
+     "label": "Ay Varken",
+     "value": "2"
+    },
+    "b": {
+     "b": "earth",
+     "label": "Ay Olmasa",
+     "value": "20"
+    },
+    "mode": "bar",
+    "key": "20"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Buzul çağı mı gelir?!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🧊",
+    "do": "freeze",
+    "key": "Buzul",
+    "label": "Buzul Çağı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bugünkü 1 ila 2 derecelik sallantının bile buzul çağlarında payı var!",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "Bugünkü Sallantı",
+    "from": 0,
+    "to": 2,
+    "unit": "derece",
+    "e": "🌍",
+    "key": "derecelik"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen 6 saatlik günde ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🌙"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "American Institute of Physics'in Inside Science yayınına göre Ay olmasaydı Dünya'da bir gün yalnızca 6 ila 12 saat sürebilir, bir yılda 1.000'den fazla gün olabilirdi.",
+   "source": "Inside Science (American Institute of Physics)",
+   "url": "https://www.aip.org/inside-science/what-would-happen-if-there-were-no-moon"
+  },
+  {
+   "text": "Live Science'a göre Ay'ın kütleçekiminin gelgitlerle yarattığı sürtünme Dünya'nın dönüşünü yavaşlatıyor; yaklaşık 70 milyon yıl önce bir gün 23,5 saat, bir yıl 372 gündü.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/earth-shorter-days-millions-years-ago.html"
+  },
+  {
+   "text": "Live Science'a göre Dünya'nın eksen eğikliği bugün yalnızca 1-2 derece değişiyor ve bu değişimlerin buzul çağlarında payı olduğu düşünülüyor.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/15467-moonless-earth-potentially-support-life-study-finds.html"
+  },
+  {
+   "text": "Idaho Üniversitesi'nden Jason Barnes ve ekibinin simülasyonlarına göre Ay olmasaydı Dünya'nın eksen eğikliği yarım milyar yılda 10 ila 20 derece değişebilirdi.",
+   "source": "Live Science (Idaho Üniversitesi araştırması)",
+   "url": "https://www.livescience.com/15467-moonless-earth-potentially-support-life-study-finds.html"
+  }
+ ],
+ "tags": [
+  "ay olmasaydı",
+  "ay hiç olmasaydı",
+  "ay olmasaydı ne olurdu",
+  "bir gün kaç saat",
+  "dünyanın ekseni",
+  "eksen eğikliği",
+  "buzul çağı",
+  "dinozorlar",
+  "what if there was no moon",
+  "earth without the moon",
+  "day length",
+  "axial tilt",
+  "moon",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.aip.org/inside-science/what-would-happen-if-there-were-no-moon",
+  "https://www.livescience.com/earth-shorter-days-millions-years-ago.html",
+  "https://www.livescience.com/15467-moonless-earth-potentially-support-life-study-finds.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If the Moon Never Existed, How Long Would a Day Be?",
+   "summary": "Without the Moon, your day might last only 6 to 12 hours, and the Sun could rise and set while you sleep! Professor Pi explains why a dinosaur's day was 23.5 hours long and how much Earth's axis would wobble without the Moon.",
+   "facts": [
+    "According to the American Institute of Physics' Inside Science, without the Moon a day on Earth might last only 6 to 12 hours, and a year could have more than 1,000 days.",
+    "According to Live Science, friction from the tides raised by the Moon's gravity slows Earth's rotation; about 70 million years ago a day lasted 23.5 hours and a year had 372 days.",
+    "According to Live Science, Earth's axial tilt varies by only 1 to 2 degrees today, and these changes are thought to be partly responsible for the ice ages.",
+    "According to simulations by Jason Barnes and colleagues at the University of Idaho, without the Moon Earth's axial tilt could vary by 10 to 20 degrees over half a billion years."
+   ]
+  },
+  "es": {
+   "title": "Si la Luna Nunca Hubiera Existido, ¿Cuánto Duraría un Día?",
+   "summary": "Sin la Luna, tu día podría durar solo de 6 a 12 horas, ¡y el Sol podría salir y ponerse mientras duermes! El profesor Pi explica por qué el día de los dinosaurios duraba 23,5 horas y cuánto se tambalearía el eje de la Tierra sin la Luna.",
+   "facts": [
+    "Según Inside Science, del Instituto Americano de Física, sin la Luna un día en la Tierra podría durar solo de 6 a 12 horas, y un año podría tener más de 1.000 días.",
+    "Según Live Science, la fricción de las mareas que provoca la gravedad de la Luna frena la rotación de la Tierra; hace unos 70 millones de años un día duraba 23,5 horas y un año tenía 372 días.",
+    "Según Live Science, la inclinación del eje de la Tierra hoy varía solo de 1 a 2 grados, y se cree que estos cambios contribuyeron a las glaciaciones.",
+    "Según las simulaciones de Jason Barnes y su equipo de la Universidad de Idaho, sin la Luna la inclinación del eje terrestre podría variar de 10 a 20 grados en 500 millones de años."
+   ]
+  },
+  "pt": {
+   "title": "Se a Lua Nunca Tivesse Existido, Quanto Duraria um Dia?",
+   "summary": "Sem a Lua, seu dia poderia durar só de 6 a 12 horas, e o Sol poderia nascer e se pôr enquanto você dorme! O professor Pi explica por que o dia dos dinossauros tinha 23,5 horas e quanto o eixo da Terra balançaria sem a Lua.",
+   "facts": [
+    "Segundo a Inside Science, do Instituto Americano de Física, sem a Lua um dia na Terra poderia durar só de 6 a 12 horas, e um ano poderia ter mais de 1.000 dias.",
+    "Segundo a Live Science, o atrito das marés causadas pela gravidade da Lua freia a rotação da Terra; há cerca de 70 milhões de anos um dia durava 23,5 horas e um ano tinha 372 dias.",
+    "Segundo a Live Science, a inclinação do eixo da Terra hoje varia só de 1 a 2 graus, e acredita-se que essas mudanças contribuíram para as eras glaciais.",
+    "Segundo simulações de Jason Barnes e colegas da Universidade de Idaho, sem a Lua a inclinação do eixo da Terra poderia variar de 10 a 20 graus em meio bilhão de anos."
+   ]
+  },
+  "ar": {
+   "title": "لو لم يوجد القمر أبدًا، كم ساعة سيستمر اليوم؟",
+   "summary": "من دون القمر قد لا يدوم يومك سوى 6 إلى 12 ساعة، وقد تشرق الشمس وتغرب وأنت نائم! يشرح البروفيسور باي لماذا كان يوم الديناصورات 23.5 ساعة، وكم كان محور الأرض سيتمايل من دون القمر.",
+   "facts": [
+    "وفقًا لمجلة Inside Science التابعة للمعهد الأمريكي للفيزياء، لو لم يوجد القمر لربما استمر اليوم على الأرض 6 إلى 12 ساعة فقط، ولربما ضمّت السنة أكثر من 1,000 يوم.",
+    "وفقًا لموقع Live Science، يُبطئ الاحتكاك الناتج عن المد والجزر الذي تسببه جاذبية القمر دورانَ الأرض؛ فقبل نحو 70 مليون سنة كان اليوم 23.5 ساعة والسنة 372 يومًا.",
+    "وفقًا لموقع Live Science، يتغير ميل محور الأرض اليوم بمقدار 1 إلى 2 درجة فقط، ويُعتقد أن لهذه التغيرات دورًا في العصور الجليدية.",
+    "وفقًا لمحاكاة أجراها جيسون بارنز وزملاؤه في جامعة أيداهو، لو لم يوجد القمر لتغيّر ميل محور الأرض بين 10 و20 درجة خلال نصف مليار سنة."
+   ]
+  },
+  "hi": {
+   "title": "अगर चाँद कभी न होता, तो एक दिन कितने घंटे का होता?",
+   "summary": "चाँद के बिना आपका दिन सिर्फ़ 6 से 12 घंटे का हो सकता था, और आपके सोते-सोते सूरज उगकर डूब भी सकता था! प्रोफ़ेसर पाई बताते हैं कि डायनासोर के ज़माने में दिन 23.5 घंटे का क्यों था और चाँद के बिना धरती की धुरी कितनी डगमगाती।",
+   "facts": [
+    "अमेरिकन इंस्टीट्यूट ऑफ़ फ़िज़िक्स की Inside Science के अनुसार, चाँद न होता तो धरती पर एक दिन सिर्फ़ 6 से 12 घंटे का हो सकता था और एक साल में 1,000 से ज़्यादा दिन हो सकते थे।",
+    "Live Science के अनुसार, चाँद के गुरुत्व से उठने वाले ज्वार का घर्षण धरती के घूमने को धीमा करता है; लगभग 7 करोड़ साल पहले एक दिन 23.5 घंटे का और एक साल 372 दिनों का था।",
+    "Live Science के अनुसार, आज धरती की धुरी का झुकाव सिर्फ़ 1 से 2 डिग्री बदलता है, और माना जाता है कि हिमयुगों में इन बदलावों की भी भूमिका रही है।",
+    "इडाहो विश्वविद्यालय के जेसन बार्न्स और उनके साथियों के सिमुलेशन के अनुसार, चाँद न होता तो धरती की धुरी का झुकाव 50 करोड़ साल में 10 से 20 डिग्री तक बदल सकता था।"
+   ]
+  },
+  "id": {
+   "title": "Jika Bulan Tak Pernah Ada, Berapa Jam Satu Hari?",
+   "summary": "Tanpa Bulan, harimu mungkin hanya 6 sampai 12 jam, dan Matahari bisa terbit lalu terbenam saat kamu tidur! Profesor Pi menjelaskan kenapa sehari di zaman dinosaurus lamanya 23,5 jam dan seberapa besar poros Bumi akan bergoyang tanpa Bulan.",
+   "facts": [
+    "Menurut Inside Science dari American Institute of Physics, tanpa Bulan satu hari di Bumi mungkin hanya berlangsung 6 sampai 12 jam, dan setahun bisa berisi lebih dari 1.000 hari.",
+    "Menurut Live Science, gesekan dari pasang surut akibat gravitasi Bulan memperlambat rotasi Bumi; sekitar 70 juta tahun lalu sehari lamanya 23,5 jam dan setahun 372 hari.",
+    "Menurut Live Science, kemiringan sumbu Bumi kini hanya berubah 1 sampai 2 derajat, dan perubahan ini diduga ikut berperan dalam zaman es.",
+    "Menurut simulasi Jason Barnes dan rekan-rekannya di University of Idaho, tanpa Bulan kemiringan sumbu Bumi bisa berubah 10 sampai 20 derajat dalam setengah miliar tahun."
+   ]
+  },
+  "fr": {
+   "title": "Si la Lune N'avait Jamais Existé, Combien Durerait une Journée ?",
+   "summary": "Sans la Lune, ta journée pourrait ne durer que 6 à 12 heures, et le Soleil pourrait se lever et se coucher pendant ton sommeil ! Le professeur Pi explique pourquoi la journée des dinosaures durait 23,5 heures et à quel point l'axe de la Terre vacillerait sans la Lune.",
+   "facts": [
+    "Selon Inside Science, de l'American Institute of Physics, sans la Lune une journée sur Terre pourrait ne durer que 6 à 12 heures, et une année pourrait compter plus de 1 000 jours.",
+    "Selon Live Science, le frottement des marées dues à la gravité de la Lune ralentit la rotation de la Terre ; il y a environ 70 millions d'années, une journée durait 23,5 heures et une année comptait 372 jours.",
+    "Selon Live Science, l'inclinaison de l'axe de la Terre ne varie aujourd'hui que de 1 à 2 degrés, et ces variations auraient contribué aux glaciations.",
+    "Selon les simulations de Jason Barnes et de ses collègues de l'université de l'Idaho, sans la Lune l'inclinaison de l'axe terrestre pourrait varier de 10 à 20 degrés en un demi-milliard d'années."
+   ]
+  },
+  "de": {
+   "title": "Hätte Es den Mond Nie Gegeben, Wie Lang Wäre Ein Tag?",
+   "summary": "Ohne den Mond könnte dein Tag nur 6 bis 12 Stunden dauern, und die Sonne könnte auf- und untergehen, während du schläfst! Professor Pi erklärt, warum ein Tag zur Zeit der Dinosaurier 23,5 Stunden hatte und wie stark die Erdachse ohne Mond schwanken würde.",
+   "facts": [
+    "Laut Inside Science vom American Institute of Physics könnte ein Tag auf der Erde ohne den Mond nur 6 bis 12 Stunden dauern, und ein Jahr könnte mehr als 1.000 Tage haben.",
+    "Laut Live Science bremst die Reibung der Gezeiten, die die Schwerkraft des Mondes erzeugt, die Erdrotation; vor etwa 70 Millionen Jahren dauerte ein Tag 23,5 Stunden und ein Jahr hatte 372 Tage.",
+    "Laut Live Science schwankt die Neigung der Erdachse heute nur um 1 bis 2 Grad, und diese Schwankungen gelten als Mitursache der Eiszeiten.",
+    "Laut Simulationen von Jason Barnes und Kollegen von der University of Idaho könnte die Neigung der Erdachse ohne Mond in einer halben Milliarde Jahren um 10 bis 20 Grad schwanken."
+   ]
+  },
+  "ru": {
+   "title": "Если бы Луны Никогда Не Было, Сколько Длились Бы Сутки?",
+   "summary": "Без Луны твои сутки могли бы длиться всего от 6 до 12 часов, и Солнце успевало бы взойти и сесть, пока ты спишь! Профессор Пи объясняет, почему во времена динозавров сутки длились 23,5 часа и насколько сильно качалась бы ось Земли без Луны.",
+   "facts": [
+    "По данным Inside Science Американского института физики, без Луны сутки на Земле могли бы длиться всего от 6 до 12 часов, а в году могло бы быть больше 1000 дней.",
+    "По данным Live Science, трение приливов, вызванных гравитацией Луны, замедляет вращение Земли; около 70 миллионов лет назад сутки длились 23,5 часа, а в году было 372 дня.",
+    "По данным Live Science, наклон оси Земли сегодня меняется всего на 1–2 градуса, и считается, что эти изменения отчасти связаны с ледниковыми периодами.",
+    "По расчётам Джейсона Барнса и его коллег из Университета Айдахо, без Луны наклон земной оси мог бы меняться на 10–20 градусов за полмиллиарда лет."
+   ]
+  },
+  "az": {
+   "title": "Ay Heç Olmasaydı Bir Gün Neçə Saat Sürərdi?",
+   "summary": "Ay heç olmasaydı günün cəmi 6-12 saat çəkə bilərdi, sən yatarkən Günəş doğub bata bilərdi! Dinozavrlar dövründə günün niyə 23,5 saat olduğunu və Aysız Yerin oxunun nə qədər yırğalanacağını Professor Pi danışır.",
+   "facts": [
+    "Amerika Fizika İnstitutunun Inside Science nəşrinə görə, Ay olmasaydı Yerdə bir gün cəmi 6-12 saat çəkə, bir ildə isə 1.000-dən çox gün ola bilərdi.",
+    "Live Science-ə görə, Ayın cazibəsinin yaratdığı qabarma-çəkilmələrin sürtünməsi Yerin fırlanmasını yavaşladır; təxminən 70 milyon il əvvəl bir gün 23,5 saat, bir il isə 372 gün idi.",
+    "Live Science-ə görə, Yerin ox meyli bu gün cəmi 1-2 dərəcə dəyişir və bu dəyişikliklərin buzlaq dövrlərində payı olduğu düşünülür.",
+    "Aydaho Universitetindən Ceyson Barns və həmkarlarının simulyasiyalarına görə, Ay olmasaydı Yerin ox meyli yarım milyard ildə 10-20 dərəcə dəyişə bilərdi."
+   ]
+  }
+ }
+}

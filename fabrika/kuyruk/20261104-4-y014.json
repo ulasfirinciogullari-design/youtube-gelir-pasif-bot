@@ -1,0 +1,273 @@
+{
+ "id": "y014",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'yı delip öbür tarafa atlasaydın ne olurdu?",
+ "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
+ "bar": {
+  "hi": "DÜNYA'YI",
+  "rest": "DELİP ATLASAN?"
+ },
+ "summary": "Dünya'yı delip atlasan merkezden saatte 28.000 kilometreden hızlı geçer, 38 dakikada öbür uçtan çıkardın! Tutunamazsan neden geri düşeceğini ve gerçek bir tünelde seni bekleyen 6.000 °C'yi Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Merkezden saatte 28.000 kilometreden hızlı geçerdin!",
+   "v": {
+    "t": "number",
+    "bg": "volcano",
+    "e": "🕳️",
+    "value": "28.000+",
+    "unit": "km/sa",
+    "label": "Merkezde Hızın",
+    "key": "28.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Havasız bir tünelde 38 dakikada öbür uçtan çıkardın; tutunamazsan geri düşerdin!",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "0. DK",
+      "e": "🤸",
+      "label": "Atlayış"
+     },
+     {
+      "when": "19. DK",
+      "e": "🌋",
+      "label": "Merkez"
+     },
+     {
+      "when": "38. DK",
+      "e": "🌏",
+      "label": "Öbür Uç"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yoyo gibi mi gidip gelirim?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🪀",
+    "do": "fall",
+    "key": "Yoyo",
+    "label": "Dünya Yoyosu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gerçekte en derin deliğimiz sadece 12 kilometre ve dibi 180 °C!",
+   "v": {
+    "t": "compare",
+    "bg": "volcano",
+    "a": {
+     "e": "🕳️",
+     "label": "En Derin Delik",
+     "value": "12"
+    },
+    "b": {
+     "b": "earth",
+     "label": "Merkeze 6.371 km",
+     "value": "6371"
+    },
+    "mode": "size",
+    "key": "12"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Merkezde ise 6.000 °C seni beklerdi: Güneş'in yüzeyi kadar sıcak!",
+   "v": {
+    "t": "meter",
+    "bg": "volcano",
+    "label": "Dünya'nın Merkezi",
+    "from": 0,
+    "to": 6000,
+    "unit": "°C",
+    "e": "☀️",
+    "key": "6.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kızarmış Bit olurum!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🤖",
+    "do": "burn",
+    "key": "Kızarmış",
+    "label": "Kızarmış Bit"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bu tünele atlar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🌍"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre McGill Üniversitesi'nden fizikçi Alexander Klotz'un hesabıyla havasız bir tünelden Dünya'nın öbür ucuna düşüş yaklaşık 38 dakika 11 saniye sürer; hız saniyede 8 kilometreyi, yani saatte 28.800 kilometreyi aşar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/50312-how-long-to-fall-through-earth.html"
+  },
+  {
+   "text": "Klotz'a göre öbür uçta bir yere tutunmazsan, geldiğin yoldan geri düşersin.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/50312-how-long-to-fall-through-earth.html"
+  },
+  {
+   "text": "Smithsonian'a göre insanların açtığı en derin delik olan Kola Süper Derin Kuyusu 12.262 metredir; beklenenden yüksek, 180 °C'lik sıcaklıklar yüzünden 1992'de bırakıldı.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/smithsonian-institution/ask-smithsonian-whats-deepest-hole-ever-dug-180954349/"
+  },
+  {
+   "text": "ESRF'deki deneylere göre Dünya'nın merkezine yakın sıcaklık yaklaşık 6.000 °C'dir; NASA'ya göre Güneş'in yüzeyi yaklaşık 5.500 °C'dir.",
+   "source": "ESRF / NASA",
+   "url": "https://www.esrf.fr/news/general/Earth-Center-Hotter"
+  }
+ ],
+ "tags": [
+  "dünyanın merkezi",
+  "dünyayı delip atlasaydın",
+  "dünyanın içinden geçmek",
+  "yer çekimi tüneli",
+  "kola kuyusu",
+  "dünyanın çekirdeği",
+  "dünyanın merkezi kaç derece",
+  "fizik",
+  "hole through the earth",
+  "gravity tunnel",
+  "earth core",
+  "kola superdeep borehole",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dünyanınmerkezi",
+  "#fizik",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/50312-how-long-to-fall-through-earth.html",
+  "https://www.smithsonianmag.com/smithsonian-institution/ask-smithsonian-whats-deepest-hole-ever-dug-180954349/",
+  "https://www.esrf.fr/news/general/Earth-Center-Hotter",
+  "https://science.nasa.gov/sun/facts/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If You Jumped Through a Hole in the Earth, Would You Survive?",
+   "summary": "Jump into a hole through the Earth and you'd pass the center at more than 28,000 km/h, popping out the other side in 38 minutes! Professor Pi explains why you'd fall back if you missed your grip, and the 6,000 °C waiting for you in a real tunnel.",
+   "facts": [
+    "According to Live Science, McGill University physicist Alexander Klotz calculated that a fall through an airless tunnel to the other side of the Earth would take about 38 minutes and 11 seconds, at speeds over 8 km per second (more than 28,800 km/h).",
+    "According to Klotz, if you don't grab onto something at the other end, you'll fall back down the way you came.",
+    "According to Smithsonian, the deepest hole ever dug, the Kola Superdeep Borehole, is 12,262 meters deep; it was abandoned in 1992 because of higher-than-expected temperatures of 180 °C.",
+    "According to experiments at the ESRF, the temperature near Earth's center is about 6,000 °C; according to NASA, the Sun's surface is about 5,500 °C."
+   ]
+  },
+  "es": {
+   "title": "Si Saltaras por un Agujero que Atraviesa la Tierra, ¿Sobrevivirías?",
+   "summary": "¡Si saltaras por un agujero que atraviesa la Tierra, pasarías por el centro a más de 28.000 km/h y saldrías por el otro lado en 38 minutos! El profesor Pi explica por qué volverías a caer si no te agarras, y los 6.000 °C que te esperarían en un túnel real.",
+   "facts": [
+    "Según Live Science, el físico Alexander Klotz, de la Universidad McGill, calculó que caer por un túnel sin aire hasta el otro lado de la Tierra llevaría unos 38 minutos y 11 segundos, a más de 8 km por segundo (más de 28.800 km/h).",
+    "Según Klotz, si no te agarras a algo en el otro extremo, volverás a caer por donde viniste.",
+    "Según Smithsonian, el agujero más profundo jamás excavado, el Pozo Superprofundo de Kola, mide 12.262 metros; se abandonó en 1992 por temperaturas más altas de lo esperado, de 180 °C.",
+    "Según experimentos del ESRF, la temperatura cerca del centro de la Tierra es de unos 6.000 °C; según la NASA, la superficie del Sol está a unos 5.500 °C."
+   ]
+  },
+  "pt": {
+   "title": "Se Você Pulasse num Buraco que Atravessa a Terra, Sobreviveria?",
+   "summary": "Se você pulasse num buraco que atravessa a Terra, passaria pelo centro a mais de 28.000 km/h e sairia do outro lado em 38 minutos! O professor Pi explica por que você cairia de volta se não se segurasse e os 6.000 °C que esperariam você num túnel de verdade.",
+   "facts": [
+    "Segundo a Live Science, o físico Alexander Klotz, da Universidade McGill, calculou que uma queda por um túnel sem ar até o outro lado da Terra levaria cerca de 38 minutos e 11 segundos, a mais de 8 km por segundo (mais de 28.800 km/h).",
+    "Segundo Klotz, se você não se segurar em algo na outra ponta, vai cair de volta pelo mesmo caminho.",
+    "Segundo o Smithsonian, o buraco mais profundo já cavado, o Poço Superprofundo de Kola, tem 12.262 metros; foi abandonado em 1992 por causa de temperaturas mais altas que o esperado, de 180 °C.",
+    "Segundo experimentos do ESRF, a temperatura perto do centro da Terra é de cerca de 6.000 °C; segundo a NASA, a superfície do Sol tem cerca de 5.500 °C."
+   ]
+  },
+  "ar": {
+   "title": "لو قفزت في نفق يخترق الأرض، هل ستنجو؟",
+   "summary": "لو قفزت في نفق يخترق الأرض لعبرت المركز بسرعة تفوق 28,000 كم/س، ولخرجت من الجهة الأخرى بعد 38 دقيقة! يشرح البروفيسور باي لماذا ستسقط عائدًا إن لم تتمسك بشيء، وما حرارة الـ6,000 درجة مئوية التي تنتظرك في نفق حقيقي.",
+   "facts": [
+    "وفقًا لموقع Live Science، حسب الفيزيائي ألكسندر كلوتز من جامعة ماكغيل أن السقوط عبر نفق مفرغ من الهواء إلى الجهة الأخرى من الأرض يستغرق نحو 38 دقيقة و11 ثانية، بسرعة تتجاوز 8 كم في الثانية (أكثر من 28,800 كم/س).",
+    "وفقًا لكلوتز، إن لم تتمسك بشيء عند الطرف الآخر فستسقط عائدًا من حيث أتيت.",
+    "وفقًا لمجلة سميثسونيان، أعمق حفرة حفرها الإنسان، بئر كولا فائقة العمق، يبلغ عمقها 12,262 مترًا، وقد هُجرت عام 1992 بسبب حرارة أعلى من المتوقع بلغت 180 درجة مئوية.",
+    "وفقًا لتجارب في المرفق الأوروبي للإشعاع السنكروتروني (ESRF)، تبلغ الحرارة قرب مركز الأرض نحو 6,000 درجة مئوية، ووفقًا لناسا تبلغ حرارة سطح الشمس نحو 5,500 درجة مئوية."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप धरती के आर-पार बने छेद में कूद जाएँ, तो क्या बचेंगे?",
+   "summary": "धरती के आर-पार बने छेद में कूदें, तो आप केंद्र से 28,000 km/h से भी तेज़ गुज़रेंगे और 38 मिनट में दूसरी तरफ़ निकल आएँगे! प्रोफ़ेसर पाई बताते हैं कि पकड़ न पाने पर आप वापस क्यों गिरेंगे, और असली सुरंग में आपका इंतज़ार कर रहा 6,000 °C।",
+   "facts": [
+    "Live Science के अनुसार, मैकगिल विश्वविद्यालय के भौतिकविद अलेक्ज़ेंडर क्लॉट्ज़ ने गणना की कि हवा-रहित सुरंग से धरती के दूसरी ओर गिरने में लगभग 38 मिनट 11 सेकंड लगेंगे, और रफ़्तार 8 km प्रति सेकंड (28,800 km/h) से ज़्यादा होगी।",
+    "क्लॉट्ज़ के अनुसार, अगर दूसरे सिरे पर आपने कुछ नहीं पकड़ा, तो आप उसी रास्ते से वापस गिर जाएँगे।",
+    "स्मिथसोनियन के अनुसार, अब तक खोदा गया सबसे गहरा छेद, कोला सुपरडीप बोरहोल, 12,262 मीटर गहरा है; उम्मीद से ज़्यादा, 180 °C तापमान के कारण इसे 1992 में छोड़ दिया गया।",
+    "ESRF के प्रयोगों के अनुसार, धरती के केंद्र के पास तापमान लगभग 6,000 °C है; NASA के अनुसार सूरज की सतह लगभग 5,500 °C है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Kamu Melompat ke Lubang Tembus Bumi, Apakah Kamu Selamat?",
+   "summary": "Lompat ke lubang yang menembus Bumi, dan kamu akan melewati pusatnya lebih cepat dari 28.000 km/jam lalu keluar di sisi lain dalam 38 menit! Profesor Pi menjelaskan kenapa kamu akan jatuh kembali jika tak berpegangan, dan suhu 6.000 °C yang menantimu di terowongan sungguhan.",
+   "facts": [
+    "Menurut Live Science, fisikawan Alexander Klotz dari Universitas McGill menghitung bahwa jatuh melalui terowongan hampa udara ke sisi lain Bumi butuh sekitar 38 menit 11 detik, dengan kecepatan lebih dari 8 km per detik (lebih dari 28.800 km/jam).",
+    "Menurut Klotz, jika kamu tidak berpegangan pada sesuatu di ujung lain, kamu akan jatuh kembali lewat jalan yang sama.",
+    "Menurut Smithsonian, lubang terdalam yang pernah digali, Sumur Superdalam Kola, sedalam 12.262 meter; proyek itu dihentikan pada 1992 karena suhu yang lebih tinggi dari perkiraan, mencapai 180 °C.",
+    "Menurut eksperimen di ESRF, suhu di dekat pusat Bumi sekitar 6.000 °C; menurut NASA, permukaan Matahari sekitar 5.500 °C."
+   ]
+  },
+  "fr": {
+   "title": "Si Tu Sautais dans un Trou à Travers la Terre, Survivrais-Tu ?",
+   "summary": "Saute dans un trou qui traverse la Terre et tu passerais le centre à plus de 28 000 km/h, pour ressortir de l'autre côté en 38 minutes ! Le professeur Pi explique pourquoi tu retomberais si tu ne t'accrochais pas, et les 6 000 °C qui t'attendraient dans un vrai tunnel.",
+   "facts": [
+    "Selon Live Science, le physicien Alexander Klotz, de l'université McGill, a calculé qu'une chute dans un tunnel sans air jusqu'à l'autre côté de la Terre durerait environ 38 minutes et 11 secondes, à plus de 8 km par seconde (plus de 28 800 km/h).",
+    "Selon Klotz, si tu ne t'accroches à rien à l'autre bout, tu retomberas par où tu es venu.",
+    "Selon la Smithsonian, le trou le plus profond jamais creusé, le forage superprofond de Kola, atteint 12 262 mètres ; il a été abandonné en 1992 à cause de températures plus élevées que prévu, de 180 °C.",
+    "Selon des expériences menées à l'ESRF, la température près du centre de la Terre est d'environ 6 000 °C ; selon la NASA, la surface du Soleil est à environ 5 500 °C."
+   ]
+  },
+  "de": {
+   "title": "Wenn Du durch ein Loch in der Erde Springst, Würdest Du Überleben?",
+   "summary": "Spring in ein Loch quer durch die Erde, und du rast mit über 28.000 km/h durch den Mittelpunkt und kommst nach 38 Minuten auf der anderen Seite heraus! Professor Pi erklärt, warum du zurückfallen würdest, wenn du dich nicht festhältst, und welche 6.000 °C in einem echten Tunnel auf dich warten.",
+   "facts": [
+    "Laut Live Science hat der Physiker Alexander Klotz von der McGill University berechnet, dass ein Fall durch einen luftleeren Tunnel auf die andere Seite der Erde etwa 38 Minuten und 11 Sekunden dauern würde, mit über 8 km pro Sekunde (mehr als 28.800 km/h).",
+    "Laut Klotz fällst du den ganzen Weg zurück, wenn du dich am anderen Ende nicht festhältst.",
+    "Laut Smithsonian ist das tiefste je gebohrte Loch, die Kola-Bohrung, 12.262 Meter tief; sie wurde 1992 wegen unerwartet hoher Temperaturen von 180 °C aufgegeben.",
+    "Laut Experimenten am ESRF beträgt die Temperatur nahe dem Erdmittelpunkt etwa 6.000 °C; laut NASA hat die Sonnenoberfläche etwa 5.500 °C."
+   ]
+  },
+  "ru": {
+   "title": "Если Прыгнуть в Дыру Сквозь Землю, Ты Бы Выжил?",
+   "summary": "Прыгни в дыру сквозь всю Землю — и ты пронесёшься через центр быстрее 28 000 км/ч и вылетишь с другой стороны через 38 минут! Профессор Пи объясняет, почему ты упадёшь обратно, если не ухватишься, и какие 6000 °C ждали бы тебя в настоящем туннеле.",
+   "facts": [
+    "По данным Live Science, физик Александр Клотц из Университета Макгилла рассчитал, что падение по безвоздушному туннелю на другую сторону Земли заняло бы около 38 минут 11 секунд, а скорость превысила бы 8 км в секунду (более 28 800 км/ч).",
+    "По словам Клотца, если на другом конце ни за что не ухватиться, ты упадёшь обратно тем же путём.",
+    "По данным журнала Smithsonian, самая глубокая скважина в истории, Кольская сверхглубокая, имеет глубину 12 262 метра; её забросили в 1992 году из-за неожиданно высоких температур — 180 °C.",
+    "По данным экспериментов в ESRF, температура вблизи центра Земли около 6000 °C; по данным NASA, температура поверхности Солнца около 5500 °C."
+   ]
+  },
+  "az": {
+   "title": "Yeri Deşib İçinə Tullansaydın Sağ Çıxardınmı?",
+   "summary": "Yeri deşib içinə tullansan, mərkəzdən saatda 28.000 kilometrdən sürətlə keçər, 38 dəqiqəyə o biri tərəfdən çıxardın! Tutunmasan niyə geri düşəcəyini və əsl tuneldə səni gözləyən 6.000 °C-ni Professor Pi danışır.",
+   "facts": [
+    "Live Science-ə görə, McGill Universitetindən fizik Aleksandr Klots hesablayıb ki, havasız tunellə Yerin o biri tərəfinə düşmək təxminən 38 dəqiqə 11 saniyə çəkər, sürət isə saniyədə 8 kilometri (saatda 28.800 kilometri) keçər.",
+    "Klotsa görə, o biri ucda bir şeyə tutunmasan, gəldiyin yolla geri düşəcəksən.",
+    "Smithsonian-a görə, indiyədək qazılmış ən dərin quyu olan Kola İfrat Dərin Quyusu 12.262 metrdir; gözləniləndən yüksək, 180 °C temperatur səbəbindən 1992-ci ildə tərk edilib.",
+    "ESRF-dəki təcrübələrə görə, Yerin mərkəzinə yaxın temperatur təxminən 6.000 °C-dir; NASA-ya görə Günəşin səthi təxminən 5.500 °C-dir."
+   ]
+  }
+ }
+}

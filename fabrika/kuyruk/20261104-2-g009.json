@@ -1,0 +1,281 @@
+{
+ "id": "g009",
+ "series": "1 Gün Boyunca",
+ "q": "Böbreklerin 1 günde ne kadar kan süzer?",
+ "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
+ "bar": {
+  "hi": "BÖBREKLER",
+  "rest": "NE KADAR SÜZER?"
+ },
+ "summary": "Sende 5 litre kadar kan var ama böbreklerin bugün 180 litre süzecek! Yumruk kadar iki organın bunun %99'unu nasıl geri kazandığını ve geri emmeyi bıraksalar saatte kaç litre çiş yapacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Sende 5 litre kadar kan var ama böbreklerin bugün 180 litre süzecek!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "🩸",
+     "label": "Kanın",
+     "value": "5"
+    },
+    "b": {
+     "e": "🫘",
+     "label": "Bugün Süzülen",
+     "value": "180"
+    },
+    "mode": "bar",
+    "key": "180"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Aynı kanı defalarca mı yıkıyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🔁",
+    "do": "spin",
+    "key": "defalarca",
+    "label": "Tekrar Tekrar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yumruk kadar böbreklerinden her dakika 1 litre kan geçiyor!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "✊",
+    "value": "1",
+    "unit": "litre",
+    "label": "Her Dakika",
+    "key": "1"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Süzdüklerinin %99'unu geri emer; sadece 1,5 litresi çişe döner.",
+   "v": {
+    "t": "meter",
+    "bg": "lab",
+    "label": "Geri Emilen",
+    "from": 0,
+    "to": 99,
+    "unit": "%",
+    "e": "♻️",
+    "key": "%99'unu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tehlike: geri emmeyi bıraksa saatte 7,5 litre çiş yapardın!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🚽",
+    "value": "7,5",
+    "unit": "litre",
+    "label": "Her Saat",
+    "key": "7,5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kanım 1 saate bile yetmez!",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🩸",
+     "label": "5 Litre Kan"
+    },
+    "right": {
+     "e": "⏳",
+     "label": "1 Saat Bile Yok"
+    },
+    "key": "yetmez"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bugün kaç bardak su içtin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "💧"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NIH'nin StatPearls kaynağına göre böbrekler dakikada yaklaşık 120 ml, günde yaklaşık 180 litre sıvı süzer; bu da saatte 7,5 litre demektir.",
+   "source": "NIH NCBI StatPearls (Physiology, Glomerular Filtration Rate)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK500032/"
+  },
+  {
+   "text": "NIH StatPearls'e göre süzülen 180 litrenin 178,5 litresi geri emilir; günlük idrar ortalama yalnızca 1,5 litredir.",
+   "source": "NIH NCBI StatPearls (Physiology, Glomerular Filtration Rate)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK500032/"
+  },
+  {
+   "text": "NIH StatPearls'e göre böbrekler kalbin pompaladığı kanın %20-25'ini, yani dakikada yaklaşık 1-1,1 litre kan alır.",
+   "source": "NIH NCBI StatPearls (Physiology, Glomerular Filtration Rate)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK500032/"
+  },
+  {
+   "text": "NIH StatPearls'e göre ortalama bir yetişkinde yaklaşık 5 litre kan dolaşır.",
+   "source": "NIH NCBI StatPearls (Physiology, Blood Volume)",
+   "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK526077/"
+  },
+  {
+   "text": "NIDDK'ye göre her böbrek yaklaşık bir yumruk büyüklüğündedir ve kan gün içinde böbreklerden defalarca geçer.",
+   "source": "NIH NIDDK",
+   "url": "https://www.niddk.nih.gov/health-information/kidney-disease/kidneys-how-they-work"
+  }
+ ],
+ "tags": [
+  "böbrek",
+  "böbrekler ne işe yarar",
+  "böbrekler günde ne kadar kan süzer",
+  "böbrek süzme",
+  "idrar",
+  "çiş",
+  "kan",
+  "insan vücudu",
+  "su içmek",
+  "kidneys",
+  "how much blood do kidneys filter",
+  "kidney function",
+  "human body",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#böbrek",
+  "#vücut",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.ncbi.nlm.nih.gov/books/NBK500032/",
+  "https://www.niddk.nih.gov/health-information/kidney-disease/kidneys-how-they-work",
+  "https://www.ncbi.nlm.nih.gov/sites/books/NBK526077/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Much Blood Do Your Kidneys Filter in 1 Day?",
+   "summary": "You have about 5 liters of blood, yet your kidneys will filter 180 liters today! Professor Pi explains how two fist-sized organs take back 99% of it, and how many liters you would pee per hour if they stopped.",
+   "facts": [
+    "According to NIH's StatPearls, the kidneys filter about 120 ml of fluid per minute, about 180 liters per day, which is 7.5 liters per hour.",
+    "According to NIH's StatPearls, 178.5 of the 180 liters filtered are reabsorbed; average urine output is only about 1.5 liters a day.",
+    "According to NIH's StatPearls, the kidneys receive 20% to 25% of the blood the heart pumps, about 1.0 to 1.1 liters per minute.",
+    "According to NIH's StatPearls, the average adult has nearly 5 liters of circulating blood.",
+    "According to the NIDDK, each kidney is about the size of a fist, and your blood passes through your kidneys many times a day."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánta Sangre Filtran Tus Riñones en 1 Día?",
+   "summary": "Tienes unos 5 litros de sangre, ¡pero tus riñones filtrarán 180 litros hoy! El profesor Pi explica cómo dos órganos del tamaño de un puño recuperan el 99% y cuántos litros orinarías por hora si dejaran de hacerlo.",
+   "facts": [
+    "Según StatPearls de los NIH, los riñones filtran unos 120 ml de líquido por minuto, unos 180 litros al día, es decir, 7,5 litros por hora.",
+    "Según StatPearls de los NIH, de los 180 litros filtrados se reabsorben 178,5; la orina diaria es en promedio de solo 1,5 litros.",
+    "Según StatPearls de los NIH, los riñones reciben entre el 20% y el 25% de la sangre que bombea el corazón, alrededor de 1,0 a 1,1 litros por minuto.",
+    "Según StatPearls de los NIH, un adulto promedio tiene casi 5 litros de sangre circulando.",
+    "Según el NIDDK, cada riñón tiene aproximadamente el tamaño de un puño, y la sangre pasa por los riñones muchas veces al día."
+   ]
+  },
+  "pt": {
+   "title": "Quanto Sangue Seus Rins Filtram em 1 Dia?",
+   "summary": "Você tem cerca de 5 litros de sangue, mas seus rins vão filtrar 180 litros hoje! O professor Pi explica como dois órgãos do tamanho de um punho recuperam 99% disso e quantos litros de xixi você faria por hora se eles parassem.",
+   "facts": [
+    "Segundo o StatPearls dos NIH, os rins filtram cerca de 120 ml de líquido por minuto, cerca de 180 litros por dia, ou seja, 7,5 litros por hora.",
+    "Segundo o StatPearls dos NIH, dos 180 litros filtrados, 178,5 são reabsorvidos; a urina diária é em média de apenas 1,5 litro.",
+    "Segundo o StatPearls dos NIH, os rins recebem de 20% a 25% do sangue bombeado pelo coração, cerca de 1,0 a 1,1 litro por minuto.",
+    "Segundo o StatPearls dos NIH, um adulto médio tem quase 5 litros de sangue circulando.",
+    "Segundo o NIDDK, cada rim tem mais ou menos o tamanho de um punho, e o sangue passa pelos rins muitas vezes por dia."
+   ]
+  },
+  "ar": {
+   "title": "كم من الدم ترشّح كليتاك في يوم واحد؟",
+   "summary": "في جسمك نحو 5 لترات من الدم، لكن كليتيك سترشّحان اليوم 180 لترًا! يشرح البروفيسور باي كيف يستعيد عضوان بحجم قبضة اليد 99% منها، وكم لترًا من البول ستُخرج في الساعة لو توقفا عن ذلك.",
+   "facts": [
+    "وفقًا لمرجع StatPearls التابع للمعاهد الوطنية للصحة الأمريكية، ترشّح الكليتان نحو 120 مل من السوائل في الدقيقة، أي نحو 180 لترًا يوميًا، وهو ما يعادل 7.5 لترات في الساعة.",
+    "وفقًا لـ StatPearls، يُعاد امتصاص 178.5 لترًا من الـ180 لترًا المرشّحة، ولا يتجاوز البول اليومي في المتوسط 1.5 لتر.",
+    "وفقًا لـ StatPearls، تتلقى الكليتان ما بين 20% و25% من الدم الذي يضخه القلب، أي نحو 1.0 إلى 1.1 لتر في الدقيقة.",
+    "وفقًا لـ StatPearls، يدور في جسم البالغ العادي ما يقرب من 5 لترات من الدم.",
+    "وفقًا للمعهد الوطني للسكري وأمراض الجهاز الهضمي والكلى (NIDDK)، كل كلية بحجم قبضة اليد تقريبًا، ويمرّ الدم عبر الكليتين مرات كثيرة في اليوم."
+   ]
+  },
+  "hi": {
+   "title": "आपकी किडनी 1 दिन में कितना खून छानती हैं?",
+   "summary": "आपके शरीर में लगभग 5 लीटर खून है, फिर भी आपकी किडनी आज 180 लीटर छानेंगी! प्रोफ़ेसर पाई बताते हैं कि मुट्ठी जितने दो अंग इसका 99% कैसे वापस ले लेते हैं, और अगर वे रुक जाएँ तो आप हर घंटे कितने लीटर पेशाब करते।",
+   "facts": [
+    "NIH के StatPearls के अनुसार, किडनी हर मिनट लगभग 120 ml तरल छानती हैं, यानी रोज़ लगभग 180 लीटर, जो हर घंटे 7.5 लीटर के बराबर है।",
+    "NIH के StatPearls के अनुसार, छाने गए 180 लीटर में से 178.5 लीटर वापस सोख लिया जाता है; रोज़ का पेशाब औसतन सिर्फ़ 1.5 लीटर होता है।",
+    "NIH के StatPearls के अनुसार, दिल जितना खून पंप करता है उसका 20% से 25%, यानी हर मिनट लगभग 1.0 से 1.1 लीटर, किडनी तक पहुँचता है।",
+    "NIH के StatPearls के अनुसार, एक औसत वयस्क के शरीर में लगभग 5 लीटर खून बहता है।",
+    "NIDDK के अनुसार, हर किडनी लगभग एक मुट्ठी के आकार की होती है, और खून दिन में कई बार किडनी से होकर गुज़रता है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Banyak Darah yang Disaring Ginjalmu dalam 1 Hari?",
+   "summary": "Darahmu cuma sekitar 5 liter, tapi ginjalmu akan menyaring 180 liter hari ini! Profesor Pi menjelaskan bagaimana dua organ sebesar kepalan tangan menyerap kembali 99%-nya, dan berapa liter kamu akan buang air kecil per jam jika ginjal berhenti melakukannya.",
+   "facts": [
+    "Menurut StatPearls dari NIH, ginjal menyaring sekitar 120 ml cairan per menit, sekitar 180 liter per hari, atau 7,5 liter per jam.",
+    "Menurut StatPearls dari NIH, dari 180 liter yang disaring, 178,5 liter diserap kembali; urine harian rata-rata hanya sekitar 1,5 liter.",
+    "Menurut StatPearls dari NIH, ginjal menerima 20% hingga 25% darah yang dipompa jantung, sekitar 1,0 hingga 1,1 liter per menit.",
+    "Menurut StatPearls dari NIH, orang dewasa rata-rata memiliki hampir 5 liter darah yang beredar.",
+    "Menurut NIDDK, setiap ginjal kira-kira sebesar kepalan tangan, dan darah melewati ginjal berkali-kali dalam sehari."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Sang Tes Reins Filtrent-Ils en 1 Jour ?",
+   "summary": "Tu as environ 5 litres de sang, mais tes reins vont filtrer 180 litres aujourd'hui ! Le professeur Pi explique comment deux organes de la taille d'un poing en récupèrent 99 %, et combien de litres tu ferais pipi par heure s'ils arrêtaient.",
+   "facts": [
+    "Selon StatPearls des NIH, les reins filtrent environ 120 ml de liquide par minute, soit environ 180 litres par jour, c'est-à-dire 7,5 litres par heure.",
+    "Selon StatPearls des NIH, sur les 180 litres filtrés, 178,5 litres sont réabsorbés ; l'urine quotidienne ne représente en moyenne que 1,5 litre.",
+    "Selon StatPearls des NIH, les reins reçoivent 20 % à 25 % du sang pompé par le cœur, soit environ 1,0 à 1,1 litre par minute.",
+    "Selon StatPearls des NIH, un adulte moyen possède près de 5 litres de sang en circulation.",
+    "Selon le NIDDK, chaque rein a à peu près la taille d'un poing, et le sang traverse les reins de nombreuses fois par jour."
+   ]
+  },
+  "de": {
+   "title": "Wie Viel Blut Filtern Deine Nieren an 1 Tag?",
+   "summary": "Du hast rund 5 Liter Blut, doch deine Nieren filtern heute 180 Liter! Professor Pi erklärt, wie zwei faustgroße Organe 99 % davon zurückholen und wie viele Liter du pro Stunde pinkeln würdest, wenn sie damit aufhörten.",
+   "facts": [
+    "Laut StatPearls der NIH filtern die Nieren etwa 120 ml Flüssigkeit pro Minute, rund 180 Liter pro Tag, also 7,5 Liter pro Stunde.",
+    "Laut StatPearls der NIH werden von den 180 gefilterten Litern 178,5 Liter zurückgewonnen; die tägliche Urinmenge liegt im Schnitt bei nur 1,5 Litern.",
+    "Laut StatPearls der NIH erhalten die Nieren 20 bis 25 % des Blutes, das das Herz pumpt, etwa 1,0 bis 1,1 Liter pro Minute.",
+    "Laut StatPearls der NIH zirkulieren im Körper eines durchschnittlichen Erwachsenen knapp 5 Liter Blut.",
+    "Laut NIDDK ist jede Niere etwa so groß wie eine Faust, und das Blut fließt mehrmals am Tag durch die Nieren."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Крови Фильтруют Твои Почки за 1 День?",
+   "summary": "В тебе около 5 литров крови, а почки сегодня отфильтруют 180 литров! Профессор Пи объясняет, как два органа размером с кулак возвращают 99% обратно и сколько литров мочи в час ты бы выделял, если бы они перестали это делать.",
+   "facts": [
+    "По данным StatPearls (NIH), почки фильтруют около 120 мл жидкости в минуту, примерно 180 литров в сутки, то есть 7,5 литра в час.",
+    "По данным StatPearls (NIH), из 180 отфильтрованных литров 178,5 литра всасываются обратно; в среднем за сутки образуется лишь около 1,5 литра мочи.",
+    "По данным StatPearls (NIH), почки получают 20–25% крови, которую перекачивает сердце, — около 1,0–1,1 литра в минуту.",
+    "По данным StatPearls (NIH), у среднего взрослого человека циркулирует почти 5 литров крови.",
+    "По данным NIDDK, каждая почка размером примерно с кулак, а кровь проходит через почки много раз за день."
+   ]
+  },
+  "az": {
+   "title": "Böyrəklərin 1 Gündə Nə Qədər Qan Süzür?",
+   "summary": "Səndə təxminən 5 litr qan var, amma böyrəklərin bu gün 180 litr süzəcək! Yumruq boyda iki orqanın bunun 99%-ni necə geri götürdüyünü və geri sorulma dayansa saatda neçə litr sidik ifraz edəcəyini Professor Pi danışır.",
+   "facts": [
+    "NIH-in StatPearls mənbəyinə görə, böyrəklər dəqiqədə təxminən 120 ml, gündə təxminən 180 litr maye süzür; bu, saatda 7,5 litr deməkdir.",
+    "NIH StatPearls-ə görə, süzülən 180 litrin 178,5 litri geri sorulur; gündəlik sidik orta hesabla cəmi 1,5 litrdir.",
+    "NIH StatPearls-ə görə, böyrəklər ürəyin vurduğu qanın 20-25%-ni, yəni dəqiqədə təxminən 1-1,1 litr qan alır.",
+    "NIH StatPearls-ə görə, orta yetkin insanda təxminən 5 litr qan dövr edir.",
+    "NIDDK-yə görə, hər böyrək təxminən bir yumruq boydadır və qan gün ərzində böyrəklərdən dəfələrlə keçir."
+   ]
+  }
+ }
+}

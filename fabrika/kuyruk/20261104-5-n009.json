@@ -1,0 +1,301 @@
+{
+ "id": "n009",
+ "series": "Ne Kadar Büyük?",
+ "q": "Işık ne kadar hızlı?",
+ "title": "Işık Gerçekte Ne Kadar Hızlı?",
+ "bar": {
+  "hi": "IŞIK",
+  "rest": "NE KADAR HIZLI?"
+ },
+ "summary": "Işık olsan 1 saniyede Dünya'nın çevresini 7,5 kez dolaşırdın! Yüzünü ısıtan enerjinin Güneş'in içinden çıkmak için neden 170.000 yıl uğraştığını ve Andromeda'ya bakınca ne kadar eski bir ışık gördüğünü Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Işık olsan, 1 saniyede Dünya'nın çevresini 7,5 kez dolaşırdın!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     },
+     {
+      "b": "star",
+      "size": "xs",
+      "at": "r"
+     }
+    ],
+    "do": "orbit",
+    "target": 1,
+    "key": "7,5",
+    "label": "Saniyede 7,5 Tur"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Midem 3. turda kalır!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "😵‍💫",
+    "do": "spin",
+    "key": "Midem",
+    "label": "Baş Dönmesi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Işığın 1 yıllık yolunu uçak 1 milyon yılda giderdi.",
+   "v": {
+    "t": "compare",
+    "bg": "sky",
+    "a": {
+     "e": "⚡",
+     "label": "Işık: 1 Yıl",
+     "value": "1"
+    },
+    "b": {
+     "e": "✈️",
+     "label": "Uçak: 1 Milyon Yıl",
+     "value": "1.000.000"
+    },
+    "mode": "bar",
+    "key": "milyon"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama yüzünü ısıtan enerji, Güneş'in içinden 170.000 yılda çıkabildi!",
+   "v": {
+    "t": "number",
+    "bg": "sunset",
+    "e": "☀️",
+    "value": "170.000",
+    "unit": "yıl",
+    "label": "Güneş'ten Kaçış",
+    "key": "170.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sonra bana 8 dakikada mı geldi?!",
+   "v": {
+    "t": "timeline",
+    "bg": "sky",
+    "steps": [
+     {
+      "when": "170.000 YIL",
+      "e": "☀️",
+      "label": "Güneş'in İçi"
+     },
+     {
+      "when": "8 DAKİKA",
+      "e": "😎",
+      "label": "Senin Yüzün"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Andromeda'ya bakınca 2,5 milyon yıl önceki ışığı görürsün; türümüz daha yoktu!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "galaxy",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "grow",
+    "target": 0,
+    "key": "2,5",
+    "label": "2,5 Milyon Yıl"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Işık hızında ilk nereye giderdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre ışık hızında giden bir yolcu 1 saniyede ekvatoru yaklaşık 7,5 kez dolaşırdı.",
+   "source": "NASA Glenn Research Center",
+   "url": "https://www.grc.nasa.gov/www/k-12/Numbers/Math/Mathematical_Thinking/how_fast_is_the_speed.htm"
+  },
+  {
+   "text": "Space.com'a göre ışık saniyede yaklaşık 300.000 km yol alır; saatte 965 km giden bir uçak tek bir ışık yılını 1 milyon yılda giderdi. Güneş ışığı gözümüze yaklaşık 8 dakikada ulaşır.",
+   "source": "Space.com",
+   "url": "https://www.space.com/15830-light-speed.html"
+  },
+  {
+   "text": "NASA'ya göre Güneş'in çekirdeğinde üretilen enerjinin konveksiyon bölgesinin tepesine ulaşması yaklaşık 170.000 yıl sürer.",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/sun/facts/"
+  },
+  {
+   "text": "NASA'ya göre Andromeda Galaksisi yaklaşık 2,5 milyon ışık yılı uzaktadır; bugün gördüğümüz ışığı, ilk atalarımız taş aletleri keşfederken yola çıktı.",
+   "source": "NASA Night Sky Network",
+   "url": "https://science.nasa.gov/solar-system/skywatching/night-sky-network/catch-andromeda-rising/"
+  },
+  {
+   "text": "Smithsonian'a göre bizim türümüz Homo sapiens yaklaşık 300.000 yıl önce Afrika'da ortaya çıktı.",
+   "source": "Smithsonian Human Origins",
+   "url": "https://humanorigins.si.edu/evidence/human-fossils/species/homo-sapiens"
+  }
+ ],
+ "tags": [
+  "ışık hızı",
+  "ışık ne kadar hızlı",
+  "ışık gerçekte ne kadar hızlı",
+  "ışık yılı",
+  "güneş ışığı",
+  "andromeda",
+  "uzay",
+  "evren",
+  "ne kadar büyük",
+  "speed of light",
+  "how fast is light",
+  "light year",
+  "andromeda galaxy",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ışıkhızı",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.grc.nasa.gov/www/k-12/Numbers/Math/Mathematical_Thinking/how_fast_is_the_speed.htm",
+  "https://www.space.com/15830-light-speed.html",
+  "https://science.nasa.gov/sun/facts/",
+  "https://science.nasa.gov/solar-system/skywatching/night-sky-network/catch-andromeda-rising/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Fast Is Light Really?",
+   "summary": "If you were light, you'd circle the Earth 7.5 times in 1 second! Professor Pi explains why the energy warming your face took 170,000 years to escape the Sun, and how old the light you see from Andromeda really is.",
+   "facts": [
+    "According to NASA, a traveler moving at the speed of light would circle the equator about 7.5 times in one second.",
+    "According to Space.com, light travels about 300,000 km per second; an airplane flying at 965 km/h would take 1 million years to travel a single light-year. Sunlight takes about 8 minutes to reach our eyes.",
+    "According to NASA, energy made in the Sun's core takes about 170,000 years to reach the top of the convection zone.",
+    "According to NASA, the Andromeda galaxy is about 2.5 million light-years away; the light we see left its stars when our earliest ancestors figured out stone tools.",
+    "According to the Smithsonian, our species, Homo sapiens, evolved in Africa about 300,000 years ago."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Rápida Es la Luz en Realidad?",
+   "summary": "¡Si fueras luz, darías 7,5 vueltas a la Tierra en 1 segundo! El profesor Pi explica por qué la energía que calienta tu cara tardó 170.000 años en salir del Sol y qué tan antigua es la luz que ves de Andrómeda.",
+   "facts": [
+    "Según la NASA, un viajero que se moviera a la velocidad de la luz daría unas 7,5 vueltas al ecuador en un segundo.",
+    "Según Space.com, la luz recorre unos 300.000 km por segundo; un avión a 965 km/h tardaría 1 millón de años en recorrer un solo año luz. La luz del Sol tarda unos 8 minutos en llegar a nuestros ojos.",
+    "Según la NASA, la energía producida en el núcleo del Sol tarda unos 170.000 años en llegar a la parte superior de la zona de convección.",
+    "Según la NASA, la galaxia de Andrómeda está a unos 2,5 millones de años luz; la luz que vemos salió de sus estrellas cuando nuestros primeros antepasados descubrieron las herramientas de piedra.",
+    "Según el Smithsonian, nuestra especie, Homo sapiens, surgió en África hace unos 300.000 años."
+   ]
+  },
+  "pt": {
+   "title": "Qual É a Velocidade Real da Luz?",
+   "summary": "Se você fosse luz, daria 7,5 voltas na Terra em 1 segundo! O professor Pi explica por que a energia que aquece seu rosto levou 170.000 anos para sair do Sol e quão antiga é a luz que você vê de Andrômeda.",
+   "facts": [
+    "Segundo a NASA, um viajante na velocidade da luz daria cerca de 7,5 voltas no equador em um segundo.",
+    "Segundo a Space.com, a luz percorre cerca de 300.000 km por segundo; um avião a 965 km/h levaria 1 milhão de anos para percorrer um único ano-luz. A luz do Sol leva cerca de 8 minutos para chegar aos nossos olhos.",
+    "Segundo a NASA, a energia produzida no núcleo do Sol leva cerca de 170.000 anos para chegar ao topo da zona de convecção.",
+    "Segundo a NASA, a galáxia de Andrômeda fica a cerca de 2,5 milhões de anos-luz; a luz que vemos saiu de suas estrelas quando nossos primeiros ancestrais descobriram as ferramentas de pedra.",
+    "Segundo o Smithsonian, nossa espécie, o Homo sapiens, surgiu na África há cerca de 300.000 anos."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى سرعة الضوء حقًا؟",
+   "summary": "لو كنت ضوءًا لدرت حول الأرض 7.5 مرات في ثانية واحدة! يشرح البروفيسور باي لماذا استغرقت الطاقة التي تدفئ وجهك 170,000 سنة لتخرج من الشمس، وكم هو قديم الضوء الذي تراه من أندروميدا.",
+   "facts": [
+    "وفقًا لناسا، المسافر بسرعة الضوء يدور حول خط الاستواء نحو 7.5 مرات في ثانية واحدة.",
+    "وفقًا لموقع Space.com، يقطع الضوء نحو 300,000 كم في الثانية، وطائرة تسير بسرعة 965 كم/س تحتاج إلى 1 مليون سنة لقطع سنة ضوئية واحدة. ويصل ضوء الشمس إلى أعيننا في نحو 8 دقائق.",
+    "وفقًا لناسا، تستغرق الطاقة المنتَجة في قلب الشمس نحو 170,000 سنة لتصل إلى أعلى منطقة الحمل.",
+    "وفقًا لناسا، تبعد مجرة أندروميدا نحو 2.5 مليون سنة ضوئية، والضوء الذي نراه غادر نجومها حين اكتشف أسلافنا الأوائل الأدوات الحجرية.",
+    "وفقًا لمؤسسة سميثسونيان، ظهر نوعنا، الإنسان العاقل، في أفريقيا قبل نحو 300,000 سنة."
+   ]
+  },
+  "hi": {
+   "title": "प्रकाश असल में कितना तेज़ है?",
+   "summary": "अगर आप प्रकाश होते, तो 1 सेकंड में धरती के 7.5 चक्कर लगा लेते! प्रोफ़ेसर पाई बताते हैं कि आपके चेहरे को गर्माने वाली ऊर्जा को सूरज से बाहर निकलने में 170,000 साल क्यों लगे, और एंड्रोमेडा से आती रोशनी असल में कितनी पुरानी है।",
+   "facts": [
+    "NASA के अनुसार, प्रकाश की गति से चलने वाला यात्री एक सेकंड में भूमध्य रेखा के लगभग 7.5 चक्कर लगा लेगा।",
+    "Space.com के अनुसार, प्रकाश हर सेकंड लगभग 300,000 km चलता है; 965 km/h से उड़ने वाले हवाई जहाज़ को एक प्रकाश-वर्ष तय करने में 10 लाख साल लगेंगे। सूरज की रोशनी हमारी आँखों तक लगभग 8 मिनट में पहुँचती है।",
+    "NASA के अनुसार, सूरज के केंद्र में बनी ऊर्जा को संवहन क्षेत्र के ऊपरी सिरे तक पहुँचने में लगभग 170,000 साल लगते हैं।",
+    "NASA के अनुसार, एंड्रोमेडा आकाशगंगा लगभग 25 लाख प्रकाश-वर्ष दूर है; जो रोशनी हम देखते हैं, वह तब निकली थी जब हमारे शुरुआती पूर्वजों ने पत्थर के औज़ार बनाना सीखा था।",
+    "स्मिथसोनियन के अनुसार, हमारी प्रजाति होमो सेपियन्स लगभग 300,000 साल पहले अफ़्रीका में विकसित हुई।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Cepat Cahaya Sebenarnya?",
+   "summary": "Kalau kamu cahaya, kamu bisa mengelilingi Bumi 7,5 kali dalam 1 detik! Profesor Pi menjelaskan kenapa energi yang menghangatkan wajahmu butuh 170.000 tahun untuk keluar dari Matahari, dan seberapa tua cahaya Andromeda yang kamu lihat.",
+   "facts": [
+    "Menurut NASA, pengelana yang bergerak secepat cahaya akan mengelilingi khatulistiwa sekitar 7,5 kali dalam satu detik.",
+    "Menurut Space.com, cahaya menempuh sekitar 300.000 km per detik; pesawat berkecepatan 965 km/jam butuh 1 juta tahun untuk menempuh satu tahun cahaya. Cahaya Matahari sampai ke mata kita dalam sekitar 8 menit.",
+    "Menurut NASA, energi yang dihasilkan di inti Matahari butuh sekitar 170.000 tahun untuk mencapai puncak zona konveksi.",
+    "Menurut NASA, galaksi Andromeda berjarak sekitar 2,5 juta tahun cahaya; cahaya yang kita lihat meninggalkan bintang-bintangnya saat nenek moyang awal kita menemukan perkakas batu.",
+    "Menurut Smithsonian, spesies kita, Homo sapiens, muncul di Afrika sekitar 300.000 tahun lalu."
+   ]
+  },
+  "fr": {
+   "title": "À Quelle Vitesse Va Vraiment la Lumière ?",
+   "summary": "Si tu étais de la lumière, tu ferais 7,5 fois le tour de la Terre en 1 seconde ! Le professeur Pi explique pourquoi l'énergie qui te chauffe le visage a mis 170 000 ans à sortir du Soleil, et à quel point la lumière d'Andromède que tu vois est ancienne.",
+   "facts": [
+    "Selon la NASA, un voyageur se déplaçant à la vitesse de la lumière ferait environ 7,5 fois le tour de l'équateur en une seconde.",
+    "Selon Space.com, la lumière parcourt environ 300 000 km par seconde ; un avion volant à 965 km/h mettrait 1 million d'années à parcourir une seule année-lumière. La lumière du Soleil met environ 8 minutes à atteindre nos yeux.",
+    "Selon la NASA, l'énergie produite au cœur du Soleil met environ 170 000 ans à atteindre le sommet de la zone de convection.",
+    "Selon la NASA, la galaxie d'Andromède est à environ 2,5 millions d'années-lumière ; la lumière que nous voyons a quitté ses étoiles quand nos premiers ancêtres ont découvert les outils en pierre.",
+    "Selon la Smithsonian, notre espèce, Homo sapiens, est apparue en Afrique il y a environ 300 000 ans."
+   ]
+  },
+  "de": {
+   "title": "Wie Schnell Ist Licht Wirklich?",
+   "summary": "Wärst du Licht, würdest du die Erde in 1 Sekunde 7,5-mal umrunden! Professor Pi erklärt, warum die Energie, die dein Gesicht wärmt, 170.000 Jahre brauchte, um aus der Sonne zu entkommen, und wie alt das Licht ist, das du von Andromeda siehst.",
+   "facts": [
+    "Laut NASA würde ein Reisender mit Lichtgeschwindigkeit den Äquator in einer Sekunde etwa 7,5-mal umrunden.",
+    "Laut Space.com legt Licht etwa 300.000 km pro Sekunde zurück; ein Flugzeug mit 965 km/h bräuchte 1 Million Jahre für ein einziges Lichtjahr. Sonnenlicht erreicht unsere Augen in etwa 8 Minuten.",
+    "Laut NASA braucht die im Sonnenkern erzeugte Energie etwa 170.000 Jahre, um den oberen Rand der Konvektionszone zu erreichen.",
+    "Laut NASA ist die Andromedagalaxie etwa 2,5 Millionen Lichtjahre entfernt; das Licht, das wir sehen, verließ ihre Sterne, als unsere frühesten Vorfahren Steinwerkzeuge entdeckten.",
+    "Laut Smithsonian entstand unsere Art, Homo sapiens, vor etwa 300.000 Jahren in Afrika."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Быстр Свет на Самом Деле?",
+   "summary": "Будь ты светом, ты облетел бы Землю 7,5 раза за 1 секунду! Профессор Пи объясняет, почему энергия, которая греет твоё лицо, 170 000 лет выбиралась из Солнца, и насколько древний свет ты видишь от Андромеды.",
+   "facts": [
+    "По данным NASA, путешественник, движущийся со скоростью света, облетел бы экватор примерно 7,5 раза за одну секунду.",
+    "По данным Space.com, свет проходит около 300 000 км в секунду; самолёту, летящему со скоростью 965 км/ч, понадобился бы 1 миллион лет, чтобы преодолеть всего один световой год. Солнечный свет доходит до наших глаз примерно за 8 минут.",
+    "По данным NASA, энергия, рождённая в ядре Солнца, добирается до верхней границы конвективной зоны примерно за 170 000 лет.",
+    "По данным NASA, галактика Андромеды находится примерно в 2,5 миллиона световых лет от нас; свет, который мы видим, покинул её звёзды, когда наши древнейшие предки открыли каменные орудия.",
+    "По данным Смитсоновского института, наш вид, Homo sapiens, появился в Африке около 300 000 лет назад."
+   ]
+  },
+  "az": {
+   "title": "İşıq Əslində Nə Qədər Sürətlidir?",
+   "summary": "İşıq olsaydın, 1 saniyədə Yerin ətrafını 7,5 dəfə dolanardın! Üzünü isidən enerjinin Günəşin içindən çıxmaq üçün niyə 170.000 il çalışdığını və Andromedaya baxanda nə qədər qədim işıq gördüyünü Professor Pi danışır.",
+   "facts": [
+    "NASA-ya görə, işıq sürəti ilə hərəkət edən səyyah 1 saniyədə ekvatoru təxminən 7,5 dəfə dolanardı.",
+    "Space.com-a görə, işıq saniyədə təxminən 300.000 km yol gedir; saatda 965 km sürətlə uçan təyyarənin cəmi bir işıq ilini qət etməsi 1 milyon il çəkərdi. Günəş işığı gözümüzə təxminən 8 dəqiqəyə çatır.",
+    "NASA-ya görə, Günəşin nüvəsində yaranan enerjinin konveksiya zonasının yuxarısına çatması təxminən 170.000 il çəkir.",
+    "NASA-ya görə, Andromeda qalaktikası təxminən 2,5 milyon işıq ili uzaqdadır; gördüyümüz işıq onun ulduzlarından ilk əcdadlarımız daş alətləri kəşf edəndə yola çıxıb.",
+    "Smithsonian-a görə, bizim növümüz Homo sapiens təxminən 300.000 il əvvəl Afrikada yaranıb."
+   ]
+  }
+ }
+}
