@@ -120,8 +120,15 @@ def main():
             except RuntimeError as e:
                 out["engaged_error"] = str(e)[:200]
             out["videos"] = videos
-            out["days"] = report(access, metrics="views,estimatedMinutesWatched,subscribersGained",
-                                 dimensions="day", sort="day")
+            # engagedViews (plays past the first frame, the pre-2025 count) is what YouTube's 10 million Shorts views
+            # for the Partner Program counts, not "views" (ZK thread, 2026-11-04). Old fields kept if it is refused.
+            try:
+                out["days"] = report(access, metrics="views,engagedViews,estimatedMinutesWatched,subscribersGained",
+                                     dimensions="day", sort="day")
+            except RuntimeError as e:
+                out["days_engaged_error"] = str(e)[:200]
+                out["days"] = report(access, metrics="views,estimatedMinutesWatched,subscribersGained",
+                                     dimensions="day", sort="day")
     except Exception as e:  # noqa: BLE001 - never stop the episode run
         out["error"] = f"{type(e).__name__}: {e}"[:600]
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
