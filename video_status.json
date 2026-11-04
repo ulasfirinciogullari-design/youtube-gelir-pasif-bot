@@ -1,10 +1,10 @@
 {
-  "d1ANnwPwVs0": {
-    "title": "Haftanın En Çok İzlenen 15 Merak Sorusu 🤯 | 19 Ekim Derlemesi",
-    "published_at": "2026-10-19T14:38:09Z",
+  "DshtAoWYhn8": {
+    "title": "Çita kükreyemez ama kuş gibi cıvıldar 🐆",
+    "published_at": "2026-11-04T07:26:22Z",
     "status": {
       "uploadStatus": "processed",
-      "privacyStatus": "private",
+      "privacyStatus": "public",
       "license": "youtube",
       "embeddable": true,
       "publicStatsViewable": true,
@@ -16,10 +16,48 @@
       "likeCount": "0",
       "dislikeCount": "0",
       "favoriteCount": "0",
-      "commentCount": "0"
+      "commentCount": "1"
     },
     "contentDetails": {
-      "duration": "PT4M21S",
+      "duration": "PT15S",
+      "dimension": "2d",
+      "definition": "hd",
+      "caption": "false",
+      "licensedContent": false,
+      "contentRating": {},
+      "projection": "rectangular",
+      "hasCustomThumbnail": true
+    },
+    "processingDetails": {
+      "processingStatus": "succeeded",
+      "fileDetailsAvailability": "available",
+      "processingIssuesAvailability": "available",
+      "tagSuggestionsAvailability": "inProgress",
+      "editorSuggestionsAvailability": "inProgress",
+      "thumbnailsAvailability": "available"
+    }
+  },
+  "Cpws3UCGfHQ": {
+    "title": "Utandığın anı insanlar sandığın kadar fark etmiyor 😳",
+    "published_at": "2026-11-03T21:28:39Z",
+    "status": {
+      "uploadStatus": "processed",
+      "privacyStatus": "public",
+      "license": "youtube",
+      "embeddable": true,
+      "publicStatsViewable": true,
+      "madeForKids": false,
+      "selfDeclaredMadeForKids": false
+    },
+    "statistics": {
+      "viewCount": "869",
+      "likeCount": "9",
+      "dislikeCount": "0",
+      "favoriteCount": "0",
+      "commentCount": "1"
+    },
+    "contentDetails": {
+      "duration": "PT17S",
       "dimension": "2d",
       "definition": "hd",
       "caption": "false",
