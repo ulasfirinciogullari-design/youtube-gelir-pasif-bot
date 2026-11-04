@@ -1,71 +1,18 @@
 {
- "started": "2026-11-04T14:11:35+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-04T17:08:01+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n008",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "51",
-  "videos": "39"
+ "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+ "chars": 370,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18427103050152049",
+  "url": "https://www.instagram.com/reel/DfU9dD3iXrN/",
+  "at": 1793812225.6323884
  },
- "credits_before": [
-  83765,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261104-2-g009.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "g009",
-  "series": "1 Gün Boyunca",
-  "q": "Böbreklerin 1 günde ne kadar kan süzer?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 407,
- "duration": 27.0,
- "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
- "url": "https://youtube.com/shorts/Gyz1vK-E-D4",
- "recent_status": {
-  "y017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1055",
-   "reason": null
-  },
-  "n008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "972",
-   "reason": null
-  },
-  "y012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "493",
-   "reason": null
-  },
-  "y061": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "807",
-   "reason": null
-  },
-  "g009": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  83864,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261104-2-g009.json Böbreklerin 1 günde ne kadar kan süzer? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/DfU9dD3iXrN/"
  ],
- "finished": "2026-11-04T14:12:33+00:00"
+ "finished": "2026-11-04T17:10:25+00:00"
 }

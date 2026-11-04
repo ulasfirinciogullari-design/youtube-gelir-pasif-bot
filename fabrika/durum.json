@@ -1277,12 +1277,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-18T08:09:13+00:00",
-   "mod": "igbolum",
-   "title": "Güneş Gerçekte Ne Kadar Büyük?",
-   "chars": 556
-  },
-  {
    "finished": "2026-10-18T09:11:34+00:00",
    "mod": "saatlik",
    "title": "1 Günde Kaç Kez Göz Kırparsın?",
@@ -1692,6 +1686,12 @@
    "url": "https://youtube.com/shorts/Gyz1vK-E-D4",
    "duration": 27.0,
    "chars": 407
+  },
+  {
+   "finished": "2026-11-04T17:10:25+00:00",
+   "mod": "igbolum",
+   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+   "chars": 370
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1856,6 +1856,11 @@
     "media_id": "18115770749333613",
     "url": "https://www.instagram.com/reel/DfUiDgbDUL3/",
     "at": 1793797855.7009938
+   },
+   "n008": {
+    "media_id": "18427103050152049",
+    "url": "https://www.instagram.com/reel/DfU9dD3iXrN/",
+    "at": 1793812225.6323884
    }
   },
   "eski": [
