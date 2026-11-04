@@ -1,71 +1,18 @@
 {
- "started": "2026-11-04T10:07:13+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-04T13:08:56+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n007",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "51",
-  "videos": "38"
+ "title": "Ay Gerçekte Ne Kadar Uzak?",
+ "chars": 420,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18115770749333613",
+  "url": "https://www.instagram.com/reel/DfUiDgbDUL3/",
+  "at": 1793797855.7009938
  },
- "credits_before": [
-  83399,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261104-1-y061.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y061",
-  "series": "Ya Olsaydı?",
-  "q": "Ay hiç olmasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 374,
- "duration": 25.5,
- "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
- "url": "https://youtube.com/shorts/m0HqyZ1pins",
- "recent_status": {
-  "n007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "976",
-   "reason": null
-  },
-  "y017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1052",
-   "reason": null
-  },
-  "n008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "956",
-   "reason": null
-  },
-  "y012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "399",
-   "reason": null
-  },
-  "y061": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  83489,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261104-1-y061.json Ay hiç olmasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfUiDgbDUL3/"
  ],
- "finished": "2026-11-04T10:08:25+00:00"
+ "finished": "2026-11-04T13:10:55+00:00"
 }

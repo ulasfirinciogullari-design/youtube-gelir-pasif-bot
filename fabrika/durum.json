@@ -1246,12 +1246,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-18T00:04:10+00:00",
-   "mod": "igbolum",
-   "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
-   "chars": 499
-  },
-  {
    "finished": "2026-10-18T06:12:07+00:00",
    "mod": "saatlik",
    "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
@@ -1661,6 +1655,12 @@
    "url": "https://youtube.com/shorts/m0HqyZ1pins",
    "duration": 25.5,
    "chars": 374
+  },
+  {
+   "finished": "2026-11-04T13:10:55+00:00",
+   "mod": "igbolum",
+   "title": "Ay Gerçekte Ne Kadar Uzak?",
+   "chars": 420
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1820,6 +1820,11 @@
     "media_id": "18108020056976727",
     "url": "https://www.instagram.com/reel/DfUGTrugZiK/",
     "at": 1793783307.827269
+   },
+   "n007": {
+    "media_id": "18115770749333613",
+    "url": "https://www.instagram.com/reel/DfUiDgbDUL3/",
+    "at": 1793797855.7009938
    }
   },
   "eski": [
