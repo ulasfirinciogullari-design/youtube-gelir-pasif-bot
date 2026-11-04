@@ -1,5 +1,5 @@
 {
- "at": "2026-11-04T18:06:33+00:00",
+ "at": "2026-11-04T20:06:02+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -16,8 +16,8 @@
  ],
  "kanal_istatistik": {
   "subscriberCount": 51,
-  "viewCount": 33522,
-  "videoCount": 40
+  "viewCount": 35973,
+  "videoCount": 41
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -147,13 +147,13 @@
    "baslik": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?"
   },
   "kJHNXA1I-SU": {
-   "view": 1111,
+   "view": 1112,
    "like": 1,
    "comment": 0,
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
   },
   "-Ob9VS2V1H4": {
-   "view": 1089,
+   "view": 1091,
    "like": 5,
    "comment": 0,
    "baslik": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?"
@@ -207,52 +207,58 @@
    "baslik": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?"
   },
   "QuUL5G3usPE": {
-   "view": 1142,
+   "view": 1133,
    "like": 6,
    "comment": 0,
    "baslik": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?"
   },
   "ExIn5xWxSkY": {
-   "view": 1289,
+   "view": 1292,
    "like": 9,
    "comment": 0,
    "baslik": "Beynin 1 Günde Kaç Kalori Yakar?"
   },
   "kzDr9prfHSw": {
-   "view": 1017,
+   "view": 1022,
    "like": 9,
    "comment": 0,
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1111,
+   "view": 1102,
    "like": 8,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 976,
+   "view": 997,
    "like": 7,
-   "comment": 0,
+   "comment": 2,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 941,
+   "view": 1039,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
   },
   "m0HqyZ1pins": {
-   "view": 807,
-   "like": 4,
+   "view": 994,
+   "like": 3,
    "comment": 0,
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   },
   "Gyz1vK-E-D4": {
-   "view": 315,
-   "like": 3,
+   "view": 440,
+   "like": 5,
    "comment": 0,
    "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
+  },
+  "F9Hkco1HKiA": {
+   "view": 100,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -530,7 +536,7 @@
    "devam_yuzde": 46.1
   },
   "kJHNXA1I-SU": {
-   "views": 1109,
+   "views": 1110,
    "estimatedMinutesWatched": 134,
    "averageViewDuration": 12,
    "averageViewPercentage": 50.93,
@@ -541,7 +547,7 @@
    "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
    "sources": {
     "SHORTS": 970,
-    "YT_SEARCH": 134,
+    "YT_SEARCH": 135,
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
@@ -549,8 +555,27 @@
    "engagedViews": 587,
    "devam_yuzde": 52.9
   },
+  "ExIn5xWxSkY": {
+   "views": 1105,
+   "estimatedMinutesWatched": 126,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 50.41,
+   "likes": 8,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
+   "sources": {
+    "SHORTS": 1081,
+    "YT_SEARCH": 21,
+    "YT_OTHER_PAGE": 3,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 481,
+   "devam_yuzde": 43.5
+  },
   "-Ob9VS2V1H4": {
-   "views": 1087,
+   "views": 1089,
    "estimatedMinutesWatched": 88,
    "averageViewDuration": 12,
    "averageViewPercentage": 75.67,
@@ -561,12 +586,12 @@
    "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
    "sources": {
     "SHORTS": 986,
-    "YT_SEARCH": 94,
+    "YT_SEARCH": 96,
     "YT_CHANNEL": 6,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 349,
+   "engagedViews": 350,
    "devam_yuzde": 32.1
   },
   "oyPgO_oDYlU": {
@@ -631,7 +656,7 @@
    "devam_yuzde": 24.0
   },
   "VMP8uC3O6jU": {
-   "views": 1003,
+   "views": 1005,
    "estimatedMinutesWatched": 102,
    "averageViewDuration": 14,
    "averageViewPercentage": 76.02,
@@ -642,14 +667,14 @@
    "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
    "sources": {
     "SHORTS": 944,
-    "YT_SEARCH": 51,
+    "YT_SEARCH": 53,
     "YT_CHANNEL": 5,
     "YT_OTHER_PAGE": 2,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 380,
-   "devam_yuzde": 37.9
+   "devam_yuzde": 37.8
   },
   "rijRRVfG0ZY": {
    "views": 999,
@@ -714,10 +739,10 @@
    "devam_yuzde": 52.4
   },
   "ActwPx-yTCQ": {
-   "views": 972,
-   "estimatedMinutesWatched": 185,
+   "views": 977,
+   "estimatedMinutesWatched": 186,
    "averageViewDuration": 19,
-   "averageViewPercentage": 80.15,
+   "averageViewPercentage": 80.19,
    "likes": 8,
    "shares": 0,
    "comments": 2,
@@ -725,13 +750,53 @@
    "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
    "sources": {
     "SHORTS": 888,
-    "YT_SEARCH": 70,
+    "YT_SEARCH": 75,
     "YT_CHANNEL": 13,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 556,
-   "devam_yuzde": 57.2
+   "engagedViews": 557,
+   "devam_yuzde": 57.0
+  },
+  "QuUL5G3usPE": {
+   "views": 945,
+   "estimatedMinutesWatched": 96,
+   "averageViewDuration": 15,
+   "averageViewPercentage": 60.6,
+   "likes": 4,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 2,
+   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
+   "sources": {
+    "SHORTS": 926,
+    "YT_SEARCH": 19,
+    "NO_LINK_OTHER": 0,
+    "YT_CHANNEL": 0
+   },
+   "engagedViews": 308,
+   "devam_yuzde": 32.6
+  },
+  "E9dsm0cEDnM": {
+   "views": 684,
+   "estimatedMinutesWatched": 56,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 51,
+   "likes": 4,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 1,
+   "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
+   "sources": {
+    "SHORTS": 667,
+    "YT_SEARCH": 13,
+    "YT_OTHER_PAGE": 2,
+    "YT_CHANNEL": 1,
+    "IMMERSIVE_LIVE": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 183,
+   "devam_yuzde": 26.8
   },
   "xMYUnZVVITU": {
    "views": 559,
@@ -754,10 +819,10 @@
    "devam_yuzde": 46.9
   },
   "yHElVXfvdsw": {
-   "views": 397,
-   "estimatedMinutesWatched": 81,
+   "views": 406,
+   "estimatedMinutesWatched": 84,
    "averageViewDuration": 22,
-   "averageViewPercentage": 59.39,
+   "averageViewPercentage": 59.489999999999995,
    "likes": 3,
    "shares": 0,
    "comments": 2,
@@ -765,21 +830,21 @@
    "title": "Güneş Gerçekte Ne Kadar Büyük?",
    "sources": {
     "SHORTS": 326,
-    "YT_SEARCH": 45,
+    "YT_SEARCH": 54,
     "YT_CHANNEL": 19,
     "PLAYLIST": 5,
     "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 209,
-   "devam_yuzde": 52.6
+   "engagedViews": 215,
+   "devam_yuzde": 53.0
   },
   "f6WyXXJWASs": {
-   "views": 329,
+   "views": 330,
    "estimatedMinutesWatched": 61,
    "averageViewDuration": 20,
-   "averageViewPercentage": 58.85,
+   "averageViewPercentage": 58.69,
    "likes": 4,
    "shares": 0,
    "comments": 1,
@@ -787,13 +852,13 @@
    "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
    "sources": {
     "SHORTS": 257,
-    "YT_SEARCH": 54,
+    "YT_SEARCH": 55,
     "YT_CHANNEL": 16,
     "PLAYLIST": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 171,
-   "devam_yuzde": 52.0
+   "engagedViews": 172,
+   "devam_yuzde": 52.1
   },
   "-7OxhWXxc8w": {
    "views": 221,
@@ -834,7 +899,7 @@
    "devam_yuzde": 55.4
   },
   "HdSKbp0rIz8": {
-   "views": 109,
+   "views": 112,
    "estimatedMinutesWatched": 16,
    "averageViewDuration": 18,
    "averageViewPercentage": 49.45,
@@ -844,13 +909,13 @@
    "subscribersGained": 0,
    "title": "Güneş Bir Anda Patlasaydı Ne Olurdu?",
    "sources": {
-    "YT_SEARCH": 75,
+    "YT_SEARCH": 78,
     "SHORTS": 18,
     "YT_CHANNEL": 16,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 50,
-   "devam_yuzde": 45.9
+   "devam_yuzde": 44.6
   },
   "X9ouBiGHD4Q": {
    "views": 45,
@@ -1016,6 +1081,13 @@
    "engagedViews": 4,
    "estimatedMinutesWatched": 0,
    "subscribersGained": 0
+  },
+  {
+   "day": "2026-11-02",
+   "views": 2757,
+   "engagedViews": 981,
+   "estimatedMinutesWatched": 282,
+   "subscribersGained": 3
   }
  ]
 }

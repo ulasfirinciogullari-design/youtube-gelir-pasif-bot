@@ -656,7 +656,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1111",
+    "views": "1112",
     "reason": null
    }
   },
@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1089",
+    "views": "1091",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1142",
+    "views": "1144",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1289",
+    "views": "1292",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1017",
+    "views": "1022",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1111",
+    "views": "1102",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "976",
+    "views": "997",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "941",
+    "views": "1039",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "993",
+    "views": "994",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "315",
+    "views": "441",
     "reason": null
    }
   },
@@ -1193,6 +1193,36 @@
    "thumbnail": true,
    "at": 1793815946.8358955,
    "chars": 392,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "104",
+    "reason": null
+   }
+  },
+  {
+   "id": "y014",
+   "video_id": "5lbPgaPW58Y",
+   "url": "https://youtube.com/shorts/5lbPgaPW58Y",
+   "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If You Jumped Through a Hole in the Earth, Would You Survive?",
+    "es": "Si Saltaras por un Agujero que Atraviesa la Tierra, ¿Sobrevivirías?",
+    "pt": "Se Você Pulasse num Buraco que Atravessa a Terra, Sobreviveria?",
+    "ar": "لو قفزت في نفق يخترق الأرض، هل ستنجو؟",
+    "hi": "अगर आप धरती के आर-पार बने छेद में कूद जाएँ, तो क्या बचेंगे?",
+    "id": "Jika Kamu Melompat ke Lubang Tembus Bumi, Apakah Kamu Selamat?",
+    "fr": "Si Tu Sautais dans un Trou à Travers la Terre, Survivrais-Tu ?",
+    "de": "Wenn Du durch ein Loch in der Erde Springst, Würdest Du Überleben?",
+    "ru": "Если Прыгнуть в Дыру Сквозь Землю, Ты Бы Выжил?",
+    "az": "Yeri Deşib İçinə Tullansaydın Sağ Çıxardınmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793822868.9232824,
+   "chars": 389,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1241,7 +1271,8 @@
   "y012",
   "y061",
   "g009",
-  "y027"
+  "y027",
+  "y014"
  ],
  "extra": [
   {
@@ -1307,14 +1338,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-18T12:10:25+00:00",
-   "mod": "saatlik",
-   "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/pJPCpis147c",
-   "duration": 25.3,
-   "chars": 373
-  },
   {
    "finished": "2026-10-18T13:08:10+00:00",
    "mod": "igbolum",
@@ -1723,6 +1746,14 @@
    "url": "https://youtube.com/shorts/F9Hkco1HKiA",
    "duration": 26.7,
    "chars": 392
+  },
+  {
+   "finished": "2026-11-04T20:07:50+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
+   "url": "https://youtube.com/shorts/5lbPgaPW58Y",
+   "duration": 25.7,
+   "chars": 389
   }
  ],
  "last_fail": 1793568784.6201334,
