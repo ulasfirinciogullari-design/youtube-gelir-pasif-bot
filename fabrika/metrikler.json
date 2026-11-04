@@ -1,5 +1,5 @@
 {
- "at": "2026-11-04T13:08:11+00:00",
+ "at": "2026-11-04T14:10:43+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -213,38 +213,38 @@
    "baslik": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?"
   },
   "ExIn5xWxSkY": {
-   "view": 1149,
+   "view": 1162,
    "like": 10,
    "comment": 0,
    "baslik": "Beynin 1 Günde Kaç Kalori Yakar?"
   },
   "kzDr9prfHSw": {
-   "view": 984,
+   "view": 992,
    "like": 9,
    "comment": 0,
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1061,
+   "view": 1055,
    "like": 8,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 969,
+   "view": 972,
    "like": 7,
    "comment": 0,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 403,
-   "like": 5,
+   "view": 493,
+   "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
   },
   "m0HqyZ1pins": {
-   "view": 596,
-   "like": 2,
+   "view": 807,
+   "like": 3,
    "comment": 0,
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   }
@@ -613,14 +613,7 @@
    "comments": 2,
    "subscribersGained": 0,
    "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
-   "sources": {
-    "SHORTS": 980,
-    "YT_SEARCH": 21,
-    "YT_CHANNEL": 10,
-    "YT_OTHER_PAGE": 4,
-    "SOUND_PAGE": 3,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 244,
    "devam_yuzde": 24.0
   },

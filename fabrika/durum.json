@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1089",
+    "views": "1094",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1130",
+    "views": "1162",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "976",
+    "views": "992",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1052",
+    "views": "1055",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "956",
+    "views": "972",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "399",
+    "views": "493",
     "reason": null
    }
   },
@@ -1133,6 +1133,36 @@
    "thumbnail": true,
    "at": 1793786903.9453537,
    "chars": 374,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "807",
+    "reason": null
+   }
+  },
+  {
+   "id": "g009",
+   "video_id": "Gyz1vK-E-D4",
+   "url": "https://youtube.com/shorts/Gyz1vK-E-D4",
+   "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Much Blood Do Your Kidneys Filter in 1 Day?",
+    "es": "¿Cuánta Sangre Filtran Tus Riñones en 1 Día?",
+    "pt": "Quanto Sangue Seus Rins Filtram em 1 Dia?",
+    "ar": "كم من الدم ترشّح كليتاك في يوم واحد؟",
+    "hi": "आपकी किडनी 1 दिन में कितना खून छानती हैं?",
+    "id": "Berapa Banyak Darah yang Disaring Ginjalmu dalam 1 Hari?",
+    "fr": "Combien de Sang Tes Reins Filtrent-Ils en 1 Jour ?",
+    "de": "Wie Viel Blut Filtern Deine Nieren an 1 Tag?",
+    "ru": "Сколько Крови Фильтруют Твои Почки за 1 День?",
+    "az": "Böyrəklərin 1 Gündə Nə Qədər Qan Süzür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793801552.5509245,
+   "chars": 407,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1179,7 +1209,8 @@
   "y017",
   "n008",
   "y012",
-  "y061"
+  "y061",
+  "g009"
  ],
  "extra": [
   {
@@ -1245,14 +1276,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-18T06:12:07+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
-   "url": "https://youtube.com/shorts/0iq7G5-5dds",
-   "duration": 25.8,
-   "chars": 369
-  },
   {
    "finished": "2026-10-18T08:09:13+00:00",
    "mod": "igbolum",
@@ -1661,6 +1684,14 @@
    "mod": "igbolum",
    "title": "Ay Gerçekte Ne Kadar Uzak?",
    "chars": 420
+  },
+  {
+   "finished": "2026-11-04T14:12:33+00:00",
+   "mod": "saatlik",
+   "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
+   "url": "https://youtube.com/shorts/Gyz1vK-E-D4",
+   "duration": 27.0,
+   "chars": 407
   }
  ],
  "last_fail": 1793568784.6201334,
