@@ -13,8 +13,8 @@
   "scenes": [
    {
     "text": "Bu fil saatte yirmi beş kilometreye kadar hızlanabiliyor.",
-    "visual": "an elephant running fast across a dusty savanna",
-    "stock_query": "elephant running",
+    "visual": "an elephant charging straight toward the camera, ears spread, dust flying",
+    "stock_query": "elephant charging",
     "source": "stock",
     "callout": "25 KM/SAAT"
    },

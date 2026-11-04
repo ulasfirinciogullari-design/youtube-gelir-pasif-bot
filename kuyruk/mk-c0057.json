@@ -12,8 +12,8 @@
   "scenes": [
    {
     "text": "İzleyenlerin yarısı bu gorili hiç görmedi.",
-    "visual": "a gorilla walking slowly across the frame",
-    "stock_query": "gorilla walking",
+    "visual": "close-up of a gorilla's face staring straight into the camera",
+    "stock_query": "gorilla face",
     "source": "stock",
     "callout": "YARISI GÖRMEDİ"
    },

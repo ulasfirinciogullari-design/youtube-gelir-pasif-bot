@@ -12,8 +12,8 @@
   "scenes": [
    {
     "text": "Bu boğa, kırmızı görünce kızmaz.",
-    "visual": "a large black bull standing in a green field staring at the camera",
-    "stock_query": "bull field",
+    "visual": "close-up of a black bull's face snorting, staring into the camera",
+    "stock_query": "bull close up",
     "source": "stock",
     "callout": "KIRMIZIYA KIZMAZ"
    },

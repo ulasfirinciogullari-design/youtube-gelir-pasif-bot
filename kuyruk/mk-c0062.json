@@ -13,8 +13,8 @@
   "scenes": [
    {
     "text": "Bu arı bir böceği sokup uçup gidebilir.",
-    "visual": "a honey bee landing on a flower and flying away",
-    "stock_query": "bee flower",
+    "visual": "macro close-up of a honey bee's body and stinger on a flower",
+    "stock_query": "bee macro",
     "source": "stock",
     "callout": "SOKAR, UÇAR GİDER"
    },

@@ -41,6 +41,19 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
 
 `kategori`: hayvan, vücut, psikoloji, doğa veya bilim. `subject`: Pixabay'de aranacak 1-2 İngilizce özne kelimesi.
 
+## İlk kare (deney 11, 4 Kasım'dan itibaren)
+
+- İzlenmeyi en çok belirleyen şey, izleyicinin ilk anda kaydırıp geçmemesi. 4 Kasım verisi: 66 merak Short'unda
+  "kaydırmadan izleyenlerin oranı" (engagedViews / views) ile izlenme arasındaki ilişki 0,69; ortalama izleme
+  yüzdesiyle ilişki yok (-0,03). Oranı en yüksek Short'lar (%49-56, 2.100-15.700 izlenme) ilk karede iddianın
+  anlattığı tuhaflığı yakın planda gösteriyordu: zürafanın koyu dili ("giraffe tongue"), timsahın açık ağzı
+  ("crocodile mouth"), devekuşunun dev gözü ("ostrich head"), tatlıyı koklayan kedi, uyuyan bebek. En düşükler
+  (%24-26, ~1.000 izlenme) genel çekimdi: gün batımında yürüyen fil, yaprağa konan kelebek, nefes alan kadın.
+- Bu yüzden ilk sahnenin `visual` ve `stock_query`'si iddianın konusu olan uzvu ya da nesneyi yakından göstersin
+  (dil, göz, ağız, ayak, yüz), hayvan kameraya baksın ya da tuhaflık karede görünsün. `stock_query` o uzvu
+  adlandırsın ("bull close up", "bee macro", "cracking knuckles"). İlk sahnede manzara, uzaktan yürüyen hayvan,
+  trafik, masa üstü nesne gibi genel çekim yok.
+
 ## Görüntü öznesi (fabrika her klibi buna göre süzer)
 
 - Fabrika yalnızca etiketinde `subject` geçen klipleri alır. Çok kelimeli terimde her kelime gerekir, bu yüzden
@@ -67,7 +80,8 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   video başa sardığında son cümle ile ilk cümle tek bir düşünce gibi okunmalı. Örnek: son cümle "Peki şu an
   senin köpeğin seni hangi renkte görüyor?", ilk cümle "Köpekler kırmızıyı göremez." 3 Kasım: en çok izlenen 3
   Short'umuzda ortalama izleme %92-109 arasındaydı. İzleyici videoyu bitirip başa sarmıştı. 1.000'de kalanlarda
-  bu oran %70-80. Döngü olmayan son cümle yazma. Son cümleye "Yani", "Böylece", "Kısacası", "Bu sayede", "Sonuç
+  bu oran %70-80. Döngü olmayan son cümle yazma. (4 Kasım: 66 Short'ta ortalama izleme yüzdesi izlenmeyi tek
+  başına açıklamıyor; döngü kalıyor ama asıl kaldıraç ilk kare, yukarıya bak.) Son cümleye "Yani", "Böylece", "Kısacası", "Bu sayede", "Sonuç
   olarak", "Özetle" ile başlama; "doğa muhteşem" gibi genel bir lafla bitirme.
 - Sadece doğrulanmış bilgi. Her sayıyı ve iddiayı web'de en az bir güvenilir kaynakla kontrol et; emin değilsen
   sayı verme. Tartışmalıysa "bir görüşe göre" de. Kaynakları dosyaya değil, commit mesajına yaz.
