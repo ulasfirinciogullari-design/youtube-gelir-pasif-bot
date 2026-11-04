@@ -1,22 +1,22 @@
 {
- "started": "2026-11-02T15:45:18+00:00",
+ "started": "2026-11-04T14:45:13+00:00",
  "deneme": false,
- "threads": 88,
- "reply_threads_read": 1,
+ "threads": 100,
+ "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgwYiII9NU9V4sQqpzR4AaABAg.AcJHI13-iboAci7LmmisU6",
-   "kind": "followup",
-   "video": "7xjRSwfX83E",
-   "comment": "ne demek❤",
-   "reply": "@SerapYorğun-n6d Rica ederiz, asıl biz teşekkür ederiz! 😊",
+   "id": "UgyHvZQEwoEvZnh5qd54AaABAg",
+   "kind": "comment",
+   "video": "LK9xEF2uL_o",
+   "comment": "*İkiside*",
+   "reply": "İkisi de akılda kalır tabii ki, hele anılar güzelse! 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-02T15:45:24+00:00"
+ "finished": "2026-11-04T14:45:18+00:00"
 }
