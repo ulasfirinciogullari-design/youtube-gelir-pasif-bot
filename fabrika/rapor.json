@@ -1,71 +1,12 @@
 {
- "started": "2026-11-03T20:07:17+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-04T07:30:42+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "50",
-  "videos": "37"
- },
- "credits_before": [
-  82529,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261103-3-y012.json",
-  "kalan": 0
- },
- "topic": {
-  "id": "y012",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'nın manyetik alanı kaybolsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 353,
- "duration": 24.0,
- "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
- "url": "https://youtube.com/shorts/sKXUwUMgkt0",
- "recent_status": {
-  "g007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1129",
-   "reason": null
-  },
-  "n007": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "864",
-   "reason": null
-  },
-  "y017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1008",
-   "reason": null
-  },
-  "n008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "212",
-   "reason": null
-  },
-  "y012": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  82616,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261103-3-y012.json Dünya'nın manyetik alanı kaybolsaydı ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-11-03T20:08:26+00:00"
+ "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+ "chars": 370,
+ "duration": 25.7,
+ "deneme": "fabrika/deneme/ornek-n008.mp4",
+ "log": [],
+ "finished": "2026-11-04T07:31:45+00:00"
 }

@@ -1215,11 +1215,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-17T19:06:58+00:00",
-   "mod": "saatlik",
-   "error": "SystemExit: Yanlış kanal: anahtar 'Zirvenin Kanunu' kanalına bağlı. Hiçbir şey değiştirilmedi. OAuth Playground'da Ya Olsaydı? kanalını seçerek yeni refresh token alınmalı."
-  },
-  {
    "finished": "2026-10-17T22:19:30+00:00",
    "mod": "zorla",
    "title": "En Büyük Yıldız Ne Kadar Büyük?",
@@ -1628,6 +1623,13 @@
    "url": "https://youtube.com/shorts/sKXUwUMgkt0",
    "duration": 24.0,
    "chars": 353
+  },
+  {
+   "finished": "2026-11-04T07:31:45+00:00",
+   "mod": "ornek",
+   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
+   "duration": 25.7,
+   "chars": 370
   }
  ],
  "last_fail": 1793568784.6201334,
