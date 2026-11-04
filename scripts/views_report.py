@@ -62,6 +62,10 @@ out["daily_sources"] = report(dimensions="day,insightTrafficSourceType", metrics
 out["by_video"] = report(dimensions="video", metrics="views,averageViewPercentage,averageViewDuration,likes,"
                                                      "subscribersGained", sort="-views", maxResults="200")
 out["daily_content_type"] = report(dimensions="day,creatorContentType", metrics="views", sort="day")
+# engagedViews: the pre-2025 Shorts count (playback past the first frame); YPP eligibility uses it, and
+# engagedViews/views shows how many viewers did not swipe away at once. Separate query so an error here
+# cannot break the reports above.
+out["daily_content_type_engaged"] = report(dimensions="day,creatorContentType", metrics="views,engagedViews", sort="day")
 os.makedirs("channel-data", exist_ok=True)
 with open("channel-data/views_report.json", "w") as f:
     json.dump(out, f, ensure_ascii=False, indent=1)
@@ -107,6 +111,7 @@ audit["top_comments"] = {vid: [{"author": t["snippet"]["topLevelComment"]["snipp
                                .get("items", [])] for vid in newest}
 audit["by_video_more"] = report(dimensions="video", metrics="views,shares,comments,subscribersGained,subscribersLost,"
                                                             "averageViewPercentage", sort="-views", maxResults="200")
+audit["by_video_engaged"] = report(dimensions="video", metrics="views,engagedViews", sort="-views", maxResults="200")
 audit["subscribed_status"] = report(dimensions="subscribedStatus", metrics="views,averageViewPercentage")
 audit["age_gender"] = report(dimensions="ageGroup,gender", metrics="viewerPercentage")
 audit["countries"] = report(dimensions="country", metrics="views,subscribersGained", sort="-views", maxResults="15")
