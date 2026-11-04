@@ -33,9 +33,14 @@ let TL = buildTimeline();
 // Instagram lays its top bar over the first ~8% of a Reel, its caption over the bottom fifth and its buttons over the
 // right edge, and its feed and profile grid crop the middle 4:5 / 3:4. The 'ig' layout (EP.layout, set by uret.py for
 // the Instagram copy) keeps the title and subtitles inside what stays visible everywhere; YouTube keeps the original.
+// 'buyuk' (uret.py SAHNE, test from 2026-11-06): the scene 6% bigger and a little lower (more clips wide numbers), Pi and Bit 30% smaller in the
+// bottom corners, so the first frame is mostly the thing the video is about (breakout Turkish science Shorts are
+// full-frame visuals; ours gave a third of the screen to the two characters).
 const LY = EP.layout === 'ig'
-  ? { title: 330, scene: 845, k: .82, band: 1200, pi: [245, 1400], bit: [800, 1380], tag: 0, pill: 0, subs: 1480, hook: 1285, hookUp: 150 }  // no name tags; the series pill falls in the crop
-  : { title: 175, scene: 760, k: 1, band: 1250, pi: [230, 1420], bit: [850, 1400], tag: 1640, pill: 1, subs: 1765, hook: 1450, hookUp: 170 };
+  ? { title: 330, scene: 845, k: .82, band: 1200, pi: [245, 1400], bit: [800, 1380], tag: 0, pill: 0, subs: 1480, hook: 1285, hookUp: 150, cs: 1 }  // no name tags; the series pill falls in the crop
+  : EP.layout === 'buyuk'
+  ? { title: 175, scene: 820, k: 1.06, band: 1430, pi: [150, 1545], bit: [935, 1530], tag: 0, pill: 1, subs: 1765, hook: 1450, hookUp: 170, cs: .62 }
+  : { title: 175, scene: 760, k: 1, band: 1250, pi: [230, 1420], bit: [850, 1400], tag: 1640, pill: 1, subs: 1765, hook: 1450, hookUp: 170, cs: 1 };
 // The first 1.6 s are the hook: half of the viewers swiped away in the first seconds (Studio, 2026-10-20) while every
 // episode opened on the same calm scene. It plays the episode's most striking moment (the reveal on its cover line)
 // raised clear of the question in big letters; the characters and the title bar come in with the cut to the running
@@ -461,7 +466,7 @@ function characters(t, line) {
   const piAct = line && line.who === 'pi', bitAct = line && line.who === 'bit';
   const g = ctx.createLinearGradient(0, LY.band, 0, H); g.addColorStop(0, 'rgba(5,7,25,0)'); g.addColorStop(.35, 'rgba(5,7,25,.85)'); g.addColorStop(1, 'rgba(5,7,25,.95)');
   ctx.fillStyle = g; ctx.fillRect(0, LY.band, W, H - LY.band);
-  const ps = lerp(.82, .9, piAct ? 1 : 0), bs = lerp(.78, .86, bitAct ? 1 : 0);
+  const ps = LY.cs * lerp(.82, .9, piAct ? 1 : 0), bs = LY.cs * lerp(.78, .86, bitAct ? 1 : 0);
   ctx.globalAlpha = piAct || !line ? 1 : .8; drawPi(LY.pi[0], LY.pi[1], ps, t, piTalk, piAct); ctx.globalAlpha = 1;
   ctx.globalAlpha = bitAct || !line ? 1 : .8; drawBit(LY.bit[0], LY.bit[1], bs, t, bitTalk, bitAct); ctx.globalAlpha = 1;
 }

@@ -44,6 +44,10 @@ ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
 # sample (fabrika/deneme/ornek-o0006.mp4) on 2026-11-01. Judged by devam_yuzde against the 47.7% of 10-17..10-20.
 # YO_FOTO=0 turns it off.
 FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
+# Big scene (motor.html LY 'buyuk'): Pi and Bit 38% smaller in the bottom corners, the scene a little bigger and lower,
+# so the first frame is mostly the subject. Built 2026-11-04 for the 10 million goal, to go on after the NASA verdict
+# of 2026-11-06 (both act on the look, so not at the same time). YO_SAHNE=1 turns it on; "ornek" always uses it.
+SAHNE = (os.environ.get("YO_SAHNE") or "0") == "1"
 
 
 def nasa_used(ep):
@@ -245,6 +249,7 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
     hook: open on the cover line's moment with the question in big letters (motor.html HOOK); default ACILIS."""
     motor = HERE / "motor"
     foto = FOTO if foto is None else foto
+    layout = layout or ("buyuk" if SAHNE else None)
     if foto and nasa_used(ep):
         ep["kredi"] = "NASA"
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
@@ -279,7 +284,7 @@ def ornek(ep_id, report):
     timings, mix, chars = ses.make(ep, WORK)
     video, cover = WORK / "video.mp4", WORK / "kapak.jpg"
     report.update({"title": ep["title"], "chars": chars})
-    report["duration"] = round(render(ep, WORK / "timings.json", mix, video, cover, foto=True), 1)
+    report["duration"] = round(render(ep, WORK / "timings.json", mix, video, cover, layout="buyuk", foto=True), 1)
     d = HERE / "deneme"
     d.mkdir(exist_ok=True)
     (d / f"ornek-{ep_id}.mp4").write_bytes(video.read_bytes())
