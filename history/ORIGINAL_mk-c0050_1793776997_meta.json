@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0050",
+  "topic": "Çitalar neden kükreyemez, nasıl ses çıkarır?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Çita kükreyemez ama kuş gibi cıvıldar 🐆",
+  "hook_text": "ÇİTA NASIL BİR SES ÇIKARIR?",
+  "description": "Çitalar neden kükreyemez, çita nasıl bir ses çıkarır?\n\nDünyanın en hızlı kara memelisi olan çita, aslan ve kaplan gibi kükreyemez; bunun yerine mırlar, tıslar, hırlar ve cıvıldar. Cıvıltısı iri bir kedi için alışılmadık derecede incedir ve kuş ötüşüne benzer. Anne çita yavrularını çağırırken bu sesi kullanır.\n\nSence hangisi daha tuhaf: çitanın kükreyememesi mi, kuş gibi cıvıldaması mı?\n\n#çita #vahşidoğa #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0050",
+  "tags": [
+    "çita",
+    "çitalar",
+    "çita sesi",
+    "çita kükrer mi",
+    "çita neden kükreyemez",
+    "çita cıvıltısı",
+    "çita yavrusu",
+    "en hızlı hayvan",
+    "en hızlı kara hayvanı",
+    "büyük kediler",
+    "aslan kükremesi",
+    "hayvan sesleri",
+    "savana",
+    "afrika hayvanları",
+    "vahşi doğa",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilim",
+    "merak",
+    "belgesel",
+    "cheetah",
+    "cheetah chirp",
+    "shorts",
+    "bilgi",
+    "zirvenin kanunu",
+    "cita",
+    "citalar",
+    "cita sesi",
+    "cita kukrer mi",
+    "cita neden kukreyemez"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cheetahs can't roar, they chirp like birds 🐆",
+      "description": "The world's fastest land mammal can't roar like a lion or tiger. Instead, cheetahs purr, hiss, growl and chirp, and the chirp is so high-pitched that it sounds remarkably like a bird. Mothers use it to call their cubs.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "es": {
+      "title": "El guepardo no ruge: pía como un pájaro 🐆",
+      "description": "El mamífero terrestre más rápido del mundo no puede rugir como un león o un tigre. En cambio ronronea, bufa, gruñe y lanza un chirrido tan agudo que se parece muchísimo al canto de un pájaro. Las madres lo usan para llamar a sus crías.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "pt": {
+      "title": "O guepardo não ruge: ele pia como um passarinho 🐆",
+      "description": "O mamífero terrestre mais rápido do mundo não consegue rugir como o leão ou o tigre. Em vez disso, o guepardo ronrona, bufa, rosna e solta um chilreio tão agudo que lembra muito o canto de um pássaro. As mães usam esse som para chamar os filhotes.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "de": {
+      "title": "Geparden können nicht brüllen – sie zwitschern wie Vögel 🐆",
+      "description": "Das schnellste Landsäugetier der Welt kann nicht brüllen wie Löwe oder Tiger. Stattdessen schnurren, fauchen, knurren und zwitschern Geparden, und ihr Zwitschern ist so hoch, dass es erstaunlich nach Vogel klingt. Mütter rufen damit ihre Jungen.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "fr": {
+      "title": "Le guépard ne rugit pas, il pépie comme un oiseau 🐆",
+      "description": "Le mammifère terrestre le plus rapide du monde est incapable de rugir comme un lion ou un tigre. À la place, le guépard ronronne, crache, grogne et lance un pépiement si aigu qu'on dirait un oiseau. Les mères s'en servent pour appeler leurs petits.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "it": {
+      "title": "Il ghepardo non ruggisce: cinguetta come un uccello 🐆",
+      "description": "Il mammifero terrestre più veloce del mondo non sa ruggire come il leone o la tigre. Al suo posto fa le fusa, soffia, ringhia e cinguetta, con un verso così acuto da sembrare proprio quello di un uccello. Le madri lo usano per richiamare i cuccioli.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "ru": {
+      "title": "Гепард не умеет рычать, как лев, зато щебечет, как птица 🐆",
+      "description": "Самое быстрое наземное млекопитающее не может рычать, как лев или тигр. Вместо этого гепард мурлычет, шипит, ворчит и щебечет, причём его щебет такой высокий, что удивительно похож на птичий. Так самки подзывают детёнышей.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "ar": {
+      "title": "الفهد الصياد لا يزأر… بل يزقزق كالطيور 🐆",
+      "description": "أسرع حيوان ثديي بري في العالم لا يستطيع الزئير مثل الأسد أو النمر. بدلًا من ذلك يخرخر الفهد الصياد ويفحّ ويزمجر ويُصدر زقزقة حادة تشبه صوت الطيور إلى حد مدهش. وتستخدمها الأم لتنادي صغارها.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "hi": {
+      "title": "चीता दहाड़ नहीं सकता, वह चिड़िया की तरह चहचहाता है 🐆",
+      "description": "दुनिया का सबसे तेज़ ज़मीनी स्तनधारी शेर या बाघ की तरह दहाड़ नहीं सकता। इसके बजाय चीता घुरघुराता, फुफकारता, गुर्राता और चहचहाता है, और उसकी चहचहाहट इतनी पतली होती है कि हैरानी की हद तक चिड़िया जैसी लगती है। माँ चीता इसी आवाज़ से अपने बच्चों को बुलाती है।\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "id": {
+      "title": "Cheetah tidak bisa mengaum, tapi bercicit seperti burung 🐆",
+      "description": "Mamalia darat tercepat di dunia ini tidak bisa mengaum seperti singa atau harimau. Sebagai gantinya, cheetah mendengkur, mendesis, menggeram, dan bercicit dengan suara yang begitu tinggi sehingga mirip sekali dengan suara burung. Induk cheetah memakai suara ini untuk memanggil anak-anaknya.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "ja": {
+      "title": "チーターはほえられない、鳥のように鳴く 🐆",
+      "description": "陸上最速の哺乳類チーターは、ライオンやトラのようにほえることができません。そのかわりゴロゴロとのどを鳴らし、シャーと威嚇し、うなり、鳥のさえずりにそっくりな高い声で鳴きます。母親はこの声で子どもを呼びます。\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "ko": {
+      "title": "치타는 포효하지 못하고 새처럼 지저귄다 🐆",
+      "description": "세상에서 가장 빠른 육상 포유류인 치타는 사자나 호랑이처럼 포효하지 못합니다. 대신 가르랑거리고, 쉿 소리를 내고, 으르렁거리고, 새소리와 놀랄 만큼 닮은 높은 소리로 지저귑니다. 어미는 이 소리로 새끼를 부릅니다.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "pl": {
+      "title": "Gepard nie umie ryczeć – ćwierka jak ptak 🐆",
+      "description": "Najszybszy lądowy ssak świata nie potrafi ryczeć jak lew czy tygrys. Zamiast tego gepard mruczy, syczy, warczy i ćwierka, a jego ćwierkanie jest tak wysokie, że zaskakująco przypomina ptaka. Matki przywołują nim młode.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "nl": {
+      "title": "Jachtluipaarden kunnen niet brullen, ze tjilpen als een vogel 🐆",
+      "description": "Het snelste landzoogdier ter wereld kan niet brullen zoals een leeuw of tijger. In plaats daarvan spint, blaast, gromt en tjilpt het jachtluipaard, en dat tjilpen is zo hoog dat het verrassend veel op een vogel lijkt. Moeders roepen er hun jongen mee.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "uk": {
+      "title": "Гепард не вміє рикати, як лев, зате щебече, як птах 🐆",
+      "description": "Найшвидший наземний ссавець світу не може рикати, як лев чи тигр. Натомість гепард муркоче, шипить, гарчить і щебече, а його щебет такий високий, що напрочуд схожий на пташиний. Так самиці кличуть малят.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "vi": {
+      "title": "Báo săn không gầm được mà kêu ríu rít như chim 🐆",
+      "description": "Loài thú trên cạn nhanh nhất thế giới lại không thể gầm như sư tử hay hổ. Thay vào đó, báo săn kêu gừ gừ, rít, gầm gừ và phát ra tiếng ríu rít cao đến mức nghe giống tiếng chim đến bất ngờ. Báo mẹ dùng tiếng này để gọi con.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "az": {
+      "title": "Gepard nərə çəkə bilmir, quş kimi civildəyir 🐆",
+      "description": "Dünyanın ən sürətli quru məməlisi aslan və ya pələng kimi nərə çəkə bilmir. Bunun əvəzinə gepard mırıldayır, fısıldayır, hırıldayır və elə incə səslə civildəyir ki, quş səsinə təəccüblü dərəcədə bənzəyir. Ana gepard balalarını bu səslə çağırır.\n\n#shorts\n\nSeri: mk-c0050"
+    },
+    "ro": {
+      "title": "Ghepardul nu poate rage, ciripește ca o pasăre 🐆",
+      "description": "Cel mai rapid mamifer terestru din lume nu poate rage ca leul sau tigrul. În schimb, ghepardul toarce, șuieră, mârâie și ciripește, iar ciripitul lui e atât de ascuțit încât seamănă surprinzător de mult cu al unei păsări. Mamele îl folosesc ca să-și cheme puii.\n\n#shorts\n\nSeri: mk-c0050"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: çitanın kükreyememesi mi, kuş gibi cıvıldaması mı?",
+  "scenes": [
+    {
+      "text": "Bu çita kükreyemez ama kuş gibi cıvıldar.",
+      "visual": "cheetah sitting in tall savanna grass",
+      "stock_query": "cheetah",
+      "source": "stock",
+      "callout": "KÜKREYEMEZ"
+    },
+    {
+      "text": "Dünyanın en hızlı kara memelisi bunun yerine mırlar, tıslar ve hırlar.",
+      "visual": "cheetah sprinting across the savanna",
+      "stock_query": "cheetah running",
+      "source": "stock"
+    },
+    {
+      "text": "En şaşırtıcı sesi ise tiz bir cıvıltı.",
+      "visual": "close-up of a cheetah's face as it calls",
+      "stock_query": "cheetah face",
+      "source": "stock",
+      "callout": "CIVILTI"
+    },
+    {
+      "text": "Bu ses iri bir kedi için alışılmadık derecede incedir, kuş ötüşüne benzer.",
+      "visual": "cheetah looking around from a termite mound",
+      "stock_query": "cheetah closeup",
+      "source": "stock",
+      "callout": "KUŞ SESİ GİBİ"
+    },
+    {
+      "text": "Anne çita yavrularını çağırırken bu sesi kullanır.",
+      "visual": "cheetah mother with her cubs in the grass",
+      "stock_query": "cheetah cubs",
+      "source": "stock",
+      "callout": "YAVRU ÇAĞRISI"
+    },
+    {
+      "text": "Savanada bir kuş sesi duyarsan iyi bak, çünkü...",
+      "visual": "cheetah walking through the savanna at sunset",
+      "stock_query": "cheetah savanna",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.97,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #103",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0050_1793776997_ig.mp4"
+}
