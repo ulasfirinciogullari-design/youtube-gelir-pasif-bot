@@ -1,12 +1,18 @@
 {
- "started": "2026-11-04T07:30:42+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-04T09:06:53+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y017",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
- "chars": 370,
- "duration": 25.7,
- "deneme": "fabrika/deneme/ornek-n008.mp4",
- "log": [],
- "finished": "2026-11-04T07:31:45+00:00"
+ "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
+ "chars": 351,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18108020056976727",
+  "url": "https://www.instagram.com/reel/DfUGTrugZiK/",
+  "at": 1793783307.827269
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfUGTrugZiK/"
+ ],
+ "finished": "2026-11-04T09:08:27+00:00"
 }

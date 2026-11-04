@@ -1,5 +1,5 @@
 {
- "at": "2026-11-04T08:04:25+00:00",
+ "at": "2026-11-04T09:06:08+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -219,25 +219,25 @@
    "baslik": "Beynin 1 Günde Kaç Kalori Yakar?"
   },
   "kzDr9prfHSw": {
-   "view": 976,
+   "view": 977,
    "like": 9,
    "comment": 0,
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1052,
+   "view": 1053,
    "like": 7,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 953,
+   "view": 956,
    "like": 7,
    "comment": 0,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 399,
+   "view": 403,
    "like": 5,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
@@ -882,108 +882,126 @@
   {
    "day": "2026-10-15",
    "views": 112,
+   "engagedViews": 48,
    "estimatedMinutesWatched": 27,
    "subscribersGained": 2
   },
   {
    "day": "2026-10-16",
    "views": 1616,
+   "engagedViews": 768,
    "estimatedMinutesWatched": 283,
    "subscribersGained": 7
   },
   {
    "day": "2026-10-17",
    "views": 749,
+   "engagedViews": 324,
    "estimatedMinutesWatched": 113,
    "subscribersGained": 2
   },
   {
    "day": "2026-10-18",
    "views": 8104,
+   "engagedViews": 3785,
    "estimatedMinutesWatched": 1432,
    "subscribersGained": 26
   },
   {
    "day": "2026-10-19",
    "views": 3352,
+   "engagedViews": 1718,
    "estimatedMinutesWatched": 534,
    "subscribersGained": 4
   },
   {
    "day": "2026-10-20",
    "views": 3477,
+   "engagedViews": 1717,
    "estimatedMinutesWatched": 527,
    "subscribersGained": 3
   },
   {
    "day": "2026-10-21",
    "views": 3842,
+   "engagedViews": 1522,
    "estimatedMinutesWatched": 402,
    "subscribersGained": 2
   },
   {
    "day": "2026-10-22",
    "views": 2794,
+   "engagedViews": 1098,
    "estimatedMinutesWatched": 302,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-23",
    "views": 3703,
+   "engagedViews": 1566,
    "estimatedMinutesWatched": 452,
    "subscribersGained": 2
   },
   {
    "day": "2026-10-24",
    "views": 785,
+   "engagedViews": 376,
    "estimatedMinutesWatched": 107,
    "subscribersGained": 1
   },
   {
    "day": "2026-10-25",
    "views": 442,
+   "engagedViews": 197,
    "estimatedMinutesWatched": 58,
    "subscribersGained": 1
   },
   {
    "day": "2026-10-26",
    "views": 170,
+   "engagedViews": 88,
    "estimatedMinutesWatched": 25,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-27",
    "views": 137,
+   "engagedViews": 68,
    "estimatedMinutesWatched": 20,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-28",
    "views": 19,
+   "engagedViews": 9,
    "estimatedMinutesWatched": 2,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-29",
    "views": 17,
+   "engagedViews": 11,
    "estimatedMinutesWatched": 2,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-30",
    "views": 9,
+   "engagedViews": 2,
    "estimatedMinutesWatched": 0,
    "subscribersGained": 0
   },
   {
    "day": "2026-10-31",
    "views": 23,
+   "engagedViews": 11,
    "estimatedMinutesWatched": 2,
    "subscribersGained": 0
   },
   {
    "day": "2026-11-01",
    "views": 9,
+   "engagedViews": 4,
    "estimatedMinutesWatched": 0,
    "subscribersGained": 0
   }

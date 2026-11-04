@@ -1215,14 +1215,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-17T22:19:30+00:00",
-   "mod": "zorla",
-   "title": "En Büyük Yıldız Ne Kadar Büyük?",
-   "url": "https://youtube.com/shorts/oyPgO_oDYlU",
-   "duration": 23.6,
-   "chars": 364
-  },
-  {
    "finished": "2026-10-17T23:33:37+00:00",
    "mod": "igbolum",
    "title": "Dünya Bir Anda Dönmeyi Bıraksaydı Ne Olurdu?",
@@ -1630,6 +1622,12 @@
    "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
    "duration": 25.7,
    "chars": 370
+  },
+  {
+   "finished": "2026-11-04T09:08:27+00:00",
+   "mod": "igbolum",
+   "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
+   "chars": 351
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1784,6 +1782,11 @@
     "media_id": "18098465333546432",
     "url": "https://www.instagram.com/reel/DfSYpcjjDmA/",
     "at": 1793725815.9544365
+   },
+   "y017": {
+    "media_id": "18108020056976727",
+    "url": "https://www.instagram.com/reel/DfUGTrugZiK/",
+    "at": 1793783307.827269
    }
   },
   "eski": [
