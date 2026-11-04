@@ -1,5 +1,5 @@
 {
- "at": "2026-11-04T14:10:43+00:00",
+ "at": "2026-11-04T16:21:37+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 51,
   "viewCount": 33522,
-  "videoCount": 39
+  "videoCount": 40
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -207,46 +207,52 @@
    "baslik": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?"
   },
   "QuUL5G3usPE": {
-   "view": 1089,
+   "view": 1133,
    "like": 6,
    "comment": 0,
    "baslik": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?"
   },
   "ExIn5xWxSkY": {
-   "view": 1162,
-   "like": 10,
+   "view": 1288,
+   "like": 9,
    "comment": 0,
    "baslik": "Beynin 1 Günde Kaç Kalori Yakar?"
   },
   "kzDr9prfHSw": {
-   "view": 992,
+   "view": 1007,
    "like": 9,
    "comment": 0,
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1055,
+   "view": 1102,
    "like": 8,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 972,
+   "view": 980,
    "like": 7,
    "comment": 0,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 493,
+   "view": 953,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
   },
   "m0HqyZ1pins": {
-   "view": 807,
+   "view": 989,
    "like": 3,
    "comment": 0,
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
+  },
+  "Gyz1vK-E-D4": {
+   "view": 232,
+   "like": 2,
+   "comment": 0,
+   "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
   }
  },
  "videos": {
@@ -613,7 +619,14 @@
    "comments": 2,
    "subscribersGained": 0,
    "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 980,
+    "YT_SEARCH": 21,
+    "YT_CHANNEL": 10,
+    "YT_OTHER_PAGE": 4,
+    "SOUND_PAGE": 3,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 244,
    "devam_yuzde": 24.0
   },
@@ -887,9 +900,9 @@
   },
   {
    "day": "2026-10-16",
-   "views": 1616,
-   "engagedViews": 768,
-   "estimatedMinutesWatched": 283,
+   "views": 1674,
+   "engagedViews": 773,
+   "estimatedMinutesWatched": 285,
    "subscribersGained": 7
   },
   {
@@ -908,9 +921,9 @@
   },
   {
    "day": "2026-10-19",
-   "views": 3352,
-   "engagedViews": 1718,
-   "estimatedMinutesWatched": 534,
+   "views": 3364,
+   "engagedViews": 1721,
+   "estimatedMinutesWatched": 535,
    "subscribersGained": 4
   },
   {
@@ -943,9 +956,9 @@
   },
   {
    "day": "2026-10-24",
-   "views": 785,
-   "engagedViews": 376,
-   "estimatedMinutesWatched": 107,
+   "views": 790,
+   "engagedViews": 377,
+   "estimatedMinutesWatched": 108,
    "subscribersGained": 1
   },
   {
