@@ -160,6 +160,11 @@
     1793723071,
     "r",
     "UgzTXltj9anGNH_LkMd4AaABAg.AckoHM4XZ1CAckoM39Z7LF"
+   ],
+   "UgxIandTEwlEa4lpgQp4AaABAg": [
+    1793819470,
+    "r",
+    "UgxIandTEwlEa4lpgQp4AaABAg.Acng53dec6fAcngDQt9r1G"
    ]
   },
   "son": [
@@ -342,6 +347,12 @@
     "video": "wvA035c4dvw",
     "comment": "--------------------------+++++++++++++++**********",
     "reply": "Klavyen biraz coşmuş galiba! Merhaba!\n— Bit 🤖"
+   },
+   {
+    "at": 1793819470,
+    "video": "9j_jigCDW7s",
+    "comment": "Komutan logar bir evren yaklaşıyor efendim",
+    "reply": "Komutan Logar devredeyse uzay yolu gözüktü demektir! 🚀\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -488,10 +499,10 @@
  "nobet": {
   "basladi": "2026-11-04T17:06:06+00:00",
   "run": "41872450398",
-  "tur": 115,
+  "tur": 126,
   "ig_cevap": 1,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-04T19:00:07+00:00"
+  "son_tur": "2026-11-04T19:11:09+00:00"
  }
 }
