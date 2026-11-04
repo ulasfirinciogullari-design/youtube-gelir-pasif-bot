@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0056",
+  "topic": "Kediler süt içebilir mi, kediye süt vermek zararlı mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kediler sütü sever ama çoğu onu sindiremez 🥛",
+  "hook_text": "KEDİYE SÜT VERİLİR Mİ?",
+  "description": "Kediler süt içebilir mi, kediye süt vermek zararlı mı?\n\nYavru kediler annelerinin sütünü laktaz enzimi sayesinde sorunsuz sindirir. Sütten kesildikten sonra bu enzim çok azalır ve çoğu yetişkin kedi laktoz intoleranslı hale gelir; sindirilemeyen süt şekeri bağırsağa su çeker, bakteriler onu mayalar ve en sık sonucu ishal olur. İnsanların da yaklaşık üçte ikisi bebeklikten sonra sütü eskisi kadar iyi sindiremez. Yetişkin bir kedi için en iyi içecek temiz sudur.\n\nSen sokak kedilerine ne bırakıyorsun: süt mü, su mu?\n\n#kedi #sokakkedileri #kediler #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0056",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kediye süt verilir mi",
+    "kedi süt içer mi",
+    "kediler süt içebilir mi",
+    "kedilere süt zararlı mı",
+    "sokak kedileri",
+    "sokak kedisine ne verilir",
+    "yavru kedi",
+    "yavru kedi süt",
+    "laktoz intoleransı",
+    "laktaz enzimi",
+    "kedi ishal",
+    "kedi bakımı",
+    "kedi beslenmesi",
+    "süt",
+    "evcil hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "cats milk",
+    "lactose intolerant cats",
+    "laktaz",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kediye sut verilir mi",
+    "kedi sut icer mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cats love milk, but most can't digest it 🥛",
+      "description": "Kittens digest their mother's milk easily, but after weaning their lactase enzyme drops sharply, so most adult cats become lactose intolerant. Undigested milk sugar pulls water into the gut and often causes diarrhea. Leave a street cat water, not milk.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "es": {
+      "title": "Los gatos adoran la leche, pero la mayoría no la digiere 🥛",
+      "description": "Los gatitos digieren sin problema la leche de su madre, pero tras el destete producen mucha menos lactasa y la mayoría de los gatos adultos se vuelve intolerante a la lactosa. El azúcar de la leche sin digerir arrastra agua al intestino y suele provocar diarrea. A un gato callejero, mejor déjale agua.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "pt": {
+      "title": "Gatos adoram leite, mas a maioria não consegue digeri-lo 🥛",
+      "description": "Filhotes digerem bem o leite da mãe, mas depois do desmame produzem bem menos lactase, e a maioria dos gatos adultos fica intolerante à lactose. O açúcar do leite não digerido puxa água para o intestino e costuma causar diarreia. Para o gato de rua, deixe água, não leite.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "de": {
+      "title": "Katzen lieben Milch, doch die meisten vertragen sie nicht 🥛",
+      "description": "Kätzchen verdauen die Milch ihrer Mutter problemlos, doch nach dem Abstillen bilden sie viel weniger Laktase – die meisten erwachsenen Katzen sind laktoseintolerant. Unverdauter Milchzucker zieht Wasser in den Darm und führt oft zu Durchfall. Stell Straßenkatzen lieber Wasser hin statt Milch.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "fr": {
+      "title": "Les chats adorent le lait, mais la plupart ne le digèrent pas 🥛",
+      "description": "Les chatons digèrent sans souci le lait de leur mère, mais après le sevrage ils produisent beaucoup moins de lactase : la plupart des chats adultes deviennent intolérants au lactose. Le sucre du lait non digéré attire l'eau dans l'intestin et provoque souvent la diarrhée. Pour un chat des rues, laisse plutôt de l'eau.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "it": {
+      "title": "I gatti amano il latte, ma la maggior parte non lo digerisce 🥛",
+      "description": "I gattini digeriscono senza problemi il latte della mamma, ma dopo lo svezzamento producono molta meno lattasi e la maggior parte dei gatti adulti diventa intollerante al lattosio. Lo zucchero del latte non digerito richiama acqua nell'intestino e spesso causa diarrea. Al gatto di strada lascia acqua, non latte.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "ru": {
+      "title": "Кошки любят молоко, но большинство не может его переварить 🥛",
+      "description": "Котята легко переваривают молоко матери, но после отлучения фермента лактазы становится гораздо меньше, и большинство взрослых кошек плохо переносит лактозу. Непереваренный молочный сахар тянет воду в кишечник и часто вызывает понос. Уличной кошке лучше оставить воду, а не молоко.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "ar": {
+      "title": "القطط تحب الحليب لكن معظمها لا يستطيع هضمه 🥛",
+      "description": "تهضم القطط الصغيرة حليب أمها بسهولة، لكن بعد الفطام ينخفض إنزيم اللاكتاز كثيرًا فتصبح معظم القطط البالغة غير قادرة على تحمّل اللاكتوز. سكر الحليب غير المهضوم يسحب الماء إلى الأمعاء وغالبًا ما يسبب الإسهال. لذلك اترك لقطط الشارع ماءً لا حليبًا.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "hi": {
+      "title": "बिल्लियों को दूध पसंद है, पर ज़्यादातर उसे पचा नहीं पातीं 🥛",
+      "description": "बिल्ली के बच्चे माँ का दूध आसानी से पचा लेते हैं, लेकिन दूध छुड़ाने के बाद उनमें लैक्टेज एंजाइम बहुत कम हो जाता है और ज़्यादातर बड़ी बिल्लियाँ लैक्टोज़ नहीं पचा पातीं। दूध की बिना पची शक्कर आँतों में पानी खींचती है और अक्सर दस्त करती है। गली की बिल्ली के लिए दूध नहीं, पानी रखें।\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "id": {
+      "title": "Kucing suka susu, tapi kebanyakan tidak bisa mencernanya 🥛",
+      "description": "Anak kucing mudah mencerna susu induknya, tetapi setelah disapih enzim laktasenya turun drastis sehingga kebanyakan kucing dewasa tidak tahan laktosa. Gula susu yang tidak tercerna menarik air ke usus dan sering menyebabkan diare. Untuk kucing jalanan, sediakan air, bukan susu.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "ja": {
+      "title": "猫は牛乳が好きでも、ほとんどはうまく消化できない 🥛",
+      "description": "子猫は母猫の乳を問題なく消化できますが、離乳後は乳糖を分解する酵素ラクターゼが大きく減り、ほとんどの成猫は乳糖不耐症になります。消化されなかった乳糖は腸に水を引き込み、下痢の原因になりがちです。外にいる猫には牛乳ではなく水をあげましょう。\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "ko": {
+      "title": "고양이는 우유를 좋아하지만 대부분 소화하지 못한다 🥛",
+      "description": "새끼 고양이는 어미 젖을 문제없이 소화하지만, 젖을 떼고 나면 유당을 분해하는 락타아제가 크게 줄어 대부분의 성묘는 유당불내증이 됩니다. 소화되지 않은 유당은 장으로 물을 끌어들여 설사를 일으키기 쉽습니다. 길고양이에게는 우유 대신 물을 주세요.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "pl": {
+      "title": "Koty uwielbiają mleko, ale większość go nie trawi 🥛",
+      "description": "Kocięta bez problemu trawią mleko matki, ale po odstawieniu wytwarzają znacznie mniej laktazy i większość dorosłych kotów nie toleruje laktozy. Niestrawiony cukier mleczny ściąga wodę do jelit i często wywołuje biegunkę. Kotu z ulicy zostaw więc wodę, a nie mleko.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "nl": {
+      "title": "Katten zijn dol op melk, maar de meeste kunnen het niet verteren 🥛",
+      "description": "Kittens verteren de melk van hun moeder zonder moeite, maar na het spenen maken ze veel minder lactase aan, waardoor de meeste volwassen katten lactose-intolerant zijn. Onverteerde melksuiker trekt water naar de darm en geeft vaak diarree. Zet een zwerfkat dus water neer, geen melk.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "uk": {
+      "title": "Коти люблять молоко, але більшість не може його перетравити 🥛",
+      "description": "Кошенята легко перетравлюють молоко матері, але після відлучення ферменту лактази стає значно менше, і більшість дорослих котів погано переносить лактозу. Неперетравлений молочний цукор тягне воду в кишечник і часто спричиняє діарею. Тож вуличному коту краще залишити воду, а не молоко.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "vi": {
+      "title": "Mèo thích sữa nhưng phần lớn không tiêu hóa được 🥛",
+      "description": "Mèo con tiêu hóa sữa mẹ rất dễ dàng, nhưng sau khi cai sữa, enzyme lactase giảm mạnh nên phần lớn mèo trưởng thành không dung nạp lactose. Đường sữa không được tiêu hóa sẽ kéo nước vào ruột và thường gây tiêu chảy. Vì vậy, hãy để nước chứ đừng để sữa cho mèo hoang.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "az": {
+      "title": "Pişiklər südü sevir, amma çoxu onu həzm edə bilmir 🥛",
+      "description": "Bala pişiklər ananın südünü rahat həzm edir, amma süddən kəsiləndən sonra laktaza fermenti xeyli azalır və yetkin pişiklərin çoxu laktozanı qəbul edə bilmir. Həzm olunmayan süd şəkəri bağırsağa su çəkir və tez-tez ishala səbəb olur. Küçə pişiyinə süd yox, su qoy.\n\n#shorts\n\nSeri: mk-c0056"
+    },
+    "ro": {
+      "title": "Pisicile iubesc laptele, dar majoritatea nu îl pot digera 🥛",
+      "description": "Puii de pisică digeră fără probleme laptele mamei, dar după înțărcare produc mult mai puțină lactază, iar majoritatea pisicilor adulte devin intolerante la lactoză. Zahărul din lapte nedigerat atrage apă în intestin și provoacă adesea diaree. Pisicii de pe stradă lasă-i apă, nu lapte.\n\n#shorts\n\nSeri: mk-c0056"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen sokak kedilerine ne bırakıyorsun: süt mü, su mu?",
+  "scenes": [
+    {
+      "text": "Bu kedi sütü sever ama büyük ihtimalle sindiremez.",
+      "visual": "close-up of a cat lapping from a bowl of milk",
+      "stock_query": "cat drinking milk",
+      "source": "stock",
+      "callout": "SÜTÜ SİNDİREMEZ"
+    },
+    {
+      "text": "Oysa yavruyken annesinin sütünü sorunsuz sindiriyordu.",
+      "visual": "small kittens nursing from their mother cat",
+      "stock_query": "kitten mother cat",
+      "source": "stock",
+      "subject": [
+        "kitten"
+      ]
+    },
+    {
+      "text": "Üstelik insanların yaklaşık üçte ikisi de bebeklikten sonra sütü eskisi kadar iyi sindiremez.",
+      "visual": "a glass of milk being poured on a kitchen table",
+      "stock_query": "milk glass",
+      "source": "stock",
+      "subject": [
+        "milk"
+      ],
+      "callout": "İNSANLARIN 2/3'Ü"
+    },
+    {
+      "text": "Çünkü sütten kesilince laktaz enzimi azalır; sindirilemeyen süt şekeri bağırsağa su çekip ishal yapar.",
+      "visual": "a cat lying on its side resting on the floor",
+      "stock_query": "cat lying",
+      "source": "stock",
+      "callout": "LAKTAZ AZALIR"
+    },
+    {
+      "text": "Sokaktaki kediye süt değil su bırak, çünkü...",
+      "visual": "street cat drinking water from a bowl on the pavement",
+      "stock_query": "cat drinking water",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.85,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #109",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0056_1793828240_ig.mp4"
+}
