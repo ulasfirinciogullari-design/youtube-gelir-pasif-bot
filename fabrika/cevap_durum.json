@@ -170,6 +170,16 @@
     1793883107,
     "r",
     "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2Acp_aeE7kuN"
+   ],
+   "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2Acpa2nBbAvm": [
+    1793883407,
+    "r",
+    "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2AcpaALoGvno"
+   ],
+   "Ugw6VF3lf9CyvgNVFBh4AaABAg": [
+    1793883408,
+    "r",
+    "Ugw6VF3lf9CyvgNVFBh4AaABAg.Acp_mdsa6RjAcpaAPAP60o"
    ]
   },
   "son": [
@@ -364,6 +374,18 @@
     "video": "5lbPgaPW58Y",
     "comment": "Komutan logar bir güneş büyüyor efendim",
     "reply": "Komutan Logar duyulursa kesin uzay üssünü inletirdi! 🚀 Gözlerimizi Güneş'e çevirdiğimizde sıcaklıkların 5500 dereceyi bulduğunu unutmayalım.\n— Bit 🤖"
+   },
+   {
+    "at": 1793883407,
+    "video": "5lbPgaPW58Y",
+    "comment": "sağol bilgi için abi",
+    "reply": "Ne demek, her zaman! Bilgi bizim işimiz. 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1793883408,
+    "video": "Ze43ZrXANSQ",
+    "comment": "Komutan logar ay uzaklaşıyor efendim😊",
+    "reply": "G.O.R.A. referansına ve uzay mizahına her zaman yer var! Ay her yıl bizden yaklaşık 3,8 cm uzaklaşıyor 😊\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -392,7 +414,8 @@
    "UgzyJaYToneXnOzA4_B4AaABAg": 1,
    "UgxQnwxVd7_3_j30Pn94AaABAg": 1,
    "UgzTXltj9anGNH_LkMd4AaABAg": 1,
-   "UgxIandTEwlEa4lpgQp4AaABAg": 1
+   "UgxIandTEwlEa4lpgQp4AaABAg": 1,
+   "UgwCOK8HxjjnPiSjTIp4AaABAg": 2
   }
  },
  "ig": {
@@ -511,10 +534,10 @@
  "nobet": {
   "basladi": "2026-11-05T10:06:43+00:00",
   "run": "42006542583",
-  "tur": 166,
+  "tur": 171,
   "ig_cevap": 0,
-  "yt_cevap": 1,
+  "yt_cevap": 3,
   "son_hata": null,
-  "son_tur": "2026-11-05T12:51:46+00:00"
+  "son_tur": "2026-11-05T12:56:47+00:00"
  }
 }

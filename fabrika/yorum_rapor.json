@@ -1,24 +1,32 @@
 {
- "started": "2026-11-05T12:51:44+00:00",
+ "started": "2026-11-05T12:56:44+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 29,
+ "threads": 30,
  "quiet": 0,
- "new": 1,
- "sent_last_24h": 1,
+ "new": 2,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgwCOK8HxjjnPiSjTIp4AaABAg",
+   "id": "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2Acpa2nBbAvm",
    "video": "5lbPgaPW58Y",
-   "comment": "Komutan logar bir güneş büyüyor efendim",
-   "reply": "Komutan Logar duyulursa kesin uzay üssünü inletirdi! 🚀 Gözlerimizi Güneş'e çevirdiğimizde sıcaklıkların 5500 dereceyi bulduğunu unutmayalım.\n— Bit 🤖",
+   "comment": "sağol bilgi için abi",
+   "cevaba_cevap": true,
+   "reply": "Ne demek, her zaman! Bilgi bizim işimiz. 🚀\n— Bit 🤖",
+   "result": "gönderildi"
+  },
+  {
+   "id": "Ugw6VF3lf9CyvgNVFBh4AaABAg",
+   "video": "Ze43ZrXANSQ",
+   "comment": "Komutan logar ay uzaklaşıyor efendim😊",
+   "reply": "G.O.R.A. referansına ve uzay mizahına her zaman yer var! Ay her yıl bizden yaklaşık 3,8 cm uzaklaşıyor 😊\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-05T12:51:46+00:00"
+ "finished": "2026-11-05T12:56:47+00:00"
 }
