@@ -1,0 +1,282 @@
+{
+ "id": "y046",
+ "series": "Ya Olsaydı?",
+ "q": "Sadece deniz suyu içseydin ne olurdu?",
+ "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
+ "bar": {
+  "hi": "DENİZ SUYU",
+  "rest": "İÇSEYDİN?"
+ },
+ "summary": "Okyanusun ortasında su içerken susuzluktan ölmek mümkün mü? Deniz suyunun böbreklerine ve beynine adım adım ne yaptığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Susuzluktan ölürdün; hem de içtikçe daha çok susayarak!",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🥵",
+    "do": "shake",
+    "key": "Susuzluktan",
+    "label": "İçtikçe Susarsın"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Okyanusun ortasında susuzluk mu?!",
+   "v": {
+    "t": "icons",
+    "bg": "ocean",
+    "items": [
+     {
+      "e": "🌊",
+      "label": "Her Yer Su"
+     },
+     {
+      "e": "🚫",
+      "label": "İçilecek Su Yok"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Deniz suyunun 1 litresinde 35 gram tuz: günlük sınırın 7 katı!",
+   "v": {
+    "t": "compare",
+    "bg": "ocean",
+    "a": {
+     "e": "🧂",
+     "label": "Günlük Sınır",
+     "value": "5"
+    },
+    "b": {
+     "e": "🌊",
+     "label": "1 Litre Deniz",
+     "value": "35"
+    },
+    "mode": "bar",
+    "key": "35"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Böbreklerin bu tuzu atmak için seni içtiğinden fazla işetir.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🥤",
+     "label": "İçtiğin Su"
+    },
+    "right": {
+     "e": "🚽",
+     "label": "Daha Fazla Çiş"
+    },
+    "key": "fazla"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl felaket beyninde: hücreleri büzülür, nöbet ve koma gelebilir!",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "ÖNCE",
+      "e": "🥵",
+      "label": "Susuzluk"
+     },
+     {
+      "when": "SONRA",
+      "e": "🧠",
+      "label": "Beyin Büzülür"
+     },
+     {
+      "when": "EN SON",
+      "e": "😵",
+      "label": "Nöbet ve Koma"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Beynim kuru üzüme mi döner?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧠",
+    "do": "shrink",
+    "key": "kuru",
+    "label": "Kuru Üzüm Beyin"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen denizde susuz kalsan ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "🏝️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NOAA'ya göre böbrekler yalnızca deniz suyundan daha az tuzlu idrar yapabilir; bu yüzden tuzu atmak için içtiğinden fazla su işersin ve susadıkça susuzluktan ölebilirsin.",
+   "source": "NOAA National Ocean Service",
+   "url": "https://oceanservice.noaa.gov/facts/drinksw.html"
+  },
+  {
+   "text": "Scripps Oşinografi Enstitüsü'ne göre deniz suyunun her kilogramında ortalama 35 gram tuz bulunur.",
+   "source": "Scripps Institution of Oceanography (UC San Diego)",
+   "url": "https://scripps.ucsd.edu/news/voyager-what-makes-ocean-salty-and-how-much-salt-ocean"
+  },
+  {
+   "text": "Dünya Sağlık Örgütü'ne göre yetişkinler günde 5 gramdan az tuz tüketmeli; bu, bir çay kaşığından biraz azdır.",
+   "source": "Dünya Sağlık Örgütü (WHO)",
+   "url": "https://www.who.int/news-room/fact-sheets/detail/salt-reduction"
+  },
+  {
+   "text": "MSD Manual'a göre kanda sodyumun aşırı yükselmesi (hipernatremi) beyin hücrelerini büzer; kafa karışıklığı, nöbet ve koma görülebilir.",
+   "source": "MSD Manual Professional Version",
+   "url": "https://www.msdmanuals.com/uk/professional/nephrology/electrolyte-disorders/hypernatremia"
+  }
+ ],
+ "tags": [
+  "deniz suyu",
+  "deniz suyu içmek",
+  "deniz suyu içilir mi",
+  "tuzlu su",
+  "susuzluk",
+  "böbrekler",
+  "beyin",
+  "hipernatremi",
+  "insan vücudu",
+  "drinking seawater",
+  "can you drink seawater",
+  "salt water",
+  "dehydration",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#denizsuyu",
+  "#vücut",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://oceanservice.noaa.gov/facts/drinksw.html",
+  "https://scripps.ucsd.edu/news/voyager-what-makes-ocean-salty-and-how-much-salt-ocean",
+  "https://www.who.int/news-room/fact-sheets/detail/salt-reduction",
+  "https://www.msdmanuals.com/uk/professional/nephrology/electrolyte-disorders/hypernatremia"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen to Your Body If You Drank Only Seawater?",
+   "summary": "Can you die of thirst while drinking? Professor Pi explains, step by step, what seawater does to your kidneys and your brain.",
+   "facts": [
+    "According to NOAA, kidneys can only make urine that is less salty than seawater, so to get rid of the salt you urinate more water than you drank and can die of dehydration while growing ever thirstier.",
+    "According to the Scripps Institution of Oceanography, every kilogram of seawater contains on average 35 grams of salt.",
+    "According to the World Health Organization, adults should eat less than 5 grams of salt a day, just under a teaspoon.",
+    "According to the MSD Manual, a dangerously high blood sodium level (hypernatremia) makes brain cells shrink and can cause confusion, seizures and coma."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Le Pasaría a Tu Cuerpo Si Solo Bebieras Agua de Mar?",
+   "summary": "¿Se puede morir de sed mientras bebes? El profesor Pi explica, paso a paso, lo que el agua de mar les hace a tus riñones y a tu cerebro.",
+   "facts": [
+    "Según la NOAA, los riñones solo pueden producir orina menos salada que el agua de mar; por eso, para eliminar la sal orinas más agua de la que bebiste y puedes morir deshidratado mientras tienes cada vez más sed.",
+    "Según el Instituto Scripps de Oceanografía, cada kilogramo de agua de mar contiene en promedio 35 gramos de sal.",
+    "Según la Organización Mundial de la Salud, los adultos deberían consumir menos de 5 gramos de sal al día, algo menos de una cucharadita.",
+    "Según el Manual MSD, un nivel de sodio en sangre peligrosamente alto (hipernatremia) hace que las células del cerebro se encojan y puede causar confusión, convulsiones y coma."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria com Seu Corpo Se Você Só Bebesse Água do Mar?",
+   "summary": "Dá para morrer de sede enquanto se bebe? O professor Pi explica, passo a passo, o que a água do mar faz com seus rins e seu cérebro.",
+   "facts": [
+    "Segundo a NOAA, os rins só conseguem produzir urina menos salgada que a água do mar; por isso, para eliminar o sal você urina mais água do que bebeu e pode morrer desidratado enquanto sente cada vez mais sede.",
+    "Segundo o Instituto Scripps de Oceanografia, cada quilograma de água do mar contém em média 35 gramas de sal.",
+    "Segundo a Organização Mundial da Saúde, adultos devem consumir menos de 5 gramas de sal por dia, pouco menos de uma colher de chá.",
+    "Segundo o Manual MSD, um nível de sódio no sangue perigosamente alto (hipernatremia) faz as células do cérebro encolherem e pode causar confusão, convulsões e coma."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لجسمك لو شربت ماء البحر فقط؟",
+   "summary": "هل يمكن أن تموت عطشًا وأنت تشرب؟ يشرح البروفيسور باي خطوة بخطوة ما يفعله ماء البحر بكليتيك ودماغك.",
+   "facts": [
+    "وفقًا للإدارة الوطنية للمحيطات والغلاف الجوي الأمريكية (NOAA)، لا تستطيع الكليتان إلا إنتاج بول أقل ملوحة من ماء البحر، لذلك تتبول ماءً أكثر مما شربت للتخلص من الملح، وقد تموت من الجفاف بينما يزداد عطشك.",
+    "وفقًا لمعهد سكريبس لعلوم المحيطات، يحتوي كل كيلوغرام من ماء البحر في المتوسط على 35 غرامًا من الملح.",
+    "وفقًا لمنظمة الصحة العالمية، ينبغي للبالغين تناول أقل من 5 غرامات من الملح يوميًا، أي أقل بقليل من ملعقة صغيرة.",
+    "وفقًا لدليل MSD، يؤدي الارتفاع الخطير لمستوى الصوديوم في الدم (فرط صوديوم الدم) إلى انكماش خلايا الدماغ، وقد يسبب التشوش والنوبات والغيبوبة."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम सिर्फ़ समुद्र का पानी पीते तो शरीर का क्या होता?",
+   "summary": "क्या पानी पीते-पीते प्यास से मरा जा सकता है? प्रोफ़ेसर पाई कदम-दर-कदम बताते हैं कि समुद्र का पानी तुम्हारी किडनी और दिमाग़ के साथ क्या करता है।",
+   "facts": [
+    "NOAA के अनुसार, किडनी सिर्फ़ समुद्री पानी से कम नमकीन पेशाब बना सकती है, इसलिए नमक निकालने के लिए तुम जितना पीते हो उससे ज़्यादा पानी पेशाब में निकल जाता है, और प्यास बढ़ते-बढ़ते डिहाइड्रेशन से मौत हो सकती है।",
+    "स्क्रिप्स इंस्टीट्यूशन ऑफ़ ओशनोग्राफ़ी के अनुसार, समुद्र के हर किलोग्राम पानी में औसतन 35 ग्राम नमक होता है।",
+    "विश्व स्वास्थ्य संगठन के अनुसार, वयस्कों को रोज़ 5 ग्राम से कम नमक खाना चाहिए, यानी एक छोटे चम्मच से थोड़ा कम।",
+    "MSD मैनुअल के अनुसार, ख़ून में सोडियम का ख़तरनाक रूप से बढ़ना (हाइपरनेट्रेमिया) दिमाग़ की कोशिकाओं को सिकोड़ देता है और भ्रम, दौरे और कोमा का कारण बन सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi pada Tubuhmu Jika Hanya Minum Air Laut?",
+   "summary": "Bisakah kamu mati kehausan sambil minum? Profesor Pi menjelaskan langkah demi langkah apa yang dilakukan air laut pada ginjal dan otakmu.",
+   "facts": [
+    "Menurut NOAA, ginjal hanya bisa membuat urine yang kurang asin dibanding air laut, jadi untuk membuang garamnya kamu mengeluarkan lebih banyak air daripada yang kamu minum dan bisa mati karena dehidrasi sambil makin haus.",
+    "Menurut Scripps Institution of Oceanography, setiap kilogram air laut rata-rata mengandung 35 gram garam.",
+    "Menurut Organisasi Kesehatan Dunia, orang dewasa sebaiknya mengonsumsi kurang dari 5 gram garam per hari, sedikit kurang dari satu sendok teh.",
+    "Menurut MSD Manual, kadar natrium darah yang sangat tinggi (hipernatremia) membuat sel-sel otak menyusut dan bisa menyebabkan kebingungan, kejang, dan koma."
+   ]
+  },
+  "fr": {
+   "title": "Que Deviendrait Ton Corps Si Tu Ne Buvais Que de l'Eau de Mer ?",
+   "summary": "Peut-on mourir de soif en buvant ? Le professeur Pi explique, étape par étape, ce que l'eau de mer fait à tes reins et à ton cerveau.",
+   "facts": [
+    "Selon la NOAA, les reins ne peuvent produire qu'une urine moins salée que l'eau de mer ; pour éliminer le sel, tu urines donc plus d'eau que tu n'en as bu et tu peux mourir de déshydratation en ayant de plus en plus soif.",
+    "Selon la Scripps Institution of Oceanography, chaque kilogramme d'eau de mer contient en moyenne 35 grammes de sel.",
+    "Selon l'Organisation mondiale de la santé, les adultes devraient consommer moins de 5 grammes de sel par jour, un peu moins d'une cuillère à café.",
+    "Selon le Manuel MSD, un taux de sodium sanguin dangereusement élevé (hypernatrémie) fait rétrécir les cellules du cerveau et peut provoquer confusion, convulsions et coma."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert Mit Deinem Körper, Wenn Du Nur Meerwasser Trinkst?",
+   "summary": "Kann man beim Trinken verdursten? Professor Pi erklärt Schritt für Schritt, was Meerwasser mit deinen Nieren und deinem Gehirn macht.",
+   "facts": [
+    "Laut NOAA können die Nieren nur Urin bilden, der weniger salzig ist als Meerwasser; um das Salz loszuwerden, scheidest du also mehr Wasser aus, als du getrunken hast, und kannst verdursten, während dein Durst immer größer wird.",
+    "Laut der Scripps Institution of Oceanography enthält jedes Kilogramm Meerwasser im Durchschnitt 35 Gramm Salz.",
+    "Laut der Weltgesundheitsorganisation sollten Erwachsene weniger als 5 Gramm Salz pro Tag essen, knapp einen Teelöffel.",
+    "Laut MSD Manual lässt ein gefährlich hoher Natriumspiegel im Blut (Hypernatriämie) die Gehirnzellen schrumpfen und kann Verwirrtheit, Krampfanfälle und Koma auslösen."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет с Твоим Телом, Если Пить Только Морскую Воду?",
+   "summary": "Можно ли умереть от жажды, когда пьёшь? Профессор Пи шаг за шагом объясняет, что морская вода делает с твоими почками и мозгом.",
+   "facts": [
+    "По данным NOAA, почки могут вырабатывать только мочу, менее солёную, чем морская вода, поэтому, чтобы избавиться от соли, ты выводишь больше воды, чем выпил, и можешь умереть от обезвоживания, испытывая всё более сильную жажду.",
+    "По данным Океанографического института Скриппса, в каждом килограмме морской воды в среднем 35 граммов соли.",
+    "По данным Всемирной организации здравоохранения, взрослым следует употреблять меньше 5 граммов соли в день — чуть меньше чайной ложки.",
+    "По данным справочника MSD, опасно высокий уровень натрия в крови (гипернатриемия) заставляет клетки мозга сжиматься и может вызвать спутанность сознания, судороги и кому."
+   ]
+  },
+  "az": {
+   "title": "Yalnız Dəniz Suyu İçsəydin Bədəninə Nə Olardı?",
+   "summary": "İçə-içə susuzluqdan ölmək mümkündürmü? Professor Pi dəniz suyunun böyrəklərinə və beyninə nə etdiyini addım-addım danışır.",
+   "facts": [
+    "NOAA-ya görə böyrəklər yalnız dəniz suyundan az duzlu sidik hasil edə bilir; buna görə duzu atmaq üçün içdiyindən çox su ifraz edirsən və getdikcə daha çox susayaraq susuzluqdan ölə bilərsən.",
+    "Scripps Okeanoqrafiya İnstitutuna görə dəniz suyunun hər kiloqramında orta hesabla 35 qram duz var.",
+    "Ümumdünya Səhiyyə Təşkilatına görə böyüklər gündə 5 qramdan az duz istehlak etməlidir, bu, bir çay qaşığından bir az azdır.",
+    "MSD Təlimatına görə qanda natriumun təhlükəli dərəcədə artması (hipernatremiya) beyin hüceyrələrini büzüşdürür və çaşqınlıq, qıcolma və komaya səbəb ola bilər."
+   ]
+  }
+ }
+}

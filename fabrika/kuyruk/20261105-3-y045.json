@@ -1,0 +1,271 @@
+{
+ "id": "y045",
+ "series": "Ya Olsaydı?",
+ "q": "Yıldırım sana çarpsaydı ne olurdu?",
+ "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+ "bar": {
+  "hi": "YILDIRIM",
+  "rest": "SANA ÇARPSAYDI?"
+ },
+ "summary": "Yıldırım çarptığında etrafındaki hava Güneş'in yüzeyinden 5 kat ısınır ve kalbin saniyenin binde birinde durabilir. Peki neden 10 kişiden 9'u hayatta kalıyor ve gök gürültüsünü duyduğunda neden zaten tehlikedesin?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Kalbin saniyenin binde birinde durabilirdi!",
+   "v": {
+    "t": "split",
+    "bg": "storm",
+    "left": {
+     "e": "⚡",
+     "label": "Yıldırım"
+    },
+    "right": {
+     "e": "💔",
+     "label": "Kalp Durur"
+    },
+    "key": "durabilirdi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Etrafındaki hava 27.000 °C'yi geçebilir: Güneş'in yüzeyinin 5 katı!",
+   "v": {
+    "t": "compare",
+    "bg": "storm",
+    "a": {
+     "b": "sun",
+     "label": "Güneş Yüzeyi",
+     "value": "5.500"
+    },
+    "b": {
+     "e": "⚡",
+     "label": "Yıldırım",
+     "value": "27.700"
+    },
+    "mode": "bar",
+    "key": "27.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kulak zarın patlayabilir, teninde eğrelti gibi izler çıkabilir.",
+   "v": {
+    "t": "icons",
+    "bg": "body",
+    "items": [
+     {
+      "e": "👂",
+      "label": "Kulak Zarı"
+     },
+     {
+      "e": "🌿",
+      "label": "Eğrelti İzi"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Tenime yıldırım dövmesi mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🌿",
+    "do": "grow",
+    "key": "dövmesi",
+    "label": "Yıldırım Dövmesi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yine de 10 kişiden 9'u yaşar ama birçoğu hafıza sorunu çeker.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🧠",
+    "value": "%90",
+    "unit": "yaşar",
+    "label": "Hayatta Kalan",
+    "key": "9'u"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gök gürültüsü duyuyorsan yıldırımın menzilindesin!",
+   "v": {
+    "t": "meter",
+    "bg": "storm",
+    "label": "Gürültü Menzili",
+    "from": 0,
+    "to": 16,
+    "unit": "km",
+    "e": "🔊",
+    "key": "menzilindesin"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen fırtınada en son neredeydin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "storm",
+    "e": "⛈️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "MSD Manual'a göre yıldırım akımı saniyenin 10.000'de biri ile 1.000'de biri arasında akar; en sık ölüm nedeni o anda kalbin durmasıdır. Kulak zarı delinmesi ve dallanan, eğrelti gibi deri izleri de görülür.",
+   "source": "MSD Manual Professional Version",
+   "url": "https://www.msdmanuals.com/professional/injuries-poisoning/electrical-and-lightning-injuries/lightning-injuries"
+  },
+  {
+   "text": "ABD Ulusal Hava Durumu Servisi'ne (NWS) göre yıldırım kanalındaki hava 50.000 °F'ye (yaklaşık 27.700 °C) ulaşabilir; bu, Güneş'in yüzeyinden 5 kat sıcaktır. Gök gürültüsü yaklaşık 16 km'ye kadar duyulur ve onu duyuyorsan yıldırımın menzilindesin.",
+   "source": "NWS (NOAA)",
+   "url": "https://www.weather.gov/safety/lightning-science-thunder"
+  },
+  {
+   "text": "NWS'ye göre yıldırım çarpan kişilerin yalnızca yaklaşık %10'u ölür; geri kalanlar farklı düzeylerde kalıcı sorunlarla yaşar.",
+   "source": "NWS (NOAA)",
+   "url": "https://www.weather.gov/safety/lightning-odds"
+  },
+  {
+   "text": "Live Science'a göre hayatta kalanlarda sinir hasarı ve hafıza kaybı sık görülür; bazılarının teninde eğrelti otu gibi Lichtenberg desenleri belirir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/what-happens-if-you-get-struck-by-lightning-and-survive"
+  }
+ ],
+ "tags": [
+  "yıldırım",
+  "yıldırım çarpması",
+  "yıldırım çarpsa ne olur",
+  "şimşek",
+  "gök gürültüsü",
+  "fırtına",
+  "lichtenberg",
+  "kalp",
+  "lightning",
+  "struck by lightning",
+  "lightning strike",
+  "thunderstorm",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#yıldırım",
+  "#fırtına",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.msdmanuals.com/professional/injuries-poisoning/electrical-and-lightning-injuries/lightning-injuries",
+  "https://www.weather.gov/safety/lightning-science-thunder",
+  "https://www.weather.gov/safety/lightning-odds",
+  "https://www.livescience.com/health/what-happens-if-you-get-struck-by-lightning-and-survive"
+ ],
+ "i18n": {
+  "en": {
+   "title": "Would You Survive If Lightning Struck You?",
+   "summary": "When lightning strikes, the air around you gets 5 times hotter than the Sun's surface and your heart can stop in a thousandth of a second. So why do 9 out of 10 people survive, and why are you already in danger when you hear thunder?",
+   "facts": [
+    "According to the MSD Manual, lightning current flows for just 1/10,000 to 1/1,000 of a second; the most common cause of death is cardiac arrest at the moment of the strike. Ruptured eardrums and branching, fern-like skin marks are also seen.",
+    "According to the US National Weather Service (NWS), the air in a lightning channel can reach 50,000 °F (about 27,700 °C), 5 times hotter than the surface of the Sun. Thunder can be heard up to about 16 km (10 miles) away, and if you can hear it, you are within striking distance.",
+    "According to the NWS, only about 10% of people struck by lightning are killed; the rest live with varying degrees of lasting harm.",
+    "According to Live Science, survivors often suffer nerve damage and memory loss, and some develop fern-like Lichtenberg figures on their skin."
+   ]
+  },
+  "es": {
+   "title": "¿Sobrevivirías Si Te Cayera un Rayo?",
+   "summary": "Cuando cae un rayo, el aire a tu alrededor se calienta 5 veces más que la superficie del Sol y tu corazón puede detenerse en una milésima de segundo. Entonces, ¿por qué sobreviven 9 de cada 10 personas y por qué ya estás en peligro cuando oyes un trueno?",
+   "facts": [
+    "Según el Manual MSD, la corriente de un rayo fluye solo entre 1/10.000 y 1/1.000 de segundo; la causa de muerte más común es el paro cardíaco en el momento del impacto. También se ven tímpanos perforados y marcas ramificadas en la piel, como helechos.",
+    "Según el Servicio Meteorológico Nacional de EE. UU. (NWS), el aire del canal de un rayo puede alcanzar 50.000 °F (unos 27.700 °C), 5 veces más caliente que la superficie del Sol. El trueno se oye hasta a unos 16 km, y si puedes oírlo, estás al alcance de un rayo.",
+    "Según el NWS, solo alrededor del 10 % de las personas alcanzadas por un rayo mueren; el resto vive con distintos grados de secuelas.",
+    "Según Live Science, los supervivientes suelen sufrir daño nervioso y pérdida de memoria, y a algunos les aparecen en la piel figuras de Lichtenberg con forma de helecho."
+   ]
+  },
+  "pt": {
+   "title": "Você Sobreviveria Se Fosse Atingido por um Raio?",
+   "summary": "Quando um raio cai, o ar ao seu redor fica 5 vezes mais quente que a superfície do Sol e seu coração pode parar em um milésimo de segundo. Então por que 9 em cada 10 pessoas sobrevivem, e por que você já está em perigo quando ouve um trovão?",
+   "facts": [
+    "Segundo o Manual MSD, a corrente de um raio flui por apenas 1/10.000 a 1/1.000 de segundo; a causa de morte mais comum é a parada cardíaca no momento do impacto. Também ocorrem tímpanos perfurados e marcas ramificadas na pele, como samambaias.",
+    "Segundo o Serviço Nacional de Meteorologia dos EUA (NWS), o ar no canal de um raio pode chegar a 50.000 °F (cerca de 27.700 °C), 5 vezes mais quente que a superfície do Sol. O trovão é ouvido a até cerca de 16 km, e se você consegue ouvi-lo, está ao alcance de um raio.",
+    "Segundo o NWS, só cerca de 10% das pessoas atingidas por raios morrem; o resto vive com diferentes graus de sequelas.",
+    "Segundo a Live Science, sobreviventes muitas vezes sofrem danos nos nervos e perda de memória, e em alguns aparecem na pele figuras de Lichtenberg em forma de samambaia."
+   ]
+  },
+  "ar": {
+   "title": "هل كنت ستنجو لو ضربتك صاعقة؟",
+   "summary": "عندما تضرب الصاعقة يسخن الهواء حولك 5 مرات أكثر من سطح الشمس، وقد يتوقف قلبك في جزء من ألف من الثانية. فلماذا ينجو 9 من كل 10 أشخاص، ولماذا تكون في خطر بمجرد أن تسمع الرعد؟",
+   "facts": [
+    "وفقًا لدليل MSD، يسري تيار الصاعقة لمدة تتراوح بين 1/10,000 و1/1,000 من الثانية فقط، وأكثر أسباب الوفاة شيوعًا هو توقف القلب لحظة الضربة. وتُلاحظ أيضًا ثقوب في طبلة الأذن وعلامات جلدية متفرعة تشبه السرخس.",
+    "وفقًا لهيئة الأرصاد الجوية الوطنية الأمريكية (NWS)، قد تصل حرارة الهواء في قناة البرق إلى 50,000 درجة فهرنهايت (نحو 27,700 °C)، أي أسخن من سطح الشمس بـ5 مرات. ويُسمع الرعد حتى مسافة 16 كم تقريبًا، وإذا كنت تسمعه فأنت في مدى الصاعقة.",
+    "وفقًا لهيئة NWS، لا يموت إلا نحو 10% ممن تضربهم الصاعقة، ويعيش الباقون بدرجات متفاوتة من الأضرار الدائمة.",
+    "وفقًا لموقع Live Science، كثيرًا ما يعاني الناجون من تلف الأعصاب وفقدان الذاكرة، وتظهر على جلد بعضهم أشكال ليختنبرغ التي تشبه السرخس."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम पर बिजली गिरती तो क्या तुम बच जाते?",
+   "summary": "जब बिजली गिरती है तो तुम्हारे आसपास की हवा सूरज की सतह से 5 गुना गर्म हो जाती है और तुम्हारा दिल एक सेकंड के हज़ारवें हिस्से में रुक सकता है। फिर 10 में से 9 लोग क्यों बच जाते हैं, और गरज सुनते ही तुम ख़तरे में क्यों हो?",
+   "facts": [
+    "MSD मैनुअल के अनुसार, बिजली का करंट सिर्फ़ 1/10,000 से 1/1,000 सेकंड तक बहता है; मौत का सबसे आम कारण उसी पल दिल का रुक जाना है। कान के पर्दे फटना और त्वचा पर फ़र्न जैसे शाखादार निशान भी दिखते हैं।",
+    "अमेरिकी नेशनल वेदर सर्विस (NWS) के अनुसार, बिजली की लकीर में हवा 50,000 °F (लगभग 27,700 °C) तक पहुँच सकती है, जो सूरज की सतह से 5 गुना गर्म है। गरज लगभग 16 km दूर तक सुनाई देती है, और अगर तुम्हें गरज सुनाई दे रही है, तो तुम बिजली की पहुँच में हो।",
+    "NWS के अनुसार, जिन पर बिजली गिरती है उनमें से सिर्फ़ लगभग 10% की मौत होती है; बाक़ी लोग अलग-अलग स्तर की स्थायी परेशानियों के साथ जीते हैं।",
+    "Live Science के अनुसार, बचने वालों को अक्सर नसों को नुक़सान और याददाश्त की समस्या होती है, और कुछ की त्वचा पर फ़र्न जैसे लिक्टेनबर्ग निशान उभर आते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Apakah Kamu Akan Selamat Jika Tersambar Petir?",
+   "summary": "Saat petir menyambar, udara di sekitarmu jadi 5 kali lebih panas dari permukaan Matahari dan jantungmu bisa berhenti dalam seperseribu detik. Lalu kenapa 9 dari 10 orang selamat, dan kenapa kamu sudah dalam bahaya saat mendengar guntur?",
+   "facts": [
+    "Menurut MSD Manual, arus petir hanya mengalir selama 1/10.000 sampai 1/1.000 detik; penyebab kematian paling umum adalah henti jantung saat sambaran terjadi. Gendang telinga pecah dan bekas bercabang seperti pakis di kulit juga sering terlihat.",
+    "Menurut Layanan Cuaca Nasional AS (NWS), udara di jalur petir bisa mencapai 50.000 °F (sekitar 27.700 °C), 5 kali lebih panas dari permukaan Matahari. Guntur terdengar hingga sekitar 16 km, dan jika kamu bisa mendengarnya, kamu berada dalam jangkauan sambaran petir.",
+    "Menurut NWS, hanya sekitar 10% orang yang tersambar petir meninggal; sisanya hidup dengan dampak permanen yang berbeda-beda.",
+    "Menurut Live Science, penyintas sering mengalami kerusakan saraf dan hilang ingatan, dan pada sebagian muncul pola Lichtenberg seperti pakis di kulitnya."
+   ]
+  },
+  "fr": {
+   "title": "Survivrais-Tu Si la Foudre Te Frappait ?",
+   "summary": "Quand la foudre frappe, l'air autour de toi devient 5 fois plus chaud que la surface du Soleil et ton cœur peut s'arrêter en un millième de seconde. Alors pourquoi 9 personnes sur 10 survivent-elles, et pourquoi es-tu déjà en danger quand tu entends le tonnerre ?",
+   "facts": [
+    "Selon le Manuel MSD, le courant de la foudre ne passe que pendant 1/10 000 à 1/1 000 de seconde ; la cause de décès la plus fréquente est l'arrêt cardiaque au moment de l'impact. On observe aussi des tympans perforés et des marques cutanées ramifiées en forme de fougère.",
+    "Selon le Service météorologique national américain (NWS), l'air d'un canal de foudre peut atteindre 50 000 °F (environ 27 700 °C), soit 5 fois plus chaud que la surface du Soleil. Le tonnerre s'entend jusqu'à environ 16 km, et si tu l'entends, tu es à portée de la foudre.",
+    "Selon le NWS, seulement environ 10 % des personnes frappées par la foudre en meurent ; les autres vivent avec des séquelles plus ou moins graves.",
+    "Selon Live Science, les survivants souffrent souvent de lésions nerveuses et de pertes de mémoire, et certains voient apparaître sur leur peau des figures de Lichtenberg en forme de fougère."
+   ]
+  },
+  "de": {
+   "title": "Würdest Du Überleben, Wenn Dich Ein Blitz Trifft?",
+   "summary": "Wenn ein Blitz einschlägt, wird die Luft um dich herum 5-mal heißer als die Sonnenoberfläche, und dein Herz kann in einer Tausendstelsekunde stehen bleiben. Warum überleben trotzdem 9 von 10 Menschen, und warum bist du schon in Gefahr, wenn du Donner hörst?",
+   "facts": [
+    "Laut MSD Manual fließt der Blitzstrom nur 1/10.000 bis 1/1.000 Sekunde lang; die häufigste Todesursache ist ein Herzstillstand im Moment des Einschlags. Auch geplatzte Trommelfelle und verzweigte, farnartige Hautmuster kommen vor.",
+    "Laut dem US-Wetterdienst (NWS) kann die Luft im Blitzkanal 50.000 °F (etwa 27.700 °C) erreichen, 5-mal heißer als die Sonnenoberfläche. Donner ist bis zu etwa 16 km weit zu hören, und wenn du ihn hörst, bist du in Reichweite eines Blitzes.",
+    "Laut NWS sterben nur etwa 10 % der vom Blitz getroffenen Menschen; die übrigen leben mit unterschiedlich schweren Dauerfolgen.",
+    "Laut Live Science leiden Überlebende oft an Nervenschäden und Gedächtnisverlust, und bei manchen erscheinen farnartige Lichtenberg-Figuren auf der Haut."
+   ]
+  },
+  "ru": {
+   "title": "Выжил Бы Ты, Если Бы в Тебя Ударила Молния?",
+   "summary": "Когда бьёт молния, воздух вокруг тебя становится в 5 раз горячее поверхности Солнца, а сердце может остановиться за тысячную долю секунды. Так почему выживают 9 человек из 10 и почему ты уже в опасности, когда слышишь гром?",
+   "facts": [
+    "По данным справочника MSD, ток молнии течёт всего от 1/10 000 до 1/1000 секунды; самая частая причина смерти — остановка сердца в момент удара. Также встречаются разрывы барабанных перепонок и ветвистые, похожие на папоротник следы на коже.",
+    "По данным Национальной метеослужбы США (NWS), воздух в канале молнии может нагреваться до 50 000 °F (около 27 700 °C) — в 5 раз горячее поверхности Солнца. Гром слышно примерно на 16 км, и если ты его слышишь, ты в зоне досягаемости молнии.",
+    "По данным NWS, погибают лишь около 10% людей, в которых ударила молния; остальные живут с последствиями разной тяжести.",
+    "По данным Live Science, у выживших часто бывают повреждения нервов и потеря памяти, а у некоторых на коже появляются похожие на папоротник фигуры Лихтенберга."
+   ]
+  },
+  "az": {
+   "title": "İldırım Sənə Dəysəydi Sağ Qalardınmı?",
+   "summary": "İldırım vuranda ətrafındakı hava Günəşin səthindən 5 dəfə isti olur və ürəyin saniyənin mində birində dayana bilər. Bəs niyə 10 nəfərdən 9-u sağ qalır və göy gurultusunu eşidəndə niyə artıq təhlükədəsən?",
+   "facts": [
+    "MSD Təlimatına görə ildırım cərəyanı saniyənin 10.000-də biri ilə 1.000-də biri arasında axır; ən çox rast gəlinən ölüm səbəbi zərbə anında ürəyin dayanmasıdır. Qulaq pərdəsinin deşilməsi və dəridə qıjıya bənzər budaqlı izlər də görülür.",
+    "ABŞ Milli Hava Xidmətinə (NWS) görə ildırım kanalındakı hava 50.000 °F-ə (təxminən 27.700 °C) çata bilər, bu da Günəşin səthindən 5 dəfə istidir. Göy gurultusu təxminən 16 km-ə qədər eşidilir və onu eşidirsənsə, ildırımın vura biləcəyi məsafədəsən.",
+    "NWS-ə görə ildırım vuran insanların yalnız təxminən 10%-i ölür; qalanları müxtəlif dərəcədə qalıcı problemlərlə yaşayır.",
+    "Live Science-a görə sağ qalanlarda sinir zədəsi və yaddaş itkisi tez-tez müşahidə olunur, bəzilərinin dərisində isə qıjıya bənzər Lixtenberq naxışları yaranır."
+   ]
+  }
+ }
+}

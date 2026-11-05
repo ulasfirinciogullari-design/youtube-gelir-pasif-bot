@@ -1,0 +1,277 @@
+{
+ "id": "g010",
+ "series": "1 Gün Boyunca",
+ "q": "Saçın 1 günde ne kadar uzar?",
+ "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+ "bar": {
+  "hi": "SAÇLARIN",
+  "rest": "KAÇ METRE UZAR?"
+ },
+ "summary": "Tek bir saç teli günde sadece 0,35 milimetre uzar ama kafandaki bütün saçlar bugün toplam 30 metreden fazla uzayacak! Saçlarının nasıl 12 ton taşıyabildiğini ve bugün kaç tel dökeceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bugün 30 metreden fazla saç uzatacaksın!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "💇",
+    "value": "30+",
+    "unit": "metre",
+    "label": "Bugünkü Saçın",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "10 katlı bina boyu saç mı?!",
+   "v": {
+    "t": "compare",
+    "bg": "city",
+    "a": {
+     "e": "🧍",
+     "label": "Sen",
+     "value": "1,7"
+    },
+    "b": {
+     "e": "🏢",
+     "label": "30 Metre Saç",
+     "value": "30"
+    },
+    "mode": "size",
+    "key": "bina"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tek tel günde 0,35 milimetre uzar ama kafanda 100.000'den fazla tel var.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "📏",
+    "value": "0,35",
+    "unit": "mm",
+    "label": "Tek Tel, 1 Gün",
+    "key": "0,35"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bugün 50 ila 100 telini de dökeceksin: tarağına bir bak!",
+   "v": {
+    "t": "icons",
+    "bg": "city",
+    "items": [
+     {
+      "e": "🪮",
+      "label": "Tarakta"
+     },
+     {
+      "e": "🚿",
+      "label": "Duşta"
+     },
+     {
+      "e": "🛏️",
+      "label": "Yastıkta"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl şok: tek tel 100 gram, bütün saçın 12 ton taşıyabilir!",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "🧵",
+     "label": "Tek Tel: 100 g",
+     "value": "0,1"
+    },
+    "b": {
+     "e": "🏋️",
+     "label": "Bütün Saç: 12 Ton",
+     "value": "12.000"
+    },
+    "mode": "bar",
+    "key": "12"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Saçlarımla fil mi kaldırırım?!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "🐘",
+    "do": "rise",
+    "key": "fil",
+    "label": "Saçla Fil"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen saçını en son ne zaman kestirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "city",
+    "e": "✂️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NIH StatPearls'e göre kafa derisindeki saç günde yaklaşık 0,35 mm, ayda 1 cm, yılda 15 cm uzar.",
+   "source": "NIH NCBI StatPearls (Physiology, Hair)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK499948/"
+  },
+  {
+   "text": "Harvard BioNumbers'ın aktardığı bir dermatoloji çalışmasına göre kafada yaklaşık 150.000 saç teli var ve %90'ı büyüme evresinde; günde 0,35 mm ile bu, her gün toplam 30 metreden fazla saç demek.",
+   "source": "Harvard BioNumbers (J Am Acad Dermatol)",
+   "url": "https://bionumbers.hms.harvard.edu/bionumber.aspx?id=114257"
+  },
+  {
+   "text": "Amerikan Dermatoloji Akademisi'ne göre günde 50 ila 100 tel saç dökmek normaldir.",
+   "source": "American Academy of Dermatology",
+   "url": "https://www.aad.org/public/diseases/hair-loss/insider/shedding"
+  },
+  {
+   "text": "Imperial College London'a göre tek bir saç teli 100 grama kadar ağırlık taşıyabilir; bütün bir kafa saçı 12 tona kadar taşıyabilir.",
+   "source": "Imperial College London",
+   "url": "https://www.imperial.ac.uk/news/96545/"
+  }
+ ],
+ "tags": [
+  "saç",
+  "saç ne kadar uzar",
+  "saç 1 günde ne kadar uzar",
+  "saç uzaması",
+  "saç dökülmesi",
+  "günde kaç saç dökülür",
+  "saç teli",
+  "insan vücudu",
+  "1 gün boyunca",
+  "hair growth",
+  "how fast does hair grow",
+  "hair loss",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#saç",
+  "#vücut",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.ncbi.nlm.nih.gov/books/NBK499948/",
+  "https://bionumbers.hms.harvard.edu/bionumber.aspx?id=114257",
+  "https://www.aad.org/public/diseases/hair-loss/insider/shedding",
+  "https://www.imperial.ac.uk/news/96545/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Meters Does Your Hair Grow in Total in 1 Day?",
+   "summary": "A single hair grows just 0.35 millimeters a day, but all the hair on your head will grow more than 30 meters in total today! Professor Pi explains how your hair could hold 12 tonnes and how many strands you'll shed today.",
+   "facts": [
+    "According to NIH StatPearls, scalp hair grows about 0.35 mm a day, 1 cm a month, or 15 cm a year.",
+    "According to Harvard's BioNumbers, citing a dermatology study, the scalp has about 150,000 hairs and 90% of them are in the growth phase; at 0.35 mm a day, that adds up to more than 30 meters of hair every day.",
+    "According to the American Academy of Dermatology, it is normal to shed between 50 and 100 hairs a day.",
+    "According to Imperial College London, a single strand of hair can hold up to 100 grams, and a full head of hair could support up to 12 tonnes."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántos Metros Crece Tu Pelo en Total en 1 Día?",
+   "summary": "Un solo pelo crece apenas 0,35 milímetros al día, ¡pero todo el pelo de tu cabeza crecerá hoy más de 30 metros en total! El profesor Pi explica cómo tu pelo podría sostener 12 toneladas y cuántos cabellos perderás hoy.",
+   "facts": [
+    "Según NIH StatPearls, el cabello del cuero cabelludo crece unos 0,35 mm al día, 1 cm al mes o 15 cm al año.",
+    "Según BioNumbers de Harvard, que cita un estudio dermatológico, el cuero cabelludo tiene unos 150.000 cabellos y el 90 % está en fase de crecimiento; a 0,35 mm al día, eso suma más de 30 metros de pelo cada día.",
+    "Según la Academia Estadounidense de Dermatología, es normal perder entre 50 y 100 cabellos al día.",
+    "Según el Imperial College de Londres, un solo cabello puede sostener hasta 100 gramos, y una cabellera completa podría soportar hasta 12 toneladas."
+   ]
+  },
+  "pt": {
+   "title": "Quantos Metros Seu Cabelo Cresce no Total em 1 Dia?",
+   "summary": "Um único fio cresce só 0,35 milímetro por dia, mas todo o cabelo da sua cabeça vai crescer hoje mais de 30 metros no total! O professor Pi explica como seu cabelo poderia sustentar 12 toneladas e quantos fios você vai perder hoje.",
+   "facts": [
+    "Segundo o NIH StatPearls, o cabelo do couro cabeludo cresce cerca de 0,35 mm por dia, 1 cm por mês ou 15 cm por ano.",
+    "Segundo o BioNumbers de Harvard, citando um estudo de dermatologia, o couro cabeludo tem cerca de 150.000 fios e 90% deles estão na fase de crescimento; a 0,35 mm por dia, isso soma mais de 30 metros de cabelo por dia.",
+    "Segundo a Academia Americana de Dermatologia, é normal perder entre 50 e 100 fios por dia.",
+    "Segundo o Imperial College London, um único fio de cabelo pode sustentar até 100 gramas, e uma cabeleira inteira poderia suportar até 12 toneladas."
+   ]
+  },
+  "ar": {
+   "title": "كم مترًا ينمو شعرك إجمالًا في يوم واحد؟",
+   "summary": "تنمو الشعرة الواحدة 0.35 ملليمتر فقط في اليوم، لكن كل شعر رأسك سينمو اليوم أكثر من 30 مترًا إجمالًا! يشرح البروفيسور باي كيف يمكن لشعرك أن يحمل 12 طنًا وكم شعرة ستفقد اليوم.",
+   "facts": [
+    "وفقًا لمرجع StatPearls التابع للمعاهد الوطنية للصحة الأمريكية، ينمو شعر فروة الرأس نحو 0.35 مم في اليوم، أي 1 سم في الشهر أو 15 سم في السنة.",
+    "وفقًا لقاعدة BioNumbers في جامعة هارفارد، نقلًا عن دراسة في طب الجلد، تحتوي فروة الرأس على نحو 150,000 شعرة، 90% منها في مرحلة النمو؛ وبمعدل 0.35 مم يوميًا يصبح المجموع أكثر من 30 مترًا من الشعر كل يوم.",
+    "وفقًا للأكاديمية الأمريكية للأمراض الجلدية، من الطبيعي أن تتساقط من 50 إلى 100 شعرة يوميًا.",
+    "وفقًا لكلية إمبريال في لندن، يمكن للشعرة الواحدة أن تحمل ما يصل إلى 100 غرام، ويمكن لشعر الرأس كله أن يتحمل ما يصل إلى 12 طنًا."
+   ]
+  },
+  "hi": {
+   "title": "तुम्हारे बाल 1 दिन में कुल कितने मीटर बढ़ते हैं?",
+   "summary": "एक बाल रोज़ सिर्फ़ 0.35 मिलीमीटर बढ़ता है, लेकिन तुम्हारे सिर के सारे बाल आज कुल मिलाकर 30 मीटर से ज़्यादा बढ़ेंगे! प्रोफ़ेसर पाई बताते हैं कि तुम्हारे बाल 12 टन कैसे उठा सकते हैं और आज तुम्हारे कितने बाल झड़ेंगे।",
+   "facts": [
+    "NIH StatPearls के अनुसार, सिर के बाल रोज़ लगभग 0.35 mm, महीने में 1 cm या साल में 15 cm बढ़ते हैं।",
+    "हार्वर्ड के BioNumbers के अनुसार, जो एक त्वचा-विज्ञान अध्ययन का हवाला देता है, सिर पर लगभग 150,000 बाल होते हैं और उनमें से 90% बढ़ने के चरण में होते हैं; रोज़ 0.35 mm के हिसाब से यह हर दिन कुल 30 मीटर से ज़्यादा बाल बनता है।",
+    "अमेरिकन एकेडमी ऑफ़ डर्मेटोलॉजी के अनुसार, रोज़ 50 से 100 बाल झड़ना सामान्य है।",
+    "इंपीरियल कॉलेज लंदन के अनुसार, एक बाल 100 ग्राम तक वज़न उठा सकता है, और सिर के सारे बाल मिलकर 12 टन तक सह सकते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Meter Total Rambutmu Tumbuh dalam 1 Hari?",
+   "summary": "Sehelai rambut hanya tumbuh 0,35 milimeter sehari, tapi semua rambut di kepalamu hari ini akan tumbuh lebih dari 30 meter totalnya! Profesor Pi menjelaskan bagaimana rambutmu bisa menahan 12 ton dan berapa helai yang akan rontok hari ini.",
+   "facts": [
+    "Menurut NIH StatPearls, rambut kepala tumbuh sekitar 0,35 mm per hari, 1 cm per bulan, atau 15 cm per tahun.",
+    "Menurut BioNumbers dari Harvard, yang mengutip sebuah studi dermatologi, kulit kepala memiliki sekitar 150.000 helai rambut dan 90% di antaranya sedang dalam fase tumbuh; dengan 0,35 mm per hari, totalnya lebih dari 30 meter rambut setiap hari.",
+    "Menurut American Academy of Dermatology, rontok 50 sampai 100 helai rambut per hari itu normal.",
+    "Menurut Imperial College London, sehelai rambut bisa menahan hingga 100 gram, dan seluruh rambut di kepala bisa menopang hingga 12 ton."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Mètres Tes Cheveux Poussent-ils au Total en 1 Jour ?",
+   "summary": "Un seul cheveu ne pousse que de 0,35 millimètre par jour, mais tous les cheveux de ta tête vont pousser aujourd'hui de plus de 30 mètres au total ! Le professeur Pi explique comment tes cheveux pourraient supporter 12 tonnes et combien tu vas en perdre aujourd'hui.",
+   "facts": [
+    "Selon NIH StatPearls, les cheveux du cuir chevelu poussent d'environ 0,35 mm par jour, 1 cm par mois ou 15 cm par an.",
+    "Selon BioNumbers de Harvard, qui cite une étude de dermatologie, le cuir chevelu compte environ 150 000 cheveux, dont 90 % en phase de croissance ; à 0,35 mm par jour, cela fait plus de 30 mètres de cheveux chaque jour.",
+    "Selon l'American Academy of Dermatology, il est normal de perdre entre 50 et 100 cheveux par jour.",
+    "Selon l'Imperial College de Londres, un seul cheveu peut supporter jusqu'à 100 grammes, et une chevelure entière pourrait supporter jusqu'à 12 tonnes."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Meter Wachsen Deine Haare an 1 Tag Insgesamt?",
+   "summary": "Ein einzelnes Haar wächst nur 0,35 Millimeter am Tag, aber alle Haare auf deinem Kopf wachsen heute insgesamt mehr als 30 Meter! Professor Pi erklärt, wie deine Haare 12 Tonnen tragen könnten und wie viele du heute verlierst.",
+   "facts": [
+    "Laut NIH StatPearls wachsen Kopfhaare etwa 0,35 mm pro Tag, 1 cm pro Monat oder 15 cm pro Jahr.",
+    "Laut Harvards BioNumbers, das eine dermatologische Studie zitiert, hat die Kopfhaut etwa 150.000 Haare, von denen 90 % in der Wachstumsphase sind; bei 0,35 mm pro Tag ergibt das jeden Tag mehr als 30 Meter Haar.",
+    "Laut der American Academy of Dermatology ist es normal, täglich 50 bis 100 Haare zu verlieren.",
+    "Laut dem Imperial College London kann ein einzelnes Haar bis zu 100 Gramm halten, und ein ganzer Haarschopf könnte bis zu 12 Tonnen tragen."
+   ]
+  },
+  "ru": {
+   "title": "На Сколько Метров Всего Вырастают Твои Волосы за 1 День?",
+   "summary": "Один волос вырастает всего на 0,35 миллиметра в день, но все волосы на твоей голове сегодня вырастут в сумме больше чем на 30 метров! Профессор Пи объясняет, как твои волосы могли бы выдержать 12 тонн и сколько волосков ты потеряешь сегодня.",
+   "facts": [
+    "По данным NIH StatPearls, волосы на голове растут примерно на 0,35 мм в день, 1 см в месяц или 15 см в год.",
+    "По данным BioNumbers Гарвардского университета со ссылкой на дерматологическое исследование, на голове около 150 000 волос, и 90% из них находятся в фазе роста; при 0,35 мм в день это больше 30 метров волос каждый день.",
+    "По данным Американской академии дерматологии, терять от 50 до 100 волос в день нормально.",
+    "По данным Имперского колледжа Лондона, один волос выдерживает до 100 граммов, а вся шевелюра могла бы выдержать до 12 тонн."
+   ]
+  },
+  "az": {
+   "title": "Saçların 1 Gündə Cəmi Neçə Metr Uzanır?",
+   "summary": "Bir saç teli gündə cəmi 0,35 millimetr uzanır, amma başındakı bütün saçlar bu gün cəmi 30 metrdən çox uzanacaq! Saçlarının necə 12 ton daşıya biləcəyini və bu gün neçə telinin töküləcəyini Professor Pi danışır.",
+   "facts": [
+    "NIH StatPearls-a görə baş dərisindəki saç gündə təxminən 0,35 mm, ayda 1 sm, ildə isə 15 sm uzanır.",
+    "Harvardın BioNumbers bazasına görə, bir dermatologiya tədqiqatına istinadən, başda təxminən 150.000 saç teli var və onların 90%-i böyümə mərhələsindədir; gündə 0,35 mm ilə bu, hər gün cəmi 30 metrdən çox saç deməkdir.",
+    "Amerika Dermatologiya Akademiyasına görə gündə 50-dən 100-ə qədər saç tökülməsi normaldır.",
+    "London İmperial Kollecinə görə bir saç teli 100 qrama qədər yük daşıya bilər, bütün baş saçı isə 12 tona qədər yükə dözə bilər."
+   ]
+  }
+ }
+}

@@ -1,0 +1,288 @@
+{
+ "id": "y062",
+ "series": "Ya Olsaydı?",
+ "q": "Lav gölüne düşseydin ne olurdu?",
+ "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+ "bar": {
+  "hi": "LAV GÖLÜNE",
+  "rest": "DÜŞSEYDİN?"
+ },
+ "summary": "Lav gölüne düşsen batmazdın ama bu seni kurtarmazdı! 1.170 °C'lik lavın üstünde vücuduna neler olacağını volkanbilimcilerin bulgularıyla Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Lava batmazdın; üstünde kalıp alev alırdın!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🧍",
+    "do": "burn",
+    "key": "batmazdın",
+    "label": "Batmaz, Yanarsın"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Lavda sörf mü yaparım?!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🏄",
+    "do": "float",
+    "key": "sörf",
+    "label": "Lav Sörfü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü lav senden 3 kat yoğun ve fıstık ezmesi kadar koyu.",
+   "v": {
+    "t": "compare",
+    "bg": "volcano",
+    "a": {
+     "e": "🧍",
+     "label": "Senin Yoğunluğun",
+     "value": "1"
+    },
+    "b": {
+     "e": "🌋",
+     "label": "Lavın Yoğunluğu",
+     "value": "3,1"
+    },
+    "mode": "bar",
+    "key": "3"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama 1.170 °C: fırının en sıcak ayarının 4 katı!",
+   "v": {
+    "t": "meter",
+    "bg": "volcano",
+    "label": "Lav Sıcaklığı",
+    "from": 0,
+    "to": 1170,
+    "unit": "°C",
+    "e": "🔥",
+    "key": "1.170"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dokunmadan bile, yükselen sıcak hava saçını ve tenini kavururdu.",
+   "v": {
+    "t": "split",
+    "bg": "volcano",
+    "left": {
+     "e": "🧑",
+     "label": "Saçın ve Tenin"
+    },
+    "right": {
+     "e": "🔥",
+     "label": "Kavrulur"
+    },
+    "key": "kavururdu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Etiyopya'da lav gölüne atılan 30 kiloluk yemek torbası, lavı fışkırttı!",
+   "v": {
+    "t": "timeline",
+    "bg": "volcano",
+    "steps": [
+     {
+      "when": "2002",
+      "e": "🛍️",
+      "label": "30 kg Torba"
+     },
+     {
+      "when": "SONRA",
+      "e": "🌋",
+      "label": "Lav Fışkırır"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen yanardağa ne kadar yaklaşırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "volcano",
+    "e": "🌋"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Volkanbilimci Erik Klemetti'ye göre bazalt lavın yoğunluğu yaklaşık 3.100 kg/m³, insan vücudununki yaklaşık 1.010 kg/m³; lav 3 kat yoğun olduğu için içine batmaz, yüzeyinde kalırsın.",
+   "source": "Discover Magazine (Erik Klemetti)",
+   "url": "https://www.discovermagazine.com/the-sciences/the-right-and-wrong-way-to-die-when-you-fall-into-lava"
+  },
+  {
+   "text": "Live Science'a göre lav fıstık ezmesi kadar koyudur ve fırının ızgara ayarından 4 kat sıcaktır; üstüne düşen biri batmaz ama hızla alev alır.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/33622-sink-fall-volcano-lava.html"
+  },
+  {
+   "text": "USGS'ye göre Kilauea lavının püskürme sıcaklığı yaklaşık 1.170 °C'dir.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/faqs/how-hot-hawaiian-volcano"
+  },
+  {
+   "text": "Oregon State Üniversitesi'ne göre lavdan yükselen aşırı sıcak hava yüzünden, rüzgâr döndüğünde birçok volkanbilimcinin saçı ve teni kavruldu.",
+   "source": "Oregon State University Volcano World",
+   "url": "https://volcano.oregonstate.edu/faq/how-close-can-i-get-lava-and-will-it-hurt-or-kill-me"
+  },
+  {
+   "text": "Live Science'a göre 2002'de Etiyopya'daki Erta Ale lav gölüne atılan 30 kiloluk yemek artığı ve organik atık torbası, lavın şiddetle fışkırmasına yol açtı.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/34031-person-fell-volcano.html"
+  }
+ ],
+ "tags": [
+  "lav",
+  "lav gölü",
+  "lava düşmek",
+  "lava düşsen ne olur",
+  "yanardağ",
+  "volkan",
+  "erta ale",
+  "kilauea",
+  "lava",
+  "lava lake",
+  "falling into lava",
+  "volcano",
+  "what if you fell into lava",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#lav",
+  "#yanardağ",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.usgs.gov/faqs/how-hot-hawaiian-volcano",
+  "https://www.discovermagazine.com/the-sciences/the-right-and-wrong-way-to-die-when-you-fall-into-lava",
+  "https://www.livescience.com/33622-sink-fall-volcano-lava.html",
+  "https://volcano.oregonstate.edu/faq/how-close-can-i-get-lava-and-will-it-hurt-or-kill-me"
+ ],
+ "i18n": {
+  "en": {
+   "title": "Would You Sink If You Fell Into a Lava Lake?",
+   "summary": "You wouldn't sink into a lava lake, but that wouldn't save you! Using what volcanologists have found, Professor Pi explains what would happen to your body on top of 1,170 °C lava.",
+   "facts": [
+    "According to volcanologist Erik Klemetti, basaltic lava has a density of about 3,100 kg/m³, while the human body is about 1,010 kg/m³; because lava is 3 times denser, you would not sink in but stay on the surface.",
+    "According to Live Science, lava is as thick as peanut butter and 4 times hotter than an oven's broiler; a person falling onto it would not sink but would quickly burst into flames.",
+    "According to the USGS, Kīlauea's lava erupts at about 1,170 °C.",
+    "According to Oregon State University, many volcanologists have had their skin and hair singed by the superheated air rising from lava when the wind changed.",
+    "According to Live Science, in 2002 a 30-kilogram bag of food waste and organic matter thrown into the Erta Ale lava lake in Ethiopia set off violent fountaining of lava."
+   ]
+  },
+  "es": {
+   "title": "¿Te Hundirías Si Cayeras en un Lago de Lava?",
+   "summary": "No te hundirías en un lago de lava, ¡pero eso no te salvaría! Con lo que han descubierto los vulcanólogos, el profesor Pi explica qué le pasaría a tu cuerpo sobre lava a 1.170 °C.",
+   "facts": [
+    "Según el vulcanólogo Erik Klemetti, la lava basáltica tiene una densidad de unos 3.100 kg/m³ y el cuerpo humano de unos 1.010 kg/m³; como la lava es 3 veces más densa, no te hundirías, te quedarías en la superficie.",
+    "Según Live Science, la lava es tan espesa como la mantequilla de cacahuete y 4 veces más caliente que el gratinador de un horno; quien cayera sobre ella no se hundiría, pero ardería rápidamente.",
+    "Según el USGS, la lava del Kīlauea sale a unos 1.170 °C.",
+    "Según la Universidad Estatal de Oregón, muchos vulcanólogos se han chamuscado la piel y el pelo con el aire sobrecalentado que sube de la lava cuando cambió el viento.",
+    "Según Live Science, en 2002 una bolsa de 30 kilos con restos de comida y materia orgánica arrojada al lago de lava del Erta Ale, en Etiopía, provocó violentos surtidores de lava."
+   ]
+  },
+  "pt": {
+   "title": "Você Afundaria Se Caísse em um Lago de Lava?",
+   "summary": "Você não afundaria em um lago de lava, mas isso não te salvaria! Com base no que os vulcanólogos descobriram, o professor Pi explica o que aconteceria com seu corpo em cima de lava a 1.170 °C.",
+   "facts": [
+    "Segundo o vulcanólogo Erik Klemetti, a lava basáltica tem densidade de cerca de 3.100 kg/m³ e o corpo humano de cerca de 1.010 kg/m³; como a lava é 3 vezes mais densa, você não afundaria, ficaria na superfície.",
+    "Segundo a Live Science, a lava é tão espessa quanto pasta de amendoim e 4 vezes mais quente que o grill de um forno; quem caísse sobre ela não afundaria, mas pegaria fogo rapidamente.",
+    "Segundo o USGS, a lava do Kīlauea sai a cerca de 1.170 °C.",
+    "Segundo a Universidade Estadual do Oregon, muitos vulcanólogos já tiveram a pele e o cabelo chamuscados pelo ar superaquecido que sobe da lava quando o vento mudou.",
+    "Segundo a Live Science, em 2002 um saco de 30 quilos com restos de comida e matéria orgânica jogado no lago de lava do Erta Ale, na Etiópia, provocou violentos jatos de lava."
+   ]
+  },
+  "ar": {
+   "title": "هل كنت ستغرق لو سقطت في بحيرة حمم؟",
+   "summary": "لن تغرق في بحيرة الحمم، لكن هذا لن ينقذك! اعتمادًا على ما توصل إليه علماء البراكين، يشرح البروفيسور باي ما سيحدث لجسمك فوق حمم حرارتها 1,170 °C.",
+   "facts": [
+    "وفقًا لعالم البراكين إريك كليميتي، تبلغ كثافة الحمم البازلتية نحو 3,100 كغ/م³ بينما تبلغ كثافة جسم الإنسان نحو 1,010 كغ/م³؛ ولأن الحمم أكثف بـ3 مرات فلن تغرق فيها بل ستبقى على سطحها.",
+    "وفقًا لموقع Live Science، الحمم كثيفة مثل زبدة الفول السوداني وأسخن بـ4 مرات من شواية الفرن؛ ومن يسقط عليها لا يغرق لكنه يشتعل بسرعة.",
+    "وفقًا لهيئة المسح الجيولوجي الأمريكية (USGS)، تندفع حمم بركان كيلاويا بحرارة تقارب 1,170 °C.",
+    "وفقًا لجامعة ولاية أوريغون، احترق جلد وشعر كثير من علماء البراكين بفعل الهواء شديد الحرارة المتصاعد من الحمم عندما تغيّر اتجاه الريح.",
+    "وفقًا لموقع Live Science، في عام 2002 أُلقي كيس وزنه 30 كيلوغرامًا من بقايا الطعام والمواد العضوية في بحيرة حمم بركان إرتا أليه في إثيوبيا، فتسبب في تدفق عنيف للحمم."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम लावा की झील में गिरते तो क्या डूब जाते?",
+   "summary": "तुम लावा की झील में डूबते नहीं, लेकिन इससे तुम बचते भी नहीं! ज्वालामुखी वैज्ञानिकों की खोजों के आधार पर प्रोफ़ेसर पाई बताते हैं कि 1,170 °C के लावा के ऊपर तुम्हारे शरीर का क्या होता।",
+   "facts": [
+    "ज्वालामुखी वैज्ञानिक एरिक क्लेमेटी के अनुसार, बेसाल्टिक लावा का घनत्व लगभग 3,100 kg/m³ और इंसानी शरीर का लगभग 1,010 kg/m³ होता है; लावा 3 गुना ज़्यादा घना है, इसलिए तुम डूबोगे नहीं, सतह पर ही रहोगे।",
+    "Live Science के अनुसार, लावा पीनट बटर जितना गाढ़ा और ओवन के ब्रॉयलर से 4 गुना गर्म होता है; उस पर गिरने वाला डूबेगा नहीं, लेकिन जल्दी ही आग पकड़ लेगा।",
+    "USGS के अनुसार, किलाउआ ज्वालामुखी का लावा लगभग 1,170 °C पर निकलता है।",
+    "ओरेगन स्टेट यूनिवर्सिटी के अनुसार, हवा का रुख़ बदलने पर लावा से उठती बेहद गर्म हवा से कई ज्वालामुखी वैज्ञानिकों की त्वचा और बाल झुलस चुके हैं।",
+    "Live Science के अनुसार, 2002 में इथियोपिया के एर्टा आले ज्वालामुखी की लावा झील में फेंके गए बचे हुए खाने और जैविक कचरे के 30 किलो के थैले से लावा के ज़ोरदार फव्वारे उठे।"
+   ]
+  },
+  "id": {
+   "title": "Apakah Kamu Akan Tenggelam Jika Jatuh ke Danau Lava?",
+   "summary": "Kamu tidak akan tenggelam di danau lava, tapi itu tidak akan menyelamatkanmu! Berdasarkan temuan para ahli vulkanologi, Profesor Pi menjelaskan apa yang terjadi pada tubuhmu di atas lava bersuhu 1.170 °C.",
+   "facts": [
+    "Menurut ahli vulkanologi Erik Klemetti, massa jenis lava basal sekitar 3.100 kg/m³, sedangkan tubuh manusia sekitar 1.010 kg/m³; karena lava 3 kali lebih padat, kamu tidak akan tenggelam, melainkan tetap di permukaan.",
+    "Menurut Live Science, lava sekental selai kacang dan 4 kali lebih panas dari pemanggang oven; orang yang jatuh ke atasnya tidak akan tenggelam, tetapi cepat terbakar.",
+    "Menurut USGS, lava Kīlauea menyembur pada suhu sekitar 1.170 °C.",
+    "Menurut Oregon State University, banyak ahli vulkanologi pernah mengalami kulit dan rambut hangus oleh udara super panas yang naik dari lava saat arah angin berubah.",
+    "Menurut Live Science, pada 2002 sekantong sisa makanan dan bahan organik seberat 30 kilogram yang dilempar ke danau lava Erta Ale di Etiopia memicu semburan lava yang hebat."
+   ]
+  },
+  "fr": {
+   "title": "Coulerais-Tu Si Tu Tombais dans un Lac de Lave ?",
+   "summary": "Tu ne coulerais pas dans un lac de lave, mais ça ne te sauverait pas ! D'après les découvertes des volcanologues, le professeur Pi explique ce qui arriverait à ton corps sur une lave à 1 170 °C.",
+   "facts": [
+    "Selon le volcanologue Erik Klemetti, la lave basaltique a une densité d'environ 3 100 kg/m³, contre environ 1 010 kg/m³ pour le corps humain ; la lave étant 3 fois plus dense, tu ne coulerais pas, tu resterais à la surface.",
+    "Selon Live Science, la lave est aussi épaisse que du beurre de cacahuète et 4 fois plus chaude que le gril d'un four ; une personne qui tomberait dessus ne coulerait pas, mais prendrait vite feu.",
+    "Selon l'USGS, la lave du Kīlauea sort à environ 1 170 °C.",
+    "Selon l'université d'État de l'Oregon, de nombreux volcanologues ont eu la peau et les cheveux roussis par l'air surchauffé qui monte de la lave quand le vent a tourné.",
+    "Selon Live Science, en 2002, un sac de 30 kilos de restes de nourriture et de matière organique jeté dans le lac de lave de l'Erta Ale, en Éthiopie, a provoqué de violentes fontaines de lave."
+   ]
+  },
+  "de": {
+   "title": "Würdest Du Versinken, Wenn Du in Einen Lavasee Fällst?",
+   "summary": "In einem Lavasee würdest du nicht versinken, aber das würde dich nicht retten! Mit den Erkenntnissen von Vulkanologen erklärt Professor Pi, was mit deinem Körper auf 1.170 °C heißer Lava passieren würde.",
+   "facts": [
+    "Laut dem Vulkanologen Erik Klemetti hat Basaltlava eine Dichte von etwa 3.100 kg/m³, der menschliche Körper etwa 1.010 kg/m³; weil Lava 3-mal dichter ist, würdest du nicht versinken, sondern an der Oberfläche bleiben.",
+    "Laut Live Science ist Lava so zäh wie Erdnussbutter und 4-mal heißer als der Grill eines Backofens; wer darauf fällt, versinkt nicht, fängt aber schnell Feuer.",
+    "Laut USGS tritt die Lava des Kīlauea mit etwa 1.170 °C aus.",
+    "Laut der Oregon State University haben sich viele Vulkanologen Haut und Haare an der überhitzten Luft versengt, die von Lava aufsteigt, als der Wind drehte.",
+    "Laut Live Science löste 2002 ein 30 Kilogramm schwerer Sack mit Essensresten und organischem Material, der in den Lavasee des Erta Ale in Äthiopien geworfen wurde, heftige Lavafontänen aus."
+   ]
+  },
+  "ru": {
+   "title": "Утонул Бы Ты, Если Бы Упал в Лавовое Озеро?",
+   "summary": "В лавовом озере ты бы не утонул, но это бы тебя не спасло! Опираясь на данные вулканологов, Профессор Пи объясняет, что случилось бы с твоим телом на лаве температурой 1170 °C.",
+   "facts": [
+    "По словам вулканолога Эрика Клеметти, плотность базальтовой лавы около 3100 кг/м³, а человеческого тела — около 1010 кг/м³; лава в 3 раза плотнее, поэтому ты бы не утонул, а остался на поверхности.",
+    "По данным Live Science, лава густая, как арахисовая паста, и в 4 раза горячее духовки в режиме гриля; упавший на неё человек не утонет, но быстро загорится.",
+    "По данным USGS, лава вулкана Килауэа извергается при температуре около 1170 °C.",
+    "По данным Университета штата Орегон, у многих вулканологов обгорали кожа и волосы от перегретого воздуха над лавой, когда менялся ветер.",
+    "По данным Live Science, в 2002 году 30-килограммовый мешок с остатками еды и органикой, брошенный в лавовое озеро вулкана Эрта-Але в Эфиопии, вызвал мощные фонтаны лавы."
+   ]
+  },
+  "az": {
+   "title": "Lava Gölünə Düşsəydin Batardınmı?",
+   "summary": "Lava gölünə düşsəydin batmazdın, amma bu səni xilas etməzdi! Vulkanoloqların tapıntılarına əsasən Professor Pi 1.170 °C-lik lavanın üstündə bədəninə nə olacağını danışır.",
+   "facts": [
+    "Vulkanoloq Erik Klemettiyə görə bazalt lavanın sıxlığı təxminən 3.100 kq/m³, insan bədəninin sıxlığı isə təxminən 1.010 kq/m³-dir; lava 3 dəfə sıx olduğu üçün batmazdın, səthində qalardın.",
+    "Live Science-a görə lava fıstıq yağı qədər qatıdır və sobanın qril rejimindən 4 dəfə istidir; onun üstünə düşən adam batmaz, amma tez alov alar.",
+    "USGS-ə görə Kilauea lavası təxminən 1.170 °C temperaturda püskürür.",
+    "Oreqon Ştat Universitetinə görə külək dəyişəndə lavadan qalxan çox isti hava bir çox vulkanoloqun dərisini və saçını qarsıb.",
+    "Live Science-a görə 2002-ci ildə Efiopiyadakı Erta Ale lava gölünə atılan 30 kiloqramlıq yemək qalıqları və üzvi tullantı torbası lavanın şiddətlə fışqırmasına səbəb oldu."
+   ]
+  }
+ }
+}
