@@ -321,12 +321,13 @@ Object.assign(SAHNE, {
     k5Stamp('ANLAŞMALI', 540, 560, 66, prog(t, tk - .05, tk + .2), -.08);
   },
   sonuc(V, L, t, lt) {
-    // four students in a row: on "dörtte üçü" the big "3 in 4"; on "kalabalığa" three of them say A, the fourth B
+    // four students in a row: the big "3 in 4" from the start, a pulse on "dörtte üçü"; on "kalabalığa" three of them
+    // say A, the fourth B
     K5.day();
     const tk = wordTime(L, V.key, .3), tw = wordTime(L, V.went, .7);
     cam(540, 1000, 1.1, () => k5Class(t));
     ctx.fillStyle = 'rgba(10,12,24,.7)'; ctx.fillRect(0, 0, W, H);
-    const big = back(prog(t, tk - .05, tk + .3));
+    const big = back(prog(lt, .02, .32)), pulse = 1 + .08 * Math.sin(Math.PI * prog(t, tk - .05, tk + .3));
     const cols = [['#d99a2b', '#5a3a1e', '#efc29e'], ['#3d6a8a', '#2a1a12', '#e2b08c'], ['#5a7a4a', '#7a5030', '#f0c4a2'], ['#8a5a3a', '#1e1814', '#d9a07c']];
     cols.forEach(([coat, hairColor, skin], i) => {
       const x = 150 + i * 260, said = prog(t, tw + i * .16, tw + i * .16 + .22), wrong = i < 3;
@@ -341,8 +342,8 @@ Object.assign(SAHNE, {
     const g = ctx.createLinearGradient(0, 1270, 0, H); g.addColorStop(0, '#5a3820'); g.addColorStop(1, '#1a100a');
     ctx.fillStyle = g; ctx.fillRect(-20, 1268, W + 40, H);
     if (big > 0) {
-      ctx.save(); ctx.translate(540, 580); ctx.scale(big, big);
-      const s = '4 KİŞİDEN 3\'Ü', size = Math.min(130, Math.floor(130 * 980 / measure(s, 130, SANS, 900)));
+      ctx.save(); ctx.translate(540, 580); ctx.scale(big * pulse, big * pulse);
+      const s = '4 KİŞİDEN 3\'Ü', size = Math.min(130, Math.floor(130 * 900 / measure(s, 130, SANS, 900)));
       text(s, 0, 0, size, C.red2, SANS, 900, 'center', 14);
       ctx.restore();
     }
@@ -428,7 +429,7 @@ Object.assign(SAHNE, {
     });
     const k1 = back(prog(t, tg - .1, tg + .25)) * (1 - prog(t, ta - .1, ta + .1));
     plate('Kendi gözünden şüphe', 540, 1330, 50, k1, C.red);
-    plate('Tek destekçi yeter', 540, 1330, 56, back(prog(t, ta + .1, ta + .4)), C.gold);
+    plate('Tek destekçi şüpheyi kırar', 540, 1330, 54, back(prog(t, ta + .1, ta + .4)), C.gold);
   },
   toplanti(V, L, t, lt) {
     // back in today's meeting, Can already beside Elif. The colleagues vote A; on "ses" Can's hand and his B go up;
