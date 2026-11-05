@@ -1,0 +1,187 @@
+{
+ "id": "mk-c0066",
+ "topic": "Atlar ayakta mı uyur, at hiç yatmadan uyuyabilir mi?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "horse"
+ ],
+ "stock_hint": "horse resting stable",
+ "script": {
+  "title": "At hiç yatmadan ayakta uyuyabilir mi? 🐴",
+  "hook_text": "AT AYAKTA UYUYABİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu at ayakta, gözleri yarı kapalı uyukluyor.",
+    "visual": "close-up of a horse's head dozing while standing, eyelids half closed, facing the camera",
+    "stock_query": "horse face",
+    "source": "stock",
+    "callout": "AYAKTA UYKU"
+   },
+   {
+    "text": "Peki hiç yatmadan, hep ayakta uyuyabilir mi?",
+    "visual": "a horse standing still in a paddock in soft morning light",
+    "stock_query": "horse standing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Ayakta düşmez; bacaklarındaki tendon ve bağlar eklemleri kilitler.",
+    "visual": "close-up of a horse's legs and hooves standing on straw",
+    "stock_query": "horse legs",
+    "source": "stock",
+    "callout": "BACAKLAR KİLİTLİ"
+   },
+   {
+    "text": "Ama cevap hayır: rüya uykusunda kasları gevşer, yere yatması şart.",
+    "visual": "a horse lying on its side asleep in a grassy field",
+    "stock_query": "horse lying",
+    "source": "stock",
+    "callout": "REM İÇİN YATMALI"
+   },
+   {
+    "text": "Yatamayan at uykusuz kalır; ayaktayken dizlerinin üstüne çökebilir.",
+    "visual": "a tired horse in a stable with its head lowered",
+    "stock_query": "horse stable",
+    "source": "stock",
+    "callout": "DİZÜSTÜ ÇÖKER"
+   },
+   {
+    "text": "Sürüde biri yatınca çoğu zaman öbürü nöbet tutar; işte o yüzden...",
+    "visual": "a small herd of horses in a meadow, one lying down while another stands beside it",
+    "stock_query": "horse herd",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Atlar, bacaklarındaki tendon ve bağların eklemleri kilitlemesi sayesinde ayakta uyuklayabilir. Ama rüya uykusunda (REM) kasları gevşediği için bu evreye ancak yere yatarak girebilirler. Yatamayan atlar uykusuz kalır ve ayaktayken dizlerinin üstüne çökebilir.",
+  "tags": [
+   "at",
+   "atlar",
+   "atlar ayakta uyur mu",
+   "at nasıl uyur",
+   "at uykusu",
+   "rem uykusu",
+   "hayvan uykusu",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: atın ayakta uyuyabilmesi mi, yatamayınca dizüstü çökmesi mi?",
+  "en_title": "Can a horse sleep standing up and never lie down? 🐴",
+  "en_description": "Horses can doze on their feet thanks to the stay apparatus, a set of tendons and ligaments that locks the leg joints. But their muscles relax during REM sleep, so they have to lie down to get it. Horses that can't lie down become sleep-deprived and can buckle to their knees while standing.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Atlar ayakta mı uyur, at hiç yatmadan uyuyabilir mi?\n\nAtların bacaklarında tendon ve bağlardan oluşan, büyük eklemleri kilitleyen bir sistem vardır; bu sayede ayakta düşmeden uyuklayabilirler. Ama rüya uykusunda (REM) kasları gevşer, bu yüzden atlar bu evreye ancak yere yatarak girer. Uzmanlara göre iyi dinlenmiş bir at günde en az yirmi beş dakika REM uykusuna ihtiyaç duyar; yatamayan atlar uykusuz kalır ve ayaktayken dizlerinin üstüne çökebilir. Sürüde biri yatarken çoğu zaman bir başkası ayakta nöbet tutar.\n\nSence hangisi daha şaşırtıcı: atın ayakta uyuyabilmesi mi, yatamayınca dizüstü çökmesi mi?",
+  "hashtags": [
+   "#at",
+   "#atlar",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "at",
+   "atlar",
+   "atlar ayakta uyur mu",
+   "at ayakta uyur mu",
+   "at nasıl uyur",
+   "atlar nasıl uyur",
+   "at uykusu",
+   "at yatar mı",
+   "atlar neden ayakta uyur",
+   "at uykusuzluğu",
+   "rem uykusu",
+   "rüya uykusu",
+   "hayvanlar nasıl uyur",
+   "hayvan uykusu",
+   "at bakımı",
+   "binicilik",
+   "hayvan davranışları",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "do horses sleep standing",
+   "horse sleep"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a horse sleep standing up and never lie down? 🐴",
+    "description": "Horses can doze on their feet thanks to the stay apparatus, a set of tendons and ligaments that locks the leg joints. But their muscles relax during REM sleep, so they have to lie down to get it. Horses that can't lie down become sleep-deprived and can buckle to their knees."
+   },
+   "es": {
+    "title": "¿Puede un caballo dormir siempre de pie, sin tumbarse nunca? 🐴",
+    "description": "Los caballos pueden dormitar de pie gracias al aparato de sostén, un sistema de tendones y ligamentos que bloquea las articulaciones de las patas. Pero en el sueño REM sus músculos se relajan, así que necesitan tumbarse. Un caballo que no puede tumbarse acaba sin dormir y puede caer de rodillas."
+   },
+   "pt": {
+    "title": "Um cavalo consegue dormir sempre em pé, sem nunca se deitar? 🐴",
+    "description": "Os cavalos cochilam em pé graças ao aparelho de sustentação, um conjunto de tendões e ligamentos que trava as articulações das patas. Mas no sono REM os músculos relaxam, por isso eles precisam se deitar. Cavalos que não conseguem se deitar ficam privados de sono e podem cair de joelhos."
+   },
+   "de": {
+    "title": "Kann ein Pferd im Stehen schlafen, ohne sich je hinzulegen? 🐴",
+    "description": "Pferde können dank des Stehapparats, eines Systems aus Sehnen und Bändern, das die Beingelenke arretiert, im Stehen dösen. Im REM-Schlaf erschlaffen jedoch die Muskeln, deshalb müssen sie sich dafür hinlegen. Pferde, die sich nicht hinlegen können, leiden unter Schlafmangel und knicken im Stehen auf die Knie ein."
+   },
+   "fr": {
+    "title": "Un cheval peut-il dormir debout sans jamais se coucher ? 🐴",
+    "description": "Les chevaux somnolent debout grâce à l'appareil de soutien, un ensemble de tendons et de ligaments qui verrouille les articulations des membres. Mais pendant le sommeil paradoxal, leurs muscles se relâchent : ils doivent alors se coucher. Un cheval qui ne peut pas se coucher manque de sommeil et peut s'effondrer sur les genoux."
+   },
+   "it": {
+    "title": "Un cavallo può dormire sempre in piedi senza mai sdraiarsi? 🐴",
+    "description": "I cavalli possono sonnecchiare in piedi grazie all'apparato di stazione, un sistema di tendini e legamenti che blocca le articolazioni delle zampe. Ma nel sonno REM i muscoli si rilassano, quindi devono sdraiarsi. Un cavallo che non riesce a sdraiarsi resta senza sonno e può crollare sulle ginocchia."
+   },
+   "ru": {
+    "title": "Может ли лошадь спать стоя и никогда не ложиться? 🐴",
+    "description": "Лошади могут дремать стоя благодаря особой системе сухожилий и связок, которая фиксирует суставы ног. Но в фазе быстрого сна мышцы расслабляются, поэтому для неё лошади нужно лечь. Лошадь, которая не может лечь, страдает от недосыпа и может упасть на колени."
+   },
+   "ar": {
+    "title": "هل يستطيع الحصان أن ينام واقفًا دون أن يستلقي أبدًا؟ 🐴",
+    "description": "يستطيع الحصان أن يغفو واقفًا بفضل جهاز من الأوتار والأربطة يثبّت مفاصل قوائمه. لكن عضلاته ترتخي في مرحلة نوم حركة العين السريعة، لذلك عليه أن يستلقي ليحصل عليها. والحصان الذي لا يستطيع الاستلقاء يعاني من قلة النوم وقد يسقط على ركبتيه."
+   },
+   "hi": {
+    "title": "क्या घोड़ा कभी लेटे बिना सिर्फ़ खड़े-खड़े सो सकता है? 🐴",
+    "description": "घोड़े अपने पैरों के टेंडन और लिगामेंट की एक ख़ास व्यवस्था से जोड़ों को लॉक करके खड़े-खड़े ऊँघ सकते हैं। लेकिन REM नींद में उनकी मांसपेशियाँ ढीली पड़ जाती हैं, इसलिए इसके लिए उन्हें लेटना पड़ता है। जो घोड़ा लेट नहीं पाता, उसकी नींद पूरी नहीं होती और वह घुटनों के बल गिर सकता है।"
+   },
+   "id": {
+    "title": "Bisakah kuda tidur berdiri tanpa pernah berbaring? 🐴",
+    "description": "Kuda bisa terkantuk-kantuk sambil berdiri berkat sistem tendon dan ligamen yang mengunci sendi kakinya. Tapi saat tidur REM ototnya mengendur, jadi kuda harus berbaring untuk mendapatkannya. Kuda yang tidak bisa berbaring akan kurang tidur dan bisa jatuh berlutut."
+   },
+   "ja": {
+    "title": "馬は一度も横にならず、立ったまま眠り続けられる？ 🐴",
+    "description": "馬は脚の腱と靭帯が関節を固定する仕組みのおかげで、立ったままうとうとできます。しかしレム睡眠では筋肉がゆるむため、横にならないとこの眠りをとれません。横になれない馬は睡眠不足になり、立ったまま膝から崩れ落ちることがあります。"
+   },
+   "ko": {
+    "title": "말은 한 번도 눕지 않고 서서만 잘 수 있을까? 🐴",
+    "description": "말은 다리의 힘줄과 인대가 관절을 고정해 주는 구조 덕분에 선 채로 졸 수 있습니다. 하지만 렘수면 중에는 근육이 풀리기 때문에 반드시 누워야 합니다. 눕지 못하는 말은 잠이 부족해지고, 서 있다가 무릎을 꿇으며 쓰러질 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy koń może spać na stojąco i nigdy się nie kłaść? 🐴",
+    "description": "Konie mogą drzemać na stojąco dzięki aparatowi ustalającemu, czyli układowi ścięgien i więzadeł, który blokuje stawy kończyn. W fazie REM mięśnie się jednak rozluźniają, więc koń musi się położyć. Koń, który nie może się położyć, jest niewyspany i może upaść na kolana."
+   },
+   "nl": {
+    "title": "Kan een paard altijd staand slapen zonder ooit te gaan liggen? 🐴",
+    "description": "Paarden kunnen staand dutten dankzij een systeem van pezen en banden dat de beengewrichten vergrendelt. Maar tijdens de REM-slaap ontspannen hun spieren, dus daarvoor moeten ze gaan liggen. Een paard dat niet kan liggen, krijgt slaaptekort en kan door de knieën zakken."
+   },
+   "uk": {
+    "title": "Чи може кінь спати стоячи й ніколи не лягати? 🐴",
+    "description": "Коні можуть дрімати стоячи завдяки системі сухожиль і зв'язок, яка фіксує суглоби ніг. Але у фазі швидкого сну м'язи розслабляються, тож для неї коню треба лягти. Кінь, який не може лягти, недосипає і може впасти на коліна."
+   },
+   "vi": {
+    "title": "Ngựa có thể chỉ ngủ đứng mà không bao giờ nằm xuống? 🐴",
+    "description": "Ngựa có thể ngủ gật khi đứng nhờ hệ thống gân và dây chằng khóa các khớp chân. Nhưng trong giấc ngủ REM, cơ bắp của chúng giãn ra nên chúng buộc phải nằm xuống. Ngựa không nằm được sẽ thiếu ngủ và có thể khuỵu gối ngay khi đang đứng."
+   },
+   "az": {
+    "title": "At heç uzanmadan ayaq üstə yata bilərmi? 🐴",
+    "description": "Atlar ayaqlarındakı vətər və bağların oynaqları kilidləməsi sayəsində ayaq üstə mürgüləyə bilir. Amma REM yuxusunda əzələləri boşaldığı üçün bu yuxu üçün yerə uzanmalıdırlar. Uzana bilməyən at yuxusuz qalır və ayaq üstə ikən dizləri üstə çökə bilər."
+   },
+   "ro": {
+    "title": "Poate un cal să doarmă mereu în picioare, fără să se culce? 🐴",
+    "description": "Caii pot ațipi în picioare datorită unui sistem de tendoane și ligamente care blochează articulațiile picioarelor. Dar în somnul REM mușchii li se relaxează, așa că trebuie să se culce. Un cal care nu se poate culca rămâne nedormit și poate cădea în genunchi."
+   }
+  }
+ }
+}

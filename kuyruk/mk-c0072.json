@@ -1,0 +1,191 @@
+{
+ "id": "mk-c0072",
+ "topic": "Köpekbalığı bir damla kanı kilometrelerce öteden koklayabilir mi?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "shark"
+ ],
+ "stock_hint": "shark close up",
+ "script": {
+  "title": "Köpekbalığı kanı kilometrelerce öteden koklayabilir mi? 🦈",
+  "hook_text": "KANI KİLOMETRELERCE KOKLAR MI?",
+  "scenes": [
+   {
+    "text": "Bu köpekbalığı tek damla kanı sezebiliyor.",
+    "visual": "close-up of a shark's snout and nostrils as it swims straight toward the camera",
+    "stock_query": "shark close up",
+    "source": "stock",
+    "callout": "TEK DAMLA KAN"
+   },
+   {
+    "text": "Peki kilometrelerce öteden de sezebilir mi?",
+    "visual": "a shark swimming alone in the open blue ocean",
+    "stock_query": "shark swimming",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Burun delikleri nefes için değil; kokunun hangisine önce geldiğine bakıp yön bulur.",
+    "visual": "a hammerhead shark swimming, its wide head and nostrils in view",
+    "stock_query": "hammerhead shark",
+    "source": "stock",
+    "callout": "ÖNCE GELEN TARAF"
+   },
+   {
+    "text": "Ama cevap hayır: bir deneyde burnu sıradan balıklardan keskin çıkmadı.",
+    "visual": "a school of small fish swimming together over a reef",
+    "stock_query": "fish school",
+    "source": "stock",
+    "callout": "BALIKLARDAN FARKSIZ",
+    "subject": [
+     "fish"
+    ]
+   },
+   {
+    "text": "O tek damlayı ancak bahçe havuzu kadar suda fark eder.",
+    "visual": "a backyard swimming pool with rippling blue water",
+    "stock_query": "swimming pool",
+    "source": "stock",
+    "callout": "HAVUZ KADAR SU",
+    "subject": [
+     "pool"
+    ]
+   },
+   {
+    "text": "Daha uzaktaysa kokuyu akıntı getirmeli; o zaman...",
+    "visual": "a shark gliding through ocean water near a reef",
+    "stock_query": "shark ocean",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpekbalıklarının bir damla kanı kilometrelerce öteden kokladığı bir efsane. 2010'daki bir deneyde köpekbalıklarının koku duyarlılığı sıradan balıklarınkinden farklı çıkmadı; tek bir damla kanı ancak bahçe havuzu büyüklüğündeki suda sezebiliyorlar. Uzaktaki kokuyu onlara akıntı taşımalı.",
+  "tags": [
+   "köpekbalığı",
+   "köpekbalıkları",
+   "köpekbalığı kan kokusu",
+   "köpekbalığı koku alma",
+   "deniz canlıları",
+   "okyanus",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: burnunun nefes almaması mı, yönü hangi burun deliğine koku önce geldiğinden bulması mı?",
+  "en_title": "Can a shark smell blood from miles away? 🦈",
+  "en_description": "The idea that sharks can smell a drop of blood from a mile away is a myth. In a 2010 study, sharks' sense of smell was no keener than that of ordinary fish: they can detect a drop of blood in roughly a backyard pool's worth of water. Farther away, the current has to carry the scent to them. Their nostrils are only for smelling, and they steer toward the nostril the scent reaches first.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Köpekbalığı bir damla kanı kilometrelerce öteden koklayabilir mi, köpekbalıkları kanın kokusunu ne kadar uzaktan alır?\n\nBu yaygın bir efsane. Florida Atlantic Üniversitesi'nden araştırmacıların 2010'da köpekbalığı ve vatoz türleriyle yaptığı ölçümlerde köpekbalıklarının koku duyarlılığı sıradan balıklarınkine benziyordu; en iyi hâlde kabaca bir milyar damla suda bir damlalık kokuyu sezebildiler. Bu da tek bir damla kanın ancak bahçe havuzu kadar suda fark edilmesi demek; daha uzaktaki kokuyu köpekbalığına akıntı taşımalı. Köpekbalıkları burun deliklerini yalnızca koku almak için kullanır ve kokunun hangi deliğe önce ulaştığına bakarak yön bulur.\n\nSence hangisi daha şaşırtıcı: burnunun nefes almaması mı, yönü hangi burun deliğine koku önce geldiğinden bulması mı?",
+  "hashtags": [
+   "#köpekbalığı",
+   "#okyanus",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpekbalığı",
+   "köpekbalıkları",
+   "köpekbalığı kan kokusu",
+   "köpekbalığı kanı koklar mı",
+   "köpekbalığı ne kadar uzaktan",
+   "köpekbalığı koku alma",
+   "köpekbalığı burnu",
+   "çekiç başlı köpekbalığı",
+   "bir damla kan",
+   "köpekbalığı efsanesi",
+   "köpekbalığı saldırısı",
+   "deniz canlıları",
+   "okyanus",
+   "deniz",
+   "vahşi yaşam",
+   "efsane mi gerçek mi",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "can sharks smell blood",
+   "shark facts"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a shark smell blood from miles away? 🦈",
+    "description": "The idea that sharks can smell a drop of blood from a mile away is a myth. In a 2010 study, sharks' sense of smell was no keener than that of ordinary fish: they can detect a drop of blood in roughly a backyard pool's worth of water. Farther away, the current has to carry the scent to them."
+   },
+   "es": {
+    "title": "¿Puede un tiburón oler sangre a kilómetros de distancia? 🦈",
+    "description": "Que un tiburón huela una gota de sangre a kilómetros es un mito. En un estudio de 2010, su olfato no resultó más fino que el de otros peces: detectan una gota de sangre en un volumen de agua como el de una piscina de jardín. Más lejos, la corriente tiene que llevarles el olor."
+   },
+   "pt": {
+    "title": "Um tubarão consegue sentir cheiro de sangue a quilômetros? 🦈",
+    "description": "A ideia de que o tubarão sente uma gota de sangue a quilômetros é um mito. Num estudo de 2010, o olfato dos tubarões não foi mais apurado que o de peixes comuns: eles detectam uma gota de sangue em algo como uma piscina de quintal. Mais longe que isso, a corrente precisa levar o cheiro até eles."
+   },
+   "de": {
+    "title": "Kann ein Hai Blut aus Kilometern Entfernung riechen? 🦈",
+    "description": "Dass Haie einen Tropfen Blut kilometerweit riechen, ist ein Mythos. In einer Studie von 2010 rochen Haie nicht feiner als gewöhnliche Fische: Einen Tropfen Blut bemerken sie etwa in der Wassermenge eines Gartenpools. Aus größerer Entfernung muss die Strömung den Geruch zu ihnen tragen."
+   },
+   "fr": {
+    "title": "Un requin peut-il sentir du sang à des kilomètres ? 🦈",
+    "description": "L'idée qu'un requin sente une goutte de sang à des kilomètres est un mythe. Dans une étude de 2010, l'odorat des requins ne s'est pas montré plus fin que celui des poissons ordinaires : ils détectent une goutte de sang dans l'équivalent d'une piscine de jardin. Au-delà, c'est le courant qui doit leur apporter l'odeur."
+   },
+   "it": {
+    "title": "Uno squalo può sentire l'odore del sangue a chilometri? 🦈",
+    "description": "Che uno squalo senta una goccia di sangue a chilometri di distanza è un mito. In uno studio del 2010 il loro olfatto non è risultato più fine di quello dei pesci comuni: percepiscono una goccia di sangue più o meno in una piscina da giardino. Più lontano, è la corrente a dover portare l'odore fino a loro."
+   },
+   "ru": {
+    "title": "Может ли акула учуять кровь за много километров? 🦈",
+    "description": "Что акула чует каплю крови за километры — миф. В исследовании 2010 года обоняние акул оказалось не острее, чем у обычных рыб: каплю крови они улавливают примерно в объёме садового бассейна. С большего расстояния запах должно принести к ним течение."
+   },
+   "ar": {
+    "title": "هل يشمّ القرش الدم من على بُعد كيلومترات؟ 🦈",
+    "description": "فكرة أن القرش يشمّ قطرة دم من على بُعد كيلومترات خرافة. ففي دراسة عام 2010 لم تكن حاسة الشم لدى أسماك القرش أقوى من حاسة الأسماك العادية، إذ تلتقط قطرة الدم في كمية ماء تقارب مسبحًا منزليًا صغيرًا. أما من مسافة أبعد فلا بد أن يحمل التيار الرائحة إليها."
+   },
+   "hi": {
+    "title": "क्या शार्क किलोमीटरों दूर से ख़ून सूँघ सकती है? 🦈",
+    "description": "शार्क का किलोमीटरों दूर से ख़ून की एक बूँद सूँघ लेना एक मिथक है। 2010 के एक अध्ययन में शार्क की सूँघने की क्षमता आम मछलियों से ज़्यादा तेज़ नहीं निकली: वे ख़ून की एक बूँद को बस घर के पीछे वाले छोटे स्विमिंग पूल जितने पानी में पहचान पाती हैं। इससे ज़्यादा दूरी से गंध को धारा ही उन तक पहुँचाती है।"
+   },
+   "id": {
+    "title": "Bisakah hiu mencium darah dari jarak berkilo-kilometer? 🦈",
+    "description": "Anggapan bahwa hiu bisa mencium setetes darah dari jarak berkilo-kilometer adalah mitos. Dalam studi tahun 2010, penciuman hiu tidak lebih tajam daripada ikan biasa: mereka bisa mendeteksi setetes darah kira-kira di air sebanyak kolam renang halaman rumah. Dari jarak lebih jauh, arus lautlah yang harus membawa baunya."
+   },
+   "ja": {
+    "title": "サメは何キロも先の血のにおいを嗅ぎつけられる？ 🦈",
+    "description": "サメが何キロも先の一滴の血を嗅ぎつけるというのは俗説です。2010年の研究では、サメの嗅覚はふつうの魚と比べて特に鋭くはありませんでした。一滴の血に気づけるのは、家庭用プールほどの水の量までです。それより遠いと、においは海流に運ばれてこなければ届きません。"
+   },
+   "ko": {
+    "title": "상어는 몇 킬로미터 밖의 피 냄새를 맡을 수 있을까? 🦈",
+    "description": "상어가 몇 킬로미터 밖의 피 한 방울을 맡는다는 건 속설입니다. 2010년 연구에서 상어의 후각은 보통 물고기보다 더 예민하지 않았습니다. 피 한 방울은 가정용 수영장 정도의 물에서나 알아챌 수 있고, 그보다 멀면 해류가 냄새를 실어 와야 합니다."
+   },
+   "pl": {
+    "title": "Czy rekin wyczuje krew z odległości kilometrów? 🦈",
+    "description": "To, że rekin wyczuwa kroplę krwi z kilometrów, jest mitem. W badaniu z 2010 roku węch rekinów nie okazał się czulszy niż u zwykłych ryb: kroplę krwi wyczuwają mniej więcej w ilości wody z ogrodowego basenu. Z większej odległości zapach musi do nich przynieść prąd."
+   },
+   "nl": {
+    "title": "Kan een haai bloed ruiken op kilometers afstand? 🦈",
+    "description": "Dat een haai een druppel bloed op kilometers afstand ruikt, is een mythe. In een studie uit 2010 bleek hun reukvermogen niet scherper dan dat van gewone vissen: een druppel bloed merken ze op in ongeveer zoveel water als in een tuinzwembad. Van verder weg moet de stroming de geur naar ze toe brengen."
+   },
+   "uk": {
+    "title": "Чи може акула відчути кров за кілометри? 🦈",
+    "description": "Те, що акула чує краплю крові за кілометри, — міф. У дослідженні 2010 року нюх акул виявився не гострішим, ніж у звичайних риб: краплю крові вони вловлюють приблизно в об'ємі садового басейну. З більшої відстані запах до них має принести течія."
+   },
+   "vi": {
+    "title": "Cá mập có ngửi thấy máu từ cách xa hàng cây số không? 🦈",
+    "description": "Chuyện cá mập ngửi được một giọt máu từ xa hàng cây số chỉ là lời đồn. Trong một nghiên cứu năm 2010, khứu giác của cá mập không nhạy hơn cá thường: chúng chỉ nhận ra một giọt máu trong lượng nước cỡ một bể bơi sân vườn. Xa hơn thế, dòng chảy phải mang mùi đến cho chúng."
+   },
+   "az": {
+    "title": "Köpəkbalığı qanı kilometrlərlə uzaqdan iyləyə bilərmi? 🦈",
+    "description": "Köpəkbalığının bir damla qanı kilometrlərlə uzaqdan iylədiyi bir əfsanədir. 2010-cu ildəki araşdırmada köpəkbalıqlarının iybilmə qabiliyyəti adi balıqlarınkından güclü çıxmadı: bir damla qanı təxminən həyət hovuzu boyda suda hiss edirlər. Daha uzaqdan qoxunu onlara axın gətirməlidir."
+   },
+   "ro": {
+    "title": "Poate un rechin să miroasă sânge de la kilometri distanță? 🦈",
+    "description": "Ideea că un rechin simte o picătură de sânge de la kilometri distanță e un mit. Într-un studiu din 2010, mirosul rechinilor nu s-a dovedit mai fin decât al peștilor obișnuiți: simt o picătură de sânge cam într-o piscină de grădină. De mai departe, curentul trebuie să le aducă mirosul."
+   }
+  }
+ }
+}

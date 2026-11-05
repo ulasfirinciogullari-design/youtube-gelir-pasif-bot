@@ -1,0 +1,190 @@
+{
+ "id": "mk-c0069",
+ "topic": "İnsan dilini yutabilir mi, kriz geçirenin ağzına kaşık sokulur mu?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "tongue"
+ ],
+ "stock_hint": "man tongue out",
+ "script": {
+  "title": "İnsan kendi dilini yutabilir mi? 👅",
+  "hook_text": "DİL YUTULABİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Baygın birinde bu dil nefes yolunu kapatabilir.",
+    "visual": "extreme close-up of a man sticking out his tongue toward the camera",
+    "stock_query": "man tongue out",
+    "source": "stock",
+    "callout": "NEFES YOLUNU KAPATIR"
+   },
+   {
+    "text": "Peki insan dilini gerçekten yutabilir mi?",
+    "visual": "close-up of a woman swallowing a sip of water",
+    "stock_query": "woman drinking water",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Bu korkuyla kriz geçirenin ağzına kaşık sokulur; oysa bu dişlerini kırabilir.",
+    "visual": "close-up of a metal spoon on a dark background",
+    "stock_query": "metal spoon",
+    "source": "stock",
+    "callout": "KAŞIK SOKMA",
+    "subject": [
+     "spoon"
+    ]
+   },
+   {
+    "text": "Cevap hayır: dilin altındaki ince bir bağ, onu ağzının tabanına sabitler.",
+    "visual": "close-up of an open mouth with the tongue lifted",
+    "stock_query": "open mouth",
+    "source": "stock",
+    "callout": "DİL ALTI BAĞI",
+    "subject": [
+     "mouth"
+    ]
+   },
+   {
+    "text": "Dil yutulmaz, sadece gevşeyip geriye düşer; bu yüzden baygın kişi yan yatırılır, çünkü...",
+    "visual": "first aid training: a person being placed in the recovery position on the floor",
+    "stock_query": "first aid training",
+    "source": "stock",
+    "callout": "YAN YATIR",
+    "subject": [
+     "first aid"
+    ]
+   }
+  ],
+  "description": "İnsan dilini yutamaz: dilin altındaki ince bağ (dil altı frenulumu) onu ağzın tabanına sabitler. Ama bilinci kapalı birinde gevşeyen dil geriye düşüp nefes yolunu tıkayabilir; bu yüzden kişi yan yatırılır. Kriz geçiren birinin ağzına kaşık ya da başka bir şey sokmak ise dişlerine ve çenesine zarar verebilir.",
+  "tags": [
+   "dil yutmak",
+   "dil yutulur mu",
+   "dilini yutmak",
+   "epilepsi krizi",
+   "ilk yardım",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "sağlık",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha yaygın bir yanlış: dilin yutulabileceğini sanmak mı, kriz geçirenin ağzına kaşık sokmak mı?",
+  "en_title": "Can you swallow your own tongue? 👅",
+  "en_description": "You can't swallow your tongue: a thin band of tissue, the lingual frenulum, anchors it to the floor of your mouth. But in an unconscious person the relaxed tongue can fall back and block the airway, which is why they are turned on their side. Putting a spoon in the mouth of someone having a seizure can break their teeth.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "İnsan dilini yutabilir mi, kriz geçiren birinin ağzına kaşık sokmak gerekir mi?\n\nDilini yutmak fiziksel olarak imkânsızdır: dilin altındaki ince doku bandı, yani dil altı frenulumu, dili ağzın tabanına bağlar. Ama bilinci kapalı birinde kaslar gevşer ve dil geriye, boğaza doğru düşerek nefes yolunu kısmen ya da tamamen tıkayabilir; bu yüzden baygın kişi yan yatırılır. Johns Hopkins'e göre kriz geçiren birinin ağzına hiçbir şey konmamalı: kaşık, parmak ya da başka bir nesne dişleri ve çeneyi kırabilir, boğulmaya yol açabilir.\n\nSence hangisi daha yaygın bir yanlış: dilin yutulabileceğini sanmak mı, kriz geçirenin ağzına kaşık sokmak mı?",
+  "hashtags": [
+   "#dil",
+   "#ilkyardım",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "dil yutmak",
+   "dil yutulur mu",
+   "dilini yutmak",
+   "insan dilini yutabilir mi",
+   "dilini yuttu",
+   "dil altı bağı",
+   "dil bağı",
+   "epilepsi",
+   "epilepsi krizi",
+   "sara krizi",
+   "kriz geçirene ne yapılır",
+   "ağza kaşık sokmak",
+   "ilk yardım",
+   "yan yatırma pozisyonu",
+   "bayılma",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "efsane mi gerçek mi",
+   "mümkün mü",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "swallow your tongue"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can you swallow your own tongue? 👅",
+    "description": "You can't swallow your tongue: a thin band of tissue, the lingual frenulum, anchors it to the floor of your mouth. But in an unconscious person the relaxed tongue can fall back and block the airway, which is why they are turned on their side. Putting a spoon in the mouth of someone having a seizure can break their teeth."
+   },
+   "es": {
+    "title": "¿Es posible tragarse la propia lengua? 👅",
+    "description": "No puedes tragarte la lengua: una fina banda de tejido, el frenillo lingual, la une al suelo de la boca. Pero en una persona inconsciente la lengua relajada puede caer hacia atrás y bloquear la vía respiratoria; por eso se la pone de lado. Meter una cuchara en la boca de alguien con una convulsión puede romperle los dientes."
+   },
+   "pt": {
+    "title": "É possível engolir a própria língua? 👅",
+    "description": "Ninguém consegue engolir a língua: uma fina faixa de tecido, o freio lingual, a prende ao assoalho da boca. Mas, numa pessoa inconsciente, a língua relaxada pode cair para trás e bloquear a passagem de ar, por isso ela é virada de lado. Colocar uma colher na boca de quem tem uma convulsão pode quebrar os dentes."
+   },
+   "de": {
+    "title": "Kann man seine eigene Zunge verschlucken? 👅",
+    "description": "Die Zunge lässt sich nicht verschlucken: Ein dünnes Gewebeband, das Zungenbändchen, verankert sie am Mundboden. Bei Bewusstlosen kann die erschlaffte Zunge aber nach hinten fallen und die Atemwege blockieren, deshalb bringt man sie in die stabile Seitenlage. Wer einem Krampfenden einen Löffel in den Mund steckt, kann ihm die Zähne brechen."
+   },
+   "fr": {
+    "title": "Peut-on avaler sa propre langue ? 👅",
+    "description": "Impossible d'avaler sa langue : une fine bande de tissu, le frein de la langue, la rattache au plancher de la bouche. Mais chez une personne inconsciente, la langue relâchée peut basculer vers l'arrière et bloquer les voies respiratoires, d'où la position latérale de sécurité. Mettre une cuillère dans la bouche de quelqu'un en crise peut lui casser les dents."
+   },
+   "it": {
+    "title": "Si può davvero ingoiare la propria lingua? 👅",
+    "description": "Non si può ingoiare la lingua: una sottile fascia di tessuto, il frenulo linguale, la ancora al pavimento della bocca. Ma in una persona incosciente la lingua rilassata può cadere all'indietro e chiudere le vie aeree, per questo la si mette sul fianco. Infilare un cucchiaio in bocca a chi ha una crisi può rompergli i denti."
+   },
+   "ru": {
+    "title": "Можно ли проглотить собственный язык? 👅",
+    "description": "Проглотить язык невозможно: тонкая перепонка, уздечка языка, крепит его ко дну рта. Но у человека без сознания расслабленный язык может западать назад и перекрывать дыхательные пути, поэтому его укладывают на бок. А ложка во рту у человека во время приступа может сломать ему зубы."
+   },
+   "ar": {
+    "title": "هل يمكن للإنسان أن يبتلع لسانه؟ 👅",
+    "description": "لا يمكن ابتلاع اللسان: فشريط رقيق من النسيج يُسمّى لجام اللسان يثبّته في قاع الفم. لكن لدى الشخص الفاقد للوعي قد يرتخي اللسان ويرتد إلى الخلف فيسدّ مجرى الهواء، ولهذا يُوضع على جنبه. أما إدخال ملعقة في فم من يعاني نوبة تشنج فقد يكسر أسنانه."
+   },
+   "hi": {
+    "title": "क्या इंसान अपनी जीभ निगल सकता है? 👅",
+    "description": "जीभ निगलना नामुमकिन है: जीभ के नीचे ऊतक की एक पतली पट्टी, जिसे फ़्रेनुलम कहते हैं, उसे मुँह के तल से जोड़े रखती है। लेकिन बेहोश व्यक्ति में ढीली पड़ी जीभ पीछे गिरकर साँस का रास्ता रोक सकती है, इसलिए उसे करवट दिलाई जाती है। दौरा पड़ने पर किसी के मुँह में चम्मच डालने से उसके दाँत टूट सकते हैं।"
+   },
+   "id": {
+    "title": "Mungkinkah manusia menelan lidahnya sendiri? 👅",
+    "description": "Lidah tidak bisa tertelan: pita jaringan tipis yang disebut frenulum lidah menambatkannya ke dasar mulut. Namun pada orang yang pingsan, lidah yang lemas bisa jatuh ke belakang dan menyumbat jalan napas, karena itu ia dibaringkan miring. Memasukkan sendok ke mulut orang yang kejang justru bisa mematahkan giginya."
+   },
+   "ja": {
+    "title": "人は自分の舌を飲み込むことができる？ 👅",
+    "description": "舌は飲み込めません。舌の裏にある舌小帯という薄い組織が、舌を口の底につなぎとめているからです。ただし意識を失った人では、ゆるんだ舌が後ろに落ちて気道をふさぐことがあり、そのため体を横向きにします。発作を起こした人の口にスプーンを入れると、歯が折れるおそれがあります。"
+   },
+   "ko": {
+    "title": "사람이 자기 혀를 삼킬 수 있을까? 👅",
+    "description": "혀는 삼킬 수 없습니다. 혀 밑의 얇은 조직인 설소대가 혀를 입 바닥에 붙잡아 두기 때문입니다. 하지만 의식을 잃은 사람은 풀린 혀가 뒤로 처져 기도를 막을 수 있어 옆으로 눕힙니다. 발작 중인 사람의 입에 숟가락을 넣으면 오히려 이가 부러질 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy można połknąć własny język? 👅",
+    "description": "Języka nie da się połknąć: cienkie pasmo tkanki, wędzidełko języka, przytwierdza go do dna jamy ustnej. U nieprzytomnej osoby rozluźniony język może jednak opaść do tyłu i zablokować drogi oddechowe, dlatego układa się ją na boku. Wkładanie łyżki do ust osobie w trakcie napadu może połamać jej zęby."
+   },
+   "nl": {
+    "title": "Kun je je eigen tong inslikken? 👅",
+    "description": "Je tong inslikken kan niet: een dun bandje weefsel, het tongriempje, verankert hem aan de mondbodem. Maar bij iemand die bewusteloos is, kan de ontspannen tong naar achteren zakken en de luchtweg blokkeren, daarom leg je diegene op de zij. Een lepel in de mond van iemand met een aanval kan zijn tanden breken."
+   },
+   "uk": {
+    "title": "Чи можна проковтнути власний язик? 👅",
+    "description": "Проковтнути язик неможливо: тонка перетинка, вуздечка язика, кріпить його до дна рота. Але в людини без свідомості розслаблений язик може западати назад і перекривати дихальні шляхи, тому її кладуть на бік. А ложка в роті під час нападу може зламати людині зуби."
+   },
+   "vi": {
+    "title": "Con người có thể tự nuốt lưỡi của mình không? 👅",
+    "description": "Không ai nuốt được lưỡi: một dải mô mỏng gọi là thắng lưỡi giữ lưỡi gắn vào sàn miệng. Nhưng ở người bất tỉnh, lưỡi mềm ra có thể tụt về phía sau và chặn đường thở, vì vậy người đó được đặt nằm nghiêng. Nhét thìa vào miệng người đang lên cơn co giật có thể làm gãy răng họ."
+   },
+   "az": {
+    "title": "İnsan öz dilini uda bilərmi? 👅",
+    "description": "Dili udmaq mümkün deyil: dilin altındakı nazik toxuma zolağı, yəni dil yüyəni onu ağızın dibinə bağlayır. Amma huşunu itirmiş insanda boşalan dil geriyə düşüb tənəffüs yolunu tıxaya bilər, buna görə də onu yan üstə uzadırlar. Tutma keçirən birinin ağzına qaşıq salmaq isə onun dişlərini sındıra bilər."
+   },
+   "ro": {
+    "title": "Își poate înghiți cineva propria limbă? 👅",
+    "description": "Limba nu poate fi înghițită: o bandă subțire de țesut, frenul lingual, o fixează de podeaua gurii. Dar la o persoană inconștientă, limba relaxată poate cădea în spate și bloca căile respiratorii, de aceea persoana e așezată pe o parte. O lingură băgată în gura cuiva care face o criză îi poate rupe dinții."
+   }
+  }
+ }
+}
