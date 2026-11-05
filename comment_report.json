@@ -1,8 +1,8 @@
 {
- "started": "2026-11-04T14:45:13+00:00",
+ "started": "2026-11-05T17:45:12+00:00",
  "deneme": false,
  "threads": 100,
- "reply_threads_read": 0,
+ "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
  "sent_last_24h": 0,
@@ -10,13 +10,13 @@
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgyHvZQEwoEvZnh5qd54AaABAg",
-   "kind": "comment",
-   "video": "LK9xEF2uL_o",
-   "comment": "*İkiside*",
-   "reply": "İkisi de akılda kalır tabii ki, hele anılar güzelse! 😊",
+   "id": "UgyHGmGjnQ82PJ3Drsd4AaABAg.AcnhkjZDjV1Acq-wcVtiWP",
+   "kind": "answer",
+   "video": "X9s6--q0k5U",
+   "comment": "Evet hiç birşey olmadı",
+   "reply": "@SalamzadeRuqeyya-i2w Vay canına, gerçekten başardın demek! Çoğu kişi için gözleri açık tutmak bayağı zorlayıcıdır, tebrikler! 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-04T14:45:18+00:00"
+ "finished": "2026-11-05T17:45:17+00:00"
 }
