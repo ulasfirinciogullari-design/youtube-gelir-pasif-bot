@@ -686,7 +686,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1091",
+    "views": "1095",
     "reason": null
    }
   },
@@ -716,7 +716,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1019",
+    "views": "1021",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1144",
+    "views": "1145",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1022",
+    "views": "1046",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1102",
+    "views": "1125",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "997",
+    "views": "1013",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1039",
+    "views": "1064",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "994",
+    "views": "998",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "441",
+    "views": "688",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "104",
+    "views": "162",
     "reason": null
    }
   },
@@ -1223,6 +1223,36 @@
    "thumbnail": true,
    "at": 1793822868.9232824,
    "chars": 389,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "148",
+    "reason": null
+   }
+  },
+  {
+   "id": "n009",
+   "video_id": "Ze43ZrXANSQ",
+   "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
+   "title": "Işık Gerçekte Ne Kadar Hızlı?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Fast Is Light Really?",
+    "es": "¿Qué Tan Rápida Es la Luz en Realidad?",
+    "pt": "Qual É a Velocidade Real da Luz?",
+    "ar": "ما مدى سرعة الضوء حقًا؟",
+    "hi": "प्रकाश असल में कितना तेज़ है?",
+    "id": "Seberapa Cepat Cahaya Sebenarnya?",
+    "fr": "À Quelle Vitesse Va Vraiment la Lumière ?",
+    "de": "Wie Schnell Ist Licht Wirklich?",
+    "ru": "Насколько Быстр Свет на Самом Деле?",
+    "az": "İşıq Əslində Nə Qədər Sürətlidir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793873351.0125096,
+   "chars": 403,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1272,7 +1302,8 @@
   "y061",
   "g009",
   "y027",
-  "y014"
+  "y014",
+  "n009"
  ],
  "extra": [
   {
@@ -1338,12 +1369,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-18T17:09:01+00:00",
-   "mod": "igbolum",
-   "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
-   "chars": 574
-  },
   {
    "finished": "2026-10-19T09:10:26+00:00",
    "mod": "igbolum",
@@ -1754,6 +1779,14 @@
    "mod": "igbolum",
    "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
    "chars": 353
+  },
+  {
+   "finished": "2026-11-05T10:09:12+00:00",
+   "mod": "saatlik",
+   "title": "Işık Gerçekte Ne Kadar Hızlı?",
+   "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
+   "duration": 26.1,
+   "chars": 403
   }
  ],
  "last_fail": 1793568784.6201334,

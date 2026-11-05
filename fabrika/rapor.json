@@ -1,19 +1,71 @@
 {
- "started": "2026-11-05T09:07:39+00:00",
- "mod": "igbolum",
- "gate": "instagram: y012",
+ "started": "2026-11-05T10:08:13+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
- "chars": 353,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18085294457357274",
-  "url": "https://www.instagram.com/reel/DfWrUc2lfmh/",
-  "at": 1793869824.70717
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "51",
+  "videos": "42"
  },
- "log": [
-  "Instagram videoyu alamadı (1. deneme): ERROR",
-  "Instagram: https://www.instagram.com/reel/DfWrUc2lfmh/"
+ "credits_before": [
+  84860,
+  613902
  ],
- "finished": "2026-11-05T09:10:24+00:00"
+ "kuyruk": {
+  "dosya": "20261104-5-n009.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "n009",
+  "series": "Ne Kadar Büyük?",
+  "q": "Işık ne kadar hızlı?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 403,
+ "duration": 26.1,
+ "title": "Işık Gerçekte Ne Kadar Hızlı?",
+ "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
+ "recent_status": {
+  "y061": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "998",
+   "reason": null
+  },
+  "g009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "688",
+   "reason": null
+  },
+  "y027": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "162",
+   "reason": null
+  },
+  "y014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "148",
+   "reason": null
+  },
+  "n009": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  84958,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261104-5-n009.json Işık ne kadar hızlı? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-05T10:09:12+00:00"
 }
