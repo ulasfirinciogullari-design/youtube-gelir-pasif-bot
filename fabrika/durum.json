@@ -1339,12 +1339,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-18T13:08:10+00:00",
-   "mod": "igbolum",
-   "title": "En Büyük Yıldız Ne Kadar Büyük?",
-   "chars": 364
-  },
-  {
    "finished": "2026-10-18T17:09:01+00:00",
    "mod": "igbolum",
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
@@ -1754,6 +1748,12 @@
    "url": "https://youtube.com/shorts/5lbPgaPW58Y",
    "duration": 25.7,
    "chars": 389
+  },
+  {
+   "finished": "2026-11-05T09:10:24+00:00",
+   "mod": "igbolum",
+   "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+   "chars": 353
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1923,6 +1923,11 @@
     "media_id": "18427103050152049",
     "url": "https://www.instagram.com/reel/DfU9dD3iXrN/",
     "at": 1793812225.6323884
+   },
+   "y012": {
+    "media_id": "18085294457357274",
+    "url": "https://www.instagram.com/reel/DfWrUc2lfmh/",
+    "at": 1793869824.70717
    }
   },
   "eski": [

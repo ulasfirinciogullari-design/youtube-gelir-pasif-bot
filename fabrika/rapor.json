@@ -1,71 +1,19 @@
 {
- "started": "2026-11-04T20:06:47+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-05T09:07:39+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y012",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "51",
-  "videos": "41"
+ "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
+ "chars": 353,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18085294457357274",
+  "url": "https://www.instagram.com/reel/DfWrUc2lfmh/",
+  "at": 1793869824.70717
  },
- "credits_before": [
-  84234,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261104-4-y014.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y014",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'yı delip öbür tarafa atlasaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 389,
- "duration": 25.7,
- "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
- "url": "https://youtube.com/shorts/5lbPgaPW58Y",
- "recent_status": {
-  "y012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1039",
-   "reason": null
-  },
-  "y061": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "994",
-   "reason": null
-  },
-  "g009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "441",
-   "reason": null
-  },
-  "y027": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "104",
-   "reason": null
-  },
-  "y014": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  84328,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261104-4-y014.json Dünya'yı delip öbür tarafa atlasaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram videoyu alamadı (1. deneme): ERROR",
+  "Instagram: https://www.instagram.com/reel/DfWrUc2lfmh/"
  ],
- "finished": "2026-11-04T20:07:50+00:00"
+ "finished": "2026-11-05T09:10:24+00:00"
 }
