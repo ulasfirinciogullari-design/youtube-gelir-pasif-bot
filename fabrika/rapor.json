@@ -1,18 +1,71 @@
 {
- "started": "2026-11-05T17:07:37+00:00",
- "mod": "igbolum",
- "gate": "instagram: y016",
+ "started": "2026-11-05T18:03:34+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
- "chars": 380,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18194032369405406",
-  "url": "https://www.instagram.com/reel/DfXiI-ejgdg/",
-  "at": 1793898564.6030607
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "54",
+  "videos": "44"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfXiI-ejgdg/"
+ "credits_before": [
+  85590,
+  613902
  ],
- "finished": "2026-11-05T17:09:24+00:00"
+ "kuyruk": {
+  "dosya": "20261105-2-g010.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "g010",
+  "series": "1 Gün Boyunca",
+  "q": "Saçın 1 günde ne kadar uzar?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 360,
+ "duration": 24.0,
+ "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+ "url": "https://youtube.com/shorts/V93tM_0-ll4",
+ "recent_status": {
+  "y027": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "271",
+   "reason": null
+  },
+  "y014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "355",
+   "reason": null
+  },
+  "n009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1227",
+   "reason": null
+  },
+  "y046": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "896",
+   "reason": null
+  },
+  "g010": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  85677,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261105-2-g010.json Saçın 1 günde ne kadar uzar? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-11-05T18:04:39+00:00"
 }

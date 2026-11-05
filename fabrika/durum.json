@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1151",
+    "views": "1153",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1292",
+    "views": "1296",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1130",
+    "views": "1165",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1014",
+    "views": "1029",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1066",
+    "views": "1069",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "998",
+    "views": "1002",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "712",
+    "views": "975",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "172",
+    "views": "271",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "192",
+    "views": "355",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "847",
+    "views": "1227",
     "reason": null
    }
   },
@@ -1283,6 +1283,36 @@
    "thumbnail": true,
    "at": 1793887698.323155,
    "chars": 367,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "896",
+    "reason": null
+   }
+  },
+  {
+   "id": "g010",
+   "video_id": "V93tM_0-ll4",
+   "url": "https://youtube.com/shorts/V93tM_0-ll4",
+   "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Meters Does Your Hair Grow in Total in 1 Day?",
+    "es": "¿Cuántos Metros Crece Tu Pelo en Total en 1 Día?",
+    "pt": "Quantos Metros Seu Cabelo Cresce no Total em 1 Dia?",
+    "ar": "كم مترًا ينمو شعرك إجمالًا في يوم واحد؟",
+    "hi": "तुम्हारे बाल 1 दिन में कुल कितने मीटर बढ़ते हैं?",
+    "id": "Berapa Meter Total Rambutmu Tumbuh dalam 1 Hari?",
+    "fr": "Combien de Mètres Tes Cheveux Poussent-ils au Total en 1 Jour ?",
+    "de": "Wie Viele Meter Wachsen Deine Haare an 1 Tag Insgesamt?",
+    "ru": "На Сколько Метров Всего Вырастают Твои Волосы за 1 День?",
+    "az": "Saçların 1 Gündə Cəmi Neçə Metr Uzanır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793901878.341725,
+   "chars": 360,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1334,7 +1364,8 @@
   "y027",
   "y014",
   "n009",
-  "y046"
+  "y046",
+  "g010"
  ],
  "extra": [
   {
@@ -1400,14 +1431,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-19T14:11:40+00:00",
-   "mod": "saatlik",
-   "title": "Okyanus Gerçekte Ne Kadar Derin?",
-   "url": "https://youtube.com/shorts/5NCDRT4b4M0",
-   "duration": 25.4,
-   "chars": 390
-  },
   {
    "finished": "2026-10-19T17:10:56+00:00",
    "mod": "igbolum",
@@ -1818,6 +1841,14 @@
    "mod": "igbolum",
    "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
    "chars": 380
+  },
+  {
+   "finished": "2026-11-05T18:04:39+00:00",
+   "mod": "saatlik",
+   "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+   "url": "https://youtube.com/shorts/V93tM_0-ll4",
+   "duration": 24.0,
+   "chars": 360
   }
  ],
  "last_fail": 1793568784.6201334,
