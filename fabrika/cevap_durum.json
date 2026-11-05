@@ -180,6 +180,11 @@
     1793883408,
     "r",
     "Ugw6VF3lf9CyvgNVFBh4AaABAg.Acp_mdsa6RjAcpaAPAP60o"
+   ],
+   "UgwMGS18_kIPJyxIUJV4AaABAg": [
+    1793897822,
+    "r",
+    "UgwMGS18_kIPJyxIUJV4AaABAg.Acq0MhAVNtDAcq0esko1XT"
    ]
   },
   "son": [
@@ -386,6 +391,12 @@
     "video": "Ze43ZrXANSQ",
     "comment": "Komutan logar ay uzaklaşıyor efendim😊",
     "reply": "G.O.R.A. referansına ve uzay mizahına her zaman yer var! Ay her yıl bizden yaklaşık 3,8 cm uzaklaşıyor 😊\n— Bit 🤖"
+   },
+   {
+    "at": 1793897822,
+    "video": "9j_jigCDW7s",
+    "comment": "hayır Jüpiter'in içine 1.300 dünya sığar",
+    "reply": "NASA'nin guncel hesaplamalarina gore Jupiter'in ici bos bir kabuk olsaydi icine yaklasik 1.000 Dunya sigabilmektedir.\n— Profesör Pi 🔭"
    }
   ],
   "sayilar": {
@@ -535,10 +546,10 @@
  "nobet": {
   "basladi": "2026-11-05T15:46:58+00:00",
   "run": "42056742911",
-  "tur": 66,
+  "tur": 71,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-05T16:52:00+00:00"
+  "son_tur": "2026-11-05T16:57:01+00:00"
  }
 }

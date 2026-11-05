@@ -1,32 +1,24 @@
 {
- "started": "2026-11-05T12:56:44+00:00",
+ "started": "2026-11-05T16:56:58+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 30,
+ "threads": 31,
  "quiet": 0,
- "new": 2,
- "sent_last_24h": 2,
+ "new": 1,
+ "sent_last_24h": 4,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2Acpa2nBbAvm",
-   "video": "5lbPgaPW58Y",
-   "comment": "sağol bilgi için abi",
-   "cevaba_cevap": true,
-   "reply": "Ne demek, her zaman! Bilgi bizim işimiz. 🚀\n— Bit 🤖",
-   "result": "gönderildi"
-  },
-  {
-   "id": "Ugw6VF3lf9CyvgNVFBh4AaABAg",
-   "video": "Ze43ZrXANSQ",
-   "comment": "Komutan logar ay uzaklaşıyor efendim😊",
-   "reply": "G.O.R.A. referansına ve uzay mizahına her zaman yer var! Ay her yıl bizden yaklaşık 3,8 cm uzaklaşıyor 😊\n— Bit 🤖",
+   "id": "UgwMGS18_kIPJyxIUJV4AaABAg",
+   "video": "9j_jigCDW7s",
+   "comment": "hayır Jüpiter'in içine 1.300 dünya sığar",
+   "reply": "NASA'nin guncel hesaplamalarina gore Jupiter'in ici bos bir kabuk olsaydi icine yaklasik 1.000 Dunya sigabilmektedir.\n— Profesör Pi 🔭",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-05T12:56:47+00:00"
+ "finished": "2026-11-05T16:57:01+00:00"
 }
