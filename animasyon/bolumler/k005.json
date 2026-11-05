@@ -1,0 +1,87 @@
+{
+ "id": "k005",
+ "kanun": "V",
+ "title": {
+  "top": "Herkese karşı çıkacaksan",
+  "hi": "önce yanına bir kişi al"
+ },
+ "yt_title": "Herkes Yanlış Söylerse Sen de Söyler misin? 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Toplantıda herkese karşı çıkacaksan, önce yanına bir kişi al.",
+   "v": {"t": "kanca", "no": "herkese", "yes": "yanına", "no_label": "Tek başına çıkma", "yes_label": "Önce yanına bir kişi al", "sfx": [["herkese", 0.3, "stamp", 0.5, 0.25], ["yanına", 0.8, "whoosh", 0.3, -0.2], ["yanına", 0.8, "shimmer", 0.4, 0.05]]}
+  },
+  {
+   "text": "1951'de bir psikolog, bir öğrenciyi yedi kişiyle masaya oturttu.",
+   "keys": ["yedi"],
+   "v": {"t": "masa", "year": "1951 · Asch deneyi", "count": "yedi", "key": "oturttu", "sfx": [["yedi", 0.5, "tick", 0.28, 0.0], ["yedi", 0.5, "tick", 0.28, 0.1], ["yedi", 0.5, "tick", 0.28, 0.2], ["yedi", 0.5, "tick", 0.28, 0.3], ["yedi", 0.5, "tick", 0.28, 0.4], ["yedi", 0.5, "tick", 0.28, 0.5], ["yedi", 0.5, "tick", 0.28, 0.6], ["oturttu", 0.85, "knock", 0.22, 0.25]]}
+  },
+  {
+   "text": "Soru çok kolaydı: Bu çizgi, şu üçünden hangisiyle aynı boyda?",
+   "v": {"t": "soru", "easy": "kolaydı", "line": "çizgi", "three": "üçünden", "key": "aynı", "sfx": [["kolaydı", 0.3, "pop", 0.3, 0.05], ["çizgi", 0.5, "paper", 0.3, 0.0], ["üçünden", 0.6, "pop", 0.3, 0.0], ["üçünden", 0.6, "pop", 0.3, 0.14], ["üçünden", 0.6, "pop", 0.3, 0.28], ["aynı", 0.8, "shimmer", 0.35, 0.1]]}
+  },
+  {
+   "text": "Oysa diğer yedisi anlaşmalıydı: hepsi aynı yanlış cevabı verdi.",
+   "keys": ["yedisi", "yanlış"],
+   "v": {"t": "hile", "key": "anlaşmalıydı", "all": "hepsi", "sfx": [["anlaşmalıydı", 0.4, "stamp", 0.45, 0.05], ["hepsi", 0.6, "pop", 0.3, 0.0], ["hepsi", 0.6, "pop", 0.3, 0.2], ["hepsi", 0.6, "pop", 0.3, 0.4], ["hepsi", 0.6, "pop", 0.3, 0.6], ["hepsi", 0.6, "pop", 0.3, 0.8], ["hepsi", 0.6, "pop", 0.3, 1.0], ["hepsi", 0.6, "pop", 0.3, 1.2], ["verdi", 0.9, "impact", 0.3, 0.1]]}
+  },
+  {
+   "text": "Öğrencilerin dörtte üçü, en az bir kez kalabalığa uydu.",
+   "keys": ["dörtte", "üçü"],
+   "v": {"t": "sonuc", "key": "dörtte", "went": "kalabalığa", "sfx": [["dörtte", 0.3, "impact", 0.35, 0.05], ["kalabalığa", 0.7, "pop", 0.3, 0.0], ["kalabalığa", 0.7, "pop", 0.3, 0.16], ["kalabalığa", 0.7, "pop", 0.3, 0.32], ["uydu", 0.9, "stamp", 0.35, 0.1]]}
+  },
+  {
+   "text": "Ama masada doğruyu söyleyen tek kişi olunca, yanlış cevaplar %32'den %5,5'e indi.",
+   "keys": ["doğruyu", "tek"],
+   "v": {"t": "destek", "key": "doğruyu", "cut": "yanlış", "from": 32, "to": 5.5, "sfx": [["doğruyu", 0.3, "shimmer", 0.4, 0.05], ["tek", 0.5, "pop", 0.35, 0.1], ["yanlış", 0.6, "whoosh", 0.3, -0.1], ["%5,5'e", 0.85, "tick", 0.28, -0.3], ["%5,5'e", 0.85, "tick", 0.28, -0.15], ["%5,5'e", 0.85, "tick", 0.28, 0.0], ["indi", 0.9, "shimmer", 0.45, 0.05]]}
+  },
+  {
+   "text": "Çünkü herkese karşı tek kalan, kendi gözünden şüphe eder. Tek bir destekçi, bu şüpheyi kırar.",
+   "v": {"t": "neden", "key": "şüphe", "ally": "destekçi", "breaks": "kırar", "sfx": [["herkese", 0.2, "whoosh", 0.25, 0.0], ["şüphe", 0.45, "knock", 0.25, 0.0], ["destekçi", 0.7, "shimmer", 0.4, -0.2], ["kırar", 0.9, "impact", 0.4, 0.0]]}
+  },
+  {
+   "text": "Toplantıda da o tek ses, susmakla konuşmak arasındaki farktır.",
+   "v": {"t": "toplanti", "key": "ses", "no": "susmakla", "yes": "konuşmak", "sfx": [["ses", 0.3, "pop", 0.35, 0.05], ["susmakla", 0.5, "stamp", 0.35, 0.05], ["konuşmak", 0.7, "shimmer", 0.45, 0.05]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Solomon Asch'ın ilk raporu (1951, Guetzkow'un derlediği \"Groups, Leadership and Men\" kitabında): sekiz kişilik bir grubun yedisi önceden ayarlanmış kişilerdi, yalnızca biri gerçek denekti. Görev, bir çizginin boyunu üç farklı çizgiden hangisiyle eşleştiğini söylemekti. Kontrol gruplarında neredeyse hiç hata yoktu (Asch 1955: tek başına cevap verenler zamanın %1'inden azında yanıldı).",
+  "Aynı raporda: oybirliğiyle yanlış söyleyen çoğunluk karşısında tahminlerin %32'si çoğunluğun yönünde hataydı; deneklerin dörtte biri tamamen bağımsız kaldı, yani dörtte üçü en az bir kez çoğunluğa uydu.",
+  "Aynı raporda: grubun içinden bir kişiye baştan sona doğru cevap vermesi söylendiğinde (bu \"ortak\" hep dördüncü sırada oturuyordu), çoğunluk yönündeki hatalar %5,5'e düştü. Asch'ın 1955 Scientific American yazısı da destekçinin çoğunluğun baskısını dörtte birine indirdiğini yazar.",
+  "Asch'ın 1956 monografisi (123 denek) ve 1955 yazısı, hatalı cevap oranını %36,8 olarak verir.",
+  "Bulgu tekrarlandı: Bond ve Smith'in 1996 meta-analizi 17 ülkeden 133 çalışmayı inceledi; ABD'de uyumun 1950'lerden beri azaldığını, toplulukçu kültürlerde daha yüksek olduğunu buldu. Franzen ve Mader'in 2023'teki tekrarında (PLOS ONE) çizgi görevinde hata oranı %33 çıktı."
+ ],
+ "sources": [
+  "https://doi.org/10.1038/scientificamerican1155-31",
+  "https://doi.org/10.1037/h0093718",
+  "https://doi.org/10.1037/0033-2909.119.1.111",
+  "https://doi.org/10.1371/journal.pone.0294325"
+ ],
+ "summary": "Toplantıda herkese karşı çıkacaksan, önce yanına bir kişi al. 1951'de psikolog Solomon Asch, bir öğrenciyi yedi kişiyle bir masaya oturttu ve çok kolay bir soru sordu: bu çizgi, şu üç çizgiden hangisiyle aynı boyda? Ama diğer yedisi anlaşmalıydı ve hepsi aynı yanlış cevabı verdi. Öğrencilerin dörtte üçü en az bir kez kalabalığa uydu. Masada doğruyu söyleyen tek bir kişi olunca ise yanlış cevaplar %32'den %5,5'e indi. Herkese karşı tek kalan kendi gözünden şüphe eder; tek bir destekçi bu şüpheyi kırar. Toplantıda da o tek ses, susmakla konuşmak arasındaki farktır.",
+ "tags": [
+  "asch deneyi",
+  "uyma davranışı",
+  "sosyal uyum",
+  "conformity",
+  "kalabalık psikolojisi",
+  "toplantı",
+  "psikoloji",
+  "ikna",
+  "güç psikolojisi",
+  "karanlık psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#aschdeneyi",
+  "#zirveninkanunu"
+ ]
+}
