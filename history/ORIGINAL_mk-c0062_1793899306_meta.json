@@ -1,0 +1,180 @@
+{
+  "topic_id": "mk-c0062",
+  "topic": "Arı soktuktan sonra yaşayabilir mi, bal arısı sokunca neden ölür?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Arı seni soktuktan sonra yaşayabilir mi? 🐝",
+  "hook_text": "ARI SOKTUKTAN SONRA YAŞAR MI?",
+  "description": "Arı soktuktan sonra yaşayabilir mi, bal arısı sokunca neden ölür?\n\nBal arısı başka bir böceği sokunca iğnesini geri çekip uçabilir. Ama işçi bal arısı bir insanı ya da başka bir memeliyi sokunca iğnesindeki geriye bakan çentikler deriye takılır; arı kaçarken iğneyle birlikte karnının ucu kopar ve arı ölür. Geride kalan iğne arısız da zehir pompalamayı sürdürür, bu yüzden iğneyi olabildiğince çabuk çıkarmak gerekir. Erkek arıların iğnesi yoktur, kraliçe arı ise defalarca sokabilir; eşek arıları da sokunca ölmez.\n\nSence hangisi daha şaşırtıcı: erkek arının iğnesinin olmaması mı, kraliçenin defalarca sokabilmesi mi?\n\n#arı #balarısı #hayvanlar #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0062",
+  "tags": [
+    "arı",
+    "bal arısı",
+    "arı soktuktan sonra ölür mü",
+    "arı soktuktan sonra yaşar mı",
+    "arı neden ölür",
+    "arı sokunca neden ölür",
+    "arı sokması",
+    "arı iğnesi",
+    "arı iğnesi nasıl çıkarılır",
+    "arı zehri",
+    "kraliçe arı",
+    "erkek arı",
+    "işçi arı",
+    "eşek arısı",
+    "arılar",
+    "böcekler",
+    "hayvanlar",
+    "mümkün mü",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "do bees die after stinging",
+    "honey bee sting",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "ari",
+    "bal arisi",
+    "ari soktuktan sonra olur mu",
+    "ari neden olur"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a bee survive after stinging you? 🐝",
+      "description": "A honey bee can sting another insect and fly away, but when a worker bee stings you, the backward-facing barbs on its stinger catch in your skin. As it pulls away, the tip of its abdomen tears off and the bee dies, while the stinger keeps pumping venom. Male bees have no stinger at all, and the queen can sting again and again.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "es": {
+      "title": "¿Puede una abeja sobrevivir después de picarte? 🐝",
+      "description": "Una abeja melífera puede picar a otro insecto y seguir volando, pero cuando una obrera te pica a ti, las púas de su aguijón se enganchan en la piel. Al escapar se le desgarra la punta del abdomen y muere, mientras el aguijón sigue bombeando veneno. Los zánganos ni siquiera tienen aguijón, y la reina puede picar una y otra vez.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "pt": {
+      "title": "Uma abelha sobrevive depois de picar você? 🐝",
+      "description": "A abelha-europeia pode picar outro inseto e ir embora voando, mas quando uma operária pica você, as farpas do ferrão ficam presas na pele. Ao fugir, ela perde a ponta do abdômen e morre, enquanto o ferrão continua bombeando veneno. Os zangões nem têm ferrão, e a rainha pode picar várias vezes.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "de": {
+      "title": "Kann eine Biene überleben, nachdem sie dich gestochen hat? 🐝",
+      "description": "Eine Honigbiene kann ein anderes Insekt stechen und davonfliegen. Sticht eine Arbeiterin aber dich, verhaken sich die Widerhaken ihres Stachels in der Haut. Beim Wegfliegen reißt ihr Hinterleibsende ab und sie stirbt, während der Stachel weiter Gift pumpt. Drohnen haben gar keinen Stachel, und die Königin kann immer wieder stechen.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "fr": {
+      "title": "Une abeille peut-elle survivre après t'avoir piqué ? 🐝",
+      "description": "Une abeille mellifère peut piquer un autre insecte puis s'envoler, mais quand une ouvrière te pique, les barbillons de son dard s'accrochent à ta peau. En s'éloignant, elle s'arrache le bout de l'abdomen et meurt, pendant que le dard continue de pomper du venin. Les faux bourdons n'ont pas de dard, et la reine peut piquer encore et encore.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "it": {
+      "title": "Un'ape può sopravvivere dopo averti punto? 🐝",
+      "description": "Un'ape mellifera può pungere un altro insetto e volare via, ma quando un'operaia punge te, gli uncini del pungiglione restano agganciati alla pelle. Mentre si allontana le si strappa la punta dell'addome e muore, e il pungiglione continua a pompare veleno. I fuchi non hanno pungiglione, mentre la regina può pungere più volte.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "ru": {
+      "title": "Может ли пчела выжить, если ужалит тебя? 🐝",
+      "description": "Медоносная пчела может ужалить другое насекомое и улететь, но когда рабочая пчела жалит человека, зазубрины жала застревают в коже. Улетая, она отрывает себе кончик брюшка и погибает, а жало продолжает качать яд. У трутней жала нет вообще, а матка может жалить снова и снова.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "ar": {
+      "title": "هل تنجو النحلة بعد أن تلسعك؟ 🐝",
+      "description": "تستطيع نحلة العسل أن تلسع حشرة أخرى ثم تطير، لكن حين تلسعك نحلة عاملة تعلق الأشواك المعقوفة في إبرتها بجلدك. وعندما تحاول الهرب ينفصل طرف بطنها فتموت، بينما تواصل الإبرة ضخ السم. أما ذكور النحل فلا إبرة لها أصلًا، والملكة تستطيع اللسع مرارًا.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "hi": {
+      "title": "क्या मधुमक्खी आपको डंक मारने के बाद ज़िंदा रह सकती है? 🐝",
+      "description": "मधुमक्खी किसी दूसरे कीड़े को डंक मारकर उड़ सकती है, लेकिन जब कोई कामगार मधुमक्खी आपको डंक मारती है, तो डंक के उल्टे काँटे आपकी त्वचा में फँस जाते हैं। उड़ते समय उसके पेट का सिरा फट जाता है और वह मर जाती है, जबकि डंक ज़हर पंप करता रहता है। नर मधुमक्खियों के डंक ही नहीं होता, और रानी बार-बार डंक मार सकती है।\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "id": {
+      "title": "Bisakah lebah bertahan hidup setelah menyengatmu? 🐝",
+      "description": "Lebah madu bisa menyengat serangga lain lalu terbang pergi, tetapi saat lebah pekerja menyengatmu, duri bergerigi pada sengatnya tersangkut di kulit. Ketika kabur, ujung perutnya ikut robek dan ia mati, sementara sengatnya terus memompa racun. Lebah jantan bahkan tidak punya sengat, dan ratu bisa menyengat berkali-kali.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "ja": {
+      "title": "ミツバチは人を刺したあとも生きられる? 🐝",
+      "description": "ミツバチはほかの昆虫を刺しても飛び去れますが、働きバチが人を刺すと、針の返しが皮膚に引っかかります。逃げようとすると腹部の先がちぎれて死んでしまい、残った針は毒を送り続けます。オスのミツバチには針がそもそもなく、女王バチは何度でも刺せます。\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "ko": {
+      "title": "꿀벌은 사람을 쏘고 나서도 살 수 있을까? 🐝",
+      "description": "꿀벌은 다른 곤충을 쏘고 날아갈 수 있지만, 일벌이 사람을 쏘면 침의 갈고리가 피부에 걸립니다. 빠져나가려다 배 끝이 뜯겨 나가 결국 죽고, 남은 침은 계속 독을 뿜어냅니다. 수벌은 아예 침이 없고, 여왕벌은 여러 번 쏠 수 있습니다.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "pl": {
+      "title": "Czy pszczoła może przeżyć po użądleniu ciebie? 🐝",
+      "description": "Pszczoła miodna może użądlić inny owad i odlecieć, ale gdy robotnica żądli człowieka, zadziory żądła wbijają się w skórę. Odlatując, odrywa sobie koniec odwłoka i ginie, a żądło dalej pompuje jad. Trutnie w ogóle nie mają żądła, a królowa może żądlić wiele razy.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "nl": {
+      "title": "Kan een bij overleven nadat ze jou gestoken heeft? 🐝",
+      "description": "Een honingbij kan een ander insect steken en wegvliegen, maar als een werkster jou steekt, haken de weerhaakjes van haar angel vast in je huid. Als ze wegvliegt, scheurt het puntje van haar achterlijf af en sterft ze, terwijl de angel gif blijft pompen. Darren hebben helemaal geen angel en de koningin kan keer op keer steken.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "uk": {
+      "title": "Чи може бджола вижити, якщо вжалить тебе? 🐝",
+      "description": "Медоносна бджола може вжалити іншу комаху й полетіти, але коли робоча бджола жалить людину, зазубрини жала застрягають у шкірі. Відлітаючи, вона відриває собі кінчик черевця і гине, а жало далі качає отруту. Трутні взагалі не мають жала, а матка може жалити знову і знову.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "vi": {
+      "title": "Ong có sống được sau khi đốt bạn không? 🐝",
+      "description": "Ong mật có thể đốt một con côn trùng khác rồi bay đi, nhưng khi ong thợ đốt bạn, các ngạnh trên kim mắc vào da. Khi cố bay đi, phần cuối bụng của nó bị rách ra và nó chết, trong khi chiếc kim vẫn tiếp tục bơm nọc. Ong đực thậm chí không có kim, còn ong chúa có thể đốt nhiều lần.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "az": {
+      "title": "Arı səni sancdıqdan sonra yaşaya bilərmi? 🐝",
+      "description": "Bal arısı başqa bir həşəratı sancıb uçub gedə bilər, amma işçi arı insanı sancanda iynəsindəki geriyə baxan dişciklər dəriyə ilişir. Qaçarkən qarnının ucu qopur və arı ölür, geridə qalan iynə isə zəhər vurmağa davam edir. Erkək arıların heç iynəsi yoxdur, ana arı isə dəfələrlə sanca bilər.\n\n#shorts\n\nSeri: mk-c0062"
+    },
+    "ro": {
+      "title": "Poate o albină să supraviețuiască după ce te înțeapă? 🐝",
+      "description": "O albină meliferă poate înțepa o altă insectă și apoi zbura mai departe, dar când o lucrătoare te înțeapă pe tine, ghimpii acului se agață în piele. Când încearcă să plece, i se rupe vârful abdomenului și moare, iar acul continuă să pompeze venin. Trântorii nu au deloc ac, iar regina poate înțepa de mai multe ori.\n\n#shorts\n\nSeri: mk-c0062"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: erkek arının iğnesinin olmaması mı, kraliçenin defalarca sokabilmesi mi?",
+  "scenes": [
+    {
+      "text": "Bu arı bir böceği sokup uçup gidebilir.",
+      "visual": "macro close-up of a honey bee's body and stinger on a flower",
+      "stock_query": "bee macro",
+      "source": "stock",
+      "callout": "SOKAR, UÇAR GİDER"
+    },
+    {
+      "text": "Peki seni soktuktan sonra da yaşayabilir mi?",
+      "visual": "macro close-up of a honey bee looking toward the camera",
+      "stock_query": "bee closeup",
+      "source": "stock"
+    },
+    {
+      "text": "Erkek arıların iğnesi bile yok; kraliçe ise defalarca sokabilir.",
+      "visual": "bees crawling over a honeycomb frame in a beehive",
+      "stock_query": "bee hive",
+      "source": "stock",
+      "callout": "ERKEKTE İĞNE YOK"
+    },
+    {
+      "text": "Ama işçi arı seni sokunca ölür: iğnesindeki geriye bakan çentikler senin derine takılır.",
+      "visual": "extreme macro of a honey bee's abdomen and stinger",
+      "stock_query": "bee macro",
+      "source": "stock",
+      "callout": "ÇENTİKLİ İĞNE"
+    },
+    {
+      "text": "Kaçarken karnının ucu kopar; iğne, arı gidince bile zehir pompalamayı sürdürür.",
+      "visual": "a honey bee flying in slow motion",
+      "stock_query": "bee flying",
+      "source": "stock",
+      "callout": "ZEHİR POMPALAR"
+    },
+    {
+      "text": "Seni sokan arı bunu canıyla öder; oysa...",
+      "visual": "a bee resting on a flower in warm sunlight",
+      "stock_query": "bee flower",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.66,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #115",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0062_1793899306_ig.mp4"
+}
