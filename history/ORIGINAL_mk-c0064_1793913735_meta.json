@@ -1,0 +1,186 @@
+{
+  "topic_id": "mk-c0064",
+  "topic": "Parmak çıtlatmak kireçlenme yapar mı, parmak çıtlatınca çıkan ses nedir?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Parmak çıtlatmak kireçlenme yapmıyor ✋",
+  "hook_text": "O ÇITIRTI NEREDEN GELİYOR?",
+  "description": "Parmak çıtlatmak kireçlenme yapar mı, parmak çıtlatınca çıkan ses nedir?\n\nAraştırmalara göre parmak çıtlatmak kireçlenmeye yol açmıyor. Amerikalı doktor Donald Unger elli yıldan uzun süre her gün yalnızca sol elinin parmaklarını çıtlattı, sağ elini hiç çıtlatmadı; sonunda iki elinde de kireçlenme yoktu ve bu çalışma 2009'da Ig Nobel ödülü aldı. 2011'de iki yüz on beş kişiyle yapılan bir çalışma da parmak çıtlatmayla el kireçlenmesi arasında bağlantı bulamadı. O ses, eklem gerilince eklem sıvısındaki bir gaz kabarcığından gelir; aynı parmak hemen tekrar çıtlamaz, çünkü gazın yeniden birikmesi zaman alır.\n\nSen parmaklarını çıtlatır mısın: evet mi, hayır mı?\n\n#parmakçıtlatmak #kireçlenme #insanvücudu #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0064",
+  "tags": [
+    "parmak çıtlatmak",
+    "parmak çıtlatma",
+    "parmak çıtlatmak zararlı mı",
+    "parmak çıtlatmak kireçlenme",
+    "kireçlenme yapar mı",
+    "parmak çıtlatınca ne olur",
+    "parmak neden çıtlar",
+    "eklem sesi",
+    "kireçlenme",
+    "eklem",
+    "artrit",
+    "eklem sıvısı",
+    "parmak eklemi",
+    "gaz kabarcığı",
+    "el sağlığı",
+    "vücut gerçekleri",
+    "insan vücudu",
+    "efsane mi gerçek mi",
+    "sağlık",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "knuckle cracking",
+    "knuckle cracking arthritis",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "parmak citlatmak"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cracking your knuckles doesn't cause arthritis ✋",
+      "description": "A doctor cracked the knuckles of only his left hand every day for more than 50 years and ended up with no arthritis in either hand, and a study of 215 people found no link either. The pop comes from a gas bubble in the joint fluid, which is why the same knuckle won't crack again right away: the gas needs time to build back up.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "es": {
+      "title": "Tronarte los dedos no causa artrosis ✋",
+      "description": "Un médico se tronó solo los dedos de la mano izquierda cada día durante más de 50 años y no tuvo artrosis en ninguna de las dos manos; un estudio con 215 personas tampoco encontró relación. El chasquido viene de una burbuja de gas en el líquido de la articulación, y por eso el mismo dedo no vuelve a sonar enseguida: el gas necesita tiempo para acumularse otra vez.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "pt": {
+      "title": "Estalar os dedos não causa artrose ✋",
+      "description": "Um médico estalou só os dedos da mão esquerda todos os dias por mais de 50 anos e não teve artrose em nenhuma das mãos; um estudo com 215 pessoas também não achou relação. O estalo vem de uma bolha de gás no líquido da articulação, e por isso o mesmo dedo não estala de novo logo em seguida: o gás precisa de tempo para se acumular outra vez.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "de": {
+      "title": "Fingerknacken verursacht keine Arthrose ✋",
+      "description": "Ein Arzt ließ über 50 Jahre lang jeden Tag nur die Finger seiner linken Hand knacken und hatte am Ende in keiner Hand Arthrose; auch eine Studie mit 215 Menschen fand keinen Zusammenhang. Das Knacken stammt von einer Gasblase in der Gelenkflüssigkeit. Deshalb knackt derselbe Finger nicht sofort wieder: Das Gas braucht Zeit, um sich neu zu sammeln.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "fr": {
+      "title": "Se faire craquer les doigts ne donne pas d'arthrose ✋",
+      "description": "Un médecin s'est fait craquer les doigts de la main gauche uniquement, chaque jour pendant plus de 50 ans, et n'a eu d'arthrose à aucune main ; une étude sur 215 personnes n'a pas trouvé de lien non plus. Le craquement vient d'une bulle de gaz dans le liquide articulaire, et c'est pour ça que le même doigt ne craque pas tout de suite à nouveau : le gaz a besoin de temps pour se reformer.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "it": {
+      "title": "Scrocchiare le dita non fa venire l'artrosi ✋",
+      "description": "Un medico ha scrocchiato solo le dita della mano sinistra ogni giorno per più di 50 anni e alla fine non aveva artrosi in nessuna delle due mani; anche uno studio su 215 persone non ha trovato alcun legame. Lo schiocco viene da una bolla di gas nel liquido dell'articolazione, ed è per questo che lo stesso dito non scrocchia subito di nuovo: il gas ha bisogno di tempo per riformarsi.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "ru": {
+      "title": "Хрустеть пальцами не вредно для суставов ✋",
+      "description": "Один врач больше 50 лет каждый день хрустел пальцами только левой руки, и в итоге артрита не оказалось ни на одной руке; исследование 215 человек тоже не нашло связи. Хруст даёт пузырёк газа в суставной жидкости, поэтому тот же палец сразу второй раз не хрустнет: газу нужно время, чтобы снова накопиться.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "ar": {
+      "title": "طقطقة الأصابع لا تسبب خشونة المفاصل ✋",
+      "description": "طقطق طبيب أصابع يده اليسرى وحدها كل يوم لأكثر من 50 عامًا، ولم يُصب بخشونة المفاصل في أي من يديه، كما لم تجد دراسة شملت 215 شخصًا أي صلة بينهما. الصوت يأتي من فقاعة غاز في سائل المفصل، ولهذا لا يطقطق الإصبع نفسه مجددًا على الفور: يحتاج الغاز إلى وقت ليتجمع من جديد.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "hi": {
+      "title": "उंगलियाँ चटकाने से गठिया नहीं होता ✋",
+      "description": "एक डॉक्टर ने 50 से ज़्यादा सालों तक हर दिन सिर्फ़ अपने बाएँ हाथ की उंगलियाँ चटकाईं, और आख़िर में उनके किसी भी हाथ में गठिया नहीं था; 215 लोगों पर हुए एक अध्ययन में भी कोई संबंध नहीं मिला। चटकने की आवाज़ जोड़ के तरल में बने गैस के बुलबुले से आती है, इसलिए वही उंगली तुरंत दोबारा नहीं चटकती: गैस को फिर से जमा होने में समय लगता है।\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "id": {
+      "title": "Membunyikan jari tidak menyebabkan radang sendi ✋",
+      "description": "Seorang dokter membunyikan jari tangan kirinya saja setiap hari selama lebih dari 50 tahun, dan pada akhirnya tidak ada radang sendi di kedua tangannya; studi pada 215 orang juga tidak menemukan kaitan. Bunyi itu berasal dari gelembung gas di cairan sendi, makanya jari yang sama tidak bisa langsung berbunyi lagi: gasnya butuh waktu untuk terkumpul kembali.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "ja": {
+      "title": "指の関節を鳴らしても関節炎にはならない ✋",
+      "description": "ある医師は50年以上、毎日左手の指だけを鳴らし続けましたが、結局どちらの手にも関節炎は出ませんでした。215人を対象にした研究でも関連は見つかっていません。あの音は関節液の中にできるガスの泡によるもので、同じ指をすぐにもう一度鳴らせないのは、ガスがたまり直すのに時間がかかるからです。\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "ko": {
+      "title": "손가락 관절을 꺾어도 관절염에 걸리지 않는다 ✋",
+      "description": "한 의사는 50년 넘게 매일 왼손 손가락만 꺾어 소리를 냈지만, 결국 양손 모두 관절염이 없었습니다. 215명을 조사한 연구에서도 관련성은 나오지 않았습니다. 그 '뚝' 소리는 관절액 속 기포에서 나는데, 같은 손가락이 바로 다시 소리 나지 않는 건 기체가 다시 모이는 데 시간이 걸리기 때문입니다.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "pl": {
+      "title": "Strzelanie palcami nie powoduje zwyrodnienia stawów ✋",
+      "description": "Pewien lekarz przez ponad 50 lat codziennie strzelał palcami tylko lewej ręki i w końcu nie miał zwyrodnienia w żadnej z dłoni; badanie 215 osób też nie wykazało związku. Trzask pochodzi od pęcherzyka gazu w płynie stawowym, dlatego ten sam palec nie strzeli od razu ponownie: gaz potrzebuje czasu, żeby znów się zebrać.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "nl": {
+      "title": "Knakken met je vingers geeft geen artrose ✋",
+      "description": "Een arts knakte ruim 50 jaar lang elke dag alleen de vingers van zijn linkerhand en had uiteindelijk in geen van beide handen artrose; ook een studie met 215 mensen vond geen verband. Het geknak komt van een gasbel in het gewrichtsvocht. Daarom knakt dezelfde vinger niet meteen opnieuw: het gas heeft tijd nodig om zich weer op te bouwen.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "uk": {
+      "title": "Хрускіт пальцями не спричиняє артриту ✋",
+      "description": "Один лікар понад 50 років щодня хрустів пальцями лише лівої руки, і зрештою артриту не виявилося в жодній руці; дослідження 215 людей теж не знайшло зв'язку. Хрускіт дає бульбашка газу в суглобовій рідині, тому той самий палець одразу вдруге не хрусне: газу потрібен час, щоб знову накопичитися.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "vi": {
+      "title": "Bẻ khớp ngón tay không gây viêm khớp ✋",
+      "description": "Một bác sĩ chỉ bẻ khớp ngón tay trái mỗi ngày suốt hơn 50 năm, và cuối cùng cả hai tay đều không bị viêm khớp; một nghiên cứu trên 215 người cũng không tìm thấy mối liên hệ nào. Tiếng rắc đến từ một bọt khí trong dịch khớp, vì vậy cùng một ngón không thể kêu lại ngay: khí cần thời gian để tích tụ trở lại.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "az": {
+      "title": "Barmaqları şaqqıldatmaq oynaq xəstəliyi yaratmır ✋",
+      "description": "Bir həkim əlli ildən çox hər gün yalnız sol əlinin barmaqlarını şaqqıldatdı və sonda heç bir əlində artroz yox idi; 215 nəfərlə aparılan araşdırma da əlaqə tapmadı. O səs oynaq mayesindəki qaz qabarcığından gəlir, ona görə eyni barmaq dərhal yenidən şaqqıldamır: qazın yenidən yığılması vaxt aparır.\n\n#shorts\n\nSeri: mk-c0064"
+    },
+    "ro": {
+      "title": "Pocnitul degetelor nu provoacă artroză ✋",
+      "description": "Un medic și-a pocnit zilnic doar degetele mâinii stângi, timp de peste 50 de ani, și la final n-avea artroză la niciuna dintre mâini; nici un studiu pe 215 oameni n-a găsit vreo legătură. Pocnetul vine de la o bulă de gaz din lichidul articular, de aceea același deget nu pocnește din nou imediat: gazul are nevoie de timp să se adune iar.\n\n#shorts\n\nSeri: mk-c0064"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen parmaklarını çıtlatır mısın: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu parmakları çıtlatmak kireçlenme yapmaz.",
+      "visual": "close-up of hands cracking the knuckles",
+      "stock_query": "cracking knuckles",
+      "source": "stock",
+      "callout": "KİREÇLENME YAPMAZ"
+    },
+    {
+      "text": "Bir doktor elli yıldan uzun süre her gün yalnızca sol elini çıtlattı.",
+      "visual": "close-up of an elderly man's wrinkled hands resting on a table",
+      "stock_query": "old man hands",
+      "source": "stock",
+      "callout": "50+ YIL, TEK EL"
+    },
+    {
+      "text": "Sonunda iki elinde de kireçlenme yoktu; araştırmalar da bağlantı bulamadı.",
+      "visual": "a doctor looking at an x-ray image of a hand on a light box",
+      "stock_query": "doctor x-ray",
+      "source": "stock",
+      "subject": [
+        "doctor"
+      ],
+      "callout": "İKİ ELDE DE YOK"
+    },
+    {
+      "text": "O ses kemikten değil, eklem sıvısındaki bir gaz kabarcığından gelir.",
+      "visual": "slow close-up of fingers bending at the knuckles",
+      "stock_query": "finger closeup",
+      "source": "stock",
+      "subject": [
+        "finger"
+      ],
+      "callout": "GAZ KABARCIĞI"
+    },
+    {
+      "text": "Aynı parmak hemen tekrar çıtlamaz; gazın yeniden birikmesi zaman alır.",
+      "visual": "a person slowly flexing and stretching their fingers",
+      "stock_query": "hands stretching",
+      "source": "stock"
+    },
+    {
+      "text": "Annen 'çıtlatma, kireçlenir' derse, ona şunu söyle:",
+      "visual": "a mother and her adult son talking and smiling at a kitchen table",
+      "stock_query": "mother son talking",
+      "source": "stock",
+      "subject": [
+        "mother"
+      ]
+    }
+  ],
+  "duration_seconds": 17.56,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #117",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0064_1793913735_ig.mp4"
+}
