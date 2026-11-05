@@ -1370,12 +1370,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-19T09:10:26+00:00",
-   "mod": "igbolum",
-   "title": "Kara Deliğe Düşseydin Ne Olurdu?",
-   "chars": 538
-  },
-  {
    "finished": "2026-10-19T10:11:54+00:00",
    "mod": "saatlik",
    "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
@@ -1787,6 +1781,12 @@
    "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
    "duration": 26.1,
    "chars": 403
+  },
+  {
+   "finished": "2026-11-05T13:09:48+00:00",
+   "mod": "igbolum",
+   "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
+   "chars": 374
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -1961,6 +1961,11 @@
     "media_id": "18085294457357274",
     "url": "https://www.instagram.com/reel/DfWrUc2lfmh/",
     "at": 1793869824.70717
+   },
+   "y061": {
+    "media_id": "18000122790050891",
+    "url": "https://www.instagram.com/reel/DfXGut_DZKf/",
+    "at": 1793884188.9949658
    }
   },
   "eski": [

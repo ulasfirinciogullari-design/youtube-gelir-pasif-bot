@@ -1,71 +1,18 @@
 {
- "started": "2026-11-05T10:08:13+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-05T13:08:02+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y061",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "51",
-  "videos": "42"
+ "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
+ "chars": 374,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18000122790050891",
+  "url": "https://www.instagram.com/reel/DfXGut_DZKf/",
+  "at": 1793884188.9949658
  },
- "credits_before": [
-  84860,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261104-5-n009.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "n009",
-  "series": "Ne Kadar Büyük?",
-  "q": "Işık ne kadar hızlı?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 403,
- "duration": 26.1,
- "title": "Işık Gerçekte Ne Kadar Hızlı?",
- "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
- "recent_status": {
-  "y061": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "998",
-   "reason": null
-  },
-  "g009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "688",
-   "reason": null
-  },
-  "y027": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "162",
-   "reason": null
-  },
-  "y014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "148",
-   "reason": null
-  },
-  "n009": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  84958,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261104-5-n009.json Işık ne kadar hızlı? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/DfXGut_DZKf/"
  ],
- "finished": "2026-11-05T10:09:12+00:00"
+ "finished": "2026-11-05T13:09:48+00:00"
 }

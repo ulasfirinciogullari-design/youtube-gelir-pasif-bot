@@ -1,5 +1,5 @@
 {
- "at": "2026-11-05T10:07:25+00:00",
+ "at": "2026-11-05T13:07:06+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,9 +15,9 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 51,
+  "subscriberCount": 53,
   "viewCount": 38034,
-  "videoCount": 42
+  "videoCount": 43
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -87,7 +87,7 @@
    "baslik": "İnsanlar Hiç Uyumasaydı Ne Olurdu?"
   },
   "oyPgO_oDYlU": {
-   "view": 1029,
+   "view": 1030,
    "like": 10,
    "comment": 0,
    "baslik": "En Büyük Yıldız Ne Kadar Büyük?"
@@ -207,7 +207,7 @@
    "baslik": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?"
   },
   "QuUL5G3usPE": {
-   "view": 1145,
+   "view": 1151,
    "like": 6,
    "comment": 0,
    "baslik": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?"
@@ -225,7 +225,7 @@
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1125,
+   "view": 1126,
    "like": 8,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
@@ -237,7 +237,7 @@
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 1064,
+   "view": 1066,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
@@ -249,22 +249,28 @@
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   },
   "Gyz1vK-E-D4": {
-   "view": 688,
-   "like": 7,
+   "view": 712,
+   "like": 9,
    "comment": 0,
    "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
   },
   "F9Hkco1HKiA": {
-   "view": 162,
+   "view": 172,
    "like": 0,
    "comment": 0,
    "baslik": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu? 😳"
   },
   "5lbPgaPW58Y": {
-   "view": 148,
+   "view": 158,
    "like": 1,
-   "comment": 0,
+   "comment": 4,
    "baslik": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın? 😳"
+  },
+  "Ze43ZrXANSQ": {
+   "view": 818,
+   "like": 12,
+   "comment": 2,
+   "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   }
  },
  "videos": {
@@ -793,7 +799,14 @@
    "comments": 0,
    "subscribersGained": 1,
    "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 667,
+    "YT_SEARCH": 13,
+    "YT_OTHER_PAGE": 2,
+    "YT_CHANNEL": 1,
+    "IMMERSIVE_LIVE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 183,
    "devam_yuzde": 26.8
   },
