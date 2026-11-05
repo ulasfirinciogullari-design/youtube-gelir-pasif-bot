@@ -185,6 +185,11 @@
     1793897822,
     "r",
     "UgwMGS18_kIPJyxIUJV4AaABAg.Acq0MhAVNtDAcq0esko1XT"
+   ],
+   "UgwMGS18_kIPJyxIUJV4AaABAg.Acq0MhAVNtDAcq1bBp57UE": [
+    1793898422,
+    "r",
+    "UgwMGS18_kIPJyxIUJV4AaABAg.Acq0MhAVNtDAcq1o8q2PjD"
    ]
   },
   "son": [
@@ -397,6 +402,12 @@
     "video": "9j_jigCDW7s",
     "comment": "hayır Jüpiter'in içine 1.300 dünya sığar",
     "reply": "NASA'nin guncel hesaplamalarina gore Jupiter'in ici bos bir kabuk olsaydi icine yaklasik 1.000 Dunya sigabilmektedir.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1793898422,
+    "video": "9j_jigCDW7s",
+    "comment": "yanlış",
+    "reply": "NASA, Jüpiter'in hacim hesaplamalarında bu tür küçük farklılıklar olabileceğini belirtir, güncel veriler 1.000 sınırını verir.\n— Profesör Pi 🔭"
    }
   ],
   "sayilar": {
@@ -428,7 +439,7 @@
    "UgxIandTEwlEa4lpgQp4AaABAg": 1,
    "UgwCOK8HxjjnPiSjTIp4AaABAg": 3,
    "Ugw6VF3lf9CyvgNVFBh4AaABAg": 1,
-   "UgwMGS18_kIPJyxIUJV4AaABAg": 1
+   "UgwMGS18_kIPJyxIUJV4AaABAg": 2
   }
  },
  "ig": {
@@ -547,10 +558,10 @@
  "nobet": {
   "basladi": "2026-11-05T15:46:58+00:00",
   "run": "42056742911",
-  "tur": 76,
+  "tur": 81,
   "ig_cevap": 0,
-  "yt_cevap": 1,
+  "yt_cevap": 2,
   "son_hata": null,
-  "son_tur": "2026-11-05T17:02:01+00:00"
+  "son_tur": "2026-11-05T17:07:01+00:00"
  }
 }
