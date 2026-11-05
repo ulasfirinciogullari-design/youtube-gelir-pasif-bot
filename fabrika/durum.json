@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1165",
+    "views": "1170",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1029",
+    "views": "1031",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "975",
+    "views": "1022",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "271",
+    "views": "419",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "355",
+    "views": "487",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1227",
+    "views": "1248",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "896",
+    "views": "1218",
     "reason": null
    }
   },
@@ -1313,6 +1313,36 @@
    "thumbnail": true,
    "at": 1793901878.341725,
    "chars": 360,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "558",
+    "reason": null
+   }
+  },
+  {
+   "id": "y045",
+   "video_id": "1EK5IR8nYDE",
+   "url": "https://youtube.com/shorts/1EK5IR8nYDE",
+   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "Would You Survive If Lightning Struck You?",
+    "es": "¿Sobrevivirías Si Te Cayera un Rayo?",
+    "pt": "Você Sobreviveria Se Fosse Atingido por um Raio?",
+    "ar": "هل كنت ستنجو لو ضربتك صاعقة؟",
+    "hi": "अगर तुम पर बिजली गिरती तो क्या तुम बच जाते?",
+    "id": "Apakah Kamu Akan Selamat Jika Tersambar Petir?",
+    "fr": "Survivrais-Tu Si la Foudre Te Frappait ?",
+    "de": "Würdest Du Überleben, Wenn Dich Ein Blitz Trifft?",
+    "ru": "Выжил Бы Ты, Если Бы в Тебя Ударила Молния?",
+    "az": "İldırım Sənə Dəysəydi Sağ Qalardınmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793911326.6536791,
+   "chars": 375,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1365,7 +1395,8 @@
   "y014",
   "n009",
   "y046",
-  "g010"
+  "g010",
+  "y045"
  ],
  "extra": [
   {
@@ -1431,12 +1462,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-19T17:10:56+00:00",
-   "mod": "igbolum",
-   "title": "1 Günde Kaç Kez Nefes Alırsın?",
-   "chars": 518
-  },
   {
    "finished": "2026-10-19T18:10:29+00:00",
    "mod": "saatlik",
@@ -1849,6 +1874,14 @@
    "url": "https://youtube.com/shorts/V93tM_0-ll4",
    "duration": 24.0,
    "chars": 360
+  },
+  {
+   "finished": "2026-11-05T20:42:08+00:00",
+   "mod": "saatlik",
+   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+   "url": "https://youtube.com/shorts/1EK5IR8nYDE",
+   "duration": 23.7,
+   "chars": 375
   }
  ],
  "last_fail": 1793568784.6201334,

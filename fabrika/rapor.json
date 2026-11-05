@@ -1,5 +1,5 @@
 {
- "started": "2026-11-05T18:03:34+00:00",
+ "started": "2026-11-05T20:41:14+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "54",
-  "videos": "44"
+  "videos": "45"
  },
  "credits_before": [
-  85590,
+  85765,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261105-2-g010.json",
-  "kalan": 2
+  "dosya": "20261105-3-y045.json",
+  "kalan": 1
  },
  "topic": {
-  "id": "g010",
-  "series": "1 Gün Boyunca",
-  "q": "Saçın 1 günde ne kadar uzar?"
+  "id": "y045",
+  "series": "Ya Olsaydı?",
+  "q": "Yıldırım sana çarpsaydı ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 360,
- "duration": 24.0,
- "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
- "url": "https://youtube.com/shorts/V93tM_0-ll4",
+ "chars": 375,
+ "duration": 23.7,
+ "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+ "url": "https://youtube.com/shorts/1EK5IR8nYDE",
  "recent_status": {
-  "y027": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "271",
-   "reason": null
-  },
   "y014": {
    "upload": "processed",
    "privacy": "public",
-   "views": "355",
+   "views": "487",
    "reason": null
   },
   "n009": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1227",
+   "views": "1248",
    "reason": null
   },
   "y046": {
    "upload": "processed",
    "privacy": "public",
-   "views": "896",
+   "views": "1218",
    "reason": null
   },
   "g010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "558",
+   "reason": null
+  },
+  "y045": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  85677,
+  85855,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261105-2-g010.json Saçın 1 günde ne kadar uzar? (1 Gün Boyunca)"
+  "Kuyruktan: 20261105-3-y045.json Yıldırım sana çarpsaydı ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-05T18:04:39+00:00"
+ "finished": "2026-11-05T20:42:08+00:00"
 }
