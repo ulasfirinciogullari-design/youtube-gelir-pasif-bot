@@ -17,6 +17,10 @@ Local stills: `python3 animasyon/uret.py --bolum <id> --js`, then from `motor/` 
   - The first line is `usta`. Usta wags a finger at `no` and offers a palm at `yes`. `no_label` and `yes_label`
     are the two plates. `no_prop` and `yes_prop` name an optional prop function (for example `giftBox`,
     `bigSignProp`, `stickerProp`).
+  - From k005 on, the first line may instead use the episode's own `kanca` scene: the rule acted out by the cast
+    in an everyday setting from frame 0, with the same two plates. 2026-11-04 data: views depend mostly on viewers
+    not swiping away in the first moment, and k003 (Usta opening) got about a third of that day's Shorts.
+    A busy, readable scene in frame 0 is the goal; the closing `usta` line stays.
   - The last line is `{"t": "usta", "end": true}`, "Bu yüzden unutma:", which loops back into the first.
   - Any other keys in `v` are the scene's own (for example a word to time a cut on).
   - `sfx`: `[[word or null, share, effect, gain, offset], ...]` adds sound cues. The effects are impact, whoosh,
