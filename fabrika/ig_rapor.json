@@ -1,5 +1,5 @@
 {
- "started": "2026-11-04T20:34:22+00:00",
+ "started": "2026-11-05T07:25:13+00:00",
  "mod": "kontrol",
  "anahtar_bitis": "2026-12-31T21:10+00:00",
  "hesap": {
@@ -78,12 +78,12 @@
    "yorum_sayisi": 2,
    "api_yorum": 2,
    "istatistik": {
-    "views": 1592,
-    "reach": 1322,
+    "views": 1597,
+    "reach": 1328,
     "saved": 1,
     "shares": 0,
     "likes": 12,
-    "ig_reels_avg_watch_time": 12911
+    "ig_reels_avg_watch_time": 12877
    }
   },
   {
@@ -92,12 +92,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1534,
-    "reach": 1282,
+    "views": 1541,
+    "reach": 1286,
     "saved": 1,
     "shares": 0,
     "likes": 6,
-    "ig_reels_avg_watch_time": 16270
+    "ig_reels_avg_watch_time": 16245
    }
   },
   {
@@ -162,12 +162,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1418,
-    "reach": 1159,
+    "views": 1419,
+    "reach": 1161,
     "saved": 2,
     "shares": 0,
     "likes": 5,
-    "ig_reels_avg_watch_time": 9036
+    "ig_reels_avg_watch_time": 9035
    }
   },
   {
@@ -414,14 +414,14 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 2071,
-    "reach": 1799,
+    "views": 2073,
+    "reach": 1801,
     "saved": 0,
     "shares": 1,
     "likes": 16,
-    "ig_reels_avg_watch_time": 14591
+    "ig_reels_avg_watch_time": 14577
    }
   }
  ],
- "finished": "2026-11-04T20:35:06+00:00"
+ "finished": "2026-11-05T07:25:41+00:00"
 }
