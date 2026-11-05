@@ -165,6 +165,11 @@
     1793819470,
     "r",
     "UgxIandTEwlEa4lpgQp4AaABAg.Acng53dec6fAcngDQt9r1G"
+   ],
+   "UgwCOK8HxjjnPiSjTIp4AaABAg": [
+    1793883107,
+    "r",
+    "UgwCOK8HxjjnPiSjTIp4AaABAg.Acp_AkIo_V2Acp_aeE7kuN"
    ]
   },
   "son": [
@@ -353,6 +358,12 @@
     "video": "9j_jigCDW7s",
     "comment": "Komutan logar bir evren yaklaşıyor efendim",
     "reply": "Komutan Logar devredeyse uzay yolu gözüktü demektir! 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1793883107,
+    "video": "5lbPgaPW58Y",
+    "comment": "Komutan logar bir güneş büyüyor efendim",
+    "reply": "Komutan Logar duyulursa kesin uzay üssünü inletirdi! 🚀 Gözlerimizi Güneş'e çevirdiğimizde sıcaklıkların 5500 dereceyi bulduğunu unutmayalım.\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -500,10 +511,10 @@
  "nobet": {
   "basladi": "2026-11-05T10:06:43+00:00",
   "run": "42006542583",
-  "tur": 161,
+  "tur": 166,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-05T12:46:45+00:00"
+  "son_tur": "2026-11-05T12:51:46+00:00"
  }
 }
