@@ -1,7 +1,7 @@
 {
- "started": "2026-11-03T22:52:04+00:00",
+ "started": "2026-11-05T22:25:14+00:00",
  "bolum": "k004",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 596,
  "voice": {
@@ -12,7 +12,15 @@
   "similarity_boost": 0.8
  },
  "duration": 33.73,
- "render_seconds": 82,
+ "render_seconds": 79,
  "title": "Pazarlıkta İlk Sayıyı Neden Sen Söylemelisin? 🤯 #psikoloji",
- "finished": "2026-11-03T22:53:29+00:00"
+ "video_id": "lAJb6CDN_v0",
+ "url": "https://youtube.com/shorts/lAJb6CDN_v0",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-06T17:00:00+00:00",
+ "finished": "2026-11-05T22:26:40+00:00"
 }
