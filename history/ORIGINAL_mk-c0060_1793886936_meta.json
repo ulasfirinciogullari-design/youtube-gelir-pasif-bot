@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0060",
+  "topic": "Boğalar kırmızı renge mi saldırır, boğayı kızdıran ne?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Boğayı kızdıran şey kırmızı renk değil 🐂",
+  "hook_text": "BOĞAYI NE KIZDIRIYOR?",
+  "description": "Boğalar kırmızı renge mi saldırır, boğa kırmızıyı görür mü, boğayı kızdıran ne?\n\nBoğalar da dahil bütün sığırlar iki tip koni hücresiyle görür; bu yüzden kırmızıyla yeşili ayırt edemez. İspanyol boğa güreşinin ilk bölümlerinde kullanılan büyük pelerin pembe ve sarıdır, kırmızı muleta yalnızca son bölümde çıkar ve boğa iki pelerine de aynı hırsla saldırır. Uzmanlara göre boğayı kışkırtan şey rengi değil, pelerinin hareketidir; \"kırmızı görmüş boğa\" deyimi bir efsaneye dayanır.\n\nSence hangisi daha şaşırtıcı: boğanın kırmızıyı ayırt edememesi mi, pembe pelerine de saldırması mı?\n\n#boğa #hayvanlar #renkkörlüğü #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0060",
+  "tags": [
+    "boğa",
+    "boğalar",
+    "boğa kırmızı",
+    "boğa kırmızıya saldırır mı",
+    "boğa neden kırmızıya saldırır",
+    "kırmızı görmüş boğa",
+    "boğa renk körü mü",
+    "boğalar renkleri görür mü",
+    "matador",
+    "matador pelerini",
+    "boğa güreşi",
+    "sığır",
+    "inek",
+    "renk körlüğü",
+    "hayvanlar renkleri nasıl görür",
+    "hayvan davranışları",
+    "efsane mi gerçek mi",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "do bulls hate red",
+    "bull color blind",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "boga",
+    "bogalar",
+    "boga kirmizi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "It's not the color red that makes a bull charge 🐂",
+      "description": "Bulls, like all cattle, have only two types of cone cells and can't tell red from green. The big cape used at the start of a bullfight is pink and yellow, and the bull charges it just as hard. What sets the bull off is the cape's movement, not its color.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "es": {
+      "title": "No es el rojo lo que hace embestir al toro 🐂",
+      "description": "Los toros, como todo el ganado, solo tienen dos tipos de conos y no distinguen el rojo del verde. El capote de los primeros tercios es rosa y amarillo, y el toro lo embiste con la misma fuerza. Lo que lo provoca es el movimiento de la tela, no su color.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "pt": {
+      "title": "Não é o vermelho que faz o touro atacar 🐂",
+      "description": "Os touros, como todo o gado, têm apenas dois tipos de cones e não distinguem vermelho de verde. A capa grande usada no início da tourada é rosa e amarela, e o touro avança contra ela com a mesma fúria. O que provoca o animal é o movimento do pano, não a cor.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "de": {
+      "title": "Nicht die Farbe Rot bringt den Stier in Rage 🐂",
+      "description": "Stiere haben wie alle Rinder nur zwei Zapfentypen und können Rot nicht von Grün unterscheiden. Die große Capa aus dem ersten Teil des Stierkampfs ist rosa und gelb, und der Stier greift sie genauso wütend an. Was ihn reizt, ist die Bewegung des Tuchs, nicht seine Farbe.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "fr": {
+      "title": "Ce n'est pas le rouge qui fait charger le taureau 🐂",
+      "description": "Comme tous les bovins, le taureau n'a que deux types de cônes et ne distingue pas le rouge du vert. La grande cape du début de la corrida est rose et jaune, et il la charge avec la même fureur. C'est le mouvement du tissu qui le provoque, pas sa couleur.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "it": {
+      "title": "Non è il rosso a far caricare il toro 🐂",
+      "description": "Come tutti i bovini, il toro ha solo due tipi di coni e non distingue il rosso dal verde. La grande cappa usata all'inizio della corrida è rosa e gialla, e il toro la carica con la stessa furia. A provocarlo è il movimento del drappo, non il colore.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "ru": {
+      "title": "Быка злит вовсе не красный цвет 🐂",
+      "description": "Как и у всего крупного рогатого скота, у быков только два типа колбочек, и красный от зелёного они не отличают. Большой плащ, с которым работают в начале корриды, розово-жёлтый, и бык бросается на него с той же яростью. Его провоцирует движение ткани, а не цвет.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "ar": {
+      "title": "ليس اللون الأحمر ما يُغضب الثور 🐂",
+      "description": "الثيران، مثل كل الأبقار، لا تملك سوى نوعين من الخلايا المخروطية، فلا تميّز الأحمر من الأخضر. والرداء الكبير المستخدم في بداية مصارعة الثيران وردي وأصفر، ومع ذلك يهاجمه الثور بالشراسة نفسها. ما يستفزه هو حركة القماش لا لونه.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "hi": {
+      "title": "बैल को लाल रंग गुस्सा नहीं दिलाता 🐂",
+      "description": "सभी मवेशियों की तरह बैल की आँखों में भी सिर्फ़ दो तरह की कोन कोशिकाएँ होती हैं, इसलिए वह लाल और हरे में फ़र्क नहीं कर पाता। बुलफ़ाइट की शुरुआत में इस्तेमाल होने वाला बड़ा कपड़ा गुलाबी और पीला होता है, फिर भी बैल उस पर उतनी ही ज़ोर से झपटता है। उसे कपड़े का रंग नहीं, उसकी हरकत भड़काती है।\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "id": {
+      "title": "Bukan warna merah yang membuat banteng menyerang 🐂",
+      "description": "Seperti semua sapi, banteng hanya punya dua jenis sel kerucut dan tidak bisa membedakan merah dari hijau. Jubah besar yang dipakai di awal adu banteng berwarna merah muda dan kuning, dan banteng tetap menyeruduknya sama ganasnya. Yang memancingnya adalah gerakan kain, bukan warnanya.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "ja": {
+      "title": "雄牛を怒らせるのは赤い色ではない 🐂",
+      "description": "雄牛を含むウシは錐体細胞が2種類しかなく、赤と緑を見分けられません。闘牛の前半で使われる大きなケープはピンクと黄色ですが、雄牛はそれにも同じ勢いで突進します。雄牛を興奮させているのは布の色ではなく、その動きなのです。\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "ko": {
+      "title": "황소를 화나게 하는 건 빨간색이 아니다 🐂",
+      "description": "황소를 포함한 모든 소는 원뿔세포가 두 종류뿐이라 빨간색과 초록색을 구별하지 못합니다. 투우 초반에 쓰는 큰 망토는 분홍색과 노란색인데, 황소는 그 망토에도 똑같이 맹렬하게 달려듭니다. 황소를 자극하는 건 천의 색이 아니라 움직임입니다.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "pl": {
+      "title": "Byka wcale nie rozwściecza czerwony kolor 🐂",
+      "description": "Byki, jak całe bydło, mają tylko dwa rodzaje czopków i nie odróżniają czerwieni od zieleni. Duża płachta używana na początku corridy jest różowo-żółta, a byk szarżuje na nią z taką samą furią. Prowokuje go ruch materiału, a nie jego kolor.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "nl": {
+      "title": "Het is niet de kleur rood die een stier laat aanvallen 🐂",
+      "description": "Stieren hebben, net als al het vee, maar twee soorten kegeltjes en kunnen rood niet van groen onderscheiden. De grote cape uit het begin van een stierengevecht is roze en geel, en de stier valt die net zo fel aan. Wat hem uitdaagt is de beweging van de doek, niet de kleur.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "uk": {
+      "title": "Бика злить зовсім не червоний колір 🐂",
+      "description": "Як і вся велика рогата худоба, бики мають лише два типи колбочок і не відрізняють червоне від зеленого. Великий плащ, з яким працюють на початку кориди, рожево-жовтий, і бик кидається на нього з тією ж люттю. Його провокує рух тканини, а не колір.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "vi": {
+      "title": "Không phải màu đỏ khiến bò tót lao vào 🐂",
+      "description": "Giống mọi loài bò, bò tót chỉ có hai loại tế bào hình nón nên không phân biệt được đỏ với xanh lá. Tấm áo choàng lớn dùng ở đầu trận đấu bò có màu hồng và vàng, vậy mà con bò vẫn lao vào nó hung hãn như thường. Thứ kích động nó là chuyển động của tấm vải, không phải màu sắc.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "az": {
+      "title": "Buğanı qəzəbləndirən qırmızı rəng deyil 🐂",
+      "description": "Bütün iribuynuzlu mal-qara kimi buğanın da gözündə cəmi iki növ kolbacıq var, ona görə qırmızını yaşıldan ayıra bilmir. Korridanın əvvəlində istifadə olunan böyük plaş çəhrayı və sarıdır, buğa ona da eyni hirslə hücum edir. Onu təhrik edən parçanın rəngi yox, hərəkətidir.\n\n#shorts\n\nSeri: mk-c0060"
+    },
+    "ro": {
+      "title": "Nu culoarea roșie îl înfurie pe taur 🐂",
+      "description": "Ca toate bovinele, taurul are doar două tipuri de conuri și nu poate deosebi roșul de verde. Pelerina mare folosită la începutul coridei e roz cu galben, iar taurul o atacă la fel de furios. Pe taur îl provoacă mișcarea pânzei, nu culoarea ei.\n\n#shorts\n\nSeri: mk-c0060"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: boğanın kırmızıyı ayırt edememesi mi, pembe pelerine de saldırması mı?",
+  "scenes": [
+    {
+      "text": "Bu boğa, kırmızı görünce kızmaz.",
+      "visual": "close-up of a black bull's face snorting, staring into the camera",
+      "stock_query": "bull close up",
+      "source": "stock",
+      "callout": "KIRMIZIYA KIZMAZ"
+    },
+    {
+      "text": "Oysa matador kırmızı pelerini sallayınca boğa hemen saldırır.",
+      "visual": "a red cloth waving in the wind under a bright sky",
+      "stock_query": "red fabric waving",
+      "source": "stock",
+      "subject": [
+        "fabric"
+      ]
+    },
+    {
+      "text": "Üstelik gösterinin başındaki büyük pelerin pembe ve sarı; boğa ona da aynı hırsla koşar.",
+      "visual": "a bull charging forward across a dusty field",
+      "stock_query": "bull running",
+      "source": "stock",
+      "callout": "PEMBE PELERİN"
+    },
+    {
+      "text": "Çünkü sığırlar kırmızıyla yeşili ayırt edemez; onu kışkırtan şey pelerinin hareketi.",
+      "visual": "extreme close-up of a cow's eye with long eyelashes",
+      "stock_query": "cow eye",
+      "source": "stock",
+      "subject": [
+        "cow"
+      ],
+      "callout": "RENK DEĞİL, HAREKET"
+    },
+    {
+      "text": "Kırmızı bir bez önünde hiç kıpırdamadan dursa...",
+      "visual": "a calm bull standing still in a pasture",
+      "stock_query": "bull standing",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.82,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #113",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0060_1793886936_ig.mp4"
+}
