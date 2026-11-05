@@ -35,16 +35,17 @@
   "2026-11-04T10": "-7p9KlR5opY https://www.instagram.com/reel/DfUMYodEWT8/",
   "2026-11-04T14": "gdQNqp1lSBE https://www.instagram.com/reel/DfUn7DMHJtR/",
   "2026-11-04T18": "O4CmIhkONV0 https://www.instagram.com/reel/DfVDQyYFDuH/",
-  "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/"
+  "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/",
+  "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/"
  },
  "nobet": {
   "basladi": "2026-11-05T10:06:02+00:00",
   "run": "42006443257",
-  "tur": 214,
+  "tur": 235,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-05T13:39:03+00:00"
+  "son_tur": "2026-11-05T14:01:06+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -228,6 +229,13 @@
    "at": 1793872897,
    "title": "Aynada kendi gözünün kaydığını asla göremezsin 🪞",
    "topic_id": "mk-c0043"
+  },
+  "LK9xEF2uL_o": {
+   "media_id": "17919078702531537",
+   "url": "https://www.instagram.com/reel/DfXMlWOCKuW/",
+   "at": 1793887267,
+   "title": "Hafızan bazen daha uzun acıyı daha hafif hatırlar 🧊",
+   "topic_id": "mk-c0053"
   }
  }
 }
