@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1145",
+    "views": "1151",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1125",
+    "views": "1130",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1013",
+    "views": "1014",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1064",
+    "views": "1066",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "688",
+    "views": "712",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "162",
+    "views": "172",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "148",
+    "views": "192",
     "reason": null
    }
   },
@@ -1253,6 +1253,36 @@
    "thumbnail": true,
    "at": 1793873351.0125096,
    "chars": 403,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "847",
+    "reason": null
+   }
+  },
+  {
+   "id": "y046",
+   "video_id": "QCM7IT8jkhc",
+   "url": "https://youtube.com/shorts/QCM7IT8jkhc",
+   "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen to Your Body If You Drank Only Seawater?",
+    "es": "¿Qué Le Pasaría a Tu Cuerpo Si Solo Bebieras Agua de Mar?",
+    "pt": "O Que Aconteceria com Seu Corpo Se Você Só Bebesse Água do Mar?",
+    "ar": "ماذا سيحدث لجسمك لو شربت ماء البحر فقط؟",
+    "hi": "अगर तुम सिर्फ़ समुद्र का पानी पीते तो शरीर का क्या होता?",
+    "id": "Apa yang Terjadi pada Tubuhmu Jika Hanya Minum Air Laut?",
+    "fr": "Que Deviendrait Ton Corps Si Tu Ne Buvais Que de l'Eau de Mer ?",
+    "de": "Was Passiert Mit Deinem Körper, Wenn Du Nur Meerwasser Trinkst?",
+    "ru": "Что Будет с Твоим Телом, Если Пить Только Морскую Воду?",
+    "az": "Yalnız Dəniz Suyu İçsəydin Bədəninə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793887698.323155,
+   "chars": 367,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1303,7 +1333,8 @@
   "g009",
   "y027",
   "y014",
-  "n009"
+  "n009",
+  "y046"
  ],
  "extra": [
   {
@@ -1369,14 +1400,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-19T10:11:54+00:00",
-   "mod": "saatlik",
-   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
-   "url": "https://youtube.com/shorts/ActwPx-yTCQ",
-   "duration": 23.1,
-   "chars": 352
-  },
   {
    "finished": "2026-10-19T13:14:48+00:00",
    "mod": "igbolum",
@@ -1787,6 +1810,14 @@
    "mod": "igbolum",
    "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
    "chars": 374
+  },
+  {
+   "finished": "2026-11-05T14:08:19+00:00",
+   "mod": "saatlik",
+   "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
+   "url": "https://youtube.com/shorts/QCM7IT8jkhc",
+   "duration": 25.8,
+   "chars": 367
   }
  ],
  "last_fail": 1793568784.6201334,

@@ -1,18 +1,71 @@
 {
- "started": "2026-11-05T13:08:02+00:00",
- "mod": "igbolum",
- "gate": "instagram: y061",
+ "started": "2026-11-05T14:07:17+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
- "chars": 374,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18000122790050891",
-  "url": "https://www.instagram.com/reel/DfXGut_DZKf/",
-  "at": 1793884188.9949658
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "53",
+  "videos": "43"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfXGut_DZKf/"
+ "credits_before": [
+  85217,
+  613902
  ],
- "finished": "2026-11-05T13:09:48+00:00"
+ "kuyruk": {
+  "dosya": "20261105-1-y046.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y046",
+  "series": "Ya Olsaydı?",
+  "q": "Sadece deniz suyu içseydin ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 367,
+ "duration": 25.8,
+ "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
+ "url": "https://youtube.com/shorts/QCM7IT8jkhc",
+ "recent_status": {
+  "g009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "712",
+   "reason": null
+  },
+  "y027": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "172",
+   "reason": null
+  },
+  "y014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "192",
+   "reason": null
+  },
+  "n009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "847",
+   "reason": null
+  },
+  "y046": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  85217,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261105-1-y046.json Sadece deniz suyu içseydin ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-05T14:08:19+00:00"
 }
