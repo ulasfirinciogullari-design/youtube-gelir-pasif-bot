@@ -39,16 +39,17 @@
   "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/",
   "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
   "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
-  "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/"
+  "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
+  "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/"
  },
  "nobet": {
   "basladi": "2026-11-06T14:27:02+00:00",
   "run": "42232512550",
-  "tur": 185,
+  "tur": 214,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-06T17:31:03+00:00"
+  "son_tur": "2026-11-06T18:00:49+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -260,6 +261,13 @@
    "at": 1793973698,
    "title": "Kargalar dörde kadar sesli sayabiliyor 🐦",
    "topic_id": "mk-c0051"
+  },
+  "X9s6--q0k5U": {
+   "media_id": "18116644217021610",
+   "url": "https://www.instagram.com/reel/DfaM0r0FuFF/",
+   "at": 1793988049,
+   "title": "Gözü açık hapşırmak mümkün mü? 🤧",
+   "topic_id": "mk-c0055"
   }
  }
 }
