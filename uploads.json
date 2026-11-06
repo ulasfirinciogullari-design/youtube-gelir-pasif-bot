@@ -1050,5 +1050,15 @@
     "uploaded_at": "2026-11-06T17:00:00+00:00",
     "privacy": "public",
     "scheduled": true
+  },
+  {
+    "video_id": "G0v552Gd__U",
+    "topic_id": "mk-c0065",
+    "title": "Adındaki harfleri öbürlerinden daha çok seversin 🔤",
+    "format": "merak",
+    "uploaded_at": "2026-11-06T07:25:41+00:00",
+    "privacy": "public",
+    "series_label": "KANUN #118",
+    "share_cta": true
   }
 ]
