@@ -1,0 +1,182 @@
+{
+  "topic_id": "mk-c0068",
+  "topic": "Yalan söyleyen göz kaçırır mı, göz kaçırmak yalanın işareti mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Göz kaçırmak yalanın işareti değil 👀",
+  "hook_text": "YALANCI GÖZ KAÇIRIR MI?",
+  "description": "Yalan söyleyen göz kaçırır mı, göz kaçırmak yalanın işareti mi, yalan nasıl anlaşılır?\n\nElli sekiz ülkede yapılan bir araştırmada insanlara yalanı nasıl anladıkları soruldu; yaklaşık üçte ikisi kendiliğinden göz kaçırmayı söyledi ve bu inanç incelenen yetmiş beş ülkenin hepsinde çıktı. Oysa deneyleri birleştiren analizlere göre göz kaçırmanın yalanla neredeyse hiçbir bağı yok: dürüst insanlar da neredeyse yalancılar kadar göz kaçırıyor. İki yüz altı çalışmayı ve yirmi dört binden fazla kişiyi kapsayan bir meta-analizde insanlar yalanla doğruyu ortalama yüzde elli dört doğrulukla ayırt edebildi, yani yazı turadan biraz daha iyi.\n\nSen birinin yalan söylediğini nereden anlarsın: gözlerinden mi, sesinden mi?\n\n#yalan #bedendili #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0068",
+  "tags": [
+    "yalan",
+    "yalan nasıl anlaşılır",
+    "yalancı nasıl anlaşılır",
+    "yalan söyleyen göz kaçırır mı",
+    "göz kaçırmak",
+    "göz teması",
+    "göz kaçırmak ne demek",
+    "yalan söyleyenin gözleri",
+    "beden dili",
+    "yalan dedektörü",
+    "yalan yakalamak",
+    "yalan söyleyen kişi",
+    "sosyal psikoloji",
+    "insan psikolojisi",
+    "psikoloji",
+    "insan davranışları",
+    "iletişim",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "lie detection",
+    "eye contact lying",
+    "yalancı",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "yalan nasil anlasilir"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Avoiding eye contact isn't a sign of lying 👀",
+      "description": "In surveys across 58 countries, about two-thirds of people said liars avert their gaze. Yet across more than 200 studies, people told lies from truths only 54% of the time, barely better than a coin flip. Meta-analyses show honest people look away nearly as often as liars do.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "es": {
+      "title": "Apartar la mirada no es señal de que alguien miente 👀",
+      "description": "En una encuesta en 58 países, cerca de dos tercios de las personas dijeron que los mentirosos desvían la mirada. Sin embargo, en más de 200 estudios la gente distinguió mentiras de verdades solo el 54 % de las veces, apenas mejor que lanzar una moneda. Los metaanálisis muestran que las personas sinceras apartan la mirada casi tanto como quienes mienten.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "pt": {
+      "title": "Desviar o olhar não é sinal de mentira 👀",
+      "description": "Numa pesquisa em 58 países, cerca de dois terços das pessoas disseram que mentirosos desviam o olhar. Mas, em mais de 200 estudos, as pessoas distinguiram mentiras de verdades só 54% das vezes, pouco melhor que cara ou coroa. Metanálises mostram que pessoas honestas desviam o olhar quase tanto quanto mentirosos.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "de": {
+      "title": "Wer den Blick abwendet, lügt nicht unbedingt 👀",
+      "description": "In einer Umfrage in 58 Ländern sagten etwa zwei Drittel der Menschen, Lügner würden dem Blick ausweichen. Doch in über 200 Studien unterschieden Menschen Lüge und Wahrheit nur zu 54 % richtig, kaum besser als ein Münzwurf. Metaanalysen zeigen: Ehrliche Menschen wenden den Blick fast genauso oft ab wie Lügner.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "fr": {
+      "title": "Détourner le regard n'est pas un signe de mensonge 👀",
+      "description": "Dans une enquête menée dans 58 pays, environ deux tiers des gens ont cité le regard fuyant comme signe de mensonge. Pourtant, sur plus de 200 études, les gens ne distinguent le vrai du faux que dans 54 % des cas, à peine mieux qu'un pile ou face. Les méta-analyses montrent que les personnes honnêtes détournent le regard presque autant que les menteurs.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "it": {
+      "title": "Distogliere lo sguardo non è un segno di bugia 👀",
+      "description": "In un sondaggio in 58 paesi, circa due terzi delle persone hanno detto che chi mente evita lo sguardo. Eppure, in oltre 200 studi, le persone hanno distinto bugie e verità solo nel 54% dei casi, appena meglio di un lancio di moneta. Le meta-analisi mostrano che chi è sincero distoglie lo sguardo quasi quanto chi mente.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "ru": {
+      "title": "Отведённый взгляд — не признак лжи 👀",
+      "description": "В опросе в 58 странах около двух третей людей назвали отведённый взгляд признаком лжи. Но в более чем 200 исследованиях люди отличали ложь от правды лишь в 54% случаев — чуть лучше, чем подбрасывание монетки. Метаанализы показывают, что честные люди отводят взгляд почти так же часто, как лжецы.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "ar": {
+      "title": "تجنّب النظر في العينين ليس علامة على الكذب 👀",
+      "description": "في استطلاع شمل 58 دولة، قال نحو ثلثي الناس إن الكاذب يتجنّب النظر في العينين. لكن في أكثر من 200 دراسة، لم يميّز الناس الكذب من الصدق إلا في 54% من الحالات، أي أفضل قليلًا من رمي عملة. وتُظهر التحليلات الشاملة أن الصادقين يشيحون بنظرهم تقريبًا بقدر الكاذبين.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "hi": {
+      "title": "नज़रें चुराना झूठ बोलने का संकेत नहीं है 👀",
+      "description": "58 देशों में हुए एक सर्वे में लगभग दो-तिहाई लोगों ने कहा कि झूठ बोलने वाला नज़रें चुराता है। लेकिन 200 से ज़्यादा अध्ययनों में लोग सिर्फ़ 54% बार ही झूठ और सच में फ़र्क़ कर पाए, जो सिक्का उछालने से बस थोड़ा बेहतर है। मेटा-विश्लेषण बताते हैं कि सच बोलने वाले भी लगभग उतनी ही बार नज़रें हटाते हैं जितना झूठ बोलने वाले।\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "id": {
+      "title": "Menghindari tatapan mata bukan tanda berbohong 👀",
+      "description": "Dalam survei di 58 negara, sekitar dua pertiga orang mengatakan pembohong menghindari tatapan mata. Namun dari lebih dari 200 studi, orang hanya bisa membedakan bohong dan jujur 54% kali, sedikit lebih baik dari lempar koin. Meta-analisis menunjukkan orang jujur pun hampir sama seringnya mengalihkan pandangan seperti pembohong.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "ja": {
+      "title": "目をそらすのは嘘のサインではない 👀",
+      "description": "58か国の調査では、約3分の2の人が「嘘つきは目をそらす」と答えました。しかし200件以上の研究をまとめると、人が嘘と本当を見分けられたのは54%だけで、コイン投げよりわずかにましな程度でした。メタ分析によれば、正直な人も嘘つきとほぼ同じくらい目をそらします。\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "ko": {
+      "title": "눈을 피한다고 거짓말하는 건 아니다 👀",
+      "description": "58개국 조사에서 약 3분의 2가 거짓말쟁이는 눈을 피한다고 답했습니다. 하지만 200여 건의 연구를 종합하면 사람들이 거짓과 진실을 구별한 비율은 54%에 그쳐, 동전 던지기보다 조금 나은 수준이었습니다. 메타분석에 따르면 정직한 사람도 거짓말하는 사람만큼 자주 시선을 피합니다.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "pl": {
+      "title": "Unikanie wzroku to nie oznaka kłamstwa 👀",
+      "description": "W badaniu w 58 krajach około dwóch trzecich ludzi stwierdziło, że kłamca unika wzroku. Tymczasem w ponad 200 badaniach ludzie odróżniali kłamstwo od prawdy tylko w 54% przypadków, niewiele lepiej niż przy rzucie monetą. Metaanalizy pokazują, że szczerzy ludzie odwracają wzrok niemal tak samo często jak kłamcy.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "nl": {
+      "title": "Wegkijken is geen teken van liegen 👀",
+      "description": "In een onderzoek in 58 landen zei ongeveer twee derde van de mensen dat leugenaars wegkijken. Toch onderscheidden mensen in meer dan 200 studies leugen en waarheid maar in 54% van de gevallen, nauwelijks beter dan kop of munt. Meta-analyses laten zien dat eerlijke mensen bijna even vaak wegkijken als leugenaars.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "uk": {
+      "title": "Відведений погляд — не ознака брехні 👀",
+      "description": "В опитуванні у 58 країнах близько двох третин людей назвали відведений погляд ознакою брехні. Але в понад 200 дослідженнях люди відрізняли брехню від правди лише у 54% випадків — трохи краще, ніж підкинути монетку. Метааналізи показують, що чесні люди відводять погляд майже так само часто, як брехуни.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "vi": {
+      "title": "Tránh ánh mắt không phải dấu hiệu nói dối 👀",
+      "description": "Trong khảo sát ở 58 quốc gia, khoảng hai phần ba người được hỏi cho rằng kẻ nói dối hay tránh ánh mắt. Thế nhưng qua hơn 200 nghiên cứu, con người chỉ phân biệt đúng lời nói dối và sự thật 54% số lần, nhỉnh hơn tung đồng xu một chút. Các phân tích tổng hợp cho thấy người trung thực cũng tránh ánh mắt gần như thường xuyên như kẻ nói dối.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "az": {
+      "title": "Gözünü qaçırmaq yalanın əlaməti deyil 👀",
+      "description": "58 ölkədə aparılan sorğuda insanların təxminən üçdə ikisi yalançının gözünü qaçırdığını dedi. Amma 200-dən çox araşdırmada insanlar yalanla həqiqəti cəmi 54 faiz hallarda ayırd edə bildi, bu da püşk atmaqdan bir az yaxşıdır. Meta-analizlər göstərir ki, dürüst insanlar da demək olar ki, yalançılar qədər gözünü qaçırır.\n\n#shorts\n\nSeri: mk-c0068"
+    },
+    "ro": {
+      "title": "Să eviți privirea nu e un semn că minți 👀",
+      "description": "Într-un sondaj din 58 de țări, cam două treimi dintre oameni au spus că mincinoșii evită privirea. Totuși, în peste 200 de studii, oamenii au deosebit minciuna de adevăr doar în 54% din cazuri, puțin peste aruncatul unei monede. Meta-analizele arată că oamenii sinceri își feresc privirea aproape la fel de des ca mincinoșii.\n\n#shorts\n\nSeri: mk-c0068"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen birinin yalan söylediğini nereden anlarsın: gözlerinden mi, sesinden mi?",
+  "scenes": [
+    {
+      "text": "Bu adam gözünü kaçırıyor ama yalan söylemiyor.",
+      "visual": "extreme close-up of a man's eyes glancing away from the camera",
+      "stock_query": "man eyes closeup",
+      "source": "stock",
+      "callout": "YALAN DEĞİL"
+    },
+    {
+      "text": "Elli sekiz ülkede insanların üçte ikisi, yalancının gözünü kaçırdığını söyledi.",
+      "visual": "a busy crowd of people walking along a city street",
+      "stock_query": "crowd people walking",
+      "source": "stock",
+      "subject": [
+        "crowd"
+      ],
+      "callout": "58 ÜLKEDE 2/3"
+    },
+    {
+      "text": "Oysa yalanla doğruyu ayırmada isabetimiz yüzde elli dört; yazı turadan biraz iyi.",
+      "visual": "slow motion close-up of a coin flipping in the air",
+      "stock_query": "coin flip",
+      "source": "stock",
+      "subject": [
+        "coin"
+      ],
+      "callout": "%54 İSABET"
+    },
+    {
+      "text": "Çünkü deneyleri birleştiren analizlere göre dürüst insanlar da neredeyse yalancılar kadar göz kaçırıyor.",
+      "visual": "a shy young woman looking down during a conversation",
+      "stock_query": "woman looking down",
+      "source": "stock",
+      "subject": [
+        "woman"
+      ],
+      "callout": "DÜRÜST DE KAÇIRIR"
+    },
+    {
+      "text": "Bir dahaki sefere biri gözünü kaçırınca hatırla:",
+      "visual": "two people talking face to face at a cafe table",
+      "stock_query": "two people talking",
+      "source": "stock",
+      "subject": [
+        "people"
+      ]
+    }
+  ],
+  "duration_seconds": 15.95,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #121",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0068_1793971454_ig.mp4"
+}
