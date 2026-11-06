@@ -67,26 +67,19 @@
   },
   {
    "who": "pi",
-   "text": "Toz fırtınaları bütün gezegeni aylarca sarabilir.",
+   "text": "Saniyeler içinde bayılır, ölürdün!",
    "v": {
-    "t": "space",
-    "bg": "space",
-    "bodies": [
-     {
-      "b": "mars",
-      "size": "l",
-      "at": "c"
-     }
-    ],
+    "t": "icon",
+    "bg": "desert",
+    "e": "😵",
     "do": "shake",
-    "target": 0,
-    "key": "fırtınaları",
-    "label": "Aylarca Toz"
+    "key": "bayılır",
+    "label": "Saniyeler İçinde"
    }
   },
   {
    "who": "pi",
-   "text": "1 haftada, Dünya'daki 1 yıllık doğal radyasyonu aşardın!",
+   "text": "Giysiyle bile 1 haftada, Dünya'daki 1 yıllık doğal radyasyonu aşardın!",
    "v": {
     "t": "compare",
     "bg": "space",
