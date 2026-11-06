@@ -1,0 +1,183 @@
+{
+  "topic_id": "mk-c0071",
+  "topic": "Tekrar tekrar duyulan bilgi neden doğru gelir? Doğruluk yanılsaması etkisi",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Tekrar duyduğun yalan sana daha doğru gelir 👂",
+  "hook_text": "YALAN NEDEN DOĞRU GELİR?",
+  "description": "Tekrar tekrar duyulan bilgi neden doğru gelir, bir yalanı çok duyunca neden inanırız?\n\n1977'deki bir deneyde insanlar iki hafta arayla üç oturumda altmışar cümlenin doğruluğunu puanladı; tekrar karşılarına çıkan cümleleri giderek daha doğru buldular. Elli bir çalışmayı birleştiren bir analiz ve 2021'de yayımlanan ön kayıtlı bir çalışma bu doğruluk yanılsaması etkisini doğruladı. 2015'teki bir deneyde ise tekrar, doğru cevabı bilen insanları bile etkiledi. Araştırmacılara göre beyin tanıdık ve kolay işlenen bilgiyi doğru sanmaya meyilli.\n\nSence tekrar eden yalanlarla en çok nerede karşılaşıyoruz: sosyal medyada mı, sohbetlerde mi?\n\n#yalan #beyin #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0071",
+  "tags": [
+    "doğruluk yanılsaması",
+    "yanıltıcı doğruluk etkisi",
+    "tekrar etkisi",
+    "yalan",
+    "tekrarlanan yalan",
+    "yalan neden doğru gelir",
+    "çok duyulan yalan",
+    "yalan haber",
+    "dezenformasyon",
+    "propaganda",
+    "bilişsel yanılgı",
+    "bilişsel önyargı",
+    "beyin nasıl kandırılır",
+    "beyin",
+    "sosyal psikoloji",
+    "insan psikolojisi",
+    "psikoloji",
+    "insan davranışları",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "illusory truth effect",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "dogruluk yanilsamasi",
+    "yaniltici dogruluk etkisi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A lie you hear twice starts to sound true 👂",
+      "description": "Repeated statements feel more true than new ones, an effect first shown in 1977 and replicated many times since. In a 2015 experiment, repetition worked even on people who knew the correct answer. The likely reason: the brain mistakes familiar, easy-to-process information for truth.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "es": {
+      "title": "Una mentira que oyes dos veces empieza a sonar verdadera 👂",
+      "description": "Las afirmaciones repetidas parecen más ciertas que las nuevas, un efecto demostrado por primera vez en 1977 y replicado muchas veces desde entonces. En un experimento de 2015, la repetición funcionó incluso con quienes sabían la respuesta correcta. La razón probable: el cerebro confunde lo familiar y fácil de procesar con lo verdadero.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "pt": {
+      "title": "Uma mentira ouvida duas vezes começa a soar verdadeira 👂",
+      "description": "Frases repetidas parecem mais verdadeiras que as novas, um efeito mostrado pela primeira vez em 1977 e replicado muitas vezes desde então. Num experimento de 2015, a repetição funcionou até com quem sabia a resposta certa. O motivo provável: o cérebro confunde o que é familiar e fácil de processar com a verdade.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "de": {
+      "title": "Eine Lüge, die du zweimal hörst, klingt plötzlich wahr 👂",
+      "description": "Wiederholte Aussagen wirken wahrer als neue – ein Effekt, der erstmals 1977 gezeigt und seitdem vielfach bestätigt wurde. In einem Experiment von 2015 wirkte die Wiederholung sogar bei Menschen, die die richtige Antwort kannten. Der wahrscheinliche Grund: Das Gehirn hält Vertrautes, das sich leicht verarbeiten lässt, für wahr.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "fr": {
+      "title": "Un mensonge entendu deux fois finit par sembler vrai 👂",
+      "description": "Les affirmations répétées paraissent plus vraies que les nouvelles, un effet démontré pour la première fois en 1977 et reproduit de nombreuses fois depuis. Dans une expérience de 2015, la répétition a même fonctionné sur des personnes qui connaissaient la bonne réponse. La raison probable : le cerveau confond ce qui est familier et facile à traiter avec ce qui est vrai.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "it": {
+      "title": "Una bugia sentita due volte comincia a sembrare vera 👂",
+      "description": "Le affermazioni ripetute sembrano più vere di quelle nuove, un effetto dimostrato per la prima volta nel 1977 e replicato molte volte da allora. In un esperimento del 2015 la ripetizione ha funzionato anche su chi conosceva la risposta giusta. Il motivo probabile: il cervello scambia ciò che è familiare e facile da elaborare per vero.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "ru": {
+      "title": "Ложь, услышанная дважды, начинает казаться правдой 👂",
+      "description": "Повторённые утверждения кажутся правдивее новых — этот эффект впервые показали в 1977 году и с тех пор много раз воспроизвели. В эксперименте 2015 года повторение действовало даже на тех, кто знал правильный ответ. Вероятная причина: мозг принимает знакомую и легко воспринимаемую информацию за правду.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "ar": {
+      "title": "الكذبة التي تسمعها مرتين تبدأ في أن تبدو حقيقية 👂",
+      "description": "تبدو العبارات المكرّرة أصدق من الجديدة، وهو تأثير ظهر لأول مرة في تجربة عام 1977 وتكرّر إثباته مرات كثيرة منذ ذلك الحين. وفي تجربة عام 2015 أثّر التكرار حتى في من يعرفون الإجابة الصحيحة. والسبب المرجّح أن الدماغ يخلط بين المألوف السهل الفهم وبين الحقيقة.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "hi": {
+      "title": "दो बार सुना गया झूठ सच लगने लगता है 👂",
+      "description": "दोहराई गई बातें नई बातों से ज़्यादा सच लगती हैं; यह असर पहली बार 1977 में दिखा और तब से कई बार दोहराया जा चुका है। 2015 के एक प्रयोग में दोहराव का असर उन लोगों पर भी हुआ जिन्हें सही जवाब पता था। संभावित वजह: दिमाग़ जानी-पहचानी और आसानी से समझ आने वाली बात को सच मान बैठता है।\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "id": {
+      "title": "Kebohongan yang kamu dengar dua kali mulai terdengar benar 👂",
+      "description": "Pernyataan yang diulang terasa lebih benar daripada yang baru, efek yang pertama kali ditunjukkan pada 1977 dan sudah berkali-kali direplikasi. Dalam eksperimen tahun 2015, pengulangan bahkan memengaruhi orang yang tahu jawaban yang benar. Alasannya kemungkinan besar: otak mengira informasi yang akrab dan mudah dicerna sebagai kebenaran.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "ja": {
+      "title": "二度聞いた嘘は本当らしく聞こえてくる 👂",
+      "description": "繰り返し聞いた文は、初めて聞く文より本当らしく感じられます。この効果は1977年に初めて示され、その後何度も再現されています。2015年の実験では、正しい答えを知っている人にさえ繰り返しの効果が表れました。脳はなじみがあって処理しやすい情報を、本当だと思い込みやすいと考えられています。\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "ko": {
+      "title": "두 번 들은 거짓말은 진짜처럼 들리기 시작한다 👂",
+      "description": "반복된 문장은 처음 듣는 문장보다 더 사실처럼 느껴집니다. 이 효과는 1977년에 처음 확인된 뒤 여러 번 재현되었습니다. 2015년 실험에서는 정답을 알고 있던 사람에게도 반복의 효과가 나타났습니다. 뇌가 익숙하고 처리하기 쉬운 정보를 사실로 착각하기 때문으로 보입니다.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "pl": {
+      "title": "Kłamstwo usłyszane dwa razy zaczyna brzmieć prawdziwie 👂",
+      "description": "Powtarzane stwierdzenia wydają się prawdziwsze niż nowe – ten efekt wykazano po raz pierwszy w 1977 roku i od tamtej pory wielokrotnie powtórzono. W eksperymencie z 2015 roku powtarzanie działało nawet na osoby, które znały poprawną odpowiedź. Prawdopodobny powód: mózg myli to, co znajome i łatwe do przetworzenia, z prawdą.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "nl": {
+      "title": "Een leugen die je twee keer hoort, klinkt ineens waar 👂",
+      "description": "Herhaalde uitspraken voelen waarder dan nieuwe, een effect dat in 1977 voor het eerst werd aangetoond en sindsdien vaak is herhaald. In een experiment uit 2015 werkte herhaling zelfs bij mensen die het juiste antwoord kenden. De vermoedelijke reden: het brein verwart wat vertrouwd en makkelijk te verwerken is met wat waar is.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "uk": {
+      "title": "Брехня, почута двічі, починає здаватися правдою 👂",
+      "description": "Повторені твердження здаються правдивішими за нові — цей ефект уперше показали 1977 року, і відтоді його багато разів відтворювали. В експерименті 2015 року повторення діяло навіть на тих, хто знав правильну відповідь. Імовірна причина: мозок сприймає знайому й легку для обробки інформацію як правду.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "vi": {
+      "title": "Lời nói dối nghe hai lần bắt đầu nghe như sự thật 👂",
+      "description": "Những câu được lặp lại nghe có vẻ đúng hơn câu mới, một hiệu ứng được chứng minh lần đầu năm 1977 và đã được lặp lại nhiều lần kể từ đó. Trong một thí nghiệm năm 2015, sự lặp lại tác động cả lên những người biết đáp án đúng. Lý do có thể là não nhầm thông tin quen thuộc, dễ xử lý với sự thật.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "az": {
+      "title": "İki dəfə eşitdiyin yalan doğru kimi gəlməyə başlayır 👂",
+      "description": "Təkrarlanan ifadələr yenilərindən daha doğru görünür; bu təsir ilk dəfə 1977-ci ildə göstərilib və o vaxtdan dəfələrlə təkrarlanıb. 2015-ci ildəki bir təcrübədə təkrar hətta düzgün cavabı bilən insanlara da təsir etdi. Ehtimal olunan səbəb: beyin tanış və asan qavranılan məlumatı həqiqət sanır.\n\n#shorts\n\nSeri: mk-c0071"
+    },
+    "ro": {
+      "title": "O minciună auzită de două ori începe să sune adevărat 👂",
+      "description": "Afirmațiile repetate par mai adevărate decât cele noi, un efect arătat prima dată în 1977 și reprodus de multe ori de atunci. Într-un experiment din 2015, repetiția a funcționat chiar și asupra celor care știau răspunsul corect. Motivul probabil: creierul confundă ce e familiar și ușor de procesat cu adevărul.\n\n#shorts\n\nSeri: mk-c0071"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence tekrar eden yalanlarla en çok nerede karşılaşıyoruz: sosyal medyada mı, sohbetlerde mi?",
+  "scenes": [
+    {
+      "text": "Bu kulak, tekrar duyduğu yalana daha çok inanır.",
+      "visual": "extreme close-up of a woman whispering into a man's ear",
+      "stock_query": "woman whispering ear",
+      "source": "stock",
+      "subject": [
+        "ear",
+        "whisper",
+        "whispering"
+      ],
+      "callout": "TEKRAR = İNANÇ"
+    },
+    {
+      "text": "Deneylerde tekrar okunan cümleler, yenilerine göre daha doğru bulundu.",
+      "visual": "a young woman scrolling and reading news on her phone",
+      "stock_query": "woman reading phone",
+      "source": "stock",
+      "subject": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Daha tuhafı: iki bin on beşteki bir deneyde doğru cevabı bilenler bile kandı.",
+      "visual": "students answering a multiple-choice test in a classroom",
+      "stock_query": "student exam",
+      "source": "stock",
+      "subject": [
+        "student"
+      ],
+      "callout": "BİLENLER BİLE KANDI"
+    },
+    {
+      "text": "Çünkü beyin tanıdık geleni kolay işler, kolay işlenen bilgiyi de doğru sanar.",
+      "visual": "a thoughtful woman looking out of a window",
+      "stock_query": "woman thinking",
+      "source": "stock",
+      "subject": [
+        "woman"
+      ],
+      "callout": "TANIDIK = DOĞRU SANILIR"
+    },
+    {
+      "text": "Dene: bu cümleyi bir kez daha dinle.",
+      "visual": "close-up of a human ear in soft light",
+      "stock_query": "human ear",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 13.88,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #124",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0071_1794001865_ig.mp4"
+}
