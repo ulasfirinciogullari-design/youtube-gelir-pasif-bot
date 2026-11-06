@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1158",
+    "views": "1160",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1298",
+    "views": "1299",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1049",
+    "views": "1053",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1194",
+    "views": "1230",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1050",
+    "views": "1058",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1080",
+    "views": "1092",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1144",
+    "views": "1195",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "667",
+    "views": "787",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "665",
+    "views": "686",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1302",
+    "views": "1312",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "992",
+    "views": "1025",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "482",
+    "views": "502",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "538",
+    "views": "627",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "902",
+    "views": "1104",
     "reason": null
    }
   },
@@ -1433,6 +1433,36 @@
    "thumbnail": true,
    "at": 1793988516.065423,
    "chars": 378,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "6",
+    "reason": null
+   }
+  },
+  {
+   "id": "g008",
+   "video_id": "yexFsNeB7JM",
+   "url": "https://youtube.com/shorts/yexFsNeB7JM",
+   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Lightning Bolts Strike Earth in 1 Day?",
+    "es": "¿Cuántos Rayos Caen en la Tierra en 1 Día?",
+    "pt": "Quantos Raios Caem na Terra em 1 Dia?",
+    "ar": "كم صاعقة تضرب الأرض في يوم واحد؟",
+    "hi": "पृथ्वी पर 1 दिन में कितनी बिजलियाँ गिरती हैं?",
+    "id": "Berapa Banyak Petir yang Menyambar Bumi dalam 1 Hari?",
+    "fr": "Combien d'Éclairs Frappent la Terre en 1 Jour ?",
+    "de": "Wie Viele Blitze Schlagen an 1 Tag auf der Erde Ein?",
+    "ru": "Сколько Молний Бьёт в Землю за 1 День?",
+    "az": "Yerə 1 Gündə Neçə İldırım Düşür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793995718.274784,
+   "chars": 369,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1489,7 +1519,8 @@
   "y045",
   "y062",
   "n010",
-  "y039"
+  "y039",
+  "g008"
  ],
  "extra": [
   {
@@ -1555,12 +1586,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-20T13:09:35+00:00",
-   "mod": "igbolum",
-   "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "chars": 337
-  },
   {
    "finished": "2026-10-20T14:09:59+00:00",
    "mod": "saatlik",
@@ -1974,6 +1999,14 @@
    "url": "https://youtube.com/shorts/5-jo5Fr030o",
    "duration": 25.1,
    "chars": 378
+  },
+  {
+   "finished": "2026-11-06T20:08:39+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+   "url": "https://youtube.com/shorts/yexFsNeB7JM",
+   "duration": 24.4,
+   "chars": 369
   }
  ],
  "last_fail": 1793568784.6201334,

@@ -1,5 +1,5 @@
 {
- "started": "2026-11-06T18:07:36+00:00",
+ "started": "2026-11-06T20:07:36+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "54",
-  "videos": "48"
+  "videos": "49"
  },
  "credits_before": [
-  88577,
+  88757,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261106-2-y039.json",
-  "kalan": 2
+  "dosya": "20261106-3-g008.json",
+  "kalan": 1
  },
  "topic": {
-  "id": "y039",
-  "series": "Ya Olsaydı?",
-  "q": "Okyanusun en dibine insaydın ne olurdu?"
+  "id": "g008",
+  "series": "1 Gün Boyunca",
+  "q": "Dünya'ya 1 günde kaç yıldırım düşer?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 378,
- "duration": 25.1,
- "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/5-jo5Fr030o",
+ "chars": 369,
+ "duration": 24.4,
+ "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+ "url": "https://youtube.com/shorts/yexFsNeB7JM",
  "recent_status": {
-  "g010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "992",
-   "reason": null
-  },
   "y045": {
    "upload": "processed",
    "privacy": "public",
-   "views": "482",
+   "views": "502",
    "reason": null
   },
   "y062": {
    "upload": "processed",
    "privacy": "public",
-   "views": "538",
+   "views": "627",
    "reason": null
   },
   "n010": {
    "upload": "processed",
    "privacy": "public",
-   "views": "902",
+   "views": "1104",
    "reason": null
   },
   "y039": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "6",
+   "reason": null
+  },
+  "g008": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  88669,
+  88847,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261106-2-y039.json Okyanusun en dibine insaydın ne olurdu? (Ya Olsaydı?)"
+  "Kuyruktan: 20261106-3-g008.json Dünya'ya 1 günde kaç yıldırım düşer? (1 Gün Boyunca)"
  ],
- "finished": "2026-11-06T18:08:37+00:00"
+ "finished": "2026-11-06T20:08:39+00:00"
 }
