@@ -1,8 +1,8 @@
 {
- "started": "2026-11-05T17:06:58+00:00",
+ "started": "2026-11-06T07:37:22+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 31,
+ "threads": 32,
  "quiet": 0,
  "new": 1,
  "sent_last_24h": 5,
@@ -10,16 +10,15 @@
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgwMGS18_kIPJyxIUJV4AaABAg.Acq0MhAVNtDAcq1bBp57UE",
-   "video": "9j_jigCDW7s",
-   "comment": "yanlış",
-   "cevaba_cevap": true,
-   "reply": "NASA, Jüpiter'in hacim hesaplamalarında bu tür küçük farklılıklar olabileceğini belirtir, güncel veriler 1.000 sınırını verir.\n— Profesör Pi 🔭",
+   "id": "Ugyi23_JXFU93EkFU294AaABAg",
+   "video": "kzDr9prfHSw",
+   "comment": "Hadi uzun",
+   "reply": "Hemen uzatıyoruz, Ay o kadar uzak ki araya diğer tüm gezegenler sığabiliyor! 🌙\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-05T17:07:01+00:00"
+ "finished": "2026-11-06T07:37:25+00:00"
 }
