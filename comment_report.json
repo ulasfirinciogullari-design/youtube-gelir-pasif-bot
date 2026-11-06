@@ -1,22 +1,22 @@
 {
- "started": "2026-11-05T17:45:12+00:00",
+ "started": "2026-11-06T06:45:12+00:00",
  "deneme": false,
- "threads": 100,
- "reply_threads_read": 1,
+ "threads": 101,
+ "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgyHGmGjnQ82PJ3Drsd4AaABAg.AcnhkjZDjV1Acq-wcVtiWP",
-   "kind": "answer",
-   "video": "X9s6--q0k5U",
-   "comment": "Evet hiç birşey olmadı",
-   "reply": "@SalamzadeRuqeyya-i2w Vay canına, gerçekten başardın demek! Çoğu kişi için gözleri açık tutmak bayağı zorlayıcıdır, tebrikler! 😉",
+   "id": "Ugxm7nt3QEJZ6V9yebB4AaABAg",
+   "kind": "comment",
+   "video": "mR4H7MKxBP8",
+   "comment": "Benim pokekim 3169 yaşında",
+   "reply": "3169 yaşındaki köpeğinle neler yaşadığını çok merak ettik! O kadar yıl yaşamak için sırrı neymiş acaba? 🤔",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-05T17:45:17+00:00"
+ "finished": "2026-11-06T06:45:16+00:00"
 }
