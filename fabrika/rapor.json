@@ -1,18 +1,71 @@
 {
- "started": "2026-11-06T09:06:57+00:00",
- "mod": "igbolum",
- "gate": "instagram: n009",
+ "started": "2026-11-06T10:07:49+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Işık Gerçekte Ne Kadar Hızlı?",
- "chars": 403,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17940133776123643",
-  "url": "https://www.instagram.com/reel/DfZP4mQHJ6f/",
-  "at": 1793956098.4497685
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "53",
+  "videos": "46"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfZP4mQHJ6f/"
+ "credits_before": [
+  86536,
+  613902
  ],
- "finished": "2026-11-06T09:08:18+00:00"
+ "kuyruk": {
+  "dosya": "20261105-4-y062.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "y062",
+  "series": "Ya Olsaydı?",
+  "q": "Lav gölüne düşseydin ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 372,
+ "duration": 24.5,
+ "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+ "url": "https://youtube.com/shorts/MM3s0q-j2q0",
+ "recent_status": {
+  "n009": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1284",
+   "reason": null
+  },
+  "y046": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1247",
+   "reason": null
+  },
+  "g010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "959",
+   "reason": null
+  },
+  "y045": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "404",
+   "reason": null
+  },
+  "y062": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  86536,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261105-4-y062.json Lav gölüne düşseydin ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-06T10:08:42+00:00"
 }

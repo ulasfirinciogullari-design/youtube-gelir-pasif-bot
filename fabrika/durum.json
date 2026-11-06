@@ -866,7 +866,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1130",
+    "views": "1131",
     "reason": null
    }
   },
@@ -896,7 +896,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1028",
+    "views": "1029",
     "reason": null
    }
   },
@@ -926,7 +926,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "896",
+    "views": "897",
     "reason": null
    }
   },
@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1153",
+    "views": "1156",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1296",
+    "views": "1297",
     "reason": null
    }
   },
@@ -1016,7 +1016,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1046",
+    "views": "1047",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1170",
+    "views": "1190",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1031",
+    "views": "1045",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1069",
+    "views": "1077",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1002",
+    "views": "1003",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1022",
+    "views": "1089",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "419",
+    "views": "610",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "487",
+    "views": "644",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1248",
+    "views": "1284",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1218",
+    "views": "1247",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "558",
+    "views": "959",
     "reason": null
    }
   },
@@ -1343,6 +1343,36 @@
    "thumbnail": true,
    "at": 1793911326.6536791,
    "chars": 375,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "404",
+    "reason": null
+   }
+  },
+  {
+   "id": "y062",
+   "video_id": "MM3s0q-j2q0",
+   "url": "https://youtube.com/shorts/MM3s0q-j2q0",
+   "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "Would You Sink If You Fell Into a Lava Lake?",
+    "es": "¿Te Hundirías Si Cayeras en un Lago de Lava?",
+    "pt": "Você Afundaria Se Caísse em um Lago de Lava?",
+    "ar": "هل كنت ستغرق لو سقطت في بحيرة حمم؟",
+    "hi": "अगर तुम लावा की झील में गिरते तो क्या डूब जाते?",
+    "id": "Apakah Kamu Akan Tenggelam Jika Jatuh ke Danau Lava?",
+    "fr": "Coulerais-Tu Si Tu Tombais dans un Lac de Lave ?",
+    "de": "Würdest Du Versinken, Wenn Du in Einen Lavasee Fällst?",
+    "ru": "Утонул Бы Ты, Если Бы Упал в Лавовое Озеро?",
+    "az": "Lava Gölünə Düşsəydin Batardınmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793959721.5034068,
+   "chars": 372,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1396,7 +1426,8 @@
   "n009",
   "y046",
   "g010",
-  "y045"
+  "y045",
+  "y062"
  ],
  "extra": [
   {
@@ -1462,13 +1493,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-20T09:07:31+00:00",
-   "mod": "igbolum",
-   "title": "Güneş Bir Anda Sönseydi Ne Olurdu?",
-   "error": "CalledProcessError: Command '['node', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/ig_video.mp4', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/timings.json', '/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/_is/mix.mp3']' returned non-zero exit status 1.",
-   "chars": 475
-  },
   {
    "finished": "2026-10-20T09:10:27+00:00",
    "mod": "igbolum",
@@ -1880,6 +1904,14 @@
    "mod": "igbolum",
    "title": "Işık Gerçekte Ne Kadar Hızlı?",
    "chars": 403
+  },
+  {
+   "finished": "2026-11-06T10:08:42+00:00",
+   "mod": "saatlik",
+   "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+   "url": "https://youtube.com/shorts/MM3s0q-j2q0",
+   "duration": 24.5,
+   "chars": 372
   }
  ],
  "last_fail": 1793568784.6201334,
