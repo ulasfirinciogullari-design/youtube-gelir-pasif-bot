@@ -1,22 +1,22 @@
 {
- "started": "2026-11-06T10:45:11+00:00",
+ "started": "2026-11-06T13:45:11+00:00",
  "deneme": false,
  "threads": 101,
- "reply_threads_read": 1,
+ "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 3,
+ "sent_last_24h": 4,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgzBcpeJqcXTAylBFBd4AaABAg.AcnxFd6vXC-AcrtnO0Zn3b",
-   "kind": "answer",
-   "video": "s2YsSOJ_RQs",
-   "comment": "Su",
-   "reply": "@EdaÇetin-l7f Harika! Zaten kediler suyu yemekten bile daha çok arar, susuzluk iştahsızlıktan daha tehlikeli onlar için. 💧",
+   "id": "UgzNQscPx7-p-SwYlTB4AaABAg",
+   "kind": "comment",
+   "video": "X9s6--q0k5U",
+   "comment": "Vidiyonu gördükde gerçekden hapşırdum",
+   "reply": "Videonun etkisiyle hapşırmak ilginç bir tepki! 😊 Bazen sadece düşüncesi bile tetikleyebilirmiş.",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-06T10:45:18+00:00"
+ "finished": "2026-11-06T13:45:16+00:00"
 }

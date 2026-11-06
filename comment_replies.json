@@ -156,6 +156,12 @@
    "r",
    "UgzBcpeJqcXTAylBFBd4AaABAg.AcnxFd6vXC-Acrvv95bPnZ",
    "UC8k6akRZp4LEdHVPJH8QjoA"
+  ],
+  "UgzNQscPx7-p-SwYlTB4AaABAg": [
+   1793972712,
+   "r",
+   "UgzNQscPx7-p-SwYlTB4AaABAg.AcsAPjZIOtOAcsFWKeixit",
+   "UCqkmzskCqz8Maevj6_ZxJVQ"
   ]
  },
  "tracked": {
@@ -190,6 +196,11 @@
   "UgzBcpeJqcXTAylBFBd4AaABAg": {
    "at": 1793961912,
    "n": 2
+  },
+  "UgzNQscPx7-p-SwYlTB4AaABAg": {
+   "at": 1793972712,
+   "n": 1,
+   "reply": "Videonun etkisiyle hapşırmak ilginç bir tepki! 😊 Bazen sadece düşüncesi bile tetikleyebilirmiş."
   }
  },
  "channel": {
@@ -328,6 +339,12 @@
    "video": "s2YsSOJ_RQs",
    "comment": "Su",
    "reply": "@EdaÇetin-l7f Harika! Zaten kediler suyu yemekten bile daha çok arar, susuzluk iştahsızlıktan daha tehlikeli onlar için. 💧"
+  },
+  {
+   "at": 1793972712,
+   "video": "X9s6--q0k5U",
+   "comment": "Vidiyonu gördükde gerçekden hapşırdum",
+   "reply": "Videonun etkisiyle hapşırmak ilginç bir tepki! 😊 Bazen sadece düşüncesi bile tetikleyebilirmiş."
   }
  ]
 }
