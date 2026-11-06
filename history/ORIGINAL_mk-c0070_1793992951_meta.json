@@ -1,0 +1,188 @@
+{
+  "topic_id": "mk-c0070",
+  "topic": "Tavuk bir dinozor mu, dinozorların hepsi yok oldu mu?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Dinozorların hepsi yok olmadı, biri kümeste 🐔",
+  "hook_text": "TAVUK BİR DİNOZOR MU?",
+  "description": "Tavuk bir dinozor mu, dinozorların hepsi yok oldu mu, kuşlar dinozorlardan mı geldi?\n\nKuşlar, tiranozorun da ait olduğu etçil dinozor grubu teropodlardan evrimleşti; bilim insanlarına göre kuşlar bugün yaşayan dinozorlardır. Altmış altı milyon yıl önce yok olan, kuş olmayan dinozorlardı. 2008'de Harvard'lı araştırmacılar altmış sekiz milyon yıllık bir tiranozor kemiğinden çıkan proteini yirmi bir canlıyla karşılaştırdı: tiranozor en çok tavuk ve devekuşuyla, timsahlarla ise daha az benzerlik gösterdi. Bugün en az on bir bin kuş türü yaşıyor.\n\nSence hangisi daha çok dinozora benziyor: tavuk mu, devekuşu mu?\n\n#tavuk #dinozor #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0070",
+  "tags": [
+    "tavuk",
+    "tavuklar",
+    "tavuk dinozor mu",
+    "tavuk dinozorların torunu",
+    "dinozor",
+    "dinozorlar",
+    "dinozorlar yok oldu mu",
+    "kuşlar dinozor mu",
+    "kuşlar dinozordan mı geldi",
+    "yaşayan dinozor",
+    "tiranozor",
+    "tiranozor reks",
+    "teropod",
+    "dinozor nesli",
+    "evrim",
+    "kuşlar",
+    "kümes hayvanları",
+    "fosil",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "birds are dinosaurs",
+    "chicken dinosaur",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "tavuk dinozorlarin torunu",
+    "kuslar dinozor mu",
+    "kuslar dinozordan mi geldi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Not all dinosaurs died out, one lives in the henhouse 🐔",
+      "description": "Birds evolved from theropods, the same group of meat-eating dinosaurs as T. rex, so birds are living dinosaurs. When protein from a 68-million-year-old T. rex bone was analyzed, it grouped with chickens and ostriches better than with alligators. Today at least 11,000 bird species are alive.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "es": {
+      "title": "No todos los dinosaurios se extinguieron: uno vive en el gallinero 🐔",
+      "description": "Las aves evolucionaron de los terópodos, el mismo grupo de dinosaurios carnívoros que el T. rex, así que las aves son dinosaurios vivos. Al analizar proteína de un hueso de T. rex de 68 millones de años, se agrupó con gallinas y avestruces mejor que con caimanes. Hoy viven al menos 11.000 especies de aves.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "pt": {
+      "title": "Nem todos os dinossauros sumiram: um vive no galinheiro 🐔",
+      "description": "As aves evoluíram dos terópodes, o mesmo grupo de dinossauros carnívoros do T. rex, por isso as aves são dinossauros vivos. Quando a proteína de um osso de T. rex de 68 milhões de anos foi analisada, ela se agrupou com galinhas e avestruzes mais do que com jacarés. Hoje existem pelo menos 11 mil espécies de aves.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "de": {
+      "title": "Nicht alle Dinosaurier sind ausgestorben, einer lebt im Hühnerstall 🐔",
+      "description": "Vögel stammen von den Theropoden ab, derselben Gruppe fleischfressender Dinosaurier wie T. rex, und sind damit lebende Dinosaurier. Als Protein aus einem 68 Millionen Jahre alten T.-rex-Knochen analysiert wurde, passte es besser zu Huhn und Strauß als zum Alligator. Heute leben mindestens 11.000 Vogelarten.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "fr": {
+      "title": "Les dinosaures n'ont pas tous disparu : l'un vit au poulailler 🐔",
+      "description": "Les oiseaux descendent des théropodes, le même groupe de dinosaures carnivores que le T. rex : ce sont des dinosaures vivants. Une protéine extraite d'un os de T. rex vieux de 68 millions d'années s'est révélée plus proche de celle du poulet et de l'autruche que de celle de l'alligator. Il existe aujourd'hui au moins 11 000 espèces d'oiseaux.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "it": {
+      "title": "Non tutti i dinosauri si sono estinti: uno vive nel pollaio 🐔",
+      "description": "Gli uccelli discendono dai teropodi, lo stesso gruppo di dinosauri carnivori del T. rex, quindi sono dinosauri viventi. Analizzando la proteina di un osso di T. rex di 68 milioni di anni, è risultata più simile a quella di pollo e struzzo che a quella dell'alligatore. Oggi esistono almeno 11.000 specie di uccelli.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "ru": {
+      "title": "Не все динозавры вымерли: один живёт в курятнике 🐔",
+      "description": "Птицы произошли от теропод — той же группы хищных динозавров, что и тираннозавр, поэтому птицы — это живые динозавры. Белок из кости тираннозавра возрастом 68 миллионов лет оказался ближе к белку курицы и страуса, чем аллигатора. Сегодня на Земле живёт не меньше 11 000 видов птиц.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "ar": {
+      "title": "لم تنقرض كل الديناصورات، أحدها يعيش في قن الدجاج 🐔",
+      "description": "تطوّرت الطيور من الثيروبودات، وهي مجموعة الديناصورات اللاحمة نفسها التي ينتمي إليها التيرانوصور، لذلك فالطيور ديناصورات حيّة. وعند تحليل بروتين من عظم تيرانوصور عمره 68 مليون سنة، تبيّن أنه أقرب إلى الدجاج والنعام منه إلى التمساح الأمريكي. ويعيش اليوم ما لا يقل عن 11 ألف نوع من الطيور.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "hi": {
+      "title": "सारे डायनासोर ख़त्म नहीं हुए, एक मुर्ग़ीख़ाने में रहता है 🐔",
+      "description": "पक्षी थेरोपोड से विकसित हुए, यानी मांसाहारी डायनासोरों के उसी समूह से जिसमें टी. रेक्स था, इसलिए पक्षी जीवित डायनासोर हैं। 6.8 करोड़ साल पुरानी टी. रेक्स की हड्डी के प्रोटीन की जाँच में वह एलिगेटर से ज़्यादा मुर्ग़ी और शुतुरमुर्ग से मिलता निकला। आज कम से कम 11,000 पक्षी प्रजातियाँ जीवित हैं।\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "id": {
+      "title": "Tidak semua dinosaurus punah, satu tinggal di kandang ayam 🐔",
+      "description": "Burung berevolusi dari teropoda, kelompok dinosaurus pemakan daging yang sama dengan T. rex, jadi burung adalah dinosaurus yang masih hidup. Saat protein dari tulang T. rex berusia 68 juta tahun dianalisis, protein itu lebih mirip ayam dan burung unta daripada aligator. Kini ada setidaknya 11.000 spesies burung.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "ja": {
+      "title": "恐竜はすべて絶滅したわけではない、一種は鶏小屋にいる 🐔",
+      "description": "鳥類はティラノサウルスと同じ肉食恐竜のグループ、獣脚類から進化しました。つまり鳥は生きている恐竜です。6800万年前のティラノサウルスの骨から取り出したタンパク質を調べると、ワニよりもニワトリやダチョウに近いことがわかりました。現在、少なくとも1万1000種の鳥が生きています。\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "ko": {
+      "title": "공룡이 다 멸종한 건 아니다, 하나는 닭장에 산다 🐔",
+      "description": "새는 티라노사우루스와 같은 육식 공룡 무리인 수각류에서 진화했습니다. 즉 새는 살아 있는 공룡입니다. 6800만 년 된 티라노사우루스 뼈의 단백질을 분석하자 악어보다 닭과 타조에 더 가까웠습니다. 오늘날 최소 1만 1000종의 새가 살고 있습니다.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "pl": {
+      "title": "Nie wszystkie dinozaury wymarły, jeden mieszka w kurniku 🐔",
+      "description": "Ptaki wyewoluowały z teropodów, tej samej grupy mięsożernych dinozaurów co T. rex, więc są żyjącymi dinozaurami. Białko z kości T. rexa sprzed 68 milionów lat okazało się bliższe białku kury i strusia niż aligatora. Dziś żyje co najmniej 11 tysięcy gatunków ptaków.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "nl": {
+      "title": "Niet alle dinosaurussen stierven uit, één woont in het kippenhok 🐔",
+      "description": "Vogels stammen af van theropoden, dezelfde groep vleesetende dinosaurussen als T. rex, dus vogels zijn levende dinosaurussen. Eiwit uit een 68 miljoen jaar oud T. rex-bot bleek meer te lijken op dat van kip en struisvogel dan op dat van de alligator. Er leven nu minstens 11.000 vogelsoorten.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "uk": {
+      "title": "Не всі динозаври вимерли: один живе в курнику 🐔",
+      "description": "Птахи походять від теропод — тієї самої групи хижих динозаврів, що й тиранозавр, тож птахи є живими динозаврами. Білок із кістки тиранозавра віком 68 мільйонів років виявився ближчим до білка курки й страуса, ніж алігатора. Сьогодні живе щонайменше 11 тисяч видів птахів.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "vi": {
+      "title": "Không phải khủng long nào cũng tuyệt chủng, một loài sống trong chuồng gà 🐔",
+      "description": "Chim tiến hóa từ nhóm khủng long chân thú ăn thịt, cùng nhóm với T. rex, nên chim chính là khủng long còn sống. Khi phân tích protein từ xương T. rex 68 triệu năm tuổi, các nhà khoa học thấy nó giống gà và đà điểu hơn cá sấu. Ngày nay có ít nhất 11.000 loài chim.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "az": {
+      "title": "Bütün dinozavrlar yox olmadı, biri hinədə yaşayır 🐔",
+      "description": "Quşlar tiranozavrın da aid olduğu ətyeyən dinozavr qrupu olan teropodlardan təkamül edib, yəni quşlar yaşayan dinozavrlardır. 68 milyon yaşlı tiranozavr sümüyündən çıxarılan zülal timsahdan çox toyuq və dəvəquşuna bənzədi. Bu gün ən azı 11 min quş növü yaşayır.\n\n#shorts\n\nSeri: mk-c0070"
+    },
+    "ro": {
+      "title": "Nu toți dinozaurii au dispărut, unul trăiește în coteț 🐔",
+      "description": "Păsările au evoluat din teropode, același grup de dinozauri carnivori ca T. rex, așa că păsările sunt dinozauri vii. O proteină dintr-un os de T. rex vechi de 68 de milioane de ani s-a dovedit mai apropiată de cea a găinii și a struțului decât de cea a aligatorului. Astăzi trăiesc cel puțin 11.000 de specii de păsări.\n\n#shorts\n\nSeri: mk-c0070"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha çok dinozora benziyor: tavuk mu, devekuşu mu?",
+  "scenes": [
+    {
+      "text": "Bu tavuk, yaşayan bir dinozor.",
+      "visual": "extreme close-up of a chicken's head and eye staring into the camera",
+      "stock_query": "chicken head",
+      "source": "stock",
+      "callout": "YAŞAYAN DİNOZOR"
+    },
+    {
+      "text": "Dinozorların hepsinin altmış altı milyon yıl önce yok olduğunu sanırız.",
+      "visual": "a large dinosaur skeleton standing in a natural history museum",
+      "stock_query": "dinosaur skeleton",
+      "source": "stock",
+      "subject": [
+        "dinosaur"
+      ]
+    },
+    {
+      "text": "Oysa bir tiranozor kemiğindeki protein bile timsahtan çok tavuğa benziyordu.",
+      "visual": "close-up of a tyrannosaurus skull fossil with sharp teeth",
+      "stock_query": "dinosaur skull",
+      "source": "stock",
+      "subject": [
+        "dinosaur"
+      ],
+      "callout": "TİMSAHTAN ÇOK TAVUK"
+    },
+    {
+      "text": "Çünkü kuşlar, tiranozorun da ait olduğu etçil dinozor grubundan evrimleşti.",
+      "visual": "a chicken walking and scratching the ground on a farm",
+      "stock_query": "chicken walking",
+      "source": "stock",
+      "callout": "KUŞLAR = DİNOZOR"
+    },
+    {
+      "text": "Bugün on bir binden fazla dinozor türü, kuş olarak yaşıyor.",
+      "visual": "a large flock of birds flying across the sky",
+      "stock_query": "bird flock",
+      "source": "stock",
+      "subject": [
+        "bird"
+      ],
+      "callout": "11.000+ TÜR"
+    },
+    {
+      "text": "Kümese bir daha bakınca hatırla:",
+      "visual": "hens and a rooster inside a wooden chicken coop",
+      "stock_query": "chicken coop",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.98,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #123",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0070_1793992951_ig.mp4"
+}
