@@ -1,18 +1,71 @@
 {
- "started": "2026-11-06T13:07:49+00:00",
- "mod": "igbolum",
- "gate": "instagram: y046",
+ "started": "2026-11-06T14:07:14+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
- "chars": 367,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17963056377213736",
-  "url": "https://www.instagram.com/reel/DfZrd77D5Oe/",
-  "at": 1793970561.574517
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "53",
+  "videos": "47"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfZrd77D5Oe/"
+ "credits_before": [
+  86902,
+  613902
  ],
- "finished": "2026-11-06T13:09:21+00:00"
+ "kuyruk": {
+  "dosya": "20261106-1-n010.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "n010",
+  "series": "Ne Kadar Büyük?",
+  "q": "Bir kara delik ne kadar ağır olabilir?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 375,
+ "duration": 24.2,
+ "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
+ "url": "https://youtube.com/shorts/hvgNbZMhWPg",
+ "recent_status": {
+  "y046": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1250",
+   "reason": null
+  },
+  "g010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "981",
+   "reason": null
+  },
+  "y045": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "430",
+   "reason": null
+  },
+  "y062": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "310",
+   "reason": null
+  },
+  "n010": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  86994,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261106-1-n010.json Bir kara delik ne kadar ağır olabilir? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-06T14:08:29+00:00"
 }
