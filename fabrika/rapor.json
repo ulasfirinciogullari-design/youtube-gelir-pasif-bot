@@ -1,71 +1,18 @@
 {
- "started": "2026-11-05T20:41:14+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-06T09:06:57+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n009",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "54",
-  "videos": "45"
+ "title": "Işık Gerçekte Ne Kadar Hızlı?",
+ "chars": 403,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17940133776123643",
+  "url": "https://www.instagram.com/reel/DfZP4mQHJ6f/",
+  "at": 1793956098.4497685
  },
- "credits_before": [
-  85765,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261105-3-y045.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y045",
-  "series": "Ya Olsaydı?",
-  "q": "Yıldırım sana çarpsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 375,
- "duration": 23.7,
- "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
- "url": "https://youtube.com/shorts/1EK5IR8nYDE",
- "recent_status": {
-  "y014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "487",
-   "reason": null
-  },
-  "n009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1248",
-   "reason": null
-  },
-  "y046": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1218",
-   "reason": null
-  },
-  "g010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "558",
-   "reason": null
-  },
-  "y045": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  85855,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261105-3-y045.json Yıldırım sana çarpsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfZP4mQHJ6f/"
  ],
- "finished": "2026-11-05T20:42:08+00:00"
+ "finished": "2026-11-06T09:08:18+00:00"
 }
