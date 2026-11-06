@@ -37,16 +37,17 @@
   "2026-11-04T18": "O4CmIhkONV0 https://www.instagram.com/reel/DfVDQyYFDuH/",
   "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/",
   "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/",
-  "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/"
+  "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
+  "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/"
  },
  "nobet": {
   "basladi": "2026-11-06T08:46:50+00:00",
   "run": "42188923869",
-  "tur": 62,
+  "tur": 75,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-06T09:47:51+00:00"
+  "son_tur": "2026-11-06T10:01:35+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -244,6 +245,13 @@
    "at": 1793901675,
    "title": "Kediler sütü sever ama çoğu onu sindiremez 🥛",
    "topic_id": "mk-c0056"
+  },
+  "0yonnQV5SMA": {
+   "media_id": "18148811026634637",
+   "url": "https://www.instagram.com/reel/DfZV-4Dmny9/",
+   "at": 1793959296,
+   "title": "Bir inek günde yüz litre tükürük üretebilir 🐄",
+   "topic_id": "mk-c0054"
   }
  }
 }
