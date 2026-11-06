@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0078",
+ "topic": "Kuş sütü gerçekten var mı, güvercinler yavrularını sütle mi besler?",
+ "kategori": "hayvan",
+ "subject": [
+  "pigeon"
+ ],
+ "stock_hint": "pigeon close up",
+ "script": {
+  "title": "Kuş sütü gerçekten var, güvercinler yapıyor 🕊️",
+  "hook_text": "KUŞ SÜTÜ GERÇEKTEN VAR MI?",
+  "scenes": [
+   {
+    "text": "Bu güvercin yavrusunu sütle besliyor.",
+    "visual": "close-up of a pigeon's head and puffed-out throat facing the camera",
+    "stock_query": "pigeon close up",
+    "source": "stock",
+    "callout": "KUŞ SÜTÜ"
+   },
+   {
+    "text": "Deyimdeki kuş sütü gerçekten var; memeden değil, boğazdaki kursaktan geliyor.",
+    "visual": "a pigeon feeding its chick beak to beak in a nest",
+    "stock_query": "pigeon chick",
+    "source": "stock",
+    "callout": "KURSAKTAN GELİR"
+   },
+   {
+    "text": "Üstelik sadece anne değil, baba güvercin de süt yapıyor.",
+    "visual": "two adult pigeons sitting side by side on a nest",
+    "stock_query": "pigeon nest",
+    "source": "stock",
+    "callout": "BABA DA SÜT YAPAR"
+   },
+   {
+    "text": "Çünkü memelilerde sütü başlatan prolaktin hormonu, güvercinde kursağın iç yüzeyini kalınlaştırır; dökülen hücreler peynirimsi bir süt olur.",
+    "visual": "close-up of a pigeon's throat and chest feathers as it breathes",
+    "stock_query": "pigeon head",
+    "source": "stock",
+    "callout": "PROLAKTİN HORMONU"
+   },
+   {
+    "text": "Kuş sütü eksik demeden önce düşün, çünkü...",
+    "visual": "a pigeon on a rooftop looking straight into the camera",
+    "stock_query": "pigeon portrait",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Deyimlere konu olan kuş sütü gerçekten var: güvercinler yavrularını boğazlarındaki kursakta ürettikleri besleyici bir sütle besler. Bu sütü hem anne hem baba güvercin yapar ve üretimini memelilerde sütü başlatan prolaktin hormonu tetikler.",
+  "tags": [
+   "güvercin",
+   "kuş sütü",
+   "güvercin sütü",
+   "kursak sütü",
+   "kuşlar",
+   "hayvan davranışları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kuş sütünün gerçekten var olması mı, baba güvercinin de süt yapması mı?",
+  "en_title": "Pigeons really make milk for their chicks 🕊️",
+  "en_description": "Pigeons feed their chicks a nutritious 'milk' made in the crop, a pouch in the throat. Both mothers and fathers produce it, triggered by prolactin, the same hormone behind milk production in mammals. Cells lining the crop are shed into a cheese-like food rich in fat and protein.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kuş sütü gerçekten var mı, güvercinler yavrularını sütle mi besler?\n\nEvet, deyimdeki kuş sütü gerçekten var. Güvercinler yavrularını boğazlarındaki kursak denen kesede ürettikleri, peynire benzeyen besleyici bir maddeyle besler. Bu sütü hem anne hem baba güvercin yapar; üretimini memelilerde sütü başlatan prolaktin hormonu tetikler ve kursağın iç yüzeyindeki hücreler dökülerek sütü oluşturur. Yavrular ilk günlerde yalnızca bu sütle beslenir. Araştırmalar bu sütün yağ bakımından zengin olduğunu, bağışıklığı destekleyen maddeler de içerdiğini gösteriyor. Flamingolar ve erkek imparator penguenler de benzer bir süt üretir.\n\nSence hangisi daha şaşırtıcı: kuş sütünün gerçekten var olması mı, baba güvercinin de süt yapması mı?",
+  "hashtags": [
+   "#güvercin",
+   "#kuşsütü",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "güvercin",
+   "güvercinler",
+   "kuş sütü",
+   "kuş sütü var mı",
+   "kuş sütü nedir",
+   "güvercin sütü",
+   "kursak sütü",
+   "güvercin yavrusu",
+   "güvercin yavrusu beslenmesi",
+   "kuşlar süt verir mi",
+   "kuşlar",
+   "kuş türleri",
+   "güvercin bakımı",
+   "hayvan davranışları",
+   "hayvanlar",
+   "deyimler",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "pigeon milk",
+   "crop milk"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Pigeons really make milk for their chicks 🕊️",
+    "description": "Pigeons feed their chicks a nutritious 'milk' made in the crop, a pouch in the throat. Both mothers and fathers produce it, triggered by prolactin, the same hormone behind milk production in mammals. Cells lining the crop are shed into a cheese-like food rich in fat and protein."
+   },
+   "es": {
+    "title": "Las palomas producen leche de verdad para sus crías 🕊️",
+    "description": "Las palomas alimentan a sus pichones con una 'leche' nutritiva que se forma en el buche, una bolsa en la garganta. La producen tanto la madre como el padre, gracias a la prolactina, la misma hormona que activa la leche en los mamíferos. Las células del buche se desprenden y forman un alimento parecido al queso, rico en grasa y proteína."
+   },
+   "pt": {
+    "title": "Pombos produzem leite de verdade para os filhotes 🕊️",
+    "description": "Os pombos alimentam os filhotes com um 'leite' nutritivo feito no papo, uma bolsa na garganta. Tanto a mãe quanto o pai produzem, estimulados pela prolactina, o mesmo hormônio que comanda o leite nos mamíferos. As células do papo se soltam e formam um alimento parecido com queijo, rico em gordura e proteína."
+   },
+   "de": {
+    "title": "Tauben machen wirklich Milch für ihre Küken 🕊️",
+    "description": "Tauben füttern ihre Jungen mit nahrhafter Kropfmilch aus dem Kropf, einer Tasche im Hals. Mutter und Vater stellen sie her, angeregt durch Prolaktin – dasselbe Hormon, das bei Säugetieren die Milchbildung steuert. Zellen der Kropfwand lösen sich ab und bilden eine käseartige Nahrung voller Fett und Eiweiß."
+   },
+   "fr": {
+    "title": "Les pigeons fabriquent vraiment du lait pour leurs petits 🕊️",
+    "description": "Les pigeons nourrissent leurs petits avec un « lait » nutritif fabriqué dans le jabot, une poche de la gorge. La mère comme le père en produisent, sous l'effet de la prolactine, l'hormone qui déclenche aussi la lactation chez les mammifères. Les cellules du jabot se détachent et forment une sorte de fromage riche en graisses et en protéines."
+   },
+   "it": {
+    "title": "I piccioni producono davvero il latte per i piccoli 🕊️",
+    "description": "I piccioni nutrono i piccoli con un 'latte' nutriente prodotto nel gozzo, una sacca nella gola. Lo producono sia la madre sia il padre, grazie alla prolattina, lo stesso ormone che stimola il latte nei mammiferi. Le cellule del gozzo si staccano e formano un alimento simile al formaggio, ricco di grassi e proteine."
+   },
+   "ru": {
+    "title": "Голуби правда выкармливают птенцов молоком 🕊️",
+    "description": "Голуби кормят птенцов питательным «молоком», которое образуется в зобе — мешке в горле. Его вырабатывают и мать, и отец под действием пролактина, того же гормона, что запускает выработку молока у млекопитающих. Клетки стенки зоба отслаиваются и превращаются в похожую на творог массу, богатую жиром и белком."
+   },
+   "ar": {
+    "title": "الحمام يصنع حليبًا حقيقيًا لصغاره 🕊️",
+    "description": "يُطعم الحمام صغاره «حليبًا» مغذيًا يتكوّن في الحوصلة، وهي كيس في الحلق. ويُنتجه الأب والأم معًا بتحفيز من هرمون البرولاكتين، وهو الهرمون نفسه الذي يُدرّ الحليب لدى الثدييات. وتتساقط خلايا جدار الحوصلة لتكوّن غذاءً يشبه الجبن، غنيًا بالدهون والبروتين."
+   },
+   "hi": {
+    "title": "कबूतर सच में अपने बच्चों के लिए दूध बनाते हैं 🕊️",
+    "description": "कबूतर अपने बच्चों को गले की एक थैली, क्रॉप, में बनने वाला पौष्टिक 'दूध' पिलाते हैं। इसे माँ और पिता दोनों बनाते हैं, और यह प्रोलैक्टिन हार्मोन से शुरू होता है, वही हार्मोन जो स्तनधारियों में दूध बनवाता है। क्रॉप की दीवार की कोशिकाएँ झड़कर पनीर जैसा भोजन बनाती हैं, जिसमें वसा और प्रोटीन भरपूर होता है।"
+   },
+   "id": {
+    "title": "Merpati benar-benar membuat susu untuk anaknya 🕊️",
+    "description": "Merpati memberi makan anaknya dengan 'susu' bergizi yang dibuat di tembolok, kantong di tenggorokan. Induk jantan dan betina sama-sama membuatnya, dipicu hormon prolaktin, hormon yang juga memicu produksi susu pada mamalia. Sel-sel dinding tembolok luruh menjadi makanan mirip keju yang kaya lemak dan protein."
+   },
+   "ja": {
+    "title": "ハトは本当にヒナのためにミルクを作る 🕊️",
+    "description": "ハトはのどにある袋「そのう」で作る栄養たっぷりの「ミルク」でヒナを育てます。母親だけでなく父親も作り、哺乳類で乳を出させるのと同じホルモン、プロラクチンがその合図になります。そのうの内側の細胞がはがれ落ちて、脂肪とタンパク質が豊富なチーズのような食べ物になります。"
+   },
+   "ko": {
+    "title": "비둘기는 정말로 새끼에게 젖을 먹인다 🕊️",
+    "description": "비둘기는 목에 있는 주머니인 모이주머니에서 만든 영양 많은 '젖'으로 새끼를 키웁니다. 어미와 아비 모두 만들며, 포유류에서 젖을 만들게 하는 것과 같은 호르몬인 프로락틴이 이를 일으킵니다. 모이주머니 안쪽 세포가 떨어져 나와 지방과 단백질이 풍부한 치즈 같은 먹이가 됩니다."
+   },
+   "pl": {
+    "title": "Gołębie naprawdę wytwarzają mleko dla piskląt 🕊️",
+    "description": "Gołębie karmią pisklęta pożywnym „mleczkiem” wytwarzanym w wolu, worku w gardle. Wytwarzają je zarówno samica, jak i samiec, pod wpływem prolaktyny, tego samego hormonu, który u ssaków pobudza laktację. Komórki ściany wola złuszczają się i tworzą przypominający ser pokarm bogaty w tłuszcz i białko."
+   },
+   "nl": {
+    "title": "Duiven maken echt melk voor hun jongen 🕊️",
+    "description": "Duiven voeren hun jongen met voedzame kropmelk uit de krop, een zak in de keel. Zowel moeder als vader maken het, aangezet door prolactine, hetzelfde hormoon dat bij zoogdieren de melkproductie regelt. Cellen van de kropwand laten los en vormen een kaasachtige brij vol vet en eiwit."
+   },
+   "uk": {
+    "title": "Голуби справді вигодовують пташенят молоком 🕊️",
+    "description": "Голуби годують пташенят поживним «молоком», яке утворюється у волі — мішечку в горлі. Його виробляють і мати, і батько під дією пролактину, того самого гормону, що запускає вироблення молока в ссавців. Клітини стінки вола відшаровуються й утворюють схожу на сир масу, багату на жир і білок."
+   },
+   "vi": {
+    "title": "Chim bồ câu thật sự tiết sữa nuôi con 🕊️",
+    "description": "Bồ câu nuôi con bằng một loại 'sữa' bổ dưỡng tiết ra từ diều, một túi nằm ở cổ họng. Cả chim bố lẫn chim mẹ đều tiết sữa, nhờ hormone prolactin, cũng chính là hormone kích thích tiết sữa ở động vật có vú. Các tế bào lót trong diều bong ra tạo thành một thứ giống pho mát, giàu chất béo và đạm."
+   },
+   "az": {
+    "title": "Quş südü həqiqətən var, göyərçinlər onu hazırlayır 🕊️",
+    "description": "Göyərçinlər balalarını boğazlarındakı kisədə, çinədanda hazırlanan qidalı 'südlə' bəsləyir. Bu südü həm ana, həm ata göyərçin hazırlayır; prosesi məməlilərdə süd ifrazını başladan prolaktin hormonu idarə edir. Çinədanın iç divarındakı hüceyrələr tökülərək yağ və zülalla zəngin, pendirəbənzər bir qida əmələ gətirir."
+   },
+   "ro": {
+    "title": "Porumbeii chiar fac lapte pentru pui 🕊️",
+    "description": "Porumbeii își hrănesc puii cu un „lapte” hrănitor produs în gușă, o pungă din gât. Îl produc atât mama, cât și tatăl, sub acțiunea prolactinei, același hormon care declanșează laptele la mamifere. Celulele din peretele gușii se desprind și formează o hrană ca brânza, bogată în grăsimi și proteine."
+   }
+  }
+ }
+}

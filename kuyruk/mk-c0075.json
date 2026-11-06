@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0075",
+ "topic": "Toplardamardaki kan mavi mi, damarlar neden mavi görünür?",
+ "kategori": "vücut",
+ "subject": [
+  "vein"
+ ],
+ "stock_hint": "hand veins",
+ "script": {
+  "title": "Damarların mavi görünür ama kanın hiç mavi değil 🩸",
+  "hook_text": "KİRLİ KAN MAVİ Mİ?",
+  "scenes": [
+   {
+    "text": "Bu bilekteki damarlar mavi, içindeki kan değil.",
+    "visual": "extreme close-up of bluish veins under the skin on the inside of a human wrist",
+    "stock_query": "wrist veins",
+    "source": "stock",
+    "callout": "KAN MAVİ DEĞİL"
+   },
+   {
+    "text": "Kan tahlilinde tüpe dolan kan da toplardamardan gelir ve koyu kırmızıdır.",
+    "visual": "close-up of a blood sample tube filled with dark red blood held in a gloved hand",
+    "stock_query": "blood test tube",
+    "source": "stock",
+    "callout": "KOYU KIRMIZI",
+    "subject": [
+     "blood"
+    ]
+   },
+   {
+    "text": "Aynı damar, esmer tende yeşilimsi görünür.",
+    "visual": "close-up of veins on the back of a dark-skinned hand",
+    "stock_query": "hand veins",
+    "source": "stock",
+    "callout": "ESMER TENDE YEŞİL"
+   },
+   {
+    "text": "Çünkü kırmızı ışık derine işleyip kana emilir; gözüne en çok mavi ışık geri döner.",
+    "visual": "a flashlight shining through a person's fingers in the dark, making them glow red",
+    "stock_query": "flashlight hand",
+    "source": "stock",
+    "callout": "MAVİ IŞIK YANSIR",
+    "subject": [
+     "flashlight"
+    ]
+   },
+   {
+    "text": "Bileğine bak; gördüğün renk ışığın oyunu, çünkü...",
+    "visual": "a person turning their hand to look at the veins on their wrist",
+    "stock_query": "human wrist",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "wrist"
+    ]
+   }
+  ],
+  "description": "Kan hiçbir zaman mavi değildir: oksijeni azalmış toplardamar kanı bile koyu kırmızıdır. Damarların mavi görünmesi ışığın deride yaptığı bir oyun; kırmızı ışık derine işleyip kana emilir, mavi ışık ise yüzeyden göze geri saçılır.",
+  "tags": [
+   "kan",
+   "damarlar",
+   "damarlar neden mavi",
+   "kan mavi mi",
+   "toplardamar",
+   "insan vücudu",
+   "vücut",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kanın hiç mavi olmaması mı, esmer tende damarların yeşil görünmesi mi?",
+  "en_title": "Your veins look blue, but your blood never is 🩸",
+  "en_description": "Blood is always red: even the oxygen-poor blood in your veins is a dark red. Veins look blue because red light penetrates deeper into the skin and is absorbed by blood, while blue light scatters back to your eyes. Under darker skin the same veins can look green.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Toplardamardaki kan mavi mi, damarlar neden mavi görünür?\n\nKan hiçbir zaman mavi değildir. Hemoglobindeki demir kana kırmızı rengini verir; oksijeni yüksek kan parlak kiraz kırmızısı, oksijeni azalmış kan ise koyu, bordoya yakın bir kırmızıdır. Kan tahlilinde tüpe dolan kan da toplardamardan alınır ve bu koyu kırmızı renktedir. Damarların mavi görünmesi ışıkla ilgili: kırmızı ışık dokunun derinlerine işleyip kan tarafından emilirken mavi ve yeşil ışık yüzeyden göze geri saçılır. Bu yüzden damarlar açık tende mavi ya da mor, esmer tende yeşilimsi görünür.\n\nSence hangisi daha şaşırtıcı: kanın hiç mavi olmaması mı, esmer tende damarların yeşil görünmesi mi?",
+  "hashtags": [
+   "#kan",
+   "#damarlar",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kan",
+   "damarlar",
+   "damarlar neden mavi",
+   "damarlar neden mavi görünür",
+   "kan mavi mi",
+   "kirli kan mavi mi",
+   "toplardamar",
+   "atardamar",
+   "kan rengi",
+   "kan neden kırmızı",
+   "hemoglobin",
+   "kan tahlili",
+   "damar rengi",
+   "insan vücudu",
+   "vücut",
+   "anatomi",
+   "biyoloji",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "why are veins blue",
+   "is blood blue"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your veins look blue, but your blood never is 🩸",
+    "description": "Blood is always red: even the oxygen-poor blood in your veins is a dark red, which is why a blood sample looks dark in the tube. Veins look blue because red light penetrates deeper and is absorbed by blood, while blue light scatters back to your eyes. Under darker skin the same veins can look green."
+   },
+   "es": {
+    "title": "Tus venas se ven azules, pero tu sangre nunca lo es 🩸",
+    "description": "La sangre siempre es roja: incluso la sangre con poco oxígeno de las venas es de un rojo oscuro, por eso en un análisis se ve oscura en el tubo. Las venas parecen azules porque la luz roja penetra más en la piel y la absorbe la sangre, mientras que la azul rebota hacia tus ojos. En pieles más oscuras, las mismas venas pueden verse verdes."
+   },
+   "pt": {
+    "title": "Suas veias parecem azuis, mas seu sangue nunca é 🩸",
+    "description": "O sangue é sempre vermelho: até o sangue pobre em oxigênio das veias é vermelho-escuro, por isso parece escuro no tubo do exame. As veias parecem azuis porque a luz vermelha penetra mais fundo e é absorvida pelo sangue, enquanto a azul volta para os seus olhos. Em peles mais escuras, as mesmas veias podem parecer verdes."
+   },
+   "de": {
+    "title": "Deine Venen sehen blau aus, dein Blut ist es nie 🩸",
+    "description": "Blut ist immer rot: Selbst sauerstoffarmes Blut in den Venen ist dunkelrot – deshalb sieht eine Blutprobe im Röhrchen dunkel aus. Venen wirken blau, weil rotes Licht tiefer in die Haut eindringt und vom Blut geschluckt wird, während blaues Licht zurück ins Auge gestreut wird. Unter dunklerer Haut können dieselben Venen grünlich wirken."
+   },
+   "fr": {
+    "title": "Tes veines paraissent bleues, mais ton sang ne l'est jamais 🩸",
+    "description": "Le sang est toujours rouge : même le sang pauvre en oxygène des veines est rouge foncé, c'est pourquoi une prise de sang paraît sombre dans le tube. Les veines semblent bleues parce que la lumière rouge pénètre plus profondément et est absorbée par le sang, tandis que la lumière bleue est renvoyée vers tes yeux. Sur une peau plus foncée, les mêmes veines peuvent paraître vertes."
+   },
+   "it": {
+    "title": "Le tue vene sembrano blu, ma il tuo sangue non lo è mai 🩸",
+    "description": "Il sangue è sempre rosso: anche quello povero di ossigeno nelle vene è rosso scuro, per questo nella provetta di un prelievo appare scuro. Le vene sembrano blu perché la luce rossa penetra più a fondo ed è assorbita dal sangue, mentre quella blu torna verso i tuoi occhi. Sulla pelle più scura, le stesse vene possono sembrare verdi."
+   },
+   "ru": {
+    "title": "Вены кажутся синими, но кровь никогда не бывает синей 🩸",
+    "description": "Кровь всегда красная: даже бедная кислородом венозная кровь тёмно-красная, поэтому в пробирке при анализе она выглядит тёмной. Вены кажутся синими, потому что красный свет проникает глубже и поглощается кровью, а синий отражается обратно к глазам. Под более тёмной кожей те же вены могут казаться зелёными."
+   },
+   "ar": {
+    "title": "عروقك تبدو زرقاء، لكن دمك ليس أزرق أبدًا 🩸",
+    "description": "الدم أحمر دائمًا: حتى الدم الفقير بالأكسجين في الأوردة لونه أحمر داكن، ولهذا يبدو داكنًا في أنبوب التحليل. تبدو الأوردة زرقاء لأن الضوء الأحمر ينفذ أعمق في الجلد فيمتصه الدم، بينما ينعكس الضوء الأزرق نحو عينيك. وتحت البشرة الداكنة قد تبدو الأوردة نفسها خضراء."
+   },
+   "hi": {
+    "title": "नसें नीली दिखती हैं, पर आपका ख़ून कभी नीला नहीं होता 🩸",
+    "description": "ख़ून हमेशा लाल होता है: नसों में बहने वाला कम ऑक्सीजन वाला ख़ून भी गहरा लाल होता है, इसीलिए जाँच की ट्यूब में वह गहरा दिखता है। नसें नीली इसलिए दिखती हैं क्योंकि लाल रोशनी त्वचा में गहराई तक जाकर ख़ून में सोख ली जाती है, जबकि नीली रोशनी लौटकर आँखों तक आती है। साँवली त्वचा में वही नसें हरी दिख सकती हैं।"
+   },
+   "id": {
+    "title": "Uratmu tampak biru, tapi darahmu tak pernah biru 🩸",
+    "description": "Darah selalu merah: bahkan darah miskin oksigen di pembuluh vena berwarna merah tua, makanya darah di tabung tes tampak gelap. Vena terlihat biru karena cahaya merah menembus lebih dalam dan diserap darah, sementara cahaya biru dipantulkan kembali ke matamu. Pada kulit yang lebih gelap, vena yang sama bisa tampak hijau."
+   },
+   "ja": {
+    "title": "血管は青く見えても、血は決して青くない 🩸",
+    "description": "血液はいつも赤色です。静脈を流れる酸素の少ない血液も暗い赤色で、採血管の中で黒っぽく見えるのはそのためです。静脈が青く見えるのは、赤い光が皮膚の奥まで届いて血液に吸収され、青い光が目に跳ね返ってくるからです。肌の色が濃い人では、同じ静脈が緑っぽく見えることもあります。"
+   },
+   "ko": {
+    "title": "핏줄은 파래 보여도 피는 결코 파랗지 않다 🩸",
+    "description": "피는 언제나 빨간색입니다. 정맥 속 산소가 적은 피도 검붉은색이라서 채혈관에 담긴 피가 어둡게 보입니다. 정맥이 파랗게 보이는 건 빨간빛은 피부 깊이 들어가 피에 흡수되고, 파란빛은 눈으로 되돌아오기 때문입니다. 피부색이 짙으면 같은 정맥이 초록빛으로 보이기도 합니다."
+   },
+   "pl": {
+    "title": "Żyły wyglądają na niebieskie, ale krew nigdy taka nie jest 🩸",
+    "description": "Krew zawsze jest czerwona: nawet uboga w tlen krew w żyłach ma ciemnoczerwony kolor, dlatego w probówce przy badaniu wygląda na ciemną. Żyły wydają się niebieskie, bo czerwone światło wnika głębiej i jest pochłaniane przez krew, a niebieskie odbija się z powrotem do oczu. Pod ciemniejszą skórą te same żyły mogą wyglądać na zielone."
+   },
+   "nl": {
+    "title": "Je aders lijken blauw, maar je bloed is dat nooit 🩸",
+    "description": "Bloed is altijd rood: zelfs zuurstofarm bloed in je aders is donkerrood, daarom ziet bloed in een buisje bij een bloedafname er donker uit. Aders lijken blauw omdat rood licht dieper de huid in gaat en door het bloed wordt opgenomen, terwijl blauw licht terugkaatst naar je ogen. Onder een donkerdere huid kunnen dezelfde aders groen lijken."
+   },
+   "uk": {
+    "title": "Вени здаються синіми, але кров ніколи не буває синьою 🩸",
+    "description": "Кров завжди червона: навіть бідна на кисень венозна кров темно-червона, тому в пробірці під час аналізу вона виглядає темною. Вени здаються синіми, бо червоне світло проникає глибше й поглинається кров'ю, а синє відбивається назад до очей. Під темнішою шкірою ті самі вени можуть виглядати зеленими."
+   },
+   "vi": {
+    "title": "Tĩnh mạch trông màu xanh, nhưng máu bạn chưa bao giờ xanh 🩸",
+    "description": "Máu luôn có màu đỏ: ngay cả máu nghèo oxy trong tĩnh mạch cũng đỏ sẫm, vì vậy máu trong ống xét nghiệm trông khá tối. Tĩnh mạch trông xanh vì ánh sáng đỏ đi sâu vào da và bị máu hấp thụ, còn ánh sáng xanh dội ngược về mắt bạn. Ở làn da sẫm màu, chính những tĩnh mạch đó có thể trông hơi xanh lục."
+   },
+   "az": {
+    "title": "Damarların mavi görünür, amma qanın heç vaxt mavi deyil 🩸",
+    "description": "Qan həmişə qırmızıdır: venalardakı oksigeni az olan qan da tünd qırmızıdır, ona görə analiz şüşəsində tünd görünür. Damarlar mavi görünür, çünki qırmızı işıq dəriyə daha dərin keçib qan tərəfindən udulur, mavi işıq isə gözünə geri qayıdır. Tünd dəridə eyni damarlar yaşılımtıl görünə bilər."
+   },
+   "ro": {
+    "title": "Venele par albastre, dar sângele tău nu e niciodată albastru 🩸",
+    "description": "Sângele este mereu roșu: chiar și sângele sărac în oxigen din vene e roșu-închis, de aceea în eprubeta de analize pare închis la culoare. Venele par albastre pentru că lumina roșie pătrunde mai adânc și e absorbită de sânge, iar cea albastră se întoarce spre ochii tăi. Sub o piele mai închisă, aceleași vene pot părea verzi."
+   }
+  }
+ }
+}

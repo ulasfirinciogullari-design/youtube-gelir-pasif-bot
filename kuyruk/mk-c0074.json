@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0074",
+ "topic": "Köpekler suçluluk duyar mı, köpeğin suçlu bakışı ne anlama gelir?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "sad dog face",
+ "script": {
+  "title": "Köpeğinin suçlu bakışı suçluluk değil 🐶",
+  "hook_text": "KÖPEKLER SUÇLULUK DUYAR MI?",
+  "scenes": [
+   {
+    "text": "Bu köpeğin suçlu bakışı suçluluk değil.",
+    "visual": "close-up of a dog's face with ears pulled back and sad eyes looking up into the camera",
+    "stock_query": "sad dog",
+    "source": "stock",
+    "callout": "SUÇLULUK DEĞİL"
+   },
+   {
+    "text": "Bir deneyde, iki bin dokuzda, odaya dönen sahiplere köpeğin yasak ödülü yediği söylendi; bazen yalan yere.",
+    "visual": "a dog sitting on the floor next to a dog treat, looking at it",
+    "stock_query": "dog treat",
+    "source": "stock",
+    "callout": "BAZEN YALAN"
+   },
+   {
+    "text": "En suçlu bakanlar, ödüle dokunmadığı halde azar işiten köpeklerdi.",
+    "visual": "a dog lowering its head and looking away while its owner stands over it",
+    "stock_query": "dog owner",
+    "source": "stock",
+    "callout": "SUÇSUZ AMA EN SUÇLU"
+   },
+   {
+    "text": "Çünkü o bakış geçmişe değil sana: kızgınlığını yatıştırma çabası.",
+    "visual": "close-up of a dog licking its lips and blinking while looking up at a person",
+    "stock_query": "dog looking up",
+    "source": "stock",
+    "callout": "SANA CEVAP"
+   },
+   {
+    "text": "Kızmadan önce bir daha bak; çünkü...",
+    "visual": "a dog lying on a sofa looking straight at the camera with big eyes",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeğin suçlu bakışı, yaptığı yaramazlığı bildiğini göstermiyor. 2009'daki bir deneyde en suçlu bakışlar, yasak ödülü yemediği halde azar işiten köpeklerden geldi. Araştırmacılara göre bu bakış, sahibinin kızgınlığına verilen bir yatıştırma tepkisi.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpekler suçluluk duyar mı",
+   "suçlu köpek",
+   "köpek davranışları",
+   "köpek eğitimi",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: suçsuz köpeğin en suçlu bakması mı, bakışın aslında sana cevap olması mı?",
+  "en_title": "Your dog's guilty look isn't actually guilt 🐶",
+  "en_description": "In a 2009 experiment, owners were told whether their dog had eaten a forbidden treat, and sometimes the information was false. The guiltiest looks came from dogs scolded for a treat they never touched. Researchers say the look is a response to the owner's anger, not a sign the dog knows it misbehaved.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler suçluluk duyar mı, köpeğin suçlu bakışı ne anlama gelir?\n\nBarnard College'dan Alexandra Horowitz'in 2009'daki deneyinde sahipler köpeklerine yasak bir ödülü yememesini söyleyip odadan çıktı; döndüklerinde onlara köpeğin ödülü yiyip yemediği söylendi, ama bu bilgi bazen yanlıştı. Suçlu bakış, köpeğin ödülü gerçekten yiyip yememesinden çok sahibin azarlamasına bağlıydı; en belirgin suçlu bakışlar, ödülü yemediği halde azar işiten köpeklerden geldi. Sonraki deneyler de bu bakışın yaramazlığı değil, sahibin kızgınlığını beklemeyi yansıttığını gösterdi; uzmanlar bunu bir yatıştırma davranışı olarak görüyor.\n\nSence hangisi daha şaşırtıcı: suçsuz köpeğin en suçlu bakması mı, bakışın aslında sana cevap olması mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpekler suçluluk duyar mı",
+   "köpeğin suçlu bakışı",
+   "suçlu köpek",
+   "köpek neden suçlu bakar",
+   "köpek azarlamak",
+   "köpeğe kızmak",
+   "köpek eğitimi",
+   "köpek davranışları",
+   "köpek dili",
+   "köpek psikolojisi",
+   "köpek sahipleri",
+   "evcil hayvanlar",
+   "hayvan davranışları",
+   "hayvan psikolojisi",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "dog guilty look",
+   "do dogs feel guilt"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your dog's guilty look isn't actually guilt 🐶",
+    "description": "In a 2009 experiment, owners were told whether their dog had eaten a forbidden treat, and sometimes the information was false. The guiltiest looks came from dogs scolded for a treat they never touched. The look is a response to the owner's anger, not a sign the dog knows it misbehaved."
+   },
+   "es": {
+    "title": "La mirada culpable de tu perro no es culpa 🐶",
+    "description": "En un experimento de 2009, a los dueños se les dijo si su perro se había comido un premio prohibido, y a veces la información era falsa. Las miradas más culpables vinieron de perros regañados por un premio que ni habían tocado. Esa mirada responde al enfado del dueño, no a que el perro sepa que se portó mal."
+   },
+   "pt": {
+    "title": "O olhar culpado do seu cachorro não é culpa 🐶",
+    "description": "Num experimento de 2009, os donos ouviam se o cachorro tinha comido um petisco proibido, e às vezes a informação era falsa. Os olhares mais culpados vieram de cães repreendidos por um petisco que nem tinham tocado. Esse olhar é uma reação à bronca do dono, não um sinal de que o cão sabe que errou."
+   },
+   "de": {
+    "title": "Der schuldbewusste Hundeblick ist kein Schuldgefühl 🐶",
+    "description": "In einem Experiment von 2009 wurde Besitzern gesagt, ob ihr Hund ein verbotenes Leckerli gefressen hatte – manchmal stimmte das nicht. Am schuldbewusstesten schauten Hunde, die für ein Leckerli geschimpft wurden, das sie gar nicht angerührt hatten. Der Blick ist eine Reaktion auf den Ärger des Besitzers, kein Zeichen von Einsicht."
+   },
+   "fr": {
+    "title": "Le regard coupable de ton chien n'est pas de la culpabilité 🐶",
+    "description": "Dans une expérience de 2009, on disait aux maîtres si leur chien avait mangé une friandise interdite, parfois à tort. Les regards les plus coupables venaient des chiens grondés pour une friandise qu'ils n'avaient même pas touchée. Ce regard répond à la colère du maître, il ne prouve pas que le chien sait avoir fauté."
+   },
+   "it": {
+    "title": "Lo sguardo colpevole del tuo cane non è senso di colpa 🐶",
+    "description": "In un esperimento del 2009 ai padroni veniva detto se il cane aveva mangiato un premio proibito, e a volte l'informazione era falsa. Gli sguardi più colpevoli arrivavano dai cani sgridati per un premio che non avevano nemmeno toccato. Quello sguardo è una risposta alla rabbia del padrone, non la prova che il cane sa di aver sbagliato."
+   },
+   "ru": {
+    "title": "Виноватый взгляд собаки — это не чувство вины 🐶",
+    "description": "В эксперименте 2009 года хозяевам сообщали, съела ли собака запрещённое лакомство, и иногда эта информация была ложной. Самый виноватый вид был у собак, которых ругали за лакомство, которого они даже не трогали. Этот взгляд — реакция на недовольство хозяина, а не признак того, что собака понимает свою вину."
+   },
+   "ar": {
+    "title": "نظرة كلبك المذنبة ليست شعورًا بالذنب 🐶",
+    "description": "في تجربة أُجريت عام 2009، أُخبر أصحاب الكلاب إن كان كلبهم قد أكل مكافأة ممنوعة، وكانت المعلومة أحيانًا خاطئة. وجاءت أكثر النظرات ذنبًا من كلاب وُبّخت على مكافأة لم تلمسها أصلًا. هذه النظرة ردّ فعل على غضب صاحبها، لا دليل على أن الكلب يعرف أنه أخطأ."
+   },
+   "hi": {
+    "title": "आपके कुत्ते की 'दोषी' नज़र असल में अपराधबोध नहीं है 🐶",
+    "description": "2009 के एक प्रयोग में मालिकों को बताया गया कि उनके कुत्ते ने मना की गई ट्रीट खाई या नहीं, और कभी-कभी यह जानकारी ग़लत थी। सबसे ज़्यादा दोषी नज़र उन कुत्तों की थी जिन्हें ऐसी ट्रीट के लिए डाँटा गया जिसे उन्होंने छुआ तक नहीं था। यह नज़र मालिक के ग़ुस्से की प्रतिक्रिया है, ग़लती समझने का संकेत नहीं।"
+   },
+   "id": {
+    "title": "Tatapan bersalah anjingmu bukan rasa bersalah 🐶",
+    "description": "Dalam eksperimen tahun 2009, pemilik diberi tahu apakah anjingnya memakan camilan terlarang, dan kadang informasinya salah. Tatapan paling bersalah justru datang dari anjing yang dimarahi padahal tidak menyentuh camilan itu. Tatapan itu adalah respons terhadap kemarahan pemilik, bukan tanda anjing tahu dirinya salah."
+   },
+   "ja": {
+    "title": "犬の「反省顔」は罪悪感ではない 🐶",
+    "description": "2009年の実験では、飼い主に犬が禁止されたおやつを食べたかどうかを伝えましたが、その情報は時々うそでした。いちばん反省しているように見えたのは、おやつに触れてもいないのに叱られた犬でした。あの表情は飼い主の怒りへの反応で、悪いことをしたと分かっている証拠ではありません。"
+   },
+   "ko": {
+    "title": "강아지의 '미안한 표정'은 죄책감이 아니다 🐶",
+    "description": "2009년 실험에서 주인들에게 개가 금지된 간식을 먹었는지 알려 주었는데, 그 정보는 가끔 거짓이었습니다. 가장 미안해 보이는 표정은 간식에 손도 대지 않았는데 혼난 개들에게서 나왔습니다. 그 표정은 주인의 화에 대한 반응이지, 잘못을 안다는 신호가 아닙니다."
+   },
+   "pl": {
+    "title": "Winne spojrzenie psa to nie poczucie winy 🐶",
+    "description": "W eksperymencie z 2009 roku właścicielom mówiono, czy pies zjadł zakazany smakołyk, a czasem była to nieprawda. Najbardziej winne spojrzenia miały psy skarcone za smakołyk, którego nawet nie tknęły. To spojrzenie jest reakcją na złość właściciela, a nie dowodem, że pies wie, że coś przeskrobał."
+   },
+   "nl": {
+    "title": "De schuldige blik van je hond is geen schuldgevoel 🐶",
+    "description": "In een experiment uit 2009 kregen baasjes te horen of hun hond een verboden snoepje had opgegeten, en soms klopte dat niet. De schuldigste blikken kwamen van honden die op hun kop kregen voor een snoepje dat ze niet eens hadden aangeraakt. De blik is een reactie op de boosheid van het baasje, geen teken dat de hond weet dat hij fout zat."
+   },
+   "uk": {
+    "title": "Винуватий погляд собаки — це не почуття провини 🐶",
+    "description": "В експерименті 2009 року господарям повідомляли, чи з'їв пес заборонені ласощі, і часом ця інформація була хибною. Найвинуватіше виглядали собаки, яких сварили за ласощі, яких вони навіть не торкалися. Цей погляд — реакція на гнів господаря, а не ознака того, що собака розуміє свою провину."
+   },
+   "vi": {
+    "title": "Ánh mắt 'có lỗi' của chó không phải là cảm giác tội lỗi 🐶",
+    "description": "Trong một thí nghiệm năm 2009, chủ được báo chó của họ có ăn món thưởng bị cấm hay không, và đôi khi thông tin đó là sai. Ánh mắt 'có lỗi' nhất lại đến từ những con chó bị mắng vì món thưởng mà chúng chưa hề đụng tới. Ánh mắt đó là phản ứng trước cơn giận của chủ, không phải dấu hiệu chó biết mình làm sai."
+   },
+   "az": {
+    "title": "Köpəyinin günahkar baxışı günah hissi deyil 🐶",
+    "description": "2009-cu ildə aparılan bir təcrübədə sahiblərə köpəyin qadağan olunmuş yeməyi yeyib-yemədiyi deyildi, bəzən isə bu məlumat yalan idi. Ən günahkar baxışlar yeməyə toxunmadığı halda danlanan köpəklərdən gəldi. Bu baxış sahibinin hirsinə verilən cavabdır, köpəyin səhv etdiyini bildiyinin əlaməti deyil."
+   },
+   "ro": {
+    "title": "Privirea vinovată a câinelui tău nu e vinovăție 🐶",
+    "description": "Într-un experiment din 2009, stăpânilor li s-a spus dacă propriul câine a mâncat o recompensă interzisă, iar uneori informația era falsă. Cele mai vinovate priviri au venit de la câinii certați pentru o recompensă pe care nici n-o atinseseră. Privirea este o reacție la supărarea stăpânului, nu un semn că animalul știe că a greșit."
+   }
+  }
+ }
+}

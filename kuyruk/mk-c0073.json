@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0073",
+ "topic": "Telefonda gülümsemek sesten anlaşılır mı, gülümseme karşı taraftan duyulur mu?",
+ "kategori": "psikoloji",
+ "subject": [
+  "smile",
+  "phone"
+ ],
+ "stock_hint": "woman smiling phone",
+ "script": {
+  "title": "Telefonda gülümsediğini karşındaki duyar 😊",
+  "hook_text": "GÜLÜMSEME SESTEN DUYULUR MU?",
+  "scenes": [
+   {
+    "text": "Bu kadının gülümsemesini telefonda bile duyarsın.",
+    "visual": "close-up of a young woman smiling broadly while talking on a mobile phone, facing the camera",
+    "stock_query": "woman smiling phone",
+    "source": "stock",
+    "callout": "GÜLÜMSEME DUYULUR"
+   },
+   {
+    "text": "Deneylerde insanlar yalnızca sesten, gülümseyerek söylenen cümleyi çoğu kez seçti.",
+    "visual": "close-up of a man listening carefully to a phone call with his eyes closed",
+    "stock_query": "man phone call",
+    "source": "stock",
+    "callout": "SADECE SESTEN"
+   },
+   {
+    "text": "Daha tuhafı: iki bin on sekizdeki bir deneyde, dinleyenin gülümseme kası farkında olmadan çalıştı.",
+    "visual": "close-up of a woman wearing headphones whose face breaks into a small smile as she listens",
+    "stock_query": "woman headphones",
+    "source": "stock",
+    "callout": "GÜLÜMSEME KASI ÇALIŞTI",
+    "subject": [
+     "headphones"
+    ]
+   },
+   {
+    "text": "Çünkü gülümserken dudakların yana gerilir; bu, sesinin tınısını inceltir ve kulak bunu yakalar.",
+    "visual": "extreme close-up of smiling lips as a woman speaks",
+    "stock_query": "smiling mouth",
+    "source": "stock",
+    "callout": "SES İNCELİR",
+    "subject": [
+     "mouth"
+    ]
+   },
+   {
+    "text": "Bir dahaki aramada sen de gülümse, çünkü...",
+    "visual": "a smiling man talking on his phone while walking down a sunny street",
+    "stock_query": "man smiling phone",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Gülümseyerek konuştuğunda sesin değişir ve karşındaki bunu yalnızca sesinden anlayabilir. Deneylerde dinleyiciler gülümseyerek söylenen cümleyi tesadüften çok daha sık doğru seçti; 2018'deki bir deneyde dinleyenlerin gülümseme kası da farkında olmadan çalıştı.",
+  "tags": [
+   "gülümseme",
+   "telefonda gülümsemek",
+   "ses tonu",
+   "iletişim",
+   "beden dili",
+   "sosyal psikoloji",
+   "psikoloji",
+   "insan psikolojisi",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: gülümsemenin sesten duyulması mı, dinleyenin de farkında olmadan gülümsemesi mi?",
+  "en_title": "People can hear you smile on the phone 😊",
+  "en_description": "Smiling while you speak changes the sound of your voice, and listeners can pick it up from sound alone. In experiments, people identified sentences spoken with a smile well above chance. A 2018 study found that hearing a smiling voice made listeners' own smile muscles activate without them noticing.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Telefonda gülümsediğin anlaşılır mı, gülümseme sesten duyulur mu?\n\nGülümserken dudakların yana gerilir ve bu, sesindeki tınıları (formantları) yukarı kaydırır; ses biraz daha parlak ve ince çıkar. Kırk yılı aşkın süredir yapılan deneylerde dinleyiciler yalnızca sesi duyarak gülümseyerek söylenen cümleyi tesadüften çok daha sık doğru seçti. 2018'de Current Biology dergisinde yayımlanan bir deneyde ise gülümseyen bir sesi duyan kişilerin gülümseme kası, gülümsemeyi bilinçli olarak fark etmedikleri durumlarda bile çalıştı.\n\nSence hangisi daha şaşırtıcı: gülümsemenin sesten duyulması mı, dinleyenin de farkında olmadan gülümsemesi mi?",
+  "hashtags": [
+   "#gülümseme",
+   "#iletişim",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "gülümseme",
+   "telefonda gülümsemek",
+   "gülümseme sesten anlaşılır mı",
+   "sesli gülümseme",
+   "ses tonu",
+   "ses tonu nasıl olmalı",
+   "telefonda konuşma",
+   "telefon görüşmesi",
+   "gülümsemenin etkisi",
+   "gülümseme bulaşıcı mı",
+   "beden dili",
+   "iletişim",
+   "iletişim becerileri",
+   "sosyal psikoloji",
+   "insan psikolojisi",
+   "psikoloji",
+   "insan davranışları",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "hearing a smile",
+   "smile voice"
+  ],
+  "localizations": {
+   "en": {
+    "title": "People can hear you smile on the phone 😊",
+    "description": "Smiling while you speak changes the sound of your voice, and listeners can pick it up from sound alone. In experiments, people identified sentences spoken with a smile well above chance. A 2018 study found that hearing a smiling voice made listeners' own smile muscles activate without them noticing."
+   },
+   "es": {
+    "title": "La gente puede oír tu sonrisa por teléfono 😊",
+    "description": "Sonreír mientras hablas cambia el sonido de tu voz, y quien escucha puede notarlo solo con el oído. En varios experimentos, los oyentes reconocieron las frases dichas sonriendo mucho más de lo que permitiría el azar. Un estudio de 2018 halló que oír una voz sonriente activaba sin querer los músculos de la sonrisa del oyente."
+   },
+   "pt": {
+    "title": "As pessoas conseguem ouvir seu sorriso ao telefone 😊",
+    "description": "Sorrir enquanto fala muda o som da sua voz, e quem escuta percebe isso só pelo ouvido. Em experimentos, os ouvintes identificaram frases ditas sorrindo bem acima do acaso. Um estudo de 2018 mostrou que ouvir uma voz sorridente ativava os músculos do sorriso de quem ouvia, sem que a pessoa percebesse."
+   },
+   "de": {
+    "title": "Man hört dein Lächeln sogar am Telefon 😊",
+    "description": "Wer beim Sprechen lächelt, verändert den Klang seiner Stimme, und Zuhörer erkennen das allein am Ton. In Experimenten erkannten Menschen lächelnd gesprochene Sätze deutlich häufiger als per Zufall. Eine Studie von 2018 zeigte, dass beim Hören einer lächelnden Stimme die Lächelmuskeln der Zuhörer unbemerkt aktiv wurden."
+   },
+   "fr": {
+    "title": "On entend ton sourire au téléphone 😊",
+    "description": "Sourire en parlant change le son de ta voix, et ton interlocuteur peut le percevoir rien qu'à l'oreille. Dans plusieurs expériences, les auditeurs ont reconnu les phrases dites en souriant bien plus souvent que le hasard. Une étude de 2018 a montré qu'entendre une voix souriante activait, sans qu'ils s'en rendent compte, les muscles du sourire des auditeurs."
+   },
+   "it": {
+    "title": "Al telefono si sente se stai sorridendo 😊",
+    "description": "Sorridere mentre parli cambia il suono della tua voce, e chi ascolta se ne accorge solo dal suono. Negli esperimenti, gli ascoltatori hanno riconosciuto le frasi dette sorridendo molto più spesso del caso. Uno studio del 2018 ha scoperto che sentire una voce sorridente attivava i muscoli del sorriso di chi ascoltava, senza che se ne accorgesse."
+   },
+   "ru": {
+    "title": "Вашу улыбку слышно даже по телефону 😊",
+    "description": "Когда вы улыбаетесь во время разговора, ваш голос звучит иначе, и собеседник может уловить это только на слух. В экспериментах слушатели узнавали фразы, сказанные с улыбкой, гораздо чаще, чем при случайном угадывании. Исследование 2018 года показало, что при звуке улыбающегося голоса у слушателей незаметно для них включались мышцы улыбки."
+   },
+   "ar": {
+    "title": "ابتسامتك تُسمَع حتى عبر الهاتف 😊",
+    "description": "عندما تبتسم وأنت تتكلم يتغيّر صوتك، ويستطيع المستمع أن يلاحظ ذلك من الصوت وحده. في التجارب، تعرّف المستمعون على الجمل المنطوقة بابتسامة أكثر بكثير مما تسمح به الصدفة. ووجدت دراسة عام 2018 أن سماع صوت مبتسم ينشّط عضلات الابتسامة لدى المستمع دون أن يشعر."
+   },
+   "hi": {
+    "title": "फ़ोन पर भी आपकी मुस्कान सुनाई देती है 😊",
+    "description": "बोलते समय मुस्कुराने से आपकी आवाज़ बदल जाती है, और सुनने वाला सिर्फ़ आवाज़ से इसे पहचान सकता है। प्रयोगों में लोगों ने मुस्कुराकर बोले गए वाक्यों को अंदाज़े से कहीं ज़्यादा बार सही पहचाना। 2018 के एक अध्ययन में पाया गया कि मुस्कुराती आवाज़ सुनकर सुनने वालों की मुस्कान वाली मांसपेशियाँ अनजाने में सक्रिय हो गईं।"
+   },
+   "id": {
+    "title": "Senyummu bisa terdengar lewat telepon 😊",
+    "description": "Tersenyum saat berbicara mengubah suaramu, dan pendengar bisa menangkapnya hanya dari suara. Dalam berbagai eksperimen, orang mengenali kalimat yang diucapkan sambil tersenyum jauh lebih sering daripada tebakan acak. Sebuah studi tahun 2018 menemukan bahwa mendengar suara yang tersenyum membuat otot senyum pendengar ikut bergerak tanpa disadari."
+   },
+   "ja": {
+    "title": "電話越しでも笑顔は声で伝わる 😊",
+    "description": "笑顔で話すと声の響きが変わり、聞き手は音だけでそれに気づけます。実験では、笑顔で話された文を偶然よりはるかに高い確率で聞き分けられました。2018年の研究では、笑顔の声を聞いた人の笑顔の筋肉が、本人も気づかないうちに動いていました。"
+   },
+   "ko": {
+    "title": "전화로도 당신의 미소가 들린다 😊",
+    "description": "웃으면서 말하면 목소리가 달라지고, 듣는 사람은 소리만으로 그걸 알아챕니다. 실험에서 사람들은 웃으며 말한 문장을 우연보다 훨씬 자주 맞혔습니다. 2018년 연구에서는 웃는 목소리를 들은 사람의 미소 근육이 본인도 모르게 움직였습니다."
+   },
+   "pl": {
+    "title": "Twój uśmiech słychać nawet przez telefon 😊",
+    "description": "Uśmiech podczas mówienia zmienia brzmienie głosu, a słuchacz potrafi to wychwycić samym uchem. W eksperymentach ludzie rozpoznawali zdania wypowiedziane z uśmiechem znacznie częściej, niż wynikałoby to z przypadku. Badanie z 2018 roku wykazało, że słysząc uśmiechnięty głos, słuchacze nieświadomie uruchamiali mięśnie uśmiechu."
+   },
+   "nl": {
+    "title": "Aan de telefoon hoor je of iemand glimlacht 😊",
+    "description": "Glimlachen tijdens het praten verandert de klank van je stem, en luisteraars kunnen dat puur op het gehoor opmerken. In experimenten herkenden mensen zinnen die met een glimlach werden uitgesproken veel vaker dan op basis van toeval. Een studie uit 2018 liet zien dat bij het horen van een lachende stem de glimlachspieren van luisteraars ongemerkt aanspanden."
+   },
+   "uk": {
+    "title": "Вашу усмішку чути навіть телефоном 😊",
+    "description": "Коли ви усміхаєтеся під час розмови, ваш голос звучить інакше, і співрозмовник може вловити це лише на слух. В експериментах слухачі впізнавали фрази, сказані з усмішкою, значно частіше, ніж за випадкового вгадування. Дослідження 2018 року показало, що від звуку усміхненого голосу в слухачів непомітно для них вмикалися м'язи усмішки."
+   },
+   "vi": {
+    "title": "Người khác nghe được nụ cười của bạn qua điện thoại 😊",
+    "description": "Mỉm cười khi nói sẽ làm giọng bạn thay đổi, và người nghe có thể nhận ra chỉ qua âm thanh. Trong các thí nghiệm, người nghe nhận ra câu nói kèm nụ cười thường xuyên hơn hẳn so với đoán mò. Một nghiên cứu năm 2018 cho thấy khi nghe giọng nói đang cười, cơ cười của người nghe tự hoạt động mà họ không hề hay biết."
+   },
+   "az": {
+    "title": "Telefonda gülümsədiyini qarşı tərəf eşidir 😊",
+    "description": "Danışarkən gülümsəmək səsini dəyişir və dinləyən bunu yalnız səsdən tuta bilir. Təcrübələrdə insanlar gülümsəyərək deyilən cümlələri təsadüfdən xeyli tez-tez düzgün seçdi. 2018-ci ildə aparılan bir araşdırmada gülümsəyən səsi eşidən insanların gülümsəmə əzələsi onlar fərqinə varmadan işə düşdü."
+   },
+   "ro": {
+    "title": "Zâmbetul tău se aude chiar și la telefon 😊",
+    "description": "Când zâmbești în timp ce vorbești, vocea ți se schimbă, iar cel care ascultă poate observa asta doar după sunet. În experimente, oamenii au recunoscut propozițiile rostite cu zâmbetul pe buze mult mai des decât la întâmplare. Un studiu din 2018 a arătat că, auzind o voce zâmbitoare, mușchii zâmbetului ascultătorilor se activau fără ca ei să-și dea seama."
+   }
+  }
+ }
+}

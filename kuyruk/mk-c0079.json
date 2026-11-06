@@ -1,0 +1,178 @@
+{
+ "id": "mk-c0079",
+ "topic": "Saç bir gecede beyazlayabilir mi, korkudan ya da stresten saçlar bir gecede ağarır mı?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "hair"
+ ],
+ "stock_hint": "gray hair close up",
+ "script": {
+  "title": "Saç korkudan bir gecede bembeyaz olabilir mi? 😱",
+  "hook_text": "SAÇ BİR GECEDE AĞARIR MI?",
+  "scenes": [
+   {
+    "text": "Bu saç tellerinin hepsi aslında ölü.",
+    "visual": "extreme close-up of gray and white hair strands on a man's head",
+    "stock_query": "gray hair",
+    "source": "stock",
+    "callout": "ÖLÜ TELLER"
+   },
+   {
+    "text": "Peki korkudan bir gecede bembeyaz olabilir mi?",
+    "visual": "close-up of an older man with white hair looking worried",
+    "stock_query": "white hair man",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Stres masum değil: bir deneyde, iki bin yirmide, farelerde tüye renk veren kök hücreler birkaç günde tükendi.",
+    "visual": "close-up of a white laboratory mouse sniffing the air",
+    "stock_query": "white mouse",
+    "source": "stock",
+    "callout": "STRES AĞARTIR",
+    "subject": [
+     "mouse"
+    ]
+   },
+   {
+    "text": "Ama bir gecede hayır: renk kökte verilir, çıkmış tel boyasını kaybedemez.",
+    "visual": "macro shot of a comb sliding through hair, roots visible",
+    "stock_query": "hair comb",
+    "source": "stock",
+    "callout": "BİR GECEDE OLMAZ"
+   },
+   {
+    "text": "Beyaz, ancak saç uzadıkça kökten gelir; çünkü...",
+    "visual": "a man running his fingers through his graying hair in front of a mirror",
+    "stock_query": "man gray hair",
+    "source": "stock",
+    "callout": "KÖKTEN BEYAZ"
+   }
+  ],
+  "description": "Saçın bir gecede bembeyaz olması mümkün değil: saç teli ölü keratinden oluşur ve rengi kökte, uzarken verilir; çıkmış bir tel rengini kaybedemez. Yine de stres ağarmayı hızlandırabilir: 2020'deki bir deneyde farelerde tüye renk veren kök hücreler birkaç günde tükendi.",
+  "tags": [
+   "saç",
+   "beyaz saç",
+   "saç neden beyazlar",
+   "saç ağarması",
+   "stres",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: saç tellerinin ölü olması mı, stresin farelerdeki renk hücrelerini birkaç günde tüketmesi mi?",
+  "en_title": "Can your hair turn white overnight from fear? 😱",
+  "en_description": "No. Each hair is dead keratin that gets its color at the root while it grows, so a strand that's already out can't lose its pigment overnight. Stress can still speed up graying: in a 2020 Harvard study, stress wiped out the pigment stem cells of mice within days, and their new fur grew in white.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Saç bir gecede beyazlayabilir mi, korkudan ya da stresten saçlar bir gecede ağarır mı?\n\nHayır. Saç teli canlı değildir, ölü keratinden oluşur ve rengini uzarken kökteki pigment hücrelerinden alır. Bu yüzden saç ancak uzadığı hızda renk değiştirebilir; zaten çıkmış bir tel bir gecede beyazlayamaz. Yine de stres masum değil: Harvard Üniversitesi'nin 2020'de Nature dergisinde yayımlanan deneyinde stres, farelerde sempatik sinirler aracılığıyla tüye renk veren kök hücreleri birkaç gün içinde tüketti ve sonradan çıkan tüyler beyaz çıktı. Bir görüşe göre 'bir gecede ağardı' hikâyelerinin ardında, renkli telleri döküp beyazları bırakan ve haftalar süren yaygın bir saç dökülmesi olabilir.\n\nSence hangisi daha şaşırtıcı: saç tellerinin ölü olması mı, stresin farelerdeki renk hücrelerini birkaç günde tüketmesi mi?",
+  "hashtags": [
+   "#saç",
+   "#beyazsaç",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "saç",
+   "beyaz saç",
+   "saç neden beyazlar",
+   "saç bir gecede beyazlar mı",
+   "stresten saç beyazlar mı",
+   "korkudan saç ağarır mı",
+   "saç ağarması",
+   "kır saç",
+   "erken beyazlama",
+   "gri saç",
+   "saç rengi",
+   "stres",
+   "stresin vücuda etkisi",
+   "saç sağlığı",
+   "insan vücudu",
+   "vücut",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "gray hair",
+   "hair turn white overnight"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can your hair turn white overnight from fear? 😱",
+    "description": "No. Each hair is dead keratin that gets its color at the root while it grows, so a strand that's already out can't lose its pigment overnight. Stress can still speed up graying: in a 2020 Harvard study, stress wiped out the pigment stem cells of mice within days, and their new fur grew in white."
+   },
+   "es": {
+    "title": "¿Puede el pelo volverse blanco en una noche por un susto? 😱",
+    "description": "No. Cada pelo es queratina muerta que toma su color en la raíz mientras crece, así que un pelo que ya salió no puede perder su pigmento de la noche a la mañana. Aun así, el estrés puede acelerar las canas: en un estudio de Harvard de 2020, el estrés agotó en pocos días las células madre del pigmento de unos ratones, y su pelo nuevo salió blanco."
+   },
+   "pt": {
+    "title": "O cabelo pode ficar branco da noite para o dia por susto? 😱",
+    "description": "Não. Cada fio é queratina morta que recebe a cor na raiz enquanto cresce, então um fio que já nasceu não perde o pigmento da noite para o dia. Mas o estresse pode acelerar os brancos: num estudo de Harvard de 2020, o estresse esgotou em poucos dias as células-tronco de pigmento de camundongos, e o pelo novo nasceu branco."
+   },
+   "de": {
+    "title": "Können Haare vor Schreck über Nacht weiß werden? 😱",
+    "description": "Nein. Jedes Haar besteht aus totem Keratin und bekommt seine Farbe beim Wachsen an der Wurzel – ein bereits gewachsenes Haar kann sein Pigment also nicht über Nacht verlieren. Stress kann das Ergrauen aber beschleunigen: In einer Harvard-Studie von 2020 vernichtete Stress bei Mäusen binnen Tagen die Pigment-Stammzellen, und das nachwachsende Fell war weiß."
+   },
+   "fr": {
+    "title": "Les cheveux peuvent-ils blanchir en une nuit sous le choc ? 😱",
+    "description": "Non. Chaque cheveu est fait de kératine morte et reçoit sa couleur à la racine pendant sa pousse : un cheveu déjà sorti ne peut donc pas perdre son pigment en une nuit. Le stress peut tout de même accélérer le blanchiment : dans une étude de Harvard de 2020, il a épuisé en quelques jours les cellules souches pigmentaires de souris, dont le nouveau pelage a poussé blanc."
+   },
+   "it": {
+    "title": "I capelli possono diventare bianchi in una notte per lo spavento? 😱",
+    "description": "No. Ogni capello è cheratina morta che prende colore alla radice mentre cresce, quindi un capello già spuntato non può perdere il pigmento in una notte. Lo stress però può accelerare l'incanutimento: in uno studio di Harvard del 2020, lo stress ha esaurito in pochi giorni le cellule staminali del pigmento nei topi, e il pelo nuovo è cresciuto bianco."
+   },
+   "ru": {
+    "title": "Могут ли волосы поседеть за одну ночь от страха? 😱",
+    "description": "Нет. Каждый волос — это мёртвый кератин, который окрашивается у корня во время роста, поэтому уже выросший волос не может потерять пигмент за ночь. Но стресс может ускорить седину: в исследовании Гарварда 2020 года стресс за несколько дней истощил пигментные стволовые клетки у мышей, и новая шерсть выросла белой."
+   },
+   "ar": {
+    "title": "هل يمكن أن يبيضّ الشعر في ليلة واحدة من الخوف؟ 😱",
+    "description": "لا. كل شعرة مكوّنة من كيراتين ميت تكتسب لونها عند الجذر أثناء نموها، لذا لا تستطيع شعرة نمت بالفعل أن تفقد صبغتها في ليلة. لكن التوتر قد يُسرّع الشيب: ففي دراسة لجامعة هارفارد عام 2020، استنفد التوتر خلال أيام الخلايا الجذعية الصبغية لدى الفئران، فنما فراؤها الجديد أبيض."
+   },
+   "hi": {
+    "title": "क्या डर से बाल एक ही रात में सफ़ेद हो सकते हैं? 😱",
+    "description": "नहीं। हर बाल मृत केराटिन से बना होता है और बढ़ते समय जड़ में ही रंग पाता है, इसलिए जो बाल पहले से उग चुका है वह एक रात में अपना रंग नहीं खो सकता। फिर भी तनाव बाल सफ़ेद होने की रफ़्तार बढ़ा सकता है: 2020 के हार्वर्ड अध्ययन में तनाव ने कुछ ही दिनों में चूहों की रंग बनाने वाली स्टेम कोशिकाएँ ख़त्म कर दीं, और उनके नए बाल सफ़ेद उगे।"
+   },
+   "id": {
+    "title": "Bisakah rambut memutih dalam semalam karena takut? 😱",
+    "description": "Tidak. Setiap helai rambut terbuat dari keratin mati yang mendapat warnanya di akar saat tumbuh, jadi helai yang sudah keluar tidak bisa kehilangan pigmennya dalam semalam. Namun stres bisa mempercepat uban: dalam studi Harvard tahun 2020, stres menghabiskan sel punca pigmen pada tikus dalam beberapa hari, dan bulu barunya tumbuh putih."
+   },
+   "ja": {
+    "title": "恐怖で髪が一晩で真っ白になることはある？ 😱",
+    "description": "ありません。髪の毛は死んだケラチンでできていて、伸びるときに根元で色がつくので、すでに生えている毛が一晩で色を失うことはありません。ただしストレスは白髪を早めることがあり、2020年のハーバード大学の研究では、ストレスによってマウスの色素幹細胞が数日で失われ、新しく生えた毛が白くなりました。"
+   },
+   "ko": {
+    "title": "공포로 하룻밤 새 머리가 하얗게 셀 수 있을까? 😱",
+    "description": "아닙니다. 머리카락은 죽은 케라틴이며 자랄 때 뿌리에서 색이 입혀지기 때문에, 이미 자란 머리카락이 하룻밤 새 색을 잃을 수는 없습니다. 그래도 스트레스는 흰머리를 앞당길 수 있습니다. 2020년 하버드대 연구에서 스트레스는 며칠 만에 생쥐의 색소 줄기세포를 고갈시켰고, 새로 난 털은 하얗게 자랐습니다."
+   },
+   "pl": {
+    "title": "Czy włosy mogą osiwieć w jedną noc ze strachu? 😱",
+    "description": "Nie. Każdy włos to martwa keratyna, która nabiera koloru u nasady podczas wzrostu, więc włos, który już wyrósł, nie może stracić barwnika w jedną noc. Stres może jednak przyspieszyć siwienie: w badaniu Harvardu z 2020 roku stres w ciągu kilku dni wyczerpał u myszy komórki macierzyste barwnika, a nowa sierść odrosła biała."
+   },
+   "nl": {
+    "title": "Kan je haar van schrik in één nacht wit worden? 😱",
+    "description": "Nee. Elke haar bestaat uit dood keratine dat zijn kleur bij de wortel krijgt terwijl het groeit, dus een haar die er al is, kan niet in één nacht zijn pigment verliezen. Stress kan grijs worden wel versnellen: in een Harvard-studie uit 2020 putte stress bij muizen binnen enkele dagen de pigmentstamcellen uit, en hun nieuwe vacht groeide wit."
+   },
+   "uk": {
+    "title": "Чи може волосся посивіти за одну ніч від страху? 😱",
+    "description": "Ні. Кожна волосина — це мертвий кератин, що отримує колір біля кореня під час росту, тож уже вирощена волосина не може втратити пігмент за ніч. Але стрес може пришвидшити сивіння: у дослідженні Гарварду 2020 року стрес за кілька днів виснажив пігментні стовбурові клітини мишей, і нова шерсть виросла білою."
+   },
+   "vi": {
+    "title": "Tóc có thể bạc trắng sau một đêm vì sợ hãi không? 😱",
+    "description": "Không. Mỗi sợi tóc là keratin đã chết và nhận màu ở chân tóc khi đang mọc, nên sợi tóc đã mọc ra không thể mất sắc tố chỉ sau một đêm. Tuy vậy, căng thẳng có thể khiến tóc bạc nhanh hơn: trong nghiên cứu năm 2020 của Harvard, căng thẳng làm cạn kiệt tế bào gốc sắc tố của chuột chỉ trong vài ngày, và lông mới mọc lên màu trắng."
+   },
+   "az": {
+    "title": "Saç qorxudan bir gecədə ağara bilərmi? 😱",
+    "description": "Xeyr. Hər saç teli ölü keratindən ibarətdir və rəngini uzanarkən kökdə alır, ona görə artıq çıxmış tel bir gecədə rəngini itirə bilməz. Bununla belə, stress ağarmanı sürətləndirə bilər: Harvardın 2020-ci il araşdırmasında stress siçanlarda rəng verən kök hüceyrələri bir neçə gündə tükətdi və yeni tükləri ağ çıxdı."
+   },
+   "ro": {
+    "title": "Poate părul să albească peste noapte de frică? 😱",
+    "description": "Nu. Fiecare fir de păr e keratină moartă care își primește culoarea la rădăcină în timp ce crește, deci un fir deja ieșit nu își poate pierde pigmentul peste noapte. Stresul poate totuși grăbi încărunțirea: într-un studiu Harvard din 2020, stresul a epuizat în câteva zile celulele stem de pigment la șoareci, iar blana nouă le-a crescut albă."
+   }
+  }
+ }
+}

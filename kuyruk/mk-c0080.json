@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0080",
+ "topic": "Baykuşların kulakları nerede, baykuşun başındaki sivri tüyler kulak mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "owl"
+ ],
+ "stock_hint": "barn owl face",
+ "script": {
+  "title": "Baykuşun bir kulağı öbüründen daha yukarıda 🦉",
+  "hook_text": "BAYKUŞUN KULAĞI NEREDE?",
+  "scenes": [
+   {
+    "text": "Bu baykuşun kulakları aynı hizada değil.",
+    "visual": "close-up of a barn owl's heart-shaped face staring straight into the camera",
+    "stock_query": "barn owl",
+    "source": "stock",
+    "callout": "ASİMETRİK KULAK"
+   },
+   {
+    "text": "Bazı baykuşların başındaki sivri kulaklar aslında sadece tüy.",
+    "visual": "close-up of an eagle owl with tall ear tufts on its head",
+    "stock_query": "eagle owl",
+    "source": "stock",
+    "callout": "SADECE TÜY"
+   },
+   {
+    "text": "Gerçek kulaklar yüzün iki yanında, tüylerin altında; birinin deliği daha yukarıda.",
+    "visual": "an owl slowly turning its head, the feathers of its facial disc in close-up",
+    "stock_query": "owl face",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Çünkü ses iki kulağa farklı güçte ulaşır; beyin bu farktan avın yüksekliğini hesaplar.",
+    "visual": "an owl tilting its head while listening intently",
+    "stock_query": "owl head",
+    "source": "stock",
+    "callout": "YÜKSEKLİĞİ BULUR"
+   },
+   {
+    "text": "Peçeli baykuş zifiri karanlıkta fareyi sadece sesinden yakalar; işte bu yüzden...",
+    "visual": "a barn owl flying low over a dark field at dusk",
+    "stock_query": "barn owl flying",
+    "source": "stock",
+    "callout": "KARANLIKTA AV"
+   }
+  ],
+  "description": "Bazı baykuşların başındaki sivri kulaklar aslında tüydür; gerçek kulaklar yüzün iki yanında, tüylerin altında gizlidir. Peçeli baykuşta bir kulak deliği öbüründen yukarıdadır; bu sayede baykuş, sesin iki kulağa ulaşan gücündeki farktan avın yüksekliğini bulur ve zifiri karanlıkta fareyi yalnızca sesinden yakalayabilir.",
+  "tags": [
+   "baykuş",
+   "baykuşlar",
+   "baykuş kulağı",
+   "peçeli baykuş",
+   "kuşlar",
+   "hayvanlar",
+   "vahşi yaşam",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: sivri kulakların tüy çıkması mı, karanlıkta fareyi sadece sesinden yakalaması mı?",
+  "en_title": "An owl's ears aren't at the same height 🦉",
+  "en_description": "The pointy 'ears' on some owls are just feathers; the real ears are hidden under the feathers on the sides of the face. In barn owls one ear opening sits higher than the other, so a sound reaches each ear at a different strength, telling the owl how high or low its prey is. Barn owls can catch a mouse in total darkness by sound alone.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Baykuşların kulakları nerede, baykuşun başındaki sivri tüyler kulak mı?\n\nBazı baykuşların başında kulak sanılan sivri uçlar aslında yalnızca tüydür ve duymayla ilgileri yoktur; gerçek kulaklar yüzün iki yanında, tüylerin altında gizlidir. Yüzdeki tüy halkası sesi bir çanak anten gibi kulaklara toplar. Peçeli baykuş gibi bazı türlerde kulak delikleri farklı yüksekliktedir; ses iki kulağa farklı güçte ulaştığı için baykuş avın yalnızca sağda mı solda mı olduğunu değil, ne kadar aşağıda ya da yukarıda olduğunu da hesaplar. Deneyler peçeli baykuşun zifiri karanlıkta bir fareyi yalnızca çıkardığı hışırtıdan bulup yakalayabildiğini gösterdi.\n\nSence hangisi daha şaşırtıcı: sivri kulakların tüy çıkması mı, karanlıkta fareyi sadece sesinden yakalaması mı?",
+  "hashtags": [
+   "#baykuş",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "baykuş",
+   "baykuşlar",
+   "baykuş kulağı",
+   "baykuşun kulakları nerede",
+   "baykuşlar nasıl duyar",
+   "peçeli baykuş",
+   "puhu",
+   "kulaklı orman baykuşu",
+   "baykuş tüyleri",
+   "baykuş avlanması",
+   "gece kuşları",
+   "yırtıcı kuşlar",
+   "kuşlar",
+   "kuş türleri",
+   "vahşi yaşam",
+   "hayvanlar",
+   "hayvan davranışları",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "owl ears",
+   "barn owl"
+  ],
+  "localizations": {
+   "en": {
+    "title": "An owl's ears aren't at the same height 🦉",
+    "description": "The pointy 'ears' on some owls are just feathers; the real ears are hidden on the sides of the face. In barn owls one ear opening sits higher than the other, so sounds reach each ear at different strengths, telling the owl how high or low its prey is. Barn owls can catch a mouse in total darkness by sound alone."
+   },
+   "es": {
+    "title": "Los oídos de la lechuza no están a la misma altura 🦉",
+    "description": "Las 'orejas' puntiagudas de algunos búhos son solo plumas; los oídos de verdad están escondidos a los lados de la cara. En la lechuza común un oído está más alto que el otro, así que el sonido llega a cada uno con distinta fuerza y le dice a qué altura está la presa. Puede cazar un ratón en total oscuridad solo por el sonido."
+   },
+   "pt": {
+    "title": "Os ouvidos da coruja não ficam na mesma altura 🦉",
+    "description": "As 'orelhas' pontudas de algumas corujas são só penas; os ouvidos de verdade ficam escondidos nas laterais do rosto. Na suindara, um ouvido fica mais alto que o outro, então o som chega a cada um com força diferente e revela a altura da presa. Ela consegue pegar um rato no escuro total só pelo som."
+   },
+   "de": {
+    "title": "Die Ohren der Schleiereule sitzen nicht auf gleicher Höhe 🦉",
+    "description": "Die spitzen 'Ohren' mancher Eulen sind nur Federn; die echten Ohren liegen versteckt seitlich am Gesicht. Bei der Schleiereule sitzt eine Ohröffnung höher als die andere, deshalb kommt ein Geräusch an jedem Ohr unterschiedlich laut an – so erkennt sie, wie hoch die Beute ist. Schleiereulen fangen eine Maus in völliger Dunkelheit allein nach Gehör."
+   },
+   "fr": {
+    "title": "Les oreilles de la chouette ne sont pas à la même hauteur 🦉",
+    "description": "Les « oreilles » pointues de certains hiboux ne sont que des plumes ; les vraies oreilles sont cachées sur les côtés du visage. Chez la chouette effraie, une oreille est placée plus haut que l'autre : le son arrive à chacune avec une force différente, ce qui lui indique la hauteur de sa proie. Elle peut attraper une souris dans le noir complet, rien qu'au son."
+   },
+   "it": {
+    "title": "Le orecchie del barbagianni non sono alla stessa altezza 🦉",
+    "description": "Le 'orecchie' a punta di alcuni gufi sono solo piume; le vere orecchie sono nascoste ai lati del viso. Nel barbagianni un'apertura dell'orecchio è più in alto dell'altra, così il suono arriva a ciascuna con intensità diversa e gli rivela a che altezza si trova la preda. Può catturare un topo al buio totale solo con l'udito."
+   },
+   "ru": {
+    "title": "Уши у совы расположены на разной высоте 🦉",
+    "description": "Острые «ушки» у некоторых сов — это просто перья, а настоящие уши спрятаны по бокам лицевого диска. У сипухи одно ушное отверстие выше другого, поэтому звук доходит до каждого уха с разной силой, и сова понимает, на какой высоте добыча. Сипуха может поймать мышь в полной темноте только по звуку."
+   },
+   "ar": {
+    "title": "أذنا البومة ليستا على الارتفاع نفسه 🦉",
+    "description": "«الأذنان» المدببتان فوق رأس بعض البوم مجرد ريش، أما الأذنان الحقيقيتان فمخفيتان على جانبي الوجه. وعند البومة الحظائرية تقع إحدى فتحتي الأذن أعلى من الأخرى، فيصل الصوت إلى كل أذن بقوة مختلفة، فتعرف البومة مدى ارتفاع فريستها. ويمكنها أن تصطاد فأرًا في ظلام دامس بالصوت وحده."
+   },
+   "hi": {
+    "title": "उल्लू के दोनों कान एक ही ऊँचाई पर नहीं होते 🦉",
+    "description": "कुछ उल्लुओं के सिर पर दिखने वाले नुकीले 'कान' सिर्फ़ पंख हैं; असली कान चेहरे के दोनों ओर पंखों के नीचे छिपे होते हैं। बार्न उल्लू में एक कान का छेद दूसरे से ऊपर होता है, इसलिए आवाज़ दोनों कानों तक अलग ताक़त से पहुँचती है और उल्लू जान लेता है कि शिकार कितनी ऊँचाई पर है। वह घुप अँधेरे में सिर्फ़ आवाज़ से चूहा पकड़ सकता है।"
+   },
+   "id": {
+    "title": "Telinga burung hantu tidak sejajar 🦉",
+    "description": "'Telinga' runcing pada beberapa burung hantu hanyalah bulu; telinga aslinya tersembunyi di sisi wajah. Pada serak jawa, satu lubang telinga letaknya lebih tinggi dari yang lain, sehingga suara sampai ke tiap telinga dengan kekuatan berbeda dan memberi tahu seberapa tinggi posisi mangsa. Ia bisa menangkap tikus dalam gelap total hanya dari suaranya."
+   },
+   "ja": {
+    "title": "フクロウの耳は左右で高さが違う 🦉",
+    "description": "一部のフクロウの頭にある耳のような突起は、ただの羽です。本当の耳は顔の両側の羽の下に隠れています。メンフクロウは片方の耳の穴がもう一方より高い位置にあるため、音が左右の耳に違う強さで届き、獲物の高さがわかります。真っ暗闇でも音だけでネズミを捕まえられます。"
+   },
+   "ko": {
+    "title": "올빼미의 두 귀는 높이가 다르다 🦉",
+    "description": "일부 올빼미 머리 위의 뾰족한 '귀'는 그냥 깃털입니다. 진짜 귀는 얼굴 양옆 깃털 아래에 숨어 있습니다. 원숭이올빼미는 한쪽 귓구멍이 다른 쪽보다 높아서 소리가 양쪽 귀에 다른 세기로 닿고, 이를 통해 먹잇감의 높이를 알아냅니다. 칠흑 같은 어둠에서도 소리만으로 쥐를 잡을 수 있습니다."
+   },
+   "pl": {
+    "title": "Uszy płomykówki nie są na tej samej wysokości 🦉",
+    "description": "Szpiczaste „uszy” niektórych sów to tylko pióra; prawdziwe uszy są ukryte po bokach twarzy. U płomykówki jeden otwór uszny leży wyżej niż drugi, więc dźwięk dociera do każdego ucha z inną siłą, co zdradza, na jakiej wysokości jest ofiara. Płomykówka potrafi złapać mysz w całkowitej ciemności, kierując się samym słuchem."
+   },
+   "nl": {
+    "title": "De oren van een kerkuil zitten niet even hoog 🦉",
+    "description": "De puntige 'oren' van sommige uilen zijn gewoon veren; de echte oren zitten verstopt aan de zijkanten van het gezicht. Bij de kerkuil zit de ene ooropening hoger dan de andere, zodat geluid elk oor met een andere sterkte bereikt en de uil weet hoe hoog zijn prooi zit. Een kerkuil kan in het pikkedonker een muis vangen op het geluid alleen."
+   },
+   "uk": {
+    "title": "Вуха сови розташовані на різній висоті 🦉",
+    "description": "Гострі «вушка» деяких сов — це просто пір'я, а справжні вуха сховані з боків лицевого диска. У сипухи один слуховий отвір вищий за інший, тож звук доходить до кожного вуха з різною силою, і сова розуміє, на якій висоті здобич. Сипуха може впіймати мишу в цілковитій темряві лише на слух."
+   },
+   "vi": {
+    "title": "Hai tai của cú không nằm ngang nhau 🦉",
+    "description": "Những chiếc 'tai' nhọn trên đầu một số loài cú thực ra chỉ là lông; tai thật nằm ẩn dưới lớp lông hai bên mặt. Ở cú lợn, một lỗ tai nằm cao hơn lỗ tai kia, nên âm thanh đến mỗi tai với độ mạnh khác nhau, giúp cú biết con mồi ở cao hay thấp. Cú lợn có thể bắt chuột trong bóng tối hoàn toàn chỉ nhờ âm thanh."
+   },
+   "az": {
+    "title": "Bayquşun qulaqları eyni hündürlükdə deyil 🦉",
+    "description": "Bəzi bayquşların başındakı şiş 'qulaqlar' sadəcə lələkdir; əsl qulaqlar üzün iki yanında, lələklərin altında gizlənib. Örtüklü bayquşda bir qulaq dəliyi o birindən yuxarıdadır, ona görə səs hər qulağa fərqli güclə çatır və bayquş ovun nə hündürlükdə olduğunu bilir. O, zil qaranlıqda siçanı yalnız səsindən tuta bilir."
+   },
+   "ro": {
+    "title": "Urechile bufniței nu sunt la aceeași înălțime 🦉",
+    "description": "„Urechile” ascuțite ale unor bufnițe sunt doar pene; urechile adevărate sunt ascunse pe laturile feței. La strigă, un orificiu al urechii e mai sus decât celălalt, așa că sunetul ajunge la fiecare ureche cu altă intensitate și îi arată la ce înălțime e prada. Striga poate prinde un șoarece în beznă totală doar după sunet."
+   }
+  }
+ }
+}
