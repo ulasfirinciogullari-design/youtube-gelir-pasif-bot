@@ -38,16 +38,17 @@
   "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/",
   "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/",
   "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
-  "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/"
+  "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
+  "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/"
  },
  "nobet": {
   "basladi": "2026-11-06T08:46:50+00:00",
   "run": "42188923869",
-  "tur": 291,
+  "tur": 315,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-06T13:36:51+00:00"
+  "son_tur": "2026-11-06T14:01:37+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -252,6 +253,13 @@
    "at": 1793959296,
    "title": "Bir inek günde yüz litre tükürük üretebilir 🐄",
    "topic_id": "mk-c0054"
+  },
+  "ulYVGl9guJk": {
+   "media_id": "18128368603858464",
+   "url": "https://www.instagram.com/reel/DfZxcw2gKrA/",
+   "at": 1793973698,
+   "title": "Kargalar dörde kadar sesli sayabiliyor 🐦",
+   "topic_id": "mk-c0051"
   }
  }
 }
