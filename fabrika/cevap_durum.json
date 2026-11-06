@@ -450,7 +450,8 @@
    "UgxIandTEwlEa4lpgQp4AaABAg": 1,
    "UgwCOK8HxjjnPiSjTIp4AaABAg": 3,
    "Ugw6VF3lf9CyvgNVFBh4AaABAg": 1,
-   "UgwMGS18_kIPJyxIUJV4AaABAg": 3
+   "UgwMGS18_kIPJyxIUJV4AaABAg": 3,
+   "Ugyi23_JXFU93EkFU294AaABAg": 1
   }
  },
  "ig": {
@@ -569,10 +570,10 @@
  "nobet": {
   "basladi": "2026-11-06T03:07:22+00:00",
   "run": "42153557335",
-  "tur": 271,
+  "tur": 276,
   "ig_cevap": 0,
   "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-06T07:37:25+00:00"
+  "son_tur": "2026-11-06T07:42:23+00:00"
  }
 }
