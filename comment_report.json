@@ -1,22 +1,22 @@
 {
- "started": "2026-11-06T06:45:12+00:00",
+ "started": "2026-11-06T09:45:12+00:00",
  "deneme": false,
  "threads": 101,
- "reply_threads_read": 0,
+ "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugxm7nt3QEJZ6V9yebB4AaABAg",
-   "kind": "comment",
-   "video": "mR4H7MKxBP8",
-   "comment": "Benim pokekim 3169 yaşında",
-   "reply": "3169 yaşındaki köpeğinle neler yaşadığını çok merak ettik! O kadar yıl yaşamak için sırrı neymiş acaba? 🤔",
+   "id": "UgwGhBf55TUWB3LyoCd4AaABAg.Acr_4C7GDIgAcrokIZ_dEd",
+   "kind": "answer",
+   "video": "G0v552Gd__U",
+   "comment": "Evet Harf:X",
+   "reply": "@CaspianRockstar_1120 X harfini özel yapan bir bağlantı olması ne güzel! İnsanlar sadece harfleri değil, isimleriyle başlayan şehirleri bile daha çok sevebiliyorlarmış. 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-06T06:45:16+00:00"
+ "finished": "2026-11-06T09:45:18+00:00"
 }
