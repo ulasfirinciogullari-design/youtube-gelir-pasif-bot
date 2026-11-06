@@ -41,13 +41,15 @@ MIN_CREDITS = 12000
 # views 1,212 -> 1,097, and Reels lost views and watch time too. YO_ACILIS=1 turns it back on.
 ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
 # Real NASA photos for planets and backdrops (fabrika/nasa.py, motor.html FOTO). On from 2026-11-02: Ulaş preferred the
-# sample (fabrika/deneme/ornek-o0006.mp4) on 2026-11-01. Judged by devam_yuzde against the 47.7% of 10-17..10-20.
-# YO_FOTO=0 turns it off.
+# sample (fabrika/deneme/ornek-o0006.mp4) on 2026-11-01. Verdict 2026-11-06: kept. On YouTube no effect in the same days
+# (stayed-to-watch 43% with a photo in the first frame vs 41% without; views equal); Instagram Reels with photos were
+# watched longer (13-16 s vs 11.9 s). YO_FOTO=0 turns it off.
 FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
 # Big scene (motor.html LY 'buyuk'): Pi and Bit 38% smaller in the bottom corners, the scene a little bigger and lower,
 # so the first frame is mostly the subject. Built 2026-11-04 for the 10 million goal, to go on after the NASA verdict
-# of 2026-11-06 (both act on the look, so not at the same time). YO_SAHNE=1 turns it on; "ornek" always uses it.
-SAHNE = (os.environ.get("YO_SAHNE") or "0") == "1"
+# of 2026-11-06 (both act on the look, so not at the same time). On from 2026-11-06 10:00 UTC, judged ~2026-11-10 by
+# devam_yuzde and views against the photo Shorts of 11-02..11-05. YO_SAHNE=0 turns it off; "ornek" always uses it.
+SAHNE = (os.environ.get("YO_SAHNE") or "1") == "1"
 
 
 def nasa_used(ep):
