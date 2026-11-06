@@ -1,0 +1,181 @@
+{
+  "topic_id": "mk-c0067",
+  "topic": "Kediler birbirine miyavlar mı, kediler neden insanlara miyavlar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kediler birbirine değil, sana miyavlar 🐱",
+  "hook_text": "KEDİ KİME MİYAVLIYOR?",
+  "description": "Kediler birbirine miyavlar mı, kediler neden insanlara miyavlar?\n\nAmerikan hayvan koruma derneği ASPCA'ya göre yetişkin kediler birbirine miyavlamaz, yalnızca insanlara miyavlar. Yavru kediler üşüdüklerinde ya da acıktıklarında annelerine miyavlar; büyüyünce başka kedilere miyavlamayı bırakır ama insanlara ömür boyu miyavlamayı sürdürür, muhtemelen miyav insanlara istediklerini yaptırdığı için. 2004'te yayımlanan bir araştırmada ev kedilerinin miyavları, yabani atası Afrika yaban kedisininkilerden daha kısa ve daha ince çıktı; dinleyen insanlar da ev kedisinin miyavını çok daha hoş buldu.\n\nSenin kedin sana en çok ne için miyavlıyor: mama için mi, kapıyı açtırmak için mi?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0067",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kediler neden miyavlar",
+    "kedi neden miyavlar",
+    "kediler birbirine miyavlar mı",
+    "kedi miyavlaması",
+    "miyav",
+    "miyav ne demek",
+    "kedi dili",
+    "kedi sesi",
+    "yavru kedi",
+    "kedi bakımı",
+    "kedi davranışları",
+    "kediler insanla konuşur mu",
+    "kedi sahipleri",
+    "ev kedisi",
+    "evcil hayvanlar",
+    "hayvan davranışları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "why do cats meow",
+    "cat meow",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kediler birbirine miyavlar mi",
+    "kedi miyavlamasi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cats don't meow at each other, they meow at you 🐱",
+      "description": "Adult cats almost never meow at other cats. Kittens meow at their mothers, but grown cats keep the meow for people, likely because it gets humans to do what they want. A study found house cat meows are shorter and higher-pitched than their wild ancestor's, and people rate them as far more pleasant.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "es": {
+      "title": "Los gatos no se maúllan entre ellos: te maúllan a ti 🐱",
+      "description": "Los gatos adultos casi nunca se maúllan entre sí. Los gatitos maúllan a su madre, pero de adultos reservan el maullido para las personas, probablemente porque así consiguen lo que quieren. Un estudio halló que el maullido del gato doméstico es más corto y agudo que el de su ancestro salvaje, y a la gente le resulta mucho más agradable.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "pt": {
+      "title": "Gatos não miam uns para os outros, miam para você 🐱",
+      "description": "Gatos adultos quase nunca miam para outros gatos. Os filhotes miam para a mãe, mas os adultos guardam o miado para as pessoas, provavelmente porque assim conseguem o que querem. Um estudo mostrou que o miado do gato doméstico é mais curto e mais agudo que o do seu ancestral selvagem, e as pessoas o acham bem mais agradável.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "de": {
+      "title": "Katzen miauen nicht einander an, sondern dich 🐱",
+      "description": "Erwachsene Katzen miauen andere Katzen fast nie an. Kätzchen miauen nach ihrer Mutter, doch ausgewachsene Katzen heben das Miauen für Menschen auf, wohl weil sie damit bekommen, was sie wollen. Eine Studie fand, dass das Miauen von Hauskatzen kürzer und höher ist als das ihres wilden Vorfahren und für Menschen viel angenehmer klingt.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "fr": {
+      "title": "Les chats ne miaulent pas entre eux, ils miaulent pour toi 🐱",
+      "description": "Les chats adultes ne miaulent presque jamais entre eux. Les chatons miaulent pour appeler leur mère, mais une fois adultes, les chats réservent le miaulement aux humains, sans doute parce qu'il leur permet d'obtenir ce qu'ils veulent. Une étude a montré que le miaulement du chat domestique est plus court et plus aigu que celui de son ancêtre sauvage, et bien plus agréable à nos oreilles.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "it": {
+      "title": "I gatti non miagolano tra loro: miagolano a te 🐱",
+      "description": "I gatti adulti non miagolano quasi mai ad altri gatti. I gattini miagolano alla madre, ma da grandi i gatti riservano il miagolio alle persone, probabilmente perché così ottengono ciò che vogliono. Uno studio ha rilevato che il miagolio del gatto domestico è più breve e più acuto di quello del suo antenato selvatico, e alle persone suona molto più gradevole.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "ru": {
+      "title": "Кошки мяукают не друг другу, а тебе 🐱",
+      "description": "Взрослые кошки почти никогда не мяукают друг на друга. Котята мяукают, зовя мать, но взрослые кошки сохраняют мяуканье для людей, вероятно потому, что так добиваются своего. Исследование показало, что мяуканье домашней кошки короче и выше, чем у её дикого предка, и людям оно кажется гораздо приятнее.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "ar": {
+      "title": "القطط لا تموء لبعضها، بل تموء لك أنت 🐱",
+      "description": "نادرًا ما تموء القطط البالغة لقطط أخرى. فالصغار تموء لأمهاتها، أما القطط الكبيرة فتحتفظ بالمواء للبشر، على الأرجح لأنه يجعلهم يفعلون ما تريد. ووجدت دراسة أن مواء القط المنزلي أقصر وأعلى نبرة من مواء سلفه البري، وأن الناس يجدونه أكثر لطفًا بكثير.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "hi": {
+      "title": "बिल्लियाँ एक-दूसरे पर नहीं, आप पर म्याऊँ करती हैं 🐱",
+      "description": "बड़ी बिल्लियाँ दूसरी बिल्लियों पर लगभग कभी म्याऊँ नहीं करतीं। बच्चे अपनी माँ को म्याऊँ करके बुलाते हैं, पर बड़ी होकर बिल्लियाँ यह आवाज़ इंसानों के लिए बचा लेती हैं, शायद इसलिए कि इससे इंसान उनकी बात मान लेते हैं। एक अध्ययन में पालतू बिल्ली की म्याऊँ उसके जंगली पूर्वज से छोटी और पतली निकली, और लोगों को कहीं ज़्यादा प्यारी लगी।\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "id": {
+      "title": "Kucing tidak mengeong ke sesamanya, tapi ke kamu 🐱",
+      "description": "Kucing dewasa hampir tidak pernah mengeong ke kucing lain. Anak kucing mengeong ke induknya, tetapi setelah dewasa kucing menyimpan suara itu untuk manusia, mungkin karena cara itu membuat manusia menuruti keinginannya. Sebuah studi menemukan bahwa eongan kucing rumahan lebih pendek dan lebih tinggi daripada leluhur liarnya, dan terdengar jauh lebih menyenangkan bagi manusia.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "ja": {
+      "title": "猫は猫同士ではなく、あなたに向かって鳴いている 🐱",
+      "description": "大人の猫は、ほかの猫に向かってニャーと鳴くことがほとんどありません。子猫は母猫に鳴きますが、大人になると「ニャー」を人間用にとっておきます。人に望みをかなえてもらえるからだと考えられています。ある研究では、飼い猫の鳴き声は野生の祖先より短く高く、人にとってずっと心地よく聞こえることがわかりました。\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "ko": {
+      "title": "고양이는 서로가 아니라 당신에게 야옹한다 🐱",
+      "description": "다 자란 고양이는 다른 고양이에게 거의 야옹하지 않습니다. 새끼 고양이는 어미에게 야옹하지만, 어른이 되면 이 소리를 사람에게만 씁니다. 그렇게 하면 사람이 원하는 걸 들어주기 때문으로 보입니다. 한 연구에서는 집고양이의 울음이 야생 조상보다 짧고 높으며, 사람에게 훨씬 듣기 좋게 들린다는 결과가 나왔습니다.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "pl": {
+      "title": "Koty nie miauczą do siebie nawzajem, tylko do ciebie 🐱",
+      "description": "Dorosłe koty prawie nigdy nie miauczą do innych kotów. Kocięta miauczą do matki, ale dorosłe koty zostawiają miauczenie dla ludzi, zapewne dlatego, że w ten sposób dostają to, czego chcą. Badanie wykazało, że miauczenie kota domowego jest krótsze i wyższe niż u jego dzikiego przodka, a ludziom wydaje się dużo przyjemniejsze.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "nl": {
+      "title": "Katten miauwen niet naar elkaar, maar naar jou 🐱",
+      "description": "Volwassen katten miauwen bijna nooit naar andere katten. Kittens miauwen naar hun moeder, maar volwassen katten bewaren het miauwen voor mensen, waarschijnlijk omdat ze daarmee gedaan krijgen wat ze willen. Uit onderzoek bleek dat het miauwen van huiskatten korter en hoger is dan dat van hun wilde voorouder, en dat mensen het veel prettiger vinden klinken.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "uk": {
+      "title": "Коти нявкають не одне до одного, а до тебе 🐱",
+      "description": "Дорослі коти майже ніколи не нявкають до інших котів. Кошенята нявкають, кличучи матір, але дорослі коти зберігають нявкання для людей, імовірно тому, що так отримують бажане. Дослідження показало, що нявкання домашнього кота коротше й вище, ніж у його дикого предка, і людям воно здається значно приємнішим.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "vi": {
+      "title": "Mèo không kêu meo với nhau, chúng kêu với bạn 🐱",
+      "description": "Mèo trưởng thành hầu như không bao giờ kêu meo với mèo khác. Mèo con kêu meo gọi mẹ, nhưng khi lớn lên, mèo dành tiếng kêu này cho con người, có lẽ vì nó khiến con người làm theo ý chúng. Một nghiên cứu cho thấy tiếng kêu của mèo nhà ngắn hơn và cao hơn tổ tiên hoang dã của chúng, và con người thấy dễ nghe hơn nhiều.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "az": {
+      "title": "Pişiklər bir-birinə yox, sənə miyovlayır 🐱",
+      "description": "Yetkin pişiklər başqa pişiklərə demək olar ki, heç miyovlamır. Balalar analarına miyovlayır, böyüyəndə isə pişiklər bu səsi insanlar üçün saxlayır, yəqin ki, insanlara istədiklərini etdirdiyi üçün. Bir araşdırmada ev pişiyinin miyovu vəhşi əcdadınınkından daha qısa və incə çıxdı, insanlar da onu xeyli xoş tapdı.\n\n#shorts\n\nSeri: mk-c0067"
+    },
+    "ro": {
+      "title": "Pisicile nu miaună între ele, ci la tine 🐱",
+      "description": "Pisicile adulte aproape niciodată nu miaună la alte pisici. Puii miaună după mama lor, dar pisicile adulte păstrează mieunatul pentru oameni, probabil pentru că așa obțin ce vor. Un studiu a arătat că mieunatul pisicii domestice e mai scurt și mai ascuțit decât al strămoșului sălbatic, iar oamenilor li se pare mult mai plăcut.\n\n#shorts\n\nSeri: mk-c0067"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin sana en çok ne için miyavlıyor: mama için mi, kapıyı açtırmak için mi?",
+  "scenes": [
+    {
+      "text": "Bu kedi başka kedilere neredeyse hiç miyavlamaz.",
+      "visual": "close-up of an adult cat meowing straight into the camera",
+      "stock_query": "cat meowing",
+      "source": "stock",
+      "callout": "KEDİYE MİYAVLAMAZ"
+    },
+    {
+      "text": "Yavruyken annesine miyavlar: üşüdüm, acıktım.",
+      "visual": "a tiny kitten meowing next to its mother cat",
+      "stock_query": "kitten meowing",
+      "source": "stock",
+      "subject": [
+        "kitten"
+      ]
+    },
+    {
+      "text": "Büyüyünce kedilere miyavlamayı bırakır, ama insanlara ömür boyu miyavlar.",
+      "visual": "a cat meowing up at its owner in a kitchen",
+      "stock_query": "cat owner",
+      "source": "stock",
+      "callout": "ÖMÜR BOYU İNSANA"
+    },
+    {
+      "text": "Üstelik ev kedisinin miyavı, yabani atasınınkinden daha kısa ve ince.",
+      "visual": "close-up of a house cat's open mouth as it meows",
+      "stock_query": "cat meow",
+      "source": "stock",
+      "callout": "DAHA KISA, DAHA İNCE"
+    },
+    {
+      "text": "Çünkü miyav sana yönelik: insanlar bu sesi hoş bulup istediğini yapıyor.",
+      "visual": "a person pouring food into a bowl while a cat meows beside it",
+      "stock_query": "cat food",
+      "source": "stock",
+      "callout": "İSTEDİĞİNİ YAPTIRIR"
+    },
+    {
+      "text": "Kedin sana miyavlıyorsa, o ses senin için; çünkü...",
+      "visual": "a cat sitting on a sofa looking straight at the camera",
+      "stock_query": "cat face",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.79,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #120",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0067_1793964130_ig.mp4"
+}
