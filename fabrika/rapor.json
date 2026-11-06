@@ -1,71 +1,18 @@
 {
- "started": "2026-11-06T10:07:49+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-06T13:07:49+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y046",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "53",
-  "videos": "46"
+ "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
+ "chars": 367,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17963056377213736",
+  "url": "https://www.instagram.com/reel/DfZrd77D5Oe/",
+  "at": 1793970561.574517
  },
- "credits_before": [
-  86536,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261105-4-y062.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y062",
-  "series": "Ya Olsaydı?",
-  "q": "Lav gölüne düşseydin ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 372,
- "duration": 24.5,
- "title": "Lav Gölüne Düşseydin Batar Mıydın?",
- "url": "https://youtube.com/shorts/MM3s0q-j2q0",
- "recent_status": {
-  "n009": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1284",
-   "reason": null
-  },
-  "y046": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1247",
-   "reason": null
-  },
-  "g010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "959",
-   "reason": null
-  },
-  "y045": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "404",
-   "reason": null
-  },
-  "y062": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  86536,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261105-4-y062.json Lav gölüne düşseydin ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfZrd77D5Oe/"
  ],
- "finished": "2026-11-06T10:08:42+00:00"
+ "finished": "2026-11-06T13:09:21+00:00"
 }
