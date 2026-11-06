@@ -42,8 +42,8 @@ MIN_CREDITS = 12000
 ACILIS = (os.environ.get("YO_ACILIS") or "0") == "1"
 # Real NASA photos for planets and backdrops (fabrika/nasa.py, motor.html FOTO). On from 2026-11-02: Ulaş preferred the
 # sample (fabrika/deneme/ornek-o0006.mp4) on 2026-11-01. Verdict 2026-11-06: kept. On YouTube no effect in the same days
-# (stayed-to-watch 43% with a photo in the first frame vs 41% without; views equal); Instagram Reels with photos were
-# watched longer (13-16 s vs 11.9 s). YO_FOTO=0 turns it off.
+# (stayed-to-watch 43% with a photo in the first frame vs 41% without; views equal). Instagram: 7 photo Reels averaged
+# 11.7 s watched vs 11.9 s before, but the 3 whose subject was a planet photo got 12.8-16.3 s. YO_FOTO=0 turns it off.
 FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
 # Big scene (motor.html LY 'buyuk'): Pi and Bit 38% smaller in the bottom corners, the scene a little bigger and lower,
 # so the first frame is mostly the subject. Built 2026-11-04 for the 10 million goal, to go on after the NASA verdict
