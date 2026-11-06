@@ -1,0 +1,300 @@
+{
+ "id": "n010",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir kara delik ne kadar ağır olabilir?",
+ "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
+ "bar": {
+  "hi": "KARA DELİK",
+  "rest": "NE KADAR AĞIR?"
+ },
+ "summary": "Dünya'yı bir fındık kadar sıkıştırsan kara delik olurdu; peki en ağır kara delikler kaç Güneş ağırlığında? Profesör Pi, Güneş Sistemi'ni yutabilecek devleri ve bilim insanlarının hesapladığı sınırı anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Dünya'yı fındık kadar sıkıştırsan kara delik olurdu!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "shrink",
+    "target": 0,
+    "key": "fındık",
+    "label": "Fındık Kadar Dünya"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Fındık boyunda Dünya ağırlığı mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🌰",
+    "do": "shake",
+    "key": "ağırlığı",
+    "label": "Dünya Ağırlığında"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Galaksimizin kalbindeki ise 4 milyon Güneş ağırlığında.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌌",
+    "value": "4.000.000",
+    "unit": "Güneş",
+    "label": "Galaksimizin Kalbi",
+    "key": "milyon"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "En ağırlardan biri 36 milyar Güneş: 8.000 kattan ağır!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "blackhole",
+     "label": "4 Milyon Güneş",
+     "value": "4"
+    },
+    "b": {
+     "b": "blackhole",
+     "label": "36 Milyar Güneş",
+     "value": "36.000"
+    },
+    "mode": "bar",
+    "key": "36"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş'in yerinde olsa bütün gezegenleri yutardı!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "blackhole",
+      "size": "xl",
+      "at": "c"
+     },
+     {
+      "b": "earth",
+      "size": "xs",
+      "at": "r"
+     },
+     {
+      "b": "jupiter",
+      "size": "s",
+      "at": "l"
+     }
+    ],
+    "do": "grow",
+    "target": 0,
+    "key": "yutardı",
+    "label": "Gezegenler Yutulur"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bilim insanlarına göre sınır 50 milyar Güneş; ötesinde aç kalır!",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Ağırlık Sınırı",
+    "from": 0,
+    "to": 50,
+    "unit": "milyar Güneş",
+    "e": "⚖️",
+    "key": "50"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen kara deliğe ne kadar yaklaşırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🕳️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Dünya'nın kara delik olması için 0,86 santimetre yarıçapa sıkıştırılması gerekir; bu, yaklaşık 1,7 santimetre çapında, fındık büyüklüğünde bir toptur.",
+   "source": "NASA Imagine the Universe",
+   "url": "https://imagine.gsfc.nasa.gov/science/activities/try_l2/black_holes.html"
+  },
+  {
+   "text": "Space.com'a göre Samanyolu'nun merkezindeki kara delik Sagittarius A* yaklaşık 4,15 milyon Güneş kütlesindedir.",
+   "source": "Space.com",
+   "url": "https://www.space.com/astronomy/black-holes/the-biggest-black-hole-ever-seen-scientists-find-one-with-mass-of-36-billion-suns"
+  },
+  {
+   "text": "Live Science ve Space.com'a göre Kozmik At Nalı galaksisindeki kara delik yaklaşık 36 milyar Güneş kütlesindedir ve bilinen en ağır kara deliklerden biridir; bu, Sagittarius A*'nın 8.000 katından fazladır.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/black-holes/colossal-black-hole-36-billion-times-the-mass-of-our-sun-is-one-of-the-largest-ever-seen-in-the-universe"
+  },
+  {
+   "text": "Schwarzschild yarıçapı formülüne göre 36 milyar Güneş kütleli bir kara deliğin olay ufku yaklaşık 106 milyar kilometre (yaklaşık 710 astronomik birim) yarıçaplıdır; Neptün ise Güneş'ten yalnızca yaklaşık 30 astronomik birim uzaktadır.",
+   "source": "NASA Imagine the Universe (formül)",
+   "url": "https://imagine.gsfc.nasa.gov/science/activities/try_l2/black_holes.html"
+  },
+  {
+   "text": "Leicester Üniversitesi'nden Prof. Andrew King'e göre kara delikler yaklaşık 50 milyar Güneş kütlesine ulaşınca beslendikleri gaz diskini tutamaz ve büyümeleri durur.",
+   "source": "University of Leicester",
+   "url": "https://le.ac.uk/news/2015/december/black-holes-could-grow-as-large-as-50-billion-suns-research-shows"
+  }
+ ],
+ "tags": [
+  "kara delik",
+  "kara delik ne kadar ağır",
+  "en büyük kara delik",
+  "en ağır kara delik",
+  "sagittarius a",
+  "kozmik at nalı",
+  "olay ufku",
+  "samanyolu",
+  "uzay",
+  "black hole",
+  "how heavy is a black hole",
+  "biggest black hole",
+  "cosmic horseshoe",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#karadelik",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://imagine.gsfc.nasa.gov/science/activities/try_l2/black_holes.html",
+  "https://www.space.com/astronomy/black-holes/the-biggest-black-hole-ever-seen-scientists-find-one-with-mass-of-36-billion-suns",
+  "https://www.livescience.com/space/black-holes/colossal-black-hole-36-billion-times-the-mass-of-our-sun-is-one-of-the-largest-ever-seen-in-the-universe",
+  "https://le.ac.uk/news/2015/december/black-holes-could-grow-as-large-as-50-billion-suns-research-shows"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Heavy Is a Black Hole, Really?",
+   "summary": "Squeeze Earth down to the size of a hazelnut and it would become a black hole, so how heavy can the biggest black holes get? Professor Pi explains the giants that could swallow the whole Solar System and the limit scientists have calculated.",
+   "facts": [
+    "According to NASA, to become a black hole Earth would have to be squeezed to a radius of 0.86 centimeters: a ball about 1.7 centimeters across, roughly the size of a hazelnut.",
+    "According to Space.com, Sagittarius A*, the black hole at the center of the Milky Way, has a mass of about 4.15 million Suns.",
+    "According to Live Science and Space.com, the black hole in the Cosmic Horseshoe galaxy has a mass of about 36 billion Suns and is one of the most massive black holes known; that is more than 8,000 times Sagittarius A*.",
+    "By the Schwarzschild radius formula, a black hole of 36 billion solar masses has an event horizon with a radius of about 106 billion kilometers (about 710 astronomical units), while Neptune is only about 30 astronomical units from the Sun.",
+    "According to Professor Andrew King of the University of Leicester, once black holes reach about 50 billion solar masses they can no longer keep the gas discs they feed on, and they stop growing."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto Pesa Realmente un Agujero Negro?",
+   "summary": "Si comprimieras la Tierra hasta el tamaño de una avellana, se convertiría en un agujero negro; entonces, ¿cuánto pueden pesar los más grandes? El profesor Pi explica los gigantes que podrían tragarse todo el sistema solar y el límite que han calculado los científicos.",
+   "facts": [
+    "Según la NASA, para convertirse en un agujero negro la Tierra tendría que comprimirse hasta un radio de 0,86 centímetros: una bola de unos 1,7 centímetros de diámetro, del tamaño de una avellana.",
+    "Según Space.com, Sagitario A*, el agujero negro del centro de la Vía Láctea, tiene una masa de unos 4,15 millones de soles.",
+    "Según Live Science y Space.com, el agujero negro de la galaxia Herradura Cósmica tiene una masa de unos 36.000 millones de soles y es uno de los más masivos conocidos; eso es más de 8.000 veces Sagitario A*.",
+    "Según la fórmula del radio de Schwarzschild, un agujero negro de 36.000 millones de masas solares tiene un horizonte de sucesos de unos 106.000 millones de kilómetros de radio (unas 710 unidades astronómicas), mientras que Neptuno está a solo unas 30 unidades astronómicas del Sol.",
+    "Según el profesor Andrew King, de la Universidad de Leicester, cuando los agujeros negros alcanzan unos 50.000 millones de masas solares ya no pueden retener los discos de gas de los que se alimentan y dejan de crecer."
+   ]
+  },
+  "pt": {
+   "title": "Quanto Pesa de Verdade um Buraco Negro?",
+   "summary": "Se você comprimisse a Terra até o tamanho de uma avelã, ela viraria um buraco negro; então, quanto podem pesar os maiores? O professor Pi explica os gigantes que poderiam engolir todo o Sistema Solar e o limite calculado pelos cientistas.",
+   "facts": [
+    "Segundo a NASA, para virar um buraco negro a Terra teria de ser comprimida até um raio de 0,86 centímetro: uma bola de cerca de 1,7 centímetro de diâmetro, do tamanho de uma avelã.",
+    "Segundo o Space.com, Sagitário A*, o buraco negro no centro da Via Láctea, tem massa de cerca de 4,15 milhões de sóis.",
+    "Segundo a Live Science e o Space.com, o buraco negro da galáxia Ferradura Cósmica tem massa de cerca de 36 bilhões de sóis e é um dos mais massivos conhecidos; isso é mais de 8.000 vezes Sagitário A*.",
+    "Pela fórmula do raio de Schwarzschild, um buraco negro de 36 bilhões de massas solares tem um horizonte de eventos com raio de cerca de 106 bilhões de quilômetros (cerca de 710 unidades astronômicas), enquanto Netuno fica a apenas cerca de 30 unidades astronômicas do Sol.",
+    "Segundo o professor Andrew King, da Universidade de Leicester, quando os buracos negros chegam a cerca de 50 bilhões de massas solares, não conseguem mais manter os discos de gás de que se alimentam e param de crescer."
+   ]
+  },
+  "ar": {
+   "title": "كم يزن الثقب الأسود حقًا؟",
+   "summary": "لو ضغطت الأرض حتى تصبح بحجم حبة بندق لتحولت إلى ثقب أسود، فكم يمكن أن تزن أضخم الثقوب السوداء؟ يشرح البروفيسور باي العمالقة القادرة على ابتلاع النظام الشمسي كله والحد الذي حسبه العلماء.",
+   "facts": [
+    "وفقًا لناسا، لكي تصبح الأرض ثقبًا أسود يجب ضغطها حتى نصف قطر 0.86 سنتيمتر، أي كرة قطرها نحو 1.7 سنتيمتر بحجم حبة بندق تقريبًا.",
+    "وفقًا لموقع Space.com، تبلغ كتلة القوس أ* (Sagittarius A*)، الثقب الأسود في مركز درب التبانة، نحو 4.15 مليون شمس.",
+    "وفقًا لموقعي Live Science وSpace.com، تبلغ كتلة الثقب الأسود في مجرة حدوة الحصان الكونية نحو 36 مليار شمس، وهو من أضخم الثقوب السوداء المعروفة؛ أي أكثر من 8,000 ضعف القوس أ*.",
+    "وفق معادلة نصف قطر شفارتزشيلد، يبلغ نصف قطر أفق الحدث لثقب أسود كتلته 36 مليار كتلة شمسية نحو 106 مليارات كيلومتر (نحو 710 وحدات فلكية)، بينما يبعد نبتون عن الشمس نحو 30 وحدة فلكية فقط.",
+    "وفقًا للبروفيسور أندرو كينغ من جامعة ليستر، عندما تبلغ الثقوب السوداء نحو 50 مليار كتلة شمسية لا تعود قادرة على الاحتفاظ بأقراص الغاز التي تتغذى عليها فتتوقف عن النمو."
+   ]
+  },
+  "hi": {
+   "title": "एक ब्लैक होल असल में कितना भारी होता है?",
+   "summary": "अगर पृथ्वी को एक हेज़लनट जितना दबा दिया जाए तो वह ब्लैक होल बन जाएगी, तो सबसे बड़े ब्लैक होल कितने भारी हो सकते हैं? प्रोफ़ेसर पाई उन दैत्यों के बारे में बताते हैं जो पूरे सौरमंडल को निगल सकते हैं, और वैज्ञानिकों की निकाली हुई सीमा भी।",
+   "facts": [
+    "NASA के अनुसार, ब्लैक होल बनने के लिए पृथ्वी को 0.86 सेंटीमीटर त्रिज्या तक दबाना होगा, यानी लगभग 1.7 सेंटीमीटर चौड़ी, एक हेज़लनट जितनी गेंद।",
+    "Space.com के अनुसार, मिल्की वे आकाशगंगा के केंद्र में स्थित ब्लैक होल सैजिटेरियस A* का द्रव्यमान लगभग 4.15 मिलियन सूर्यों जितना है।",
+    "Live Science और Space.com के अनुसार, कॉस्मिक हॉर्सशू आकाशगंगा के ब्लैक होल का द्रव्यमान लगभग 36 अरब सूर्यों जितना है और यह ज्ञात सबसे भारी ब्लैक होल में से एक है; यह सैजिटेरियस A* से 8,000 गुना से भी ज़्यादा है।",
+    "श्वार्ज़शिल्ड त्रिज्या के सूत्र के अनुसार, 36 अरब सौर द्रव्यमान वाले ब्लैक होल के घटना क्षितिज की त्रिज्या लगभग 106 अरब किलोमीटर (लगभग 710 खगोलीय इकाई) होती है, जबकि नेपच्यून सूर्य से सिर्फ़ लगभग 30 खगोलीय इकाई दूर है।",
+    "लीसेस्टर विश्वविद्यालय के प्रोफ़ेसर एंड्रयू किंग के अनुसार, लगभग 50 अरब सौर द्रव्यमान तक पहुँचने के बाद ब्लैक होल उन गैस डिस्क को नहीं सँभाल पाते जिनसे उन्हें भोजन मिलता है, और उनका बढ़ना रुक जाता है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Berat Sebenarnya Sebuah Lubang Hitam?",
+   "summary": "Jika Bumi dipadatkan sampai seukuran kacang hazel, ia akan menjadi lubang hitam; lalu seberapa berat lubang hitam terbesar? Profesor Pi menjelaskan raksasa yang bisa menelan seluruh Tata Surya dan batas yang dihitung para ilmuwan.",
+   "facts": [
+    "Menurut NASA, agar menjadi lubang hitam, Bumi harus dipadatkan hingga berjari-jari 0,86 sentimeter, yaitu bola berdiameter sekitar 1,7 sentimeter, kira-kira seukuran kacang hazel.",
+    "Menurut Space.com, Sagittarius A*, lubang hitam di pusat Bima Sakti, bermassa sekitar 4,15 juta kali Matahari.",
+    "Menurut Live Science dan Space.com, lubang hitam di galaksi Tapal Kuda Kosmik bermassa sekitar 36 miliar kali Matahari dan merupakan salah satu lubang hitam paling masif yang diketahui; itu lebih dari 8.000 kali Sagittarius A*.",
+    "Menurut rumus jari-jari Schwarzschild, lubang hitam bermassa 36 miliar massa Matahari memiliki cakrawala peristiwa berjari-jari sekitar 106 miliar kilometer (sekitar 710 satuan astronomi), sedangkan Neptunus hanya sekitar 30 satuan astronomi dari Matahari.",
+    "Menurut Profesor Andrew King dari Universitas Leicester, setelah mencapai sekitar 50 miliar massa Matahari, lubang hitam tidak bisa lagi mempertahankan piringan gas yang menjadi makanannya sehingga berhenti tumbuh."
+   ]
+  },
+  "fr": {
+   "title": "Combien Pèse Vraiment un Trou Noir ?",
+   "summary": "Si l'on comprimait la Terre jusqu'à la taille d'une noisette, elle deviendrait un trou noir ; alors combien peuvent peser les plus gros ? Le professeur Pi présente les géants capables d'avaler tout le Système solaire et la limite calculée par les scientifiques.",
+   "facts": [
+    "Selon la NASA, pour devenir un trou noir, la Terre devrait être comprimée jusqu'à un rayon de 0,86 centimètre, soit une boule d'environ 1,7 centimètre de diamètre, à peu près la taille d'une noisette.",
+    "Selon Space.com, Sagittarius A*, le trou noir au centre de la Voie lactée, a une masse d'environ 4,15 millions de soleils.",
+    "Selon Live Science et Space.com, le trou noir de la galaxie du Fer à cheval cosmique a une masse d'environ 36 milliards de soleils et compte parmi les plus massifs connus ; c'est plus de 8 000 fois Sagittarius A*.",
+    "D'après la formule du rayon de Schwarzschild, un trou noir de 36 milliards de masses solaires a un horizon des événements d'environ 106 milliards de kilomètres de rayon (environ 710 unités astronomiques), alors que Neptune n'est qu'à environ 30 unités astronomiques du Soleil.",
+    "Selon le professeur Andrew King, de l'université de Leicester, une fois arrivés à environ 50 milliards de masses solaires, les trous noirs ne peuvent plus retenir les disques de gaz dont ils se nourrissent et cessent de grandir."
+   ]
+  },
+  "de": {
+   "title": "Wie Schwer Ist ein Schwarzes Loch Wirklich?",
+   "summary": "Würde man die Erde auf die Größe einer Haselnuss zusammenpressen, wäre sie ein Schwarzes Loch – doch wie schwer können die größten werden? Professor Pi erklärt die Giganten, die das ganze Sonnensystem verschlucken könnten, und die Grenze, die Forscher berechnet haben.",
+   "facts": [
+    "Laut NASA müsste die Erde auf einen Radius von 0,86 Zentimetern zusammengepresst werden, um ein Schwarzes Loch zu werden – eine Kugel von etwa 1,7 Zentimetern Durchmesser, ungefähr so groß wie eine Haselnuss.",
+    "Laut Space.com hat Sagittarius A*, das Schwarze Loch im Zentrum der Milchstraße, eine Masse von etwa 4,15 Millionen Sonnen.",
+    "Laut Live Science und Space.com hat das Schwarze Loch in der Galaxie Kosmisches Hufeisen eine Masse von etwa 36 Milliarden Sonnen und gehört zu den massereichsten bekannten Schwarzen Löchern; das ist mehr als das 8.000-Fache von Sagittarius A*.",
+    "Nach der Formel für den Schwarzschild-Radius hat ein Schwarzes Loch mit 36 Milliarden Sonnenmassen einen Ereignishorizont mit einem Radius von etwa 106 Milliarden Kilometern (etwa 710 Astronomischen Einheiten), während Neptun nur etwa 30 Astronomische Einheiten von der Sonne entfernt ist.",
+    "Laut Professor Andrew King von der University of Leicester können Schwarze Löcher ab etwa 50 Milliarden Sonnenmassen die Gasscheiben, von denen sie sich ernähren, nicht mehr halten und hören auf zu wachsen."
+   ]
+  },
+  "ru": {
+   "title": "Сколько на Самом Деле Весит Чёрная Дыра?",
+   "summary": "Если сжать Землю до размера лесного ореха, она станет чёрной дырой. А сколько могут весить самые большие чёрные дыры? Профессор Пи рассказывает о гигантах, способных проглотить всю Солнечную систему, и о пределе, который рассчитали учёные.",
+   "facts": [
+    "По данным NASA, чтобы стать чёрной дырой, Землю нужно сжать до радиуса 0,86 сантиметра — это шарик диаметром около 1,7 сантиметра, примерно с лесной орех.",
+    "По данным Space.com, масса Стрельца A* — чёрной дыры в центре Млечного Пути — около 4,15 миллиона Солнц.",
+    "По данным Live Science и Space.com, масса чёрной дыры в галактике «Космическая подкова» — около 36 миллиардов Солнц; это одна из самых массивных известных чёрных дыр, более чем в 8000 раз тяжелее Стрельца A*.",
+    "По формуле радиуса Шварцшильда у чёрной дыры массой 36 миллиардов Солнц радиус горизонта событий составляет около 106 миллиардов километров (около 710 астрономических единиц), а Нептун находится всего примерно в 30 астрономических единицах от Солнца.",
+    "По словам профессора Эндрю Кинга из Лестерского университета, достигнув примерно 50 миллиардов масс Солнца, чёрные дыры уже не могут удерживать газовые диски, которыми питаются, и перестают расти."
+   ]
+  },
+  "az": {
+   "title": "Bir Qara Dəlik Əslində Nə Qədər Ağırdır?",
+   "summary": "Yer kürəsini bir fındıq boyda sıxsaydın, qara dəliyə çevrilərdi; bəs ən böyük qara dəliklər nə qədər ağır ola bilər? Professor Pi bütün Günəş sistemini uda biləcək nəhəngləri və alimlərin hesabladığı həddi danışır.",
+   "facts": [
+    "NASA-ya görə Yerin qara dəliyə çevrilməsi üçün 0,86 santimetr radiusa qədər sıxılması lazımdır; bu, diametri təxminən 1,7 santimetr olan, fındıq boyda bir kürədir.",
+    "Space.com-a görə Süd Yolunun mərkəzindəki qara dəlik Sagittarius A* təxminən 4,15 milyon Günəş kütləsindədir.",
+    "Live Science və Space.com-a görə Kosmik Nal qalaktikasındakı qara dəlik təxminən 36 milyard Günəş kütləsindədir və məlum olan ən ağır qara dəliklərdən biridir; bu, Sagittarius A*-dan 8.000 dəfədən çox ağırdır.",
+    "Şvartsşild radiusu düsturuna görə 36 milyard Günəş kütləli qara dəliyin hadisələr üfüqünün radiusu təxminən 106 milyard kilometrdir (təxminən 710 astronomik vahid); Neptun isə Günəşdən cəmi təxminən 30 astronomik vahid uzaqdadır.",
+    "Lester Universitetindən professor Endryu Kinqə görə qara dəliklər təxminən 50 milyard Günəş kütləsinə çatdıqda qidalandıqları qaz diskini saxlaya bilmir və böyüməsi dayanır."
+   ]
+  }
+ }
+}

@@ -1,0 +1,289 @@
+{
+ "id": "y039",
+ "series": "Ya Olsaydı?",
+ "q": "Okyanusun en dibine insaydın ne olurdu?",
+ "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+ "bar": {
+  "hi": "OKYANUS DİBİNE",
+  "rest": "DALSAYDIN?"
+ },
+ "summary": "Okyanusun en dibinde tırnağın kadar bir yere 1 ton biner! İnerken kulaklarına ve ciğerlerine neler olacağını, 1960'ta oraya inen denizaltının başına geleni Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Tırnağına bak: okyanusun en dibinde oraya 1 ton biner!",
+   "v": {
+    "t": "number",
+    "bg": "underwater",
+    "e": "💅",
+    "value": "1",
+    "unit": "ton",
+    "label": "Tırnağına Binen",
+    "key": "ton"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Tırnağıma araba mı park etti?!",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🚗",
+    "do": "fall",
+    "key": "araba",
+    "label": "Tırnakta Araba"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her 10 metrede 1 atmosfer biner; havuzda kulağın bu yüzden ağrır.",
+   "v": {
+    "t": "meter",
+    "bg": "underwater",
+    "label": "10 Metrede Basınç",
+    "from": 1,
+    "to": 2,
+    "unit": "atm",
+    "e": "👂",
+    "key": "atmosfer"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "40 metrede ciğerlerindeki hava 5'te 1'ine sıkışır.",
+   "v": {
+    "t": "compare",
+    "bg": "underwater",
+    "a": {
+     "e": "🎈",
+     "label": "Yüzeyde",
+     "value": "5"
+    },
+    "b": {
+     "e": "🎈",
+     "label": "40 Metrede",
+     "value": "1"
+    },
+    "mode": "size",
+    "key": "40"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dipte basınç 1.000 katı aşar; ciğerlerin tamamen büzüşürdü!",
+   "v": {
+    "t": "split",
+    "bg": "underwater",
+    "left": {
+     "e": "🎈",
+     "label": "Ciğerlerin"
+    },
+    "right": {
+     "e": "💥",
+     "label": "Büzüşür"
+    },
+    "key": "büzüşürdü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1960'ta oraya inen denizaltının bile camı çatladı!",
+   "v": {
+    "t": "timeline",
+    "bg": "underwater",
+    "steps": [
+     {
+      "when": "1960",
+      "e": "🚢",
+      "label": "Dibe İniş"
+     },
+     {
+      "when": "9.000 M",
+      "e": "💥",
+      "label": "Cam Çatlar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen okyanusta kaç metreye inerdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "underwater",
+    "e": "🌊"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre NOAA verileriyle Challenger Çukuru yaklaşık 10.935 metre derinliktedir ve dipteki basınç deniz seviyesindeki atmosfer basıncının 1.000 katından fazladır.",
+   "source": "Live Science (NOAA)",
+   "url": "https://www.livescience.com/how-deep-is-the-mariana-trench"
+  },
+  {
+   "text": "Live Science'a göre Challenger Çukuru'nun dibindeki basınç inç kareye yaklaşık 8 tondur; bu, santimetrekare başına 1 tondan fazla, yani tırnak büyüklüğünde bir alana bir otomobil ağırlığı demektir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/29534-the-first-and-last-voyage-to-the-bottom-of-the-sea.html"
+  },
+  {
+   "text": "NOAA'ya göre denizde her 10 metrede basınç 1 atmosfer artar.",
+   "source": "NOAA National Ocean Service",
+   "url": "https://oceanservice.noaa.gov/facts/pressure.html"
+  },
+  {
+   "text": "Batı Avustralya Üniversitesi'ne göre dalgıç indikçe vücuttaki hava sıkışır; 40 metrede hava hacmi yüzeydekinin %20'sine iner.",
+   "source": "University of Western Australia",
+   "url": "https://www.uwa.edu.au/study/-/media/Faculties/Science/Docs/Problems-with-pressure.pdf"
+  },
+  {
+   "text": "Live Science'a göre 1960'ta Trieste denizaltısı yaklaşık 9.000 metreyi geçince dış pencere camlarından biri çatladı ve bütün araç şiddetle sarsıldı; dibe iniş 4 saat 48 dakika sürdü.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/29534-the-first-and-last-voyage-to-the-bottom-of-the-sea.html"
+  }
+ ],
+ "tags": [
+  "okyanus",
+  "okyanusun dibi",
+  "mariana çukuru",
+  "challenger çukuru",
+  "derin deniz",
+  "su basıncı",
+  "dalış",
+  "trieste",
+  "deep ocean",
+  "mariana trench",
+  "challenger deep",
+  "water pressure",
+  "bottom of the ocean",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#okyanus",
+  "#marianaçukuru",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/how-deep-is-the-mariana-trench",
+  "https://oceanservice.noaa.gov/facts/pressure.html",
+  "https://www.uwa.edu.au/study/-/media/Faculties/Science/Docs/Problems-with-pressure.pdf",
+  "https://www.livescience.com/29534-the-first-and-last-voyage-to-the-bottom-of-the-sea.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Dived to the Very Bottom of the Ocean?",
+   "summary": "At the bottom of the ocean, 1 ton presses on an area the size of your fingernail! Professor Pi explains what would happen to your ears and lungs on the way down, and what happened to the submersible that reached the bottom in 1960.",
+   "facts": [
+    "According to Live Science, citing NOAA, the Challenger Deep is about 10,935 meters deep, and the pressure at the bottom is more than 1,000 times standard atmospheric pressure at sea level.",
+    "According to Live Science, the pressure at the bottom of the Challenger Deep is roughly 8 tons per square inch; that is more than 1 ton per square centimeter, about the weight of a car on an area the size of a fingernail.",
+    "According to NOAA, pressure in the sea increases by 1 atmosphere for every 10 meters of depth.",
+    "According to the University of Western Australia, the air in a diver's body is compressed on the way down; at 40 meters it shrinks to 20% of its volume at the surface.",
+    "According to Live Science, in 1960, after the Trieste passed about 9,000 meters, one of its outer window panes cracked, violently shaking the entire vessel; the descent to the bottom took 4 hours and 48 minutes."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Bajaras al Fondo Más Profundo del Océano?",
+   "summary": "¡En el fondo del océano, 1 tonelada presiona sobre un área del tamaño de tu uña! El profesor Pi explica qué les pasaría a tus oídos y tus pulmones al bajar, y qué le ocurrió al batiscafo que llegó al fondo en 1960.",
+   "facts": [
+    "Según Live Science, con datos de la NOAA, el abismo Challenger tiene unos 10.935 metros de profundidad y la presión en el fondo es más de 1.000 veces la presión atmosférica al nivel del mar.",
+    "Según Live Science, la presión en el fondo del abismo Challenger es de unas 8 toneladas por pulgada cuadrada; eso es más de 1 tonelada por centímetro cuadrado, el peso de un coche sobre un área del tamaño de una uña.",
+    "Según la NOAA, en el mar la presión aumenta 1 atmósfera por cada 10 metros de profundidad.",
+    "Según la Universidad de Australia Occidental, el aire del cuerpo de un buceador se comprime al descender; a 40 metros se reduce al 20% de su volumen en la superficie.",
+    "Según Live Science, en 1960, después de que el Trieste pasara unos 9.000 metros, se agrietó uno de los cristales exteriores de sus ventanas y toda la nave se sacudió violentamente; el descenso hasta el fondo duró 4 horas y 48 minutos."
+   ]
+  },
+  "pt": {
+   "title": "E Se Você Mergulhasse até o Ponto Mais Fundo do Oceano?",
+   "summary": "No fundo do oceano, 1 tonelada pressiona uma área do tamanho da sua unha! O professor Pi explica o que aconteceria com seus ouvidos e seus pulmões na descida, e o que houve com o batiscafo que chegou ao fundo em 1960.",
+   "facts": [
+    "Segundo a Live Science, com dados da NOAA, a Depressão Challenger tem cerca de 10.935 metros de profundidade, e a pressão no fundo é mais de 1.000 vezes a pressão atmosférica ao nível do mar.",
+    "Segundo a Live Science, a pressão no fundo da Depressão Challenger é de cerca de 8 toneladas por polegada quadrada; isso é mais de 1 tonelada por centímetro quadrado, o peso de um carro sobre uma área do tamanho de uma unha.",
+    "Segundo a NOAA, no mar a pressão aumenta 1 atmosfera a cada 10 metros de profundidade.",
+    "Segundo a Universidade da Austrália Ocidental, o ar no corpo de um mergulhador é comprimido na descida; a 40 metros ele cai para 20% do volume na superfície.",
+    "Segundo a Live Science, em 1960, depois que o Trieste passou de cerca de 9.000 metros, um dos vidros externos de suas janelas rachou e a embarcação inteira tremeu violentamente; a descida até o fundo levou 4 horas e 48 minutos."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو غصت إلى أعمق نقطة في المحيط؟",
+   "summary": "في قاع المحيط يضغط 1 طن على مساحة بحجم ظفرك! يشرح البروفيسور باي ما سيحدث لأذنيك ورئتيك أثناء النزول، وما جرى للغواصة التي بلغت القاع عام 1960.",
+   "facts": [
+    "وفقًا لموقع Live Science نقلًا عن NOAA، يبلغ عمق خندق تشالنجر نحو 10,935 مترًا، والضغط في قاعه أكبر من 1,000 ضعف الضغط الجوي عند مستوى سطح البحر.",
+    "وفقًا لموقع Live Science، يبلغ الضغط في قاع خندق تشالنجر نحو 8 أطنان لكل بوصة مربعة؛ أي أكثر من 1 طن لكل سنتيمتر مربع، وهو وزن سيارة على مساحة بحجم الظفر.",
+    "وفقًا لـ NOAA، يزداد الضغط في البحر بمقدار 1 ضغط جوي مع كل 10 أمتار من العمق.",
+    "وفقًا لجامعة غرب أستراليا، ينضغط الهواء في جسم الغواص أثناء النزول؛ وعند عمق 40 مترًا يتقلص إلى 20% من حجمه عند السطح.",
+    "وفقًا لموقع Live Science، في عام 1960 وبعد أن تجاوزت الغواصة ترييستي نحو 9,000 متر، تشقق أحد ألواح نوافذها الخارجية واهتزت المركبة كلها بعنف؛ واستغرق النزول إلى القاع 4 ساعات و48 دقيقة."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम समुद्र के सबसे गहरे तल तक गोता लगाते तो क्या होता?",
+   "summary": "समुद्र के सबसे गहरे तल पर तुम्हारे नाखून जितनी जगह पर 1 टन का दबाव पड़ता है! प्रोफ़ेसर पाई बताते हैं कि नीचे जाते हुए तुम्हारे कानों और फेफड़ों का क्या होता, और 1960 में तल तक पहुँची पनडुब्बी के साथ क्या हुआ।",
+   "facts": [
+    "Live Science के अनुसार, NOAA के आँकड़ों से चैलेंजर डीप लगभग 10,935 मीटर गहरा है और तल पर दबाव समुद्र तल के वायुमंडलीय दबाव से 1,000 गुना से ज़्यादा है।",
+    "Live Science के अनुसार, चैलेंजर डीप के तल पर दबाव लगभग 8 टन प्रति वर्ग इंच है; यानी 1 टन प्रति वर्ग सेंटीमीटर से ज़्यादा, नाखून जितनी जगह पर एक कार का वज़न।",
+    "NOAA के अनुसार, समुद्र में हर 10 मीटर गहराई पर दबाव 1 वायुमंडल बढ़ जाता है।",
+    "यूनिवर्सिटी ऑफ़ वेस्टर्न ऑस्ट्रेलिया के अनुसार, नीचे जाते हुए गोताखोर के शरीर की हवा सिकुड़ती है; 40 मीटर पर वह सतह वाले आयतन का 20% रह जाती है।",
+    "Live Science के अनुसार, 1960 में ट्रिएस्टे पनडुब्बी के लगभग 9,000 मीटर पार करते ही उसकी एक बाहरी खिड़की का शीशा चटक गया और पूरा यान ज़ोर से हिल गया; तल तक उतरने में 4 घंटे 48 मिनट लगे।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Menyelam ke Dasar Laut Terdalam?",
+   "summary": "Di dasar laut terdalam, 1 ton menekan area seukuran kukumu! Profesor Pi menjelaskan apa yang terjadi pada telinga dan paru-parumu selama turun, serta nasib kapal selam yang mencapai dasar pada 1960.",
+   "facts": [
+    "Menurut Live Science yang mengutip NOAA, Challenger Deep sedalam sekitar 10.935 meter, dan tekanan di dasarnya lebih dari 1.000 kali tekanan atmosfer di permukaan laut.",
+    "Menurut Live Science, tekanan di dasar Challenger Deep sekitar 8 ton per inci persegi; itu lebih dari 1 ton per sentimeter persegi, seberat mobil di atas area seukuran kuku.",
+    "Menurut NOAA, tekanan di laut bertambah 1 atmosfer setiap kedalaman 10 meter.",
+    "Menurut University of Western Australia, udara di tubuh penyelam termampatkan saat turun; di kedalaman 40 meter volumenya tinggal 20% dari volume di permukaan.",
+    "Menurut Live Science, pada 1960 setelah Trieste melewati sekitar 9.000 meter, salah satu kaca jendela luarnya retak dan seluruh kapal terguncang hebat; penurunan ke dasar memakan waktu 4 jam 48 menit."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tu Plongeais au Point le Plus Profond de l'Océan ?",
+   "summary": "Au fond de l'océan, 1 tonne appuie sur une surface grande comme ton ongle ! Le professeur Pi explique ce qui arriverait à tes oreilles et à tes poumons pendant la descente, et ce qui est arrivé au bathyscaphe qui a atteint le fond en 1960.",
+   "facts": [
+    "Selon Live Science, d'après la NOAA, la fosse Challenger atteint environ 10 935 mètres de profondeur, et la pression au fond dépasse 1 000 fois la pression atmosphérique au niveau de la mer.",
+    "Selon Live Science, la pression au fond de la fosse Challenger est d'environ 8 tonnes par pouce carré ; c'est plus de 1 tonne par centimètre carré, le poids d'une voiture sur une surface grande comme un ongle.",
+    "Selon la NOAA, en mer, la pression augmente de 1 atmosphère tous les 10 mètres de profondeur.",
+    "Selon l'université d'Australie-Occidentale, l'air contenu dans le corps d'un plongeur se comprime pendant la descente ; à 40 mètres, il ne fait plus que 20 % de son volume en surface.",
+    "Selon Live Science, en 1960, après que le Trieste a dépassé environ 9 000 mètres, l'une des vitres extérieures de ses hublots s'est fissurée et tout l'engin a été violemment secoué ; la descente jusqu'au fond a duré 4 heures et 48 minutes."
+   ]
+  },
+  "de": {
+   "title": "Was Wäre, Wenn Du zum Tiefsten Punkt des Ozeans Tauchst?",
+   "summary": "Am tiefsten Punkt des Ozeans drückt 1 Tonne auf eine Fläche so groß wie dein Fingernagel! Professor Pi erklärt, was auf dem Weg nach unten mit deinen Ohren und deiner Lunge passieren würde – und was dem Tauchboot geschah, das 1960 den Grund erreichte.",
+   "facts": [
+    "Laut Live Science ist das Challengertief nach NOAA-Angaben etwa 10.935 Meter tief, und der Druck am Grund beträgt mehr als das 1.000-Fache des Luftdrucks auf Meereshöhe.",
+    "Laut Live Science beträgt der Druck am Grund des Challengertiefs etwa 8 Tonnen pro Quadratzoll; das sind mehr als 1 Tonne pro Quadratzentimeter, das Gewicht eines Autos auf einer Fläche so groß wie ein Fingernagel.",
+    "Laut NOAA steigt der Druck im Meer alle 10 Meter Tiefe um 1 Atmosphäre.",
+    "Laut der University of Western Australia wird die Luft im Körper eines Tauchers beim Abstieg zusammengedrückt; in 40 Metern Tiefe schrumpft sie auf 20 % ihres Volumens an der Oberfläche.",
+    "Laut Live Science bekam 1960, nachdem die Trieste etwa 9.000 Meter passiert hatte, eine der äußeren Fensterscheiben einen Riss, und das ganze Fahrzeug wurde heftig erschüttert; der Abstieg zum Grund dauerte 4 Stunden und 48 Minuten."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Нырнуть на Самое Дно Океана?",
+   "summary": "На дне океана на участок размером с твой ноготь давит 1 тонна! Профессор Пи объясняет, что по пути вниз происходило бы с твоими ушами и лёгкими и что случилось с батискафом, достигшим дна в 1960 году.",
+   "facts": [
+    "По данным Live Science со ссылкой на NOAA, глубина впадины Челленджера — около 10 935 метров, а давление на дне более чем в 1000 раз выше атмосферного давления на уровне моря.",
+    "По данным Live Science, давление на дне впадины Челленджера — около 8 тонн на квадратный дюйм; это больше 1 тонны на квадратный сантиметр, вес автомобиля на площади размером с ноготь.",
+    "По данным NOAA, давление в море растёт на 1 атмосферу на каждые 10 метров глубины.",
+    "По данным Университета Западной Австралии, при погружении воздух в теле дайвера сжимается; на глубине 40 метров его объём составляет 20% от объёма на поверхности.",
+    "По данным Live Science, в 1960 году, когда «Триест» прошёл около 9000 метров, треснуло одно из внешних оконных стёкол и весь аппарат сильно тряхнуло; спуск на дно занял 4 часа 48 минут."
+   ]
+  },
+  "az": {
+   "title": "Okeanın Ən Dibinə Dalsaydın Nə Olardı?",
+   "summary": "Okeanın ən dibində dırnağın boyda yerə 1 ton düşür! Professor Pi aşağı enərkən qulaqlarına və ciyərlərinə nə olacağını, 1960-cı ildə dibə enən sualtı aparatın başına gələnləri danışır.",
+   "facts": [
+    "Live Science-a görə NOAA məlumatlarına əsasən Çellencer çökəkliyi təxminən 10.935 metr dərinlikdədir və dibdəki təzyiq dəniz səviyyəsindəki atmosfer təzyiqindən 1.000 dəfədən çoxdur.",
+    "Live Science-a görə Çellencer çökəkliyinin dibində təzyiq hər kvadrat düymə təxminən 8 tondur; bu, hər kvadrat santimetrə 1 tondan çox, yəni dırnaq boyda sahəyə bir avtomobil çəkisi deməkdir.",
+    "NOAA-ya görə dənizdə hər 10 metr dərinlikdə təzyiq 1 atmosfer artır.",
+    "Qərbi Avstraliya Universitetinə görə dalğıc endikcə bədənindəki hava sıxılır; 40 metrdə havanın həcmi səthdəkinin 20%-nə enir.",
+    "Live Science-a görə 1960-cı ildə Trieste təxminən 9.000 metri keçəndə xarici pəncərə şüşələrindən biri çatladı və bütün aparat şiddətlə silkələndi; dibə eniş 4 saat 48 dəqiqə çəkdi."
+   ]
+  }
+ }
+}

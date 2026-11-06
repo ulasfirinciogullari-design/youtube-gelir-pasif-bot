@@ -1,0 +1,287 @@
+{
+ "id": "y020",
+ "series": "Ya Olsaydı?",
+ "q": "Mars'ta korumasız kalsaydın ne olurdu?",
+ "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+ "bar": {
+  "hi": "MARS'TA",
+  "rest": "KORUMASIZ KALSAN?"
+ },
+ "summary": "Mars'ta aldığın her nefeste oksijen 10.000 kattan fazla azalırdı! Karbondioksit havasının, dondurucu soğuğun, gezegeni saran tozun ve görünmez radyasyonun sana neler yapacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Derin nefes al: Mars'ta bu nefesin oksijeni 10.000 kattan fazla azalırdı!",
+   "v": {
+    "t": "number",
+    "bg": "desert",
+    "e": "💨",
+    "value": "10.000",
+    "unit": "kat az",
+    "label": "Nefesteki Oksijen",
+    "key": "10.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Havanın %95'i de karbondioksit.",
+   "v": {
+    "t": "meter",
+    "bg": "desert",
+    "label": "Karbondioksit",
+    "from": 0,
+    "to": 95,
+    "unit": "%",
+    "e": "🌫️",
+    "key": "karbondioksit"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ciğerlerim gazoz mu oluyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "🥤",
+    "do": "shake",
+    "key": "gazoz",
+    "label": "Gazoz Ciğer"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ekvatorda öğlen bile ayakların 24 °C'de, başın 0 °C'de olurdu!",
+   "v": {
+    "t": "split",
+    "bg": "desert",
+    "left": {
+     "e": "🦶",
+     "label": "Ayakların: 24 °C"
+    },
+    "right": {
+     "e": "🥶",
+     "label": "Başın: 0 °C"
+    },
+    "key": "başın"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Toz fırtınaları bütün gezegeni aylarca sarabilir.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "mars",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "fırtınaları",
+    "label": "Aylarca Toz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1 haftada, Dünya'daki 1 yıllık doğal radyasyonu aşardın!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "earth",
+     "label": "Dünya: 1 Yıl",
+     "value": "3,1"
+    },
+    "b": {
+     "b": "mars",
+     "label": "Mars: 1 Hafta",
+     "value": "4,5"
+    },
+    "mode": "bar",
+    "key": "haftada"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen Mars'a tek yön bilet alır mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "desert",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "ESA'ya göre Mars atmosferi %95,32 karbondioksit ve yalnızca %0,13 oksijendir; yüzey basıncı 6,35 milibar, yani Dünya'nınkinin 100'de 1'inden azdır. Buna göre Mars'ta bir nefesteki oksijen Dünya'dakinden yaklaşık 25.000 kat azdır.",
+   "source": "ESA",
+   "url": "https://www.esa.int/Science_Exploration/Space_Science/Mars_Express/Facts_about_Mars"
+  },
+  {
+   "text": "NASA'ya göre Mars'ta ekvatorda öğlen ayakta dursan ayaklarında 24 °C ile ilkbahar, başında 0 °C ile kış hissederdin.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/mars/facts/"
+  },
+  {
+   "text": "Space.com'a göre Mars'taki toz fırtınaları bütün gezegeni kaplayabilir ve aylarca sürebilir.",
+   "source": "Space.com",
+   "url": "https://www.space.com/16903-mars-atmosphere-climate-weather.html"
+  },
+  {
+   "text": "Space.com'a göre Curiosity'nin ölçümleri, Mars yüzeyindeki bir astronotun günde yaklaşık 0,64 milisievert radyasyon alacağını gösteriyor; 1 haftada bu yaklaşık 4,5 milisievert eder.",
+   "source": "Space.com",
+   "url": "https://www.space.com/23875-mars-radiation-life-manned-mission.html"
+  },
+  {
+   "text": "ABD Nükleer Düzenleme Komisyonu'na göre ABD'de bir kişi yılda ortalama 6,2 milisievert radyasyon alır ve bunun yarısı, yani yaklaşık 3,1 milisievert, doğal kaynaklardandır.",
+   "source": "U.S. Nuclear Regulatory Commission",
+   "url": "https://www.nrc.gov/facilities-safety/radiation-protection/radiation-all-around-us/doses-in-our-daily-lives"
+  }
+ ],
+ "tags": [
+  "mars",
+  "mars'ta yaşam",
+  "mars atmosferi",
+  "mars'ta nefes almak",
+  "kızıl gezegen",
+  "radyasyon",
+  "toz fırtınası",
+  "uzay",
+  "life on mars",
+  "mars atmosphere",
+  "survive on mars",
+  "mars without a spacesuit",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#mars",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://science.nasa.gov/mars/facts/",
+  "https://www.esa.int/Science_Exploration/Space_Science/Mars_Express/Facts_about_Mars",
+  "https://www.space.com/23875-mars-radiation-life-manned-mission.html",
+  "https://www.nrc.gov/facilities-safety/radiation-protection/radiation-all-around-us/doses-in-our-daily-lives"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Were Unprotected on Mars?",
+   "summary": "On Mars, every breath you took would hold more than 10,000 times less oxygen! Professor Pi explains what the carbon dioxide air, the freezing cold, the planet-wide dust and the invisible radiation would do to you.",
+   "facts": [
+    "According to ESA, Mars' atmosphere is 95.32% carbon dioxide and only 0.13% oxygen, and its surface pressure of 6.35 mbar is less than one hundredth of Earth's; so a breath on Mars holds about 25,000 times less oxygen than on Earth.",
+    "According to NASA, if you stood on the equator of Mars at noon, it would feel like spring at your feet (24 °C) and winter at your head (0 °C).",
+    "According to Space.com, dust storms on Mars can blanket the entire planet and last for months.",
+    "According to Space.com, Curiosity's measurements show that an astronaut on the Martian surface would receive about 0.64 millisieverts of radiation per day; in 1 week that adds up to about 4.5 millisieverts.",
+    "According to the U.S. Nuclear Regulatory Commission, a person in the U.S. receives an average of 6.2 millisieverts of radiation a year, and half of it, about 3.1 millisieverts, comes from natural sources."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Te Pasaría Si Estuvieras Desprotegido en Marte?",
+   "summary": "¡En Marte, cada respiración tendría más de 10.000 veces menos oxígeno! El profesor Pi explica lo que te harían el aire de dióxido de carbono, el frío helador, el polvo que cubre el planeta y la radiación invisible.",
+   "facts": [
+    "Según la ESA, la atmósfera de Marte es 95,32% dióxido de carbono y solo 0,13% oxígeno, y su presión en superficie, de 6,35 mbar, es menos de una centésima parte de la terrestre; por eso una respiración en Marte contiene unas 25.000 veces menos oxígeno que en la Tierra.",
+    "Según la NASA, si estuvieras de pie en el ecuador de Marte al mediodía, sentirías primavera en los pies (24 °C) e invierno en la cabeza (0 °C).",
+    "Según Space.com, las tormentas de polvo de Marte pueden cubrir todo el planeta y durar meses.",
+    "Según Space.com, las mediciones del Curiosity indican que un astronauta en la superficie de Marte recibiría unos 0,64 milisieverts de radiación al día; en 1 semana eso suma unos 4,5 milisieverts.",
+    "Según la Comisión Reguladora Nuclear de EE. UU., una persona en EE. UU. recibe de media 6,2 milisieverts de radiación al año, y la mitad, unos 3,1 milisieverts, procede de fuentes naturales."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Ficasse Desprotegido em Marte?",
+   "summary": "Em Marte, cada respiração teria mais de 10.000 vezes menos oxigênio! O professor Pi explica o que o ar de dióxido de carbono, o frio congelante, a poeira que cobre o planeta e a radiação invisível fariam com você.",
+   "facts": [
+    "Segundo a ESA, a atmosfera de Marte tem 95,32% de dióxido de carbono e só 0,13% de oxigênio, e a pressão na superfície, de 6,35 mbar, é menos de um centésimo da terrestre; por isso uma respiração em Marte tem cerca de 25.000 vezes menos oxigênio do que na Terra.",
+    "Segundo a NASA, se você estivesse no equador de Marte ao meio-dia, sentiria primavera nos pés (24 °C) e inverno na cabeça (0 °C).",
+    "Segundo o Space.com, as tempestades de poeira de Marte podem cobrir o planeta inteiro e durar meses.",
+    "Segundo o Space.com, as medições do Curiosity mostram que um astronauta na superfície de Marte receberia cerca de 0,64 milisievert de radiação por dia; em 1 semana isso soma cerca de 4,5 milisieverts.",
+    "Segundo a Comissão Reguladora Nuclear dos EUA, uma pessoa nos EUA recebe em média 6,2 milisieverts de radiação por ano, e metade disso, cerca de 3,1 milisieverts, vem de fontes naturais."
+   ]
+  },
+  "ar": {
+   "title": "ماذا كان سيحدث لك لو بقيت على المريخ بلا حماية؟",
+   "summary": "على المريخ سيقل الأكسجين في كل نفس تأخذه أكثر من 10,000 مرة! يشرح البروفيسور باي ما سيفعله بك هواء ثاني أكسيد الكربون والبرد القارس والغبار الذي يغطي الكوكب والإشعاع الخفي.",
+   "facts": [
+    "وفقًا لوكالة الفضاء الأوروبية، يتكون غلاف المريخ الجوي من 95.32% ثاني أكسيد الكربون و0.13% فقط أكسجين، وضغطه السطحي 6.35 مليبار أي أقل من جزء من 100 من ضغط الأرض؛ لذا يحمل النفس على المريخ أكسجينًا أقل بنحو 25,000 مرة مما على الأرض.",
+    "وفقًا لناسا، لو وقفت على خط استواء المريخ عند الظهر لشعرت بالربيع عند قدميك (24 °C) وبالشتاء عند رأسك (0 °C).",
+    "وفقًا لموقع Space.com، يمكن للعواصف الترابية على المريخ أن تغطي الكوكب كله وتستمر شهورًا.",
+    "وفقًا لموقع Space.com، تُظهر قياسات المسبار كيوريوسيتي أن رائد الفضاء على سطح المريخ سيتلقى نحو 0.64 ملّي سيفرت من الإشعاع يوميًا؛ أي نحو 4.5 ملّي سيفرت في أسبوع واحد.",
+    "وفقًا لهيئة التنظيم النووي الأمريكية، يتلقى الشخص في الولايات المتحدة في المتوسط 6.2 ملّي سيفرت من الإشعاع سنويًا، نصفها، أي نحو 3.1 ملّي سيفرت، من مصادر طبيعية."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम मंगल पर बिना सुरक्षा के रह जाते तो क्या होता?",
+   "summary": "मंगल पर तुम्हारी हर साँस में ऑक्सीजन 10,000 गुना से भी ज़्यादा कम होती! प्रोफ़ेसर पाई बताते हैं कि कार्बन डाइऑक्साइड वाली हवा, जमा देने वाली ठंड, पूरे ग्रह पर छाने वाली धूल और अदृश्य विकिरण तुम्हारे साथ क्या करते।",
+   "facts": [
+    "ESA के अनुसार, मंगल का वायुमंडल 95.32% कार्बन डाइऑक्साइड और सिर्फ़ 0.13% ऑक्सीजन है, और उसकी सतह का दबाव 6.35 मिलीबार, यानी पृथ्वी के 100वें हिस्से से भी कम है; इसलिए मंगल पर एक साँस में पृथ्वी से लगभग 25,000 गुना कम ऑक्सीजन होती है।",
+    "NASA के अनुसार, अगर तुम दोपहर में मंगल की भूमध्य रेखा पर खड़े होते, तो पैरों के पास वसंत (24 °C) और सिर के पास सर्दी (0 °C) महसूस होती।",
+    "Space.com के अनुसार, मंगल के धूल भरे तूफ़ान पूरे ग्रह को ढक सकते हैं और महीनों तक चल सकते हैं।",
+    "Space.com के अनुसार, Curiosity के मापों से पता चलता है कि मंगल की सतह पर एक अंतरिक्ष यात्री को रोज़ लगभग 0.64 मिलीसीवर्ट विकिरण मिलेगा; 1 हफ़्ते में यह लगभग 4.5 मिलीसीवर्ट हो जाता है।",
+    "अमेरिकी न्यूक्लियर रेगुलेटरी कमीशन के अनुसार, अमेरिका में एक व्यक्ति को साल में औसतन 6.2 मिलीसीवर्ट विकिरण मिलता है, जिसमें से आधा, यानी लगभग 3.1 मिलीसीवर्ट, प्राकृतिक स्रोतों से आता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Jika Kamu Tanpa Pelindung di Mars?",
+   "summary": "Di Mars, oksigen dalam setiap napasmu akan lebih dari 10.000 kali lebih sedikit! Profesor Pi menjelaskan apa yang akan dilakukan udara karbon dioksida, dingin yang membekukan, debu yang menyelimuti planet, dan radiasi tak terlihat terhadapmu.",
+   "facts": [
+    "Menurut ESA, atmosfer Mars terdiri dari 95,32% karbon dioksida dan hanya 0,13% oksigen, dan tekanan permukaannya 6,35 milibar, kurang dari seperseratus tekanan Bumi; karena itu satu tarikan napas di Mars berisi oksigen sekitar 25.000 kali lebih sedikit daripada di Bumi.",
+    "Menurut NASA, jika kamu berdiri di khatulistiwa Mars pada siang hari, kakimu akan merasakan musim semi (24 °C) dan kepalamu musim dingin (0 °C).",
+    "Menurut Space.com, badai debu di Mars bisa menyelimuti seluruh planet dan berlangsung berbulan-bulan.",
+    "Menurut Space.com, pengukuran Curiosity menunjukkan astronaut di permukaan Mars akan menerima sekitar 0,64 milisievert radiasi per hari; dalam 1 minggu jumlahnya sekitar 4,5 milisievert.",
+    "Menurut Komisi Pengaturan Nuklir AS, seseorang di AS menerima rata-rata 6,2 milisievert radiasi per tahun, dan setengahnya, sekitar 3,1 milisievert, berasal dari sumber alami."
+   ]
+  },
+  "fr": {
+   "title": "Que T'arriverait-il Si Tu Étais Sans Protection sur Mars ?",
+   "summary": "Sur Mars, chaque respiration contiendrait plus de 10 000 fois moins d'oxygène ! Le professeur Pi explique ce que te feraient l'air chargé de dioxyde de carbone, le froid glacial, la poussière qui recouvre la planète et le rayonnement invisible.",
+   "facts": [
+    "Selon l'ESA, l'atmosphère de Mars contient 95,32 % de dioxyde de carbone et seulement 0,13 % d'oxygène, et sa pression au sol de 6,35 mbar est inférieure au centième de celle de la Terre ; une respiration sur Mars contient donc environ 25 000 fois moins d'oxygène que sur Terre.",
+    "Selon la NASA, si tu te tenais sur l'équateur de Mars à midi, tu aurais l'impression d'être au printemps aux pieds (24 °C) et en hiver à la tête (0 °C).",
+    "Selon Space.com, les tempêtes de poussière martiennes peuvent recouvrir toute la planète et durer des mois.",
+    "Selon Space.com, les mesures de Curiosity montrent qu'un astronaute à la surface de Mars recevrait environ 0,64 millisievert de rayonnement par jour ; en 1 semaine, cela fait environ 4,5 millisieverts.",
+    "Selon la Commission de réglementation nucléaire des États-Unis, une personne aux États-Unis reçoit en moyenne 6,2 millisieverts de rayonnement par an, dont la moitié, environ 3,1 millisieverts, d'origine naturelle."
+   ]
+  },
+  "de": {
+   "title": "Was Würde Dir Ungeschützt auf dem Mars Passieren?",
+   "summary": "Auf dem Mars enthielte jeder Atemzug mehr als 10.000-mal weniger Sauerstoff! Professor Pi erklärt, was die Kohlendioxid-Luft, die eisige Kälte, der Staub, der den Planeten umhüllt, und die unsichtbare Strahlung mit dir machen würden.",
+   "facts": [
+    "Laut ESA besteht die Marsatmosphäre zu 95,32 % aus Kohlendioxid und nur zu 0,13 % aus Sauerstoff, und ihr Bodendruck von 6,35 mbar beträgt weniger als ein Hundertstel des Erddrucks; ein Atemzug auf dem Mars enthält also etwa 25.000-mal weniger Sauerstoff als auf der Erde.",
+    "Laut NASA würde es sich mittags am Marsäquator an deinen Füßen wie Frühling (24 °C) und an deinem Kopf wie Winter (0 °C) anfühlen.",
+    "Laut Space.com können Staubstürme auf dem Mars den ganzen Planeten einhüllen und monatelang andauern.",
+    "Laut Space.com zeigen Messungen von Curiosity, dass ein Astronaut auf der Marsoberfläche etwa 0,64 Millisievert Strahlung pro Tag abbekäme; in 1 Woche sind das etwa 4,5 Millisievert.",
+    "Laut der US-Atomaufsichtsbehörde NRC erhält ein Mensch in den USA im Schnitt 6,2 Millisievert Strahlung pro Jahr, die Hälfte davon, etwa 3,1 Millisievert, aus natürlichen Quellen."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Оказаться на Марсе Без Защиты?",
+   "summary": "На Марсе в каждом твоём вдохе было бы больше чем в 10 000 раз меньше кислорода! Профессор Пи объясняет, что сделали бы с тобой углекислый воздух, леденящий холод, пыль, окутывающая планету, и невидимая радиация.",
+   "facts": [
+    "По данным ЕКА, атмосфера Марса на 95,32% состоит из углекислого газа и лишь на 0,13% из кислорода, а давление у поверхности, 6,35 мбар, меньше одной сотой земного; поэтому во вдохе на Марсе примерно в 25 000 раз меньше кислорода, чем на Земле.",
+    "По данным NASA, если встать на экваторе Марса в полдень, у ног будет ощущаться весна (24 °C), а у головы — зима (0 °C).",
+    "По данным Space.com, пыльные бури на Марсе могут окутать всю планету и длиться месяцами.",
+    "По данным Space.com, измерения Curiosity показывают, что астронавт на поверхности Марса получал бы около 0,64 миллизиверта радиации в день; за 1 неделю это около 4,5 миллизиверта.",
+    "По данным Комиссии по ядерному регулированию США, житель США в среднем получает 6,2 миллизиверта радиации в год, и половина из них, около 3,1 миллизиверта, приходится на природные источники."
+   ]
+  },
+  "az": {
+   "title": "Marsda Qorunmasız Qalsaydın Nə Olardı?",
+   "summary": "Marsda aldığın hər nəfəsdə oksigen 10.000 dəfədən çox azalardı! Professor Pi karbon qazı havasının, dondurucu soyuğun, planeti bürüyən tozun və görünməz radiasiyanın sənə nə edəcəyini danışır.",
+   "facts": [
+    "ESA-ya görə Mars atmosferi 95,32% karbon qazından və cəmi 0,13% oksigendən ibarətdir, səth təzyiqi isə 6,35 millibar, yəni Yerinkinin 100-də 1-indən azdır; buna görə Marsda bir nəfəsdəki oksigen Yerdəkindən təxminən 25.000 dəfə azdır.",
+    "NASA-ya görə Marsın ekvatorunda günorta dayansaydın, ayaqlarında 24 °C ilə yaz, başında 0 °C ilə qış hiss edərdin.",
+    "Space.com-a görə Marsdakı toz fırtınaları bütün planeti bürüyə və aylarla davam edə bilər.",
+    "Space.com-a görə Curiosity-nin ölçmələri Mars səthindəki astronavtın gündə təxminən 0,64 millizivert radiasiya alacağını göstərir; 1 həftədə bu təxminən 4,5 millizivert edir.",
+    "ABŞ Nüvə Tənzimləmə Komissiyasına görə ABŞ-da bir nəfər ildə orta hesabla 6,2 millizivert radiasiya alır, bunun yarısı, yəni təxminən 3,1 millizivert, təbii mənbələrdəndir."
+   ]
+  }
+ }
+}

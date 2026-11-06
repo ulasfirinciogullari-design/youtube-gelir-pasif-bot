@@ -1,0 +1,264 @@
+{
+ "id": "g008",
+ "series": "1 Gün Boyunca",
+ "q": "Dünya'ya 1 günde kaç yıldırım düşer?",
+ "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+ "bar": {
+  "hi": "KAÇ YILDIRIM",
+  "rest": "DÜŞER?"
+ },
+ "summary": "Bu videoyu izlediğin sürede gökte yaklaşık 1.000 şimşek çakıyor! Bugün kaç yıldırımın yere düşeceğini, aynı yere iki kez düşüp düşmediğini ve fırtınanın uzaklığını nasıl ölçeceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bu videoyu izlerken gökte yaklaşık 1.000 şimşek çakacak!",
+   "v": {
+    "t": "number",
+    "bg": "storm",
+    "e": "⚡",
+    "value": "1.000",
+    "unit": "şimşek",
+    "label": "Bu Video Boyunca",
+    "key": "1.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gök flaşla fotoğraf mı çekiyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "storm",
+    "e": "📸",
+    "do": "pulse",
+    "key": "flaşla",
+    "label": "Gökten Flaş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Saniyede 46 şimşek: bugün yaklaşık 4 milyon!",
+   "v": {
+    "t": "number",
+    "bg": "storm",
+    "e": "🌩️",
+    "value": "4.000.000",
+    "unit": "şimşek",
+    "label": "Bugün",
+    "key": "milyon"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çoğu bulutta kalır, yüz binlercesi yıldırım olup düşer.",
+   "v": {
+    "t": "split",
+    "bg": "storm",
+    "left": {
+     "e": "☁️",
+     "label": "Çoğu Bulutta"
+    },
+    "right": {
+     "e": "🌩️",
+     "label": "Yere Düşen"
+    },
+    "key": "yıldırım"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Şimşekle gök gürültüsü arasını say: her 3 saniye 1 kilometre!",
+   "v": {
+    "t": "timeline",
+    "bg": "storm",
+    "steps": [
+     {
+      "when": "ŞİMŞEK",
+      "e": "⚡",
+      "label": "Saymaya Başla"
+     },
+     {
+      "when": "3 SANİYE",
+      "e": "🔊",
+      "label": "1 Kilometre"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Aynı yere düşmez mi? Empire State'e yılda 23 kez düşer!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏙️",
+    "do": "shake",
+    "key": "23",
+    "label": "Yılda 23 Kez"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Senin evine hiç yıldırım düştü mü? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "storm",
+    "e": "🏠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Alabama Üniversitesi Huntsville'e (UAH) göre NASA uydu verileri, Dünya'da saniyede yaklaşık 46, günde yaklaşık 4 milyon şimşek çaktığını gösteriyor.",
+   "source": "University of Alabama in Huntsville",
+   "url": "https://www.uah.edu/news/research/earth-system-science-centers-lightning-research-is-vital"
+  },
+  {
+   "text": "NOAA Ulusal Şiddetli Fırtınalar Laboratuvarı'na göre bulut içi şimşekler, yere düşen yıldırımlardan yaklaşık 5 ila 10 kat fazladır; buna rağmen her gün yüz binlerce yıldırım yere düşer.",
+   "source": "NOAA National Severe Storms Laboratory",
+   "url": "https://www.nssl.noaa.gov/education/svrwx101/lightning/types/"
+  },
+  {
+   "text": "NASA'ya göre NOAA verileriyle Empire State Binası'na yılda yaklaşık 23 kez yıldırım düşer; 'yıldırım aynı yere iki kez düşmez' sözü bir efsanedir.",
+   "source": "NASA Scientific Visualization Studio",
+   "url": "https://svs.gsfc.nasa.gov/30872/"
+  },
+  {
+   "text": "ABD Ulusal Hava Durumu Servisi'ne göre gök gürültüsü 1 mili (1,6 km) yaklaşık 5 saniyede gider; yani şimşekle gürültü arasındaki her 3 saniye yaklaşık 1 kilometre demektir.",
+   "source": "U.S. National Weather Service",
+   "url": "https://www.weather.gov/safety/lightning-science-thunder"
+  }
+ ],
+ "tags": [
+  "yıldırım",
+  "şimşek",
+  "yıldırım düşmesi",
+  "günde kaç yıldırım düşer",
+  "gök gürültüsü",
+  "fırtına",
+  "empire state",
+  "1 gün boyunca",
+  "lightning",
+  "lightning strikes per day",
+  "thunderstorm",
+  "lightning facts",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#yıldırım",
+  "#şimşek",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.uah.edu/news/research/earth-system-science-centers-lightning-research-is-vital",
+  "https://www.nssl.noaa.gov/education/svrwx101/lightning/types/",
+  "https://svs.gsfc.nasa.gov/30872/",
+  "https://www.weather.gov/safety/lightning-science-thunder"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Lightning Bolts Strike Earth in 1 Day?",
+   "summary": "About 1,000 lightning flashes light up the sky while you watch this video! Professor Pi explains how many bolts will hit the ground today, whether lightning really never strikes the same place twice, and how to tell how far away a storm is.",
+   "facts": [
+    "According to the University of Alabama in Huntsville (UAH), NASA satellite data show about 46 lightning flashes per second on Earth, about 4 million a day.",
+    "According to NOAA's National Severe Storms Laboratory, there are roughly 5 to 10 times as many cloud flashes as cloud-to-ground flashes; even so, hundreds of thousands of bolts hit the ground every day.",
+    "According to NASA, citing NOAA, the Empire State Building is hit by lightning about 23 times a year; the saying 'lightning never strikes the same place twice' is a myth.",
+    "According to the U.S. National Weather Service, thunder takes about 5 seconds to travel 1 mile (1.6 km), so every 3 seconds between the flash and the thunder means about 1 kilometer."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántos Rayos Caen en la Tierra en 1 Día?",
+   "summary": "¡Mientras ves este video, en el cielo se producen unos 1.000 relámpagos! El profesor Pi explica cuántos rayos caerán hoy al suelo, si de verdad un rayo nunca cae dos veces en el mismo lugar y cómo saber a qué distancia está una tormenta.",
+   "facts": [
+    "Según la Universidad de Alabama en Huntsville (UAH), los datos satelitales de la NASA muestran unos 46 relámpagos por segundo en la Tierra, unos 4 millones al día.",
+    "Según el Laboratorio Nacional de Tormentas Severas de la NOAA, hay entre 5 y 10 veces más relámpagos dentro de las nubes que rayos que llegan al suelo; aun así, cientos de miles de rayos caen al suelo cada día.",
+    "Según la NASA, con datos de la NOAA, al Empire State Building le caen unos 23 rayos al año; el dicho de que 'un rayo nunca cae dos veces en el mismo lugar' es un mito.",
+    "Según el Servicio Meteorológico Nacional de EE. UU., el trueno tarda unos 5 segundos en recorrer 1 milla (1,6 km), así que cada 3 segundos entre el relámpago y el trueno equivalen a 1 kilómetro aproximadamente."
+   ]
+  },
+  "pt": {
+   "title": "Quantos Raios Caem na Terra em 1 Dia?",
+   "summary": "Enquanto você assiste a este vídeo, cerca de 1.000 relâmpagos riscam o céu! O professor Pi explica quantos raios vão atingir o chão hoje, se um raio realmente nunca cai duas vezes no mesmo lugar e como saber a que distância está uma tempestade.",
+   "facts": [
+    "Segundo a Universidade do Alabama em Huntsville (UAH), dados de satélites da NASA mostram cerca de 46 relâmpagos por segundo na Terra, cerca de 4 milhões por dia.",
+    "Segundo o Laboratório Nacional de Tempestades Severas da NOAA, há de 5 a 10 vezes mais relâmpagos dentro das nuvens do que raios que atingem o solo; mesmo assim, centenas de milhares de raios caem no chão todos os dias.",
+    "Segundo a NASA, com dados da NOAA, o Empire State Building é atingido por raios cerca de 23 vezes por ano; o ditado 'um raio nunca cai duas vezes no mesmo lugar' é um mito.",
+    "Segundo o Serviço Nacional de Meteorologia dos EUA, o som do trovão leva cerca de 5 segundos para percorrer 1 milha (1,6 km), então cada 3 segundos entre o relâmpago e o trovão equivalem a cerca de 1 quilômetro."
+   ]
+  },
+  "ar": {
+   "title": "كم صاعقة تضرب الأرض في يوم واحد؟",
+   "summary": "خلال مشاهدتك هذا الفيديو يومض في السماء نحو 1,000 برق! يشرح البروفيسور باي كم صاعقة ستضرب الأرض اليوم، وهل صحيح أن الصاعقة لا تضرب المكان نفسه مرتين، وكيف تعرف بُعد العاصفة عنك.",
+   "facts": [
+    "وفقًا لجامعة ألاباما في هانتسفيل (UAH)، تُظهر بيانات أقمار ناسا نحو 46 ومضة برق في الثانية على الأرض، أي نحو 4 ملايين يوميًا.",
+    "وفقًا للمختبر الوطني للعواصف الشديدة التابع لـ NOAA، فإن ومضات البرق داخل السحب أكثر بنحو 5 إلى 10 أضعاف من الصواعق التي تبلغ الأرض؛ ومع ذلك تضرب مئات الآلاف من الصواعق الأرض كل يوم.",
+    "وفقًا لناسا نقلًا عن NOAA، تضرب الصواعق مبنى إمباير ستيت نحو 23 مرة في السنة؛ والقول بأن 'الصاعقة لا تضرب المكان نفسه مرتين' خرافة.",
+    "وفقًا لهيئة الأرصاد الجوية الوطنية الأمريكية، يقطع صوت الرعد 1 ميل (1.6 كم) في نحو 5 ثوانٍ، لذا فكل 3 ثوانٍ بين البرق والرعد تعني نحو 1 كيلومتر."
+   ]
+  },
+  "hi": {
+   "title": "पृथ्वी पर 1 दिन में कितनी बिजलियाँ गिरती हैं?",
+   "summary": "जितनी देर तुम यह वीडियो देखते हो, आसमान में लगभग 1,000 बार बिजली चमकती है! प्रोफ़ेसर पाई बताते हैं कि आज कितनी बिजलियाँ ज़मीन पर गिरेंगी, क्या बिजली सच में एक जगह दो बार नहीं गिरती, और तूफ़ान की दूरी कैसे पता करें।",
+   "facts": [
+    "यूनिवर्सिटी ऑफ़ अलबामा इन हंट्सविल (UAH) के अनुसार, NASA के उपग्रह आँकड़े दिखाते हैं कि पृथ्वी पर हर सेकंड लगभग 46 बार और हर दिन लगभग 4 मिलियन बार बिजली चमकती है।",
+    "NOAA की नेशनल सीवियर स्टॉर्म्स लैबोरेटरी के अनुसार, बादलों के अंदर चमकने वाली बिजली ज़मीन पर गिरने वाली बिजली से लगभग 5 से 10 गुना ज़्यादा होती है; फिर भी हर दिन सैकड़ों हज़ार बिजलियाँ ज़मीन पर गिरती हैं।",
+    "NASA के अनुसार, NOAA के आँकड़ों से एम्पायर स्टेट बिल्डिंग पर साल में लगभग 23 बार बिजली गिरती है; 'बिजली एक जगह दो बार नहीं गिरती' कहावत एक मिथक है।",
+    "अमेरिकी नेशनल वेदर सर्विस के अनुसार, गरज की आवाज़ 1 मील (1.6 किमी) तय करने में लगभग 5 सेकंड लेती है, इसलिए चमक और गरज के बीच हर 3 सेकंड का मतलब लगभग 1 किलोमीटर है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Banyak Petir yang Menyambar Bumi dalam 1 Hari?",
+   "summary": "Selama kamu menonton video ini, sekitar 1.000 kilat menyala di langit! Profesor Pi menjelaskan berapa banyak petir yang akan menyambar tanah hari ini, apakah petir benar-benar tak pernah menyambar tempat yang sama dua kali, dan cara mengetahui jarak badai.",
+   "facts": [
+    "Menurut University of Alabama in Huntsville (UAH), data satelit NASA menunjukkan sekitar 46 kilat per detik di Bumi, sekitar 4 juta per hari.",
+    "Menurut Laboratorium Badai Hebat Nasional (NSSL) milik NOAA, kilat di dalam awan sekitar 5 hingga 10 kali lebih banyak daripada petir yang menyambar tanah; meski begitu, ratusan ribu petir menyambar tanah setiap hari.",
+    "Menurut NASA yang mengutip NOAA, Empire State Building tersambar petir sekitar 23 kali setahun; pepatah 'petir tidak pernah menyambar tempat yang sama dua kali' hanyalah mitos.",
+    "Menurut Layanan Cuaca Nasional AS, suara guntur butuh sekitar 5 detik untuk menempuh 1 mil (1,6 km), jadi setiap 3 detik antara kilat dan guntur berarti sekitar 1 kilometer."
+   ]
+  },
+  "fr": {
+   "title": "Combien d'Éclairs Frappent la Terre en 1 Jour ?",
+   "summary": "Pendant que tu regardes cette vidéo, environ 1 000 éclairs zèbrent le ciel ! Le professeur Pi explique combien de coups de foudre toucheront le sol aujourd'hui, si la foudre ne tombe vraiment jamais deux fois au même endroit et comment savoir à quelle distance se trouve un orage.",
+   "facts": [
+    "Selon l'université d'Alabama à Huntsville (UAH), les données satellites de la NASA montrent environ 46 éclairs par seconde sur Terre, soit environ 4 millions par jour.",
+    "Selon le Laboratoire national des tempêtes violentes (NSSL) de la NOAA, les éclairs dans les nuages sont environ 5 à 10 fois plus nombreux que les coups de foudre qui touchent le sol ; des centaines de milliers de coups de foudre frappent pourtant le sol chaque jour.",
+    "Selon la NASA, d'après la NOAA, l'Empire State Building est frappé par la foudre environ 23 fois par an ; le dicton « la foudre ne tombe jamais deux fois au même endroit » est un mythe.",
+    "Selon le Service météorologique national des États-Unis, le son du tonnerre met environ 5 secondes pour parcourir 1 mile (1,6 km) ; chaque intervalle de 3 secondes entre l'éclair et le tonnerre correspond donc à environ 1 kilomètre."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Blitze Schlagen an 1 Tag auf der Erde Ein?",
+   "summary": "Während du dieses Video schaust, zucken etwa 1.000 Blitze über den Himmel! Professor Pi erklärt, wie viele Blitze heute in den Boden einschlagen, ob der Blitz wirklich nie zweimal an derselben Stelle einschlägt und wie du die Entfernung eines Gewitters bestimmst.",
+   "facts": [
+    "Laut der University of Alabama in Huntsville (UAH) zeigen NASA-Satellitendaten etwa 46 Blitze pro Sekunde auf der Erde, etwa 4 Millionen pro Tag.",
+    "Laut dem National Severe Storms Laboratory der NOAA gibt es etwa 5- bis 10-mal so viele Wolkenblitze wie Erdblitze; trotzdem schlagen jeden Tag Hunderttausende Blitze in den Boden ein.",
+    "Laut NASA wird das Empire State Building nach NOAA-Angaben etwa 23-mal im Jahr vom Blitz getroffen; der Spruch „Der Blitz schlägt nie zweimal an derselben Stelle ein“ ist ein Mythos.",
+    "Laut dem US-Wetterdienst NWS braucht der Donner etwa 5 Sekunden für 1 Meile (1,6 km); jede 3 Sekunden zwischen Blitz und Donner bedeuten also etwa 1 Kilometer."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Молний Бьёт в Землю за 1 День?",
+   "summary": "Пока ты смотришь это видео, в небе вспыхивает около 1000 молний! Профессор Пи объясняет, сколько молний сегодня ударит в землю, правда ли, что молния не бьёт дважды в одно место, и как узнать, далеко ли гроза.",
+   "facts": [
+    "По данным Университета Алабамы в Хантсвилле (UAH), спутниковые данные NASA показывают около 46 вспышек молний в секунду на Земле — около 4 миллионов в день.",
+    "По данным Национальной лаборатории сильных штормов NOAA, внутриоблачных молний примерно в 5–10 раз больше, чем ударов в землю; и всё же каждый день в землю бьют сотни тысяч молний.",
+    "По данным NASA со ссылкой на NOAA, в Эмпайр-стейт-билдинг молния бьёт примерно 23 раза в год; поговорка «молния не бьёт дважды в одно место» — миф.",
+    "По данным Национальной метеорологической службы США, звук грома проходит 1 милю (1,6 км) примерно за 5 секунд, поэтому каждые 3 секунды между вспышкой и громом означают около 1 километра."
+   ]
+  },
+  "az": {
+   "title": "Yerə 1 Gündə Neçə İldırım Düşür?",
+   "summary": "Sən bu videonu izləyərkən göydə təxminən 1.000 şimşək çaxır! Professor Pi bu gün neçə ildırımın yerə düşəcəyini, ildırımın doğrudan da eyni yerə iki dəfə düşmədiyini və fırtınanın uzaqlığını necə ölçəcəyini danışır.",
+   "facts": [
+    "Hantsvildəki Alabama Universitetinə (UAH) görə NASA peyk məlumatları Yerdə saniyədə təxminən 46, gündə təxminən 4 milyon şimşək çaxdığını göstərir.",
+    "NOAA-nın Milli Şiddətli Fırtınalar Laboratoriyasına görə bulud daxilindəki şimşəklər yerə düşən ildırımlardan təxminən 5-10 dəfə çoxdur; buna baxmayaraq hər gün yüz minlərlə ildırım yerə düşür.",
+    "NASA-ya görə NOAA məlumatlarına əsasən Empire State binasına ildə təxminən 23 dəfə ildırım düşür; 'ildırım eyni yerə iki dəfə düşməz' sözü mifdir.",
+    "ABŞ Milli Hava Xidmətinə görə ildırım gurultusu 1 mili (1,6 km) təxminən 5 saniyəyə qət edir; yəni şimşəklə gurultu arasındakı hər 3 saniyə təxminən 1 kilometr deməkdir."
+   ]
+  }
+ }
+}
