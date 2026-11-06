@@ -1,71 +1,18 @@
 {
- "started": "2026-11-06T14:07:14+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-06T17:45:45+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g009",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "53",
-  "videos": "47"
+ "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
+ "chars": 407,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17945536068376488",
+  "url": "https://www.instagram.com/reel/DfaLRqsEgJt/",
+  "at": 1793987232.9646897
  },
- "credits_before": [
-  86902,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261106-1-n010.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "n010",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bir kara delik ne kadar ağır olabilir?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 375,
- "duration": 24.2,
- "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
- "url": "https://youtube.com/shorts/hvgNbZMhWPg",
- "recent_status": {
-  "y046": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1250",
-   "reason": null
-  },
-  "g010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "981",
-   "reason": null
-  },
-  "y045": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "430",
-   "reason": null
-  },
-  "y062": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "310",
-   "reason": null
-  },
-  "n010": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  86994,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261106-1-n010.json Bir kara delik ne kadar ağır olabilir? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/DfaLRqsEgJt/"
  ],
- "finished": "2026-11-06T14:08:29+00:00"
+ "finished": "2026-11-06T17:47:12+00:00"
 }
