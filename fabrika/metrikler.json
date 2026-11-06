@@ -1,5 +1,5 @@
 {
- "at": "2026-11-06T10:07:07+00:00",
+ "at": "2026-11-06T11:33:24+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 53,
   "viewCount": 43900,
-  "videoCount": 46
+  "videoCount": 47
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -207,19 +207,19 @@
    "baslik": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?"
   },
   "QuUL5G3usPE": {
-   "view": 1156,
+   "view": 1157,
    "like": 6,
    "comment": 0,
    "baslik": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?"
   },
   "ExIn5xWxSkY": {
-   "view": 1297,
+   "view": 1298,
    "like": 10,
    "comment": 0,
    "baslik": "Beynin 1 Günde Kaç Kalori Yakar?"
   },
   "kzDr9prfHSw": {
-   "view": 1047,
+   "view": 1049,
    "like": 10,
    "comment": 2,
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
@@ -231,13 +231,13 @@
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 1045,
+   "view": 1049,
    "like": 7,
    "comment": 6,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
   },
   "sKXUwUMgkt0": {
-   "view": 1076,
+   "view": 1080,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
@@ -249,46 +249,52 @@
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   },
   "Gyz1vK-E-D4": {
-   "view": 1080,
+   "view": 1093,
    "like": 10,
    "comment": 0,
    "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
   },
   "F9Hkco1HKiA": {
-   "view": 610,
+   "view": 654,
    "like": 6,
    "comment": 0,
    "baslik": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu? 😳"
   },
   "5lbPgaPW58Y": {
-   "view": 644,
+   "view": 653,
    "like": 4,
    "comment": 4,
    "baslik": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın? 😳"
   },
   "Ze43ZrXANSQ": {
-   "view": 1284,
+   "view": 1289,
    "like": 12,
    "comment": 2,
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   },
   "QCM7IT8jkhc": {
-   "view": 1247,
+   "view": 1250,
    "like": 3,
    "comment": 0,
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
   },
   "V93tM_0-ll4": {
-   "view": 959,
+   "view": 979,
    "like": 8,
    "comment": 0,
    "baslik": "Saçların 1 Günde Toplam Kaç Metre Uzar? 😮"
   },
   "1EK5IR8nYDE": {
-   "view": 404,
-   "like": 1,
+   "view": 429,
+   "like": 2,
    "comment": 0,
    "baslik": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın? 😳"
+  },
+  "MM3s0q-j2q0": {
+   "view": 2,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Lav Gölüne Düşseydin Batar Mıydın? 😳"
   }
  },
  "videos": {
@@ -1077,9 +1083,9 @@
   },
   {
    "day": "2026-10-16",
-   "views": 1674,
-   "engagedViews": 773,
-   "estimatedMinutesWatched": 285,
+   "views": 1616,
+   "engagedViews": 768,
+   "estimatedMinutesWatched": 283,
    "subscribersGained": 7
   },
   {
@@ -1098,9 +1104,9 @@
   },
   {
    "day": "2026-10-19",
-   "views": 3364,
-   "engagedViews": 1721,
-   "estimatedMinutesWatched": 535,
+   "views": 3352,
+   "engagedViews": 1718,
+   "estimatedMinutesWatched": 534,
    "subscribersGained": 4
   },
   {
@@ -1133,9 +1139,9 @@
   },
   {
    "day": "2026-10-24",
-   "views": 790,
-   "engagedViews": 377,
-   "estimatedMinutesWatched": 108,
+   "views": 785,
+   "engagedViews": 376,
+   "estimatedMinutesWatched": 107,
    "subscribersGained": 1
   },
   {
