@@ -116,6 +116,10 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   ya da "senin hakkında" şaşırtıcı bir gerçek. Köpekler kırmızıyı göremez 15.723, bebeklerin kemiği senden fazla
   9.437, kargalar yüzü unutmaz 8.139, geyik her yıl yeni boynuz 5.727, pandanın altıncı parmağı 4.024. Uzak ya da
   az tanınan canlılar (deniz atı, kurbağa, kelebek) 1.100-1.400'de kalıyor.
+- 6 Kasım verisi aynı şeyi gösterdi. "Kediler sütü sever ama çoğu onu sindiremez" 35 saatte 6.032 izlendi, ilk
+  5 bin üstü. İzleyicinin evde kendisinin yaptığı yaygın bir yanlışı düzeltiyordu. Göz kayması 4.873 ve uzun acı
+  4.524 ile "senin hakkında" konularıydı. Denizanası 1.627'de, buz 1.248'de kaldı. Öncelik sırası: evdeki ya da
+  çevredeki hayvana dair yaygın yanlış, izleyicinin kendi vücudu ya da zihni, sonra öbürleri.
 - İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
   1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
 - Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 2'si
