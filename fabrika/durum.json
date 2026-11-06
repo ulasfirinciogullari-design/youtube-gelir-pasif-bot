@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1157",
+    "views": "1158",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1049",
+    "views": "1050",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1100",
+    "views": "1144",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "655",
+    "views": "667",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "658",
+    "views": "665",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1298",
+    "views": "1302",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1250",
+    "views": "1252",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "981",
+    "views": "992",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "430",
+    "views": "482",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "310",
+    "views": "538",
     "reason": null
    }
   },
@@ -1403,6 +1403,36 @@
    "thumbnail": true,
    "at": 1793974108.2022529,
    "chars": 375,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "902",
+    "reason": null
+   }
+  },
+  {
+   "id": "y039",
+   "video_id": "5-jo5Fr030o",
+   "url": "https://youtube.com/shorts/5-jo5Fr030o",
+   "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Dived to the Very Bottom of the Ocean?",
+    "es": "¿Qué Pasaría Si Bajaras al Fondo Más Profundo del Océano?",
+    "pt": "E Se Você Mergulhasse até o Ponto Mais Fundo do Oceano?",
+    "ar": "ماذا لو غصت إلى أعمق نقطة في المحيط؟",
+    "hi": "अगर तुम समुद्र के सबसे गहरे तल तक गोता लगाते तो क्या होता?",
+    "id": "Apa Jadinya Jika Kamu Menyelam ke Dasar Laut Terdalam?",
+    "fr": "Et Si Tu Plongeais au Point le Plus Profond de l'Océan ?",
+    "de": "Was Wäre, Wenn Du zum Tiefsten Punkt des Ozeans Tauchst?",
+    "ru": "Что Будет, Если Нырнуть на Самое Дно Океана?",
+    "az": "Okeanın Ən Dibinə Dalsaydın Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1793988516.065423,
+   "chars": 378,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1458,7 +1488,8 @@
   "g010",
   "y045",
   "y062",
-  "n010"
+  "n010",
+  "y039"
  ],
  "extra": [
   {
@@ -1524,14 +1555,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-20T10:07:50+00:00",
-   "mod": "saatlik",
-   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
-   "url": "https://youtube.com/shorts/zkaODqXzaCo",
-   "duration": 26.7,
-   "chars": 401
-  },
   {
    "finished": "2026-10-20T13:09:35+00:00",
    "mod": "igbolum",
@@ -1943,6 +1966,14 @@
    "mod": "igbolum",
    "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
    "chars": 407
+  },
+  {
+   "finished": "2026-11-06T18:08:37+00:00",
+   "mod": "saatlik",
+   "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/5-jo5Fr030o",
+   "duration": 25.1,
+   "chars": 378
   }
  ],
  "last_fail": 1793568784.6201334,

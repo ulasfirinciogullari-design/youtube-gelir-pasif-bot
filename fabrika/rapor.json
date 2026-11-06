@@ -1,18 +1,71 @@
 {
- "started": "2026-11-06T17:45:45+00:00",
- "mod": "igbolum",
- "gate": "instagram: g009",
+ "started": "2026-11-06T18:07:36+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
- "chars": 407,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17945536068376488",
-  "url": "https://www.instagram.com/reel/DfaLRqsEgJt/",
-  "at": 1793987232.9646897
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "54",
+  "videos": "48"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfaLRqsEgJt/"
+ "credits_before": [
+  88577,
+  613902
  ],
- "finished": "2026-11-06T17:47:12+00:00"
+ "kuyruk": {
+  "dosya": "20261106-2-y039.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y039",
+  "series": "Ya Olsaydı?",
+  "q": "Okyanusun en dibine insaydın ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 378,
+ "duration": 25.1,
+ "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+ "url": "https://youtube.com/shorts/5-jo5Fr030o",
+ "recent_status": {
+  "g010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "992",
+   "reason": null
+  },
+  "y045": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "482",
+   "reason": null
+  },
+  "y062": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "538",
+   "reason": null
+  },
+  "n010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "902",
+   "reason": null
+  },
+  "y039": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  88669,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261106-2-y039.json Okyanusun en dibine insaydın ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-06T18:08:37+00:00"
 }
