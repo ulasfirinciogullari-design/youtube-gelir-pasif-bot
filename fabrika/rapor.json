@@ -1,71 +1,18 @@
 {
- "started": "2026-11-06T20:07:36+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-07T09:07:23+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n010",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "54",
-  "videos": "49"
+ "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
+ "chars": 375,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17967284241238550",
+  "url": "https://www.instagram.com/reel/Dfb0xnmEwUu/",
+  "at": 1794042546.274131
  },
- "credits_before": [
-  88757,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261106-3-g008.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "g008",
-  "series": "1 Gün Boyunca",
-  "q": "Dünya'ya 1 günde kaç yıldırım düşer?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 369,
- "duration": 24.4,
- "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
- "url": "https://youtube.com/shorts/yexFsNeB7JM",
- "recent_status": {
-  "y045": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "502",
-   "reason": null
-  },
-  "y062": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "627",
-   "reason": null
-  },
-  "n010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1104",
-   "reason": null
-  },
-  "y039": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "6",
-   "reason": null
-  },
-  "g008": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  88847,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261106-3-g008.json Dünya'ya 1 günde kaç yıldırım düşer? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/Dfb0xnmEwUu/"
  ],
- "finished": "2026-11-06T20:08:39+00:00"
+ "finished": "2026-11-07T09:09:06+00:00"
 }

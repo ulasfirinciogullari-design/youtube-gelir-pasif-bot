@@ -1587,14 +1587,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-20T14:09:59+00:00",
-   "mod": "saatlik",
-   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/iKojt12DL_Y",
-   "duration": 24.2,
-   "chars": 362
-  },
-  {
    "finished": "2026-10-20T17:11:21+00:00",
    "mod": "igbolum",
    "title": "Okyanus Gerçekte Ne Kadar Derin?",
@@ -2007,6 +1999,12 @@
    "url": "https://youtube.com/shorts/yexFsNeB7JM",
    "duration": 24.4,
    "chars": 369
+  },
+  {
+   "finished": "2026-11-07T09:09:06+00:00",
+   "mod": "igbolum",
+   "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
+   "chars": 375
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -2206,6 +2204,11 @@
     "media_id": "17945536068376488",
     "url": "https://www.instagram.com/reel/DfaLRqsEgJt/",
     "at": 1793987232.9646897
+   },
+   "n010": {
+    "media_id": "17967284241238550",
+    "url": "https://www.instagram.com/reel/Dfb0xnmEwUu/",
+    "at": 1794042546.274131
    }
   },
   "eski": [
