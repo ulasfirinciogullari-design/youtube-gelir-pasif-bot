@@ -1,0 +1,178 @@
+{
+ "id": "mk-c0081",
+ "topic": "Başkası kaşınınca neden sen de kaşınırsın, kaşıntı bulaşıcı mı?",
+ "kategori": "psikoloji",
+ "subject": [
+  "itch",
+  "scratch",
+  "scratching"
+ ],
+ "stock_hint": "scratching arm close up",
+ "script": {
+  "title": "Birinin kaşındığını görmek seni de kaşındırır 🤚",
+  "hook_text": "KAŞINTI BULAŞICI MI?",
+  "scenes": [
+   {
+    "text": "Bu kaşınan kolu izlemek bile seni kaşındırır.",
+    "visual": "extreme close-up of fingernails scratching the skin of a forearm",
+    "stock_query": "scratching arm",
+    "source": "stock",
+    "callout": "İZLEMEK KAŞINDIRIR"
+   },
+   {
+    "text": "Deneylerde izleyenlerin çoğu kaşıntı hissetti ve kendini kaşıdı.",
+    "visual": "a woman absent-mindedly scratching her neck while looking at a screen",
+    "stock_query": "woman scratching",
+    "source": "stock",
+    "callout": "ÇOĞU KAŞINDI"
+   },
+   {
+    "text": "Daha tuhafı: bir deneyde, iki bin on ikide, videodaki kişi kolunu kaşıdı; izleyenler çoğunlukla yüzünü ve saçını kaşıdı.",
+    "visual": "close-up of a man scratching his head and hair",
+    "stock_query": "scratching head",
+    "source": "stock",
+    "callout": "YÜZ VE SAÇ"
+   },
+   {
+    "text": "Çünkü sadece izlerken bile beyninde gerçek kaşıntıdaki ağın aynısı çalışıyor.",
+    "visual": "a glowing 3D brain scan with active regions lighting up",
+    "stock_query": "brain scan",
+    "source": "stock",
+    "callout": "AYNI BEYİN AĞI",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Şu an yüzün ya da saçın kaşınıyorsa sebebi basit:",
+    "visual": "close-up of a young woman scratching her cheek",
+    "stock_query": "scratching face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Başkasının kaşındığını görmek insanı da kaşındırır. Deneylerde kaşınma videosu izleyenlerin çoğu kaşıntı hissetti ve kendini kaşıdı; 2012'deki bir deneyde videodaki kişi kolunu kaşısa da izleyenler çoğunlukla yüzünü ve saçını kaşıdı. Beyin taramaları, sadece izlerken bile gerçek kaşıntıda çalışan beyin ağının devreye girdiğini gösterdi.",
+  "tags": [
+   "kaşıntı",
+   "bulaşıcı kaşıntı",
+   "kaşınmak",
+   "neden kaşınırız",
+   "beyin",
+   "psikoloji",
+   "insan psikolojisi",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen bu videoyu izlerken kaşındın mı: evet mi, hayır mı?",
+  "en_title": "Watching someone scratch makes you itch too 🤚",
+  "en_description": "In experiments, most people who watched a video of someone scratching felt itchy and started scratching themselves. Oddly, the person on screen scratched their arm, but viewers mostly scratched their face and hair. Brain scans show that just watching switches on the same network as a real itch.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Başkası kaşınınca neden sen de kaşınırsın, kaşıntı bulaşıcı mı?\n\nEvet, kaşıntı bulaşıcıdır. Sussex Üniversitesi'nden Henning Holle ve ekibinin 2012'de PNAS dergisinde yayımladığı deneyde, birinin kendini kaşıdığı videoyu izleyenler, aynı kişinin koluna yalnızca hafifçe vurduğu videoya göre çok daha fazla kaşıntı hissetti ve kendilerini daha sık kaşıdı; araştırmacılara göre bu, çoğu insanda görülen olağan bir tepki. Aynı katılımcıların görüntüleri yeniden incelendiğinde, videodaki kişi kolunu ve göğsünü kaşısa da izleyenlerin çoğunlukla yüzünü ve saçını kaşıdığı görüldü. Beyin taramaları, sadece izlerken bile gerçek bir kaşıntıda çalışan beyin ağının, insula ve dokunma duyusunu işleyen bölgeler dahil, devreye girdiğini gösterdi; kaygıya yatkın kişiler daha çok etkilendi.\n\nSen bu videoyu izlerken kaşındın mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#kaşıntı",
+   "#beyin",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kaşıntı",
+   "bulaşıcı kaşıntı",
+   "kaşıntı bulaşıcı mı",
+   "başkası kaşınınca kaşınmak",
+   "neden kaşınırız",
+   "kaşınmak",
+   "kaşıntı neden olur",
+   "kaşıntı psikolojisi",
+   "sosyal bulaşma",
+   "esneme bulaşıcı mı",
+   "beyin",
+   "beyin nasıl çalışır",
+   "nörobilim",
+   "algı",
+   "insan psikolojisi",
+   "psikoloji",
+   "insan davranışları",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "contagious itch",
+   "why do we itch"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Watching someone scratch makes you itch too 🤚",
+    "description": "In experiments, most people who watched a video of someone scratching felt itchy and started scratching themselves. Oddly, the person on screen scratched their arm, but viewers mostly scratched their face and hair. Brain scans show that just watching switches on the same network as a real itch."
+   },
+   "es": {
+    "title": "Ver a alguien rascarse te da picor a ti también 🤚",
+    "description": "En experimentos, la mayoría de quienes vieron un vídeo de alguien rascándose sintieron picor y empezaron a rascarse. Lo curioso: la persona del vídeo se rascaba el brazo, pero los espectadores se rascaban sobre todo la cara y el pelo. Solo con mirar, el cerebro activa la misma red que con un picor real."
+   },
+   "pt": {
+    "title": "Ver alguém se coçar faz você sentir coceira também 🤚",
+    "description": "Em experimentos, a maioria das pessoas que assistiu a um vídeo de alguém se coçando sentiu coceira e começou a se coçar. O curioso: a pessoa do vídeo coçava o braço, mas quem assistia coçava sobretudo o rosto e o cabelo. Só de olhar, o cérebro ativa a mesma rede de uma coceira de verdade."
+   },
+   "de": {
+    "title": "Siehst du jemanden kratzen, juckt es dich auch 🤚",
+    "description": "In Experimenten spürten die meisten, die ein Video von einer sich kratzenden Person sahen, selbst Juckreiz und kratzten sich. Kurios: Im Video wurde der Arm gekratzt, die Zuschauer kratzten sich aber vor allem im Gesicht und an den Haaren. Schon beim Zusehen springt im Gehirn dasselbe Netzwerk an wie bei echtem Juckreiz."
+   },
+   "fr": {
+    "title": "Voir quelqu'un se gratter te donne envie de te gratter 🤚",
+    "description": "Dans des expériences, la plupart des personnes qui regardaient une vidéo de quelqu'un en train de se gratter ont ressenti des démangeaisons et se sont grattées. Curieusement, la personne filmée se grattait le bras, mais les spectateurs se grattaient surtout le visage et les cheveux. Rien qu'en regardant, le cerveau active le même réseau qu'une vraie démangeaison."
+   },
+   "it": {
+    "title": "Vedere qualcuno grattarsi fa venire il prurito anche a te 🤚",
+    "description": "Negli esperimenti, la maggior parte di chi guardava il video di una persona che si grattava ha sentito prurito e ha iniziato a grattarsi. La cosa strana: nel video ci si grattava il braccio, ma gli spettatori si grattavano soprattutto il viso e i capelli. Solo guardando, il cervello attiva la stessa rete di un prurito vero."
+   },
+   "ru": {
+    "title": "Видишь, как кто-то чешется, и начинаешь чесаться сам 🤚",
+    "description": "В экспериментах большинство людей, смотревших видео, где человек чешется, сами чувствовали зуд и начинали чесаться. Любопытно, что в ролике чесали руку, а зрители чаще всего чесали лицо и волосы. Даже простое наблюдение включает в мозге ту же сеть, что и настоящий зуд."
+   },
+   "ar": {
+    "title": "رؤية شخص يحك جلده تجعلك تشعر بالحكة أنت أيضًا 🤚",
+    "description": "في التجارب، شعر معظم من شاهدوا مقطعًا لشخص يحك جلده بالحكة وبدؤوا يحكّون أنفسهم. والغريب أن الشخص في المقطع كان يحك ذراعه، بينما حكّ المشاهدون وجوههم وشعرهم في الغالب. فمجرد المشاهدة يشغّل في الدماغ الشبكة نفسها التي تعمل عند الحكة الحقيقية."
+   },
+   "hi": {
+    "title": "किसी को खुजलाते देखकर आपको भी खुजली होने लगती है 🤚",
+    "description": "प्रयोगों में किसी को खुजलाते हुए वीडियो देखने वाले ज़्यादातर लोगों को खुद खुजली महसूस हुई और वे खुजलाने लगे। अजीब बात यह है कि वीडियो में व्यक्ति अपनी बाँह खुजला रहा था, पर देखने वालों ने ज़्यादातर अपना चेहरा और बाल खुजलाए। सिर्फ़ देखने भर से दिमाग़ में वही नेटवर्क सक्रिय हो जाता है जो असली खुजली में होता है।"
+   },
+   "id": {
+    "title": "Melihat orang menggaruk bikin kamu ikut gatal 🤚",
+    "description": "Dalam eksperimen, kebanyakan orang yang menonton video seseorang menggaruk ikut merasa gatal dan mulai menggaruk diri. Anehnya, orang di video menggaruk lengannya, tetapi penonton kebanyakan menggaruk wajah dan rambut. Hanya dengan menonton, otak menyalakan jaringan yang sama seperti saat gatal sungguhan."
+   },
+   "ja": {
+    "title": "人がかいているのを見るだけで、あなたもかゆくなる 🤚",
+    "description": "実験では、体をかく人の動画を見た人の多くが自分もかゆみを感じ、体をかき始めました。不思議なことに、動画の人は腕をかいていたのに、見ていた人はおもに顔や髪をかいていました。見ているだけで、脳では本物のかゆみと同じネットワークが働くのです。"
+   },
+   "ko": {
+    "title": "누가 긁는 걸 보기만 해도 나도 가려워진다 🤚",
+    "description": "실험에서 누군가 몸을 긁는 영상을 본 사람 대부분이 가려움을 느끼고 자기 몸을 긁었습니다. 신기하게도 영상 속 사람은 팔을 긁었는데, 보는 사람들은 주로 얼굴과 머리카락을 긁었습니다. 보기만 해도 뇌에서는 실제로 가려울 때와 같은 신경망이 작동합니다."
+   },
+   "pl": {
+    "title": "Gdy widzisz, że ktoś się drapie, ciebie też zaczyna swędzieć 🤚",
+    "description": "W eksperymentach większość osób oglądających nagranie kogoś, kto się drapie, sama poczuła swędzenie i zaczęła się drapać. Co ciekawe, osoba na filmie drapała się po ręce, a widzowie głównie po twarzy i włosach. Samo patrzenie uruchamia w mózgu tę samą sieć co prawdziwe swędzenie."
+   },
+   "nl": {
+    "title": "Iemand zien krabben geeft jou ook jeuk 🤚",
+    "description": "In experimenten kregen de meeste mensen die een video zagen van iemand die krabde zelf jeuk en begonnen ze te krabben. Gek genoeg krabde de persoon in de video aan zijn arm, maar krabden de kijkers vooral aan hun gezicht en haar. Alleen al kijken zet in de hersenen hetzelfde netwerk aan als echte jeuk."
+   },
+   "uk": {
+    "title": "Бачиш, як хтось чухається, і починаєш чухатися сам 🤚",
+    "description": "В експериментах більшість людей, які дивилися відео, де людина чухається, самі відчували свербіж і починали чухатися. Цікаво, що на відео чухали руку, а глядачі здебільшого чухали обличчя й волосся. Навіть просте спостереження вмикає в мозку ту саму мережу, що й справжній свербіж."
+   },
+   "vi": {
+    "title": "Nhìn người khác gãi khiến bạn cũng thấy ngứa 🤚",
+    "description": "Trong các thí nghiệm, phần lớn người xem video một người đang gãi cũng thấy ngứa và bắt đầu tự gãi. Lạ là người trong video gãi cánh tay, còn người xem lại chủ yếu gãi mặt và tóc. Chỉ cần nhìn, não đã kích hoạt cùng mạng lưới như khi ngứa thật."
+   },
+   "az": {
+    "title": "Kiminsə qaşındığını görmək səni də qaşındırır 🤚",
+    "description": "Təcrübələrdə qaşınan birinin videosuna baxanların çoxu özü də qaşınma hiss etdi və qaşınmağa başladı. Maraqlısı budur ki, videodakı adam qolunu qaşıyırdı, baxanlar isə əsasən üzünü və saçını qaşıdı. Sadəcə baxanda belə beyində əsl qaşınmadakı eyni şəbəkə işə düşür."
+   },
+   "ro": {
+    "title": "Când vezi pe cineva scărpinându-se, te mănâncă și pe tine 🤚",
+    "description": "În experimente, majoritatea celor care au privit un video cu cineva care se scărpina au simțit mâncărime și au început să se scarpine. Ciudat este că persoana din video se scărpina pe braț, dar privitorii se scărpinau mai ales pe față și în păr. Doar privind, creierul activează aceeași rețea ca la o mâncărime reală."
+   }
+  }
+ }
+}

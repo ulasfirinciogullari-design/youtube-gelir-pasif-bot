@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0086",
+ "topic": "Eşekler gerçekten inatçı mı, eşek neden birden durur ve yürümez?",
+ "kategori": "hayvan",
+ "subject": [
+  "donkey"
+ ],
+ "stock_hint": "donkey face close up",
+ "script": {
+  "title": "Eşek inatçı değil, sadece aklını kullanıyor 🫏",
+  "hook_text": "EŞEKLER İNATÇI MI?",
+  "scenes": [
+   {
+    "text": "Bu eşek inatçı değil, sadece aklını kullanıyor.",
+    "visual": "close-up of a donkey's face with big ears looking straight into the camera",
+    "stock_query": "donkey face",
+    "source": "stock",
+    "callout": "İNATÇI DEĞİL"
+   },
+   {
+    "text": "Korkunca at gibi kaçmaz; olduğu yerde durup durumu tartar.",
+    "visual": "a donkey standing completely still on a dirt path",
+    "stock_query": "donkey standing",
+    "source": "stock",
+    "callout": "KAÇMAZ, DURUR"
+   },
+   {
+    "text": "Tehlike sürerse kaçmak yerine karşı koyar; bu yüzden bazı çiftçiler koyunlarının yanına bekçi eşek koyar.",
+    "visual": "a donkey grazing among a flock of sheep in a pasture",
+    "stock_query": "donkey sheep",
+    "source": "stock",
+    "callout": "SÜRÜ BEKÇİSİ"
+   },
+   {
+    "text": "Çünkü ataları sarp, kayalık yerlerde yaşadı; orada körü körüne kaçmak kurtarmazdı.",
+    "visual": "a donkey walking carefully on a steep rocky mountain path",
+    "stock_query": "donkey mountain",
+    "source": "stock",
+    "callout": "KAYALIK ATALAR"
+   },
+   {
+    "text": "Eşek bir daha durunca kızma, önüne bak; çünkü...",
+    "visual": "a donkey turning its head to look at the camera",
+    "stock_query": "donkey head",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Eşeğin inatçı olduğu düşüncesi bir yanılgı: eşek korkunca at gibi kaçmaz, olduğu yerde durup durumu tartar ve tehlike sürerse karşı koyar. Ataları, körü körüne kaçmanın iyi bir savunma olmadığı sarp ve kayalık yerlerde evrimleşti. Bu cesaret yüzünden bazı çiftçiler koyun sürülerini korumak için yanlarına eşek koyuyor.",
+  "tags": [
+   "eşek",
+   "eşekler",
+   "eşekler inatçı mı",
+   "eşek inadı",
+   "bekçi eşek",
+   "çiftlik hayvanları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: eşeğin inatçı olmaması mı, koyun sürüsüne bekçilik yapması mı?",
+  "en_title": "Donkeys aren't stubborn, they're thinking 🫏",
+  "en_description": "When scared, a horse runs, but a donkey stops and weighs up the situation. Its ancestors lived on steep, rocky ground where bolting blindly was a poor defense. If the danger stays, a donkey stands its ground and fights back, which is why some farmers keep one with their sheep as a guard.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Eşekler gerçekten inatçı mı, eşek neden birden durur ve yürümez?\n\nHayır, eşeğin inatçı olduğu düşüncesi bir yanılgı. Florida Üniversitesi'nin veteriner yayınına göre eşekler korkunca atlar kadar kaçmaya değil, olduğu yerde durmaya ve gerekirse karşı koymaya yatkındır. The Donkey Sanctuary'den Faith Burden'a göre bunun sebebi evrim: atlar açık ovalarda kaçarak hayatta kaldı, Afrika yaban eşeğinden gelen eşekler ise kaçmanın iyi bir savunma olmadığı sarp, kayalık yerlerde evrimleşti. Bu yüzden eşek körü körüne kaçmaz; durur ve durumu tartar. Bu cesaret sayesinde, Missouri Üniversitesi'nin anlattığı gibi bazı çiftçiler koyun ve keçi sürülerini köpek ve çakal gibi yırtıcılardan korumak için yanlarına eşek koyuyor; eşek yırtıcıyı görünce anırıp üstüne yürüyor.\n\nSence hangisi daha şaşırtıcı: eşeğin inatçı olmaması mı, koyun sürüsüne bekçilik yapması mı?",
+  "hashtags": [
+   "#eşek",
+   "#hayvanlar",
+   "#çiftlik",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "eşek",
+   "eşekler",
+   "eşekler inatçı mı",
+   "eşek inadı",
+   "eşek neden durur",
+   "eşek neden yürümez",
+   "bekçi eşek",
+   "eşek koyun sürüsü",
+   "eşek ve at farkı",
+   "eşek davranışları",
+   "çiftlik hayvanları",
+   "köy hayatı",
+   "hayvan davranışları",
+   "hayvan zekası",
+   "hayvanlar",
+   "bilinen yanlışlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "are donkeys stubborn",
+   "guard donkey"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Donkeys aren't stubborn, they're thinking 🫏",
+    "description": "When scared, a horse runs, but a donkey stops and weighs up the situation. Its ancestors lived on steep, rocky ground where bolting blindly was a poor defense. If the danger stays, a donkey stands its ground and fights back, which is why some farmers keep one with their sheep as a guard."
+   },
+   "es": {
+    "title": "El burro no es terco, está pensando 🫏",
+    "description": "Cuando se asusta, el caballo huye, pero el burro se detiene y evalúa la situación. Sus antepasados vivían en terrenos escarpados y rocosos donde huir a ciegas no servía de mucho. Si el peligro sigue, el burro le hace frente, y por eso algunos ganaderos lo usan para proteger a sus ovejas."
+   },
+   "pt": {
+    "title": "O burro não é teimoso, ele está pensando 🫏",
+    "description": "Quando se assusta, o cavalo foge, mas o burro para e avalia a situação. Seus ancestrais viviam em terrenos íngremes e rochosos, onde fugir às cegas não ajudava. Se o perigo continua, o burro enfrenta, e por isso alguns criadores o colocam para proteger o rebanho de ovelhas."
+   },
+   "de": {
+    "title": "Esel sind nicht stur, sie denken nach 🫏",
+    "description": "Erschrickt ein Pferd, rennt es weg; ein Esel bleibt stehen und schätzt die Lage ein. Seine Vorfahren lebten in steilem, felsigem Gelände, wo blinde Flucht wenig half. Bleibt die Gefahr, wehrt sich der Esel – deshalb halten manche Bauern ihn als Wächter bei ihren Schafen."
+   },
+   "fr": {
+    "title": "L'âne n'est pas têtu, il réfléchit 🫏",
+    "description": "Quand il a peur, le cheval s'enfuit, mais l'âne s'arrête et évalue la situation. Ses ancêtres vivaient sur des terrains escarpés et rocailleux où fuir à l'aveugle ne servait pas à grand-chose. Si le danger persiste, l'âne fait face, et certains éleveurs l'utilisent pour protéger leurs moutons."
+   },
+   "it": {
+    "title": "L'asino non è testardo, sta ragionando 🫏",
+    "description": "Quando ha paura il cavallo scappa, l'asino invece si ferma e valuta la situazione. I suoi antenati vivevano su terreni ripidi e rocciosi, dove fuggire alla cieca non serviva. Se il pericolo resta, l'asino lo affronta, e per questo alcuni allevatori lo tengono a guardia delle pecore."
+   },
+   "ru": {
+    "title": "Осёл не упрямый, он просто думает 🫏",
+    "description": "Испугавшись, лошадь убегает, а осёл останавливается и оценивает ситуацию. Его предки жили на крутых каменистых склонах, где бежать сломя голову было плохой защитой. Если опасность не уходит, осёл даёт отпор, поэтому некоторые фермеры держат его как сторожа при овцах."
+   },
+   "ar": {
+    "title": "الحمار ليس عنيدًا، إنه يفكر 🫏",
+    "description": "عندما يخاف الحصان يهرب، أما الحمار فيتوقف ويقدّر الموقف. فقد عاش أسلافه في أراضٍ وعرة شديدة الانحدار لم يكن الهروب الأعمى فيها وسيلة دفاع جيدة. وإذا استمر الخطر يواجهه الحمار، ولهذا يضعه بعض المزارعين مع قطعان الأغنام لحراستها."
+   },
+   "hi": {
+    "title": "गधा ज़िद्दी नहीं, वह सोच-समझकर रुकता है 🫏",
+    "description": "डरने पर घोड़ा भाग जाता है, लेकिन गधा रुककर हालात परखता है। उसके पूर्वज खड़ी, पथरीली ज़मीन पर रहते थे जहाँ आँख मूँदकर भागना अच्छा बचाव नहीं था। ख़तरा बना रहे तो गधा डटकर मुकाबला करता है, इसलिए कुछ किसान भेड़ों की रखवाली के लिए गधा रखते हैं।"
+   },
+   "id": {
+    "title": "Keledai tidak keras kepala, ia sedang berpikir 🫏",
+    "description": "Saat takut, kuda akan lari, tetapi keledai berhenti dan menimbang keadaan. Nenek moyangnya hidup di medan curam berbatu, tempat kabur membabi buta bukan pertahanan yang baik. Jika bahaya terus datang, keledai melawan, sehingga sebagian peternak memakainya untuk menjaga domba."
+   },
+   "ja": {
+    "title": "ロバは頑固なのではなく、考えている 🫏",
+    "description": "怖いとき、馬は走って逃げますが、ロバは立ち止まって状況を見きわめます。祖先が暮らしていたのは険しい岩場で、やみくもに逃げても身を守れなかったからです。危険が去らなければロバは立ち向かうので、羊の番にロバを置く牧場もあります。"
+   },
+   "ko": {
+    "title": "당나귀는 고집쟁이가 아니라 생각하는 중이다 🫏",
+    "description": "겁을 먹으면 말은 달아나지만 당나귀는 멈춰 서서 상황을 살핍니다. 조상이 가파르고 바위투성이인 땅에서 살았는데, 그곳에서는 무작정 달아나는 게 좋은 방어가 아니었기 때문입니다. 위험이 계속되면 당나귀는 맞서 싸워서, 일부 농장에서는 양 떼를 지키게 합니다."
+   },
+   "pl": {
+    "title": "Osioł nie jest uparty, on myśli 🫏",
+    "description": "Przestraszony koń ucieka, a osioł staje i ocenia sytuację. Jego przodkowie żyli na stromych, skalistych terenach, gdzie ucieczka na oślep była kiepską obroną. Jeśli zagrożenie nie mija, osioł stawia mu czoła, dlatego niektórzy hodowcy trzymają go jako stróża przy owcach."
+   },
+   "nl": {
+    "title": "Een ezel is niet koppig, hij denkt na 🫏",
+    "description": "Als een paard schrikt, rent het weg, maar een ezel blijft staan en schat de situatie in. Zijn voorouders leefden op steil, rotsachtig terrein waar blind wegvluchten weinig hielp. Blijft het gevaar, dan gaat de ezel de strijd aan; daarom houden sommige boeren er een als waakdier bij hun schapen."
+   },
+   "uk": {
+    "title": "Віслюк не впертий, він думає 🫏",
+    "description": "Злякавшись, кінь тікає, а віслюк зупиняється й оцінює ситуацію. Його предки жили на крутих кам'янистих схилах, де тікати наосліп було поганим захистом. Якщо небезпека не минає, віслюк дає відсіч, тому деякі фермери тримають його як сторожа біля овець."
+   },
+   "vi": {
+    "title": "Con lừa không bướng, nó đang suy nghĩ 🫏",
+    "description": "Khi sợ hãi, ngựa sẽ bỏ chạy, còn lừa thì đứng lại và đánh giá tình hình. Tổ tiên của lừa sống ở vùng đất dốc, nhiều đá, nơi chạy trốn mù quáng không phải cách tự vệ tốt. Nếu nguy hiểm vẫn còn, lừa sẽ chống trả, nên một số nông dân nuôi lừa để canh giữ đàn cừu."
+   },
+   "az": {
+    "title": "Eşşək inadkar deyil, sadəcə ağlını işlədir 🫏",
+    "description": "Qorxanda at qaçır, eşşək isə dayanıb vəziyyəti ölçüb-biçir. Onun əcdadları sıldırım, qayalı yerlərdə yaşayıb, orada kor-koranə qaçmaq yaxşı müdafiə deyildi. Təhlükə davam edərsə, eşşək müqavimət göstərir, buna görə bəzi fermerlər qoyun sürüsünü qorumaq üçün eşşək saxlayır."
+   },
+   "ro": {
+    "title": "Măgarul nu e încăpățânat, se gândește 🫏",
+    "description": "Când se sperie, calul fuge, dar măgarul se oprește și cântărește situația. Strămoșii lui trăiau pe terenuri abrupte și stâncoase, unde fuga oarbă nu era o apărare bună. Dacă pericolul rămâne, măgarul îi ține piept, de aceea unii fermieri îl țin ca paznic pe lângă oi."
+   }
+  }
+ }
+}

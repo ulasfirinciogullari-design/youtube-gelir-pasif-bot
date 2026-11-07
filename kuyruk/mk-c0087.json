@@ -1,0 +1,179 @@
+{
+ "id": "mk-c0087",
+ "topic": "Rüyada olduğunu anlamak mümkün mü, lüsid rüya nedir?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "sleep",
+  "sleeping"
+ ],
+ "stock_hint": "sleeping face close up",
+ "script": {
+  "title": "Rüyanda olduğunu rüyanın içinde anlamak mümkün mü? 😴",
+  "hook_text": "RÜYADA OLDUĞUNU ANLAR MISIN?",
+  "scenes": [
+   {
+    "text": "Bu adam uyurken sorulan soruyu gözleriyle cevaplıyor.",
+    "visual": "extreme close-up of a sleeping man's face, eyes closed, eyelids flickering",
+    "stock_query": "sleeping man face",
+    "source": "stock",
+    "callout": "GÖZLE CEVAP"
+   },
+   {
+    "text": "Peki rüyada olduğunu rüyanın içinde anlamak mümkün mü?",
+    "visual": "close-up of a young woman's calm face as she sleeps",
+    "stock_query": "woman sleeping",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Nadir de değil: insanların yarısından fazlası bunu en az bir kez yaşamış.",
+    "visual": "close-up of a sleeping girl's face in soft light",
+    "stock_query": "sleeping girl",
+    "source": "stock",
+    "callout": "%55 YAŞAMIŞ"
+   },
+   {
+    "text": "Cevap evet: iki bin yirmi birde, rüyasını fark eden uyuyanlar basit işlemleri göz hareketleriyle yanıtladı.",
+    "visual": "extreme close-up of a closed eye moving under the eyelid",
+    "stock_query": "closed eye",
+    "source": "stock",
+    "callout": "İŞLEM ÇÖZDÜLER",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Çünkü rüyada kolların, bacakların kilitlenir ama gözlerin serbest kalır; o yüzden...",
+    "visual": "a man sleeping peacefully, face in close-up",
+    "stock_query": "man sleeping",
+    "source": "stock",
+    "callout": "GÖZLER SERBEST"
+   }
+  ],
+  "description": "Rüyada olduğunu rüyanın içinde anlamak mümkün; buna lüsid rüya denir ve insanların yarısından fazlası en az bir kez yaşamış. 2021'de dört laboratuvarda yapılan bir çalışmada lüsid rüya gören uyuyanlar basit işlemleri göz hareketleriyle yanıtladı. Rüyaların çoğunun görüldüğü REM uykusunda kollar ve bacaklar geçici olarak felç olur, gözler ise hareket edebilir.",
+  "tags": [
+   "rüya",
+   "lüsid rüya",
+   "bilinçli rüya",
+   "uyku",
+   "rem uykusu",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen hiç rüyada olduğunu rüyanın içinde anladın mı: evet mi, hayır mı?",
+  "en_title": "Can you realize you're dreaming while you're still in the dream? 😴",
+  "en_description": "Yes, it's called lucid dreaming, and more than half of people have had at least one. In a 2021 study across four labs, lucid dreamers answered simple math questions with eye movements while still asleep. During REM sleep your arms and legs are paralyzed, but your eyes stay free.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Rüyada olduğunu anlamak mümkün mü, lüsid rüya nedir?\n\nEvet. Rüya görürken rüyada olduğunu fark etmeye lüsid (bilinçli) rüya denir. Northampton Üniversitesi'nin 34 çalışmayı birleştiren 2016 tarihli analizine göre insanların yaklaşık yüzde 55'i hayatında en az bir kez lüsid rüya görmüş, yaklaşık yüzde 23'ü ise ayda en az bir kez görüyor. 2021'de Current Biology dergisinde yayımlanan ve ABD, Fransa, Almanya ve Hollanda'daki dört laboratuvarda yapılan çalışmada, rüyasının farkına varan uyuyanlar araştırmacıların sorduğu basit matematik işlemlerini ve evet-hayır sorularını önceden anlaşılan göz ya da yüz kası hareketleriyle yanıtladı. Bu mümkün, çünkü rüyaların çoğunun görüldüğü REM uykusunda kol ve bacak kasları geçici olarak felç olur ama gözler hızla hareket etmeye devam eder.\n\nSen hiç rüyada olduğunu rüyanın içinde anladın mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#rüya",
+   "#uyku",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "rüya",
+   "lüsid rüya",
+   "bilinçli rüya",
+   "lüsid rüya nedir",
+   "rüyada olduğunu anlamak",
+   "rüya kontrolü",
+   "rüyayı kontrol etmek",
+   "rüya görmek",
+   "rem uykusu",
+   "uyku",
+   "uykuda göz hareketi",
+   "uykuda beyin",
+   "beyin",
+   "insan vücudu",
+   "psikoloji",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "nörobilim",
+   "lucid dreaming",
+   "lucid dream"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can you realize you're dreaming while you're still in the dream? 😴",
+    "description": "Yes, it's called lucid dreaming, and more than half of people have had at least one. In a 2021 study across four labs, lucid dreamers answered simple math questions with eye movements while still asleep. During REM sleep your arms and legs are paralyzed, but your eyes stay free."
+   },
+   "es": {
+    "title": "¿Es posible darte cuenta de que sueñas sin despertarte? 😴",
+    "description": "Sí: se llama sueño lúcido y más de la mitad de las personas lo ha vivido al menos una vez. En un estudio de 2021 en cuatro laboratorios, soñadores lúcidos resolvieron operaciones sencillas moviendo los ojos sin despertarse. En la fase REM los brazos y las piernas quedan paralizados, pero los ojos siguen libres."
+   },
+   "pt": {
+    "title": "É possível perceber que você está sonhando dentro do sonho? 😴",
+    "description": "Sim: isso se chama sonho lúcido, e mais da metade das pessoas já teve pelo menos um. Num estudo de 2021 em quatro laboratórios, sonhadores lúcidos responderam a contas simples movendo os olhos, ainda dormindo. No sono REM, braços e pernas ficam paralisados, mas os olhos continuam livres."
+   },
+   "de": {
+    "title": "Kann man im Traum merken, dass man träumt? 😴",
+    "description": "Ja, das nennt sich Klartraum, und mehr als die Hälfte der Menschen hatte schon mindestens einen. In einer Studie von 2021 in vier Laboren lösten Klarträumer im Schlaf einfache Rechenaufgaben und antworteten mit Augenbewegungen. Im REM-Schlaf sind Arme und Beine gelähmt, die Augen aber bleiben frei."
+   },
+   "fr": {
+    "title": "Peut-on savoir qu'on rêve sans se réveiller ? 😴",
+    "description": "Oui, c'est le rêve lucide, et plus de la moitié des gens en ont déjà fait au moins un. Dans une étude de 2021 menée dans quatre laboratoires, des rêveurs lucides ont répondu à des calculs simples par des mouvements des yeux, tout en dormant. En sommeil paradoxal, bras et jambes sont paralysés, mais les yeux restent libres."
+   },
+   "it": {
+    "title": "È possibile accorgersi di sognare mentre si sogna? 😴",
+    "description": "Sì, si chiama sogno lucido e più di metà delle persone ne ha fatto almeno uno. In uno studio del 2021 in quattro laboratori, alcuni sognatori lucidi hanno risposto a semplici calcoli muovendo gli occhi, senza svegliarsi. Nel sonno REM braccia e gambe sono paralizzate, ma gli occhi restano liberi."
+   },
+   "ru": {
+    "title": "Можно ли понять, что ты спишь, прямо во сне? 😴",
+    "description": "Да, это осознанное сновидение, и больше половины людей видели его хотя бы раз. В исследовании 2021 года в четырёх лабораториях люди в осознанном сне решали простые примеры и отвечали движениями глаз, не просыпаясь. В фазе быстрого сна руки и ноги парализованы, а глаза остаются свободными."
+   },
+   "ar": {
+    "title": "هل يمكن أن تدرك أنك تحلم وأنت داخل الحلم؟ 😴",
+    "description": "نعم، يسمى ذلك الحلم الواعي، وقد عاشه أكثر من نصف الناس مرة واحدة على الأقل. في دراسة عام 2021 أُجريت في أربعة مختبرات، أجاب حالمون واعون عن مسائل حسابية بسيطة بحركات أعينهم وهم نائمون. ففي نوم حركة العين السريعة تُشل الذراعان والساقان مؤقتًا، لكن العينين تبقيان حرتين."
+   },
+   "hi": {
+    "title": "क्या सपने के अंदर ही पता चल सकता है कि आप सपना देख रहे हैं? 😴",
+    "description": "हाँ, इसे ल्यूसिड ड्रीम कहते हैं, और आधे से ज़्यादा लोग कम से कम एक बार इसे अनुभव कर चुके हैं। 2021 में चार प्रयोगशालाओं के अध्ययन में ल्यूसिड सपने देख रहे लोगों ने सोते-सोते आसान गणित के सवालों के जवाब आँखें घुमाकर दिए। REM नींद में हाथ-पैर अस्थायी रूप से निष्क्रिय हो जाते हैं, पर आँखें आज़ाद रहती हैं।"
+   },
+   "id": {
+    "title": "Mungkinkah sadar sedang bermimpi saat masih di dalam mimpi? 😴",
+    "description": "Mungkin, namanya mimpi sadar atau lucid dream, dan lebih dari separuh orang pernah mengalaminya setidaknya sekali. Dalam studi 2021 di empat laboratorium, para pemimpi sadar menjawab soal hitungan sederhana dengan gerakan mata tanpa terbangun. Saat tidur REM, lengan dan kaki lumpuh sementara, tetapi mata tetap bebas bergerak."
+   },
+   "ja": {
+    "title": "夢の中で「これは夢だ」と気づくことはできる？ 😴",
+    "description": "できます。明晰夢と呼ばれ、半数以上の人が少なくとも一度は経験しています。2021年に4つの研究室で行われた研究では、明晰夢を見ている人が眠ったまま簡単な計算問題に目の動きで答えました。レム睡眠中は手足の筋肉がまひしていますが、目は自由に動かせるのです。"
+   },
+   "ko": {
+    "title": "꿈속에서 지금 꿈꾸고 있다는 걸 알아챌 수 있을까? 😴",
+    "description": "가능합니다. 자각몽이라고 하며, 절반이 넘는 사람이 적어도 한 번은 경험했습니다. 2021년 네 곳의 연구실에서 진행된 연구에서는 자각몽을 꾸던 사람들이 잠든 채로 간단한 계산 문제에 눈동자 움직임으로 답했습니다. 렘수면 중에는 팔다리가 마비되지만 눈은 자유롭게 움직입니다."
+   },
+   "pl": {
+    "title": "Czy można we śnie zorientować się, że się śni? 😴",
+    "description": "Tak, to świadomy sen i ponad połowa ludzi miała go przynajmniej raz. W badaniu z 2021 roku w czterech laboratoriach osoby śniące świadomie rozwiązywały proste działania i odpowiadały ruchami oczu, nie budząc się. W fazie REM ręce i nogi są sparaliżowane, ale oczy pozostają wolne."
+   },
+   "nl": {
+    "title": "Kun je in je droom doorhebben dat je droomt? 😴",
+    "description": "Ja, dat heet lucide dromen, en meer dan de helft van de mensen heeft het minstens één keer meegemaakt. In een studie uit 2021 in vier labs beantwoordden lucide dromers slapend eenvoudige rekensommen met oogbewegingen. Tijdens de REM-slaap zijn je armen en benen verlamd, maar je ogen blijven vrij."
+   },
+   "uk": {
+    "title": "Чи можна зрозуміти, що спиш, просто уві сні? 😴",
+    "description": "Так, це усвідомлене сновидіння, і понад половина людей бачили його принаймні раз. У дослідженні 2021 року в чотирьох лабораторіях люди в усвідомленому сні розв'язували прості приклади й відповідали рухами очей, не прокидаючись. У фазі швидкого сну руки й ноги паралізовані, а очі залишаються вільними."
+   },
+   "vi": {
+    "title": "Có thể nhận ra mình đang mơ ngay trong giấc mơ không? 😴",
+    "description": "Có, đó gọi là giấc mơ sáng suốt, và hơn một nửa số người từng trải qua ít nhất một lần. Trong nghiên cứu năm 2021 tại bốn phòng thí nghiệm, những người đang mơ sáng suốt đã trả lời các phép tính đơn giản bằng chuyển động mắt mà không tỉnh dậy. Trong giấc ngủ REM, tay chân bị tê liệt tạm thời nhưng mắt vẫn cử động tự do."
+   },
+   "az": {
+    "title": "Yuxuda olduğunu yuxunun içində anlamaq mümkündürmü? 😴",
+    "description": "Bəli, buna lüsid yuxu deyilir və insanların yarıdan çoxu bunu ən azı bir dəfə yaşayıb. 2021-ci ildə dörd laboratoriyada aparılan araşdırmada lüsid yuxu görənlər oyanmadan sadə riyazi sualları göz hərəkətləri ilə cavablandırdı. REM yuxusunda qol və ayaqlar müvəqqəti iflic olur, gözlər isə sərbəst qalır."
+   },
+   "ro": {
+    "title": "Poți să-ți dai seama că visezi chiar în timpul visului? 😴",
+    "description": "Da, se numește vis lucid și peste jumătate dintre oameni au avut cel puțin unul. Într-un studiu din 2021 făcut în patru laboratoare, visătorii lucizi au răspuns la calcule simple prin mișcări ale ochilor, fără să se trezească. În somnul REM brațele și picioarele sunt paralizate, dar ochii rămân liberi."
+   }
+  }
+ }
+}

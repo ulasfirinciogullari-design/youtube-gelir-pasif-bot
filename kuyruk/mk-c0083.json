@@ -1,0 +1,175 @@
+{
+ "id": "mk-c0083",
+ "topic": "Köpekler kıskanır mı, köpek sahibini başka bir köpekten kıskanabilir mi?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog face close up",
+ "script": {
+  "title": "Köpeğin seni başka bir köpekten kıskanabilir mi? 🐶",
+  "hook_text": "KÖPEK KISKANIR MI?",
+  "scenes": [
+   {
+    "text": "Bu köpeklerin dörtte biri oyuncak köpeği ısırmaya kalktı.",
+    "visual": "close-up of a dog's face with ears up, looking straight into the camera",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": "%25 ISIRMAYA KALKTI"
+   },
+   {
+    "text": "Sahipleri onu sevip okşuyordu; peki köpek kıskanabilir mi?",
+    "visual": "a person gently petting a dog's head",
+    "stock_query": "petting dog",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Çoğu önce oyuncağın arkasını kokladı; onu gerçek sanmış olabilirler.",
+    "visual": "two dogs sniffing each other",
+    "stock_query": "dogs sniffing",
+    "source": "stock",
+    "callout": "%86 KOKLADI"
+   },
+   {
+    "text": "Cevap evet: iki bin yirmi birdeki bir deneyde sahibi sahte köpeği perde arkasında sevince bile tasmayı zorladılar.",
+    "visual": "a dog pulling hard on its leash toward its owner",
+    "stock_query": "dog leash",
+    "source": "stock",
+    "callout": "PERDE ARKASINDA BİLE"
+   },
+   {
+    "text": "Görmedikleri sevgiyi bile kafalarında canlandırıyorlar; başka köpeği severken dikkat et, çünkü...",
+    "visual": "a dog watching its owner pet another dog",
+    "stock_query": "two dogs",
+    "source": "stock",
+    "callout": "HAYAL EDİYOR"
+   }
+  ],
+  "description": "Köpekler kıskanabilir. 2014'teki bir deneyde sahipleri gerçeğine benzeyen oyuncak bir köpeği sevince köpeklerin dörtte biri onu ısırmaya kalktı, yüzde 86'sı da arkasını kokladı. 2021'deki bir deneyde ise köpekler, sahibi sahte köpeği bir perdenin arkasında sevdiğinde bile tasmayı zorladı; yani göremedikleri etkileşimi kafalarında canlandırabiliyorlar.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpekler kıskanır mı",
+   "köpek kıskançlığı",
+   "köpek davranışları",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin seni başka köpeklerden kıskanıyor mu: evet mi, hayır mı?",
+  "en_title": "Can your dog get jealous of another dog? 🐶",
+  "en_description": "Yes. In a 2014 study, owners petted a realistic toy dog, and a quarter of the dogs snapped at it; most also sniffed its rear, as if it might be real. In a 2021 study, dogs strained at the leash even when their owner petted a fake dog hidden behind a screen.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler kıskanır mı, köpek sahibini başka bir köpekten kıskanabilir mi?\n\nEvet. Kaliforniya Üniversitesi San Diego'dan Christine Harris ve Caroline Prouvost'un 2014'te PLOS ONE dergisinde yayımladığı deneyde 36 köpeğin sahibi, havlayıp kuyruk sallayan oyuncak bir köpeği gerçek bir köpekmiş gibi sevip okşadı. Köpeklerin yüzde 78'i sahibini itti ya da ona dokundu, yaklaşık yüzde 30'u araya girmeye çalıştı ve dörtte biri oyuncak köpeği ısırmaya kalktı; sahibi bir kovayla ya da kitapla ilgilendiğinde bunu yalnızca bir köpek yaptı. Köpeklerin yüzde 86'sı oyuncağın arkasını kokladı. Auckland Üniversitesi'nin 2021'de Psychological Science'ta yayımlanan deneyinde ise köpekler, sahibi sahte köpeği bir perdenin arkasında sevdiğinde bile ona ulaşmak için tasmayı çok daha güçlü çekti; araştırmacılara göre köpekler göremedikleri bu etkileşimi zihinlerinde canlandırabiliyor.\n\nSenin köpeğin seni başka köpeklerden kıskanıyor mu: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpekler kıskanır mı",
+   "köpek kıskançlığı",
+   "köpek sahibini kıskanır mı",
+   "kıskanç köpek",
+   "köpek davranışları",
+   "köpek psikolojisi",
+   "köpek duyguları",
+   "hayvan duyguları",
+   "kıskançlık",
+   "köpek eğitimi",
+   "evcil hayvanlar",
+   "hayvan davranışları",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "do dogs get jealous",
+   "dog jealousy"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can your dog get jealous of another dog? 🐶",
+    "description": "Yes. In a 2014 study, owners petted a realistic toy dog, and a quarter of the dogs snapped at it; most also sniffed its rear, as if it might be real. In a 2021 study, dogs strained at the leash even when their owner petted a fake dog hidden behind a screen."
+   },
+   "es": {
+    "title": "¿Puede tu perro ponerse celoso de otro perro? 🐶",
+    "description": "Sí. En un estudio de 2014, los dueños acariciaron un perro de peluche realista y una cuarta parte de los perros intentó morderlo; la mayoría le olfateó el trasero, como si pudiera ser real. En otro de 2021, los perros tiraban de la correa incluso cuando el dueño acariciaba al perro falso detrás de una pantalla."
+   },
+   "pt": {
+    "title": "Seu cachorro pode sentir ciúme de outro cachorro? 🐶",
+    "description": "Sim. Num estudo de 2014, os donos fizeram carinho num cachorro de pelúcia realista e um quarto dos cães tentou mordê-lo; a maioria cheirou o traseiro dele, como se pudesse ser de verdade. Em outro, de 2021, os cães puxaram a guia mesmo quando o dono acariciava o cachorro falso atrás de uma barreira."
+   },
+   "de": {
+    "title": "Kann dein Hund auf einen anderen Hund eifersüchtig sein? 🐶",
+    "description": "Ja. In einer Studie von 2014 streichelten Halter einen täuschend echten Stoffhund, und ein Viertel der Hunde schnappte nach ihm; die meisten beschnüffelten sein Hinterteil, als könnte er echt sein. 2021 zogen Hunde sogar dann an der Leine, als ihr Mensch den falschen Hund hinter einem Sichtschutz streichelte."
+   },
+   "fr": {
+    "title": "Ton chien peut-il être jaloux d'un autre chien ? 🐶",
+    "description": "Oui. Dans une étude de 2014, les maîtres caressaient un chien en peluche réaliste, et un quart des chiens ont tenté de le mordre ; la plupart lui ont reniflé l'arrière-train, comme s'il pouvait être vrai. En 2021, des chiens tiraient sur leur laisse même quand leur maître caressait le faux chien caché derrière un écran."
+   },
+   "it": {
+    "title": "Il tuo cane può essere geloso di un altro cane? 🐶",
+    "description": "Sì. In uno studio del 2014 i padroni accarezzavano un cane di peluche realistico e un quarto dei cani ha provato a morderlo; la maggior parte gli ha annusato il sedere, come se potesse essere vero. In uno studio del 2021 i cani tiravano il guinzaglio anche quando il padrone accarezzava il cane finto dietro uno schermo."
+   },
+   "ru": {
+    "title": "Может ли собака ревновать тебя к другой собаке? 🐶",
+    "description": "Да. В исследовании 2014 года хозяева гладили реалистичную игрушечную собаку, и четверть собак пытались её укусить; большинство обнюхали её сзади, будто она могла быть настоящей. В 2021 году собаки рвались с поводка, даже когда хозяин гладил фальшивую собаку за ширмой."
+   },
+   "ar": {
+    "title": "هل يمكن أن يغار كلبك عليك من كلب آخر؟ 🐶",
+    "description": "نعم. في دراسة عام 2014 داعب أصحاب الكلاب كلبًا لعبة يشبه الحقيقي، فحاول ربع الكلاب عضّه، وشمّ معظمها مؤخرته كأنه قد يكون كلبًا حقيقيًا. وفي دراسة عام 2021 شدّت الكلاب مقاودها حتى عندما كان صاحبها يداعب الكلب المزيف خلف حاجز لا تراه."
+   },
+   "hi": {
+    "title": "क्या आपका कुत्ता दूसरे कुत्ते से आपको लेकर जल सकता है? 🐶",
+    "description": "हाँ। 2014 के एक अध्ययन में मालिकों ने असली जैसे दिखने वाले खिलौना कुत्ते को सहलाया, तो एक चौथाई कुत्तों ने उसे काटने की कोशिश की; ज़्यादातर ने उसका पिछला हिस्सा सूँघा, मानो वह असली हो सकता हो। 2021 के अध्ययन में कुत्तों ने तब भी पट्टा खींचा जब मालिक पर्दे के पीछे नकली कुत्ते को सहला रहा था।"
+   },
+   "id": {
+    "title": "Bisakah anjingmu cemburu pada anjing lain? 🐶",
+    "description": "Bisa. Dalam studi tahun 2014, pemilik mengelus boneka anjing yang mirip asli, dan seperempat anjing mencoba menggigitnya; kebanyakan mengendus bagian belakangnya seolah bisa saja anjing sungguhan. Dalam studi 2021, anjing tetap menarik talinya kuat-kuat meski pemiliknya mengelus anjing palsu di balik sekat."
+   },
+   "ja": {
+    "title": "犬はほかの犬に飼い主を取られてやきもちを焼く？ 🐶",
+    "description": "焼きます。2014年の研究では、飼い主が本物そっくりのぬいぐるみの犬をなでると、4分の1の犬がかみつこうとし、多くはそのお尻のにおいをかぎました。2021年の研究では、飼い主がついたての向こうで偽の犬をなでているだけでも、犬はリードを強く引っぱりました。"
+   },
+   "ko": {
+    "title": "강아지가 다른 개 때문에 주인을 질투할 수 있을까? 🐶",
+    "description": "그렇습니다. 2014년 연구에서 주인이 진짜 같은 강아지 인형을 쓰다듬자 개의 4분의 1이 인형을 물려고 했고, 대부분은 인형의 엉덩이 냄새를 맡았습니다. 2021년 연구에서는 주인이 칸막이 뒤에서 가짜 개를 쓰다듬기만 해도 개들이 목줄을 세게 당겼습니다."
+   },
+   "pl": {
+    "title": "Czy twój pies może być zazdrosny o innego psa? 🐶",
+    "description": "Tak. W badaniu z 2014 roku właściciele głaskali realistycznego pluszowego psa, a co czwarty pies próbował go ugryźć; większość obwąchała mu tył, jakby mógł być prawdziwy. W 2021 roku psy szarpały smycz nawet wtedy, gdy właściciel głaskał sztucznego psa za zasłoną."
+   },
+   "nl": {
+    "title": "Kan je hond jaloers zijn op een andere hond? 🐶",
+    "description": "Ja. In een studie uit 2014 aaiden baasjes een levensechte speelgoedhond, en een kwart van de honden probeerde ernaar te happen; de meeste snuffelden aan zijn achterwerk, alsof hij echt kon zijn. In 2021 trokken honden hard aan de lijn, zelfs toen hun baasje de nephond achter een scherm aaide."
+   },
+   "uk": {
+    "title": "Чи може пес ревнувати тебе до іншого собаки? 🐶",
+    "description": "Так. У дослідженні 2014 року власники гладили реалістичного іграшкового пса, і чверть собак намагалася його вкусити; більшість обнюхала його ззаду, наче він міг бути справжнім. У 2021 році собаки рвалися з повідка, навіть коли господар гладив несправжнього пса за ширмою."
+   },
+   "vi": {
+    "title": "Chó của bạn có thể ghen với một con chó khác không? 🐶",
+    "description": "Có. Trong một nghiên cứu năm 2014, chủ vuốt ve một con chó đồ chơi trông như thật, và một phần tư số chó đã định cắn nó; phần lớn còn ngửi mông nó như thể đó có thể là chó thật. Năm 2021, chó vẫn ghì mạnh dây dắt ngay cả khi chủ vuốt ve con chó giả sau một tấm chắn."
+   },
+   "az": {
+    "title": "İtin səni başqa itdən qısqana bilərmi? 🐶",
+    "description": "Bəli. 2014-cü il araşdırmasında sahiblər əsl kimi görünən oyuncaq iti sığallayanda itlərin dörddə biri onu dişləməyə cəhd etdi; çoxu onun arxasını iylədi, sanki əsl it ola bilərdi. 2021-ci ildə isə sahib saxta iti pərdənin arxasında sığallayanda belə itlər qayışı bərk dartdı."
+   },
+   "ro": {
+    "title": "Poate câinele tău să fie gelos pe alt câine? 🐶",
+    "description": "Da. Într-un studiu din 2014, stăpânii au mângâiat un câine de pluș realist, iar un sfert dintre câini au încercat să-l muște; cei mai mulți l-au mirosit în spate, ca și cum ar fi putut fi adevărat. În 2021, câinii trăgeau tare de lesă chiar și când stăpânul mângâia câinele fals ascuns după un paravan."
+   }
+  }
+ }
+}
