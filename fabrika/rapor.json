@@ -1,5 +1,5 @@
 {
- "started": "2026-11-07T18:06:45+00:00",
+ "started": "2026-11-07T20:07:04+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "56",
-  "videos": "52"
+  "videos": "53"
  },
  "credits_before": [
-  90050,
+  90235,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261107-2-n011.json",
-  "kalan": 2
+  "dosya": "20261107-3-y021.json",
+  "kalan": 1
  },
  "topic": {
-  "id": "n011",
-  "series": "Ne Kadar Büyük?",
-  "q": "Everest ne kadar yüksek?"
+  "id": "y021",
+  "series": "Ya Olsaydı?",
+  "q": "Dünya'ya dev bir asteroit çarpsaydı ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 404,
- "duration": 25.9,
- "title": "Everest Gerçekte Ne Kadar Yüksek?",
- "url": "https://youtube.com/shorts/xRibz7N8GmY",
+ "chars": 424,
+ "duration": 28.3,
+ "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
+ "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
  "recent_status": {
-  "y039": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "984",
-   "reason": null
-  },
   "g008": {
    "upload": "processed",
    "privacy": "public",
-   "views": "495",
+   "views": "536",
    "reason": null
   },
   "y020": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1063",
+   "views": "1077",
    "reason": null
   },
   "y033": {
    "upload": "processed",
    "privacy": "public",
-   "views": "16",
+   "views": "865",
    "reason": null
   },
   "n011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "79",
+   "reason": null
+  },
+  "y021": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  90149,
+  90338,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261107-2-n011.json Everest ne kadar yüksek? (Ne Kadar Büyük?)"
+  "Kuyruktan: 20261107-3-y021.json Dünya'ya dev bir asteroit çarpsaydı ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-07T18:07:40+00:00"
+ "finished": "2026-11-07T20:08:06+00:00"
 }

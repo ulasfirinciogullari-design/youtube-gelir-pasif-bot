@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1070",
+    "views": "1069",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1104",
+    "views": "1108",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1282",
+    "views": "1286",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1624",
+    "views": "1613",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1854",
+    "views": "1905",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1066",
+    "views": "1068",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1111",
+    "views": "1113",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "984",
+    "views": "985",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "495",
+    "views": "536",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1063",
+    "views": "1077",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "16",
+    "views": "865",
     "reason": null
    }
   },
@@ -1553,6 +1553,36 @@
    "thumbnail": true,
    "at": 1794074859.2671082,
    "chars": 404,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "79",
+    "reason": null
+   }
+  },
+  {
+   "id": "y021",
+   "video_id": "EQ0PrGtNYWo",
+   "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
+   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If the Dinosaur-Killing Asteroid Hit Istanbul?",
+    "es": "¿Y Si el Asteroide Que Mató a los Dinosaurios Cayera en Estambul?",
+    "pt": "E Se o Asteroide Que Matou os Dinossauros Caísse em Istambul?",
+    "ar": "ماذا لو سقط الكويكب الذي قتل الديناصورات على إسطنبول؟",
+    "hi": "अगर डायनासोर मारने वाला एस्टेरॉयड इस्तांबुल पर गिरता तो क्या होता?",
+    "id": "Bagaimana Jika Asteroid Pembunuh Dinosaurus Jatuh di Istanbul?",
+    "fr": "Et Si l'Astéroïde Qui a Tué les Dinosaures Tombait sur Istanbul ?",
+    "de": "Was Wäre, Wenn der Dinosaurier-Killer-Asteroid Istanbul Träfe?",
+    "ru": "Что Будет, Если Астероид-Убийца Динозавров Упадёт на Стамбул?",
+    "az": "Dinozavrları Məhv Edən Asteroid İstanbula Düşsəydi Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794082085.2943347,
+   "chars": 424,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1613,7 +1643,8 @@
   "g008",
   "y020",
   "y033",
-  "n011"
+  "n011",
+  "y021"
  ],
  "extra": [
   {
@@ -1679,12 +1710,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-21T13:10:30+00:00",
-   "mod": "igbolum",
-   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "chars": 362
-  },
   {
    "finished": "2026-10-21T14:09:30+00:00",
    "mod": "saatlik",
@@ -2099,6 +2124,14 @@
    "url": "https://youtube.com/shorts/xRibz7N8GmY",
    "duration": 25.9,
    "chars": 404
+  },
+  {
+   "finished": "2026-11-07T20:08:06+00:00",
+   "mod": "saatlik",
+   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
+   "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
+   "duration": 28.3,
+   "chars": 424
   }
  ],
  "last_fail": 1793568784.6201334,
