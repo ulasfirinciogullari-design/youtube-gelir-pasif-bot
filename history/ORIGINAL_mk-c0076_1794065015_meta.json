@@ -1,0 +1,173 @@
+{
+  "topic_id": "mk-c0076",
+  "topic": "Fareler gıdıklanınca güler mi, sıçan gıdıklanınca gülebilir mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Sıçan gıdıklanınca gülebilir mi? 🐀",
+  "hook_text": "SIÇAN GÜLEBİLİR Mİ?",
+  "description": "Fareler gıdıklanınca güler mi, sıçan gıdıklanınca gülebilir mi?\n\nEvet. Sıçanlar gıdıklandığında elli kilohertz civarında ultrasonik cıvıltılar çıkarır; bu ses insan kulağının duyabildiği aralığın çok üstünde olduğu için onu ancak özel mikrofonlarla duyabiliyoruz. Berlin Humboldt Üniversitesi'nden araştırmacıların 2016'da Science dergisinde yayımladığı deneyde gıdıklanan sıçanlar sevinçten zıpladı ve araştırmacının elini kovaladı; en çok karınları ve ayak altları gıdıklanıyordu. Sıçanlar parlak ışıklı, yüksek bir platformda kaygılandırıldığında ise gıdıklanmaya tepkileri ve gülmeleri azaldı. Daha önceki araştırmalar da sıçanların kendilerini güldüren eli aradığını göstermişti.\n\nSence hangisi daha şaşırtıcı: sıçanın gıdıklanınca gülmesi mi, korkunca gıdıklanmaz olması mı?\n\n#sıçan #fare #hayvanlar #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0076",
+  "tags": [
+    "sıçan",
+    "fare",
+    "fareler güler mi",
+    "sıçan güler mi",
+    "sıçan gıdıklama",
+    "fare gıdıklanınca güler mi",
+    "hayvanlar güler mi",
+    "hayvanlar gıdıklanır mı",
+    "gıdıklanmak",
+    "gıdıklanma",
+    "ultrasonik ses",
+    "evcil sıçan",
+    "kemirgenler",
+    "hayvan davranışları",
+    "hayvan duyguları",
+    "hayvanlar",
+    "mümkün mü",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "do rats laugh",
+    "rat tickling",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "sican",
+    "fareler guler mi",
+    "sican guler mi",
+    "sican gidiklama",
+    "fare gidiklaninca guler mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a rat laugh when you tickle it? 🐀",
+      "description": "Yes. Tickled rats make 50-kilohertz ultrasonic chirps, a laugh pitched too high for human ears. In a 2016 study, tickled rats jumped for joy and chased the researcher's hand, but they became far less ticklish when they were made anxious.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "es": {
+      "title": "¿Puede reírse una rata si le haces cosquillas? 🐀",
+      "description": "Sí. Las ratas a las que se les hace cosquillas emiten chirridos ultrasónicos de unos 50 kilohercios, una risa demasiado aguda para el oído humano. En un estudio de 2016 saltaban de alegría y perseguían la mano del investigador, pero casi dejaban de tener cosquillas cuando estaban asustadas.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "pt": {
+      "title": "Um rato consegue rir quando você faz cócegas nele? 🐀",
+      "description": "Sim. Ratos que levam cócegas emitem chiados ultrassônicos de cerca de 50 quilohertz, uma risada aguda demais para o ouvido humano. Num estudo de 2016, eles pulavam de alegria e perseguiam a mão do pesquisador, mas quase deixavam de sentir cócegas quando estavam ansiosos.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "de": {
+      "title": "Kann eine Ratte lachen, wenn man sie kitzelt? 🐀",
+      "description": "Ja. Gekitzelte Ratten geben Ultraschall-Laute um 50 Kilohertz von sich, ein Lachen, das für menschliche Ohren zu hoch ist. In einer Studie von 2016 machten sie Freudensprünge und jagten der Hand des Forschers hinterher, waren aber kaum noch kitzlig, wenn man sie ängstigte.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "fr": {
+      "title": "Un rat peut-il rire quand on le chatouille ? 🐀",
+      "description": "Oui. Chatouillés, les rats émettent des cris ultrasonores autour de 50 kilohertz, un rire trop aigu pour l'oreille humaine. Dans une étude de 2016, ils bondissaient de joie et poursuivaient la main du chercheur, mais n'étaient presque plus chatouilleux quand on les rendait anxieux.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "it": {
+      "title": "Un ratto può ridere se gli fai il solletico? 🐀",
+      "description": "Sì. I ratti a cui si fa il solletico emettono squittii ultrasonici intorno ai 50 kilohertz, una risata troppo acuta per l'orecchio umano. In uno studio del 2016 saltavano di gioia e inseguivano la mano del ricercatore, ma quasi non soffrivano più il solletico quando erano in ansia.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "ru": {
+      "title": "Может ли крыса смеяться от щекотки? 🐀",
+      "description": "Да. Когда крыс щекочут, они издают ультразвуковой писк частотой около 50 килогерц — смех слишком высокий для человеческого уха. В исследовании 2016 года крысы подпрыгивали от радости и гонялись за рукой учёного, но почти переставали реагировать на щекотку, когда были встревожены.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "ar": {
+      "title": "هل يمكن للجرذ أن يضحك عندما تدغدغه؟ 🐀",
+      "description": "نعم. عند دغدغة الجرذان تُصدر زقزقات فوق صوتية بتردد يقارب 50 كيلوهرتز، وهي ضحكة أعلى من أن تسمعها الأذن البشرية. وفي دراسة عام 2016 قفزت الجرذان فرحًا وطاردت يد الباحث، لكنها كادت لا تتأثر بالدغدغة عندما شعرت بالقلق.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "hi": {
+      "title": "क्या गुदगुदी करने पर चूहा हँस सकता है? 🐀",
+      "description": "हाँ। गुदगुदी करने पर चूहे लगभग 50 किलोहर्ट्ज़ की अल्ट्रासोनिक आवाज़ निकालते हैं, यह हँसी इतनी ऊँची होती है कि इंसान के कान इसे सुन नहीं पाते। 2016 के एक अध्ययन में चूहे ख़ुशी से उछले और शोधकर्ता के हाथ के पीछे दौड़े, लेकिन डरे होने पर उन पर गुदगुदी का असर बहुत कम हो गया।\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "id": {
+      "title": "Bisakah tikus tertawa saat digelitik? 🐀",
+      "description": "Bisa. Tikus yang digelitik mengeluarkan cicitan ultrasonik sekitar 50 kilohertz, tawa yang terlalu tinggi untuk didengar telinga manusia. Dalam studi tahun 2016, tikus melompat kegirangan dan mengejar tangan peneliti, tetapi hampir tidak geli lagi saat sedang cemas.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "ja": {
+      "title": "ネズミはくすぐられると笑うことができる？ 🐀",
+      "description": "できます。くすぐられたラットは約50キロヘルツの超音波で鳴きます。人間の耳には高すぎて聞こえない笑い声です。2016年の研究では、ラットは喜んで跳びはね、研究者の手を追いかけましたが、不安な状態ではほとんどくすぐったがらなくなりました。\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "ko": {
+      "title": "쥐도 간지럼을 태우면 웃을 수 있을까? 🐀",
+      "description": "그렇습니다. 간지럼을 탄 쥐는 약 50킬로헤르츠의 초음파 소리를 내는데, 사람 귀로는 들을 수 없을 만큼 높은 웃음소리입니다. 2016년 연구에서 쥐들은 기뻐서 펄쩍 뛰고 연구자의 손을 쫓아다녔지만, 불안할 때는 간지럼을 거의 타지 않았습니다.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "pl": {
+      "title": "Czy szczur może się śmiać, gdy go łaskoczesz? 🐀",
+      "description": "Tak. Łaskotane szczury wydają ultradźwiękowe piski o częstotliwości około 50 kiloherców, czyli śmiech za wysoki dla ludzkiego ucha. W badaniu z 2016 roku podskakiwały z radości i goniły dłoń badacza, ale prawie przestawały reagować na łaskotki, gdy były zestresowane.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "nl": {
+      "title": "Kan een rat lachen als je hem kietelt? 🐀",
+      "description": "Ja. Gekietelde ratten maken ultrasone piepjes van zo'n 50 kilohertz, een lach die te hoog is voor menselijke oren. In een studie uit 2016 sprongen ze van plezier en joegen ze de hand van de onderzoeker achterna, maar ze waren nauwelijks nog kietelig als ze angstig waren.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "uk": {
+      "title": "Чи може щур сміятися від лоскоту? 🐀",
+      "description": "Так. Коли щурів лоскочуть, вони видають ультразвуковий писк частотою близько 50 кілогерц — сміх, занадто високий для людського вуха. У дослідженні 2016 року щури підстрибували від радості й ганялися за рукою дослідника, але майже переставали реагувати на лоскіт, коли були стривожені.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "vi": {
+      "title": "Chuột có thể cười khi bị cù không? 🐀",
+      "description": "Có. Chuột bị cù phát ra tiếng chít siêu âm khoảng 50 kilohertz, một tiếng cười quá cao để tai người nghe thấy. Trong một nghiên cứu năm 2016, chuột nhảy cẫng lên vì vui và đuổi theo tay nhà nghiên cứu, nhưng khi lo sợ thì chúng gần như không còn nhột nữa.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "az": {
+      "title": "Siçovul qıdıqlananda gülə bilərmi? 🐀",
+      "description": "Bəli. Qıdıqlanan siçovullar təxminən 50 kilohers tezliyində ultrasəs cırıltıları çıxarır, bu gülüş insan qulağının eşidə bilməyəcəyi qədər incədir. 2016-cı ildə aparılan bir araşdırmada siçovullar sevincdən hoppandı və tədqiqatçının əlini qovdu, amma qorxudulduqda qıdıqlanmağa demək olar ki, reaksiya vermədilər.\n\n#shorts\n\nSeri: mk-c0076"
+    },
+    "ro": {
+      "title": "Poate un șobolan să râdă când îl gâdili? 🐀",
+      "description": "Da. Șobolanii gâdilați scot chițăieli ultrasonice de circa 50 de kilohertzi, un râs prea ascuțit pentru urechea umană. Într-un studiu din 2016, ei săreau de bucurie și urmăreau mâna cercetătorului, dar aproape că nu mai erau gâdilicioși când erau speriați.\n\n#shorts\n\nSeri: mk-c0076"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: sıçanın gıdıklanınca gülmesi mi, korkunca gıdıklanmaz olması mı?",
+  "scenes": [
+    {
+      "text": "Bu sıçan gıdıklanmak için bir eli kovalıyor.",
+      "visual": "close-up of a pet rat's face and whiskers looking straight into the camera, a human hand beside it",
+      "stock_query": "rat close up",
+      "source": "stock",
+      "callout": "ELİ KOVALIYOR"
+    },
+    {
+      "text": "Peki gıdıklanınca gülebilir mi?",
+      "visual": "a person gently tickling a pet rat lying on its back in their palm",
+      "stock_query": "pet rat hand",
+      "source": "stock"
+    },
+    {
+      "text": "Refleks sanma: bir deneyde, iki bin on altıda, korkutulan sıçan neredeyse gıdıklanmaz oldu.",
+      "visual": "a nervous rat crouching still on a bright surface, whiskers twitching",
+      "stock_query": "rat sniffing",
+      "source": "stock",
+      "callout": "KORKUNCA GIDIKLANMAZ"
+    },
+    {
+      "text": "Cevap evet: gülüyor, ama elli kilohertzlik sesini senin kulağın duyamıyor.",
+      "visual": "close-up of a rat's face and whiskers as it squeaks with its mouth slightly open",
+      "stock_query": "rat face",
+      "source": "stock",
+      "callout": "50 KHZ KAHKAHA"
+    },
+    {
+      "text": "Sevinçten zıplıyor ve onu güldüren eli bir daha arıyor; o yüzden...",
+      "visual": "a playful young pet rat hopping around its cage",
+      "stock_query": "pet rat playing",
+      "source": "stock",
+      "callout": "SEVİNÇ ZIPLAMASI"
+    }
+  ],
+  "duration_seconds": 14.02,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #129",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0076_1794065015_ig.mp4"
+}
