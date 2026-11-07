@@ -1,12 +1,12 @@
 {
- "started": "2026-11-06T07:25:13+00:00",
+ "started": "2026-11-07T07:24:54+00:00",
  "mod": "kontrol",
  "anahtar_bitis": "2026-12-31T21:10+00:00",
  "hesap": {
   "username": "yaolsaydi.bilim",
   "account_type": "MEDIA_CREATOR",
-  "media_count": 34,
-  "followers_count": 41
+  "media_count": 37,
+  "followers_count": 40
  },
  "paylasim_hakki": {
   "data": [
@@ -73,17 +73,59 @@
  ],
  "medya": [
   {
+   "link": "https://www.instagram.com/reel/DfaLRqsEgJt/",
+   "zaman": "2026-11-06T17:47:05+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1446,
+    "reach": 1285,
+    "saved": 1,
+    "shares": 1,
+    "likes": 5,
+    "ig_reels_avg_watch_time": 10585
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DfZrd77D5Oe/",
+   "zaman": "2026-11-06T13:09:12+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1431,
+    "reach": 1187,
+    "saved": 1,
+    "shares": 0,
+    "likes": 7,
+    "ig_reels_avg_watch_time": 13457
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DfZP4mQHJ6f/",
+   "zaman": "2026-11-06T09:08:10+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1420,
+    "reach": 1214,
+    "saved": 1,
+    "shares": 0,
+    "likes": 3,
+    "ig_reels_avg_watch_time": 12997
+   }
+  },
+  {
    "link": "https://www.instagram.com/reel/DfXiI-ejgdg/",
    "zaman": "2026-11-05T17:09:14+0000",
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1212,
-    "reach": 1061,
+    "views": 1224,
+    "reach": 1074,
     "saved": 0,
     "shares": 0,
-    "likes": 5,
-    "ig_reels_avg_watch_time": 6494
+    "likes": 6,
+    "ig_reels_avg_watch_time": 6479
    }
   },
   {
@@ -92,12 +134,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1408,
-    "reach": 1209,
+    "views": 1417,
+    "reach": 1214,
     "saved": 3,
     "shares": 0,
     "likes": 5,
-    "ig_reels_avg_watch_time": 10936
+    "ig_reels_avg_watch_time": 10926
    }
   },
   {
@@ -106,12 +148,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1235,
-    "reach": 1066,
+    "views": 1238,
+    "reach": 1069,
     "saved": 0,
     "shares": 0,
     "likes": 3,
-    "ig_reels_avg_watch_time": 9792
+    "ig_reels_avg_watch_time": 9774
    }
   },
   {
@@ -120,12 +162,12 @@
    "yorum_sayisi": 2,
    "api_yorum": 2,
    "istatistik": {
-    "views": 1606,
-    "reach": 1335,
+    "views": 1607,
+    "reach": 1337,
     "saved": 1,
     "shares": 0,
     "likes": 12,
-    "ig_reels_avg_watch_time": 12814
+    "ig_reels_avg_watch_time": 12805
    }
   },
   {
@@ -134,12 +176,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1549,
-    "reach": 1295,
+    "views": 1550,
+    "reach": 1297,
     "saved": 1,
     "shares": 0,
     "likes": 7,
-    "ig_reels_avg_watch_time": 16266
+    "ig_reels_avg_watch_time": 16256
    }
   },
   {
@@ -148,12 +190,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1311,
+    "views": 1313,
     "reach": 1152,
     "saved": 0,
     "shares": 0,
     "likes": 5,
-    "ig_reels_avg_watch_time": 9620
+    "ig_reels_avg_watch_time": 9612
    }
   },
   {
@@ -204,12 +246,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1419,
-    "reach": 1161,
+    "views": 1420,
+    "reach": 1162,
     "saved": 2,
     "shares": 0,
     "likes": 5,
-    "ig_reels_avg_watch_time": 9035
+    "ig_reels_avg_watch_time": 9032
    }
   },
   {
@@ -379,49 +421,7 @@
     "likes": 3,
     "ig_reels_avg_watch_time": 10200
    }
-  },
-  {
-   "link": "https://www.instagram.com/reel/Det5-o8lZTj/",
-   "zaman": "2026-10-20T13:09:26+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1941,
-    "reach": 1539,
-    "saved": 1,
-    "shares": 0,
-    "likes": 5,
-    "ig_reels_avg_watch_time": 10765
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DetfRj1D5yM/",
-   "zaman": "2026-10-20T09:16:11+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1714,
-    "reach": 1493,
-    "saved": 0,
-    "shares": 0,
-    "likes": 5,
-    "ig_reels_avg_watch_time": 12473
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DerwzY7FBdW/",
-   "zaman": "2026-10-19T17:10:47+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1745,
-    "reach": 1497,
-    "saved": 1,
-    "shares": 1,
-    "likes": 9,
-    "ig_reels_avg_watch_time": 11787
-   }
   }
  ],
- "finished": "2026-11-06T07:25:39+00:00"
+ "finished": "2026-11-07T07:25:39+00:00"
 }
