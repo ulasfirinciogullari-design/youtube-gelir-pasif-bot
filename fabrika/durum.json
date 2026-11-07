@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1270",
+    "views": "1274",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1063",
+    "views": "1065",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1100",
+    "views": "1103",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1004",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1257",
+    "views": "1277",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "809",
+    "views": "810",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1349",
+    "views": "1466",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1417",
+    "views": "1615",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1046",
+    "views": "1056",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1047",
+    "views": "1081",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1544",
+    "views": "1679",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "974",
+    "views": "982",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "218",
+    "views": "381",
     "reason": null
    }
   },
@@ -1493,6 +1493,36 @@
    "thumbnail": true,
    "at": 1794046047.4491475,
    "chars": 384,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "743",
+    "reason": null
+   }
+  },
+  {
+   "id": "y033",
+   "video_id": "HVyvxH-huIc",
+   "url": "https://youtube.com/shorts/HVyvxH-huIc",
+   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If You Stopped Blinking, Would You Go Blind?",
+    "es": "¿Te Quedarías Ciego Si Dejaras de Parpadear?",
+    "pt": "Você Ficaria Cego Se Parasse de Piscar?",
+    "ar": "هل كنت ستصاب بالعمى لو توقفت عن الرمش؟",
+    "hi": "अगर तुम पलक झपकाना बंद कर दो, तो क्या अंधे हो जाओगे?",
+    "id": "Kalau Kamu Berhenti Berkedip, Apakah Kamu Bisa Buta?",
+    "fr": "Si Tu Arrêtais de Cligner des Yeux, Deviendrais-tu Aveugle ?",
+    "de": "Würdest Du Blind, Wenn Du Nicht Mehr Blinzeln Würdest?",
+    "ru": "Ослепнешь Ли Ты, Если Перестанешь Моргать?",
+    "az": "Göz Qırpmağı Dayandırsaydın, Kor Olardınmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794060475.950626,
+   "chars": 372,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1551,7 +1581,8 @@
   "n010",
   "y039",
   "g008",
-  "y020"
+  "y020",
+  "y033"
  ],
  "extra": [
   {
@@ -1617,13 +1648,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-20T21:40:04+00:00",
-   "mod": "ornek",
-   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "duration": 23.5,
-   "chars": 362
-  },
   {
    "finished": "2026-10-21T10:08:19+00:00",
    "mod": "saatlik",
@@ -2035,6 +2059,14 @@
    "finished": "2026-11-07T13:08:55+00:00",
    "mod": "igbolum",
    "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+   "chars": 372
+  },
+  {
+   "finished": "2026-11-07T14:07:57+00:00",
+   "mod": "saatlik",
+   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+   "url": "https://youtube.com/shorts/HVyvxH-huIc",
+   "duration": 24.8,
    "chars": 372
   }
  ],

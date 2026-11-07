@@ -1,18 +1,71 @@
 {
- "started": "2026-11-07T13:07:25+00:00",
- "mod": "igbolum",
- "gate": "instagram: y062",
+ "started": "2026-11-07T14:06:51+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Lav Gölüne Düşseydin Batar Mıydın?",
- "chars": 372,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18115748246167712",
-  "url": "https://www.instagram.com/reel/DfcQNZMCaqL/",
-  "at": 1794056935.4011297
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "56",
+  "videos": "51"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfcQNZMCaqL/"
+ "credits_before": [
+  89717,
+  613902
  ],
- "finished": "2026-11-07T13:08:55+00:00"
+ "kuyruk": {
+  "dosya": "20261107-1-y033.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y033",
+  "series": "Ya Olsaydı?",
+  "q": "Göz kırpmayı bıraksaydın ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 372,
+ "duration": 24.8,
+ "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+ "url": "https://youtube.com/shorts/HVyvxH-huIc",
+ "recent_status": {
+  "n010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1679",
+   "reason": null
+  },
+  "y039": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "982",
+   "reason": null
+  },
+  "g008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "381",
+   "reason": null
+  },
+  "y020": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "743",
+   "reason": null
+  },
+  "y033": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  89807,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261107-1-y033.json Göz kırpmayı bıraksaydın ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-07T14:07:57+00:00"
 }
