@@ -42,16 +42,17 @@
   "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
   "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
   "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
-  "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/"
+  "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
+  "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/"
  },
  "nobet": {
   "basladi": "2026-11-07T13:07:56+00:00",
   "run": "42374756342",
-  "tur": 268,
+  "tur": 293,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-07T17:35:02+00:00"
+  "son_tur": "2026-11-07T18:01:38+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -284,6 +285,13 @@
    "at": 1794060119,
    "title": "Kediler birbirine değil, sana miyavlar 🐱",
    "topic_id": "mk-c0067"
+  },
+  "cIZHhqGAemo": {
+   "media_id": "18127738870868248",
+   "url": "https://www.instagram.com/reel/DfcxtuPDiqV/",
+   "at": 1794074499,
+   "title": "Boğayı kızdıran şey kırmızı renk değil 🐂",
+   "topic_id": "mk-c0060"
   }
  }
 }
