@@ -120,6 +120,11 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   5 bin üstü. İzleyicinin evde kendisinin yaptığı yaygın bir yanlışı düzeltiyordu. Göz kayması 4.873 ve uzun acı
   4.524 ile "senin hakkında" konularıydı. Denizanası 1.627'de, buz 1.248'de kaldı. Öncelik sırası: evdeki ya da
   çevredeki hayvana dair yaygın yanlış, izleyicinin kendi vücudu ya da zihni, sonra öbürleri.
+- 7 Kasım verisi: kedi ve köpek sahibinin inandığı ya da yaptığı bir şey en güçlü konu. "Kediler sütü sever ama
+  çoğu onu sindiremez" 59 saatte 10.342, "Kediler birbirine değil, sana miyavlar" 21 saatte 4.190, "Köpeğinin
+  yaşını yediyle çarpmak yanlış" 37 saatte 3.878. Sahibiyle ilgisi olmayan kedi bilgisi ("kediler gözle gülümser")
+  1.477'de kaldı. Her 8 dosyanın en az 2'si kedi ya da köpek olsun (art arda değil) ve sahibine dokunsun: onun
+  inandığı bir yanlış, yaptığı bir hata ya da hayvanın ona yaptığı bir şey.
 - İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
   1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
 - Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 2'si
