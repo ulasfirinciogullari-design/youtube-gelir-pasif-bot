@@ -1,71 +1,18 @@
 {
- "started": "2026-11-07T10:06:30+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-07T13:07:25+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y062",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "56",
-  "videos": "50"
+ "title": "Lav Gölüne Düşseydin Batar Mıydın?",
+ "chars": 372,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18115748246167712",
+  "url": "https://www.instagram.com/reel/DfcQNZMCaqL/",
+  "at": 1794056935.4011297
  },
- "credits_before": [
-  89387,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261106-4-y020.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y020",
-  "series": "Ya Olsaydı?",
-  "q": "Mars'ta korumasız kalsaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 384,
- "duration": 25.7,
- "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/VMFzMO2A2CY",
- "recent_status": {
-  "y062": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1047",
-   "reason": null
-  },
-  "n010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1544",
-   "reason": null
-  },
-  "y039": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "974",
-   "reason": null
-  },
-  "g008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "218",
-   "reason": null
-  },
-  "y020": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  89387,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261106-4-y020.json Mars'ta korumasız kalsaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfcQNZMCaqL/"
  ],
- "finished": "2026-11-07T10:07:28+00:00"
+ "finished": "2026-11-07T13:08:55+00:00"
 }
