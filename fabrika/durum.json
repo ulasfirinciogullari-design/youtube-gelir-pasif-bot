@@ -956,7 +956,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1160",
+    "views": "1159",
     "reason": null
    }
   },
@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1299",
+    "views": "1298",
     "reason": null
    }
   },
@@ -1046,7 +1046,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1230",
+    "views": "1270",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1058",
+    "views": "1063",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1092",
+    "views": "1100",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1195",
+    "views": "1257",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "787",
+    "views": "809",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "686",
+    "views": "757",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1312",
+    "views": "1349",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1252",
+    "views": "1417",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1025",
+    "views": "1046",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "502",
+    "views": "926",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "627",
+    "views": "1047",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1104",
+    "views": "1544",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "6",
+    "views": "974",
     "reason": null
    }
   },
@@ -1463,6 +1463,36 @@
    "thumbnail": true,
    "at": 1793995718.274784,
    "chars": 369,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "218",
+    "reason": null
+   }
+  },
+  {
+   "id": "y020",
+   "video_id": "VMFzMO2A2CY",
+   "url": "https://youtube.com/shorts/VMFzMO2A2CY",
+   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Were Unprotected on Mars?",
+    "es": "¿Qué Te Pasaría Si Estuvieras Desprotegido en Marte?",
+    "pt": "O Que Aconteceria Se Você Ficasse Desprotegido em Marte?",
+    "ar": "ماذا كان سيحدث لك لو بقيت على المريخ بلا حماية؟",
+    "hi": "अगर तुम मंगल पर बिना सुरक्षा के रह जाते तो क्या होता?",
+    "id": "Apa yang Terjadi Jika Kamu Tanpa Pelindung di Mars?",
+    "fr": "Que T'arriverait-il Si Tu Étais Sans Protection sur Mars ?",
+    "de": "Was Würde Dir Ungeschützt auf dem Mars Passieren?",
+    "ru": "Что Будет, Если Оказаться на Марсе Без Защиты?",
+    "az": "Marsda Qorunmasız Qalsaydın Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794046047.4491475,
+   "chars": 384,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1520,7 +1550,8 @@
   "y062",
   "n010",
   "y039",
-  "g008"
+  "g008",
+  "y020"
  ],
  "extra": [
   {
@@ -1586,12 +1617,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-20T17:11:21+00:00",
-   "mod": "igbolum",
-   "title": "Okyanus Gerçekte Ne Kadar Derin?",
-   "chars": 390
-  },
   {
    "finished": "2026-10-20T18:07:50+00:00",
    "mod": "saatlik",
@@ -2005,6 +2030,14 @@
    "mod": "igbolum",
    "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
    "chars": 375
+  },
+  {
+   "finished": "2026-11-07T10:07:28+00:00",
+   "mod": "saatlik",
+   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/VMFzMO2A2CY",
+   "duration": 25.7,
+   "chars": 384
   }
  ],
  "last_fail": 1793568784.6201334,

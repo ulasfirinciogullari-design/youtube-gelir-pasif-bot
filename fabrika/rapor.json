@@ -1,18 +1,71 @@
 {
- "started": "2026-11-07T09:07:23+00:00",
- "mod": "igbolum",
- "gate": "instagram: n010",
+ "started": "2026-11-07T10:06:30+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
- "chars": 375,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17967284241238550",
-  "url": "https://www.instagram.com/reel/Dfb0xnmEwUu/",
-  "at": 1794042546.274131
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "56",
+  "videos": "50"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfb0xnmEwUu/"
+ "credits_before": [
+  89387,
+  613902
  ],
- "finished": "2026-11-07T09:09:06+00:00"
+ "kuyruk": {
+  "dosya": "20261106-4-y020.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "y020",
+  "series": "Ya Olsaydı?",
+  "q": "Mars'ta korumasız kalsaydın ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 384,
+ "duration": 25.7,
+ "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+ "url": "https://youtube.com/shorts/VMFzMO2A2CY",
+ "recent_status": {
+  "y062": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1047",
+   "reason": null
+  },
+  "n010": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1544",
+   "reason": null
+  },
+  "y039": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "974",
+   "reason": null
+  },
+  "g008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "218",
+   "reason": null
+  },
+  "y020": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  89387,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261106-4-y020.json Mars'ta korumasız kalsaydın ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-07T10:07:28+00:00"
 }
