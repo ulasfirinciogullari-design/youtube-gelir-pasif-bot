@@ -1649,14 +1649,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-21T10:08:19+00:00",
-   "mod": "saatlik",
-   "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
-   "url": "https://youtube.com/shorts/kJHNXA1I-SU",
-   "duration": 24.0,
-   "chars": 362
-  },
-  {
    "finished": "2026-10-21T10:11:40+00:00",
    "mod": "igbolum",
    "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
@@ -2068,6 +2060,12 @@
    "url": "https://youtube.com/shorts/HVyvxH-huIc",
    "duration": 24.8,
    "chars": 372
+  },
+  {
+   "finished": "2026-11-07T17:09:13+00:00",
+   "mod": "igbolum",
+   "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+   "chars": 360
   }
  ],
  "last_fail": 1793568784.6201334,
@@ -2277,6 +2275,11 @@
     "media_id": "18115748246167712",
     "url": "https://www.instagram.com/reel/DfcQNZMCaqL/",
     "at": 1794056935.4011297
+   },
+   "g010": {
+    "media_id": "18086630936709782",
+    "url": "https://www.instagram.com/reel/DfcrqIAAlHg/",
+    "at": 1794071353.1929417
    }
   },
   "eski": [

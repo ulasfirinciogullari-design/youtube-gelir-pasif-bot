@@ -1,71 +1,18 @@
 {
- "started": "2026-11-07T14:06:51+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-07T17:07:12+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g010",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "56",
-  "videos": "51"
+ "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
+ "chars": 360,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "18086630936709782",
+  "url": "https://www.instagram.com/reel/DfcrqIAAlHg/",
+  "at": 1794071353.1929417
  },
- "credits_before": [
-  89717,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261107-1-y033.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y033",
-  "series": "Ya Olsaydı?",
-  "q": "Göz kırpmayı bıraksaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 372,
- "duration": 24.8,
- "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
- "url": "https://youtube.com/shorts/HVyvxH-huIc",
- "recent_status": {
-  "n010": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1679",
-   "reason": null
-  },
-  "y039": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "982",
-   "reason": null
-  },
-  "g008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "381",
-   "reason": null
-  },
-  "y020": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "743",
-   "reason": null
-  },
-  "y033": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  89807,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261107-1-y033.json Göz kırpmayı bıraksaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfcrqIAAlHg/"
  ],
- "finished": "2026-11-07T14:07:57+00:00"
+ "finished": "2026-11-07T17:09:13+00:00"
 }
