@@ -1,0 +1,292 @@
+{
+ "id": "g011",
+ "series": "1 Gün Boyunca",
+ "q": "Bir fil 1 günde ne kadar yemek yer?",
+ "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+ "bar": {
+  "hi": "BİR FİL",
+  "rest": "1 GÜNDE NE YER?"
+ },
+ "summary": "Bir fil tek günde 150 kilo yiyebilir: 2 yetişkin insandan ağır! Günde 16 saat süren yemeği, 136 kiloluk kakayı ve vahşi fillerin neden günde sadece 2 saat uyuduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bir fil günde 150 kilo yiyebilir: 2 yetişkin insandan ağır!",
+   "v": {
+    "t": "compare",
+    "bg": "forest",
+    "a": {
+     "e": "🧍",
+     "label": "2 Yetişkin",
+     "value": "124"
+    },
+    "b": {
+     "e": "🥬",
+     "label": "Filin 1 Günü",
+     "value": "150"
+    },
+    "mode": "bar",
+    "key": "150"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Açık büfeyi batırır mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "🍽️",
+    "do": "shake",
+    "key": "büfeyi",
+    "label": "Açık Büfe"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Günde 16 saat çiğner, 190 litreye kadar su içer.",
+   "v": {
+    "t": "meter",
+    "bg": "forest",
+    "label": "Yemek Süresi",
+    "from": 0,
+    "to": 16,
+    "unit": "saat",
+    "e": "🐘",
+    "key": "16"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yediğinin yarısından fazlasını sindiremez: günde 136 kilo kaka!",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "💩",
+    "value": "136",
+    "unit": "kg",
+    "label": "Günde Kaka",
+    "key": "136"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Belki bu yüzden vahşi filler günde 2 saat uyur; sana en az 7 saat lazım!",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "e": "🧑",
+     "label": "Sen: En Az 7 Saat",
+     "value": "7"
+    },
+    "b": {
+     "e": "🐘",
+     "label": "Fil: 2 Saat",
+     "value": "2"
+    },
+    "mode": "bar",
+    "key": "2"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hatta 46 saat hiç uyumadan dolaşabilir!",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "0. SAAT",
+      "e": "🐘",
+      "label": "Uyanık"
+     },
+     {
+      "when": "46. SAAT",
+      "e": "🥱",
+      "label": "Hâlâ Uyanık"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bir günde en çok ne kadar yedin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "forest",
+    "e": "🐘"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "San Diego Hayvanat Bahçesi'ne göre vahşi filler günde 75-150 kilo yer, günde ortalama 16 saat yemek yer ve 75-190 litre su içer; hayvanat bahçesindeki bir fil günde yaklaşık 136 kilo dışkı çıkarır.",
+   "source": "San Diego Zoo Wildlife Alliance",
+   "url": "https://animals.sandiegozoo.org/animals/elephant"
+  },
+  {
+   "text": "Smithsonian Ulusal Hayvanat Bahçesi'ne göre filler yediklerinin yalnızca yaklaşık %44'ünü sindirip vücutlarına alabilir.",
+   "source": "Smithsonian's National Zoo",
+   "url": "https://nationalzoo.si.edu/animals/asian-elephant"
+  },
+  {
+   "text": "Londra Hijyen ve Tropikal Tıp Okulu'na göre dünyada bir yetişkinin ortalama ağırlığı 62 kilodur; yani 150 kilo yemek, 2 yetişkinden ağırdır.",
+   "source": "London School of Hygiene & Tropical Medicine",
+   "url": "https://www.lshtm.ac.uk/newsevents/news/2012/tacking_population_weight_crucial_for_food%20security.html"
+  },
+  {
+   "text": "Witwatersrand Üniversitesi'nin 2017'de PLOS ONE'da yayımlanan araştırmasına göre vahşi Afrika filleri günde ortalama 2 saat uyur ve 46 saate kadar hiç uyumadan kalabilir; Smithsonian'a göre büyük memeliler beslenmeye çok zaman ayırdıkları için daha az uyuyor olabilir.",
+   "source": "University of the Witwatersrand (PLOS ONE) / Smithsonian",
+   "url": "https://escholarship.org/uc/item/50n7v100"
+  },
+  {
+   "text": "ABD Hastalık Kontrol ve Önleme Merkezleri'ne (CDC) göre 18-60 yaş arası yetişkinlerin en az 7 saat uyuması gerekir.",
+   "source": "CDC",
+   "url": "https://www.cdc.gov/sleep/about/index.html"
+  }
+ ],
+ "tags": [
+  "fil",
+  "fil ne kadar yer",
+  "fil ne yer",
+  "afrika fili",
+  "filler",
+  "hayvanlar",
+  "fil uykusu",
+  "hayvan belgeseli",
+  "1 gün boyunca",
+  "elephant",
+  "how much does an elephant eat",
+  "elephant facts",
+  "elephant sleep",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#fil",
+  "#hayvanlar",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://animals.sandiegozoo.org/animals/elephant",
+  "https://nationalzoo.si.edu/animals/asian-elephant",
+  "https://www.smithsonianmag.com/smart-news/african-elephants-sleep-just-two-hours-day-180962362/",
+  "https://escholarship.org/uc/item/50n7v100"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Much Does an Elephant Eat in 1 Day?",
+   "summary": "An elephant can eat 150 kg in a single day: heavier than 2 adult humans! Professor Pi explains the 16-hour daily meal, the 136 kg of poop, and why wild elephants sleep only 2 hours a day.",
+   "facts": [
+    "According to the San Diego Zoo, wild elephants eat 75–150 kg a day, spend an average of 16 hours a day eating and drink 75–190 liters of water; a zoo elephant produces about 136 kg of dung a day.",
+    "According to Smithsonian's National Zoo, elephants absorb only about 44% of what they eat.",
+    "According to the London School of Hygiene & Tropical Medicine, the average adult worldwide weighs 62 kg, so 150 kg of food is heavier than 2 adults.",
+    "According to a 2017 University of the Witwatersrand study in PLOS ONE, wild African elephants sleep 2 hours a day on average and can go up to 46 hours without sleep; Smithsonian notes that large mammals may sleep less because they need to spend so much time eating.",
+    "According to the U.S. CDC, adults aged 18–60 need at least 7 hours of sleep."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto Come un Elefante en 1 Día?",
+   "summary": "¡Un elefante puede comer 150 kg en un solo día: más que el peso de 2 personas adultas! El profesor Pi explica su comida de 16 horas diarias, los 136 kg de caca y por qué los elefantes salvajes duermen solo 2 horas al día.",
+   "facts": [
+    "Según el Zoo de San Diego, los elefantes salvajes comen de 75 a 150 kg al día, pasan una media de 16 horas al día comiendo y beben de 75 a 190 litros de agua; un elefante de zoo produce unos 136 kg de excremento al día.",
+    "Según el Zoo Nacional del Smithsonian, los elefantes solo asimilan alrededor del 44% de lo que comen.",
+    "Según la Escuela de Higiene y Medicina Tropical de Londres, un adulto pesa de media 62 kg en el mundo, así que 150 kg de comida pesan más que 2 adultos.",
+    "Según un estudio de 2017 de la Universidad del Witwatersrand publicado en PLOS ONE, los elefantes africanos salvajes duermen 2 horas al día de media y pueden pasar hasta 46 horas sin dormir; según el Smithsonian, los grandes mamíferos podrían dormir menos porque necesitan pasar mucho tiempo comiendo.",
+    "Según los CDC de EE. UU., los adultos de 18 a 60 años necesitan al menos 7 horas de sueño."
+   ]
+  },
+  "pt": {
+   "title": "Quanto um Elefante Come em 1 Dia?",
+   "summary": "Um elefante pode comer 150 kg em um único dia: mais pesado que 2 adultos! O professor Pi explica a refeição de 16 horas por dia, os 136 kg de cocô e por que os elefantes selvagens dormem só 2 horas por dia.",
+   "facts": [
+    "Segundo o Zoológico de San Diego, elefantes selvagens comem de 75 a 150 kg por dia, passam em média 16 horas por dia comendo e bebem de 75 a 190 litros de água; um elefante de zoológico produz cerca de 136 kg de fezes por dia.",
+    "Segundo o Zoológico Nacional do Smithsonian, os elefantes absorvem só cerca de 44% do que comem.",
+    "Segundo a Escola de Higiene e Medicina Tropical de Londres, um adulto pesa em média 62 kg no mundo, então 150 kg de comida pesam mais que 2 adultos.",
+    "Segundo um estudo de 2017 da Universidade de Witwatersrand publicado na PLOS ONE, elefantes africanos selvagens dormem em média 2 horas por dia e podem ficar até 46 horas sem dormir; segundo o Smithsonian, grandes mamíferos podem dormir menos porque precisam passar muito tempo comendo.",
+    "Segundo o CDC dos EUA, adultos de 18 a 60 anos precisam de pelo menos 7 horas de sono."
+   ]
+  },
+  "ar": {
+   "title": "كم يأكل الفيل في يوم واحد؟",
+   "summary": "يمكن للفيل أن يأكل 150 كغ في يوم واحد: أثقل من شخصين بالغين! يشرح البروفيسور باي وجبته التي تستمر 16 ساعة يوميًا، و136 كغ من الروث، ولماذا تنام الفيلة البرية ساعتين فقط في اليوم.",
+   "facts": [
+    "وفقًا لحديقة حيوان سان دييغو، تأكل الفيلة البرية من 75 إلى 150 كغ يوميًا، وتقضي في المتوسط 16 ساعة يوميًا في الأكل، وتشرب من 75 إلى 190 لترًا من الماء؛ وينتج فيل حديقة الحيوان نحو 136 كغ من الروث يوميًا.",
+    "وفقًا لحديقة الحيوان الوطنية التابعة لسميثسونيان، لا تمتص الفيلة سوى نحو 44% مما تأكله.",
+    "وفقًا لكلية لندن للصحة والطب الاستوائي، يبلغ متوسط وزن البالغ في العالم 62 كغ، لذا فإن 150 كغ من الطعام أثقل من شخصين بالغين.",
+    "وفقًا لدراسة أجرتها جامعة ويتواترسراند عام 2017 ونُشرت في PLOS ONE، تنام الفيلة الأفريقية البرية ساعتين يوميًا في المتوسط ويمكنها البقاء حتى 46 ساعة دون نوم؛ وبحسب سميثسونيان، قد تنام الثدييات الكبيرة أقل لأنها تحتاج إلى قضاء وقت طويل في الأكل.",
+    "وفقًا لمراكز السيطرة على الأمراض الأمريكية (CDC)، يحتاج البالغون من 18 إلى 60 عامًا إلى 7 ساعات نوم على الأقل."
+   ]
+  },
+  "hi": {
+   "title": "एक हाथी 1 दिन में कितना खाना खाता है?",
+   "summary": "एक हाथी एक ही दिन में 150 किलो खा सकता है: 2 बड़े इंसानों से भी भारी! प्रोफ़ेसर पाई बताते हैं रोज़ 16 घंटे चलने वाला खाना, 136 किलो गोबर, और जंगली हाथी दिन में सिर्फ़ 2 घंटे क्यों सोते हैं।",
+   "facts": [
+    "सैन डिएगो ज़ू के अनुसार, जंगली हाथी रोज़ 75–150 किलो खाते हैं, औसतन दिन में 16 घंटे खाने में बिताते हैं और 75–190 लीटर पानी पीते हैं; ज़ू का एक हाथी रोज़ लगभग 136 किलो गोबर करता है।",
+    "स्मिथसोनियन नेशनल ज़ू के अनुसार, हाथी जो खाते हैं उसका सिर्फ़ लगभग 44% ही पचाकर शरीर में ले पाते हैं।",
+    "लंदन स्कूल ऑफ़ हाइजीन एंड ट्रॉपिकल मेडिसिन के अनुसार, दुनिया में एक वयस्क का औसत वज़न 62 किलो है, इसलिए 150 किलो खाना 2 वयस्कों से भारी है।",
+    "PLOS ONE में छपे यूनिवर्सिटी ऑफ़ द विटवॉटर्सरैंड के 2017 के अध्ययन के अनुसार, जंगली अफ़्रीकी हाथी औसतन दिन में 2 घंटे सोते हैं और 46 घंटे तक बिना सोए रह सकते हैं; स्मिथसोनियन के अनुसार बड़े स्तनधारी शायद इसलिए कम सोते हैं क्योंकि उन्हें खाने में बहुत समय लगाना पड़ता है।",
+    "अमेरिकी CDC के अनुसार, 18–60 साल के वयस्कों को कम से कम 7 घंटे की नींद चाहिए।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Banyak Gajah Makan dalam 1 Hari?",
+   "summary": "Seekor gajah bisa makan 150 kg dalam sehari: lebih berat dari 2 orang dewasa! Profesor Pi menjelaskan acara makan 16 jam sehari, 136 kg kotorannya, dan kenapa gajah liar hanya tidur 2 jam sehari.",
+   "facts": [
+    "Menurut Kebun Binatang San Diego, gajah liar makan 75–150 kg per hari, rata-rata menghabiskan 16 jam sehari untuk makan, dan minum 75–190 liter air; seekor gajah di kebun binatang menghasilkan sekitar 136 kg kotoran per hari.",
+    "Menurut Smithsonian's National Zoo, gajah hanya menyerap sekitar 44% dari yang dimakannya.",
+    "Menurut London School of Hygiene & Tropical Medicine, berat rata-rata orang dewasa di dunia 62 kg, jadi 150 kg makanan lebih berat dari 2 orang dewasa.",
+    "Menurut studi University of the Witwatersrand tahun 2017 di PLOS ONE, gajah Afrika liar rata-rata tidur 2 jam sehari dan bisa tidak tidur hingga 46 jam; menurut Smithsonian, mamalia besar mungkin tidur lebih sedikit karena harus menghabiskan banyak waktu untuk makan.",
+    "Menurut CDC Amerika Serikat, orang dewasa berusia 18–60 tahun butuh tidur setidaknya 7 jam."
+   ]
+  },
+  "fr": {
+   "title": "Combien un Éléphant Mange-t-il en 1 Jour ?",
+   "summary": "Un éléphant peut manger 150 kg en une seule journée : plus lourd que 2 adultes ! Le professeur Pi explique son repas de 16 heures par jour, ses 136 kg de crottes et pourquoi les éléphants sauvages ne dorment que 2 heures par jour.",
+   "facts": [
+    "Selon le zoo de San Diego, les éléphants sauvages mangent 75 à 150 kg par jour, passent en moyenne 16 heures par jour à manger et boivent 75 à 190 litres d'eau ; un éléphant de zoo produit environ 136 kg d'excréments par jour.",
+    "Selon le zoo national du Smithsonian, les éléphants n'assimilent qu'environ 44 % de ce qu'ils mangent.",
+    "Selon la London School of Hygiene & Tropical Medicine, un adulte pèse en moyenne 62 kg dans le monde : 150 kg de nourriture pèsent donc plus que 2 adultes.",
+    "Selon une étude de l'Université du Witwatersrand publiée en 2017 dans PLOS ONE, les éléphants d'Afrique sauvages dorment 2 heures par jour en moyenne et peuvent rester jusqu'à 46 heures sans dormir ; selon le Smithsonian, les grands mammifères dormiraient moins parce qu'ils doivent passer beaucoup de temps à manger.",
+    "Selon les CDC américains, les adultes de 18 à 60 ans ont besoin d'au moins 7 heures de sommeil."
+   ]
+  },
+  "de": {
+   "title": "Wie Viel Frisst ein Elefant an 1 Tag?",
+   "summary": "Ein Elefant kann an einem einzigen Tag 150 kg fressen: schwerer als 2 Erwachsene! Professor Pi erklärt die 16-stündige Mahlzeit, die 136 kg Kot und warum wilde Elefanten nur 2 Stunden am Tag schlafen.",
+   "facts": [
+    "Laut dem San Diego Zoo fressen wilde Elefanten 75 bis 150 kg am Tag, verbringen im Schnitt 16 Stunden täglich mit Fressen und trinken 75 bis 190 Liter Wasser; ein Zoo-Elefant produziert etwa 136 kg Dung am Tag.",
+    "Laut dem National Zoo des Smithsonian verwerten Elefanten nur etwa 44 % dessen, was sie fressen.",
+    "Laut der London School of Hygiene & Tropical Medicine wiegt ein Erwachsener weltweit im Schnitt 62 kg; 150 kg Futter sind also schwerer als 2 Erwachsene.",
+    "Laut einer Studie der University of the Witwatersrand von 2017 in PLOS ONE schlafen wilde Afrikanische Elefanten im Schnitt 2 Stunden am Tag und können bis zu 46 Stunden ohne Schlaf auskommen; laut Smithsonian schlafen große Säugetiere womöglich weniger, weil sie so viel Zeit mit Fressen verbringen müssen.",
+    "Laut der US-Gesundheitsbehörde CDC brauchen Erwachsene von 18 bis 60 Jahren mindestens 7 Stunden Schlaf."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Съедает Слон за 1 День?",
+   "summary": "Слон может съесть 150 кг за один день: это тяжелее 2 взрослых людей! Профессор Пи рассказывает о 16-часовой ежедневной трапезе, 136 кг навоза и о том, почему дикие слоны спят всего 2 часа в сутки.",
+   "facts": [
+    "По данным зоопарка Сан-Диего, дикие слоны съедают 75–150 кг в день, в среднем тратят на еду 16 часов в сутки и выпивают 75–190 литров воды; слон в зоопарке производит около 136 кг навоза в день.",
+    "По данным Национального зоопарка Смитсоновского института, слоны усваивают лишь около 44% того, что съедают.",
+    "По данным Лондонской школы гигиены и тропической медицины, средний вес взрослого человека в мире 62 кг, так что 150 кг еды тяжелее 2 взрослых.",
+    "По данным исследования Витватерсрандского университета 2017 года в PLOS ONE, дикие африканские слоны спят в среднем 2 часа в сутки и могут не спать до 46 часов; по данным Smithsonian, крупные млекопитающие, возможно, спят меньше, потому что им приходится много времени тратить на еду.",
+    "По данным CDC США, взрослым 18–60 лет нужно не меньше 7 часов сна."
+   ]
+  },
+  "az": {
+   "title": "Bir Fil 1 Gündə Nə Qədər Yemək Yeyir?",
+   "summary": "Bir fil bir gündə 150 kilo yeyə bilər: 2 yetkin insandan ağır! Gündə 16 saat sürən yeməyi, 136 kiloluq nəcisi və vəhşi fillərin niyə gündə cəmi 2 saat yatdığını Professor Pi danışır.",
+   "facts": [
+    "San Dieqo Zooparkına görə vəhşi fillər gündə 75-150 kilo yeyir, gündə orta hesabla 16 saat yemək yeyir və 75-190 litr su içir; zooparkdakı bir fil gündə təxminən 136 kilo nəcis ifraz edir.",
+    "Smithsonian Milli Zooparkına görə fillər yediklərinin yalnız təxminən 44%-ni həzm edib mənimsəyə bilir.",
+    "London Gigiyena və Tropik Tibb Məktəbinə görə dünyada yetkin insanın orta çəkisi 62 kilodur; yəni 150 kilo yemək 2 yetkin insandan ağırdır.",
+    "Vitvatersrand Universitetinin 2017-ci ildə PLOS ONE-da dərc olunan araşdırmasına görə vəhşi Afrika filləri gündə orta hesabla 2 saat yatır və 46 saata qədər heç yatmaya bilir; Smithsonian-a görə iri məməlilər qidalanmaya çox vaxt ayırdıqları üçün daha az yata bilərlər.",
+    "ABŞ-ın CDC-sinə görə 18-60 yaşlı yetkinlərə ən azı 7 saat yuxu lazımdır."
+   ]
+  }
+ }
+}

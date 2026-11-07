@@ -1,0 +1,288 @@
+{
+ "id": "n011",
+ "series": "Ne Kadar Büyük?",
+ "q": "Everest ne kadar yüksek?",
+ "title": "Everest Gerçekte Ne Kadar Yüksek?",
+ "bar": {
+  "hi": "EVEREST",
+  "rest": "NE KADAR YÜKSEK?"
+ },
+ "summary": "Seni bir anda Everest'in tepesine bıraksalar, birkaç dakika içinde bayılırdın! 8.849 metrelik dağın yolcu uçaklarına ne kadar yakın olduğunu, nefesindeki oksijene ne olduğunu ve zirvedeki deniz dibi sırrını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Seni Everest'in tepesine ışınlasalar, birkaç dakikada bayılırdın!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "😵",
+    "do": "shake",
+    "key": "bayılırdın",
+    "label": "Birkaç Dakika"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Selfie bile çekemez miyim?!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🤳",
+    "do": "fall",
+    "key": "selfie",
+    "label": "Zirve Selfiesi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Zirve 8.849 metre; yolcu uçakları 2 km yukarıda uçar.",
+   "v": {
+    "t": "compare",
+    "bg": "sky",
+    "a": {
+     "e": "🏔️",
+     "label": "Everest",
+     "value": "8.849"
+    },
+    "b": {
+     "e": "✈️",
+     "label": "Yolcu Uçağı",
+     "value": "10.668"
+    },
+    "mode": "bar",
+    "key": "8.849"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Orada her nefeste normalin 3'te 1'i kadar oksijen var.",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "Nefesteki Oksijen",
+    "from": 100,
+    "to": 33,
+    "unit": "%",
+    "e": "🫁",
+    "key": "oksijen"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kalsan ciğerine sıvı dolabilir; karada boğulur gibi olursun!",
+   "v": {
+    "t": "split",
+    "bg": "ice",
+    "left": {
+     "e": "🫁",
+     "label": "Ciğerlerin"
+    },
+    "right": {
+     "e": "💧",
+     "label": "Sıvı Dolar"
+    },
+    "key": "boğulur"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tuhafı: zirve 470 milyon yıl önce deniz dibiydi!",
+   "v": {
+    "t": "timeline",
+    "bg": "ocean",
+    "steps": [
+     {
+      "when": "470 MİLYON YIL",
+      "e": "🐚",
+      "label": "Deniz Dibi"
+     },
+     {
+      "when": "BUGÜN",
+      "e": "🏔️",
+      "label": "Dünyanın Zirvesi"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen Everest'e tırmanır mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ice",
+    "e": "🏔️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Britannica'ya göre Everest'in yüksekliği 8.849 metredir ve zirvede solunabilir oksijen deniz seviyesindekinin 3'te 1'i kadardır.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/place/Mount-Everest"
+  },
+  {
+   "text": "Everest dağcısı ve hekim Tom Hornbein'a göre alışma süresi olmadan hızla 29.000 feet (yaklaşık 8.840 metre) yüksekliğe çıkan biri birkaç dakika içinde bilincini kaybeder ve kısa süre sonra ölür.",
+   "source": "PBS NOVA",
+   "url": "https://www.pbs.org/wgbh/nova/everest/exposure/higher.html"
+  },
+  {
+   "text": "Smithsonian'ın Air & Space dergisine göre bir yolcu uçağı örneğin 35.000 feet (yaklaşık 10.668 metre) seyir yüksekliğinde uçar; bu, Everest'in zirvesinden yaklaşık 2 km yukarısıdır.",
+   "source": "Smithsonian Air & Space",
+   "url": "https://www.smithsonianmag.com/air-space-magazine/how-things-work-cabin-pressure-2870604/"
+  },
+  {
+   "text": "Live Science'a göre yüksek irtifada ciğerlerde ve beyinde sıvı birikebilir; ciğerdeki sıvı, boğulmaya benzer bir süreçle ölüme yol açabilir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/54875-why-mount-everest-is-deadly.html"
+  },
+  {
+   "text": "Montana Eyalet Üniversitesi'ne göre Everest'in zirvesi 470 milyon yıl önce deniz tabanıydı; zirvedeki kireçtaşında trilobit ve deniz zambağı gibi deniz canlılarının fosil parçaları bulunur.",
+   "source": "Montana State University",
+   "url": "https://montana.edu/everest/facts/summit-limestone.html"
+  }
+ ],
+ "tags": [
+  "everest",
+  "everest dağı",
+  "everest ne kadar yüksek",
+  "dünyanın en yüksek dağı",
+  "ölüm bölgesi",
+  "yükseklik hastalığı",
+  "oksijen",
+  "himalaya",
+  "mount everest",
+  "how tall is everest",
+  "death zone",
+  "altitude sickness",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#everest",
+  "#dağ",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.britannica.com/place/Mount-Everest",
+  "https://www.pbs.org/wgbh/nova/everest/exposure/higher.html",
+  "https://www.livescience.com/54875-why-mount-everest-is-deadly.html",
+  "https://montana.edu/everest/facts/summit-limestone.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Tall Is Mount Everest Really?",
+   "summary": "If you were suddenly dropped on top of Everest, you'd pass out within minutes! Professor Pi explains how close this 8,849-meter mountain comes to passenger jets, what happens to the oxygen in every breath, and the seafloor secret at the summit.",
+   "facts": [
+    "According to Britannica, Mount Everest is 8,849 meters tall, and the breathable oxygen at the summit is one-third of what it is at sea level.",
+    "According to Everest climber and physician Tom Hornbein, someone who rose quickly to 29,000 feet (about 8,840 meters) without acclimatizing would become unconscious within a couple of minutes and die soon after.",
+    "According to Smithsonian's Air & Space magazine, an airliner cruises at, for example, 35,000 feet (about 10,668 meters), which is about 2 km above Everest's summit.",
+    "According to Live Science, fluid can build up in the lungs and brain at high altitude; fluid in the lungs can kill through a process similar to drowning.",
+    "According to Montana State University, Everest's summit was the seafloor 470 million years ago; its limestone holds fossil fragments of sea creatures such as trilobites and crinoids."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Alto Es Realmente el Everest?",
+   "summary": "¡Si te dejaran de golpe en la cima del Everest, te desmayarías en pocos minutos! El profesor Pi explica lo cerca que está esta montaña de 8849 metros de los aviones de pasajeros, qué le pasa al oxígeno de cada respiración y el secreto del fondo marino en la cumbre.",
+   "facts": [
+    "Según Britannica, el Everest mide 8849 metros y el oxígeno respirable en la cima es un tercio del que hay al nivel del mar.",
+    "Según el alpinista y médico del Everest Tom Hornbein, alguien que subiera rápido a 29.000 pies (unos 8840 metros) sin aclimatarse perdería el conocimiento en un par de minutos y moriría poco después.",
+    "Según la revista Air & Space del Smithsonian, un avión de pasajeros vuela, por ejemplo, a 35.000 pies (unos 10.668 metros) de altitud de crucero, unos 2 km por encima de la cima del Everest.",
+    "Según Live Science, a gran altitud se puede acumular líquido en los pulmones y el cerebro; el líquido en los pulmones puede matar mediante un proceso parecido al ahogamiento.",
+    "Según la Universidad Estatal de Montana, la cima del Everest era fondo marino hace 470 millones de años; su caliza contiene fragmentos fósiles de animales marinos como trilobites y crinoideos."
+   ]
+  },
+  "pt": {
+   "title": "Qual É a Altura Real do Monte Everest?",
+   "summary": "Se te deixassem de repente no topo do Everest, você desmaiaria em poucos minutos! O professor Pi explica o quanto esta montanha de 8.849 metros chega perto dos aviões de passageiros, o que acontece com o oxigênio de cada respiração e o segredo do fundo do mar no cume.",
+   "facts": [
+    "Segundo a Britannica, o Everest tem 8.849 metros de altura, e o oxigênio respirável no cume é um terço do que há ao nível do mar.",
+    "Segundo o alpinista e médico do Everest Tom Hornbein, alguém que subisse rápido a 29.000 pés (cerca de 8.840 metros) sem aclimatação ficaria inconsciente em poucos minutos e morreria logo depois.",
+    "Segundo a revista Air & Space do Smithsonian, um avião de passageiros voa, por exemplo, a 35.000 pés (cerca de 10.668 metros) de altitude de cruzeiro, cerca de 2 km acima do cume do Everest.",
+    "Segundo a Live Science, em grandes altitudes pode se acumular líquido nos pulmões e no cérebro; o líquido nos pulmões pode matar por um processo parecido com afogamento.",
+    "Segundo a Universidade Estadual de Montana, o cume do Everest era fundo do mar há 470 milhões de anos; seu calcário guarda fragmentos fósseis de animais marinhos como trilobitas e crinoides."
+   ]
+  },
+  "ar": {
+   "title": "ما الارتفاع الحقيقي لجبل إيفرست؟",
+   "summary": "لو وُضعت فجأة على قمة إيفرست، لفقدت وعيك خلال دقائق! يشرح البروفيسور باي كم يقترب هذا الجبل البالغ 8,849 مترًا من الطائرات، وماذا يحدث للأكسجين في كل نفس، وسر قاع البحر في القمة.",
+   "facts": [
+    "وفقًا لموسوعة بريتانيكا، يبلغ ارتفاع إيفرست 8,849 مترًا، والأكسجين القابل للتنفس في قمته يعادل ثلث ما هو عليه عند مستوى سطح البحر.",
+    "وفقًا لمتسلق إيفرست والطبيب توم هورنباين، من يصعد بسرعة إلى 29,000 قدم (نحو 8,840 مترًا) دون تأقلم يفقد وعيه خلال دقيقتين تقريبًا ويموت بعد ذلك بوقت قصير.",
+    "وفقًا لمجلة Air & Space التابعة لسميثسونيان، تطير طائرة الركاب مثلًا على ارتفاع 35,000 قدم (نحو 10,668 مترًا)، أي نحو 2 كم فوق قمة إيفرست.",
+    "وفقًا لموقع Live Science، قد تتجمع السوائل في الرئتين والدماغ على الارتفاعات العالية؛ والسوائل في الرئتين قد تقتل بعملية تشبه الغرق.",
+    "وفقًا لجامعة ولاية مونتانا، كانت قمة إيفرست قاعًا للبحر قبل 470 مليون سنة؛ ويحتوي حجرها الجيري على بقايا أحافير كائنات بحرية مثل ثلاثيات الفصوص وزنابق البحر."
+   ]
+  },
+  "hi": {
+   "title": "माउंट एवरेस्ट असल में कितना ऊँचा है?",
+   "summary": "अगर तुम्हें अचानक एवरेस्ट की चोटी पर छोड़ दिया जाए, तो कुछ ही मिनटों में तुम बेहोश हो जाओगे! प्रोफ़ेसर पाई बताते हैं कि 8,849 मीटर ऊँचा यह पहाड़ यात्री विमानों के कितना क़रीब है, हर साँस की ऑक्सीजन का क्या होता है, और चोटी पर छिपा समुद्र तल का राज़।",
+   "facts": [
+    "ब्रिटानिका के अनुसार, माउंट एवरेस्ट 8,849 मीटर ऊँचा है, और चोटी पर साँस लेने लायक़ ऑक्सीजन समुद्र तल की तुलना में एक-तिहाई होती है।",
+    "एवरेस्ट पर्वतारोही और डॉक्टर टॉम हॉर्नबीन के अनुसार, बिना अनुकूलन के तेज़ी से 29,000 फ़ीट (लगभग 8,840 मीटर) तक पहुँचने वाला व्यक्ति कुछ ही मिनटों में बेहोश हो जाएगा और जल्द ही उसकी मौत हो जाएगी।",
+    "स्मिथसोनियन की Air & Space पत्रिका के अनुसार, एक यात्री विमान उदाहरण के लिए 35,000 फ़ीट (लगभग 10,668 मीटर) की ऊँचाई पर उड़ता है, जो एवरेस्ट की चोटी से लगभग 2 किमी ऊपर है।",
+    "लाइव साइंस के अनुसार, ज़्यादा ऊँचाई पर फेफड़ों और दिमाग़ में तरल जमा हो सकता है; फेफड़ों का तरल डूबने जैसी प्रक्रिया से जान ले सकता है।",
+    "मोंटाना स्टेट यूनिवर्सिटी के अनुसार, एवरेस्ट की चोटी 470 मिलियन साल पहले समुद्र तल थी; वहाँ के चूना पत्थर में ट्राइलोबाइट और क्रिनॉइड जैसे समुद्री जीवों के जीवाश्म टुकड़े हैं।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Tinggi Gunung Everest Sebenarnya?",
+   "summary": "Kalau kamu tiba-tiba diturunkan di puncak Everest, kamu akan pingsan dalam beberapa menit! Profesor Pi menjelaskan seberapa dekat gunung setinggi 8.849 meter ini dengan pesawat penumpang, apa yang terjadi pada oksigen di setiap napas, dan rahasia dasar laut di puncaknya.",
+   "facts": [
+    "Menurut Britannica, tinggi Gunung Everest 8.849 meter, dan oksigen yang bisa dihirup di puncaknya hanya sepertiga dari di permukaan laut.",
+    "Menurut pendaki Everest sekaligus dokter Tom Hornbein, orang yang naik cepat ke 29.000 kaki (sekitar 8.840 meter) tanpa aklimatisasi akan pingsan dalam beberapa menit dan segera meninggal.",
+    "Menurut majalah Air & Space dari Smithsonian, pesawat penumpang terbang misalnya di ketinggian jelajah 35.000 kaki (sekitar 10.668 meter), sekitar 2 km di atas puncak Everest.",
+    "Menurut Live Science, di ketinggian, cairan bisa menumpuk di paru-paru dan otak; cairan di paru-paru bisa membunuh lewat proses yang mirip tenggelam.",
+    "Menurut Montana State University, puncak Everest adalah dasar laut 470 juta tahun lalu; batu kapurnya menyimpan pecahan fosil hewan laut seperti trilobita dan krinoid."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Hauteur de l'Everest ?",
+   "summary": "Si on te déposait d'un coup au sommet de l'Everest, tu t'évanouirais en quelques minutes ! Le professeur Pi explique à quel point cette montagne de 8 849 mètres frôle les avions de ligne, ce qui arrive à l'oxygène de chaque respiration et le secret de fond marin du sommet.",
+   "facts": [
+    "Selon Britannica, l'Everest culmine à 8 849 mètres, et l'oxygène respirable au sommet représente un tiers de celui du niveau de la mer.",
+    "Selon Tom Hornbein, alpiniste et médecin de l'Everest, quelqu'un qui monterait vite à 29 000 pieds (environ 8 840 mètres) sans acclimatation perdrait connaissance en quelques minutes et mourrait peu après.",
+    "Selon le magazine Air & Space du Smithsonian, un avion de ligne vole par exemple à 35 000 pieds (environ 10 668 mètres) d'altitude de croisière, soit environ 2 km au-dessus du sommet de l'Everest.",
+    "Selon Live Science, du liquide peut s'accumuler dans les poumons et le cerveau en haute altitude ; le liquide dans les poumons peut tuer par un processus proche de la noyade.",
+    "Selon l'Université d'État du Montana, le sommet de l'Everest était un fond marin il y a 470 millions d'années ; son calcaire contient des fragments fossiles d'animaux marins comme des trilobites et des crinoïdes."
+   ]
+  },
+  "de": {
+   "title": "Wie Hoch Ist der Mount Everest Wirklich?",
+   "summary": "Würde man dich plötzlich auf dem Gipfel des Everest absetzen, würdest du in wenigen Minuten ohnmächtig! Professor Pi erklärt, wie nah dieser 8.849 Meter hohe Berg den Passagierflugzeugen kommt, was mit dem Sauerstoff in jedem Atemzug passiert und welches Meeresboden-Geheimnis der Gipfel birgt.",
+   "facts": [
+    "Laut Britannica ist der Mount Everest 8.849 Meter hoch, und am Gipfel gibt es nur ein Drittel des atembaren Sauerstoffs auf Meereshöhe.",
+    "Laut dem Everest-Bergsteiger und Arzt Tom Hornbein würde jemand, der ohne Akklimatisierung schnell auf 29.000 Fuß (etwa 8.840 Meter) steigt, innerhalb weniger Minuten bewusstlos werden und kurz darauf sterben.",
+    "Laut dem Smithsonian-Magazin Air & Space fliegt ein Passagierflugzeug zum Beispiel in 35.000 Fuß (etwa 10.668 Meter) Reiseflughöhe, also etwa 2 km über dem Everest-Gipfel.",
+    "Laut Live Science kann sich in großer Höhe Flüssigkeit in Lunge und Gehirn sammeln; Flüssigkeit in der Lunge kann durch einen Vorgang ähnlich dem Ertrinken töten.",
+    "Laut der Montana State University war der Everest-Gipfel vor 470 Millionen Jahren Meeresboden; sein Kalkstein enthält Fossilreste von Meerestieren wie Trilobiten und Seelilien."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Высок Эверест на Самом Деле?",
+   "summary": "Если бы тебя внезапно высадили на вершине Эвереста, ты бы потерял сознание за несколько минут! Профессор Пи объясняет, как близко эта гора высотой 8849 метров подходит к пассажирским самолётам, что происходит с кислородом в каждом вдохе и какую тайну морского дна хранит вершина.",
+   "facts": [
+    "По данным Britannica, высота Эвереста 8849 метров, а пригодного для дыхания кислорода на вершине в три раза меньше, чем на уровне моря.",
+    "По словам альпиниста и врача Тома Хорнбейна, человек, быстро поднявшийся на 29 000 футов (около 8840 метров) без акклиматизации, потерял бы сознание за пару минут и вскоре погиб бы.",
+    "По данным журнала Air & Space Смитсоновского института, пассажирский самолёт летит, например, на крейсерской высоте 35 000 футов (около 10 668 метров), то есть примерно на 2 км выше вершины Эвереста.",
+    "По данным Live Science, на большой высоте в лёгких и мозге может скапливаться жидкость; жидкость в лёгких способна убить так, будто человек тонет.",
+    "По данным Университета штата Монтана, вершина Эвереста 470 миллионов лет назад была морским дном; в её известняке есть фрагменты окаменелостей морских животных, например трилобитов и морских лилий."
+   ]
+  },
+  "az": {
+   "title": "Everest Əslində Nə Qədər Hündürdür?",
+   "summary": "Səni birdən Everestin zirvəsinə qoysalar, bir neçə dəqiqəyə huşunu itirərdin! 8.849 metrlik dağın sərnişin təyyarələrinə nə qədər yaxın olduğunu, hər nəfəsdəki oksigenə nə baş verdiyini və zirvədəki dəniz dibi sirrini Professor Pi danışır.",
+   "facts": [
+    "Britannica-ya görə Everestin hündürlüyü 8.849 metrdir və zirvədə nəfəs alına bilən oksigen dəniz səviyyəsindəkinin 3-də 1-i qədərdir.",
+    "Everest alpinisti və həkim Tom Hornbeinə görə uyğunlaşmadan sürətlə 29.000 fut (təxminən 8.840 metr) hündürlüyə qalxan insan bir neçə dəqiqəyə huşunu itirər və tezliklə ölər.",
+    "Smithsonian-ın Air & Space jurnalına görə sərnişin təyyarəsi, məsələn, 35.000 fut (təxminən 10.668 metr) kruiz hündürlüyündə uçur; bu, Everestin zirvəsindən təxminən 2 km yuxarıdır.",
+    "Live Science-ə görə böyük hündürlükdə ağciyərlərdə və beyində maye yığıla bilər; ağciyərdəki maye boğulmaya bənzər bir proseslə ölümə səbəb ola bilər.",
+    "Montana Ştat Universitetinə görə Everestin zirvəsi 470 milyon il əvvəl dəniz dibi idi; oradakı əhəngdaşında trilobit və dəniz zanbağı kimi dəniz canlılarının fosil qalıqları var."
+   ]
+  }
+ }
+}

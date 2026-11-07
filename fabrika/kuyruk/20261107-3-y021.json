@@ -1,0 +1,278 @@
+{
+ "id": "y021",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'ya dev bir asteroit çarpsaydı ne olurdu?",
+ "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
+ "bar": {
+  "hi": "ASTEROİT",
+  "rest": "İSTANBUL'A DÜŞSE"
+ },
+ "summary": "Dinozorları yok eden dev asteroit İstanbul'a düşseydi, 1.000 km ötede Erzurum'da bile 9 saniyede kavrulurdun! Ateş topundan kaya yağmuruna, saatte 965 km'lik rüzgârdan yıllarca süren karanlığa kadar neler olacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Dev asteroit İstanbul'a düşse, Erzurum'da bile 9 saniyede kavrulurdun!",
+   "v": {
+    "t": "number",
+    "bg": "volcano",
+    "e": "🔥",
+    "value": "9",
+    "unit": "saniye",
+    "label": "1.000 km Ötede",
+    "key": "9"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Erzurum ayazı da mı yetmez?!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🥶",
+    "do": "burn",
+    "key": "ayazı",
+    "label": "Erzurum Ayazı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Everest'ten büyük kaya saatte 64.000 km hızla çarpar.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "🏔️",
+     "label": "Everest: 8,8 km",
+     "value": "8,8"
+    },
+    "b": {
+     "b": "asteroid",
+     "label": "Asteroit: 10 km",
+     "value": "10"
+    },
+    "mode": "size",
+    "key": "büyük"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ağaçlar tutuşur; 8 dakika sonra gökten kaya yağar.",
+   "v": {
+    "t": "timeline",
+    "bg": "volcano",
+    "steps": [
+     {
+      "when": "9 SANİYE",
+      "e": "🔥",
+      "label": "Ağaçlar Tutuşur"
+     },
+     {
+      "when": "8 DAKİKA",
+      "e": "🪨",
+      "label": "Kaya Yağmuru"
+     },
+     {
+      "when": "45 DAKİKA",
+      "e": "🌪️",
+      "label": "Dev Rüzgâr"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "45 dakika sonra saatte 965 km'lik rüzgâr her şeyi yıkar!",
+   "v": {
+    "t": "meter",
+    "bg": "storm",
+    "label": "Rüzgâr Hızı",
+    "from": 0,
+    "to": 965,
+    "unit": "km/sa",
+    "e": "🌪️",
+    "key": "965"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gök yıllarca kararır; dinozorlar dahil türlerin %75'i yok olur.",
+   "v": {
+    "t": "split",
+    "bg": "night",
+    "left": {
+     "e": "🦖",
+     "label": "Türlerin %75'i"
+    },
+    "right": {
+     "e": "🦴",
+     "label": "Yok Olur"
+    },
+    "key": "kararır"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen sığınağa ne alırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "☄️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Londra Doğa Tarihi Müzesi'ne göre dinozorları yok eden asteroit 10-15 km genişliğindeydi, yani 8.849 metrelik Everest'ten büyüktü; Dünya'daki hayvanların yaklaşık %75'i aynı anda yok oldu.",
+   "source": "Natural History Museum, London",
+   "url": "https://www.nhm.ac.uk/discover/how-an-asteroid-caused-extinction-of-dinosaurs.html"
+  },
+  {
+   "text": "National Geographic'e göre çarpma noktasından yaklaşık 1.000 km uzaktaki biri 9 saniye sonra gelen ısı dalgasıyla kavrulur, tüm vücudunda üçüncü derece yanıklar oluşurdu; ağaçlar ve otlar kendiliğinden alev alırdı. (İstanbul-Erzurum arası kuş uçuşu yaklaşık 1.050 km.)",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/animals/article/what-happened-day-dinosaurs-died-chicxulub-drilling-asteroid-science"
+  },
+  {
+   "text": "National Geographic'e göre asteroit saatte yaklaşık 64.000 km hızla çarptı; yaklaşık 8 dakika sonra gökten enkaz yağmaya başladı, yaklaşık 45 dakika sonra bölgede saatte 965 km hızla rüzgâr esti.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/animals/article/what-happened-day-dinosaurs-died-chicxulub-drilling-asteroid-science"
+  },
+  {
+   "text": "Smithsonian'a göre çarpışmadan sonra Güneş ışığı tüm dünyada azaldı ve sıcaklıklar yıllarca düştü; bilinen türlerin yaklaşık %75'i yok oldu.",
+   "source": "Smithsonian",
+   "url": "https://www.smithsonianmag.com/science-nature/dinosaur-killing-asteroid-impact-chicxulub-crater-timeline-destruction-180973075/"
+  }
+ ],
+ "tags": [
+  "asteroit",
+  "dinozorları yok eden asteroit",
+  "chicxulub",
+  "asteroit çarpması",
+  "istanbul",
+  "dinozorlar",
+  "kitlesel yok oluş",
+  "uzay",
+  "asteroid impact",
+  "chicxulub asteroid",
+  "dinosaur extinction",
+  "what if an asteroid hit earth",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#asteroit",
+  "#dinozor",
+  "#uzay"
+ ],
+ "cover": 2,
+ "sources": [
+  "https://www.nationalgeographic.com/animals/article/what-happened-day-dinosaurs-died-chicxulub-drilling-asteroid-science",
+  "https://www.nhm.ac.uk/discover/how-an-asteroid-caused-extinction-of-dinosaurs.html",
+  "https://www.smithsonianmag.com/science-nature/dinosaur-killing-asteroid-impact-chicxulub-crater-timeline-destruction-180973075/",
+  "https://www.britannica.com/place/Mount-Everest"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If the Dinosaur-Killing Asteroid Hit Istanbul?",
+   "summary": "If the giant asteroid that wiped out the dinosaurs hit Istanbul, you'd be roasted within 9 seconds even 1,000 km away in Erzurum! Professor Pi walks through what would happen, from the fireball and raining rocks to 965 km/h winds and years of darkness.",
+   "facts": [
+    "According to the Natural History Museum in London, the asteroid that wiped out the dinosaurs was 10–15 km wide, bigger than 8,849-meter Everest; around 75% of Earth's animals died out at the same time.",
+    "According to National Geographic, someone about 1,000 km from the impact would be roasted by a blast of heat 9 seconds later, with third-degree burns over the whole body, while trees and grass burst into flame. (Istanbul to Erzurum is about 1,050 km as the crow flies.)",
+    "According to National Geographic, the asteroid hit at about 64,000 km/h; about 8 minutes later debris began raining down, and about 45 minutes later winds of 965 km/h tore through the region.",
+    "According to Smithsonian, after the impact sunlight dimmed worldwide and temperatures plunged for years; about 75% of known species disappeared."
+   ]
+  },
+  "es": {
+   "title": "¿Y Si el Asteroide Que Mató a los Dinosaurios Cayera en Estambul?",
+   "summary": "¡Si el asteroide gigante que acabó con los dinosaurios cayera en Estambul, te achicharrarías en 9 segundos incluso a 1000 km, en Erzurum! El profesor Pi explica lo que pasaría, desde la bola de fuego y la lluvia de rocas hasta vientos de 965 km/h y años de oscuridad.",
+   "facts": [
+    "Según el Museo de Historia Natural de Londres, el asteroide que acabó con los dinosaurios medía entre 10 y 15 km de ancho, más que los 8849 metros del Everest; alrededor del 75% de los animales de la Tierra desapareció a la vez.",
+    "Según National Geographic, alguien a unos 1000 km del impacto quedaría abrasado por una ola de calor 9 segundos después, con quemaduras de tercer grado en todo el cuerpo, mientras árboles y hierba ardían solos. (De Estambul a Erzurum hay unos 1050 km en línea recta.)",
+    "Según National Geographic, el asteroide chocó a unos 64.000 km/h; unos 8 minutos después empezaron a caer escombros, y unos 45 minutos después vientos de 965 km/h arrasaron la región.",
+    "Según Smithsonian, tras el impacto la luz del Sol se atenuó en todo el planeta y las temperaturas cayeron durante años; desapareció alrededor del 75% de las especies conocidas."
+   ]
+  },
+  "pt": {
+   "title": "E Se o Asteroide Que Matou os Dinossauros Caísse em Istambul?",
+   "summary": "Se o asteroide gigante que acabou com os dinossauros caísse em Istambul, você seria torrado em 9 segundos mesmo a 1.000 km, em Erzurum! O professor Pi mostra o que aconteceria, da bola de fogo e da chuva de rochas aos ventos de 965 km/h e anos de escuridão.",
+   "facts": [
+    "Segundo o Museu de História Natural de Londres, o asteroide que acabou com os dinossauros tinha de 10 a 15 km de largura, maior que os 8.849 metros do Everest; cerca de 75% dos animais da Terra morreram ao mesmo tempo.",
+    "Segundo a National Geographic, alguém a cerca de 1.000 km do impacto seria torrado por uma onda de calor 9 segundos depois, com queimaduras de terceiro grau no corpo todo, enquanto árvores e grama pegavam fogo sozinhas. (De Istambul a Erzurum são cerca de 1.050 km em linha reta.)",
+    "Segundo a National Geographic, o asteroide atingiu a Terra a cerca de 64.000 km/h; uns 8 minutos depois começaram a cair destroços, e uns 45 minutos depois ventos de 965 km/h varreram a região.",
+    "Segundo o Smithsonian, depois do impacto a luz do Sol diminuiu no mundo todo e as temperaturas despencaram por anos; cerca de 75% das espécies conhecidas desapareceram."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو سقط الكويكب الذي قتل الديناصورات على إسطنبول؟",
+   "summary": "لو سقط الكويكب العملاق الذي أباد الديناصورات على إسطنبول، لاحترقت خلال 9 ثوانٍ حتى لو كنت على بعد 1,000 كم في أرضروم! يشرح البروفيسور باي ما سيحدث، من كرة النار ومطر الصخور إلى رياح بسرعة 965 كم/س وسنوات من الظلام.",
+   "facts": [
+    "وفقًا لمتحف التاريخ الطبيعي في لندن، كان عرض الكويكب الذي أباد الديناصورات بين 10 و15 كم، أي أكبر من إيفرست البالغ 8,849 مترًا؛ ونفق نحو 75% من حيوانات الأرض في الوقت نفسه.",
+    "وفقًا لناشيونال جيوغرافيك، من يكون على بعد نحو 1,000 كم من الاصطدام ستشويه موجة حرارة بعد 9 ثوانٍ، مع حروق من الدرجة الثالثة في جسمه كله، بينما تشتعل الأشجار والعشب من تلقاء نفسها. (المسافة بين إسطنبول وأرضروم نحو 1,050 كم في خط مستقيم.)",
+    "وفقًا لناشيونال جيوغرافيك، اصطدم الكويكب بسرعة نحو 64,000 كم/س؛ وبعد نحو 8 دقائق بدأ الحطام يتساقط، وبعد نحو 45 دقيقة اجتاحت المنطقة رياح بسرعة 965 كم/س.",
+    "وفقًا لسميثسونيان، خفت ضوء الشمس في العالم كله بعد الاصطدام وانخفضت درجات الحرارة لسنوات؛ واختفى نحو 75% من الأنواع المعروفة."
+   ]
+  },
+  "hi": {
+   "title": "अगर डायनासोर मारने वाला एस्टेरॉयड इस्तांबुल पर गिरता तो क्या होता?",
+   "summary": "अगर डायनासोर ख़त्म करने वाला विशाल एस्टेरॉयड इस्तांबुल पर गिरता, तो 1,000 किमी दूर एरज़ुरुम में भी तुम 9 सेकंड में झुलस जाते! प्रोफ़ेसर पाई बताते हैं कि आग के गोले और पत्थरों की बारिश से लेकर 965 किमी/घंटा की हवा और सालों के अंधेरे तक क्या-क्या होता।",
+   "facts": [
+    "लंदन के नेचुरल हिस्ट्री म्यूज़ियम के अनुसार, डायनासोर ख़त्म करने वाला एस्टेरॉयड 10–15 किमी चौड़ा था, यानी 8,849 मीटर ऊँचे एवरेस्ट से बड़ा; धरती के लगभग 75% जानवर एक साथ ख़त्म हो गए।",
+    "नेशनल ज्योग्राफ़िक के अनुसार, टक्कर से लगभग 1,000 किमी दूर खड़ा व्यक्ति 9 सेकंड बाद आई गर्मी की लहर से झुलस जाता और पूरे शरीर पर थर्ड-डिग्री जलन होती, जबकि पेड़ और घास अपने-आप जल उठते। (इस्तांबुल से एरज़ुरुम की सीधी दूरी लगभग 1,050 किमी है।)",
+    "नेशनल ज्योग्राफ़िक के अनुसार, एस्टेरॉयड लगभग 64,000 किमी/घंटा की रफ़्तार से टकराया; लगभग 8 मिनट बाद मलबा बरसने लगा, और लगभग 45 मिनट बाद इलाक़े में 965 किमी/घंटा की हवा चली।",
+    "स्मिथसोनियन के अनुसार, टक्कर के बाद पूरी दुनिया में सूरज की रोशनी कम हो गई और सालों तक तापमान गिरा; ज्ञात प्रजातियों में से लगभग 75% ख़त्म हो गईं।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Asteroid Pembunuh Dinosaurus Jatuh di Istanbul?",
+   "summary": "Kalau asteroid raksasa yang memusnahkan dinosaurus jatuh di Istanbul, kamu akan terpanggang dalam 9 detik bahkan 1.000 km jauhnya di Erzurum! Profesor Pi menjelaskan apa yang akan terjadi, dari bola api dan hujan batu sampai angin 965 km/jam dan kegelapan bertahun-tahun.",
+   "facts": [
+    "Menurut Natural History Museum London, asteroid yang memusnahkan dinosaurus lebarnya 10–15 km, lebih besar dari Everest yang tingginya 8.849 meter; sekitar 75% hewan di Bumi punah bersamaan.",
+    "Menurut National Geographic, orang yang berada sekitar 1.000 km dari titik tumbukan akan terpanggang gelombang panas 9 detik kemudian, dengan luka bakar derajat tiga di seluruh tubuh, sementara pohon dan rumput terbakar sendiri. (Jarak garis lurus Istanbul–Erzurum sekitar 1.050 km.)",
+    "Menurut National Geographic, asteroid itu menabrak dengan kecepatan sekitar 64.000 km/jam; sekitar 8 menit kemudian puing mulai berjatuhan, dan sekitar 45 menit kemudian angin 965 km/jam menyapu wilayah itu.",
+    "Menurut Smithsonian, setelah tumbukan cahaya Matahari meredup di seluruh dunia dan suhu anjlok selama bertahun-tahun; sekitar 75% spesies yang dikenal punah."
+   ]
+  },
+  "fr": {
+   "title": "Et Si l'Astéroïde Qui a Tué les Dinosaures Tombait sur Istanbul ?",
+   "summary": "Si l'astéroïde géant qui a anéanti les dinosaures tombait sur Istanbul, tu serais grillé en 9 secondes même à 1 000 km, à Erzurum ! Le professeur Pi raconte ce qui se passerait, de la boule de feu et la pluie de roches aux vents de 965 km/h et aux années d'obscurité.",
+   "facts": [
+    "Selon le Muséum d'histoire naturelle de Londres, l'astéroïde qui a anéanti les dinosaures mesurait 10 à 15 km de large, plus que les 8 849 mètres de l'Everest ; environ 75 % des animaux de la Terre ont disparu en même temps.",
+    "Selon National Geographic, une personne à environ 1 000 km de l'impact serait grillée par une vague de chaleur 9 secondes plus tard, avec des brûlures au troisième degré sur tout le corps, tandis que les arbres et l'herbe s'enflammeraient spontanément. (Istanbul–Erzurum : environ 1 050 km à vol d'oiseau.)",
+    "Selon National Geographic, l'astéroïde a frappé à environ 64 000 km/h ; environ 8 minutes plus tard, des débris ont commencé à pleuvoir, et environ 45 minutes plus tard des vents de 965 km/h ont balayé la région.",
+    "Selon le Smithsonian, après l'impact la lumière du Soleil a faibli sur toute la planète et les températures ont chuté pendant des années ; environ 75 % des espèces connues ont disparu."
+   ]
+  },
+  "de": {
+   "title": "Was Wäre, Wenn der Dinosaurier-Killer-Asteroid Istanbul Träfe?",
+   "summary": "Würde der riesige Asteroid, der die Dinosaurier auslöschte, Istanbul treffen, würdest du selbst 1.000 km entfernt in Erzurum in 9 Sekunden verbrennen! Professor Pi erklärt, was passieren würde, vom Feuerball und Gesteinsregen bis zu Winden mit 965 km/h und jahrelanger Dunkelheit.",
+   "facts": [
+    "Laut dem Natural History Museum in London war der Asteroid, der die Dinosaurier auslöschte, 10 bis 15 km breit, also größer als der 8.849 Meter hohe Everest; rund 75 % der Tiere der Erde starben gleichzeitig aus.",
+    "Laut National Geographic würde jemand etwa 1.000 km vom Einschlag entfernt 9 Sekunden später von einer Hitzewelle geröstet, mit Verbrennungen dritten Grades am ganzen Körper, während Bäume und Gras von selbst in Flammen aufgingen. (Istanbul–Erzurum: etwa 1.050 km Luftlinie.)",
+    "Laut National Geographic schlug der Asteroid mit etwa 64.000 km/h ein; etwa 8 Minuten später begannen Trümmer herabzuregnen, und etwa 45 Minuten später fegten Winde mit 965 km/h durch die Region.",
+    "Laut Smithsonian wurde das Sonnenlicht nach dem Einschlag weltweit schwächer und die Temperaturen sanken jahrelang; etwa 75 % der bekannten Arten verschwanden."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Астероид-Убийца Динозавров Упадёт на Стамбул?",
+   "summary": "Если бы гигантский астероид, уничтоживший динозавров, упал на Стамбул, ты бы сгорел за 9 секунд даже в 1000 км оттуда, в Эрзуруме! Профессор Пи рассказывает, что бы произошло: от огненного шара и каменного дождя до ветра 965 км/ч и многолетней тьмы.",
+   "facts": [
+    "По данным Музея естественной истории в Лондоне, астероид, уничтоживший динозавров, был шириной 10–15 км, то есть больше 8849-метрового Эвереста; около 75% животных Земли вымерли одновременно.",
+    "По данным National Geographic, человека примерно в 1000 км от места удара через 9 секунд обожгла бы тепловая волна, с ожогами третьей степени по всему телу, а деревья и трава вспыхнули бы сами. (От Стамбула до Эрзурума по прямой около 1050 км.)",
+    "По данным National Geographic, астероид врезался со скоростью около 64 000 км/ч; примерно через 8 минут начали падать обломки, а примерно через 45 минут регион накрыл ветер скоростью 965 км/ч.",
+    "По данным Smithsonian, после удара солнечный свет по всей планете ослаб, а температура падала годами; исчезло около 75% известных видов."
+   ]
+  },
+  "az": {
+   "title": "Dinozavrları Məhv Edən Asteroid İstanbula Düşsəydi Nə Olardı?",
+   "summary": "Dinozavrları məhv edən nəhəng asteroid İstanbula düşsəydi, 1.000 km uzaqda, Ərzurumda belə 9 saniyəyə qovrulardın! Od topundan daş yağışına, saatda 965 km-lik küləkdən illərlə sürən qaranlığa qədər nələr olacağını Professor Pi danışır.",
+   "facts": [
+    "London Təbiət Tarixi Muzeyinə görə dinozavrları məhv edən asteroidin eni 10-15 km idi, yəni 8.849 metrlik Everestdən böyük idi; Yerdəki heyvanların təxminən 75%-i eyni anda yox oldu.",
+    "National Geographic-ə görə zərbə nöqtəsindən təxminən 1.000 km uzaqdakı insan 9 saniyə sonra gələn istilik dalğası ilə qovrular, bütün bədənində üçüncü dərəcəli yanıqlar yaranar, ağaclar və otlar öz-özünə alovlanardı. (İstanbul-Ərzurum arası düz xətt üzrə təxminən 1.050 km-dir.)",
+    "National Geographic-ə görə asteroid saatda təxminən 64.000 km sürətlə çırpıldı; təxminən 8 dəqiqə sonra göydən qırıntılar yağmağa başladı, təxminən 45 dəqiqə sonra isə bölgədə saatda 965 km sürətlə külək əsdi.",
+    "Smithsonian-a görə zərbədən sonra Günəş işığı bütün dünyada zəiflədi və temperatur illərlə düşdü; məlum növlərin təxminən 75%-i yox oldu."
+   ]
+  }
+ }
+}

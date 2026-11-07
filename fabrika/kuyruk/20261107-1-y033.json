@@ -1,0 +1,280 @@
+{
+ "id": "y033",
+ "series": "Ya Olsaydı?",
+ "q": "Göz kırpmayı bıraksaydın ne olurdu?",
+ "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+ "bar": {
+  "hi": "GÖZ KIRPMAYI",
+  "rest": "BIRAKSAN?"
+ },
+ "summary": "Gözünü kırpmayı bıraksan 10 saniye sonra yaş tabakan dağılmaya başlar, sonunda kornean yaralanıp kör bile olabilirsin! Deriden 300 kat hassas korneanın neden yandığını ve beyninin her gün senden sakladığı karanlığı Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Göz kırpmasan, korneanda yaralar açılır; kör bile olabilirsin!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👁️",
+    "do": "shake",
+    "key": "kör",
+    "label": "Kör Olma Riski"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gözüm kuru üzüme mi döner?!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "🍇",
+    "do": "shrink",
+    "key": "üzüme",
+    "label": "Kuru Üzüm Göz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dene: 10 saniye sonra gözündeki yaş tabakası dağılmaya başlar.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "⏱️",
+    "value": "10",
+    "unit": "saniye",
+    "label": "Yaş Tabakası",
+    "key": "10"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kornean deriden 300 kat hassas; gözün ateş gibi yanar!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "✋",
+     "label": "Deri",
+     "value": "1"
+    },
+    "b": {
+     "e": "👁️",
+     "label": "Kornea",
+     "value": "300"
+    },
+    "mode": "bar",
+    "key": "300"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra gözün sel gibi yaşarır, görüşün bulanıklaşır.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "😭",
+     "label": "Sel Gibi Yaş"
+    },
+    "right": {
+     "e": "🌫️",
+     "label": "Bulanık Görüş"
+    },
+    "key": "bulanıklaşır"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her kırpışta 0,1 saniye karanlık; beynin bunu gizler!",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "🧠",
+    "value": "0,1",
+    "unit": "saniye",
+    "label": "Her Kırpışta",
+    "key": "0,1"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen kaç saniye kırpmadan durdun? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "👁️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Iowa Üniversitesi'ne göre gözyaşı tabakası, son göz kırpışından sonra ilk kuru leke oluşana kadar normalde en az 10 saniye dayanır; 10 saniyenin altı anormal sayılır.",
+   "source": "University of Iowa (EyeRounds)",
+   "url": "https://eyerounds.org/atlas/pages/TBUT/index.htm"
+  },
+  {
+   "text": "UT Southwestern'e göre kornea deriden yaklaşık 300 kat daha hassastır; korneadaki hasar birikirse kalıcı görme kaybı olabilir.",
+   "source": "UT Southwestern Medical Center",
+   "url": "https://utswmed.org/medblog/cornea-surgery-neurotization/"
+  },
+  {
+   "text": "Amerikan Oftalmoloji Akademisi'ne göre göz kırpma azalınca yanma, batma, artan gözyaşı ve bulanık görme başlar; korneada ülser, delinme ve görme kaybına yol açan iz oluşabilir.",
+   "source": "American Academy of Ophthalmology (EyeWiki)",
+   "url": "https://eyewiki.aao.org/Exposure_Keratopathy"
+  },
+  {
+   "text": "Utah Üniversitesi'ne göre bir yetişkin dakikada yaklaşık 15, saatte 900 kez göz kırpar; telefona ya da bilgisayara bakarken bu %50 azalır.",
+   "source": "University of Utah Health",
+   "url": "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough"
+  },
+  {
+   "text": "Washington Üniversitesi'ne göre bir göz kırpma 0,10-0,15 saniye sürer; bu sırada beynin görmeyle ilgili bölgeleri bastırılır, bu yüzden karanlığı fark etmediğimiz düşünülüyor.",
+   "source": "University of Washington",
+   "url": "https://staff.washington.edu/chudler/blink.html"
+  }
+ ],
+ "tags": [
+  "göz kırpma",
+  "göz kırpmasan ne olur",
+  "kornea",
+  "kuru göz",
+  "gözyaşı",
+  "göz sağlığı",
+  "körlük",
+  "beyin",
+  "ekran",
+  "blinking",
+  "what if you stop blinking",
+  "dry eye",
+  "cornea",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#gözkırpma",
+  "#gözsağlığı",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://eyewiki.aao.org/Exposure_Keratopathy",
+  "https://utswmed.org/medblog/cornea-surgery-neurotization/",
+  "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough",
+  "https://staff.washington.edu/chudler/blink.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If You Stopped Blinking, Would You Go Blind?",
+   "summary": "If you stopped blinking, the tear film on your eye would start breaking up after 10 seconds, and in the end your cornea could be damaged badly enough to blind you! Professor Pi explains why your cornea, 300 times more sensitive than skin, burns, and the darkness your brain hides from you every day.",
+   "facts": [
+    "According to the University of Iowa, the tear film normally lasts at least 10 seconds after the last blink before the first dry spot appears; under 10 seconds is considered abnormal.",
+    "According to UT Southwestern, the cornea is about 300 times more sensitive than skin; if damage to the cornea builds up, permanent vision loss can occur.",
+    "According to the American Academy of Ophthalmology, reduced blinking brings burning, a gritty feeling, increased tearing and blurry vision; it can lead to corneal ulcers, perforation and scarring that causes vision loss.",
+    "According to University of Utah Health, an adult blinks about 15 times a minute, or 900 times an hour; while looking at a phone or computer, that drops by 50%.",
+    "According to the University of Washington, a blink lasts 0.10–0.15 seconds; during it, the brain's visual areas are suppressed, which is thought to be why we don't notice the darkness."
+   ]
+  },
+  "es": {
+   "title": "¿Te Quedarías Ciego Si Dejaras de Parpadear?",
+   "summary": "Si dejaras de parpadear, a los 10 segundos la película de lágrimas de tu ojo empezaría a romperse, ¡y al final tu córnea podría dañarse tanto que te quedarías ciego! El profesor Pi explica por qué arde tu córnea, 300 veces más sensible que la piel, y la oscuridad que tu cerebro te oculta cada día.",
+   "facts": [
+    "Según la Universidad de Iowa, la película lagrimal normalmente dura al menos 10 segundos tras el último parpadeo antes de que aparezca la primera mancha seca; menos de 10 segundos se considera anormal.",
+    "Según UT Southwestern, la córnea es unas 300 veces más sensible que la piel; si el daño en la córnea se acumula, puede haber pérdida de visión permanente.",
+    "Según la Academia Estadounidense de Oftalmología, parpadear menos provoca ardor, sensación de arenilla, más lagrimeo y visión borrosa; puede causar úlceras, perforación y cicatrices en la córnea que llevan a la pérdida de visión.",
+    "Según University of Utah Health, un adulto parpadea unas 15 veces por minuto, es decir, 900 veces por hora; al mirar un móvil o un ordenador, la cifra baja un 50%.",
+    "Según la Universidad de Washington, un parpadeo dura entre 0,10 y 0,15 segundos; durante él se suprimen las áreas visuales del cerebro, y por eso se cree que no notamos la oscuridad."
+   ]
+  },
+  "pt": {
+   "title": "Você Ficaria Cego Se Parasse de Piscar?",
+   "summary": "Se você parasse de piscar, depois de 10 segundos a película de lágrimas do seu olho começaria a se romper, e no fim sua córnea poderia ficar tão ferida que você ficaria cego! O professor Pi explica por que sua córnea, 300 vezes mais sensível que a pele, arde, e a escuridão que seu cérebro esconde de você todos os dias.",
+   "facts": [
+    "Segundo a Universidade de Iowa, o filme lacrimal normalmente dura pelo menos 10 segundos após a última piscada até surgir a primeira mancha seca; menos de 10 segundos é considerado anormal.",
+    "Segundo a UT Southwestern, a córnea é cerca de 300 vezes mais sensível que a pele; se os danos na córnea se acumularem, pode haver perda permanente da visão.",
+    "Segundo a Academia Americana de Oftalmologia, piscar menos causa ardor, sensação de areia, mais lacrimejamento e visão embaçada; pode levar a úlceras, perfuração e cicatrizes na córnea que causam perda da visão.",
+    "Segundo a University of Utah Health, um adulto pisca cerca de 15 vezes por minuto, ou 900 vezes por hora; olhando para o celular ou o computador, isso cai 50%.",
+    "Segundo a Universidade de Washington, uma piscada dura de 0,10 a 0,15 segundo; durante ela, as áreas visuais do cérebro são suprimidas, e acredita-se que por isso não percebemos a escuridão."
+   ]
+  },
+  "ar": {
+   "title": "هل كنت ستصاب بالعمى لو توقفت عن الرمش؟",
+   "summary": "لو توقفت عن الرمش، لبدأت طبقة الدموع على عينك بالتفكك بعد 10 ثوانٍ، وفي النهاية قد تتضرر قرنيتك إلى حد العمى! يشرح البروفيسور باي لماذا تحترق قرنيتك الأكثر حساسية من الجلد بـ300 مرة، والظلام الذي يخفيه دماغك عنك كل يوم.",
+   "facts": [
+    "وفقًا لجامعة آيوا، تصمد طبقة الدموع عادةً 10 ثوانٍ على الأقل بعد آخر رمشة قبل ظهور أول بقعة جافة؛ وأقل من 10 ثوانٍ يُعد غير طبيعي.",
+    "وفقًا لمركز UT Southwestern الطبي، القرنية أكثر حساسية من الجلد بنحو 300 مرة؛ وإذا تراكم الضرر فيها فقد يحدث فقدان دائم للبصر.",
+    "وفقًا للأكاديمية الأمريكية لطب العيون، قلة الرمش تسبب حرقة وإحساسًا بجسم غريب وزيادة في الدموع وتشوشًا في الرؤية؛ وقد تؤدي إلى قرح وانثقاب وندوب في القرنية تسبب فقدان البصر.",
+    "وفقًا لجامعة يوتا الصحية، يرمش البالغ نحو 15 مرة في الدقيقة، أي 900 مرة في الساعة؛ وعند النظر إلى الهاتف أو الحاسوب ينخفض ذلك بنسبة 50%.",
+    "وفقًا لجامعة واشنطن، تستغرق الرمشة 0.10 إلى 0.15 ثانية؛ وخلالها يُكبح نشاط مناطق الرؤية في الدماغ، ويُعتقد أن هذا سبب عدم ملاحظتنا للظلام."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम पलक झपकाना बंद कर दो, तो क्या अंधे हो जाओगे?",
+   "summary": "अगर तुम पलक झपकाना बंद कर दो, तो 10 सेकंड बाद तुम्हारी आँख की आँसुओं की परत टूटने लगेगी, और आख़िर में कॉर्निया इतना ज़ख़्मी हो सकता है कि तुम अंधे हो जाओ! प्रोफ़ेसर पाई बताते हैं कि त्वचा से 300 गुना ज़्यादा संवेदनशील कॉर्निया क्यों जलता है, और वह अंधेरा जो तुम्हारा दिमाग़ हर दिन तुमसे छिपाता है।",
+   "facts": [
+    "यूनिवर्सिटी ऑफ़ आयोवा के अनुसार, आख़िरी बार पलक झपकाने के बाद पहला सूखा धब्बा बनने तक आँसुओं की परत आम तौर पर कम से कम 10 सेकंड टिकती है; 10 सेकंड से कम को असामान्य माना जाता है।",
+    "UT साउथवेस्टर्न के अनुसार, कॉर्निया त्वचा से लगभग 300 गुना ज़्यादा संवेदनशील है; अगर कॉर्निया को नुकसान बढ़ता जाए तो हमेशा के लिए दृष्टि जा सकती है।",
+    "अमेरिकन एकेडमी ऑफ़ ऑप्थैल्मोलॉजी के अनुसार, कम पलक झपकाने से जलन, किरकिरापन, ज़्यादा आँसू और धुंधला दिखना शुरू होता है; इससे कॉर्निया में अल्सर, छेद और ऐसे निशान बन सकते हैं जिनसे दृष्टि चली जाती है।",
+    "यूनिवर्सिटी ऑफ़ यूटा हेल्थ के अनुसार, एक वयस्क मिनट में लगभग 15 बार, यानी घंटे में 900 बार पलक झपकाता है; फ़ोन या कंप्यूटर देखते समय यह 50% घट जाता है।",
+    "यूनिवर्सिटी ऑफ़ वॉशिंगटन के अनुसार, एक बार पलक झपकाने में 0.10–0.15 सेकंड लगते हैं; इस दौरान दिमाग़ के देखने वाले हिस्से दबा दिए जाते हैं, और माना जाता है कि इसी वजह से हमें अंधेरा महसूस नहीं होता।"
+   ]
+  },
+  "id": {
+   "title": "Kalau Kamu Berhenti Berkedip, Apakah Kamu Bisa Buta?",
+   "summary": "Kalau kamu berhenti berkedip, setelah 10 detik lapisan air mata di matamu mulai pecah, dan akhirnya korneamu bisa rusak sampai kamu buta! Profesor Pi menjelaskan kenapa korneamu, yang 300 kali lebih sensitif daripada kulit, terasa terbakar, dan kegelapan yang disembunyikan otakmu setiap hari.",
+   "facts": [
+    "Menurut University of Iowa, lapisan air mata biasanya bertahan setidaknya 10 detik setelah kedipan terakhir sebelum muncul bercak kering pertama; kurang dari 10 detik dianggap tidak normal.",
+    "Menurut UT Southwestern, kornea sekitar 300 kali lebih sensitif daripada kulit; jika kerusakan pada kornea terus menumpuk, kehilangan penglihatan permanen bisa terjadi.",
+    "Menurut American Academy of Ophthalmology, jarang berkedip menimbulkan rasa terbakar, rasa mengganjal, air mata berlebih, dan penglihatan kabur; ini bisa menyebabkan tukak, perforasi, dan jaringan parut pada kornea yang membuat kehilangan penglihatan.",
+    "Menurut University of Utah Health, orang dewasa berkedip sekitar 15 kali per menit, atau 900 kali per jam; saat menatap ponsel atau komputer, angka ini turun 50%.",
+    "Menurut University of Washington, satu kedipan berlangsung 0,10–0,15 detik; selama itu area penglihatan di otak ditekan, dan diduga itulah sebabnya kita tidak menyadari gelapnya."
+   ]
+  },
+  "fr": {
+   "title": "Si Tu Arrêtais de Cligner des Yeux, Deviendrais-tu Aveugle ?",
+   "summary": "Si tu arrêtais de cligner des yeux, le film lacrymal de ton œil commencerait à se rompre au bout de 10 secondes, et ta cornée pourrait finir si abîmée que tu deviendrais aveugle ! Le professeur Pi explique pourquoi ta cornée, 300 fois plus sensible que la peau, te brûle, et l'obscurité que ton cerveau te cache chaque jour.",
+   "facts": [
+    "Selon l'Université de l'Iowa, le film lacrymal tient normalement au moins 10 secondes après le dernier clignement avant l'apparition de la première zone sèche ; moins de 10 secondes est considéré comme anormal.",
+    "Selon UT Southwestern, la cornée est environ 300 fois plus sensible que la peau ; si les lésions de la cornée s'accumulent, une perte de vision permanente peut survenir.",
+    "Selon l'Académie américaine d'ophtalmologie, moins cligner provoque brûlures, sensation de sable, larmoiement accru et vision floue ; cela peut entraîner ulcères, perforation et cicatrices de la cornée menant à une perte de vision.",
+    "Selon University of Utah Health, un adulte cligne des yeux environ 15 fois par minute, soit 900 fois par heure ; devant un téléphone ou un ordinateur, ce chiffre baisse de 50 %.",
+    "Selon l'Université de Washington, un clignement dure de 0,10 à 0,15 seconde ; pendant ce temps, les zones visuelles du cerveau sont mises en sourdine, ce qui expliquerait pourquoi on ne remarque pas l'obscurité."
+   ]
+  },
+  "de": {
+   "title": "Würdest Du Blind, Wenn Du Nicht Mehr Blinzeln Würdest?",
+   "summary": "Würdest du aufhören zu blinzeln, würde der Tränenfilm auf deinem Auge nach 10 Sekunden aufreißen, und am Ende könnte deine Hornhaut so verletzt werden, dass du erblindest! Professor Pi erklärt, warum deine Hornhaut, 300-mal empfindlicher als Haut, brennt, und welche Dunkelheit dein Gehirn jeden Tag vor dir versteckt.",
+   "facts": [
+    "Laut der University of Iowa hält der Tränenfilm nach dem letzten Lidschlag normalerweise mindestens 10 Sekunden, bevor die erste trockene Stelle auftaucht; unter 10 Sekunden gilt als auffällig.",
+    "Laut UT Southwestern ist die Hornhaut etwa 300-mal empfindlicher als die Haut; wenn sich Schäden an der Hornhaut häufen, kann ein dauerhafter Sehverlust folgen.",
+    "Laut der American Academy of Ophthalmology führt seltenes Blinzeln zu Brennen, Fremdkörpergefühl, verstärktem Tränenfluss und verschwommenem Sehen; es kann Hornhautgeschwüre, Durchbrüche und Narben verursachen, die zu Sehverlust führen.",
+    "Laut University of Utah Health blinzelt ein Erwachsener etwa 15-mal pro Minute, also 900-mal pro Stunde; beim Blick auf Handy oder Computer sinkt das um 50 %.",
+    "Laut der University of Washington dauert ein Lidschlag 0,10 bis 0,15 Sekunden; währenddessen werden die Sehzentren des Gehirns gedämpft, weshalb wir die Dunkelheit vermutlich nicht bemerken."
+   ]
+  },
+  "ru": {
+   "title": "Ослепнешь Ли Ты, Если Перестанешь Моргать?",
+   "summary": "Если перестать моргать, через 10 секунд слёзная плёнка на глазу начнёт разрываться, а в итоге роговица может пострадать так, что ты ослепнешь! Профессор Пи объясняет, почему горит роговица, которая в 300 раз чувствительнее кожи, и какую темноту твой мозг каждый день от тебя прячет.",
+   "facts": [
+    "По данным Университета Айовы, слёзная плёнка после последнего моргания обычно держится не меньше 10 секунд, прежде чем появится первое сухое пятно; меньше 10 секунд считается отклонением.",
+    "По данным UT Southwestern, роговица примерно в 300 раз чувствительнее кожи; если повреждения роговицы накапливаются, зрение можно потерять навсегда.",
+    "По данным Американской академии офтальмологии, редкое моргание вызывает жжение, ощущение песка, усиленное слезотечение и размытое зрение; оно может привести к язвам, перфорации и рубцам роговицы, из-за которых теряется зрение.",
+    "По данным University of Utah Health, взрослый моргает примерно 15 раз в минуту, то есть 900 раз в час; когда мы смотрим в телефон или компьютер, это число падает на 50%.",
+    "По данным Вашингтонского университета, одно моргание длится 0,10–0,15 секунды; в это время зрительные области мозга подавляются, и, как считается, поэтому мы не замечаем темноты."
+   ]
+  },
+  "az": {
+   "title": "Göz Qırpmağı Dayandırsaydın, Kor Olardınmı?",
+   "summary": "Göz qırpmağı dayandırsan, 10 saniyədən sonra gözündəki göz yaşı təbəqəsi dağılmağa başlayar, sonda isə buynuz qişan elə zədələnə bilər ki, kor olarsan! Dəridən 300 dəfə həssas buynuz qişanın niyə yandığını və beyninin hər gün səndən gizlətdiyi qaranlığı Professor Pi danışır.",
+   "facts": [
+    "Ayova Universitetinə görə göz yaşı təbəqəsi son göz qırpımından sonra ilk quru ləkə yaranana qədər adətən ən azı 10 saniyə davam edir; 10 saniyədən az olması anormal sayılır.",
+    "UT Southwestern-ə görə buynuz qişa dəridən təxminən 300 dəfə həssasdır; buynuz qişadakı zədələr yığılarsa, görmə həmişəlik itə bilər.",
+    "Amerika Oftalmologiya Akademiyasına görə az göz qırpmaq yanma, qum hissi, artan göz yaşı və bulanıq görmə yaradır; bu, buynuz qişada xora, deşilmə və görməni itirən çapıqlara səbəb ola bilər.",
+    "University of Utah Health-ə görə yetkin insan dəqiqədə təxminən 15, saatda 900 dəfə göz qırpır; telefona və ya kompüterə baxanda bu 50% azalır.",
+    "Vaşinqton Universitetinə görə bir göz qırpımı 0,10–0,15 saniyə çəkir; bu zaman beynin görmə sahələri basdırılır və qaranlığı hiss etməməyimizin səbəbinin bu olduğu düşünülür."
+   ]
+  }
+ }
+}
