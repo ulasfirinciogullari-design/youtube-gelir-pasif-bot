@@ -195,6 +195,11 @@
     1793950645,
     "r",
     "Ugyi23_JXFU93EkFU294AaABAg.Acra1ESqGcKAcraQ4egbJf"
+   ],
+   "UgzZyk2EnBYVbfEVWRZ4AaABAg": [
+    1794076121,
+    "r",
+    "UgzZyk2EnBYVbfEVWRZ4AaABAg.AcvKh70EqpSAcvKjyVMSjq"
    ]
   },
   "son": [
@@ -419,6 +424,12 @@
     "video": "kzDr9prfHSw",
     "comment": "Hadi uzun",
     "reply": "Hemen uzatıyoruz, Ay o kadar uzak ki araya diğer tüm gezegenler sığabiliyor! 🌙\n— Bit 🤖"
+   },
+   {
+    "at": 1794076121,
+    "video": "HVyvxH-huIc",
+    "comment": "60 saniye durdum",
+    "reply": "Iowa Universitesine gore normalde gozyaşı tabakası ilk kuru lekeye kadar en az 10 saniye dayanır. 60 saniye boyunca kırpmamak korneada ciddi kuruluk ve hasar riskine yol açabilir.\n— Profesör Pi 🔭"
    }
   ],
   "sayilar": {
@@ -570,10 +581,10 @@
  "nobet": {
   "basladi": "2026-11-07T13:08:37+00:00",
   "run": "42374808407",
-  "tur": 310,
+  "tur": 321,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-07T18:17:39+00:00"
+  "son_tur": "2026-11-07T18:28:41+00:00"
  }
 }
