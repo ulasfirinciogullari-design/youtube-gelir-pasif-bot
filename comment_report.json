@@ -1,38 +1,22 @@
 {
- "started": "2026-11-07T08:45:11+00:00",
+ "started": "2026-11-07T15:45:11+00:00",
  "deneme": false,
- "threads": 101,
+ "threads": 100,
  "reply_threads_read": 0,
- "new": 3,
+ "new": 1,
  "quiet": 0,
- "sent_last_24h": 4,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugxr9ypSeSDNXt6uHh14AaABAg",
-   "kind": "comment",
-   "video": "cIZHhqGAemo",
-   "comment": "*_-cr7-_*",
-   "reply": "Klavye coşmuş sanki! 😄",
-   "result": "gönderildi"
-  },
-  {
-   "id": "UgxOaB45NTrSbG3Yhwp4AaABAg",
+   "id": "Ugz3VDYkEPa03hlCqYV4AaABAg",
    "kind": "comment",
    "video": "6iVJA8girRE",
-   "comment": "🧑‍🎄🧑‍🎄🧑‍🎄🧑‍🎄🧑‍🎄🧑‍🎄🧑‍🎄🧑‍🎄",
-   "reply": "Ne güzel emojiler, teşekkürler! 😊",
-   "result": "gönderildi"
-  },
-  {
-   "id": "Ugy6RDUZbhFx91pBHoN4AaABAg",
-   "kind": "comment",
-   "video": "mR4H7MKxBP8",
-   "comment": "7 yaşında",
-   "reply": "Ah, o meşhur 7 yaş kuralı! Ama köpeğinizin yaşı aslında düşündüğünüzden farklı olabilirmiş. 😉",
+   "comment": "Bunu gerçek bir bilgiymiş gibi anlatma bir teoriye göer öyle ve kanıtlanması imkansız yani insan düşüncesi",
+   "reply": "Aslında bu, bilim dünyasında geniş kabul görmüş bir gerçek. Kuşların dinozorlardan evrimleştiği fosil ve genetik kanıtlarla destekleniyor. 🦕",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-07T08:45:18+00:00"
+ "finished": "2026-11-07T15:45:19+00:00"
 }

@@ -186,6 +186,12 @@
    "r",
    "Ugy6RDUZbhFx91pBHoN4AaABAg.Act3uU3rlYgAcuHzBYZL3b",
    "UCUJ64gcOgyC6uN_zdTXPU_w"
+  ],
+  "Ugz3VDYkEPa03hlCqYV4AaABAg": [
+   1794066311,
+   "r",
+   "Ugz3VDYkEPa03hlCqYV4AaABAg.AcuxBNYlL64Acv22WLmhd2",
+   "UCqU77QlJPn2RN6ABLSioFEA"
   ]
  },
  "tracked": {
@@ -235,6 +241,11 @@
    "at": 1794041112,
    "n": 1,
    "reply": "Ah, o meşhur 7 yaş kuralı! Ama köpeğinizin yaşı aslında düşündüğünüzden farklı olabilirmiş. 😉"
+  },
+  "Ugz3VDYkEPa03hlCqYV4AaABAg": {
+   "at": 1794066311,
+   "n": 1,
+   "reply": "Aslında bu, bilim dünyasında geniş kabul görmüş bir gerçek. Kuşların dinozorlardan evrimleştiği fosil ve genetik kanıtlarla destekleniyor. 🦕"
   }
  },
  "channel": {
@@ -403,6 +414,12 @@
    "video": "mR4H7MKxBP8",
    "comment": "7 yaşında",
    "reply": "Ah, o meşhur 7 yaş kuralı! Ama köpeğinizin yaşı aslında düşündüğünüzden farklı olabilirmiş. 😉"
+  },
+  {
+   "at": 1794066311,
+   "video": "6iVJA8girRE",
+   "comment": "Bunu gerçek bir bilgiymiş gibi anlatma bir teoriye göer öyle ve kanıtlanması imkansız yani insan düşüncesi",
+   "reply": "Aslında bu, bilim dünyasında geniş kabul görmüş bir gerçek. Kuşların dinozorlardan evrimleştiği fosil ve genetik kanıtlarla destekleniyor. 🦕"
   }
  ]
 }
