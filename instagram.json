@@ -41,16 +41,17 @@
   "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
   "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
   "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
-  "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/"
+  "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
+  "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/"
  },
  "nobet": {
   "basladi": "2026-11-07T13:07:56+00:00",
   "run": "42374756342",
-  "tur": 32,
+  "tur": 54,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-07T13:38:57+00:00"
+  "son_tur": "2026-11-07T14:01:59+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -276,6 +277,13 @@
    "at": 1794045689,
    "title": "Tonlarca ağırlıktaki fil zıplayabilir mi? 🐘",
    "topic_id": "mk-c0052"
+  },
+  "YYvP0VE1rkM": {
+   "media_id": "18086423876709856",
+   "url": "https://www.instagram.com/reel/DfcWSxUjVcv/",
+   "at": 1794060119,
+   "title": "Kediler birbirine değil, sana miyavlar 🐱",
+   "topic_id": "mk-c0067"
   }
  }
 }
