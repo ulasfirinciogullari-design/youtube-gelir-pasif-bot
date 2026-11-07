@@ -1,18 +1,71 @@
 {
- "started": "2026-11-07T17:07:12+00:00",
- "mod": "igbolum",
- "gate": "instagram: g010",
+ "started": "2026-11-07T18:06:45+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
- "chars": 360,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18086630936709782",
-  "url": "https://www.instagram.com/reel/DfcrqIAAlHg/",
-  "at": 1794071353.1929417
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "56",
+  "videos": "52"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfcrqIAAlHg/"
+ "credits_before": [
+  90050,
+  613902
  ],
- "finished": "2026-11-07T17:09:13+00:00"
+ "kuyruk": {
+  "dosya": "20261107-2-n011.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "n011",
+  "series": "Ne Kadar Büyük?",
+  "q": "Everest ne kadar yüksek?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 404,
+ "duration": 25.9,
+ "title": "Everest Gerçekte Ne Kadar Yüksek?",
+ "url": "https://youtube.com/shorts/xRibz7N8GmY",
+ "recent_status": {
+  "y039": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "984",
+   "reason": null
+  },
+  "g008": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "495",
+   "reason": null
+  },
+  "y020": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1063",
+   "reason": null
+  },
+  "y033": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "16",
+   "reason": null
+  },
+  "n011": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  90149,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261107-2-n011.json Everest ne kadar yüksek? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-07T18:07:40+00:00"
 }

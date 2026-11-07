@@ -986,7 +986,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1298",
+    "views": "1300",
     "reason": null
    }
   },
@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1065",
+    "views": "1070",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1103",
+    "views": "1104",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1004",
+    "views": "1005",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1277",
+    "views": "1282",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "810",
+    "views": "813",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1466",
+    "views": "1624",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1615",
+    "views": "1854",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1056",
+    "views": "1066",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "926",
+    "views": "935",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1081",
+    "views": "1111",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1679",
+    "views": "1746",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "982",
+    "views": "984",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "381",
+    "views": "495",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "743",
+    "views": "1063",
     "reason": null
    }
   },
@@ -1523,6 +1523,36 @@
    "thumbnail": true,
    "at": 1794060475.950626,
    "chars": 372,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "16",
+    "reason": null
+   }
+  },
+  {
+   "id": "n011",
+   "video_id": "xRibz7N8GmY",
+   "url": "https://youtube.com/shorts/xRibz7N8GmY",
+   "title": "Everest Gerçekte Ne Kadar Yüksek?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Tall Is Mount Everest Really?",
+    "es": "¿Qué Tan Alto Es Realmente el Everest?",
+    "pt": "Qual É a Altura Real do Monte Everest?",
+    "ar": "ما الارتفاع الحقيقي لجبل إيفرست؟",
+    "hi": "माउंट एवरेस्ट असल में कितना ऊँचा है?",
+    "id": "Seberapa Tinggi Gunung Everest Sebenarnya?",
+    "fr": "Quelle Est la Vraie Hauteur de l'Everest ?",
+    "de": "Wie Hoch Ist der Mount Everest Wirklich?",
+    "ru": "Насколько Высок Эверест на Самом Деле?",
+    "az": "Everest Əslində Nə Qədər Hündürdür?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794074859.2671082,
+   "chars": 404,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1582,7 +1612,8 @@
   "y039",
   "g008",
   "y020",
-  "y033"
+  "y033",
+  "n011"
  ],
  "extra": [
   {
@@ -1648,12 +1679,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-21T10:11:40+00:00",
-   "mod": "igbolum",
-   "title": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?",
-   "chars": 401
-  },
   {
    "finished": "2026-10-21T13:10:30+00:00",
    "mod": "igbolum",
@@ -2066,6 +2091,14 @@
    "mod": "igbolum",
    "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
    "chars": 360
+  },
+  {
+   "finished": "2026-11-07T18:07:40+00:00",
+   "mod": "saatlik",
+   "title": "Everest Gerçekte Ne Kadar Yüksek?",
+   "url": "https://youtube.com/shorts/xRibz7N8GmY",
+   "duration": 25.9,
+   "chars": 404
   }
  ],
  "last_fail": 1793568784.6201334,
