@@ -40,16 +40,17 @@
   "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
   "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
   "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
-  "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/"
+  "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
+  "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/"
  },
  "nobet": {
   "basladi": "2026-11-07T07:27:38+00:00",
   "run": "42350656480",
-  "tur": 124,
+  "tur": 154,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-07T09:30:39+00:00"
+  "son_tur": "2026-11-07T10:01:29+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -268,6 +269,13 @@
    "at": 1793988049,
    "title": "Gözü açık hapşırmak mümkün mü? 🤧",
    "topic_id": "mk-c0055"
+  },
+  "p0eTpBxbXkc": {
+   "media_id": "17929660434431075",
+   "url": "https://www.instagram.com/reel/Dfb6xCBiDJp/",
+   "at": 1794045689,
+   "title": "Tonlarca ağırlıktaki fil zıplayabilir mi? 🐘",
+   "topic_id": "mk-c0052"
   }
  }
 }
