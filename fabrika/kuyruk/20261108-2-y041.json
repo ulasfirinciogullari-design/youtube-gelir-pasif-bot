@@ -1,0 +1,264 @@
+{
+ "id": "y041",
+ "series": "Ya Olsaydı?",
+ "q": "İnsan derisi şeffaf olsaydı ne görürdük?",
+ "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+ "bar": {
+  "hi": "DERİN",
+  "rest": "ŞEFFAF OLSA?"
+ },
+ "summary": "Bileğindeki mavi damarlar aslında koyu kırmızı; derin şeffaf olsa bunu aynada görürdün! Yüz kaslarından Güneş'in gerçek tehlikesine ve kanını saklayan cam kurbağalarına kadar Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bileğine bak: o mavi damarlar aslında koyu kırmızı!",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "💙",
+     "label": "Mavi Görünür"
+    },
+    "right": {
+     "e": "🩸",
+     "label": "Aslında Kırmızı"
+    },
+    "key": "kırmızı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Mavi kanlı değil miymişim?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👑",
+    "do": "shake",
+    "key": "kanlı",
+    "label": "Mavi Kanlı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gülümsesen yüz kaslarının derini çektiğini görürdün.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "😁",
+    "do": "pulse",
+    "key": "kaslarının",
+    "label": "Yüz Kasları"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl felaket Güneş: renksiz derinde UV kalkanı olmazdı!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "☀️",
+    "do": "burn",
+    "key": "Güneş",
+    "label": "UV Kalkanı Yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Açık tenliler bile koyu tenlilerden 70 kat fazla cilt kanseri olur!",
+   "v": {
+    "t": "compare",
+    "bg": "desert",
+    "a": {
+     "e": "✋🏿",
+     "label": "Koyu Ten",
+     "value": "1"
+    },
+    "b": {
+     "e": "✋🏻",
+     "label": "Açık Ten",
+     "value": "70"
+    },
+    "mode": "bar",
+    "key": "70"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Görünmez olmazdın: cam kurbağaları bile alyuvarlarının %89'unu saklar!",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🐸",
+    "value": "%89",
+    "unit": "alyuvar",
+    "label": "Saklanan Kan",
+    "key": "%89"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İlk neyini izlerdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "👀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre damarların mavi görünmesi bir ışık yanılsamasıdır: insan kanı hiçbir zaman mavi değildir, oksijeni azalmış kan yalnızca daha koyu kırmızıdır ve mavi ışık dokuya kırmızı ışık kadar derin giremez.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/62724-blood-in-your-veins-not-blue.html"
+  },
+  {
+   "text": "ABD Ulusal Sağlık Enstitüleri'nin (NIH) kitaplığındaki StatPearls'e göre yüzün her iki yanında yaklaşık 30 kas vardır ve mimik kasları çoğu kasın aksine kemikten çıkıp doğrudan deriye tutunarak deriyi hareket ettirir.",
+   "source": "StatPearls (NIH NCBI Bookshelf)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK493209/"
+  },
+  {
+   "text": "NIH arşivindeki Brenner ve Hearing (2008) derlemesine göre deriye rengini veren melanin UV'ye karşı kalkandır: açık ten UVB'nin %24'ünü ve UVA'nın %55'ini geçirirken koyu ten yalnızca %7,4 ve %17,5'ini geçirir; açık tenlilerin cilt kanserine yakalanma olasılığı koyu tenlilerden yaklaşık 70 kat fazladır.",
+   "source": "Photochemistry and Photobiology (NIH PMC)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2671032/"
+  },
+  {
+   "text": "Duke Üniversitesi'nden araştırmacıların da yer aldığı ve Science dergisinde yayımlanan çalışmaya göre cam kurbağaları uyurken alyuvarlarının yaklaşık %89'unu karaciğerlerinde saklayarak neredeyse tamamen şeffaflaşır, çünkü kandaki hemoglobin ışığı soğurur.",
+   "source": "Live Science (Science, Duke University)",
+   "url": "https://www.livescience.com/glassfrogs-hide-blood-in-liver"
+  }
+ ],
+ "tags": [
+  "deri",
+  "şeffaf deri",
+  "derimiz şeffaf olsaydı",
+  "damarlar neden mavi",
+  "melanin",
+  "cilt kanseri",
+  "cam kurbağası",
+  "insan vücudu",
+  "transparent skin",
+  "what if skin was transparent",
+  "why veins look blue",
+  "glass frog",
+  "melanin uv",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#deri",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/62724-blood-in-your-veins-not-blue.html",
+  "https://www.ncbi.nlm.nih.gov/books/NBK493209/",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC2671032/",
+  "https://www.livescience.com/glassfrogs-hide-blood-in-liver"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Your Skin Were Transparent, What Would You See in the Mirror?",
+   "summary": "The blue veins on your wrist are actually dark red, and with transparent skin you would see it in the mirror! Professor Pi explains what you would see, from your face muscles to the Sun's real danger and the glass frogs that hide their blood.",
+   "facts": [
+    "According to Live Science, veins looking blue is an optical illusion: human blood is never blue, blood low in oxygen is just a darker red, and blue light does not penetrate tissue as deeply as red light.",
+    "According to StatPearls on the US National Institutes of Health (NIH) bookshelf, the face has around 30 muscles on each side, and unlike most muscles, the muscles of facial expression start on bone and attach directly to the skin, moving it.",
+    "According to a 2008 review by Brenner and Hearing in the NIH archive, melanin, which gives skin its color, shields it from UV: white skin lets through 24% of UVB and 55% of UVA, while black skin lets through only 7.4% and 17.5%; people with white skin are about 70 times more likely to develop skin cancer than people with black skin.",
+    "According to a study published in Science with researchers from Duke University, sleeping glass frogs hide about 89% of their red blood cells in their liver and become almost completely transparent, because the hemoglobin in blood absorbs light."
+   ]
+  },
+  "es": {
+   "title": "Si Tu Piel Fuera Transparente, ¿Qué Verías en el Espejo?",
+   "summary": "Las venas azules de tu muñeca en realidad son rojo oscuro, ¡y con la piel transparente lo verías en el espejo! El profesor Pi te cuenta qué verías, desde los músculos de tu cara hasta el verdadero peligro del Sol y las ranas de cristal que esconden su sangre.",
+   "facts": [
+    "Según Live Science, que las venas se vean azules es una ilusión óptica: la sangre humana nunca es azul, la sangre con poco oxígeno solo es de un rojo más oscuro y la luz azul no penetra en los tejidos tan profundamente como la roja.",
+    "Según StatPearls, en la biblioteca de los Institutos Nacionales de Salud de EE. UU. (NIH), la cara tiene unos 30 músculos a cada lado y, a diferencia de la mayoría de los músculos, los de la expresión facial nacen en el hueso y se insertan directamente en la piel, moviéndola.",
+    "Según una revisión de Brenner y Hearing de 2008 en el archivo de los NIH, la melanina, que da color a la piel, la protege de los rayos UV: la piel blanca deja pasar el 24% de los UVB y el 55% de los UVA, mientras que la piel negra solo deja pasar el 7,4% y el 17,5%; las personas de piel blanca tienen unas 70 veces más probabilidades de sufrir cáncer de piel que las de piel negra.",
+    "Según un estudio publicado en Science con investigadores de la Universidad Duke, las ranas de cristal, mientras duermen, esconden cerca del 89% de sus glóbulos rojos en el hígado y se vuelven casi totalmente transparentes, porque la hemoglobina de la sangre absorbe la luz."
+   ]
+  },
+  "pt": {
+   "title": "Se Sua Pele Fosse Transparente, o Que Você Veria no Espelho?",
+   "summary": "As veias azuis do seu pulso na verdade são vermelho-escuras, e com a pele transparente você veria isso no espelho! O professor Pi conta o que você veria, dos músculos do rosto ao verdadeiro perigo do Sol e às rãs-de-vidro que escondem o próprio sangue.",
+   "facts": [
+    "Segundo a Live Science, as veias parecerem azuis é uma ilusão de óptica: o sangue humano nunca é azul, o sangue com pouco oxigênio é apenas de um vermelho mais escuro e a luz azul não penetra nos tecidos tão fundo quanto a vermelha.",
+    "Segundo o StatPearls, na biblioteca dos Institutos Nacionais de Saúde dos EUA (NIH), o rosto tem cerca de 30 músculos de cada lado e, ao contrário da maioria dos músculos, os da expressão facial saem do osso e se prendem diretamente à pele, movendo-a.",
+    "Segundo uma revisão de Brenner e Hearing de 2008 no arquivo dos NIH, a melanina, que dá cor à pele, a protege dos raios UV: a pele branca deixa passar 24% dos UVB e 55% dos UVA, enquanto a pele negra deixa passar só 7,4% e 17,5%; pessoas de pele branca têm cerca de 70 vezes mais chance de ter câncer de pele do que pessoas de pele negra.",
+    "Segundo um estudo publicado na Science com pesquisadores da Universidade Duke, as rãs-de-vidro, enquanto dormem, escondem cerca de 89% das hemácias no fígado e ficam quase totalmente transparentes, porque a hemoglobina do sangue absorve a luz."
+   ]
+  },
+  "ar": {
+   "title": "لو كانت بشرتك شفافة، ماذا كنت سترى في المرآة؟",
+   "summary": "العروق الزرقاء في معصمك حمراء داكنة في الحقيقة، ولو كانت بشرتك شفافة لرأيت ذلك في المرآة! يشرح البروفيسور باي ما كنت ستراه، من عضلات وجهك إلى الخطر الحقيقي للشمس والضفادع الزجاجية التي تخبّئ دمها.",
+   "facts": [
+    "وفقًا لموقع Live Science، فإن ظهور العروق باللون الأزرق خداع بصري: دم الإنسان ليس أزرق أبدًا، والدم القليل الأكسجين أحمر أغمق فقط، والضوء الأزرق لا يخترق الأنسجة بعمق الضوء الأحمر.",
+    "وفقًا لمرجع StatPearls في مكتبة المعاهد الوطنية الأمريكية للصحة (NIH)، يحتوي الوجه على نحو 30 عضلة في كل جانب، وعلى عكس معظم العضلات تنشأ عضلات تعابير الوجه من العظم وتتصل بالجلد مباشرة فتحرّكه.",
+    "وفقًا لمراجعة برينر وهيرينغ (2008) في أرشيف NIH، فإن الميلانين الذي يمنح الجلد لونه يحميه من الأشعة فوق البنفسجية: تمرّر البشرة البيضاء 24% من UVB و55% من UVA، بينما لا تمرّر البشرة السوداء سوى 7.4% و17.5%؛ واحتمال إصابة ذوي البشرة البيضاء بسرطان الجلد أعلى بنحو 70 مرة من ذوي البشرة السوداء.",
+    "وفقًا لدراسة نُشرت في مجلة Science بمشاركة باحثين من جامعة ديوك، تخبّئ الضفادع الزجاجية أثناء نومها نحو 89% من خلايا دمها الحمراء في الكبد فتصبح شبه شفافة تمامًا، لأن الهيموغلوبين في الدم يمتص الضوء."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम्हारी त्वचा पारदर्शी होती, तो आईने में क्या दिखता?",
+   "summary": "तुम्हारी कलाई की नीली नसें असल में गहरी लाल हैं, और पारदर्शी त्वचा होती तो तुम इसे आईने में देख लेते! चेहरे की मांसपेशियों से लेकर सूरज के असली ख़तरे और अपना ख़ून छिपाने वाले ग्लास फ़्रॉग तक, प्रोफ़ेसर पाई बताते हैं कि तुम्हें क्या दिखता।",
+   "facts": [
+    "Live Science के अनुसार, नसों का नीला दिखना एक दृष्टि-भ्रम है: इंसान का ख़ून कभी नीला नहीं होता, कम ऑक्सीजन वाला ख़ून बस गहरा लाल होता है, और नीली रोशनी ऊतकों में लाल रोशनी जितनी गहराई तक नहीं जाती।",
+    "अमेरिकी नेशनल इंस्टीट्यूट्स ऑफ़ हेल्थ (NIH) की लाइब्रेरी में StatPearls के अनुसार, चेहरे के हर तरफ़ लगभग 30 मांसपेशियाँ होती हैं, और ज़्यादातर मांसपेशियों के उलट, हाव-भाव की मांसपेशियाँ हड्डी से निकलकर सीधे त्वचा से जुड़ती हैं और उसे हिलाती हैं।",
+    "NIH आर्काइव में ब्रेनर और हियरिंग की 2008 की समीक्षा के अनुसार, त्वचा को रंग देने वाला मेलानिन उसे UV से बचाता है: गोरी त्वचा 24% UVB और 55% UVA को अंदर जाने देती है, जबकि काली त्वचा सिर्फ़ 7.4% और 17.5% को; गोरी त्वचा वाले लोगों में त्वचा कैंसर की संभावना काली त्वचा वालों से लगभग 70 गुना ज़्यादा है।",
+    "Duke यूनिवर्सिटी के शोधकर्ताओं वाले और Science पत्रिका में छपे अध्ययन के अनुसार, ग्लास फ़्रॉग सोते समय अपनी लगभग 89% लाल रक्त कोशिकाएँ जिगर में छिपा लेते हैं और लगभग पूरी तरह पारदर्शी हो जाते हैं, क्योंकि ख़ून का हीमोग्लोबिन रोशनी सोख लेता है।"
+   ]
+  },
+  "id": {
+   "title": "Kalau Kulitmu Transparan, Apa yang Kamu Lihat di Cermin?",
+   "summary": "Urat biru di pergelangan tanganmu sebenarnya merah tua, dan dengan kulit transparan kamu akan melihatnya di cermin! Profesor Pi menjelaskan apa yang akan kamu lihat, dari otot wajah hingga bahaya Matahari yang sebenarnya dan katak kaca yang menyembunyikan darahnya.",
+   "facts": [
+    "Menurut Live Science, urat yang tampak biru adalah ilusi optik: darah manusia tidak pernah biru, darah yang kurang oksigen hanya berwarna merah lebih gelap, dan cahaya biru tidak menembus jaringan sedalam cahaya merah.",
+    "Menurut StatPearls di perpustakaan Institut Kesehatan Nasional AS (NIH), wajah punya sekitar 30 otot di tiap sisinya, dan tidak seperti kebanyakan otot, otot ekspresi wajah berpangkal di tulang dan menempel langsung ke kulit sehingga menggerakkannya.",
+    "Menurut tinjauan Brenner dan Hearing tahun 2008 di arsip NIH, melanin yang memberi warna kulit melindunginya dari UV: kulit putih meloloskan 24% UVB dan 55% UVA, sedangkan kulit hitam hanya 7,4% dan 17,5%; orang berkulit putih sekitar 70 kali lebih mungkin terkena kanker kulit dibanding orang berkulit hitam.",
+    "Menurut studi di jurnal Science yang melibatkan peneliti Duke University, katak kaca yang sedang tidur menyembunyikan sekitar 89% sel darah merahnya di hati dan menjadi hampir sepenuhnya transparan, karena hemoglobin dalam darah menyerap cahaya."
+   ]
+  },
+  "fr": {
+   "title": "Si Ta Peau Était Transparente, Que Verrais-Tu dans le Miroir ?",
+   "summary": "Les veines bleues de ton poignet sont en réalité rouge foncé, et avec une peau transparente tu le verrais dans le miroir ! Le professeur Pi t'explique ce que tu verrais, des muscles de ton visage au vrai danger du Soleil et aux grenouilles de verre qui cachent leur sang.",
+   "facts": [
+    "Selon Live Science, les veines qui paraissent bleues sont une illusion d'optique : le sang humain n'est jamais bleu, le sang pauvre en oxygène est seulement d'un rouge plus foncé, et la lumière bleue pénètre moins profondément dans les tissus que la lumière rouge.",
+    "Selon StatPearls, dans la bibliothèque des Instituts nationaux de la santé américains (NIH), le visage compte environ 30 muscles de chaque côté et, contrairement à la plupart des muscles, les muscles de l'expression partent de l'os et s'attachent directement à la peau, qu'ils font bouger.",
+    "Selon une revue de Brenner et Hearing publiée en 2008 et archivée par les NIH, la mélanine, qui donne sa couleur à la peau, la protège des UV : la peau blanche laisse passer 24 % des UVB et 55 % des UVA, contre seulement 7,4 % et 17,5 % pour la peau noire ; les personnes à peau blanche ont environ 70 fois plus de risques de développer un cancer de la peau que celles à peau noire.",
+    "Selon une étude publiée dans Science avec des chercheurs de l'université Duke, les grenouilles de verre cachent pendant leur sommeil environ 89 % de leurs globules rouges dans leur foie et deviennent presque entièrement transparentes, car l'hémoglobine du sang absorbe la lumière."
+   ]
+  },
+  "de": {
+   "title": "Wäre Deine Haut Durchsichtig, Was Würdest Du im Spiegel Sehen?",
+   "summary": "Die blauen Adern an deinem Handgelenk sind in Wahrheit dunkelrot, und mit durchsichtiger Haut würdest du das im Spiegel sehen! Professor Pi erklärt, was du sehen würdest, von deinen Gesichtsmuskeln bis zur echten Gefahr der Sonne und den Glasfröschen, die ihr Blut verstecken.",
+   "facts": [
+    "Laut Live Science ist das Blau der Venen eine optische Täuschung: Menschliches Blut ist nie blau, sauerstoffarmes Blut ist nur dunkler rot, und blaues Licht dringt nicht so tief ins Gewebe ein wie rotes Licht.",
+    "Laut StatPearls in der Bibliothek der US-Gesundheitsinstitute (NIH) hat das Gesicht auf jeder Seite rund 30 Muskeln, und anders als die meisten Muskeln entspringen die mimischen Muskeln am Knochen und setzen direkt an der Haut an, die sie bewegen.",
+    "Laut einer Übersichtsarbeit von Brenner und Hearing aus dem Jahr 2008 im NIH-Archiv schützt Melanin, das der Haut ihre Farbe gibt, vor UV-Strahlung: Weiße Haut lässt 24 % der UVB- und 55 % der UVA-Strahlung durch, schwarze Haut nur 7,4 % und 17,5 %; Menschen mit weißer Haut erkranken etwa 70-mal häufiger an Hautkrebs als Menschen mit schwarzer Haut.",
+    "Laut einer in Science veröffentlichten Studie mit Forschenden der Duke University verstecken Glasfrösche im Schlaf etwa 89 % ihrer roten Blutkörperchen in der Leber und werden fast völlig durchsichtig, weil das Hämoglobin im Blut Licht absorbiert."
+   ]
+  },
+  "ru": {
+   "title": "Если Бы Твоя Кожа Была Прозрачной, Что Бы Ты Увидел в Зеркале?",
+   "summary": "Синие вены на твоём запястье на самом деле тёмно-красные, и с прозрачной кожей ты увидел бы это в зеркале! Профессор Пи рассказывает, что бы ты увидел, — от мышц лица до настоящей опасности Солнца и стеклянных лягушек, которые прячут свою кровь.",
+   "facts": [
+    "По данным Live Science, синий цвет вен — оптическая иллюзия: кровь человека никогда не бывает синей, бедная кислородом кровь просто более тёмная, а синий свет проникает в ткани не так глубоко, как красный.",
+    "Согласно StatPearls в библиотеке Национальных институтов здравоохранения США (NIH), на каждой стороне лица около 30 мышц, и, в отличие от большинства мышц, мимические мышцы начинаются на кости и крепятся прямо к коже, двигая её.",
+    "Согласно обзору Бреннера и Хиринга 2008 года в архиве NIH, меланин, придающий коже цвет, защищает её от ультрафиолета: светлая кожа пропускает 24% UVB и 55% UVA, а тёмная — лишь 7,4% и 17,5%; у людей со светлой кожей рак кожи развивается примерно в 70 раз чаще, чем у людей с тёмной кожей.",
+    "Согласно исследованию, опубликованному в Science при участии учёных Университета Дьюка, спящие стеклянные лягушки прячут в печени около 89% своих эритроцитов и становятся почти полностью прозрачными, потому что гемоглобин крови поглощает свет."
+   ]
+  },
+  "az": {
+   "title": "Dərin Şəffaf Olsaydı, Güzgüdə Nə Görərdin?",
+   "summary": "Biləyindəki göy damarlar əslində tünd qırmızıdır və dərin şəffaf olsaydı, bunu güzgüdə görərdin! Üz əzələlərindən Günəşin əsl təhlükəsinə və qanını gizlədən şüşə qurbağalara qədər Professor Pi danışır.",
+   "facts": [
+    "Live Science-ə görə damarların göy görünməsi optik illüziyadır: insan qanı heç vaxt göy olmur, oksigeni az olan qan sadəcə daha tünd qırmızıdır, göy işıq isə toxumaya qırmızı işıq qədər dərindən keçmir.",
+    "ABŞ Milli Səhiyyə İnstitutlarının (NIH) kitabxanasındakı StatPearls-ə görə üzün hər tərəfində təxminən 30 əzələ var və əksər əzələlərdən fərqli olaraq mimika əzələləri sümükdən başlayıb birbaşa dəriyə bağlanır və onu hərəkət etdirir.",
+    "NIH arxivindəki Brenner və Hirinqin 2008-ci il icmalına görə dəriyə rəng verən melanin onu UV-dən qoruyur: ağ dəri UVB-nin 24%-ni, UVA-nın 55%-ni keçirir, qara dəri isə cəmi 7,4% və 17,5%-ni; ağ dərili insanlarda dəri xərçənginə tutulma ehtimalı qara dərililərdən təxminən 70 dəfə çoxdur.",
+    "Duke Universitetinin tədqiqatçılarının da iştirak etdiyi və Science jurnalında dərc olunan araşdırmaya görə şüşə qurbağalar yatarkən qırmızı qan hüceyrələrinin təxminən 89%-ni qaraciyərdə gizlədir və demək olar ki, tamamilə şəffaflaşır, çünki qandakı hemoqlobin işığı udur."
+   ]
+  }
+ }
+}

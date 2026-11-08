@@ -1,0 +1,283 @@
+{
+ "id": "y036",
+ "series": "Ya Olsaydı?",
+ "q": "Ay Dünya'ya çarpsaydı ne olurdu?",
+ "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
+ "bar": {
+  "hi": "AY",
+  "rest": "DÜNYA'YA ÇARPSA?"
+ },
+ "summary": "Ay Dünya'ya çarpsaydı kaçacak yer olmazdı: yeryüzü magma denizine dönerdi! 8 kat yükselen gelgitlerden gökte paramparça olan Ay'a ve başına yağan kayalara kadar o günü Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Kaçacak yer yok: Ay çarpsa yeryüzü magma denizine dönerdi!",
+   "v": {
+    "t": "split",
+    "bg": "volcano",
+    "left": {
+     "e": "🌍",
+     "label": "Yeryüzü"
+    },
+    "right": {
+     "e": "🌋",
+     "label": "Magma Denizi"
+    },
+    "key": "magma"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sığınağım da mı erir?!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🛖",
+    "do": "burn",
+    "key": "Sığınağım",
+    "label": "Sığınak"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Önce Ay büyür; yarı yolda gelgitler 8 kat yükselip kıyıları yutar.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "8",
+    "unit": "kat",
+    "label": "Gelgit",
+    "key": "8"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ay şu an bile toprağı 20 cm'ye kadar kaldırıyor; o gün yanardağlar uyanır!",
+   "v": {
+    "t": "meter",
+    "bg": "city",
+    "label": "Toprak Gelgiti",
+    "from": 0,
+    "to": 20,
+    "unit": "cm",
+    "e": "🦶",
+    "key": "20"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gökte 20 kat büyüyünce Ay paramparça olur, dev bir halkaya döner.",
+   "v": {
+    "t": "space",
+    "bg": "night",
+    "bodies": [
+     {
+      "b": "moon",
+      "size": "xl",
+      "at": "t"
+     },
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "b"
+     }
+    ],
+    "do": "explode",
+    "target": 0,
+    "key": "paramparça",
+    "label": "20 Kat Büyük Ay"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra o kayalar başına yağar!",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "ÖNCE",
+      "e": "🌊",
+      "label": "Dev Gelgit"
+     },
+     {
+      "when": "SONRA",
+      "e": "💥",
+      "label": "Ay Parçalanır"
+     },
+     {
+      "when": "EN SON",
+      "e": "☄️",
+      "label": "Kaya Yağmuru"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Son geceni nerede geçirirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🌕"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Washington Üniversitesi (St. Louis) gezegen bilimcisi Paul Byrne'a göre Ay'ın Dünya'ya çarpması gezegeni bir magma okyanusuna ve parlayan dev bir buhar bulutuna çevirirdi; Byrne'ın deyişiyle hiçbir sığınak seni kurtaramazdı.",
+   "source": "Inverse (Paul Byrne, Washington University in St. Louis)",
+   "url": "https://inverse.com/science/moonfall-moon-crash-into-earth-real-science"
+  },
+  {
+   "text": "Maine Üniversitesi fizikçisi Neil Comins'e göre Ay bugünkü uzaklığının yarısına gelse gelgitler 8 kat yükselir ve kalabalık kıyılar yaşanmaz hale gelir; volkanolog Jazmin Scarlett'e göre bu çekim daha fazla deprem ve yanardağ patlamasını tetikleyebilir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/what-if-moon-closer-to-earth.html"
+  },
+  {
+   "text": "Central Florida Üniversitesi'nin yayımladığı OpenStax Astronomi kitabına göre Ay'ın gelgit kuvveti katı yeryüzünü de esnetir; bu şekil değişimi en fazla yaklaşık 20 cm'dir.",
+   "source": "OpenStax Astronomy (University of Central Florida)",
+   "url": "https://pressbooks.online.ucf.edu/astronomybc/chapter/4-6-ocean-tides-and-the-moon/"
+  },
+  {
+   "text": "Space.com'a göre Ay, Roche sınırı denen 18.470 km'ye kadar yaklaşırsa gelgit kuvvetleri onu parçalar, parçaları ekvatorun üstünde 37.000 km çaplı, Satürn benzeri bir halka olur ve sonunda yeryüzüne yağar; bu mesafe Ay'ın bugünkü yaklaşık 384.400 km'lik uzaklığının 20'de 1'i olduğundan Ay gökte yaklaşık 20 kat büyük görünür.",
+   "source": "Space.com",
+   "url": "https://www.space.com/3373-earth-moon-destined-disintegrate.html"
+  }
+ ],
+ "tags": [
+  "ay",
+  "ay dünyaya çarparsa",
+  "ay düşerse ne olur",
+  "ay dünyaya düşseydi",
+  "gelgit",
+  "roche sınırı",
+  "magma okyanusu",
+  "uzay",
+  "moon crash earth",
+  "what if the moon crashed into earth",
+  "moonfall",
+  "roche limit",
+  "tides",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://www.livescience.com/what-if-moon-closer-to-earth.html",
+  "https://www.space.com/3373-earth-moon-destined-disintegrate.html",
+  "https://pressbooks.online.ucf.edu/astronomybc/chapter/4-6-ocean-tides-and-the-moon/",
+  "https://inverse.com/science/moonfall-moon-crash-into-earth-real-science"
+ ],
+ "i18n": {
+  "en": {
+   "title": "Would You Survive If the Moon Hit Earth?",
+   "summary": "If the Moon hit Earth, there would be nowhere to run: the surface would turn into a sea of magma! Professor Pi walks you through that day, from tides 8 times higher to the Moon shattering in the sky and its rocks raining down on you.",
+   "facts": [
+    "According to planetary scientist Paul Byrne of Washington University in St. Louis, a Moon impact would turn Earth into a magma ocean and a giant glowing vapor cloud; in his words, no bunker would save you.",
+    "According to University of Maine physicist Neil Comins, if the Moon came to half its current distance, tides would be 8 times higher and populated coastlines would become uninhabitable; volcanologist Jazmin Scarlett says the pull could trigger more earthquakes and volcanic eruptions.",
+    "According to the OpenStax Astronomy textbook published by the University of Central Florida, the Moon's tidal pull also deforms the solid Earth, by up to about 20 cm.",
+    "According to Space.com, if the Moon came within the Roche limit of 18,470 km, tidal forces would tear it apart; its pieces would form a Saturn-like ring 37,000 km across above the equator and eventually rain down on Earth. That distance is about 1/20 of the Moon's current distance of about 384,400 km, so the Moon would look about 20 times bigger in the sky."
+   ]
+  },
+  "es": {
+   "title": "¿Sobrevivirías Si la Luna Chocara Contra la Tierra?",
+   "summary": "Si la Luna chocara contra la Tierra, no habría a dónde huir: ¡la superficie se convertiría en un mar de magma! El profesor Pi te cuenta ese día, desde mareas 8 veces más altas hasta la Luna haciéndose pedazos en el cielo y sus rocas cayendo sobre ti.",
+   "facts": [
+    "Según el científico planetario Paul Byrne, de la Universidad Washington en San Luis, un choque de la Luna convertiría la Tierra en un océano de magma y una gigantesca nube de vapor incandescente; en sus palabras, ningún búnker te salvaría.",
+    "Según el físico Neil Comins, de la Universidad de Maine, si la Luna se acercara a la mitad de su distancia actual, las mareas serían 8 veces más altas y las costas pobladas se volverían inhabitables; la vulcanóloga Jazmin Scarlett afirma que esa atracción podría desencadenar más terremotos y erupciones volcánicas.",
+    "Según el libro de texto OpenStax Astronomy, publicado por la Universidad de Florida Central, la fuerza de marea de la Luna también deforma la Tierra sólida, hasta unos 20 cm.",
+    "Según Space.com, si la Luna llegara al límite de Roche, a 18.470 km, las fuerzas de marea la despedazarían; sus fragmentos formarían sobre el ecuador un anillo como el de Saturno de 37.000 km de diámetro y acabarían cayendo sobre la Tierra. Esa distancia es cerca de 1/20 de la distancia actual de la Luna, de unos 384.400 km, así que la Luna se vería unas 20 veces más grande en el cielo."
+   ]
+  },
+  "pt": {
+   "title": "Você Sobreviveria Se a Lua Batesse na Terra?",
+   "summary": "Se a Lua batesse na Terra, não haveria para onde fugir: a superfície viraria um mar de magma! O professor Pi conta esse dia, das marés 8 vezes mais altas à Lua se despedaçando no céu e suas rochas caindo sobre você.",
+   "facts": [
+    "Segundo o cientista planetário Paul Byrne, da Universidade Washington em St. Louis, um impacto da Lua transformaria a Terra em um oceano de magma e uma gigantesca nuvem de vapor incandescente; nas palavras dele, nenhum bunker salvaria você.",
+    "Segundo o físico Neil Comins, da Universidade do Maine, se a Lua chegasse à metade da distância atual, as marés seriam 8 vezes mais altas e litorais povoados ficariam inabitáveis; a vulcanóloga Jazmin Scarlett diz que essa atração poderia desencadear mais terremotos e erupções vulcânicas.",
+    "Segundo o livro OpenStax Astronomy, publicado pela Universidade da Flórida Central, a força de maré da Lua também deforma a Terra sólida, em até cerca de 20 cm.",
+    "Segundo o Space.com, se a Lua chegasse ao limite de Roche, a 18.470 km, as forças de maré a despedaçariam; seus pedaços formariam acima do equador um anel parecido com o de Saturno, com 37.000 km de diâmetro, e acabariam caindo na Terra. Essa distância é cerca de 1/20 da distância atual da Lua, de uns 384.400 km, então a Lua pareceria umas 20 vezes maior no céu."
+   ]
+  },
+  "ar": {
+   "title": "هل كنت ستنجو لو اصطدم القمر بالأرض؟",
+   "summary": "لو اصطدم القمر بالأرض لما وُجد مكان للهرب: سيتحول سطح الأرض إلى بحر من الصهارة! يحكي لك البروفيسور باي ذلك اليوم، من مدٍّ أعلى بـ8 مرات إلى تحطم القمر في السماء وتساقط صخوره عليك.",
+   "facts": [
+    "وفقًا لعالم الكواكب بول بيرن من جامعة واشنطن في سانت لويس، فإن اصطدام القمر سيحوّل الأرض إلى محيط من الصهارة وسحابة بخار متوهجة عملاقة؛ وعلى حد قوله، لن ينقذك أي ملجأ.",
+    "وفقًا للفيزيائي نيل كومينز من جامعة مين، لو اقترب القمر إلى نصف مسافته الحالية لصار المد أعلى بـ8 مرات ولأصبحت السواحل المأهولة غير صالحة للسكن؛ وتقول عالمة البراكين جازمين سكارليت إن هذا الجذب قد يثير مزيدًا من الزلازل والثورات البركانية.",
+    "وفقًا لكتاب OpenStax لعلم الفلك الصادر عن جامعة سنترال فلوريدا، فإن قوة المد القمرية تشوّه الأرض الصلبة أيضًا بما يصل إلى نحو 20 سم.",
+    "وفقًا لموقع Space.com، لو وصل القمر إلى حد روش على بُعد 18,470 كم لمزقته قوى المد، ولشكّلت شظاياه فوق خط الاستواء حلقة تشبه حلقات زحل قطرها 37,000 كم، ثم تتساقط في النهاية على الأرض. وهذه المسافة تعادل نحو 1/20 من المسافة الحالية للقمر البالغة نحو 384,400 كم، لذا سيبدو القمر في السماء أكبر بنحو 20 مرة."
+   ]
+  },
+  "hi": {
+   "title": "अगर चाँद धरती से टकरा जाता, तो क्या तुम बच पाते?",
+   "summary": "अगर चाँद धरती से टकरा जाए तो भागने की कोई जगह नहीं होगी: धरती की सतह मैग्मा का समुद्र बन जाएगी! 8 गुना ऊँचे ज्वार से लेकर आसमान में चाँद के टुकड़े-टुकड़े होने और उसकी चट्टानों के तुम पर बरसने तक, प्रोफ़ेसर पाई वह दिन बताते हैं।",
+   "facts": [
+    "सेंट लुइस की वॉशिंगटन यूनिवर्सिटी के ग्रह वैज्ञानिक पॉल बर्न के अनुसार, चाँद की टक्कर धरती को मैग्मा के महासागर और चमकते भाप के विशाल बादल में बदल देगी; उनके शब्दों में, कोई भी बंकर तुम्हें नहीं बचा पाएगा।",
+    "यूनिवर्सिटी ऑफ़ मेन के भौतिकविद नील कॉमिन्स के अनुसार, अगर चाँद अपनी मौजूदा दूरी के आधे पर आ जाए तो ज्वार 8 गुना ऊँचे होंगे और आबादी वाले तट रहने लायक नहीं बचेंगे; ज्वालामुखी विशेषज्ञ जैज़मिन स्कारलेट कहती हैं कि यह खिंचाव और ज़्यादा भूकंप व ज्वालामुखी विस्फोट भड़का सकता है।",
+    "यूनिवर्सिटी ऑफ़ सेंट्रल फ़्लोरिडा द्वारा प्रकाशित OpenStax खगोल विज्ञान पुस्तक के अनुसार, चाँद का ज्वारीय खिंचाव ठोस धरती को भी लगभग 20 cm तक विकृत करता है।",
+    "Space.com के अनुसार, अगर चाँद 18,470 km की रोश सीमा तक आ जाए तो ज्वारीय बल उसे चीर देंगे; उसके टुकड़े भूमध्य रेखा के ऊपर 37,000 km चौड़ा, शनि जैसा छल्ला बनाएँगे और आख़िर में धरती पर बरसेंगे। यह दूरी चाँद की मौजूदा लगभग 384,400 km की दूरी का लगभग 1/20 है, इसलिए आसमान में चाँद लगभग 20 गुना बड़ा दिखेगा।"
+   ]
+  },
+  "id": {
+   "title": "Apakah Kamu Akan Selamat Jika Bulan Menabrak Bumi?",
+   "summary": "Jika Bulan menabrak Bumi, tak ada tempat untuk lari: permukaan Bumi akan berubah jadi lautan magma! Profesor Pi menceritakan hari itu, dari pasang surut 8 kali lebih tinggi hingga Bulan hancur berkeping-keping di langit dan batunya menghujanimu.",
+   "facts": [
+    "Menurut ilmuwan planet Paul Byrne dari Washington University di St. Louis, tabrakan Bulan akan mengubah Bumi menjadi lautan magma dan awan uap raksasa yang berpijar; menurutnya, tak ada bunker yang bisa menyelamatkanmu.",
+    "Menurut fisikawan Neil Comins dari University of Maine, jika Bulan mendekat hingga separuh jaraknya sekarang, pasang surut akan 8 kali lebih tinggi dan pesisir yang berpenduduk tak bisa lagi dihuni; vulkanolog Jazmin Scarlett mengatakan tarikan itu bisa memicu lebih banyak gempa dan letusan gunung berapi.",
+    "Menurut buku OpenStax Astronomy terbitan University of Central Florida, tarikan pasang Bulan juga mengubah bentuk Bumi padat hingga sekitar 20 cm.",
+    "Menurut Space.com, jika Bulan mencapai batas Roche di jarak 18.470 km, gaya pasang akan mencabiknya; kepingannya akan membentuk cincin mirip Saturnus selebar 37.000 km di atas khatulistiwa dan akhirnya berjatuhan ke Bumi. Jarak itu sekitar 1/20 jarak Bulan sekarang yang sekitar 384.400 km, sehingga Bulan akan tampak sekitar 20 kali lebih besar di langit."
+   ]
+  },
+  "fr": {
+   "title": "Survivrais-Tu Si la Lune Percutait la Terre ?",
+   "summary": "Si la Lune percutait la Terre, impossible de fuir : la surface deviendrait une mer de magma ! Le professeur Pi te raconte ce jour-là, des marées 8 fois plus hautes à la Lune qui vole en éclats dans le ciel et dont les roches te tombent dessus.",
+   "facts": [
+    "Selon le planétologue Paul Byrne, de l'université Washington à Saint-Louis, un impact de la Lune transformerait la Terre en océan de magma et en gigantesque nuage de vapeur incandescent ; selon lui, aucun bunker ne te sauverait.",
+    "Selon le physicien Neil Comins, de l'université du Maine, si la Lune se rapprochait à la moitié de sa distance actuelle, les marées seraient 8 fois plus hautes et les côtes peuplées deviendraient inhabitables ; la volcanologue Jazmin Scarlett estime que cette attraction pourrait déclencher davantage de séismes et d'éruptions volcaniques.",
+    "Selon le manuel OpenStax Astronomy, publié par l'université de Floride centrale, la force de marée de la Lune déforme aussi la Terre solide, jusqu'à environ 20 cm.",
+    "Selon Space.com, si la Lune atteignait la limite de Roche, à 18 470 km, les forces de marée la déchireraient ; ses morceaux formeraient au-dessus de l'équateur un anneau semblable à celui de Saturne, large de 37 000 km, puis finiraient par retomber sur Terre. Cette distance représente environ 1/20 de la distance actuelle de la Lune, d'environ 384 400 km : la Lune paraîtrait donc environ 20 fois plus grande dans le ciel."
+   ]
+  },
+  "de": {
+   "title": "Würdest Du Überleben, Wenn der Mond die Erde Trifft?",
+   "summary": "Würde der Mond die Erde treffen, gäbe es kein Entkommen: Die Oberfläche würde zu einem Meer aus Magma! Professor Pi erzählt von diesem Tag, von 8-mal höheren Gezeiten bis zum Mond, der am Himmel zerbricht und dessen Gestein auf dich herabregnet.",
+   "facts": [
+    "Laut dem Planetenforscher Paul Byrne von der Washington University in St. Louis würde ein Mondeinschlag die Erde in einen Magmaozean und eine riesige glühende Dampfwolke verwandeln; mit seinen Worten: Kein Bunker würde dich retten.",
+    "Laut dem Physiker Neil Comins von der University of Maine wären die Gezeiten 8-mal höher, wenn der Mond auf die Hälfte seiner heutigen Entfernung heranrückte, und bewohnte Küsten würden unbewohnbar; die Vulkanologin Jazmin Scarlett sagt, diese Anziehung könnte mehr Erdbeben und Vulkanausbrüche auslösen.",
+    "Laut dem Lehrbuch OpenStax Astronomy, herausgegeben von der University of Central Florida, verformt die Gezeitenkraft des Mondes auch die feste Erde, um bis zu etwa 20 cm.",
+    "Laut Space.com würden Gezeitenkräfte den Mond zerreißen, wenn er die Roche-Grenze von 18.470 km erreicht; seine Trümmer würden über dem Äquator einen saturnähnlichen Ring mit 37.000 km Durchmesser bilden und schließlich auf die Erde herabregnen. Diese Entfernung ist etwa 1/20 der heutigen Monddistanz von rund 384.400 km, daher würde der Mond am Himmel etwa 20-mal größer aussehen."
+   ]
+  },
+  "ru": {
+   "title": "Выжил Бы Ты, Если Бы Луна Врезалась в Землю?",
+   "summary": "Если бы Луна врезалась в Землю, бежать было бы некуда: поверхность превратилась бы в море магмы! Профессор Пи рассказывает об этом дне — от приливов в 8 раз выше до Луны, разлетающейся на куски прямо в небе, и её камней, падающих тебе на голову.",
+   "facts": [
+    "По словам планетолога Пола Бирна из Вашингтонского университета в Сент-Луисе, столкновение с Луной превратило бы Землю в океан магмы и гигантское раскалённое облако пара; по его словам, никакой бункер тебя не спасёт.",
+    "По словам физика Нила Коминса из Университета Мэна, если бы Луна приблизилась на половину нынешнего расстояния, приливы стали бы в 8 раз выше, а населённые побережья — непригодными для жизни; вулканолог Джазмин Скарлетт говорит, что такое притяжение могло бы вызвать больше землетрясений и извержений вулканов.",
+    "Согласно учебнику OpenStax Astronomy, изданному Университетом Центральной Флориды, приливная сила Луны деформирует и твёрдую Землю — примерно до 20 см.",
+    "По данным Space.com, если бы Луна подошла к пределу Роша на расстоянии 18 470 км, приливные силы разорвали бы её; обломки образовали бы над экватором кольцо, как у Сатурна, диаметром 37 000 км и в итоге обрушились бы на Землю. Это расстояние составляет примерно 1/20 нынешнего расстояния до Луны (около 384 400 км), поэтому Луна выглядела бы в небе примерно в 20 раз больше."
+   ]
+  },
+  "az": {
+   "title": "Ay Yerə Çırpılsaydı Sağ Qalardınmı?",
+   "summary": "Ay Yerə çırpılsaydı, qaçmağa yer olmazdı: yer səthi maqma dənizinə çevrilərdi! 8 dəfə yüksələn qabarmalardan göydə parça-parça olan Aya və başına yağan qayalara qədər o günü Professor Pi danışır.",
+   "facts": [
+    "Sent-Luisdəki Vaşinqton Universitetinin planetoloqu Pol Bernə görə Ayın Yerə çırpılması planeti maqma okeanına və parlayan nəhəng buxar buluduna çevirərdi; onun sözləri ilə, heç bir sığınacaq səni xilas etməzdi.",
+    "Men Universitetinin fiziki Nil Kominsə görə Ay indiki məsafəsinin yarısına qədər yaxınlaşsaydı, qabarmalar 8 dəfə yüksək olar, sıx məskunlaşmış sahillər yaşanmaz hala düşərdi; vulkanoloq Cazmin Skarlet deyir ki, bu cazibə daha çox zəlzələ və vulkan püskürməsinə səbəb ola bilər.",
+    "Mərkəzi Florida Universitetinin nəşr etdiyi OpenStax Astronomiya dərsliyinə görə Ayın qabarma qüvvəsi bərk Yer səthini də təxminən 20 sm-ə qədər deformasiya edir.",
+    "Space.com-a görə Ay 18.470 km-lik Roş həddinə qədər yaxınlaşsaydı, qabarma qüvvələri onu parçalayar, qırıqları ekvatorun üzərində 37.000 km diametrli, Saturnunkuna bənzər halqa yaradar və nəhayət Yerə yağardı. Bu məsafə Ayın indiki təxminən 384.400 km-lik məsafəsinin təxminən 1/20-i qədərdir, ona görə də Ay göydə təxminən 20 dəfə böyük görünərdi."
+   ]
+  }
+ }
+}

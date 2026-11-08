@@ -1,0 +1,269 @@
+{
+ "id": "n012",
+ "series": "Ne Kadar Büyük?",
+ "q": "DNA'n açılsa ne kadar uzun olur?",
+ "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+ "bar": {
+  "hi": "DNA'N",
+  "rest": "NE KADAR UZUN?"
+ },
+ "summary": "Tek bir hücrendeki DNA bile senden uzun: 2 metre! Bunun minicik bir çekirdeğe nasıl sığdığını, tüm DNA'nın Plüton'a kadar uzanmasını ve hücrelerinin çoğunda neden hiç DNA olmadığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Tek hücrendeki DNA bile senden uzun: 2 metre!",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "🧍",
+     "label": "Sen",
+     "value": "1,7"
+    },
+    "b": {
+     "e": "🧬",
+     "label": "1 Hücrenin DNA'sı",
+     "value": "2"
+    },
+    "mode": "size",
+    "key": "uzun"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bunu nereye sığdırıyorum?!",
+   "v": {
+    "t": "question",
+    "bg": "lab",
+    "e": "🧬",
+    "label": "Nereye Sığar?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "0,006 milimetrelik çekirdeğe; 40 km ipliği tenis topuna sığdırmak gibi!",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🎾",
+    "value": "40",
+    "unit": "km",
+    "label": "Tenis Topunda İp",
+    "key": "40"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tüm hücrelerindekini uç uca eklesen yaklaşık 6 milyar km: Güneş'ten Plüton'a kadar!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "m",
+      "at": "l"
+     },
+     {
+      "b": "pluto",
+      "size": "xs",
+      "at": "r"
+     }
+    ],
+    "do": "none",
+    "target": 1,
+    "key": "Plüton'a",
+    "label": "6 Milyar km"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Plüton'a ipten köprü mü?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🌉",
+    "do": "grow",
+    "key": "köprü",
+    "label": "İpten Köprü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tuhafı: hücrelerinin %84'ü alyuvar ve onlarda hiç DNA yok!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🩸",
+    "value": "%84",
+    "unit": "alyuvar",
+    "label": "DNA'sız Hücre",
+    "key": "%84"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bu ipi nereye uzatırdın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🧬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NIH'nin NCBI kitaplığındaki Molecular Biology of the Cell'e göre her insan hücresindeki DNA uç uca açılırsa yaklaşık 2 metredir ve yalnızca yaklaşık 6 mikrometre (0,006 mm) çapındaki hücre çekirdeğine sığar.",
+   "source": "Molecular Biology of the Cell (NIH NCBI Bookshelf)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK26834/"
+  },
+  {
+   "text": "Aynı kaynağa göre bu, 40 km uzunluğunda incecik bir ipliği bir tenis topunun içine sığdırmaya eşdeğerdir.",
+   "source": "Molecular Biology of the Cell (NIH NCBI Bookshelf)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK26834/"
+  },
+  {
+   "text": "Weizmann Enstitüsü araştırmacılarının PLOS Biology'de (2016) yayımladığı hesaba göre 70 kiloluk bir yetişkinde yaklaşık 30 trilyon insan hücresi vardır; bunların %84'ü alyuvardır ve hücrelerin yaklaşık %90'ı (çoğu alyuvar ve trombosit) çekirdeksizdir; olgun alyuvarlarda DNA bulunmaz.",
+   "source": "PLOS Biology (Weizmann Institute of Science)",
+   "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002533"
+  },
+  {
+   "text": "Çekirdekli yaklaşık 3 trilyon hücre, hücre başına 2 metreyle çarpılınca toplam yaklaşık 6 milyar km eder; NASA'ya göre Plüton Güneş'ten ortalama 5,9 milyar km uzaktadır (alyuvarları da DNA'lı sayan popüler hesaplar onlarca milyar km gibi çok daha büyük rakamlar verir).",
+   "source": "NASA + hesap (NCBI, PLOS Biology)",
+   "url": "https://science.nasa.gov/dwarf-planets/pluto/facts"
+  }
+ ],
+ "tags": [
+  "dna",
+  "dna ne kadar uzun",
+  "dna uzunluğu",
+  "hücre",
+  "genetik",
+  "kromozom",
+  "alyuvar",
+  "insan vücudu",
+  "dna length",
+  "how long is your dna",
+  "human cells",
+  "genetics",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dna",
+  "#genetik",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.ncbi.nlm.nih.gov/books/NBK26834/",
+  "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002533",
+  "https://science.nasa.gov/dwarf-planets/pluto/facts"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Long Is Your DNA Really?",
+   "summary": "The DNA in just one of your cells is longer than you are tall: 2 meters! Professor Pi explains how it fits into a tiny nucleus, how all your DNA would stretch to Pluto, and why most of your cells carry no DNA at all.",
+   "facts": [
+    "According to Molecular Biology of the Cell on the NIH's NCBI Bookshelf, the DNA in each human cell is about 2 meters long if stretched end to end, and it fits into a cell nucleus only about 6 micrometers (0.006 mm) across.",
+    "According to the same source, this is like packing 40 km of extremely fine thread into a tennis ball.",
+    "According to a 2016 estimate by Weizmann Institute researchers in PLOS Biology, a 70 kg adult has about 30 trillion human cells; 84% of them are red blood cells, and about 90% of all cells (mostly red blood cells and platelets) have no nucleus; mature red blood cells contain no DNA.",
+    "About 3 trillion cells with a nucleus times 2 meters each comes to roughly 6 billion km; according to NASA, Pluto is on average 5.9 billion km from the Sun (popular estimates that also count red blood cells as carrying DNA give much larger figures, in the tens of billions of km)."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto Mide Realmente Tu ADN?",
+   "summary": "El ADN de una sola de tus células mide más que tú: ¡2 metros! El profesor Pi explica cómo cabe en un núcleo diminuto, cómo todo tu ADN llegaría hasta Plutón y por qué la mayoría de tus células no tienen nada de ADN.",
+   "facts": [
+    "Según Molecular Biology of the Cell, en la biblioteca NCBI de los NIH, el ADN de cada célula humana mide unos 2 metros si se estira de punta a punta y cabe en un núcleo de solo unos 6 micrómetros (0,006 mm) de diámetro.",
+    "Según la misma fuente, es como meter 40 km de un hilo finísimo dentro de una pelota de tenis.",
+    "Según un cálculo de 2016 de investigadores del Instituto Weizmann en PLOS Biology, un adulto de 70 kg tiene unos 30 billones de células humanas; el 84% son glóbulos rojos y cerca del 90% de todas las células (sobre todo glóbulos rojos y plaquetas) no tienen núcleo; los glóbulos rojos maduros no contienen ADN.",
+    "Unos 3 billones de células con núcleo por 2 metros cada una dan aproximadamente 6.000 millones de km; según la NASA, Plutón está en promedio a 5.900 millones de km del Sol (los cálculos populares que también cuentan los glóbulos rojos como portadores de ADN dan cifras mucho mayores, de decenas de miles de millones de km)."
+   ]
+  },
+  "pt": {
+   "title": "Qual É o Tamanho Real do Seu DNA?",
+   "summary": "O DNA de uma única célula sua é mais comprido que a sua altura: 2 metros! O professor Pi explica como ele cabe em um núcleo minúsculo, como todo o seu DNA chegaria até Plutão e por que a maioria das suas células não tem DNA nenhum.",
+   "facts": [
+    "Segundo Molecular Biology of the Cell, na biblioteca NCBI dos NIH, o DNA de cada célula humana mede cerca de 2 metros se esticado de ponta a ponta e cabe em um núcleo de apenas uns 6 micrômetros (0,006 mm) de diâmetro.",
+    "Segundo a mesma fonte, é como colocar 40 km de uma linha finíssima dentro de uma bola de tênis.",
+    "Segundo uma estimativa de 2016 de pesquisadores do Instituto Weizmann na PLOS Biology, um adulto de 70 kg tem cerca de 30 trilhões de células humanas; 84% delas são hemácias e cerca de 90% de todas as células (principalmente hemácias e plaquetas) não têm núcleo; hemácias maduras não contêm DNA.",
+    "Cerca de 3 trilhões de células com núcleo vezes 2 metros cada dão aproximadamente 6 bilhões de km; segundo a NASA, Plutão fica em média a 5,9 bilhões de km do Sol (estimativas populares que também contam as hemácias como portadoras de DNA dão números bem maiores, de dezenas de bilhões de km)."
+   ]
+  },
+  "ar": {
+   "title": "ما الطول الحقيقي لحمضك النووي؟",
+   "summary": "الحمض النووي في خلية واحدة من خلاياك أطول من قامتك: مترين! يشرح البروفيسور باي كيف يتسع داخل نواة صغيرة جدًا، وكيف سيمتد كل حمضك النووي حتى بلوتو، ولماذا لا تحمل معظم خلاياك أي حمض نووي على الإطلاق.",
+   "facts": [
+    "وفقًا لكتاب Molecular Biology of the Cell في مكتبة NCBI التابعة للمعاهد الوطنية للصحة (NIH)، يبلغ طول الحمض النووي في كل خلية بشرية نحو 2 متر إذا فُرد طرفًا لطرف، ويتسع داخل نواة لا يتجاوز قطرها نحو 6 ميكرومترات (0.006 مم).",
+    "ووفقًا للمصدر نفسه، فإن ذلك يشبه حشر خيط رفيع جدًا طوله 40 كم داخل كرة تنس.",
+    "وفقًا لتقدير نشره باحثون من معهد وايزمان في مجلة PLOS Biology عام 2016، يحتوي جسم بالغ وزنه 70 كغ على نحو 30 تريليون خلية بشرية؛ 84% منها خلايا دم حمراء، ونحو 90% من جميع الخلايا (معظمها خلايا دم حمراء وصفائح دموية) بلا نواة، ولا تحتوي خلايا الدم الحمراء الناضجة على حمض نووي.",
+    "إن ضرب نحو 3 تريليونات خلية ذات نواة في 2 متر لكل منها يعطي نحو 6 مليارات كم؛ ووفقًا لناسا يبعد بلوتو عن الشمس 5.9 مليار كم في المتوسط (أما التقديرات الشائعة التي تحسب خلايا الدم الحمراء أيضًا حاملةً للحمض النووي فتعطي أرقامًا أكبر بكثير، بعشرات المليارات من الكيلومترات)."
+   ]
+  },
+  "hi": {
+   "title": "तुम्हारा DNA असल में कितना लंबा है?",
+   "summary": "तुम्हारी सिर्फ़ एक कोशिका का DNA भी तुम्हारी लंबाई से ज़्यादा है: 2 मीटर! प्रोफ़ेसर पाई बताते हैं कि यह एक नन्हे से केंद्रक में कैसे समाता है, तुम्हारा पूरा DNA प्लूटो तक कैसे पहुँच जाता, और तुम्हारी ज़्यादातर कोशिकाओं में DNA बिल्कुल क्यों नहीं होता।",
+   "facts": [
+    "NIH की NCBI लाइब्रेरी में Molecular Biology of the Cell के अनुसार, हर इंसानी कोशिका का DNA सिरे से सिरे तक खींचने पर लगभग 2 मीटर लंबा होता है, और यह सिर्फ़ लगभग 6 माइक्रोमीटर (0.006 mm) चौड़े केंद्रक में समा जाता है।",
+    "उसी स्रोत के अनुसार, यह 40 km बेहद पतले धागे को एक टेनिस बॉल में भरने जैसा है।",
+    "PLOS Biology में वाइज़मैन इंस्टीट्यूट के शोधकर्ताओं के 2016 के अनुमान के अनुसार, 70 kg के एक वयस्क में लगभग 30 ट्रिलियन इंसानी कोशिकाएँ होती हैं; इनमें 84% लाल रक्त कोशिकाएँ हैं, और लगभग 90% कोशिकाओं (ज़्यादातर लाल रक्त कोशिकाएँ और प्लेटलेट्स) में केंद्रक नहीं होता; परिपक्व लाल रक्त कोशिकाओं में DNA नहीं होता।",
+    "केंद्रक वाली लगभग 3 ट्रिलियन कोशिकाओं को 2 मीटर प्रति कोशिका से गुणा करने पर लगभग 6 अरब km बनते हैं; NASA के अनुसार प्लूटो सूरज से औसतन 5.9 अरब km दूर है (लाल रक्त कोशिकाओं को भी DNA वाली मानने वाले लोकप्रिय अनुमान कहीं बड़े आँकड़े देते हैं, दसियों अरब km)।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Panjang DNA-mu Sebenarnya?",
+   "summary": "DNA dalam satu sel tubuhmu saja lebih panjang dari tinggi badanmu: 2 meter! Profesor Pi menjelaskan bagaimana DNA muat di inti sel yang mungil, bagaimana seluruh DNA-mu bisa terbentang sampai Pluto, dan kenapa sebagian besar selmu sama sekali tak punya DNA.",
+   "facts": [
+    "Menurut Molecular Biology of the Cell di perpustakaan NCBI milik NIH, DNA di setiap sel manusia panjangnya sekitar 2 meter jika direntangkan ujung ke ujung, dan muat di inti sel yang lebarnya hanya sekitar 6 mikrometer (0,006 mm).",
+    "Menurut sumber yang sama, ini seperti memasukkan benang super tipis sepanjang 40 km ke dalam bola tenis.",
+    "Menurut perkiraan peneliti Weizmann Institute di PLOS Biology tahun 2016, orang dewasa 70 kg punya sekitar 30 triliun sel manusia; 84% di antaranya sel darah merah, dan sekitar 90% dari semua sel (kebanyakan sel darah merah dan trombosit) tidak punya inti; sel darah merah dewasa tidak mengandung DNA.",
+    "Sekitar 3 triliun sel berinti dikali 2 meter per sel menghasilkan sekitar 6 miliar km; menurut NASA, Pluto rata-rata berjarak 5,9 miliar km dari Matahari (perkiraan populer yang juga menghitung sel darah merah sebagai pembawa DNA memberi angka jauh lebih besar, puluhan miliar km)."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Longueur de Ton ADN ?",
+   "summary": "L'ADN d'une seule de tes cellules est plus long que ta taille : 2 mètres ! Le professeur Pi explique comment il tient dans un minuscule noyau, comment tout ton ADN irait jusqu'à Pluton, et pourquoi la plupart de tes cellules n'ont pas d'ADN du tout.",
+   "facts": [
+    "Selon Molecular Biology of the Cell, sur la bibliothèque NCBI des NIH, l'ADN de chaque cellule humaine mesure environ 2 mètres une fois déroulé bout à bout, et tient dans un noyau d'à peine 6 micromètres (0,006 mm) de diamètre.",
+    "Selon la même source, cela revient à faire tenir 40 km d'un fil extrêmement fin dans une balle de tennis.",
+    "Selon une estimation de chercheurs de l'Institut Weizmann publiée en 2016 dans PLOS Biology, un adulte de 70 kg compte environ 30 000 milliards de cellules humaines ; 84 % sont des globules rouges et environ 90 % de toutes les cellules (surtout des globules rouges et des plaquettes) n'ont pas de noyau ; les globules rouges matures ne contiennent pas d'ADN.",
+    "Environ 3 000 milliards de cellules à noyau multipliées par 2 mètres chacune donnent environ 6 milliards de km ; selon la NASA, Pluton est en moyenne à 5,9 milliards de km du Soleil (les estimations populaires qui comptent aussi les globules rouges comme porteurs d'ADN donnent des chiffres bien plus grands, de plusieurs dizaines de milliards de km)."
+   ]
+  },
+  "de": {
+   "title": "Wie Lang Ist Deine DNA Wirklich?",
+   "summary": "Die DNA in nur einer deiner Zellen ist länger, als du groß bist: 2 Meter! Professor Pi erklärt, wie sie in einen winzigen Zellkern passt, wie deine gesamte DNA bis zum Pluto reichen würde und warum die meisten deiner Zellen gar keine DNA haben.",
+   "facts": [
+    "Laut Molecular Biology of the Cell in der NCBI-Bibliothek der NIH ist die DNA jeder menschlichen Zelle ausgestreckt etwa 2 Meter lang und passt in einen Zellkern von nur etwa 6 Mikrometern (0,006 mm) Durchmesser.",
+    "Laut derselben Quelle entspricht das dem Verstauen von 40 km extrem dünnem Faden in einem Tennisball.",
+    "Laut einer Schätzung von Forschenden des Weizmann-Instituts in PLOS Biology (2016) hat ein 70 kg schwerer Erwachsener etwa 30 Billionen menschliche Zellen; 84 % davon sind rote Blutkörperchen, und etwa 90 % aller Zellen (vor allem rote Blutkörperchen und Blutplättchen) haben keinen Zellkern; reife rote Blutkörperchen enthalten keine DNA.",
+    "Etwa 3 Billionen Zellen mit Kern mal je 2 Meter ergeben rund 6 Milliarden km; laut NASA ist Pluto im Durchschnitt 5,9 Milliarden km von der Sonne entfernt (populäre Rechnungen, die auch rote Blutkörperchen als DNA-Träger zählen, kommen auf viel größere Werte von zig Milliarden km)."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Длинная Твоя ДНК на Самом Деле?",
+   "summary": "ДНК всего одной твоей клетки длиннее, чем ты ростом: 2 метра! Профессор Пи объясняет, как она помещается в крошечное ядро, как вся твоя ДНК дотянулась бы до Плутона и почему в большинстве твоих клеток ДНК нет вовсе.",
+   "facts": [
+    "Согласно учебнику Molecular Biology of the Cell в библиотеке NCBI Национальных институтов здравоохранения США (NIH), ДНК каждой клетки человека в вытянутом виде имеет длину около 2 метров и помещается в ядро диаметром всего около 6 микрометров (0,006 мм).",
+    "По тому же источнику, это всё равно что уложить 40 км тончайшей нити в теннисный мяч.",
+    "По оценке исследователей Института Вейцмана, опубликованной в PLOS Biology в 2016 году, у взрослого весом 70 кг около 30 триллионов клеток человека; 84% из них — эритроциты, а около 90% всех клеток (в основном эритроциты и тромбоциты) не имеют ядра; в зрелых эритроцитах ДНК нет.",
+    "Около 3 триллионов клеток с ядром, умноженные на 2 метра каждая, дают примерно 6 миллиардов км; по данным NASA, Плутон в среднем находится в 5,9 миллиарда км от Солнца (популярные оценки, считающие носителями ДНК и эритроциты, дают гораздо большие цифры — десятки миллиардов км)."
+   ]
+  },
+  "az": {
+   "title": "Sənin DNT-n Əslində Nə Qədər Uzundur?",
+   "summary": "Təkcə bir hüceyrəndəki DNT belə səndən uzundur: 2 metr! Onun balaca nüvəyə necə sığdığını, bütün DNT-nin Plutona qədər necə uzanacağını və hüceyrələrinin çoxunda niyə ümumiyyətlə DNT olmadığını Professor Pi danışır.",
+   "facts": [
+    "NIH-in NCBI kitabxanasındakı Molecular Biology of the Cell kitabına görə hər insan hüceyrəsindəki DNT uc-uca açılsa təxminən 2 metr uzunluğundadır və diametri cəmi təxminən 6 mikrometr (0,006 mm) olan nüvəyə sığır.",
+    "Eyni mənbəyə görə bu, 40 km çox nazik sapı bir tennis topunun içinə yerləşdirməyə bərabərdir.",
+    "Veysman İnstitutunun tədqiqatçılarının 2016-cı ildə PLOS Biology-də dərc etdiyi hesablamaya görə 70 kq-lıq yetkin insanda təxminən 30 trilyon insan hüceyrəsi var; onların 84%-i eritrositdir, bütün hüceyrələrin təxminən 90%-i (əsasən eritrositlər və trombositlər) nüvəsizdir; yetkin eritrositlərdə DNT olmur.",
+    "Nüvəli təxminən 3 trilyon hüceyrəni hər biri üçün 2 metrə vurduqda təxminən 6 milyard km alınır; NASA-ya görə Pluton Günəşdən orta hesabla 5,9 milyard km uzaqdadır (eritrositləri də DNT daşıyıcısı sayan populyar hesablamalar onlarla milyard km kimi daha böyük rəqəmlər verir)."
+   ]
+  }
+ }
+}

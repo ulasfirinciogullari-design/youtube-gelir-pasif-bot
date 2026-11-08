@@ -1,0 +1,297 @@
+{
+ "id": "y042",
+ "series": "Ya Olsaydı?",
+ "q": "Bir kara delik Güneş Sistemi'ne girseydi ne olurdu?",
+ "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
+ "bar": {
+  "hi": "KARA DELİK",
+  "rest": "GELSEYDİ?"
+ },
+ "summary": "Bir kara delik Mars'a kadar gelse ayağının altındaki kaya erirdi! Okyanusların buharlaşmasından spagetti gibi uzamaya ve galakside başıboş dolaşan 100 milyon kara deliğe kadar Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Ayağının altındaki kaya erirdi: kara delik Mars'a kadar gelse yeter!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "l"
+     },
+     {
+      "b": "blackhole",
+      "size": "m",
+      "at": "r"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "erirdi",
+    "label": "Kaya Erir"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Denize atlasam?!",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🏊",
+    "do": "shake",
+    "key": "Denize",
+    "label": "Denize Atla"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Okyanuslar buharlaşırdı! Neptün'e gelse bile buz çağı gelebilirdi.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "NEPTÜN",
+      "e": "🥶",
+      "label": "Buz Çağı"
+     },
+     {
+      "when": "MARS",
+      "e": "♨️",
+      "label": "Okyanus Buharlaşır"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gökte onu göremezdin; yıldızlar yerinden kayardı.",
+   "v": {
+    "t": "space",
+    "bg": "night",
+    "bodies": [
+     {
+      "b": "blackhole",
+      "size": "m",
+      "at": "c"
+     },
+     {
+      "b": "star",
+      "size": "xs",
+      "at": "tr"
+     }
+    ],
+    "do": "spin",
+    "target": 0,
+    "key": "kayardı",
+    "label": "Görünmez Delik"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Düşersen ayağın başından daha sert çekilir: spagetti olurdun!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🍝",
+    "do": "grow",
+    "key": "spagetti",
+    "label": "Spagettileşme"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Galakside tahminen 100 milyon kara delik başıboş dolaşıyor!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🕳️",
+    "value": "100",
+    "unit": "milyon",
+    "label": "Başıboş Kara Delik",
+    "key": "100"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Son gününde ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🕳️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Strasbourg Astronomik Veri Merkezi'nden astrofizikçi Karina Voggel'e göre bir kara delik Dünya ile Mars arasına kadar gelirse gelgit ısınması Dünya'nın yüzeyini baştan şekillendirir: magma oluşur ve okyanuslar buharlaşır.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/black-holes/what-would-happen-if-a-black-hole-wandered-into-our-solar-system"
+  },
+  {
+   "text": "Voggel'e göre kara delik Uranüs ile Plüton'un yörüngeleri arasından geçse bile Dünya'nın yörüngesi değişebilir ve bu, bir buz çağına ya da yaşamı yok edecek kadar aşırı ısınmaya yol açabilir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/space/black-holes/what-would-happen-if-a-black-hole-wandered-into-our-solar-system"
+  },
+  {
+   "text": "NASA'ya göre kara delikler ışık vermediği için Hubble, Samanyolu'nda kütlesini ölçtüğü ilk yalnız kara deliği ancak arkasındaki bir yıldızın ışığını büküp onu parlatması ve görünür yerini kaydırmasıyla fark edebildi; bu kara delik yaklaşık 5.000 ışık yılı ötede, saatte yaklaşık 160.000 km hızla ilerliyor.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/missions/hubble/hubble-determines-mass-of-isolated-black-hole-roaming-our-milky-way-galaxy/"
+  },
+  {
+   "text": "NASA'ya göre gökbilimciler Samanyolu'nda yaklaşık 100 milyon kara deliğin yıldızlar arasında başıboş dolaştığını tahmin ediyor; en yakını 80 ışık yılı kadar yakında olabilir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/missions/hubble/hubble-determines-mass-of-isolated-black-hole-roaming-our-milky-way-galaxy/"
+  },
+  {
+   "text": "NASA'nın Imagine the Universe sayfasına göre kara deliğe düşen birinin ayaklarına binen çekim başına binenden güçlü olduğu için vücut uzar; buna spagettileşme denir ve küçük kara deliklerde bu gelgit kuvveti çok daha şiddetlidir.",
+   "source": "NASA Imagine the Universe",
+   "url": "https://imagine.gsfc.nasa.gov/educators/blackholes/imagine/page8.html"
+  }
+ ],
+ "tags": [
+  "kara delik",
+  "kara delik güneş sistemine girerse",
+  "başıboş kara delik",
+  "spagettileşme",
+  "güneş sistemi",
+  "gelgit kuvveti",
+  "uzay",
+  "astronomi",
+  "black hole",
+  "rogue black hole",
+  "black hole solar system",
+  "spaghettification",
+  "what if a black hole",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#karadelik",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/space/black-holes/what-would-happen-if-a-black-hole-wandered-into-our-solar-system",
+  "https://science.nasa.gov/missions/hubble/hubble-determines-mass-of-isolated-black-hole-roaming-our-milky-way-galaxy/",
+  "https://imagine.gsfc.nasa.gov/educators/blackholes/imagine/page8.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen to You If a Black Hole Entered the Solar System?",
+   "summary": "If a black hole came as close as Mars, the rock under your feet would melt! Professor Pi explains everything from evaporating oceans and being stretched like spaghetti to the 100 million black holes roaming our galaxy.",
+   "facts": [
+    "According to astrophysicist Karina Voggel of the Strasbourg Astronomical Data Center, if a black hole came between Earth and Mars, tidal heating would resurface the Earth: magma would form and the oceans would evaporate.",
+    "According to Voggel, even if a black hole passed between the orbits of Uranus and Pluto, Earth's orbit could change, plunging us into an ice age or heating the planet enough to wipe out life.",
+    "According to NASA, because black holes give off no light, Hubble found the first isolated black hole in the Milky Way whose mass it measured only because it bent and brightened the light of a star behind it and shifted that star's apparent position; this black hole is about 5,000 light-years away and moves at about 160,000 km/h.",
+    "According to NASA, astronomers estimate that 100 million black holes roam among the stars of the Milky Way; the nearest might be as close as 80 light-years away.",
+    "According to NASA's Imagine the Universe, someone falling into a black hole is stretched because gravity pulls harder on their feet than on their head; this is called spaghettification, and the tidal force is much stronger near smaller black holes."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Te Pasaría Si un Agujero Negro Entrara en el Sistema Solar?",
+   "summary": "Si un agujero negro llegara tan cerca como Marte, ¡la roca bajo tus pies se derretiría! El profesor Pi lo explica todo, desde océanos que se evaporan y estirarte como un espagueti hasta los 100 millones de agujeros negros que vagan por nuestra galaxia.",
+   "facts": [
+    "Según la astrofísica Karina Voggel, del Centro de Datos Astronómicos de Estrasburgo, si un agujero negro llegara entre la Tierra y Marte, el calentamiento por mareas remodelaría la superficie terrestre: se formaría magma y los océanos se evaporarían.",
+    "Según Voggel, aunque un agujero negro pasara entre las órbitas de Urano y Plutón, la órbita de la Tierra podría cambiar y sumirnos en una era de hielo o calentar tanto el planeta que acabaría con la vida.",
+    "Según la NASA, como los agujeros negros no emiten luz, el Hubble detectó el primer agujero negro aislado de la Vía Láctea cuya masa midió solo porque curvó y aumentó el brillo de la luz de una estrella situada detrás y desplazó su posición aparente; este agujero negro está a unos 5.000 años luz y se mueve a unos 160.000 km/h.",
+    "Según la NASA, los astrónomos calculan que 100 millones de agujeros negros vagan entre las estrellas de la Vía Láctea; el más cercano podría estar a solo 80 años luz.",
+    "Según Imagine the Universe de la NASA, quien cae en un agujero negro se estira porque la gravedad tira con más fuerza de sus pies que de su cabeza; esto se llama espaguetización, y la fuerza de marea es mucho más intensa cerca de los agujeros negros pequeños."
+   ]
+  },
+  "pt": {
+   "title": "O Que Seria de Você Se um Buraco Negro Entrasse no Sistema Solar?",
+   "summary": "Se um buraco negro chegasse tão perto quanto Marte, a rocha sob seus pés derreteria! O professor Pi explica tudo, dos oceanos evaporando e você esticado como espaguete aos 100 milhões de buracos negros que vagam pela nossa galáxia.",
+   "facts": [
+    "Segundo a astrofísica Karina Voggel, do Centro de Dados Astronômicos de Estrasburgo, se um buraco negro chegasse entre a Terra e Marte, o aquecimento por marés remodelaria a superfície da Terra: se formaria magma e os oceanos evaporariam.",
+    "Segundo Voggel, mesmo que um buraco negro passasse entre as órbitas de Urano e Plutão, a órbita da Terra poderia mudar e nos lançar numa era glacial ou aquecer o planeta a ponto de acabar com a vida.",
+    "Segundo a NASA, como buracos negros não emitem luz, o Hubble só detectou o primeiro buraco negro isolado da Via Láctea cuja massa mediu porque ele curvou e intensificou a luz de uma estrela atrás dele e deslocou sua posição aparente; esse buraco negro está a cerca de 5.000 anos-luz e se move a cerca de 160.000 km/h.",
+    "Segundo a NASA, os astrônomos estimam que 100 milhões de buracos negros vagam entre as estrelas da Via Láctea; o mais próximo pode estar a apenas 80 anos-luz.",
+    "Segundo o Imagine the Universe da NASA, quem cai num buraco negro é esticado porque a gravidade puxa os pés com mais força do que a cabeça; isso se chama espaguetificação, e a força de maré é muito mais intensa perto de buracos negros pequenos."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لك لو دخل ثقب أسود إلى النظام الشمسي؟",
+   "summary": "لو اقترب ثقب أسود حتى المريخ لذابت الصخور تحت قدميك! يشرح البروفيسور باي كل شيء، من تبخر المحيطات وتمددك مثل السباغيتي إلى 100 مليون ثقب أسود تجوب مجرتنا.",
+   "facts": [
+    "وفقًا لعالمة الفيزياء الفلكية كارينا فوغل من مركز ستراسبورغ للبيانات الفلكية، لو وصل ثقب أسود إلى ما بين الأرض والمريخ لأعاد التسخين المدّي تشكيل سطح الأرض: ستتكوّن الصهارة وتتبخر المحيطات.",
+    "وفقًا لفوغل، حتى لو مرّ ثقب أسود بين مداري أورانوس وبلوتو، فقد يتغير مدار الأرض فيُدخلنا في عصر جليدي أو يرفع الحرارة إلى حد يقضي على الحياة.",
+    "وفقًا لناسا، ولأن الثقوب السوداء لا تُصدر ضوءًا، لم يرصد هابل أول ثقب أسود منعزل قاس كتلته في درب التبانة إلا لأنه حنى ضوء نجم خلفه وزاد سطوعه وأزاح موقعه الظاهري؛ ويقع هذا الثقب على بعد نحو 5,000 سنة ضوئية ويتحرك بسرعة نحو 160,000 كم/س.",
+    "وفقًا لناسا، يقدّر الفلكيون أن 100 مليون ثقب أسود تجوب بين نجوم درب التبانة، وقد يكون أقربها على بعد 80 سنة ضوئية فقط.",
+    "وفقًا لموقع Imagine the Universe التابع لناسا، يتمدد من يسقط في ثقب أسود لأن الجاذبية تشد قدميه أقوى من رأسه، ويُسمى ذلك «التمدد السباغيتي» (السبغتة)، وتكون قوة المد أشد كثيرًا قرب الثقوب السوداء الصغيرة."
+   ]
+  },
+  "hi": {
+   "title": "अगर ब्लैक होल सौरमंडल में आ जाता, तो तुम्हारा क्या होता?",
+   "summary": "अगर कोई ब्लैक होल मंगल तक आ जाए, तो तुम्हारे पैरों के नीचे की चट्टान पिघल जाएगी! महासागरों के भाप बनने और स्पेगेटी की तरह खिंचने से लेकर हमारी आकाशगंगा में भटकते 10 करोड़ ब्लैक होल तक, प्रोफ़ेसर पाई सब बताते हैं।",
+   "facts": [
+    "स्ट्रासबर्ग एस्ट्रोनॉमिकल डेटा सेंटर की खगोल भौतिकविद कैरिना फ़ॉगेल के अनुसार, अगर कोई ब्लैक होल धरती और मंगल के बीच आ जाए, तो ज्वारीय गर्मी धरती की सतह को नए सिरे से गढ़ देगी: मैग्मा बनेगा और महासागर भाप बनकर उड़ जाएँगे।",
+    "फ़ॉगेल के अनुसार, अगर ब्लैक होल यूरेनस और प्लूटो की कक्षाओं के बीच से भी गुज़रे, तो धरती की कक्षा बदल सकती है, जिससे हिमयुग आ सकता है या ग्रह इतना गर्म हो सकता है कि जीवन ख़त्म हो जाए।",
+    "NASA के अनुसार, क्योंकि ब्लैक होल रोशनी नहीं देते, हबल ने आकाशगंगा में जिस पहले अकेले ब्लैक होल का द्रव्यमान मापा, उसे सिर्फ़ इसलिए पकड़ पाया क्योंकि उसने पीछे के एक तारे की रोशनी मोड़कर उसे चमका दिया और उसकी दिखने वाली जगह खिसका दी; यह ब्लैक होल लगभग 5,000 प्रकाश-वर्ष दूर है और लगभग 1,60,000 km/h की रफ़्तार से चल रहा है।",
+    "NASA के अनुसार, खगोलविदों का अनुमान है कि आकाशगंगा के तारों के बीच 10 करोड़ (100 मिलियन) ब्लैक होल भटक रहे हैं; सबसे नज़दीकी शायद सिर्फ़ 80 प्रकाश-वर्ष दूर हो।",
+    "NASA की Imagine the Universe साइट के अनुसार, ब्लैक होल में गिरने वाला इंसान खिंच जाता है क्योंकि गुरुत्वाकर्षण उसके पैरों को सिर से ज़्यादा ज़ोर से खींचता है; इसे स्पेगेटीफ़िकेशन कहते हैं, और छोटे ब्लैक होल के पास यह ज्वारीय बल कहीं ज़्यादा तेज़ होता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi Padamu Jika Lubang Hitam Masuk ke Tata Surya?",
+   "summary": "Jika lubang hitam datang sedekat Mars, batu di bawah kakimu akan meleleh! Profesor Pi menjelaskan semuanya, dari lautan yang menguap dan tubuh yang memanjang seperti spageti hingga 100 juta lubang hitam yang berkeliaran di galaksi kita.",
+   "facts": [
+    "Menurut astrofisikawan Karina Voggel dari Strasbourg Astronomical Data Center, jika lubang hitam datang hingga di antara Bumi dan Mars, pemanasan pasang akan membentuk ulang permukaan Bumi: magma terbentuk dan lautan menguap.",
+    "Menurut Voggel, bahkan jika lubang hitam lewat di antara orbit Uranus dan Pluto, orbit Bumi bisa berubah dan menjerumuskan kita ke zaman es atau memanaskan planet hingga kehidupan punah.",
+    "Menurut NASA, karena lubang hitam tidak memancarkan cahaya, Hubble baru bisa mendeteksi lubang hitam terisolasi pertama di Bima Sakti yang massanya diukur karena ia membelokkan dan menerangkan cahaya bintang di belakangnya serta menggeser posisi tampak bintang itu; lubang hitam ini berjarak sekitar 5.000 tahun cahaya dan bergerak sekitar 160.000 km/jam.",
+    "Menurut NASA, para astronom memperkirakan 100 juta lubang hitam berkeliaran di antara bintang-bintang Bima Sakti; yang terdekat mungkin hanya 80 tahun cahaya jauhnya.",
+    "Menurut Imagine the Universe dari NASA, orang yang jatuh ke lubang hitam akan memanjang karena gravitasi menarik kakinya lebih kuat daripada kepalanya; ini disebut spagetifikasi, dan gaya pasangnya jauh lebih kuat di dekat lubang hitam kecil."
+   ]
+  },
+  "fr": {
+   "title": "Que T'arriverait-Il Si un Trou Noir Entrait dans le Système Solaire ?",
+   "summary": "Si un trou noir s'approchait jusqu'à Mars, la roche sous tes pieds fondrait ! Le professeur Pi t'explique tout, des océans qui s'évaporent à ton corps étiré comme un spaghetti, jusqu'aux 100 millions de trous noirs qui errent dans notre galaxie.",
+   "facts": [
+    "Selon l'astrophysicienne Karina Voggel, du Centre de données astronomiques de Strasbourg, si un trou noir arrivait entre la Terre et Mars, le réchauffement par effet de marée remodèlerait la surface terrestre : du magma se formerait et les océans s'évaporeraient.",
+    "Selon Voggel, même si un trou noir passait entre les orbites d'Uranus et de Pluton, l'orbite de la Terre pourrait changer et nous plonger dans une ère glaciaire ou réchauffer la planète au point d'éteindre la vie.",
+    "Selon la NASA, comme les trous noirs n'émettent pas de lumière, Hubble n'a repéré le premier trou noir isolé de la Voie lactée dont il a mesuré la masse que parce qu'il a courbé et amplifié la lumière d'une étoile située derrière lui et décalé sa position apparente ; ce trou noir se trouve à environ 5 000 années-lumière et se déplace à environ 160 000 km/h.",
+    "Selon la NASA, les astronomes estiment que 100 millions de trous noirs errent parmi les étoiles de la Voie lactée ; le plus proche pourrait n'être qu'à 80 années-lumière.",
+    "Selon le site Imagine the Universe de la NASA, une personne qui tombe dans un trou noir est étirée car la gravité tire plus fort sur ses pieds que sur sa tête ; c'est la spaghettification, et cette force de marée est bien plus violente près des petits trous noirs."
+   ]
+  },
+  "de": {
+   "title": "Ein Schwarzes Loch im Sonnensystem: Was Würde Dir Passieren?",
+   "summary": "Käme ein Schwarzes Loch bis zum Mars, würde der Fels unter deinen Füßen schmelzen! Professor Pi erklärt alles, von verdampfenden Ozeanen und Spaghettifizierung bis zu den 100 Millionen Schwarzen Löchern, die durch unsere Galaxie streifen.",
+   "facts": [
+    "Laut der Astrophysikerin Karina Voggel vom Astronomischen Datenzentrum Straßburg würde Gezeitenerwärmung die Erdoberfläche neu formen, wenn ein Schwarzes Loch zwischen Erde und Mars käme: Magma würde entstehen und die Ozeane würden verdampfen.",
+    "Laut Voggel könnte sich selbst dann, wenn ein Schwarzes Loch zwischen den Bahnen von Uranus und Pluto vorbeizöge, die Erdbahn ändern und uns in eine Eiszeit stürzen oder den Planeten so stark aufheizen, dass das Leben ausstirbt.",
+    "Laut NASA entdeckte Hubble das erste isolierte Schwarze Loch der Milchstraße, dessen Masse gemessen wurde, nur deshalb, weil es das Licht eines dahinterliegenden Sterns krümmte und verstärkte und dessen scheinbare Position verschob, denn Schwarze Löcher senden kein Licht aus; dieses Schwarze Loch ist etwa 5.000 Lichtjahre entfernt und bewegt sich mit rund 160.000 km/h.",
+    "Laut NASA schätzen Astronomen, dass 100 Millionen Schwarze Löcher zwischen den Sternen der Milchstraße umherstreifen; das nächste könnte nur 80 Lichtjahre entfernt sein.",
+    "Laut NASAs Imagine the Universe wird jemand, der in ein Schwarzes Loch fällt, in die Länge gezogen, weil die Schwerkraft stärker an den Füßen als am Kopf zieht; das heißt Spaghettifizierung, und diese Gezeitenkraft ist bei kleinen Schwarzen Löchern viel stärker."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет с Тобой, Если Чёрная Дыра Войдёт в Солнечную Систему?",
+   "summary": "Если бы чёрная дыра подошла к Марсу, камень у тебя под ногами расплавился бы! Профессор Пи объясняет всё — от испаряющихся океанов и растяжения в спагетти до 100 миллионов чёрных дыр, блуждающих по нашей Галактике.",
+   "facts": [
+    "По словам астрофизика Карины Фоггель из Страсбургского центра астрономических данных, если бы чёрная дыра оказалась между Землёй и Марсом, приливный нагрев полностью изменил бы поверхность Земли: образовалась бы магма, а океаны испарились бы.",
+    "По словам Фоггель, даже если бы чёрная дыра прошла между орбитами Урана и Плутона, орбита Земли могла бы измениться — это погрузило бы нас в ледниковый период или нагрело бы планету настолько, что жизнь бы вымерла.",
+    "По данным NASA, поскольку чёрные дыры не излучают свет, «Хаббл» заметил первую одиночную чёрную дыру Млечного Пути с измеренной массой только потому, что она искривила и усилила свет звезды позади неё и сместила её видимое положение; эта чёрная дыра находится примерно в 5000 световых лет и движется со скоростью около 160 000 км/ч.",
+    "По данным NASA, астрономы оценивают, что среди звёзд Млечного Пути блуждают 100 миллионов чёрных дыр; ближайшая может находиться всего в 80 световых годах.",
+    "По данным сайта NASA Imagine the Universe, упавшего в чёрную дыру растягивает, потому что гравитация тянет ноги сильнее, чем голову; это называется спагеттификацией, и вблизи небольших чёрных дыр приливная сила гораздо сильнее."
+   ]
+  },
+  "az": {
+   "title": "Qara Dəlik Günəş Sisteminə Girsəydi, Sənə Nə Olardı?",
+   "summary": "Qara dəlik Marsa qədər gəlsəydi, ayağının altındakı qaya əriyərdi! Okeanların buxarlanmasından spagetti kimi uzanmağa və qalaktikamızda başıboş dolaşan 100 milyon qara dəliyə qədər Professor Pi danışır.",
+   "facts": [
+    "Strasburq Astronomik Məlumat Mərkəzindən astrofizik Karina Foqelə görə qara dəlik Yerlə Mars arasına qədər gəlsəydi, qabarma istiləşməsi Yerin səthini yenidən formalaşdırardı: maqma yaranar, okeanlar buxarlanardı.",
+    "Foqelə görə qara dəlik Uran və Plutonun orbitləri arasından keçsə belə, Yerin orbiti dəyişə, bu da bizi buz dövrünə sala və ya planeti həyatı məhv edəcək qədər qızdıra bilərdi.",
+    "NASA-ya görə qara dəliklər işıq saçmadığı üçün Hubble Süd Yolunda kütləsini ölçdüyü ilk tək qara dəliyi yalnız arxasındakı ulduzun işığını əyib parlatdığı və onun görünən yerini sürüşdürdüyü üçün aşkar edə bildi; bu qara dəlik təxminən 5.000 işıq ili uzaqdadır və saatda təxminən 160.000 km sürətlə hərəkət edir.",
+    "NASA-ya görə astronomlar Süd Yolunun ulduzları arasında 100 milyon qara dəliyin başıboş dolaşdığını təxmin edir; ən yaxını cəmi 80 işıq ili uzaqda ola bilər.",
+    "NASA-nın Imagine the Universe saytına görə qara dəliyə düşən insan uzanır, çünki cazibə ayaqlarını başından daha güclü çəkir; buna spagettiləşmə deyilir və kiçik qara dəliklərin yaxınlığında bu qabarma qüvvəsi daha şiddətlidir."
+   ]
+  }
+ }
+}
