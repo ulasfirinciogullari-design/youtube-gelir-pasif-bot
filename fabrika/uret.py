@@ -24,13 +24,16 @@ STATE = HERE / "durum.json"
 REPORT = HERE / "rapor.json"
 TOPICS = HERE / "konular.json"
 WORK = HERE / "_is"
-DAILY = int(os.environ.get("YO_GUNLUK") or 4)
+DAILY = int(os.environ.get("YO_GUNLUK") or 5)
 # YouTube, TR (UTC+3) 13, 17, 21: lunch, after school, prime time. 2026-10-18: Shorts uploaded hours apart got
 # 460-1,266 views, the hourly ones of 10-16 got 1-133, so 3 a day instead of 6; odd TR hours keep clear of
 # Zirvenin Kanunu's even-hour uploads.
 # 2026-11-03: a 4th slot at TR 23 (late-night scrolling), +1 a day as the volume rule allows, for the 10 million
 # views goal: every upload is one more chance at a breakout. Views per Short are watched for a repeat of 10-16.
-SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "10,14,18,20").split(",") if h.strip()]
+# 2026-11-08: a 5th slot at TR 15 (UTC 12). With 4 a day views per Short held (median ~1,070 at 24 h vs ~1,100
+# at 3 a day) and the day total rose (11-05: 5,499 views, the best day yet); TR 17 is the strongest slot, so the
+# new one goes into the afternoon next to it, on an odd TR hour like the rest.
+SLOTS = [int(h) for h in (os.environ.get("YO_SAATLER") or "10,12,14,18,20").split(",") if h.strip()]
 # Instagram, TR 12, 16 and 20: each the episode that did best on YouTube and has no Reel yet. Reels posted 1-3 h
 # apart on 2026-10-18 each reached 1,000-1,700 views, so Instagram does not punish frequency the way Shorts did.
 IG_HOURS = [int(h) for h in (os.environ.get("YO_IG_SAATLER") or "9,13,17").split(",") if h.strip()]
