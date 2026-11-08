@@ -1804,12 +1804,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-22T17:09:13+00:00",
-   "mod": "igbolum",
-   "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
-   "chars": 385
-  },
-  {
    "finished": "2026-10-22T19:30:10+00:00",
    "mod": "saatlik"
   },
@@ -2225,6 +2219,12 @@
    "url": "https://youtube.com/shorts/IVKSORUOwqk",
    "duration": 24.8,
    "chars": 369
+  },
+  {
+   "finished": "2026-11-08T17:09:01+00:00",
+   "mod": "igbolum",
+   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+   "chars": 384
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2449,6 +2449,11 @@
     "media_id": "17907262815353306",
     "url": "https://www.instagram.com/reel/Dfe1TBZgcTP/",
     "at": 1794143488.8775759
+   },
+   "y020": {
+    "media_id": "18358575370222547",
+    "url": "https://www.instagram.com/reel/DffQe5clCF5/",
+    "at": 1794157741.302166
    }
   },
   "eski": [
