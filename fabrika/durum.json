@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1293",
+    "views": "1294",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "818",
+    "views": "819",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1696",
+    "views": "1719",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2058",
+    "views": "2066",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1186",
+    "views": "1203",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1922",
+    "views": "1926",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1115",
+    "views": "1117",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "942",
+    "views": "946",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1084",
+    "views": "1085",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "950",
+    "views": "952",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "160",
+    "views": "805",
     "reason": null
    }
   },
@@ -1643,6 +1643,36 @@
    "thumbnail": true,
    "at": 1794139693.941966,
    "chars": 371,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "111",
+    "reason": null
+   }
+  },
+  {
+   "id": "y041",
+   "video_id": "IVKSORUOwqk",
+   "url": "https://youtube.com/shorts/IVKSORUOwqk",
+   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Your Skin Were Transparent, What Would You See in the Mirror?",
+    "es": "Si Tu Piel Fuera Transparente, ¿Qué Verías en el Espejo?",
+    "pt": "Se Sua Pele Fosse Transparente, o Que Você Veria no Espelho?",
+    "ar": "لو كانت بشرتك شفافة، ماذا كنت سترى في المرآة؟",
+    "hi": "अगर तुम्हारी त्वचा पारदर्शी होती, तो आईने में क्या दिखता?",
+    "id": "Kalau Kulitmu Transparan, Apa yang Kamu Lihat di Cermin?",
+    "fr": "Si Ta Peau Était Transparente, Que Verrais-Tu dans le Miroir ?",
+    "de": "Wäre Deine Haut Durchsichtig, Was Würdest Du im Spiegel Sehen?",
+    "ru": "Если Бы Твоя Кожа Была Прозрачной, Что Бы Ты Увидел в Зеркале?",
+    "az": "Dərin Şəffaf Olsaydı, Güzgüdə Nə Görərdin?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794146870.0538905,
+   "chars": 369,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1706,7 +1736,8 @@
   "n011",
   "y021",
   "g011",
-  "y036"
+  "y036",
+  "y041"
  ],
  "extra": [
   {
@@ -1772,14 +1803,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-22T14:12:15+00:00",
-   "mod": "saatlik",
-   "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
-   "url": "https://youtube.com/shorts/LjCJ1NSbCQQ",
-   "duration": 19.2,
-   "chars": 277
-  },
   {
    "finished": "2026-10-22T17:09:13+00:00",
    "mod": "igbolum",
@@ -2194,6 +2217,14 @@
    "mod": "igbolum",
    "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
    "chars": 378
+  },
+  {
+   "finished": "2026-11-08T14:07:51+00:00",
+   "mod": "saatlik",
+   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+   "url": "https://youtube.com/shorts/IVKSORUOwqk",
+   "duration": 24.8,
+   "chars": 369
   }
  ],
  "last_fail": 1794133491.1438286,

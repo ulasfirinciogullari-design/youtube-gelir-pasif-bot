@@ -1,18 +1,71 @@
 {
- "started": "2026-11-08T13:09:23+00:00",
- "mod": "igbolum",
- "gate": "instagram: y039",
+ "started": "2026-11-08T14:07:09+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
- "chars": 378,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "17907262815353306",
-  "url": "https://www.instagram.com/reel/Dfe1TBZgcTP/",
-  "at": 1794143488.8775759
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "59",
+  "videos": "56"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfe1TBZgcTP/"
+ "credits_before": [
+  91590,
+  613902
  ],
- "finished": "2026-11-08T13:11:28+00:00"
+ "kuyruk": {
+  "dosya": "20261108-2-y041.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y041",
+  "series": "Ya Olsaydı?",
+  "q": "İnsan derisi şeffaf olsaydı ne görürdük?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 369,
+ "duration": 24.8,
+ "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+ "url": "https://youtube.com/shorts/IVKSORUOwqk",
+ "recent_status": {
+  "n011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "952",
+   "reason": null
+  },
+  "y021": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "941",
+   "reason": null
+  },
+  "g011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "805",
+   "reason": null
+  },
+  "y036": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "111",
+   "reason": null
+  },
+  "y041": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  91679,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261108-2-y041.json İnsan derisi şeffaf olsaydı ne görürdük? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-08T14:07:51+00:00"
 }
