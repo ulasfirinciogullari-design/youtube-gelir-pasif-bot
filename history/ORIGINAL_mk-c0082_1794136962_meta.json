@@ -1,0 +1,171 @@
+{
+  "topic_id": "mk-c0082",
+  "topic": "Kediler karanlıkta görebilir mi, kediler zifiri karanlıkta görür mü?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kediler zifiri karanlıkta senin kadar kördür 🐱",
+  "hook_text": "KEDİLER KARANLIKTA GÖRÜR MÜ?",
+  "description": "Kediler karanlıkta görebilir mi, kediler zifiri karanlıkta görür mü?\n\nHayır, hiç ışık olmayan zifiri karanlıkta kediler de göremez. Ama loş ışıkta bizden çok daha iyi görürler: veteriner göz uzmanlarına göre net görmek için insanın ihtiyaç duyduğu ışığın yaklaşık altıda biri onlara yeter. Retinalarında karanlığa duyarlı çubuk hücreleri bizimkinden çok daha fazladır, göz bebekleri karanlıkta neredeyse tam bir daire olacak kadar açılır ve retinanın arkasındaki tapetum lucidum adlı ayna gibi tabaka, retinadan geçen ışığı geri yansıtıp ikinci kez retinadan geçirir. Gece parlayan kedi gözleri de bu tabakanın geri yansıttığı ışıktır; gözler kendi ışığını üretmez.\n\nSen kedilerin zifiri karanlıkta gördüğünü sanıyor muydun: evet mi, hayır mı?\n\n#kedi #kediler #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0082",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kediler karanlıkta görür mü",
+    "kedi gece görüşü",
+    "kedi gözü",
+    "kedi gözü neden parlar",
+    "kediler nasıl görür",
+    "kedi görme yeteneği",
+    "zifiri karanlık",
+    "tapetum lucidum",
+    "gece görüşü",
+    "kedi davranışları",
+    "kedi bakımı",
+    "evcil hayvanlar",
+    "sokak kedileri",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "can cats see in the dark",
+    "cat night vision",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kediler karanlikta gorur mu",
+    "kedi gece gorusu",
+    "kedi gozu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "In pitch darkness, your cat is as blind as you are 🐱",
+      "description": "Cats can't see in total darkness. In dim light, though, they need only about a sixth of the light we do. Their glowing eyes don't make light: a mirror-like layer behind the retina, the tapetum lucidum, bounces light back through it for a second chance.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "es": {
+      "title": "En la oscuridad total, tu gato está tan ciego como tú 🐱",
+      "description": "Los gatos no ven en la oscuridad total. Pero con poca luz les basta más o menos una sexta parte de la que necesitamos nosotros. Sus ojos brillantes no producen luz: una capa como un espejo detrás de la retina, el tapetum lucidum, devuelve la luz para aprovecharla dos veces.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "pt": {
+      "title": "No escuro total, seu gato fica tão cego quanto você 🐱",
+      "description": "Gatos não enxergam na escuridão total. Mas na penumbra precisam de apenas cerca de um sexto da luz de que nós precisamos. Os olhos que brilham não produzem luz: uma camada como um espelho atrás da retina, o tapetum lucidum, reflete a luz de volta para aproveitá-la duas vezes.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "de": {
+      "title": "In völliger Dunkelheit ist deine Katze so blind wie du 🐱",
+      "description": "Katzen können in völliger Dunkelheit nichts sehen. Im Dämmerlicht reicht ihnen aber etwa ein Sechstel des Lichts, das wir brauchen. Ihre leuchtenden Augen erzeugen kein Licht: Eine spiegelartige Schicht hinter der Netzhaut, das Tapetum lucidum, schickt das Licht ein zweites Mal hindurch.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "fr": {
+      "title": "Dans le noir complet, ton chat est aussi aveugle que toi 🐱",
+      "description": "Les chats ne voient pas dans l'obscurité totale. En pénombre, en revanche, il leur suffit d'environ un sixième de la lumière dont nous avons besoin. Leurs yeux qui brillent ne produisent pas de lumière : une couche réfléchissante derrière la rétine, le tapetum lucidum, renvoie la lumière pour une seconde chance.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "it": {
+      "title": "Nel buio totale il tuo gatto è cieco quanto te 🐱",
+      "description": "I gatti non vedono nel buio totale. Con poca luce, però, gli basta circa un sesto della luce che serve a noi. I loro occhi che brillano non producono luce: uno strato simile a uno specchio dietro la retina, il tapetum lucidum, rimanda indietro la luce per sfruttarla due volte.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "ru": {
+      "title": "В полной темноте твоя кошка видит не больше тебя 🐱",
+      "description": "Кошки не видят в абсолютной темноте. Зато в сумерках им хватает примерно шестой части света, который нужен нам. Светящиеся глаза не излучают свет: зеркальный слой за сетчаткой, тапетум, отражает свет обратно, и он проходит через сетчатку второй раз.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "ar": {
+      "title": "في الظلام الدامس قطتك عمياء مثلك تمامًا 🐱",
+      "description": "لا تستطيع القطط الرؤية في الظلام الدامس. لكنها في الضوء الخافت تحتاج إلى نحو سدس الضوء الذي نحتاجه فقط. وعيونها اللامعة لا تصنع الضوء، بل تعكسه طبقة تشبه المرآة خلف الشبكية تُسمّى البساط الشفاف، فيمر الضوء عبر الشبكية مرة ثانية.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "hi": {
+      "title": "घुप अँधेरे में आपकी बिल्ली भी आपकी तरह कुछ नहीं देख पाती 🐱",
+      "description": "बिल्लियाँ पूरे अँधेरे में नहीं देख सकतीं। लेकिन मंद रोशनी में उन्हें हमारी ज़रूरत की लगभग छठे हिस्से जितनी रोशनी काफ़ी होती है। उनकी चमकती आँखें खुद रोशनी नहीं बनातीं: रेटिना के पीछे आईने जैसी परत, टेपेटम ल्यूसिडम, रोशनी को वापस लौटाकर दूसरा मौका देती है।\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "id": {
+      "title": "Dalam gelap gulita, kucingmu sama butanya denganmu 🐱",
+      "description": "Kucing tidak bisa melihat dalam gelap total. Namun dalam cahaya redup, mereka hanya butuh sekitar seperenam cahaya yang kita perlukan. Mata yang menyala itu tidak menghasilkan cahaya: lapisan seperti cermin di balik retina, tapetum lucidum, memantulkan cahaya kembali agar terpakai dua kali.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "ja": {
+      "title": "真っ暗闇では、猫もあなたと同じで何も見えない 🐱",
+      "description": "猫は完全な暗闇では物が見えません。ただし薄暗い場所なら、人が必要とする光のおよそ6分の1で見えます。光って見える目は自分で光を出しているのではなく、網膜の裏にある鏡のような層「タペタム」が光を反射し、もう一度網膜に通しているのです。\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "ko": {
+      "title": "완전한 어둠 속에서는 고양이도 당신만큼 앞을 못 본다 🐱",
+      "description": "고양이는 빛이 전혀 없는 어둠에서는 볼 수 없습니다. 하지만 어스름한 빛에서는 사람이 필요한 빛의 약 6분의 1만 있어도 봅니다. 빛나는 눈은 스스로 빛을 내는 게 아니라, 망막 뒤의 거울 같은 층인 휘판이 빛을 다시 반사해 망막을 한 번 더 통과시키는 것입니다.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "pl": {
+      "title": "W całkowitej ciemności twój kot jest tak samo ślepy jak ty 🐱",
+      "description": "Koty nie widzą w zupełnej ciemności. Za to w półmroku wystarcza im około jednej szóstej światła, którego potrzebujemy my. Świecące oczy nie wytwarzają światła: lustrzana warstwa za siatkówką, błona odblaskowa, odbija je z powrotem, by przeszło przez siatkówkę drugi raz.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "nl": {
+      "title": "In het pikkedonker is je kat net zo blind als jij 🐱",
+      "description": "Katten kunnen in totale duisternis niets zien. Bij schemerlicht hebben ze maar ongeveer een zesde nodig van het licht dat wij nodig hebben. Hun oplichtende ogen maken geen licht: een spiegelende laag achter het netvlies, het tapetum lucidum, kaatst het licht terug voor een tweede kans.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "uk": {
+      "title": "У повній темряві твоя кішка бачить не більше за тебе 🐱",
+      "description": "Коти не бачать в абсолютній темряві. Проте в сутінках їм вистачає приблизно шостої частини світла, потрібного нам. Їхні очі світяться не власним світлом: дзеркальний шар за сітківкою, тапетум, відбиває світло назад, і воно проходить крізь сітківку вдруге.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "vi": {
+      "title": "Trong bóng tối hoàn toàn, mèo của bạn cũng mù như bạn 🐱",
+      "description": "Mèo không thể nhìn thấy trong bóng tối hoàn toàn. Nhưng trong ánh sáng lờ mờ, chúng chỉ cần khoảng một phần sáu lượng ánh sáng mà con người cần. Đôi mắt phát sáng không tự tạo ra ánh sáng: một lớp như tấm gương sau võng mạc, gọi là tapetum lucidum, phản chiếu ánh sáng trở lại để dùng thêm một lần.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "az": {
+      "title": "Zil qaranlıqda pişiyin də sənin qədər kordur 🐱",
+      "description": "Pişiklər tam qaranlıqda görə bilmir. Amma zəif işıqda bizə lazım olan işığın təxminən altıda biri onlara kifayət edir. Parlayan gözləri işıq yaratmır: torlu qişanın arxasındakı güzgüyəbənzər təbəqə, tapetum lucidum, işığı geri qaytarır və o, torlu qişadan ikinci dəfə keçir.\n\n#shorts\n\nSeri: mk-c0082"
+    },
+    "ro": {
+      "title": "În întuneric total, pisica ta e la fel de oarbă ca tine 🐱",
+      "description": "Pisicile nu văd în întuneric complet. În lumină slabă însă le ajunge cam o șesime din lumina de care avem nevoie noi. Ochii lor care strălucesc nu produc lumină: un strat ca o oglindă din spatele retinei, tapetum lucidum, trimite lumina înapoi pentru o a doua șansă.\n\n#shorts\n\nSeri: mk-c0082"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen kedilerin zifiri karanlıkta gördüğünü sanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kedi zifiri karanlıkta hiçbir şey göremez.",
+      "visual": "extreme close-up of a cat's eyes with wide open pupils staring into the camera in dim light",
+      "stock_query": "cat eyes",
+      "source": "stock",
+      "callout": "ZİFİRİ KARANLIKTA KÖR"
+    },
+    {
+      "text": "Ama loş bir odada, senin ihtiyacının altıda biri kadar ışık ona yeter.",
+      "visual": "a cat sitting in a dim room at night, lit only by a faint lamp",
+      "stock_query": "cat night",
+      "source": "stock",
+      "callout": "1/6 IŞIK YETER"
+    },
+    {
+      "text": "Gece parlayan gözleri de ışık üretmez; gelen ışığı geri yansıtır.",
+      "visual": "a cat's eyes glowing green in the dark as they reflect a light",
+      "stock_query": "cat eyes glowing",
+      "source": "stock",
+      "callout": "IŞIK ÜRETMEZ"
+    },
+    {
+      "text": "Çünkü retinanın arkasındaki ayna gibi bir tabaka, ışığı ikinci kez retinadan geçirir.",
+      "visual": "macro shot of a single cat eye with a slit pupil",
+      "stock_query": "cat eye macro",
+      "source": "stock",
+      "callout": "GÖZDE AYNA"
+    },
+    {
+      "text": "Işığı kapatınca kedin seni hâlâ görüyorsa odada biraz ışık var demektir; çünkü...",
+      "visual": "a cat looking up at the camera in a dark room",
+      "stock_query": "cat dark",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.13,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #135",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0082_1794136962_ig.mp4"
+}
