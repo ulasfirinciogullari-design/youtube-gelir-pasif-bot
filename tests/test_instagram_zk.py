@@ -188,6 +188,56 @@ def test_a_reel_hour_posts_the_first_short_that_can_go_and_closes(tmp_path):
     assert ig.reel_slot(tmp_path, {}, {}, NOW, tmp_path, {"ZK_IG_KAPALI": "1"}, order=order, post=post) is None
 
 
+def test_when_instagram_turns_down_the_github_release_the_reel_comes_from_jsdelivr(monkeypatch):
+    """2026-11-07 ~18:00 UTC on: ERROR for every video on a GitHub release (11-08 10:00 UTC Reel lost)."""
+    sent, statuses = [], iter(["ERROR", "ERROR", "FINISHED"])
+
+    def call(tok, method, path, params=None, form=None, body=None, timeout=60):
+        if method == "POST":
+            sent.append(form)
+            return {"id": f"c{len(sent)}"}
+        return {"status_code": next(statuses), "status": "x"}
+    monkeypatch.setattr(ig, "call", call)
+    monkeypatch.setattr(ig, "_direct", lambda url: url + "?signed")
+    urls = {"video.mp4": "https://github.com/r/v.mp4", "kapak.jpg": "https://github.com/r/k.jpg"}
+    cdn = {name: f"https://cdn.jsdelivr.net/gh/r@abc/{name}" for name in ("video.mp4", "kapak.jpg")}
+    assert ig.reel("tok", urls, "metin", sleep=lambda s: None, more=lambda: cdn) == "c3"
+    assert [f["video_url"] for f in sent] == [urls["video.mp4"], urls["video.mp4"] + "?signed", cdn["video.mp4"]]
+    assert sent[2]["cover_url"] == cdn["kapak.jpg"]
+
+    statuses, sent[:] = iter(["ERROR", "ERROR"]), []
+    with pytest.raises(ig.IGError, match="işleyemedi"):
+        ig.reel("tok", urls, "metin", sleep=lambda s: None)  # without a second host: two tries, as before
+    assert len(sent) == 2
+
+
+def test_the_jsdelivr_copy_is_a_parentless_commit_on_a_throwaway_branch(tmp_path):
+    video, cover = tmp_path / "v.mp4", tmp_path / "k.jpg"
+    video.write_bytes(b"video")
+    cover.write_bytes(b"jpg")
+    asked, fetched = [], []
+
+    def github(method, url, env, **kw):
+        asked.append((method, url.split("/git/")[-1], kw.get("body")))
+        return {"sha": f"s{len(asked)}"}
+    env = {"GITHUB_REPOSITORY": "o/r"}
+    original = ig._github
+    ig._github = github
+    try:
+        urls, branch = ig.cdn_host({"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")},
+                                   "ig-zk-x-1", env, sleep=lambda s: None, fetch=lambda u: fetched.append(u) or 200)
+        ig.cdn_unhost(branch, env)
+    finally:
+        ig._github = original
+    assert [a[1] for a in asked] == ["blobs", "blobs", "trees", "commits", "refs", "refs/heads/ig-gecici/ig-zk-x-1"]
+    assert asked[3][2]["parents"] == [] and asked[3][2]["tree"] == "s3"
+    assert asked[4][2] == {"ref": "refs/heads/ig-gecici/ig-zk-x-1", "sha": "s4"}
+    assert asked[5][0] == "DELETE"
+    assert urls == {"video.mp4": "https://cdn.jsdelivr.net/gh/o/r@s4/video.mp4",
+                    "kapak.jpg": "https://cdn.jsdelivr.net/gh/o/r@s4/kapak.jpg"}
+    assert fetched == list(urls.values())
+
+
 def test_a_one_off_reel_record_survives_the_watch_push(tmp_path):
     (tmp_path / ig.STATE_FILE).write_text(json.dumps({"posted": {"one": {"url": "u1"}}}), encoding="utf-8")
     pushed = json.loads(ig.merged(tmp_path, {"posted": {"two": {"url": "u2"}}, "nobet": {"tur": 3}}))
