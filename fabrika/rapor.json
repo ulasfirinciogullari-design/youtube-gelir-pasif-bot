@@ -1,71 +1,18 @@
 {
- "started": "2026-11-08T12:07:13+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-08T13:09:23+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y039",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "58",
-  "videos": "55"
+ "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+ "chars": 378,
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17907262815353306",
+  "url": "https://www.instagram.com/reel/Dfe1TBZgcTP/",
+  "at": 1794143488.8775759
  },
- "credits_before": [
-  91313,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261108-1-y036.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y036",
-  "series": "Ya Olsaydı?",
-  "q": "Ay Dünya'ya çarpsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 371,
- "duration": 25.6,
- "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
- "url": "https://youtube.com/shorts/33I8lo_Kk18",
- "recent_status": {
-  "y033": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1191",
-   "reason": null
-  },
-  "n011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "950",
-   "reason": null
-  },
-  "y021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "941",
-   "reason": null
-  },
-  "g011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "160",
-   "reason": null
-  },
-  "y036": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  91402,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261108-1-y036.json Ay Dünya'ya çarpsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Dfe1TBZgcTP/"
  ],
- "finished": "2026-11-08T12:08:15+00:00"
+ "finished": "2026-11-08T13:11:28+00:00"
 }

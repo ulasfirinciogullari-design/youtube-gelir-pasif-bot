@@ -1773,12 +1773,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-22T13:10:21+00:00",
-   "mod": "igbolum",
-   "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
-   "chars": 230
-  },
-  {
    "finished": "2026-10-22T14:12:15+00:00",
    "mod": "saatlik",
    "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
@@ -2194,6 +2188,12 @@
    "url": "https://youtube.com/shorts/33I8lo_Kk18",
    "duration": 25.6,
    "chars": 371
+  },
+  {
+   "finished": "2026-11-08T13:11:28+00:00",
+   "mod": "igbolum",
+   "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
+   "chars": 378
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2413,6 +2413,11 @@
     "media_id": "17967048813235384",
     "url": "https://www.instagram.com/reel/DfejFgmgMmK/",
     "at": 1794133936.787008
+   },
+   "y039": {
+    "media_id": "17907262815353306",
+    "url": "https://www.instagram.com/reel/Dfe1TBZgcTP/",
+    "at": 1794143488.8775759
    }
   },
   "eski": [
