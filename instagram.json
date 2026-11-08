@@ -44,16 +44,17 @@
   "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
   "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
   "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/",
-  "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR"
+  "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR",
+  "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/"
  },
  "nobet": {
   "basladi": "2026-11-08T11:48:50+00:00",
   "run": "42476689147",
-  "tur": 124,
+  "tur": 133,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-08T13:51:50+00:00"
+  "son_tur": "2026-11-08T14:01:51+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -300,6 +301,13 @@
    "at": 1794135057,
    "title": "Dinozorların hepsi yok olmadı, biri kümeste 🐔",
    "topic_id": "mk-c0070"
+  },
+  "mR4H7MKxBP8": {
+   "media_id": "18051986594819616",
+   "url": "https://www.instagram.com/reel/Dfe7C9oAqFO/",
+   "at": 1794146512,
+   "title": "Köpeğinin yaşını yediyle çarpmak yanlış 🐶",
+   "topic_id": "mk-c0063"
   }
  }
 }
