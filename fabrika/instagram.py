@@ -186,12 +186,20 @@ def _direct(url):
 
 def reel(tok, urls, text):
     """Create a Reels container and wait until Instagram has fetched and processed the video -> container id.
-    If Instagram cannot fetch through GitHub's redirect, try once more with the signed link it points to."""
-    for attempt in (1, 2):
+    If Instagram cannot fetch through GitHub's redirect, try once more with the signed link it points to.
+    2026-11-08: both tries came back ERROR within a minute (on 11-05 only the first did), and the 09:00 Reel was
+    lost. So a third try waits two minutes and leaves out the cover, letting Instagram take a frame instead.
+    (Uploading the bytes directly, upload_type=resumable, is only for Facebook Login apps, not this one.)"""
+    for attempt in (1, 2, 3):
+        if attempt == 3:
+            time.sleep(120)
         u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
-        cid = call(tok, "POST", "me/media", data={
-            "media_type": "REELS", "video_url": u["video.mp4"], "cover_url": u["kapak.jpg"],
-            "caption": text, "share_to_feed": "true"})["id"]
+        data = {"media_type": "REELS", "video_url": u["video.mp4"], "caption": text, "share_to_feed": "true"}
+        if attempt < 3:
+            data["cover_url"] = u["kapak.jpg"]
+        else:
+            data["thumb_offset"] = "1000"
+        cid = call(tok, "POST", "me/media", data=data)["id"]
         for _ in range(40):  # Instagram fetches and processes the video, usually within a minute or two
             time.sleep(15)
             st = call(tok, "GET", cid, params={"fields": "status_code,status"})
