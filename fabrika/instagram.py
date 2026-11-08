@@ -184,21 +184,59 @@ def _direct(url):
     return r.headers.get("Location") or url
 
 
-def reel(tok, urls, text):
+def cdn_host(files, tag):
+    """The same files from a second place: a throwaway branch of this public repo, served by jsDelivr's CDN
+    -> ({name: public url}, branch). 2026-11-08: from 11-07 ~18:00 UTC Instagram answered ERROR to every video
+    hosted on a GitHub release, on both channels, so it gets a URL on a different host with a video/mp4 type."""
+    repo = os.environ["GITHUB_REPOSITORY"]
+    api = f"https://api.github.com/repos/{repo}/git"
+    tree = []
+    for name, (path, _ctype) in files.items():
+        blob = _gh("POST", f"{api}/blobs", timeout=300, json={
+            "content": base64.b64encode(Path(path).read_bytes()).decode(), "encoding": "base64"})
+        tree.append({"path": name, "mode": "100644", "type": "blob", "sha": blob["sha"]})
+    t = _gh("POST", f"{api}/trees", json={"tree": tree})
+    c = _gh("POST", f"{api}/commits", json={"message": f"{tag}: Instagram için geçici", "tree": t["sha"], "parents": []})
+    branch = f"ig-gecici/{tag}"
+    _gh("POST", f"{api}/refs", json={"ref": f"refs/heads/{branch}", "sha": c["sha"]})
+    urls = {name: f"https://cdn.jsdelivr.net/gh/{repo}@{c['sha']}/{name}" for name in files}
+    for u in urls.values():  # let the CDN fetch it once before Instagram asks
+        for _ in range(6):
+            try:
+                if requests.get(u, timeout=60).ok:
+                    break
+            except requests.RequestException:
+                pass
+            time.sleep(10)
+    return urls, branch
+
+
+def cdn_unhost(branch):
+    repo = os.environ["GITHUB_REPOSITORY"]
+    try:
+        _gh("DELETE", f"https://api.github.com/repos/{repo}/git/refs/heads/{branch}")
+    except IGError as e:
+        log(f"geçici dal silinemedi: {e}")
+
+
+def reel(tok, urls, text, more=None):
     """Create a Reels container and wait until Instagram has fetched and processed the video -> container id.
-    If Instagram cannot fetch through GitHub's redirect, try once more with the signed link it points to.
-    2026-11-08: both tries came back ERROR within a minute (on 11-05 only the first did), and the 09:00 Reel was
-    lost. So a third try waits two minutes and leaves out the cover, letting Instagram take a frame instead.
-    (Uploading the bytes directly, upload_type=resumable, is only for Facebook Login apps, not this one.)"""
+    If Instagram cannot fetch through GitHub's redirect, try once more with the signed link it points to, then
+    with the copy on jsDelivr (more() -> its urls). (Uploading the bytes directly, upload_type=resumable, is only
+    for Facebook Login apps, not this one.)"""
     for attempt in (1, 2, 3):
         if attempt == 3:
-            time.sleep(120)
-        u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
-        data = {"media_type": "REELS", "video_url": u["video.mp4"], "caption": text, "share_to_feed": "true"}
-        if attempt < 3:
-            data["cover_url"] = u["kapak.jpg"]
+            if more is None:
+                break
+            try:
+                u = more()
+            except Exception as e:  # noqa: BLE001
+                log(f"jsDelivr kopyası kurulamadı: {e}")
+                break
         else:
-            data["thumb_offset"] = "1000"
+            u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
+        data = {"media_type": "REELS", "video_url": u["video.mp4"], "cover_url": u["kapak.jpg"],
+                "caption": text, "share_to_feed": "true"}
         cid = call(tok, "POST", "me/media", data=data)["id"]
         for _ in range(40):  # Instagram fetches and processes the video, usually within a minute or two
             time.sleep(15)
@@ -209,7 +247,7 @@ def reel(tok, urls, text):
                 break
         else:
             raise IGError("Instagram videoyu 10 dakikada işlemedi")
-        log(f"Instagram videoyu alamadı ({attempt}. deneme): {st.get('status')}")
+        log(f"Instagram videoyu alamadı ({attempt}. deneme{', jsDelivr' if attempt == 3 else ''}): {st.get('status')}")
     raise IGError(f"Instagram videoyu işleyemedi: {st.get('status')}")
 
 
@@ -224,12 +262,23 @@ def paylas(ep, video, cover, state):
         return {"skipped": "zaten paylaşıldı", **ig["posted"][ep["id"]]}
     me(tok, state)
     tag = f"ig-{ep['id']}-{int(time.time())}"
-    urls, rel = host({"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}, tag)
+    files = {"video.mp4": (video, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}
+    urls, rel = host(files, tag)
+    branches = []
+
+    def more():
+        u, br = cdn_host(files, tag)
+        branches.append(br)
+        return u
     try:
-        cid = reel(tok, urls, caption(ep))
+        cid = reel(tok, urls, caption(ep), more)
         mid = call(tok, "POST", "me/media_publish", data={"creation_id": cid})["id"]
+        if branches:
+            log("Instagram videoyu jsDelivr'dan aldı")
     finally:
         unhost(rel, tag)
+        for br in branches:
+            cdn_unhost(br)
     link = call(tok, "GET", mid, params={"fields": "permalink"}).get("permalink")
     rec = {"media_id": mid, "url": link, "at": time.time()}
     ig.setdefault("posted", {})[ep["id"]] = rec

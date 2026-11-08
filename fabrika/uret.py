@@ -94,8 +94,8 @@ def views(e):
 def ig_pick(state):
     """-> the YouTube episode with no Reel yet that has the most YouTube views (newest on a tie), or None."""
     posted = state.get("instagram", {}).get("posted", {})
-    # 2026-11-08: Instagram refused y020 in 5 tries over two runs (ERROR, no reason given), and the next IG hour would
-    # have picked it again; an episode Instagram refused in two runs is passed over
+    # an episode Instagram refused in two runs is passed over, so one bad file cannot block every IG hour
+    # (2026-11-08 the refusals turned out to hit every video, on both channels: see instagram.cdn_host)
     refused = {k for k, n in state.get("instagram", {}).get("reddedilen", {}).items() if n >= 2}
     eps = [e for e in state.get("episodes", []) if e.get("id") not in posted and e.get("id") not in refused
            and (HERE / "bolumler" / f"{e.get('id')}.json").exists()]
