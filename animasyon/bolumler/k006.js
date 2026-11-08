@@ -338,9 +338,9 @@ Object.assign(SAHNE, {
   },
   buyuk(V, L, t, lt) {
     // 20 pages: the same empty reason, now on a thick stack. He frowns and says no; the board switches to 20 pages
-    // and on "çöktü" the empty-reason column crashes from 93 to 24, the others fall to 24 and 42; "=" on "aynı"
+    // and on "çöktü" the empty-reason column crashes from 93 to 24, the others fall to 24 and 42; "=" on "sebepsiz"
     K6.seventies();
-    const tb = wordTime(L, V.big, .2), td = wordTime(L, V.drop, .5), tk = wordTime(L, V.key, .65), ta = wordTime(L, V.same, .9);
+    const tb = wordTime(L, V.big, .2), td = wordTime(L, V.drop, .5), tk = wordTime(L, V.key, .65), ta = wordTime(L, V.same, .8);
     const no = prog(t, td - .2, td + .15), fall = prog(t, td - .05, tk + .2), head = prog(t, tb - .1, tb + .2);
     cam(540, 1000, lerp(1.03, 1.0, eio(prog(lt, 0, 4))), () => k6TwoShot(t, {
       pages: 20, denExpr: no > .4 ? 'displeased' : { ...EXPR.surprised, look: [.5, .3] }, denGlow: no, denGlowCol: 'rgba(210,35,47,1)',
@@ -385,14 +385,14 @@ Object.assign(SAHNE, {
       // only the "çünkü" goes in: it pops up big, then flies into his ear
       const pop = prog(t, te - .75, te - .5), fly = prog(t, te - .35, te + .05);
       if (pop > 0 && fly < 1) {
-        const x = lerp(860, 650, eio(fly)), y = lerp(800, 925, eio(fly)), s = back(pop) * lerp(1, .25, ei(fly));
+        const x = lerp(830, 650, eio(fly)), y = lerp(610, 925, eio(fly)), s = back(pop) * lerp(1, .25, ei(fly));
         ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-        glow(0, 0, 170, 'rgba(232,181,74,1)', .55); text('ÇÜNKÜ', 0, 0, 96, C.gold2, SANS, 900, 'center', 12);
+        glow(0, 0, 160, 'rgba(232,181,74,1)', .55); text('ÇÜNKÜ', 0, 0, 84, C.gold2, SANS, 900, 'center', 12);
         ctx.restore();
       }
       if (fly >= 1) glow(650, 925, 200, 'rgba(255,217,138,1)', .6 * (1 - prog(t, te + .05, te + .6)));
       k6Bubble(260, 680, [['Tamam!', K6GOLD]], 56, ok, 420, 770, { fill: '#fff2c8', border: C.gold });
-      plate('Küçük ricada “çünkü” yeter', 540, 1330, 50, back(prog(t, te - .05, te + .3)), C.gold);
+      plate('Küçük ricada “çünkü” yeter', 540, 1330, 50, back(prog(t, tk + .1, tk + .4)), C.gold);
       return;
     }
     const look = eo(prog(t, tb, tb + .35)), ask = prog(t, tr - .35, tr + .05), sway = Math.sin(t * 2.2) * .05;

@@ -34,7 +34,7 @@
   {
    "text": "Ama 20 sayfa olunca saçma sebep çöktü: %24, sebepsiz soruyla aynı.",
    "keys": ["saçma", "aynı"],
-   "v": {"t": "buyuk", "big": "20", "drop": "çöktü", "key": "%24", "same": "aynı", "sfx": [["20", 0.2, "paper", 0.4, 0.0], ["çöktü", 0.5, "impact", 0.4, 0.0], ["%24", 0.65, "knock", 0.25, 0.0], ["aynı", 0.9, "stamp", 0.35, 0.05]]}
+   "v": {"t": "buyuk", "big": "20", "drop": "çöktü", "key": "%24", "same": "sebepsiz", "sfx": [["20", 0.2, "paper", 0.4, 0.0], ["çöktü", 0.5, "impact", 0.4, 0.0], ["%24", 0.65, "knock", 0.25, 0.0], ["sebepsiz", 0.8, "stamp", 0.35, 0.0]]}
   },
   {
    "text": "Çünkü küçük ricada beyin sebebi dinlemez, “çünkü” yeter. Büyükte ise gerçek sebep arar.",
