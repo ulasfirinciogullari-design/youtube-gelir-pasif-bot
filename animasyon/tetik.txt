@@ -1,2 +1,2 @@
-k005 zamanla 2026-11-09T17:00:00Z
-# k005 "Herkese karşı çıkacaksan önce yanına bir kişi al" (Asch uyum deneyi): Pazartesi 9 Kasım 20:00 TR
+k006 deneme
+# k006 "Bir iyilik isteyeceksen sonuna “çünkü” ekle" (Langer fotokopi deneyi)

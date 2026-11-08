@@ -1,0 +1,87 @@
+{
+ "id": "k006",
+ "kanun": "VI",
+ "title": {
+  "top": "Bir iyilik isteyeceksen",
+  "hi": "sonuna “çünkü” ekle"
+ },
+ "yt_title": "Bu Tek Kelime İnsanlara Evet Dedirtiyor 🤫 #psikoloji",
+ "lines": [
+  {
+   "text": "Bir iyilik isteyeceksen, sadece sorma: sonuna bir “çünkü” ekle.",
+   "keys": ["çünkü"],
+   "v": {"t": "kanca", "no": "sorma", "yes": "çünkü", "no_label": "Sadece sorma", "yes_label": "Sonuna “çünkü” ekle", "sfx": [["sorma", 0.4, "stamp", 0.5, 0.2], ["çünkü", 0.8, "whoosh", 0.3, -0.2], ["çünkü", 0.8, "shimmer", 0.4, 0.15]]}
+  },
+  {
+   "text": "1978'de bir araştırmacı, fotokopi çekenleri tek tek durdurdu.",
+   "v": {"t": "deney", "year": "1978 · Langer deneyi", "who": "araştırmacı", "key": "durdurdu", "sfx": [[null, 0.1, "paper", 0.25, 0.0], ["tek", 0.6, "knock", 0.22, 0.0], ["durdurdu", 0.85, "pop", 0.32, 0.1]]}
+  },
+  {
+   "text": "“Beş sayfam var, önce ben çekebilir miyim?” Buna %60'ı evet dedi.",
+   "keys": ["beş"],
+   "v": {"t": "rica", "kind": "sade", "key": "%60", "sfx": [["beş", 0.2, "paper", 0.3, 0.0], ["%60", 0.7, "tick", 0.28, -0.15], ["%60", 0.7, "tick", 0.28, 0.0], ["evet", 0.85, "pop", 0.35, 0.0]]}
+  },
+  {
+   "text": "Sonuna “çünkü acelem var” ekleyince oran %94'e çıktı.",
+   "keys": ["çünkü"],
+   "v": {"t": "rica", "kind": "gercek", "key": "%94", "sfx": [["çünkü", 0.2, "whoosh", 0.25, -0.1], ["%94", 0.7, "tick", 0.28, -0.15], ["%94", 0.7, "tick", 0.28, 0.0], ["çıktı", 0.9, "shimmer", 0.4, 0.0]]}
+  },
+  {
+   "text": "Peki “çünkü fotokopi çekmem lazım” gibi saçma bir sebep? %93!",
+   "keys": ["çünkü", "saçma"],
+   "v": {"t": "rica", "kind": "bos", "key": "%93", "silly": "saçma", "sfx": [["saçma", 0.55, "stamp", 0.45, 0.05], ["%93", 0.85, "impact", 0.35, 0.0], ["%93", 0.85, "shimmer", 0.4, 0.1]]}
+  },
+  {
+   "text": "Ama 20 sayfa olunca saçma sebep çöktü: %24, sebepsiz soruyla aynı.",
+   "keys": ["saçma", "aynı"],
+   "v": {"t": "buyuk", "big": "20", "drop": "çöktü", "key": "%24", "same": "aynı", "sfx": [["20", 0.2, "paper", 0.4, 0.0], ["çöktü", 0.5, "impact", 0.4, 0.0], ["%24", 0.65, "knock", 0.25, 0.0], ["aynı", 0.9, "stamp", 0.35, 0.05]]}
+  },
+  {
+   "text": "Çünkü küçük ricada beyin sebebi dinlemez, “çünkü” yeter. Büyükte ise gerçek sebep arar.",
+   "keys": ["küçük", "büyükte"],
+   "v": {"t": "neden", "key": "dinlemez", "enough": "yeter", "big": "büyükte", "real": "gerçek", "sfx": [["küçük", 0.1, "pop", 0.3, 0.0], ["yeter", 0.45, "shimmer", 0.4, 0.0], ["büyükte", 0.6, "whoosh", 0.3, -0.1], ["arar", 0.95, "tick", 0.25, 0.0]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Langer, Blank ve Chanowitz (1978), \"The mindlessness of ostensibly thoughtful action: The role of 'placebic' information in interpersonal interaction\", Journal of Personality and Social Psychology 36(6), 635-642. Deney 1, New York'taki City University of New York Graduate Center kütüphanesinin fotokopi makinesinde yapıldı: 120 yetişkin (68 erkek, 52 kadın). Kütüphanede bir masada oturan araştırmacı, makineye gelen kişiye tam parayı atmadan önce yaklaşıp önce kendisinin kullanmasını rica etti.",
+  "Üç rica biçimi: sadece rica (\"Excuse me, I have 5 (20) pages. May I use the xerox machine?\"), gerçek sebep (\"... because I'm in a rush?\") ve plasebo, yani bilgi taşımayan sebep (\"... because I have to make copies?\"). Küçük rica 5 sayfa, büyük rica 20 sayfaydı.",
+  "Makalenin Tablo 1'i, araştırmacının makineyi kullanmasına izin verenlerin oranı, 5 sayfada: sebepsiz .60 (n=15), plasebo sebep .93 (n=15), gerçek sebep .94 (n=16). Yazarlara göre küçük ricada plasebo ve gerçek sebep neredeyse aynıydı ve sebepsizden anlamlı ölçüde farklıydı (F(1,114)=6.35, p<.05).",
+  "Aynı tabloda 20 sayfada: sebepsiz .24 (n=25), plasebo sebep .24 (n=25), gerçek sebep .42 (n=24). Yazarlar: büyük ricada sebepsiz ve plasebo gruplar aynıydı, gerçek sebep grubu onlardan farklı olmaya yatkındı (F(1,114)=2.83).",
+  "Yazarların yorumu: küçük, alışılmış bir ricada insanlar \"rica + çünkü + sebep\" kalıbına sebebi tartmadan uyar; rica büyüyünce (20 sayfa) daha dikkatli düşünür. Hücreler küçüktü (15-25 kişi): Folkes'in 1985 kısmi tekrarı (JPSP, s. 600-604) sonucu tekrarlayamadı ve istatistikçi Andrew Gelman 2024'te çalışmayı gürültülü buldu; video, 1978 deneyinde ölçüleni anlatıyor."
+ ],
+ "sources": [
+  "https://doi.org/10.1037/0022-3514.36.6.635",
+  "https://jamesclear.com/wp-content/uploads/2015/03/copy-machine-study-ellen-langer.pdf",
+  "https://synapsesocial.com/papers/W2087275828",
+  "https://sources.mandala.library.virginia.edu/node/108551",
+  "https://statmodeling.stat.columbia.edu/2024/03/06/mindlessness-in-the-interpretation-of-a-study-on-mindlessness/"
+ ],
+ "summary": "Bir iyilik isteyeceksen sadece sorma, sonuna bir “çünkü” ekle. 1978'de psikolog Ellen Langer'ın ekibinden bir araştırmacı, New York'ta bir kütüphanede fotokopi çekmeye gelenleri tek tek durdurdu ve öne geçmeyi rica etti. “Beş sayfam var, önce ben çekebilir miyim?” diye sorunca insanların %60'ı evet dedi. Sonuna “çünkü acelem var” ekleyince oran %94'e çıktı. “Çünkü fotokopi çekmem lazım” gibi saçma bir sebep bile %93 aldı. Ama sayfa sayısı 20 olunca saçma sebep işe yaramadı: %24, sebepsiz soruyla aynı; gerçek sebep ise %42 aldı. Küçük bir ricada beyin sebebi dinlemez, “çünkü” kelimesi yeter; büyük ricada ise gerçek bir sebep arar.",
+ "tags": [
+  "çünkü kelimesi",
+  "langer deneyi",
+  "fotokopi deneyi",
+  "ellen langer",
+  "ikna",
+  "ikna teknikleri",
+  "rica etmek",
+  "mindlessness",
+  "psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "güç psikolojisi",
+  "karanlık psikoloji",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#ikna",
+  "#zirveninkanunu"
+ ]
+}
