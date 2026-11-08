@@ -1,5 +1,5 @@
 {
-  "scanned_at": "2026-11-01T21:02:40.655894+00:00",
+  "scanned_at": "2026-11-08T21:06:43.339364+00:00",
   "series": "merak",
   "queries": [
     "ilginç bilgiler",
@@ -11,11 +11,11 @@
   "profiles": [
     {
       "name": "Ali Aslan",
-      "subscribers": 365000,
-      "video_count": 423,
-      "uploads_per_week": 2.1,
-      "median_views": 486918,
-      "avg_seconds": 30,
+      "subscribers": 366000,
+      "video_count": 424,
+      "uploads_per_week": 2.0,
+      "median_views": 448181,
+      "avg_seconds": 31,
       "shorts_pct": 100,
       "title_features": {
         "avg_chars": 56,
@@ -25,25 +25,67 @@
         "caps_word_pct": 0
       },
       "best_titles": [
-        "Okyanus Neden Bu Kadar Ürkütücü Ses Çıkarıyor? 🌊😳 #shorts (12222541 izlenme, 26 sn)",
-        "Bu At Su İçemiyordu… Ta ki Bunu Fark Edene Kadar 😱🐴 #shorts (4782577 izlenme, 23 sn)",
-        "Bu Motorcuyu Dolandırmaya Çalıştılar… Ama Büyük Bir Hata Yaptılar! 😱 #shorts (4484916 izlenme, 62 sn)",
-        "Bu Öğrenci Tek Bir Hata Yaparsa 2 Yıl Daha Okuyacak! 😳 #shorts (3046936 izlenme, 25 sn)",
-        "İnternette Su Yukarı Çıkıyor… Ama Onda Neden Olmadı? 😱💦 #shorts (2820355 izlenme, 24 sn)",
-        "Bu Adamın Kontrolüne İnanamayacaksınız! 😱 #shorts (2245830 izlenme, 41 sn)",
-        "Yıllardır Tahtayı Yanlış Temizliyorlarmış! 😱 #shorts (2116910 izlenme, 23 sn)",
-        "Buzun Altında Ne Olduğunu Asla Bilemezsiniz 😨 #shorts (1562629 izlenme, 20 sn)"
+        "Okyanus Neden Bu Kadar Ürkütücü Ses Çıkarıyor? 🌊😳 #shorts (12543888 izlenme, 26 sn)",
+        "Bu Motorcuyu Dolandırmaya Çalıştılar… Ama Büyük Bir Hata Yaptılar! 😱 #shorts (4650656 izlenme, 62 sn)",
+        "Bu Öğrenci Tek Bir Hata Yaparsa 2 Yıl Daha Okuyacak! 😳 #shorts (3050276 izlenme, 25 sn)",
+        "İnternette Su Yukarı Çıkıyor… Ama Onda Neden Olmadı? 😱💦 #shorts (2842876 izlenme, 24 sn)",
+        "Yıllardır Tahtayı Yanlış Temizliyorlarmış! 😱 #shorts (2426622 izlenme, 23 sn)",
+        "Bu Adamın Kontrolüne İnanamayacaksınız! 😱 #shorts (2330736 izlenme, 41 sn)",
+        "Son Maratoncu Gizli Bir Serinleme Taktiği Biliyordu 😳🧊 #shorts (1649817 izlenme, 23 sn)",
+        "Buzun Altında Ne Olduğunu Asla Bilemezsiniz 😨 #shorts (1568113 izlenme, 20 sn)"
       ],
       "common_tags": [],
       "niche_hits": 1,
-      "niche_views": 12222541
+      "niche_views": 12543888
+    },
+    {
+      "name": "Kırmızı Pencere",
+      "subscribers": 105000,
+      "video_count": 399,
+      "uploads_per_week": 5.8,
+      "median_views": 92929,
+      "avg_seconds": 38,
+      "shorts_pct": 100,
+      "title_features": {
+        "avg_chars": 39,
+        "emoji_pct": 97,
+        "question_pct": 23,
+        "number_pct": 43,
+        "caps_word_pct": 0
+      },
+      "best_titles": [
+        "Dili Ağzına Sığmayan 5 Hayvan! 😳 (2856563 izlenme, 48 sn)",
+        "Dünyanın En Sevimli 5 Hayvanı 🥹❤️ (1573701 izlenme, 42 sn)",
+        "Doğanın En Hüzünlü 5 Hayvanı!😢 (793478 izlenme, 47 sn)",
+        "Hayvanlara Zarar Veren 5 Hata 😱 (665005 izlenme, 46 sn)",
+        "Kedilerin Gizlice Sevdiği 5 Yiyecek! 😻 (399794 izlenme, 40 sn)",
+        "Dişisini etkilemeye çalışan kedi 😂 (325176 izlenme, 14 sn)",
+        "Görebileceğiniz En Küçük Evcil Hayvan 😈 (170156 izlenme, 44 sn)",
+        "Gecko Neden Kuyruğunu Koparır? 🦎 (138923 izlenme, 36 sn)"
+      ],
+      "common_tags": [
+        "ilginç bilgiler",
+        "hayvan bilgileri",
+        "şaşırtıcı hayvan gerçekleri",
+        "shorts",
+        "kırmızı pencere",
+        "ilginç hayvanlar",
+        "hayvan sıralaması",
+        "sevimli hayvanlar",
+        "kedi",
+        "sevimli kedi",
+        "komik hayvanlar",
+        "sahte gibi görünen yerler"
+      ],
+      "niche_hits": 1,
+      "niche_views": 6780401
     },
     {
       "name": "SARMISAK BEY",
       "subscribers": 196000,
       "video_count": 73,
-      "uploads_per_week": 2.6,
-      "median_views": 648454,
+      "uploads_per_week": 2.4,
+      "median_views": 680732,
       "avg_seconds": 31,
       "shorts_pct": 100,
       "title_features": {
@@ -54,102 +96,18 @@
         "caps_word_pct": 0
       },
       "best_titles": [
-        "Pelerini Yoktu, Adı Manisa Tarzanı'ydı 🌲🦸‍♂️ (2186108 izlenme, 29 sn)",
-        "Garantili Evlatlıktan Reddedilme Rehberi: Porselen Kupaya Çivi Çakmak 🚪👟 (1631079 izlenme, 31 sn)",
-        "Anakartın Yanmadan Suyu 3 Dakikada Nasıl Soğutursun? 🧊🔥 (1589679 izlenme, 31 sn)",
-        "Tabağa ‘Kardeşim Kusura Bakma’ Dedirten Eğitsel Şok! 💀🔥 (1321480 izlenme, 37 sn)",
-        "Çığlığıyla Öldüren Bitki ve Gariban Karabaşın Sonu 🌿🐕 (1256263 izlenme, 31 sn)",
-        "PlayStation 4'ü Manavda Elma Diye Tartmak! (Asrın Loot Taktigi) 🍎🎮 (1220018 izlenme, 25 sn)",
-        "Yapay Zekanın Etik Sınavı: Hangisi Psikopat, Hangisi Haklı? 🤖⚖️ (1175426 izlenme, 75 sn)",
-        "Kölelikten Koliye: Filadelfiya'ya Kargoyla Kaçışın Hikayesi 📦🕊️ (982152 izlenme, 30 sn)"
+        "Pelerini Yoktu, Adı Manisa Tarzanı'ydı 🌲🦸‍♂️ (2189301 izlenme, 29 sn)",
+        "Garantili Evlatlıktan Reddedilme Rehberi: Porselen Kupaya Çivi Çakmak 🚪👟 (1633566 izlenme, 31 sn)",
+        "Yapay Zekanın Etik Sınavı: Hangisi Psikopat, Hangisi Haklı? 🤖⚖️ (1601343 izlenme, 75 sn)",
+        "Anakartın Yanmadan Suyu 3 Dakikada Nasıl Soğutursun? 🧊🔥 (1595474 izlenme, 31 sn)",
+        "Tencereyi Sanayilik Eden Salça Operasyonu 🍅🚒 (1423887 izlenme, 26 sn)",
+        "Tabağa ‘Kardeşim Kusura Bakma’ Dedirten Eğitsel Şok! 💀🔥 (1325460 izlenme, 37 sn)",
+        "Çığlığıyla Öldüren Bitki ve Gariban Karabaşın Sonu 🌿🐕 (1260170 izlenme, 31 sn)",
+        "PlayStation 4'ü Manavda Elma Diye Tartmak! (Asrın Loot Taktigi) 🍎🎮 (1230556 izlenme, 25 sn)"
       ],
       "common_tags": [],
-      "niche_hits": 6,
-      "niche_views": 9734765
-    },
-    {
-      "name": "Kırmızı Pencere",
-      "subscribers": 104000,
-      "video_count": 393,
-      "uploads_per_week": 6.8,
-      "median_views": 106069,
-      "avg_seconds": 32,
-      "shorts_pct": 100,
-      "title_features": {
-        "avg_chars": 36,
-        "emoji_pct": 97,
-        "question_pct": 20,
-        "number_pct": 33,
-        "caps_word_pct": 0
-      },
-      "best_titles": [
-        "Dili Ağzına Sığmayan 5 Hayvan! 😳 (2413294 izlenme, 48 sn)",
-        "Dünyanın En Sevimli 5 Hayvanı 🥹❤️ (1276053 izlenme, 42 sn)",
-        "Bu kediler vergi vermemek için konuşmuyor😂 (752096 izlenme, 13 sn)",
-        "Doğanın En Hüzünlü 5 Hayvanı!😢 (678718 izlenme, 47 sn)",
-        "Hayvanlara Zarar Veren 5 Hata 😱 (645082 izlenme, 46 sn)",
-        "Kedilerin Gizlice Sevdiği 5 Yiyecek! 😻 (374181 izlenme, 40 sn)",
-        "Kurtulmaya çalışıyor kendince😂😂 (369596 izlenme, 10 sn)",
-        "Dişisini etkilemeye çalışan kedi 😂 (324463 izlenme, 14 sn)"
-      ],
-      "common_tags": [
-        "ilginç bilgiler",
-        "hayvan bilgileri",
-        "şaşırtıcı hayvan gerçekleri",
-        "shorts",
-        "kedi",
-        "kırmızı pencere",
-        "ilginç hayvanlar",
-        "hayvan sıralaması",
-        "komik hayvanlar",
-        "kedi videoları",
-        "komik",
-        "sevimli hayvanlar"
-      ],
-      "niche_hits": 2,
-      "niche_views": 9509927
-    },
-    {
-      "name": "VULRAN",
-      "subscribers": 25700,
-      "video_count": 113,
-      "uploads_per_week": 7.2,
-      "median_views": 887441,
-      "avg_seconds": 31,
-      "shorts_pct": 100,
-      "title_features": {
-        "avg_chars": 42,
-        "emoji_pct": 100,
-        "question_pct": 73,
-        "number_pct": 0,
-        "caps_word_pct": 0
-      },
-      "best_titles": [
-        "Bir Posta Pulu Helikopteri Düşürebilir mi? 🚁💥 (4600458 izlenme, 36 sn)",
-        "Tabutu Kırıp Topraktan Çıkmak Mümkün Mü? 🤯 (4584117 izlenme, 38 sn)",
-        "Yağmurda Üstü Açık Arabayla Islanmamak Mümkün mü? 🌧️🏎️ (3231114 izlenme, 31 sn)",
-        "Mermiden Kaçmak Mümkün Mü? 🔫🏃‍♂️ (2595923 izlenme, 35 sn)",
-        "Ninjaların Su Altı Suikast Taktiği Gerçek mi? 🥷💧 (2300641 izlenme, 34 sn)",
-        "Bu Sularda Yüzmeye Cesaretiniz Var mı? 🌊💀 (1912730 izlenme, 39 sn)",
-        "Hokey Oyuncuları Sopalarını Neden Kırar? 🏒💥 (1853336 izlenme, 26 sn)",
-        "Yüzünüzde Patlayan Şeker 🍬😱 (1729423 izlenme, 29 sn)"
-      ],
-      "common_tags": [
-        "genel kültür",
-        "vulran",
-        "ilginç bilgiler",
-        "şaşırtıcı gerçekler",
-        "efsane avcıları",
-        "mythbusters",
-        "bilimsel deney",
-        "shorts türkiye",
-        "şaşırtıcı bilgiler",
-        "belgesel",
-        "ilginç deneyler",
-        "deney"
-      ],
-      "niche_hits": 2,
-      "niche_views": 6244952
+      "niche_hits": 3,
+      "niche_views": 3464056
     }
   ],
   "channels": [
@@ -157,68 +115,34 @@
       "name": "Ali Aslan",
       "dna": {
         "hooks": [
-          "Şok edici veya inanılmaz bir iddia ile başlama (örn. 'Bu At Su İçemiyordu…')",
-          "Gizem veya bilinmeyene vurgu yapma (örn. 'Okyanus Neden Bu Kadar Ürkütücü Ses Çıkarıyor?')",
-          "Beklenmedik bir dönüş veya hata vurgusu (örn. 'Büyük Bir Hata Yaptılar!')",
-          "Şaşırtıcı bir sonuç veya durum (örn. '2 Yıl Daha Okuyacak!')"
+          "Şaşırtıcı bir olgu veya durumla başla ('Neden bu kadar ürkütücü?', 'Yıllardır yanlış...').",
+          "Dramatik bir insan hikayesi veya yüksek riskli bir senaryo sun ('Bu motorcuyu dolandırmaya çalıştılar...', 'Tek bir hata yaparsa...').",
+          "Bir gizem veya bilinmeyenle merak uyandır ('Buzun altında ne olduğunu asla bilemezsiniz...')."
         ],
         "title_formulas": [
-          "[Konu] Neden Bu Kadar [Sıfat] [Fiil]? 🌊😳 #shorts",
-          "Bu [Canlı/Nesne] [Durumdaydı]… Ta ki Bunu Fark Edene Kadar 😱🐴 #shorts",
-          "Bu [Kişi/Nesne] [Eylem Yapmaya Çalıştı]… Ama Büyük Bir Hata Yaptılar! 😱 #shorts",
-          "[Yıllardır Yanlış Yapılan Şey]! 😱 #shorts"
+          "[Olay/Fenomen] Neden Bu Kadar [Sıfat] [Fiil]? [Emoji]",
+          "Bu [Kişi/Nesne] [Durum]... Ama [Sonuç]! [Emoji]",
+          "Yıllardır [Nesne] [Fiil] [Yanlış Şekilde]! [Emoji]",
+          "[Gizemli Durum] Asla Bilemezsiniz [Emoji]"
         ],
         "topics": [
-          "Genel bilimsel fenomenler (okyanus sesleri, su fiziği)",
-          "İnsan davranışları ve hikayeleri (dolandırıcılık, öğrenci hataları, beceriler)",
-          "Hayvan davranışları (su içemeyen at)",
-          "Günlük yaşamdaki yanlış bilinenler (tahta temizliği)"
+          "Doğa olayları ve bilimsel açıklamalar (Okyanus sesleri, suyun davranışı).",
+          "İnsan hikayeleri ve başarıları (Dolandırıcılık, beceri, maratonlar).",
+          "Yaygın yanılgılar ve günlük yaşam hileleri (Tahta temizliği).",
+          "Gizem ve bilinmeyene dair keşifler."
         ],
-        "length": "Ortalama 30 saniye",
-        "cadence": "Haftada 2.1 video",
+        "length": "Ortalama 31 saniye. Çoğu video 20-30 saniye aralığında, bazıları 60+ saniyeye çıkabilir.",
+        "cadence": "Haftada ortalama 2 video.",
         "strengths": [
-          "Şok ve merak uyandıran başlıklarla viral potansiyeli yüksek içerik üretimi",
-          "Evrensel merak konularını etkili bir şekilde işleme",
-          "Emojileri ve şok ifadelerini (😱, 😳) başlıkta ustaca kullanma"
+          "Başlıklarında ve kancalarında yüksek merak ve şok etkisi yaratma yeteneği.",
+          "Geniş konu yelpazesine rağmen tutarlı yüksek izlenme oranları.",
+          "Emoji kullanımında ustalık.",
+          "Kısa ve akılda kalıcı video süreleri."
         ],
         "weaknesses": [
-          "Niş konulara (bilim, hayvanlar, insan vücudu, psikoloji) doğrudan odaklanma eksikliği",
-          "İçeriklerin genel 'şaşırtıcı gerçekler' kategorisine daha yakın olması"
-        ]
-      }
-    },
-    {
-      "name": "SARMISAK BEY",
-      "dna": {
-        "hooks": [
-          "Absürt veya mizahi bir senaryo ile başlama (örn. 'Garantili Evlatlıktan Reddedilme Rehberi')",
-          "Sıra dışı bir hikaye veya karakter tanıtımı (örn. 'Pelerini Yoktu, Adı Manisa Tarzanı'ydı')",
-          "Etik ikilemler veya 'ne olurdu' soruları (örn. 'Yapay Zekanın Etik Sınavı')",
-          "Mühendislik veya 'nasıl yapılır' sorularına absürt yaklaşımlar"
-        ],
-        "title_formulas": [
-          "[Absürt Hikaye Başlığı]: [Açıklama] 🌲🦸‍♂️",
-          "Garantili [Sonuç]: [Absürt Yöntem] 🚪👟",
-          "[Teknik Konu] [Süre] Dakikada Nasıl [Eylem Yapılır]? 🧊🔥",
-          "Yapay Zekanın Etik Sınavı: Hangisi [Sıfat], Hangisi [Sıfat]? 🤖⚖️"
-        ],
-        "topics": [
-          "Tarihi hikayeler ve efsaneler (Manisa Tarzanı, kölelikten kaçış)",
-          "Bilim ve teknolojiye absürt/mizahi yaklaşımlar (anakart soğutma, yapay zeka)",
-          "Bizarre deneyler ve gerçekler (porselen kupaya çivi, çığlığıyla öldüren bitki)",
-          "Sıra dışı yaşam taktikleri veya senaryolar"
-        ],
-        "length": "Ortalama 31 saniye",
-        "cadence": "Haftada 2.6 video",
-        "strengths": [
-          "Mizahi ve yaratıcı anlatım tarzı",
-          "Karmaşık veya tarihi konuları eğlenceli hale getirme becerisi",
-          "Niş konulara benzersiz bir bakış açısı getirme"
-        ],
-        "weaknesses": [
-          "Başlıklar bazen uzun ve daha fazla bağlam gerektirebilir",
-          "Mizah anlayışı herkese hitap etmeyebilir",
-          "Doğrudan bilimsel açıklamalar yerine hikaye anlatımına daha fazla odaklanma"
+          "Belirli bir niş yerine daha genel konulara odaklanması, derinlemesine bilgi yerine şaşırtıcı anlara vurgu.",
+          "Aşırı şok değeri kullanımı, her zaman 'Zirvenin Kanunu'nun belgesel tonuna uymayabilir.",
+          "Niş konulara doğrudan hitap eden içerik azlığı."
         ]
       }
     },
@@ -226,101 +150,102 @@
       "name": "Kırmızı Pencere",
       "dna": {
         "hooks": [
-          "Liste formatı ile dikkat çekme (örn. 'Dili Ağzına Sığmayan 5 Hayvan!')",
-          "Hayvanların duygusal veya sevimli yönlerine vurgu yapma (örn. 'Dünyanın En Sevimli 5 Hayvanı')",
-          "Sıra dışı hayvan davranışları veya özelliklerini vurgulama",
-          "Merak uyandıran 'neden' soruları (örn. 'Kediler Neden Yoğurur?')"
+          "Sıralı listelerle başla ('5 Hayvan...', '5 Yiyecek...').",
+          "Hayvanların sıradışı veya duygusal özelliklerini vurgula ('Dili ağzına sığmayan...', 'En sevimli...', 'En hüzünlü...').",
+          "Hayvan davranışlarına dair sorular sor ('Gecko neden kuyruğunu koparır?')."
         ],
         "title_formulas": [
-          "[Sıfat] [Sayı] Hayvan! 😳",
-          "Dünyanın En [Sıfat] [Sayı] Hayvanı 🥹❤️",
-          "Bu kediler [Durum] için [Eylem] 😂",
-          "Hayvanlara Zarar Veren [Sayı] Hata 😱",
-          "[Canlıların] Gizlice Sevdiği [Sayı] Yiyecek! 😻"
+          "[Sıfat] [Sayı] Hayvan! [Emoji]",
+          "Dünyanın En [Sıfat] [Sayı] Hayvanı [Emoji]",
+          "[Hayvan] Neden [Davranış] [Fiil]? [Emoji]",
+          "[Hayvan]ların Gizlice Sevdiği [Sayı] [Nesne]! [Emoji]"
         ],
         "topics": [
-          "Hayvanlar alemi (genel)",
-          "Kedi davranışları ve özellikleri",
-          "Hayvanlar hakkında ilginç bilgiler ve sıralamalar",
-          "Komik ve sevimli hayvan videoları"
+          "Hayvanlar alemi ve ilginç gerçekler.",
+          "Hayvanların fiziksel özellikleri ve davranışları.",
+          "Hayvanlarla ilgili listeler (en sevimli, en hüzünlü, en tuhaf).",
+          "Evcil hayvanlar, özellikle kediler."
         ],
-        "length": "Ortalama 32 saniye",
-        "cadence": "Haftada 6.8 video",
+        "length": "Ortalama 38 saniye. Çoğu video 40-50 saniye aralığında.",
+        "cadence": "Haftada ortalama 5.8 video (çok yüksek).",
         "strengths": [
-          "Hayvansever kitlesine güçlü odaklanma",
-          "Liste formatını ve duygusal çekiciliği etkili kullanma",
-          "Yüksek yükleme sıklığı ile sürekli içerik akışı sağlama"
+          "Hayvanlar nişinde güçlü odaklanma ve uzmanlaşma.",
+          "Yüksek yayın sıklığı ile sürekli görünürlük.",
+          "Liste formatını etkili kullanma.",
+          "Kapsamlı etiket kullanımı ile daha iyi keşfedilebilirlik."
         ],
         "weaknesses": [
-          "Ortalama izlenme sayılarının diğer rakiplere göre daha düşük olması",
-          "Başlıkların bazen daha az ilgi çekici veya tekrarlayıcı olabilmesi",
-          "Derinlemesine bilimsel açıklamalardan çok yüzeysel bilgilere odaklanma"
+          "Yüksek video sayısına rağmen medyan izlenmelerin diğer rakiplere göre daha düşük olması.",
+          "Liste formatının bazen monoton veya yüzeysel kalabilmesi.",
+          "Diğer nişlere (bilim, insan vücudu, psikoloji) çok az değinmesi."
         ]
       }
     },
     {
-      "name": "VULRAN",
+      "name": "SARMISAK BEY",
       "dna": {
         "hooks": [
-          "Hipotez veya 'mümkün mü' soruları ile başlama (örn. 'Bir Posta Pulu Helikopteri Düşürebilir mi?')",
-          "Şok edici veya tehlikeli senaryolar sunma (örn. 'Tabutu Kırıp Topraktan Çıkmak Mümkün Mü?')",
-          "Efsane veya mitleri sorgulama (örn. 'Ninjaların Su Altı Suikast Taktiği Gerçek mi?')",
-          "Cesaret veya korku temalı sorular (örn. 'Bu Sularda Yüzmeye Cesaretiniz Var mı?')"
+          "Absürt veya ironik bir senaryo ile başla ('Garantili Evlatlıktan Reddedilme Rehberi...', 'PlayStation 4'ü Manavda Elma Diye Tartmak!').",
+          "Paradoksal bir soru veya problem ortaya koy ('Anakartın Yanmadan Suyu Nasıl Soğutursun?').",
+          "Kurgusal veya gerçek dışı gibi görünen ama düşündürücü hikayeler anlat ('Çığlığıyla Öldüren Bitki...').",
+          "Etik ikilemler veya felsefi sorular sun ('Yapay Zekanın Etik Sınavı...')."
         ],
         "title_formulas": [
-          "[A] [B] Yapabilir mi? 🚁💥",
-          "[X] Mümkün Mü? 🤯",
-          "[Konu] Gerçek mi? 🥷💧",
-          "Bu [Yer/Durum] [Eylem Yapmaya] Cesaretiniz Var mı? 🌊💀"
+          "[Sıfat] [Kişi/Nesne], [İlginç Özellik/Durum] [Emoji]",
+          "[Absürt Başlangıç]: [Absürt Eylem] [Emoji]",
+          "[Paradoks/Problem] Nasıl [Çözüm]? [Emoji]",
+          "[Düşündürücü Soru]: Hangisi [Sıfat], Hangisi [Sıfat]? [Emoji]"
         ],
         "topics": [
-          "Bilimsel deneyler ve fizik (posta pulu, yağmurda araba)",
-          "Hayatta kalma senaryoları ve insan limitleri (tabuttan çıkma, mermiden kaçma)",
-          "Urban efsaneleri ve tarihi mitler (ninja suikast taktiği)",
-          "Genel kültür ve şaşırtıcı bilgiler"
+          "Tarihi figürler ve ilginç hikayeler (Manisa Tarzanı).",
+          "Teknoloji ve etik (Yapay zeka).",
+          "Bilimsel paradokslar ve pratik çözümler (Soğutma teknikleri).",
+          "Mizah ve absürtlük üzerinden günlük yaşam yorumları.",
+          "Doğa ve fantastik öğelerin birleşimi."
         ],
-        "length": "Ortalama 31 saniye",
-        "cadence": "Haftada 7.2 video",
+        "length": "Ortalama 31 saniye. Çoğu video 25-37 saniye aralığında, bazıları 75 saniyeye kadar çıkabilir.",
+        "cadence": "Haftada ortalama 2.4 video.",
         "strengths": [
-          "'Mümkün mü?' formatıyla yüksek etkileşim sağlama",
-          "Bilimsel veya hipotetik soruları ilgi çekici bir şekilde ele alma",
-          "Yüksek yükleme sıklığına rağmen yüksek ortalama izlenme sayıları"
+          "Benzersiz ve yaratıcı başlıklar ile güçlü kişisel marka.",
+          "Yüksek medyan izlenme oranları.",
+          "Mizahı ve düşündürücü konuları birleştirme yeteneği.",
+          "Farklı ve beklenmedik konulara değinme cesareti."
         ],
         "weaknesses": [
-          "Çok yüksek yükleme sıklığının kalite sürdürülebilirliği açısından zorlayıcı olabilmesi",
-          "Doğal fenomenlerin veya biyolojik adaptasyonların 'neden' ve 'nasıl' sorularına daha az odaklanma"
+          "Mizah anlayışı herkese hitap etmeyebilir, bu da daha geniş bir kitleye ulaşmayı zorlaştırabilir.",
+          "Konu seçiminde geleneksel bilim veya eğitim formatından sapması, spesifik niş arayanları kaçırabilir.",
+          "Daha az video sayısı, genel keşfedilebilirliği etkileyebilir."
         ]
       }
     }
   ],
   "gaps": [
-    "Biyolojik adaptasyonların bilimsel 'nasıl' ve 'neden'lerini derinlemesine inceleyen belgesel tonunda içerikler (örn. 'Zürafalar neden bayılmaz?' gibi konular)",
-    "İnsan vücudu ve psikolojisi hakkında bilimsel 'neden' ve 'nasıl' sorularına odaklanan, soyut kavramlardan uzak, somut konular",
-    "Mizah veya şok edici unsurlardan ziyade, saf bilimsel merak ve bilgiye dayalı, ciddi belgesel anlatım",
-    "Günlük hayatta karşılaşılan bilimsel fenomenlerin arka planındaki 'inanılmaz' gerçekleri açıklayan içerikler",
-    "Görsel olarak zengin, gerçek stok videolarla desteklenmiş, doğanın ve bilimin harikalarını vurgulayan içerikler"
+    "İnsan vücudu ve psikoloji konularında, bilimsel gerçeklere dayalı, doğrudan merak uyandıran ve açıklayıcı içerik boşluğu.",
+    "Hayvanlar nişinde, yüzeysel listelerden ziyade spesifik davranışların, biyolojik özelliklerin veya evrimsel adaptasyonların 'neden' ve 'nasıl' sorularına odaklanan derinlemesine belgesel tarzı içerik.",
+    "Genel bilim ve doğa konularında, şok edici başlıklardan öte, 'herkesin merak ettiği' temel sorulara hızlı ve anlaşılır bilimsel açıklamalar getiren bir format.",
+    "Mizah veya aşırı dramatizasyon yerine, konunun kendisine odaklanan, ancak sürükleyici ve merak uyandıran bir belgesel tonu."
   ],
   "our_rules": [
-    "Videonun ilk 3 saniyesinde merak uyandıran, bilimsel bir soru veya şaşırtıcı bir iddia ile başla.",
-    "Bilimsel gerçekleri net, özlü ve hızlı bir şekilde, belgeselvari bir anlatım diliyle sun.",
-    "Anlatılan konuyu destekleyen yüksek kaliteli, gerçek stok videolar ve animasyonlarla içeriği zenginleştir.",
-    "Her videoyu tek bir ana sorunun cevabını bilimsel olarak açıklayan bir formatta kurgula.",
-    "Başlıklarda konuya uygun, merak uyandıran ve pozitif/şaşırtıcı hisler uyandıran 1-2 emoji kullan.",
-    "Başlıkta veya videonun sonunda ana noktayı vurgulayan, akılda kalıcı ifadeler ('İşte Şaşırtıcı Gerçek!', 'İnanılmaz Bir Adaptasyon!') kullan.",
-    "Videoları ortalama 25-35 saniye aralığında tutarak Shorts formatının dinamizmini ve izleyici dikkatini koru."
+    "Videonun ilk 3 saniyesinde, soruyu veya merak uyandıran bilgiyi doğrudan, çarpıcı bir görsel ve sesle sun.",
+    "Başlıklar '[Konu]: [Merak Edilen Soru]? [İlgili Emoji]' veya '[Şaşırtıcı Bilgi], [Açıklama/Sonuç] [İlgili Emoji]' formatında, 40-60 karakter civarında olsun.",
+    "Hızlı, net ve belgeselvari bir dille, bilimsel bilgiyi basitleştirerek sun. Ağır bilimsel terimlerden kaçın.",
+    "Gerçek stok videoları kullanarak anlatılan konuyu somutlaştır ve görsel olarak zenginleştir. Soyut kavramları somut görsellerle destekle.",
+    "Ortalama 25-40 saniye arasında kal. Bilgiyi hızlıca ver ve bitir.",
+    "Her videoda tek bir 'neden' veya 'nasıl' sorusuna net bir cevap ver. Konuyu dağıtma.",
+    "Bilimsel gerçekleri sunarken, izleyicide 'vay canına' veya 'ilginçmiş' hissi yaratacak bir anlatım kullan."
   ],
   "topic_ideas": [
-    "Ahtapotlar renklerini neden bu kadar hızlı değiştirebilir?",
-    "Yılanlar dillerini neden sürekli dışarı çıkarır?",
-    "Kutup ayıları neden bu kadar soğukta donmaz?",
-    "İnsanlar neden parmaklarını şıklatabilir?",
-    "Timsahlar neden ağızları açık uyur?",
     "Baykuşlar başlarını neden bu kadar geriye çevirebilir?",
-    "Bukalemunlar neden gözlerini bağımsız hareket ettirebilir?",
-    "Bazı bitkiler neden etoburdur?",
-    "Kargalar neden alet kullanabilir?",
+    "Bukalemunlar renklerini nasıl değiştirir?",
+    "Vücudumuzdaki en güçlü kas hangisidir?",
+    "Parmak izlerimiz neden herkeste farklıdır?",
     "Kediler karanlıkta neden daha iyi görür?",
-    "Balıklar su altında nasıl nefes alır?",
-    "İnsanlar neden rüya görür?"
+    "Güneş neden sarı görünürken aslında beyazdır?",
+    "Su neden donunca genleşir?",
+    "Köpekler neden kuyruk sallar?",
+    "İnsan beyni neden rüya görür?",
+    "Yıldırımlar neden zigzag şeklinde çakar?",
+    "Ahtapotlar neden 3 kalbe sahiptir?",
+    "İnsanlar neden esner?"
   ]
 }

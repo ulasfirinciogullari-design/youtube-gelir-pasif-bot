@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0088",
+  "topic": "Kediler adını bilir mi, kedi adını duyunca neden gelmez?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kedin adını biliyor, sadece seni duymazdan geliyor 🐱",
+  "hook_text": "KEDİN ADINI BİLİYOR MU?",
+  "description": "Kediler adını bilir mi, kedi adını duyunca neden gelmez?\n\nTokyo'daki Sophia Üniversitesi'nden Atsuko Saito ve ekibi, 2019'da Scientific Reports dergisinde yayımlanan çalışmada 78 kediyi test etti: kedilere önce adlarına uzunluk ve vurgu bakımından benzeyen dört sıradan kelime, ardından kendi adları söylendi. Kediler kendi adlarına daha güçlü tepki verdi; çoğu kulağını ya da başını çevirdi, miyavlayan, kuyruğunu oynatan ya da yerinden kalkan ise yüzde onun altında kaldı. Evde yaşayan kediler öbür kedilerin adlarından da kendi adını ayırt etti ve adı hiç tanımadığı biri söylediğinde bile tanıdı. Araştırmacılara göre kediler adlarını mama, sevgi ve oyun ya da veteriner ve banyo gibi olaylardan hemen önce duydukları için öğreniyor; Saito'ya göre çağrılınca gelmeyen kedi büyük ihtimalle sahibini duymazdan geliyor.\n\nSenin kedin adını duyunca ne yapıyor: yanına mı geliyor, sadece kulağını mı oynatıyor?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0088",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kedi adını bilir mi",
+    "kediler adını tanır mı",
+    "kedi neden gelmez",
+    "kedi çağırınca gelmez",
+    "kedi isimleri",
+    "kedi ismi",
+    "kedi davranışları",
+    "kedi dili",
+    "kedi kulağı",
+    "kedi sahipleri",
+    "kedi bakımı",
+    "ev kedisi",
+    "evcil hayvanlar",
+    "hayvan davranışları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "do cats know their names",
+    "cat name",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi adini bilir mi",
+    "kediler adini tanir mi",
+    "kedi cagirinca gelmez",
+    "kedi kulagi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat knows its name, it's just ignoring you 🐱",
+      "description": "In a 2019 study, 78 cats heard four ordinary words and then their own name. Most turned their ears or heads at their name, yet very few meowed or got up, and they recognized it even when a stranger said it. Cats likely learn their names because they hear them right before food, petting or a trip to the vet.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "es": {
+      "title": "Tu gato sabe cómo se llama, simplemente te ignora 🐱",
+      "description": "En un estudio de 2019, 78 gatos escucharon cuatro palabras comunes y después su nombre. La mayoría giró las orejas o la cabeza al oírlo, pero casi ninguno maulló ni se levantó, y lo reconocieron incluso en boca de un desconocido. Probablemente lo aprenden porque lo oyen justo antes de la comida, las caricias o el veterinario.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "pt": {
+      "title": "Seu gato sabe o próprio nome, só está te ignorando 🐱",
+      "description": "Num estudo de 2019, 78 gatos ouviram quatro palavras comuns e depois o próprio nome. A maioria mexeu as orelhas ou a cabeça ao ouvir o nome, mas quase nenhum miou ou se levantou, e eles o reconheceram até na voz de um estranho. Eles provavelmente aprendem o nome porque o ouvem logo antes da comida, do carinho ou do veterinário.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "de": {
+      "title": "Deine Katze kennt ihren Namen, sie ignoriert dich nur 🐱",
+      "description": "In einer Studie von 2019 hörten 78 Katzen vier gewöhnliche Wörter und dann ihren Namen. Bei ihrem Namen drehten die meisten Ohren oder Kopf, doch kaum eine miaute oder stand auf – und sie erkannten ihn sogar, wenn ein Fremder ihn sagte. Vermutlich lernen Katzen ihren Namen, weil er kurz vor Futter, Streicheleinheiten oder dem Tierarztbesuch fällt.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "fr": {
+      "title": "Ton chat connaît son nom, il fait juste semblant de ne pas t'entendre 🐱",
+      "description": "Dans une étude de 2019, 78 chats ont entendu quatre mots ordinaires puis leur propre nom. La plupart ont tourné les oreilles ou la tête en l'entendant, mais presque aucun n'a miaulé ni ne s'est levé, et ils l'ont reconnu même prononcé par un inconnu. Les chats apprennent sans doute leur nom parce qu'ils l'entendent juste avant la gamelle, les caresses ou le vétérinaire.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "it": {
+      "title": "Il tuo gatto conosce il suo nome, ti sta solo ignorando 🐱",
+      "description": "In uno studio del 2019, 78 gatti hanno ascoltato quattro parole comuni e poi il proprio nome. Sentendo il nome, quasi tutti hanno girato le orecchie o la testa, ma pochissimi hanno miagolato o si sono alzati, e lo hanno riconosciuto anche detto da uno sconosciuto. Probabilmente lo imparano perché lo sentono subito prima della pappa, delle coccole o del veterinario.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "ru": {
+      "title": "Твоя кошка знает своё имя, она просто тебя игнорирует 🐱",
+      "description": "В исследовании 2019 года 78 кошкам сначала произносили четыре обычных слова, а потом их кличку. На кличку большинство поворачивали уши или голову, но почти никто не мяукал и не вставал с места, и узнавали её даже из уст незнакомца. Скорее всего, кошки запоминают кличку, потому что слышат её прямо перед едой, лаской или походом к ветеринару.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "ar": {
+      "title": "قطتك تعرف اسمها، لكنها تتجاهلك فقط 🐱",
+      "description": "في دراسة أُجريت عام 2019، سمعت 78 قطة أربع كلمات عادية ثم اسمها. أدار معظمها أذنيه أو رأسه عند سماع اسمه، لكن قلة قليلة جدًا ماءت أو نهضت من مكانها، وتعرّفت القطط على أسمائها حتى عندما نطقها شخص غريب. والأرجح أنها تتعلم أسماءها لأنها تسمعها قبل الطعام أو المداعبة أو زيارة الطبيب البيطري.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "hi": {
+      "title": "आपकी बिल्ली अपना नाम जानती है, बस आपको अनसुना कर रही है 🐱",
+      "description": "2019 के एक अध्ययन में 78 बिल्लियों को पहले चार आम शब्द और फिर उनका नाम सुनाया गया। नाम सुनकर ज़्यादातर ने कान या सिर घुमाया, लेकिन बहुत कम ने म्याऊँ किया या अपनी जगह से उठीं, और किसी अजनबी के बोलने पर भी उन्होंने अपना नाम पहचाना। बिल्लियाँ शायद अपना नाम इसलिए सीखती हैं क्योंकि वे उसे खाने, दुलार या डॉक्टर के पास जाने से ठीक पहले सुनती हैं।\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "id": {
+      "title": "Kucingmu tahu namanya, dia cuma pura-pura tidak dengar 🐱",
+      "description": "Dalam studi tahun 2019, 78 kucing mendengar empat kata biasa lalu nama mereka sendiri. Saat namanya disebut, kebanyakan menggerakkan telinga atau kepala, tetapi hampir tidak ada yang mengeong atau beranjak, dan mereka tetap mengenalinya meski diucapkan orang asing. Kucing kemungkinan belajar namanya karena mendengarnya tepat sebelum makan, dielus, atau dibawa ke dokter hewan.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "ja": {
+      "title": "猫は自分の名前をわかっている。ただ返事をしないだけ 🐱",
+      "description": "2019年の研究で、78匹の猫に4つのふつうの単語を聞かせたあと、自分の名前を聞かせました。名前を聞くとほとんどの猫が耳や頭を動かしましたが、鳴いたり立ち上がったりした猫はごくわずかで、知らない人が呼んでも名前を聞き分けました。猫はごはんやなでてもらう時、動物病院に行く前に名前を聞くことで覚えると考えられています。\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "ko": {
+      "title": "고양이는 자기 이름을 안다, 그냥 못 들은 척할 뿐 🐱",
+      "description": "2019년 연구에서 고양이 78마리에게 평범한 단어 네 개를 들려준 뒤 자기 이름을 들려주었습니다. 이름을 듣자 대부분 귀나 머리를 움직였지만 울거나 자리에서 일어난 고양이는 아주 적었고, 낯선 사람이 불러도 이름을 알아들었습니다. 고양이는 밥, 쓰다듬기, 동물병원 직전에 이름을 듣기 때문에 이름을 익히는 것으로 보입니다.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "pl": {
+      "title": "Twój kot zna swoje imię, po prostu cię ignoruje 🐱",
+      "description": "W badaniu z 2019 roku 78 kotów usłyszało cztery zwykłe słowa, a potem swoje imię. Na dźwięk imienia większość ruszała uszami lub głową, ale prawie żaden nie miauknął ani nie wstał, a imię rozpoznawały nawet wtedy, gdy wypowiadał je obcy. Koty prawdopodobnie uczą się imienia, bo słyszą je tuż przed jedzeniem, głaskaniem albo wizytą u weterynarza.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "nl": {
+      "title": "Je kat kent zijn naam, hij negeert je gewoon 🐱",
+      "description": "In een studie uit 2019 hoorden 78 katten eerst vier gewone woorden en daarna hun eigen naam. Bij hun naam draaiden de meeste hun oren of kop, maar bijna geen enkele miauwde of stond op, en ze herkenden hun naam zelfs als een vreemde hem uitsprak. Katten leren hun naam waarschijnlijk omdat ze hem horen vlak voor eten, aaien of een bezoek aan de dierenarts.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "uk": {
+      "title": "Твій кіт знає своє ім'я, він просто тебе ігнорує 🐱",
+      "description": "У дослідженні 2019 року 78 котам спочатку казали чотири звичайні слова, а потім їхнє ім'я. Почувши ім'я, більшість повертали вуха чи голову, але майже ніхто не нявкав і не вставав, і ім'я вони впізнавали навіть від незнайомця. Ймовірно, коти запам'ятовують ім'я, бо чують його просто перед їжею, пестощами чи візитом до ветеринара.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "vi": {
+      "title": "Mèo của bạn biết tên mình, chỉ là nó đang lờ bạn đi 🐱",
+      "description": "Trong một nghiên cứu năm 2019, 78 con mèo được nghe bốn từ thông thường rồi đến tên của chính mình. Khi nghe tên, phần lớn xoay tai hoặc quay đầu, nhưng rất ít con kêu meo hay đứng dậy, và chúng vẫn nhận ra tên ngay cả khi người lạ gọi. Có lẽ mèo học tên vì thường nghe nó ngay trước khi được cho ăn, được vuốt ve hay bị đưa đi bác sĩ thú y.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "az": {
+      "title": "Pişiyin adını bilir, sadəcə səni eşitməzliyə vurur 🐱",
+      "description": "2019-cu il araşdırmasında 78 pişiyə əvvəlcə dörd adi söz, sonra öz adı deyildi. Adını eşidəndə çoxu qulağını və ya başını çevirdi, amma miyovlayan və ya yerindən qalxan çox az oldu; adı yad biri deyəndə belə tanıdılar. Pişiklər adlarını, ehtimal ki, onu yemək, sığal və ya baytar ziyarətindən dərhal əvvəl eşitdikləri üçün öyrənirlər.\n\n#shorts\n\nSeri: mk-c0088"
+    },
+    "ro": {
+      "title": "Pisica ta își știe numele, doar se face că nu te aude 🐱",
+      "description": "Într-un studiu din 2019, 78 de pisici au auzit patru cuvinte obișnuite și apoi propriul nume. La auzul numelui, cele mai multe au mișcat urechile sau capul, dar foarte puține au mieunat sau s-au ridicat, iar numele l-au recunoscut chiar și rostit de un străin. Probabil pisicile își învață numele pentru că îl aud chiar înainte de mâncare, mângâieri sau drumul la veterinar.\n\n#shorts\n\nSeri: mk-c0088"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin adını duyunca ne yapıyor: yanına mı geliyor, sadece kulağını mı oynatıyor?",
+  "scenes": [
+    {
+      "text": "Bu kedi adını biliyor, sadece cevap vermiyor.",
+      "visual": "close-up of a cat's face with ears pricked, looking straight into the camera",
+      "stock_query": "cat face",
+      "source": "stock",
+      "callout": "ADINI BİLİYOR"
+    },
+    {
+      "text": "Bir deneyde yetmiş sekiz kediye önce dört sıradan kelime, sonra adları söylendi.",
+      "visual": "a woman crouching on the floor and talking softly to her cat",
+      "stock_query": "cat owner",
+      "source": "stock"
+    },
+    {
+      "text": "Adını duyunca çoğu kulağını ya da başını çevirdi, ama yerinden kalkmadı.",
+      "visual": "close-up of a lying cat turning one ear toward a sound without getting up",
+      "stock_query": "cat ears",
+      "source": "stock",
+      "callout": "KULAĞINI ÇEVİRDİ"
+    },
+    {
+      "text": "Üstelik adını yabancı biri söylediğinde bile tanıdılar.",
+      "visual": "a cat on a sofa glancing up at an unfamiliar visitor",
+      "stock_query": "cat sofa",
+      "source": "stock",
+      "callout": "YABANCI SESTE BİLE"
+    },
+    {
+      "text": "Çünkü adını hep mamadan, sevgiden ya da veterinerden önce duyuyor.",
+      "visual": "a person pouring dry food into a bowl while a cat watches",
+      "stock_query": "cat food",
+      "source": "stock",
+      "callout": "MAMA YA DA VETERİNER"
+    },
+    {
+      "text": "Şimdi adını söyle ve kulağına bak; kıpırdıyorsa...",
+      "visual": "a cat lying on a bed flicking one ear toward the camera",
+      "stock_query": "cat lying",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.25,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #141",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0088_1794172054_ig.mp4"
+}
