@@ -1,7 +1,7 @@
 {
- "started": "2026-11-05T22:55:21+00:00",
+ "started": "2026-11-08T22:25:30+00:00",
  "bolum": "k005",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 607,
  "voice": {
@@ -12,7 +12,15 @@
   "similarity_boost": 0.8
  },
  "duration": 38.7,
- "render_seconds": 152,
+ "render_seconds": 96,
  "title": "Herkes Yanlış Söylerse Sen de Söyler misin? 🤯 #psikoloji",
- "finished": "2026-11-05T22:57:59+00:00"
+ "video_id": "np-1v5zhrjc",
+ "url": "https://youtube.com/shorts/np-1v5zhrjc",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-09T17:00:00+00:00",
+ "finished": "2026-11-08T22:27:13+00:00"
 }
