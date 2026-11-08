@@ -1,5 +1,5 @@
 {
- "started": "2026-11-07T18:00:01+00:00",
+ "started": "2026-11-08T10:00:34+00:00",
  "mod": "nöbet",
  "anahtar_bitis": "2026-12-31T21:02",
  "new": 0,
@@ -7,8 +7,11 @@
  "room": 20,
  "sent_last_24h": 0,
  "later": 0,
+ "reel_hatalari": [
+  "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR"
+ ],
  "reel": {
-  "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/"
+  "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR"
  },
- "finished": "2026-11-07T18:01:38+00:00"
+ "finished": "2026-11-08T10:03:09+00:00"
 }
