@@ -1,5 +1,5 @@
 {
- "at": "2026-11-08T13:08:31+00:00",
+ "at": "2026-11-08T13:28:16+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -147,7 +147,7 @@
    "baslik": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?"
   },
   "kJHNXA1I-SU": {
-   "view": 1118,
+   "view": 1116,
    "like": 1,
    "comment": 0,
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
@@ -201,7 +201,7 @@
    "baslik": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?"
   },
   "E9dsm0cEDnM": {
-   "view": 901,
+   "view": 897,
    "like": 8,
    "comment": 2,
    "baslik": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?"
@@ -225,7 +225,7 @@
    "baslik": "Ay Gerçekte Ne Kadar Uzak?"
   },
   "wvA035c4dvw": {
-   "view": 1276,
+   "view": 1274,
    "like": 9,
    "comment": 2,
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
@@ -249,13 +249,13 @@
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   },
   "Gyz1vK-E-D4": {
-   "view": 1294,
+   "view": 1293,
    "like": 10,
    "comment": 0,
    "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
   },
   "F9Hkco1HKiA": {
-   "view": 819,
+   "view": 818,
    "like": 6,
    "comment": 0,
    "baslik": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu? 😳"
@@ -267,13 +267,13 @@
    "baslik": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın? 😳"
   },
   "Ze43ZrXANSQ": {
-   "view": 1719,
+   "view": 1696,
    "like": 15,
    "comment": 2,
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   },
   "QCM7IT8jkhc": {
-   "view": 2066,
+   "view": 2058,
    "like": 5,
    "comment": 0,
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
@@ -291,31 +291,31 @@
    "baslik": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın? 😳"
   },
   "MM3s0q-j2q0": {
-   "view": 1203,
+   "view": 1186,
    "like": 7,
    "comment": 0,
    "baslik": "Lav Gölüne Düşseydin Batar Mıydın? 😳"
   },
   "hvgNbZMhWPg": {
-   "view": 1926,
+   "view": 1922,
    "like": 19,
    "comment": 0,
    "baslik": "Bir Kara Delik Gerçekte Ne Kadar Ağır? 🤯"
   },
   "5-jo5Fr030o": {
-   "view": 1117,
+   "view": 1115,
    "like": 4,
    "comment": 0,
    "baslik": "Okyanusun En Dibine Dalsaydın Ne Olurdu? 😳"
   },
   "yexFsNeB7JM": {
-   "view": 946,
+   "view": 942,
    "like": 5,
    "comment": 0,
    "baslik": "Dünya'ya 1 Günde Kaç Yıldırım Düşer? 😮"
   },
   "VMFzMO2A2CY": {
-   "view": 1085,
+   "view": 1084,
    "like": 4,
    "comment": 0,
    "baslik": "Mars'ta Korumasız Kalsaydın Ne Olurdu? 😳"
@@ -327,7 +327,7 @@
    "baslik": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun? 😳"
   },
   "xRibz7N8GmY": {
-   "view": 950,
+   "view": 951,
    "like": 4,
    "comment": 0,
    "baslik": "Everest Gerçekte Ne Kadar Yüksek? 🤯"
@@ -339,13 +339,13 @@
    "baslik": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu? 😳"
   },
   "4J5Gbwz3y4E": {
-   "view": 804,
+   "view": 805,
    "like": 9,
    "comment": 0,
    "baslik": "Bir Fil 1 Günde Ne Kadar Yemek Yer? 😮"
   },
   "33I8lo_Kk18": {
-   "view": 50,
+   "view": 40,
    "like": 0,
    "comment": 0,
    "baslik": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın? 😳"
@@ -404,13 +404,7 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1367,
-    "YT_SEARCH": 83,
-    "YT_CHANNEL": 5,
-    "NO_LINK_OTHER": 1,
-    "YT_OTHER_PAGE": 1
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 728,
    "devam_yuzde": 50.0
   },
