@@ -525,6 +525,12 @@
     "r",
     "Like sayını buradan göremiyorum ama desteğin için çok teşekkürler! 🚀\n— Bit 🤖",
     "dc937b598926"
+   ],
+   "18080570315429540": [
+    1794137174.2618642,
+    "r",
+    "Ekranı izlemekten dalmış olmalısın, hadi şimdi kocaman bir göz kırpma kampanyası",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -575,6 +581,12 @@
     "kind": "yorum",
     "text": "Şuan kaç bende 1 like?",
     "reply": "Like sayını buradan göremiyorum ama desteğin için çok teşekkürler! 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1794137174.2618642,
+    "kind": "yorum",
+    "text": "Ben gözümü kıramıyor ki",
+    "reply": "Ekranı izlemekten dalmış olmalısın, hadi şimdi kocaman bir göz kırpma kampanyası yapalım! 😉\n— Bit 🤖"
    }
   ]
  },
@@ -582,10 +594,10 @@
  "nobet": {
   "basladi": "2026-11-08T06:09:13+00:00",
   "run": "42452859662",
-  "tur": 316,
-  "ig_cevap": 0,
+  "tur": 318,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-08T11:24:15+00:00"
+  "son_tur": "2026-11-08T11:26:17+00:00"
  }
 }
