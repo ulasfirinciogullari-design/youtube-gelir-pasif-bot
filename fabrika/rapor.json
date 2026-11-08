@@ -1,5 +1,5 @@
 {
- "started": "2026-11-08T18:07:05+00:00",
+ "started": "2026-11-08T20:07:39+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,37 +8,31 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "59",
-  "videos": "57"
+  "videos": "58"
  },
  "credits_before": [
-  91941,
+  92122,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261108-3-n012.json",
-  "kalan": 1
+  "dosya": "20261108-4-y042.json",
+  "kalan": 0
  },
  "topic": {
-  "id": "n012",
-  "series": "Ne Kadar Büyük?",
-  "q": "DNA'n açılsa ne kadar uzun olur?"
+  "id": "y042",
+  "series": "Ya Olsaydı?",
+  "q": "Bir kara delik Güneş Sistemi'ne girseydi ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 414,
- "duration": 29.5,
- "title": "DNA'n Gerçekte Ne Kadar Uzun?",
- "url": "https://youtube.com/shorts/0lt8q81TuOs",
+ "chars": 358,
+ "duration": 25.2,
+ "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
+ "url": "https://youtube.com/shorts/Tk6wA4QlShk",
  "recent_status": {
-  "y021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "949",
-   "reason": null
-  },
   "g011": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1090",
+   "views": "1105",
    "reason": null
   },
   "y036": {
@@ -50,10 +44,16 @@
   "y041": {
    "upload": "processed",
    "privacy": "public",
-   "views": "594",
+   "views": "893",
    "reason": null
   },
   "n012": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "4",
+   "reason": null
+  },
+  "y042": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  92040,
+  92208,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261108-3-n012.json DNA'n açılsa ne kadar uzun olur? (Ne Kadar Büyük?)"
+  "Kuyruktan: 20261108-4-y042.json Bir kara delik Güneş Sistemi'ne girseydi ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-08T18:08:19+00:00"
+ "finished": "2026-11-08T20:08:49+00:00"
 }

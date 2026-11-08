@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "831",
+    "views": "834",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2094",
+    "views": "2091",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1081",
+    "views": "1083",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "986",
+    "views": "990",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1303",
+    "views": "1347",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "954",
+    "views": "953",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1087",
+    "views": "1090",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1197",
+    "views": "1207",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "959",
+    "views": "956",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "949",
+    "views": "943",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1090",
+    "views": "1105",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "594",
+    "views": "893",
     "reason": null
    }
   },
@@ -1703,6 +1703,36 @@
    "thumbnail": true,
    "at": 1794161298.2159464,
    "chars": 414,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "4",
+    "reason": null
+   }
+  },
+  {
+   "id": "y042",
+   "video_id": "Tk6wA4QlShk",
+   "url": "https://youtube.com/shorts/Tk6wA4QlShk",
+   "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen to You If a Black Hole Entered the Solar System?",
+    "es": "¿Qué Te Pasaría Si un Agujero Negro Entrara en el Sistema Solar?",
+    "pt": "O Que Seria de Você Se um Buraco Negro Entrasse no Sistema Solar?",
+    "ar": "ماذا سيحدث لك لو دخل ثقب أسود إلى النظام الشمسي؟",
+    "hi": "अगर ब्लैक होल सौरमंडल में आ जाता, तो तुम्हारा क्या होता?",
+    "id": "Apa yang Terjadi Padamu Jika Lubang Hitam Masuk ke Tata Surya?",
+    "fr": "Que T'arriverait-Il Si un Trou Noir Entrait dans le Système Solaire ?",
+    "de": "Ein Schwarzes Loch im Sonnensystem: Was Würde Dir Passieren?",
+    "ru": "Что Будет с Тобой, Если Чёрная Дыра Войдёт в Солнечную Систему?",
+    "az": "Qara Dəlik Günəş Sisteminə Girsəydi, Sənə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794168528.0316217,
+   "chars": 358,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1768,7 +1798,8 @@
   "g011",
   "y036",
   "y041",
-  "n012"
+  "n012",
+  "y042"
  ],
  "extra": [
   {
@@ -1834,14 +1865,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-22T19:32:54+00:00",
-   "mod": "zorla",
-   "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
-   "url": "https://youtube.com/shorts/gEB2tRsHr5s",
-   "duration": 25.3,
-   "chars": 384
-  },
   {
    "finished": "2026-10-23T09:09:35+00:00",
    "mod": "igbolum",
@@ -2260,6 +2283,14 @@
    "url": "https://youtube.com/shorts/0lt8q81TuOs",
    "duration": 29.5,
    "chars": 414
+  },
+  {
+   "finished": "2026-11-08T20:08:49+00:00",
+   "mod": "saatlik",
+   "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
+   "url": "https://youtube.com/shorts/Tk6wA4QlShk",
+   "duration": 25.2,
+   "chars": 358
   }
  ],
  "last_fail": 1794133491.1438286,
