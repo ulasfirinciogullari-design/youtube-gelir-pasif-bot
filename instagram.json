@@ -45,16 +45,17 @@
   "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
   "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/",
   "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR",
-  "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/"
+  "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/",
+  "2026-11-08T18": "kkPqwP8hyz4 https://www.instagram.com/reel/DffWa5FAjpw/"
  },
  "nobet": {
   "basladi": "2026-11-08T17:29:02+00:00",
   "run": "42504334386",
-  "tur": 1,
+  "tur": 32,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-08T17:29:04+00:00"
+  "son_tur": "2026-11-08T18:00:49+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -308,6 +309,13 @@
    "at": 1794146512,
    "title": "Köpeğinin yaşını yediyle çarpmak yanlış 🐶",
    "topic_id": "mk-c0063"
+  },
+  "kkPqwP8hyz4": {
+   "media_id": "18123010265292333",
+   "url": "https://www.instagram.com/reel/DffWa5FAjpw/",
+   "at": 1794160849,
+   "title": "At hiç yatmadan ayakta uyuyabilir mi? 🐴",
+   "topic_id": "mk-c0066"
   }
  }
 }
