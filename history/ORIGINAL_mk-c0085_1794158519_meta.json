@@ -1,0 +1,186 @@
+{
+  "topic_id": "mk-c0085",
+  "topic": "Şeker çocukları hiperaktif yapar mı, şeker yiyen çocuk neden coşar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Çocuğu coşturan şeker değil, senin beklentin 🍭",
+  "hook_text": "ŞEKER ÇOCUĞU COŞTURUR MU?",
+  "description": "Şeker çocukları hiperaktif yapar mı, şeker yiyen çocuk neden coşar?\n\nAraştırmalar şekerin çocukları hiperaktif yapmadığını gösteriyor. Mark Wolraich ve ekibinin 1995'te JAMA dergisinde yayımladığı ve 16 deneyi birleştiren analiz, şekerin çocukların davranışını ya da zihinsel performansını etkilemediği sonucuna vardı. 1994'te yayımlanan bir deneyde ise 5-7 yaşındaki 35 erkek çocuğun hepsine şeker yerine tatlandırıcılı bir içecek verildi, ama annelerin yarısına çocuğuna yüksek dozda şeker verildiği söylendi. Bu anneler oğullarını belirgin biçimde daha hareketli buldu ve onlara daha yakın durup onları daha çok kontrol etti. Araştırmacılara göre beklenti, ebeveynin gördüğünü değiştiriyor.\n\nSen şekerin çocukları coşturduğuna inanıyor muydun: evet mi, hayır mı?\n\n#şeker #çocuk #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0085",
+  "tags": [
+    "şeker",
+    "şeker hiperaktivite",
+    "şeker çocukları coşturur mu",
+    "şeker hiperaktif yapar mı",
+    "çocuk ve şeker",
+    "hiperaktif çocuk",
+    "çocuk psikolojisi",
+    "çocuk gelişimi",
+    "ebeveynlik",
+    "anne baba",
+    "beklenti etkisi",
+    "plasebo etkisi",
+    "doğum günü",
+    "psikoloji",
+    "insan psikolojisi",
+    "insan davranışları",
+    "bilinen yanlışlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "sugar hyperactivity myth",
+    "sugar rush",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "seker",
+    "seker hiperaktivite",
+    "cocuk ve seker"
+  ],
+  "localizations": {
+    "en": {
+      "title": "It's not the sugar that makes kids hyper, it's what you expect 🍭",
+      "description": "A 1995 analysis of 16 studies found that sugar doesn't change children's behavior. In a 1994 experiment, no child got sugar, yet mothers who were told their son had a big dose rated him as more hyperactive and stayed closer to him. Expectation changes what parents see.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "es": {
+      "title": "No es el azúcar lo que altera a los niños, es lo que esperas 🍭",
+      "description": "Un análisis de 1995 que reunió 16 estudios concluyó que el azúcar no cambia la conducta de los niños. En un experimento de 1994 ningún niño tomó azúcar, pero las madres a las que se les dijo que su hijo había tomado mucha lo vieron más hiperactivo y se quedaron más cerca de él. La expectativa cambia lo que vemos.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "pt": {
+      "title": "Não é o açúcar que agita as crianças, é a sua expectativa 🍭",
+      "description": "Uma análise de 1995 com 16 estudos concluiu que o açúcar não muda o comportamento das crianças. Num experimento de 1994, nenhuma criança comeu açúcar, mas as mães que ouviram que o filho tinha tomado uma dose alta o acharam mais hiperativo e ficaram mais perto dele. A expectativa muda o que vemos.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "de": {
+      "title": "Nicht der Zucker macht Kinder zappelig, sondern deine Erwartung 🍭",
+      "description": "Eine Auswertung von 16 Studien aus dem Jahr 1995 ergab, dass Zucker das Verhalten von Kindern nicht verändert. In einem Experiment von 1994 bekam kein Kind Zucker, doch Mütter, denen man das Gegenteil sagte, hielten ihren Sohn für hyperaktiver und blieben näher bei ihm. Die Erwartung verändert, was wir sehen.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "fr": {
+      "title": "Ce n'est pas le sucre qui excite les enfants, c'est ce que tu attends 🍭",
+      "description": "Une analyse de 16 études publiée en 1995 a conclu que le sucre ne change pas le comportement des enfants. Dans une expérience de 1994, aucun enfant n'avait pris de sucre, mais les mères à qui l'on avait dit le contraire jugeaient leur fils plus hyperactif et restaient plus près de lui. L'attente change ce que l'on voit.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "it": {
+      "title": "Non è lo zucchero ad agitare i bambini, sono le tue aspettative 🍭",
+      "description": "Un'analisi di 16 studi del 1995 ha concluso che lo zucchero non cambia il comportamento dei bambini. In un esperimento del 1994 nessun bambino aveva preso zucchero, ma le madri a cui era stato detto il contrario giudicavano il figlio più iperattivo e gli stavano più vicine. L'aspettativa cambia ciò che vediamo.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "ru": {
+      "title": "Детей возбуждает не сахар, а твои ожидания 🍭",
+      "description": "Анализ 16 исследований 1995 года показал, что сахар не меняет поведение детей. В эксперименте 1994 года ни один ребёнок не получил сахара, но матери, которым сказали обратное, сочли сыновей более гиперактивными и держались к ним ближе. Ожидание меняет то, что мы видим.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "ar": {
+      "title": "ليس السكر ما يجعل الأطفال مفرطي النشاط بل توقعاتك 🍭",
+      "description": "خلص تحليل لـ16 دراسة نُشر عام 1995 إلى أن السكر لا يغيّر سلوك الأطفال. وفي تجربة عام 1994 لم يتناول أي طفل السكر، لكن الأمهات اللاتي قيل لهن إن أبناءهن تناولوا جرعة كبيرة منه رأين أبناءهن أكثر نشاطًا وبقين أقرب إليهم. فالتوقع يغيّر ما نراه.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "hi": {
+      "title": "बच्चों को चीनी नहीं, आपकी उम्मीद हाइपर दिखाती है 🍭",
+      "description": "1995 में 16 अध्ययनों के विश्लेषण में पाया गया कि चीनी बच्चों का व्यवहार नहीं बदलती। 1994 के एक प्रयोग में किसी बच्चे को चीनी नहीं दी गई, फिर भी जिन माँओं से कहा गया कि बेटे ने खूब चीनी खाई है, उन्हें बेटा ज़्यादा चंचल लगा और वे उसके ज़्यादा पास रहीं। उम्मीद ही बदल देती है कि हमें क्या दिखता है।\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "id": {
+      "title": "Bukan gula yang bikin anak hiperaktif, tapi harapanmu 🍭",
+      "description": "Analisis tahun 1995 terhadap 16 studi menyimpulkan bahwa gula tidak mengubah perilaku anak. Dalam eksperimen tahun 1994, tidak ada anak yang diberi gula, tetapi para ibu yang diberi tahu anaknya mendapat banyak gula menilai anaknya lebih hiperaktif dan terus berada di dekatnya. Harapan mengubah apa yang kita lihat.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "ja": {
+      "title": "子どもをはしゃがせるのは砂糖ではなく、親の思い込み 🍭",
+      "description": "1995年に16件の研究をまとめた分析では、砂糖は子どもの行動を変えないという結論でした。1994年の実験では、どの子も砂糖をとっていないのに「息子さんに砂糖をたっぷり与えた」と聞かされた母親は、わが子をより落ち着きがないと評価し、そばを離れませんでした。思い込みが見え方を変えるのです。\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "ko": {
+      "title": "아이를 들뜨게 하는 건 설탕이 아니라 당신의 기대다 🍭",
+      "description": "1995년 16건의 연구를 종합한 분석은 설탕이 아이들의 행동을 바꾸지 않는다고 결론지었습니다. 1994년 실험에서는 어떤 아이도 설탕을 먹지 않았지만, 아들이 설탕을 많이 먹었다는 말을 들은 엄마들은 아들을 더 산만하다고 평가하고 곁에 더 가까이 있었습니다. 기대가 보이는 것을 바꿉니다.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "pl": {
+      "title": "To nie cukier nakręca dzieci, tylko twoje oczekiwania 🍭",
+      "description": "Analiza 16 badań z 1995 roku wykazała, że cukier nie zmienia zachowania dzieci. W eksperymencie z 1994 roku żadne dziecko nie dostało cukru, ale matki, którym powiedziano, że syn zjadł go dużo, oceniały go jako bardziej nadpobudliwego i trzymały się bliżej niego. Oczekiwania zmieniają to, co widzimy.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "nl": {
+      "title": "Niet de suiker maakt kinderen druk, maar wat jij verwacht 🍭",
+      "description": "Een analyse van 16 studies uit 1995 concludeerde dat suiker het gedrag van kinderen niet verandert. In een experiment uit 1994 kreeg geen enkel kind suiker, maar moeders die te horen kregen dat hun zoon veel suiker had gehad, vonden hem drukker en bleven dichter bij hem. Verwachting verandert wat we zien.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "uk": {
+      "title": "Дітей збуджує не цукор, а твої очікування 🍭",
+      "description": "Аналіз 16 досліджень 1995 року показав, що цукор не змінює поведінку дітей. В експерименті 1994 року жодна дитина не отримала цукру, але матері, яким сказали протилежне, вважали синів гіперактивнішими й трималися ближче до них. Очікування змінює те, що ми бачимо.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "vi": {
+      "title": "Không phải đường khiến trẻ hiếu động, mà là kỳ vọng của bạn 🍭",
+      "description": "Một phân tích năm 1995 gộp 16 nghiên cứu kết luận rằng đường không làm thay đổi hành vi của trẻ. Trong một thí nghiệm năm 1994, không đứa trẻ nào được ăn đường, nhưng những bà mẹ được bảo rằng con mình vừa ăn nhiều đường lại thấy con hiếu động hơn và ở sát bên con hơn. Kỳ vọng làm thay đổi điều ta nhìn thấy.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "az": {
+      "title": "Uşağı coşduran şəkər deyil, sənin gözləntindir 🍭",
+      "description": "1995-ci ildə 16 araşdırmanı birləşdirən təhlil şəkərin uşaqların davranışını dəyişmədiyini göstərdi. 1994-cü ildəki təcrübədə heç bir uşaq şəkər almamışdı, amma oğluna çoxlu şəkər verildiyi deyilən analar onu daha hiperaktiv saydı və ona daha yaxın durdu. Gözlənti gördüyümüzü dəyişir.\n\n#shorts\n\nSeri: mk-c0085"
+    },
+    "ro": {
+      "title": "Nu zahărul îi agită pe copii, ci așteptările tale 🍭",
+      "description": "O analiză din 1995 a 16 studii a arătat că zahărul nu schimbă comportamentul copiilor. Într-un experiment din 1994, niciun copil nu primise zahăr, dar mamele cărora li s-a spus că fiul lor a primit mult l-au considerat mai hiperactiv și au stat mai aproape de el. Așteptările schimbă ce vedem.\n\n#shorts\n\nSeri: mk-c0085"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen şekerin çocukları coşturduğuna inanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu şeker, çocuğu sandığın kadar coşturmuyor.",
+      "visual": "close-up of a small child licking a big colorful lollipop",
+      "stock_query": "child lollipop",
+      "source": "stock",
+      "callout": "ŞEKER SUÇSUZ"
+    },
+    {
+      "text": "On altı deneyin analizi, şekerin davranışı değiştirmediğini buldu.",
+      "visual": "children laughing and running around at a birthday party",
+      "stock_query": "children party",
+      "source": "stock",
+      "callout": "16 DENEY"
+    },
+    {
+      "text": "Bir deneyde, bin dokuz yüz doksan dörtte, annelerin yarısına 'oğlunuz şeker aldı' dendi.",
+      "visual": "a mother sitting next to her young son and talking to him",
+      "stock_query": "mother son",
+      "source": "stock",
+      "subject": [
+        "mother"
+      ]
+    },
+    {
+      "text": "Hiçbiri almamıştı; yine de bu anneler oğullarını daha hareketli buldu.",
+      "visual": "a mother closely watching her little son play",
+      "stock_query": "mother child playing",
+      "source": "stock",
+      "subject": [
+        "mother"
+      ],
+      "callout": "HİÇ ŞEKER YOKTU"
+    },
+    {
+      "text": "Çünkü ne beklersen onu görürsün; sıradan koşturma bile şekerden sanılır.",
+      "visual": "a little boy happily running around the living room",
+      "stock_query": "boy running",
+      "source": "stock",
+      "subject": [
+        "boy"
+      ],
+      "callout": "BEKLENTİ GÖRÜR"
+    },
+    {
+      "text": "Doğum gününde çocuk coşarsa hatırla:",
+      "visual": "close-up of a child eating a slice of birthday cake",
+      "stock_query": "child cake",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.7,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #138",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0085_1794158519_ig.mp4"
+}
