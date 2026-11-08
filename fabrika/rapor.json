@@ -1,18 +1,71 @@
 {
- "started": "2026-11-08T17:07:29+00:00",
- "mod": "igbolum",
- "gate": "instagram: y020",
+ "started": "2026-11-08T18:07:05+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
- "chars": 384,
- "instagram": {
-  "anahtar_bitis": "2026-12-31T21:10+00:00",
-  "media_id": "18358575370222547",
-  "url": "https://www.instagram.com/reel/DffQe5clCF5/",
-  "at": 1794157741.302166
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "59",
+  "videos": "57"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DffQe5clCF5/"
+ "credits_before": [
+  91941,
+  613902
  ],
- "finished": "2026-11-08T17:09:01+00:00"
+ "kuyruk": {
+  "dosya": "20261108-3-n012.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "n012",
+  "series": "Ne Kadar Büyük?",
+  "q": "DNA'n açılsa ne kadar uzun olur?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 414,
+ "duration": 29.5,
+ "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+ "url": "https://youtube.com/shorts/0lt8q81TuOs",
+ "recent_status": {
+  "y021": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "949",
+   "reason": null
+  },
+  "g011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1090",
+   "reason": null
+  },
+  "y036": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1075",
+   "reason": null
+  },
+  "y041": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "594",
+   "reason": null
+  },
+  "n012": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  92040,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261108-3-n012.json DNA'n açılsa ne kadar uzun olur? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-08T18:08:19+00:00"
 }

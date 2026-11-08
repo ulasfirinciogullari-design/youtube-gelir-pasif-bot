@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1294",
+    "views": "1299",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "819",
+    "views": "831",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1719",
+    "views": "1731",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2066",
+    "views": "2094",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1078",
+    "views": "1081",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "972",
+    "views": "986",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1203",
+    "views": "1303",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1926",
+    "views": "1976",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "946",
+    "views": "954",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1085",
+    "views": "1087",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1191",
+    "views": "1197",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "952",
+    "views": "959",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "941",
+    "views": "949",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "805",
+    "views": "1090",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "111",
+    "views": "1075",
     "reason": null
    }
   },
@@ -1673,6 +1673,36 @@
    "thumbnail": true,
    "at": 1794146870.0538905,
    "chars": 369,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "594",
+    "reason": null
+   }
+  },
+  {
+   "id": "n012",
+   "video_id": "0lt8q81TuOs",
+   "url": "https://youtube.com/shorts/0lt8q81TuOs",
+   "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Long Is Your DNA Really?",
+    "es": "¿Cuánto Mide Realmente Tu ADN?",
+    "pt": "Qual É o Tamanho Real do Seu DNA?",
+    "ar": "ما الطول الحقيقي لحمضك النووي؟",
+    "hi": "तुम्हारा DNA असल में कितना लंबा है?",
+    "id": "Seberapa Panjang DNA-mu Sebenarnya?",
+    "fr": "Quelle Est la Vraie Longueur de Ton ADN ?",
+    "de": "Wie Lang Ist Deine DNA Wirklich?",
+    "ru": "Насколько Длинная Твоя ДНК на Самом Деле?",
+    "az": "Sənin DNT-n Əslində Nə Qədər Uzundur?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794161298.2159464,
+   "chars": 414,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1737,7 +1767,8 @@
   "y021",
   "g011",
   "y036",
-  "y041"
+  "y041",
+  "n012"
  ],
  "extra": [
   {
@@ -1803,10 +1834,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-22T19:30:10+00:00",
-   "mod": "saatlik"
-  },
   {
    "finished": "2026-10-22T19:32:54+00:00",
    "mod": "zorla",
@@ -2225,6 +2252,14 @@
    "mod": "igbolum",
    "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
    "chars": 384
+  },
+  {
+   "finished": "2026-11-08T18:08:19+00:00",
+   "mod": "saatlik",
+   "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+   "url": "https://youtube.com/shorts/0lt8q81TuOs",
+   "duration": 29.5,
+   "chars": 414
   }
  ],
  "last_fail": 1794133491.1438286,
