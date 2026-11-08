@@ -1708,16 +1708,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 0,
+ "fail_streak": 1,
  "runs": [
-  {
-   "finished": "2026-10-21T14:09:30+00:00",
-   "mod": "saatlik",
-   "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
-   "url": "https://youtube.com/shorts/-Ob9VS2V1H4",
-   "duration": 16.3,
-   "chars": 230
-  },
   {
    "finished": "2026-10-21T17:10:43+00:00",
    "mod": "igbolum",
@@ -2132,9 +2124,16 @@
    "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
    "duration": 28.3,
    "chars": 424
+  },
+  {
+   "finished": "2026-11-08T09:08:58+00:00",
+   "mod": "igbolum",
+   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+   "error": "IGError: Instagram videoyu işleyemedi: ERROR",
+   "chars": 384
   }
  ],
- "last_fail": 1793568784.6201334,
+ "last_fail": 1794128938.8251593,
  "instagram": {
   "user": {
    "user_id": "17841467272692803",

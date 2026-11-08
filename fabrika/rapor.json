@@ -1,71 +1,15 @@
 {
- "started": "2026-11-07T20:07:04+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-08T09:07:28+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y020",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "56",
-  "videos": "53"
- },
- "credits_before": [
-  90235,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261107-3-y021.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y021",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'ya dev bir asteroit çarpsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 424,
- "duration": 28.3,
- "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
- "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
- "recent_status": {
-  "g008": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "536",
-   "reason": null
-  },
-  "y020": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1077",
-   "reason": null
-  },
-  "y033": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "865",
-   "reason": null
-  },
-  "n011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "79",
-   "reason": null
-  },
-  "y021": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  90338,
-  613902
- ],
+ "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
+ "chars": 384,
+ "error": "IGError: Instagram videoyu işleyemedi: ERROR",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 446, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 317, in ig_bolum\n    report[\"instagram\"] = to_instagram(ep, WORK / \"timings.json\", mix, state)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 277, in to_instagram\n    return instagram.paylas(ep, video, cover, state)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 221, in paylas\n    cid = reel(tok, urls, caption(ep))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 205, in reel\n    raise IGError(f\"Instagram videoyu işleyemedi: {st.get('status')}\")\ninstagram.IGError: Instagram videoyu işleyemedi: ERROR\n",
  "log": [
-  "Kuyruktan: 20261107-3-y021.json Dünya'ya dev bir asteroit çarpsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram videoyu alamadı (1. deneme): ERROR",
+  "Instagram videoyu alamadı (2. deneme): ERROR"
  ],
- "finished": "2026-11-07T20:08:06+00:00"
+ "finished": "2026-11-08T09:08:58+00:00"
 }
