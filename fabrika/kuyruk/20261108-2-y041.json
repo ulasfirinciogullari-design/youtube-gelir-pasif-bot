@@ -64,18 +64,18 @@
   },
   {
    "who": "pi",
-   "text": "Açık tenliler bile koyu tenlilerden 70 kat fazla cilt kanseri olur!",
+   "text": "Melanin o kadar önemli ki açık tende cilt kanseri 70 kat sık!",
    "v": {
     "t": "compare",
     "bg": "desert",
     "a": {
-     "e": "✋🏿",
-     "label": "Koyu Ten",
+     "e": "🛡️",
+     "label": "Çok Melanin",
      "value": "1"
     },
     "b": {
-     "e": "✋🏻",
-     "label": "Açık Ten",
+     "e": "☀️",
+     "label": "Az Melanin",
      "value": "70"
     },
     "mode": "bar",
