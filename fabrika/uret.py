@@ -94,8 +94,11 @@ def views(e):
 def ig_pick(state):
     """-> the YouTube episode with no Reel yet that has the most YouTube views (newest on a tie), or None."""
     posted = state.get("instagram", {}).get("posted", {})
-    eps = [e for e in state.get("episodes", [])
-           if e.get("id") not in posted and (HERE / "bolumler" / f"{e.get('id')}.json").exists()]
+    # 2026-11-08: Instagram refused y020 in 5 tries over two runs (ERROR, no reason given), and the next IG hour would
+    # have picked it again; an episode Instagram refused in two runs is passed over
+    refused = {k for k, n in state.get("instagram", {}).get("reddedilen", {}).items() if n >= 2}
+    eps = [e for e in state.get("episodes", []) if e.get("id") not in posted and e.get("id") not in refused
+           and (HERE / "bolumler" / f"{e.get('id')}.json").exists()]
     return max(reversed(eps), key=views)["id"] if eps else None
 
 
@@ -453,6 +456,9 @@ def main():
         if not isinstance(e, SystemExit):  # a wrong or missing key costs nothing; once fixed, the next slot should run
             state["fail_streak"] = state.get("fail_streak", 0) + 1
             state["last_fail"] = now()
+        if a.mod == "igbolum" and type(e).__name__ == "IGError" and "işleyemedi" in str(e):
+            rd = state.setdefault("instagram", {}).setdefault("reddedilen", {})
+            rd[a.bolum] = rd.get(a.bolum, 0) + 1
         print(traceback.format_exc(), file=sys.stderr)
     finally:
         report["log"] = yazar.LOG[-60:]
