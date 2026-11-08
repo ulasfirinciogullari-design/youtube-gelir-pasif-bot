@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 import original_factory
-from app.services import original_script, original_visuals
+from app.services import channel_audit, original_script, original_visuals
 from app.services.original_script import ScriptError, validate_script, write_script
 
 HAS_FFMPEG = shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
@@ -513,3 +513,11 @@ def test_full_render_with_offline_assets(tmp_path, monkeypatch):
     assert meta["music"].endswith(".mp3") and meta["music_mood"] == ""
     assert meta["stock_videos"] >= 1
     assert abs(float(probe["format"]["duration"]) - meta["duration_seconds"]) < 0.3
+
+
+def test_marker_matches_claude_queue_ids():
+    # Claude's queued scripts end their descriptions with "Seri: mk-c0071"; metrics.json must see them.
+    for marker in (original_factory.MARKER_RE, channel_audit.MARKER_RE):
+        assert marker.search("... #keşfet\n\nSeri: mk-c0071").group(1) == "mk-c0071"
+        assert marker.search("Seri: mk-028").group(1) == "mk-028"
+        assert marker.search("Seri: fk-101").group(1) == "fk-101"
