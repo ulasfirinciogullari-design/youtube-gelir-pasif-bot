@@ -61,7 +61,9 @@ AUDIO_LIBRARY = DATA_DIR / "audio"
 
 VOICE = {"name": "tr-TR-AhmetNeural", "rate": "+6%", "pitch": "-2Hz"}
 MARKER_PREFIX = "Seri: "
-MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
+# Claude's queued scripts are numbered mk-c0001 on (2026-10-20); the pattern missed them, so from then on
+# metrics.json and the published-topic list stopped at the last Gemini-era Short (mk-049).
+MARKER_RE = re.compile(r"Seri: ([a-z]{2}-[a-z]?\d{3,})")
 BASE_TAGS = ["shorts", "psikoloji", "tarih", "güç", "karar verme", "zirvenin kanunu"]
 BASE_HASHTAGS = "#shorts #psikoloji #tarih #keşfet"
 # cut = longest shot in seconds. The reference Shorts cut every ~1.5 s; the AI-image series stay at 2.5 s

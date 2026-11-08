@@ -17,7 +17,9 @@ from app.services.original_script import BANNED_REFERENCES, EMOJI_RE
 LOW_VIEWS = 50
 MIN_AGE_DAYS = 3
 LIVE_SECONDS = 15 * 60
-MARKER_RE = re.compile(r"Seri: ([a-z]{2}-\d{3,})")
+# Claude's queued scripts are numbered mk-c0001 on (2026-10-20); the pattern missed them, so from then on
+# metrics.json and the published-topic list stopped at the last Gemini-era Short (mk-049).
+MARKER_RE = re.compile(r"Seri: ([a-z]{2}-[a-z]?\d{3,})")
 FILM_NAMES = BANNED_REFERENCES + [
     "oppenheimer", "gladyatör", "gladiator", "maximus", "the matrix", "matrix illusion", "don corleone",
     "cillian murphy", "hollywood", "şafak sezer", "hedef ben miyim tayfun", "polat", "minecraft",
