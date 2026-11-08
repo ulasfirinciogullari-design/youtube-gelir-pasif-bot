@@ -1739,16 +1739,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 0,
+ "fail_streak": 1,
  "runs": [
-  {
-   "finished": "2026-10-21T18:08:32+00:00",
-   "mod": "saatlik",
-   "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
-   "url": "https://youtube.com/shorts/CK03tB9BVyY",
-   "duration": 25.7,
-   "chars": 385
-  },
   {
    "finished": "2026-10-22T09:09:54+00:00",
    "mod": "igbolum",
@@ -2164,9 +2156,16 @@
    "url": "https://youtube.com/shorts/4J5Gbwz3y4E",
    "duration": 26.3,
    "chars": 397
+  },
+  {
+   "finished": "2026-11-08T10:24:51+00:00",
+   "mod": "igbolum",
+   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+   "error": "IGError: Instagram videoyu işleyemedi: ERROR",
+   "chars": 372
   }
  ],
- "last_fail": 1794128938.8251593,
+ "last_fail": 1794133491.1438286,
  "instagram": {
   "user": {
    "user_id": "17841467272692803",
@@ -2395,7 +2394,8 @@
    }
   ],
   "reddedilen": {
-   "y020": 2
+   "y020": 2,
+   "y033": 1
   }
  },
  "skipped": [
