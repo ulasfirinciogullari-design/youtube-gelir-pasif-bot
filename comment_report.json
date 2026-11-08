@@ -1,30 +1,22 @@
 {
- "started": "2026-11-08T11:45:12+00:00",
+ "started": "2026-11-08T13:45:12+00:00",
  "deneme": false,
  "threads": 100,
  "reply_threads_read": 0,
- "new": 2,
+ "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxQShAsqzbN88Kwl5d4AaABAg",
+   "id": "UgzreHmYM4pv6LxCAkN4AaABAg",
    "kind": "comment",
-   "video": "mR4H7MKxBP8",
-   "comment": "Benim köpeğim 1 olucak",
-   "reply": "Vay be, daha şimdiden 1 yaşına mı geliyor? Ne kadar hızlı büyüyorlar öyle! 🐶",
-   "result": "gönderildi"
-  },
-  {
-   "id": "Ugy-53DiptL3FnBwLMB4AaABAg",
-   "kind": "comment",
-   "video": "mccbXMW6PR8",
-   "comment": "Amlin",
-   "reply": "Klavye coşmuş galiba! 😊",
+   "video": "a2Zc8jK28L0",
+   "comment": "Hayır kaşınma dum hayır",
+   "reply": "Kaşınmamak için direnmen harika! Çoğu kişi karşı koyamıyor bu duruma. 😂",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-08T11:45:20+00:00"
+ "finished": "2026-11-08T13:45:17+00:00"
 }

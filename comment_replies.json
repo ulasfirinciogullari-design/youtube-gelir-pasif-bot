@@ -204,6 +204,12 @@
    "r",
    "Ugy-53DiptL3FnBwLMB4AaABAg.Acx6UuBudAxAcxBNfau90R",
    "UCBwa4l8IAkXhogFTuZSvMoA"
+  ],
+  "UgzreHmYM4pv6LxCAkN4AaABAg": [
+   1794145512,
+   "r",
+   "UgzreHmYM4pv6LxCAkN4AaABAg.AcxK5yUKY_nAcxP6BZtMll",
+   "UCd46ospWdGxVv5A8nxIoRFA"
   ]
  },
  "tracked": {
@@ -268,6 +274,11 @@
    "at": 1794138312,
    "n": 1,
    "reply": "Klavye coşmuş galiba! 😊"
+  },
+  "UgzreHmYM4pv6LxCAkN4AaABAg": {
+   "at": 1794145512,
+   "n": 1,
+   "reply": "Kaşınmamak için direnmen harika! Çoğu kişi karşı koyamıyor bu duruma. 😂"
   }
  },
  "channel": {
@@ -454,6 +465,12 @@
    "video": "mccbXMW6PR8",
    "comment": "Amlin",
    "reply": "Klavye coşmuş galiba! 😊"
+  },
+  {
+   "at": 1794145512,
+   "video": "a2Zc8jK28L0",
+   "comment": "Hayır kaşınma dum hayır",
+   "reply": "Kaşınmamak için direnmen harika! Çoğu kişi karşı koyamıyor bu duruma. 😂"
   }
  ]
 }
