@@ -1,15 +1,71 @@
 {
- "started": "2026-11-08T09:07:28+00:00",
- "mod": "igbolum",
- "gate": "instagram: y020",
+ "started": "2026-11-08T10:06:56+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
- "chars": 384,
- "error": "IGError: Instagram videoyu işleyemedi: ERROR",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 446, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 317, in ig_bolum\n    report[\"instagram\"] = to_instagram(ep, WORK / \"timings.json\", mix, state)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 277, in to_instagram\n    return instagram.paylas(ep, video, cover, state)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 221, in paylas\n    cid = reel(tok, urls, caption(ep))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 205, in reel\n    raise IGError(f\"Instagram videoyu işleyemedi: {st.get('status')}\")\ninstagram.IGError: Instagram videoyu işleyemedi: ERROR\n",
- "log": [
-  "Instagram videoyu alamadı (1. deneme): ERROR",
-  "Instagram videoyu alamadı (2. deneme): ERROR"
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "58",
+  "videos": "54"
+ },
+ "credits_before": [
+  90858,
+  613902
  ],
- "finished": "2026-11-08T09:08:58+00:00"
+ "kuyruk": {
+  "dosya": "20261107-4-g011.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "g011",
+  "series": "1 Gün Boyunca",
+  "q": "Bir fil 1 günde ne kadar yemek yer?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 397,
+ "duration": 26.3,
+ "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+ "url": "https://youtube.com/shorts/4J5Gbwz3y4E",
+ "recent_status": {
+  "y020": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1084",
+   "reason": null
+  },
+  "y033": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1180",
+   "reason": null
+  },
+  "n011": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "946",
+   "reason": null
+  },
+  "y021": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "934",
+   "reason": null
+  },
+  "g011": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  90955,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261107-4-g011.json Bir fil 1 günde ne kadar yemek yer? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-11-08T10:07:56+00:00"
 }

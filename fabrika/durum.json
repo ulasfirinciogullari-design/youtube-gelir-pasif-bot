@@ -1076,7 +1076,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1069",
+    "views": "1072",
     "reason": null
    }
   },
@@ -1106,7 +1106,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1108",
+    "views": "1112",
     "reason": null
    }
   },
@@ -1136,7 +1136,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1005",
+    "views": "1006",
     "reason": null
    }
   },
@@ -1166,7 +1166,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1286",
+    "views": "1290",
     "reason": null
    }
   },
@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "813",
+    "views": "814",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1613",
+    "views": "1701",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1905",
+    "views": "2026",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1068",
+    "views": "1076",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "935",
+    "views": "970",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1113",
+    "views": "1162",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1746",
+    "views": "1872",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "985",
+    "views": "1115",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "536",
+    "views": "892",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1077",
+    "views": "1084",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "865",
+    "views": "1180",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "79",
+    "views": "946",
     "reason": null
    }
   },
@@ -1583,6 +1583,36 @@
    "thumbnail": true,
    "at": 1794082085.2943347,
    "chars": 424,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "934",
+    "reason": null
+   }
+  },
+  {
+   "id": "g011",
+   "video_id": "4J5Gbwz3y4E",
+   "url": "https://youtube.com/shorts/4J5Gbwz3y4E",
+   "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Much Does an Elephant Eat in 1 Day?",
+    "es": "¿Cuánto Come un Elefante en 1 Día?",
+    "pt": "Quanto um Elefante Come em 1 Dia?",
+    "ar": "كم يأكل الفيل في يوم واحد؟",
+    "hi": "एक हाथी 1 दिन में कितना खाना खाता है?",
+    "id": "Berapa Banyak Gajah Makan dalam 1 Hari?",
+    "fr": "Combien un Éléphant Mange-t-il en 1 Jour ?",
+    "de": "Wie Viel Frisst ein Elefant an 1 Tag?",
+    "ru": "Сколько Съедает Слон за 1 День?",
+    "az": "Bir Fil 1 Gündə Nə Qədər Yemək Yeyir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794132475.339147,
+   "chars": 397,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1644,7 +1674,8 @@
   "y020",
   "y033",
   "n011",
-  "y021"
+  "y021",
+  "g011"
  ],
  "extra": [
   {
@@ -1708,14 +1739,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 1,
+ "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-21T17:10:43+00:00",
-   "mod": "igbolum",
-   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
-   "chars": 352
-  },
   {
    "finished": "2026-10-21T18:08:32+00:00",
    "mod": "saatlik",
@@ -2131,6 +2156,14 @@
    "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
    "error": "IGError: Instagram videoyu işleyemedi: ERROR",
    "chars": 384
+  },
+  {
+   "finished": "2026-11-08T10:07:56+00:00",
+   "mod": "saatlik",
+   "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+   "url": "https://youtube.com/shorts/4J5Gbwz3y4E",
+   "duration": 26.3,
+   "chars": 397
   }
  ],
  "last_fail": 1794128938.8251593,
