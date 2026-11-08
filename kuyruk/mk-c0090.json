@@ -1,0 +1,188 @@
+{
+ "id": "mk-c0090",
+ "topic": "Horoz kendi ötüşüyle sağır olur mu, horoz ötüşü kaç desibel?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "rooster"
+ ],
+ "stock_hint": "rooster crowing close up",
+ "script": {
+  "title": "Horoz kendi ötüşüyle sağır olabilir mi? 🐓",
+  "hook_text": "HOROZ SAĞIR OLUR MU?",
+  "scenes": [
+   {
+    "text": "Bu horoz yüz desibelin üstünde ötüyor.",
+    "visual": "close-up of a rooster's head with its beak wide open as it crows toward the camera",
+    "stock_query": "rooster crowing",
+    "source": "stock",
+    "callout": "100+ DESİBEL"
+   },
+   {
+    "text": "Testere kadar gürültülü; peki kendi sesiyle sağır olabilir mi?",
+    "visual": "close-up of a rooster's red comb and eye",
+    "stock_query": "rooster head",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kulağının dibinde ölçülen ses, bir horozda yüz kırk desibeli geçti.",
+    "visual": "a rooster crowing loudly while standing on a wooden fence",
+    "stock_query": "rooster fence",
+    "source": "stock",
+    "callout": "140 DESİBEL"
+   },
+   {
+    "text": "Cevap hayır: gagasını sonuna kadar açınca kulak kanalı tamamen kapanıyor.",
+    "visual": "slow-motion close-up of a rooster opening its beak wide",
+    "stock_query": "rooster close up",
+    "source": "stock",
+    "callout": "KULAK KAPANIR"
+   },
+   {
+    "text": "Tavuklarda kanal tam kapanmaz; onların sesi çok daha kısık.",
+    "visual": "a hen pecking calmly in a farmyard",
+    "stock_query": "hen farm",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "hen"
+    ]
+   },
+   {
+    "text": "Sabah seni uyandıran ses, horozun kendi kulağında kısılıyor; oysa...",
+    "visual": "a rooster crowing on a farm in the early morning",
+    "stock_query": "rooster morning",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Horoz ötüşü yüz desibeli geçer, yani elektrikli testere kadar gürültülüdür; bir horozda kulağın dibinde yüz kırk desibelin üstü ölçüldü. Yine de horoz sağır olmaz: gagasını sonuna kadar açtığında dış kulak kanalı tamamen kapanır. Tavuklarda bu kanal yalnızca daralır, ama onların sesi zaten çok daha kısıktır.",
+  "tags": [
+   "horoz",
+   "horoz ötüşü",
+   "horoz sağır olur mu",
+   "tavuk",
+   "kümes hayvanları",
+   "çiftlik hayvanları",
+   "mümkün mü",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: horozun testere kadar gürültülü olması mı, kendi kulağını kapatması mı?",
+  "en_title": "Can a rooster go deaf from its own crowing? 🐓",
+  "en_description": "A rooster's crow tops 100 decibels, as loud as a chainsaw, and one measured over 140 decibels right at its ear. Yet it doesn't deafen itself: scans show that when a rooster opens its beak fully, its ear canal closes completely, like built-in earplugs. Hens' canals only narrow, but their calls are much quieter anyway.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Horoz kendi ötüşüyle sağır olur mu, horoz ötüşü kaç desibel?\n\nBelçika'daki Antwerp ve Gent üniversitelerinden Raf Claes ve ekibi, 2018'in başında Zoology dergisinde yayımlanan çalışmada horozların başına mikrofon takarak ötüşlerini kulaklarının hemen yanında ölçtü. Ötüşler yüz desibelin üstündeydi, yani elektrikli testere kadar gürültülüydü; bir horozda ses yüz kırk desibeli geçti. Mikrotomografi taramaları, horoz gagasını sonuna kadar açtığında dış kulak kanalının tamamen kapandığını ve kulak zarının bir kısmının yumuşak dokuyla örtülü olduğunu gösterdi; horozun adeta yerleşik bir kulak tıkacı var. Tavuklarda kanal yalnızca biraz daralıyor, ama onların sesleri zaten çok daha kısık. Kuşlar ayrıca, insanların aksine, hasar gören işitme hücrelerini yenileyebiliyor.\n\nSence hangisi daha şaşırtıcı: horozun testere kadar gürültülü olması mı, kendi kulağını kapatması mı?",
+  "hashtags": [
+   "#horoz",
+   "#tavuk",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "horoz",
+   "horoz ötüşü",
+   "horoz sağır olur mu",
+   "horoz neden sağır olmaz",
+   "horoz kaç desibel",
+   "horoz ötüşü kaç desibel",
+   "horoz neden öter",
+   "horoz sesi",
+   "tavuk",
+   "tavuklar",
+   "kümes hayvanları",
+   "çiftlik hayvanları",
+   "kuş kulağı",
+   "işitme",
+   "desibel",
+   "mümkün mü",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "rooster crowing",
+   "rooster deaf"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a rooster go deaf from its own crowing? 🐓",
+    "description": "A rooster's crow tops 100 decibels, as loud as a chainsaw, and one measured over 140 decibels right at its ear. Yet it doesn't deafen itself: scans show that when a rooster opens its beak fully, its ear canal closes completely, like built-in earplugs. Hens' canals only narrow, but their calls are much quieter anyway."
+   },
+   "es": {
+    "title": "¿Puede un gallo quedarse sordo con su propio canto? 🐓",
+    "description": "El canto de un gallo supera los 100 decibelios, tanto como una motosierra, y en uno se midieron más de 140 junto a su oído. Aun así no se ensordece: los escáneres muestran que, cuando abre el pico del todo, su conducto auditivo se cierra por completo, como un tapón natural. En las gallinas solo se estrecha, pero su voz es mucho más suave."
+   },
+   "pt": {
+    "title": "Um galo pode ficar surdo com o próprio canto? 🐓",
+    "description": "O canto do galo passa dos 100 decibéis, tão alto quanto uma motosserra, e em um deles mediu-se mais de 140 junto ao ouvido. Mesmo assim ele não fica surdo: tomografias mostram que, quando abre o bico por completo, o canal auditivo se fecha totalmente, como um protetor de ouvido embutido. Nas galinhas o canal só se estreita, mas o som delas é bem mais baixo."
+   },
+   "de": {
+    "title": "Kann ein Hahn von seinem eigenen Krähen taub werden? 🐓",
+    "description": "Ein Hahn kräht mit über 100 Dezibel, so laut wie eine Kettensäge, bei einem wurden direkt am Ohr sogar über 140 Dezibel gemessen. Taub macht er sich trotzdem nicht: Scans zeigen, dass sich sein Gehörgang komplett schließt, wenn er den Schnabel ganz öffnet – ein eingebauter Ohrstöpsel. Bei Hennen verengt er sich nur, aber sie sind ohnehin viel leiser."
+   },
+   "fr": {
+    "title": "Un coq peut-il devenir sourd à force de chanter ? 🐓",
+    "description": "Le chant du coq dépasse 100 décibels, autant qu'une tronçonneuse, et chez l'un d'eux on a mesuré plus de 140 décibels au niveau de l'oreille. Pourtant il ne s'assourdit pas : les scanners montrent que lorsqu'il ouvre grand le bec, son conduit auditif se ferme complètement, comme des bouchons d'oreille intégrés. Chez la poule, il se rétrécit seulement, mais elle chante bien moins fort."
+   },
+   "it": {
+    "title": "Un gallo può diventare sordo per il suo stesso canto? 🐓",
+    "description": "Il canto del gallo supera i 100 decibel, quanto una motosega, e in un esemplare sono stati misurati oltre 140 decibel vicino all'orecchio. Eppure non diventa sordo: le scansioni mostrano che quando spalanca il becco il condotto uditivo si chiude del tutto, come un tappo per le orecchie incorporato. Nelle galline si restringe soltanto, ma il loro verso è molto più debole."
+   },
+   "ru": {
+    "title": "Может ли петух оглохнуть от собственного крика? 🐓",
+    "description": "Петух кричит громче 100 децибел, как бензопила, а у одного у самого уха намерили больше 140. Но себя он не оглушает: томография показала, что когда петух широко раскрывает клюв, его слуховой проход полностью закрывается, словно встроенные беруши. У кур проход лишь сужается, но они и кудахчут гораздо тише."
+   },
+   "ar": {
+    "title": "هل يمكن أن يُصاب الديك بالصمم من صياحه؟ 🐓",
+    "description": "يتجاوز صياح الديك 100 ديسيبل، أي بصوت منشار كهربائي، وسُجّل عند أذن أحد الديوك أكثر من 140 ديسيبل. ومع ذلك لا يُصاب بالصمم، إذ أظهرت الصور المقطعية أن قناة أذنه الخارجية تنغلق تمامًا عندما يفتح منقاره إلى آخره، كسدادة أذن طبيعية. أما الدجاجة فتضيق قناتها فقط، لكن صوتها أخفض بكثير."
+   },
+   "hi": {
+    "title": "क्या मुर्गा अपनी ही बांग से बहरा हो सकता है? 🐓",
+    "description": "मुर्गे की बांग 100 डेसिबल से ज़्यादा होती है, यानी चेनसॉ जितनी तेज़, और एक मुर्गे के कान के पास 140 डेसिबल से ज़्यादा मापी गई। फिर भी वह बहरा नहीं होता: स्कैन से पता चला कि चोंच पूरी खोलते ही उसकी कान की नली पूरी तरह बंद हो जाती है, जैसे भीतर लगे इयरप्लग। मुर्गियों में यह नली सिर्फ़ थोड़ी सिकुड़ती है, पर उनकी आवाज़ भी काफ़ी धीमी होती है।"
+   },
+   "id": {
+    "title": "Bisakah ayam jago tuli karena kokoknya sendiri? 🐓",
+    "description": "Kokok ayam jago melebihi 100 desibel, sekeras gergaji mesin, dan pada satu ekor terukur lebih dari 140 desibel di dekat telinganya. Namun ia tidak menjadi tuli: hasil pemindaian menunjukkan saluran telinganya menutup sepenuhnya saat paruhnya terbuka lebar, seperti penyumbat telinga bawaan. Pada ayam betina saluran itu hanya menyempit, tetapi suaranya memang jauh lebih pelan."
+   },
+   "ja": {
+    "title": "オンドリは自分の大声で耳が悪くならないの? 🐓",
+    "description": "オンドリの鳴き声は100デシベルを超え、チェーンソー並みの大きさです。耳元で140デシベル以上を記録した個体もいました。それでも耳を傷めないのは、くちばしを大きく開くと外耳道が完全にふさがるからだとスキャンで分かりました。メンドリでは少し狭まるだけですが、そもそも声がずっと小さいのです。"
+   },
+   "ko": {
+    "title": "수탉은 자기 울음소리에 귀가 멀 수 있을까? 🐓",
+    "description": "수탉의 울음소리는 100데시벨을 넘어 전기톱만큼 시끄럽고, 한 마리는 귀 바로 옆에서 140데시벨 이상이 측정됐습니다. 그래도 귀가 멀지 않는 이유는, 부리를 끝까지 벌리면 외이도가 완전히 닫히기 때문이라는 사실이 스캔으로 밝혀졌습니다. 암탉은 외이도가 조금 좁아질 뿐이지만, 애초에 소리가 훨씬 작습니다."
+   },
+   "pl": {
+    "title": "Czy kogut może ogłuchnąć od własnego piania? 🐓",
+    "description": "Pianie koguta przekracza 100 decybeli, jest głośne jak piła łańcuchowa, a u jednego przy samym uchu zmierzono ponad 140 decybeli. Mimo to kogut nie głuchnie: skany pokazały, że gdy szeroko otwiera dziób, jego przewód słuchowy całkowicie się zamyka, jak wbudowane zatyczki do uszu. U kur przewód tylko się zwęża, ale one i tak są dużo cichsze."
+   },
+   "nl": {
+    "title": "Kan een haan doof worden van zijn eigen gekraai? 🐓",
+    "description": "Een haan kraait met meer dan 100 decibel, zo hard als een kettingzaag, en bij één exemplaar werd vlak bij het oor ruim 140 decibel gemeten. Toch wordt hij niet doof: scans tonen dat zijn gehoorgang volledig dichtgaat als hij zijn snavel helemaal opent, als ingebouwde oordopjes. Bij hennen vernauwt de gang alleen, maar die zijn sowieso veel stiller."
+   },
+   "uk": {
+    "title": "Чи може півень оглухнути від власного співу? 🐓",
+    "description": "Півень кукурікає гучніше за 100 децибел, як бензопила, а в одного біля самого вуха зафіксували понад 140. Та себе він не оглушує: сканування показало, що коли півень широко розкриває дзьоб, його слуховий прохід повністю закривається, мов вбудовані беруші. У курей прохід лише звужується, але вони й так значно тихіші."
+   },
+   "vi": {
+    "title": "Gà trống có thể bị điếc vì tiếng gáy của chính mình không? 🐓",
+    "description": "Tiếng gáy của gà trống vượt 100 decibel, to như máy cưa xích, và ở một con, mức đo sát tai lên tới hơn 140 decibel. Thế nhưng nó không bị điếc: ảnh quét cho thấy khi há mỏ hết cỡ, ống tai ngoài của nó đóng kín hoàn toàn, như có sẵn nút bịt tai. Ở gà mái ống tai chỉ hẹp lại, nhưng tiếng kêu của chúng vốn nhỏ hơn nhiều."
+   },
+   "az": {
+    "title": "Xoruz öz banlamasından kar ola bilərmi? 🐓",
+    "description": "Xoruzun banlaması 100 desibeli keçir, yəni elektrik mişarı qədər səs-küylüdür, birində isə qulağının dibində 140 desibeldən çox ölçüldü. Yenə də kar olmur: taramalar göstərdi ki, dimdiyini sonadək açanda xarici qulaq kanalı tam bağlanır, sanki daxili qulaq tıxacı var. Toyuqlarda kanal yalnız daralır, amma onların səsi onsuz da xeyli zəifdir."
+   },
+   "ro": {
+    "title": "Poate un cocoș să asurzească din cauza propriului cântat? 🐓",
+    "description": "Cântecul cocoșului depășește 100 de decibeli, cât o drujbă, iar la unul s-au măsurat peste 140 de decibeli chiar lângă ureche. Totuși nu asurzește: scanările arată că atunci când deschide larg ciocul, canalul auditiv se închide complet, ca niște dopuri de urechi încorporate. La găini canalul doar se îngustează, dar ele oricum sunt mult mai silențioase."
+   }
+  }
+ }
+}

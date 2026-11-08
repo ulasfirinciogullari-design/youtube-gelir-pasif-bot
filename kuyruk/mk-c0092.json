@@ -1,0 +1,187 @@
+{
+ "id": "mk-c0092",
+ "topic": "Tekrar tekrar okumak işe yarar mı, en etkili ders çalışma yöntemi hangisi? Sınama etkisi",
+ "kategori": "psikoloji",
+ "subject": [
+  "student",
+  "book"
+ ],
+ "stock_hint": "student reading book close up",
+ "script": {
+  "title": "Notlarını tekrar okumak seni kandırıyor 📚",
+  "hook_text": "TEKRAR OKUMAK İŞE YARAR MI?",
+  "scenes": [
+   {
+    "text": "Bu notları tekrar okumak seni kandırıyor.",
+    "visual": "extreme close-up of a student's eyes scanning the lines of an open book",
+    "stock_query": "student reading",
+    "source": "stock",
+    "callout": "OKUMAK KANDIRIR"
+   },
+   {
+    "text": "İki bin altıdaki bir deneyde kimi metni dört kez okudu, kimi bir kez okuyup kendini sınadı.",
+    "visual": "a student writing answers from memory on a sheet of paper",
+    "stock_query": "student writing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Beş dakika sonra okuyanlar öndeydi.",
+    "visual": "a confident student smiling as she closes her book",
+    "stock_query": "student smiling",
+    "source": "stock",
+    "callout": "5 DAKİKA SONRA"
+   },
+   {
+    "text": "Bir hafta sonra sınayanlar yüzde altmış bir, okuyanlar yüzde kırk hatırladı.",
+    "visual": "students taking a written exam in a quiet classroom",
+    "stock_query": "student exam",
+    "source": "stock",
+    "callout": "%61'E %40"
+   },
+   {
+    "text": "Çünkü hatırlamaya çalışmak bilgiyi güçlendirir; okumak sadece tanıdık gelir.",
+    "visual": "close-up of a young woman with eyes closed, trying hard to remember something",
+    "stock_query": "woman thinking",
+    "source": "stock",
+    "callout": "HATIRLAMAK GÜÇLENDİRİR",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Kitabı kapat ve hatırladığını yaz; çünkü...",
+    "visual": "a student closing a book and starting to write in a notebook",
+    "stock_query": "student book",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Notları tekrar tekrar okumak öğrendiğimiz hissini verir ama kalıcı değildir. 2006'daki bir deneyde metni dört kez okuyanlar beş dakika sonra öndeydi; bir hafta sonra ise bir kez okuyup kendini sınayanlar yüzde altmış bir, yalnızca okuyanlar yüzde kırk hatırladı. Bilgiyi hafızadan geri çağırmak onu güçlendiriyor.",
+  "tags": [
+   "ders çalışma",
+   "nasıl ders çalışılır",
+   "sınama etkisi",
+   "hafıza",
+   "ezber",
+   "sınava hazırlık",
+   "öğrenme",
+   "psikoloji",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen sınava nasıl çalışıyorsun: tekrar okuyarak mı, kendini sınayarak mı?",
+  "en_title": "Rereading your notes is fooling you 📚",
+  "en_description": "In a 2006 experiment, some students read a passage four times, while others read it once and tested themselves three times. Five minutes later, the rereaders were slightly ahead; a week later, the self-testers remembered 61% and the rereaders only 40%. Pulling information out of memory strengthens it, while rereading only makes it feel familiar.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Tekrar tekrar okumak işe yarar mı, en etkili ders çalışma yöntemi hangisi?\n\nSt. Louis'teki Washington Üniversitesi'nden Henry Roediger ve Jeffrey Karpicke'nin 2006'da Psychological Science dergisinde yayımladığı deneyde, üniversite öğrencilerinin bir kısmı kısa bir metni dört kez okudu, öbürleri bir kez okuyup üç kez kendini sınadı. Beş dakika sonraki testte okuyanlar biraz öndeydi ve kendilerinden daha emindi. Bir hafta sonra ise kendini sınayanlar metnin yüzde altmış birini, yalnızca okuyanlar yüzde kırkını hatırladı. Sınama etkisi denen bu bulgu sonraki pek çok çalışmada ve meta-analizde tekrarlandı: bilgiyi hafızadan geri çağırmak onu güçlendiriyor, tekrar okumak ise çoğu zaman sadece tanıdık bir his bırakıyor.\n\nSen sınava nasıl çalışıyorsun: tekrar okuyarak mı, kendini sınayarak mı?",
+  "hashtags": [
+   "#dersçalışma",
+   "#sınav",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "ders çalışma",
+   "nasıl ders çalışılır",
+   "verimli ders çalışma",
+   "ders çalışma teknikleri",
+   "sınama etkisi",
+   "kendini test etmek",
+   "tekrar okumak",
+   "unutmamak için",
+   "ezber",
+   "hafıza",
+   "hafıza teknikleri",
+   "akılda tutmak",
+   "sınava hazırlık",
+   "yks",
+   "lgs",
+   "öğrenme",
+   "öğrenci",
+   "beyin",
+   "psikoloji",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "testing effect",
+   "retrieval practice"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Rereading your notes is fooling you 📚",
+    "description": "In a 2006 experiment, some students read a passage four times, while others read it once and tested themselves three times. Five minutes later, the rereaders were slightly ahead; a week later, the self-testers remembered 61% and the rereaders only 40%. Pulling information out of memory strengthens it, while rereading only makes it feel familiar."
+   },
+   "es": {
+    "title": "Releer tus apuntes te está engañando 📚",
+    "description": "En un experimento de 2006, unos estudiantes leyeron un texto cuatro veces y otros lo leyeron una vez y se pusieron a prueba tres veces. A los cinco minutos iban un poco por delante los que releían; una semana después, los que se habían examinado recordaban el 61 % y los otros solo el 40 %. Recuperar la información de la memoria la refuerza; releer solo hace que te suene."
+   },
+   "pt": {
+    "title": "Reler suas anotações está te enganando 📚",
+    "description": "Num experimento de 2006, alguns estudantes leram um texto quatro vezes, enquanto outros leram uma vez e se testaram três vezes. Cinco minutos depois, quem só leu estava um pouco à frente; uma semana depois, quem se testou lembrava 61% e quem só leu, 40%. Puxar a informação da memória a fortalece; reler só a deixa familiar."
+   },
+   "de": {
+    "title": "Deine Notizen nochmal zu lesen, täuscht dich 📚",
+    "description": "In einem Experiment von 2006 lasen einige Studierende einen Text viermal, andere lasen ihn einmal und testeten sich dreimal selbst. Nach fünf Minuten lagen die Leser knapp vorn, nach einer Woche erinnerten sich die Selbsttester an 61 Prozent, die Leser nur an 40 Prozent. Wissen aus dem Gedächtnis abzurufen festigt es, Wiederlesen fühlt sich nur vertraut an."
+   },
+   "fr": {
+    "title": "Relire tes notes te joue des tours 📚",
+    "description": "Dans une expérience de 2006, certains étudiants ont lu un texte quatre fois, d'autres l'ont lu une fois puis se sont testés trois fois. Cinq minutes après, les lecteurs avaient une petite avance ; une semaine plus tard, ceux qui s'étaient testés retenaient 61 % du texte, les lecteurs seulement 40 %. Aller chercher l'information dans sa mémoire la renforce, la relire ne fait que la rendre familière."
+   },
+   "it": {
+    "title": "Rileggere gli appunti ti inganna 📚",
+    "description": "In un esperimento del 2006, alcuni studenti hanno letto un testo quattro volte, altri lo hanno letto una volta e si sono messi alla prova tre volte. Dopo cinque minuti erano leggermente avanti quelli che rileggevano; dopo una settimana chi si era interrogato ricordava il 61%, chi aveva solo letto il 40%. Richiamare un'informazione dalla memoria la rafforza, rileggerla la rende solo familiare."
+   },
+   "ru": {
+    "title": "Перечитывание конспекта тебя обманывает 📚",
+    "description": "В эксперименте 2006 года одни студенты прочитали текст четыре раза, а другие прочитали один раз и трижды проверили себя. Через пять минут те, кто перечитывал, были чуть впереди, а через неделю проверявшие себя помнили 61%, а перечитывавшие — лишь 40%. Извлечение информации из памяти укрепляет её, а перечитывание лишь создаёт чувство знакомости."
+   },
+   "ar": {
+    "title": "إعادة قراءة ملاحظاتك تخدعك 📚",
+    "description": "في تجربة أُجريت عام 2006، قرأ بعض الطلاب نصًا أربع مرات، بينما قرأه آخرون مرة واحدة ثم اختبروا أنفسهم ثلاث مرات. بعد خمس دقائق تقدّم القرّاء قليلًا، لكن بعد أسبوع تذكّر من اختبروا أنفسهم 61% من النص مقابل 40% فقط للقرّاء. فاسترجاع المعلومة من الذاكرة يقوّيها، أما إعادة القراءة فتجعلها مألوفة فحسب."
+   },
+   "hi": {
+    "title": "नोट्स बार-बार पढ़ना आपको धोखा देता है 📚",
+    "description": "2006 के एक प्रयोग में कुछ छात्रों ने एक पाठ चार बार पढ़ा, जबकि दूसरों ने उसे एक बार पढ़कर तीन बार खुद को परखा। पाँच मिनट बाद पढ़ने वाले थोड़ा आगे थे, लेकिन एक हफ़्ते बाद खुद को परखने वालों को 61% और सिर्फ़ पढ़ने वालों को 40% ही याद रहा। याद से जानकारी निकालना उसे मज़बूत करता है, जबकि दोबारा पढ़ना उसे बस जाना-पहचाना बना देता है।"
+   },
+   "id": {
+    "title": "Membaca ulang catatan itu menipumu 📚",
+    "description": "Dalam eksperimen tahun 2006, sebagian mahasiswa membaca sebuah teks empat kali, sementara yang lain membacanya sekali lalu menguji diri tiga kali. Lima menit kemudian, kelompok pembaca sedikit unggul; seminggu kemudian, yang menguji diri ingat 61% dan yang hanya membaca 40%. Mengingat kembali informasi dari memori memperkuatnya, sedangkan membaca ulang hanya membuatnya terasa akrab."
+   },
+   "ja": {
+    "title": "ノートの読み返しはあなたをだましている 📚",
+    "description": "2006年の実験で、ある学生たちは文章を4回読み、別の学生たちは1回読んでから3回自分をテストしました。5分後は読み返したグループがわずかに上でしたが、1週間後にはテストしたグループが61%、読み返したグループは40%しか覚えていませんでした。記憶から思い出す作業が記憶を強くし、読み返しは「見覚えがある」感覚を生むだけなのです。"
+   },
+   "ko": {
+    "title": "노트를 다시 읽는 건 당신을 속인다 📚",
+    "description": "2006년 실험에서 일부 학생은 글을 네 번 읽었고, 다른 학생들은 한 번 읽은 뒤 스스로 세 번 시험을 봤습니다. 5분 뒤에는 다시 읽은 쪽이 조금 앞섰지만, 일주일 뒤에는 시험을 본 쪽이 61%, 읽기만 한 쪽은 40%를 기억했습니다. 기억에서 꺼내는 과정이 기억을 강하게 만들고, 다시 읽기는 익숙한 느낌만 줄 뿐입니다."
+   },
+   "pl": {
+    "title": "Ponowne czytanie notatek cię oszukuje 📚",
+    "description": "W eksperymencie z 2006 roku część studentów przeczytała tekst cztery razy, a inni przeczytali go raz i trzy razy sprawdzili się sami. Po pięciu minutach czytający byli nieco lepsi, ale po tygodniu ci, którzy się testowali, pamiętali 61%, a czytający tylko 40%. Wydobywanie wiedzy z pamięci ją wzmacnia, a ponowne czytanie sprawia jedynie, że wydaje się znajoma."
+   },
+   "nl": {
+    "title": "Je aantekeningen herlezen houdt je voor de gek 📚",
+    "description": "In een experiment uit 2006 lazen sommige studenten een tekst vier keer, terwijl anderen hem één keer lazen en zichzelf drie keer overhoorden. Na vijf minuten lagen de lezers iets voor; na een week wisten de zelftesters nog 61 procent en de lezers maar 40 procent. Informatie uit je geheugen ophalen versterkt haar, herlezen maakt haar alleen vertrouwd."
+   },
+   "uk": {
+    "title": "Перечитування конспекту тебе обманює 📚",
+    "description": "В експерименті 2006 року одні студенти прочитали текст чотири рази, а інші прочитали один раз і тричі перевірили себе. Через п'ять хвилин ті, хто перечитував, були трохи попереду, а через тиждень ті, хто перевіряв себе, пам'ятали 61%, а ті, хто перечитував, лише 40%. Витягування інформації з пам'яті зміцнює її, а перечитування лише створює відчуття знайомого."
+   },
+   "vi": {
+    "title": "Đọc lại ghi chép đang đánh lừa bạn 📚",
+    "description": "Trong một thí nghiệm năm 2006, một số sinh viên đọc một đoạn văn bốn lần, số khác đọc một lần rồi tự kiểm tra ba lần. Sau năm phút, nhóm đọc lại nhỉnh hơn một chút; nhưng sau một tuần, nhóm tự kiểm tra nhớ được 61%, còn nhóm chỉ đọc nhớ 40%. Việc lục lại thông tin từ trí nhớ giúp củng cố nó, còn đọc lại chỉ khiến nó trông quen thuộc."
+   },
+   "az": {
+    "title": "Qeydlərini təkrar oxumaq səni aldadır 📚",
+    "description": "2006-cı ildəki bir təcrübədə bəzi tələbələr mətni dörd dəfə oxudu, digərləri isə bir dəfə oxuyub üç dəfə özünü yoxladı. Beş dəqiqə sonra oxuyanlar bir az öndə idi, amma bir həftə sonra özünü yoxlayanlar mətnin 61%-ni, yalnız oxuyanlar isə 40%-ni xatırladı. Məlumatı yaddaşdan çıxarmaq onu möhkəmləndirir, təkrar oxumaq isə sadəcə tanış hiss etdirir."
+   },
+   "ro": {
+    "title": "Să-ți recitești notițele te păcălește 📚",
+    "description": "Într-un experiment din 2006, unii studenți au citit un text de patru ori, iar alții l-au citit o dată și s-au testat singuri de trei ori. După cinci minute, cei care citiseră erau ușor înainte; după o săptămână, cei care se testaseră își aminteau 61%, iar cititorii doar 40%. Când scoți informația din memorie o întărești, recititul doar o face să pară cunoscută."
+   }
+  }
+ }
+}

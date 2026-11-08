@@ -1,0 +1,185 @@
+{
+ "id": "mk-c0089",
+ "topic": "Konuştuğum kişi beni sevdi mi, insanlar bizi sandığımızdan daha çok mu sever? Beğenilme açığı",
+ "kategori": "psikoloji",
+ "subject": [
+  "conversation",
+  "talking"
+ ],
+ "stock_hint": "two people talking close up",
+ "script": {
+  "title": "Konuştuğun kişi seni sandığından daha çok sevdi 💬",
+  "hook_text": "SENİ NE KADAR SEVDİ?",
+  "scenes": [
+   {
+    "text": "Konuştuğun bu kişi seni sandığından daha çok sevdi.",
+    "visual": "close-up of a young woman smiling warmly as she listens to someone across a café table",
+    "stock_query": "smiling woman talking",
+    "source": "stock",
+    "callout": "SANDIĞINDAN ÇOK"
+   },
+   {
+    "text": "Bir deneyde iki yabancı beş dakika sohbet etti, sonra birbirini puanladı.",
+    "visual": "two young strangers chatting at a small table",
+    "stock_query": "two people talking",
+    "source": "stock",
+    "callout": "5 DAKİKA SOHBET"
+   },
+   {
+    "text": "Çoğu, karşısındakinin onu daha az sevdiğini sandı; yanılıyordu.",
+    "visual": "close-up of a young man looking slightly unsure while talking",
+    "stock_query": "man talking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Yurtta aynı odayı paylaşan öğrencilerde bu yanılgı aylarca sürdü.",
+    "visual": "two university roommates talking in a dorm room",
+    "stock_query": "students talking",
+    "source": "stock",
+    "callout": "AYLARCA SÜRDÜ"
+   },
+   {
+    "text": "Çünkü sohbet boyunca kendi sözlerini didiklersin, onun sana gösterdiği ilgiyi kaçırırsın.",
+    "visual": "close-up of a man looking down thoughtfully after a conversation",
+    "stock_query": "man thinking",
+    "source": "stock",
+    "callout": "KENDİNE TAKILIRSIN",
+    "subject": [
+     "man"
+    ]
+   },
+   {
+    "text": "Dün konuştuğun o kişiyi hatırla; çünkü...",
+    "visual": "two friends laughing together over coffee",
+    "stock_query": "friends talking",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "İnsanlar bir sohbetten sonra karşısındakinin kendilerini, aslında sevdiğinden daha az sevdiğini sanır. Psikologlar buna beğenilme açığı diyor: beş dakikalık tanışma sohbetlerinde ortaya çıktı, yurtta aynı odayı paylaşan öğrencilerde aylarca sürdü. Sebebi, sohbet boyunca kendi sözlerimizi didiklerken karşımızdakinin ilgisini gösteren işaretleri kaçırmamız.",
+  "tags": [
+   "beğenilme açığı",
+   "beni sevdi mi",
+   "ilk izlenim",
+   "sohbet",
+   "arkadaşlık",
+   "sosyal psikoloji",
+   "psikoloji",
+   "insan psikolojisi",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen bir sohbetten sonra en çok neyi düşünürsün: ne dediğini mi, karşındakinin seni nasıl bulduğunu mu?",
+  "en_title": "The person you just talked to liked you more than you think 💬",
+  "en_description": "In experiments, strangers chatted for five minutes and then rated each other. On average, people liked their partner more than they believed their partner liked them, a bias called the liking gap; among new college roommates it lasted for months. We're busy picking apart what we said and miss the other person's signs of interest.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "İnsanlar bizi sandığımızdan daha çok sever mi, konuştuğum kişi beni sevdi mi?\n\nPsikologlar Erica Boothby, Gus Cooney, Gillian Sandstrom ve Margaret Clark'ın 2018'de Psychological Science dergisinde yayımladığı çalışmalarda birbirini tanımayan kişiler beş dakikalık tanışma sohbetleri yaptı, sonra karşısındakini ne kadar sevdiğini ve onun kendisini ne kadar sevdiğini tahmin etti. Ortalamada herkes karşısındakini, onun kendisini sevdiğini sandığından daha çok sevdi; araştırmacılar buna beğenilme açığı adını verdi. Açık daha uzun sohbetlerde ve gerçek hayatta da görüldü; yurtta aynı odayı paylaşan üniversite öğrencilerinde aylarca sürdü. Sebebi, insanların sohbet boyunca kendi söyledikleriyle meşgul olup karşısındakinin ilgisini gösteren işaretleri kaçırması; dışarıdan izleyenler bu işaretleri hemen fark etti. Sonraki çalışmalar aynı açığı beş yaşından büyük çocuklarda ve iş ekiplerinde de buldu.\n\nSen bir sohbetten sonra en çok neyi düşünürsün: ne dediğini mi, karşındakinin seni nasıl bulduğunu mu?",
+  "hashtags": [
+   "#sohbet",
+   "#arkadaşlık",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "beğenilme açığı",
+   "beni sevdi mi",
+   "insanlar beni seviyor mu",
+   "ilk izlenim",
+   "sohbetten sonra",
+   "sohbet psikolojisi",
+   "tanışma",
+   "arkadaşlık",
+   "yeni arkadaş edinmek",
+   "sosyal kaygı",
+   "özgüven",
+   "kendini eleştirmek",
+   "insan ilişkileri",
+   "iletişim",
+   "insan psikolojisi",
+   "psikoloji",
+   "sosyal psikoloji",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "liking gap",
+   "first impression"
+  ],
+  "localizations": {
+   "en": {
+    "title": "The person you just talked to liked you more than you think 💬",
+    "description": "In experiments, strangers chatted for five minutes and then rated each other. On average, people liked their partner more than they believed their partner liked them, a bias called the liking gap; among new college roommates it lasted for months. We're busy picking apart what we said and miss the other person's signs of interest."
+   },
+   "es": {
+    "title": "Le gustaste más de lo que crees a la persona con la que hablaste 💬",
+    "description": "En varios experimentos, desconocidos charlaron cinco minutos y luego se puntuaron. De media, cada uno apreciaba a su compañero más de lo que creía ser apreciado: es la llamada brecha de agrado, y entre compañeros de habitación universitarios duró meses. Estamos tan ocupados repasando lo que dijimos que no vemos las señales de interés del otro."
+   },
+   "pt": {
+    "title": "Quem conversou com você gostou mais de você do que você imagina 💬",
+    "description": "Em experimentos, desconhecidos conversaram por cinco minutos e depois avaliaram um ao outro. Em média, cada um gostou mais do parceiro do que achava que o parceiro tinha gostado dele: é a chamada lacuna de simpatia, que entre colegas de quarto na faculdade durou meses. Ficamos tão ocupados remoendo o que dissemos que não percebemos os sinais de interesse do outro."
+   },
+   "de": {
+    "title": "Dein Gesprächspartner mochte dich mehr, als du denkst 💬",
+    "description": "In Experimenten unterhielten sich Fremde fünf Minuten lang und bewerteten sich danach. Im Schnitt mochten die Leute ihr Gegenüber mehr, als sie glaubten, selbst gemocht zu werden – die sogenannte Liking Gap, die bei neuen Mitbewohnern im Studentenwohnheim monatelang anhielt. Wir sind so mit unseren eigenen Worten beschäftigt, dass wir die Signale des Interesses beim anderen übersehen."
+   },
+   "fr": {
+    "title": "La personne avec qui tu as parlé t'a apprécié plus que tu ne le crois 💬",
+    "description": "Dans des expériences, des inconnus ont discuté cinq minutes puis se sont notés. En moyenne, chacun appréciait davantage son partenaire qu'il ne pensait être apprécié en retour : c'est le « liking gap », qui a duré des mois chez de nouveaux colocataires étudiants. On est tellement occupé à décortiquer ce qu'on a dit qu'on rate les signes d'intérêt de l'autre."
+   },
+   "it": {
+    "title": "La persona con cui hai parlato ti ha apprezzato più di quanto pensi 💬",
+    "description": "Negli esperimenti, sconosciuti hanno chiacchierato per cinque minuti e poi si sono dati un voto. In media ognuno apprezzava l'altro più di quanto credeva di essere apprezzato: è il cosiddetto liking gap, che tra nuovi compagni di stanza all'università è durato mesi. Siamo così presi a rimuginare su ciò che abbiamo detto che non notiamo i segnali di interesse dell'altro."
+   },
+   "ru": {
+    "title": "Собеседник симпатизировал тебе больше, чем ты думаешь 💬",
+    "description": "В экспериментах незнакомые люди пять минут разговаривали, а потом оценивали друг друга. В среднем каждому собеседник нравился больше, чем, как ему казалось, он сам нравился собеседнику; у новых соседей по общежитию это заблуждение держалось месяцами. Мы так заняты разбором собственных слов, что не замечаем знаков интереса со стороны другого."
+   },
+   "ar": {
+    "title": "الشخص الذي تحدثت معه أحبك أكثر مما تظن 💬",
+    "description": "في تجارب عدة، تحدّث غرباء خمس دقائق ثم قيّم كلٌّ منهم الآخر. وفي المتوسط، أحب كل شخص محاوره أكثر مما ظن أن محاوره أحبه، وتسمى هذه الظاهرة فجوة الإعجاب، وقد استمرت لأشهر بين زملاء السكن الجامعي الجدد. فنحن ننشغل بمراجعة ما قلناه فتفوتنا علامات اهتمام الطرف الآخر."
+   },
+   "hi": {
+    "title": "जिससे आपने बात की, उसने आपको आपकी सोच से ज़्यादा पसंद किया 💬",
+    "description": "प्रयोगों में अजनबियों ने पाँच मिनट बात की और फिर एक-दूसरे को अंक दिए। औसतन लोगों ने सामने वाले को उससे ज़्यादा पसंद किया जितना उन्हें लगा कि सामने वाले ने उन्हें पसंद किया; इसे लाइकिंग गैप कहते हैं, और कॉलेज के नए रूममेट्स में यह महीनों तक बना रहा। हम अपनी कही बातों में इतना उलझे रहते हैं कि सामने वाले की दिलचस्पी के संकेत चूक जाते हैं।"
+   },
+   "id": {
+    "title": "Orang yang tadi ngobrol denganmu lebih menyukaimu daripada yang kamu kira 💬",
+    "description": "Dalam eksperimen, orang-orang asing mengobrol lima menit lalu saling menilai. Rata-rata, mereka lebih menyukai lawan bicaranya daripada yang mereka kira lawan bicaranya menyukai mereka; fenomena ini disebut liking gap, dan pada teman sekamar baru di asrama kampus bertahan berbulan-bulan. Kita terlalu sibuk memikirkan ucapan sendiri sampai melewatkan tanda-tanda ketertarikan lawan bicara."
+   },
+   "ja": {
+    "title": "話した相手は、あなたが思うよりあなたを気に入っている 💬",
+    "description": "実験では、初対面の人どうしが5分間話したあと、互いを評価しました。平均すると人は、相手が自分を好いていると思う以上に相手を好いていて、これは「好意のギャップ」と呼ばれます。大学の新しいルームメイトの間では数か月続きました。自分の発言を振り返るのに夢中で、相手の好意のサインを見落としてしまうのです。"
+   },
+   "ko": {
+    "title": "방금 대화한 사람은 생각보다 당신을 더 좋아했다 💬",
+    "description": "실험에서 처음 만난 사람들이 5분 동안 대화한 뒤 서로를 평가했습니다. 평균적으로 사람들은 상대가 자신을 좋아한다고 생각한 것보다 더 상대를 좋아했는데, 이를 '호감 격차'라고 하며 대학 기숙사의 새 룸메이트 사이에서는 몇 달이나 이어졌습니다. 우리는 내가 한 말을 곱씹느라 상대의 호감 신호를 놓칩니다."
+   },
+   "pl": {
+    "title": "Osoba, z którą rozmawiałeś, polubiła cię bardziej, niż myślisz 💬",
+    "description": "W eksperymentach nieznajomi rozmawiali przez pięć minut, a potem oceniali się nawzajem. Średnio każdy lubił rozmówcę bardziej, niż sądził, że rozmówca lubi jego – to tak zwana luka sympatii, która u nowych współlokatorów w akademiku utrzymywała się miesiącami. Jesteśmy tak zajęci rozbieraniem na części własnych słów, że przegapiamy sygnały zainteresowania drugiej osoby."
+   },
+   "nl": {
+    "title": "Degene met wie je praatte, vond je leuker dan je denkt 💬",
+    "description": "In experimenten praatten onbekenden vijf minuten met elkaar en beoordeelden ze elkaar daarna. Gemiddeld vonden mensen hun gesprekspartner leuker dan ze dachten dat die hen vond: de zogeheten liking gap, die bij nieuwe kamergenoten op de campus maandenlang bleef bestaan. We zijn zo druk met het ontleden van wat we zelf zeiden, dat we de signalen van interesse van de ander missen."
+   },
+   "uk": {
+    "title": "Співрозмовник симпатизував тобі більше, ніж ти думаєш 💬",
+    "description": "В експериментах незнайомці п'ять хвилин розмовляли, а потім оцінювали одне одного. У середньому кожному співрозмовник подобався більше, ніж, як йому здавалося, він сам подобався співрозмовнику; у нових сусідів по гуртожитку ця помилка трималася місяцями. Ми так зайняті розбором власних слів, що не помічаємо ознак інтересу з боку іншої людини."
+   },
+   "vi": {
+    "title": "Người vừa trò chuyện với bạn thích bạn hơn bạn nghĩ 💬",
+    "description": "Trong các thí nghiệm, những người lạ trò chuyện năm phút rồi chấm điểm cho nhau. Trung bình, mỗi người thích người kia nhiều hơn mức họ nghĩ người kia thích mình; hiện tượng này gọi là khoảng cách thiện cảm, và ở những bạn cùng phòng ký túc xá mới, nó kéo dài nhiều tháng. Chúng ta mải soi lại những gì mình đã nói nên bỏ lỡ tín hiệu quan tâm từ người đối diện."
+   },
+   "az": {
+    "title": "Danışdığın adam səni düşündüyündən daha çox bəyəndi 💬",
+    "description": "Təcrübələrdə bir-birini tanımayan insanlar beş dəqiqə söhbət edib sonra bir-birini qiymətləndirdi. Orta hesabla hər kəs həmsöhbətini, həmsöhbətinin onu bəyəndiyini düşündüyündən daha çox bəyəndi; buna bəyənmə boşluğu deyilir və yataqxanada yeni otaq yoldaşları arasında aylarla davam etdi. Öz dediklərimizi götür-qoy etməklə məşğul olduğumuz üçün qarşı tərəfin maraq işarələrini qaçırırıq."
+   },
+   "ro": {
+    "title": "Persoana cu care ai vorbit te-a plăcut mai mult decât crezi 💬",
+    "description": "În experimente, necunoscuți au vorbit cinci minute și apoi s-au evaluat reciproc. În medie, fiecare și-a plăcut partenerul mai mult decât credea că este plăcut la rândul lui: este așa-numitul liking gap, care la colegii noi de cameră din cămin a durat luni de zile. Suntem atât de ocupați să ne disecăm propriile vorbe, încât ratăm semnele de interes ale celuilalt."
+   }
+  }
+ }
+}

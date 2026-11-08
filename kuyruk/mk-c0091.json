@@ -1,0 +1,176 @@
+{
+ "id": "mk-c0091",
+ "topic": "Tıraş olunca kıl kalınlaşır mı, jilet atınca sakal gürleşir mi?",
+ "kategori": "vücut",
+ "subject": [
+  "shaving",
+  "razor",
+  "beard"
+ ],
+ "stock_hint": "man shaving face close up",
+ "script": {
+  "title": "Tıraş olmak kılını kalınlaştırmaz, sadece öyle gösterir 🪒",
+  "hook_text": "TIRAŞ KILI KALINLAŞTIRIR MI?",
+  "scenes": [
+   {
+    "text": "Bu jilet kılını ne kalınlaştırır ne de koyulaştırır.",
+    "visual": "extreme close-up of a razor gliding through shaving foam on a man's cheek",
+    "stock_query": "man shaving",
+    "source": "stock",
+    "callout": "KALINLAŞTIRMAZ"
+   },
+   {
+    "text": "Oysa tıraştan sonra çıkan kıl daha sert ve koyu görünür.",
+    "visual": "close-up of dark stubble on a man's chin and jaw",
+    "stock_query": "beard stubble",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Üstelik derinin üstündeki kıl zaten ölü; jilet, büyümeyi yöneten köke hiç dokunmaz.",
+    "visual": "macro shot of short beard hairs coming out of the skin",
+    "stock_query": "beard macro",
+    "source": "stock",
+    "callout": "KIL ZATEN ÖLÜ"
+   },
+   {
+    "text": "Çünkü jilet kılın incelen ucunu keser; yeni uç küttür ve güneşte henüz açılmamıştır.",
+    "visual": "close-up of a razor blade cutting through stubble",
+    "stock_query": "razor shaving",
+    "source": "stock",
+    "callout": "KÜT UÇ"
+   },
+   {
+    "text": "Sakalın gür çıksın diye jilet atıyorsan boşuna; çünkü...",
+    "visual": "a young man looking at his freshly shaved face in a bathroom mirror",
+    "stock_query": "shaving mirror",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Tıraş olmak kılın kalınlığını, rengini ya da uzama hızını değiştirmez; bunu 1928'deki kontrollü bir deney gösterdi. Derinin üstündeki kıl zaten ölüdür ve jilet büyümeyi yöneten köke ulaşmaz. Tıraştan sonra çıkan kıl, jilet incelen ucunu kesip küt bir uç bıraktığı için sert, güneşte henüz açılmadığı için de koyu görünür.",
+  "tags": [
+   "tıraş",
+   "jilet",
+   "sakal",
+   "tıraş kılı kalınlaştırır mı",
+   "kıl",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen jilet atınca sakalın ya da tüylerin gürleşeceğine inanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Shaving doesn't make your hair thicker, it just looks that way 🪒",
+  "en_description": "Shaving doesn't change hair's thickness, color or growth rate; a controlled trial showed this as early as 1928. The hair above your skin is already dead, and the razor never reaches the root where it grows. Regrowth feels coarse because the razor cuts off the tapered tip and leaves a blunt end, and it looks darker because the sun hasn't lightened it yet.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Tıraş olunca kıl kalınlaşır mı, jilet atınca sakal gürleşir mi?\n\nHayır. Mayo Clinic'e göre tıraş olmak kılın kalınlığını, rengini ya da uzama hızını değiştirmez. BMJ dergisinde 2007'de yayımlanan tıp efsaneleri derlemesi, bunun ilk kez 1928'de tıraş edilen ve edilmeyen bölgelerin karşılaştırıldığı kontrollü bir deneyle gösterildiğini, sonraki çalışmaların da aynı sonucu bulduğunu aktarır. Derinin üstünde gördüğümüz kıl ölü, keratin dolu hücrelerden oluşur; kıl derinin altındaki kökte büyür ve jilet oraya ulaşmaz. Tıraştan sonra çıkan kıl sert gelir, çünkü jilet kılın incelen ucunu keser ve geriye küt bir uç kalır; güneşte henüz açılmadığı için de daha koyu görünür.\n\nSen jilet atınca sakalın ya da tüylerin gürleşeceğine inanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#tıraş",
+   "#sakal",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tıraş",
+   "tıraş olmak",
+   "tıraş kılı kalınlaştırır mı",
+   "jilet atınca sakal gürleşir mi",
+   "sakal",
+   "sakal çıkarmak",
+   "sakal gürleştirme",
+   "jilet",
+   "kıl",
+   "tüy",
+   "tıraş efsaneleri",
+   "kıl kökü",
+   "cilt bakımı",
+   "erkek bakımı",
+   "efsane mi gerçek mi",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "does shaving make hair thicker",
+   "shaving myth"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Shaving doesn't make your hair thicker, it just looks that way 🪒",
+    "description": "Shaving doesn't change hair's thickness, color or growth rate; a controlled trial showed this as early as 1928. The hair above your skin is already dead, and the razor never reaches the root where it grows. Regrowth feels coarse because the razor cuts off the tapered tip and leaves a blunt end, and it looks darker because the sun hasn't lightened it yet."
+   },
+   "es": {
+    "title": "Afeitarte no hace que el vello salga más grueso, solo lo parece 🪒",
+    "description": "Afeitarse no cambia el grosor, el color ni la velocidad de crecimiento del vello; un ensayo controlado ya lo demostró en 1928. El pelo que asoma por encima de la piel ya está muerto y la cuchilla nunca llega a la raíz, que es donde crece. Al rebrotar raspa porque la cuchilla corta la punta fina y deja un extremo romo, y parece más oscuro porque el sol aún no lo ha aclarado."
+   },
+   "pt": {
+    "title": "Raspar não deixa o pelo mais grosso, só parece 🪒",
+    "description": "Raspar não muda a espessura, a cor nem a velocidade de crescimento dos pelos; um estudo controlado já mostrou isso em 1928. O pelo acima da pele já está morto, e a lâmina nunca alcança a raiz, onde ele cresce. Ao nascer de novo ele parece áspero porque a lâmina corta a ponta fina e deixa uma ponta reta, e parece mais escuro porque o sol ainda não o clareou."
+   },
+   "de": {
+    "title": "Rasieren macht Haare nicht dicker, es sieht nur so aus 🪒",
+    "description": "Rasieren verändert weder Dicke noch Farbe noch Wachstumstempo der Haare – das zeigte eine kontrollierte Studie schon 1928. Das Haar über der Haut ist bereits abgestorben, und die Klinge erreicht nie die Wurzel, in der es wächst. Nachwachsende Stoppeln fühlen sich rau an, weil die Klinge die feine Spitze kappt und ein stumpfes Ende bleibt, und wirken dunkler, weil die Sonne sie noch nicht aufgehellt hat."
+   },
+   "fr": {
+    "title": "Se raser ne rend pas les poils plus épais, ça en a seulement l'air 🪒",
+    "description": "Le rasage ne change ni l'épaisseur, ni la couleur, ni la vitesse de pousse des poils ; un essai contrôlé l'a montré dès 1928. Le poil au-dessus de la peau est déjà mort et la lame n'atteint jamais la racine, là où il pousse. La repousse pique parce que la lame coupe la pointe effilée et laisse un bout net, et elle paraît plus foncée parce que le soleil ne l'a pas encore éclaircie."
+   },
+   "it": {
+    "title": "Radersi non rende i peli più spessi, sembra soltanto 🪒",
+    "description": "La rasatura non cambia spessore, colore né velocità di crescita dei peli: lo ha dimostrato uno studio controllato già nel 1928. Il pelo sopra la pelle è già morto e la lama non raggiunge mai la radice, dove cresce. Quando ricresce punge perché la lama taglia la punta sottile e lascia un'estremità netta, e sembra più scuro perché il sole non l'ha ancora schiarito."
+   },
+   "ru": {
+    "title": "Бритьё не делает волосы толще, так только кажется 🪒",
+    "description": "Бритьё не меняет ни толщину, ни цвет, ни скорость роста волос — это показало контролируемое исследование ещё в 1928 году. Волос над кожей уже мёртвый, а бритва никогда не достаёт до корня, где он растёт. Отросшая щетина кажется жёсткой, потому что бритва срезает тонкий кончик и оставляет тупой срез, а темнее она выглядит, потому что ещё не выгорела на солнце."
+   },
+   "ar": {
+    "title": "الحلاقة لا تجعل الشعر أكثف، بل تجعله يبدو كذلك فقط 🪒",
+    "description": "الحلاقة لا تغيّر سماكة الشعر ولا لونه ولا سرعة نموه، وقد أثبتت ذلك تجربة مضبوطة منذ عام 1928. فالشعر الظاهر فوق الجلد ميت أصلًا، والشفرة لا تصل أبدًا إلى الجذر حيث ينمو. يبدو الشعر النابت خشنًا لأن الشفرة تقطع طرفه المدبب وتترك طرفًا مقطوعًا عريضًا، ويبدو أغمق لأن الشمس لم تفتّح لونه بعد."
+   },
+   "hi": {
+    "title": "शेव करने से बाल घने नहीं होते, बस ऐसे दिखते हैं 🪒",
+    "description": "शेव करने से बालों की मोटाई, रंग या बढ़ने की रफ़्तार नहीं बदलती; 1928 में ही एक नियंत्रित प्रयोग ने यह दिखा दिया था। त्वचा के ऊपर दिखने वाला बाल पहले से ही मृत होता है और रेज़र कभी उस जड़ तक नहीं पहुँचता जहाँ बाल बढ़ता है। दोबारा उगा बाल खुरदुरा लगता है क्योंकि रेज़र उसकी पतली नोक काटकर कुंद सिरा छोड़ देता है, और गहरा इसलिए दिखता है क्योंकि धूप ने उसे अभी हल्का नहीं किया।"
+   },
+   "id": {
+    "title": "Bercukur tidak membuat bulu jadi tebal, cuma kelihatannya begitu 🪒",
+    "description": "Bercukur tidak mengubah ketebalan, warna, atau kecepatan tumbuh bulu; uji terkontrol sudah membuktikannya pada 1928. Bagian rambut di atas kulit sebenarnya sudah mati, dan pisau cukur tidak pernah mencapai akar tempat rambut tumbuh. Rambut yang tumbuh lagi terasa kasar karena ujungnya yang runcing terpotong dan tersisa ujung tumpul, dan tampak lebih gelap karena belum memudar oleh matahari."
+   },
+   "ja": {
+    "title": "剃っても毛は太くならない。そう見えるだけ 🪒",
+    "description": "剃っても毛の太さや色、伸びる速さは変わりません。1928年の対照実験ですでに示されています。皮膚の上に出ている毛はもともと死んだ細胞で、カミソリは毛が育つ毛根には届きません。生えかけの毛がチクチクするのは、細くなった先端が切られて断面が平らになるから。濃く見えるのは、まだ日光で色が抜けていないからです。"
+   },
+   "ko": {
+    "title": "면도해도 털은 굵어지지 않는다, 그렇게 보일 뿐 🪒",
+    "description": "면도는 털의 굵기, 색, 자라는 속도를 바꾸지 않으며, 이미 1928년에 대조 실험으로 확인됐습니다. 피부 위로 나온 털은 이미 죽은 세포이고, 면도날은 털이 자라는 모근까지 닿지 않습니다. 다시 자란 털이 까칠한 건 면도날이 가늘어지는 끝을 잘라 뭉툭한 단면이 남기 때문이고, 더 짙어 보이는 건 아직 햇볕에 바래지 않았기 때문입니다."
+   },
+   "pl": {
+    "title": "Golenie nie sprawia, że włosy są grubsze, tylko tak wyglądają 🪒",
+    "description": "Golenie nie zmienia grubości, koloru ani tempa wzrostu włosów; kontrolowane badanie pokazało to już w 1928 roku. Włos nad skórą jest już martwy, a maszynka nigdy nie sięga cebulki, w której rośnie. Odrastający włos kłuje, bo ostrze ścina cienki koniec i zostawia tępe zakończenie, a ciemniejszy wydaje się, bo słońce go jeszcze nie rozjaśniło."
+   },
+   "nl": {
+    "title": "Scheren maakt je haar niet dikker, het lijkt alleen zo 🪒",
+    "description": "Scheren verandert de dikte, kleur en groeisnelheid van haar niet; een gecontroleerde proef liet dat al in 1928 zien. Het haar boven je huid is al dood en het mesje komt nooit bij de wortel, waar het groeit. Teruggroeiend haar voelt stug omdat het mesje het dunne puntje afsnijdt en een stomp uiteinde achterlaat, en het lijkt donkerder omdat de zon het nog niet heeft gebleekt."
+   },
+   "uk": {
+    "title": "Гоління не робить волосся густішим, так лише здається 🪒",
+    "description": "Гоління не змінює ні товщини, ні кольору, ні швидкості росту волосся — це показало контрольоване дослідження ще 1928 року. Волосина над шкірою вже мертва, а лезо ніколи не дістає до кореня, де вона росте. Відросла щетина здається жорсткою, бо лезо зрізає тонкий кінчик і лишає тупий зріз, а темнішою — бо ще не вигоріла на сонці."
+   },
+   "vi": {
+    "title": "Cạo không làm lông dày lên, chỉ trông có vẻ như vậy 🪒",
+    "description": "Cạo không làm thay đổi độ dày, màu sắc hay tốc độ mọc của lông; một thử nghiệm có đối chứng đã chứng minh điều này từ năm 1928. Phần lông trên da vốn đã chết, và lưỡi dao không bao giờ chạm tới chân lông, nơi lông mọc ra. Lông mọc lại có cảm giác cứng vì dao cắt mất phần ngọn thon, để lại đầu cụt, và trông sẫm hơn vì chưa bị nắng làm bạc màu."
+   },
+   "az": {
+    "title": "Təraş tükü qalınlaşdırmır, sadəcə elə görünür 🪒",
+    "description": "Təraş tükün qalınlığını, rəngini və uzanma sürətini dəyişmir; bunu hələ 1928-ci ildə nəzarətli bir təcrübə göstərib. Dərinin üstündəki tük artıq ölüdür, ülgüc isə tükün böyüdüyü kökə heç vaxt çatmır. Yenidən çıxan tük ona görə sərt gəlir ki, ülgüc onun incələn ucunu kəsib küt bir uc qoyur; daha tünd görünməsi isə hələ günəşdə açılmamasındandır."
+   },
+   "ro": {
+    "title": "Bărbieritul nu îngroașă firele de păr, doar așa pare 🪒",
+    "description": "Bărbieritul nu schimbă grosimea, culoarea sau viteza de creștere a firelor; un studiu controlat a arătat asta încă din 1928. Firul de deasupra pielii este deja mort, iar lama nu ajunge niciodată la rădăcină, acolo unde crește. Firul care revine înțeapă pentru că lama îi taie vârful subțire și lasă un capăt bont, iar pare mai închis la culoare pentru că soarele nu l-a decolorat încă."
+   }
+  }
+ }
+}
