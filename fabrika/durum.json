@@ -1739,14 +1739,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 1,
+ "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-22T09:09:54+00:00",
-   "mod": "igbolum",
-   "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
-   "chars": 362
-  },
   {
    "finished": "2026-10-22T10:16:45+00:00",
    "mod": "saatlik",
@@ -2163,6 +2157,12 @@
    "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
    "error": "IGError: Instagram videoyu işleyemedi: ERROR",
    "chars": 372
+  },
+  {
+   "finished": "2026-11-08T10:32:16+00:00",
+   "mod": "igbolum",
+   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
+   "chars": 372
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2377,6 +2377,11 @@
     "media_id": "18086630936709782",
     "url": "https://www.instagram.com/reel/DfcrqIAAlHg/",
     "at": 1794071353.1929417
+   },
+   "y033": {
+    "media_id": "17967048813235384",
+    "url": "https://www.instagram.com/reel/DfejFgmgMmK/",
+    "at": 1794133936.787008
    }
   },
   "eski": [

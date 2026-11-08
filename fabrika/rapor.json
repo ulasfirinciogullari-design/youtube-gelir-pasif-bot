@@ -1,16 +1,21 @@
 {
- "started": "2026-11-08T10:20:08+00:00",
+ "started": "2026-11-08T10:29:32+00:00",
  "mod": "igbolum",
  "gate": "igbolum",
  "tarayici": "playwright ubuntu24.04-x64",
  "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
  "chars": 372,
- "error": "IGError: Instagram videoyu işleyemedi: ERROR",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 449, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 320, in ig_bolum\n    report[\"instagram\"] = to_instagram(ep, WORK / \"timings.json\", mix, state)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 280, in to_instagram\n    return instagram.paylas(ep, video, cover, state)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 229, in paylas\n    cid = reel(tok, urls, caption(ep))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/instagram.py\", line 213, in reel\n    raise IGError(f\"Instagram videoyu işleyemedi: {st.get('status')}\")\ninstagram.IGError: Instagram videoyu işleyemedi: ERROR\n",
+ "instagram": {
+  "anahtar_bitis": "2026-12-31T21:10+00:00",
+  "media_id": "17967048813235384",
+  "url": "https://www.instagram.com/reel/DfejFgmgMmK/",
+  "at": 1794133936.787008
+ },
  "log": [
   "Instagram videoyu alamadı (1. deneme): ERROR",
   "Instagram videoyu alamadı (2. deneme): ERROR",
-  "Instagram videoyu alamadı (3. deneme): ERROR"
+  "Instagram videoyu jsDelivr'dan aldı",
+  "Instagram: https://www.instagram.com/reel/DfejFgmgMmK/"
  ],
- "finished": "2026-11-08T10:24:51+00:00"
+ "finished": "2026-11-08T10:32:16+00:00"
 }
