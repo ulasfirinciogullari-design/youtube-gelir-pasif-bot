@@ -200,6 +200,11 @@
     1794076121,
     "r",
     "UgzZyk2EnBYVbfEVWRZ4AaABAg.AcvKh70EqpSAcvKjyVMSjq"
+   ],
+   "UgxZqwl7ldadrVY8z354AaABAg": [
+    1794146368,
+    "r",
+    "UgxZqwl7ldadrVY8z354AaABAg.AcxQNQkt4OUAcxQiy2-pFL"
    ]
   },
   "son": [
@@ -430,6 +435,12 @@
     "video": "HVyvxH-huIc",
     "comment": "60 saniye durdum",
     "reply": "Iowa Universitesine gore normalde gozyaşı tabakası ilk kuru lekeye kadar en az 10 saniye dayanır. 60 saniye boyunca kırpmamak korneada ciddi kuruluk ve hasar riskine yol açabilir.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1794146368,
+    "video": "33I8lo_Kk18",
+    "comment": "Tt",
+    "reply": "Klavyen biraz heyecanlanmış galiba!\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -594,10 +605,10 @@
  "nobet": {
   "basladi": "2026-11-08T11:49:24+00:00",
   "run": "42476692056",
-  "tur": 130,
+  "tur": 131,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-08T13:58:25+00:00"
+  "son_tur": "2026-11-08T13:59:27+00:00"
  }
 }
