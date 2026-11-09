@@ -16,7 +16,8 @@ Needs the ZK_IG_TOKEN secret: a long-lived user token of the "Instagram API with
 "Zirvenin Kanunu" Meta app, never Ya Olsaydı?'s. Actions cannot write secrets and channel-data is public, so the
 watch refreshes the token once a week and keeps the fresh one in channel-data/instagram_token.enc, encrypted with a
 key derived from the secret; a new secret simply replaces it. Instagram fetches a Reel's video from a public URL, so
-the video and cover sit on a temporary GitHub release for the few minutes Instagram needs.
+the video and cover sit on a temporary GitHub release for the few minutes Instagram needs (and, when Instagram turns
+that down, on a throwaway branch served by jsDelivr).
 Comments and DMs are judged by the YouTube responder's Gemini prompt (scripts/comment_replies.py), reworded for
 Instagram. The branch is public: people are stored as a short hash, DM text never.
 """
@@ -291,12 +292,61 @@ def _direct(url: str) -> str:
     return url
 
 
-def reel(tok: str, urls: dict, text: str, sleep=time.sleep) -> str:
+def cdn_host(files: dict, tag: str, env=os.environ, sleep=time.sleep, fetch=None) -> tuple[dict, str]:
+    """The same files from a second host: a parentless commit on a throwaway branch of this public repo, served by
+    jsDelivr -> ({name: public url}, branch). From 2026-11-07 ~18:00 UTC Instagram answered ERROR to every video on a
+    GitHub release, redirect and signed link alike, on both channels (ZK lost its 11-08 10:00 UTC Reel); Ya
+    Olsaydı?'s Reel went through from jsDelivr (ya-olsaydi a17c3644). jsDelivr serves files up to 20 MB from GitHub;
+    our Instagram copies are far smaller. A ref made with the workflow's token starts no workflow."""
+    repo = env["GITHUB_REPOSITORY"]
+    api = f"{GITHUB_API}/{repo}/git"
+    tree = []
+    for name, (path, _ctype) in files.items():
+        blob = _github("POST", f"{api}/blobs", env, timeout=300, body={
+            "content": base64.b64encode(Path(path).read_bytes()).decode(), "encoding": "base64"})
+        tree.append({"path": name, "mode": "100644", "type": "blob", "sha": blob["sha"]})
+    t = _github("POST", f"{api}/trees", env, body={"tree": tree})
+    commit = _github("POST", f"{api}/commits", env, body={
+        "message": f"{tag}: Instagram için geçici", "tree": t["sha"], "parents": []})
+    branch = f"ig-gecici/{tag}"
+    _github("POST", f"{api}/refs", env, body={"ref": f"refs/heads/{branch}", "sha": commit["sha"]})
+    urls = {name: f"https://cdn.jsdelivr.net/gh/{repo}@{commit['sha']}/{name}" for name in files}
+    fetch = fetch or (lambda url: http("GET", url, timeout=120)[0])
+    for url in urls.values():  # the CDN fetches it once before Instagram asks
+        for _ in range(6):
+            try:
+                if fetch(url) == 200:
+                    break
+            except OSError:
+                pass
+            sleep(10)
+    return urls, branch
+
+
+def cdn_unhost(branch: str, env=os.environ) -> None:
+    try:
+        _github("DELETE", f"{GITHUB_API}/{env['GITHUB_REPOSITORY']}/git/refs/heads/{branch}", env)
+    except IGError as e:
+        print(f"⚠️ Geçici dal silinemedi: {e}")
+
+
+def reel(tok: str, urls: dict, text: str, sleep=time.sleep, more=None) -> str:
     """Creates a Reels container and waits until Instagram has fetched and processed the video -> container id. If
-    Instagram cannot fetch through GitHub's redirect, tries once more with the signed link it points to."""
+    Instagram cannot fetch through GitHub's redirect, tries once more with the signed link it points to, then with
+    the copy on jsDelivr (more() -> its urls). (Uploading the bytes, upload_type=resumable, is only for Facebook
+    Login apps, not this Instagram Login one.)"""
     status = {}
-    for attempt in (1, 2):
-        u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
+    for attempt in (1, 2, 3):
+        if attempt == 3:
+            if more is None:
+                break
+            try:
+                u = more()
+            except Exception as e:  # noqa: BLE001  (the error below says what Instagram answered)
+                print(f"⚠️ jsDelivr kopyası kurulamadı: {str(e)[:200]}")
+                break
+        else:
+            u = urls if attempt == 1 else {k: _direct(v) for k, v in urls.items()}
         cid = call(tok, "POST", "me/media", form={
             "media_type": "REELS", "video_url": u["video.mp4"], "cover_url": u["kapak.jpg"],
             "caption": text, "share_to_feed": "true"})["id"]
@@ -309,7 +359,8 @@ def reel(tok: str, urls: dict, text: str, sleep=time.sleep) -> str:
                 break
         else:
             raise IGError("Instagram videoyu 10 dakikada işlemedi")
-        print(f"⚠️ Instagram videoyu alamadı ({attempt}. deneme): {status.get('status')}")
+        print(f"⚠️ Instagram videoyu alamadı ({attempt}. deneme{', jsDelivr' if attempt == 3 else ''}): "
+              f"{status.get('status')}")
     raise IGError(f"Instagram videoyu işleyemedi: {status.get('status')}")
 
 
@@ -403,12 +454,23 @@ def publish(data_dir: Path, state: dict, upload: dict, out_dir: Path, env=os.env
             raise ShortError(f"kapak resmi yok ve çıkarılamadı: {e}") from e
     me(tok, state)
     tag = f"ig-zk-{upload['video_id']}-{int(time.time())}"
-    urls, release = host({"video.mp4": (ig, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}, tag, env)
+    files = {"video.mp4": (ig, "video/mp4"), "kapak.jpg": (cover, "image/jpeg")}
+    urls, release = host(files, tag, env)
+    branches = []
+
+    def more() -> dict:
+        cdn_urls, branch = cdn_host(files, tag, env, sleep=sleep)
+        branches.append(branch)
+        return cdn_urls
     try:
-        cid = reel(tok, urls, caption(meta), sleep=sleep)
+        cid = reel(tok, urls, caption(meta), sleep=sleep, more=more)
         media_id = call(tok, "POST", "me/media_publish", form={"creation_id": cid})["id"]
+        if branches:
+            print("📸 Instagram videoyu jsDelivr'dan aldı")
     finally:
         unhost(release, tag, env)
+        for branch in branches:
+            cdn_unhost(branch, env)
     link = call(tok, "GET", media_id, params={"fields": "permalink"}).get("permalink")
     record = {"media_id": media_id, "url": link, "at": round(time.time()), "title": upload.get("title", ""),
               "topic_id": upload.get("topic_id", "")}
