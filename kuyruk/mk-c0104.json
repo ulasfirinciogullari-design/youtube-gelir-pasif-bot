@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0104",
+ "topic": "Kuyruk sallayan köpek mutlu mudur, köpek neden kuyruk sallar?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog tail wagging",
+ "script": {
+  "title": "Kuyruk sallayan köpek her zaman mutlu değil 🐶",
+  "hook_text": "KUYRUK SALLAYAN KÖPEK MUTLU MU?",
+  "scenes": [
+   {
+    "text": "Bu köpek kuyruk sallıyor ama mutlu olmayabilir.",
+    "visual": "close-up of a dog staring into the camera while its tail wags behind it",
+    "stock_query": "dog tail wagging",
+    "source": "stock",
+    "callout": "MUTLU OLMAYABİLİR"
+   },
+   {
+    "text": "Gergin, hatta saldırmaya hazır bir köpek de kuyruk sallar.",
+    "visual": "a tense dog growling and baring its teeth",
+    "stock_query": "dog growling",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deneyde köpekler sahibini görünce kuyruğu daha çok sağa, yabancı iri bir köpeği görünce sola salladı.",
+    "visual": "a dog running happily to greet its owner at the door",
+    "stock_query": "dog greeting owner",
+    "source": "stock",
+    "callout": "SAHİBİNE SAĞA"
+   },
+   {
+    "text": "Çünkü kuyruk sallamak mutluluk değil, heyecan demek; iyisini kötüsünü bedenin geri kalanı söyler.",
+    "visual": "close-up of a dog's tail swinging side to side",
+    "stock_query": "dog tail",
+    "source": "stock",
+    "callout": "MUTLULUK DEĞİL, HEYECAN"
+   },
+   {
+    "text": "Sallanan kuyruğa güvenip elini uzatma; çünkü...",
+    "visual": "a hand slowly reaching out to pet a dog",
+    "stock_query": "hand petting dog",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kuyruk sallamak her zaman mutluluk demek değil; gergin, hatta saldırgan köpekler de kuyruk sallayabiliyor. 2007'deki bir deneyde köpekler sahibini görünce kuyruğunu daha çok sağa, yabancı iri bir köpeği görünce sola salladı. Uzmanlara göre kuyruk heyecanı gösteriyor; köpeğin ne hissettiğini kulakları, duruşu ve bedeninin geri kalanı söylüyor.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "kuyruk sallamak",
+   "köpek neden kuyruk sallar",
+   "köpek beden dili",
+   "köpek davranışları",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin seni görünce kuyruğunu hangi yöne sallıyor: sağa mı, sola mı?",
+  "en_title": "A wagging tail doesn't always mean a happy dog 🐶",
+  "en_description": "Tense or even aggressive dogs wag their tails too. In a 2007 study, dogs wagged more to the right when they saw their owner and more to the left when facing a large unfamiliar dog. Wagging signals arousal, not happiness: read the ears, posture and the rest of the body.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kuyruk sallayan köpek mutlu mudur, köpek neden kuyruk sallar?\n\n2024'te Biology Letters dergisinde yayımlanan bir derlemeye göre köpekler kuyruklarını hem olumlu hem olumsuz heyecan anlarında sallıyor; gergin ya da saldırgan köpekler de kuyruk sallayabiliyor. İtalya'daki Bari Üniversitesi'nden Angelo Quaranta, Marcello Siniscalchi ve Giorgio Vallortigara'nın 2007'de Current Biology'de yayımladığı deneyde 30 köpek sahibini görünce kuyruğunu daha çok sağa, yabancı ve iri bir Belçika çoban köpeği görünce daha çok sola salladı. Aynı ekibin 2013'teki çalışmasında sola kuyruk sallayan bir köpeğin videosunu izleyen köpeklerin kalp atışı hızlandı ve stres belirtileri arttı. Uzmanlar kuyruğa tek başına değil, kulaklara, duruşa ve bedenin geri kalanına bakmayı öneriyor.\n\nSenin köpeğin seni görünce kuyruğunu hangi yöne sallıyor: sağa mı, sola mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "kuyruk sallamak",
+   "köpek neden kuyruk sallar",
+   "kuyruk sallayan köpek",
+   "köpek mutlu mu",
+   "köpek dili",
+   "köpek beden dili",
+   "köpek davranışları",
+   "köpek psikolojisi",
+   "köpek eğitimi",
+   "köpek sahibi",
+   "köpek ısırması",
+   "evcil hayvan",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "dog tail wagging",
+   "dog body language"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A wagging tail doesn't always mean a happy dog 🐶",
+    "description": "Tense or even aggressive dogs wag their tails too. In a 2007 study, dogs wagged more to the right when they saw their owner and more to the left when facing a large unfamiliar dog. Wagging signals arousal, not happiness: read the ears, posture and the rest of the body."
+   },
+   "es": {
+    "title": "Un perro que mueve la cola no siempre está feliz 🐶",
+    "description": "Los perros tensos o incluso agresivos también mueven la cola. En un estudio de 2007, los perros la movían más hacia la derecha al ver a su dueño y más hacia la izquierda ante un perro grande desconocido. Mover la cola indica excitación, no alegría: fíjate en las orejas, la postura y el resto del cuerpo."
+   },
+   "pt": {
+    "title": "Cachorro abanando o rabo nem sempre está feliz 🐶",
+    "description": "Cães tensos ou até agressivos também abanam o rabo. Num estudo de 2007, os cães abanavam mais para a direita ao ver o dono e mais para a esquerda diante de um cão grande desconhecido. Abanar o rabo indica excitação, não alegria: observe as orelhas, a postura e o resto do corpo."
+   },
+   "de": {
+    "title": "Ein wedelnder Hund ist nicht immer glücklich 🐶",
+    "description": "Auch angespannte oder sogar angriffslustige Hunde wedeln mit dem Schwanz. In einer Studie von 2007 wedelten Hunde beim Anblick ihres Halters stärker nach rechts und bei einem großen fremden Hund stärker nach links. Wedeln zeigt Erregung, nicht Freude: Achte auf Ohren, Haltung und den restlichen Körper."
+   },
+   "fr": {
+    "title": "Un chien qui remue la queue n'est pas toujours content 🐶",
+    "description": "Les chiens tendus, voire agressifs, remuent aussi la queue. Dans une étude de 2007, les chiens la remuaient davantage vers la droite en voyant leur maître et vers la gauche face à un grand chien inconnu. Remuer la queue traduit l'excitation, pas la joie : regarde les oreilles, la posture et le reste du corps."
+   },
+   "it": {
+    "title": "Un cane che scodinzola non è sempre felice 🐶",
+    "description": "Anche i cani tesi o perfino aggressivi scodinzolano. In uno studio del 2007 i cani scodinzolavano più verso destra vedendo il padrone e più verso sinistra davanti a un grosso cane sconosciuto. Scodinzolare indica eccitazione, non felicità: guarda orecchie, postura e il resto del corpo."
+   },
+   "ru": {
+    "title": "Виляющая хвостом собака не всегда рада 🐶",
+    "description": "Хвостом виляют и напряжённые, и даже агрессивные собаки. В исследовании 2007 года собаки виляли сильнее вправо, увидев хозяина, а влево, увидев крупную незнакомую собаку. Виляние хвостом говорит о возбуждении, а не о радости: смотрите на уши, позу и всё тело."
+   },
+   "ar": {
+    "title": "الكلب الذي يهز ذيله ليس سعيدًا دائمًا 🐶",
+    "description": "الكلاب المتوترة بل والعدوانية تهز ذيولها أيضًا. في دراسة عام 2007 هزّت الكلاب ذيولها أكثر نحو اليمين عند رؤية أصحابها، وأكثر نحو اليسار أمام كلب ضخم غريب. فهز الذيل يدل على الإثارة لا على السعادة: انظر إلى الأذنين ووضعية الجسم وبقية الجسد."
+   },
+   "hi": {
+    "title": "पूँछ हिलाने वाला कुत्ता हमेशा खुश नहीं होता 🐶",
+    "description": "तनाव में या हमला करने को तैयार कुत्ते भी पूँछ हिलाते हैं। 2007 के एक अध्ययन में कुत्तों ने मालिक को देखकर पूँछ ज़्यादा दाईं ओर और किसी बड़े अनजान कुत्ते को देखकर बाईं ओर हिलाई। पूँछ हिलाना ख़ुशी नहीं, उत्तेजना का संकेत है: कान, मुद्रा और पूरे शरीर पर ध्यान दें।"
+   },
+   "id": {
+    "title": "Anjing yang mengibaskan ekor belum tentu senang 🐶",
+    "description": "Anjing yang tegang, bahkan agresif, juga mengibaskan ekor. Dalam studi tahun 2007, anjing lebih banyak mengibas ke kanan saat melihat pemiliknya dan ke kiri saat berhadapan dengan anjing besar yang asing. Kibasan ekor menandakan rangsangan, bukan kebahagiaan: perhatikan telinga, postur, dan seluruh tubuhnya."
+   },
+   "ja": {
+    "title": "しっぽを振る犬がいつも喜んでいるとは限らない 🐶",
+    "description": "緊張した犬や、攻撃しそうな犬もしっぽを振ります。2007年の研究では、犬は飼い主を見ると右寄りに、見知らぬ大型犬を見ると左寄りにしっぽを振りました。しっぽ振りは喜びではなく興奮のサイン。耳や姿勢、体全体を見て判断しましょう。"
+   },
+   "ko": {
+    "title": "꼬리 흔드는 개가 늘 기쁜 건 아니다 🐶",
+    "description": "긴장했거나 심지어 공격적인 개도 꼬리를 흔듭니다. 2007년 연구에서 개들은 주인을 보면 꼬리를 오른쪽으로 더 많이, 낯선 큰 개를 보면 왼쪽으로 더 많이 흔들었습니다. 꼬리 흔들기는 기쁨이 아니라 흥분의 신호입니다. 귀와 자세, 몸 전체를 함께 보세요."
+   },
+   "pl": {
+    "title": "Pies machający ogonem nie zawsze jest szczęśliwy 🐶",
+    "description": "Ogonem machają też psy spięte, a nawet agresywne. W badaniu z 2007 roku psy na widok opiekuna machały mocniej w prawo, a na widok dużego obcego psa w lewo. Machanie ogonem oznacza pobudzenie, a nie radość: patrz na uszy, postawę i resztę ciała."
+   },
+   "nl": {
+    "title": "Een kwispelende hond is niet altijd blij 🐶",
+    "description": "Ook gespannen of zelfs agressieve honden kwispelen. In een studie uit 2007 kwispelden honden meer naar rechts als ze hun baasje zagen en meer naar links bij een grote onbekende hond. Kwispelen betekent opwinding, niet blijdschap: let op de oren, de houding en de rest van het lichaam."
+   },
+   "uk": {
+    "title": "Собака, що виляє хвостом, не завжди радіє 🐶",
+    "description": "Хвостом виляють і напружені, і навіть агресивні собаки. У дослідженні 2007 року собаки виляли сильніше праворуч, побачивши господаря, а ліворуч, побачивши великого незнайомого пса. Виляння хвостом означає збудження, а не радість: дивіться на вуха, позу й усе тіло."
+   },
+   "vi": {
+    "title": "Chó vẫy đuôi chưa chắc đã vui 🐶",
+    "description": "Chó căng thẳng, thậm chí hung dữ, cũng vẫy đuôi. Trong một nghiên cứu năm 2007, chó vẫy đuôi lệch sang phải nhiều hơn khi thấy chủ và lệch sang trái khi gặp một con chó lớn lạ. Vẫy đuôi là dấu hiệu hưng phấn chứ không phải vui vẻ: hãy để ý tai, tư thế và cả cơ thể."
+   },
+   "az": {
+    "title": "Quyruq bulayan it həmişə xoşbəxt deyil 🐶",
+    "description": "Gərgin, hətta aqressiv itlər də quyruq bulayır. 2007-ci il araşdırmasında itlər sahibini görəndə quyruğunu daha çox sağa, iri yad iti görəndə isə sola buladı. Quyruq bulamaq sevinc yox, həyəcan əlamətidir: qulaqlara, duruşa və bütün bədənə baxın."
+   },
+   "ro": {
+    "title": "Un câine care dă din coadă nu e mereu fericit 🐶",
+    "description": "Și câinii tensionați, chiar agresivi, dau din coadă. Într-un studiu din 2007, câinii dădeau mai mult spre dreapta când își vedeau stăpânul și mai mult spre stânga în fața unui câine mare necunoscut. Datul din coadă arată agitație, nu bucurie: uită-te la urechi, postură și restul corpului."
+   }
+  }
+ }
+}

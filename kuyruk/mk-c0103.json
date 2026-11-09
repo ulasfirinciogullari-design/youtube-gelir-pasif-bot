@@ -1,0 +1,188 @@
+{
+ "id": "mk-c0103",
+ "topic": "İnsan kaç gün uykusuz kalabilir, günlerce uyumadan durmak mümkün mü?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "man"
+ ],
+ "stock_hint": "tired man face",
+ "script": {
+  "title": "İnsan günlerce hiç uyumadan durabilir mi? 😵",
+  "hook_text": "GÜNLERCE UYUMADAN DURULUR MU?",
+  "scenes": [
+   {
+    "text": "Bu genç tam on bir gün uyumadı.",
+    "visual": "extreme close-up of an exhausted young man's face with heavy red eyes, staring into the camera",
+    "stock_query": "tired man face",
+    "source": "stock",
+    "callout": "11 GÜN UYKUSUZ"
+   },
+   {
+    "text": "Peki insan günlerce hiç uyumadan durabilir mi?",
+    "visual": "a young man yawning widely, close-up",
+    "stock_query": "man yawning",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Ardından yalnızca on dört saat uyudu; Guinness ise bu rekorları tehlikeli diye artık kaydetmiyor.",
+    "visual": "a man fast asleep with his head on a desk",
+    "stock_query": "man sleeping desk",
+    "source": "stock",
+    "callout": "SADECE 14 SAAT"
+   },
+   {
+    "text": "Cevap: tam olarak değil.",
+    "visual": "extreme close-up of a human eye slowly closing and opening",
+    "stock_query": "eye close up",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Uykusuz beynin bazı bölgeleri, sen uyanıkken bile kısa süreliğine uyuyabiliyor.",
+    "visual": "a glowing 3D human brain with some regions dimming and lighting up",
+    "stock_query": "human brain",
+    "source": "stock",
+    "callout": "BEYİN GİZLİCE UYUR",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Gözün açıkken bile olur; o yüzden kâğıt üstünde...",
+    "visual": "a tired man staring blankly at a laptop late at night, eyes open but unfocused",
+    "stock_query": "tired man laptop",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kaliforniyalı 17 yaşındaki Randy Gardner 1963-64'te yaklaşık 11 gün uyumadı, ardından yaklaşık 14 saat uyudu; Guinness bu tür rekorları tehlikeli olduğu için artık kaydetmiyor. Ama 'hiç uyumamak' tam doğru değil: uykusuz beynin bazı bölgeleri kişi uyanıkken bile kısa süreliğine uykuya geçebiliyor, gözler açıkken mikro uykular yaşanabiliyor.",
+  "tags": [
+   "uykusuzluk",
+   "uyku",
+   "kaç gün uyumadan durulur",
+   "mikro uyku",
+   "beyin",
+   "insan vücudu",
+   "sağlık",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen en fazla ne kadar uyanık kaldın: bir gece mi, daha fazla mı?",
+  "en_title": "Can a person go days without any sleep? 😵",
+  "en_description": "In 1963-64, 17-year-old Randy Gardner stayed awake for about 11 days, then slept around 14 hours. Guinness no longer accepts such records because they're dangerous. And 'no sleep at all' isn't quite true: a sleep-deprived brain can switch off parts of itself for brief moments, even with eyes open.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "İnsan kaç gün uykusuz kalabilir, günlerce uyumadan durmak mümkün mü?\n\nSan Diego'da 17 yaşında bir lise öğrencisi olan Randy Gardner, 1963 sonu ile 1964 başında 264 saat, yani yaklaşık 11 gün hiç uyumadan kaldı; Stanford'lu uyku araştırmacısı William Dement de deneyin bir bölümünü izledi. NPR'ın aktardığına göre Gardner bu süreçte bulantı, hafıza sorunları ve sinirlilik yaşadı, sonunda yaklaşık 14 saat uyudu. Guinness Dünya Rekorları sağlığa zararlı olduğu için bu tür uykusuzluk rekorlarını artık kaydetmiyor. Ama 'hiç uyumamak' tam doğru değil: 2011'de Nature dergisinde yayımlanan bir çalışmada uykusuz bırakılan sıçanların beyninde bazı nöronlar, hayvan uyanıkken kısa süreliğine uykuya geçti; 2017'de Nature Medicine'de yayımlanan bir insan çalışması da uykusuzluğun belli beyin bölgelerinde benzer yerel uyku izleri yarattığını gösterdi. Gözler açıkken bile birkaç saniyelik mikro uykular yaşanabiliyor.\n\nSen en fazla ne kadar uyanık kaldın: bir gece mi, daha fazla mı?",
+  "hashtags": [
+   "#uyku",
+   "#uykusuzluk",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "uykusuzluk",
+   "uyku",
+   "kaç gün uyumadan durulur",
+   "uykusuz kalmak",
+   "uykusuzluk rekoru",
+   "uyumadan kaç gün yaşanır",
+   "mikro uyku",
+   "uyku bozukluğu",
+   "uykusuzluğun zararları",
+   "uyku neden önemli",
+   "beyin",
+   "beyin nasıl çalışır",
+   "insan vücudu",
+   "vücudumuz",
+   "sağlık",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "sleep deprivation",
+   "microsleep"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a person go days without any sleep? 😵",
+    "description": "In 1963-64, 17-year-old Randy Gardner stayed awake for about 11 days, then slept around 14 hours. Guinness no longer accepts such records because they're dangerous. And 'no sleep at all' isn't quite true: a sleep-deprived brain can switch off parts of itself for brief moments, even with eyes open."
+   },
+   "es": {
+    "title": "¿Puede una persona pasar días sin dormir nada? 😵",
+    "description": "En 1963-64, Randy Gardner, de 17 años, estuvo despierto unos 11 días y después durmió unas 14 horas. Guinness ya no registra estos récords por peligrosos. Y lo de 'sin dormir nada' no es del todo cierto: un cerebro privado de sueño puede apagar zonas propias durante breves instantes, incluso con los ojos abiertos."
+   },
+   "pt": {
+    "title": "Uma pessoa consegue ficar dias sem dormir nada? 😵",
+    "description": "Em 1963-64, Randy Gardner, de 17 anos, ficou acordado por cerca de 11 dias e depois dormiu umas 14 horas. O Guinness não registra mais esses recordes por serem perigosos. E 'sem dormir nada' não é bem verdade: um cérebro privado de sono pode desligar algumas regiões por instantes, mesmo de olhos abertos."
+   },
+   "de": {
+    "title": "Kann ein Mensch tagelang ganz ohne Schlaf auskommen? 😵",
+    "description": "1963/64 blieb der 17-jährige Randy Gardner rund 11 Tage wach und schlief danach etwa 14 Stunden. Guinness erkennt solche Rekorde nicht mehr an, weil sie gefährlich sind. Und „ganz ohne Schlaf“ stimmt nicht ganz: Ein übermüdetes Gehirn kann Teile von sich kurz abschalten, sogar bei offenen Augen."
+   },
+   "fr": {
+    "title": "Peut-on rester plusieurs jours sans dormir du tout ? 😵",
+    "description": "En 1963-1964, Randy Gardner, 17 ans, est resté éveillé environ 11 jours, puis a dormi près de 14 heures. Le Guinness n'enregistre plus ces records, jugés dangereux. Et « sans dormir du tout » n'est pas tout à fait vrai : un cerveau privé de sommeil peut mettre certaines zones en veille quelques instants, même les yeux ouverts."
+   },
+   "it": {
+    "title": "Si può restare giorni senza dormire affatto? 😵",
+    "description": "Nel 1963-64 il diciassettenne Randy Gardner rimase sveglio circa 11 giorni e poi dormì circa 14 ore. Il Guinness non registra più questi record perché pericolosi. E 'senza dormire affatto' non è del tutto vero: un cervello privato del sonno può spegnere alcune sue aree per brevi istanti, anche a occhi aperti."
+   },
+   "ru": {
+    "title": "Может ли человек несколько дней совсем не спать? 😵",
+    "description": "В 1963–64 годах 17-летний Рэнди Гарднер не спал около 11 дней, а потом проспал примерно 14 часов. Книга рекордов Гиннесса больше не регистрирует такие рекорды, потому что они опасны. И «совсем не спать» не совсем правда: лишённый сна мозг может на мгновения отключать отдельные участки, даже при открытых глазах."
+   },
+   "ar": {
+    "title": "هل يمكن للإنسان أن يبقى أيامًا دون نوم على الإطلاق؟ 😵",
+    "description": "في 1963-1964 بقي راندي غاردنر، وعمره 17 عامًا، مستيقظًا نحو 11 يومًا، ثم نام قرابة 14 ساعة. ولم تعد موسوعة غينيس تسجل مثل هذه الأرقام لخطورتها. كما أن «عدم النوم إطلاقًا» ليس دقيقًا تمامًا: فالدماغ المحروم من النوم قد يطفئ بعض مناطقه للحظات قصيرة، حتى والعينان مفتوحتان."
+   },
+   "hi": {
+    "title": "क्या इंसान कई दिनों तक बिल्कुल बिना सोए रह सकता है? 😵",
+    "description": "1963-64 में 17 साल के रैंडी गार्डनर लगभग 11 दिन जागते रहे और फिर करीब 14 घंटे सोए। गिनीज़ अब ऐसे रिकॉर्ड दर्ज नहीं करता क्योंकि ये ख़तरनाक हैं। और 'बिल्कुल न सोना' पूरी तरह सच नहीं: नींद से वंचित दिमाग़ अपने कुछ हिस्सों को पल भर के लिए बंद कर सकता है, खुली आँखों के साथ भी।"
+   },
+   "id": {
+    "title": "Bisakah manusia bertahan berhari-hari tanpa tidur sama sekali? 😵",
+    "description": "Pada 1963-64, Randy Gardner yang berusia 17 tahun terjaga sekitar 11 hari, lalu tidur kira-kira 14 jam. Guinness kini tidak lagi mencatat rekor seperti ini karena berbahaya. Dan 'tidak tidur sama sekali' tidak sepenuhnya benar: otak yang kurang tidur bisa mematikan sebagian dirinya sesaat, bahkan saat mata terbuka."
+   },
+   "ja": {
+    "title": "人は何日も一睡もせずにいられる？ 😵",
+    "description": "1963〜64年、17歳のランディ・ガードナーは約11日間起き続け、その後約14時間眠りました。危険なため、ギネスは今ではこうした記録を認定していません。しかも「一睡もしない」は正確ではありません。睡眠不足の脳は、目を開けていても一部が一瞬だけ眠ってしまうことがあるのです。"
+   },
+   "ko": {
+    "title": "사람은 며칠 동안 한숨도 안 자고 버틸 수 있을까? 😵",
+    "description": "1963~64년, 17살 랜디 가드너는 약 11일 동안 깨어 있다가 이후 약 14시간을 잤습니다. 기네스는 위험하다는 이유로 이제 이런 기록을 인정하지 않습니다. 게다가 '한숨도 안 잔다'는 말도 정확하지 않습니다. 잠이 부족한 뇌는 눈을 뜨고 있어도 일부가 잠깐씩 잠들 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy człowiek może przez kilka dni w ogóle nie spać? 😵",
+    "description": "W latach 1963–64 17-letni Randy Gardner nie spał około 11 dni, a potem przespał mniej więcej 14 godzin. Księga Guinnessa nie notuje już takich rekordów, bo są niebezpieczne. A „w ogóle nie spać” to nie do końca prawda: niewyspany mózg potrafi na krótkie chwile wyłączać swoje fragmenty, nawet przy otwartych oczach."
+   },
+   "nl": {
+    "title": "Kan een mens dagenlang helemaal niet slapen? 😵",
+    "description": "In 1963-64 bleef de 17-jarige Randy Gardner zo'n 11 dagen wakker en sliep daarna ongeveer 14 uur. Guinness registreert zulke records niet meer omdat ze gevaarlijk zijn. En 'helemaal niet slapen' klopt niet helemaal: een brein met slaaptekort kan delen van zichzelf even uitschakelen, zelfs met open ogen."
+   },
+   "uk": {
+    "title": "Чи може людина кілька днів зовсім не спати? 😵",
+    "description": "У 1963–64 роках 17-річний Ренді Гарднер не спав близько 11 днів, а потім проспав приблизно 14 годин. Книга рекордів Гіннесса більше не реєструє такі рекорди, бо вони небезпечні. І «зовсім не спати» не зовсім правда: позбавлений сну мозок може на мить вимикати окремі ділянки, навіть із розплющеними очима."
+   },
+   "vi": {
+    "title": "Con người có thể thức nhiều ngày liền không ngủ chút nào không? 😵",
+    "description": "Năm 1963-64, Randy Gardner 17 tuổi đã thức khoảng 11 ngày rồi ngủ chừng 14 tiếng. Guinness nay không còn ghi nhận những kỷ lục như vậy vì quá nguy hiểm. Và 'không ngủ chút nào' cũng không hẳn đúng: bộ não thiếu ngủ có thể tắt một vài vùng trong chốc lát, kể cả khi mắt vẫn mở."
+   },
+   "az": {
+    "title": "İnsan günlərlə heç yatmadan dura bilərmi? 😵",
+    "description": "1963-64-cü illərdə 17 yaşlı Rendi Qardner təxminən 11 gün yatmadı, sonra isə təxminən 14 saat yatdı. Ginnes artıq belə rekordları təhlükəli olduğu üçün qeydə almır. Üstəlik “heç yatmamaq” tam doğru deyil: yuxusuz beyin göz açıq olanda belə bəzi hissələrini qısa anlığa söndürə bilər."
+   },
+   "ro": {
+    "title": "Poate un om să stea zile întregi fără să doarmă deloc? 😵",
+    "description": "În 1963-64, Randy Gardner, în vârstă de 17 ani, a stat treaz aproximativ 11 zile, apoi a dormit circa 14 ore. Guinness nu mai înregistrează astfel de recorduri, fiind periculoase. Iar „fără să doarmă deloc” nu e chiar adevărat: un creier nedormit își poate închide unele zone pentru scurte momente, chiar cu ochii deschiși."
+   }
+  }
+ }
+}

@@ -1,0 +1,179 @@
+{
+ "id": "mk-c0098",
+ "topic": "Kulak pamuklu çubukla temizlenir mi, kulak kiri nasıl temizlenir?",
+ "kategori": "vücut",
+ "subject": [
+  "ear"
+ ],
+ "stock_hint": "ear close up",
+ "script": {
+  "title": "Pamuklu çubuk kulağını temizlemez, kiri içeri iter 👂",
+  "hook_text": "KULAK ÇUBUKLA TEMİZLENİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu pamuklu çubuk kulağını temizlemiyor, kiri içeri itiyor.",
+    "visual": "extreme close-up of a cotton swab entering a human ear canal",
+    "stock_query": "ear cotton swab",
+    "source": "stock",
+    "callout": "KİRİ İÇERİ İTER"
+   },
+   {
+    "text": "Peki kir oradan nasıl çıkacak?",
+    "visual": "close-up of a human ear in profile",
+    "stock_query": "ear close up",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kulak doktorlarının kuralı şu: kulağına dirseğinden küçük hiçbir şey sokma.",
+    "visual": "a doctor examining a patient's ear with an otoscope",
+    "stock_query": "doctor ear exam",
+    "source": "stock",
+    "callout": "DİRSEKTEN KÜÇÜK OLMAZ"
+   },
+   {
+    "text": "Çünkü kulak kendini temizler: kanalın derisi kiri yürüyen bant gibi dışarı taşır, çene hareketleri de iter.",
+    "visual": "close-up of a man chewing gum, his jaw moving",
+    "stock_query": "man chewing gum",
+    "source": "stock",
+    "callout": "KULAK KENDİNİ TEMİZLER",
+    "subject": [
+     "chewing"
+    ]
+   },
+   {
+    "text": "Kir zaten kulağını koruyor; çubuğu bırak, çünkü...",
+    "visual": "a hand putting cotton swabs back into their box",
+    "stock_query": "cotton swabs",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "cotton"
+    ]
+   }
+  ],
+  "description": "Pamuklu çubuk kulağı temizlemez, kiri kanalın daha derinine itebilir. Amerikan Kulak Burun Boğaz Akademisi'nin rehberine göre kulak kendini temizler: kanalın derisi kiri dışarı doğru taşır, çiğneme ve çene hareketleri de yardım eder. Kulak kiri kulağı korur; uzmanların kuralı, kulağa dirsekten küçük hiçbir şey sokmamak.",
+  "tags": [
+   "kulak",
+   "kulak kiri",
+   "pamuklu çubuk",
+   "kulak temizliği",
+   "kulak nasıl temizlenir",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen kulağını nasıl temizliyorsun: pamuklu çubukla mı, hiç dokunmadan mı?",
+  "en_title": "Cotton swabs don't clean your ears, they push wax deeper 👂",
+  "en_description": "Ear specialists' rule: never put anything smaller than your elbow in your ear. Your ears clean themselves: the skin of the ear canal slowly carries wax outward like a conveyor belt, and chewing and jaw movement help. Swabs mostly push the wax back in, and the wax itself protects your ears.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Kulak pamuklu çubukla temizlenir mi, kulak kiri nasıl temizlenir?\n\nAmerikan Kulak Burun Boğaz ve Baş Boyun Cerrahisi Akademisi Vakfı'nın 2017'de güncellediği klinik rehbere göre kulak kiri, kulağı temizleyen, koruyan ve nemlendiren normal bir salgı; çoğu insanda kulak kendi kendini temizler. Kulak kanalının derisi dışa doğru büyüyerek kiri kulak girişine taşır, çiğneme ve çene hareketleri de bu taşımaya yardım eder; kir orada kuruyup dökülür. Pamuklu çubuk ise kiri çoğu zaman kanalın derinine iter ve tıkanmaya yol açabilir. Rehberin kuralı: kulağına dirseğinden küçük hiçbir şey sokma; pamuklu çubuk, toka ve kürdan kulağa zarar verebilir.\n\nSen kulağını nasıl temizliyorsun: pamuklu çubukla mı, hiç dokunmadan mı?",
+  "hashtags": [
+   "#kulak",
+   "#kulakkiri",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kulak",
+   "kulak kiri",
+   "pamuklu çubuk",
+   "kulak çubuğu",
+   "kulak temizliği",
+   "kulak nasıl temizlenir",
+   "kulak kiri nasıl çıkar",
+   "kulak tıkanması",
+   "kulak kiri neden olur",
+   "kulak sağlığı",
+   "kulak burun boğaz",
+   "kbb",
+   "işitme",
+   "insan vücudu",
+   "vücudumuz",
+   "sağlık",
+   "sağlıklı yaşam",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "earwax",
+   "cotton swab"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Cotton swabs don't clean your ears, they push wax deeper 👂",
+    "description": "Ear specialists' rule: never put anything smaller than your elbow in your ear. Your ears clean themselves: the skin of the ear canal slowly carries wax outward like a conveyor belt, and chewing and jaw movement help. Swabs mostly push the wax back in, and the wax itself protects your ears."
+   },
+   "es": {
+    "title": "Los bastoncillos no limpian tus oídos, empujan la cera hacia dentro 👂",
+    "description": "La regla de los otorrinos: no metas en el oído nada más pequeño que tu codo. Los oídos se limpian solos: la piel del conducto lleva la cera hacia fuera como una cinta transportadora, y masticar y mover la mandíbula ayuda. El bastoncillo suele empujarla hacia dentro, y la cera protege el oído."
+   },
+   "pt": {
+    "title": "Cotonete não limpa o ouvido, empurra a cera para dentro 👂",
+    "description": "A regra dos otorrinos: não coloque no ouvido nada menor que o seu cotovelo. O ouvido se limpa sozinho: a pele do canal leva a cera para fora como uma esteira, e mastigar e mexer a mandíbula ajuda. O cotonete costuma empurrar a cera de volta, e a cera protege o ouvido."
+   },
+   "de": {
+    "title": "Wattestäbchen reinigen dein Ohr nicht, sie schieben das Schmalz tiefer 👂",
+    "description": "Die Regel der HNO-Ärzte: Steck nichts ins Ohr, was kleiner ist als dein Ellbogen. Ohren reinigen sich selbst: Die Haut des Gehörgangs schiebt das Ohrenschmalz wie ein Förderband nach außen, Kauen und Kieferbewegungen helfen dabei. Wattestäbchen drücken es meist zurück, dabei schützt das Schmalz dein Ohr."
+   },
+   "fr": {
+    "title": "Le coton-tige ne nettoie pas tes oreilles, il repousse le cérumen 👂",
+    "description": "La règle des ORL : ne mets rien de plus petit que ton coude dans ton oreille. L'oreille se nettoie toute seule : la peau du conduit pousse le cérumen vers l'extérieur comme un tapis roulant, aidée par la mastication et les mouvements de la mâchoire. Le coton-tige l'enfonce souvent, alors que le cérumen protège l'oreille."
+   },
+   "it": {
+    "title": "I cotton fioc non puliscono le orecchie, spingono il cerume più in fondo 👂",
+    "description": "La regola degli otorini: non mettere nell'orecchio niente di più piccolo del tuo gomito. Le orecchie si puliscono da sole: la pelle del condotto porta fuori il cerume come un nastro trasportatore, e masticare e muovere la mascella aiuta. Il cotton fioc spesso lo spinge dentro, e il cerume protegge l'orecchio."
+   },
+   "ru": {
+    "title": "Ватные палочки не чистят уши, а заталкивают серу глубже 👂",
+    "description": "Правило ЛОР-врачей: не засовывай в ухо ничего меньше своего локтя. Уши чистятся сами: кожа слухового прохода, как конвейер, выносит серу наружу, а жевание и движения челюсти помогают. Палочка чаще проталкивает серу внутрь, хотя сера защищает ухо."
+   },
+   "ar": {
+    "title": "أعواد القطن لا تنظف أذنك بل تدفع الشمع إلى الداخل 👂",
+    "description": "قاعدة أطباء الأنف والأذن: لا تُدخل في أذنك شيئًا أصغر من مرفقك. الأذن تنظف نفسها، فجلد قناة الأذن ينقل الشمع إلى الخارج كسير متحرك، والمضغ وحركة الفك يساعدان على ذلك. أما عود القطن فغالبًا يدفع الشمع إلى الداخل، مع أن الشمع يحمي الأذن."
+   },
+   "hi": {
+    "title": "कॉटन बड कान साफ़ नहीं करता, मैल को अंदर धकेलता है 👂",
+    "description": "कान-नाक-गला विशेषज्ञों का नियम: कान में अपनी कोहनी से छोटी कोई चीज़ न डालें। कान खुद को साफ़ करता है: कान की नली की त्वचा मैल को कन्वेयर बेल्ट की तरह बाहर ले जाती है, और चबाने व जबड़े की हरकत से मदद मिलती है। कॉटन बड अक्सर मैल को अंदर धकेल देता है, जबकि मैल कान की रक्षा करता है।"
+   },
+   "id": {
+    "title": "Cotton bud tidak membersihkan telinga, malah mendorong kotoran ke dalam 👂",
+    "description": "Aturan dokter THT: jangan masukkan apa pun yang lebih kecil dari sikumu ke telinga. Telinga membersihkan dirinya sendiri: kulit liang telinga membawa kotoran keluar seperti ban berjalan, dibantu gerakan mengunyah dan rahang. Cotton bud justru sering mendorongnya masuk, padahal kotoran telinga melindungi telinga."
+   },
+   "ja": {
+    "title": "綿棒は耳をきれいにせず、耳あかを奥へ押し込む 👂",
+    "description": "耳鼻科医のルールは「ひじより小さいものを耳に入れない」。耳は自分で掃除をしています。外耳道の皮膚がベルトコンベアのように耳あかを外へ運び、かんだりあごを動かしたりするとそれを助けます。綿棒はむしろ耳あかを奥へ押し込みがちで、耳あか自体は耳を守っています。"
+   },
+   "ko": {
+    "title": "면봉은 귀를 청소하지 않고 귀지를 더 깊이 밀어 넣는다 👂",
+    "description": "이비인후과 의사들의 규칙: 팔꿈치보다 작은 것은 귀에 넣지 마세요. 귀는 스스로 청소합니다. 귓구멍 피부가 컨베이어 벨트처럼 귀지를 바깥으로 옮기고, 씹는 동작과 턱 움직임이 이를 돕습니다. 면봉은 오히려 귀지를 안으로 밀어 넣기 쉽고, 귀지는 귀를 보호합니다."
+   },
+   "pl": {
+    "title": "Patyczki nie czyszczą uszu, tylko wpychają woskowinę głębiej 👂",
+    "description": "Zasada laryngologów: nie wkładaj do ucha niczego mniejszego niż twój łokieć. Uszy czyszczą się same: skóra przewodu słuchowego przesuwa woskowinę na zewnątrz jak taśmociąg, a żucie i ruchy szczęki w tym pomagają. Patyczek zwykle wpycha ją z powrotem, a woskowina chroni ucho."
+   },
+   "nl": {
+    "title": "Wattenstaafjes maken je oren niet schoon, ze duwen het oorsmeer dieper 👂",
+    "description": "De regel van kno-artsen: stop niets in je oor dat kleiner is dan je elleboog. Oren maken zichzelf schoon: de huid van de gehoorgang voert oorsmeer als een lopende band naar buiten, en kauwen en kaakbewegingen helpen mee. Een wattenstaafje duwt het vaak terug, terwijl oorsmeer je oor beschermt."
+   },
+   "uk": {
+    "title": "Ватні палички не чистять вуха, а заштовхують сірку глибше 👂",
+    "description": "Правило ЛОР-лікарів: не засовуй у вухо нічого меншого за свій лікоть. Вуха чистяться самі: шкіра слухового проходу, мов конвеєр, виносить сірку назовні, а жування й рухи щелепи допомагають. Паличка частіше проштовхує сірку всередину, хоча сірка захищає вухо."
+   },
+   "vi": {
+    "title": "Tăm bông không làm sạch tai mà đẩy ráy tai vào sâu hơn 👂",
+    "description": "Quy tắc của bác sĩ tai mũi họng: đừng đưa vào tai thứ gì nhỏ hơn khuỷu tay của bạn. Tai tự làm sạch: lớp da ống tai đưa ráy tai ra ngoài như băng chuyền, và việc nhai, cử động hàm cũng giúp sức. Tăm bông thường đẩy ráy tai vào trong, trong khi ráy tai lại bảo vệ tai."
+   },
+   "az": {
+    "title": "Qulaq çöpü qulağı təmizləmir, kiri içəri itələyir 👂",
+    "description": "LOR həkimlərinin qaydası: qulağına dirsəyindən kiçik heç nə salma. Qulaq özünü təmizləyir: qulaq kanalının dərisi kiri konveyer kimi çölə daşıyır, çeynəmək və çənə hərəkətləri də kömək edir. Qulaq çöpü isə çox vaxt kiri içəri itələyir, halbuki qulaq kiri qulağı qoruyur."
+   },
+   "ro": {
+    "title": "Bețișoarele nu-ți curăță urechile, ci împing ceara mai adânc 👂",
+    "description": "Regula medicilor ORL: nu-ți băga în ureche nimic mai mic decât cotul. Urechile se curăță singure: pielea canalului duce ceara spre exterior ca o bandă rulantă, iar mestecatul și mișcările maxilarului ajută. Bețișorul o împinge de obicei înapoi, deși ceara îți protejează urechea."
+   }
+  }
+ }
+}

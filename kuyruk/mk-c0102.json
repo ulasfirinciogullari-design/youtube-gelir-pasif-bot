@@ -1,0 +1,178 @@
+{
+ "id": "mk-c0102",
+ "topic": "Kediler nankör mü, kediler sahibine bağlanır mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat face close up",
+ "script": {
+  "title": "Kediler nankör değil, sahibine bebek gibi bağlanır 🐱",
+  "hook_text": "KEDİLER NANKÖR MÜ?",
+  "scenes": [
+   {
+    "text": "Bu kedi nankör değil, sana bebek gibi bağlı.",
+    "visual": "close-up of a cat's face looking up lovingly into the camera",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": "BEBEK GİBİ BAĞLI"
+   },
+   {
+    "text": "Bir deneyde yavrular sahibiyle yabancı bir odaya girdi; sahibi iki dakika çıkıp döndü.",
+    "visual": "a small kitten exploring an unfamiliar room, sniffing around",
+    "stock_query": "kitten exploring",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "kitten"
+    ]
+   },
+   {
+    "text": "Yüzde altmış dördü güvenli bağlıydı; insan bebeklerinde bu oran yüzde altmış beş.",
+    "visual": "a human baby crawling happily toward its mother",
+    "stock_query": "baby crawling",
+    "source": "stock",
+    "callout": "%64 GÜVENLİ BAĞLI",
+    "subject": [
+     "baby"
+    ]
+   },
+   {
+    "text": "Çünkü sen onun güvenli limanısın: stres anında sana bakıp sakinleşir, sonra keşfe döner.",
+    "visual": "a cat rubbing against its owner's legs, then walking off to explore",
+    "stock_query": "cat owner",
+    "source": "stock",
+    "callout": "GÜVENLİ LİMAN"
+   },
+   {
+    "text": "Eve dönünce seni karşılayan kediye iyi bak:",
+    "visual": "a cat waiting at the front door as its owner comes home",
+    "stock_query": "cat door",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kediler nankör değil; araştırmalara göre sahiplerine insan bebekleri gibi bağlanıyor. Oregon Eyalet Üniversitesi'nin 2019'daki deneyinde yavru kedilerin yüzde 64'ü sahibine güvenli bağlıydı; insan bebeklerinde bu oran yaklaşık yüzde 65. Güvenli bağlı kedi, stres anında sahibini güvenli liman olarak kullanıp sakinleşiyor ve keşfe devam ediyor.",
+  "tags": [
+   "kedi",
+   "kediler",
+   "kediler nankör mü",
+   "kedi sahibi",
+   "kedi davranışları",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin kedin sen eve gelince ne yapıyor: kapıda mı karşılıyor, umursamıyor mu?",
+  "en_title": "Cats aren't ungrateful, they bond to you like babies 🐱",
+  "en_description": "In a 2019 Oregon State University study, kittens spent two minutes in a new room with their owner, two minutes alone, then were reunited. 64% were securely attached, almost the same rate as human babies (about 65%). A securely attached cat uses you as its safe base: it calms down with you, then goes back to exploring.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediler nankör mü, kediler sahibine bağlanır mı?\n\nOregon Eyalet Üniversitesi'nden Kristyn Vitale ve ekibinin 2019'da Current Biology dergisinde yayımladığı çalışmada yavru kediler, insan bebekleri ve köpekler için kullanılan 'güvenli üs' testine alındı: kedi sahibiyle yabancı bir odada iki dakika geçirdi, sonra iki dakika yalnız kaldı, ardından sahibi geri döndü. Sınıflandırılabilen 70 yavrunun yüzde 64,3'ü güvenli, yüzde 35,7'si güvensiz bağlıydı; insan bebeklerinde güvenli bağlanma oranı yaklaşık yüzde 65. Güvenli bağlı kediler sahibi dönünce daha az stres gösterdi, ilgilerini sahipleriyle odayı keşfetmek arasında dengeledi. Bir yaşından büyük 38 kedide de oran neredeyse aynıydı: yüzde 65,8. Vitale'ye göre kedin, stresliyken güvende hissetmek için sana güveniyor.\n\nSenin kedin sen eve gelince ne yapıyor: kapıda mı karşılıyor, umursamıyor mu?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi",
+   "kediler",
+   "kediler nankör mü",
+   "kedi nankör mü",
+   "kedi sahibini sever mi",
+   "kedi sahibine bağlanır mı",
+   "kedi sevgisi",
+   "kedi davranışları",
+   "kedi psikolojisi",
+   "kedi sahibi",
+   "yavru kedi",
+   "kedi bakımı",
+   "güvenli bağlanma",
+   "evcil hayvan",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat attachment",
+   "cats love owners"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Cats aren't ungrateful, they bond to you like babies 🐱",
+    "description": "In a 2019 Oregon State University study, kittens spent two minutes in a new room with their owner, two minutes alone, then were reunited. 64% were securely attached, almost the same rate as human babies (about 65%). A securely attached cat uses you as its safe base: it calms down with you, then goes back to exploring."
+   },
+   "es": {
+    "title": "Los gatos no son desagradecidos: se apegan a ti como un bebé 🐱",
+    "description": "En un estudio de 2019 de la Universidad Estatal de Oregón, gatitos pasaron dos minutos en una sala nueva con su dueño, dos minutos solos y luego se reencontraron. El 64 % tenía un apego seguro, casi igual que los bebés humanos (alrededor del 65 %). Un gato con apego seguro te usa como base segura: se calma contigo y vuelve a explorar."
+   },
+   "pt": {
+    "title": "Gatos não são ingratos, eles se apegam a você como bebês 🐱",
+    "description": "Num estudo de 2019 da Universidade Estadual do Oregon, filhotes passaram dois minutos numa sala nova com o dono, dois minutos sozinhos e depois o reencontraram. 64% tinham apego seguro, quase a mesma taxa dos bebês humanos (cerca de 65%). Um gato com apego seguro usa você como porto seguro: se acalma ao seu lado e volta a explorar."
+   },
+   "de": {
+    "title": "Katzen sind nicht undankbar, sie binden sich an dich wie Babys 🐱",
+    "description": "In einer Studie der Oregon State University von 2019 verbrachten Kätzchen zwei Minuten mit ihrem Menschen in einem fremden Raum, zwei Minuten allein und wurden dann wieder zusammengeführt. 64 % waren sicher gebunden, fast genauso viele wie bei Babys (etwa 65 %). Eine sicher gebundene Katze nutzt dich als sichere Basis: Sie beruhigt sich bei dir und erkundet dann weiter."
+   },
+   "fr": {
+    "title": "Les chats ne sont pas ingrats, ils s'attachent à toi comme des bébés 🐱",
+    "description": "Dans une étude de 2019 de l'université d'État de l'Oregon, des chatons ont passé deux minutes dans une pièce inconnue avec leur maître, deux minutes seuls, puis l'ont retrouvé. 64 % présentaient un attachement sécure, presque autant que les bébés humains (environ 65 %). Un chat attaché de façon sécure se sert de toi comme base sûre : il se calme près de toi, puis repart explorer."
+   },
+   "it": {
+    "title": "I gatti non sono ingrati, si legano a te come i neonati 🐱",
+    "description": "In uno studio del 2019 della Oregon State University, alcuni gattini hanno passato due minuti in una stanza nuova con il padrone, due minuti da soli e poi lo hanno ritrovato. Il 64% mostrava un attaccamento sicuro, quasi come i neonati umani (circa il 65%). Un gatto con attaccamento sicuro ti usa come base sicura: si calma con te e poi torna a esplorare."
+   },
+   "ru": {
+    "title": "Кошки не неблагодарные: они привязываются к тебе, как младенцы 🐱",
+    "description": "В исследовании Университета штата Орегон 2019 года котята провели две минуты с хозяином в незнакомой комнате, две минуты одни, а потом встретились с ним снова. У 64% была надёжная привязанность, почти как у человеческих младенцев (около 65%). Надёжно привязанная кошка использует тебя как безопасную базу: успокаивается рядом и снова идёт исследовать."
+   },
+   "ar": {
+    "title": "القطط ليست ناكرة للجميل، بل تتعلق بك كالأطفال الرضّع 🐱",
+    "description": "في دراسة لجامعة ولاية أوريغون عام 2019، أمضت قطط صغيرة دقيقتين مع صاحبها في غرفة جديدة، ثم دقيقتين وحدها، ثم عاد إليها. كان 64% منها متعلقًا تعلقًا آمنًا، وهي نسبة تقارب ما لدى الرضّع من البشر (نحو 65%). القطة المتعلقة تعلقًا آمنًا تتخذك قاعدة أمان: تهدأ قربك ثم تعود للاستكشاف."
+   },
+   "hi": {
+    "title": "बिल्लियाँ एहसानफ़रामोश नहीं, वे बच्चों की तरह आपसे जुड़ती हैं 🐱",
+    "description": "2019 में ओरेगन स्टेट यूनिवर्सिटी के एक अध्ययन में बिल्ली के बच्चों ने दो मिनट अपने मालिक के साथ एक नए कमरे में बिताए, दो मिनट अकेले, फिर मालिक लौट आया। 64% में सुरक्षित लगाव दिखा, लगभग इंसानी शिशुओं जितना (करीब 65%)। सुरक्षित लगाव वाली बिल्ली आपको अपना सुरक्षित ठिकाना मानती है: आपके पास शांत होती है और फिर खोजबीन में लौट जाती है।"
+   },
+   "id": {
+    "title": "Kucing bukan tak tahu terima kasih, mereka terikat padamu seperti bayi 🐱",
+    "description": "Dalam studi Oregon State University tahun 2019, anak kucing menghabiskan dua menit bersama pemiliknya di ruangan baru, dua menit sendirian, lalu bertemu lagi. Sebanyak 64% memiliki keterikatan aman, hampir sama dengan bayi manusia (sekitar 65%). Kucing yang terikat dengan aman menjadikanmu tempat aman: ia tenang di dekatmu lalu kembali menjelajah."
+   },
+   "ja": {
+    "title": "猫は恩知らずじゃない。赤ちゃんのようにあなたに愛着を持つ 🐱",
+    "description": "2019年のオレゴン州立大学の研究で、子猫は見知らぬ部屋で飼い主と2分、ひとりで2分過ごし、その後飼い主と再会しました。64％が安定した愛着を示し、人間の赤ちゃん（約65％）とほぼ同じ割合でした。安定した愛着を持つ猫は、あなたを安全基地にして落ち着き、また探検に戻っていきます。"
+   },
+   "ko": {
+    "title": "고양이는 배은망덕하지 않다, 아기처럼 당신에게 애착한다 🐱",
+    "description": "2019년 오리건 주립대 연구에서 새끼 고양이들은 낯선 방에서 주인과 2분, 혼자 2분을 보낸 뒤 주인과 다시 만났습니다. 64%가 안정 애착을 보였는데, 사람 아기(약 65%)와 거의 같은 비율입니다. 안정 애착 고양이는 당신을 안전기지로 삼아 곁에서 진정한 뒤 다시 탐험에 나섭니다."
+   },
+   "pl": {
+    "title": "Koty nie są niewdzięczne, przywiązują się do ciebie jak niemowlęta 🐱",
+    "description": "W badaniu Oregon State University z 2019 roku kocięta spędziły dwie minuty z opiekunem w nowym pokoju, dwie minuty same, a potem znów się z nim spotkały. 64% wykazało bezpieczne przywiązanie, prawie tyle samo co ludzkie niemowlęta (około 65%). Bezpiecznie przywiązany kot traktuje cię jak bezpieczną bazę: uspokaja się przy tobie i wraca do zwiedzania."
+   },
+   "nl": {
+    "title": "Katten zijn niet ondankbaar, ze hechten zich aan je als baby's 🐱",
+    "description": "In een studie van Oregon State University uit 2019 brachten kittens twee minuten met hun baasje in een onbekende kamer door, twee minuten alleen en werden dan herenigd. 64% was veilig gehecht, bijna net zoveel als bij mensenbaby's (ongeveer 65%). Een veilig gehechte kat gebruikt jou als veilige basis: hij kalmeert bij je en gaat dan weer op verkenning."
+   },
+   "uk": {
+    "title": "Коти не невдячні: вони прив'язуються до тебе, як немовлята 🐱",
+    "description": "У дослідженні Університету штату Орегон 2019 року кошенята провели дві хвилини з господарем у незнайомій кімнаті, дві хвилини наодинці, а потім знову зустрілися з ним. У 64% була надійна прив'язаність, майже як у людських немовлят (близько 65%). Надійно прив'язаний кіт використовує тебе як безпечну базу: заспокоюється поруч і знову йде досліджувати."
+   },
+   "vi": {
+    "title": "Mèo không vô ơn, chúng gắn bó với bạn như em bé 🐱",
+    "description": "Trong nghiên cứu năm 2019 của Đại học Bang Oregon, mèo con ở cùng chủ hai phút trong một căn phòng lạ, ở một mình hai phút rồi gặp lại chủ. 64% có kiểu gắn bó an toàn, gần bằng tỉ lệ ở trẻ sơ sinh (khoảng 65%). Mèo gắn bó an toàn coi bạn là chốn an toàn: bình tĩnh lại bên bạn rồi tiếp tục khám phá."
+   },
+   "az": {
+    "title": "Pişiklər nankor deyil, sənə körpə kimi bağlanır 🐱",
+    "description": "Oreqon Ştat Universitetinin 2019-cu il araşdırmasında pişik balaları yad otaqda sahibi ilə iki dəqiqə, tək iki dəqiqə qaldı, sonra sahibi geri qayıtdı. Onların 64%-i etibarlı bağlılıq göstərdi, bu, insan körpələrindəki göstəriciyə (təxminən 65%) çox yaxındır. Etibarlı bağlı pişik səni təhlükəsiz sığınacaq kimi görür: yanında sakitləşir, sonra yenidən kəşfə çıxır."
+   },
+   "ro": {
+    "title": "Pisicile nu sunt nerecunoscătoare, se atașează de tine ca bebelușii 🐱",
+    "description": "Într-un studiu din 2019 al Universității de Stat din Oregon, pisoii au stat două minute cu stăpânul într-o cameră nouă, două minute singuri, apoi l-au revăzut. 64% aveau un atașament sigur, aproape la fel ca bebelușii (circa 65%). O pisică atașată sigur te folosește ca bază sigură: se liniștește lângă tine, apoi pleacă din nou să exploreze."
+   }
+  }
+ }
+}

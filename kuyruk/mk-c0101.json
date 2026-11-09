@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0101",
+ "topic": "Konuştuğun kişi değişse fark eder misin, değişim körlüğü nedir?",
+ "kategori": "psikoloji",
+ "subject": [
+  "man"
+ ],
+ "stock_hint": "man talking face",
+ "script": {
+  "title": "Konuştuğun kişi değişse fark etmeyebilirsin 🚪",
+  "hook_text": "KARŞINDAKİ DEĞİŞSE FARK EDER MİSİN?",
+  "scenes": [
+   {
+    "text": "Bu adam konuşurken değişti; yarıdan fazlası görmedi.",
+    "visual": "close-up of a man's face talking and gesturing, as if asking for directions on a street",
+    "stock_query": "man talking face",
+    "source": "stock",
+    "callout": "YARIDAN FAZLASI GÖRMEDİ"
+   },
+   {
+    "text": "Bin dokuz yüz doksan sekizdeki bir deneyde, yol sorarken aralarından kapı taşıyan iki kişi geçti.",
+    "visual": "two workers carrying a large wooden door across a street",
+    "stock_query": "carrying door",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "door"
+    ]
+   },
+   {
+    "text": "Kapının arkasında soran kişi başkasıyla yer değiştirdi; kıyafeti, boyu, sesi bile farklıydı.",
+    "visual": "close-up of a different man's face, in other clothes, talking",
+    "stock_query": "man portrait",
+    "source": "stock",
+    "callout": "SESİ BİLE FARKLI"
+   },
+   {
+    "text": "Çünkü beyin her ayrıntıyı saklamaz; karşısındakini 'yol soran biri' diye özetler.",
+    "visual": "a glowing 3D human brain slowly rotating",
+    "stock_query": "human brain",
+    "source": "stock",
+    "callout": "BEYİN ÖZETLER",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Bir sonraki sohbette karşındakine iyi bak; çünkü...",
+    "visual": "two people having a conversation on a city sidewalk",
+    "stock_query": "people talking street",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "people"
+    ]
+   }
+  ],
+  "description": "Konuştuğun kişi gözünün önünde değişse bile fark etmeyebilirsin. 1998'deki bir deneyde yol soran kişi, aralarından kapı taşınırken başkasıyla yer değiştirdi; kıyafeti, boyu ve sesi farklı olmasına rağmen yoldan geçenlerin yarıdan fazlası değişimi görmedi. Buna değişim körlüğü deniyor: beyin her ayrıntıyı saklamak yerine sahnenin özetini tutuyor.",
+  "tags": [
+   "değişim körlüğü",
+   "dikkat",
+   "algı",
+   "beyin",
+   "psikoloji",
+   "insan psikolojisi",
+   "psikolojik deney",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence sen fark eder miydin: evet mi, hayır mı?",
+  "en_title": "If the person you're talking to changed, you might not notice 🚪",
+  "en_description": "In a 1998 experiment, a stranger asked passers-by for directions. Mid-conversation, two people carried a door between them, and behind it the stranger swapped places with someone else, with different clothes, height and voice. More than half the passers-by never noticed. The brain keeps a summary like 'someone asking for directions', not every detail.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Konuştuğun kişi değişse fark eder misin, değişim körlüğü nedir?\n\nDaniel Simons ve Daniel Levin'in 1998'de Psychonomic Bulletin & Review dergisinde yayımladığı deneyde, Cornell Üniversitesi kampüsünde haritalı bir araştırmacı yoldan geçenlere yol sordu. Konuşma sürerken iki kişi aralarından büyük bir kapı taşıyarak geçti ve kapının arkasında araştırmacı başka biriyle yer değiştirdi. Yeni kişinin kıyafeti farklıydı, boyu yaklaşık beş santim farklıydı ve sesi açıkça ayırt edilebiliyordu; yine de 15 kişiden yalnızca 7'si değişimi fark etti. Bu olguya değişim körlüğü deniyor: araştırmacılara göre beyin karşısındakinin her ayrıntısını kaydetmiyor, 'yol soran biri' gibi bir özetle yetiniyor. Aynı ekibin sonraki gerçek hayat deneylerinde de yoldan geçenlerin ancak yarısı değişimi fark etti.\n\nSence sen fark eder miydin: evet mi, hayır mı?",
+  "hashtags": [
+   "#psikoloji",
+   "#dikkat",
+   "#beyin",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "değişim körlüğü",
+   "kapı deneyi",
+   "konuştuğun kişi değişse",
+   "fark edememek",
+   "dikkat",
+   "dikkat yanılgısı",
+   "algı",
+   "görsel algı",
+   "beyin",
+   "beyin nasıl çalışır",
+   "beyin bizi kandırıyor",
+   "hafıza",
+   "psikoloji",
+   "insan psikolojisi",
+   "sosyal psikoloji",
+   "psikolojik deney",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "change blindness",
+   "door study"
+  ],
+  "localizations": {
+   "en": {
+    "title": "If the person you're talking to changed, you might not notice 🚪",
+    "description": "In a 1998 experiment, a stranger asked passers-by for directions. Mid-conversation, two people carried a door between them, and behind it the stranger swapped places with someone else, with different clothes, height and voice. More than half the passers-by never noticed. The brain keeps a summary like 'someone asking for directions', not every detail."
+   },
+   "es": {
+    "title": "Si la persona con la que hablas cambiara, quizá no lo notarías 🚪",
+    "description": "En un experimento de 1998, un desconocido pedía indicaciones a los transeúntes. A mitad de la charla, dos personas pasaban entre ellos con una puerta y, detrás, el desconocido se cambiaba por otro con distinta ropa, altura y voz. Más de la mitad no se dio cuenta. El cerebro guarda un resumen, 'alguien que pregunta una dirección', no cada detalle."
+   },
+   "pt": {
+    "title": "Se a pessoa com quem você fala mudasse, talvez nem notasse 🚪",
+    "description": "Num experimento de 1998, um desconhecido pedia informações a quem passava. No meio da conversa, duas pessoas passavam entre eles carregando uma porta e, atrás dela, o desconhecido trocava de lugar com outro, de roupa, altura e voz diferentes. Mais da metade não percebeu. O cérebro guarda um resumo, 'alguém pedindo informação', e não cada detalhe."
+   },
+   "de": {
+    "title": "Würde dein Gesprächspartner ausgetauscht, merkst du es vielleicht nicht 🚪",
+    "description": "In einem Experiment von 1998 fragte ein Fremder Passanten nach dem Weg. Mitten im Gespräch trugen zwei Leute eine Tür zwischen ihnen hindurch, und dahinter tauschte der Fremde mit jemand anderem, mit anderer Kleidung, Größe und Stimme. Mehr als die Hälfte bemerkte es nicht. Das Gehirn speichert eine Zusammenfassung wie „jemand fragt nach dem Weg“, nicht jedes Detail."
+   },
+   "fr": {
+    "title": "Si ton interlocuteur changeait, tu pourrais ne rien remarquer 🚪",
+    "description": "Dans une expérience de 1998, un inconnu demandait son chemin à des passants. En pleine conversation, deux personnes passaient entre eux avec une porte et, derrière, l'inconnu était remplacé par quelqu'un d'autre, aux vêtements, à la taille et à la voix différents. Plus de la moitié n'ont rien vu. Le cerveau garde un résumé, « quelqu'un qui demande son chemin », pas chaque détail."
+   },
+   "it": {
+    "title": "Se la persona con cui parli cambiasse, potresti non accorgertene 🚪",
+    "description": "In un esperimento del 1998 uno sconosciuto chiedeva indicazioni ai passanti. A metà conversazione, due persone passavano tra loro con una porta e, dietro, lo sconosciuto veniva sostituito da un altro, con abiti, altezza e voce diversi. Più della metà non se ne accorse. Il cervello conserva un riassunto, 'qualcuno che chiede la strada', non ogni dettaglio."
+   },
+   "ru": {
+    "title": "Если твоего собеседника подменят, ты можешь этого не заметить 🚪",
+    "description": "В эксперименте 1998 года незнакомец спрашивал у прохожих дорогу. Посреди разговора между ними проносили дверь, и за ней незнакомца подменяли другим человеком с другой одеждой, ростом и голосом. Больше половины прохожих ничего не заметили. Мозг хранит краткую сводку вроде «кто-то спрашивает дорогу», а не каждую деталь."
+   },
+   "ar": {
+    "title": "لو تبدّل الشخص الذي تحادثه فقد لا تلاحظ ذلك 🚪",
+    "description": "في تجربة عام 1998 كان شخص غريب يسأل المارة عن الطريق. وفي منتصف الحديث مرّ شخصان بينهما يحملان بابًا، وخلفه حلّ محلّ الغريب شخص آخر بملابس وطول وصوت مختلفة. أكثر من نصف المارة لم يلاحظوا. فالدماغ يحتفظ بملخص مثل «شخص يسأل عن الطريق» لا بكل التفاصيل."
+   },
+   "hi": {
+    "title": "जिससे आप बात कर रहे हैं वह बदल जाए, तो शायद पता भी न चले 🚪",
+    "description": "1998 के एक प्रयोग में एक अजनबी राहगीरों से रास्ता पूछ रहा था। बातचीत के बीच दो लोग उनके बीच से एक दरवाज़ा लेकर निकले, और उसकी आड़ में अजनबी की जगह दूसरा आदमी आ गया, जिसके कपड़े, कद और आवाज़ अलग थे। आधे से ज़्यादा लोगों ने ध्यान नहीं दिया। दिमाग़ हर ब्योरा नहीं, बस 'कोई रास्ता पूछ रहा है' जैसा सार याद रखता है।"
+   },
+   "id": {
+    "title": "Kalau lawan bicaramu diganti, kamu mungkin tak menyadarinya 🚪",
+    "description": "Dalam eksperimen tahun 1998, seorang asing menanyakan arah kepada pejalan kaki. Di tengah obrolan, dua orang lewat di antara mereka membawa pintu, dan di baliknya orang asing itu bertukar tempat dengan orang lain yang pakaian, tinggi, dan suaranya berbeda. Lebih dari separuh tidak sadar. Otak menyimpan ringkasan seperti 'orang yang tanya jalan', bukan setiap detail."
+   },
+   "ja": {
+    "title": "話し相手が入れ替わっても、気づかないかもしれない 🚪",
+    "description": "1998年の実験で、見知らぬ人が通行人に道をたずねました。会話の途中で二人がドアを運んで間を通り抜け、その陰で道をたずねていた人が、服も背丈も声も違う別人と入れ替わりました。半数以上の通行人は気づきませんでした。脳は細部ではなく「道をたずねる人」という要約だけを覚えているのです。"
+   },
+   "ko": {
+    "title": "대화 상대가 바뀌어도 눈치채지 못할 수 있다 🚪",
+    "description": "1998년 실험에서 낯선 사람이 행인에게 길을 물었습니다. 대화 도중 두 사람이 문짝을 들고 그 사이를 지나갔고, 문 뒤에서 길을 묻던 사람이 옷과 키, 목소리가 다른 사람으로 바뀌었습니다. 행인의 절반 이상이 알아채지 못했습니다. 뇌는 모든 세부가 아니라 '길을 묻는 사람' 같은 요약만 저장합니다."
+   },
+   "pl": {
+    "title": "Gdyby twój rozmówca się zmienił, możesz tego nie zauważyć 🚪",
+    "description": "W eksperymencie z 1998 roku nieznajomy pytał przechodniów o drogę. W trakcie rozmowy dwie osoby przeniosły między nimi drzwi, a za nimi nieznajomego zastąpił ktoś inny, w innym ubraniu, innego wzrostu i z innym głosem. Ponad połowa niczego nie zauważyła. Mózg zapisuje streszczenie w stylu „ktoś pyta o drogę”, a nie każdy szczegół."
+   },
+   "nl": {
+    "title": "Als je gesprekspartner werd verwisseld, merk je het misschien niet 🚪",
+    "description": "In een experiment uit 1998 vroeg een onbekende voorbijgangers de weg. Midden in het gesprek droegen twee mensen een deur tussen hen door, en daarachter werd de onbekende vervangen door iemand met andere kleren, een andere lengte en stem. Meer dan de helft merkte niets. Je brein onthoudt een samenvatting als 'iemand die de weg vraagt', niet elk detail."
+   },
+   "uk": {
+    "title": "Якщо твого співрозмовника підмінять, ти можеш цього не помітити 🚪",
+    "description": "В експерименті 1998 року незнайомець питав у перехожих дорогу. Посеред розмови між ними пронесли двері, і за ними незнайомця замінили іншою людиною з іншим одягом, зростом і голосом. Понад половина перехожих нічого не помітила. Мозок зберігає короткий підсумок на кшталт «хтось питає дорогу», а не кожну деталь."
+   },
+   "vi": {
+    "title": "Nếu người đang nói chuyện với bạn bị đổi, có thể bạn chẳng nhận ra 🚪",
+    "description": "Trong một thí nghiệm năm 1998, một người lạ hỏi đường người qua lại. Giữa cuộc trò chuyện, hai người khiêng một cánh cửa đi ngang qua, và phía sau cánh cửa người hỏi đường được thay bằng người khác, khác quần áo, chiều cao và giọng nói. Hơn một nửa không hề nhận ra. Não chỉ giữ một bản tóm tắt kiểu 'ai đó đang hỏi đường', không phải mọi chi tiết."
+   },
+   "az": {
+    "title": "Danışdığın adam dəyişsə, bunu hiss etməyə bilərsən 🚪",
+    "description": "1998-ci il təcrübəsində bir yad adam yoldan keçənlərdən ünvan soruşurdu. Söhbətin ortasında iki nəfər aralarından qapı daşıyaraq keçdi və qapının arxasında ünvan soruşan adam paltarı, boyu və səsi fərqli başqa biri ilə əvəz olundu. Yoldan keçənlərin yarısından çoxu bunu görmədi. Beyin hər detalı deyil, 'yol soruşan biri' kimi qısa xülasəni yadda saxlayır."
+   },
+   "ro": {
+    "title": "Dacă omul cu care vorbești ar fi înlocuit, poate n-ai observa 🚪",
+    "description": "Într-un experiment din 1998, un necunoscut le cerea trecătorilor indicații. În mijlocul discuției, două persoane treceau printre ei cu o ușă, iar în spatele ei necunoscutul era înlocuit cu altcineva, cu alte haine, altă înălțime și altă voce. Mai mult de jumătate n-au observat. Creierul păstrează un rezumat, „cineva care întreabă de drum”, nu fiecare detaliu."
+   }
+  }
+ }
+}

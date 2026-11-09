@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0097",
+ "topic": "Köpekler sahiplerine benzer mi, insanlar neden kendine benzeyen köpeği seçer?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog owner portrait",
+ "script": {
+  "title": "Köpekler sahiplerine gerçekten benziyor, sebebi sensin 🐶",
+  "hook_text": "KÖPEKLER SAHİBİNE NEDEN BENZER?",
+  "scenes": [
+   {
+    "text": "Bu köpek sahibine benziyor, şaka değil.",
+    "visual": "close-up of a smiling woman cheek to cheek with her dog, both looking straight into the camera",
+    "stock_query": "dog owner portrait",
+    "source": "stock",
+    "callout": "SAHİBİNE BENZİYOR"
+   },
+   {
+    "text": "Bir deneyde insanlar, ayrı çekilmiş fotoğraflardan safkan köpeklerin çoğunu sahibiyle doğru eşleştirdi.",
+    "visual": "a man and his dog photographed side by side in a park",
+    "stock_query": "man dog park",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Japonya'daki bir deneyde sadece gözleri görmek yetti; sahibin gözleri kapanınca tahmin şansa düştü.",
+    "visual": "extreme close-up of a dog's eyes looking into the camera",
+    "stock_query": "dog eyes",
+    "source": "stock",
+    "callout": "SIR GÖZLERDE"
+   },
+   {
+    "text": "Çünkü köpek zamanla sana benzemiyor; benzerlik yıllarla artmadı, kendine benzeyeni sen seçiyorsun.",
+    "visual": "a woman lifting one puppy from a litter of purebred puppies and smiling at it",
+    "stock_query": "woman holding puppy",
+    "source": "stock",
+    "callout": "SEN SEÇİYORSUN"
+   },
+   {
+    "text": "Köpeğinle yan yana bir fotoğrafına bak; çünkü...",
+    "visual": "a dog and its owner posing together for a photo, both facing the camera",
+    "stock_query": "dog owner",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeklerin sahiplerine benzediği şaka değil, deneylerde ölçüldü. 2004'te ABD'de yapılan bir deneyde insanlar ayrı çekilmiş fotoğraflardan safkan köpeklerin çoğunu sahibiyle doğru eşleştirdi; Japonya'daki bir deneyde sadece gözleri görmek yetti. Benzerlik sahiplik süresiyle artmadığı için araştırmacılara göre insanlar kendine benzeyen köpeği seçiyor.",
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpek sahibi",
+   "köpekler sahibine benzer mi",
+   "evcil hayvan",
+   "hayvanlar",
+   "psikoloji",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence sen köpeğine benziyor musun: evet mi, hayır mı?",
+  "en_title": "Dogs really do look like their owners, and it's your doing 🐶",
+  "en_description": "In a 2004 study, people matched most purebred dogs to their owners from separate photos. In Japan, seeing just the eyes was enough, and covering the owner's eyes dropped accuracy to chance. The likeness didn't grow with years together: people pick dogs that resemble them.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler sahiplerine benzer mi, insanlar neden kendine benzeyen köpeği seçer?\n\nKaliforniya Üniversitesi San Diego'dan Michael Roy ve Nicholas Christenfeld'in 2004'te Psychological Science dergisinde yayımladığı deneyde köpekler ve sahipleri ayrı ayrı fotoğraflandı; jüri safkan köpeklerin 25'inden 16'sını sahibiyle doğru eşleştirdi, melez köpeklerde ise benzerlik bulunmadı. Benzerlik, köpeğin kaç yıldır o evde olduğuyla artmıyordu; araştırmacılara göre köpek zamanla sahibine benzemiyor, insanlar kendine benzeyeni seçiyor. Japonya'da Kwansei Gakuin Üniversitesi'nden Sadahiko Nakajima'nın 2013'teki çalışmasında 502 kişi tam fotoğraflarda yaklaşık yüzde 80 doğru eşleştirdi; yalnızca gözler görününce oran yüzde 74'tü, sahibin gözleri kapatılınca şans düzeyine indi.\n\nSence sen köpeğine benziyor musun: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek",
+   "köpekler",
+   "köpek sahibi",
+   "köpekler sahibine benzer mi",
+   "sahibine benzeyen köpek",
+   "köpek ve sahibi",
+   "köpek sahiplenmek",
+   "köpek cinsleri",
+   "safkan köpek",
+   "köpek psikolojisi",
+   "köpek gözleri",
+   "evcil hayvan",
+   "evcil hayvanlar",
+   "hayvanlar",
+   "hayvan davranışları",
+   "psikoloji",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "dogs look like owners",
+   "dog owner"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Dogs really do look like their owners, and it's your doing 🐶",
+    "description": "In a 2004 study, people matched most purebred dogs to their owners from separate photos. In Japan, seeing just the eyes was enough, and covering the owner's eyes dropped accuracy to chance. The likeness didn't grow with years together: people pick dogs that resemble them."
+   },
+   "es": {
+    "title": "Los perros sí se parecen a sus dueños, y es cosa tuya 🐶",
+    "description": "En un estudio de 2004, la gente emparejó a la mayoría de los perros de raza con sus dueños a partir de fotos separadas. En Japón bastó con ver solo los ojos, y al tapar los del dueño el acierto cayó al azar. El parecido no crecía con los años juntos: elegimos perros que se nos parecen."
+   },
+   "pt": {
+    "title": "Cães parecem mesmo com os donos, e a culpa é sua 🐶",
+    "description": "Num estudo de 2004, as pessoas ligaram a maioria dos cães de raça aos donos usando fotos separadas. No Japão, ver só os olhos bastou, e cobrir os olhos do dono derrubou o acerto ao nível do acaso. A semelhança não aumentava com os anos juntos: escolhemos cães parecidos conosco."
+   },
+   "de": {
+    "title": "Hunde sehen ihren Haltern wirklich ähnlich, und das liegt an dir 🐶",
+    "description": "In einer Studie von 2004 ordneten Menschen die meisten Rassehunde anhand getrennter Fotos richtig ihren Haltern zu. In Japan reichten schon die Augen; deckte man die Augen der Halter ab, sank die Trefferquote auf Zufallsniveau. Die Ähnlichkeit wuchs nicht mit den gemeinsamen Jahren: Wir wählen Hunde, die uns ähneln."
+   },
+   "fr": {
+    "title": "Les chiens ressemblent vraiment à leur maître, et c'est grâce à toi 🐶",
+    "description": "Dans une étude de 2004, des gens ont associé la plupart des chiens de race à leur maître à partir de photos séparées. Au Japon, voir seulement les yeux suffisait, et en cachant ceux du maître, on tombait au hasard. La ressemblance n'augmentait pas avec les années : on choisit un chien qui nous ressemble."
+   },
+   "it": {
+    "title": "I cani somigliano davvero ai padroni, e il merito è tuo 🐶",
+    "description": "In uno studio del 2004 le persone hanno abbinato la maggior parte dei cani di razza ai loro padroni da foto separate. In Giappone bastavano gli occhi, e coprendo quelli del padrone si scendeva al caso. La somiglianza non cresceva con gli anni insieme: scegliamo cani che ci somigliano."
+   },
+   "ru": {
+    "title": "Собаки и правда похожи на хозяев, и дело в тебе 🐶",
+    "description": "В исследовании 2004 года люди по отдельным фотографиям верно сопоставили большинство породистых собак с их хозяевами. В Японии хватило одних глаз, а если глаза хозяина закрывали, точность падала до случайной. Сходство не росло с годами: люди сами выбирают похожих на себя собак."
+   },
+   "ar": {
+    "title": "الكلاب تشبه أصحابها فعلًا، والسبب أنت 🐶",
+    "description": "في دراسة عام 2004 طابق الناس معظم الكلاب الأصيلة مع أصحابها من صور منفصلة. وفي اليابان كانت رؤية العيون وحدها كافية، وعند تغطية عيني المالك هبطت الدقة إلى مستوى الصدفة. ولم يزد الشبه مع سنوات العِشرة: نحن نختار الكلب الذي يشبهنا."
+   },
+   "hi": {
+    "title": "कुत्ते सच में अपने मालिक जैसे दिखते हैं, और वजह आप हैं 🐶",
+    "description": "2004 के एक अध्ययन में लोगों ने अलग-अलग तस्वीरों से ज़्यादातर नस्ली कुत्तों को उनके मालिकों से सही मिला दिया। जापान में सिर्फ़ आँखें देखना काफ़ी था, और मालिक की आँखें ढकने पर अंदाज़ा तुक्के जितना रह गया। साथ बिताए सालों से समानता नहीं बढ़ी: लोग खुद जैसे दिखने वाले कुत्ते चुनते हैं।"
+   },
+   "id": {
+    "title": "Anjing memang mirip pemiliknya, dan itu karena kamu 🐶",
+    "description": "Dalam studi tahun 2004, orang berhasil mencocokkan sebagian besar anjing ras dengan pemiliknya dari foto terpisah. Di Jepang, melihat matanya saja sudah cukup, dan saat mata pemilik ditutup, tebakan turun ke tingkat kebetulan. Kemiripan tidak bertambah seiring tahun: kita memilih anjing yang mirip dengan kita."
+   },
+   "ja": {
+    "title": "犬は本当に飼い主に似ている。その理由はあなた 🐶",
+    "description": "2004年の研究では、別々に撮った写真から、多くの純血種の犬を飼い主と正しく組み合わせることができました。日本の研究では目だけで十分で、飼い主の目を隠すと正解率は偶然と同じに。似ている度合いは一緒に暮らした年数では増えず、人は自分に似た犬を選んでいるのです。"
+   },
+   "ko": {
+    "title": "개는 정말 주인을 닮았다, 그 이유는 바로 당신 🐶",
+    "description": "2004년 연구에서 사람들은 따로 찍은 사진만 보고 순종견 대부분을 주인과 맞게 짝지었습니다. 일본 연구에서는 눈만 봐도 충분했고, 주인의 눈을 가리자 정답률이 우연 수준으로 떨어졌습니다. 함께 산 세월이 길다고 더 닮지는 않았습니다. 사람들은 자기를 닮은 개를 고릅니다."
+   },
+   "pl": {
+    "title": "Psy naprawdę są podobne do właścicieli i to twoja sprawka 🐶",
+    "description": "W badaniu z 2004 roku ludzie na podstawie osobnych zdjęć poprawnie dopasowali większość psów rasowych do właścicieli. W Japonii wystarczyły same oczy, a po zasłonięciu oczu właściciela trafność spadła do poziomu przypadku. Podobieństwo nie rosło z latami: wybieramy psy podobne do nas."
+   },
+   "nl": {
+    "title": "Honden lijken echt op hun baasje, en dat komt door jou 🐶",
+    "description": "In een studie uit 2004 koppelden mensen de meeste rashonden op basis van losse foto's aan hun baasje. In Japan waren alleen de ogen al genoeg, en als de ogen van het baasje bedekt werden, zakte de score naar toeval. De gelijkenis groeide niet met de jaren: we kiezen een hond die op ons lijkt."
+   },
+   "uk": {
+    "title": "Собаки справді схожі на господарів, і річ у тобі 🐶",
+    "description": "У дослідженні 2004 року люди за окремими фото правильно поєднали більшість породистих собак із господарями. У Японії вистачало самих очей, а коли очі господаря закривали, точність падала до випадкової. Схожість не зростала з роками: люди самі обирають схожих на себе собак."
+   },
+   "vi": {
+    "title": "Chó thật sự giống chủ, và lý do là ở bạn 🐶",
+    "description": "Trong một nghiên cứu năm 2004, mọi người ghép đúng phần lớn chó thuần chủng với chủ của chúng chỉ qua ảnh chụp riêng. Ở Nhật Bản, chỉ cần nhìn đôi mắt là đủ, còn khi che mắt người chủ thì tỉ lệ đúng tụt về mức đoán mò. Độ giống nhau không tăng theo năm tháng: ta chọn chú chó giống mình."
+   },
+   "az": {
+    "title": "İtlər həqiqətən sahiblərinə oxşayır, səbəb isə sənsən 🐶",
+    "description": "2004-cü il araşdırmasında insanlar ayrıca çəkilmiş fotolardan cins itlərin çoxunu sahibləri ilə düzgün uyğunlaşdırdı. Yaponiyada yalnız gözləri görmək kifayət etdi, sahibin gözləri örtüləndə isə nəticə təsadüf səviyyəsinə düşdü. Oxşarlıq birgə illərlə artmırdı: insanlar özlərinə oxşayan iti seçir."
+   },
+   "ro": {
+    "title": "Câinii chiar seamănă cu stăpânii, iar motivul ești tu 🐶",
+    "description": "Într-un studiu din 2004, oamenii au potrivit corect majoritatea câinilor de rasă cu stăpânii lor din fotografii separate. În Japonia au fost de ajuns doar ochii, iar când ochii stăpânului erau acoperiți, reușita a scăzut la nivelul hazardului. Asemănarea nu creștea cu anii: ne alegem câini care ne seamănă."
+   }
+  }
+ }
+}

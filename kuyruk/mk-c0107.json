@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0107",
+ "topic": "Tüysüz kedi alerji yapar mı, kedi alerjisi tüyden mi olur?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "sphynx cat",
+ "script": {
+  "title": "Tüysüz kedi de alerji yapar, suçlu tüy değil 🤧",
+  "hook_text": "TÜYSÜZ KEDİ ALERJİ YAPAR MI?",
+  "scenes": [
+   {
+    "text": "Bu tüysüz kedi de alerji yapar.",
+    "visual": "close-up of a hairless sphynx cat's wrinkled face staring into the camera",
+    "stock_query": "sphynx cat",
+    "source": "stock",
+    "callout": "TÜYSÜZ AMA ALERJİ"
+   },
+   {
+    "text": "Hipoalerjenik diye satılan cinsler için de bilimsel kanıt yok.",
+    "visual": "a fluffy long-haired cat sitting on a sofa",
+    "stock_query": "fluffy cat",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Üstelik kedi alerjeni, kedisi olmayan evlerde, okullarda, hatta sinemalarda bile bulunuyor.",
+    "visual": "an empty school classroom with desks and chairs",
+    "stock_query": "school classroom",
+    "source": "stock",
+    "callout": "KEDİSİZ EVDE BİLE",
+    "subject": [
+     "classroom"
+    ]
+   },
+   {
+    "text": "Çünkü suçlu tüy değil, kedinin tükürüğünde ve derisinde üretilen bir protein; kedi kendini yalayınca tüyüne, oradan her yere yayılır.",
+    "visual": "close-up of a cat licking and grooming its fur",
+    "stock_query": "cat grooming",
+    "source": "stock",
+    "callout": "SUÇLU TÜY DEĞİL"
+   },
+   {
+    "text": "Alerjin varsa tüysüz kediye güvenme; çünkü...",
+    "visual": "a woman sneezing into a tissue",
+    "stock_query": "woman sneezing",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "sneezing",
+     "sneeze"
+    ]
+   }
+  ],
+  "description": "Tüysüz sfenks kediler de alerji yapar, çünkü kedi alerjisinin asıl kaynağı tüy değil, Fel d 1 adlı bir protein. Bu protein kedinin tükürüğünde ve deri bezlerinde üretiliyor, kedi kendini yaladıkça tüylerine ve oradan her yere yayılıyor; kedisi olmayan evlerde, okullarda ve sinemalarda bile bulunuyor. Hipoalerjenik diye satılan cinsler için de bilimsel kanıt yok.",
+  "tags": [
+   "kedi alerjisi",
+   "tüysüz kedi",
+   "sfenks kedi",
+   "hipoalerjenik kedi",
+   "fel d 1",
+   "alerji",
+   "kedi",
+   "kediler",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sende kedi alerjisi var mı: evet mi, hayır mı?",
+  "en_title": "Hairless cats cause allergies too: fur isn't the culprit 🤧",
+  "en_description": "Most cat allergies come from a protein called Fel d 1, made in a cat's saliva and skin glands. When the cat grooms, it spreads onto the fur and then everywhere: it has been found in homes without cats, schools and even cinemas. All cats make it, including hairless sphynx cats, and there's no scientific proof for 'hypoallergenic' breeds.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Tüysüz kedi alerji yapar mı, kedi alerjisi tüyden mi olur?\n\nKedi alerjisi olanların yüzde 90-96'sı Fel d 1 adlı proteine duyarlı. Journal of Feline Medicine and Surgery'de 2021'de yayımlanan derlemeye göre bu protein kedinin tükürük bezlerinde ve deri yağ bezlerinde üretiliyor, kedi kendini yaladıkça tüylerine ve oradan çevreye yayılıyor. Bütün kediler Fel d 1 üretiyor; düşük alerjenli olduğu söylenen cinsleri destekleyen veri yok, kısırlaştırılmamış erkekler ise daha fazla üretiyor. Alerjen kedisi olmayan evlerde, okullarda ve sinemalarda bile ölçülmüş; kedi evden gittikten sonra düzeyinin düşmesi dört ila altı ay sürebiliyor. The Conversation'daki bir yazıya göre tüysüz sfenks kediler de Fel d 1 üretiyor.\n\nSende kedi alerjisi var mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#kedi",
+   "#kedialerjisi",
+   "#kediler",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi alerjisi",
+   "tüysüz kedi",
+   "sfenks kedi",
+   "tüysüz kedi alerji yapar mı",
+   "kedi alerjisi neden olur",
+   "hipoalerjenik kedi",
+   "alerji yapmayan kedi",
+   "kedi tüyü alerjisi",
+   "kedi alerjisi belirtileri",
+   "fel d 1",
+   "alerji",
+   "kedi",
+   "kediler",
+   "kedi sahibi",
+   "kedi bakımı",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat allergy",
+   "sphynx cat"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Hairless cats cause allergies too: fur isn't the culprit 🤧",
+    "description": "Most cat allergies come from a protein called Fel d 1, made in a cat's saliva and skin glands. When the cat grooms, it spreads onto the fur and then everywhere: it has been found in homes without cats, schools and even cinemas. All cats make it, including hairless sphynx cats, and there's no scientific proof for 'hypoallergenic' breeds."
+   },
+   "es": {
+    "title": "Los gatos sin pelo también dan alergia: el pelo no es el culpable 🤧",
+    "description": "La mayoría de las alergias a los gatos se deben a una proteína llamada Fel d 1, que se produce en la saliva y en las glándulas de la piel. Al acicalarse, el gato la extiende por el pelaje y de ahí a todas partes: se ha encontrado en casas sin gatos, escuelas e incluso cines. Todos los gatos la producen, también los esfinge, y no hay pruebas científicas de razas 'hipoalergénicas'."
+   },
+   "pt": {
+    "title": "Gato sem pelo também dá alergia: o culpado não é o pelo 🤧",
+    "description": "A maioria das alergias a gatos vem de uma proteína chamada Fel d 1, produzida na saliva e nas glândulas da pele. Quando o gato se lambe, ela se espalha pelos pelos e dali para todo lugar: já foi encontrada em casas sem gatos, escolas e até cinemas. Todos os gatos a produzem, inclusive o sphynx, e não há prova científica de raças 'hipoalergênicas'."
+   },
+   "de": {
+    "title": "Auch Nacktkatzen lösen Allergien aus, schuld ist nicht das Fell 🤧",
+    "description": "Die meisten Katzenallergien gehen auf ein Eiweiß namens Fel d 1 zurück, das im Speichel und in Hautdrüsen der Katze entsteht. Beim Putzen verteilt die Katze es aufs Fell und von dort überallhin: Man hat es in Wohnungen ohne Katzen, in Schulen und sogar in Kinos gefunden. Alle Katzen bilden es, auch Sphynx-Katzen, und für „hypoallergene“ Rassen gibt es keinen wissenschaftlichen Beleg."
+   },
+   "fr": {
+    "title": "Les chats sans poils donnent aussi des allergies : le poil n'y est pour rien 🤧",
+    "description": "La plupart des allergies aux chats viennent d'une protéine appelée Fel d 1, produite dans la salive et les glandes de la peau. En faisant sa toilette, le chat la dépose sur son pelage, puis elle se répand partout : on en a trouvé dans des maisons sans chat, des écoles et même des cinémas. Tous les chats en produisent, sphynx compris, et aucune preuve scientifique ne soutient l'existence de races « hypoallergéniques »."
+   },
+   "it": {
+    "title": "Anche i gatti senza pelo fanno venire l'allergia: il pelo non c'entra 🤧",
+    "description": "La maggior parte delle allergie ai gatti è dovuta a una proteina chiamata Fel d 1, prodotta nella saliva e nelle ghiandole della pelle. Quando il gatto si lecca la distribuisce sul pelo e da lì ovunque: è stata trovata in case senza gatti, scuole e perfino cinema. Tutti i gatti la producono, anche gli sphynx, e non ci sono prove scientifiche di razze 'ipoallergeniche'."
+   },
+   "ru": {
+    "title": "Лысые кошки тоже вызывают аллергию: дело не в шерсти 🤧",
+    "description": "Чаще всего аллергию на кошек вызывает белок Fel d 1, который вырабатывается в слюне и кожных железах кошки. Вылизываясь, кошка наносит его на шерсть, а оттуда он разносится повсюду: его находили в домах без кошек, в школах и даже кинотеатрах. Его вырабатывают все кошки, включая сфинксов, а научных доказательств «гипоаллергенных» пород нет."
+   },
+   "ar": {
+    "title": "القطط بلا فرو تسبب الحساسية أيضًا، والفرو ليس المذنب 🤧",
+    "description": "معظم حالات حساسية القطط سببها بروتين يُدعى Fel d 1 يُفرز في لعاب القطة وغدد جلدها. وحين تلعق القطة نفسها تنشره على فرائها ومنه إلى كل مكان: فقد وُجد في بيوت بلا قطط وفي مدارس بل ودور سينما. كل القطط تفرزه، ومنها قطط السفينكس، ولا دليل علميًا على وجود سلالات «مضادة للحساسية»."
+   },
+   "hi": {
+    "title": "बिना बालों वाली बिल्ली से भी एलर्जी होती है, क़सूर बालों का नहीं 🤧",
+    "description": "बिल्ली से होने वाली ज़्यादातर एलर्जी Fel d 1 नाम के एक प्रोटीन से होती है, जो बिल्ली की लार और त्वचा की ग्रंथियों में बनता है। खुद को चाटते समय बिल्ली इसे अपने बालों पर और फिर हर जगह फैला देती है: यह बिना बिल्ली वाले घरों, स्कूलों और सिनेमाघरों तक में पाया गया है। सभी बिल्लियाँ इसे बनाती हैं, स्फ़िंक्स भी, और 'हाइपोएलर्जेनिक' नस्लों का कोई वैज्ञानिक सबूत नहीं है।"
+   },
+   "id": {
+    "title": "Kucing tak berbulu juga bikin alergi, bulunya bukan biang keladi 🤧",
+    "description": "Sebagian besar alergi kucing disebabkan protein bernama Fel d 1 yang dibuat di air liur dan kelenjar kulit kucing. Saat kucing menjilati tubuhnya, protein ini menempel di bulu lalu menyebar ke mana-mana: ia bahkan ditemukan di rumah tanpa kucing, sekolah, dan bioskop. Semua kucing memproduksinya, termasuk sphynx, dan tidak ada bukti ilmiah soal ras 'hipoalergenik'."
+   },
+   "ja": {
+    "title": "毛のない猫でもアレルギーは起きる。犯人は毛じゃない 🤧",
+    "description": "猫アレルギーの多くは、猫の唾液や皮膚の腺で作られるFel d 1というたんぱく質が原因です。猫が毛づくろいをすると毛に付き、そこからあらゆる場所へ広がります。猫のいない家や学校、映画館からも見つかっています。スフィンクスを含むすべての猫が作っており、「低アレルギー」品種の科学的根拠はありません。"
+   },
+   "ko": {
+    "title": "털 없는 고양이도 알레르기를 일으킨다, 범인은 털이 아니다 🤧",
+    "description": "고양이 알레르기의 대부분은 고양이 침과 피부샘에서 만들어지는 Fel d 1이라는 단백질 때문입니다. 고양이가 그루밍을 하면 이 단백질이 털에 묻고 거기서 사방으로 퍼집니다. 고양이가 없는 집과 학교, 심지어 영화관에서도 발견됐습니다. 스핑크스를 포함한 모든 고양이가 이를 만들며, '저알레르기' 품종에 대한 과학적 근거는 없습니다."
+   },
+   "pl": {
+    "title": "Bezwłose koty też uczulają, winna nie jest sierść 🤧",
+    "description": "Większość alergii na koty wywołuje białko Fel d 1, wytwarzane w ślinie i gruczołach skóry kota. Gdy kot się wylizuje, rozprowadza je po sierści, a stamtąd wszędzie: wykryto je w domach bez kotów, w szkołach, a nawet w kinach. Wytwarzają je wszystkie koty, także sfinksy, a na istnienie ras „hipoalergicznych” nie ma naukowych dowodów."
+   },
+   "nl": {
+    "title": "Ook haarloze katten veroorzaken allergie, de vacht is niet de boosdoener 🤧",
+    "description": "De meeste kattenallergieën komen door een eiwit dat Fel d 1 heet en in het speeksel en de huidklieren van de kat wordt gemaakt. Als de kat zich wast, komt het op de vacht en van daaruit overal: het is gevonden in huizen zonder katten, op scholen en zelfs in bioscopen. Alle katten maken het, ook sphynxen, en er is geen wetenschappelijk bewijs voor 'hypoallergene' rassen."
+   },
+   "uk": {
+    "title": "Лисі коти теж викликають алергію: річ не в шерсті 🤧",
+    "description": "Найчастіше алергію на котів викликає білок Fel d 1, що виробляється в слині та шкірних залозах кота. Вилизуючись, кіт наносить його на шерсть, а звідти він поширюється всюди: його знаходили в домівках без котів, у школах і навіть кінотеатрах. Його виробляють усі коти, зокрема сфінкси, а наукових доказів існування «гіпоалергенних» порід немає."
+   },
+   "vi": {
+    "title": "Mèo không lông vẫn gây dị ứng, thủ phạm không phải là lông 🤧",
+    "description": "Phần lớn dị ứng mèo là do một loại protein tên Fel d 1, được tạo ra trong nước bọt và tuyến da của mèo. Khi mèo liếm lông, protein bám lên lông rồi lan ra khắp nơi: người ta còn tìm thấy nó trong nhà không nuôi mèo, trường học và cả rạp chiếu phim. Mọi con mèo đều tạo ra nó, kể cả mèo sphynx, và không có bằng chứng khoa học nào về giống mèo 'không gây dị ứng'."
+   },
+   "az": {
+    "title": "Tüksüz pişik də allergiya yaradır, günahkar tük deyil 🤧",
+    "description": "Pişik allergiyasının çoxu pişiyin tüpürcəyində və dəri vəzilərində yaranan Fel d 1 adlı zülaldan qaynaqlanır. Pişik özünü yalayanda bu zülal tüklərinə, oradan da hər yerə yayılır: onu pişiksiz evlərdə, məktəblərdə, hətta kinoteatrlarda belə tapıblar. Bütün pişiklər, o cümlədən sfinkslər onu istehsal edir, “hipoallergen” cinslərin isə elmi sübutu yoxdur."
+   },
+   "ro": {
+    "title": "Și pisicile fără blană dau alergie: vinovată nu e blana 🤧",
+    "description": "Cele mai multe alergii la pisici sunt cauzate de o proteină numită Fel d 1, produsă în saliva și glandele pielii pisicii. Când pisica se linge, o întinde pe blană și de acolo peste tot: a fost găsită în case fără pisici, în școli și chiar în cinematografe. Toate pisicile o produc, inclusiv sfinxul, iar pentru rasele „hipoalergenice” nu există dovezi științifice."
+   }
+  }
+ }
+}
