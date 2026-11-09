@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2093",
+    "views": "2095",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1093",
+    "views": "1092",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "995",
+    "views": "997",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1374",
+    "views": "1378",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2023",
+    "views": "2041",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "958",
+    "views": "955",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1232",
+    "views": "1238",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "974",
+    "views": "996",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "959",
+    "views": "1025",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1138",
+    "views": "1142",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1113",
+    "views": "1118",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "986",
+    "views": "983",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "284",
+    "views": "383",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "453",
+    "views": "796",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "781",
+    "views": "1071",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "116",
+    "views": "953",
     "reason": null
    }
   },
@@ -1823,6 +1823,36 @@
    "thumbnail": true,
    "at": 1794233493.4164455,
    "chars": 398,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "27",
+    "reason": null
+   }
+  },
+  {
+   "id": "n013",
+   "video_id": "Sr9y1BY4FPk",
+   "url": "https://youtube.com/shorts/Sr9y1BY4FPk",
+   "title": "Damarların Gerçekte Ne Kadar Uzun?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Long Are Your Blood Vessels, Really?",
+    "es": "¿Cuánto Miden Realmente Tus Vasos Sanguíneos?",
+    "pt": "Qual o Comprimento Real dos Seus Vasos Sanguíneos?",
+    "ar": "ما الطول الحقيقي لأوعيتك الدموية؟",
+    "hi": "तुम्हारी रक्त वाहिकाएँ असल में कितनी लंबी हैं?",
+    "id": "Seberapa Panjang Pembuluh Darahmu Sebenarnya?",
+    "fr": "Quelle Est la Vraie Longueur de Tes Vaisseaux Sanguins ?",
+    "de": "Wie Lang Sind Deine Blutgefäße Wirklich?",
+    "ru": "Какой Длины Твои Сосуды на Самом Деле?",
+    "az": "Damarların Əslində Nə Qədər Uzundur?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794247734.6816788,
+   "chars": 407,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1892,7 +1922,8 @@
   "y042",
   "g012",
   "y063",
-  "y064"
+  "y064",
+  "n013"
  ],
  "extra": [
   {
@@ -1958,13 +1989,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-01T21:33:04+00:00",
-   "mod": "ornek",
-   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "error": "RuntimeError: çizim hatası (1): node:internal/process/promises:391\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\npage.evaluate: SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.\n    at eval (eval at evaluate (:291:30), <anonymous>:1:36)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at shot (/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/motor/render.js:18:52)\n    a",
-   "chars": 362
-  },
   {
    "finished": "2026-11-01T21:35:53+00:00",
    "mod": "ornek",
@@ -2384,6 +2408,14 @@
    "mod": "igbolum",
    "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
    "chars": 375
+  },
+  {
+   "finished": "2026-11-09T18:08:56+00:00",
+   "mod": "saatlik",
+   "title": "Damarların Gerçekte Ne Kadar Uzun?",
+   "url": "https://youtube.com/shorts/Sr9y1BY4FPk",
+   "duration": 27.5,
+   "chars": 407
   }
  ],
  "last_fail": 1794133491.1438286,
