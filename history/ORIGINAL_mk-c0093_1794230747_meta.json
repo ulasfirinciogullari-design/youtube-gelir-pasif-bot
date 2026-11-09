@@ -1,0 +1,179 @@
+{
+  "topic_id": "mk-c0093",
+  "topic": "Köpekler üzüm yiyebilir mi, üzüm ve kuru üzüm köpeklere neden zararlı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Sana sağlıklı gelen üzüm köpeğin için zehir 🍇",
+  "hook_text": "KÖPEK ÜZÜM YİYEBİLİR Mİ?",
+  "description": "Köpekler üzüm yiyebilir mi, üzüm ve kuru üzüm köpeklere neden zararlı?\n\nÜzüm, kuru üzüm ve kuş üzümünün köpekler için zehirli olduğu yirmi yılı aşkın süredir biliniyordu ama sebebi bulunamamıştı. 2021'de ASPCA Hayvan Zehir Kontrol Merkezi'nden veteriner Colette Wegenast, tartar kremiyle yapılmış ev yapımı oyun hamuru yiyen bir köpekte üzüm zehirlenmesine benzer bir böbrek tablosu görünce ipucunu buldu: tartar kreminde de üzümde de tartarik asit ve onun tuzu potasyum bitartrat var. Bu asit insanlarda geniş bir güvenlik payına sahipken köpekler ona çok hassas. Cornell Üniversitesi Veteriner Fakültesi'ne göre üzümdeki asit miktarı olgunluğa göre değiştiği ve köpeklerin duyarlılığı farklı olduğu için güvenli bir miktar bilinmiyor; bazı köpeklerde birkaç tane bile ani böbrek hasarı yapabilir. Köpeğin üzüm yediyse belirti beklemeden veterinere başvur.\n\nSen köpeklere üzüm verilmemesi gerektiğini biliyor muydun: evet mi, hayır mı?\n\n#köpek #köpekler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0093",
+  "tags": [
+    "köpek",
+    "köpekler",
+    "köpek üzüm yer mi",
+    "köpeklere üzüm verilir mi",
+    "köpek kuru üzüm",
+    "üzüm zehirlenmesi",
+    "köpek zehirlenmesi",
+    "köpeklere zararlı yiyecekler",
+    "köpek ne yemez",
+    "köpek beslenmesi",
+    "köpek bakımı",
+    "köpek sahipleri",
+    "tartarik asit",
+    "böbrek hasarı",
+    "veteriner",
+    "evcil hayvanlar",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "can dogs eat grapes",
+    "grape toxicity dogs",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kopek",
+    "kopekler",
+    "kopek uzum yer mi",
+    "kopek kuru uzum"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Grapes seem healthy to you, but they're poison for your dog 🍇",
+      "description": "Grapes and raisins can cause sudden kidney damage in some dogs, sometimes from just a few. The cause was a mystery for over twenty years until a dog that ate homemade play dough gave vets the clue: cream of tartar and grapes both contain tartaric acid, and dogs are especially sensitive to it. If your dog eats grapes, call a vet right away.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "es": {
+      "title": "Las uvas te parecen sanas, pero son veneno para tu perro 🍇",
+      "description": "Las uvas y las pasas pueden causar daño renal repentino en algunos perros, a veces con solo unas pocas. La causa fue un misterio durante más de veinte años, hasta que un perro que comió plastilina casera dio la pista: el crémor tártaro y las uvas contienen ácido tartárico, y los perros son muy sensibles a él. Si tu perro come uvas, llama al veterinario enseguida.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "pt": {
+      "title": "Uva parece saudável para você, mas é veneno para o seu cachorro 🍇",
+      "description": "Uvas e uvas-passas podem causar lesão renal repentina em alguns cães, às vezes com poucas unidades. A causa foi um mistério por mais de vinte anos, até que um cão que comeu massinha caseira deu a pista: o cremor tártaro e a uva contêm ácido tartárico, e os cães são muito sensíveis a ele. Se o seu cachorro comer uva, procure o veterinário na hora.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "de": {
+      "title": "Trauben wirken gesund, doch für deinen Hund sind sie Gift 🍇",
+      "description": "Trauben und Rosinen können bei manchen Hunden schon in kleinen Mengen akute Nierenschäden auslösen. Die Ursache war über zwanzig Jahre lang ein Rätsel, bis ein Hund, der selbstgemachte Knete gefressen hatte, die Spur lieferte: Weinstein und Trauben enthalten Weinsäure, und Hunde reagieren darauf besonders empfindlich. Frisst dein Hund Trauben, ruf sofort den Tierarzt an.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "fr": {
+      "title": "Le raisin te paraît sain, mais c'est un poison pour ton chien 🍇",
+      "description": "Le raisin frais ou sec peut provoquer chez certains chiens une atteinte rénale brutale, parfois avec seulement quelques grains. La cause est restée un mystère pendant plus de vingt ans, jusqu'à ce qu'un chien ayant mangé de la pâte à modeler maison mette les vétérinaires sur la piste : la crème de tartre et le raisin contiennent de l'acide tartrique, auquel les chiens sont très sensibles. Si ton chien mange du raisin, appelle tout de suite un vétérinaire.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "it": {
+      "title": "L'uva a te sembra sana, ma per il tuo cane è veleno 🍇",
+      "description": "Uva e uvetta possono causare un danno renale improvviso in alcuni cani, a volte bastano pochi acini. La causa è rimasta un mistero per oltre vent'anni, finché un cane che aveva mangiato pasta da modellare fatta in casa ha dato l'indizio: il cremor tartaro e l'uva contengono acido tartarico, a cui i cani sono molto sensibili. Se il tuo cane mangia uva, chiama subito il veterinario.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "ru": {
+      "title": "Виноград кажется тебе полезным, но для собаки это яд 🍇",
+      "description": "Виноград и изюм могут вызвать у некоторых собак внезапное поражение почек, иногда даже в небольшом количестве. Причина оставалась загадкой больше двадцати лет, пока подсказку не дала собака, съевшая домашний пластилин: в винном камне и в винограде есть винная кислота, к которой собаки очень чувствительны. Если собака съела виноград, сразу звони ветеринару.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "ar": {
+      "title": "العنب يبدو لك صحيًا، لكنه سمّ لكلبك 🍇",
+      "description": "قد يسبب العنب والزبيب لبعض الكلاب تلفًا مفاجئًا في الكلى، أحيانًا بحبات قليلة فقط. وظل السبب لغزًا لأكثر من عشرين عامًا، حتى قدّم كلب أكل عجينة لعب منزلية الصنع الدليل: كريمة الطرطير والعنب يحتويان على حمض الطرطريك، والكلاب شديدة الحساسية له. إذا أكل كلبك العنب فاتصل بالطبيب البيطري فورًا.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "hi": {
+      "title": "अंगूर आपको सेहतमंद लगते हैं, पर आपके कुत्ते के लिए ज़हर हैं 🍇",
+      "description": "अंगूर और किशमिश कुछ कुत्तों की किडनी को अचानक नुकसान पहुँचा सकते हैं, कभी-कभी बस कुछ दानों से ही। इसकी वजह बीस साल से ज़्यादा समय तक रहस्य रही, फिर घर का बना प्ले-डो खाने वाले एक कुत्ते से सुराग मिला: क्रीम ऑफ़ टार्टर और अंगूर दोनों में टार्टरिक एसिड होता है, और कुत्ते इसके प्रति बहुत संवेदनशील होते हैं। अगर आपका कुत्ता अंगूर खा ले, तुरंत पशु चिकित्सक को फ़ोन करें।\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "id": {
+      "title": "Anggur terlihat sehat bagimu, tapi racun bagi anjingmu 🍇",
+      "description": "Anggur dan kismis dapat menyebabkan kerusakan ginjal mendadak pada sebagian anjing, kadang hanya dari beberapa butir. Penyebabnya menjadi misteri selama lebih dari dua puluh tahun, sampai seekor anjing yang memakan plastisin buatan rumah memberi petunjuk: krim tartar dan anggur sama-sama mengandung asam tartarat, dan anjing sangat peka terhadapnya. Jika anjingmu makan anggur, segera hubungi dokter hewan.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "ja": {
+      "title": "体にいいブドウも、犬には毒になる 🍇",
+      "description": "ブドウやレーズンは、一部の犬にほんの数粒でも急性の腎臓障害を起こすことがあります。原因は20年以上なぞでしたが、手作りの小麦粘土を食べた犬が手がかりになりました。粘土に使うクリームオブターターにもブドウにも酒石酸が含まれ、犬はこれにとても敏感なのです。愛犬がブドウを食べたら、すぐ獣医師に相談してください。\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "ko": {
+      "title": "당신에겐 건강한 포도가 강아지에겐 독이다 🍇",
+      "description": "포도와 건포도는 일부 개에게 몇 알만으로도 급성 신장 손상을 일으킬 수 있습니다. 그 원인은 20년 넘게 수수께끼였는데, 집에서 만든 놀이용 점토를 먹은 개가 단서가 됐습니다. 점토에 들어가는 주석영과 포도에는 모두 주석산이 들어 있고, 개는 이 성분에 매우 민감합니다. 강아지가 포도를 먹었다면 바로 수의사에게 연락하세요.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "pl": {
+      "title": "Winogrona wydają ci się zdrowe, a dla twojego psa są trucizną 🍇",
+      "description": "Winogrona i rodzynki mogą u niektórych psów wywołać nagłe uszkodzenie nerek, czasem już po kilku sztukach. Przyczyna przez ponad dwadzieścia lat była zagadką, aż trop dał pies, który zjadł domową masę plastyczną: kamień winny i winogrona zawierają kwas winowy, na który psy są bardzo wrażliwe. Jeśli twój pies zje winogrona, od razu dzwoń do weterynarza.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "nl": {
+      "title": "Druiven lijken gezond, maar voor je hond zijn ze giftig 🍇",
+      "description": "Druiven en rozijnen kunnen bij sommige honden plotselinge nierschade veroorzaken, soms al na een paar stuks. De oorzaak bleef ruim twintig jaar een raadsel, tot een hond die zelfgemaakte speelklei had gegeten de aanwijzing gaf: wijnsteen en druiven bevatten allebei wijnsteenzuur, en honden zijn daar heel gevoelig voor. Heeft je hond druiven gegeten, bel dan meteen de dierenarts.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "uk": {
+      "title": "Виноград здається тобі корисним, але для собаки це отрута 🍇",
+      "description": "Виноград і родзинки можуть спричинити в деяких собак раптове ураження нирок, іноді навіть від кількох ягід. Причина понад двадцять років лишалася загадкою, аж поки підказку не дав пес, що з'їв домашній пластилін: у винному камені й у винограді є винна кислота, до якої собаки дуже чутливі. Якщо собака з'їв виноград, одразу телефонуй ветеринару.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "vi": {
+      "title": "Nho tốt cho bạn nhưng là chất độc với chó của bạn 🍇",
+      "description": "Nho và nho khô có thể gây tổn thương thận cấp ở một số con chó, đôi khi chỉ với vài quả. Nguyên nhân là một bí ẩn suốt hơn hai mươi năm, cho đến khi một chú chó ăn đất nặn tự làm ở nhà cho các bác sĩ thú y manh mối: bột kem tartar và nho đều chứa axit tartaric, và chó rất nhạy cảm với chất này. Nếu chó của bạn ăn nho, hãy gọi bác sĩ thú y ngay.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "az": {
+      "title": "Sənə faydalı görünən üzüm itin üçün zəhərdir 🍇",
+      "description": "Üzüm və kişmiş bəzi itlərdə, bəzən cəmi bir neçə dənə ilə belə, qəfil böyrək zədəsinə səbəb ola bilər. Səbəb iyirmi ildən çox sirr olaraq qaldı, ta ki evdə hazırlanmış oyun xəmiri yeyən bir it ipucu verənə qədər: həm tartar kremində, həm də üzümdə tartarat turşusu var və itlər ona çox həssasdır. İtin üzüm yeyibsə, dərhal baytara müraciət et.\n\n#shorts\n\nSeri: mk-c0093"
+    },
+    "ro": {
+      "title": "Strugurii ți se par sănătoși, dar pentru câinele tău sunt otravă 🍇",
+      "description": "Strugurii și stafidele pot provoca la unii câini leziuni renale bruște, uneori chiar și câteva boabe. Cauza a fost un mister timp de peste douăzeci de ani, până când un câine care mâncase plastilină făcută în casă a oferit indiciul: crema de tartru și strugurii conțin acid tartric, iar câinii sunt foarte sensibili la el. Dacă câinele tău mănâncă struguri, sună imediat veterinarul.\n\n#shorts\n\nSeri: mk-c0093"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen köpeklere üzüm verilmemesi gerektiğini biliyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Sana sağlıklı gelen üzüm, bu köpek için zehir.",
+      "visual": "close-up of a dog's face looking up into the camera, a bunch of grapes blurred in the foreground",
+      "stock_query": "dog face",
+      "source": "stock",
+      "callout": "ÜZÜM ZEHİR"
+    },
+    {
+      "text": "Kuru üzüm de öyle; bazı köpeklerde birkaç tanesi bile böbreğe zarar verebilir.",
+      "visual": "close-up of a bunch of fresh grapes",
+      "stock_query": "grapes close up",
+      "source": "stock",
+      "subject": [
+        "grapes"
+      ],
+      "callout": "BİRKAÇ TANE BİLE"
+    },
+    {
+      "text": "Sebebi yıllarca çözülemedi; ipucu ev yapımı oyun hamuru yiyen bir köpekten geldi.",
+      "visual": "a child's hands shaping colorful homemade play dough on a table",
+      "stock_query": "play dough plasticine",
+      "source": "stock",
+      "subject": [
+        "play dough",
+        "plasticine"
+      ],
+      "callout": "OYUN HAMURU"
+    },
+    {
+      "text": "Çünkü hamurdaki tartar kreminde de üzümde de tartarik asit var; köpekler buna çok hassas.",
+      "visual": "a veterinarian gently examining a dog on a clinic table",
+      "stock_query": "dog veterinarian",
+      "source": "stock",
+      "callout": "TARTARİK ASİT"
+    },
+    {
+      "text": "Köpeğin üzüm kaparsa beklemeden veterinere git; çünkü...",
+      "visual": "close-up of a dog's eyes looking straight at the camera",
+      "stock_query": "dog eyes",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.32,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #146",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0093_1794230747_ig.mp4"
+}
