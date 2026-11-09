@@ -1,18 +1,71 @@
 {
- "started": "2026-11-09T13:12:41+00:00",
- "mod": "igbolum",
- "gate": "instagram: y036",
+ "started": "2026-11-09T14:10:50+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
- "chars": 371,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "17896182171615917",
-  "url": "https://www.instagram.com/reel/DfhabnGiCYJ/",
-  "at": 1794230061.6642532
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "60",
+  "videos": "61"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfhabnGiCYJ/"
+ "credits_before": [
+  93776,
+  613902
  ],
- "finished": "2026-11-09T13:14:21+00:00"
+ "kuyruk": {
+  "dosya": "20261109-3-y064.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y064",
+  "series": "Ya Olsaydı?",
+  "q": "Asansör düşerken son anda zıplasaydın kurtulur muydun?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 398,
+ "duration": 26.8,
+ "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
+ "url": "https://youtube.com/shorts/I-Tn6aqeA80",
+ "recent_status": {
+  "n012": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "284",
+   "reason": null
+  },
+  "y042": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "453",
+   "reason": null
+  },
+  "g012": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "781",
+   "reason": null
+  },
+  "y063": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "116",
+   "reason": null
+  },
+  "y064": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  93873,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261109-3-y064.json Asansör düşerken son anda zıplasaydın kurtulur muydun? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-09T14:11:34+00:00"
 }
