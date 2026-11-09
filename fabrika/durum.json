@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1092",
+    "views": "1093",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1378",
+    "views": "1377",
     "reason": null
    }
   },
@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1090",
+    "views": "1091",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1238",
+    "views": "1239",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "996",
+    "views": "998",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1025",
+    "views": "1026",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1142",
+    "views": "1143",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1118",
+    "views": "1120",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "383",
+    "views": "390",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "796",
+    "views": "807",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1071",
+    "views": "1089",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "953",
+    "views": "956",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "27",
+    "views": "416",
     "reason": null
    }
   },
@@ -1853,6 +1853,36 @@
    "thumbnail": true,
    "at": 1794247734.6816788,
    "chars": 407,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "16",
+    "reason": null
+   }
+  },
+  {
+   "id": "y065",
+   "video_id": "mt9KmhllXGQ",
+   "url": "https://youtube.com/shorts/mt9KmhllXGQ",
+   "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Didn't Sleep for a Week?",
+    "es": "¿Qué Pasaría Si No Durmieras en Toda una Semana?",
+    "pt": "O Que Aconteceria Se Você Ficasse uma Semana Sem Dormir?",
+    "ar": "ماذا كان سيحدث لو لم تنم أسبوعًا كاملًا؟",
+    "hi": "अगर तुम एक हफ़्ते तक बिल्कुल न सोते तो क्या होता?",
+    "id": "Apa Jadinya Jika Kamu Tidak Tidur Seminggu?",
+    "fr": "Que Se Passerait-il Si Tu Ne Dormais Pas Pendant une Semaine ?",
+    "de": "Was Würde Passieren, Wenn Du Eine Woche Nicht Schläfst?",
+    "ru": "Что Будет, Если Не Спать Целую Неделю?",
+    "az": "Bir Həftə Heç Yatmasaydın Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794254899.9447966,
+   "chars": 360,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1923,7 +1953,8 @@
   "g012",
   "y063",
   "y064",
-  "n013"
+  "n013",
+  "y065"
  ],
  "extra": [
   {
@@ -1989,13 +2020,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-01T21:35:53+00:00",
-   "mod": "ornek",
-   "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
-   "duration": 24.1,
-   "chars": 362
-  },
   {
    "finished": "2026-11-02T09:09:12+00:00",
    "mod": "igbolum",
@@ -2416,6 +2440,14 @@
    "url": "https://youtube.com/shorts/Sr9y1BY4FPk",
    "duration": 27.5,
    "chars": 407
+  },
+  {
+   "finished": "2026-11-09T20:08:21+00:00",
+   "mod": "saatlik",
+   "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/mt9KmhllXGQ",
+   "duration": 24.4,
+   "chars": 360
   }
  ],
  "last_fail": 1794133491.1438286,

@@ -1,5 +1,5 @@
 {
- "started": "2026-11-09T18:07:56+00:00",
+ "started": "2026-11-09T20:07:20+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -7,53 +7,53 @@
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
-  "subscribers": "60",
-  "videos": "62"
+  "subscribers": "61",
+  "videos": "63"
  },
  "credits_before": [
-  94059,
+  94242,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261109-4-n013.json",
-  "kalan": 2
+  "dosya": "20261109-5-y065.json",
+  "kalan": 1
  },
  "topic": {
-  "id": "n013",
-  "series": "Ne Kadar Büyük?",
-  "q": "Damarlarını uç uca eklesen ne kadar uzun olur?"
+  "id": "y065",
+  "series": "Ya Olsaydı?",
+  "q": "Bir hafta hiç uyumasaydın ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 407,
- "duration": 27.5,
- "title": "Damarların Gerçekte Ne Kadar Uzun?",
- "url": "https://youtube.com/shorts/Sr9y1BY4FPk",
+ "chars": 360,
+ "duration": 24.4,
+ "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
+ "url": "https://youtube.com/shorts/mt9KmhllXGQ",
  "recent_status": {
-  "y042": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "796",
-   "reason": null
-  },
   "g012": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1071",
+   "views": "1089",
    "reason": null
   },
   "y063": {
    "upload": "processed",
    "privacy": "public",
-   "views": "953",
+   "views": "956",
    "reason": null
   },
   "y064": {
    "upload": "processed",
    "privacy": "public",
-   "views": "27",
+   "views": "416",
    "reason": null
   },
   "n013": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "16",
+   "reason": null
+  },
+  "y065": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  94059,
+  94330,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261109-4-n013.json Damarlarını uç uca eklesen ne kadar uzun olur? (Ne Kadar Büyük?)"
+  "Kuyruktan: 20261109-5-y065.json Bir hafta hiç uyumasaydın ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-09T18:08:56+00:00"
+ "finished": "2026-11-09T20:08:21+00:00"
 }
