@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0096",
+  "topic": "Burç yorumları neden herkese uyar, Barnum etkisi nedir?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Burç yorumu sana uyuyorsa, herkese uyduğu için 🔮",
+  "hook_text": "BURÇ YORUMU NEDEN SANA UYUYOR?",
+  "description": "Burç yorumları neden herkese uyar, Barnum etkisi nedir?\n\nPsikolog Bertram Forer 1949'da öğrencilerine bir kişilik testi yaptırdı ve bir hafta sonra her birine 'kişisel' bir analiz verdi. Otuz dokuz öğrencinin hepsi aynı metni almıştı; metin büyük ölçüde gazete bayisinde satılan bir burç kitabından derlenmişti. Yine de öğrenciler analize beş üzerinden ortalama yaklaşık 4,3 puan verdi, yalnızca beşi dörtten düşük puanladı. Metindeki cümleler herkese uyacak kadar genel ve hoşa gidecek türdendi: 'Dışarıdan disiplinli ve kendine hakimsin ama içten içe kaygılı ve güvensiz olabiliyorsun.' Barnum ya da Forer etkisi denen bu yanılgı sonraki onlarca çalışmada tekrar gösterildi.\n\nSence burç yorumu sana neden uyuyor: yıldızlardan mı, herkese uyduğundan mı?\n\n#burçlar #burçyorumu #psikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0096",
+  "tags": [
+    "burç yorumu",
+    "burç yorumları",
+    "burçlar",
+    "barnum etkisi",
+    "forer etkisi",
+    "burç yorumu neden tutar",
+    "burçlar doğru mu",
+    "astroloji",
+    "astroloji gerçek mi",
+    "kişilik testi",
+    "kişilik analizi",
+    "fal psikolojisi",
+    "bilişsel yanılgı",
+    "beyin nasıl kandırılır",
+    "psikoloji",
+    "insan psikolojisi",
+    "sosyal psikoloji",
+    "psikolojik deney",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "barnum effect",
+    "forer effect",
+    "beyin",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "burc yorumu",
+    "burc yorumlari",
+    "burclar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your horoscope fits you because it fits everyone 🔮",
+      "description": "In 1949, psychologist Bertram Forer gave each of his students a 'personal' analysis after a test. They all got the same text, taken largely from an astrology book, yet most rated it 4 or 5 out of 5. Vague, flattering lines like 'disciplined outside, worried inside' fit almost anyone.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "es": {
+      "title": "Tu horóscopo te encaja porque le encaja a todo el mundo 🔮",
+      "description": "En 1949, el psicólogo Bertram Forer dio a cada alumno un análisis 'personal' tras un test. Todos recibieron el mismo texto, sacado en gran parte de un libro de astrología, y aun así la mayoría lo puntuó con 4 o 5 sobre 5. Las frases vagas y halagadoras encajan con casi cualquiera.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "pt": {
+      "title": "Seu horóscopo combina com você porque combina com todo mundo 🔮",
+      "description": "Em 1949, o psicólogo Bertram Forer entregou a cada aluno uma análise 'pessoal' depois de um teste. Todos receberam o mesmo texto, tirado em boa parte de um livro de astrologia, e mesmo assim a maioria deu nota 4 ou 5 de 5. Frases vagas e lisonjeiras servem para quase todo mundo.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "de": {
+      "title": "Dein Horoskop passt zu dir, weil es zu allen passt 🔮",
+      "description": "1949 gab der Psychologe Bertram Forer seinen Studierenden nach einem Test eine „persönliche“ Analyse. Alle bekamen denselben Text, größtenteils aus einem Astrologiebuch, und trotzdem gaben die meisten 4 oder 5 von 5 Punkten. Vage, schmeichelhafte Sätze passen auf fast jeden.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "fr": {
+      "title": "Ton horoscope te ressemble parce qu'il ressemble à tout le monde 🔮",
+      "description": "En 1949, le psychologue Bertram Forer a remis à chaque étudiant une analyse « personnelle » après un test. Tous ont reçu le même texte, tiré en grande partie d'un livre d'astrologie, et pourtant la plupart lui ont donné 4 ou 5 sur 5. Des phrases vagues et flatteuses collent à presque tout le monde.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "it": {
+      "title": "Il tuo oroscopo ti somiglia perché somiglia a tutti 🔮",
+      "description": "Nel 1949 lo psicologo Bertram Forer diede a ogni studente un'analisi 'personale' dopo un test. Tutti ricevettero lo stesso testo, preso in gran parte da un libro di astrologia, eppure quasi tutti gli diedero 4 o 5 su 5. Frasi vaghe e lusinghiere vanno bene per quasi chiunque.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "ru": {
+      "title": "Гороскоп подходит тебе, потому что подходит всем 🔮",
+      "description": "В 1949 году психолог Бертрам Форер после теста раздал студентам «личные» характеристики. Все получили один и тот же текст, во многом взятый из книги по астрологии, но большинство оценили его на 4 или 5 из 5. Расплывчатые и лестные фразы подходят почти любому.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "ar": {
+      "title": "برجك يناسبك لأنه يناسب الجميع 🔮",
+      "description": "في عام 1949 أعطى عالم النفس برترام فورر كل طالب من طلابه تحليلًا «شخصيًا» بعد اختبار. حصل الجميع على النص نفسه، المأخوذ في معظمه من كتاب أبراج، ومع ذلك منحه أغلبهم 4 أو 5 من 5. فالعبارات العامة والمجاملة تناسب أي شخص تقريبًا.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "hi": {
+      "title": "आपका राशिफल आप पर इसलिए सही बैठता है क्योंकि वह सब पर सही बैठता है 🔮",
+      "description": "1949 में मनोवैज्ञानिक बर्ट्रम फोरर ने एक टेस्ट के बाद हर छात्र को एक 'निजी' विश्लेषण दिया। सबको एक ही पाठ मिला था, जो ज़्यादातर ज्योतिष की एक किताब से लिया गया था, फिर भी ज़्यादातर ने उसे 5 में से 4 या 5 अंक दिए। गोलमोल और तारीफ़ भरी बातें लगभग हर किसी पर सही बैठती हैं।\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "id": {
+      "title": "Ramalan zodiakmu cocok karena cocok untuk semua orang 🔮",
+      "description": "Pada 1949, psikolog Bertram Forer memberi setiap mahasiswanya analisis 'pribadi' setelah sebuah tes. Semuanya menerima teks yang sama, sebagian besar diambil dari buku astrologi, tetapi kebanyakan memberi nilai 4 atau 5 dari 5. Kalimat yang samar dan menyanjung cocok untuk hampir siapa saja.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "ja": {
+      "title": "星占いが当たるのは、誰にでも当てはまるから 🔮",
+      "description": "1949年、心理学者バートラム・フォアは、テストのあと学生一人ひとりに「あなた専用」の性格分析を渡しました。実は全員が同じ文章で、大半は星占いの本から取ったものでしたが、ほとんどの学生が5点満点で4点か5点をつけました。あいまいで心地よい言葉は、ほぼ誰にでも当てはまるのです。\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "ko": {
+      "title": "별자리 운세가 맞는 건 누구에게나 맞기 때문이다 🔮",
+      "description": "1949년 심리학자 버트럼 포러는 검사를 마친 학생들에게 각자 '개인' 성격 분석을 나눠 주었습니다. 사실 모두 같은 글이었고 대부분 점성술 책에서 가져온 문장이었지만, 대다수가 5점 만점에 4점이나 5점을 줬습니다. 모호하고 듣기 좋은 말은 거의 누구에게나 들어맞습니다.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "pl": {
+      "title": "Horoskop pasuje do ciebie, bo pasuje do wszystkich 🔮",
+      "description": "W 1949 roku psycholog Bertram Forer po teście dał każdemu studentowi „osobistą” analizę. Wszyscy dostali ten sam tekst, w dużej części wzięty z książki astrologicznej, a mimo to większość oceniła go na 4 lub 5 w skali do 5. Ogólnikowe, pochlebne zdania pasują prawie do każdego.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "nl": {
+      "title": "Je horoscoop klopt omdat hij voor iedereen klopt 🔮",
+      "description": "In 1949 gaf psycholoog Bertram Forer zijn studenten na een test elk een 'persoonlijke' analyse. Iedereen kreeg dezelfde tekst, grotendeels uit een astrologieboek, en toch gaven de meesten een 4 of 5 op 5. Vage, vleiende zinnen passen bij bijna iedereen.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "uk": {
+      "title": "Гороскоп пасує тобі, бо пасує всім 🔮",
+      "description": "У 1949 році психолог Бертрам Форер після тесту роздав студентам «особисті» характеристики. Усі отримали той самий текст, здебільшого взятий з книжки з астрології, але більшість оцінили його на 4 або 5 з 5. Розмиті й приємні фрази підходять майже кожному.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "vi": {
+      "title": "Tử vi đúng với bạn vì nó đúng với tất cả mọi người 🔮",
+      "description": "Năm 1949, nhà tâm lý học Bertram Forer phát cho mỗi sinh viên một bản phân tích 'riêng' sau một bài trắc nghiệm. Thật ra ai cũng nhận cùng một đoạn văn, phần lớn chép từ một cuốn sách chiêm tinh, vậy mà đa số vẫn chấm 4 hoặc 5 trên 5. Những câu mơ hồ, dễ nghe hợp với gần như bất kỳ ai.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "az": {
+      "title": "Bürc proqnozu sənə uyur, çünki hamıya uyur 🔮",
+      "description": "1949-cu ildə psixoloq Bertram Forer testdən sonra hər tələbəyə “şəxsi” təhlil verdi. Hamı eyni mətni almışdı, mətnin çoxu astrologiya kitabından götürülmüşdü, amma əksəriyyət onu 5 bal üzərindən 4 və ya 5 bal ilə qiymətləndirdi. Qeyri-müəyyən və xoş gələn cümlələr demək olar ki, hər kəsə uyur.\n\n#shorts\n\nSeri: mk-c0096"
+    },
+    "ro": {
+      "title": "Horoscopul ți se potrivește pentru că se potrivește tuturor 🔮",
+      "description": "În 1949, psihologul Bertram Forer le-a dat studenților, după un test, câte o analiză „personală”. Toți au primit același text, luat în mare parte dintr-o carte de astrologie, și totuși cei mai mulți i-au dat nota 4 sau 5 din 5. Frazele vagi și măgulitoare se potrivesc aproape oricui.\n\n#shorts\n\nSeri: mk-c0096"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence burç yorumu sana neden uyuyor: yıldızlardan mı, herkese uyduğundan mı?",
+  "scenes": [
+    {
+      "text": "Herkes aynı yorumu aldı, herkes 'tam ben' dedi.",
+      "visual": "close-up of a young woman's face reading a sheet of paper, eyebrows raised in surprise",
+      "stock_query": "surprised woman face",
+      "source": "stock",
+      "callout": "HERKESE AYNI YORUM"
+    },
+    {
+      "text": "Bir psikolog öğrencilerine test yaptırdı, sonra her birine kişisel analiz verdi.",
+      "visual": "university students filling in a test at their desks in a classroom",
+      "stock_query": "students exam",
+      "source": "stock",
+      "subject": [
+        "students"
+      ]
+    },
+    {
+      "text": "Metin bir burç kitabından alınmıştı; yine de çoğu beş üzerinden dört ya da beş verdi.",
+      "visual": "close-up of a rotating zodiac wheel with the astrology signs",
+      "stock_query": "zodiac signs",
+      "source": "stock",
+      "subject": [
+        "zodiac"
+      ],
+      "callout": "BURÇ KİTABINDAN"
+    },
+    {
+      "text": "Çünkü cümleler herkese uyacak kadar genel: 'Dışarıdan disiplinlisin ama içten içe kaygılısın.'",
+      "visual": "a young man reading thoughtfully, then nodding as if he recognizes himself",
+      "stock_query": "man thinking face",
+      "source": "stock",
+      "callout": "HERKESE UYAN CÜMLELER"
+    },
+    {
+      "text": "Burç yorumun da sana tıpatıp uyuyorsa, belki de...",
+      "visual": "a woman smiling while reading her horoscope on a smartphone",
+      "stock_query": "woman reading phone",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.76,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #149",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0096_1794256460_ig.mp4"
+}
