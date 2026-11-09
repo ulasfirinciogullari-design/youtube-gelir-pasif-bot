@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-18T14": "atlandı: Instagram kopyası olan, paylaşılmamış Short yok",
   "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/",
   "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/",
   "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/",
@@ -48,16 +47,17 @@
   "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/",
   "2026-11-08T18": "kkPqwP8hyz4 https://www.instagram.com/reel/DffWa5FAjpw/",
   "2026-11-09T10": "C-gsguJI_VQ https://www.instagram.com/reel/DfhEVFslEws/",
-  "2026-11-09T14": "54hA0-qmdaM https://www.instagram.com/reel/Dfhf0j3FSFF/"
+  "2026-11-09T14": "54hA0-qmdaM https://www.instagram.com/reel/Dfhf0j3FSFF/",
+  "2026-11-09T18": "K9JGmD_QiPg https://www.instagram.com/reel/Dfh7NS2kYhL/"
  },
  "nobet": {
   "basladi": "2026-11-09T16:10:00+00:00",
   "run": "42650220075",
-  "tur": 93,
+  "tur": 111,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-09T17:42:02+00:00"
+  "son_tur": "2026-11-09T18:00:51+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -332,6 +332,13 @@
    "at": 1794232891,
    "title": "Parmak çıtlatmak kireçlenme yapmıyor ✋",
    "topic_id": "mk-c0064"
+  },
+  "K9JGmD_QiPg": {
+   "media_id": "18082846277433720",
+   "url": "https://www.instagram.com/reel/Dfh7NS2kYhL/",
+   "at": 1794247251,
+   "title": "Sürücülerin çoğu kendini ortalamanın üstünde sanıyor 🚗",
+   "topic_id": "mk-c0061"
   }
  }
 }
