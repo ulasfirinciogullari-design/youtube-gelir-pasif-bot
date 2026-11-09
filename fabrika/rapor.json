@@ -1,71 +1,18 @@
 {
- "started": "2026-11-09T12:20:29+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-09T13:12:41+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y036",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "59",
-  "videos": "60"
+ "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
+ "chars": 371,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "17896182171615917",
+  "url": "https://www.instagram.com/reel/DfhabnGiCYJ/",
+  "at": 1794230061.6642532
  },
- "credits_before": [
-  93509,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261109-2-y063.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y063",
-  "series": "Ya Olsaydı?",
-  "q": "Hapşırığını tutsaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 370,
- "duration": 24.2,
- "title": "Hapşırığını Tutsaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/73hAb835EFE",
- "recent_status": {
-  "y041": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "982",
-   "reason": null
-  },
-  "n012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "284",
-   "reason": null
-  },
-  "y042": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "361",
-   "reason": null
-  },
-  "g012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "80",
-   "reason": null
-  },
-  "y063": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  93598,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261109-2-y063.json Hapşırığını tutsaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfhabnGiCYJ/"
  ],
- "finished": "2026-11-09T12:21:27+00:00"
+ "finished": "2026-11-09T13:14:21+00:00"
 }
