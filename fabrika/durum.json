@@ -1866,12 +1866,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-23T09:09:35+00:00",
-   "mod": "igbolum",
-   "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "chars": 371
-  },
-  {
    "finished": "2026-10-23T10:04:23+00:00",
    "mod": "saatlik",
    "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
@@ -2291,6 +2285,12 @@
    "url": "https://youtube.com/shorts/Tk6wA4QlShk",
    "duration": 25.2,
    "chars": 358
+  },
+  {
+   "finished": "2026-11-09T09:09:26+00:00",
+   "mod": "igbolum",
+   "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+   "chars": 397
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2520,6 +2520,11 @@
     "media_id": "18358575370222547",
     "url": "https://www.instagram.com/reel/DffQe5clCF5/",
     "at": 1794157741.302166
+   },
+   "g011": {
+    "media_id": "18146941039510565",
+    "url": "https://www.instagram.com/reel/Dfg-Xz-CPoc/",
+    "at": 1794215366.6966615
    }
   },
   "eski": [

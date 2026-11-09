@@ -1,71 +1,18 @@
 {
- "started": "2026-11-08T20:07:39+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-09T09:07:32+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g011",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "59",
-  "videos": "58"
+ "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
+ "chars": 397,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18146941039510565",
+  "url": "https://www.instagram.com/reel/Dfg-Xz-CPoc/",
+  "at": 1794215366.6966615
  },
- "credits_before": [
-  92122,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261108-4-y042.json",
-  "kalan": 0
- },
- "topic": {
-  "id": "y042",
-  "series": "Ya Olsaydı?",
-  "q": "Bir kara delik Güneş Sistemi'ne girseydi ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 358,
- "duration": 25.2,
- "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
- "url": "https://youtube.com/shorts/Tk6wA4QlShk",
- "recent_status": {
-  "g011": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1105",
-   "reason": null
-  },
-  "y036": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1075",
-   "reason": null
-  },
-  "y041": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "893",
-   "reason": null
-  },
-  "n012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "4",
-   "reason": null
-  },
-  "y042": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  92208,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261108-4-y042.json Bir kara delik Güneş Sistemi'ne girseydi ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Dfg-Xz-CPoc/"
  ],
- "finished": "2026-11-08T20:08:49+00:00"
+ "finished": "2026-11-09T09:09:26+00:00"
 }
