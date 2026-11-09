@@ -1,0 +1,272 @@
+{
+ "id": "g013",
+ "series": "1 Gün Boyunca",
+ "q": "Uzay İstasyonu 1 günde kaç kez Dünya'yı turlar?",
+ "title": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar?",
+ "bar": {
+  "hi": "UZAY İSTASYONU",
+  "rest": "KAÇ TUR?"
+ },
+ "summary": "Sen bir nefes alıp verene kadar Uzay İstasyonu 30 km yol alıyor! Günde 16 kez Dünya'yı turlayan istasyonda 16 gün doğumundan eriyen kemiklere kadar bir günü Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Sen bir nefes alıp verene kadar Uzay İstasyonu 30 km yol alır!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🛰️",
+    "value": "30",
+    "unit": "km",
+    "label": "Tek Nefeste",
+    "key": "30"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Nefesim ona yetişemiyor mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🌬️",
+    "do": "pulse",
+    "key": "Nefesim",
+    "label": "Tek Nefes"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Saatte 28.000 km'yle Dünya'yı 90 dakikada bir turlar: günde 16 kez!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "spin",
+    "target": 0,
+    "key": "16",
+    "label": "Günde 16 Tur"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İçinde olsan bugün 16 kez güneş doğar, 16 kez batardı.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "0. DK",
+      "e": "🌅",
+      "label": "Gün Doğar"
+     },
+     {
+      "when": "45. DK",
+      "e": "🌇",
+      "label": "Gün Batar"
+     },
+     {
+      "when": "90. DK",
+      "e": "🌅",
+      "label": "Yine Doğar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Onu balkondan çıplak gözle bile görebilirsin.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "👀",
+    "do": "float",
+    "key": "çıplak",
+    "label": "Çıplak Göz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama orada kemiklerin her ay %1,5'e kadar erir!",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Aylık Kemik Kaybı",
+    "from": 0,
+    "to": 1.5,
+    "unit": "%",
+    "e": "🦴",
+    "key": "erir"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen hiç Uzay İstasyonu'nu gördün mü? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🛰️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Uzay İstasyonu saatte yaklaşık 28.000 km (saniyede yaklaşık 8 km) hızla gider ve Dünya'nın çevresini yaklaşık 90 dakikada bir dolaşır. Cleveland Clinic'e göre dinlenen bir yetişkin dakikada 12-18 kez nefes alır; yaklaşık 4 saniyelik bir nefeste istasyon yaklaşık 30 km yol alır.",
+   "source": "NASA, Cleveland Clinic",
+   "url": "https://www.nasa.gov/missions/station/spot-the-station-frequently-asked-questions/"
+  },
+  {
+   "text": "NASA'ya göre istasyon 24 saatte Dünya'nın çevresinde 16 tur atar ve 16 gün doğumu ile 16 gün batımından geçer.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/"
+  },
+  {
+   "text": "NASA'nın Spot the Station sayfasına göre istasyon Güneş ışığını yansıttığı için hiçbir alet olmadan çıplak gözle görülebilir; bulunduğun yerden görme fırsatı ayda birden haftada birkaç kereye kadar değişir.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/missions/station/spot-the-station-frequently-asked-questions/"
+  },
+  {
+   "text": "NASA'ya göre uzay uçuşu sırasında yük taşıyan kemikler her ay ortalama %1 ile %1,5 mineral yoğunluğu kaybeder.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"
+  }
+ ],
+ "tags": [
+  "uluslararası uzay istasyonu",
+  "uzay istasyonu",
+  "uzay istasyonu dünyayı kaç kez döner",
+  "iss",
+  "astronot",
+  "uzayda gün doğumu",
+  "uzay istasyonu nasıl görülür",
+  "international space station",
+  "iss orbit",
+  "how many times does the iss orbit earth",
+  "spot the station",
+  "1 gün boyunca",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzay",
+  "#uzayistasyonu",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/",
+  "https://www.nasa.gov/missions/station/spot-the-station-frequently-asked-questions/",
+  "https://www.nasa.gov/humans-in-space/the-human-body-in-space/",
+  "https://my.clevelandclinic.org/health/articles/10881-vital-signs"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Times Does the Space Station Circle Earth in 1 Day?",
+   "summary": "In the time it takes you to breathe in and out, the Space Station travels 30 km! Professor Pi walks you through a day on a station that circles Earth 16 times, from 16 sunrises to bones that waste away.",
+   "facts": [
+    "According to NASA, the Space Station travels at about 28,000 km/h (about 8 km per second) and circles Earth about every 90 minutes. According to Cleveland Clinic, a resting adult breathes 12 to 18 times a minute; in one breath of about 4 seconds, the station covers about 30 km.",
+    "According to NASA, in 24 hours the station makes 16 orbits of Earth, traveling through 16 sunrises and 16 sunsets.",
+    "According to NASA's Spot the Station page, the station can be seen with the bare eye because it reflects sunlight; viewing opportunities from your location range from once a month to several times a week.",
+    "According to NASA, weight-bearing bones lose on average 1% to 1.5% of their mineral density per month during spaceflight."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas Vueltas a la Tierra Da la Estación Espacial en 1 Día?",
+   "summary": "¡En lo que tardas en inspirar y espirar, la Estación Espacial recorre 30 km! El profesor Pi te cuenta un día en una estación que da 16 vueltas a la Tierra, desde 16 amaneceres hasta unos huesos que se debilitan.",
+   "facts": [
+    "Según la NASA, la Estación Espacial viaja a unos 28.000 km/h (unos 8 km por segundo) y da una vuelta a la Tierra aproximadamente cada 90 minutos. Según la Cleveland Clinic, un adulto en reposo respira de 12 a 18 veces por minuto; en una respiración de unos 4 segundos, la estación recorre unos 30 km.",
+    "Según la NASA, en 24 horas la estación da 16 vueltas a la Tierra y atraviesa 16 amaneceres y 16 atardeceres.",
+    "Según la página Spot the Station de la NASA, la estación se puede ver a simple vista porque refleja la luz del Sol; las oportunidades de verla desde tu ubicación van de una vez al mes a varias veces por semana.",
+    "Según la NASA, durante los vuelos espaciales los huesos que soportan peso pierden de media entre un 1 % y un 1,5 % de su densidad mineral al mes."
+   ]
+  },
+  "pt": {
+   "title": "Quantas Voltas na Terra a Estação Espacial Dá em 1 Dia?",
+   "summary": "No tempo de você inspirar e expirar, a Estação Espacial percorre 30 km! O professor Pi mostra um dia em uma estação que dá 16 voltas na Terra, dos 16 nasceres do sol aos ossos que vão enfraquecendo.",
+   "facts": [
+    "Segundo a NASA, a Estação Espacial viaja a cerca de 28.000 km/h (cerca de 8 km por segundo) e dá uma volta na Terra aproximadamente a cada 90 minutos. Segundo a Cleveland Clinic, um adulto em repouso respira de 12 a 18 vezes por minuto; em uma respiração de cerca de 4 segundos, a estação percorre cerca de 30 km.",
+    "Segundo a NASA, em 24 horas a estação dá 16 voltas na Terra e passa por 16 nasceres e 16 pores do sol.",
+    "Segundo a página Spot the Station da NASA, a estação pode ser vista a olho nu porque reflete a luz do Sol; as oportunidades de vê-la de onde você está variam de uma vez por mês a várias vezes por semana.",
+    "Segundo a NASA, durante voos espaciais os ossos que sustentam peso perdem em média de 1% a 1,5% da densidade mineral por mês."
+   ]
+  },
+  "ar": {
+   "title": "كم مرة تدور محطة الفضاء حول الأرض في يوم واحد؟",
+   "summary": "في الوقت الذي تأخذ فيه نفَسًا واحدًا، تقطع محطة الفضاء 30 كم! يأخذك البروفيسور باي في يوم على محطة تدور حول الأرض 16 مرة، من 16 شروقًا للشمس إلى عظام تضعف.",
+   "facts": [
+    "وفقًا لناسا، تسير محطة الفضاء بسرعة نحو 28,000 كم/س (نحو 8 كم في الثانية) وتدور حول الأرض مرة كل 90 دقيقة تقريبًا. ووفقًا لكليفلاند كلينك، يتنفس البالغ في أثناء الراحة من 12 إلى 18 مرة في الدقيقة؛ وفي نفَس واحد مدته نحو 4 ثوانٍ تقطع المحطة نحو 30 كم.",
+    "وفقًا لناسا، تدور المحطة حول الأرض 16 مرة في 24 ساعة، وتمر بـ16 شروقًا و16 غروبًا للشمس.",
+    "وفقًا لصفحة Spot the Station التابعة لناسا، يمكن رؤية المحطة بالعين المجردة لأنها تعكس ضوء الشمس، وتتراوح فرص رؤيتها من موقعك بين مرة في الشهر وعدة مرات في الأسبوع.",
+    "وفقًا لناسا، تفقد العظام الحاملة للوزن في أثناء رحلات الفضاء في المتوسط ما بين 1% و1.5% من كثافتها المعدنية كل شهر."
+   ]
+  },
+  "hi": {
+   "title": "अंतरिक्ष स्टेशन 1 दिन में धरती के कितने चक्कर लगाता है?",
+   "summary": "जितनी देर में तुम एक साँस लेकर छोड़ते हो, उतने में अंतरिक्ष स्टेशन 30 km चल लेता है! धरती के 16 चक्कर लगाने वाले स्टेशन पर 16 सूर्योदयों से लेकर कमज़ोर होती हड्डियों तक, प्रोफ़ेसर पाई एक दिन का हाल बताते हैं।",
+   "facts": [
+    "NASA के अनुसार अंतरिक्ष स्टेशन लगभग 28,000 km/h (लगभग 8 km प्रति सेकंड) की रफ़्तार से चलता है और लगभग हर 90 मिनट में धरती का एक चक्कर लगाता है। क्लीवलैंड क्लिनिक के अनुसार आराम कर रहा वयस्क एक मिनट में 12 से 18 बार साँस लेता है; लगभग 4 सेकंड की एक साँस में स्टेशन लगभग 30 km चल लेता है।",
+    "NASA के अनुसार स्टेशन 24 घंटे में धरती के 16 चक्कर लगाता है और 16 सूर्योदय व 16 सूर्यास्त से गुज़रता है।",
+    "NASA के Spot the Station पेज के अनुसार स्टेशन सूरज की रोशनी परावर्तित करता है, इसलिए उसे बिना किसी उपकरण के नंगी आँखों से देखा जा सकता है; तुम्हारी जगह से उसे देखने के मौके महीने में एक बार से लेकर हफ़्ते में कई बार तक होते हैं।",
+    "NASA के अनुसार अंतरिक्ष उड़ान के दौरान वज़न उठाने वाली हड्डियाँ हर महीने औसतन 1% से 1.5% खनिज घनत्व खो देती हैं।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Kali Stasiun Luar Angkasa Mengelilingi Bumi dalam 1 Hari?",
+   "summary": "Dalam waktu kamu menarik dan membuang napas, Stasiun Luar Angkasa menempuh 30 km! Profesor Pi mengajakmu melewati sehari di stasiun yang mengelilingi Bumi 16 kali, dari 16 matahari terbit hingga tulang yang makin rapuh.",
+   "facts": [
+    "Menurut NASA, Stasiun Luar Angkasa melaju sekitar 28.000 km/jam (sekitar 8 km per detik) dan mengelilingi Bumi kira-kira setiap 90 menit. Menurut Cleveland Clinic, orang dewasa yang beristirahat bernapas 12 hingga 18 kali per menit; dalam satu napas sekitar 4 detik, stasiun menempuh sekitar 30 km.",
+    "Menurut NASA, dalam 24 jam stasiun mengelilingi Bumi 16 kali dan melewati 16 matahari terbit serta 16 matahari terbenam.",
+    "Menurut halaman Spot the Station milik NASA, stasiun dapat dilihat dengan mata telanjang karena memantulkan cahaya Matahari; kesempatan melihatnya dari lokasimu berkisar dari sekali sebulan hingga beberapa kali seminggu.",
+    "Menurut NASA, selama penerbangan antariksa tulang penopang beban kehilangan rata-rata 1% hingga 1,5% kepadatan mineralnya setiap bulan."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Tours de la Terre Fait la Station Spatiale en 1 Jour ?",
+   "summary": "Le temps que tu inspires et expires, la Station spatiale parcourt 30 km ! Le professeur Pi te fait vivre une journée sur une station qui fait 16 fois le tour de la Terre, de ses 16 levers de soleil aux os qui s'affaiblissent.",
+   "facts": [
+    "Selon la NASA, la Station spatiale file à environ 28 000 km/h (environ 8 km par seconde) et fait le tour de la Terre environ toutes les 90 minutes. Selon la Cleveland Clinic, un adulte au repos respire 12 à 18 fois par minute ; pendant une respiration d'environ 4 secondes, la station parcourt environ 30 km.",
+    "Selon la NASA, en 24 heures la station fait 16 fois le tour de la Terre et traverse 16 levers et 16 couchers de soleil.",
+    "Selon la page Spot the Station de la NASA, la station est visible à l'œil nu parce qu'elle réfléchit la lumière du Soleil ; selon l'endroit où tu te trouves, les occasions de la voir vont d'une fois par mois à plusieurs fois par semaine.",
+    "Selon la NASA, pendant un vol spatial, les os porteurs perdent en moyenne 1 % à 1,5 % de leur densité minérale par mois."
+   ]
+  },
+  "de": {
+   "title": "Wie Oft Umkreist die Raumstation die Erde an 1 Tag?",
+   "summary": "In der Zeit, in der du einmal ein- und ausatmest, legt die Raumstation 30 km zurück! Professor Pi zeigt dir einen Tag auf einer Station, die die Erde 16-mal umkreist, von 16 Sonnenaufgängen bis zu Knochen, die abbauen.",
+   "facts": [
+    "Laut NASA fliegt die Raumstation mit etwa 28.000 km/h (etwa 8 km pro Sekunde) und umrundet die Erde etwa alle 90 Minuten. Laut der Cleveland Clinic atmet ein Erwachsener in Ruhe 12- bis 18-mal pro Minute; während eines Atemzugs von etwa 4 Sekunden legt die Station etwa 30 km zurück.",
+    "Laut NASA umkreist die Station die Erde in 24 Stunden 16-mal und erlebt dabei 16 Sonnenaufgänge und 16 Sonnenuntergänge.",
+    "Laut der NASA-Seite Spot the Station ist die Station mit bloßem Auge sichtbar, weil sie Sonnenlicht reflektiert; je nach Standort gibt es zwischen einmal im Monat und mehrmals pro Woche Gelegenheit, sie zu sehen.",
+    "Laut NASA verlieren lasttragende Knochen während der Raumfahrt pro Monat durchschnittlich 1 % bis 1,5 % ihrer Mineraldichte."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Раз за 1 День Космическая Станция Облетает Землю?",
+   "summary": "Пока ты делаешь один вдох и выдох, космическая станция пролетает 30 км! Профессор Пи показывает один день на станции, которая облетает Землю 16 раз, — от 16 рассветов до слабеющих костей.",
+   "facts": [
+    "По данным NASA, космическая станция летит со скоростью около 28 000 км/ч (около 8 км в секунду) и облетает Землю примерно каждые 90 минут. По данным Cleveland Clinic, взрослый в покое делает 12–18 вдохов в минуту; за один вдох-выдох длиной около 4 секунд станция пролетает около 30 км.",
+    "По данным NASA, за 24 часа станция делает 16 витков вокруг Земли и встречает 16 рассветов и 16 закатов.",
+    "Согласно странице NASA Spot the Station, станцию можно увидеть невооружённым глазом, потому что она отражает солнечный свет; возможность увидеть её из твоего места бывает от раза в месяц до нескольких раз в неделю.",
+    "По данным NASA, во время космического полёта несущие нагрузку кости теряют в среднем от 1% до 1,5% минеральной плотности в месяц."
+   ]
+  },
+  "az": {
+   "title": "Kosmik Stansiya 1 Gündə Yer Kürəsini Neçə Dəfə Dolanır?",
+   "summary": "Sən bir dəfə nəfəs alıb verənə qədər Kosmik Stansiya 30 km yol gedir! Yer kürəsini 16 dəfə dolanan stansiyada 16 gün doğumundan zəifləyən sümüklərə qədər bir günü Professor Pi danışır.",
+   "facts": [
+    "NASA-ya görə Kosmik Stansiya saatda təxminən 28.000 km (saniyədə təxminən 8 km) sürətlə hərəkət edir və Yer kürəsini təxminən hər 90 dəqiqədə bir dəfə dolanır. Cleveland Clinic-ə görə istirahət edən yetkin insan dəqiqədə 12-18 dəfə nəfəs alır; təxminən 4 saniyəlik bir nəfəsdə stansiya təxminən 30 km yol gedir.",
+    "NASA-ya görə stansiya 24 saatda Yer kürəsini 16 dəfə dolanır və 16 gün doğumu ilə 16 gün batımından keçir.",
+    "NASA-nın Spot the Station səhifəsinə görə stansiya Günəş işığını əks etdirdiyi üçün heç bir alət olmadan adi gözlə görünə bilər; olduğun yerdən onu görmək imkanı ayda bir dəfədən həftədə bir neçə dəfəyə qədər dəyişir.",
+    "NASA-ya görə kosmik uçuş zamanı yük daşıyan sümüklər hər ay orta hesabla 1%-1,5% mineral sıxlığını itirir."
+   ]
+  }
+ }
+}

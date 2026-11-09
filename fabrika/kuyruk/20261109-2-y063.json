@@ -1,0 +1,247 @@
+{
+ "id": "y063",
+ "series": "Ya Olsaydı?",
+ "q": "Hapşırığını tutsaydın ne olurdu?",
+ "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+ "bar": {
+  "hi": "HAPŞIRIK",
+  "rest": "TUTSAYDIN?"
+ },
+ "summary": "Hapşırığını tutmak soluk borunu bile delebilir: bir adamın başına geldi! 20 kattan fazla artan basınçtan kulak zarına kadar, tutulan bir hapşırığın vücudunda neler yapabileceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Soluk borun delinebilir: hapşırığını tutan bir adama oldu!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🤧",
+    "do": "shake",
+    "key": "delinebilir",
+    "label": "Soluk Borusu"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hapşırık içimde mi patladı?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "💥",
+    "do": "grow",
+    "key": "patladı",
+    "label": "İçeride!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ağız burun kapalıyken basınç 20 katı aşabilir.",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "Basınç",
+    "from": 1,
+    "to": 20,
+    "unit": "kat",
+    "e": "🤐",
+    "key": "20"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "2018'de birinin de boğazı yırtıldı: tüple beslendi!",
+   "v": {
+    "t": "split",
+    "bg": "lab",
+    "left": {
+     "e": "🤧",
+     "label": "Tutulan Hapşırık"
+    },
+    "right": {
+     "e": "🏥",
+     "label": "Tüple Beslenme"
+    },
+    "key": "yırtıldı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kulak zarın delinebilir, beyinde zayıf bir damar patlayabilir!",
+   "v": {
+    "t": "icons",
+    "bg": "body",
+    "items": [
+     {
+      "e": "👂",
+      "label": "Kulak Zarı"
+     },
+     {
+      "e": "🧠",
+      "label": "Beyin Damarı"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Nadir ama gerçek. Her 4 kişiden 1'i güneşte hapşırır; sen tutma!",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "☀️",
+    "value": "1/4",
+    "unit": "kişi",
+    "label": "Güneşte Hapşıran",
+    "key": "4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen hapşırığını tutar mısın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🤧"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "BMJ Case Reports'ta 2023'te yayımlanan vakada İskoçya'da bir adam hapşırığını burnunu sıkıp ağzını kapatarak tutunca soluk borusunda 2x2 mm'lik bir yırtık oluştu; doktorlara göre ağız ve burun kapalıyken üst solunum yolundaki basınç normal bir hapşırığın 20 katından fazlasına çıkabilir. Bu, türünün bilinen ilk vakasıydı.",
+   "source": "Live Science (BMJ Case Reports)",
+   "url": "https://www.livescience.com/health/in-worlds-1st-known-case-man-tears-windpipe-from-holding-sneeze"
+  },
+  {
+   "text": "BMJ Case Reports'taki 2018 vakasında 34 yaşında bir adam hapşırığını tutunca boğazının arka duvarı yırtıldı; hastanede tüple beslendi ve 7 gün sonra taburcu oldu. Doktorlar tutulan hapşırığın kulak zarını delebileceği ve beyin anevrizmasını yırtabileceği uyarısında bulundu; bu tür yırtıklar çok nadirdir.",
+   "source": "ScienceDaily (BMJ Case Reports)",
+   "url": "https://www.sciencedaily.com/releases/2018/01/180115184339.htm"
+  },
+  {
+   "text": "Cleveland Clinic'e göre parlak ışığa bakınca hapşırma (ACHOO sendromu) insanların tahminen %18 ile %35'inde görülür ve kalıtsaldır.",
+   "source": "Cleveland Clinic",
+   "url": "https://health.clevelandclinic.org/why-does-bright-light-make-me-sneeze/"
+  }
+ ],
+ "tags": [
+  "hapşırık",
+  "hapşırığı tutmak",
+  "hapşırık tutmak zararlı mı",
+  "hapşırığını tutarsan ne olur",
+  "soluk borusu yırtılması",
+  "achoo sendromu",
+  "güneşe bakınca hapşırma",
+  "holding in a sneeze",
+  "stifled sneeze",
+  "sneeze",
+  "photic sneeze reflex",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#hapşırık",
+  "#sağlık",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/health/in-worlds-1st-known-case-man-tears-windpipe-from-holding-sneeze",
+  "https://www.sciencedaily.com/releases/2018/01/180115184339.htm",
+  "https://casereports.bmj.com/content/2018/bcr-2016-218906",
+  "https://health.clevelandclinic.org/why-does-bright-light-make-me-sneeze/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Held In a Sneeze?",
+   "summary": "Holding in a sneeze can even tear your windpipe: it happened to a man! From pressure rising more than 20-fold to your eardrums, Professor Pi explains what a stifled sneeze can do to your body.",
+   "facts": [
+    "In a case published in BMJ Case Reports in 2023, a man in Scotland held in a sneeze by pinching his nose and closing his mouth and tore a 2 x 2 mm hole in his windpipe; doctors say that with the nose and mouth closed, pressure in the upper airways can reach more than 20 times that of a normal sneeze. It was the first known case of its kind.",
+    "In a 2018 case in BMJ Case Reports, a 34-year-old man ruptured the back of his throat by holding in a sneeze; he was fed through a tube in hospital and discharged after 7 days. The doctors warned that a stifled sneeze can also perforate the eardrum and rupture a brain aneurysm; such tears are very rare.",
+    "According to Cleveland Clinic, sneezing when looking at bright light (ACHOO syndrome) affects an estimated 18% to 35% of people and is inherited."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Aguantaras un Estornudo?",
+   "summary": "Aguantar un estornudo puede incluso romperte la tráquea: ¡le pasó a un hombre! Desde una presión más de 20 veces mayor hasta tus tímpanos, el profesor Pi explica lo que un estornudo contenido puede hacerle a tu cuerpo.",
+   "facts": [
+    "En un caso publicado en BMJ Case Reports en 2023, un hombre en Escocia contuvo un estornudo tapándose la nariz y cerrando la boca y se abrió un orificio de 2 x 2 mm en la tráquea; según los médicos, con la nariz y la boca cerradas la presión en las vías respiratorias superiores puede ser más de 20 veces la de un estornudo normal. Fue el primer caso conocido de este tipo.",
+    "En un caso de 2018 en BMJ Case Reports, un hombre de 34 años se rompió la parte posterior de la garganta al contener un estornudo; en el hospital lo alimentaron por sonda y le dieron el alta a los 7 días. Los médicos advirtieron que un estornudo contenido también puede perforar el tímpano y romper un aneurisma cerebral; estos desgarros son muy raros.",
+    "Según la Cleveland Clinic, estornudar al mirar una luz intensa (síndrome ACHOO) afecta, según las estimaciones, a entre el 18 % y el 35 % de las personas, y es hereditario."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Segurasse um Espirro?",
+   "summary": "Segurar um espirro pode até rasgar sua traqueia: aconteceu com um homem! Da pressão mais de 20 vezes maior aos seus tímpanos, o professor Pi explica o que um espirro contido pode fazer com o seu corpo.",
+   "facts": [
+    "Em um caso publicado no BMJ Case Reports em 2023, um homem na Escócia segurou um espirro apertando o nariz e fechando a boca e abriu um furo de 2 x 2 mm na traqueia; segundo os médicos, com nariz e boca fechados, a pressão nas vias aéreas superiores pode passar de 20 vezes a de um espirro normal. Foi o primeiro caso conhecido do tipo.",
+    "Em um caso de 2018 no BMJ Case Reports, um homem de 34 anos rompeu o fundo da garganta ao segurar um espirro; no hospital, foi alimentado por sonda e recebeu alta após 7 dias. Os médicos alertaram que um espirro contido também pode perfurar o tímpano e romper um aneurisma cerebral; essas rupturas são muito raras.",
+    "Segundo a Cleveland Clinic, espirrar ao olhar para uma luz forte (síndrome ACHOO) afeta, segundo estimativas, de 18% a 35% das pessoas, e é hereditário."
+   ]
+  },
+  "ar": {
+   "title": "ماذا كان سيحدث لو كتمت عطستك؟",
+   "summary": "كتم العطسة قد يمزق قصبتك الهوائية: حدث ذلك لرجل بالفعل! من ضغط يرتفع أكثر من 20 مرة إلى طبلة أذنك، يشرح البروفيسور باي ما قد تفعله العطسة المكتومة بجسمك.",
+   "facts": [
+    "في حالة نُشرت في مجلة BMJ Case Reports عام 2023، كتم رجل في اسكتلندا عطسته بالضغط على أنفه وإغلاق فمه، فأصيب بتمزق مساحته 2 × 2 ملم في قصبته الهوائية؛ ووفقًا للأطباء، قد يتجاوز الضغط في المجاري التنفسية العليا مع إغلاق الأنف والفم 20 ضعف ضغط العطسة العادية. وكانت أول حالة معروفة من نوعها.",
+    "في حالة عام 2018 نشرتها مجلة BMJ Case Reports، تمزق الجدار الخلفي لحلق رجل في الرابعة والثلاثين بعدما كتم عطسته؛ وتغذّى عبر أنبوب في المستشفى وخرج بعد 7 أيام. وحذّر الأطباء من أن العطسة المكتومة قد تثقب طبلة الأذن وتفجّر تمدد الأوعية الدموية في الدماغ؛ وهذه التمزقات نادرة جدًا.",
+    "وفقًا لكليفلاند كلينك، يصيب العطاس عند النظر إلى ضوء ساطع (متلازمة ACHOO) ما بين 18% و35% من الناس تقديرًا، وهو وراثي."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम छींक रोक लेते तो क्या होता?",
+   "summary": "छींक रोकने से तुम्हारी साँस की नली तक फट सकती है: एक आदमी के साथ ऐसा हुआ! 20 गुना से ज़्यादा बढ़ते दबाव से लेकर कान के पर्दे तक, प्रोफ़ेसर पाई बताते हैं कि रोकी गई छींक तुम्हारे शरीर के साथ क्या कर सकती है।",
+   "facts": [
+    "2023 में BMJ Case Reports में प्रकाशित एक मामले में स्कॉटलैंड के एक आदमी ने नाक दबाकर और मुँह बंद करके छींक रोकी, तो उसकी श्वासनली में 2 x 2 mm का छेद हो गया; डॉक्टरों के अनुसार नाक और मुँह बंद होने पर ऊपरी श्वास मार्ग में दबाव सामान्य छींक से 20 गुना से ज़्यादा हो सकता है। यह अपनी तरह का पहला ज्ञात मामला था।",
+    "BMJ Case Reports के 2018 के एक मामले में 34 साल के एक आदमी के छींक रोकने से उसके गले की पिछली दीवार फट गई; अस्पताल में उसे नली से खाना दिया गया और 7 दिन बाद छुट्टी मिली। डॉक्टरों ने चेताया कि रोकी गई छींक कान का पर्दा फाड़ सकती है और दिमाग़ का एन्यूरिज़्म भी फोड़ सकती है; ऐसे मामले बहुत दुर्लभ हैं।",
+    "क्लीवलैंड क्लिनिक के अनुसार तेज़ रोशनी देखकर छींक आना (ACHOO सिंड्रोम) अनुमानतः 18% से 35% लोगों में होता है और यह वंशानुगत है।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Menahan Bersin?",
+   "summary": "Menahan bersin bahkan bisa merobek batang tenggorokmu: ini pernah terjadi pada seorang pria! Dari tekanan yang naik lebih dari 20 kali lipat hingga gendang telingamu, Profesor Pi menjelaskan apa yang bisa dilakukan bersin yang ditahan pada tubuhmu.",
+   "facts": [
+    "Dalam kasus yang terbit di BMJ Case Reports pada 2023, seorang pria di Skotlandia menahan bersin dengan memencet hidung dan menutup mulut, lalu batang tenggoroknya robek sebesar 2 x 2 mm; menurut dokter, dengan hidung dan mulut tertutup, tekanan di saluran napas atas bisa lebih dari 20 kali tekanan bersin biasa. Itu kasus pertama yang diketahui dari jenisnya.",
+    "Dalam kasus 2018 di BMJ Case Reports, seorang pria berusia 34 tahun mengalami robekan di bagian belakang tenggorokan setelah menahan bersin; di rumah sakit ia diberi makan lewat selang dan pulang setelah 7 hari. Dokter memperingatkan bahwa bersin yang ditahan juga bisa melubangi gendang telinga dan memecahkan aneurisma otak; robekan seperti ini sangat jarang.",
+    "Menurut Cleveland Clinic, bersin saat melihat cahaya terang (sindrom ACHOO) diperkirakan dialami 18% hingga 35% orang dan bersifat menurun."
+   ]
+  },
+  "fr": {
+   "title": "Que Se Passerait-il Si Tu Retenais un Éternuement ?",
+   "summary": "Retenir un éternuement peut même déchirer ta trachée : c'est arrivé à un homme ! De la pression multipliée par plus de 20 à tes tympans, le professeur Pi explique ce qu'un éternuement retenu peut faire à ton corps.",
+   "facts": [
+    "Dans un cas publié dans BMJ Case Reports en 2023, un homme en Écosse a retenu un éternuement en se pinçant le nez et en fermant la bouche et s'est fait une déchirure de 2 x 2 mm dans la trachée ; selon les médecins, nez et bouche fermés, la pression dans les voies respiratoires supérieures peut dépasser 20 fois celle d'un éternuement normal. C'était le premier cas connu de ce type.",
+    "Dans un cas de 2018 publié dans BMJ Case Reports, un homme de 34 ans s'est déchiré l'arrière de la gorge en retenant un éternuement ; à l'hôpital, il a été nourri par sonde et il est sorti au bout de 7 jours. Les médecins ont averti qu'un éternuement retenu peut aussi perforer le tympan et rompre un anévrisme cérébral ; ces déchirures sont très rares.",
+    "Selon la Cleveland Clinic, éternuer en regardant une lumière vive (syndrome ACHOO) concernerait environ 18 % à 35 % des gens, et ce trait est héréditaire."
+   ]
+  },
+  "de": {
+   "title": "Was Würde Passieren, Wenn Du Einen Nieser Unterdrückst?",
+   "summary": "Einen Nieser zu unterdrücken, kann sogar deine Luftröhre reißen lassen: Einem Mann ist genau das passiert! Vom mehr als 20-fachen Druck bis zu deinen Trommelfellen erklärt Professor Pi, was ein unterdrückter Nieser mit deinem Körper machen kann.",
+   "facts": [
+    "In einem 2023 in BMJ Case Reports veröffentlichten Fall unterdrückte ein Mann in Schottland einen Nieser, indem er sich die Nase zuhielt und den Mund schloss, und riss sich ein 2 x 2 mm großes Loch in die Luftröhre; laut den Ärzten kann der Druck in den oberen Atemwegen bei geschlossener Nase und geschlossenem Mund mehr als das 20-Fache eines normalen Niesers erreichen. Es war der erste bekannte Fall dieser Art.",
+    "In einem Fall von 2018 in BMJ Case Reports riss bei einem 34-jährigen Mann die hintere Rachenwand, als er einen Nieser unterdrückte; im Krankenhaus wurde er über eine Sonde ernährt und nach 7 Tagen entlassen. Die Ärzte warnten, dass ein unterdrückter Nieser auch das Trommelfell perforieren und ein Hirnaneurysma zum Platzen bringen kann; solche Risse sind sehr selten.",
+    "Laut der Cleveland Clinic betrifft das Niesen beim Blick in helles Licht (ACHOO-Syndrom) schätzungsweise 18 % bis 35 % der Menschen und ist erblich."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Сдержать Чих?",
+   "summary": "Сдержанный чих может даже порвать тебе трахею: с одним мужчиной так и случилось! От давления, выросшего более чем в 20 раз, до барабанных перепонок — профессор Пи объясняет, что сдержанный чих может сделать с твоим телом.",
+   "facts": [
+    "В случае, описанном в BMJ Case Reports в 2023 году, мужчина в Шотландии сдержал чих, зажав нос и закрыв рот, и получил разрыв трахеи размером 2 x 2 мм; по словам врачей, при закрытых носе и рте давление в верхних дыхательных путях может более чем в 20 раз превышать давление при обычном чихании. Это был первый известный случай такого рода.",
+    "В случае 2018 года из BMJ Case Reports у 34-летнего мужчины, сдержавшего чих, разорвалась задняя стенка глотки; в больнице его кормили через зонд и выписали через 7 дней. Врачи предупредили, что сдержанный чих может также повредить барабанную перепонку и вызвать разрыв аневризмы сосудов мозга; такие разрывы очень редки.",
+    "По данным Cleveland Clinic, чихание при взгляде на яркий свет (синдром ACHOO) встречается, по оценкам, у 18–35% людей и передаётся по наследству."
+   ]
+  },
+  "az": {
+   "title": "Asqırığını Saxlasaydın Nə Olardı?",
+   "summary": "Asqırığı saxlamaq hətta nəfəs borunu yırta bilər: bir kişinin başına gəlib! 20 dəfədən çox artan təzyiqdən qulaq pərdənə qədər, saxlanılan asqırığın bədəninə nə edə biləcəyini Professor Pi danışır.",
+   "facts": [
+    "2023-cü ildə BMJ Case Reports-da dərc olunan halda Şotlandiyada bir kişi burnunu sıxıb ağzını bağlayaraq asqırığını saxlayanda nəfəs borusunda 2x2 mm-lik yırtıq əmələ gəlib; həkimlərə görə burun və ağız bağlı olanda yuxarı tənəffüs yollarında təzyiq adi asqırığın 20 qatından çox ola bilər. Bu, öz növünün məlum olan ilk halı idi.",
+    "BMJ Case Reports-dakı 2018-ci il halında 34 yaşlı bir kişi asqırığını saxlayanda boğazının arxa divarı yırtılıb; xəstəxanada boru ilə qidalandırılıb və 7 gün sonra evə buraxılıb. Həkimlər saxlanılan asqırığın qulaq pərdəsini deşə və beyin anevrizmasını partlada biləcəyini xəbərdar ediblər; belə yırtıqlar çox nadirdir.",
+    "Cleveland Clinic-ə görə parlaq işığa baxanda asqırmaq (ACHOO sindromu) təxminən insanların 18%-35%-ində görülür və irsidir."
+   ]
+  }
+ }
+}

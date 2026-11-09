@@ -1,0 +1,278 @@
+{
+ "id": "n013",
+ "series": "Ne Kadar Büyük?",
+ "q": "Damarlarını uç uca eklesen ne kadar uzun olur?",
+ "title": "Damarların Gerçekte Ne Kadar Uzun?",
+ "bar": {
+  "hi": "DAMARLARIN",
+  "rest": "NE KADAR UZUN?"
+ },
+ "summary": "Damarlarının Dünya'yı 2,5 kez saracağı söylenir ama bu 100 yıllık bir hesap! Saç telinden ince kılcallardan şu an tırnağınla yapabileceğin teste kadar damarlarının gerçek boyunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Damarların Dünya'yı 2,5 kez sarar derler: 100.000 km!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "b": "earth",
+     "label": "Ekvator",
+     "value": "40.075"
+    },
+    "b": {
+     "e": "🩸",
+     "label": "Damarlar?",
+     "value": "100.000"
+    },
+    "mode": "bar",
+    "key": "100.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İçimde dünya turu mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🌍",
+    "do": "spin",
+    "key": "dünya",
+    "label": "Dünya Turu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çoğu saçtan ince kılcal; alyuvarlar tek sıra geçer.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🔬",
+    "value": "5",
+    "unit": "mikron",
+    "label": "Kılcal Genişliği",
+    "key": "kılcal"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama bu sayı 1922'de 143 kiloluk dev bir adama göre hesaplandı!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "💪",
+    "do": "grow",
+    "key": "143",
+    "label": "143 Kilo"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kasta kılcal 7 kat seyrek: Dünya'yı bir kez bile saramayabilir!",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "📜",
+     "label": "1922 Hesabı",
+     "value": "2.000"
+    },
+    "b": {
+     "e": "🔬",
+     "label": "Gerçek Kas",
+     "value": "300"
+    },
+    "mode": "bar",
+    "key": "7"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tırnağına bas bırak: 2 saniyede pembeleşirse kan akışın iyi!",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "BAS",
+      "e": "👆",
+      "label": "Beyazlar"
+     },
+     {
+      "when": "BIRAK",
+      "e": "💅",
+      "label": "Pembeleşir"
+     },
+     {
+      "when": "2 SANİYE",
+      "e": "⏱️",
+      "label": "Akış İyi"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Seninki kaç saniyede pembeleşti? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "💅"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Fizyologlar Poole ve arkadaşlarının 2021'de yayımlanan makalesine göre kılcal damarların toplam uzunluğu için verilen 100.000 km tahmini August Krogh'un 1922 tarihli kitabından gelir; Krogh, mm² başına 2.000 kılcal ve 50 kg iskelet kası olan 143 kg'lık olağanüstü iri bir insan varsaymıştı. 100.000 km, Dünya'nın yaklaşık 40.075 km'lik ekvator çevresinin yaklaşık 2,5 katıdır.",
+   "source": "Poole ve ark., Comparative Biochemistry and Physiology A (NIH PMC)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7867635/"
+  },
+  {
+   "text": "Aynı makaleye göre insan uyluk kasında ölçülen kılcal yoğunluğu mm² başına yaklaşık 300'dür, yani Krogh'un varsaydığının yaklaşık 7'de 1'i; kas kütlesi de 50 değil yaklaşık 23 kg'dır. Bu değerler Krogh'un hesabına konunca kaslardaki kılcalların toplamı 100.000 km yerine yaklaşık 7.000 km çıkar; yani gerçek uzunluk Dünya'nın çevresinden kısa olabilir.",
+   "source": "Poole ve ark., Comparative Biochemistry and Physiology A (NIH PMC)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7867635/"
+  },
+  {
+   "text": "Cleveland Clinic'e göre bir kılcal damar yaklaşık 5 mikrometre genişliğindedir ve saç telinden incedir; Britannica'ya göre kılcallar alyuvarların ancak tek sıra halinde geçebileceği kadar dardır.",
+   "source": "Cleveland Clinic, Britannica",
+   "url": "https://my.clevelandclinic.org/health/body/21988-capillaries"
+  },
+  {
+   "text": "ABD Ulusal Tıp Kütüphanesi'nin MedlinePlus sayfasına göre tırnak yatağına beyazlayana kadar bastırıp bıraktıktan sonra pembe renk 2 saniyeden kısa sürede geri geliyorsa kan akışı iyidir.",
+   "source": "MedlinePlus (NIH)",
+   "url": "https://medlineplus.gov/ency/article/003394.htm"
+  }
+ ],
+ "tags": [
+  "damarların uzunluğu",
+  "damarlar ne kadar uzun",
+  "damarlar uç uca eklense",
+  "kılcal damar",
+  "kan damarları",
+  "kılcal dolum testi",
+  "insan vücudu",
+  "blood vessels length",
+  "how long are your blood vessels",
+  "capillaries",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#damar",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC7867635/",
+  "https://my.clevelandclinic.org/health/body/21988-capillaries",
+  "https://www.britannica.com/science/capillary",
+  "https://medlineplus.gov/ency/article/003394.htm"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Long Are Your Blood Vessels, Really?",
+   "summary": "They say your blood vessels could wrap around Earth 2.5 times, but that number is a 100-year-old calculation! From capillaries thinner than a hair to a test you can do with your fingernail right now, Professor Pi reveals their real length.",
+   "facts": [
+    "According to a 2021 paper by physiologists Poole and colleagues, the 100,000 km estimate for the total length of capillaries comes from August Krogh's 1922 book; Krogh assumed 2,000 capillaries per mm² and an extraordinarily large 143 kg person with 50 kg of skeletal muscle. 100,000 km is about 2.5 times Earth's equatorial circumference of about 40,075 km.",
+    "According to the same paper, capillary density measured in human thigh muscle is about 300 per mm², about 1/7 of what Krogh assumed, and muscle mass is about 23 kg, not 50 kg. Putting these values into Krogh's calculation gives about 7,000 km of muscle capillaries instead of 100,000 km, so the real total may be shorter than Earth's circumference.",
+    "According to Cleveland Clinic, a capillary is about 5 micrometers wide, thinner than a human hair; according to Britannica, capillaries are just wide enough for red blood cells to pass through in single file.",
+    "According to MedlinePlus from the US National Library of Medicine, if you press on a nail bed until it turns white and the pink color returns in less than 2 seconds after release, blood flow is good."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánto Miden Realmente Tus Vasos Sanguíneos?",
+   "summary": "Dicen que tus vasos sanguíneos darían 2,5 vueltas a la Tierra, ¡pero esa cifra es un cálculo de hace 100 años! Desde capilares más finos que un cabello hasta una prueba que puedes hacer ahora mismo con tu uña, el profesor Pi revela su longitud real.",
+   "facts": [
+    "Según un artículo de 2021 de los fisiólogos Poole y colaboradores, la estimación de 100.000 km para la longitud total de los capilares procede del libro de August Krogh de 1922; Krogh supuso 2.000 capilares por mm² y una persona extraordinariamente grande, de 143 kg, con 50 kg de músculo esquelético. 100.000 km equivalen a unas 2,5 veces la circunferencia ecuatorial de la Tierra, de unos 40.075 km.",
+    "Según el mismo artículo, la densidad capilar medida en el músculo del muslo humano es de unos 300 por mm², alrededor de 1/7 de lo que supuso Krogh, y la masa muscular es de unos 23 kg, no 50. Con estos valores, el cálculo de Krogh da unos 7.000 km de capilares musculares en lugar de 100.000 km, así que la longitud real podría ser menor que la circunferencia de la Tierra.",
+    "Según la Cleveland Clinic, un capilar mide unos 5 micrómetros de ancho, menos que un cabello; según la Britannica, los capilares son apenas lo bastante anchos para que los glóbulos rojos pasen en fila de uno.",
+    "Según MedlinePlus, de la Biblioteca Nacional de Medicina de EE. UU., si presionas el lecho de una uña hasta que se ponga blanco y el color rosado vuelve en menos de 2 segundos al soltar, el flujo sanguíneo es bueno."
+   ]
+  },
+  "pt": {
+   "title": "Qual o Comprimento Real dos Seus Vasos Sanguíneos?",
+   "summary": "Dizem que seus vasos sanguíneos dariam 2,5 voltas na Terra, mas esse número é um cálculo de 100 anos atrás! De capilares mais finos que um fio de cabelo a um teste que você pode fazer agora com a unha, o professor Pi revela o comprimento real.",
+   "facts": [
+    "Segundo um artigo de 2021 dos fisiologistas Poole e colegas, a estimativa de 100.000 km para o comprimento total dos capilares vem do livro de August Krogh de 1922; Krogh supôs 2.000 capilares por mm² e uma pessoa extraordinariamente grande, de 143 kg, com 50 kg de músculo esquelético. 100.000 km equivalem a cerca de 2,5 vezes a circunferência equatorial da Terra, de cerca de 40.075 km.",
+    "Segundo o mesmo artigo, a densidade capilar medida no músculo da coxa humana é de cerca de 300 por mm², cerca de 1/7 do que Krogh supôs, e a massa muscular é de cerca de 23 kg, não 50. Com esses valores, o cálculo de Krogh dá cerca de 7.000 km de capilares musculares em vez de 100.000 km, então o comprimento real pode ser menor que a circunferência da Terra.",
+    "Segundo a Cleveland Clinic, um capilar tem cerca de 5 micrômetros de largura, menos que um fio de cabelo; segundo a Britannica, os capilares são tão estreitos que as hemácias passam por eles em fila única.",
+    "Segundo o MedlinePlus, da Biblioteca Nacional de Medicina dos EUA, se você aperta o leito da unha até ficar branco e a cor rosada volta em menos de 2 segundos depois de soltar, o fluxo sanguíneo é bom."
+   ]
+  },
+  "ar": {
+   "title": "ما الطول الحقيقي لأوعيتك الدموية؟",
+   "summary": "يقال إن أوعيتك الدموية تلتف حول الأرض 2.5 مرة، لكن هذا الرقم حساب عمره 100 عام! من شعيرات أدق من الشعرة إلى اختبار تستطيع إجراءه الآن بظفرك، يكشف البروفيسور باي طولها الحقيقي.",
+   "facts": [
+    "وفقًا لورقة نشرها عالم الفسيولوجيا بوول وزملاؤه عام 2021، يعود تقدير 100,000 كم للطول الكلي للشعيرات الدموية إلى كتاب أوغست كروغ الصادر عام 1922؛ إذ افترض كروغ وجود 2,000 شعيرة في كل ملم² وشخصًا ضخمًا على نحو استثنائي وزنه 143 كغ ولديه 50 كغ من العضلات الهيكلية. و100,000 كم تعادل نحو 2.5 ضعف محيط الأرض عند خط الاستواء البالغ نحو 40,075 كم.",
+    "وفقًا للورقة نفسها، تبلغ كثافة الشعيرات المقيسة في عضلة الفخذ لدى الإنسان نحو 300 في كل ملم²، أي نحو 1/7 مما افترضه كروغ، وتبلغ الكتلة العضلية نحو 23 كغ لا 50. وبإدخال هذه القيم في حساب كروغ يصبح طول شعيرات العضلات نحو 7,000 كم بدل 100,000 كم، لذا قد يكون الطول الحقيقي أقصر من محيط الأرض.",
+    "وفقًا لكليفلاند كلينك، يبلغ عرض الشعيرة الدموية نحو 5 ميكرومترات، أي أدق من الشعرة؛ ووفقًا لموسوعة بريتانيكا، الشعيرات ضيقة بحيث لا تمر خلايا الدم الحمراء فيها إلا في صف واحد.",
+    "وفقًا لموقع MedlinePlus التابع للمكتبة الوطنية الأمريكية للطب، إذا ضغطت على قاعدة الظفر حتى تبيضّ ثم عاد اللون الوردي في أقل من ثانيتين بعد رفع الضغط، فإن تدفق الدم جيد."
+   ]
+  },
+  "hi": {
+   "title": "तुम्हारी रक्त वाहिकाएँ असल में कितनी लंबी हैं?",
+   "summary": "कहा जाता है कि तुम्हारी रक्त वाहिकाएँ धरती को 2.5 बार लपेट सकती हैं, लेकिन यह संख्या 100 साल पुरानी गणना है! बाल से भी पतली केशिकाओं से लेकर उस टेस्ट तक जो तुम अभी अपने नाख़ून से कर सकते हो, प्रोफ़ेसर पाई उनकी असली लंबाई बताते हैं।",
+   "facts": [
+    "फ़िज़ियोलॉजिस्ट पूल और साथियों के 2021 के शोधपत्र के अनुसार, केशिकाओं की कुल लंबाई का 100,000 km वाला अनुमान ऑगस्ट क्रोघ की 1922 की किताब से आया है; क्रोघ ने हर mm² में 2,000 केशिकाएँ और 50 kg कंकाल-मांसपेशी वाले 143 kg के असाधारण रूप से बड़े इंसान को माना था। 100,000 km धरती की लगभग 40,075 km की भूमध्यरेखीय परिधि का लगभग 2.5 गुना है।",
+    "उसी शोधपत्र के अनुसार, इंसान की जाँघ की मांसपेशी में मापा गया केशिका घनत्व लगभग 300 प्रति mm² है, यानी क्रोघ की मान्यता का लगभग 1/7, और मांसपेशियों का वज़न 50 नहीं बल्कि लगभग 23 kg है। इन मानों से क्रोघ की गणना करने पर मांसपेशियों की केशिकाएँ 100,000 km की जगह लगभग 7,000 km बनती हैं, इसलिए असली लंबाई धरती की परिधि से भी कम हो सकती है।",
+    "क्लीवलैंड क्लिनिक के अनुसार एक केशिका लगभग 5 माइक्रोमीटर चौड़ी होती है, जो इंसानी बाल से पतली है; ब्रिटानिका के अनुसार केशिकाएँ इतनी संकरी होती हैं कि लाल रक्त कोशिकाएँ उनमें एक-एक करके क़तार में गुज़रती हैं।",
+    "अमेरिकी नेशनल लाइब्रेरी ऑफ़ मेडिसिन की MedlinePlus के अनुसार, नाख़ून को सफ़ेद होने तक दबाकर छोड़ने के बाद अगर गुलाबी रंग 2 सेकंड से कम में लौट आए, तो रक्त प्रवाह अच्छा है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Panjang Pembuluh Darahmu Sebenarnya?",
+   "summary": "Katanya pembuluh darahmu bisa melilit Bumi 2,5 kali, tapi angka itu hasil hitungan 100 tahun lalu! Dari kapiler yang lebih tipis dari rambut hingga tes yang bisa kamu coba sekarang dengan kukumu, Profesor Pi mengungkap panjang sebenarnya.",
+   "facts": [
+    "Menurut makalah tahun 2021 oleh fisiolog Poole dan rekan-rekannya, perkiraan 100.000 km untuk total panjang kapiler berasal dari buku August Krogh tahun 1922; Krogh mengasumsikan 2.000 kapiler per mm² dan orang yang luar biasa besar, 143 kg dengan 50 kg otot rangka. 100.000 km sekitar 2,5 kali keliling khatulistiwa Bumi yang sekitar 40.075 km.",
+    "Menurut makalah yang sama, kepadatan kapiler yang diukur pada otot paha manusia sekitar 300 per mm², kira-kira 1/7 dari asumsi Krogh, dan massa otot sekitar 23 kg, bukan 50 kg. Dengan nilai-nilai ini, hitungan Krogh menghasilkan sekitar 7.000 km kapiler otot, bukan 100.000 km, sehingga panjang sebenarnya bisa lebih pendek dari keliling Bumi.",
+    "Menurut Cleveland Clinic, sebuah kapiler lebarnya sekitar 5 mikrometer, lebih tipis dari rambut manusia; menurut Britannica, kapiler hanya cukup lebar untuk dilewati sel darah merah satu per satu.",
+    "Menurut MedlinePlus dari Perpustakaan Kedokteran Nasional AS, jika kamu menekan dasar kuku sampai memutih lalu warna merah muda kembali dalam kurang dari 2 detik setelah dilepas, aliran darahmu baik."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Longueur de Tes Vaisseaux Sanguins ?",
+   "summary": "On dit que tes vaisseaux sanguins feraient 2,5 fois le tour de la Terre, mais ce chiffre vient d'un calcul vieux de 100 ans ! Des capillaires plus fins qu'un cheveu à un test que tu peux faire tout de suite avec ton ongle, le professeur Pi révèle leur vraie longueur.",
+   "facts": [
+    "Selon un article publié en 2021 par les physiologistes Poole et ses collègues, l'estimation de 100 000 km pour la longueur totale des capillaires vient du livre d'August Krogh de 1922 ; Krogh supposait 2 000 capillaires par mm² et une personne extraordinairement grande, de 143 kg, avec 50 kg de muscles squelettiques. 100 000 km représentent environ 2,5 fois la circonférence équatoriale de la Terre, d'environ 40 075 km.",
+    "Selon le même article, la densité capillaire mesurée dans le muscle de la cuisse humaine est d'environ 300 par mm², soit environ 1/7 de ce que supposait Krogh, et la masse musculaire est d'environ 23 kg, pas 50. Avec ces valeurs, le calcul de Krogh donne environ 7 000 km de capillaires musculaires au lieu de 100 000 km : la longueur réelle pourrait donc être inférieure à la circonférence de la Terre.",
+    "Selon la Cleveland Clinic, un capillaire mesure environ 5 micromètres de large, moins qu'un cheveu ; selon l'Encyclopædia Britannica, les capillaires sont juste assez larges pour que les globules rouges y passent en file indienne.",
+    "Selon MedlinePlus, de la Bibliothèque nationale de médecine des États-Unis, si l'on appuie sur le lit de l'ongle jusqu'à ce qu'il blanchisse et que la couleur rose revient en moins de 2 secondes après avoir relâché, la circulation sanguine est bonne."
+   ]
+  },
+  "de": {
+   "title": "Wie Lang Sind Deine Blutgefäße Wirklich?",
+   "summary": "Angeblich könnten deine Blutgefäße die Erde 2,5-mal umwickeln, doch diese Zahl stammt aus einer 100 Jahre alten Rechnung! Von Kapillaren, dünner als ein Haar, bis zu einem Test, den du jetzt mit deinem Fingernagel machen kannst, verrät Professor Pi ihre wahre Länge.",
+   "facts": [
+    "Laut einem 2021 veröffentlichten Artikel der Physiologen Poole und Kollegen stammt die Schätzung von 100.000 km für die Gesamtlänge der Kapillaren aus August Kroghs Buch von 1922; Krogh nahm 2.000 Kapillaren pro mm² und einen außergewöhnlich großen, 143 kg schweren Menschen mit 50 kg Skelettmuskulatur an. 100.000 km sind etwa das 2,5-Fache des Erdumfangs am Äquator von etwa 40.075 km.",
+    "Laut demselben Artikel liegt die im menschlichen Oberschenkelmuskel gemessene Kapillardichte bei etwa 300 pro mm², also etwa 1/7 von Kroghs Annahme, und die Muskelmasse bei etwa 23 kg statt 50 kg. Mit diesen Werten ergibt Kroghs Rechnung etwa 7.000 km Muskelkapillaren statt 100.000 km; die tatsächliche Länge könnte also kürzer sein als der Erdumfang.",
+    "Laut der Cleveland Clinic ist eine Kapillare etwa 5 Mikrometer breit und damit dünner als ein Haar; laut Britannica sind Kapillaren gerade so weit, dass rote Blutkörperchen im Gänsemarsch hindurchpassen.",
+    "Laut MedlinePlus der US-amerikanischen National Library of Medicine ist die Durchblutung gut, wenn das Nagelbett nach dem Drücken, bis es weiß wird, in weniger als 2 Sekunden nach dem Loslassen wieder rosa wird."
+   ]
+  },
+  "ru": {
+   "title": "Какой Длины Твои Сосуды на Самом Деле?",
+   "summary": "Говорят, твои сосуды могли бы обернуть Землю 2,5 раза, но это число — расчёт столетней давности! От капилляров тоньше волоса до теста, который можно сделать прямо сейчас с ногтем, — профессор Пи раскрывает их настоящую длину.",
+   "facts": [
+    "Согласно статье физиологов Пула и коллег 2021 года, оценка общей длины капилляров в 100 000 км взята из книги Августа Крога 1922 года; Крог исходил из 2 000 капилляров на мм² и необычайно крупного человека весом 143 кг с 50 кг скелетных мышц. 100 000 км — это примерно 2,5 длины экватора Земли (около 40 075 км).",
+    "Согласно той же статье, плотность капилляров, измеренная в мышце бедра человека, составляет около 300 на мм², то есть примерно 1/7 от предположения Крога, а масса мышц — около 23 кг, а не 50. С этими значениями расчёт Крога даёт около 7 000 км мышечных капилляров вместо 100 000 км, так что настоящая длина может быть меньше окружности Земли.",
+    "По данным Cleveland Clinic, ширина капилляра около 5 микрометров — он тоньше волоса; по данным Britannica, капилляры настолько узки, что эритроциты проходят по ним по одному.",
+    "По данным MedlinePlus Национальной медицинской библиотеки США, если надавить на ногтевое ложе до побеления и после отпускания розовый цвет вернётся меньше чем за 2 секунды, кровоток в норме."
+   ]
+  },
+  "az": {
+   "title": "Damarların Əslində Nə Qədər Uzundur?",
+   "summary": "Deyirlər ki, damarların Yer kürəsini 2,5 dəfə dolaya bilər, amma bu rəqəm 100 illik bir hesablamadır! Saç telindən nazik kapilyarlardan indi dırnağınla edə biləcəyin testə qədər damarlarının əsl uzunluğunu Professor Pi açıqlayır.",
+   "facts": [
+    "Fizioloqlar Pul və həmkarlarının 2021-ci il məqaləsinə görə kapilyarların ümumi uzunluğu üçün verilən 100.000 km təxmini Avqust Kroqun 1922-ci il kitabından gəlir; Kroq hər mm²-də 2.000 kapilyar və 50 kq skelet əzələsi olan 143 kq-lıq qeyri-adi iri bir insan fərz etmişdi. 100.000 km Yerin təxminən 40.075 km-lik ekvator çevrəsinin təxminən 2,5 qatıdır.",
+    "Həmin məqaləyə görə insanın bud əzələsində ölçülən kapilyar sıxlığı hər mm²-də təxminən 300-dür, yəni Kroqun fərz etdiyinin təxminən 1/7-i, əzələ kütləsi isə 50 deyil, təxminən 23 kq-dır. Bu dəyərlərlə Kroqun hesablaması 100.000 km əvəzinə təxminən 7.000 km əzələ kapilyarı verir, yəni əsl uzunluq Yerin çevrəsindən qısa ola bilər.",
+    "Cleveland Clinic-ə görə kapilyarın eni təxminən 5 mikrometrdir və saç telindən nazikdir; Britannica-ya görə kapilyarlar elə dardır ki, qırmızı qan hüceyrələri onlardan yalnız tək sıra ilə keçə bilir.",
+    "ABŞ Milli Tibb Kitabxanasının MedlinePlus səhifəsinə görə dırnaq yatağını ağarana qədər sıxıb buraxdıqdan sonra çəhrayı rəng 2 saniyədən tez qayıdırsa, qan axını yaxşıdır."
+   ]
+  }
+ }
+}

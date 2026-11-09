@@ -1,0 +1,265 @@
+{
+ "id": "g012",
+ "series": "1 Gün Boyunca",
+ "q": "Dünya'da 1 günde kaç deprem olur?",
+ "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+ "bar": {
+  "hi": "1 GÜNDE",
+  "rest": "KAÇ DEPREM?"
+ },
+ "summary": "Sen bu videoyu izlerken bir yerde yer sallanıyor: Dünya'da günde yaklaşık 1.400 deprem oluyor! Cebindeki telefonun depremi nasıl yakaladığını ve 2004'teki dev depremin günü nasıl kısalttığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Dakikada bir deprem: bugün yer yaklaşık 1.400 kez sallanacak!",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "🌍",
+    "value": "1.400",
+    "unit": "deprem",
+    "label": "Bugün",
+    "key": "1.400"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ben şu an sallanıyor muyum?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏠",
+    "do": "shake",
+    "key": "sallanıyor",
+    "label": "Şu An"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bunların 270 kadarını insanlar hisseder.",
+   "v": {
+    "t": "compare",
+    "bg": "city",
+    "a": {
+     "e": "🌍",
+     "label": "Tüm Depremler",
+     "value": "1.400"
+    },
+    "b": {
+     "e": "🧍",
+     "label": "Hissedilen",
+     "value": "270"
+    },
+    "mode": "bar",
+    "key": "270"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Telefonun da hisseder: Android'ler 11.000'den fazla deprem yakaladı!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "📱",
+    "do": "shake",
+    "key": "Telefonun",
+    "label": "11.000+ Deprem"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "2004'te tek deprem tüm Dünya'yı 1 santimden fazla oynattı; sokağını da!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "oynattı",
+    "label": "Her Yerde 1 cm+"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik günü 6,8 mikrosaniye kısalttı!",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "⏱️",
+    "value": "6,8",
+    "unit": "mikrosaniye",
+    "label": "Daha Kısa Gün",
+    "key": "6,8"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen en son hangi depremi hissettin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "city",
+    "e": "🌍"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "USGS'e göre dünyada her yıl tahminen 500.000 tespit edilebilir deprem olur: günde yaklaşık 1.400, dakikada yaklaşık 1 deprem. Bunların yaklaşık 100.000'i hissedilir (günde yaklaşık 270), yaklaşık 100'ü hasar verir.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/programs/earthquake-hazards/cool-earthquake-facts"
+  },
+  {
+   "text": "Science dergisinde 2025'te yayımlanan çalışmaya göre Android telefonlardaki ivme ölçerler 2021-2024 arasında 98 ülkede 11.000'den fazla depremi algıladı.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/technology/communications/google-has-turned-2-billion-smartphones-into-a-global-earthquake-warning-system-its-as-effective-as-seismometers-tests-show"
+  },
+  {
+   "text": "California Üniversitesi Santa Cruz'a göre 2004 Sumatra-Andaman depremi, hissedilemeyecek kadar yavaş olsa da Dünya yüzeyinin her yerinde 1 santimetreden fazla yer hareketine yol açtı.",
+   "source": "University of California, Santa Cruz",
+   "url": "https://news.ucsc.edu/2005/05/seismologists-publish-detailed-analysis-of-the-great-sumatra-andaman-earthquake/"
+  },
+  {
+   "text": "NASA Jet İtki Laboratuvarı'ndan Richard Gross'un hesabına göre 9,1 büyüklüğündeki 2004 Sumatra depremi günün uzunluğunu 6,8 mikrosaniye kısalttı.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/news/japan-quake-may-have-shortened-earth-days-moved-axis/"
+  }
+ ],
+ "tags": [
+  "dünyada günde kaç deprem olur",
+  "1 günde kaç deprem olur",
+  "deprem",
+  "deprem sayısı",
+  "sumatra depremi",
+  "android deprem uyarısı",
+  "günün kısalması",
+  "earthquakes per day",
+  "how many earthquakes a day",
+  "earthquake facts",
+  "1 gün boyunca",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#deprem",
+  "#dünya",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://www.usgs.gov/programs/earthquake-hazards/cool-earthquake-facts",
+  "https://www.jpl.nasa.gov/news/japan-quake-may-have-shortened-earth-days-moved-axis/",
+  "https://news.ucsc.edu/2005/05/seismologists-publish-detailed-analysis-of-the-great-sumatra-andaman-earthquake/",
+  "https://www.livescience.com/technology/communications/google-has-turned-2-billion-smartphones-into-a-global-earthquake-warning-system-its-as-effective-as-seismometers-tests-show"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Earthquakes Happen on Earth in 1 Day?",
+   "summary": "While you watch this video, the ground is shaking somewhere: about 1,400 earthquakes happen on Earth every day! Professor Pi explains how the phone in your pocket catches them and how the giant 2004 quake shortened the day.",
+   "facts": [
+    "According to the USGS, an estimated 500,000 detectable earthquakes happen in the world each year: about 1,400 a day, or roughly 1 per minute. About 100,000 of them can be felt (about 270 a day), and about 100 cause damage.",
+    "According to a study published in Science in 2025, accelerometers in Android phones detected more than 11,000 earthquakes in 98 countries between 2021 and 2024.",
+    "According to the University of California, Santa Cruz, the 2004 Sumatra-Andaman earthquake caused ground movements of more than 1 centimeter everywhere on Earth's surface, though too gradual to feel.",
+    "According to calculations by Richard Gross of NASA's Jet Propulsion Laboratory, the magnitude 9.1 Sumatra earthquake of 2004 shortened the length of the day by 6.8 microseconds."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántos Terremotos Hay en la Tierra en 1 Día?",
+   "summary": "Mientras ves este video, la tierra tiembla en algún lugar: ¡en la Tierra hay unos 1.400 terremotos al día! El profesor Pi explica cómo el teléfono de tu bolsillo los detecta y cómo el gran terremoto de 2004 acortó el día.",
+   "facts": [
+    "Según el USGS, cada año se producen en el mundo unos 500.000 terremotos detectables: unos 1.400 al día, o aproximadamente 1 por minuto. Unos 100.000 se pueden sentir (unos 270 al día) y unos 100 causan daños.",
+    "Según un estudio publicado en Science en 2025, los acelerómetros de los teléfonos Android detectaron más de 11.000 terremotos en 98 países entre 2021 y 2024.",
+    "Según la Universidad de California en Santa Cruz, el terremoto de Sumatra-Andamán de 2004 provocó movimientos del suelo de más de 1 centímetro en todos los puntos de la superficie terrestre, aunque demasiado lentos para sentirse.",
+    "Según los cálculos de Richard Gross, del Laboratorio de Propulsión a Chorro de la NASA, el terremoto de Sumatra de 2004, de magnitud 9,1, acortó la duración del día en 6,8 microsegundos."
+   ]
+  },
+  "pt": {
+   "title": "Quantos Terremotos Acontecem na Terra em 1 Dia?",
+   "summary": "Enquanto você assiste a este vídeo, o chão está tremendo em algum lugar: a Terra tem cerca de 1.400 terremotos por dia! O professor Pi explica como o celular no seu bolso os detecta e como o grande terremoto de 2004 encurtou o dia.",
+   "facts": [
+    "Segundo o USGS, estima-se que ocorram no mundo 500.000 terremotos detectáveis por ano: cerca de 1.400 por dia, ou aproximadamente 1 por minuto. Cerca de 100.000 podem ser sentidos (cerca de 270 por dia) e cerca de 100 causam danos.",
+    "Segundo um estudo publicado na Science em 2025, os acelerômetros de celulares Android detectaram mais de 11.000 terremotos em 98 países entre 2021 e 2024.",
+    "Segundo a Universidade da Califórnia em Santa Cruz, o terremoto de Sumatra-Andaman de 2004 provocou movimentos do solo de mais de 1 centímetro em todos os pontos da superfície da Terra, lentos demais para serem sentidos.",
+    "Segundo cálculos de Richard Gross, do Laboratório de Propulsão a Jato da NASA, o terremoto de magnitude 9,1 em Sumatra, em 2004, encurtou a duração do dia em 6,8 microssegundos."
+   ]
+  },
+  "ar": {
+   "title": "كم زلزالًا يحدث على الأرض في يوم واحد؟",
+   "summary": "بينما تشاهد هذا الفيديو، تهتز الأرض في مكان ما: يحدث على الأرض نحو 1,400 زلزال كل يوم! يشرح البروفيسور باي كيف يلتقطها الهاتف الذي في جيبك، وكيف قصّر زلزال 2004 العملاق طول اليوم.",
+   "facts": [
+    "وفقًا لهيئة المسح الجيولوجي الأمريكية (USGS)، يقع في العالم سنويًا نحو 500,000 زلزال يمكن رصده، أي نحو 1,400 زلزال يوميًا أو زلزال واحد تقريبًا كل دقيقة. ويمكن الشعور بنحو 100,000 منها (نحو 270 يوميًا)، ويُحدث نحو 100 منها أضرارًا.",
+    "وفقًا لدراسة نُشرت في مجلة Science عام 2025، رصدت مقاييس التسارع في هواتف أندرويد أكثر من 11,000 زلزال في 98 دولة بين عامي 2021 و2024.",
+    "وفقًا لجامعة كاليفورنيا في سانتا كروز، تسبب زلزال سومطرة-أندامان عام 2004 في تحركات للأرض تزيد على 1 سنتيمتر في كل مكان على سطح الأرض، وإن كانت أبطأ من أن تُحَس.",
+    "وفقًا لحسابات ريتشارد غروس من مختبر الدفع النفاث التابع لناسا، قصّر زلزال سومطرة عام 2004 بقوة 9.1 طول اليوم بمقدار 6.8 ميكروثانية."
+   ]
+  },
+  "hi": {
+   "title": "धरती पर 1 दिन में कितने भूकंप आते हैं?",
+   "summary": "जब तुम यह वीडियो देख रहे हो, कहीं न कहीं ज़मीन हिल रही है: धरती पर हर दिन लगभग 1,400 भूकंप आते हैं! प्रोफ़ेसर पाई बताते हैं कि तुम्हारी जेब का फ़ोन उन्हें कैसे पकड़ता है और 2004 के विशाल भूकंप ने दिन को कैसे छोटा कर दिया।",
+   "facts": [
+    "USGS के अनुसार, दुनिया में हर साल अनुमानित 500,000 ऐसे भूकंप आते हैं जिन्हें दर्ज किया जा सकता है, यानी रोज़ लगभग 1,400 या हर मिनट लगभग 1। इनमें से लगभग 100,000 महसूस किए जा सकते हैं (रोज़ लगभग 270) और लगभग 100 नुकसान पहुँचाते हैं।",
+    "2025 में Science पत्रिका में प्रकाशित एक अध्ययन के अनुसार, Android फ़ोनों के एक्सेलेरोमीटर ने 2021 से 2024 के बीच 98 देशों में 11,000 से ज़्यादा भूकंप पकड़े।",
+    "यूनिवर्सिटी ऑफ़ कैलिफ़ोर्निया, सांता क्रूज़ के अनुसार, 2004 के सुमात्रा-अंडमान भूकंप से धरती की सतह पर हर जगह ज़मीन 1 सेंटीमीटर से ज़्यादा खिसकी, हालाँकि यह इतनी धीमी थी कि महसूस नहीं हुई।",
+    "NASA की जेट प्रोपल्शन लैबोरेटरी के रिचर्ड ग्रॉस की गणना के अनुसार, 2004 के 9.1 तीव्रता वाले सुमात्रा भूकंप ने दिन की लंबाई 6.8 माइक्रोसेकंड कम कर दी।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Gempa yang Terjadi di Bumi dalam 1 Hari?",
+   "summary": "Saat kamu menonton video ini, tanah sedang berguncang di suatu tempat: Bumi mengalami sekitar 1.400 gempa setiap hari! Profesor Pi menjelaskan bagaimana ponsel di sakumu menangkapnya dan bagaimana gempa raksasa 2004 memperpendek hari.",
+   "facts": [
+    "Menurut USGS, diperkirakan terjadi 500.000 gempa yang dapat terdeteksi di dunia setiap tahun: sekitar 1.400 per hari, atau kira-kira 1 per menit. Sekitar 100.000 di antaranya dapat dirasakan (sekitar 270 per hari) dan sekitar 100 menimbulkan kerusakan.",
+    "Menurut studi yang terbit di jurnal Science pada 2025, akselerometer di ponsel Android mendeteksi lebih dari 11.000 gempa di 98 negara antara 2021 dan 2024.",
+    "Menurut University of California, Santa Cruz, gempa Sumatra-Andaman 2004 menyebabkan pergerakan tanah lebih dari 1 sentimeter di semua tempat di permukaan Bumi, meski terlalu perlahan untuk dirasakan.",
+    "Menurut perhitungan Richard Gross dari Jet Propulsion Laboratory NASA, gempa Sumatra 2004 bermagnitudo 9,1 memperpendek panjang hari sebesar 6,8 mikrodetik."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Séismes Se Produisent sur Terre en 1 Jour ?",
+   "summary": "Pendant que tu regardes cette vidéo, le sol tremble quelque part : la Terre connaît environ 1 400 séismes par jour ! Le professeur Pi explique comment le téléphone dans ta poche les détecte et comment le séisme géant de 2004 a raccourci la journée.",
+   "facts": [
+    "Selon l'USGS, on estime à 500 000 le nombre de séismes détectables chaque année dans le monde : environ 1 400 par jour, soit à peu près 1 par minute. Environ 100 000 peuvent être ressentis (environ 270 par jour) et environ 100 causent des dégâts.",
+    "Selon une étude publiée dans Science en 2025, les accéléromètres des téléphones Android ont détecté plus de 11 000 séismes dans 98 pays entre 2021 et 2024.",
+    "Selon l'université de Californie à Santa Cruz, le séisme de Sumatra-Andaman de 2004 a provoqué des mouvements du sol de plus de 1 centimètre partout à la surface de la Terre, trop lents pour être ressentis.",
+    "Selon les calculs de Richard Gross, du Jet Propulsion Laboratory de la NASA, le séisme de magnitude 9,1 de Sumatra en 2004 a raccourci la durée du jour de 6,8 microsecondes."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Erdbeben Gibt Es auf der Erde an 1 Tag?",
+   "summary": "Während du dieses Video schaust, bebt irgendwo die Erde: Auf der Erde gibt es etwa 1.400 Erdbeben pro Tag! Professor Pi erklärt, wie das Handy in deiner Tasche sie erkennt und wie das gewaltige Beben von 2004 den Tag verkürzt hat.",
+   "facts": [
+    "Laut USGS gibt es weltweit schätzungsweise 500.000 messbare Erdbeben pro Jahr: etwa 1.400 pro Tag, also ungefähr 1 pro Minute. Etwa 100.000 davon sind spürbar (etwa 270 pro Tag), und etwa 100 richten Schäden an.",
+    "Laut einer 2025 in Science veröffentlichten Studie haben die Beschleunigungssensoren von Android-Handys zwischen 2021 und 2024 in 98 Ländern mehr als 11.000 Erdbeben erkannt.",
+    "Laut der University of California, Santa Cruz, verursachte das Sumatra-Andamanen-Beben von 2004 überall auf der Erdoberfläche Bodenbewegungen von mehr als 1 Zentimeter, allerdings zu langsam, um sie zu spüren.",
+    "Laut Berechnungen von Richard Gross vom Jet Propulsion Laboratory der NASA verkürzte das Sumatra-Beben der Stärke 9,1 von 2004 die Tageslänge um 6,8 Mikrosekunden."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Землетрясений Происходит на Земле за 1 День?",
+   "summary": "Пока ты смотришь это видео, где-то трясётся земля: на Земле происходит около 1 400 землетрясений в день! Профессор Пи объясняет, как их ловит телефон в твоём кармане и как гигантское землетрясение 2004 года укоротило сутки.",
+   "facts": [
+    "По оценке Геологической службы США (USGS), в мире ежегодно происходит около 500 000 регистрируемых землетрясений — примерно 1 400 в день, или около 1 в минуту. Около 100 000 из них ощутимы (примерно 270 в день), а около 100 причиняют ущерб.",
+    "Согласно исследованию, опубликованному в журнале Science в 2025 году, акселерометры телефонов на Android с 2021 по 2024 год обнаружили более 11 000 землетрясений в 98 странах.",
+    "По данным Калифорнийского университета в Санта-Крузе, Суматра-Андаманское землетрясение 2004 года вызвало смещения грунта более чем на 1 сантиметр во всех точках земной поверхности, хотя слишком медленные, чтобы их почувствовать.",
+    "По расчётам Ричарда Гросса из Лаборатории реактивного движения NASA, землетрясение магнитудой 9,1 на Суматре в 2004 году сократило продолжительность суток на 6,8 микросекунды."
+   ]
+  },
+  "az": {
+   "title": "Yer Üzərində 1 Gündə Neçə Zəlzələ Olur?",
+   "summary": "Sən bu videonu izləyərkən haradasa yer silkələnir: Yer üzərində gündə təxminən 1.400 zəlzələ olur! Cibindəki telefonun onları necə tutduğunu və 2004-cü ildəki nəhəng zəlzələnin günü necə qısaltdığını Professor Pi danışır.",
+   "facts": [
+    "ABŞ Geoloji Xidmətinə (USGS) görə dünyada hər il təxminən 500.000 qeydə alına bilən zəlzələ olur: gündə təxminən 1.400, dəqiqədə təxminən 1 zəlzələ. Onlardan təxminən 100.000-i hiss olunur (gündə təxminən 270), təxminən 100-ü isə ziyan vurur.",
+    "2025-ci ildə Science jurnalında dərc olunan araşdırmaya görə Android telefonlarının akselerometrləri 2021-2024-cü illərdə 98 ölkədə 11.000-dən çox zəlzələ aşkarlayıb.",
+    "Kaliforniya Universitetinin (Santa-Kruz) məlumatına görə 2004-cü il Sumatra-Andaman zəlzələsi hiss olunmayacaq qədər yavaş olsa da, Yer səthinin hər yerində torpağı 1 santimetrdən çox yerindən oynadıb.",
+    "NASA-nın Reaktiv Hərəkət Laboratoriyasından Riçard Qrossun hesablamasına görə 2004-cü ildə Sumatrada baş verən 9,1 maqnitudalı zəlzələ günün uzunluğunu 6,8 mikrosaniyə qısaldıb."
+   ]
+  }
+ }
+}

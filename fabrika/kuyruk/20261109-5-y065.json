@@ -1,0 +1,236 @@
+{
+ "id": "y065",
+ "series": "Ya Olsaydı?",
+ "q": "Bir hafta hiç uyumasaydın ne olurdu?",
+ "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
+ "bar": {
+  "hi": "1 HAFTA",
+  "rest": "UYUMASAYDIN?"
+ },
+ "summary": "Bir hafta hiç uyumasan daha 3. günde olmayan şeyleri görmeye başlardın! 24 saatte sarhoş gibi çalışan beyinden 5. gündeki çöküşe kadar uykusuzluğun vücudunda neler yaptığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Olmayan şeyleri görmeye başlarsın: hem de daha 3. günde!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "👁️",
+    "do": "pulse",
+    "key": "görmeye",
+    "label": "Halüsinasyon"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gözüm açıkken rüya mı görürüm?!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "💭",
+    "do": "float",
+    "key": "rüya",
+    "label": "Uyanık Rüya"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sabah 7'de kalktıysan gece yarısı beynin 0,5 promil içmiş gibi; sabaha 1 promil!",
+   "v": {
+    "t": "meter",
+    "bg": "night",
+    "label": "Uykusuz Beyin",
+    "from": 0.5,
+    "to": 1.0,
+    "unit": "promil",
+    "e": "🥴",
+    "key": "promil"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "5. gün akıl sağlığın aniden bozulur: tablo akut psikoza benzer.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "1. GÜN",
+      "e": "🥴",
+      "label": "Sarhoş Gibi"
+     },
+     {
+      "when": "3. GÜN",
+      "e": "👁️",
+      "label": "Halüsinasyon"
+     },
+     {
+      "when": "5. GÜN",
+      "e": "🌀",
+      "label": "Psikoz Benzeri"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hiç uyutulmayan meyve sinekleri 20 gün içinde öldü!",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🪰",
+    "value": "20",
+    "unit": "gün",
+    "label": "Uykusuz Sinekler",
+    "key": "20"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen en uzun kaç saat uyanık kaldın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "😴"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Frontiers in Psychiatry'de 2018'de yayımlanan ve 21 çalışmayı inceleyen derlemeye göre uykusuzluğun 24-48. saatinde algı bozuklukları başlar; 3. günde görme, işitme ve dokunma halüsinasyonları bildirilir, 72 saatten sonra sanrılar görülür ve 5. günde akıl sağlığı aniden bozularak tablo akut psikoza benzer.",
+   "source": "Frontiers in Psychiatry (Waters ve ark., 2018)",
+   "url": "https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2018.00303/full"
+  },
+  {
+   "text": "ABD Hastalık Kontrol ve Önleme Merkezleri'ne (CDC/NIOSH) göre 17 saat uyanık kalmak kanda %0,05 (0,5 promil), 24 saat uyanık kalmak %0,10 (1 promil) alkol olmasına benzer etki yapar.",
+   "source": "CDC / NIOSH",
+   "url": "https://archive.cdc.gov/www_cdc_gov/niosh/emres/longhourstraining/impaired.html"
+  },
+  {
+   "text": "Harvard Tıp Fakültesi'nin 2020 çalışmasında uykusuz bırakılan meyve sineklerinde ölümler 10. günden sonra arttı ve hepsi yaklaşık 20. günde öldü; bağırsaklarında reaktif oksijen türleri birikmişti.",
+   "source": "Harvard Gazette",
+   "url": "https://news.harvard.edu/gazette/story/2020/06/study-reveals-guts-role-in-causing-death-by-sleep-deprivation"
+  }
+ ],
+ "tags": [
+  "uykusuzluk",
+  "bir hafta uyumasan ne olur",
+  "hiç uyumamak",
+  "uyku yoksunluğu",
+  "halüsinasyon",
+  "uykusuzluk ve alkol",
+  "uyku",
+  "sleep deprivation",
+  "what happens if you don't sleep",
+  "no sleep for a week",
+  "sleep science",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uyku",
+  "#uykusuzluk",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2018.00303/full",
+  "https://archive.cdc.gov/www_cdc_gov/niosh/emres/longhourstraining/impaired.html",
+  "https://news.harvard.edu/gazette/story/2020/06/study-reveals-guts-role-in-causing-death-by-sleep-deprivation"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Didn't Sleep for a Week?",
+   "summary": "Go a week without sleep and by day 3 you would start seeing things that aren't there! From a brain that works like it's drunk after 24 hours to the breakdown on day 5, Professor Pi explains what sleep loss does to your body.",
+   "facts": [
+    "According to a 2018 review of 21 studies in Frontiers in Psychiatry, perceptual distortions begin within 24-48 hours without sleep; by day 3, visual, auditory and tactile hallucinations are reported, delusions appear after 72 hours, and on day 5 mental health deteriorates suddenly into a picture resembling acute psychosis.",
+    "According to the US Centers for Disease Control and Prevention (CDC/NIOSH), being awake for 17 hours is similar to a blood alcohol concentration of 0.05%, and being awake for 24 hours is similar to 0.10%.",
+    "In a 2020 Harvard Medical School study, deaths among sleep-deprived fruit flies rose after day 10 and all of them died by around day 20; reactive oxygen species had built up in their guts."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si No Durmieras en Toda una Semana?",
+   "summary": "¡Pasa una semana sin dormir y al tercer día empezarías a ver cosas que no existen! Desde un cerebro que a las 24 horas funciona como si estuviera borracho hasta el colapso del quinto día, el profesor Pi explica lo que la falta de sueño le hace a tu cuerpo.",
+   "facts": [
+    "Según una revisión de 21 estudios publicada en Frontiers in Psychiatry en 2018, las distorsiones de la percepción empiezan a las 24-48 horas sin dormir; al tercer día se describen alucinaciones visuales, auditivas y táctiles, los delirios aparecen después de 72 horas y al quinto día la salud mental se deteriora de golpe hasta un cuadro parecido a una psicosis aguda.",
+    "Según los Centros para el Control y la Prevención de Enfermedades de EE. UU. (CDC/NIOSH), estar despierto 17 horas equivale a tener una concentración de alcohol en sangre del 0,05 %, y 24 horas, del 0,10 %.",
+    "En un estudio de la Facultad de Medicina de Harvard de 2020, las muertes de moscas de la fruta privadas de sueño aumentaron a partir del día 10 y todas murieron hacia el día 20; en su intestino se habían acumulado especies reactivas de oxígeno."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Ficasse uma Semana Sem Dormir?",
+   "summary": "Fique uma semana sem dormir e, no terceiro dia, você começaria a ver coisas que não existem! De um cérebro que funciona como se estivesse bêbado após 24 horas ao colapso do quinto dia, o professor Pi explica o que a falta de sono faz com o seu corpo.",
+   "facts": [
+    "Segundo uma revisão de 21 estudos publicada na Frontiers in Psychiatry em 2018, distorções de percepção começam entre 24 e 48 horas sem dormir; no terceiro dia, há relatos de alucinações visuais, auditivas e táteis, delírios surgem após 72 horas e, no quinto dia, a saúde mental piora de repente até um quadro parecido com psicose aguda.",
+    "Segundo os Centros de Controle e Prevenção de Doenças dos EUA (CDC/NIOSH), ficar acordado por 17 horas equivale a ter 0,05% de álcool no sangue, e por 24 horas, a 0,10%.",
+    "Em um estudo de 2020 da Escola de Medicina de Harvard, as mortes de moscas-das-frutas privadas de sono aumentaram após o 10º dia e todas morreram por volta do 20º dia; espécies reativas de oxigênio tinham se acumulado no intestino delas."
+   ]
+  },
+  "ar": {
+   "title": "ماذا كان سيحدث لو لم تنم أسبوعًا كاملًا؟",
+   "summary": "ابقَ أسبوعًا بلا نوم وستبدأ في اليوم الثالث برؤية أشياء غير موجودة! من دماغ يعمل كأنه مخمور بعد 24 ساعة إلى الانهيار في اليوم الخامس، يشرح البروفيسور باي ما يفعله الحرمان من النوم بجسمك.",
+   "facts": [
+    "وفقًا لمراجعة شملت 21 دراسة نُشرت في مجلة Frontiers in Psychiatry عام 2018، تبدأ اضطرابات الإدراك خلال 24 إلى 48 ساعة من دون نوم؛ وبحلول اليوم الثالث تُسجَّل هلوسات بصرية وسمعية ولمسية، وتظهر الأوهام بعد 72 ساعة، وفي اليوم الخامس تتدهور الصحة النفسية فجأة إلى حالة تشبه الذهان الحاد.",
+    "وفقًا للمراكز الأمريكية لمكافحة الأمراض والوقاية منها (CDC/NIOSH)، يشبه البقاء مستيقظًا 17 ساعة أن يكون تركيز الكحول في الدم 0.05%، ويشبه البقاء مستيقظًا 24 ساعة تركيزًا قدره 0.10%.",
+    "في دراسة لكلية الطب بجامعة هارفارد عام 2020، ارتفعت الوفيات بين ذباب الفاكهة المحروم من النوم بعد اليوم العاشر، وماتت كلها بحلول اليوم العشرين تقريبًا؛ إذ تراكمت أنواع الأكسجين التفاعلية في أمعائها."
+   ]
+  },
+  "hi": {
+   "title": "अगर तुम एक हफ़्ते तक बिल्कुल न सोते तो क्या होता?",
+   "summary": "एक हफ़्ता बिना सोए रहो तो तीसरे दिन तक तुम्हें वो चीज़ें दिखने लगेंगी जो हैं ही नहीं! 24 घंटे बाद नशे जैसे काम करते दिमाग़ से लेकर पाँचवें दिन की टूटन तक, प्रोफ़ेसर पाई बताते हैं कि नींद की कमी तुम्हारे शरीर के साथ क्या करती है।",
+   "facts": [
+    "Frontiers in Psychiatry में 2018 में प्रकाशित 21 अध्ययनों की समीक्षा के अनुसार, बिना सोए 24-48 घंटों में ही धारणा की गड़बड़ियाँ शुरू हो जाती हैं; तीसरे दिन तक देखने, सुनने और छूने के मतिभ्रम दर्ज होते हैं, 72 घंटे बाद भ्रम दिखते हैं और पाँचवें दिन मानसिक स्वास्थ्य अचानक बिगड़कर तीव्र मनोविकृति जैसी स्थिति में पहुँच जाता है।",
+    "अमेरिकी रोग नियंत्रण एवं रोकथाम केंद्र (CDC/NIOSH) के अनुसार 17 घंटे जागे रहना ख़ून में 0.05% अल्कोहल होने जैसा है, और 24 घंटे जागे रहना 0.10% जैसा।",
+    "हार्वर्ड मेडिकल स्कूल के 2020 के अध्ययन में नींद से वंचित फल-मक्खियों की मौतें 10वें दिन के बाद बढ़ीं और लगभग 20वें दिन तक सभी मर गईं; उनकी आँतों में रिएक्टिव ऑक्सीजन स्पीशीज़ जमा हो गई थीं।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Tidak Tidur Seminggu?",
+   "summary": "Seminggu tanpa tidur, dan di hari ke-3 kamu mulai melihat hal-hal yang tidak ada! Dari otak yang bekerja seperti mabuk setelah 24 jam hingga keruntuhan di hari ke-5, Profesor Pi menjelaskan apa yang dilakukan kurang tidur pada tubuhmu.",
+   "facts": [
+    "Menurut tinjauan atas 21 studi di Frontiers in Psychiatry tahun 2018, distorsi persepsi mulai muncul dalam 24-48 jam tanpa tidur; pada hari ke-3 dilaporkan halusinasi penglihatan, pendengaran, dan sentuhan, delusi muncul setelah 72 jam, dan pada hari ke-5 kesehatan mental memburuk tiba-tiba hingga menyerupai psikosis akut.",
+    "Menurut Pusat Pengendalian dan Pencegahan Penyakit AS (CDC/NIOSH), terjaga selama 17 jam mirip dengan kadar alkohol dalam darah 0,05%, dan terjaga 24 jam mirip dengan 0,10%.",
+    "Dalam studi Harvard Medical School tahun 2020, kematian lalat buah yang tidak diberi tidur meningkat setelah hari ke-10 dan semuanya mati sekitar hari ke-20; spesies oksigen reaktif menumpuk di usus mereka."
+   ]
+  },
+  "fr": {
+   "title": "Que Se Passerait-il Si Tu Ne Dormais Pas Pendant une Semaine ?",
+   "summary": "Passe une semaine sans dormir et, dès le 3e jour, tu commencerais à voir des choses qui n'existent pas ! D'un cerveau qui fonctionne comme s'il était ivre après 24 heures à l'effondrement du 5e jour, le professeur Pi explique ce que le manque de sommeil fait à ton corps.",
+   "facts": [
+    "Selon une revue de 21 études publiée dans Frontiers in Psychiatry en 2018, les distorsions de la perception commencent après 24 à 48 heures sans sommeil ; au 3e jour, des hallucinations visuelles, auditives et tactiles sont rapportées, des idées délirantes apparaissent après 72 heures et, au 5e jour, la santé mentale se dégrade brutalement jusqu'à un tableau proche d'une psychose aiguë.",
+    "Selon les Centres pour le contrôle et la prévention des maladies des États-Unis (CDC/NIOSH), rester éveillé 17 heures équivaut à une alcoolémie de 0,05 %, et 24 heures à 0,10 %.",
+    "Dans une étude de la Harvard Medical School de 2020, les décès de mouches du vinaigre privées de sommeil ont augmenté après le 10e jour et toutes sont mortes vers le 20e jour ; des espèces réactives de l'oxygène s'étaient accumulées dans leur intestin."
+   ]
+  },
+  "de": {
+   "title": "Was Würde Passieren, Wenn Du Eine Woche Nicht Schläfst?",
+   "summary": "Eine Woche ohne Schlaf, und am 3. Tag würdest du Dinge sehen, die gar nicht da sind! Vom Gehirn, das nach 24 Stunden wie betrunken arbeitet, bis zum Zusammenbruch am 5. Tag erklärt Professor Pi, was Schlafmangel mit deinem Körper macht.",
+   "facts": [
+    "Laut einer Übersichtsarbeit über 21 Studien in Frontiers in Psychiatry von 2018 beginnen Wahrnehmungsstörungen nach 24 bis 48 Stunden ohne Schlaf; am 3. Tag werden visuelle, akustische und taktile Halluzinationen berichtet, nach 72 Stunden treten Wahnvorstellungen auf, und am 5. Tag verschlechtert sich die psychische Gesundheit plötzlich zu einem Bild, das einer akuten Psychose ähnelt.",
+    "Laut den US-Gesundheitsbehörden CDC/NIOSH wirkt es nach 17 Stunden Wachsein ähnlich wie ein Blutalkohol von 0,05 % und nach 24 Stunden ähnlich wie 0,10 %.",
+    "In einer Studie der Harvard Medical School von 2020 stieg die Sterblichkeit schlafentzogener Fruchtfliegen nach dem 10. Tag an, und alle starben bis etwa zum 20. Tag; in ihrem Darm hatten sich reaktive Sauerstoffspezies angesammelt."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Не Спать Целую Неделю?",
+   "summary": "Неделя без сна — и уже на 3-й день ты начнёшь видеть то, чего нет! От мозга, который через 24 часа работает как у пьяного, до срыва на 5-й день — профессор Пи объясняет, что недосып делает с твоим телом.",
+   "facts": [
+    "Согласно обзору 21 исследования, опубликованному в Frontiers in Psychiatry в 2018 году, искажения восприятия начинаются через 24–48 часов без сна; к 3-му дню описаны зрительные, слуховые и тактильные галлюцинации, после 72 часов появляется бред, а на 5-й день психическое состояние резко ухудшается и напоминает острый психоз.",
+    "По данным Центров по контролю и профилактике заболеваний США (CDC/NIOSH), 17 часов без сна действуют примерно как 0,05% алкоголя в крови, а 24 часа — как 0,10%.",
+    "В исследовании Гарвардской медицинской школы 2020 года смертность лишённых сна плодовых мушек росла после 10-го дня, и примерно к 20-му дню погибли все; в их кишечнике накопились активные формы кислорода."
+   ]
+  },
+  "az": {
+   "title": "Bir Həftə Heç Yatmasaydın Nə Olardı?",
+   "summary": "Bir həftə yatmasan, hələ 3-cü gün olmayan şeyləri görməyə başlayardın! 24 saatdan sonra sərxoş kimi işləyən beyindən 5-ci gündəki çöküşə qədər yuxusuzluğun bədəninə nə etdiyini Professor Pi danışır.",
+   "facts": [
+    "Frontiers in Psychiatry jurnalında 2018-ci ildə dərc olunan və 21 araşdırmanı əhatə edən icmala görə yuxusuzluğun 24-48-ci saatlarında qavrayış pozuntuları başlayır; 3-cü gün görmə, eşitmə və toxunma halüsinasiyaları qeydə alınır, 72 saatdan sonra sayıqlamalar yaranır, 5-ci gün isə psixi sağlamlıq qəfil pisləşərək kəskin psixoza bənzəyir.",
+    "ABŞ Xəstəliklərə Nəzarət və Qarşısının Alınması Mərkəzlərinə (CDC/NIOSH) görə 17 saat oyaq qalmaq qanda 0,05% (0,5 promil), 24 saat oyaq qalmaq isə 0,10% (1 promil) alkoqolun təsirinə bənzəyir.",
+    "Harvard Tibb Məktəbinin 2020-ci il araşdırmasında yuxusuz saxlanılan meyvə milçəklərində ölümlər 10-cu gündən sonra artıb və hamısı təxminən 20-ci günə qədər ölüb; onların bağırsaqlarında reaktiv oksigen növləri yığılıb."
+   ]
+  }
+ }
+}

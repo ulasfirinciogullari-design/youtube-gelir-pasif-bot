@@ -1,0 +1,274 @@
+{
+ "id": "y064",
+ "series": "Ya Olsaydı?",
+ "q": "Asansör düşerken son anda zıplasaydın kurtulur muydun?",
+ "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
+ "bar": {
+  "hi": "ASANSÖRDE",
+  "rest": "ZIPLASAN?"
+ },
+ "summary": "Asansör düşerken son anda zıplamak seni kurtarır mı? Kabinde havada süzülmekten saatte 105 km'lik çarpmaya ve 75 kat düşüp hayatta kalan kadına kadar fiziğin cevabını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Havada süzülürdün: düşen kabinde ağırlığın sıfıra iner!",
+   "v": {
+    "t": "meter",
+    "bg": "city",
+    "label": "Ağırlığın",
+    "from": 100,
+    "to": 0,
+    "unit": "%",
+    "e": "🛗",
+    "key": "sıfıra"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "İnerken mide kalkması gibi mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🎢",
+    "do": "float",
+    "key": "kalkması",
+    "label": "Mide Kalkması"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Zıplasan bile 15 kattan saatte 105 km hızla çarparsın!",
+   "v": {
+    "t": "compare",
+    "bg": "city",
+    "a": {
+     "e": "🧍",
+     "label": "Zıplamadan",
+     "value": "116"
+    },
+    "b": {
+     "e": "🦘",
+     "label": "Zıplayınca",
+     "value": "105"
+    },
+    "mode": "bar",
+    "key": "105"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uzmanlara göre sırtüstü yat: darbe vücuduna yayılır.",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "🧍",
+     "label": "Ayakta"
+    },
+    "right": {
+     "e": "🛌",
+     "label": "Sırtüstü"
+    },
+    "key": "sırtüstü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Neyse ki halat kopsa fren raylara kenetlenir.",
+   "v": {
+    "t": "icons",
+    "bg": "city",
+    "items": [
+     {
+      "e": "⛓️",
+      "label": "4-8 Halat"
+     },
+     {
+      "e": "🛑",
+      "label": "Fren"
+     },
+     {
+      "e": "🛤️",
+      "label": "Ray"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1945'te bir kadın 75 kat düşüp yaşadı: kopan halat yay gibi tamponladı!",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "🏢",
+    "value": "75",
+    "unit": "kat",
+    "label": "1945, New York",
+    "key": "75"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen asansörde hiç mahsur kaldın mı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "city",
+    "e": "🛗"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre serbest düşen bir asansörde kendini ağırlıksız hisseder, kabinde süzülürsün; bu yüzden yere yatmak bile zorlaşır. Uzmanların en iyi bulduğu öneri sırtüstü yatıp yüzünü ve başını korumaktır, çünkü böylece omurga ve uzun kemikler darbeye dik gelir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/33445-how-survive-falling-elevator.html"
+  },
+  {
+   "text": "West Texas A&M Üniversitesi fizikçisi Christopher Baird'in hesabına göre (hava direnci yok sayılarak) yaklaşık 15 kat düşen bir asansörde çarpma hızı saatte yaklaşık 116 km'dir; insanın en iyi zıplayışı bunu ancak yaklaşık 105 km'ye indirir.",
+   "source": "West Texas A&M University",
+   "url": "https://www.wtamu.edu/~cbaird/sq/2012/12/05/if-im-on-an-elevator-that-breaks-loose-and-plummets-down-the-shaft-can-i-avoid-harm-by-jumping-at-the-last-second/"
+  },
+  {
+   "text": "Live Science'a göre çekişli asansörlerde 4-8 çelik halatın her biri kabini tek başına taşıyabilir; kabin fazla hızlanırsa hız regülatörü raylardaki frenleri devreye sokar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/33445-how-survive-falling-elevator.html"
+  },
+  {
+   "text": "Guinness Dünya Rekorları'na göre asansör görevlisi Betty Lou Oliver 1945'te Empire State Binası'nda 75 kat (yaklaşık 300 m) düşen asansörde hayatta kaldı; Live Science'a göre kuyunun dibinde yay gibi kıvrılan kopuk halat inişini yumuşattı.",
+   "source": "Guinness World Records",
+   "url": "https://www.guinnessworldrecords.com/news/2023/10/How-an-Elevator-attendant-Survived-a-1-000-Ft-Fall-Down-the-Empire-State-Building-759670"
+  }
+ ],
+ "tags": [
+  "asansör düşerse ne olur",
+  "düşen asansör",
+  "asansörde zıplamak",
+  "asansör kazası",
+  "serbest düşüş",
+  "betty lou oliver",
+  "asansör güvenliği",
+  "falling elevator",
+  "jump in falling elevator",
+  "elevator free fall",
+  "elevator physics",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#asansör",
+  "#fizik",
+  "#bilim"
+ ],
+ "cover": 5,
+ "sources": [
+  "https://www.livescience.com/33445-how-survive-falling-elevator.html",
+  "https://www.wtamu.edu/~cbaird/sq/2012/12/05/if-im-on-an-elevator-that-breaks-loose-and-plummets-down-the-shaft-can-i-avoid-harm-by-jumping-at-the-last-second/",
+  "https://www.guinnessworldrecords.com/news/2023/10/How-an-Elevator-attendant-Survived-a-1-000-Ft-Fall-Down-the-Empire-State-Building-759670",
+  "https://www.sciencefocus.com/science/the-thought-experiment-if-a-lift-is-falling-whats-your-best-chance-of-staying-alive"
+ ],
+ "i18n": {
+  "en": {
+   "title": "Could You Survive a Falling Elevator by Jumping?",
+   "summary": "Would jumping at the last second save you in a falling elevator? From floating inside the car to a 105 km/h impact and the woman who survived a 75-story fall, Professor Pi gives the physics answer.",
+   "facts": [
+    "According to Live Science, in a free-falling elevator you would feel weightless and float inside the car, which makes even lying down hard. Experts' best advice is to lie flat on your back and cover your face and head, because this puts your spine and long bones perpendicular to the impact.",
+    "According to a calculation by West Texas A&M University physicist Christopher Baird (ignoring air resistance), an elevator falling about 15 floors hits at about 116 km/h; the best human jump only reduces that to about 105 km/h.",
+    "According to Live Science, each of the 4 to 8 steel cables in a traction elevator can hold the car by itself, and if the car speeds down too fast, a governor triggers brakes on the guide rails.",
+    "According to Guinness World Records, elevator operator Betty Lou Oliver survived a 75-story (about 300 m) elevator fall in the Empire State Building in 1945; according to Live Science, the severed cable coiled like a spring at the bottom of the shaft and softened her landing."
+   ]
+  },
+  "es": {
+   "title": "¿Sobrevivirías a un Ascensor en Caída Si Saltaras?",
+   "summary": "¿Te salvaría saltar en el último segundo dentro de un ascensor que cae? Desde flotar en la cabina hasta un impacto a 105 km/h y la mujer que sobrevivió a una caída de 75 pisos, el profesor Pi da la respuesta de la física.",
+   "facts": [
+    "Según Live Science, en un ascensor en caída libre te sentirías ingrávido y flotarías dentro de la cabina, por lo que incluso tumbarte sería difícil. El mejor consejo de los expertos es acostarse boca arriba y cubrirse la cara y la cabeza, porque así la columna y los huesos largos quedan perpendiculares al impacto.",
+    "Según el cálculo del físico Christopher Baird, de la Universidad West Texas A&M (sin contar la resistencia del aire), un ascensor que cae unos 15 pisos choca a unos 116 km/h; el mejor salto humano solo lo reduce a unos 105 km/h.",
+    "Según Live Science, cada uno de los 4 a 8 cables de acero de un ascensor de tracción puede sostener la cabina por sí solo, y si la cabina baja demasiado rápido, un regulador activa los frenos sobre los rieles.",
+    "Según Guinness World Records, la ascensorista Betty Lou Oliver sobrevivió en 1945 a la caída de un ascensor de 75 pisos (unos 300 m) en el Empire State Building; según Live Science, el cable cortado se enrolló como un resorte en el fondo del hueco y amortiguó su caída."
+   ]
+  },
+  "pt": {
+   "title": "Você Sobreviveria a um Elevador Caindo Se Pulasse?",
+   "summary": "Pular no último segundo salvaria você em um elevador em queda? De flutuar na cabine a um impacto a 105 km/h e a mulher que sobreviveu a uma queda de 75 andares, o professor Pi dá a resposta da física.",
+   "facts": [
+    "Segundo o Live Science, em um elevador em queda livre você se sentiria sem peso e flutuaria na cabine, o que torna difícil até deitar no chão. A melhor dica dos especialistas é deitar de costas e proteger o rosto e a cabeça, porque assim a coluna e os ossos longos ficam perpendiculares ao impacto.",
+    "Segundo o cálculo do físico Christopher Baird, da Universidade West Texas A&M (desconsiderando a resistência do ar), um elevador que cai cerca de 15 andares atinge o chão a cerca de 116 km/h; o melhor salto humano só reduz isso para cerca de 105 km/h.",
+    "Segundo o Live Science, cada um dos 4 a 8 cabos de aço de um elevador de tração consegue sustentar a cabine sozinho, e se a cabine desce rápido demais, um regulador aciona freios nos trilhos.",
+    "Segundo o Guinness World Records, a ascensorista Betty Lou Oliver sobreviveu em 1945 à queda de um elevador de 75 andares (cerca de 300 m) no Empire State Building; segundo o Live Science, o cabo rompido se enrolou como uma mola no fundo do poço e amorteceu a queda."
+   ]
+  },
+  "ar": {
+   "title": "هل كنت ستنجو من مصعد يسقط لو قفزت؟",
+   "summary": "هل ينقذك القفز في اللحظة الأخيرة داخل مصعد يسقط؟ من الطفو داخل المقصورة إلى ارتطام بسرعة 105 كم/س والمرأة التي نجت من سقوط 75 طابقًا، يقدم البروفيسور باي جواب الفيزياء.",
+   "facts": [
+    "وفقًا لموقع Live Science، ستشعر في مصعد يسقط سقوطًا حرًا بانعدام الوزن وتطفو داخل المقصورة، ما يجعل حتى الاستلقاء صعبًا. وأفضل نصيحة لدى الخبراء هي الاستلقاء على الظهر وحماية الوجه والرأس، لأن العمود الفقري والعظام الطويلة تصبح عمودية على اتجاه الصدمة.",
+    "وفقًا لحساب الفيزيائي كريستوفر بيرد من جامعة ويست تكساس إيه آند إم (مع إهمال مقاومة الهواء)، يرتطم مصعد يسقط نحو 15 طابقًا بسرعة نحو 116 كم/س، وأفضل قفزة بشرية لا تخفضها إلا إلى نحو 105 كم/س.",
+    "وفقًا لموقع Live Science، يستطيع كل كابل من الكابلات الفولاذية الأربعة إلى الثمانية في مصعد الجر حمل المقصورة وحده، وإذا نزلت المقصورة بسرعة زائدة يُفعّل منظم السرعة مكابح على القضبان.",
+    "وفقًا لموسوعة غينيس للأرقام القياسية، نجت عاملة المصعد بيتي لو أوليفر عام 1945 من سقوط مصعد 75 طابقًا (نحو 300 م) في مبنى إمباير ستيت؛ ووفقًا لموقع Live Science، التف الكابل المقطوع كالنابض في قاع البئر وخفف ارتطامها."
+   ]
+  },
+  "hi": {
+   "title": "गिरती लिफ़्ट में कूदकर क्या तुम बच सकते थे?",
+   "summary": "गिरती लिफ़्ट में आख़िरी पल में कूदना क्या तुम्हें बचा लेगा? केबिन में तैरने से लेकर 105 km/h की टक्कर और 75 मंज़िल गिरकर बचने वाली महिला तक, प्रोफ़ेसर पाई भौतिकी का जवाब देते हैं।",
+   "facts": [
+    "Live Science के अनुसार, मुक्त रूप से गिरती लिफ़्ट में तुम भारहीन महसूस करोगे और केबिन में तैरने लगोगे, इसलिए लेटना भी मुश्किल हो जाता है। विशेषज्ञों की सबसे अच्छी सलाह है पीठ के बल लेटकर चेहरा और सिर ढक लेना, क्योंकि इससे रीढ़ और लंबी हड्डियाँ टक्कर की दिशा के लंबवत रहती हैं।",
+    "वेस्ट टेक्सास A&M यूनिवर्सिटी के भौतिकविद क्रिस्टोफ़र बेयर्ड की गणना के अनुसार (हवा का प्रतिरोध छोड़कर), लगभग 15 मंज़िल गिरने वाली लिफ़्ट लगभग 116 km/h की रफ़्तार से टकराती है; इंसान की सबसे अच्छी छलांग इसे बस लगभग 105 km/h तक घटाती है।",
+    "Live Science के अनुसार, ट्रैक्शन लिफ़्ट की 4 से 8 स्टील केबलों में से हर एक अकेले केबिन को थाम सकती है, और अगर केबिन बहुत तेज़ी से नीचे जाए तो गवर्नर पटरियों पर ब्रेक लगा देता है।",
+    "गिनीज़ वर्ल्ड रिकॉर्ड्स के अनुसार, लिफ़्ट ऑपरेटर बेटी लू ओलिवर 1945 में एम्पायर स्टेट बिल्डिंग में 75 मंज़िल (लगभग 300 m) गिरी लिफ़्ट में ज़िंदा बच गईं; Live Science के अनुसार शाफ़्ट के तल में स्प्रिंग की तरह लिपटी टूटी केबल ने उनकी गिरावट को नरम किया।"
+   ]
+  },
+  "id": {
+   "title": "Bisakah Kamu Selamat dari Lift Jatuh dengan Melompat?",
+   "summary": "Apakah melompat di detik terakhir bisa menyelamatkanmu di lift yang jatuh? Dari melayang di dalam kabin hingga benturan 105 km/jam dan perempuan yang selamat dari jatuh 75 lantai, Profesor Pi memberi jawaban fisika.",
+   "facts": [
+    "Menurut Live Science, di lift yang jatuh bebas kamu akan merasa tanpa bobot dan melayang di dalam kabin, sehingga berbaring pun sulit. Saran terbaik para ahli adalah berbaring telentang dan melindungi wajah serta kepala, karena tulang belakang dan tulang panjang jadi tegak lurus terhadap arah benturan.",
+    "Menurut perhitungan fisikawan Christopher Baird dari West Texas A&M University (tanpa memperhitungkan hambatan udara), lift yang jatuh sekitar 15 lantai menghantam dasar dengan kecepatan sekitar 116 km/jam; lompatan terbaik manusia hanya menurunkannya menjadi sekitar 105 km/jam.",
+    "Menurut Live Science, masing-masing dari 4 hingga 8 kabel baja pada lift traksi sanggup menahan kabin sendirian, dan jika kabin turun terlalu cepat, governor mengaktifkan rem pada rel.",
+    "Menurut Guinness World Records, operator lift Betty Lou Oliver selamat pada 1945 dari jatuhnya lift setinggi 75 lantai (sekitar 300 m) di Empire State Building; menurut Live Science, kabel putus yang melingkar seperti pegas di dasar lubang lift meredam jatuhnya."
+   ]
+  },
+  "fr": {
+   "title": "Survivrais-Tu à un Ascenseur Qui Tombe en Sautant ?",
+   "summary": "Sauter à la dernière seconde te sauverait-il dans un ascenseur qui tombe ? De la flottaison dans la cabine à un choc à 105 km/h et à la femme qui a survécu à une chute de 75 étages, le professeur Pi donne la réponse de la physique.",
+   "facts": [
+    "Selon Live Science, dans un ascenseur en chute libre, tu te sentirais en apesanteur et flotterais dans la cabine, si bien que même t'allonger serait difficile. Le meilleur conseil des experts est de s'allonger sur le dos et de protéger le visage et la tête, car la colonne vertébrale et les os longs se retrouvent perpendiculaires au choc.",
+    "Selon le calcul du physicien Christopher Baird, de l'université West Texas A&M (sans tenir compte de la résistance de l'air), un ascenseur qui tombe d'environ 15 étages percute le fond à environ 116 km/h ; le meilleur saut humain ne réduit cette vitesse qu'à environ 105 km/h.",
+    "Selon Live Science, chacun des 4 à 8 câbles d'acier d'un ascenseur à traction peut à lui seul porter la cabine, et si la cabine descend trop vite, un limiteur de vitesse déclenche des freins sur les rails.",
+    "Selon le Guinness World Records, la liftière Betty Lou Oliver a survécu en 1945 à la chute d'un ascenseur de 75 étages (environ 300 m) dans l'Empire State Building ; selon Live Science, le câble rompu, enroulé comme un ressort au fond de la cage, a amorti sa chute."
+   ]
+  },
+  "de": {
+   "title": "Würdest Du Einen Fallenden Aufzug Mit Einem Sprung Überleben?",
+   "summary": "Würde dich ein Sprung in letzter Sekunde in einem fallenden Aufzug retten? Vom Schweben in der Kabine über einen Aufprall mit 105 km/h bis zur Frau, die einen Sturz über 75 Stockwerke überlebte: Professor Pi gibt die Antwort der Physik.",
+   "facts": [
+    "Laut Live Science würdest du dich in einem frei fallenden Aufzug schwerelos fühlen und in der Kabine schweben, sodass selbst das Hinlegen schwerfällt. Der beste Rat der Experten: flach auf den Rücken legen und Gesicht und Kopf schützen, weil Wirbelsäule und lange Knochen dann quer zur Aufprallrichtung liegen.",
+    "Laut einer Berechnung des Physikers Christopher Baird von der West Texas A&M University (ohne Luftwiderstand) prallt ein Aufzug nach etwa 15 Stockwerken Fall mit etwa 116 km/h auf; der beste menschliche Sprung senkt das nur auf etwa 105 km/h.",
+    "Laut Live Science kann jedes der 4 bis 8 Stahlseile eines Treibscheibenaufzugs die Kabine allein halten, und fährt die Kabine zu schnell abwärts, löst ein Geschwindigkeitsbegrenzer Bremsen an den Führungsschienen aus.",
+    "Laut Guinness World Records überlebte die Aufzugführerin Betty Lou Oliver 1945 im Empire State Building den Absturz eines Aufzugs über 75 Stockwerke (etwa 300 m); laut Live Science rollte sich das gerissene Seil am Schachtboden wie eine Feder auf und dämpfte ihren Aufprall."
+   ]
+  },
+  "ru": {
+   "title": "Спасёт Ли Тебя Прыжок в Падающем Лифте?",
+   "summary": "Спасёт ли тебя прыжок в последнюю секунду в падающем лифте? От невесомости в кабине до удара на скорости 105 км/ч и женщины, пережившей падение с 75 этажей, — профессор Пи даёт ответ физики.",
+   "facts": [
+    "По данным Live Science, в свободно падающем лифте ты ощутишь невесомость и будешь парить в кабине, поэтому даже лечь будет трудно. Лучший совет экспертов — лечь на спину и закрыть лицо и голову: так позвоночник и длинные кости оказываются перпендикулярно направлению удара.",
+    "По расчёту физика Кристофера Бэрда из Университета Западного Техаса A&M (без учёта сопротивления воздуха), лифт, упавший примерно с 15 этажей, ударяется на скорости около 116 км/ч; лучший человеческий прыжок снижает её лишь примерно до 105 км/ч.",
+    "По данным Live Science, каждый из 4–8 стальных тросов тягового лифта способен в одиночку удержать кабину, а если кабина слишком быстро идёт вниз, ограничитель скорости включает тормоза на направляющих.",
+    "По данным Книги рекордов Гиннесса, лифтёр Бетти Лу Оливер в 1945 году выжила при падении лифта с 75 этажей (около 300 м) в Эмпайр-стейт-билдинг; по данным Live Science, оборванный трос свернулся на дне шахты, как пружина, и смягчил удар."
+   ]
+  },
+  "az": {
+   "title": "Düşən Liftdə Tullansaydın Xilas Olardınmı?",
+   "summary": "Düşən liftdə son anda tullanmaq səni xilas edərdimi? Kabinədə havada süzməkdən saatda 105 km-lik zərbəyə və 75 mərtəbədən düşüb sağ qalan qadına qədər fizikanın cavabını Professor Pi danışır.",
+   "facts": [
+    "Live Science-ə görə sərbəst düşən liftdə özünü çəkisiz hiss edər və kabinədə süzərsən, ona görə də uzanmaq belə çətinləşir. Mütəxəssislərin ən yaxşı məsləhəti arxası üstə uzanıb üzünü və başını qorumaqdır, çünki belə olanda onurğa və uzun sümüklər zərbəyə perpendikulyar olur.",
+    "West Texas A&M Universitetinin fiziki Kristofer Berdin hesablamasına görə (hava müqaviməti nəzərə alınmadan) təxminən 15 mərtəbə düşən lift saatda təxminən 116 km sürətlə çırpılır; insanın ən yaxşı tullanışı bunu yalnız təxminən 105 km-ə endirir.",
+    "Live Science-ə görə dartı liftlərindəki 4-8 polad trosdan hər biri kabinəni tək başına saxlaya bilir; kabinə çox sürətlə enərsə, sürət tənzimləyicisi relslərdəki əyləcləri işə salır.",
+    "Ginnesin Rekordlar Kitabına görə lift operatoru Betti Lu Oliver 1945-ci ildə Empayr-Steyt Binasında 75 mərtəbə (təxminən 300 m) düşən liftdə sağ qalıb; Live Science-ə görə şaxtanın dibində yay kimi qıvrılan qırıq tros onun düşməsini yumşaldıb."
+   ]
+  }
+ }
+}
