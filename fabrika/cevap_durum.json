@@ -215,15 +215,14 @@
     1794231016,
     "r",
     "UgzGAoYppDXzbeZkaMh4AaABAg.AczwfPNcwQjAczxB36ujas"
+   ],
+   "UgyA0A6dwcZOLh_DdtF4AaABAg": [
+    1794237616,
+    "r",
+    "UgyA0A6dwcZOLh_DdtF4AaABAg.Ad-8lASxFHsAd-8lhByROK"
    ]
   },
   "son": [
-   {
-    "at": 1792163225,
-    "video": "yHElVXfvdsw",
-    "comment": "Eğer Güneş yerine aynı kütlede olan bir kara delik koysaydı ne olur",
-    "reply": "Kütle aynı kaldığı için Dünya içine çekilmez, aynı yörüngede dönmeye devam ederdi ama hızla donardık. Bu konuyu video listemize aldım.\n— Profesör Pi 🔭"
-   },
    {
     "at": 1792333958,
     "video": "pJPCpis147c",
@@ -457,6 +456,12 @@
     "video": "aiJ_NUnr84M",
     "comment": "6..1 one mister",
     "reply": "Klavyen biraz coşmuş galiba, dakikada bir deprem dedik ama bu hızla harfler deprem yarattı bile!\n— Bit 🤖"
+   },
+   {
+    "at": 1794237616,
+    "video": "73hAb835EFE",
+    "comment": "1 kere oldu btw",
+    "reply": "Neyse ki atlattın, geçmiş olsun!\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -624,10 +629,10 @@
  "nobet": {
   "basladi": "2026-11-09T10:30:13+00:00",
   "run": "42600117963",
-  "tur": 282,
+  "tur": 291,
   "ig_cevap": 0,
-  "yt_cevap": 1,
+  "yt_cevap": 2,
   "son_hata": null,
-  "son_tur": "2026-11-09T15:11:14+00:00"
+  "son_tur": "2026-11-09T15:20:16+00:00"
  }
 }
