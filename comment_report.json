@@ -1,22 +1,22 @@
 {
- "started": "2026-11-09T19:45:14+00:00",
+ "started": "2026-11-09T20:45:15+00:00",
  "deneme": false,
  "threads": 100,
  "reply_threads_read": 0,
  "new": 1,
- "quiet": 1,
- "sent_last_24h": 2,
+ "quiet": 0,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgyIWRRC8tyCoOBQ8A94AaABAg",
+   "id": "UgwqWKQW8dsDe3lxdbV4AaABAg",
    "kind": "comment",
    "video": "a2Zc8jK28L0",
-   "comment": "saçım kaşındı",
-   "reply": "Videodaki kaşıntı bulaşıcı demek ki! 😄 Beynin de hemen o ağı çalıştırmış.",
+   "comment": "Benim kolum kaşındı",
+   "reply": "Vay be, demek bu etki sende de işe yaradı! Kaşıntı bulaşıcı bir his gibi değil mi? 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-09T19:45:19+00:00"
+ "finished": "2026-11-09T20:45:24+00:00"
 }

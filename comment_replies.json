@@ -233,6 +233,12 @@
    "r",
    "UgyIWRRC8tyCoOBQ8A94AaABAg.Ad-bDiJDm7jAd-c6-1nxcL",
    "UCtoUrelSPsFED1Glium4XiQ"
+  ],
+  "UgwqWKQW8dsDe3lxdbV4AaABAg": [
+   1794257115,
+   "r",
+   "UgwqWKQW8dsDe3lxdbV4AaABAg.Ad-d52QS0_oAd-iz2tDXu4",
+   "UCk7UcamYsGnRQcWX_tiu54A"
   ]
  },
  "tracked": {
@@ -317,6 +323,11 @@
    "at": 1794253514,
    "n": 1,
    "reply": "Videodaki kaşıntı bulaşıcı demek ki! 😄 Beynin de hemen o ağı çalıştırmış."
+  },
+  "UgwqWKQW8dsDe3lxdbV4AaABAg": {
+   "at": 1794257115,
+   "n": 1,
+   "reply": "Vay be, demek bu etki sende de işe yaradı! Kaşıntı bulaşıcı bir his gibi değil mi? 😉"
   }
  },
  "channel": {
@@ -527,6 +538,12 @@
    "video": "a2Zc8jK28L0",
    "comment": "saçım kaşındı",
    "reply": "Videodaki kaşıntı bulaşıcı demek ki! 😄 Beynin de hemen o ağı çalıştırmış."
+  },
+  {
+   "at": 1794257115,
+   "video": "a2Zc8jK28L0",
+   "comment": "Benim kolum kaşındı",
+   "reply": "Vay be, demek bu etki sende de işe yaradı! Kaşıntı bulaşıcı bir his gibi değil mi? 😉"
   }
  ]
 }
