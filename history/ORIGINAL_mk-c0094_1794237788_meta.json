@@ -1,0 +1,187 @@
+{
+  "topic_id": "mk-c0094",
+  "topic": "Uyurken koku alınır mı, duman kokusu insanı uykudan uyandırır mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Uyurken duman kokusuyla uyanmak mümkün mü? 🔥",
+  "hook_text": "DUMAN KOKUSU UYANDIRIR MI?",
+  "description": "Uyurken koku alınır mı, duman kokusu insanı uykudan uyandırır mı?\n\nÇoğu zaman hayır. Brown Üniversitesi'nden Mary Carskadon ve Rachel Herz'in 2004'te Sleep dergisinde yayımladığı deneyde katılımcılar nane kokusunu ve keskin piridin kokusunu uyanıkken ve uykuya dalarken fark etti, ama uykunun daha derin evrelerinde ve REM uykusunda neredeyse hiç fark etmedi; orta şiddette bir ses ise onları neredeyse her seferinde uyandırdı. Almanya'da yapılan deneylerde çürük yumurta kokusu veren hidrojen sülfür (2007) ve yapay duman (2012) da uyanmaları artırmadı; burnu yakan karbondioksit ise artırdı. Araştırmacılara göre koku alma duyusu uyurken bir alarm sistemi gibi çalışacak kadar duyarlı ve güvenilir değil. Bu yüzden duman dedektörleri sesle uyarır.\n\nSen uyurken bir kokuyla hiç uyandın mı: evet mi, hayır mı?\n\n#uyku #koku #insanvücudu #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0094",
+  "tags": [
+    "uyku",
+    "uyurken koku alınır mı",
+    "duman kokusu uyandırır mı",
+    "uykuda koku",
+    "koku alma",
+    "burun",
+    "duman dedektörü",
+    "yangın alarmı",
+    "yangın güvenliği",
+    "uyku evreleri",
+    "derin uyku",
+    "rem uykusu",
+    "beyin",
+    "koku duyusu",
+    "uyanmak",
+    "mümkün mü",
+    "insan vücudu",
+    "vücut gerçekleri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "sağlık",
+    "smell during sleep",
+    "smoke alarm",
+    "duman kokusu",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "uyurken koku alinir mi",
+    "duman kokusu uyandirir mi",
+    "duman dedektoru"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can the smell of smoke wake you up while you sleep? 🔥",
+      "description": "Mostly not. In experiments, sleepers didn't wake to a strong peppermint smell, a sharp chemical odor, rotten-egg gas or even artificial smoke, but a moderately loud tone woke them almost every time. Researchers say the sense of smell is not reliable enough to act as an alarm during sleep, which is why smoke alarms beep.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "es": {
+      "title": "¿Puede el olor a humo despertarte mientras duermes? 🔥",
+      "description": "Casi nunca. En experimentos, las personas dormidas no se despertaron con un fuerte olor a menta, con un olor químico penetrante, con gas de huevo podrido ni siquiera con humo artificial, pero un tono de volumen moderado las despertó casi siempre. Según los investigadores, el olfato no es lo bastante fiable como alarma durante el sueño; por eso los detectores de humo pitan.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "pt": {
+      "title": "O cheiro de fumaça consegue te acordar enquanto você dorme? 🔥",
+      "description": "Quase nunca. Em experimentos, pessoas dormindo não acordaram com cheiro forte de hortelã, com um odor químico penetrante, com gás de ovo podre nem mesmo com fumaça artificial, mas um som moderado as acordou quase sempre. Segundo os pesquisadores, o olfato não é confiável o bastante para funcionar como alarme durante o sono; por isso os detectores de fumaça apitam.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "de": {
+      "title": "Kann dich Rauchgeruch im Schlaf aufwecken? 🔥",
+      "description": "Meistens nicht. In Experimenten wachten Schlafende weder von starkem Pfefferminzduft noch von einem stechenden Chemiegeruch, Faule-Eier-Gas oder sogar künstlichem Rauch auf – ein mäßig lauter Ton weckte sie dagegen fast jedes Mal. Laut den Forschern ist der Geruchssinn im Schlaf als Alarmsystem nicht zuverlässig genug; deshalb piepen Rauchmelder.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "fr": {
+      "title": "L'odeur de fumée peut-elle te réveiller pendant ton sommeil ? 🔥",
+      "description": "Le plus souvent, non. Dans des expériences, des dormeurs ne se sont réveillés ni avec une forte odeur de menthe, ni avec une odeur chimique piquante, ni avec un gaz à l'odeur d'œuf pourri, ni même avec de la fumée artificielle, alors qu'un son modéré les réveillait presque à chaque fois. Selon les chercheurs, l'odorat n'est pas assez fiable pour servir d'alarme pendant le sommeil : c'est pour ça que les détecteurs de fumée sonnent.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "it": {
+      "title": "L'odore di fumo può svegliarti mentre dormi? 🔥",
+      "description": "Quasi mai. Negli esperimenti chi dormiva non si è svegliato con un forte odore di menta, con un pungente odore chimico, con il gas che sa di uova marce e nemmeno con il fumo artificiale, mentre un suono di media intensità lo svegliava quasi sempre. Secondo i ricercatori l'olfatto non è abbastanza affidabile da fare da allarme nel sonno: per questo i rilevatori di fumo suonano.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "ru": {
+      "title": "Может ли запах дыма разбудить тебя во сне? 🔥",
+      "description": "Чаще всего нет. В экспериментах спящие не просыпались ни от сильного запаха мяты, ни от резкого химического запаха, ни от газа с запахом тухлых яиц и даже от искусственного дыма, зато умеренно громкий звук будил их почти каждый раз. По словам исследователей, обоняние во сне недостаточно надёжно, чтобы служить сигнализацией, поэтому пожарные датчики пищат.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "ar": {
+      "title": "هل يمكن لرائحة الدخان أن توقظك من النوم؟ 🔥",
+      "description": "في الغالب لا. ففي التجارب لم يستيقظ النائمون على رائحة نعناع قوية ولا على رائحة كيميائية نفّاذة ولا على غاز برائحة البيض الفاسد، ولا حتى على دخان صناعي، بينما أيقظتهم نغمة متوسطة الارتفاع في كل مرة تقريبًا. ويقول الباحثون إن حاسة الشم ليست موثوقة بما يكفي لتعمل كجرس إنذار أثناء النوم، ولهذا تُصدر أجهزة كشف الدخان صوتًا.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "hi": {
+      "title": "क्या धुएँ की गंध आपको नींद से जगा सकती है? 🔥",
+      "description": "ज़्यादातर नहीं। प्रयोगों में सोते हुए लोग पुदीने की तेज़ गंध, एक तीखी रासायनिक गंध, सड़े अंडे जैसी गैस और यहाँ तक कि कृत्रिम धुएँ से भी नहीं जागे, जबकि मध्यम आवाज़ की एक ध्वनि ने उन्हें लगभग हर बार जगा दिया। शोधकर्ताओं के अनुसार नींद में सूँघने की शक्ति अलार्म का काम करने लायक भरोसेमंद नहीं है, इसीलिए स्मोक डिटेक्टर आवाज़ करते हैं।\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "id": {
+      "title": "Bisakah bau asap membangunkanmu saat tidur? 🔥",
+      "description": "Hampir tidak pernah. Dalam eksperimen, orang yang tidur tidak terbangun oleh bau mint yang kuat, bau kimia yang menyengat, gas berbau telur busuk, bahkan asap buatan, tetapi nada dengan volume sedang membangunkan mereka hampir setiap kali. Menurut para peneliti, indra penciuman tidak cukup andal untuk menjadi alarm saat tidur; karena itulah detektor asap berbunyi.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "ja": {
+      "title": "寝ているとき、煙のにおいで目を覚ませる? 🔥",
+      "description": "ほとんどの場合、無理です。実験では、眠っている人は強いミントの香りや刺激的な化学臭、腐った卵のにおいのガス、さらには人工の煙でも目を覚ましませんでしたが、中くらいの音量の音ではほぼ毎回起きました。研究者によると、睡眠中の嗅覚は警報として頼れるほど確かではありません。だから火災報知器は音で知らせるのです。\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "ko": {
+      "title": "자는 동안 연기 냄새에 깰 수 있을까? 🔥",
+      "description": "대부분 그렇지 않습니다. 실험에서 잠든 사람들은 강한 박하 향, 자극적인 화학 냄새, 썩은 달걀 냄새가 나는 가스, 심지어 인공 연기에도 깨지 않았지만, 적당한 크기의 소리에는 거의 매번 깼습니다. 연구자들에 따르면 잠자는 동안 후각은 경보 역할을 할 만큼 믿을 만하지 않으며, 그래서 화재경보기는 소리로 알립니다.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "pl": {
+      "title": "Czy zapach dymu może cię obudzić we śnie? 🔥",
+      "description": "Najczęściej nie. W eksperymentach śpiący nie budzili się ani od silnego zapachu mięty, ani od ostrego chemicznego odoru, gazu o zapachu zgniłych jaj, ani nawet od sztucznego dymu, za to umiarkowanie głośny dźwięk budził ich prawie za każdym razem. Według badaczy węch we śnie nie jest dość niezawodny, by działać jak alarm, dlatego czujniki dymu piszczą.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "nl": {
+      "title": "Kan de geur van rook je wakker maken als je slaapt? 🔥",
+      "description": "Meestal niet. In experimenten werden slapers niet wakker van een sterke pepermuntgeur, een scherpe chemische lucht, gas dat naar rotte eieren ruikt of zelfs kunstmatige rook, maar een matig luide toon wekte ze bijna elke keer. Volgens de onderzoekers is je reukzin in je slaap niet betrouwbaar genoeg als alarm; daarom piepen rookmelders.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "uk": {
+      "title": "Чи може запах диму розбудити тебе уві сні? 🔥",
+      "description": "Здебільшого ні. В експериментах сплячі не прокидалися ні від сильного запаху м'яти, ні від різкого хімічного запаху, ні від газу із запахом тухлих яєць і навіть від штучного диму, натомість помірно гучний звук будив їх майже щоразу. За словами дослідників, нюх уві сні недостатньо надійний, щоб бути сигналізацією, тому пожежні датчики пищать.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "vi": {
+      "title": "Mùi khói có thể đánh thức bạn khi đang ngủ không? 🔥",
+      "description": "Phần lớn là không. Trong các thí nghiệm, người đang ngủ không tỉnh dậy vì mùi bạc hà nồng, mùi hóa chất hăng, khí có mùi trứng thối hay thậm chí khói nhân tạo, nhưng một âm thanh to vừa phải gần như lần nào cũng đánh thức họ. Theo các nhà nghiên cứu, khứu giác khi ngủ không đủ tin cậy để làm chuông báo động, vì vậy máy báo khói phát ra tiếng kêu.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "az": {
+      "title": "Yuxuda tüstü iyi səni oyada bilərmi? 🔥",
+      "description": "Çox vaxt yox. Təcrübələrdə yatanlar nə güclü nanə iyindən, nə kəskin kimyəvi iydən, nə çürük yumurta qoxulu qazdan, nə də hətta süni tüstüdən oyandı, amma orta səviyyəli bir səs onları demək olar ki, hər dəfə oyatdı. Tədqiqatçılara görə yuxuda iybilmə duyğusu siqnalizasiya kimi işləyəcək qədər etibarlı deyil; tüstü detektorlarının səs çıxarması da bu səbəbdəndir.\n\n#shorts\n\nSeri: mk-c0094"
+    },
+    "ro": {
+      "title": "Te poate trezi mirosul de fum în timp ce dormi? 🔥",
+      "description": "De cele mai multe ori, nu. În experimente, cei care dormeau nu s-au trezit nici la un miros puternic de mentă, nici la un miros chimic înțepător, nici la gazul cu miros de ouă stricate și nici măcar la fum artificial, în schimb un sunet moderat i-a trezit aproape de fiecare dată. Potrivit cercetătorilor, mirosul nu e destul de sigur ca să funcționeze ca alarmă în somn, de aceea detectoarele de fum sună.\n\n#shorts\n\nSeri: mk-c0094"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen uyurken bir kokuyla hiç uyandın mı: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu adam nefes alıyor ama dumanın kokusunu almıyor.",
+      "visual": "extreme close-up of a sleeping man's face and nose, breathing calmly in a dim bedroom",
+      "stock_query": "sleeping man face",
+      "source": "stock",
+      "callout": "KOKUYU ALMIYOR"
+    },
+    {
+      "text": "Peki uyurken duman kokusuyla uyanmak mümkün mü?",
+      "visual": "close-up of a young woman's face as she sleeps peacefully",
+      "stock_query": "woman sleeping",
+      "source": "stock"
+    },
+    {
+      "text": "Deneylerde çürük yumurta kokusu bile uyuyanları uyandırmadı.",
+      "visual": "close-up of a sleeping person's face in soft night light",
+      "stock_query": "sleeping face",
+      "source": "stock",
+      "callout": "ÇÜRÜK YUMURTA BİLE"
+    },
+    {
+      "text": "Cevap çoğu zaman hayır: yapay duman da uyanmaları artırmadı, ama orta şiddette bir ses uyandırdı.",
+      "visual": "a ringing alarm clock on a nightstand next to a sleeping person",
+      "stock_query": "alarm clock",
+      "source": "stock",
+      "subject": [
+        "alarm clock"
+      ],
+      "callout": "SES UYANDIRIR"
+    },
+    {
+      "text": "Çünkü uyuyan beyin seslere nöbet tutar, kokulara tutmaz.",
+      "visual": "close-up of a man sleeping on his side, face relaxed",
+      "stock_query": "man sleeping",
+      "source": "stock",
+      "callout": "KOKUYA NÖBET YOK"
+    },
+    {
+      "text": "Yangın alarmlarının ses çıkarması bu yüzden; çünkü...",
+      "visual": "a smoke detector on a white ceiling with a blinking light",
+      "stock_query": "smoke detector",
+      "source": "stock",
+      "subject": [
+        "smoke detector",
+        "smoke alarm"
+      ]
+    }
+  ],
+  "duration_seconds": 17.59,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "anahtar kelime",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #147",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0094_1794237788_ig.mp4"
+}
