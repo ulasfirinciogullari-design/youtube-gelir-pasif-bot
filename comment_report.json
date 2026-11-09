@@ -1,22 +1,22 @@
 {
- "started": "2026-11-09T15:45:13+00:00",
+ "started": "2026-11-09T19:45:14+00:00",
  "deneme": false,
  "threads": 100,
  "reply_threads_read": 0,
  "new": 1,
- "quiet": 0,
- "sent_last_24h": 1,
+ "quiet": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugww50vBKFajFoyE7dV4AaABAg",
+   "id": "UgyIWRRC8tyCoOBQ8A94AaABAg",
    "kind": "comment",
-   "video": "RuAXVyN79Ak",
-   "comment": "Bir keresinde rüyamda rüyada oldugumu anlamıştım Ve kendi kolumu cimbikledim(tırnaklarımla derimi çektim) aniden uyandım o an Abi bu nedir sence, yaygın mı acab",
-   "reply": "Rüyanda rüyada olduğunu fark etmen çok ilginç bir deneyim! Bu, rüya içinde uyanıklık hali olarak biliniyor ve aslında insanların yarısından fazlası en az bir kez deneyimlemiş. 😊",
+   "video": "a2Zc8jK28L0",
+   "comment": "saçım kaşındı",
+   "reply": "Videodaki kaşıntı bulaşıcı demek ki! 😄 Beynin de hemen o ağı çalıştırmış.",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-09T15:45:20+00:00"
+ "finished": "2026-11-09T19:45:19+00:00"
 }
