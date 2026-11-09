@@ -1,22 +1,22 @@
 {
- "started": "2026-11-08T13:45:12+00:00",
+ "started": "2026-11-09T12:45:12+00:00",
  "deneme": false,
  "threads": 100,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 3,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgzreHmYM4pv6LxCAkN4AaABAg",
+   "id": "Ugy_H9y6EIcxQw9vsr14AaABAg",
    "kind": "comment",
    "video": "a2Zc8jK28L0",
-   "comment": "Hayır kaşınma dum hayır",
-   "reply": "Kaşınmamak için direnmen harika! Çoğu kişi karşı koyamıyor bu duruma. 😂",
+   "comment": "Evet kaşıdı bir çevirdi telefonu kaşınmaya başdadım çok iyi arkadaşla abone olub like atmayı unutmayın",
+   "reply": "Evet, o kaşıntı hissi hemen geçiyor! Beynin sadece izleyerek bile kaşıntı ağını harekete geçirmesi çok ilginç, değil mi? 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-08T13:45:17+00:00"
+ "finished": "2026-11-09T12:45:20+00:00"
 }
