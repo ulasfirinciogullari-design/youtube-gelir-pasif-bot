@@ -47,16 +47,17 @@
   "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR",
   "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/",
   "2026-11-08T18": "kkPqwP8hyz4 https://www.instagram.com/reel/DffWa5FAjpw/",
-  "2026-11-09T10": "C-gsguJI_VQ https://www.instagram.com/reel/DfhEVFslEws/"
+  "2026-11-09T10": "C-gsguJI_VQ https://www.instagram.com/reel/DfhEVFslEws/",
+  "2026-11-09T14": "54hA0-qmdaM https://www.instagram.com/reel/Dfhf0j3FSFF/"
  },
  "nobet": {
   "basladi": "2026-11-09T10:29:44+00:00",
   "run": "42600049722",
-  "tur": 185,
+  "tur": 212,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-09T13:33:44+00:00"
+  "son_tur": "2026-11-09T14:01:30+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -324,6 +325,13 @@
    "at": 1794218478,
    "title": "İnsan kendi dilini yutabilir mi? 👅",
    "topic_id": "mk-c0069"
+  },
+  "54hA0-qmdaM": {
+   "media_id": "18062944373545998",
+   "url": "https://www.instagram.com/reel/Dfhf0j3FSFF/",
+   "at": 1794232891,
+   "title": "Parmak çıtlatmak kireçlenme yapmıyor ✋",
+   "topic_id": "mk-c0064"
   }
  }
 }
