@@ -1,18 +1,71 @@
 {
- "started": "2026-11-09T09:07:32+00:00",
- "mod": "igbolum",
- "gate": "instagram: g011",
+ "started": "2026-11-09T10:07:42+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
- "chars": 397,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18146941039510565",
-  "url": "https://www.instagram.com/reel/Dfg-Xz-CPoc/",
-  "at": 1794215366.6966615
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "59",
+  "videos": "59"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfg-Xz-CPoc/"
+ "credits_before": [
+  93323,
+  613902
  ],
- "finished": "2026-11-09T09:09:26+00:00"
+ "kuyruk": {
+  "dosya": "20261109-1-g012.json",
+  "kalan": 5
+ },
+ "topic": {
+  "id": "g012",
+  "series": "1 Gün Boyunca",
+  "q": "Dünya'da 1 günde kaç deprem olur?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 400,
+ "duration": 27.7,
+ "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+ "url": "https://youtube.com/shorts/aiJ_NUnr84M",
+ "recent_status": {
+  "y036": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1109",
+   "reason": null
+  },
+  "y041": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "981",
+   "reason": null
+  },
+  "n012": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "282",
+   "reason": null
+  },
+  "y042": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "345",
+   "reason": null
+  },
+  "g012": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  93419,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261109-1-g012.json Dünya'da 1 günde kaç deprem olur? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-11-09T10:09:12+00:00"
 }

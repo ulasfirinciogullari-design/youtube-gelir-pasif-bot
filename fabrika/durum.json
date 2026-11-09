@@ -1196,7 +1196,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "834",
+    "views": "833",
     "reason": null
    }
   },
@@ -1226,7 +1226,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "757",
+    "views": "756",
     "reason": null
    }
   },
@@ -1256,7 +1256,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1731",
+    "views": "1744",
     "reason": null
    }
   },
@@ -1286,7 +1286,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2091",
+    "views": "2093",
     "reason": null
    }
   },
@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1083",
+    "views": "1092",
     "reason": null
    }
   },
@@ -1346,7 +1346,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "990",
+    "views": "995",
     "reason": null
    }
   },
@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1347",
+    "views": "1374",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1976",
+    "views": "2009",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "953",
+    "views": "958",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1207",
+    "views": "1230",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "956",
+    "views": "962",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "943",
+    "views": "946",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1105",
+    "views": "1131",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1075",
+    "views": "1109",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "893",
+    "views": "981",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "4",
+    "views": "282",
     "reason": null
    }
   },
@@ -1733,6 +1733,36 @@
    "thumbnail": true,
    "at": 1794168528.0316217,
    "chars": 358,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "345",
+    "reason": null
+   }
+  },
+  {
+   "id": "g012",
+   "video_id": "aiJ_NUnr84M",
+   "url": "https://youtube.com/shorts/aiJ_NUnr84M",
+   "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Earthquakes Happen on Earth in 1 Day?",
+    "es": "¿Cuántos Terremotos Hay en la Tierra en 1 Día?",
+    "pt": "Quantos Terremotos Acontecem na Terra em 1 Dia?",
+    "ar": "كم زلزالًا يحدث على الأرض في يوم واحد؟",
+    "hi": "धरती पर 1 दिन में कितने भूकंप आते हैं?",
+    "id": "Berapa Gempa yang Terjadi di Bumi dalam 1 Hari?",
+    "fr": "Combien de Séismes Se Produisent sur Terre en 1 Jour ?",
+    "de": "Wie Viele Erdbeben Gibt Es auf der Erde an 1 Tag?",
+    "ru": "Сколько Землетрясений Происходит на Земле за 1 День?",
+    "az": "Yer Üzərində 1 Gündə Neçə Zəlzələ Olur?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794218950.8356292,
+   "chars": 400,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1799,7 +1829,8 @@
   "y036",
   "y041",
   "n012",
-  "y042"
+  "y042",
+  "g012"
  ],
  "extra": [
   {
@@ -1865,14 +1896,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-23T10:04:23+00:00",
-   "mod": "saatlik",
-   "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
-   "url": "https://youtube.com/shorts/hf5CYGuKU8M",
-   "duration": 18.7,
-   "chars": 248
-  },
   {
    "finished": "2026-10-23T13:09:37+00:00",
    "mod": "igbolum",
@@ -2291,6 +2314,14 @@
    "mod": "igbolum",
    "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
    "chars": 397
+  },
+  {
+   "finished": "2026-11-09T10:09:12+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+   "url": "https://youtube.com/shorts/aiJ_NUnr84M",
+   "duration": 27.7,
+   "chars": 400
   }
  ],
  "last_fail": 1794133491.1438286,
