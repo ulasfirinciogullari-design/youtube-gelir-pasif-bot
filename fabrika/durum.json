@@ -1959,14 +1959,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-10-23T18:08:14+00:00",
-   "mod": "saatlik",
-   "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
-   "url": "https://youtube.com/shorts/fwDsy2Wq4S4",
-   "duration": 27.8,
-   "chars": 387
-  },
-  {
    "finished": "2026-11-01T21:33:04+00:00",
    "mod": "ornek",
    "title": "Jüpiter Yok Olsaydı Ne Olurdu?",
@@ -2386,6 +2378,12 @@
    "url": "https://youtube.com/shorts/I-Tn6aqeA80",
    "duration": 26.8,
    "chars": 398
+  },
+  {
+   "finished": "2026-11-09T17:09:22+00:00",
+   "mod": "igbolum",
+   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+   "chars": 375
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2625,6 +2623,11 @@
     "media_id": "17896182171615917",
     "url": "https://www.instagram.com/reel/DfhabnGiCYJ/",
     "at": 1794230061.6642532
+   },
+   "y045": {
+    "media_id": "17940727482404640",
+    "url": "https://www.instagram.com/reel/Dfh1UeHjVuD/",
+    "at": 1794244162.9161766
    }
   },
   "eski": [
