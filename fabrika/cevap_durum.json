@@ -205,6 +205,11 @@
     1794146368,
     "r",
     "UgxZqwl7ldadrVY8z354AaABAg.AcxQNQkt4OUAcxQiy2-pFL"
+   ],
+   "UgzDZIh5QolKTFr_3rt4AaABAg": [
+    1794188695,
+    "r",
+    "UgzDZIh5QolKTFr_3rt4AaABAg.AcygKFVbq5dAcygSt3Af1q"
    ]
   },
   "son": [
@@ -441,6 +446,12 @@
     "video": "33I8lo_Kk18",
     "comment": "Tt",
     "reply": "Klavyen biraz heyecanlanmış galiba!\n— Bit 🤖"
+   },
+   {
+    "at": 1794188695,
+    "video": "HVyvxH-huIc",
+    "comment": "Hes100",
+    "reply": "Klavyen biraz coşmuş gibi! 😊\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -606,10 +617,10 @@
  "nobet": {
   "basladi": "2026-11-08T23:09:52+00:00",
   "run": "42532936023",
-  "tur": 148,
+  "tur": 156,
   "ig_cevap": 0,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-09T01:36:52+00:00"
+  "son_tur": "2026-11-09T01:44:54+00:00"
  }
 }
