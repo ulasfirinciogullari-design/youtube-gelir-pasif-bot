@@ -127,9 +127,13 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   inandığı bir yanlış, yaptığı bir hata ya da hayvanın ona yaptığı bir şey.
 - İzlenme oranı belirleyici: ortalama izleme %90'ın üstünde olan Short'lar ortanca 3.212, %75'in altındakiler
   1.364 izlendi. Bu yüzden 4-5 sahne, 15-17 saniye ve başa saran son cümle tercih et.
-- Günde 8 Short'un 2'si insan psikolojisi (`kategori: psikoloji`, 2 Kasım'dan itibaren bir hafta deneme), 2'si
-  "mümkün mü?" biçimi (aşağıda, 4 Kasım'dan itibaren deneme), 1'i insan vücudu, 3'ü tanıdık hayvanlar. Kuyrukta bu
-  sırayı koru: her 4 dosyadan biri psikoloji, biri "mümkün mü?" olsun. Aynı biçim ya da aynı canlı art arda gelmesin.
+- 9 Kasım kararı (deney 3, bir haftalık psikoloji denemesi): psikoloji Short'ları 48 saatte hayvanlarınkinin
+  %74'ü kadar izlendi (ortanca 1.497'ye 2.018). 1.000 izlenmede abone 0,20'ye 0,53, kaydırmadan izleme oranı
+  0,41'e 0,46. 5 bin üstüne çıkma oranı 10'da 1'e karşı 22'de 6. Bu yüzden mk-c0109'dan itibaren her 8 dosyanın
+  dağılımı şöyle: 1 insan psikolojisi (`kategori: psikoloji`; en güçlü "senin hakkında" kancası olanı seç), 2
+  "mümkün mü?" biçimi (aşağıda), 1 insan vücudu, 4 tanıdık hayvan. Hayvan ve "mümkün mü?" dosyalarının en az 3'ü
+  kedi ya da köpek olsun ve sahibine dokunsun (art arda değil). Kuyrukta her 4 dosyadan biri "mümkün mü?" olsun,
+  psikoloji 8'de bir gelsin. Aynı biçim ya da aynı canlı art arda gelmesin.
 
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
