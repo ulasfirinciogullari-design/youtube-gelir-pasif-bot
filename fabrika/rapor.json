@@ -1,5 +1,5 @@
 {
- "started": "2026-11-09T10:07:42+00:00",
+ "started": "2026-11-09T12:20:29+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "59",
-  "videos": "59"
+  "videos": "60"
  },
  "credits_before": [
-  93323,
+  93509,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261109-1-g012.json",
-  "kalan": 5
+  "dosya": "20261109-2-y063.json",
+  "kalan": 4
  },
  "topic": {
-  "id": "g012",
-  "series": "1 Gün Boyunca",
-  "q": "Dünya'da 1 günde kaç deprem olur?"
+  "id": "y063",
+  "series": "Ya Olsaydı?",
+  "q": "Hapşırığını tutsaydın ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 400,
- "duration": 27.7,
- "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
- "url": "https://youtube.com/shorts/aiJ_NUnr84M",
+ "chars": 370,
+ "duration": 24.2,
+ "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+ "url": "https://youtube.com/shorts/73hAb835EFE",
  "recent_status": {
-  "y036": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1109",
-   "reason": null
-  },
   "y041": {
    "upload": "processed",
    "privacy": "public",
-   "views": "981",
+   "views": "982",
    "reason": null
   },
   "n012": {
    "upload": "processed",
    "privacy": "public",
-   "views": "282",
+   "views": "284",
    "reason": null
   },
   "y042": {
    "upload": "processed",
    "privacy": "public",
-   "views": "345",
+   "views": "361",
    "reason": null
   },
   "g012": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "80",
+   "reason": null
+  },
+  "y063": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  93419,
+  93598,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261109-1-g012.json Dünya'da 1 günde kaç deprem olur? (1 Gün Boyunca)"
+  "Kuyruktan: 20261109-2-y063.json Hapşırığını tutsaydın ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-09T10:09:12+00:00"
+ "finished": "2026-11-09T12:21:27+00:00"
 }

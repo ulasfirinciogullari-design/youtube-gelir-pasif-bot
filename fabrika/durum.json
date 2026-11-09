@@ -1316,7 +1316,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1092",
+    "views": "1093",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2009",
+    "views": "2023",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "946",
+    "views": "950",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1131",
+    "views": "1138",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1109",
+    "views": "1113",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "981",
+    "views": "982",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "282",
+    "views": "284",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "345",
+    "views": "361",
     "reason": null
    }
   },
@@ -1763,6 +1763,36 @@
    "thumbnail": true,
    "at": 1794218950.8356292,
    "chars": 400,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "80",
+    "reason": null
+   }
+  },
+  {
+   "id": "y063",
+   "video_id": "73hAb835EFE",
+   "url": "https://youtube.com/shorts/73hAb835EFE",
+   "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Held In a Sneeze?",
+    "es": "¿Qué Pasaría Si Aguantaras un Estornudo?",
+    "pt": "O Que Aconteceria Se Você Segurasse um Espirro?",
+    "ar": "ماذا كان سيحدث لو كتمت عطستك؟",
+    "hi": "अगर तुम छींक रोक लेते तो क्या होता?",
+    "id": "Apa Jadinya Jika Kamu Menahan Bersin?",
+    "fr": "Que Se Passerait-il Si Tu Retenais un Éternuement ?",
+    "de": "Was Würde Passieren, Wenn Du Einen Nieser Unterdrückst?",
+    "ru": "Что Будет, Если Сдержать Чих?",
+    "az": "Asqırığını Saxlasaydın Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794226886.4400053,
+   "chars": 370,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1830,7 +1860,8 @@
   "y041",
   "n012",
   "y042",
-  "g012"
+  "g012",
+  "y063"
  ],
  "extra": [
   {
@@ -1896,12 +1927,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-10-23T13:09:37+00:00",
-   "mod": "igbolum",
-   "title": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?",
-   "chars": 264
-  },
   {
    "finished": "2026-10-23T14:08:56+00:00",
    "mod": "saatlik",
@@ -2322,6 +2347,14 @@
    "url": "https://youtube.com/shorts/aiJ_NUnr84M",
    "duration": 27.7,
    "chars": 400
+  },
+  {
+   "finished": "2026-11-09T12:21:27+00:00",
+   "mod": "saatlik",
+   "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/73hAb835EFE",
+   "duration": 24.2,
+   "chars": 370
   }
  ],
  "last_fail": 1794133491.1438286,
