@@ -1,0 +1,175 @@
+{
+ "id": "mk-c0110",
+ "topic": "Kaplumbağa kabuğundan çıkabilir mi, kaplumbağa kabuğu olmadan yaşar mı?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "turtle",
+  "tortoise"
+ ],
+ "stock_hint": "tortoise close up",
+ "script": {
+  "title": "Kaplumbağa kabuğundan çıkabilir mi? 🐢",
+  "hook_text": "KAPLUMBAĞA KABUĞUNDAN ÇIKAR MI?",
+  "scenes": [
+   {
+    "text": "Bu kaplumbağa kabuğuna dokunsan bile hisseder.",
+    "visual": "extreme close-up of a tortoise's head and patterned shell, the tortoise looking into the camera",
+    "stock_query": "tortoise close up",
+    "source": "stock",
+    "callout": "KABUĞU HİSSEDER"
+   },
+   {
+    "text": "Peki istese kabuğundan çıkıp çıplak gezebilir mi?",
+    "visual": "a tortoise slowly pulling its head into its shell",
+    "stock_query": "tortoise shell",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Tuhafı şu: kürek kemikleri kaburgalarının içinde durur, bizde ise dışında.",
+    "visual": "a turtle walking on grass seen from the side",
+    "stock_query": "turtle walking",
+    "source": "stock",
+    "callout": "KÜREK KEMİĞİ İÇERİDE"
+   },
+   {
+    "text": "Cevap hayır: kabuk, genişleyip kaynaşmış kaburgaları ve omurgası; çıkarmak, senin kaburgalarını sökmek gibi.",
+    "visual": "close-up of the plates of a turtle shell",
+    "stock_query": "turtle shell",
+    "source": "stock",
+    "callout": "KABUK = KABURGA"
+   },
+   {
+    "text": "Kabuğunda omuriliğine bağlı sinirler var; o yüzden...",
+    "visual": "a hand gently touching the shell of a tortoise",
+    "stock_query": "tortoise hand",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kaplumbağa kabuğundan çıkamaz, çünkü kabuk genişleyip birbirine kaynaşmış kaburgalarından ve omurgasından oluşur. Kürek kemikleri de kaburgalarının içinde kalır; insanda ise dışındadır. Kabukta omuriliğe bağlı sinirler bulunduğu için kaplumbağa kabuğuna dokunulduğunu hisseder.",
+  "tags": [
+   "kaplumbağa",
+   "kaplumbağa kabuğu",
+   "kaplumbağa kabuğundan çıkar mı",
+   "kaplumbağa kabuksuz yaşar mı",
+   "sürüngenler",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de kaplumbağanın kabuğundan çıkabildiğini sanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Can a turtle come out of its shell? 🐢",
+  "en_description": "No: a turtle's shell is made of its own widened, fused ribs and backbone, so taking it off would be like removing your ribcage. Its shoulder blades even sit inside the ribcage, the opposite of ours. The shell is full of nerves connected to the spinal cord, so a turtle can feel it when you touch its shell.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kaplumbağa kabuğundan çıkabilir mi, kaplumbağa kabuğu olmadan yaşar mı?\n\nHayır. Kabuk, genişleyip birbirine kaynaşmış kaburgalardan ve omurgadan oluşur; kaplumbağanın iskeletinin bir parçasıdır ve onu çıkarmak, bir insanın kaburgalarını sökmek gibidir. Kürek kemikleri de kaburgalarının, yani kabuğun içinde kalır; insanda ise kaburgaların dışındadır. Washington Eyalet Üniversitesi'nden yaban hayatı biyoloğu Ryan Wagner'a göre kabuk omuriliğe bağlı sinirlerle doludur, bu yüzden kaplumbağa kabuğuna dokunulduğunu hisseder.\n\nSen de kaplumbağanın kabuğundan çıkabildiğini sanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kaplumbağa",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kaplumbağa",
+   "kaplumbağa kabuğu",
+   "kaplumbağa kabuğundan çıkar mı",
+   "kabuksuz kaplumbağa",
+   "kaplumbağa kabuksuz yaşar mı",
+   "kaplumbağa kabuğu hisseder mi",
+   "kaplumbağa iskeleti",
+   "kara kaplumbağası",
+   "su kaplumbağası",
+   "kaplumbağa bakımı",
+   "kaplumbağa gerçekleri",
+   "sürüngenler",
+   "sürüngen",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "doğa",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "turtle shell",
+   "tortoise"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a turtle come out of its shell? 🐢",
+    "description": "No: a turtle's shell is made of its own widened, fused ribs and backbone, so taking it off would be like removing your ribcage. Its shoulder blades even sit inside the ribcage, the opposite of ours, and the shell is full of nerves connected to the spinal cord, so a turtle feels it when you touch it."
+   },
+   "es": {
+    "title": "¿Puede una tortuga salir de su caparazón? 🐢",
+    "description": "No: el caparazón son sus propias costillas y su columna, ensanchadas y fusionadas, así que quitárselo sería como arrancarte las costillas. Además, sus omóplatos quedan dentro de las costillas, al revés que los nuestros. El caparazón está lleno de nervios conectados a la médula espinal, por eso la tortuga siente cuando lo tocas."
+   },
+   "pt": {
+    "title": "Uma tartaruga consegue sair do casco? 🐢",
+    "description": "Não: o casco é formado pelas próprias costelas e pela coluna, alargadas e fundidas, então tirá-lo seria como arrancar suas costelas. As escápulas dela ainda ficam dentro das costelas, o contrário das nossas. O casco é cheio de nervos ligados à medula espinhal, por isso a tartaruga sente quando você toca nele."
+   },
+   "de": {
+    "title": "Kann eine Schildkröte aus ihrem Panzer schlüpfen? 🐢",
+    "description": "Nein: Der Panzer besteht aus ihren eigenen verbreiterten, verwachsenen Rippen und der Wirbelsäule. Ihn abzunehmen wäre, als würde man dir die Rippen entfernen. Ihre Schulterblätter liegen sogar innerhalb der Rippen, anders als bei uns. Der Panzer ist voller Nerven, die mit dem Rückenmark verbunden sind, deshalb spürt die Schildkröte jede Berührung."
+   },
+   "fr": {
+    "title": "Une tortue peut-elle sortir de sa carapace ? 🐢",
+    "description": "Non : la carapace est faite de ses propres côtes et de sa colonne vertébrale, élargies et soudées. L'enlever reviendrait à t'arracher les côtes. Ses omoplates se trouvent même à l'intérieur de la cage thoracique, à l'inverse des nôtres. La carapace est pleine de nerfs reliés à la moelle épinière : la tortue sent quand on la touche."
+   },
+   "it": {
+    "title": "Una tartaruga può uscire dal suo guscio? 🐢",
+    "description": "No: il guscio è fatto delle sue stesse costole e della colonna vertebrale, allargate e fuse insieme, quindi toglierlo sarebbe come strapparti le costole. Le sue scapole stanno addirittura dentro la gabbia toracica, al contrario delle nostre. Il guscio è pieno di nervi collegati al midollo spinale, perciò la tartaruga sente quando lo tocchi."
+   },
+   "ru": {
+    "title": "Может ли черепаха вылезти из панциря? 🐢",
+    "description": "Нет: панцирь — это её собственные расширенные и сросшиеся рёбра и позвоночник, так что снять его — всё равно что вынуть у тебя рёбра. Её лопатки даже находятся внутри грудной клетки, в отличие от наших. В панцире много нервов, связанных со спинным мозгом, поэтому черепаха чувствует прикосновения к нему."
+   },
+   "ar": {
+    "title": "هل تستطيع السلحفاة الخروج من صدفتها؟ 🐢",
+    "description": "لا: فالصدفة مكونة من أضلاعها وعمودها الفقري بعد أن اتسعت والتحمت، ونزعها يشبه نزع أضلاعك. بل إن عظمتي كتفيها تقعان داخل القفص الصدري، على عكسنا. والصدفة مليئة بأعصاب متصلة بالحبل الشوكي، لذلك تشعر السلحفاة حين تلمسها."
+   },
+   "hi": {
+    "title": "क्या कछुआ अपने खोल से बाहर निकल सकता है? 🐢",
+    "description": "नहीं: कछुए का खोल उसकी अपनी चौड़ी होकर जुड़ी पसलियों और रीढ़ से बना है, इसलिए उसे उतारना आपकी पसलियाँ निकालने जैसा होगा। उसके कंधे की हड्डियाँ भी पसलियों के अंदर होती हैं, हमारे उलट। खोल में रीढ़ की हड्डी से जुड़ी नसें होती हैं, इसलिए छूने पर कछुए को महसूस होता है।"
+   },
+   "id": {
+    "title": "Bisakah kura-kura keluar dari tempurungnya? 🐢",
+    "description": "Tidak: tempurung itu adalah tulang rusuk dan tulang punggungnya sendiri yang melebar dan menyatu, jadi melepasnya sama seperti mencabut tulang rusukmu. Tulang belikatnya bahkan berada di dalam rongga rusuk, kebalikan dari kita. Tempurungnya penuh saraf yang terhubung ke sumsum tulang belakang, jadi kura-kura bisa merasakan sentuhan di tempurungnya."
+   },
+   "ja": {
+    "title": "カメは甲羅から出られる？ 🐢",
+    "description": "出られません。甲羅はカメ自身の肋骨と背骨が広がってくっついたものなので、外すのは人間の肋骨を取り外すのと同じです。しかも肩甲骨は肋骨の内側にあり、私たちとは逆です。甲羅には脊髄につながる神経が通っているので、触られるとカメはちゃんと感じます。"
+   },
+   "ko": {
+    "title": "거북이는 등껍질 밖으로 나올 수 있을까? 🐢",
+    "description": "아닙니다. 등껍질은 거북이 자신의 갈비뼈와 척추가 넓어지고 붙어서 만들어진 것이라, 벗기는 건 사람의 갈비뼈를 떼어내는 것과 같습니다. 게다가 어깨뼈가 갈비뼈 안쪽에 있어 우리와 반대입니다. 등껍질에는 척수와 연결된 신경이 있어서 만지면 거북이가 느낍니다."
+   },
+   "pl": {
+    "title": "Czy żółw może wyjść ze swojej skorupy? 🐢",
+    "description": "Nie: skorupa to jego własne poszerzone i zrośnięte żebra oraz kręgosłup, więc zdjęcie jej byłoby jak wyjęcie ci żeber. Jego łopatki leżą nawet wewnątrz klatki żebrowej, odwrotnie niż u nas. Skorupa jest pełna nerwów połączonych z rdzeniem kręgowym, dlatego żółw czuje, gdy jej dotykasz."
+   },
+   "nl": {
+    "title": "Kan een schildpad uit zijn schild kruipen? 🐢",
+    "description": "Nee: het schild bestaat uit zijn eigen verbrede, vergroeide ribben en ruggengraat, dus het eraf halen zou zijn alsof jouw ribben worden verwijderd. Zijn schouderbladen zitten zelfs binnen de ribbenkast, andersom dan bij ons. Het schild zit vol zenuwen die met het ruggenmerg verbonden zijn, dus een schildpad voelt het als je zijn schild aanraakt."
+   },
+   "uk": {
+    "title": "Чи може черепаха вилізти з панцира? 🐢",
+    "description": "Ні: панцир — це її власні розширені та зрощені ребра й хребет, тож зняти його — те саме, що вийняти в тебе ребра. Її лопатки навіть розташовані всередині грудної клітки, на відміну від наших. У панцирі багато нервів, з'єднаних зі спинним мозком, тому черепаха відчуває дотики до нього."
+   },
+   "vi": {
+    "title": "Rùa có thể chui ra khỏi mai của mình không? 🐢",
+    "description": "Không: mai rùa chính là xương sườn và xương sống của nó đã nở rộng và dính liền, nên tháo mai ra cũng như rút xương sườn của bạn. Xương bả vai của rùa còn nằm bên trong lồng xương sườn, ngược với chúng ta. Mai rùa có nhiều dây thần kinh nối với tủy sống, nên rùa cảm nhận được khi bạn chạm vào."
+   },
+   "az": {
+    "title": "Tısbağa çanağından çıxa bilərmi? 🐢",
+    "description": "Xeyr: çanaq onun genişlənib bir-birinə bitişmiş qabırğaları və onurğasıdır, onu çıxarmaq sənin qabırğalarını sökmək kimidir. Onun kürək sümükləri hətta qabırğaların içində yerləşir, bizdə isə əksinədir. Çanaqda onurğa beyninə bağlı sinirlər var, ona görə tısbağa çanağına toxunulanda bunu hiss edir."
+   },
+   "ro": {
+    "title": "Poate o broască țestoasă să iasă din carapace? 🐢",
+    "description": "Nu: carapacea este formată din propriile coaste și coloana vertebrală, lățite și sudate, așa că a o scoate ar fi ca și cum ți-ai scoate coastele. Omoplații ei stau chiar în interiorul cutiei toracice, invers față de noi. Carapacea e plină de nervi legați de măduva spinării, de aceea țestoasa simte când o atingi."
+   }
+  }
+ }
+}

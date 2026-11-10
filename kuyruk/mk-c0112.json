@@ -1,0 +1,177 @@
+{
+ "id": "mk-c0112",
+ "topic": "Mesajdaki şaka neden yanlış anlaşılır, yazılı mesajda alay anlaşılır mı?",
+ "kategori": "psikoloji",
+ "subject": [
+  "phone",
+  "smartphone"
+ ],
+ "stock_hint": "typing phone",
+ "script": {
+  "title": "Yazdığın şaka sandığın kadar anlaşılmıyor 📱",
+  "hook_text": "MESAJDAKİ ŞAKA NEDEN ANLAŞILMAZ?",
+  "scenes": [
+   {
+    "text": "Bu mesajdaki şakan sandığından az anlaşılacak.",
+    "visual": "close-up of thumbs typing a message on a smartphone screen",
+    "stock_query": "typing phone",
+    "source": "stock",
+    "callout": "SANDIĞINDAN AZ"
+   },
+   {
+    "text": "İki bin beşteki bir deneyde öğrenciler e-postayla alaycı ya da ciddi cümleler yolladı.",
+    "visual": "two students sitting with laptops and typing",
+    "stock_query": "students laptop",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "students",
+     "laptop"
+    ]
+   },
+   {
+    "text": "Gönderenler yüzde yetmiş sekizinin anlaşılacağını sandı; okuyanlar yüzde elli altısını bildi, yazı turaya yakın.",
+    "visual": "a puzzled young woman frowning at her phone",
+    "stock_query": "woman reading phone",
+    "source": "stock",
+    "callout": "SADECE %56"
+   },
+   {
+    "text": "Çünkü yazarken ses tonunu kafanda duyarsın; karşındaki sadece kelimeleri görür.",
+    "visual": "close-up of a young man's face smiling while texting on his phone",
+    "stock_query": "man texting phone",
+    "source": "stock",
+    "callout": "TON KAFANDA KALIR"
+   },
+   {
+    "text": "Göndermeden önce bir de ciddi sesle oku; çünkü...",
+    "visual": "a hand holding a phone, thumb hovering over the send button",
+    "stock_query": "phone hand",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yazılı mesajdaki alayı karşındaki sandığından çok daha az anlar. 2005'teki bir deneyde e-postayla alaycı ya da ciddi cümleler gönderen öğrenciler, yüzde 78'inin doğru anlaşılacağını tahmin etti; okuyanlar ise ancak yüzde 56'sını doğru bildi. Sebep, yazarken kendi ses tonunu kafanda duyman; karşındaki yalnızca kelimeleri görür.",
+  "tags": [
+   "mesajlaşma",
+   "mesajda şaka",
+   "alay",
+   "e-posta",
+   "iletişim",
+   "yanlış anlaşılma",
+   "psikoloji",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin şakaların mesajda hiç yanlış anlaşıldı mı: evet mi, hayır mı?",
+  "en_title": "Your jokes in texts land far less often than you think 📱",
+  "en_description": "In a 2005 experiment, students emailed each other statements that were either sarcastic or serious. Senders expected about 78% to be read correctly, but readers got only 56% right, close to a coin flip, while people who heard the same lines spoken did much better. When you write, you hear your own tone in your head; the reader only sees the words.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Mesajdaki şaka neden yanlış anlaşılır, yazılı mesajda alay anlaşılır mı?\n\nJournal of Personality and Social Psychology'de 2005'te yayımlanan bir deneyde öğrenciler birbirine e-postayla alaycı ya da ciddi cümleler yolladı. Gönderenler cümlelerin yüzde 78'inin doğru anlaşılacağını sandı, ama okuyanlar ancak yüzde 56'sını doğru bildi; bu, yazı turaya yakın bir oran. Aynı cümleleri sesli dinleyenler çok daha başarılıydı. Araştırmacılara göre yazarken kendi ses tonunu kafanda duyarsın, karşındaki ise yalnızca kelimeleri görür; cümleleri göndermeden önce ters tonda sesli okuyanlarda bu aşırı güven ortadan kalktı.\n\nSenin şakaların mesajda hiç yanlış anlaşıldı mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#psikoloji",
+   "#iletişim",
+   "#mesajlaşma",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "mesajda şaka",
+   "mesajda alay",
+   "yazılı iletişim",
+   "mesaj yanlış anlaşılması",
+   "e-postada alay",
+   "şaka neden anlaşılmaz",
+   "ses tonu",
+   "mesajlaşma",
+   "iletişim hataları",
+   "iletişim",
+   "yanlış anlaşılma",
+   "benmerkezcilik",
+   "sosyal psikoloji",
+   "psikoloji",
+   "psikolojik gerçekler",
+   "insan davranışı",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "sarcasm in text",
+   "email sarcasm"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your jokes in texts land far less often than you think 📱",
+    "description": "In a 2005 experiment, students emailed each other sarcastic or serious statements. Senders expected about 78% to be read correctly, but readers got only 56% right, close to a coin flip. When you write, you hear your own tone in your head; the reader only sees the words."
+   },
+   "es": {
+    "title": "Tus bromas por mensaje se entienden mucho menos de lo que crees 📱",
+    "description": "En un experimento de 2005, unos estudiantes se enviaron por correo frases sarcásticas o serias. Quienes escribían esperaban que se entendiera el 78 %, pero los lectores solo acertaron el 56 %, casi como lanzar una moneda. Al escribir oyes tu propio tono en la cabeza; quien lee solo ve las palabras."
+   },
+   "pt": {
+    "title": "Suas piadas por mensagem são entendidas bem menos do que você pensa 📱",
+    "description": "Num experimento de 2005, estudantes trocaram por e-mail frases sarcásticas ou sérias. Quem escrevia achava que 78% seriam entendidas, mas os leitores acertaram só 56%, quase cara ou coroa. Quando você escreve, ouve o próprio tom na cabeça; quem lê só vê as palavras."
+   },
+   "de": {
+    "title": "Deine Witze im Chat kommen viel seltener an, als du denkst 📱",
+    "description": "In einem Experiment von 2005 schickten Studierende einander per E-Mail sarkastische oder ernste Sätze. Die Absender erwarteten, dass 78 % richtig verstanden würden, doch die Leser lagen nur bei 56 % richtig, kaum besser als ein Münzwurf. Beim Schreiben hörst du deinen Tonfall im Kopf, der Leser sieht nur die Wörter."
+   },
+   "fr": {
+    "title": "Tes blagues par message passent bien moins que tu ne le crois 📱",
+    "description": "Dans une expérience de 2005, des étudiants s'envoyaient par e-mail des phrases sarcastiques ou sérieuses. Les auteurs pensaient que 78 % seraient bien comprises, mais les lecteurs n'en ont saisi que 56 %, à peine mieux qu'un pile ou face. En écrivant, tu entends ton ton dans ta tête ; le lecteur, lui, ne voit que les mots."
+   },
+   "it": {
+    "title": "Le tue battute per messaggio arrivano molto meno di quanto pensi 📱",
+    "description": "In un esperimento del 2005 alcuni studenti si sono mandati via e-mail frasi sarcastiche o serie. Chi scriveva si aspettava che il 78% venisse capito, ma i lettori ne hanno indovinato solo il 56%, quasi come lanciare una moneta. Quando scrivi senti il tuo tono nella testa; chi legge vede solo le parole."
+   },
+   "ru": {
+    "title": "Твои шутки в сообщениях понимают гораздо реже, чем ты думаешь 📱",
+    "description": "В эксперименте 2005 года студенты отправляли друг другу по почте саркастические или серьёзные фразы. Авторы ожидали, что поймут 78 %, но читатели угадали лишь 56 % — почти как подбросить монетку. Когда пишешь, ты слышишь свой тон в голове, а читатель видит только слова."
+   },
+   "ar": {
+    "title": "مزاحك في الرسائل يُفهم أقل بكثير مما تظن 📱",
+    "description": "في تجربة أُجريت عام 2005 تبادل طلاب عبر البريد الإلكتروني عبارات ساخرة أو جادة. توقّع المرسلون أن يُفهم 78% منها، لكن القرّاء أصابوا في 56% فقط، أي ما يقارب رمي عملة. فحين تكتب تسمع نبرة صوتك في رأسك، أما القارئ فلا يرى إلا الكلمات."
+   },
+   "hi": {
+    "title": "मैसेज में किया आपका मज़ाक उतना समझ नहीं आता जितना आप सोचते हैं 📱",
+    "description": "2005 के एक प्रयोग में छात्रों ने एक-दूसरे को ईमेल से व्यंग्य वाले या गंभीर वाक्य भेजे। भेजने वालों को लगा कि 78% सही समझे जाएँगे, लेकिन पढ़ने वाले सिर्फ़ 56% सही पहचान पाए, लगभग सिक्का उछालने जितना। लिखते समय आप अपना लहजा अपने दिमाग़ में सुनते हैं, पढ़ने वाला सिर्फ़ शब्द देखता है।"
+   },
+   "id": {
+    "title": "Candaanmu lewat chat jauh lebih jarang dipahami dari dugaanmu 📱",
+    "description": "Dalam eksperimen tahun 2005, mahasiswa saling mengirim kalimat sarkastis atau serius lewat email. Pengirim mengira 78% akan dipahami, tetapi pembaca hanya menebak benar 56%, hampir seperti melempar koin. Saat menulis, kamu mendengar nada suaramu sendiri di kepala; pembaca hanya melihat kata-katanya."
+   },
+   "ja": {
+    "title": "メッセージの冗談は、思っているほど伝わっていない 📱",
+    "description": "2005年のある実験で、学生たちが皮肉か真面目な文をメールで送り合いました。送り手は78%が正しく伝わると予想しましたが、読み手が正しく読み取れたのは56%で、コイン投げとほぼ同じでした。書くときは自分の口調が頭の中で聞こえていますが、読む人には文字しか見えないのです。"
+   },
+   "ko": {
+    "title": "메시지로 한 농담은 생각보다 훨씬 덜 통한다 📱",
+    "description": "2005년의 한 실험에서 학생들이 이메일로 비꼬는 문장이나 진지한 문장을 주고받았습니다. 보낸 사람들은 78%가 제대로 전달될 거라 예상했지만, 읽은 사람들이 맞힌 건 56%로 동전 던지기와 비슷했습니다. 글을 쓸 때는 내 말투가 머릿속에서 들리지만, 읽는 사람은 글자만 봅니다."
+   },
+   "pl": {
+    "title": "Twoje żarty w wiadomościach trafiają rzadziej, niż myślisz 📱",
+    "description": "W eksperymencie z 2005 roku studenci wysyłali sobie e-mailem zdania sarkastyczne lub poważne. Nadawcy spodziewali się, że 78% zostanie dobrze zrozumianych, ale czytelnicy trafili tylko w 56%, prawie jak przy rzucie monetą. Pisząc, słyszysz w głowie swój ton, a czytelnik widzi tylko słowa."
+   },
+   "nl": {
+    "title": "Je grappen in een appje komen veel minder vaak over dan je denkt 📱",
+    "description": "In een experiment uit 2005 stuurden studenten elkaar per e-mail sarcastische of serieuze zinnen. De afzenders dachten dat 78% goed begrepen zou worden, maar de lezers hadden maar 56% goed, nauwelijks beter dan kop of munt. Als je schrijft, hoor je je eigen toon in je hoofd; de lezer ziet alleen de woorden."
+   },
+   "uk": {
+    "title": "Твої жарти в повідомленнях розуміють набагато рідше, ніж ти думаєш 📱",
+    "description": "В експерименті 2005 року студенти надсилали одне одному поштою саркастичні або серйозні фрази. Автори очікували, що зрозуміють 78 %, але читачі вгадали лише 56 % — майже як підкинути монетку. Коли пишеш, ти чуєш свій тон у голові, а читач бачить лише слова."
+   },
+   "vi": {
+    "title": "Câu đùa qua tin nhắn của bạn ít được hiểu hơn bạn nghĩ nhiều 📱",
+    "description": "Trong một thí nghiệm năm 2005, sinh viên gửi cho nhau qua email những câu mỉa mai hoặc nghiêm túc. Người gửi tưởng 78% sẽ được hiểu đúng, nhưng người đọc chỉ đoán đúng 56%, gần như tung đồng xu. Khi viết, bạn nghe giọng điệu của mình trong đầu; người đọc chỉ thấy chữ."
+   },
+   "az": {
+    "title": "Mesajda etdiyin zarafat düşündüyündən çox az başa düşülür 📱",
+    "description": "2005-ci ildə aparılan bir təcrübədə tələbələr bir-birinə e-poçtla istehzalı və ya ciddi cümlələr göndərdi. Göndərənlər 78 faizinin düzgün anlaşılacağını düşündü, oxuyanlar isə yalnız 56 faizini düz tapdı, bu da demək olar ki, püşk atmaq qədərdir. Yazanda öz səs tonunu başında eşidirsən, oxuyan isə yalnız sözləri görür."
+   },
+   "ro": {
+    "title": "Glumele tale din mesaje sunt înțelese mult mai rar decât crezi 📱",
+    "description": "Într-un experiment din 2005, studenții și-au trimis prin e-mail fraze sarcastice sau serioase. Expeditorii credeau că 78% vor fi înțelese corect, dar cititorii au ghicit doar 56%, aproape cât dai cu banul. Când scrii, îți auzi tonul în minte; cel care citește vede doar cuvintele."
+   }
+  }
+ }
+}

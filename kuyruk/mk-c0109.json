@@ -1,0 +1,176 @@
+{
+ "id": "mk-c0109",
+ "topic": "Köpekler neden ot yer, ot yiyen köpek hasta mıdır?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog eating grass",
+ "script": {
+  "title": "Köpeğin ot yiyorsa büyük ihtimalle hasta değil 🌿",
+  "hook_text": "KÖPEK NEDEN OT YER?",
+  "scenes": [
+   {
+    "text": "Bu köpek ot yiyor ama hasta değil.",
+    "visual": "close-up of a dog's mouth chewing green grass blades",
+    "stock_query": "dog eating grass",
+    "source": "stock",
+    "callout": "HASTA DEĞİL"
+   },
+   {
+    "text": "Sahiplerin çoğu, midesi bulandığı için ot yediğini sanır.",
+    "visual": "a dog lying on a lawn next to its owner",
+    "stock_query": "dog owner grass",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir ankette köpeklerin üçte ikisi her hafta ot yiyordu; önceden hasta görünen onda birden azdı.",
+    "visual": "a dog grazing on grass in a backyard",
+    "stock_query": "dog grass",
+    "source": "stock",
+    "callout": "ONDA BİRDEN AZ"
+   },
+   {
+    "text": "Bir görüşe göre vahşi atalarından kalma: ot, bağırsak parazitlerini dışarı süpürmeye yarıyor olabilir.",
+    "visual": "a grey wolf walking through a grassy meadow",
+    "stock_query": "wolf meadow",
+    "source": "stock",
+    "callout": "ATALARDAN KALMA",
+    "subject": [
+     "wolf"
+    ]
+   },
+   {
+    "text": "Ot yiyen köpeğini hemen hasta sanma; çünkü...",
+    "visual": "a happy dog running across green grass",
+    "stock_query": "dog running grass",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeklerin ot yemesi çoğu zaman hastalık işareti değil. Bin beş yüzü aşkın köpekle yapılan bir ankette köpeklerin üçte ikisi her hafta ot yiyordu, ama ot yemeden önce hasta görünenler onda birden azdı. Bir görüşe göre bu davranış vahşi atalardan kalma ve bağırsak parazitlerini dışarı atmaya yarıyor olabilir.",
+  "tags": [
+   "köpek",
+   "köpek ot yer mi",
+   "köpek neden ot yer",
+   "ot yiyen köpek",
+   "köpekler",
+   "köpek sahibi",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin ot yiyor mu: evet mi, hayır mı?",
+  "en_title": "If your dog eats grass, it probably isn't sick 🌿",
+  "en_description": "Many owners think dogs eat grass because they feel sick, but a survey of more than 1,500 dogs found otherwise. About two-thirds ate plants daily or weekly, fewer than one in ten looked ill beforehand, and only about a fifth regularly vomited afterwards. One idea is that it's a habit inherited from wild ancestors that may help sweep out intestinal parasites.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler neden ot yer, ot yiyen köpek hasta mıdır?\n\nKaliforniya Üniversitesi Davis'teki araştırmacıların 2008'de yayımladığı ankette bin beş yüzü aşkın köpeğin üçte ikisi her gün ya da her hafta ot yiyordu. Ot yemeden önce sık sık hasta görünenler onda birden azdı, ot yedikten sonra sık sık kusanlar ise beşte bir kadardı; genç köpekler daha sık ot yiyor ve daha az kusuyordu. Araştırmacılara göre ot yemek köpekler için normal bir davranış; bir görüşe göre vahşi atalardan kalma ve bağırsak parazitlerini dışarı süpürmeye yarıyor olabilir.\n\nSenin köpeğin ot yiyor mu: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek ot yer mi",
+   "köpek neden ot yer",
+   "ot yiyen köpek",
+   "köpeğim ot yiyor",
+   "köpek ot yiyip kusuyor",
+   "köpek ot yemesi",
+   "köpek midesi bulanması",
+   "köpek davranışları",
+   "köpek sağlığı",
+   "köpek",
+   "köpekler",
+   "köpek sahibi",
+   "köpek bakımı",
+   "evcil hayvan",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "dog eating grass",
+   "why dogs eat grass"
+  ],
+  "localizations": {
+   "en": {
+    "title": "If your dog eats grass, it probably isn't sick 🌿",
+    "description": "Many owners think dogs eat grass because they feel sick, but a survey of more than 1,500 dogs found otherwise: about two-thirds ate plants at least weekly and fewer than one in ten looked ill beforehand. One idea is that it's a habit inherited from wild ancestors that may help sweep out intestinal parasites."
+   },
+   "es": {
+    "title": "Si tu perro come hierba, probablemente no está enfermo 🌿",
+    "description": "Muchos dueños creen que los perros comen hierba porque se sienten mal, pero una encuesta con más de 1.500 perros mostró otra cosa: dos tercios la comían cada semana y menos de uno de cada diez parecía enfermo antes. Una teoría dice que es una costumbre heredada de sus ancestros salvajes que podría ayudar a expulsar parásitos intestinales."
+   },
+   "pt": {
+    "title": "Se seu cachorro come grama, provavelmente não está doente 🌿",
+    "description": "Muitos tutores acham que o cachorro come grama porque está passando mal, mas uma pesquisa com mais de 1.500 cães mostrou outra coisa: dois terços comiam grama toda semana e menos de um em cada dez parecia doente antes. Uma hipótese é que seja um hábito herdado dos ancestrais selvagens, que talvez ajude a expulsar parasitas intestinais."
+   },
+   "de": {
+    "title": "Frisst dein Hund Gras, ist er wahrscheinlich nicht krank 🌿",
+    "description": "Viele Halter glauben, Hunde fressen Gras, weil ihnen übel ist. Eine Umfrage zu über 1.500 Hunden zeigte etwas anderes: Zwei Drittel fraßen jede Woche Gras, und weniger als jeder zehnte wirkte vorher krank. Eine Vermutung lautet, dass es ein Erbe wilder Vorfahren ist, das helfen könnte, Darmparasiten auszuscheiden."
+   },
+   "fr": {
+    "title": "Si ton chien mange de l'herbe, il n'est sûrement pas malade 🌿",
+    "description": "Beaucoup de maîtres pensent que le chien mange de l'herbe parce qu'il se sent mal. Pourtant, dans une enquête portant sur plus de 1 500 chiens, deux tiers en mangeaient chaque semaine et moins d'un sur dix semblait malade avant. Selon une hypothèse, c'est un héritage de leurs ancêtres sauvages qui aiderait à évacuer les parasites intestinaux."
+   },
+   "it": {
+    "title": "Se il tuo cane mangia l'erba, probabilmente non sta male 🌿",
+    "description": "Molti padroni pensano che il cane mangi l'erba perché sta male, ma un sondaggio su oltre 1.500 cani ha mostrato altro: due terzi la mangiavano ogni settimana e meno di uno su dieci sembrava malato prima. Secondo un'ipotesi è un'abitudine ereditata dagli antenati selvatici che potrebbe aiutare a espellere i parassiti intestinali."
+   },
+   "ru": {
+    "title": "Если собака ест траву, она, скорее всего, не больна 🌿",
+    "description": "Многие хозяева думают, что собака ест траву, потому что ей плохо. Но опрос о более чем 1500 собаках показал другое: две трети ели траву каждую неделю, и меньше чем каждая десятая выглядела больной перед этим. По одной версии, это привычка, унаследованная от диких предков, которая может помогать выводить кишечных паразитов."
+   },
+   "ar": {
+    "title": "إذا كان كلبك يأكل العشب فهو على الأرجح ليس مريضًا 🌿",
+    "description": "يظن كثير من أصحاب الكلاب أنها تأكل العشب لأنها مريضة، لكن استطلاعًا شمل أكثر من 1500 كلب أظهر غير ذلك: ثلثا الكلاب كانت تأكل العشب كل أسبوع، وأقل من واحد من كل عشرة بدا مريضًا قبلها. وتقول إحدى الفرضيات إنها عادة موروثة من أسلافها البرية قد تساعد على طرد الطفيليات المعوية."
+   },
+   "hi": {
+    "title": "आपका कुत्ता घास खाता है तो शायद वह बीमार नहीं है 🌿",
+    "description": "कई लोग मानते हैं कि कुत्ते बीमार होने पर घास खाते हैं, लेकिन 1,500 से ज़्यादा कुत्तों पर हुए एक सर्वे ने कुछ और दिखाया: दो-तिहाई कुत्ते हर हफ़्ते घास खाते थे और दस में से एक से भी कम पहले बीमार दिखते थे। एक विचार के मुताबिक़ यह जंगली पूर्वजों से मिली आदत है, जो पेट के कीड़ों को बाहर निकालने में मदद कर सकती है।"
+   },
+   "id": {
+    "title": "Kalau anjingmu makan rumput, kemungkinan besar ia tidak sakit 🌿",
+    "description": "Banyak pemilik mengira anjing makan rumput karena sedang sakit, tetapi survei terhadap lebih dari 1.500 anjing menunjukkan hal lain: dua pertiganya makan rumput setiap minggu dan kurang dari satu dari sepuluh tampak sakit sebelumnya. Menurut satu dugaan, ini kebiasaan warisan leluhur liarnya yang mungkin membantu mengeluarkan parasit usus."
+   },
+   "ja": {
+    "title": "犬が草を食べても、たいていは具合が悪いわけではない 🌿",
+    "description": "犬は具合が悪いときに草を食べると思われがちですが、1,500匹以上の犬を対象にした調査では違いました。3分の2が毎週草を食べていて、その前に具合が悪そうだったのは10匹に1匹未満でした。野生の祖先から受け継いだ習性で、腸の寄生虫を押し出すのに役立つのではという説があります。"
+   },
+   "ko": {
+    "title": "강아지가 풀을 먹는다고 아픈 건 아닐 가능성이 크다 🌿",
+    "description": "많은 보호자가 개는 아플 때 풀을 먹는다고 생각하지만, 1,500마리가 넘는 개를 조사한 결과는 달랐습니다. 3분의 2가 매주 풀을 먹었고, 그 전에 아파 보인 개는 10마리 중 1마리도 안 됐습니다. 야생 조상에게서 물려받은 습관으로 장내 기생충을 밀어내는 데 도움이 될 수 있다는 가설이 있습니다."
+   },
+   "pl": {
+    "title": "Jeśli twój pies je trawę, raczej nie jest chory 🌿",
+    "description": "Wielu opiekunów sądzi, że psy jedzą trawę, bo źle się czują. Ankieta obejmująca ponad 1500 psów pokazała jednak coś innego: dwie trzecie jadły trawę co tydzień, a mniej niż co dziesiąty wyglądał wcześniej na chorego. Według jednej hipotezy to nawyk odziedziczony po dzikich przodkach, który może pomagać usuwać pasożyty jelitowe."
+   },
+   "nl": {
+    "title": "Eet je hond gras, dan is hij waarschijnlijk niet ziek 🌿",
+    "description": "Veel baasjes denken dat honden gras eten omdat ze zich ziek voelen, maar een enquête over meer dan 1500 honden liet iets anders zien: twee derde at elke week gras en minder dan één op de tien leek vooraf ziek. Volgens één theorie is het een gewoonte van hun wilde voorouders die zou kunnen helpen darmparasieten af te voeren."
+   },
+   "uk": {
+    "title": "Якщо собака їсть траву, вона, найімовірніше, не хвора 🌿",
+    "description": "Багато власників думають, що собака їсть траву, бо їй погано. Але опитування щодо понад 1500 собак показало інше: дві третини їли траву щотижня, і менше ніж кожна десята виглядала хворою перед цим. За однією версією, це звичка, успадкована від диких предків, яка може допомагати виводити кишкових паразитів."
+   },
+   "vi": {
+    "title": "Chó nhà bạn ăn cỏ thì nhiều khả năng nó không bị ốm 🌿",
+    "description": "Nhiều người nuôi nghĩ chó ăn cỏ vì đang thấy khó chịu, nhưng một khảo sát trên hơn 1.500 con chó cho thấy điều khác: hai phần ba ăn cỏ hằng tuần và chưa tới một phần mười trông có vẻ ốm trước đó. Theo một giả thuyết, đây là thói quen thừa hưởng từ tổ tiên hoang dã, có thể giúp tống ký sinh trùng đường ruột ra ngoài."
+   },
+   "az": {
+    "title": "İtin ot yeyirsə, çox güman ki, xəstə deyil 🌿",
+    "description": "Bir çox sahib elə bilir ki, itlər xəstə olanda ot yeyir. Lakin 1500-dən çox it üzrə aparılan sorğu başqa şey göstərdi: üçdə ikisi hər həftə ot yeyirdi, əvvəlcədən xəstə görünənlər isə ondan birdən az idi. Bir fikrə görə, bu, vəhşi əcdadlardan qalan vərdişdir və bağırsaq parazitlərini çıxarmağa kömək edə bilər."
+   },
+   "ro": {
+    "title": "Dacă câinele tău mănâncă iarbă, probabil nu e bolnav 🌿",
+    "description": "Mulți stăpâni cred că, atunci când mănâncă iarbă, câinilor le e rău, dar un sondaj despre peste 1.500 de câini a arătat altceva: două treimi mâncau iarbă în fiecare săptămână și mai puțin de unul din zece părea bolnav înainte. O ipoteză spune că e un obicei moștenit de la strămoșii sălbatici care ar putea ajuta la eliminarea paraziților intestinali."
+   }
+  }
+ }
+}

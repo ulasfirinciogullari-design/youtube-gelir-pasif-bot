@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0116",
+ "topic": "Tavşanlar havuç yer mi, tavşana havuç vermek zararlı mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "rabbit"
+ ],
+ "stock_hint": "rabbit carrot",
+ "script": {
+  "title": "Havuç tavşanın ana yemeği değil, şekerlemesi 🥕",
+  "hook_text": "TAVŞANA HAVUÇ VERİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu tavşanın yediği havuç, onun için şekerleme.",
+    "visual": "close-up of a rabbit's mouth nibbling an orange carrot",
+    "stock_query": "rabbit carrot",
+    "source": "stock",
+    "callout": "HAVUÇ = ŞEKERLEME"
+   },
+   {
+    "text": "Peki tavşan aslında neyle beslenmeli?",
+    "visual": "a rabbit sitting on green grass",
+    "stock_query": "rabbit grass",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Tuhafı şu: dişleri ömür boyu hiç durmadan uzar.",
+    "visual": "close-up of a rabbit's face and front teeth",
+    "stock_query": "rabbit face",
+    "source": "stock",
+    "callout": "DİŞLERİ HİÇ DURMAZ"
+   },
+   {
+    "text": "Cevap: beslenmesinin yüzde seksen beşi saman ve çimen olmalı; bu lifli otlar sindirimi çalıştırır, dişleri aşındırır.",
+    "visual": "a rabbit eating hay",
+    "stock_query": "rabbit hay",
+    "source": "stock",
+    "callout": "%85 SAMAN, ÇİMEN"
+   },
+   {
+    "text": "Havuçtaki şeker kilo ve sindirim sorunu getirebilir; havucu ara sıra ödül yap, çünkü...",
+    "visual": "a fluffy rabbit sniffing a carrot",
+    "stock_query": "rabbit eating",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Havuç tavşanların ana besini değil; şekeri yüksek olduğu için ara sıra verilecek bir ödül. Bir tavşanın beslenmesinin yaklaşık yüzde 85'i saman ve çimen olmalı. Tavşanın dişleri ömür boyu uzar ve lifli otları çiğnemek dişleri aşındırır.",
+  "tags": [
+   "tavşan",
+   "tavşan havuç yer mi",
+   "tavşan ne yer",
+   "tavşan beslenmesi",
+   "tavşan dişleri",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de tavşanların en çok havuç yediğini sanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Carrots aren't a rabbit's main food, they're candy 🥕",
+  "en_description": "Despite the popular image, carrots are high in sugar and should only be an occasional treat for rabbits. Around 85% of a rabbit's diet should be hay and grass: the fibre keeps its gut working and wears down its teeth, which keep growing throughout its life. Too many carrots can lead to weight gain and digestive problems.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Tavşanlar havuç yer mi, tavşana havuç vermek zararlı mı?\n\nİngiltere'nin hayvan refahı kuruluşları RSPCA ve PDSA'ya göre havuç, yaygın inanışın aksine tavşanın ana besini değil; şekeri yüksek, lifi az olduğu için yalnızca ara sıra küçük bir ödül olmalı. Bir tavşanın beslenmesinin yaklaşık yüzde seksen beşi saman ve çimen olmalı. Tavşanın dişleri ömür boyu durmadan uzar; lifli otları çiğnemek hem sindirimini çalıştırır hem dişlerini aşındırır, fazla havuç ise kilo ve sindirim sorunlarına yol açabilir.\n\nSen de tavşanların en çok havuç yediğini sanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#tavşan",
+   "#evcilhayvan",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tavşan havuç yer mi",
+   "tavşan ne yer",
+   "tavşana havuç verilir mi",
+   "tavşan beslenmesi",
+   "tavşan yemi",
+   "tavşan saman",
+   "tavşan dişleri",
+   "tavşan dişi uzar mı",
+   "tavşan bakımı",
+   "tavşan sahibi",
+   "tavşan",
+   "tavşanlar",
+   "evcil tavşan",
+   "havuç",
+   "evcil hayvan",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "rabbit carrots",
+   "rabbit diet"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Carrots aren't a rabbit's main food, they're candy 🥕",
+    "description": "Despite the popular image, carrots are high in sugar and should only be an occasional treat for rabbits. Around 85% of a rabbit's diet should be hay and grass: the fibre keeps its gut working and wears down its teeth, which keep growing throughout its life."
+   },
+   "es": {
+    "title": "La zanahoria no es la comida principal del conejo, es su golosina 🥕",
+    "description": "Aunque lo parezca, la zanahoria tiene mucho azúcar y solo debería ser un premio ocasional para los conejos. Cerca del 85 % de su dieta debe ser heno y hierba: la fibra mantiene su digestión en marcha y desgasta sus dientes, que crecen toda la vida."
+   },
+   "pt": {
+    "title": "Cenoura não é a comida principal do coelho, é a guloseima dele 🥕",
+    "description": "Apesar da fama, a cenoura tem muito açúcar e deveria ser só um petisco ocasional para coelhos. Cerca de 85% da dieta deles deve ser feno e capim: a fibra mantém a digestão funcionando e desgasta os dentes, que crescem a vida toda."
+   },
+   "de": {
+    "title": "Karotten sind kein Hauptfutter für Kaninchen, sondern Süßigkeiten 🥕",
+    "description": "Trotz ihres Rufs enthalten Karotten viel Zucker und sollten für Kaninchen nur eine gelegentliche Leckerei sein. Etwa 85 % ihres Futters sollten Heu und Gras sein: Die Fasern halten die Verdauung in Gang und schleifen die Zähne ab, die ein Leben lang wachsen."
+   },
+   "fr": {
+    "title": "La carotte n'est pas le repas du lapin, c'est sa friandise 🥕",
+    "description": "Malgré sa réputation, la carotte est très sucrée et ne devrait être qu'une friandise occasionnelle pour le lapin. Environ 85 % de son alimentation doit être du foin et de l'herbe : les fibres font fonctionner sa digestion et usent ses dents, qui poussent toute sa vie."
+   },
+   "it": {
+    "title": "La carota non è il cibo principale del coniglio, è il suo dolcetto 🥕",
+    "description": "Nonostante la fama, la carota è molto zuccherina e per i conigli dovrebbe essere solo un premio occasionale. Circa l'85% della loro dieta dovrebbe essere fieno ed erba: le fibre fanno funzionare la digestione e consumano i denti, che crescono per tutta la vita."
+   },
+   "ru": {
+    "title": "Морковь для кролика не основная еда, а лакомство 🥕",
+    "description": "Вопреки распространённому образу, в моркови много сахара, и кроликам её стоит давать лишь изредка как угощение. Около 85 % их рациона должны составлять сено и трава: клетчатка поддерживает пищеварение и стачивает зубы, которые растут всю жизнь."
+   },
+   "ar": {
+    "title": "الجزر ليس الطعام الأساسي للأرنب، بل حلواه 🥕",
+    "description": "رغم الصورة الشائعة، يحتوي الجزر على كثير من السكر، ولا ينبغي أن يكون للأرانب إلا مكافأة من حين لآخر. فنحو 85% من غذائها يجب أن يكون من التبن والعشب: الألياف تحافظ على عمل الهضم وتبري أسنانها التي تنمو طوال حياتها."
+   },
+   "hi": {
+    "title": "गाजर खरगोश का असली खाना नहीं, उसकी मिठाई है 🥕",
+    "description": "आम धारणा के उलट, गाजर में काफ़ी चीनी होती है और खरगोश को इसे बस कभी-कभार इनाम की तरह देना चाहिए। उसके खाने का लगभग 85% हिस्सा सूखी घास और हरी घास होना चाहिए: रेशा पाचन को चलाता है और उसके दाँत घिसता है, जो ज़िंदगी भर बढ़ते रहते हैं।"
+   },
+   "id": {
+    "title": "Wortel bukan makanan utama kelinci, melainkan camilan manisnya 🥕",
+    "description": "Meski terkenal begitu, wortel tinggi gula dan sebaiknya hanya jadi camilan sesekali untuk kelinci. Sekitar 85% makanannya seharusnya jerami dan rumput: seratnya menjaga pencernaan tetap bekerja dan mengikis giginya yang terus tumbuh seumur hidup."
+   },
+   "ja": {
+    "title": "ニンジンはウサギの主食ではなく、おやつ 🥕",
+    "description": "イメージとは違い、ニンジンは糖分が多く、ウサギにはたまに与えるおやつ程度にすべきです。食事の約85%は牧草や草であるべきで、その繊維が消化を助け、一生伸び続ける歯をすり減らしてくれます。"
+   },
+   "ko": {
+    "title": "당근은 토끼의 주식이 아니라 간식이다 🥕",
+    "description": "흔한 이미지와 달리 당근은 당분이 많아 토끼에게는 가끔 주는 간식이어야 합니다. 먹이의 약 85%는 건초와 풀이어야 하는데, 섬유질이 소화를 돕고 평생 자라는 이빨을 갈아 줍니다."
+   },
+   "pl": {
+    "title": "Marchewka to nie główne jedzenie królika, tylko jego słodycz 🥕",
+    "description": "Wbrew popularnemu wyobrażeniu marchewka ma dużo cukru i dla królika powinna być tylko okazjonalnym przysmakiem. Około 85% jego diety powinno stanowić siano i trawa: błonnik utrzymuje trawienie w ruchu i ściera zęby, które rosną przez całe życie."
+   },
+   "nl": {
+    "title": "Wortels zijn geen hoofdvoer voor konijnen, maar snoep 🥕",
+    "description": "Ondanks het bekende beeld zitten wortels vol suiker en zijn ze voor konijnen alleen af en toe een traktatie. Zo'n 85% van hun voer hoort hooi en gras te zijn: de vezels houden de spijsvertering op gang en slijten de tanden af, die hun hele leven doorgroeien."
+   },
+   "uk": {
+    "title": "Морква для кролика не основна їжа, а ласощі 🥕",
+    "description": "Попри поширений образ, у моркві багато цукру, тож кролям її варто давати лише зрідка як частування. Близько 85 % їхнього раціону мають становити сіно й трава: клітковина підтримує травлення і сточує зуби, які ростуть усе життя."
+   },
+   "vi": {
+    "title": "Cà rốt không phải món chính của thỏ mà là đồ ăn vặt 🥕",
+    "description": "Trái với hình ảnh quen thuộc, cà rốt chứa nhiều đường và chỉ nên là phần thưởng thỉnh thoảng cho thỏ. Khoảng 85% khẩu phần của thỏ nên là cỏ khô và cỏ tươi: chất xơ giúp tiêu hóa hoạt động và mài mòn răng, vốn mọc dài suốt đời."
+   },
+   "az": {
+    "title": "Kök dovşanın əsas yeməyi deyil, şirniyyatıdır 🥕",
+    "description": "Geniş yayılmış təsəvvürün əksinə, kökdə çoxlu şəkər var və dovşana yalnız arabir mükafat kimi verilməlidir. Onun qidasının təxminən 85 faizi quru ot və təzə ot olmalıdır: lif həzmi işlədir və ömür boyu uzanan dişlərini aşındırır."
+   },
+   "ro": {
+    "title": "Morcovul nu e mâncarea principală a iepurelui, e desertul lui 🥕",
+    "description": "Contrar imaginii populare, morcovul are mult zahăr și ar trebui să fie doar o recompensă ocazională pentru iepuri. Aproximativ 85% din hrana lor ar trebui să fie fân și iarbă: fibrele țin digestia în mișcare și le tocesc dinții, care cresc toată viața."
+   }
+  }
+ }
+}

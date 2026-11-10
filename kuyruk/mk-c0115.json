@@ -1,0 +1,175 @@
+{
+ "id": "mk-c0115",
+ "topic": "Baş ağrısında beyin mi ağrır, beyin acı hisseder mi?",
+ "kategori": "vücut",
+ "subject": [
+  "headache",
+  "brain"
+ ],
+ "stock_hint": "headache woman",
+ "script": {
+  "title": "Başın ağrıdığında ağrıyan şey beynin değil 🧠",
+  "hook_text": "BAŞ AĞRISI NEREDEN GELİR?",
+  "scenes": [
+   {
+    "text": "Başın ağrırken ağrıyan şey beynin değil.",
+    "visual": "close-up of a woman's face pressing her fingertips to her temples with a headache",
+    "stock_query": "headache woman",
+    "source": "stock",
+    "callout": "AĞRIYAN BEYİN DEĞİL"
+   },
+   {
+    "text": "Peki o zonklama nereden geliyor?",
+    "visual": "a man rubbing his forehead in pain",
+    "stock_query": "man headache",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Üstelik bazı beyin ameliyatlarında hasta uyanık kalır; beyne dokunulurken acı duymaz.",
+    "visual": "surgeons working in an operating room",
+    "stock_query": "surgery operating room",
+    "source": "stock",
+    "callout": "UYANIK AMELİYAT",
+    "subject": [
+     "surgery"
+    ]
+   },
+   {
+    "text": "Çünkü beyinde ağrı algılayıcısı yok; ağrıyı onu saran zarlar, damarlar, kaslar ve sinirler hisseder.",
+    "visual": "a 3D model of a human brain slowly rotating",
+    "stock_query": "human brain",
+    "source": "stock",
+    "callout": "AĞRI ALGILAYICI YOK"
+   },
+   {
+    "text": "Bütün acıyı beynin duyar ama kendisi acı hissetmez; o yüzden...",
+    "visual": "a woman with a headache closing her eyes",
+    "stock_query": "headache",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Baş ağrısında ağrıyan şey beynin kendisi değil. Beyin dokusunda ağrı algılayıcısı (nosiseptör) yoktur; baş ağrısını beyni saran zarlar, kan damarları, kaslar ve yüzle boyundaki sinirler hisseder. Bu yüzden bazı beyin ameliyatlarında hasta uyanık tutulabilir ve beynine dokunulurken acı duymaz.",
+  "tags": [
+   "baş ağrısı",
+   "beyin",
+   "beyin acı hisseder mi",
+   "baş ağrısı neden olur",
+   "uyanık beyin ameliyatı",
+   "insan vücudu",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin baş ağrın en çok nereden başlar: alnından mı, şakaklarından mı?",
+  "en_title": "When you have a headache, it isn't your brain that hurts 🧠",
+  "en_description": "Brain tissue has no pain receptors. Headache pain comes from the membranes around the brain, blood vessels, muscles and the nerves of the face and neck. That's why some brain surgeries are done with the patient awake: touching the brain itself doesn't hurt.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Baş ağrısında beyin mi ağrır, beyin acı hisseder mi?\n\nHayır, beynin kendisi acı hissetmez. Sinirbilim Derneği'nin (Society for Neuroscience) BrainFacts sitesine göre beyin dokusunda ağrı algılayıcısı (nosiseptör) yoktur; baş ağrısını beyni saran zarlar, kan damarları, kaslar ve yüzle boyundaki sinirler hisseder. Bu yüzden bazı beyin ameliyatlarında hasta uyanık tutulur ve beynine dokunulurken acı duymaz; bütün acıları algılayan beyin, kendine dokunulduğunu hissetmez.\n\nSenin baş ağrın en çok nereden başlar: alnından mı, şakaklarından mı?",
+  "hashtags": [
+   "#beyin",
+   "#başağrısı",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "baş ağrısı",
+   "beyin acı hisseder mi",
+   "baş ağrısı nereden gelir",
+   "baş ağrısı neden olur",
+   "beyin ağrır mı",
+   "beyinde ağrı reseptörü",
+   "uyanık beyin ameliyatı",
+   "beyin ameliyatı",
+   "migren",
+   "zonklayan baş ağrısı",
+   "beyin",
+   "beyin zarı",
+   "sinir sistemi",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "headache",
+   "brain pain"
+  ],
+  "localizations": {
+   "en": {
+    "title": "When you have a headache, it isn't your brain that hurts 🧠",
+    "description": "Brain tissue has no pain receptors. Headache pain comes from the membranes around the brain, blood vessels, muscles and the nerves of the face and neck. That's why some brain surgeries are done with the patient awake: touching the brain itself doesn't hurt."
+   },
+   "es": {
+    "title": "Cuando te duele la cabeza, lo que duele no es tu cerebro 🧠",
+    "description": "El tejido cerebral no tiene receptores del dolor. El dolor de cabeza viene de las membranas que rodean el cerebro, los vasos sanguíneos, los músculos y los nervios de la cara y el cuello. Por eso algunas cirugías cerebrales se hacen con el paciente despierto: tocar el cerebro no le duele."
+   },
+   "pt": {
+    "title": "Quando sua cabeça dói, quem dói não é o seu cérebro 🧠",
+    "description": "O tecido do cérebro não tem receptores de dor. A dor de cabeça vem das membranas que envolvem o cérebro, dos vasos sanguíneos, dos músculos e dos nervos do rosto e do pescoço. Por isso algumas cirurgias no cérebro são feitas com o paciente acordado: tocar o cérebro não dói."
+   },
+   "de": {
+    "title": "Wenn du Kopfschmerzen hast, tut nicht dein Gehirn weh 🧠",
+    "description": "Das Hirngewebe selbst hat keine Schmerzrezeptoren. Kopfschmerzen entstehen in den Hirnhäuten, Blutgefäßen, Muskeln und den Nerven in Gesicht und Nacken. Deshalb werden manche Hirnoperationen bei wachem Patienten gemacht: Die Berührung des Gehirns selbst tut nicht weh."
+   },
+   "fr": {
+    "title": "Quand tu as mal à la tête, ce n'est pas ton cerveau qui a mal 🧠",
+    "description": "Le tissu cérébral n'a pas de récepteurs de la douleur. Le mal de tête vient des membranes qui entourent le cerveau, des vaisseaux sanguins, des muscles et des nerfs du visage et du cou. C'est pourquoi certaines opérations du cerveau se font avec le patient éveillé : toucher le cerveau ne fait pas mal."
+   },
+   "it": {
+    "title": "Quando hai mal di testa, a far male non è il cervello 🧠",
+    "description": "Il tessuto cerebrale non ha recettori del dolore. Il mal di testa nasce dalle membrane che avvolgono il cervello, dai vasi sanguigni, dai muscoli e dai nervi del viso e del collo. Per questo alcuni interventi al cervello si fanno con il paziente sveglio: toccare il cervello non fa male."
+   },
+   "ru": {
+    "title": "Когда болит голова, болит вовсе не мозг 🧠",
+    "description": "В ткани мозга нет болевых рецепторов. Головная боль возникает в оболочках мозга, кровеносных сосудах, мышцах и нервах лица и шеи. Поэтому некоторые операции на мозге проводят, пока пациент в сознании: прикосновения к самому мозгу не причиняют боли."
+   },
+   "ar": {
+    "title": "عندما يؤلمك رأسك، فالذي يؤلمك ليس دماغك 🧠",
+    "description": "نسيج الدماغ لا يحتوي على مستقبلات للألم. فألم الرأس يأتي من الأغشية المحيطة بالدماغ والأوعية الدموية والعضلات وأعصاب الوجه والرقبة. ولهذا تُجرى بعض عمليات الدماغ والمريض مستيقظ، لأن لمس الدماغ نفسه لا يؤلم."
+   },
+   "hi": {
+    "title": "सिर दर्द में दर्द आपके दिमाग़ को नहीं होता 🧠",
+    "description": "दिमाग़ के ऊतक में दर्द महसूस करने वाले रिसेप्टर नहीं होते। सिर दर्द दिमाग़ को ढकने वाली झिल्लियों, ख़ून की नलियों, मांसपेशियों और चेहरे व गर्दन की नसों से आता है। इसीलिए दिमाग़ की कुछ सर्जरी मरीज़ के जागते हुए की जाती है: दिमाग़ को छूने से दर्द नहीं होता।"
+   },
+   "id": {
+    "title": "Saat kepalamu sakit, yang sakit bukan otakmu 🧠",
+    "description": "Jaringan otak tidak punya reseptor rasa sakit. Sakit kepala berasal dari selaput yang membungkus otak, pembuluh darah, otot, serta saraf di wajah dan leher. Karena itu, beberapa operasi otak dilakukan saat pasien terjaga: menyentuh otaknya tidak terasa sakit."
+   },
+   "ja": {
+    "title": "頭が痛いとき、痛んでいるのは脳ではない 🧠",
+    "description": "脳の組織そのものには痛みを感じる受容体がありません。頭痛は、脳を包む膜や血管、筋肉、顔や首の神経から生じます。そのため、患者が起きたまま行う脳の手術もあります。脳そのものに触れても痛くないのです。"
+   },
+   "ko": {
+    "title": "머리가 아플 때 아픈 건 뇌가 아니다 🧠",
+    "description": "뇌 조직에는 통증 수용체가 없습니다. 두통은 뇌를 감싼 막, 혈관, 근육, 얼굴과 목의 신경에서 생깁니다. 그래서 어떤 뇌 수술은 환자가 깨어 있는 상태에서 진행됩니다. 뇌 자체를 만져도 아프지 않기 때문입니다."
+   },
+   "pl": {
+    "title": "Kiedy boli cię głowa, nie boli cię mózg 🧠",
+    "description": "Tkanka mózgu nie ma receptorów bólu. Ból głowy pochodzi z opon otaczających mózg, naczyń krwionośnych, mięśni oraz nerwów twarzy i szyi. Dlatego niektóre operacje mózgu przeprowadza się u przytomnego pacjenta: dotykanie samego mózgu nie boli."
+   },
+   "nl": {
+    "title": "Als je hoofdpijn hebt, doen je hersenen geen pijn 🧠",
+    "description": "Hersenweefsel heeft geen pijnreceptoren. Hoofdpijn komt van de vliezen rond de hersenen, bloedvaten, spieren en de zenuwen in gezicht en nek. Daarom worden sommige hersenoperaties gedaan terwijl de patiënt wakker is: het aanraken van de hersenen zelf doet geen pijn."
+   },
+   "uk": {
+    "title": "Коли болить голова, болить зовсім не мозок 🧠",
+    "description": "У тканині мозку немає больових рецепторів. Головний біль виникає в оболонках мозку, кровоносних судинах, м'язах і нервах обличчя та шиї. Тому деякі операції на мозку проводять, коли пацієнт при свідомості: дотики до самого мозку не болять."
+   },
+   "vi": {
+    "title": "Khi bạn đau đầu, thứ bị đau không phải là não 🧠",
+    "description": "Mô não không có thụ thể cảm nhận đau. Cơn đau đầu đến từ các lớp màng bao quanh não, mạch máu, cơ và dây thần kinh ở mặt và cổ. Vì vậy, một số ca mổ não được thực hiện khi bệnh nhân còn tỉnh: chạm vào não không gây đau."
+   },
+   "az": {
+    "title": "Başın ağrıyanda ağrıyan sənin beynin deyil 🧠",
+    "description": "Beyin toxumasında ağrı reseptorları yoxdur. Baş ağrısı beyni əhatə edən qişalardan, qan damarlarından, əzələlərdən, üz və boyun sinirlərindən gəlir. Buna görə bəzi beyin əməliyyatları xəstə oyaq ikən aparılır: beynin özünə toxunmaq ağrı vermir."
+   },
+   "ro": {
+    "title": "Când te doare capul, nu te doare creierul 🧠",
+    "description": "Țesutul creierului nu are receptori pentru durere. Durerea de cap vine din membranele care învelesc creierul, din vasele de sânge, din mușchi și din nervii feței și ai gâtului. De aceea unele operații pe creier se fac cu pacientul treaz: atingerea creierului nu doare."
+   }
+  }
+ }
+}

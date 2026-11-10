@@ -1,0 +1,176 @@
+{
+ "id": "mk-c0114",
+ "topic": "Köpekler sevinçten ağlar mı, köpeğin gözleri sahibini görünce yaşarır mı?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog eyes",
+ "script": {
+  "title": "Köpeğinin gözleri seni görünce yaşarabilir mi? 🐶",
+  "hook_text": "KÖPEKLER SEVİNÇTEN AĞLAR MI?",
+  "scenes": [
+   {
+    "text": "Bu köpek beş saattir sahibini bekliyor.",
+    "visual": "close-up of a dog's eyes looking up into the camera",
+    "stock_query": "dog eyes",
+    "source": "stock",
+    "callout": "5 SAATTİR BEKLİYOR"
+   },
+   {
+    "text": "Peki sahibi gelince gözleri sevinçten yaşarabilir mi?",
+    "visual": "a dog waiting by the front door of a house",
+    "stock_query": "dog door",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Japonya'daki bir deneyde köpeklerin gözyaşı ölçüldü; tanıdık başka biri gelince artmadı.",
+    "visual": "a dog greeting a visitor at the door",
+    "stock_query": "dog greeting",
+    "source": "stock",
+    "callout": "BAŞKASINA ARTMADI"
+   },
+   {
+    "text": "Bu deneye göre evet: sahibine kavuşunca gözyaşı arttı; gözüne sevgi hormonu damlatınca da.",
+    "visual": "a happy dog hugging its owner",
+    "stock_query": "dog owner hug",
+    "source": "stock",
+    "callout": "SEVGİ HORMONU"
+   },
+   {
+    "text": "Eve dönünce köpeğinin gözlerine yakından bak; çünkü...",
+    "visual": "close-up of a dog's face with shiny eyes",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Japonya'daki Azabu Üniversitesi'nin 2022'de yayımlanan deneyinde köpeklerin gözyaşı miktarı, sahiplerine beş ila yedi saatlik ayrılıktan sonra kavuştuklarında arttı; tanıdık başka biriyle buluşunca artmadı. Gözlerine sevgi hormonu oksitosin damlatıldığında da gözyaşı arttı.",
+  "tags": [
+   "köpek",
+   "köpekler ağlar mı",
+   "köpek gözyaşı",
+   "köpek sahibine kavuşunca",
+   "oksitosin",
+   "köpekler",
+   "evcil hayvan",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin seni nasıl karşılıyor: zıplayarak mı, sakince mi?",
+  "en_title": "Can your dog's eyes well up when it sees you? 🐶",
+  "en_description": "In a 2022 experiment in Japan, dogs' tear volume was measured before and after reunions. Tears increased when dogs were reunited with their owners after five to seven hours apart, but not with familiar people who weren't their owners. Putting oxytocin, the bonding hormone, in their eyes also increased tears.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler sevinçten ağlar mı, köpeğin gözleri sahibini görünce yaşarır mı?\n\nCurrent Biology'de 2022'de yayımlanan, Japonya'daki Azabu Üniversitesi'nden Takefumi Kikusui ve ekibinin deneyinde köpeklerin gözyaşı miktarı, sahipleriyle beş ila yedi saatlik ayrılıktan sonra buluşunca arttı; tanıdık ama sahibi olmayan biriyle buluşunca ise artmadı. Gözlerine sevgi hormonu olarak bilinen oksitosin damlatıldığında da gözyaşı arttı. Tek bir deney olduğu için bazı veteriner göz uzmanları sonucun yeni çalışmalarla doğrulanması gerektiğini söylüyor.\n\nSenin köpeğin seni nasıl karşılıyor: zıplayarak mı, sakince mi?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpekler ağlar mı",
+   "köpek sevinçten ağlar mı",
+   "köpek gözyaşı",
+   "köpeğin gözleri yaşarıyor",
+   "köpek sahibine kavuşunca",
+   "köpek sahibini özler mi",
+   "köpek oksitosin",
+   "köpek duyguları",
+   "köpek sevgisi",
+   "köpek sahibi",
+   "köpek",
+   "köpekler",
+   "köpek davranışları",
+   "evcil hayvan",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "dog tears",
+   "do dogs cry"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can your dog's eyes well up when it sees you? 🐶",
+    "description": "In a 2022 experiment in Japan, dogs' tear volume rose when they were reunited with their owners after five to seven hours apart, but not with familiar people who weren't their owners. Putting oxytocin, the bonding hormone, in their eyes also increased tears."
+   },
+   "es": {
+    "title": "¿Pueden los ojos de tu perro llenarse de lágrimas al verte? 🐶",
+    "description": "En un experimento de 2022 en Japón se midieron las lágrimas de perros antes y después de un reencuentro. Tras cinco a siete horas separados, aumentaron al volver su dueño, pero no con personas conocidas que no eran sus dueños. Ponerles oxitocina, la hormona del vínculo, en los ojos también las aumentó."
+   },
+   "pt": {
+    "title": "Os olhos do seu cachorro podem se encher de lágrimas ao te ver? 🐶",
+    "description": "Num experimento de 2022 no Japão, mediram-se as lágrimas de cães antes e depois de reencontros. Depois de cinco a sete horas separados, elas aumentaram quando o tutor voltou, mas não com pessoas conhecidas que não eram seus donos. Pingar oxitocina, o hormônio do vínculo, nos olhos também aumentou as lágrimas."
+   },
+   "de": {
+    "title": "Können deinem Hund vor Freude die Augen feucht werden? 🐶",
+    "description": "In einem Experiment aus Japan von 2022 wurde die Tränenmenge von Hunden vor und nach einem Wiedersehen gemessen. Nach fünf bis sieben Stunden Trennung stieg sie, wenn der Halter zurückkam, aber nicht bei vertrauten Personen, die nicht ihre Halter waren. Auch Oxytocin, das Bindungshormon, in die Augen getropft, ließ die Tränen steigen."
+   },
+   "fr": {
+    "title": "Les yeux de ton chien peuvent-ils s'embuer de joie en te voyant ? 🐶",
+    "description": "Dans une expérience menée au Japon en 2022, on a mesuré les larmes de chiens avant et après des retrouvailles. Après cinq à sept heures de séparation, elles augmentaient au retour de leur maître, mais pas avec des personnes familières qui n'étaient pas leur maître. De l'ocytocine, l'hormone de l'attachement, déposée dans leurs yeux les augmentait aussi."
+   },
+   "it": {
+    "title": "Gli occhi del tuo cane possono inumidirsi quando ti vede? 🐶",
+    "description": "In un esperimento del 2022 in Giappone è stata misurata la quantità di lacrime dei cani prima e dopo un ricongiungimento. Dopo cinque-sette ore di separazione aumentava al ritorno del padrone, ma non con persone familiari che non erano i loro padroni. Anche l'ossitocina, l'ormone del legame, messa negli occhi la faceva aumentare."
+   },
+   "ru": {
+    "title": "Могут ли у собаки навернуться слёзы, когда она видит тебя? 🐶",
+    "description": "В эксперименте 2022 года в Японии у собак измеряли количество слёз до и после встречи. После пяти–семи часов разлуки слёз становилось больше, когда возвращался хозяин, но не при встрече со знакомыми людьми, которые не были их хозяевами. Окситоцин, гормон привязанности, закапанный в глаза, тоже увеличивал количество слёз."
+   },
+   "ar": {
+    "title": "هل يمكن أن تدمع عينا كلبك حين يراك؟ 🐶",
+    "description": "في تجربة أُجريت في اليابان عام 2022 قيست كمية دموع الكلاب قبل اللقاء وبعده. فبعد فراق دام من خمس إلى سبع ساعات زادت الدموع عند عودة الصاحب، ولم تزد عند لقاء أشخاص مألوفين ليسوا أصحابها. كما زادت الدموع عند وضع الأوكسيتوسين، هرمون الترابط، في أعينها."
+   },
+   "hi": {
+    "title": "क्या आपको देखकर आपके कुत्ते की आँखें भर सकती हैं? 🐶",
+    "description": "जापान में 2022 के एक प्रयोग में मिलने से पहले और बाद में कुत्तों के आँसुओं की मात्रा मापी गई। पाँच से सात घंटे दूर रहने के बाद मालिक के लौटने पर आँसू बढ़े, लेकिन जान-पहचान वाले दूसरे लोगों से मिलने पर नहीं। आँखों में ऑक्सीटोसिन यानी लगाव का हार्मोन डालने पर भी आँसू बढ़े।"
+   },
+   "id": {
+    "title": "Bisakah mata anjingmu berkaca-kaca saat melihatmu? 🐶",
+    "description": "Dalam eksperimen tahun 2022 di Jepang, jumlah air mata anjing diukur sebelum dan sesudah bertemu kembali. Setelah berpisah lima sampai tujuh jam, air matanya bertambah saat pemiliknya kembali, tetapi tidak saat bertemu orang yang dikenal tapi bukan pemiliknya. Meneteskan oksitosin, hormon ikatan, ke matanya juga menambah air mata."
+   },
+   "ja": {
+    "title": "犬はあなたに会うとうれし涙を浮かべる？ 🐶",
+    "description": "2022年に日本で行われた実験で、再会の前後に犬の涙の量が測られました。5〜7時間離れたあと飼い主と再会すると涙が増えましたが、飼い主ではない顔見知りの人では増えませんでした。絆のホルモンとも呼ばれるオキシトシンを目に垂らしても涙が増えました。"
+   },
+   "ko": {
+    "title": "강아지가 당신을 보면 눈물이 그렁그렁해질 수 있을까? 🐶",
+    "description": "2022년 일본의 한 실험에서 재회 전후로 개의 눈물 양을 쟀습니다. 5~7시간 떨어져 있다가 보호자와 다시 만나자 눈물이 늘었지만, 보호자가 아닌 아는 사람과 만났을 때는 늘지 않았습니다. 유대 호르몬인 옥시토신을 눈에 넣었을 때도 눈물이 늘었습니다."
+   },
+   "pl": {
+    "title": "Czy psu mogą zaszklić się oczy, gdy cię widzi? 🐶",
+    "description": "W eksperymencie z 2022 roku w Japonii mierzono ilość łez u psów przed spotkaniem i po nim. Po pięciu–siedmiu godzinach rozłąki łez przybywało, gdy wracał opiekun, ale nie przy spotkaniu ze znajomymi osobami, które nie były ich opiekunami. Oksytocyna, hormon więzi, zakroplona do oczu również zwiększała ilość łez."
+   },
+   "nl": {
+    "title": "Kunnen de ogen van je hond vochtig worden als hij je ziet? 🐶",
+    "description": "In een Japans experiment uit 2022 werd de hoeveelheid traanvocht van honden gemeten voor en na een weerzien. Na vijf tot zeven uur scheiding nam die toe als hun baasje terugkwam, maar niet bij bekenden die niet hun baasje waren. Oxytocine, het bindingshormoon, in hun ogen druppelen verhoogde de tranen ook."
+   },
+   "uk": {
+    "title": "Чи можуть у собаки набігти сльози, коли вона бачить тебе? 🐶",
+    "description": "В експерименті 2022 року в Японії в собак вимірювали кількість сліз до і після зустрічі. Після п'яти–семи годин розлуки сліз ставало більше, коли повертався господар, але не під час зустрічі зі знайомими людьми, які не були їхніми господарями. Окситоцин, гормон прив'язаності, закапаний в очі, теж збільшував кількість сліз."
+   },
+   "vi": {
+    "title": "Mắt chó có thể rưng rưng khi nhìn thấy bạn không? 🐶",
+    "description": "Trong một thí nghiệm năm 2022 tại Nhật Bản, người ta đo lượng nước mắt của chó trước và sau khi gặp lại. Sau năm đến bảy giờ xa cách, nước mắt tăng lên khi chủ trở về, nhưng không tăng khi gặp người quen không phải chủ. Nhỏ oxytocin, hormone gắn kết, vào mắt cũng làm nước mắt tăng."
+   },
+   "az": {
+    "title": "İtin səni görəndə gözləri yaşara bilərmi? 🐶",
+    "description": "2022-ci ildə Yaponiyada aparılan təcrübədə itlərin göz yaşının miqdarı görüşdən əvvəl və sonra ölçüldü. Beş-yeddi saatlıq ayrılıqdan sonra sahibi qayıdanda göz yaşı artdı, sahibi olmayan tanış adamlarla görüşəndə isə artmadı. Gözlərinə bağlılıq hormonu oksitosin damızdırılanda da göz yaşı artdı."
+   },
+   "ro": {
+    "title": "Pot să-i lăcrimeze ochii câinelui tău când te vede? 🐶",
+    "description": "Într-un experiment din Japonia, din 2022, s-a măsurat cantitatea de lacrimi a câinilor înainte și după o revedere. După cinci-șapte ore de despărțire, lacrimile au crescut când s-a întors stăpânul, dar nu și la întâlnirea cu persoane cunoscute care nu le erau stăpâni. Și oxitocina, hormonul atașamentului, picurată în ochi a crescut lacrimile."
+   }
+  }
+ }
+}
