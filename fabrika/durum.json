@@ -2021,12 +2021,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-02T09:09:12+00:00",
-   "mod": "igbolum",
-   "title": "Uzayda Kaskını Çıkarsaydın Kaç Saniye Dayanırdın?",
-   "chars": 248
-  },
-  {
    "finished": "2026-11-02T10:09:01+00:00",
    "mod": "saatlik",
    "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
@@ -2448,6 +2442,13 @@
    "url": "https://youtube.com/shorts/mt9KmhllXGQ",
    "duration": 24.4,
    "chars": 360
+  },
+  {
+   "finished": "2026-11-10T07:58:09+00:00",
+   "mod": "ornek",
+   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+   "duration": 56.1,
+   "chars": 856
   }
  ],
  "last_fail": 1794133491.1438286,

@@ -1,71 +1,12 @@
 {
- "started": "2026-11-09T20:07:20+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-10T07:56:36+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "61",
-  "videos": "63"
- },
- "credits_before": [
-  94242,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261109-5-y065.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y065",
-  "series": "Ya Olsaydı?",
-  "q": "Bir hafta hiç uyumasaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 360,
- "duration": 24.4,
- "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/mt9KmhllXGQ",
- "recent_status": {
-  "g012": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1089",
-   "reason": null
-  },
-  "y063": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "956",
-   "reason": null
-  },
-  "y064": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "416",
-   "reason": null
-  },
-  "n013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "16",
-   "reason": null
-  },
-  "y065": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  94330,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261109-5-y065.json Bir hafta hiç uyumasaydın ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-11-09T20:08:21+00:00"
+ "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+ "chars": 856,
+ "duration": 56.1,
+ "deneme": "fabrika/deneme/ornek-y069.mp4",
+ "log": [],
+ "finished": "2026-11-10T07:58:09+00:00"
 }
