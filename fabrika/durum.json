@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2062",
+    "views": "2063",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "956",
+    "views": "959",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1242",
+    "views": "1246",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1154",
+    "views": "1155",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1123",
+    "views": "1124",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "984",
+    "views": "986",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "498",
+    "views": "515",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "950",
+    "views": "955",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "751",
+    "views": "776",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "207",
+    "views": "298",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "159",
+    "views": "349",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "92",
     "reason": null
    }
   },
@@ -1943,6 +1943,36 @@
    "thumbnail": true,
    "at": 1794312702.410649,
    "chars": 856,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "28",
+    "reason": null
+   }
+  },
+  {
+   "id": "y030",
+   "video_id": "zvgB-9sAUUY",
+   "url": "https://youtube.com/shorts/zvgB-9sAUUY",
+   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Could Never Feel Pain?",
+    "es": "¿Qué Pasaría Si Nunca Sintieras Dolor?",
+    "pt": "E Se Você Nunca Sentisse Dor?",
+    "ar": "ماذا لو لم تشعر بالألم أبدًا؟",
+    "hi": "अगर आपको कभी दर्द महसूस न होता तो क्या होता?",
+    "id": "Bagaimana Jika Kamu Tidak Pernah Merasakan Sakit?",
+    "fr": "Et Si Tu Ne Ressentais Jamais la Douleur ?",
+    "de": "Was Wäre, Wenn Du Nie Schmerz Spüren Würdest?",
+    "ru": "Что Будет, Если Ты Никогда Не Почувствуешь Боль?",
+    "az": "Heç Ağrı Hiss Etməsəydin Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794319869.163635,
+   "chars": 355,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2016,7 +2046,8 @@
   "n013",
   "y065",
   "g013",
-  "y069"
+  "y069",
+  "y030"
  ],
  "extra": [
   {
@@ -2082,14 +2113,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-02T18:08:56+00:00",
-   "mod": "saatlik",
-   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
-   "url": "https://youtube.com/shorts/ExIn5xWxSkY",
-   "duration": 27.4,
-   "chars": 397
-  },
   {
    "finished": "2026-11-03T09:08:03+00:00",
    "mod": "igbolum",
@@ -2511,6 +2534,14 @@
    "mod": "igbolum",
    "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
    "chars": 424
+  },
+  {
+   "finished": "2026-11-10T14:11:10+00:00",
+   "mod": "saatlik",
+   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/zvgB-9sAUUY",
+   "duration": 23.3,
+   "chars": 355
   }
  ],
  "last_fail": 1794133491.1438286,

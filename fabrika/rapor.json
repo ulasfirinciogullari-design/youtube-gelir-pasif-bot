@@ -1,18 +1,71 @@
 {
- "started": "2026-11-10T13:15:47+00:00",
- "mod": "igbolum",
- "gate": "instagram: y021",
+ "started": "2026-11-10T14:10:13+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
- "chars": 424,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "17910756456572090",
-  "url": "https://www.instagram.com/reel/Dfj_lislH0L/",
-  "at": 1794316660.8428183
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "61",
+  "videos": "66"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfj_lislH0L/"
+ "credits_before": [
+  95844,
+  613902
  ],
- "finished": "2026-11-10T13:17:40+00:00"
+ "kuyruk": {
+  "dosya": "20261110-1-y030.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "y030",
+  "series": "Ya Olsaydı?",
+  "q": "Hiç ağrı hissetmeseydik ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 355,
+ "duration": 23.3,
+ "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+ "url": "https://youtube.com/shorts/zvgB-9sAUUY",
+ "recent_status": {
+  "n013": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "298",
+   "reason": null
+  },
+  "y065": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "349",
+   "reason": null
+  },
+  "g013": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "92",
+   "reason": null
+  },
+  "y069": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "28",
+   "reason": null
+  },
+  "y030": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  95931,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261110-1-y030.json Hiç ağrı hissetmeseydik ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-10T14:11:10+00:00"
 }
