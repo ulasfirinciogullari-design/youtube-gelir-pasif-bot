@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0100",
+  "topic": "Devekuşu gerçekten başını kuma gömer mi, bu söz nereden çıktı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Devekuşu aslında başını hiç kuma gömmez 🪶",
+  "hook_text": "DEVEKUŞU BAŞINI KUMA GÖMER Mİ?",
+  "description": "Devekuşu gerçekten başını kuma gömer mi, bu söz nereden çıktı?\n\nSan Diego Hayvanat Bahçesi'ne göre devekuşları başlarını kuma gömmez; bu yaygın bir efsane. Live Science'ın aktardığına göre fikir, Romalı doğa yazarı Yaşlı Plinius'a kadar uzanıyor: Plinius, devekuşunun başını ve boynunu bir çalılığa sokunca bütün vücudunun saklandığını sandığını yazmıştı. Gerçekte devekuşu yumurtalarını kumda ya da toprakta kazdığı sığ bir çukura bırakır ve gün içinde birkaç kez başını içeri sokup yumurtaları çevirir; tehlikede kaçamazsa yere yatıp başını ve boynunu toprağa uzatır. Uzaktan bakınca ikisi de başı gömülü gibi görünür. Üstelik devekuşu korkak da değil: kısa mesafede saatte 70 kilometreye kadar koşabilir, tekmesi bir aslanı öldürecek kadar güçlü.\n\nSen de devekuşunun başını kuma gömdüğünü sanıyor muydun: evet mi, hayır mı?\n\n#devekuşu #kuşlar #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0100",
+  "tags": [
+    "devekuşu",
+    "devekuşları",
+    "devekuşu başını kuma gömer mi",
+    "başını kuma gömmek",
+    "devekuşu gibi",
+    "devekuşu neden başını gömer",
+    "devekuşu yumurtası",
+    "devekuşu hızı",
+    "devekuşu tekmesi",
+    "en hızlı kuş",
+    "kuşlar",
+    "hayvanlar",
+    "vahşi yaşam",
+    "yanlış bilinenler",
+    "deyimler",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "hayvan belgeseli",
+    "bilim",
+    "ostrich",
+    "ostrich head in sand",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "devekusu",
+    "devekuslari",
+    "devekusu basini kuma gomer mi",
+    "basini kuma gommek",
+    "devekusu gibi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Ostriches never bury their heads in the sand 🪶",
+      "description": "The idea goes back to the Roman writer Pliny the Elder. Ostriches lay their eggs in a hole dug in the ground and dip their heads in several times a day to turn them, and when threatened they lie flat with their necks along the ground. From afar, both look like a buried head. And they're no cowards: they sprint at up to 70 km/h, and a kick can kill a lion.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "es": {
+      "title": "Los avestruces nunca esconden la cabeza en la arena 🪶",
+      "description": "La idea viene del escritor romano Plinio el Viejo. El avestruz pone los huevos en un hoyo excavado en el suelo y mete la cabeza varias veces al día para darles la vuelta; ante un peligro, se tumba con el cuello pegado al suelo. De lejos, ambas cosas parecen una cabeza enterrada. Y de cobarde nada: corre a 70 km/h y su patada puede matar a un león.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "pt": {
+      "title": "Avestruzes nunca enterram a cabeça na areia 🪶",
+      "description": "A ideia vem do escritor romano Plínio, o Velho. A avestruz põe os ovos num buraco cavado no chão e enfia a cabeça várias vezes ao dia para virá-los; diante de perigo, deita-se com o pescoço colado ao chão. De longe, as duas coisas parecem uma cabeça enterrada. E ela não tem nada de covarde: corre a até 70 km/h e seu chute pode matar um leão.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "de": {
+      "title": "Strauße stecken den Kopf nie in den Sand 🪶",
+      "description": "Die Vorstellung geht auf den römischen Autor Plinius den Älteren zurück. Strauße legen ihre Eier in eine Mulde im Boden und stecken mehrmals am Tag den Kopf hinein, um sie zu wenden; bei Gefahr legen sie sich flach hin, den Hals am Boden. Von Weitem sieht beides aus wie ein vergrabener Kopf. Feige sind sie auch nicht: Sie sprinten mit bis zu 70 km/h, und ein Tritt kann einen Löwen töten.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "fr": {
+      "title": "L'autruche ne met jamais la tête dans le sable 🪶",
+      "description": "L'idée remonte à l'auteur romain Pline l'Ancien. L'autruche pond dans un trou creusé dans le sol et y plonge la tête plusieurs fois par jour pour retourner ses œufs ; en cas de danger, elle se couche, le cou à plat sur le sol. De loin, on croirait une tête enfouie. Et elle n'a rien de lâche : elle sprinte jusqu'à 70 km/h et un coup de patte peut tuer un lion.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "it": {
+      "title": "Gli struzzi non nascondono mai la testa sotto la sabbia 🪶",
+      "description": "L'idea risale allo scrittore romano Plinio il Vecchio. Lo struzzo depone le uova in una buca scavata nel terreno e ci infila la testa più volte al giorno per girarle; in pericolo si sdraia con il collo steso a terra. Da lontano sembra una testa sepolta. E non è affatto codardo: corre fino a 70 km/h e un suo calcio può uccidere un leone.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "ru": {
+      "title": "Страусы никогда не прячут голову в песок 🪶",
+      "description": "Эта идея восходит к римскому писателю Плинию Старшему. Страус откладывает яйца в ямку в земле и несколько раз в день опускает туда голову, чтобы их перевернуть, а в опасности ложится, вытянув шею по земле. Издалека и то и другое похоже на спрятанную голову. И страус вовсе не трус: он бежит со скоростью до 70 км/ч, а его удар ногой может убить льва.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "ar": {
+      "title": "النعام لا يدفن رأسه في الرمل أبدًا 🪶",
+      "description": "تعود هذه الفكرة إلى الكاتب الروماني بلينيوس الأكبر. تضع النعامة بيضها في حفرة تحفرها في الأرض وتُدخل رأسها فيها عدة مرات يوميًا لتقليبه، وعند الخطر تستلقي ممددة عنقها على الأرض. ومن بعيد يبدو الأمران كرأس مدفون. وهي ليست جبانة أبدًا: تعدو بسرعة تصل إلى 70 كم في الساعة، وركلتها قد تقتل أسدًا.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "hi": {
+      "title": "शुतुरमुर्ग कभी रेत में सिर नहीं छिपाता 🪶",
+      "description": "यह धारणा रोमन लेखक प्लिनी द एल्डर के समय से चली आ रही है। शुतुरमुर्ग ज़मीन में खोदे गड्ढे में अंडे देता है और उन्हें पलटने के लिए दिन में कई बार सिर अंदर डालता है; ख़तरे में वह गर्दन ज़मीन पर फैलाकर लेट जाता है। दूर से दोनों ही दबे हुए सिर जैसे लगते हैं। और वह डरपोक भी नहीं: 70 किमी/घंटा तक दौड़ता है और उसकी लात शेर को मार सकती है।\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "id": {
+      "title": "Burung unta tidak pernah membenamkan kepala ke pasir 🪶",
+      "description": "Gagasan ini berasal dari penulis Romawi Plinius yang Tua. Burung unta bertelur di lubang yang digali di tanah dan memasukkan kepalanya beberapa kali sehari untuk membalik telur; saat terancam, ia berbaring dengan leher menempel di tanah. Dari jauh, keduanya tampak seperti kepala yang terkubur. Ia juga bukan penakut: larinya hingga 70 km/jam dan tendangannya bisa membunuh singa.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "ja": {
+      "title": "ダチョウは砂に頭を突っ込んだりしない 🪶",
+      "description": "この話は古代ローマの著述家、大プリニウスにまでさかのぼります。ダチョウは地面に掘った穴に卵を産み、1日に何度も頭を入れて卵を転がします。危険が迫ると首を地面に伸ばして伏せます。遠くからはどちらも頭を埋めているように見えるのです。しかも臆病どころか、時速70キロで走り、蹴りはライオンを倒すほどです。\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "ko": {
+      "title": "타조는 절대 모래에 머리를 묻지 않는다 🪶",
+      "description": "이 이야기는 고대 로마의 작가 대(大) 플리니우스까지 거슬러 올라갑니다. 타조는 땅에 판 구덩이에 알을 낳고 하루에도 여러 번 머리를 넣어 알을 굴립니다. 위험할 때는 목을 땅에 쭉 붙이고 엎드립니다. 멀리서 보면 둘 다 머리를 묻은 것처럼 보이죠. 게다가 겁쟁이도 아닙니다. 시속 70km로 달리고 발차기는 사자를 죽일 만큼 강합니다.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "pl": {
+      "title": "Strusie nigdy nie chowają głowy w piasek 🪶",
+      "description": "Ten pomysł sięga rzymskiego pisarza Pliniusza Starszego. Strusie składają jaja w dołku wykopanym w ziemi i kilka razy dziennie wkładają tam głowę, by je obrócić, a w niebezpieczeństwie kładą się płasko z szyją przy ziemi. Z daleka jedno i drugie wygląda jak zakopana głowa. I wcale nie są tchórzami: biegną do 70 km/h, a ich kopnięcie może zabić lwa.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "nl": {
+      "title": "Struisvogels steken hun kop nooit in het zand 🪶",
+      "description": "Het idee gaat terug op de Romeinse schrijver Plinius de Oudere. Struisvogels leggen hun eieren in een kuil in de grond en steken er meerdere keren per dag hun kop in om ze te keren; bij gevaar gaan ze plat liggen met de nek langs de grond. Van ver lijkt dat allebei op een begraven kop. Laf zijn ze ook niet: ze sprinten tot 70 km/u en een trap kan een leeuw doden.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "uk": {
+      "title": "Страуси ніколи не ховають голову в пісок 🪶",
+      "description": "Ця ідея сягає римського письменника Плінія Старшого. Страус відкладає яйця в ямку в землі й кілька разів на день опускає туди голову, щоб їх перевернути, а в небезпеці лягає, витягнувши шию по землі. Здалеку і те, і те схоже на заховану голову. І страус зовсім не боягуз: бігає зі швидкістю до 70 км/год, а удар його ноги може вбити лева.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "vi": {
+      "title": "Đà điểu không bao giờ vùi đầu xuống cát 🪶",
+      "description": "Ý tưởng này có từ thời nhà văn La Mã Pliny Già. Đà điểu đẻ trứng trong hố đào dưới đất và chúi đầu vào vài lần mỗi ngày để trở trứng; khi gặp nguy, nó nằm rạp với cổ duỗi sát mặt đất. Nhìn từ xa, cả hai trông như đang vùi đầu. Mà đà điểu cũng chẳng nhút nhát: chạy tới 70 km/giờ và cú đá có thể giết chết sư tử.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "az": {
+      "title": "Dəvəquşu başını heç vaxt quma soxmur 🪶",
+      "description": "Bu fikir Roma yazıçısı Böyük Plininin dövrünə gedib çıxır. Dəvəquşu yumurtalarını yerdə qazdığı çuxura qoyur və onları çevirmək üçün gündə bir neçə dəfə başını içəri salır; təhlükədə isə boynunu yerə uzadıb uzanır. Uzaqdan hər ikisi basdırılmış baş kimi görünür. Üstəlik qorxaq da deyil: saatda 70 km-ə qədər qaçır, təpiyi isə şiri öldürə bilər.\n\n#shorts\n\nSeri: mk-c0100"
+    },
+    "ro": {
+      "title": "Struțul nu își bagă niciodată capul în nisip 🪶",
+      "description": "Ideea vine de la scriitorul roman Pliniu cel Bătrân. Struțul își depune ouăle într-o groapă săpată în pământ și își bagă capul de câteva ori pe zi ca să le întoarcă; la pericol se întinde la pământ, cu gâtul lipit de sol. De departe, amândouă par un cap îngropat. Și nu e deloc fricos: aleargă cu până la 70 km/h, iar o lovitură de picior poate ucide un leu.\n\n#shorts\n\nSeri: mk-c0100"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de devekuşunun başını kuma gömdüğünü sanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu devekuşu başını hiç kuma gömmez.",
+      "visual": "close-up of an ostrich's head and huge eye looking straight into the camera",
+      "stock_query": "ostrich head",
+      "source": "stock",
+      "callout": "KUMA GÖMMEZ"
+    },
+    {
+      "text": "Peki 'başını kuma gömmek' sözü nereden çıktı?",
+      "visual": "an ostrich lowering its long neck toward the sandy ground",
+      "stock_query": "ostrich neck",
+      "source": "stock"
+    },
+    {
+      "text": "Üstelik korkak da değil: saatte yetmiş kilometre koşar, tekmesi aslanı öldürebilir.",
+      "visual": "an ostrich sprinting across dry savanna, legs pumping",
+      "stock_query": "ostrich running",
+      "source": "stock",
+      "callout": "TEKMESİ ASLAN ÖLDÜRÜR"
+    },
+    {
+      "text": "Çünkü yumurtalarını yerde kazdığı çukura bırakır, günde birkaç kez başını sokup çevirir.",
+      "visual": "an ostrich with its head down in a shallow ground nest full of large eggs",
+      "stock_query": "ostrich eggs nest",
+      "source": "stock",
+      "callout": "YUMURTA ÇEVİRİR"
+    },
+    {
+      "text": "Tehlikede de yere yatıp boynunu toprağa yapıştırır.",
+      "visual": "an ostrich lying flat on the ground with its neck stretched along the sand",
+      "stock_query": "ostrich lying",
+      "source": "stock",
+      "callout": "BOYUN YERDE"
+    },
+    {
+      "text": "Uzaktan bakan başı gömülü sanar; oysa...",
+      "visual": "an ostrich lifting its head and looking around",
+      "stock_query": "ostrich close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.88,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #153",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0100_1794302861_ig.mp4"
+}
