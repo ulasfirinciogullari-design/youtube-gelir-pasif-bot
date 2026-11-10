@@ -1,5 +1,5 @@
 {
- "started": "2026-11-10T18:07:07+00:00",
+ "started": "2026-11-10T20:07:45+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "62",
-  "videos": "67"
+  "videos": "68"
  },
  "credits_before": [
-  96203,
+  96386,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261110-2-y066.json",
-  "kalan": 3
+  "dosya": "20261110-3-n014.json",
+  "kalan": 2
  },
  "topic": {
-  "id": "y066",
-  "series": "Ya Olsaydı?",
-  "q": "Buz gibi suya düşseydin ilk dakikada ne olurdu?"
+  "id": "n014",
+  "series": "Ne Kadar Büyük?",
+  "q": "En büyük dinozor ne kadar büyüktü?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 370,
- "duration": 26.7,
- "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
- "url": "https://youtube.com/shorts/6pHVAozelhE",
+ "chars": 410,
+ "duration": 27.8,
+ "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
+ "url": "https://youtube.com/shorts/nFBLtsB59Uw",
  "recent_status": {
-  "y065": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "682",
-   "reason": null
-  },
   "g013": {
    "upload": "processed",
    "privacy": "public",
-   "views": "145",
+   "views": "159",
    "reason": null
   },
   "y069": {
    "upload": "processed",
    "privacy": "public",
-   "views": "636",
+   "views": "788",
    "reason": null
   },
   "y030": {
    "upload": "processed",
    "privacy": "public",
-   "views": "583",
+   "views": "856",
    "reason": null
   },
   "y066": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "4",
+   "reason": null
+  },
+  "n014": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  96292,
+  96386,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261110-2-y066.json Buz gibi suya düşseydin ilk dakikada ne olurdu? (Ya Olsaydı?)"
+  "Kuyruktan: 20261110-3-n014.json En büyük dinozor ne kadar büyüktü? (Ne Kadar Büyük?)"
  ],
- "finished": "2026-11-10T18:08:06+00:00"
+ "finished": "2026-11-10T20:08:47+00:00"
 }

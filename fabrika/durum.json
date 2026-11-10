@@ -1496,7 +1496,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1091",
+    "views": "1092",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1246",
+    "views": "1248",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1009",
+    "views": "1011",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1030",
+    "views": "1037",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1165",
+    "views": "1189",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1054",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "967",
+    "views": "996",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1101",
+    "views": "1107",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "970",
+    "views": "971",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "796",
+    "views": "906",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "501",
+    "views": "608",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "682",
+    "views": "864",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "145",
+    "views": "159",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "636",
+    "views": "788",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "583",
+    "views": "856",
     "reason": null
    }
   },
@@ -2003,6 +2003,36 @@
    "thumbnail": true,
    "at": 1794334084.9274707,
    "chars": 370,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "4",
+    "reason": null
+   }
+  },
+  {
+   "id": "n014",
+   "video_id": "nFBLtsB59Uw",
+   "url": "https://youtube.com/shorts/nFBLtsB59Uw",
+   "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Big Was the Biggest Dinosaur Really?",
+    "es": "¿Qué Tan Grande Era Realmente el Dinosaurio Más Grande?",
+    "pt": "Qual Era o Tamanho Real do Maior Dinossauro?",
+    "ar": "ما الحجم الحقيقي لأكبر ديناصور؟",
+    "hi": "सबसे बड़ा डायनासोर असल में कितना बड़ा था?",
+    "id": "Seberapa Besar Sebenarnya Dinosaurus Terbesar?",
+    "fr": "Quelle Était la Vraie Taille du Plus Grand Dinosaure ?",
+    "de": "Wie Groß War der Größte Dinosaurier Wirklich?",
+    "ru": "Насколько Большим Был Самый Большой Динозавр на Самом Деле?",
+    "az": "Ən Böyük Dinozavr Əslində Nə Qədər Böyük İdi?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794341325.4626594,
+   "chars": 410,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2078,7 +2108,8 @@
   "g013",
   "y069",
   "y030",
-  "y066"
+  "y066",
+  "n014"
  ],
  "extra": [
   {
@@ -2144,12 +2175,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-03T13:08:55+00:00",
-   "mod": "igbolum",
-   "title": "Beynin 1 Günde Kaç Kalori Yakar?",
-   "chars": 397
-  },
   {
    "finished": "2026-11-03T14:10:30+00:00",
    "mod": "saatlik",
@@ -2573,6 +2598,14 @@
    "url": "https://youtube.com/shorts/6pHVAozelhE",
    "duration": 26.7,
    "chars": 370
+  },
+  {
+   "finished": "2026-11-10T20:08:47+00:00",
+   "mod": "saatlik",
+   "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
+   "url": "https://youtube.com/shorts/nFBLtsB59Uw",
+   "duration": 27.8,
+   "chars": 410
   }
  ],
  "last_fail": 1794133491.1438286,
