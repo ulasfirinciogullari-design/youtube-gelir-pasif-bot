@@ -1,0 +1,89 @@
+{
+ "id": "k007",
+ "kanun": "VII",
+ "title": {
+  "top": "Birinden iyilik bekliyorsan",
+  "hi": "küçük bir şeyi ona özel yap"
+ },
+ "yt_title": "Garsonun Bu Tek Hareketi Bahşişi %21 Artırdı 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Birinden iyilik bekliyorsan, herkese verdiğini verme: küçük bir şeyi ona özel yap.",
+   "keys": ["özel"],
+   "v": {"t": "kanca", "no": "herkese", "back": "küçük", "yes": "özel", "no_label": "Herkese aynısı", "yes_label": "Ona özel yap", "sfx": [["herkese", 0.3, "stamp", 0.5, 0.2], ["küçük", 0.7, "whoosh", 0.3, -0.1], ["özel", 0.85, "shimmer", 0.45, 0.05], ["özel", 0.85, "pop", 0.3, 0.1]]}
+  },
+  {
+   "text": "Bir restoranda yapılan deneyde garson, hesabı dört farklı şekilde getirdi.",
+   "keys": ["dört"],
+   "v": {"t": "restoran", "year": "2002 · Strohmetz deneyi", "key": "dört", "sfx": [[null, 0.1, "knock", 0.22, 0.0], ["garson", 0.4, "paper", 0.3, 0.0], ["dört", 0.6, "pop", 0.3, 0.0], ["dört", 0.6, "pop", 0.3, 0.12], ["dört", 0.6, "pop", 0.3, 0.24], ["dört", 0.6, "pop", 0.3, 0.36]]}
+  },
+  {
+   "text": "Hesapla bir çikolata verince, bahşiş çikolatasız masalara göre sadece %3 arttı.",
+   "keys": ["bir", "sadece"],
+   "v": {"t": "ikram", "kind": 1, "key": "%3", "sfx": [["çikolata", 0.25, "paper", 0.3, 0.0], ["%3", 0.85, "tick", 0.28, -0.1], ["arttı", 0.95, "pop", 0.3, 0.0]]}
+  },
+  {
+   "text": "İki çikolata verince artış %14'e çıktı.",
+   "keys": ["iki"],
+   "v": {"t": "ikram", "kind": 2, "key": "%14", "sfx": [["iki", 0.1, "paper", 0.3, 0.0], ["%14", 0.7, "tick", 0.28, -0.15], ["%14", 0.7, "tick", 0.28, 0.0], ["çıktı", 0.9, "shimmer", 0.4, 0.0]]}
+  },
+  {
+   "text": "Ama dördüncüsü farklıydı: bir çikolata verdi, uzaklaşırken durdu, dönüp bir tane daha uzattı.",
+   "keys": ["dördüncüsü", "dönüp", "daha"],
+   "v": {"t": "don", "key": "farklıydı", "one": "bir", "walk": "uzaklaşırken", "stop": "durdu", "back": "dönüp", "more": "daha", "sfx": [["farklıydı", 0.2, "stamp", 0.4, 0.0], ["verdi", 0.4, "pop", 0.3, 0.0], ["durdu", 0.6, "knock", 0.25, 0.0], ["dönüp", 0.7, "whoosh", 0.3, 0.0], ["daha", 0.85, "shimmer", 0.45, 0.05]]}
+  },
+  {
+   "text": "Toplam yine iki çikolata, ama bahşiş %21 arttı!",
+   "keys": ["yine", "iki"],
+   "v": {"t": "sonuc", "same": "yine", "key": "%21", "sfx": [["yine", 0.2, "stamp", 0.35, 0.0], ["%21", 0.7, "riser", 0.3, -0.5], ["%21", 0.7, "impact", 0.4, 0.0], ["arttı", 0.9, "shimmer", 0.45, 0.0]]}
+  },
+  {
+   "text": "Çünkü ikincisi kural gibi değil, onlara özel bir jest gibi geldi. Özel iyilik karşılıksız kalmaz.",
+   "keys": ["özel", "karşılıksız"],
+   "v": {"t": "neden", "rule": "kural", "key": "özel", "pay": "karşılıksız", "sfx": [["kural", 0.2, "stamp", 0.35, 0.0], ["özel", 0.45, "shimmer", 0.4, 0.0], ["karşılıksız", 0.8, "whoosh", 0.3, -0.1], ["kalmaz", 0.95, "pop", 0.35, 0.0]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Strohmetz, D. B., Rind, B., Fisher, R. ve Lynn, M. (2002), \"Sweetening the till: The use of candy to increase restaurant tipping\", Journal of Applied Social Psychology 32(2), 300-309. İki deney var. Deney 1 (Ithaca, New York, sıradan bir restoran, iki erkek garson, 92 masa): hesapla birlikte her müşteriye folyoya sarılı bir çikolata verilince ortalama bahşiş %17,8, verilmeyince %15,1 oldu.",
+  "Videodaki deney, makalenin Deney 2'si: New Jersey'nin merkezinde lüks bir İtalyan-Amerikan restoranı, yaklaşık 5 yıllık deneyimli tek bir kadın garson, 80 masa (293 müşteri), her koşulda 20 masa. Koşul, karıştırılmış talimat kartlarıyla rastgele seçildi. Hesap getirilirken küçük bir hasır sepette mini çikolatalar sunuldu: hiç çikolata yok; her müşteriye bir çikolata; her müşteriye iki çikolata; ve \"1+1\": her müşteri bir çikolata seçti, garson masadan ayrılırken durup her müşteriye bir çikolata daha sundu (toplam yine iki).",
+  "Makalenin Tablo 1'i, ortalama bahşiş (hesabın yüzdesi): çikolatasız %18,95; bir çikolata %19,59; iki çikolata %21,62; 1+1 %22,99. Çikolatasız masalara göre artış: bir çikolatada %3,4, iki çikolatada %14,1, 1+1'de %21,3. 1+1 ile iki çikolata arasındaki fark anlamlıydı (t(76) = 2,06, p = ,02, tek yönlü). Bir çikolatanın tek başına kontrolle farkı ayrıca test edilmedi.",
+  "Yazarlar sonucu karşılıklılıkla (reciprocity) açıklar: 1+1 koşulunda garson, ikinci çikolatayla kendiliğinden yapılmış gibi görünen ek bir jest yaptı; bu, müşterilerde daha büyük bir bahşişle karşılık verme yükümlülüğü doğurdu. İzlenim yönetimi ya da iyi ruh hali açıklamalarını daha zayıf bulurlar.",
+  "Robert Cialdini'nin Influence at Work sayfası aynı çalışmayı \"nane şekeri\" ve %3, %14, %23 rakamlarıyla anlatır ve ikinci şekerin kişiye özel hissettirdiğini söyler. Makalenin kendi tablosundan hesaplanan artış 1+1 için %21'dir; videoda %21 kullanıldı ve makaledeki gibi çikolata denildi."
+ ],
+ "sources": [
+  "https://doi.org/10.1111/j.1559-1816.2002.tb00216.x",
+  "https://ecommons.cornell.edu/items/49ee9efd-b182-49af-8346-a3c63391a552",
+  "https://ircommons.uwf.edu/esploro/outputs/journalArticle/Sweetening-the-Till-The-Use-of/99380501893006600",
+  "https://changingminds.org/techniques/tipping/bigger_tip/give_sweets.htm",
+  "https://www.influenceatwork.com/6-principles-of-persuasion/"
+ ],
+ "summary": "Birinden iyilik bekliyorsan, herkese verdiğini verme: küçük bir şeyi ona özel yap. ABD'de bir İtalyan restoranında yapılan deneyde (Strohmetz ve ekibi, 2002) garson, hesabı 80 masaya dört farklı şekilde getirdi. Hesapla birlikte bir çikolata verince bahşiş, çikolatasız masalara göre yalnızca %3 arttı; iki çikolata verince artış %14'e çıktı. Dördüncü yolda garson bir çikolata verdi, masadan uzaklaşırken durdu ve dönüp bir tane daha sundu. Toplam yine iki çikolataydı ama bahşiş %21 arttı. Çünkü ikinci çikolata bir kural gibi değil, o masaya özel bir jest gibi geldi; özel bir iyilik, insanda karşılık verme isteği doğurur.",
+ "tags": [
+  "karşılıklılık",
+  "karşılıklılık ilkesi",
+  "reciprocity",
+  "bahşiş",
+  "bahşiş psikolojisi",
+  "garson",
+  "restoran",
+  "cialdini",
+  "ikna",
+  "ikna teknikleri",
+  "psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "güç psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#ikna",
+  "#zirveninkanunu"
+ ]
+}
