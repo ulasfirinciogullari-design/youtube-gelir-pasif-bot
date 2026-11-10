@@ -370,12 +370,12 @@ function k7TwoShot(t, o = {}) {
 Object.assign(SAHNE, {
   kanca(V, L, t, lt) {
     // the hook, from the very first frame: in today's café the waiter puts the bill down ("Hesabınız."). On "herkese"
-    // he turns and walks off; on "küçük" he stops and comes back; on "özel" he holds out a saucer with one more
-    // chocolate, "Bu da size özel!", and the couple light up
+    // he turns and walks off; by "küçük" he has turned back; on "ona" he holds out one more chocolate, "Bu da size
+    // özel!", and the couple light up
     K7.day();
     const tn = wordTime(L, V.no, .3), tb = wordTime(L, V.back, .65), ty = wordTime(L, V.yes, .85);
-    const away = prog(t, tn - .05, tb - .15), come = prog(t, tb - .05, ty - .1), yes = prog(t, ty - .15, ty + .2);
-    const turned = t > tn - .1 && t < tb - .1;
+    const away = prog(t, tn - .05, tn + .8), come = prog(t, tb - .45, tb + .35), yes = prog(t, ty - .15, ty + .2);
+    const turned = t > tn - .1 && t < tb - .45;
     const wx = t < tn - .1 ? 800 : turned ? lerp(800, 960, eio(away)) : lerp(960, 790, eio(come));
     const walking = (away > 0 && away < 1) || (come > 0 && come < 1);
     const top = 1130, ws = .74;
@@ -387,11 +387,11 @@ Object.assign(SAHNE, {
         front: happy ? { sh: lerp(.45, 1.2, yes), el: lerp(1.25, 1.6, yes), hand: 'open' } : null });
       k7Diner(K7.erkek, 440, top, .68, t, { seed: 6, expr: happy ? 'warm' : meh ? { ...EXPR.displeased, look: [.6, 0] } : { ...EXPR.calm, look: [.6, 0] } });
       if (yes > 0) glow(330, 900, 360, 'rgba(232,181,74,1)', .35 * yes);
-      const offer = t > tb ? eo(prog(t, ty - .45, ty)) : 0, served = t > tn - .35;
+      const offer = t > tb - .45 ? eo(prog(t, ty - .5, ty)) : 0, served = t > tn - .35;
       const sh = t < tn - .35 ? .95 : turned ? .15 : lerp(.25, .8, offer), el = t < tn - .35 ? .35 : turned ? .3 : lerp(1.4, .5, offer);
       figure(K7.garson, wx, 1490, ws, t, { dir: turned ? 1 : -1, legs: walking ? 'walk' : 'stand', phase: t * 9, seed: 4,
         expr: yes > .3 ? 'happy' : 'warm', talk: (t < tn - .3 || (yes > 0 && yes < 1)) ? .5 : 0,
-        front: !served ? { sh, el, hand: 'palm', prop: k7DishIn(sh, el, 1) } : t > tb ? { sh, el, hand: 'hold', prop: k7Hold((hx, hy) => k7Choc(hx + 4, hy - 34, 1.35, -.4, K7CH[1]), sh, el) } : { sh, el },
+        front: !served ? { sh, el, hand: 'palm', prop: k7DishIn(sh, el, 1) } : t > tb - .45 ? { sh, el, hand: 'hold', prop: k7Hold((hx, hy) => k7Choc(hx + 4, hy - 34, 1.35, -.4, K7CH[1]), sh, el) } : { sh, el },
         back: { sh: .1, el: .3 } });
       k7Table(40, 640, top, 340);
       k7Plate(170, top - 18, 140); k7Plate(420, top - 18, 140);
@@ -484,15 +484,16 @@ Object.assign(SAHNE, {
     k7Bubble(720, 610, [['Size bir tane', K7GOLD], ['daha!', K7GOLD]], 42, again, 770, 720, { fill: '#fff2c8', border: C.gold });
   },
   sonuc(V, L, t, lt) {
-    // the result as three big bars over the dimmed dining room: +3, +14 and, on the number, +21. On "yine" the two
-    // chocolates under bars 2 and 3 get an "=" between them: the same two
+    // the result as three big bars over the dimmed dining room: +3 and +14. On "yine" the two chocolates under bars 2
+    // and 3 get an "=" between them and a dashed outline of bar 3 rises to the level of bar 2; on the number it fills and
+    // climbs on to +21
     K7.warm();
     const ts = wordTime(L, V.same, .2), tk = wordTime(L, V.key, .65);
     cam(540, 900, 1.1, () => k7Trattoria(t));
     ctx.fillStyle = 'rgba(10,8,14,.74)'; ctx.fillRect(0, 0, W, H);
     plate('Bahşiş artışı', 540, 510, 52, back(prog(lt, 0, .3)), C.ivory);
-    const bot = 1190, topY = 720, max = 25, grow = prog(t, tk - .1, tk + .5);
-    [[200, 3, '1 ÇİKOLATA'], [540, 14, '2 ÇİKOLATA'], [880, k7Count(0, 21, grow), '1 + 1']].forEach(([cx, v, cap], i) => {
+    const bot = 1190, topY = 720, max = 25, same = prog(t, ts - .05, ts + .35), grow = prog(t, tk - .1, tk + .5);
+    [[200, 3, '1 ÇİKOLATA'], [540, 14, '2 ÇİKOLATA'], [880, grow > 0 ? k7Count(14, 21, grow) : 0, '1 + 1']].forEach(([cx, v, cap], i) => {
       const hot = i === 2 && grow > 0, y = lerp(bot, topY, v / max);
       shape(() => rrp(cx - 135, topY - 30, 270, bot - topY + 30, 16), 'rgba(20,18,26,.85)', { flat: true, line: 4 });
       if (v > .2) {
@@ -501,6 +502,10 @@ Object.assign(SAHNE, {
         shape(() => rrp(cx - 112, y, 224, Math.max(10, bot - y - 4), 10), C.gold, { flat: true, line: 4,
           after: () => { ctx.fillStyle = g; ctx.fillRect(cx - 120, y, 240, bot - y); ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(cx - 92, y + 10, 18, Math.max(0, bot - y - 20)); } });
         text('+%' + Math.round(v), cx, y - 70, hot ? 116 : 96, i === 2 ? C.gold2 : C.ivory, SANS, 900, 'center', 12);
+      } else if (i === 2 && same > 0) {  // a dashed ghost at the level of bar 2: "the same two chocolates", no number yet
+        const gy = lerp(bot, lerp(bot, topY, 14 / max), eo(same));
+        ctx.save(); ctx.setLineDash([16, 12]); ctx.strokeStyle = rgba(C.gold2, .8); ctx.lineWidth = 6; rr(cx - 112, gy, 224, bot - gy - 4, 10); ctx.stroke(); ctx.restore();
+        text('?', cx, gy - 70, 96, rgba(C.gold2, .8), SANS, 900, 'center', 10);
       } else text('?', cx, bot - 70, 96, 'rgba(243,234,216,.35)', SANS, 900);
       plate(cap, cx, bot + 62, 34, 1, i === 2 ? C.gold : C.bone, 300);
       // the chocolates given: 1, 2, 1 + 1
