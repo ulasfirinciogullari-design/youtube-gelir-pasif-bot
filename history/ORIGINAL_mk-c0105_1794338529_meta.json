@@ -1,0 +1,178 @@
+{
+  "topic_id": "mk-c0105",
+  "topic": "Grupta neden daha az çalışırız, sosyal kaytarma nedir?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kalabalıkla halat çekince farkında olmadan gevşersin 💪",
+  "hook_text": "GRUPTA NEDEN DAHA AZ ÇALIŞIRSIN?",
+  "description": "Grupta neden daha az çalışırız, sosyal kaytarma nedir?\n\nFransız tarım mühendisi Max Ringelmann, 1913'te yayımladığı çalışmada halat çeken kişi sayısı arttıkça kişi başına düşen gücün azaldığını gösterdi: sekiz kişilik grup, bireysel güçlerinin toplamının yaklaşık yarısıyla çekti. 1974'te Alan Ingham ve ekibi gözleri bağlı deneklere arkalarında başkalarının da çektiğini söyledi; denekler aslında yalnızdı ama yalnız olduklarını bildikleri duruma göre daha az asıldı. Bu olguya sosyal kaytarma deniyor. Steven Karau ve Kipling Williams'ın 1993'te 78 çalışmayı inceleyen meta-analizi etkinin sağlam olduğunu, ama herkesin katkısı ayrı ayrı görülebildiğinde zayıfladığını gösterdi.\n\nGrup ödevlerinde sen hangisisin: en çok çalışan mı, en az çalışan mı?\n\n#psikoloji #takımçalışması #sosyalpsikoloji #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0105",
+  "tags": [
+    "sosyal kaytarma",
+    "ringelmann etkisi",
+    "halat çekme deneyi",
+    "grupta neden az çalışırız",
+    "grup ödevi",
+    "grup çalışması",
+    "takım çalışması",
+    "ekip çalışması",
+    "motivasyon",
+    "verimlilik",
+    "tembellik",
+    "iş psikolojisi",
+    "psikoloji",
+    "insan psikolojisi",
+    "sosyal psikoloji",
+    "insan davranışları",
+    "psikolojik deney",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "social loafing",
+    "ringelmann effect",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "halat cekme deneyi",
+    "grupta neden az calisiriz",
+    "grup odevi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Pull a rope with a crowd and you slack off without noticing 💪",
+      "description": "Over a century ago, engineer Max Ringelmann found that eight people pulling a rope together used only about half their combined strength. Later, blindfolded people who thought others were pulling behind them pulled less, even though they were alone. A review of 78 studies confirmed this 'social loafing': when your own effort can't be seen, you ease off.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "es": {
+      "title": "Tira de una cuerda con un grupo y aflojas sin darte cuenta 💪",
+      "description": "Hace más de un siglo, el ingeniero Max Ringelmann vio que ocho personas tirando juntas de una cuerda usaban solo la mitad de su fuerza total. Después, personas con los ojos vendados que creían que otros tiraban detrás de ellas tiraron menos, aunque estaban solas. Una revisión de 78 estudios confirmó esta 'holgazanería social': si tu esfuerzo no se ve, aflojas.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "pt": {
+      "title": "Puxe uma corda em grupo e você relaxa sem perceber 💪",
+      "description": "Há mais de um século, o engenheiro Max Ringelmann viu que oito pessoas puxando juntas uma corda usavam só metade da força somada. Depois, pessoas vendadas que achavam que outros puxavam atrás delas puxaram menos, mesmo estando sozinhas. Uma revisão de 78 estudos confirmou essa 'vadiagem social': quando seu esforço não aparece, você afrouxa.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "de": {
+      "title": "Ziehst du mit vielen am Seil, lässt du unbemerkt nach 💪",
+      "description": "Vor über hundert Jahren stellte der Ingenieur Max Ringelmann fest, dass acht Menschen gemeinsam nur etwa die Hälfte ihrer summierten Kraft aufs Seil brachten. Später zogen Menschen mit verbundenen Augen schwächer, wenn sie glaubten, hinter ihnen zögen andere mit, obwohl sie allein waren. Eine Auswertung von 78 Studien bestätigte dieses „soziale Faulenzen“: Wenn deine Leistung nicht sichtbar ist, lässt du nach.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "fr": {
+      "title": "Tire une corde en groupe et tu relâches l'effort sans t'en rendre compte 💪",
+      "description": "Il y a plus d'un siècle, l'ingénieur Max Ringelmann a constaté que huit personnes tirant ensemble sur une corde n'utilisaient qu'environ la moitié de leur force cumulée. Plus tard, des personnes aux yeux bandés qui croyaient que d'autres tiraient derrière elles ont moins tiré, alors qu'elles étaient seules. Une synthèse de 78 études a confirmé cette « paresse sociale » : quand ton effort ne se voit pas, tu relâches.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "it": {
+      "title": "Tira una fune in gruppo e ti rilassi senza accorgertene 💪",
+      "description": "Più di un secolo fa l'ingegnere Max Ringelmann scoprì che otto persone che tiravano insieme una fune usavano solo circa metà della loro forza complessiva. In seguito, persone bendate convinte che altri tirassero dietro di loro tirarono meno, anche se erano sole. Una revisione di 78 studi ha confermato questa 'inerzia sociale': quando il tuo sforzo non si vede, molli.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "ru": {
+      "title": "Тянешь канат толпой и незаметно ослабляешь усилие 💪",
+      "description": "Больше века назад инженер Макс Рингельман обнаружил, что восемь человек, тянущих канат вместе, используют лишь около половины своей суммарной силы. Позже люди с завязанными глазами, думавшие, что сзади тянут и другие, тянули слабее, хотя были одни. Обзор 78 исследований подтвердил эту «социальную леность»: когда твой вклад не виден, ты расслабляешься.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "ar": {
+      "title": "عندما تشد الحبل مع جماعة تتراخى دون أن تشعر 💪",
+      "description": "قبل أكثر من قرن وجد المهندس ماكس رينغلمان أن ثمانية أشخاص يشدون حبلًا معًا لا يستخدمون إلا نحو نصف قوتهم مجتمعة. ولاحقًا شدّ أشخاص معصوبو الأعين بقوة أقل حين ظنوا أن آخرين يشدون خلفهم، مع أنهم كانوا وحدهم. وأكدت مراجعة لـ78 دراسة هذا «التكاسل الاجتماعي»: حين لا يظهر جهدك تتراخى.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "hi": {
+      "title": "भीड़ के साथ रस्सी खींचते हुए आप अनजाने में ढीले पड़ जाते हैं 💪",
+      "description": "सौ साल से भी पहले इंजीनियर मैक्स रिंगेलमान ने पाया कि साथ में रस्सी खींचते आठ लोग अपनी कुल ताक़त का लगभग आधा ही लगाते थे। बाद में आँखों पर पट्टी बँधे लोगों ने, यह सोचकर कि पीछे दूसरे भी खींच रहे हैं, कम ज़ोर लगाया, जबकि वे अकेले थे। 78 अध्ययनों की समीक्षा ने इस 'सोशल लोफ़िंग' की पुष्टि की: जब आपकी मेहनत अलग से नहीं दिखती, आप ढील दे देते हैं।\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "id": {
+      "title": "Menarik tali beramai-ramai membuatmu mengendur tanpa sadar 💪",
+      "description": "Lebih dari seabad lalu, insinyur Max Ringelmann menemukan bahwa delapan orang yang menarik tali bersama hanya memakai sekitar separuh dari total tenaga mereka. Belakangan, orang yang matanya ditutup dan mengira ada orang lain ikut menarik di belakangnya menarik lebih lemah, padahal mereka sendirian. Tinjauan atas 78 studi menegaskan 'kemalasan sosial' ini: saat usahamu tak terlihat, kamu mengendur.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "ja": {
+      "title": "大勢で綱を引くと、知らないうちに手を抜いている 💪",
+      "description": "100年以上前、技術者マックス・リンゲルマンは、8人で綱を引くと合計した力のおよそ半分しか出ていないことを発見しました。のちの実験では、目隠しをして「後ろでも他の人が引いている」と思わされた人は、実際は一人なのに力を弱めました。78の研究をまとめた分析もこの「社会的手抜き」を裏付けています。自分の努力が見えないと、人は力を抜くのです。\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "ko": {
+      "title": "여럿이 줄을 당기면 나도 모르게 힘을 덜 쓴다 💪",
+      "description": "100여 년 전 기술자 막스 링겔만은 여덟 명이 함께 줄을 당기면 각자 힘을 합친 것의 절반 정도밖에 나오지 않는다는 것을 발견했습니다. 이후 눈을 가린 사람들은 뒤에서 다른 사람도 당긴다고 믿자, 실제로는 혼자였는데도 힘을 덜 썼습니다. 78개 연구를 분석한 결과도 이 '사회적 태만'을 확인했습니다. 내 노력이 드러나지 않으면 힘을 빼게 됩니다.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "pl": {
+      "title": "Ciągnąc linę w tłumie, bezwiednie się obijasz 💪",
+      "description": "Ponad sto lat temu inżynier Max Ringelmann odkrył, że osiem osób ciągnących razem linę wykorzystuje tylko około połowy swojej łącznej siły. Później osoby z zawiązanymi oczami, przekonane, że za nimi ciągną inni, ciągnęły słabiej, choć były same. Przegląd 78 badań potwierdził to „próżniactwo społeczne”: gdy twojego wysiłku nie widać, odpuszczasz.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "nl": {
+      "title": "Trek je met een groep aan een touw, dan verslap je zonder het te merken 💪",
+      "description": "Ruim een eeuw geleden ontdekte ingenieur Max Ringelmann dat acht mensen die samen aan een touw trokken maar ongeveer de helft van hun opgetelde kracht gebruikten. Later trokken geblinddoekte mensen die dachten dat anderen achter hen meetrokken minder hard, terwijl ze alleen waren. Een overzicht van 78 studies bevestigde dit 'sociaal lanterfanten': als jouw inzet niet zichtbaar is, verslap je.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "uk": {
+      "title": "Тягнеш канат натовпом і непомітно послаблюєш зусилля 💪",
+      "description": "Понад століття тому інженер Макс Рінгельман виявив, що вісім людей, які тягнуть канат разом, використовують лише близько половини своєї сумарної сили. Пізніше люди із зав'язаними очима, які думали, що позаду тягнуть інші, тягнули слабше, хоча були самі. Огляд 78 досліджень підтвердив це «соціальне ледарство»: коли твій внесок не видно, ти розслабляєшся.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "vi": {
+      "title": "Kéo co cùng đám đông, bạn vô thức chùng tay 💪",
+      "description": "Hơn một thế kỷ trước, kỹ sư Max Ringelmann phát hiện tám người cùng kéo một sợi dây chỉ dùng khoảng một nửa tổng sức của họ. Về sau, những người bị bịt mắt tưởng có người khác cùng kéo phía sau đã kéo yếu hơn, dù thật ra họ chỉ có một mình. Một tổng quan 78 nghiên cứu xác nhận hiện tượng 'ỷ lại xã hội' này: khi công sức của bạn không được nhìn thấy, bạn sẽ chùng xuống.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "az": {
+      "title": "Kalabalıqla kəndir çəkəndə bilmədən zəifləyirsən 💪",
+      "description": "Bir əsrdən çox əvvəl mühəndis Maks Rinqelman kəşf etdi ki, kəndiri birlikdə çəkən səkkiz nəfər ümumi gücünün təxminən yarısını işlədir. Sonralar gözləri bağlı insanlar arxada başqalarının da çəkdiyini düşünəndə, əslində tək olsalar da, daha zəif çəkdilər. 78 araşdırmanın təhlili bu “sosial tənbəlliyi” təsdiqlədi: zəhmətin ayrıca görünməyəndə zəifləyirsən.\n\n#shorts\n\nSeri: mk-c0105"
+    },
+    "ro": {
+      "title": "Când tragi de frânghie în grup, slăbești efortul fără să-ți dai seama 💪",
+      "description": "Acum peste un secol, inginerul Max Ringelmann a descoperit că opt oameni care trăgeau împreună de o frânghie foloseau doar cam jumătate din forța lor însumată. Mai târziu, oameni legați la ochi, care credeau că alții trag în spatele lor, au tras mai slab, deși erau singuri. O analiză a 78 de studii a confirmat această „lene socială”: când efortul tău nu se vede, slăbești ritmul.\n\n#shorts\n\nSeri: mk-c0105"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Grup ödevlerinde sen hangisisin: en çok çalışan mı, en az çalışan mı?",
+  "scenes": [
+    {
+      "text": "Bu halata kalabalıkla asılınca daha az çekersin.",
+      "visual": "close-up of straining hands gripping a thick rope during a tug of war",
+      "stock_query": "hands pulling rope",
+      "source": "stock",
+      "callout": "DAHA AZ ÇEKERSİN"
+    },
+    {
+      "text": "Bir asır önce bir mühendis ölçtü: sekiz kişi, güçlerinin ancak yarısıyla çekti.",
+      "visual": "a team of people pulling a rope together in a tug of war",
+      "stock_query": "tug of war",
+      "source": "stock",
+      "callout": "YARI GÜÇLE ÇEKTİ"
+    },
+    {
+      "text": "Üstelik gözü bağlı denekler, arkada başkaları da çekiyor sanınca yalnızken bile daha az asıldı.",
+      "visual": "a man wearing a blindfold, standing alone",
+      "stock_query": "blindfolded man",
+      "source": "stock",
+      "subject": [
+        "blindfold",
+        "blindfolded"
+      ],
+      "callout": "GÖZÜ BAĞLI, YALNIZ"
+    },
+    {
+      "text": "Çünkü emeğin tek tek görünmeyince farkında olmadan gevşersin; yetmiş sekiz çalışma bunu doğruladı.",
+      "visual": "a group of students around a table where only one is working while the others chat",
+      "stock_query": "students group work",
+      "source": "stock",
+      "subject": [
+        "students"
+      ],
+      "callout": "78 ÇALIŞMA"
+    },
+    {
+      "text": "Grup ödevinde en az çalışan sen olabilirsin; çünkü...",
+      "visual": "a team pulling a rope while one person at the back barely holds it",
+      "stock_query": "rope pulling team",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.0,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #158",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0105_1794338529_ig.mp4"
+}
