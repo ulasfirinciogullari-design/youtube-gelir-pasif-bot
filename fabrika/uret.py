@@ -268,7 +268,7 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
                                 str(out_video)], capture_output=True, text=True, check=True).stdout.strip())
-    if not 14 <= dur <= 60:
+    if not 14 <= dur <= (90 if ep.get("uzun") else 60):
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
 
@@ -285,6 +285,8 @@ def ornek(ep_id, report):
     fabrika/deneme/ornek-<id>.mp4, so a change to the look can be seen before it goes live. Nothing is uploaded."""
     import ses
     p = HERE / "bolumler" / f"{ep_id}.json"
+    if not p.exists():  # also a queued script, or a draft in fabrika/deneme/<id>.json, before it goes live
+        p = next(iter(sorted((HERE / "kuyruk").glob(f"*-{ep_id}.json"))), HERE / "deneme" / f"{ep_id}.json")
     if not p.exists():
         raise SystemExit(f"bölüm bulunamadı: {ep_id}")
     ep = json.loads(p.read_text(encoding="utf-8"))
@@ -304,6 +306,8 @@ def ig_bolum(state, ep_id, report):
     """An episode from before Instagram: voice it again (the audio is not kept) and post the Instagram copy."""
     import ses
     p = HERE / "bolumler" / f"{ep_id}.json"
+    if not p.exists():  # also a queued script, or a draft in fabrika/deneme/<id>.json, before it goes live
+        p = next(iter(sorted((HERE / "kuyruk").glob(f"*-{ep_id}.json"))), HERE / "deneme" / f"{ep_id}.json")
     if not p.exists():
         raise SystemExit(f"bölüm bulunamadı: {ep_id}")
     ep = json.loads(p.read_text(encoding="utf-8"))

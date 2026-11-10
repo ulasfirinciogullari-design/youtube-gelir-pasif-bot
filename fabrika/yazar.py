@@ -355,8 +355,12 @@ def _same(a, b):
 def validate(ep):
     probs = []
     lines = ep.get("lines") or []
-    if not 5 <= len(lines) <= 9:
-        probs.append(f"{len(lines)} replik (6-8 olmalı)")
+    # "uzun": the long-video test (2026-11-10, karar-defteri test 7): one Short a day of 45-60 seconds that walks
+    # the viewer through a situation second by second, 10-16 lines and 550-800 characters.
+    uzun = bool(ep.get("uzun"))
+    lo, hi = (9, 17) if uzun else (5, 9)
+    if not lo <= len(lines) <= hi:
+        probs.append(f"{len(lines)} replik ({'10-16' if uzun else '6-8'} olmalı)")
     for i, l in enumerate(lines):
         if l.get("who") not in ("pi", "bit") or not str(l.get("text", "")).strip():
             probs.append(f"satır {i}: konuşan ya da metin yok")
@@ -377,7 +381,9 @@ def validate(ep):
         if lines[-1]["v"].get("t") != "outro":
             lines[-1]["v"] = {"t": "outro", "bg": lines[-1]["v"].get("bg", "space")}
     chars = sum(len(l.get("text", "")) for l in lines)
-    if not 200 <= chars <= 400:
+    if uzun and not 520 <= chars <= 850:
+        probs.append(f"toplam {chars} karakter (uzun video: 550-800 olmalı)")
+    elif not uzun and not 200 <= chars <= 400:
         probs.append(f"toplam {chars} karakter (230-360 olmalı)")
     title = str(ep.get("title", "")).strip()
     if not title or len(title) > 70:
@@ -390,7 +396,7 @@ def validate(ep):
         probs.append(f"sadece {len(types)} görsel türü (en az 4)")
     if not ({"number", "compare", "meter"} & types):
         probs.append("rakam gösteren görsel yok")
-    if not 2 <= len(ep.get("facts") or []) <= 6:
+    if not 2 <= len(ep.get("facts") or []) <= (8 if uzun else 6):
         probs.append("bilgi listesi 3-5 olmalı")
     tags = [t for t in ep.get("tags", []) if isinstance(t, str) and t.strip()]
     ep["tags"] = list(dict.fromkeys(t.strip().lstrip("#") for t in tags))
