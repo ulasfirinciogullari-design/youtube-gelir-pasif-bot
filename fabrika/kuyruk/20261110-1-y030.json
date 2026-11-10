@@ -1,0 +1,246 @@
+{
+ "id": "y030",
+ "series": "Ya Olsaydı?",
+ "q": "Hiç ağrı hissetmeseydik ne olurdu?",
+ "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+ "bar": {
+  "hi": "AĞRI",
+  "rest": "HİSSETMESEYDİN?"
+ },
+ "summary": "Ağrı hissetmeyen insanlar dillerinin ucunu ısırıp koparabiliyor, kırık bacakla yürümeye devam ediyor! Seni her gün koruyan bu alarm hiç olmasaydı vücuduna neler olacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Dilinin ucunu ısırıp koparırdın, hiçbir şey hissetmeden!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👅",
+    "do": "shake",
+    "key": "koparırdın",
+    "label": "Dil Ucu"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kendi dilimi mi yerdim?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "😱",
+    "label": "Kendi Dilim?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bacağın kırılsa üstünde yürümeye devam eder, eklemlerini harap ederdin.",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "🦴",
+     "label": "Kırık Bacak"
+    },
+    "right": {
+     "e": "🚶",
+     "label": "Yürümeye Devam"
+    },
+    "key": "kırılsa"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Parmağını çarpınca keskin acı araba hızında, zonklama yürüme hızında gelir!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "⚡",
+     "label": "Keskin Acı",
+     "value": "108"
+    },
+    "b": {
+     "e": "💢",
+     "label": "Zonklama",
+     "value": "7,2"
+    },
+    "mode": "bar",
+    "key": "zonklama"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ağrısız bir çocuk kızgın kömürde yürür, koluna bıçak saplayıp gösteri yapardı!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🔥",
+    "do": "burn",
+    "key": "kömürde",
+    "label": "Kızgın Kömür"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen en son nerede canını acıttın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🩹"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NIH GeneReviews'a göre doğuştan ağrı duyarsızlığı olan bebek ve küçük çocuklarda parmak uçlarını ısırıp koparma ve dil ucunun kaybı gibi kendine zarar vererek oluşan yaralanmalar sık görülür.",
+   "source": "NIH GeneReviews (NCBI)",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK481553/"
+  },
+  {
+   "text": "GeneReviews'a göre bu kişilerde ağrısız kırıklar ve eklem hasarı sık görülür ve kalıcı hasara yol açabilir; MedlinePlus'a göre kırık kemikler fark edilmeden kalabilir.",
+   "source": "NIH GeneReviews, MedlinePlus",
+   "url": "https://medlineplus.gov/genetics/condition/channelopathy-associated-congenital-insensitivity-to-pain/"
+  },
+  {
+   "text": "Washington Üniversitesi'nin ders kitabına göre keskin 'ilk ağrıyı' taşıyan Aδ lifleri saniyede 10-30 metre (saatte 36-108 km), zonklayan 'ikinci ağrıyı' taşıyan C lifleri saniyede 0,5-2 metre (saatte 1,8-7,2 km) hızla iletir.",
+   "source": "University of Washington",
+   "url": "https://uw.pressbooks.pub/spinal/?p=5"
+  },
+  {
+   "text": "Nature'a göre ağrı hissetmeyen bir çocuk kızgın kömürde yürüyüp kollarına bıçak saplayarak sokak gösterisi yapıyordu; araştırmacılar akrabalarındaki ağrısızlığı SCN9A genindeki bir değişikliğe bağladı.",
+   "source": "Nature",
+   "url": "https://www.nature.com/news/2006/061211/full/news061211-11.html"
+  }
+ ],
+ "tags": [
+  "ağrı hissetmemek",
+  "doğuştan ağrı duyarsızlığı",
+  "acı hissetmeyen insan",
+  "ağrı neden var",
+  "sinir sistemi",
+  "insan vücudu",
+  "congenital insensitivity to pain",
+  "what if you couldn't feel pain",
+  "pain science",
+  "scn9a",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ağrı",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://www.ncbi.nlm.nih.gov/books/NBK481553/",
+  "https://medlineplus.gov/genetics/condition/channelopathy-associated-congenital-insensitivity-to-pain/",
+  "https://www.nature.com/news/2006/061211/full/news061211-11.html",
+  "https://uw.pressbooks.pub/spinal/?p=5"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Could Never Feel Pain?",
+   "summary": "People who can't feel pain can bite off the tip of their tongue and keep walking on a broken leg! Professor Pi explains what would happen to your body without the alarm that protects you every day.",
+   "facts": [
+    "According to NIH GeneReviews, self-inflicted injuries such as biting off fingertips and losing the tip of the tongue are common in infants and young children with congenital insensitivity to pain.",
+    "According to GeneReviews, painless fractures and joint damage occur frequently in these people and can cause permanent damage; MedlinePlus notes that broken bones may go undetected.",
+    "According to a University of Washington textbook, Aδ fibers carrying sharp 'first pain' conduct at 10-30 meters per second (36-108 km/h), while C fibers carrying throbbing 'second pain' conduct at 0.5-2 meters per second (1.8-7.2 km/h).",
+    "According to Nature, a boy who could not feel pain performed street shows walking on burning coals and stabbing his arms with knives; researchers linked the painlessness in his relatives to a change in the SCN9A gene."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Nunca Sintieras Dolor?",
+   "summary": "¡Las personas que no sienten dolor pueden arrancarse de un mordisco la punta de la lengua y seguir caminando con una pierna rota! El Profesor Pi explica qué le pasaría a tu cuerpo sin la alarma que te protege cada día.",
+   "facts": [
+    "Según NIH GeneReviews, en bebés y niños pequeños con insensibilidad congénita al dolor son frecuentes las autolesiones, como arrancarse a mordiscos las yemas de los dedos o perder la punta de la lengua.",
+    "Según GeneReviews, las fracturas indoloras y el daño articular son frecuentes en estas personas y pueden causar daños permanentes; MedlinePlus señala que los huesos rotos pueden pasar desapercibidos.",
+    "Según un libro de texto de la Universidad de Washington, las fibras Aδ, que transmiten el 'primer dolor' agudo, conducen a 10-30 metros por segundo (36-108 km/h), y las fibras C, que transmiten el 'segundo dolor' palpitante, a 0,5-2 metros por segundo (1,8-7,2 km/h).",
+    "Según Nature, un niño que no podía sentir dolor hacía espectáculos callejeros caminando sobre brasas y clavándose cuchillos en los brazos; los investigadores relacionaron la ausencia de dolor en sus familiares con un cambio en el gen SCN9A."
+   ]
+  },
+  "pt": {
+   "title": "E Se Você Nunca Sentisse Dor?",
+   "summary": "Pessoas que não sentem dor podem arrancar a ponta da língua com uma mordida e continuar andando com a perna quebrada! O Professor Pi explica o que aconteceria com seu corpo sem o alarme que te protege todos os dias.",
+   "facts": [
+    "Segundo o NIH GeneReviews, autolesões como arrancar as pontas dos dedos com mordidas e perder a ponta da língua são comuns em bebês e crianças pequenas com insensibilidade congênita à dor.",
+    "Segundo o GeneReviews, fraturas indolores e danos nas articulações são frequentes nessas pessoas e podem causar danos permanentes; o MedlinePlus observa que ossos quebrados podem passar despercebidos.",
+    "Segundo um livro didático da Universidade de Washington, as fibras Aδ, que levam a 'primeira dor' aguda, conduzem a 10-30 metros por segundo (36-108 km/h), e as fibras C, que levam a 'segunda dor' latejante, a 0,5-2 metros por segundo (1,8-7,2 km/h).",
+    "Segundo a Nature, um menino que não sentia dor fazia apresentações de rua andando sobre brasas e cravando facas nos braços; pesquisadores ligaram a ausência de dor em seus parentes a uma alteração no gene SCN9A."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم تشعر بالألم أبدًا؟",
+   "summary": "الأشخاص الذين لا يشعرون بالألم قد يقضمون طرف لسانهم ويواصلون المشي على ساق مكسورة! يشرح البروفيسور باي ما سيحدث لجسمك دون جهاز الإنذار الذي يحميك كل يوم.",
+   "facts": [
+    "وفقًا لـ GeneReviews التابع للمعاهد الوطنية للصحة الأمريكية، تشيع لدى الرضع والأطفال الصغار المصابين بعدم الإحساس الخلقي بالألم إصابات ذاتية مثل قضم أطراف الأصابع وفقدان طرف اللسان.",
+    "وفقًا لـ GeneReviews، تحدث الكسور غير المؤلمة وتلف المفاصل كثيرًا لدى هؤلاء الأشخاص وقد تسبب ضررًا دائمًا؛ وتشير MedlinePlus إلى أن العظام المكسورة قد تمر دون أن تُكتشف.",
+    "وفقًا لكتاب دراسي من جامعة واشنطن، تنقل ألياف Aδ «الألم الأول» الحاد بسرعة 10-30 مترًا في الثانية (36-108 كم/ساعة)، بينما تنقل ألياف C «الألم الثاني» النابض بسرعة 0.5-2 متر في الثانية (1.8-7.2 كم/ساعة).",
+    "وفقًا لمجلة Nature، كان صبي لا يشعر بالألم يقدم عروضًا في الشارع يمشي فيها على الجمر ويطعن ذراعيه بالسكاكين؛ وربط الباحثون انعدام الألم لدى أقاربه بتغير في جين SCN9A."
+   ]
+  },
+  "hi": {
+   "title": "अगर आपको कभी दर्द महसूस न होता तो क्या होता?",
+   "summary": "जो लोग दर्द महसूस नहीं करते, वे अपनी जीभ का सिरा काटकर अलग कर सकते हैं और टूटी टांग पर चलते रह सकते हैं! प्रोफेसर पाई बताते हैं कि हर दिन आपकी रक्षा करने वाले इस अलार्म के बिना आपके शरीर का क्या होता।",
+   "facts": [
+    "NIH GeneReviews के अनुसार, जन्मजात दर्द-असंवेदनशीलता वाले शिशुओं और छोटे बच्चों में उंगलियों के सिरे काट लेना और जीभ का सिरा खो देना जैसी खुद को पहुंचाई गई चोटें आम हैं।",
+    "GeneReviews के अनुसार, ऐसे लोगों में बिना दर्द के फ्रैक्चर और जोड़ों को नुकसान अक्सर होता है और यह स्थायी क्षति पहुंचा सकता है; MedlinePlus के अनुसार टूटी हड्डियों का पता भी नहीं चल पाता।",
+    "University of Washington की एक पाठ्यपुस्तक के अनुसार, तेज़ 'पहला दर्द' ले जाने वाले Aδ तंतु 10-30 मीटर प्रति सेकंड (36-108 किमी/घंटा) और धड़कता 'दूसरा दर्द' ले जाने वाले C तंतु 0.5-2 मीटर प्रति सेकंड (1.8-7.2 किमी/घंटा) की गति से संकेत भेजते हैं।",
+    "Nature के अनुसार, दर्द महसूस न करने वाला एक लड़का दहकते अंगारों पर चलकर और अपनी बाहों में चाकू घोंपकर सड़क पर करतब दिखाता था; शोधकर्ताओं ने उसके रिश्तेदारों में दर्द न होने को SCN9A जीन के एक बदलाव से जोड़ा।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Kamu Tidak Pernah Merasakan Sakit?",
+   "summary": "Orang yang tidak bisa merasakan sakit bisa menggigit putus ujung lidahnya dan terus berjalan dengan kaki patah! Profesor Pi menjelaskan apa yang terjadi pada tubuhmu tanpa alarm yang melindungimu setiap hari.",
+   "facts": [
+    "Menurut NIH GeneReviews, cedera yang dibuat sendiri seperti menggigit putus ujung jari dan kehilangan ujung lidah sering terjadi pada bayi dan anak kecil dengan ketidakpekaan bawaan terhadap rasa sakit.",
+    "Menurut GeneReviews, patah tulang tanpa rasa sakit dan kerusakan sendi sering terjadi pada orang-orang ini dan dapat menyebabkan kerusakan permanen; MedlinePlus mencatat bahwa tulang patah bisa tidak terdeteksi.",
+    "Menurut buku ajar University of Washington, serabut Aδ yang membawa 'nyeri pertama' yang tajam menghantarkan sinyal 10-30 meter per detik (36-108 km/jam), sedangkan serabut C yang membawa 'nyeri kedua' yang berdenyut menghantarkan 0,5-2 meter per detik (1,8-7,2 km/jam).",
+    "Menurut Nature, seorang anak laki-laki yang tidak bisa merasakan sakit melakukan pertunjukan jalanan dengan berjalan di atas bara api dan menusuk lengannya dengan pisau; peneliti mengaitkan hilangnya rasa sakit pada kerabatnya dengan perubahan pada gen SCN9A."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tu Ne Ressentais Jamais la Douleur ?",
+   "summary": "Les personnes qui ne sentent pas la douleur peuvent se trancher le bout de la langue d'un coup de dents et continuer à marcher sur une jambe cassée ! Le Professeur Pi explique ce qui arriverait à ton corps sans l'alarme qui te protège chaque jour.",
+   "facts": [
+    "Selon NIH GeneReviews, les automutilations comme se sectionner le bout des doigts avec les dents ou perdre le bout de la langue sont fréquentes chez les nourrissons et jeunes enfants atteints d'insensibilité congénitale à la douleur.",
+    "Selon GeneReviews, les fractures indolores et les lésions articulaires sont fréquentes chez ces personnes et peuvent laisser des séquelles permanentes ; MedlinePlus indique que des os cassés peuvent passer inaperçus.",
+    "Selon un manuel de l'Université de Washington, les fibres Aδ, qui transmettent la « première douleur » vive, conduisent à 10-30 mètres par seconde (36-108 km/h), et les fibres C, qui transmettent la « seconde douleur » lancinante, à 0,5-2 mètres par seconde (1,8-7,2 km/h).",
+    "Selon Nature, un garçon incapable de ressentir la douleur faisait des spectacles de rue en marchant sur des braises et en se plantant des couteaux dans les bras ; les chercheurs ont relié l'absence de douleur chez ses proches à une modification du gène SCN9A."
+   ]
+  },
+  "de": {
+   "title": "Was Wäre, Wenn Du Nie Schmerz Spüren Würdest?",
+   "summary": "Menschen, die keinen Schmerz spüren, können sich die Zungenspitze abbeißen und mit einem gebrochenen Bein weiterlaufen! Professor Pi erklärt, was mit deinem Körper ohne den Alarm passieren würde, der dich jeden Tag schützt.",
+   "facts": [
+    "Laut NIH GeneReviews sind Selbstverletzungen wie abgebissene Fingerkuppen und der Verlust der Zungenspitze bei Säuglingen und Kleinkindern mit angeborener Schmerzunempfindlichkeit häufig.",
+    "Laut GeneReviews kommen schmerzlose Knochenbrüche und Gelenkschäden bei diesen Menschen häufig vor und können bleibende Schäden verursachen; MedlinePlus weist darauf hin, dass Knochenbrüche unbemerkt bleiben können.",
+    "Laut einem Lehrbuch der University of Washington leiten Aδ-Fasern, die den scharfen „ersten Schmerz“ tragen, mit 10-30 Metern pro Sekunde (36-108 km/h), C-Fasern für den pochenden „zweiten Schmerz“ mit 0,5-2 Metern pro Sekunde (1,8-7,2 km/h).",
+    "Laut Nature trat ein Junge, der keinen Schmerz spürte, auf der Straße auf, lief über glühende Kohlen und stach sich Messer in die Arme; Forscher führten die Schmerzlosigkeit bei seinen Verwandten auf eine Veränderung im SCN9A-Gen zurück."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Ты Никогда Не Почувствуешь Боль?",
+   "summary": "Люди, не чувствующие боли, могут откусить себе кончик языка и продолжать ходить на сломанной ноге! Профессор Пи объясняет, что случилось бы с твоим телом без сигнализации, которая защищает тебя каждый день.",
+   "facts": [
+    "По данным NIH GeneReviews, у младенцев и маленьких детей с врождённой нечувствительностью к боли часто встречаются самоповреждения: откусывание кончиков пальцев и потеря кончика языка.",
+    "По данным GeneReviews, безболезненные переломы и повреждения суставов у таких людей случаются часто и могут приводить к необратимым последствиям; MedlinePlus отмечает, что переломы могут оставаться незамеченными.",
+    "Согласно учебнику Вашингтонского университета, волокна Aδ, передающие острую «первую боль», проводят сигнал со скоростью 10-30 метров в секунду (36-108 км/ч), а волокна C, передающие ноющую «вторую боль», — 0,5-2 метра в секунду (1,8-7,2 км/ч).",
+    "По данным Nature, мальчик, не чувствовавший боли, выступал на улице: ходил по раскалённым углям и вонзал ножи себе в руки; исследователи связали отсутствие боли у его родственников с изменением в гене SCN9A."
+   ]
+  },
+  "az": {
+   "title": "Heç Ağrı Hiss Etməsəydin Nə Olardı?",
+   "summary": "Ağrı hiss etməyən insanlar dillərinin ucunu dişləyib qopara və sınıq ayaqla yeriməyə davam edə bilir! Professor Pi səni hər gün qoruyan bu siqnal olmasaydı bədəninə nə olacağını izah edir.",
+   "facts": [
+    "NIH GeneReviews-a görə, anadangəlmə ağrı hissizliyi olan körpə və kiçik uşaqlarda barmaq uclarını dişləyib qoparmaq və dilin ucunu itirmək kimi özünə vurulan xəsarətlər tez-tez rast gəlinir.",
+    "GeneReviews-a görə, bu insanlarda ağrısız sınıqlar və oynaq zədələri tez-tez baş verir və daimi zərərə səbəb ola bilər; MedlinePlus qeyd edir ki, sınıq sümüklər fərq edilmədən qala bilər.",
+    "Vaşinqton Universitetinin dərsliyinə görə, kəskin \"birinci ağrını\" daşıyan Aδ lifləri saniyədə 10-30 metr (saatda 36-108 km), zoqquldayan \"ikinci ağrını\" daşıyan C lifləri isə saniyədə 0,5-2 metr (saatda 1,8-7,2 km) sürətlə ötürür.",
+    "Nature-a görə, ağrı hiss etməyən bir oğlan közərmiş kömür üzərində yeriyib qollarına bıçaq sancaraq küçə tamaşaları göstərirdi; tədqiqatçılar onun qohumlarındakı ağrısızlığı SCN9A genindəki dəyişikliklə əlaqələndirdi."
+   ]
+  }
+ }
+}

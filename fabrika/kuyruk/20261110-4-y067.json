@@ -1,0 +1,267 @@
+{
+ "id": "y067",
+ "series": "Ya Olsaydı?",
+ "q": "Hiç su içmeseydin kaç gün dayanırdın?",
+ "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
+ "bar": {
+  "hi": "SU İÇMESEYDİN",
+  "rest": "KAÇ GÜN?"
+ },
+ "summary": "Vücudun her gün yaklaşık 2,5 litre su kaybeder; hiç içmezsen sonunda beynin bile büzülmeye başlar! Serin bir odada kaç gün, sıcakta kaç saat dayanabileceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Beynin büzülür, kafatasındaki damarlar yırtılabilir!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🧠",
+    "do": "shrink",
+    "key": "büzülür",
+    "label": "Büzülen Beyin"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Beynim kuru üzüm mü olur?!",
+   "v": {
+    "t": "question",
+    "bg": "desert",
+    "e": "🍇",
+    "label": "Kuru Üzüm?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Vücudun her gün yaklaşık 2,5 litre su kaybeder.",
+   "v": {
+    "t": "number",
+    "bg": "desert",
+    "e": "💧",
+    "value": "2,5",
+    "unit": "litre",
+    "label": "Günlük Kayıp",
+    "key": "2,5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir cama hohla: o buğu da su! Nefesle günde 400 ml gider.",
+   "v": {
+    "t": "compare",
+    "bg": "city",
+    "a": {
+     "e": "💧",
+     "label": "Toplam Kayıp",
+     "value": "2.500"
+    },
+    "b": {
+     "e": "🌫️",
+     "label": "Sadece Nefes",
+     "value": "400"
+    },
+    "mode": "bar",
+    "key": "400"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Önce böbreklerin iflas eder; serin bir odada belki 1 hafta dayanırsın.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "ÖNCE",
+      "e": "🫘",
+      "label": "Böbrekler"
+     },
+     {
+      "when": "1 HAFTA",
+      "e": "🛏️",
+      "label": "Serin Oda Sınırı"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama sıcakta koşarsan birkaç saat bile yetebilir!",
+   "v": {
+    "t": "split",
+    "bg": "desert",
+    "left": {
+     "e": "🛏️",
+     "label": "Serin Oda: 1 Hafta"
+    },
+    "right": {
+     "e": "🏃",
+     "label": "Sıcakta: Saatler"
+    },
+    "key": "sıcakta"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen bugün kaç bardak su içtin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "desert",
+    "e": "🥤"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre ağır susuzlukta beyin hücrelerinden su çekildikçe beyin büzülür ve kafatasındaki kan damarları yırtılabilir; genellikle ilk iflas eden organlar böbreklerdir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/32320-how-long-can-a-person-survive-without-water.html"
+  },
+  {
+   "text": "Loyola Marymount Üniversitesi'nin fizyoloji ders kitabına göre bir yetişkin idrar, ter, dışkı, akciğer ve deri yoluyla günde ortalama yaklaşık 2.500 ml su kaybeder.",
+   "source": "Loyola Marymount University",
+   "url": "https://lmu.pressbooks.pub/humanphysiology/?p=1440"
+  },
+  {
+   "text": "LibreTexts'teki Fluid Physiology (Brandis) kitabına göre stres altında olmayan bir yetişkin yalnızca solunum yoluyla günde yaklaşık 400 ml su kaybeder.",
+   "source": "LibreTexts Medicine",
+   "url": "https://med.libretexts.org/Bookshelves/Anatomy_and_Physiology/Fluid_Physiology_(Brandis)/03%3A_Water_Balance/3.02%3A_Insensible_Water_Loss"
+  },
+  {
+   "text": "Scientific American'a göre serin ortamdaki bir yetişkin hiç ya da çok az suyla 1 hafta ya da daha uzun dayanabilir; sıcak havada ağır egzersiz yapan biri ise birkaç saat içinde susuz kalıp aşırı ısınarak ölebilir.",
+   "source": "Scientific American",
+   "url": "https://www.scientificamerican.com/article/how-long-can-the-average/"
+  }
+ ],
+ "tags": [
+  "susuz kaç gün yaşanır",
+  "susuz kalmak",
+  "dehidrasyon",
+  "su içmemek",
+  "vücuttan su kaybı",
+  "böbrek",
+  "insan vücudu",
+  "how long can you survive without water",
+  "dehydration",
+  "survive without water",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#su",
+  "#dehidrasyon",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/32320-how-long-can-a-person-survive-without-water.html",
+  "https://www.scientificamerican.com/article/how-long-can-the-average/",
+  "https://lmu.pressbooks.pub/humanphysiology/?p=1440",
+  "https://med.libretexts.org/Bookshelves/Anatomy_and_Physiology/Fluid_Physiology_(Brandis)/03%3A_Water_Balance/3.02%3A_Insensible_Water_Loss"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Days Could You Survive Without Drinking Water?",
+   "summary": "Your body loses about 2.5 liters of water every day, and if you drink nothing, your brain eventually starts to shrink! Professor Pi explains how many days you could last in a cool room and how many hours in the heat.",
+   "facts": [
+    "According to Live Science, in severe dehydration the brain contracts as water leaves brain cells and blood vessels in the skull can burst; the kidneys are usually the first organs to fail.",
+    "According to a Loyola Marymount University physiology textbook, an adult loses on average about 2,500 ml of water a day through urine, sweat, feces, the lungs and the skin.",
+    "According to the Fluid Physiology textbook (Brandis) on LibreTexts, an unstressed adult loses about 400 ml of water a day through the respiratory tract alone.",
+    "According to Scientific American, an adult in comfortable surroundings can survive a week or more with no or very little water, while someone exercising hard in hot weather can dehydrate, overheat and die within a few hours."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántos Días Aguantarías Sin Beber Agua?",
+   "summary": "¡Tu cuerpo pierde unos 2,5 litros de agua al día y, si no bebes nada, al final hasta tu cerebro empieza a encogerse! El Profesor Pi explica cuántos días aguantarías en una habitación fresca y cuántas horas con calor.",
+   "facts": [
+    "Según Live Science, en la deshidratación grave el cerebro se contrae al salir agua de sus células y los vasos sanguíneos del cráneo pueden romperse; los riñones suelen ser los primeros órganos en fallar.",
+    "Según un libro de fisiología de la Universidad Loyola Marymount, un adulto pierde de media unos 2.500 ml de agua al día por la orina, el sudor, las heces, los pulmones y la piel.",
+    "Según el libro Fluid Physiology (Brandis) en LibreTexts, un adulto en reposo pierde unos 400 ml de agua al día solo por las vías respiratorias.",
+    "Según Scientific American, un adulto en un entorno cómodo puede sobrevivir una semana o más sin agua o con muy poca, mientras que alguien que hace ejercicio intenso con calor puede deshidratarse, sobrecalentarse y morir en pocas horas."
+   ]
+  },
+  "pt": {
+   "title": "Quantos Dias Você Aguentaria Sem Beber Água?",
+   "summary": "Seu corpo perde cerca de 2,5 litros de água por dia e, se você não beber nada, no fim até seu cérebro começa a encolher! O Professor Pi explica quantos dias você aguentaria num quarto fresco e quantas horas no calor.",
+   "facts": [
+    "Segundo a Live Science, na desidratação grave o cérebro se contrai à medida que a água sai de suas células, e vasos sanguíneos do crânio podem se romper; os rins costumam ser os primeiros órgãos a falhar.",
+    "Segundo um livro de fisiologia da Loyola Marymount University, um adulto perde em média cerca de 2.500 ml de água por dia pela urina, suor, fezes, pulmões e pele.",
+    "Segundo o livro Fluid Physiology (Brandis) no LibreTexts, um adulto em repouso perde cerca de 400 ml de água por dia só pelas vias respiratórias.",
+    "Segundo a Scientific American, um adulto em ambiente confortável pode sobreviver uma semana ou mais sem água ou com muito pouca, enquanto alguém se exercitando intensamente no calor pode desidratar, superaquecer e morrer em poucas horas."
+   ]
+  },
+  "ar": {
+   "title": "كم يومًا يمكنك الصمود دون شرب الماء؟",
+   "summary": "يفقد جسمك نحو 2.5 لتر من الماء يوميًا، وإذا لم تشرب شيئًا يبدأ دماغك في النهاية بالانكماش! يشرح البروفيسور باي كم يومًا قد تصمد في غرفة باردة وكم ساعة في الحر.",
+   "facts": [
+    "وفقًا لموقع Live Science، في الجفاف الشديد ينكمش الدماغ مع خروج الماء من خلاياه وقد تنفجر الأوعية الدموية داخل الجمجمة؛ وعادةً ما تكون الكليتان أول الأعضاء التي تفشل.",
+    "وفقًا لكتاب علم وظائف الأعضاء من جامعة لويولا ماريماونت، يفقد البالغ في المتوسط نحو 2500 مل من الماء يوميًا عبر البول والعرق والبراز والرئتين والجلد.",
+    "وفقًا لكتاب Fluid Physiology (Brandis) على LibreTexts، يفقد البالغ في حالة الراحة نحو 400 مل من الماء يوميًا عبر الجهاز التنفسي وحده.",
+    "وفقًا لمجلة Scientific American، يمكن للبالغ في بيئة مريحة أن يعيش أسبوعًا أو أكثر دون ماء أو بقليل جدًا منه، بينما قد يُصاب من يمارس رياضة شاقة في الحر بالجفاف وارتفاع الحرارة ويموت خلال ساعات قليلة."
+   ]
+  },
+  "hi": {
+   "title": "बिना पानी पिए आप कितने दिन जीवित रह सकते हैं?",
+   "summary": "आपका शरीर हर दिन लगभग 2.5 लीटर पानी खोता है, और कुछ भी न पीने पर आखिरकार आपका दिमाग सिकुड़ने लगता है! प्रोफेसर पाई बताते हैं कि ठंडे कमरे में आप कितने दिन और गर्मी में कितने घंटे टिक सकते हैं।",
+   "facts": [
+    "Live Science के अनुसार, गंभीर डिहाइड्रेशन में मस्तिष्क की कोशिकाओं से पानी निकलने पर दिमाग सिकुड़ता है और खोपड़ी की रक्त वाहिकाएं फट सकती हैं; आमतौर पर सबसे पहले गुर्दे फेल होते हैं।",
+    "Loyola Marymount University की फिज़ियोलॉजी पाठ्यपुस्तक के अनुसार, एक वयस्क पेशाब, पसीने, मल, फेफड़ों और त्वचा के ज़रिए रोज़ औसतन लगभग 2,500 मिली पानी खोता है।",
+    "LibreTexts पर Fluid Physiology (Brandis) के अनुसार, आराम की स्थिति में एक वयस्क सिर्फ सांस के रास्ते रोज़ लगभग 400 मिली पानी खोता है।",
+    "Scientific American के अनुसार, आरामदायक माहौल में एक वयस्क बिना या बहुत कम पानी के एक हफ्ता या उससे ज़्यादा जी सकता है, जबकि गर्मी में कड़ी कसरत करने वाला व्यक्ति कुछ ही घंटों में पानी की कमी और ज़्यादा गर्मी से मर सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Hari Kamu Bisa Bertahan Tanpa Minum Air?",
+   "summary": "Tubuhmu kehilangan sekitar 2,5 liter air setiap hari, dan jika kamu tidak minum sama sekali, akhirnya otakmu mulai menyusut! Profesor Pi menjelaskan berapa hari kamu bisa bertahan di ruangan sejuk dan berapa jam di cuaca panas.",
+   "facts": [
+    "Menurut Live Science, pada dehidrasi berat otak menyusut saat air keluar dari sel-selnya dan pembuluh darah di tengkorak bisa pecah; ginjal biasanya menjadi organ pertama yang gagal.",
+    "Menurut buku ajar fisiologi Loyola Marymount University, orang dewasa kehilangan rata-rata sekitar 2.500 ml air per hari melalui urine, keringat, feses, paru-paru, dan kulit.",
+    "Menurut buku Fluid Physiology (Brandis) di LibreTexts, orang dewasa yang sedang beristirahat kehilangan sekitar 400 ml air per hari hanya melalui saluran napas.",
+    "Menurut Scientific American, orang dewasa di lingkungan nyaman bisa bertahan seminggu atau lebih tanpa atau dengan sangat sedikit air, sedangkan orang yang berolahraga berat di cuaca panas bisa mengalami dehidrasi, kepanasan, dan meninggal dalam beberapa jam."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Jours Tiendrais-tu Sans Boire d'Eau ?",
+   "summary": "Ton corps perd environ 2,5 litres d'eau par jour, et si tu ne bois rien, ton cerveau finit par rétrécir ! Le Professeur Pi explique combien de jours tu tiendrais dans une pièce fraîche et combien d'heures sous la chaleur.",
+   "facts": [
+    "Selon Live Science, lors d'une déshydratation sévère, le cerveau se contracte à mesure que l'eau quitte ses cellules et des vaisseaux sanguins du crâne peuvent éclater ; les reins sont généralement les premiers organes à lâcher.",
+    "Selon un manuel de physiologie de la Loyola Marymount University, un adulte perd en moyenne environ 2 500 ml d'eau par jour par l'urine, la sueur, les selles, les poumons et la peau.",
+    "Selon le manuel Fluid Physiology (Brandis) sur LibreTexts, un adulte au repos perd environ 400 ml d'eau par jour par les seules voies respiratoires.",
+    "Selon Scientific American, un adulte dans un environnement confortable peut survivre une semaine ou plus sans eau ou presque, alors qu'une personne faisant un effort intense par forte chaleur peut se déshydrater, surchauffer et mourir en quelques heures."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Tage Würdest Du Ohne Wasser Überleben?",
+   "summary": "Dein Körper verliert jeden Tag etwa 2,5 Liter Wasser, und wenn du gar nichts trinkst, beginnt irgendwann dein Gehirn zu schrumpfen! Professor Pi erklärt, wie viele Tage du in einem kühlen Raum und wie viele Stunden in der Hitze durchhalten würdest.",
+   "facts": [
+    "Laut Live Science schrumpft das Gehirn bei schwerer Dehydrierung, weil Wasser die Gehirnzellen verlässt, und Blutgefäße im Schädel können platzen; meist versagen zuerst die Nieren.",
+    "Laut einem Physiologie-Lehrbuch der Loyola Marymount University verliert ein Erwachsener über Urin, Schweiß, Stuhl, Lunge und Haut durchschnittlich etwa 2.500 ml Wasser pro Tag.",
+    "Laut dem Lehrbuch Fluid Physiology (Brandis) auf LibreTexts verliert ein Erwachsener in Ruhe allein über die Atemwege etwa 400 ml Wasser pro Tag.",
+    "Laut Scientific American kann ein Erwachsener in angenehmer Umgebung eine Woche oder länger ohne oder mit sehr wenig Wasser überleben, während jemand, der bei Hitze hart trainiert, innerhalb weniger Stunden austrocknen, überhitzen und sterben kann."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Дней Ты Продержишься Без Воды?",
+   "summary": "Твоё тело каждый день теряет около 2,5 литра воды, и если ничего не пить, в итоге начинает сжиматься мозг! Профессор Пи объясняет, сколько дней ты продержишься в прохладной комнате и сколько часов в жару.",
+   "facts": [
+    "По данным Live Science, при сильном обезвоживании мозг сжимается, потому что вода уходит из его клеток, а сосуды в черепе могут лопнуть; первыми обычно отказывают почки.",
+    "Согласно учебнику физиологии Университета Лойола Мэримаунт, взрослый человек теряет в среднем около 2500 мл воды в сутки с мочой, потом, калом, через лёгкие и кожу.",
+    "Согласно учебнику Fluid Physiology (Brandis) на LibreTexts, взрослый в спокойном состоянии теряет около 400 мл воды в сутки только через дыхательные пути.",
+    "По данным Scientific American, взрослый в комфортных условиях может прожить неделю и дольше совсем без воды или почти без неё, а человек, интенсивно тренирующийся в жару, может обезводиться, перегреться и умереть за несколько часов."
+   ]
+  },
+  "az": {
+   "title": "Heç Su İçməsəydin Neçə Gün Dözərdin?",
+   "summary": "Bədənin hər gün təxminən 2,5 litr su itirir və heç nə içməsən, sonda beynin büzülməyə başlayır! Professor Pi sərin otaqda neçə gün, istidə isə neçə saat dözə biləcəyini izah edir.",
+   "facts": [
+    "Live Science-a görə, ağır susuzluqda beyin hüceyrələrindən su çəkildikcə beyin büzülür və kəllədəki qan damarları partlaya bilər; adətən ilk sıradan çıxan orqanlar böyrəklərdir.",
+    "Loyola Marymount Universitetinin fiziologiya dərsliyinə görə, yetkin insan sidik, tər, nəcis, ağciyərlər və dəri yolu ilə gündə orta hesabla təxminən 2500 ml su itirir.",
+    "LibreTexts-dəki Fluid Physiology (Brandis) kitabına görə, sakit vəziyyətdə olan yetkin insan yalnız tənəffüs yolu ilə gündə təxminən 400 ml su itirir.",
+    "Scientific American-a görə, rahat şəraitdə yetkin insan heç su içmədən və ya çox az su ilə bir həftə və ya daha çox yaşaya bilər, isti havada ağır məşq edən biri isə bir neçə saat ərzində susuzluqdan və həddindən artıq qızmadan ölə bilər."
+   ]
+  }
+ }
+}

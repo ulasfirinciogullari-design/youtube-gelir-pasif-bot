@@ -1,0 +1,261 @@
+{
+ "id": "y066",
+ "series": "Ya Olsaydı?",
+ "q": "Buz gibi suya düşseydin ilk dakikada ne olurdu?",
+ "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
+ "bar": {
+  "hi": "BUZ GİBİ SU",
+  "rest": "İLK DAKİKA?"
+ },
+ "summary": "Buz gibi suya düştüğün an vücudun istemsizce 2,4 litrelik dev bir nefes çeker ve kalbin zorlanır! İlk 60 saniyede vücudunda neler olduğunu ve seni neyin kurtarabileceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "İstemsizce 2,4 litrelik dev bir nefes çekerdin: başın sudaysa, ciğerine su!",
+   "v": {
+    "t": "number",
+    "bg": "underwater",
+    "e": "🫁",
+    "value": "2,4",
+    "unit": "litre",
+    "label": "İlk Nefes",
+    "key": "2,4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Nefes almak beni mi boğar?!",
+   "v": {
+    "t": "question",
+    "bg": "underwater",
+    "e": "😨",
+    "label": "Nefes Tuzağı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Soğuk duşta 'hah!' diye nefesin kesilir ya: aynı refleks!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "🚿",
+    "do": "shake",
+    "key": "duşta",
+    "label": "Soğuk Duş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Nefesin 10 kata kadar hızlanır, tansiyonun fırlar: gençte bile kalp krizi riski!",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "Nefes Hızı",
+    "from": 1,
+    "to": 10,
+    "unit": "kat",
+    "e": "💨",
+    "key": "10"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kalbim de mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "ice",
+    "e": "💔",
+    "do": "pulse",
+    "key": "Kalbim",
+    "label": "Kalp Krizi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çırpınma, sırtüstü süzül: şok yaklaşık 1 dakikada geçer.",
+   "v": {
+    "t": "timeline",
+    "bg": "ocean",
+    "steps": [
+     {
+      "when": "0. SN",
+      "e": "🥶",
+      "label": "Soğuk Şok"
+     },
+     {
+      "when": "30. SN",
+      "e": "🛟",
+      "label": "Sırtüstü Süzül"
+     },
+     {
+      "when": "1. DK",
+      "e": "🫁",
+      "label": "Nefes Düzelir"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen buz gibi suya hiç girdin mi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ice",
+    "e": "🧊"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Extreme Physiology & Medicine'de yayımlanan bir deneyde 15 °C suya giren gönüllüler ilk 10 saniyede ortalama yaklaşık 2,4 litrelik istemsiz bir soluk çekti.",
+   "source": "Extreme Physiology & Medicine (NIH PMC)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4580772/"
+  },
+  {
+   "text": "ABD Ulusal Hava Durumu Servisi'ne göre ani suya girişte istemsiz soluma ve hızlı nefes alma 25 °C kadar ılık suda bile tetiklenebilir; kalp atışı ve tansiyon aniden yükselir.",
+   "source": "NOAA National Weather Service",
+   "url": "https://www.weather.gov/safety/coldwater"
+  },
+  {
+   "text": "RNLI'ye göre soğuk su şokunda nefes alma hızı 10 kata kadar artabilir ve bu şok görece genç ve sağlıklı kişilerde bile kalp krizine yol açabilir.",
+   "source": "RNLI",
+   "url": "https://rnli.org/safety/know-the-risks/cold-water-shock"
+  },
+  {
+   "text": "Portsmouth Üniversitesi'ne göre soğuk su şokunun etkileri 60-90 saniye içinde geçer; bu sürede çırpınmak yerine sırtüstü süzülmek önerilir.",
+   "source": "University of Portsmouth",
+   "url": "https://www.port.ac.uk/news-events-and-blogs/news/portsmouth-scientist-says-fight-your-instincts-not-the-water-to-help-stay-alive"
+  }
+ ],
+ "tags": [
+  "soğuk su şoku",
+  "buz gibi suya düşmek",
+  "soğuk suda hayatta kalma",
+  "hipotermi",
+  "soğuk duş",
+  "boğulma",
+  "cold water shock",
+  "falling into icy water",
+  "float to live",
+  "cold shock response",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#soğuksu",
+  "#hayattakalma",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC4580772/",
+  "https://rnli.org/safety/know-the-risks/cold-water-shock",
+  "https://www.weather.gov/safety/coldwater",
+  "https://www.port.ac.uk/news-events-and-blogs/news/portsmouth-scientist-says-fight-your-instincts-not-the-water-to-help-stay-alive"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen in the First Minute If You Fell Into Icy Water?",
+   "summary": "The moment you fall into icy water, your body involuntarily gulps a giant 2.4-liter breath and your heart is put under strain! Professor Pi explains what happens to your body in the first 60 seconds and what can save you.",
+   "facts": [
+    "In an experiment published in Extreme Physiology & Medicine, volunteers immersed in 15 °C water took an involuntary gasp averaging about 2.4 liters in the first 10 seconds.",
+    "According to the US National Weather Service, involuntary gasping and rapid breathing on sudden immersion can be triggered even by water as warm as 25 °C, and heart rate and blood pressure spike suddenly.",
+    "According to the RNLI, breathing rate can increase as much as tenfold during cold water shock, and the shock can cause heart attacks even in relatively young and healthy people.",
+    "According to the University of Portsmouth, the effects of cold water shock pass within 60-90 seconds; during that time, floating on your back is advised instead of thrashing."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Te Pasaría en el Primer Minuto Si Cayeras en Agua Helada?",
+   "summary": "¡En cuanto caes en agua helada, tu cuerpo toma sin querer una enorme bocanada de 2,4 litros y tu corazón se pone al límite! El Profesor Pi explica qué le pasa a tu cuerpo en los primeros 60 segundos y qué puede salvarte.",
+   "facts": [
+    "En un experimento publicado en Extreme Physiology & Medicine, voluntarios sumergidos en agua a 15 °C tomaron una bocanada involuntaria de unos 2,4 litros de media en los primeros 10 segundos.",
+    "Según el Servicio Meteorológico Nacional de EE. UU., la inmersión repentina puede provocar jadeo involuntario y respiración rápida incluso en agua a 25 °C, y el ritmo cardíaco y la presión arterial se disparan.",
+    "Según la RNLI, durante el choque por agua fría la frecuencia respiratoria puede multiplicarse hasta por diez, y el choque puede causar infartos incluso en personas relativamente jóvenes y sanas.",
+    "Según la Universidad de Portsmouth, los efectos del choque por agua fría pasan en 60-90 segundos; durante ese tiempo se recomienda flotar boca arriba en lugar de agitarse."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria no Primeiro Minuto Se Você Caísse em Água Gelada?",
+   "summary": "Assim que você cai em água gelada, seu corpo puxa sem querer um fôlego gigante de 2,4 litros e seu coração entra em esforço extremo! O Professor Pi explica o que acontece com seu corpo nos primeiros 60 segundos e o que pode te salvar.",
+   "facts": [
+    "Em um experimento publicado na Extreme Physiology & Medicine, voluntários imersos em água a 15 °C deram um arquejo involuntário de cerca de 2,4 litros, em média, nos primeiros 10 segundos.",
+    "Segundo o Serviço Nacional de Meteorologia dos EUA, a imersão repentina pode provocar arquejo involuntário e respiração acelerada até em água a 25 °C, e a frequência cardíaca e a pressão arterial disparam.",
+    "Segundo a RNLI, no choque de água fria a frequência respiratória pode aumentar até dez vezes, e o choque pode causar ataques cardíacos até em pessoas relativamente jovens e saudáveis.",
+    "Segundo a Universidade de Portsmouth, os efeitos do choque de água fria passam em 60-90 segundos; nesse tempo, recomenda-se boiar de costas em vez de se debater."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لك في الدقيقة الأولى لو سقطت في ماء متجمد؟",
+   "summary": "في اللحظة التي تسقط فيها في ماء شديد البرودة، يسحب جسمك لا إراديًا نفسًا هائلًا بحجم 2.4 لتر ويتعرض قلبك لضغط كبير! يشرح البروفيسور باي ما يحدث لجسمك في أول 60 ثانية وما الذي قد ينقذك.",
+   "facts": [
+    "في تجربة نُشرت في مجلة Extreme Physiology & Medicine، أخذ متطوعون غُمروا في ماء حرارته 15 درجة مئوية شهقة لا إرادية بلغ متوسطها نحو 2.4 لتر في أول 10 ثوانٍ.",
+    "وفقًا لهيئة الأرصاد الجوية الوطنية الأمريكية، قد يُحفَّز الشهيق اللاإرادي والتنفس السريع عند الغمر المفاجئ حتى في ماء دافئ بدرجة 25 مئوية، ويرتفع معدل ضربات القلب وضغط الدم فجأة.",
+    "وفقًا لـ RNLI، قد يزداد معدل التنفس حتى عشرة أضعاف أثناء صدمة الماء البارد، وقد تسبب الصدمة نوبات قلبية حتى لدى الشباب والأصحاء نسبيًا.",
+    "وفقًا لجامعة بورتسموث، تزول آثار صدمة الماء البارد خلال 60-90 ثانية؛ ويُنصح خلال ذلك بالطفو على الظهر بدلًا من التخبط."
+   ]
+  },
+  "hi": {
+   "title": "बर्फीले पानी में गिरने पर पहले मिनट में क्या होता?",
+   "summary": "बर्फीले पानी में गिरते ही आपका शरीर अनजाने में 2.4 लीटर की एक विशाल सांस खींचता है और दिल पर भारी दबाव पड़ता है! प्रोफेसर पाई बताते हैं कि पहले 60 सेकंड में आपके शरीर में क्या होता है और आपको क्या बचा सकता है।",
+   "facts": [
+    "Extreme Physiology & Medicine में प्रकाशित एक प्रयोग में 15 °C पानी में उतारे गए स्वयंसेवकों ने पहले 10 सेकंड में औसतन लगभग 2.4 लीटर की अनैच्छिक हांफती सांस ली।",
+    "अमेरिकी राष्ट्रीय मौसम सेवा के अनुसार, अचानक पानी में गिरने पर अनैच्छिक हांफना और तेज़ सांस लेना 25 °C जितने गुनगुने पानी में भी शुरू हो सकता है, और दिल की धड़कन व रक्तचाप अचानक बढ़ जाते हैं।",
+    "RNLI के अनुसार, ठंडे पानी के झटके में सांस लेने की दर दस गुना तक बढ़ सकती है, और यह झटका अपेक्षाकृत युवा और स्वस्थ लोगों में भी दिल का दौरा ला सकता है।",
+    "University of Portsmouth के अनुसार, ठंडे पानी के झटके का असर 60-90 सेकंड में खत्म हो जाता है; इस दौरान हाथ-पैर पटकने के बजाय पीठ के बल तैरते रहने की सलाह दी जाती है।"
+   ]
+  },
+  "id": {
+   "title": "Jatuh ke Air Sedingin Es, Apa yang Terjadi di Menit Pertama?",
+   "summary": "Begitu kamu jatuh ke air sedingin es, tubuhmu tanpa sadar menarik napas raksasa 2,4 liter dan jantungmu bekerja sangat keras! Profesor Pi menjelaskan apa yang terjadi pada tubuhmu dalam 60 detik pertama dan apa yang bisa menyelamatkanmu.",
+   "facts": [
+    "Dalam eksperimen yang diterbitkan di Extreme Physiology & Medicine, relawan yang dicelupkan ke air 15 °C menarik napas terengah tanpa sadar rata-rata sekitar 2,4 liter dalam 10 detik pertama.",
+    "Menurut Layanan Cuaca Nasional AS, napas terengah tanpa sadar dan napas cepat saat tercebur tiba-tiba bisa terpicu bahkan di air sehangat 25 °C, dan detak jantung serta tekanan darah melonjak tiba-tiba.",
+    "Menurut RNLI, laju napas bisa meningkat hingga sepuluh kali lipat saat syok air dingin, dan syok ini bisa memicu serangan jantung bahkan pada orang yang relatif muda dan sehat.",
+    "Menurut University of Portsmouth, efek syok air dingin hilang dalam 60-90 detik; selama itu disarankan mengapung telentang alih-alih meronta-ronta."
+   ]
+  },
+  "fr": {
+   "title": "Tombé Dans l'Eau Glacée : Que Se Passe-t-il la Première Minute ?",
+   "summary": "Dès que tu tombes dans l'eau glacée, ton corps aspire malgré lui une énorme bouffée d'air de 2,4 litres et ton cœur est mis à rude épreuve ! Le Professeur Pi explique ce qui arrive à ton corps pendant les 60 premières secondes et ce qui peut te sauver.",
+   "facts": [
+    "Dans une expérience publiée dans Extreme Physiology & Medicine, des volontaires immergés dans une eau à 15 °C ont pris un halètement involontaire d'environ 2,4 litres en moyenne dans les 10 premières secondes.",
+    "Selon le Service météorologique national des États-Unis, l'immersion soudaine peut déclencher un halètement involontaire et une respiration rapide même dans une eau à 25 °C, et le rythme cardiaque et la tension artérielle grimpent brusquement.",
+    "Selon la RNLI, le rythme respiratoire peut être multiplié jusqu'à dix lors du choc de l'eau froide, et ce choc peut provoquer des crises cardiaques même chez des personnes relativement jeunes et en bonne santé.",
+    "Selon l'Université de Portsmouth, les effets du choc de l'eau froide passent en 60 à 90 secondes ; pendant ce temps, il est conseillé de flotter sur le dos plutôt que de se débattre."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert in der Ersten Minute, Wenn Du in Eiswasser Fällst?",
+   "summary": "Sobald du in eiskaltes Wasser fällst, schnappt dein Körper unwillkürlich nach einem riesigen Atemzug von 2,4 Litern und dein Herz gerät unter Druck! Professor Pi erklärt, was in den ersten 60 Sekunden mit deinem Körper passiert und was dich retten kann.",
+   "facts": [
+    "In einem in Extreme Physiology & Medicine veröffentlichten Experiment machten Freiwillige in 15 °C kaltem Wasser in den ersten 10 Sekunden einen unwillkürlichen Schnappatemzug von durchschnittlich etwa 2,4 Litern.",
+    "Laut dem US-Wetterdienst NWS kann plötzliches Eintauchen schon in 25 °C warmem Wasser unwillkürliches Luftschnappen und schnelles Atmen auslösen; Herzfrequenz und Blutdruck steigen schlagartig.",
+    "Laut RNLI kann sich die Atemfrequenz beim Kälteschock bis auf das Zehnfache erhöhen, und der Schock kann selbst bei relativ jungen und gesunden Menschen Herzinfarkte auslösen.",
+    "Laut der University of Portsmouth klingen die Effekte des Kälteschocks innerhalb von 60-90 Sekunden ab; in dieser Zeit wird empfohlen, sich auf dem Rücken treiben zu lassen, statt wild zu strampeln."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет в Первую Минуту, Если Ты Упадёшь в Ледяную Воду?",
+   "summary": "Как только ты падаешь в ледяную воду, тело невольно делает огромный вдох в 2,4 литра, а сердце работает на пределе! Профессор Пи объясняет, что происходит с твоим телом в первые 60 секунд и что может тебя спасти.",
+   "facts": [
+    "В эксперименте, опубликованном в Extreme Physiology & Medicine, добровольцы, погружённые в воду с температурой 15 °C, в первые 10 секунд делали непроизвольный вдох в среднем около 2,4 литра.",
+    "По данным Национальной метеорологической службы США, непроизвольный судорожный вдох и учащённое дыхание при внезапном погружении могут возникать даже в воде температурой 25 °C, а пульс и давление резко подскакивают.",
+    "По данным RNLI, при холодовом шоке частота дыхания может возрасти до десяти раз, а сам шок может вызвать инфаркт даже у относительно молодых и здоровых людей.",
+    "По данным Портсмутского университета, эффекты холодового шока проходят за 60-90 секунд; в это время советуют лечь на спину и держаться на воде, а не барахтаться."
+   ]
+  },
+  "az": {
+   "title": "Buz Kimi Suya Düşsəydin İlk Dəqiqədə Nə Olardı?",
+   "summary": "Buz kimi suya düşdüyün an bədənin istəmsizcə 2,4 litrlik nəhəng bir nəfəs çəkir və ürəyin ağır yük altına düşür! Professor Pi ilk 60 saniyədə bədənində nələr baş verdiyini və səni nəyin xilas edə biləcəyini izah edir.",
+   "facts": [
+    "Extreme Physiology & Medicine jurnalında dərc olunan təcrübədə 15 °C suya salınan könüllülər ilk 10 saniyədə orta hesabla təxminən 2,4 litrlik istəmsiz nəfəs çəkdilər.",
+    "ABŞ Milli Hava Xidmətinə görə, qəfil suya düşəndə istəmsiz nəfəsalma və sürətli nəfəs hətta 25 °C-lik ilıq suda da yarana bilər; ürək döyüntüsü və qan təzyiqi qəfil yüksəlir.",
+    "RNLI-yə görə, soyuq su şokunda nəfəs sürəti on dəfəyə qədər arta bilər və bu şok nisbətən gənc və sağlam insanlarda belə infarkta səbəb ola bilər.",
+    "Portsmut Universitetinə görə, soyuq su şokunun təsirləri 60-90 saniyə ərzində keçir; bu müddətdə çırpınmaq əvəzinə arxası üstə suyun üzündə qalmaq tövsiyə olunur."
+   ]
+  }
+ }
+}

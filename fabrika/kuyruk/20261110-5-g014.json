@@ -1,0 +1,256 @@
+{
+ "id": "g014",
+ "series": "1 Gün Boyunca",
+ "q": "1 günde ne kadar tükürük üretirsin?",
+ "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
+ "bar": {
+  "hi": "TÜKÜRÜK",
+  "rest": "1 GÜNDE NE KADAR?"
+ },
+ "summary": "Bugün koca bir pet şişe dolusu, yani 1,5 litreye kadar tükürük üreteceksin! Uykuda azalan, limonu düşününce artan ve içinde güçlü bir ağrı kesici saklayan tükürüğünü Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bugün 1,5 litreye kadar tükürük üreteceksin: koca bir pet şişe!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "💧",
+    "value": "1,5",
+    "unit": "litre",
+    "label": "Günlük Tükürük",
+    "key": "1,5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bir şişe tükürük mü yutuyorum?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🫗",
+    "label": "Bir Şişe?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uykuda azalır, yemek yerken 5 kattan fazla artar.",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "e": "😴",
+     "label": "Uykuda",
+     "value": "0,1"
+    },
+    "b": {
+     "e": "🍽️",
+     "label": "Yemekte",
+     "value": "2"
+    },
+    "mode": "bar",
+    "key": "artar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Limon ısırdığını düşün: ağzın sulandı mı? Düşüncesi bile yetiyor!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "🍋",
+    "do": "pulse",
+    "key": "Limon",
+    "label": "Sadece Düşün"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İçinde opiorfin var: sıçanlarda morfinden 6 kata kadar güçlü bir ağrı kesici!",
+   "v": {
+    "t": "meter",
+    "bg": "lab",
+    "label": "Morfine Göre",
+    "from": 1,
+    "to": 6,
+    "unit": "kat",
+    "e": "💊",
+    "key": "6"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ağzımda eczane mi var?!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "💊",
+    "do": "spin",
+    "key": "eczane",
+    "label": "Ağızda Eczane"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Senin de ağzın sulandı mı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🍋"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Cleveland Clinic'e göre yetişkinlerin tükürük bezleri günde yaklaşık 0,5-1,5 litre tükürük üretir; tükürüğün %99'u sudur.",
+   "source": "Cleveland Clinic",
+   "url": "https://my.clevelandclinic.org/health/body/saliva"
+  },
+  {
+   "text": "Journal of Dental Research'teki bir derlemeye göre dinlenirken tükürük akışı dakikada yaklaşık 0,3-0,4 ml, uykuda yaklaşık 0,1 ml'dir; yemek yerken akış 5 kattan fazla artabilir.",
+   "source": "Journal of Dental Research (NIH PMC)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8461045/"
+  },
+  {
+   "text": "Britannica'ya göre yiyeceğin varlığı, hatta sadece kokusu ya da düşüncesi bile tükürük akışını hızla artırır.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/science/saliva"
+  },
+  {
+   "text": "Nature'a göre insan tükürüğünde bulunan opiorfin adlı molekül, sıçanlarda yapılan testlerde morfinden 6 kata kadar güçlü çıktı; ilaç olarak işe yarayıp yaramadığı henüz kanıtlanmadı.",
+   "source": "Nature",
+   "url": "https://www.nature.com/news/2006/061113/full/news061113-4.html"
+  }
+ ],
+ "tags": [
+  "tükürük",
+  "günde ne kadar tükürük",
+  "tükürük bezleri",
+  "opiorfin",
+  "ağız sulanması",
+  "insan vücudu",
+  "saliva",
+  "how much saliva per day",
+  "opiorphin",
+  "1 gün boyunca",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#tükürük",
+  "#insanvücudu",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://my.clevelandclinic.org/health/body/saliva",
+  "https://www.britannica.com/science/saliva",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC8461045/",
+  "https://www.nature.com/news/2006/061113/full/news061113-4.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Much Saliva Do You Make in 1 Day?",
+   "summary": "Today you'll make up to 1.5 liters of saliva, a whole big plastic bottle! Professor Pi explains your saliva: it slows down while you sleep, surges when you just think of a lemon, and hides a powerful painkiller.",
+   "facts": [
+    "According to Cleveland Clinic, the salivary glands make about 0.5 to 1.5 liters of saliva a day in most adults, and saliva is 99% water.",
+    "According to a review in the Journal of Dental Research, resting saliva flow is about 0.3-0.4 ml per minute and about 0.1 ml per minute during sleep; while eating, flow can increase more than 5-fold.",
+    "According to Britannica, the presence of food, or even its mere smell or thought, rapidly increases saliva flow.",
+    "According to Nature, a molecule in human saliva called opiorphin was up to six times more potent than morphine in tests on rats; it has not yet been proven to work as a drug."
+   ]
+  },
+  "es": {
+   "title": "¿Cuánta Saliva Produces en 1 Día?",
+   "summary": "¡Hoy producirás hasta 1,5 litros de saliva, una botella grande entera! El Profesor Pi explica tu saliva: disminuye cuando duermes, se dispara con solo pensar en un limón y esconde un potente analgésico.",
+   "facts": [
+    "Según Cleveland Clinic, las glándulas salivales producen entre 0,5 y 1,5 litros de saliva al día en la mayoría de los adultos, y la saliva es 99 % agua.",
+    "Según una revisión en el Journal of Dental Research, el flujo de saliva en reposo es de unos 0,3-0,4 ml por minuto y de unos 0,1 ml por minuto durante el sueño; al comer, el flujo puede aumentar más de 5 veces.",
+    "Según Britannica, la presencia de comida, o incluso solo su olor o pensar en ella, aumenta rápidamente el flujo de saliva.",
+    "Según Nature, una molécula de la saliva humana llamada opiorfina fue hasta seis veces más potente que la morfina en pruebas con ratas; aún no se ha demostrado que funcione como medicamento."
+   ]
+  },
+  "pt": {
+   "title": "Quanta Saliva Você Produz em 1 Dia?",
+   "summary": "Hoje você vai produzir até 1,5 litro de saliva, uma garrafa grande inteira! O Professor Pi explica sua saliva: ela diminui quando você dorme, dispara só de pensar em um limão e esconde um analgésico poderoso.",
+   "facts": [
+    "Segundo a Cleveland Clinic, as glândulas salivares produzem cerca de 0,5 a 1,5 litro de saliva por dia na maioria dos adultos, e a saliva é 99% água.",
+    "Segundo uma revisão no Journal of Dental Research, o fluxo de saliva em repouso é de cerca de 0,3-0,4 ml por minuto e de cerca de 0,1 ml por minuto durante o sono; ao comer, o fluxo pode aumentar mais de 5 vezes.",
+    "Segundo a Britannica, a presença de comida, ou até só o cheiro dela ou pensar nela, aumenta rapidamente o fluxo de saliva.",
+    "Segundo a Nature, uma molécula da saliva humana chamada opiorfina foi até seis vezes mais potente que a morfina em testes com ratos; ainda não foi comprovado que funcione como remédio."
+   ]
+  },
+  "ar": {
+   "title": "كم من اللعاب تفرز في يوم واحد؟",
+   "summary": "اليوم ستفرز ما يصل إلى 1.5 لتر من اللعاب، أي زجاجة بلاستيكية كبيرة كاملة! يشرح البروفيسور باي لعابك: يقل أثناء النوم، ويتدفق بمجرد التفكير في الليمون، ويخفي مسكنًا قويًا للألم.",
+   "facts": [
+    "وفقًا لكليفلاند كلينك، تفرز الغدد اللعابية لدى معظم البالغين نحو 0.5 إلى 1.5 لتر من اللعاب يوميًا، ويتكون اللعاب من الماء بنسبة 99%.",
+    "وفقًا لمراجعة في Journal of Dental Research، يبلغ تدفق اللعاب أثناء الراحة نحو 0.3-0.4 مل في الدقيقة ونحو 0.1 مل في الدقيقة أثناء النوم، وقد يزيد التدفق أثناء الأكل أكثر من 5 أضعاف.",
+    "وفقًا لبريتانيكا، فإن وجود الطعام، بل مجرد رائحته أو التفكير فيه، يزيد تدفق اللعاب بسرعة.",
+    "وفقًا لمجلة Nature، كانت جزيئة في لعاب الإنسان تسمى الأوبيورفين أقوى من المورفين بما يصل إلى ست مرات في اختبارات على الجرذان؛ ولم يثبت بعد أنها تصلح دواءً."
+   ]
+  },
+  "hi": {
+   "title": "आप 1 दिन में कितनी लार बनाते हैं?",
+   "summary": "आज आप 1.5 लीटर तक लार बनाएंगे, यानी पूरी एक बड़ी प्लास्टिक बोतल! प्रोफेसर पाई आपकी लार के बारे में बताते हैं: सोते समय यह घट जाती है, नींबू के बारे में सोचते ही बढ़ जाती है और इसमें एक ताकतवर दर्द निवारक छिपा है।",
+   "facts": [
+    "Cleveland Clinic के अनुसार, ज़्यादातर वयस्कों में लार ग्रंथियां रोज़ लगभग 0.5 से 1.5 लीटर लार बनाती हैं, और लार में 99% पानी होता है।",
+    "Journal of Dental Research की एक समीक्षा के अनुसार, आराम की स्थिति में लार का बहाव लगभग 0.3-0.4 मिली प्रति मिनट और नींद में लगभग 0.1 मिली प्रति मिनट होता है; खाना खाते समय बहाव 5 गुना से ज़्यादा बढ़ सकता है।",
+    "Britannica के अनुसार, खाने की मौजूदगी, या सिर्फ उसकी खुशबू या उसके बारे में सोचना भी, लार का बहाव तेज़ी से बढ़ा देता है।",
+    "Nature के अनुसार, इंसानी लार में मिलने वाला ओपिओर्फिन नाम का अणु चूहों पर हुए परीक्षणों में मॉर्फिन से छह गुना तक ज़्यादा असरदार रहा; दवा के रूप में इसका काम करना अभी साबित नहीं हुआ है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Banyak Air Liur yang Kamu Hasilkan dalam 1 Hari?",
+   "summary": "Hari ini kamu akan menghasilkan hingga 1,5 liter air liur, satu botol plastik besar penuh! Profesor Pi menjelaskan air liurmu: berkurang saat tidur, melonjak hanya dengan membayangkan lemon, dan menyimpan pereda nyeri yang kuat.",
+   "facts": [
+    "Menurut Cleveland Clinic, kelenjar ludah pada kebanyakan orang dewasa menghasilkan sekitar 0,5 hingga 1,5 liter air liur per hari, dan air liur terdiri dari 99% air.",
+    "Menurut tinjauan di Journal of Dental Research, aliran air liur saat istirahat sekitar 0,3-0,4 ml per menit dan sekitar 0,1 ml per menit saat tidur; saat makan, alirannya bisa naik lebih dari 5 kali lipat.",
+    "Menurut Britannica, kehadiran makanan, bahkan hanya baunya atau memikirkannya, dengan cepat meningkatkan aliran air liur.",
+    "Menurut Nature, molekul dalam air liur manusia bernama opiorphin hingga enam kali lebih kuat daripada morfin dalam uji pada tikus; kegunaannya sebagai obat belum terbukti."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Salive Produis-tu en 1 Jour ?",
+   "summary": "Aujourd'hui, tu vas produire jusqu'à 1,5 litre de salive, soit une grande bouteille entière ! Le Professeur Pi explique ta salive : elle diminue pendant le sommeil, afflue rien qu'en pensant à un citron et cache un puissant antidouleur.",
+   "facts": [
+    "Selon la Cleveland Clinic, les glandes salivaires produisent environ 0,5 à 1,5 litre de salive par jour chez la plupart des adultes, et la salive est composée à 99 % d'eau.",
+    "Selon une revue du Journal of Dental Research, le débit salivaire au repos est d'environ 0,3-0,4 ml par minute et d'environ 0,1 ml par minute pendant le sommeil ; en mangeant, il peut être multiplié par plus de 5.",
+    "Selon Britannica, la présence de nourriture, ou même sa simple odeur ou le fait d'y penser, augmente rapidement le débit de salive.",
+    "Selon Nature, une molécule de la salive humaine appelée opiorphine s'est montrée jusqu'à six fois plus puissante que la morphine lors de tests sur des rats ; son efficacité comme médicament n'est pas encore prouvée."
+   ]
+  },
+  "de": {
+   "title": "Wie Viel Speichel Produzierst Du an 1 Tag?",
+   "summary": "Heute produzierst du bis zu 1,5 Liter Speichel, eine ganze große Plastikflasche! Professor Pi erklärt deinen Speichel: Im Schlaf wird er weniger, beim bloßen Gedanken an eine Zitrone schießt er hoch, und er versteckt ein starkes Schmerzmittel.",
+   "facts": [
+    "Laut Cleveland Clinic produzieren die Speicheldrüsen bei den meisten Erwachsenen etwa 0,5 bis 1,5 Liter Speichel pro Tag, und Speichel besteht zu 99 % aus Wasser.",
+    "Laut einer Übersichtsarbeit im Journal of Dental Research beträgt der Speichelfluss in Ruhe etwa 0,3-0,4 ml pro Minute und im Schlaf etwa 0,1 ml pro Minute; beim Essen kann er sich um mehr als das 5-Fache erhöhen.",
+    "Laut Britannica steigert schon die Anwesenheit von Essen, ja sogar nur sein Geruch oder der Gedanke daran, den Speichelfluss rasch.",
+    "Laut Nature war ein Molekül im menschlichen Speichel namens Opiorphin in Tests an Ratten bis zu sechsmal stärker als Morphin; dass es als Medikament wirkt, ist noch nicht bewiesen."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Слюны Ты Вырабатываешь за 1 День?",
+   "summary": "Сегодня ты выработаешь до 1,5 литра слюны — целую большую пластиковую бутылку! Профессор Пи рассказывает о твоей слюне: во сне её становится меньше, при одной мысли о лимоне она так и течёт, а внутри прячется мощное обезболивающее.",
+   "facts": [
+    "По данным Cleveland Clinic, слюнные железы у большинства взрослых вырабатывают около 0,5-1,5 литра слюны в сутки, а слюна на 99% состоит из воды.",
+    "Согласно обзору в Journal of Dental Research, в покое слюна выделяется со скоростью около 0,3-0,4 мл в минуту, во сне — около 0,1 мл в минуту; во время еды поток может вырасти более чем в 5 раз.",
+    "По данным Britannica, присутствие еды и даже один её запах или мысль о ней быстро усиливают слюноотделение.",
+    "По данным Nature, молекула из человеческой слюны под названием опиорфин в опытах на крысах оказалась до шести раз сильнее морфина; её действие как лекарства пока не доказано."
+   ]
+  },
+  "az": {
+   "title": "1 Gündə Nə Qədər Tüpürcək İfraz Edirsən?",
+   "summary": "Bu gün 1,5 litrə qədər tüpürcək ifraz edəcəksən, yəni bütöv bir böyük plastik butulka! Professor Pi tüpürcəyini izah edir: yuxuda azalır, sadəcə limonu düşünəndə artır və içində güclü bir ağrıkəsici gizlədir.",
+   "facts": [
+    "Cleveland Clinic-ə görə, əksər yetkinlərdə tüpürcək vəziləri gündə təxminən 0,5-1,5 litr tüpürcək ifraz edir və tüpürcəyin 99%-i sudur.",
+    "Journal of Dental Research-dəki icmala görə, istirahət zamanı tüpürcək axını dəqiqədə təxminən 0,3-0,4 ml, yuxuda isə dəqiqədə təxminən 0,1 ml-dir; yemək yeyərkən axın 5 dəfədən çox arta bilər.",
+    "Britannica-ya görə, yeməyin olması, hətta sadəcə onun qoxusu və ya onu düşünmək belə tüpürcək axınını sürətlə artırır.",
+    "Nature-a görə, insan tüpürcəyindəki opiorfin adlı molekul siçovullar üzərində sınaqlarda morfindən altı dəfəyə qədər güclü olub; onun dərman kimi işlədiyi hələ sübut olunmayıb."
+   ]
+  }
+ }
+}

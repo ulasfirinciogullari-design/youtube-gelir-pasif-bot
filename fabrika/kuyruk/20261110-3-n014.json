@@ -1,0 +1,281 @@
+{
+ "id": "n014",
+ "series": "Ne Kadar Büyük?",
+ "q": "En büyük dinozor ne kadar büyüktü?",
+ "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
+ "bar": {
+  "hi": "EN BÜYÜK",
+  "rest": "DİNOZOR?"
+ },
+ "summary": "Patagotitan'ın sadece uyluk kemiği senden uzundu, boyu ise arka arkaya yatmış 20'den fazla insana eşitti! Bilinen en büyük dinozorlardan birinin yanında dursan ne kadar küçük kalacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Sadece uyluk kemiği senden uzundu: 2,38 metre, seninkinin 5 katı!",
+   "v": {
+    "t": "compare",
+    "bg": "desert",
+    "a": {
+     "e": "🦵",
+     "label": "Senin Uyluğun",
+     "value": "0,46"
+    },
+    "b": {
+     "e": "🦴",
+     "label": "Patagotitan",
+     "value": "2,38"
+    },
+    "mode": "size",
+    "key": "2,38"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Tek kemiği benden mi uzun?!",
+   "v": {
+    "t": "question",
+    "bg": "desert",
+    "e": "🦴",
+    "label": "Benden Uzun?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Patagotitan 37,5 metre: arka arkaya yatmış 20'den fazla insan!",
+   "v": {
+    "t": "number",
+    "bg": "desert",
+    "e": "🦕",
+    "value": "37,5",
+    "unit": "metre",
+    "label": "Patagotitan",
+    "key": "37,5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Boynunu dikse 5 katlı bir binanın çatısına uzanırdı!",
+   "v": {
+    "t": "meter",
+    "bg": "city",
+    "label": "Baş Yüksekliği",
+    "from": 0,
+    "to": 15,
+    "unit": "m",
+    "e": "🏢",
+    "key": "çatısına"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bilim insanlarına göre 57 ton: 9 filden ağır!",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🐘",
+    "value": "57",
+    "unit": "ton",
+    "label": "9 Filden Ağır",
+    "key": "57"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama en büyük hayvan hâlâ yaşıyor: mavi balina, 150 ton!",
+   "v": {
+    "t": "compare",
+    "bg": "underwater",
+    "a": {
+     "e": "🦕",
+     "label": "Patagotitan",
+     "value": "57"
+    },
+    "b": {
+     "e": "🐋",
+     "label": "Mavi Balina",
+     "value": "150"
+    },
+    "mode": "size",
+    "key": "150"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence en büyük dinozor hangisiydi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "desert",
+    "e": "🦕"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Londra Doğa Tarihi Müzesi'ne (NHM) göre Patagotitan'ın uyluk kemiği 2,38 metre, boyu 37,5 metredir; ağırlığı yaklaşık 57 ton olarak tahmin edilir (yönteme göre 42,5-71,4 ton).",
+   "source": "Natural History Museum, London",
+   "url": "https://www.nhm.ac.uk/discover/dino-directory/patagotitan.html"
+  },
+  {
+   "text": "Cleveland Clinic'e göre yetişkinlerin uyluk kemiği çoğunlukla yaklaşık 46 cm (18 inç) uzunluğundadır.",
+   "source": "Cleveland Clinic",
+   "url": "https://my.clevelandclinic.org/health/body/22503-femur"
+  },
+  {
+   "text": "Live Science'a göre Patagotitan boynunu dimdik kaldırsaydı başı yaklaşık 15 metre yüksekliğe ulaşabilirdi.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/60080-largest-titanosaur-dinosaur-on-record.html"
+  },
+  {
+   "text": "NHM'ye göre Patagotitan bir Afrika filinden 9 kattan fazla ağırdı.",
+   "source": "Natural History Museum, London",
+   "url": "https://www.nhm.ac.uk/discover/what-is-the-biggest-dinosaur.html"
+  },
+  {
+   "text": "NOAA'ya göre mavi balina yaklaşık 150 tona (330.000 libre) kadar ulaşabilir ve gezegenimizde yaşamış en büyük hayvandır.",
+   "source": "NOAA Fisheries",
+   "url": "https://www.fisheries.noaa.gov/species/blue-whale/conservation-management"
+  }
+ ],
+ "tags": [
+  "en büyük dinozor",
+  "patagotitan",
+  "dinozor ne kadar büyük",
+  "titanozor",
+  "argentinosaurus",
+  "mavi balina",
+  "dinozorlar",
+  "biggest dinosaur",
+  "largest dinosaur ever",
+  "patagotitan size",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dinozor",
+  "#patagotitan",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.nhm.ac.uk/discover/dino-directory/patagotitan.html",
+  "https://www.livescience.com/60080-largest-titanosaur-dinosaur-on-record.html",
+  "https://www.fisheries.noaa.gov/species/blue-whale/conservation-management",
+  "https://my.clevelandclinic.org/health/body/22503-femur"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Big Was the Biggest Dinosaur Really?",
+   "summary": "Patagotitan's thigh bone alone was taller than you, and its body was as long as more than 20 people lying head to toe! Professor Pi shows how tiny you would look standing next to one of the biggest dinosaurs ever found.",
+   "facts": [
+    "According to the Natural History Museum in London, Patagotitan's thigh bone measured 2.38 meters and the animal was 37.5 meters long; its weight is estimated at about 57 tonnes (42.5-71.4 tonnes depending on the method).",
+    "According to Cleveland Clinic, most adult femurs are about 46 cm (18 inches) long.",
+    "According to Live Science, Patagotitan could have reached a height of about 15 meters if it held its neck straight up.",
+    "According to the Natural History Museum, Patagotitan was more than nine times heavier than an African elephant.",
+    "According to NOAA, the blue whale can weigh up to about 150 tonnes (330,000 pounds) and is the largest animal ever to live on our planet."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Grande Era Realmente el Dinosaurio Más Grande?",
+   "summary": "¡Solo el fémur del Patagotitan era más alto que tú, y su cuerpo medía lo mismo que más de 20 personas tumbadas en fila! El Profesor Pi muestra lo diminuto que te verías junto a uno de los dinosaurios más grandes jamás encontrados.",
+   "facts": [
+    "Según el Museo de Historia Natural de Londres, el fémur del Patagotitan medía 2,38 metros y el animal, 37,5 metros de largo; se estima que pesaba unas 57 toneladas (42,5-71,4 toneladas según el método).",
+    "Según Cleveland Clinic, la mayoría de los fémures adultos miden unos 46 cm (18 pulgadas).",
+    "Según Live Science, el Patagotitan podría haber alcanzado unos 15 metros de altura si estiraba el cuello hacia arriba.",
+    "Según el Museo de Historia Natural, el Patagotitan pesaba más de nueve veces lo que un elefante africano.",
+    "Según la NOAA, la ballena azul puede pesar hasta unas 150 toneladas (330.000 libras) y es el animal más grande que ha vivido en nuestro planeta."
+   ]
+  },
+  "pt": {
+   "title": "Qual Era o Tamanho Real do Maior Dinossauro?",
+   "summary": "Só o fêmur do Patagotitan era mais alto que você, e seu corpo era tão comprido quanto mais de 20 pessoas deitadas em fila! O Professor Pi mostra como você pareceria minúsculo ao lado de um dos maiores dinossauros já encontrados.",
+   "facts": [
+    "Segundo o Museu de História Natural de Londres, o fêmur do Patagotitan media 2,38 metros e o animal tinha 37,5 metros de comprimento; seu peso é estimado em cerca de 57 toneladas (42,5-71,4 toneladas, conforme o método).",
+    "Segundo a Cleveland Clinic, a maioria dos fêmures adultos tem cerca de 46 cm (18 polegadas).",
+    "Segundo a Live Science, o Patagotitan poderia alcançar cerca de 15 metros de altura se erguesse o pescoço na vertical.",
+    "Segundo o Museu de História Natural, o Patagotitan era mais de nove vezes mais pesado que um elefante-africano.",
+    "Segundo a NOAA, a baleia-azul pode pesar até cerca de 150 toneladas (330.000 libras) e é o maior animal que já viveu no nosso planeta."
+   ]
+  },
+  "ar": {
+   "title": "ما الحجم الحقيقي لأكبر ديناصور؟",
+   "summary": "كانت عظمة فخذ الباتاغوتيتان وحدها أطول منك، وكان طول جسمه يعادل أكثر من 20 شخصًا مستلقين واحدًا تلو الآخر! يوضح البروفيسور باي كم ستبدو صغيرًا بجانب واحد من أكبر الديناصورات المكتشفة على الإطلاق.",
+   "facts": [
+    "وفقًا لمتحف التاريخ الطبيعي في لندن، بلغ طول عظمة فخذ الباتاغوتيتان 2.38 متر وطول الحيوان 37.5 متر، ويُقدَّر وزنه بنحو 57 طنًا (42.5-71.4 طن حسب الطريقة).",
+    "وفقًا لكليفلاند كلينك، يبلغ طول عظمة الفخذ لدى معظم البالغين نحو 46 سم (18 بوصة).",
+    "وفقًا لموقع Live Science، كان بإمكان الباتاغوتيتان أن يصل إلى ارتفاع نحو 15 مترًا لو رفع عنقه مستقيمًا إلى أعلى.",
+    "وفقًا لمتحف التاريخ الطبيعي، كان الباتاغوتيتان أثقل من الفيل الأفريقي بأكثر من تسع مرات.",
+    "وفقًا للإدارة الوطنية للمحيطات والغلاف الجوي (NOAA)، قد يصل وزن الحوت الأزرق إلى نحو 150 طنًا (330 ألف رطل)، وهو أكبر حيوان عاش على كوكبنا."
+   ]
+  },
+  "hi": {
+   "title": "सबसे बड़ा डायनासोर असल में कितना बड़ा था?",
+   "summary": "पैटागोटाइटन की सिर्फ जांघ की हड्डी ही आपसे लंबी थी, और उसका शरीर एक के पीछे एक लेटे 20 से ज़्यादा लोगों जितना लंबा था! प्रोफेसर पाई दिखाते हैं कि अब तक मिले सबसे बड़े डायनासोरों में से एक के पास आप कितने छोटे दिखते।",
+   "facts": [
+    "Natural History Museum (लंदन) के अनुसार, पैटागोटाइटन की जांघ की हड्डी 2.38 मीटर और जानवर की लंबाई 37.5 मीटर थी; उसका वज़न लगभग 57 टन आंका गया है (तरीके के अनुसार 42.5-71.4 टन)।",
+    "Cleveland Clinic के अनुसार, ज़्यादातर वयस्कों की जांघ की हड्डी लगभग 46 सेमी (18 इंच) लंबी होती है।",
+    "Live Science के अनुसार, अगर पैटागोटाइटन अपनी गर्दन सीधी ऊपर उठाता तो लगभग 15 मीटर की ऊंचाई तक पहुंच सकता था।",
+    "Natural History Museum के अनुसार, पैटागोटाइटन एक अफ्रीकी हाथी से नौ गुना से भी ज़्यादा भारी था।",
+    "NOAA के अनुसार, ब्लू व्हेल का वज़न लगभग 150 टन (3,30,000 पाउंड) तक हो सकता है और यह हमारे ग्रह पर रहा अब तक का सबसे बड़ा जानवर है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Besar Sebenarnya Dinosaurus Terbesar?",
+   "summary": "Tulang paha Patagotitan saja lebih tinggi darimu, dan tubuhnya sepanjang lebih dari 20 orang yang berbaring berderet! Profesor Pi menunjukkan betapa kecilnya kamu jika berdiri di samping salah satu dinosaurus terbesar yang pernah ditemukan.",
+   "facts": [
+    "Menurut Natural History Museum London, tulang paha Patagotitan berukuran 2,38 meter dan panjang hewan ini 37,5 meter; beratnya diperkirakan sekitar 57 ton (42,5-71,4 ton tergantung metodenya).",
+    "Menurut Cleveland Clinic, tulang paha sebagian besar orang dewasa panjangnya sekitar 46 cm (18 inci).",
+    "Menurut Live Science, Patagotitan bisa mencapai ketinggian sekitar 15 meter jika menegakkan lehernya lurus ke atas.",
+    "Menurut Natural History Museum, Patagotitan lebih dari sembilan kali lebih berat daripada gajah Afrika.",
+    "Menurut NOAA, paus biru bisa mencapai berat sekitar 150 ton (330.000 pon) dan merupakan hewan terbesar yang pernah hidup di planet kita."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Était la Vraie Taille du Plus Grand Dinosaure ?",
+   "summary": "Le fémur du Patagotitan à lui seul était plus grand que toi, et son corps était aussi long que plus de 20 personnes allongées bout à bout ! Le Professeur Pi te montre à quel point tu paraîtrais minuscule à côté de l'un des plus grands dinosaures jamais découverts.",
+   "facts": [
+    "Selon le Natural History Museum de Londres, le fémur du Patagotitan mesurait 2,38 mètres et l'animal 37,5 mètres de long ; son poids est estimé à environ 57 tonnes (42,5 à 71,4 tonnes selon la méthode).",
+    "Selon la Cleveland Clinic, la plupart des fémurs adultes mesurent environ 46 cm (18 pouces).",
+    "Selon Live Science, le Patagotitan aurait pu atteindre environ 15 mètres de haut en dressant le cou à la verticale.",
+    "Selon le Natural History Museum, le Patagotitan était plus de neuf fois plus lourd qu'un éléphant d'Afrique.",
+    "Selon la NOAA, la baleine bleue peut peser jusqu'à environ 150 tonnes (330 000 livres) et c'est le plus grand animal ayant jamais vécu sur notre planète."
+   ]
+  },
+  "de": {
+   "title": "Wie Groß War der Größte Dinosaurier Wirklich?",
+   "summary": "Allein der Oberschenkelknochen von Patagotitan war größer als du, und sein Körper war so lang wie mehr als 20 hintereinander liegende Menschen! Professor Pi zeigt, wie winzig du neben einem der größten je gefundenen Dinosaurier wärst.",
+   "facts": [
+    "Laut dem Natural History Museum in London war der Oberschenkelknochen von Patagotitan 2,38 Meter lang und das Tier 37,5 Meter; sein Gewicht wird auf etwa 57 Tonnen geschätzt (je nach Methode 42,5-71,4 Tonnen).",
+    "Laut Cleveland Clinic ist der Oberschenkelknochen der meisten Erwachsenen etwa 46 cm (18 Zoll) lang.",
+    "Laut Live Science hätte Patagotitan mit senkrecht aufgerichtetem Hals eine Höhe von etwa 15 Metern erreichen können.",
+    "Laut dem Natural History Museum war Patagotitan mehr als neunmal so schwer wie ein Afrikanischer Elefant.",
+    "Laut NOAA kann ein Blauwal bis zu etwa 150 Tonnen (330.000 Pfund) wiegen und ist das größte Tier, das je auf unserem Planeten gelebt hat."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Большим Был Самый Большой Динозавр на Самом Деле?",
+   "summary": "Одна только бедренная кость патаготитана была выше тебя, а его тело было длиной с более чем 20 людей, лежащих друг за другом! Профессор Пи показывает, каким крошечным ты выглядел бы рядом с одним из крупнейших найденных динозавров.",
+   "facts": [
+    "По данным Музея естественной истории в Лондоне, бедренная кость патаготитана достигала 2,38 метра, а длина животного — 37,5 метра; его масса оценивается примерно в 57 тонн (42,5-71,4 тонны в зависимости от метода).",
+    "По данным Cleveland Clinic, бедренная кость у большинства взрослых имеет длину около 46 см (18 дюймов).",
+    "По данным Live Science, подняв шею вертикально, патаготитан мог бы достать до высоты около 15 метров.",
+    "По данным Музея естественной истории, патаготитан был тяжелее африканского слона более чем в девять раз.",
+    "По данным NOAA, синий кит может весить до 150 тонн (330 000 фунтов) и является крупнейшим животным, когда-либо жившим на нашей планете."
+   ]
+  },
+  "az": {
+   "title": "Ən Böyük Dinozavr Əslində Nə Qədər Böyük İdi?",
+   "summary": "Patagotitanın təkcə bud sümüyü səndən uzun idi, bədəni isə arxa-arxaya uzanmış 20-dən çox insan qədər idi! Professor Pi indiyədək tapılan ən böyük dinozavrlardan birinin yanında nə qədər balaca görünəcəyini göstərir.",
+   "facts": [
+    "London Təbiət Tarixi Muzeyinə görə, Patagotitanın bud sümüyü 2,38 metr, uzunluğu isə 37,5 metr idi; çəkisi təxminən 57 ton hesablanır (metoddan asılı olaraq 42,5-71,4 ton).",
+    "Cleveland Clinic-ə görə, yetkinlərin əksəriyyətində bud sümüyü təxminən 46 sm (18 düym) uzunluğundadır.",
+    "Live Science-a görə, Patagotitan boynunu düz yuxarı qaldırsaydı, təxminən 15 metr hündürlüyə çata bilərdi.",
+    "Təbiət Tarixi Muzeyinə görə, Patagotitan Afrika filindən 9 dəfədən çox ağır idi.",
+    "NOAA-ya görə, mavi balina təxminən 150 tona (330 000 funt) qədər çəkiyə çata bilər və planetimizdə yaşamış ən böyük heyvandır."
+   ]
+  }
+ }
+}
