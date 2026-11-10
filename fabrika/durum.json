@@ -1376,7 +1376,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1377",
+    "views": "1383",
     "reason": null
    }
   },
@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2041",
+    "views": "2059",
     "reason": null
    }
   },
@@ -1436,7 +1436,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1117",
+    "views": "1115",
     "reason": null
    }
   },
@@ -1466,7 +1466,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "955",
+    "views": "956",
     "reason": null
    }
   },
@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1239",
+    "views": "1242",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "998",
+    "views": "1006",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1026",
+    "views": "1027",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1143",
+    "views": "1154",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1120",
+    "views": "1123",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "983",
+    "views": "984",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "390",
+    "views": "493",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "807",
+    "views": "950",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1089",
+    "views": "1098",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "956",
+    "views": "970",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "416",
+    "views": "746",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "16",
+    "views": "195",
     "reason": null
    }
   },
@@ -1883,6 +1883,36 @@
    "thumbnail": true,
    "at": 1794254899.9447966,
    "chars": 360,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "164",
+    "reason": null
+   }
+  },
+  {
+   "id": "g013",
+   "video_id": "uTmyAqqF5qU",
+   "url": "https://youtube.com/shorts/uTmyAqqF5qU",
+   "title": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Times Does the Space Station Circle Earth in 1 Day?",
+    "es": "¿Cuántas Vueltas a la Tierra Da la Estación Espacial en 1 Día?",
+    "pt": "Quantas Voltas na Terra a Estação Espacial Dá em 1 Dia?",
+    "ar": "كم مرة تدور محطة الفضاء حول الأرض في يوم واحد؟",
+    "hi": "अंतरिक्ष स्टेशन 1 दिन में धरती के कितने चक्कर लगाता है?",
+    "id": "Berapa Kali Stasiun Luar Angkasa Mengelilingi Bumi dalam 1 Hari?",
+    "fr": "Combien de Tours de la Terre Fait la Station Spatiale en 1 Jour ?",
+    "de": "Wie Oft Umkreist die Raumstation die Erde an 1 Tag?",
+    "ru": "Сколько Раз за 1 День Космическая Станция Облетает Землю?",
+    "az": "Kosmik Stansiya 1 Gündə Yer Kürəsini Neçə Dəfə Dolanır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794305353.6898048,
+   "chars": 411,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1954,7 +1984,8 @@
   "y063",
   "y064",
   "n013",
-  "y065"
+  "y065",
+  "g013"
  ],
  "extra": [
   {
@@ -2020,12 +2051,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-02T13:22:58+00:00",
-   "mod": "igbolum",
-   "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
-   "chars": 384
-  },
   {
    "finished": "2026-11-02T14:16:45+00:00",
    "mod": "saatlik",
@@ -2447,6 +2472,14 @@
    "mod": "igbolum",
    "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
    "chars": 400
+  },
+  {
+   "finished": "2026-11-10T10:09:15+00:00",
+   "mod": "saatlik",
+   "title": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar?",
+   "url": "https://youtube.com/shorts/uTmyAqqF5qU",
+   "duration": 26.6,
+   "chars": 411
   }
  ],
  "last_fail": 1794133491.1438286,
