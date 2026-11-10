@@ -1,0 +1,432 @@
+{
+ "id": "y069",
+ "series": "Ya Olsaydı?",
+ "q": "Uçağın kapısı havada açılsaydı ne olurdu?",
+ "uzun": true,
+ "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+ "bar": {
+  "hi": "UÇAK KAPISI",
+  "rest": "AÇILSAYDI?"
+ },
+ "summary": "11.000 metrede uçağın kapısı açılsa, maskeni takmak için yalnızca 15-30 saniyen olurdu! Saniye saniye kabinde neler olacağını ve o kapının neden aslında açılamadığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "15 saniyen var, en fazla 30. Sonra maskeni takacak aklın kalmayabilir.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "⏱️",
+    "value": "15",
+    "unit": "saniye",
+    "label": "Bilinç Süresi",
+    "key": "15"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "11.000 metredesin: dışarısı -56 °C, basınç yerdekinin %22'si.",
+   "v": {
+    "t": "meter",
+    "bg": "sky",
+    "label": "Dış Hava",
+    "from": 22,
+    "to": -56,
+    "unit": "°C",
+    "e": "🥶",
+    "key": "-56"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kapı açıldı! İlk saniye: bir patlama, sonra kabin sisle dolar.",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🌫️",
+    "do": "shake",
+    "key": "sisle",
+    "label": "Ani Sis"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uçağın içinde bulut mu çıktı?!",
+   "v": {
+    "t": "question",
+    "bg": "sky",
+    "e": "☁️",
+    "label": "Kabinde Bulut?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Telefonlar, kâğıtlar deliğe uçar; kemerin seni yerinde tutar.",
+   "v": {
+    "t": "icons",
+    "bg": "sky",
+    "items": [
+     {
+      "e": "📱",
+      "label": "Telefonlar"
+     },
+     {
+      "e": "📄",
+      "label": "Kâğıtlar"
+     },
+     {
+      "e": "💺",
+      "label": "Kemer Tutar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "2. saniyede maskeler düşer. 5. saniyede önce kendi maskeni tak!",
+   "v": {
+    "t": "timeline",
+    "bg": "sky",
+    "steps": [
+     {
+      "when": "1. SN",
+      "e": "💥",
+      "label": "Patlama ve Sis"
+     },
+     {
+      "when": "2. SN",
+      "e": "😷",
+      "label": "Maskeler Düşer"
+     },
+     {
+      "when": "5. SN",
+      "e": "✅",
+      "label": "Önce Kendi Maskeni"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü 15 saniye sonra maskesizlerin aklı bulanır.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "😵",
+    "do": "spin",
+    "key": "bulanır",
+    "label": "Oksijensizlik"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Torba şişmiyor ama, bozuk mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🎈",
+    "do": "shrink",
+    "key": "şişmiyor",
+    "label": "Sönük Torba"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Değil, anonsta da söylenir: oksijen akarken torba şişmeyebilir.",
+   "v": {
+    "t": "split",
+    "bg": "sky",
+    "left": {
+     "e": "🎈",
+     "label": "Torba Sönük"
+    },
+    "right": {
+     "e": "🫁",
+     "label": "Oksijen Akıyor"
+    },
+    "key": "akarken"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Pilotlar dalışa geçer: birkaç dakikada 3.000 metredesin.",
+   "v": {
+    "t": "meter",
+    "bg": "sky",
+    "label": "İrtifa",
+    "from": 11000,
+    "to": 3000,
+    "unit": "m",
+    "e": "✈️",
+    "key": "3.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "2024'te uçuşta bir kapı paneli koptu: bir gencin tişörtü uçtu, ölen olmadı.",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "👕",
+    "do": "vanish",
+    "key": "tişörtü",
+    "label": "Ocak 2024"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: bu yükseklikte o kapıyı kimse açamaz. Basınç onu 10 tonu aşkın kuvvetle tutar.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "🚪",
+    "value": "10,7",
+    "unit": "ton",
+    "label": "Kapıya Kuvvet",
+    "key": "10"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kapıya iki fil mi yaslanmış?!",
+   "v": {
+    "t": "icons",
+    "bg": "sky",
+    "items": [
+     {
+      "e": "🐘",
+      "label": "1. Fil"
+     },
+     {
+      "e": "🐘",
+      "label": "2. Fil"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uçakta kapının yanında oturur muydun? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "sky",
+    "e": "💺"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "FAA'ya göre 35.000 fitte (yaklaşık 10.700 m) ani basınç kaybından sonra \"işe yarar bilinç süresi\" yalnızca 15-30 saniyedir; sabitlenmemiş her şey açıklığa doğru savrulur.",
+   "source": "FAA (Advisory Circular 61-107B)",
+   "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_61-107B_CHG_1.pdf"
+  },
+  {
+   "text": "NASA'nın standart atmosfer modeline göre 11.000 metrede hava yaklaşık -56 °C'dir ve basınç deniz seviyesindekinin yalnızca yaklaşık %22'si kadardır.",
+   "source": "NASA Glenn Research Center",
+   "url": "https://www.grc.nasa.gov/www/k-12/airplane/atmosmet.html"
+  },
+  {
+   "text": "Smithsonian Air & Space'e göre ani basınç kaybında kabini bir anlığına yoğun bir sis kaplar ve oksijen maskeleri birkaç saniye içinde düşer.",
+   "source": "Smithsonian Air & Space",
+   "url": "https://www.airspacemag.com/flight-today/how-things-work-cabin-pressure-2870604"
+  },
+  {
+   "text": "FAA'nın yolcu güvenlik bilgilendirmesi yönergesine göre oksijen yeterince aksa bile maskenin torbası şişmeyebilir; yolcular çocuklara yardım etmeden önce kendi maskelerini takmalıdır.",
+   "source": "FAA (Advisory Circular 121-24E)",
+   "url": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_121-24E.pdf"
+  },
+  {
+   "text": "Emekli kaptan John Cox'un USA Today'deki yanıtına göre bir yolcu uçağı gerekirse dakikada 8.000 fitten hızlı alçalabilir ve 35.000 fitten yaklaşık 11.000 fite 3 dakika ya da daha kısa sürede iner.",
+   "source": "USA Today (Ask the Captain)",
+   "url": "https://news.yahoo.com/ask-captain-fast-plane-descend-153004937.html"
+  },
+  {
+   "text": "NTSB'ye göre 5 Ocak 2024'te Alaska Airlines'ın 1282 sefer sayılı uçağı yaklaşık 14.830 fitte (4.520 m) tırmanırken bir kapı tıpası (kapı paneli) koptu; 7 yolcu ve 1 kabin görevlisi hafif yaralandı, ölen olmadı.",
+   "source": "NTSB",
+   "url": "https://www.ntsb.gov/investigations/Pages/dca24ma063.aspx"
+  },
+  {
+   "text": "AP'ye göre bu olayda rüzgâr cep telefonlarını, kulaklıkları ve bir gencin tişörtünü üstünden çekip aldı; pilotlar herkese yetecek oksijenin olduğu 10.000 fite (yaklaşık 3.000 m) indi.",
+   "source": "Associated Press (Anchorage Daily News)",
+   "url": "https://www.adn.com/nation-world/2024/01/08/emergency-at-16000-feet-alaska-airlines-pilots-passengers-stayed-calm-after-fuselage-blowout/"
+  },
+  {
+   "text": "Live Science'ta Georgia Tech'ten Prof. John-Paul Clarke'ın hesabına göre 36.000 fitte (11.000 m) içerideki basınç bir yolcu kapısını yaklaşık 10.700 kg'lık kuvvetle kapalı tutar; bu neredeyse iki Afrika fili demek.",
+   "source": "Live Science (Georgia Tech)",
+   "url": "https://www.livescience.com/59750-can-you-open-plane-door-midflight.html"
+  }
+ ],
+ "tags": [
+  "uçak kapısı",
+  "uçakta kapı açılırsa",
+  "ani basınç kaybı",
+  "oksijen maskesi",
+  "kabin basıncı",
+  "uçak güvenliği",
+  "hipoksi",
+  "Alaska Airlines",
+  "airplane door mid flight",
+  "rapid decompression",
+  "time of useful consciousness",
+  "oxygen mask",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uçak",
+  "#oksijenmaskesi",
+  "#bilim"
+ ],
+ "cover": 11,
+ "sources": [
+  "https://www.livescience.com/59750-can-you-open-plane-door-midflight.html",
+  "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_61-107B_CHG_1.pdf",
+  "https://www.ntsb.gov/investigations/Pages/dca24ma063.aspx",
+  "https://www.airspacemag.com/flight-today/how-things-work-cabin-pressure-2870604"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If a Plane Door Opened Mid-Flight?",
+   "summary": "If a plane door opened at 11,000 meters, you would have just 15 to 30 seconds to put on your mask! Professor Pi walks you through what would happen in the cabin second by second, and why that door actually can't be opened.",
+   "facts": [
+    "According to the FAA, at 35,000 feet (about 10,700 m) the \"time of useful consciousness\" after a rapid decompression is only 15-30 seconds; anything not secured moves toward the opening.",
+    "According to NASA's standard atmosphere model, at 11,000 meters the air is about -56 °C and the pressure is only about 22% of that at sea level.",
+    "According to Smithsonian Air & Space, in a sudden decompression a thick fog momentarily fills the cabin and the oxygen masks drop within a couple of seconds.",
+    "According to the FAA's passenger safety briefing guidance, the mask's reservoir bag may not inflate even though enough oxygen is flowing, and passengers must put on their own masks before helping children.",
+    "According to retired captain John Cox in USA Today, an airliner can descend at more than 8,000 feet per minute if needed and get from 35,000 feet down to about 11,000 feet in 3 minutes or less.",
+    "According to the NTSB, on January 5, 2024, a door plug blew out of Alaska Airlines Flight 1282 as it climbed through about 14,830 feet (4,520 m); 7 passengers and 1 flight attendant had minor injuries and no one died.",
+    "According to the AP, the blast snatched cellphones, headsets and a teenager's shirt right off his body, and the pilots descended to 10,000 feet (about 3,000 m), where there is enough oxygen for everyone.",
+    "In Live Science, Georgia Tech professor John-Paul Clarke calculated that at 36,000 feet (11,000 m) cabin pressure holds a passenger door shut with a force of about 10,700 kg, nearly two African elephants."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si la Puerta del Avión Se Abriera en Pleno Vuelo?",
+   "summary": "Si la puerta del avión se abriera a 11.000 metros, ¡solo tendrías entre 15 y 30 segundos para ponerte la mascarilla! El Profesor Pi explica segundo a segundo qué pasaría en la cabina y por qué, en realidad, esa puerta no se puede abrir.",
+   "facts": [
+    "Según la FAA, a 35.000 pies (unos 10.700 m) el \"tiempo de conciencia útil\" tras una descompresión rápida es de solo 15-30 segundos; todo lo que no esté sujeto se desplaza hacia la abertura.",
+    "Según el modelo de atmósfera estándar de la NASA, a 11.000 metros el aire está a unos -56 °C y la presión es solo de alrededor del 22 % de la del nivel del mar.",
+    "Según Smithsonian Air & Space, en una descompresión repentina una niebla espesa llena la cabina por un momento y las mascarillas de oxígeno caen en un par de segundos.",
+    "Según la guía de la FAA para las instrucciones de seguridad a los pasajeros, la bolsa de la mascarilla puede no inflarse aunque fluya suficiente oxígeno, y los pasajeros deben ponerse su propia mascarilla antes de ayudar a los niños.",
+    "Según el capitán retirado John Cox en USA Today, un avión de pasajeros puede descender a más de 8.000 pies por minuto si es necesario y bajar de 35.000 a unos 11.000 pies en 3 minutos o menos.",
+    "Según la NTSB, el 5 de enero de 2024 un tapón de puerta se desprendió del vuelo 1282 de Alaska Airlines mientras ascendía a unos 14.830 pies (4.520 m); 7 pasajeros y 1 auxiliar de vuelo sufrieron heridas leves y nadie murió.",
+    "Según AP, la ráfaga arrancó teléfonos, auriculares y hasta la camiseta del cuerpo de un adolescente, y los pilotos descendieron a 10.000 pies (unos 3.000 m), donde hay oxígeno suficiente para todos.",
+    "En Live Science, el profesor John-Paul Clarke, de Georgia Tech, calculó que a 36.000 pies (11.000 m) la presión de la cabina mantiene cerrada una puerta de pasajeros con una fuerza de unos 10.700 kg, casi dos elefantes africanos."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se a Porta do Avião Abrisse em Pleno Voo?",
+   "summary": "Se a porta do avião se abrisse a 11.000 metros, você teria só 15 a 30 segundos para colocar a máscara! O Professor Pi explica segundo a segundo o que aconteceria na cabine e por que, na verdade, essa porta não pode ser aberta.",
+   "facts": [
+    "Segundo a FAA, a 35.000 pés (cerca de 10.700 m) o \"tempo de consciência útil\" após uma descompressão rápida é de apenas 15-30 segundos; tudo o que não estiver preso se move em direção à abertura.",
+    "Segundo o modelo de atmosfera padrão da NASA, a 11.000 metros o ar está a cerca de -56 °C e a pressão é só cerca de 22% da do nível do mar.",
+    "Segundo a Smithsonian Air & Space, numa descompressão repentina uma névoa densa enche a cabine por um momento e as máscaras de oxigênio caem em poucos segundos.",
+    "Segundo a orientação da FAA para as instruções de segurança aos passageiros, a bolsa da máscara pode não inflar mesmo com oxigênio suficiente fluindo, e os passageiros devem colocar a própria máscara antes de ajudar crianças.",
+    "Segundo o comandante aposentado John Cox, no USA Today, um avião de passageiros pode descer a mais de 8.000 pés por minuto se necessário e ir de 35.000 a cerca de 11.000 pés em 3 minutos ou menos.",
+    "Segundo o NTSB, em 5 de janeiro de 2024 um tampão de porta se soltou do voo 1282 da Alaska Airlines quando subia a cerca de 14.830 pés (4.520 m); 7 passageiros e 1 comissário de bordo tiveram ferimentos leves e ninguém morreu.",
+    "Segundo a AP, a rajada arrancou celulares, fones de ouvido e até a camiseta do corpo de um adolescente, e os pilotos desceram para 10.000 pés (cerca de 3.000 m), onde há oxigênio suficiente para todos.",
+    "Na Live Science, o professor John-Paul Clarke, da Georgia Tech, calculou que a 36.000 pés (11.000 m) a pressão da cabine mantém uma porta de passageiros fechada com uma força de cerca de 10.700 kg, quase dois elefantes africanos."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لو فُتح باب الطائرة أثناء الطيران؟",
+   "summary": "لو فُتح باب الطائرة على ارتفاع 11,000 متر، لكان أمامك 15 إلى 30 ثانية فقط لتضع قناع الأكسجين! يشرح البروفيسور باي ثانيةً بثانية ما سيحدث في المقصورة، ولماذا لا يمكن فتح ذلك الباب في الواقع.",
+   "facts": [
+    "وفقًا لإدارة الطيران الفيدرالية الأمريكية (FAA)، يبلغ «وقت الوعي المفيد» على ارتفاع 35,000 قدم (نحو 10,700 م) بعد فقدان الضغط السريع 15-30 ثانية فقط، وكل ما ليس مثبتًا يندفع نحو الفتحة.",
+    "وفقًا لنموذج الغلاف الجوي القياسي لناسا، تبلغ حرارة الهواء على ارتفاع 11,000 متر نحو -56 درجة مئوية، ولا يتجاوز الضغط نحو 22% من ضغطه عند مستوى سطح البحر.",
+    "وفقًا لمجلة Smithsonian Air & Space، عند فقدان الضغط المفاجئ يملأ ضباب كثيف المقصورة للحظات، وتسقط أقنعة الأكسجين خلال ثوانٍ قليلة.",
+    "وفقًا لإرشادات FAA الخاصة بتعليمات السلامة للركاب، قد لا ينتفخ كيس القناع رغم تدفق ما يكفي من الأكسجين، ويجب على الركاب وضع أقنعتهم قبل مساعدة الأطفال.",
+    "وفقًا للكابتن المتقاعد جون كوكس في USA Today، يمكن لطائرة الركاب عند الحاجة أن تهبط بأكثر من 8,000 قدم في الدقيقة، وأن تنزل من 35,000 إلى نحو 11,000 قدم في 3 دقائق أو أقل.",
+    "وفقًا لـ NTSB، في 5 يناير 2024 انفصلت سدادة باب عن طائرة رحلة ألاسكا إيرلاينز 1282 أثناء صعودها عند نحو 14,830 قدمًا (4,520 م)؛ وأصيب 7 ركاب و1 من طاقم الضيافة بإصابات طفيفة، ولم يمت أحد.",
+    "وفقًا لوكالة AP، اقتلع تيار الهواء الهواتف وسماعات الرأس وحتى قميص مراهق عن جسده، وهبط الطياران إلى 10,000 قدم (نحو 3,000 م) حيث يكفي الأكسجين للجميع.",
+    "في Live Science، حسب البروفيسور جون-بول كلارك من معهد جورجيا للتكنولوجيا أن ضغط المقصورة على ارتفاع 36,000 قدم (11,000 م) يُبقي باب الركاب مغلقًا بقوة تقارب 10,700 كغ، أي ما يقارب وزن فيلين أفريقيين."
+   ]
+  },
+  "hi": {
+   "title": "अगर उड़ते विमान का दरवाज़ा खुल जाए तो क्या होगा?",
+   "summary": "अगर 11,000 मीटर की ऊंचाई पर विमान का दरवाज़ा खुल जाए, तो मास्क पहनने के लिए आपके पास सिर्फ़ 15 से 30 सेकंड होंगे! प्रोफेसर पाई सेकंड-दर-सेकंड बताते हैं कि केबिन में क्या होगा और असल में वह दरवाज़ा खुल ही क्यों नहीं सकता।",
+   "facts": [
+    "FAA के अनुसार, 35,000 फीट (लगभग 10,700 मीटर) पर अचानक दबाव गिरने के बाद 'उपयोगी चेतना का समय' सिर्फ़ 15-30 सेकंड होता है; जो कुछ बंधा नहीं है, वह खुले हिस्से की ओर खिंचता है।",
+    "NASA के मानक वायुमंडल मॉडल के अनुसार, 11,000 मीटर पर हवा लगभग -56 °C होती है और दबाव समुद्र तल के दबाव का सिर्फ़ लगभग 22% होता है।",
+    "Smithsonian Air & Space के अनुसार, अचानक दबाव गिरने पर केबिन में पल भर के लिए घना कोहरा भर जाता है और ऑक्सीजन मास्क कुछ ही सेकंड में नीचे गिर जाते हैं।",
+    "FAA के यात्री सुरक्षा ब्रीफ़िंग दिशानिर्देश के अनुसार, पर्याप्त ऑक्सीजन बहने पर भी मास्क की थैली शायद न फूले, और यात्रियों को बच्चों की मदद करने से पहले अपना मास्क पहनना चाहिए।",
+    "USA Today में सेवानिवृत्त कैप्टन जॉन कॉक्स के अनुसार, ज़रूरत पड़ने पर यात्री विमान 8,000 फीट प्रति मिनट से भी तेज़ नीचे आ सकता है और 35,000 से लगभग 11,000 फीट तक 3 मिनट या उससे कम में उतर सकता है।",
+    "NTSB के अनुसार, 5 जनवरी 2024 को Alaska Airlines की उड़ान 1282 के लगभग 14,830 फीट (4,520 मीटर) पर चढ़ते समय एक डोर प्लग उखड़ गया; 7 यात्रियों और 1 फ्लाइट अटेंडेंट को मामूली चोटें आईं, किसी की मौत नहीं हुई।",
+    "AP के अनुसार, हवा के झोंके ने मोबाइल फ़ोन, हेडसेट और एक किशोर की टी-शर्ट तक उसके शरीर से खींच ली, और पायलट 10,000 फीट (लगभग 3,000 मीटर) पर उतरे, जहां सबके लिए पर्याप्त ऑक्सीजन होती है।",
+    "Live Science में Georgia Tech के प्रोफेसर जॉन-पॉल क्लार्क ने गणना की कि 36,000 फीट (11,000 मीटर) पर केबिन का दबाव यात्री दरवाज़े को लगभग 10,700 किलो के बल से बंद रखता है, यानी लगभग दो अफ्रीकी हाथियों जितना।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Pintu Pesawat Terbuka Saat Terbang?",
+   "summary": "Jika pintu pesawat terbuka di ketinggian 11.000 meter, kamu hanya punya 15 sampai 30 detik untuk memakai masker! Profesor Pi menjelaskan detik demi detik apa yang terjadi di kabin dan kenapa sebenarnya pintu itu tidak bisa dibuka.",
+   "facts": [
+    "Menurut FAA, di ketinggian 35.000 kaki (sekitar 10.700 m) \"waktu kesadaran berguna\" setelah dekompresi cepat hanya 15-30 detik; semua benda yang tidak terikat bergerak ke arah lubang.",
+    "Menurut model atmosfer standar NASA, di ketinggian 11.000 meter suhu udara sekitar -56 °C dan tekanannya hanya sekitar 22% dari tekanan di permukaan laut.",
+    "Menurut Smithsonian Air & Space, saat dekompresi mendadak kabut tebal sesaat memenuhi kabin dan masker oksigen jatuh dalam beberapa detik.",
+    "Menurut panduan FAA untuk pengarahan keselamatan penumpang, kantong masker bisa saja tidak mengembang meski oksigen mengalir cukup, dan penumpang harus memakai maskernya sendiri sebelum membantu anak-anak.",
+    "Menurut kapten pensiunan John Cox di USA Today, pesawat penumpang bisa turun lebih dari 8.000 kaki per menit bila perlu dan turun dari 35.000 ke sekitar 11.000 kaki dalam 3 menit atau kurang.",
+    "Menurut NTSB, pada 5 Januari 2024 sebuah penutup pintu (door plug) lepas dari pesawat Alaska Airlines penerbangan 1282 saat menanjak di sekitar 14.830 kaki (4.520 m); 7 penumpang dan 1 awak kabin luka ringan, tidak ada yang tewas.",
+    "Menurut AP, embusan udara merenggut ponsel, headset, bahkan kaus seorang remaja dari badannya, dan pilot turun ke 10.000 kaki (sekitar 3.000 m), tempat oksigen cukup untuk semua orang.",
+    "Di Live Science, profesor John-Paul Clarke dari Georgia Tech menghitung bahwa di ketinggian 36.000 kaki (11.000 m) tekanan kabin menahan pintu penumpang tetap tertutup dengan gaya sekitar 10.700 kg, hampir setara dua gajah Afrika."
+   ]
+  },
+  "fr": {
+   "title": "Que Se Passerait-il Si la Porte de l'Avion S'ouvrait en Plein Vol ?",
+   "summary": "Si la porte de l'avion s'ouvrait à 11 000 mètres, tu n'aurais que 15 à 30 secondes pour mettre ton masque ! Le Professeur Pi explique seconde par seconde ce qui se passerait dans la cabine et pourquoi, en réalité, cette porte ne peut pas s'ouvrir.",
+   "facts": [
+    "Selon la FAA, à 35 000 pieds (environ 10 700 m), le « temps de conscience utile » après une décompression rapide n'est que de 15 à 30 secondes ; tout ce qui n'est pas attaché se déplace vers l'ouverture.",
+    "Selon le modèle d'atmosphère standard de la NASA, à 11 000 mètres l'air est à environ -56 °C et la pression n'atteint qu'environ 22 % de celle au niveau de la mer.",
+    "Selon Smithsonian Air & Space, lors d'une décompression soudaine, un épais brouillard envahit un instant la cabine et les masques à oxygène tombent en quelques secondes.",
+    "Selon les consignes de la FAA pour les instructions de sécurité aux passagers, le sac du masque peut ne pas se gonfler alors que suffisamment d'oxygène circule, et les passagers doivent mettre leur propre masque avant d'aider les enfants.",
+    "Selon le commandant retraité John Cox dans USA Today, un avion de ligne peut descendre à plus de 8 000 pieds par minute si nécessaire et passer de 35 000 à environ 11 000 pieds en 3 minutes ou moins.",
+    "Selon le NTSB, le 5 janvier 2024, un bouchon de porte s'est détaché du vol 1282 d'Alaska Airlines en montée à environ 14 830 pieds (4 520 m) ; 7 passagers et 1 membre de l'équipage de cabine ont été légèrement blessés, et personne n'est mort.",
+    "Selon l'AP, le souffle a arraché des téléphones, des casques et même le t-shirt d'un adolescent, et les pilotes sont descendus à 10 000 pieds (environ 3 000 m), où il y a assez d'oxygène pour tout le monde.",
+    "Dans Live Science, le professeur John-Paul Clarke, de Georgia Tech, a calculé qu'à 36 000 pieds (11 000 m), la pression de la cabine maintient une porte passagers fermée avec une force d'environ 10 700 kg, presque deux éléphants d'Afrique."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert, Wenn Sich die Flugzeugtür Mitten im Flug Öffnet?",
+   "summary": "Würde sich die Flugzeugtür in 11.000 Metern Höhe öffnen, hättest du nur 15 bis 30 Sekunden, um deine Maske aufzusetzen! Professor Pi erklärt Sekunde für Sekunde, was in der Kabine passieren würde und warum sich diese Tür in Wahrheit gar nicht öffnen lässt.",
+   "facts": [
+    "Laut FAA beträgt die \"Zeit des nutzbaren Bewusstseins\" in 35.000 Fuß (etwa 10.700 m) nach einem schnellen Druckverlust nur 15-30 Sekunden; alles, was nicht gesichert ist, bewegt sich zur Öffnung hin.",
+    "Laut dem Standardatmosphären-Modell der NASA ist die Luft in 11.000 Metern Höhe etwa -56 °C kalt, und der Druck beträgt nur rund 22 % des Drucks auf Meereshöhe.",
+    "Laut Smithsonian Air & Space füllt bei einem plötzlichen Druckverlust für einen Moment dichter Nebel die Kabine, und die Sauerstoffmasken fallen innerhalb weniger Sekunden herunter.",
+    "Laut den FAA-Richtlinien für die Sicherheitseinweisung der Passagiere bläht sich der Beutel der Maske womöglich nicht auf, obwohl genug Sauerstoff fließt, und Passagiere müssen ihre eigene Maske aufsetzen, bevor sie Kindern helfen.",
+    "Laut dem pensionierten Flugkapitän John Cox in USA Today kann ein Verkehrsflugzeug bei Bedarf mit mehr als 8.000 Fuß pro Minute sinken und in 3 Minuten oder weniger von 35.000 auf etwa 11.000 Fuß herunterkommen.",
+    "Laut NTSB löste sich am 5. Januar 2024 bei Alaska-Airlines-Flug 1282 im Steigflug auf etwa 14.830 Fuß (4.520 m) ein Türstopfen; 7 Passagiere und 1 Flugbegleiter wurden leicht verletzt, niemand starb.",
+    "Laut AP riss der Luftsog Handys, Kopfhörer und sogar einem Teenager das T-Shirt vom Leib, und die Piloten sanken auf 10.000 Fuß (etwa 3.000 m), wo genug Sauerstoff für alle vorhanden ist.",
+    "In Live Science berechnete Professor John-Paul Clarke von der Georgia Tech, dass der Kabinendruck in 36.000 Fuß (11.000 m) eine Passagiertür mit einer Kraft von etwa 10.700 kg zuhält, fast so viel wie zwei Afrikanische Elefanten."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Дверь Самолёта Откроется в Полёте?",
+   "summary": "Если бы дверь самолёта открылась на высоте 11 000 метров, у тебя было бы всего 15–30 секунд, чтобы надеть маску! Профессор Пи секунда за секундой объясняет, что произошло бы в салоне и почему на самом деле эту дверь невозможно открыть.",
+   "facts": [
+    "По данным FAA, на высоте 35 000 футов (около 10 700 м) «время полезного сознания» после быстрой разгерметизации составляет всего 15–30 секунд; всё незакреплённое устремляется к отверстию.",
+    "По стандартной модели атмосферы NASA, на высоте 11 000 метров температура воздуха около -56 °C, а давление составляет лишь около 22% от давления на уровне моря.",
+    "По данным Smithsonian Air & Space, при внезапной разгерметизации салон на мгновение заполняет густой туман, а кислородные маски выпадают в течение пары секунд.",
+    "Согласно руководству FAA по инструктажу пассажиров, мешок маски может не надуваться, хотя кислород поступает в достаточном количестве, а пассажиры должны надеть свою маску, прежде чем помогать детям.",
+    "По словам капитана в отставке Джона Кокса в USA Today, авиалайнер при необходимости может снижаться быстрее 8 000 футов в минуту и опуститься с 35 000 примерно до 11 000 футов за 3 минуты или меньше.",
+    "По данным NTSB, 5 января 2024 года у самолёта рейса 1282 Alaska Airlines при наборе высоты около 14 830 футов (4 520 м) оторвалась дверная заглушка; 7 пассажиров и 1 бортпроводник получили лёгкие травмы, никто не погиб.",
+    "По данным AP, поток воздуха вырвал телефоны, наушники и даже сорвал футболку с подростка, а пилоты снизились до 10 000 футов (около 3 000 м), где кислорода хватает всем.",
+    "В Live Science профессор Технологического института Джорджии Джон-Пол Кларк подсчитал, что на высоте 36 000 футов (11 000 м) давление в салоне прижимает пассажирскую дверь с силой около 10 700 кг — почти как два африканских слона."
+   ]
+  },
+  "az": {
+   "title": "Təyyarənin Qapısı Havada Açılsaydı Nə Olardı?",
+   "summary": "Təyyarənin qapısı 11.000 metrdə açılsaydı, maskanı taxmaq üçün cəmi 15-30 saniyən olardı! Professor Pi saniyə-saniyə salonda nələr baş verəcəyini və o qapının əslində niyə açıla bilmədiyini izah edir.",
+   "facts": [
+    "FAA-ya görə, 35.000 futda (təxminən 10.700 m) sürətli dekompressiyadan sonra \"faydalı şüur müddəti\" cəmi 15-30 saniyədir; bərkidilməmiş hər şey açıq yerə doğru sovrulur.",
+    "NASA-nın standart atmosfer modelinə görə, 11.000 metrdə hava təxminən -56 °C olur, təzyiq isə dəniz səviyyəsindəkinin cəmi təxminən 22%-i qədərdir.",
+    "Smithsonian Air & Space-ə görə, qəfil dekompressiya zamanı salonu bir anlıq qatı duman bürüyür və oksigen maskaları bir neçə saniyə ərzində düşür.",
+    "FAA-nın sərnişinlər üçün təhlükəsizlik təlimatı tövsiyəsinə görə, kifayət qədər oksigen axsa belə maskanın kisəsi şişməyə bilər; sərnişinlər uşaqlara kömək etməzdən əvvəl öz maskalarını taxmalıdırlar.",
+    "Təqaüdçü kapitan Con Koksun USA Today-dəki cavabına görə, sərnişin təyyarəsi lazım olsa dəqiqədə 8.000 futdan sürətlə enə bilər və 35.000 futdan təxminən 11.000 futa 3 dəqiqə və ya daha az müddətdə düşər.",
+    "NTSB-yə görə, 5 yanvar 2024-cü ildə Alaska Airlines-ın 1282 saylı reysinin təyyarəsi təxminən 14.830 futda (4.520 m) yüksələrkən qapı tıxacı qopdu; 7 sərnişin və 1 bələdçi yüngül xəsarət aldı, ölən olmadı.",
+    "AP-yə görə, bu hadisədə hava axını telefonları, qulaqlıqları və hətta bir yeniyetmənin köynəyini əynindən qoparıb apardı; pilotlar hamıya kifayət edəcək oksigen olan 10.000 futa (təxminən 3.000 m) endi.",
+    "Live Science-də Georgia Tech-dən professor Con-Pol Klarkın hesablamasına görə, 36.000 futda (11.000 m) salondakı təzyiq sərnişin qapısını təxminən 10.700 kq qüvvə ilə bağlı saxlayır; bu, demək olar ki, iki Afrika fili deməkdir."
+   ]
+  }
+ }
+}
