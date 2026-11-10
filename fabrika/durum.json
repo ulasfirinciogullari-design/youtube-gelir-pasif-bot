@@ -1406,7 +1406,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "2059",
+    "views": "2062",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1027",
+    "views": "1029",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "493",
+    "views": "498",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1098",
+    "views": "1099",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "746",
+    "views": "751",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "195",
+    "views": "207",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "164",
+    "views": "159",
     "reason": null
    }
   },
@@ -1913,6 +1913,36 @@
    "thumbnail": true,
    "at": 1794305353.6898048,
    "chars": 411,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "y069",
+   "video_id": "m_XagF1CrzE",
+   "url": "https://youtube.com/shorts/m_XagF1CrzE",
+   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If a Plane Door Opened Mid-Flight?",
+    "es": "¿Qué Pasaría Si la Puerta del Avión Se Abriera en Pleno Vuelo?",
+    "pt": "O Que Aconteceria Se a Porta do Avião Abrisse em Pleno Voo?",
+    "ar": "ماذا سيحدث لو فُتح باب الطائرة أثناء الطيران؟",
+    "hi": "अगर उड़ते विमान का दरवाज़ा खुल जाए तो क्या होगा?",
+    "id": "Apa Jadinya Jika Pintu Pesawat Terbuka Saat Terbang?",
+    "fr": "Que Se Passerait-il Si la Porte de l'Avion S'ouvrait en Plein Vol ?",
+    "de": "Was Passiert, Wenn Sich die Flugzeugtür Mitten im Flug Öffnet?",
+    "ru": "Что Будет, Если Дверь Самолёта Откроется в Полёте?",
+    "az": "Təyyarənin Qapısı Havada Açılsaydı Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794312702.410649,
+   "chars": 856,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -1985,7 +2015,8 @@
   "y064",
   "n013",
   "y065",
-  "g013"
+  "g013",
+  "y069"
  ],
  "extra": [
   {
@@ -2051,14 +2082,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-02T14:16:45+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
-   "url": "https://youtube.com/shorts/QuUL5G3usPE",
-   "duration": 25.4,
-   "chars": 376
-  },
   {
    "finished": "2026-11-02T17:28:29+00:00",
    "mod": "igbolum",
@@ -2480,6 +2503,14 @@
    "url": "https://youtube.com/shorts/uTmyAqqF5qU",
    "duration": 26.6,
    "chars": 411
+  },
+  {
+   "finished": "2026-11-10T12:11:43+00:00",
+   "mod": "saatlik",
+   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/m_XagF1CrzE",
+   "duration": 56.7,
+   "chars": 856
   }
  ],
  "last_fail": 1794133491.1438286,
