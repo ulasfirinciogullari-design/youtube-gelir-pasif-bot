@@ -1,18 +1,71 @@
 {
- "started": "2026-11-10T17:07:46+00:00",
- "mod": "igbolum",
- "gate": "instagram: n011",
+ "started": "2026-11-10T18:07:07+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Everest Gerçekte Ne Kadar Yüksek?",
- "chars": 404,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18386896900236347",
-  "url": "https://www.instagram.com/reel/DfkaNGtjjWx/",
-  "at": 1794330615.0566885
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "62",
+  "videos": "67"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfkaNGtjjWx/"
+ "credits_before": [
+  96203,
+  613902
  ],
- "finished": "2026-11-10T17:10:15+00:00"
+ "kuyruk": {
+  "dosya": "20261110-2-y066.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y066",
+  "series": "Ya Olsaydı?",
+  "q": "Buz gibi suya düşseydin ilk dakikada ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 370,
+ "duration": 26.7,
+ "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
+ "url": "https://youtube.com/shorts/6pHVAozelhE",
+ "recent_status": {
+  "y065": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "682",
+   "reason": null
+  },
+  "g013": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "145",
+   "reason": null
+  },
+  "y069": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "636",
+   "reason": null
+  },
+  "y030": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "583",
+   "reason": null
+  },
+  "y066": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  96292,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261110-2-y066.json Buz gibi suya düşseydin ilk dakikada ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-10T18:08:06+00:00"
 }

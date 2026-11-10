@@ -1,5 +1,5 @@
 {
- "at": "2026-11-10T17:06:58+00:00",
+ "at": "2026-11-10T18:06:18+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -45,7 +45,7 @@
    "baslik": "Kalbin 1 Günde Kaç Kez Atar?"
   },
   "f6WyXXJWASs": {
-   "view": 336,
+   "view": 339,
    "like": 4,
    "comment": 4,
    "baslik": "Güneş Kara Delik Olsaydı Ne Olurdu?"
@@ -147,7 +147,7 @@
    "baslik": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?"
   },
   "kJHNXA1I-SU": {
-   "view": 1122,
+   "view": 1121,
    "like": 1,
    "comment": 0,
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
@@ -243,7 +243,7 @@
    "baslik": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu? 😳"
   },
   "m0HqyZ1pins": {
-   "view": 1008,
+   "view": 1009,
    "like": 3,
    "comment": 0,
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
@@ -273,7 +273,7 @@
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   },
   "QCM7IT8jkhc": {
-   "view": 2095,
+   "view": 2094,
    "like": 6,
    "comment": 0,
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
@@ -369,13 +369,13 @@
    "baslik": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu? 😳"
   },
   "aiJ_NUnr84M": {
-   "view": 1100,
+   "view": 1101,
    "like": 6,
    "comment": 2,
    "baslik": "Dünya'da 1 Günde Kaç Deprem Olur? 😮"
   },
   "73hAb835EFE": {
-   "view": 970,
+   "view": 971,
    "like": 2,
    "comment": 2,
    "baslik": "Hapşırığını Tutsaydın Ne Olurdu? 😳"
@@ -387,32 +387,32 @@
    "baslik": "Düşen Asansörde Zıplasan Kurtulur Muydun? 😳"
   },
   "Sr9y1BY4FPk": {
-   "view": 430,
+   "view": 501,
    "like": 4,
    "comment": 0,
    "baslik": "Damarların Gerçekte Ne Kadar Uzun? 🤯"
   },
   "mt9KmhllXGQ": {
-   "view": 574,
-   "like": 5,
+   "view": 681,
+   "like": 7,
    "comment": 0,
    "baslik": "Bir Hafta Hiç Uyumasaydın Ne Olurdu? 😳"
   },
   "uTmyAqqF5qU": {
-   "view": 123,
-   "like": 1,
+   "view": 145,
+   "like": 2,
    "comment": 0,
    "baslik": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar? 😮"
   },
   "m_XagF1CrzE": {
-   "view": 504,
+   "view": 635,
    "like": 1,
    "comment": 0,
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 366,
-   "like": 2,
+   "view": 580,
+   "like": 4,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
   }
@@ -940,13 +940,7 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
-   "sources": {
-    "SHORTS": 986,
-    "YT_SEARCH": 111,
-    "YT_CHANNEL": 7,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 356,
    "devam_yuzde": 32.2
   },
@@ -1140,14 +1134,7 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 964,
-    "YT_SEARCH": 27,
-    "YT_CHANNEL": 6,
-    "YT_OTHER_PAGE": 2,
-    "EXT_URL": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 456,
    "devam_yuzde": 45.6
   },

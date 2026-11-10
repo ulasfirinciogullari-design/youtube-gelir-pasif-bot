@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1006",
+    "views": "1009",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1029",
+    "views": "1030",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1155",
+    "views": "1165",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1124",
+    "views": "1125",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "986",
+    "views": "1003",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "515",
+    "views": "524",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "955",
+    "views": "967",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1099",
+    "views": "1101",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "776",
+    "views": "796",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "298",
+    "views": "501",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "349",
+    "views": "682",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "92",
+    "views": "145",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "28",
+    "views": "636",
     "reason": null
    }
   },
@@ -1973,6 +1973,36 @@
    "thumbnail": true,
    "at": 1794319869.163635,
    "chars": 355,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "583",
+    "reason": null
+   }
+  },
+  {
+   "id": "y066",
+   "video_id": "6pHVAozelhE",
+   "url": "https://youtube.com/shorts/6pHVAozelhE",
+   "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen in the First Minute If You Fell Into Icy Water?",
+    "es": "¿Qué Te Pasaría en el Primer Minuto Si Cayeras en Agua Helada?",
+    "pt": "O Que Aconteceria no Primeiro Minuto Se Você Caísse em Água Gelada?",
+    "ar": "ماذا سيحدث لك في الدقيقة الأولى لو سقطت في ماء متجمد؟",
+    "hi": "बर्फीले पानी में गिरने पर पहले मिनट में क्या होता?",
+    "id": "Jatuh ke Air Sedingin Es, Apa yang Terjadi di Menit Pertama?",
+    "fr": "Tombé Dans l'Eau Glacée : Que Se Passe-t-il la Première Minute ?",
+    "de": "Was Passiert in der Ersten Minute, Wenn Du in Eiswasser Fällst?",
+    "ru": "Что Будет в Первую Минуту, Если Ты Упадёшь в Ледяную Воду?",
+    "az": "Buz Kimi Suya Düşsəydin İlk Dəqiqədə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794334084.9274707,
+   "chars": 370,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2047,7 +2077,8 @@
   "y065",
   "g013",
   "y069",
-  "y030"
+  "y030",
+  "y066"
  ],
  "extra": [
   {
@@ -2113,14 +2144,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-03T10:08:07+00:00",
-   "mod": "saatlik",
-   "title": "Ay Gerçekte Ne Kadar Uzak?",
-   "url": "https://youtube.com/shorts/kzDr9prfHSw",
-   "duration": 28.4,
-   "chars": 420
-  },
   {
    "finished": "2026-11-03T13:08:55+00:00",
    "mod": "igbolum",
@@ -2542,6 +2565,14 @@
    "mod": "igbolum",
    "title": "Everest Gerçekte Ne Kadar Yüksek?",
    "chars": 404
+  },
+  {
+   "finished": "2026-11-10T18:08:06+00:00",
+   "mod": "saatlik",
+   "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
+   "url": "https://youtube.com/shorts/6pHVAozelhE",
+   "duration": 26.7,
+   "chars": 370
   }
  ],
  "last_fail": 1794133491.1438286,
