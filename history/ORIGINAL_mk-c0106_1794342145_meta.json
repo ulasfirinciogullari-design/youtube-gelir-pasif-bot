@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0106",
+  "topic": "Hamamböceği kafası kopunca yaşar mı, kafasız hamamböceği ne kadar yaşar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Hamamböceği kafası olmadan yaşayabilir mi? 🪳",
+  "hook_text": "KAFASIZ HAMAMBÖCEĞİ YAŞAR MI?",
+  "description": "Hamamböceği kafası kopunca yaşar mı, kafasız hamamböceği ne kadar yaşar?\n\nScientific American'ın 2007'de Massachusetts Amherst Üniversitesi'nden fizyolog Joseph Kunkel'e dayandırdığı açıklamaya göre hamamböceği kafası olmadan haftalarca yaşayabilir. İnsanlardan farklı olarak hamamböceğinin kan basıncı düşüktür ve kılcal damar ağı yoktur; kafa koptuğunda boyun pıhtılaşmayla kapanır ve kan kaybı durur. Nefesini ağızdan değil, vücut bölümlerindeki küçük deliklerden (spirakül) ve bunlara bağlı borucuklardan alır; bunun için beynin kontrolüne gerek duymaz. Soğukkanlı bir hayvan olduğu için tek öğünle haftalarca dayanabilir. Delaware Valley College'dan biyolog Christopher Tipping de kafası kesilen hamamböceklerinin kavanozda haftalarca yaşadığını gözlemledi. Kopan kafa da enerjisi bitene kadar saatlerce antenlerini oynatmayı sürdürür.\n\nSence hangisi daha tuhaf: kafasız gövdenin yaşaması mı, kopan kafanın kıpırdaması mı?\n\n#hamamböceği #böcekler #hayvanlar #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0106",
+  "tags": [
+    "hamamböceği",
+    "hamamböcekleri",
+    "kafasız hamamböceği",
+    "hamamböceği kafasız yaşar mı",
+    "hamamböceği ne kadar yaşar",
+    "hamamböceği neden ölmez",
+    "hamamböceği gerçekleri",
+    "kalorifer böceği",
+    "böcekler",
+    "böcek",
+    "haşere",
+    "hayvanlar",
+    "hayvan gerçekleri",
+    "doğa",
+    "mümkün mü",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "cockroach",
+    "headless cockroach",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "hamambocegi",
+    "hamambocekleri",
+    "kafasiz hamambocegi",
+    "hamambocegi kafasiz yasar mi",
+    "hamambocegi ne kadar yasar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a cockroach live without its head? 🪳",
+      "description": "Yes: a headless cockroach can live for weeks. Its blood is under low pressure, so the neck seals off by clotting, and it breathes through little holes along its body without needing the brain. Being cold-blooded, it can last weeks on one meal, and the severed head keeps waving its antennae for hours.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "es": {
+      "title": "¿Puede una cucaracha vivir sin cabeza? 🪳",
+      "description": "Sí: una cucaracha sin cabeza puede vivir semanas. Su sangre circula a baja presión, así que el cuello se sella al coagularse, y respira por pequeños orificios a lo largo del cuerpo sin necesitar el cerebro. Como es de sangre fría, aguanta semanas con una sola comida, y la cabeza cortada sigue moviendo las antenas durante horas.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "pt": {
+      "title": "Uma barata consegue viver sem a cabeça? 🪳",
+      "description": "Sim: uma barata sem cabeça pode viver semanas. O sangue dela circula com pressão baixa, então o pescoço se fecha por coagulação, e ela respira por pequenos furos ao longo do corpo sem precisar do cérebro. Por ter sangue frio, aguenta semanas com uma só refeição, e a cabeça cortada continua mexendo as antenas por horas.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "de": {
+      "title": "Kann eine Kakerlake ohne Kopf leben? 🪳",
+      "description": "Ja: Eine kopflose Kakerlake kann wochenlang leben. Ihr Blut steht nur unter geringem Druck, deshalb verschließt sich der Hals durch Gerinnung, und sie atmet durch kleine Öffnungen am Körper, ganz ohne Gehirn. Als wechselwarmes Tier kommt sie mit einer Mahlzeit wochenlang aus, und der abgetrennte Kopf bewegt noch stundenlang die Fühler.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "fr": {
+      "title": "Un cafard peut-il vivre sans sa tête ? 🪳",
+      "description": "Oui : un cafard sans tête peut vivre des semaines. Son sang circule à basse pression, le cou se referme donc par coagulation, et il respire par de petits orifices le long du corps sans avoir besoin du cerveau. Animal à sang froid, il tient des semaines avec un seul repas, et la tête coupée continue d'agiter ses antennes pendant des heures.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "it": {
+      "title": "Uno scarafaggio può vivere senza testa? 🪳",
+      "description": "Sì: uno scarafaggio senza testa può vivere per settimane. Il suo sangue scorre a bassa pressione, quindi il collo si chiude per coagulazione, e respira attraverso piccoli fori lungo il corpo senza bisogno del cervello. Essendo a sangue freddo, resiste settimane con un solo pasto, e la testa staccata continua a muovere le antenne per ore.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "ru": {
+      "title": "Может ли таракан жить без головы? 🪳",
+      "description": "Да: таракан без головы может прожить несколько недель. Давление крови у него низкое, поэтому шея закупоривается сгустком, а дышит он через маленькие отверстия по бокам тела, и мозг для этого не нужен. Как холоднокровное, он неделями живёт на одной трапезе, а отрезанная голова ещё часами шевелит усиками.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "ar": {
+      "title": "هل يمكن للصرصور أن يعيش بلا رأس؟ 🪳",
+      "description": "نعم: يمكن للصرصور مقطوع الرأس أن يعيش أسابيع. فدمه منخفض الضغط، لذا تنغلق رقبته بالتخثر، ويتنفس عبر ثقوب صغيرة على امتداد جسمه دون حاجة إلى الدماغ. ولأنه من ذوات الدم البارد تكفيه وجبة واحدة لأسابيع، أما الرأس المقطوع فيظل يحرك قرني الاستشعار لساعات.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "hi": {
+      "title": "क्या कॉकरोच बिना सिर के ज़िंदा रह सकता है? 🪳",
+      "description": "हाँ: बिना सिर का कॉकरोच हफ़्तों तक जी सकता है। उसके ख़ून का दबाव कम होता है, इसलिए गर्दन थक्का जमकर बंद हो जाती है, और वह शरीर पर बने छोटे छेदों से साँस लेता है, जिसके लिए दिमाग़ की ज़रूरत नहीं। ठंडे ख़ून वाला होने से एक बार खाकर हफ़्तों चल जाता है, और कटा सिर घंटों तक अपने एंटीना हिलाता रहता है।\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "id": {
+      "title": "Bisakah kecoak hidup tanpa kepala? 🪳",
+      "description": "Bisa: kecoak tanpa kepala dapat hidup berminggu-minggu. Tekanan darahnya rendah sehingga lehernya tertutup oleh gumpalan darah, dan ia bernapas lewat lubang-lubang kecil di sepanjang tubuhnya tanpa perlu otak. Sebagai hewan berdarah dingin, ia tahan berminggu-minggu dengan sekali makan, dan kepala yang terputus masih menggerakkan antenanya selama berjam-jam.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "ja": {
+      "title": "ゴキブリは頭がなくても生きられる？ 🪳",
+      "description": "はい、頭のないゴキブリは何週間も生きられます。血圧が低いので首の傷は血が固まってふさがり、呼吸は体の側面にある小さな穴で行うため脳は必要ありません。変温動物なので1回の食事で何週間ももち、切り離された頭も何時間も触角を動かし続けます。\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "ko": {
+      "title": "바퀴벌레는 머리 없이도 살 수 있을까? 🪳",
+      "description": "네, 머리 없는 바퀴벌레는 몇 주 동안 살 수 있습니다. 혈압이 낮아서 목이 응고된 피로 막히고, 몸 곳곳의 작은 구멍으로 숨을 쉬기 때문에 뇌가 필요 없습니다. 변온동물이라 한 끼로 몇 주를 버티고, 잘린 머리도 몇 시간 동안 더듬이를 움직입니다.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "pl": {
+      "title": "Czy karaluch może żyć bez głowy? 🪳",
+      "description": "Tak: karaluch bez głowy może żyć tygodniami. Jego krew ma niskie ciśnienie, więc szyja zasklepia się skrzepem, a oddycha przez małe otwory na ciele i nie potrzebuje do tego mózgu. Jako zwierzę zmiennocieplne wytrzymuje tygodnie na jednym posiłku, a odcięta głowa jeszcze godzinami porusza czułkami.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "nl": {
+      "title": "Kan een kakkerlak leven zonder kop? 🪳",
+      "description": "Ja: een kakkerlak zonder kop kan wekenlang leven. Zijn bloed staat onder lage druk, dus de nek sluit zich door stolling, en hij ademt via kleine openingen langs zijn lijf zonder dat zijn hersenen nodig zijn. Als koudbloedig dier redt hij het weken op één maaltijd, en de afgehakte kop beweegt nog urenlang zijn voelsprieten.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "uk": {
+      "title": "Чи може тарган жити без голови? 🪳",
+      "description": "Так: тарган без голови може прожити кілька тижнів. Тиск крові в нього низький, тож шия закупорюється згустком, а дихає він крізь маленькі отвори вздовж тіла, і мозок для цього не потрібен. Як холоднокровний, він тижнями живе на одній трапезі, а відірвана голова ще годинами ворушить вусиками.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "vi": {
+      "title": "Gián có thể sống khi không còn đầu không? 🪳",
+      "description": "Có: một con gián mất đầu có thể sống nhiều tuần. Máu của nó chảy với áp suất thấp nên cổ tự bịt lại nhờ máu đông, và nó thở qua các lỗ nhỏ dọc thân mà không cần đến não. Là loài máu lạnh, nó chịu được nhiều tuần chỉ với một bữa ăn, còn cái đầu bị đứt vẫn ngọ nguậy râu suốt nhiều giờ.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "az": {
+      "title": "Tarakan başsız yaşaya bilərmi? 🪳",
+      "description": "Bəli: başsız tarakan həftələrlə yaşaya bilər. Onun qan təzyiqi aşağıdır, buna görə boynu laxtalanma ilə bağlanır, nəfəsi isə bədənindəki kiçik dəliklərdən alır və bunun üçün beyinə ehtiyac duymur. Soyuqqanlı olduğu üçün bir dəfə yeməklə həftələrlə dözür, qopmuş baş isə saatlarla bığcıqlarını tərpətməyə davam edir.\n\n#shorts\n\nSeri: mk-c0106"
+    },
+    "ro": {
+      "title": "Poate un gândac de bucătărie să trăiască fără cap? 🪳",
+      "description": "Da: un gândac fără cap poate trăi săptămâni. Sângele lui circulă la presiune mică, așa că gâtul se închide prin coagulare, iar el respiră prin mici orificii de-a lungul corpului, fără să aibă nevoie de creier. Fiind cu sânge rece, rezistă săptămâni cu o singură masă, iar capul tăiat își mai mișcă antenele ore întregi.\n\n#shorts\n\nSeri: mk-c0106"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: kafasız gövdenin yaşaması mı, kopan kafanın kıpırdaması mı?",
+  "scenes": [
+    {
+      "text": "Bu hamamböceği tek öğünle haftalarca dayanabilir.",
+      "visual": "macro close-up of a cockroach's head and antennae facing the camera",
+      "stock_query": "cockroach macro",
+      "source": "stock",
+      "callout": "TEK ÖĞÜN, HAFTALAR"
+    },
+    {
+      "text": "Peki kafası koparsa da yaşayabilir mi?",
+      "visual": "a cockroach standing still on a kitchen floor",
+      "stock_query": "cockroach floor",
+      "source": "stock"
+    },
+    {
+      "text": "Kopan kafa bile antenlerini saatlerce oynatmayı sürdürür.",
+      "visual": "macro shot of cockroach antennae waving slowly",
+      "stock_query": "cockroach antennae",
+      "source": "stock",
+      "callout": "KAFA SAATLERCE OYNAR"
+    },
+    {
+      "text": "Cevap evet: kafasız gövde haftalarca yaşayabilir.",
+      "visual": "a cockroach walking across a surface",
+      "stock_query": "cockroach walking",
+      "source": "stock",
+      "callout": "KAFASIZ HAFTALARCA"
+    },
+    {
+      "text": "Çünkü kanı düşük basınçlı, boynu pıhtıyla kapanır; nefesi vücudundaki deliklerden alır, beyne gerek duymaz.",
+      "visual": "macro close-up of a cockroach's body segments",
+      "stock_query": "cockroach close up",
+      "source": "stock",
+      "callout": "BEYİNSİZ NEFES"
+    },
+    {
+      "text": "Ağzı olmadan yiyemez ama dert değil; çünkü...",
+      "visual": "a cockroach running fast across the floor",
+      "stock_query": "cockroach running",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.47,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "anahtar kelime",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #159",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0106_1794342145_ig.mp4"
+}
