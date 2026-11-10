@@ -1,5 +1,5 @@
 {
- "at": "2026-11-10T18:06:18+00:00",
+ "at": "2026-11-10T18:42:27+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 62,
   "viewCount": 63838,
-  "videoCount": 67
+  "videoCount": 68
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -147,7 +147,7 @@
    "baslik": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?"
   },
   "kJHNXA1I-SU": {
-   "view": 1121,
+   "view": 1122,
    "like": 1,
    "comment": 0,
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
@@ -165,7 +165,7 @@
    "baslik": "Vücudun 1 Günde Kaç Hücre Yeniler?"
   },
   "VMP8uC3O6jU": {
-   "view": 1012,
+   "view": 1015,
    "like": 6,
    "comment": 0,
    "baslik": "Tüm Erkekler Yok Olsaydı İnsanlık Kaç Yıl Dayanırdı?"
@@ -273,7 +273,7 @@
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   },
   "QCM7IT8jkhc": {
-   "view": 2094,
+   "view": 2096,
    "like": 6,
    "comment": 0,
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
@@ -339,82 +339,88 @@
    "baslik": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu? 😳"
   },
   "4J5Gbwz3y4E": {
-   "view": 1157,
+   "view": 1181,
    "like": 7,
    "comment": 0,
    "baslik": "Bir Fil 1 Günde Ne Kadar Yemek Yer? 😮"
   },
   "33I8lo_Kk18": {
-   "view": 1125,
+   "view": 1126,
    "like": 6,
    "comment": 2,
    "baslik": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın? 😳"
   },
   "IVKSORUOwqk": {
-   "view": 1050,
+   "view": 1051,
    "like": 1,
    "comment": 0,
    "baslik": "Derin Şeffaf Olsaydı Aynada Ne Görürdün? 😳"
   },
   "0lt8q81TuOs": {
-   "view": 550,
+   "view": 555,
    "like": 0,
    "comment": 0,
    "baslik": "DNA'n Gerçekte Ne Kadar Uzun? 🤯"
   },
   "Tk6wA4QlShk": {
-   "view": 968,
+   "view": 973,
    "like": 18,
    "comment": 0,
    "baslik": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu? 😳"
   },
   "aiJ_NUnr84M": {
-   "view": 1101,
+   "view": 1100,
    "like": 6,
    "comment": 2,
    "baslik": "Dünya'da 1 Günde Kaç Deprem Olur? 😮"
   },
   "73hAb835EFE": {
-   "view": 971,
+   "view": 970,
    "like": 2,
    "comment": 2,
    "baslik": "Hapşırığını Tutsaydın Ne Olurdu? 😳"
   },
   "I-Tn6aqeA80": {
-   "view": 832,
+   "view": 891,
    "like": 6,
    "comment": 0,
    "baslik": "Düşen Asansörde Zıplasan Kurtulur Muydun? 😳"
   },
   "Sr9y1BY4FPk": {
-   "view": 501,
-   "like": 4,
+   "view": 532,
+   "like": 5,
    "comment": 0,
    "baslik": "Damarların Gerçekte Ne Kadar Uzun? 🤯"
   },
   "mt9KmhllXGQ": {
-   "view": 681,
+   "view": 742,
    "like": 7,
    "comment": 0,
    "baslik": "Bir Hafta Hiç Uyumasaydın Ne Olurdu? 😳"
   },
   "uTmyAqqF5qU": {
-   "view": 145,
-   "like": 2,
+   "view": 149,
+   "like": 3,
    "comment": 0,
    "baslik": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar? 😮"
   },
   "m_XagF1CrzE": {
-   "view": 635,
+   "view": 679,
    "like": 1,
    "comment": 0,
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 580,
-   "like": 4,
+   "view": 709,
+   "like": 7,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
+  },
+  "6pHVAozelhE": {
+   "view": 0,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -940,7 +946,13 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 986,
+    "YT_SEARCH": 111,
+    "YT_CHANNEL": 7,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 356,
    "devam_yuzde": 32.2
   },
@@ -1134,7 +1146,14 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 964,
+    "YT_SEARCH": 27,
+    "YT_CHANNEL": 6,
+    "YT_OTHER_PAGE": 2,
+    "EXT_URL": 2,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 456,
    "devam_yuzde": 45.6
   },
