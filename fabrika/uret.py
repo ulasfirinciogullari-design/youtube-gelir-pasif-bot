@@ -51,7 +51,9 @@ FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
 # Big scene (motor.html LY 'buyuk'): Pi and Bit 38% smaller in the bottom corners, the scene a little bigger and lower,
 # so the first frame is mostly the subject. Built 2026-11-04 for the 10 million goal, to go on after the NASA verdict
 # of 2026-11-06 (both act on the look, so not at the same time). On from 2026-11-06 10:00 UTC, judged ~2026-11-10 by
-# devam_yuzde and views against the photo Shorts of 11-02..11-05. YO_SAHNE=0 turns it off; "ornek" always uses it.
+# devam_yuzde and views against the photo Shorts of 11-02..11-05. Verdict 2026-11-10: kept (8 Shorts of 11-06/07:
+# stayed-to-watch median 48.5% vs 44.5%, average % viewed 65.5 vs 60.7, views equal at ~1,100). YO_SAHNE=0 turns it
+# off; "ornek" always uses it.
 SAHNE = (os.environ.get("YO_SAHNE") or "1") == "1"
 
 
@@ -306,8 +308,6 @@ def ig_bolum(state, ep_id, report):
     """An episode from before Instagram: voice it again (the audio is not kept) and post the Instagram copy."""
     import ses
     p = HERE / "bolumler" / f"{ep_id}.json"
-    if not p.exists():  # also a queued script, or a draft in fabrika/deneme/<id>.json, before it goes live
-        p = next(iter(sorted((HERE / "kuyruk").glob(f"*-{ep_id}.json"))), HERE / "deneme" / f"{ep_id}.json")
     if not p.exists():
         raise SystemExit(f"bölüm bulunamadı: {ep_id}")
     ep = json.loads(p.read_text(encoding="utf-8"))
