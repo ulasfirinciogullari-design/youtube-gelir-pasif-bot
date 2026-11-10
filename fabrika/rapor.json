@@ -1,71 +1,18 @@
 {
- "started": "2026-11-10T14:10:13+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-10T17:07:46+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n011",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "61",
-  "videos": "66"
+ "title": "Everest Gerçekte Ne Kadar Yüksek?",
+ "chars": 404,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18386896900236347",
+  "url": "https://www.instagram.com/reel/DfkaNGtjjWx/",
+  "at": 1794330615.0566885
  },
- "credits_before": [
-  95844,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261110-1-y030.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y030",
-  "series": "Ya Olsaydı?",
-  "q": "Hiç ağrı hissetmeseydik ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 355,
- "duration": 23.3,
- "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
- "url": "https://youtube.com/shorts/zvgB-9sAUUY",
- "recent_status": {
-  "n013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "298",
-   "reason": null
-  },
-  "y065": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "349",
-   "reason": null
-  },
-  "g013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "92",
-   "reason": null
-  },
-  "y069": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "28",
-   "reason": null
-  },
-  "y030": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  95931,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261110-1-y030.json Hiç ağrı hissetmeseydik ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfkaNGtjjWx/"
  ],
- "finished": "2026-11-10T14:11:10+00:00"
+ "finished": "2026-11-10T17:10:15+00:00"
 }

@@ -2114,12 +2114,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-03T09:08:03+00:00",
-   "mod": "igbolum",
-   "title": "Arılar Yok Olsaydı Tabağında Ne Kalırdı?",
-   "chars": 387
-  },
-  {
    "finished": "2026-11-03T10:08:07+00:00",
    "mod": "saatlik",
    "title": "Ay Gerçekte Ne Kadar Uzak?",
@@ -2542,6 +2536,12 @@
    "url": "https://youtube.com/shorts/zvgB-9sAUUY",
    "duration": 23.3,
    "chars": 355
+  },
+  {
+   "finished": "2026-11-10T17:10:15+00:00",
+   "mod": "igbolum",
+   "title": "Everest Gerçekte Ne Kadar Yüksek?",
+   "chars": 404
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2796,6 +2796,11 @@
     "media_id": "17910756456572090",
     "url": "https://www.instagram.com/reel/Dfj_lislH0L/",
     "at": 1794316660.8428183
+   },
+   "n011": {
+    "media_id": "18386896900236347",
+    "url": "https://www.instagram.com/reel/DfkaNGtjjWx/",
+    "at": 1794330615.0566885
    }
   },
   "eski": [
