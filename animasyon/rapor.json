@@ -1,9 +1,9 @@
 {
- "started": "2026-11-10T22:24:47+00:00",
- "bolum": "k006",
- "mod": "zamanla",
+ "started": "2026-11-10T22:44:26+00:00",
+ "bolum": "k007",
+ "mod": "deneme",
  "tablolar": {},
- "chars": 550,
+ "chars": 562,
  "voice": {
   "model": "eleven_flash_v2_5",
   "speed": 1.1,
@@ -11,16 +11,8 @@
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 33.17,
- "render_seconds": 84,
- "title": "Bu Tek Kelime İnsanlara Evet Dedirtiyor 🤫 #psikoloji",
- "video_id": "vDucBdbU_UA",
- "url": "https://youtube.com/shorts/vDucBdbU_UA",
- "privacy": "private",
- "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu"
- },
- "publish_at": "2026-11-11T17:00:00+00:00",
- "finished": "2026-11-10T22:26:19+00:00"
+ "duration": 31.87,
+ "render_seconds": 102,
+ "title": "Garsonun Bu Tek Hareketi Bahşişi %21 Artırdı 🤯 #psikoloji",
+ "finished": "2026-11-10T22:46:13+00:00"
 }
