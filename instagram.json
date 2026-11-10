@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/",
   "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/",
   "2026-10-19T18": "HVLl6Fm8pUE https://www.instagram.com/reel/Der2oOEAaQ0/",
   "2026-10-20T10": "B1WUrxV1qgU https://www.instagram.com/reel/DetkehOjjBi/",
@@ -48,16 +47,17 @@
   "2026-11-09T10": "C-gsguJI_VQ https://www.instagram.com/reel/DfhEVFslEws/",
   "2026-11-09T14": "54hA0-qmdaM https://www.instagram.com/reel/Dfhf0j3FSFF/",
   "2026-11-09T18": "K9JGmD_QiPg https://www.instagram.com/reel/Dfh7NS2kYhL/",
-  "2026-11-10T10": "mccbXMW6PR8 https://www.instagram.com/reel/DfjpJ-rEndB/"
+  "2026-11-10T10": "mccbXMW6PR8 https://www.instagram.com/reel/DfjpJ-rEndB/",
+  "2026-11-10T14": "cnUHdK51l4w https://www.instagram.com/reel/DfkEnpsDdq6/"
  },
  "nobet": {
   "basladi": "2026-11-10T09:10:47+00:00",
   "run": "42787100142",
-  "tur": 266,
+  "tur": 291,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-10T13:35:48+00:00"
+  "son_tur": "2026-11-10T14:01:32+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -346,6 +346,13 @@
    "at": 1794304892,
    "title": "Saç korkudan bir gecede bembeyaz olabilir mi? 😱",
    "topic_id": "mk-c0079"
+  },
+  "cnUHdK51l4w": {
+   "media_id": "17910606132596242",
+   "url": "https://www.instagram.com/reel/DfkEnpsDdq6/",
+   "at": 1794319293,
+   "title": "Sıçan gıdıklanınca gülebilir mi? 🐀",
+   "topic_id": "mk-c0076"
   }
  }
 }
