@@ -239,6 +239,12 @@
    "r",
    "UgwqWKQW8dsDe3lxdbV4AaABAg.Ad-d52QS0_oAd-iz2tDXu4",
    "UCk7UcamYsGnRQcWX_tiu54A"
+  ],
+  "Ugx3Tql8t2RgtCxGx8p4AaABAg": [
+   1794311112,
+   "r",
+   "Ugx3Tql8t2RgtCxGx8p4AaABAg.Ad1J405ndmsAd1KxzRmcPd",
+   "UC6Fewlouf9n7JHnB3KguFyA"
   ]
  },
  "tracked": {
@@ -328,6 +334,11 @@
    "at": 1794257115,
    "n": 1,
    "reply": "Vay be, demek bu etki sende de işe yaradı! Kaşıntı bulaşıcı bir his gibi değil mi? 😉"
+  },
+  "Ugx3Tql8t2RgtCxGx8p4AaABAg": {
+   "at": 1794311112,
+   "n": 1,
+   "reply": "Evet mi? Kediler balkonda gezmeyi çok sever, değil mi? Ama dikkatli olmak lazım, çünkü yüksekten düşmelerde çoğu kedi yine de yaralanıyor. 🐈"
   }
  },
  "channel": {
@@ -544,6 +555,12 @@
    "video": "a2Zc8jK28L0",
    "comment": "Benim kolum kaşındı",
    "reply": "Vay be, demek bu etki sende de işe yaradı! Kaşıntı bulaşıcı bir his gibi değil mi? 😉"
+  },
+  {
+   "at": 1794311112,
+   "video": "7q4TC7a8Bko",
+   "comment": "evettt",
+   "reply": "Evet mi? Kediler balkonda gezmeyi çok sever, değil mi? Ama dikkatli olmak lazım, çünkü yüksekten düşmelerde çoğu kedi yine de yaralanıyor. 🐈"
   }
  ]
 }
