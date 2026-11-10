@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-18T18": "CGjHVJfvL3A https://www.instagram.com/reel/DepRvq8kSjj/",
   "2026-10-19T10": "FD6RkHQlEgU https://www.instagram.com/reel/Deq_r3pmfyi/",
   "2026-10-19T14": "c35gmT12OGk https://www.instagram.com/reel/DerbKKWCqmm/",
   "2026-10-19T18": "HVLl6Fm8pUE https://www.instagram.com/reel/Der2oOEAaQ0/",
@@ -48,16 +47,17 @@
   "2026-11-08T18": "kkPqwP8hyz4 https://www.instagram.com/reel/DffWa5FAjpw/",
   "2026-11-09T10": "C-gsguJI_VQ https://www.instagram.com/reel/DfhEVFslEws/",
   "2026-11-09T14": "54hA0-qmdaM https://www.instagram.com/reel/Dfhf0j3FSFF/",
-  "2026-11-09T18": "K9JGmD_QiPg https://www.instagram.com/reel/Dfh7NS2kYhL/"
+  "2026-11-09T18": "K9JGmD_QiPg https://www.instagram.com/reel/Dfh7NS2kYhL/",
+  "2026-11-10T10": "mccbXMW6PR8 https://www.instagram.com/reel/DfjpJ-rEndB/"
  },
  "nobet": {
   "basladi": "2026-11-10T09:10:47+00:00",
   "run": "42787100142",
-  "tur": 32,
+  "tur": 51,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-10T09:41:48+00:00"
+  "son_tur": "2026-11-10T10:01:32+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -339,6 +339,13 @@
    "at": 1794247251,
    "title": "Sürücülerin çoğu kendini ortalamanın üstünde sanıyor 🚗",
    "topic_id": "mk-c0061"
+  },
+  "mccbXMW6PR8": {
+   "media_id": "17980116297136913",
+   "url": "https://www.instagram.com/reel/DfjpJ-rEndB/",
+   "at": 1794304892,
+   "title": "Saç korkudan bir gecede bembeyaz olabilir mi? 😱",
+   "topic_id": "mk-c0079"
   }
  }
 }
