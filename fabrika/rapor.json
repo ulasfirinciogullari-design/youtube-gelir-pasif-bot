@@ -1,12 +1,18 @@
 {
- "started": "2026-11-10T07:56:36+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-10T09:07:56+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g012",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
- "chars": 856,
- "duration": 56.1,
- "deneme": "fabrika/deneme/ornek-y069.mp4",
- "log": [],
- "finished": "2026-11-10T07:58:09+00:00"
+ "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+ "chars": 400,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18017419460963495",
+  "url": "https://www.instagram.com/reel/DfjjLGqEtWq/",
+  "at": 1794301757.71557
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfjjLGqEtWq/"
+ ],
+ "finished": "2026-11-10T09:09:17+00:00"
 }

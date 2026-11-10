@@ -2021,14 +2021,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-02T10:09:01+00:00",
-   "mod": "saatlik",
-   "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
-   "url": "https://youtube.com/shorts/E9dsm0cEDnM",
-   "duration": 27.1,
-   "chars": 380
-  },
-  {
    "finished": "2026-11-02T13:22:58+00:00",
    "mod": "igbolum",
    "title": "Samanyolu'nu Arabayla Kaç Yılda Geçerdin?",
@@ -2449,6 +2441,12 @@
    "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
    "duration": 56.1,
    "chars": 856
+  },
+  {
+   "finished": "2026-11-10T09:09:17+00:00",
+   "mod": "igbolum",
+   "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
+   "chars": 400
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2693,6 +2691,11 @@
     "media_id": "17940727482404640",
     "url": "https://www.instagram.com/reel/Dfh1UeHjVuD/",
     "at": 1794244162.9161766
+   },
+   "g012": {
+    "media_id": "18017419460963495",
+    "url": "https://www.instagram.com/reel/DfjjLGqEtWq/",
+    "at": 1794301757.71557
    }
   },
   "eski": [
