@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0099",
+  "topic": "Kedi yedinci kattan düşerse yaşar mı, kediler yüksekten düşünce nasıl kurtulur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kedi yedinci kattan düşüp yaşayabilir mi? 🐱",
+  "hook_text": "KEDİ YEDİNCİ KATTAN DÜŞÜP YAŞAR MI?",
+  "description": "Kedi yedinci kattan düşerse yaşar mı, kediler yüksekten düşünce nasıl kurtulur?\n\nNew York'taki Animal Medical Center'dan veteriner hekimler Wayne Whitney ve Cheryl Mehlhaff, 1984'te beş ayda yüksekten düşüp kliniğe getirilen 132 kediyi inceledi ve sonuçları 1987'de JAVMA dergisinde yayımladı. Tedavi edilen kedilerin yüzde 90'ı kurtuldu, ama yüzde 90'ında göğüs yaralanması vardı ve üçte birden fazlası acil tedavi gerektirdi. Scientific American'ın aktardığına göre yaralanmaların ağırlığı yaklaşık yedinci kata kadar arttı, daha yüksekten düşenlerde azaldı. Bir açıklamaya göre kedi belli bir hızdan sonra hızlanmayı bırakıyor, gevşiyor ve yere daha dengeli bir ağırlık dağılımıyla iniyor. Ancak düşüp ölen kediler veterinere getirilmediği için bu tablo olduğundan iyimser olabilir; Hırvatistan'daki 119 kedilik bir çalışmada daha yüksekten düşenler daha ağır yaralandı. Balkon ve pencerelere kedi filesi takmak en güvenli yol.\n\nSenin kedin balkona çıkıyor mu: evet mi, hayır mı?\n\n#kedi #kediler #evcilhayvan #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0099",
+  "tags": [
+    "kedi",
+    "kediler",
+    "kedi balkondan düştü",
+    "kedi yüksekten düşerse",
+    "kedi 7. kattan düşerse",
+    "kedi düşünce yaşar mı",
+    "kedi düşmesi",
+    "kediler ayak üstü düşer mi",
+    "yüksek bina sendromu",
+    "kedi filesi",
+    "balkon filesi",
+    "kedi bakımı",
+    "kedi sahibi",
+    "evcil hayvan",
+    "hayvanlar",
+    "mümkün mü",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "high rise syndrome",
+    "falling cat",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi balkondan dustu",
+    "kedi yuksekten duserse",
+    "kedi 7. kattan duserse",
+    "kedi dusmesi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a cat survive a fall from the seventh floor? 🐱",
+      "description": "In a study of 132 cats brought to a New York vet after high falls, 90% survived with treatment, and injuries got worse up to about seven stories, then eased. One explanation: the cat stops speeding up, relaxes and spreads the impact. Most were still hurt, so keep balconies and windows secured.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "es": {
+      "title": "¿Puede un gato sobrevivir a una caída desde un séptimo piso? 🐱",
+      "description": "En un estudio con 132 gatos llevados a un veterinario de Nueva York tras caer de altura, el 90 % sobrevivió con tratamiento, y las lesiones empeoraban hasta unos siete pisos y luego disminuían. Una explicación: el gato deja de acelerar, se relaja y reparte el golpe. Aun así, la mayoría se lesionó: protege balcones y ventanas.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "pt": {
+      "title": "Um gato sobrevive a uma queda do sétimo andar? 🐱",
+      "description": "Num estudo com 132 gatos levados a um veterinário de Nova York após quedas de prédios, 90% sobreviveram com tratamento, e os ferimentos pioravam até uns sete andares e depois diminuíam. Uma explicação: o gato para de acelerar, relaxa e distribui o impacto. Mesmo assim, a maioria se feriu: proteja varandas e janelas.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "de": {
+      "title": "Kann eine Katze einen Sturz aus dem siebten Stock überleben? 🐱",
+      "description": "In einer Studie mit 132 Katzen, die nach Stürzen in eine New Yorker Tierklinik kamen, überlebten 90 % mit Behandlung; die Verletzungen nahmen bis etwa zum siebten Stock zu und danach ab. Eine Erklärung: Die Katze beschleunigt nicht weiter, entspannt sich und verteilt den Aufprall. Verletzt waren trotzdem die meisten, also Balkon und Fenster sichern.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "fr": {
+      "title": "Un chat peut-il survivre à une chute du septième étage ? 🐱",
+      "description": "Dans une étude portant sur 132 chats amenés chez un vétérinaire new-yorkais après une chute, 90 % ont survécu grâce aux soins, et les blessures s'aggravaient jusqu'à environ sept étages avant de diminuer. Une explication : le chat cesse d'accélérer, se détend et répartit le choc. La plupart étaient tout de même blessés : sécurise balcons et fenêtres.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "it": {
+      "title": "Un gatto può sopravvivere a una caduta dal settimo piano? 🐱",
+      "description": "In uno studio su 132 gatti portati da un veterinario di New York dopo una caduta, il 90% è sopravvissuto con le cure, e le ferite peggioravano fino a circa sette piani per poi diminuire. Una spiegazione: il gatto smette di accelerare, si rilassa e distribuisce l'impatto. La maggior parte però si è ferita: metti in sicurezza balconi e finestre.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "ru": {
+      "title": "Может ли кошка выжить после падения с седьмого этажа? 🐱",
+      "description": "В исследовании 132 кошек, которых после падения привезли в ветклинику Нью-Йорка, 90% выжили благодаря лечению, а травмы становились тяжелее примерно до седьмого этажа и дальше шли на спад. Одно из объяснений: кошка перестаёт разгоняться, расслабляется и распределяет удар. Но травмы были у большинства, так что защитите балконы и окна.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "ar": {
+      "title": "هل يمكن للقطة أن تنجو من السقوط من الطابق السابع؟ 🐱",
+      "description": "في دراسة شملت 132 قطة نُقلت إلى طبيب بيطري في نيويورك بعد السقوط من مبانٍ، نجا 90% منها بالعلاج، وكانت الإصابات تزداد حتى الطابق السابع تقريبًا ثم تقل. أحد التفسيرات أن القطة تتوقف عن التسارع فترتخي وتوزع قوة الارتطام. ومع ذلك أصيب معظمها، فأمّن الشرفات والنوافذ.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "hi": {
+      "title": "क्या बिल्ली सातवीं मंज़िल से गिरकर बच सकती है? 🐱",
+      "description": "न्यूयॉर्क में ऊँचाई से गिरकर पशु-चिकित्सक के पास लाई गई 132 बिल्लियों के एक अध्ययन में 90% इलाज से बच गईं, और चोटें लगभग सातवीं मंज़िल तक बढ़ीं, फिर कम हुईं। एक व्याख्या के अनुसार एक हद के बाद बिल्ली की रफ़्तार नहीं बढ़ती, वह ढीली पड़ जाती है और झटका पूरे शरीर में बाँट देती है। फिर भी ज़्यादातर घायल हुईं, इसलिए बालकनी और खिड़कियाँ सुरक्षित रखें।\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "id": {
+      "title": "Bisakah kucing selamat jatuh dari lantai tujuh? 🐱",
+      "description": "Dalam studi terhadap 132 kucing yang dibawa ke dokter hewan di New York setelah jatuh dari gedung, 90% selamat dengan perawatan, dan cederanya makin parah sampai sekitar lantai tujuh lalu berkurang. Salah satu penjelasannya: kucing berhenti bertambah cepat, lalu rileks dan menyebarkan benturan. Tetap saja kebanyakan terluka, jadi amankan balkon dan jendela.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "ja": {
+      "title": "猫は7階から落ちても助かる？ 🐱",
+      "description": "高所から落ちてニューヨークの動物病院に運ばれた132匹の猫を調べた研究では、治療を受けた猫の90％が助かり、けがは7階あたりまで重くなり、それより上では軽くなりました。ある説明では、猫はある程度で加速が止まり、体の力を抜いて衝撃を分散させます。それでも多くがけがをしたので、ベランダや窓の対策は欠かせません。\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "ko": {
+      "title": "고양이는 7층에서 떨어져도 살 수 있을까? 🐱",
+      "description": "높은 곳에서 떨어져 뉴욕의 동물병원에 온 고양이 132마리를 조사한 연구에서 치료받은 고양이의 90%가 살아남았고, 부상은 약 7층까지는 심해지다가 그 위에서는 줄었습니다. 한 설명에 따르면 고양이는 어느 순간 더 빨라지지 않고 몸의 힘을 빼 충격을 분산합니다. 그래도 대부분 다쳤으니 베란다와 창문 단속은 필수입니다.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "pl": {
+      "title": "Czy kot przeżyje upadek z siódmego piętra? 🐱",
+      "description": "W badaniu 132 kotów przywiezionych do nowojorskiej lecznicy po upadku z wysokości 90% przeżyło dzięki leczeniu, a obrażenia narastały mniej więcej do siódmego piętra, a potem malały. Jedno z wyjaśnień: kot przestaje przyspieszać, rozluźnia się i rozkłada uderzenie. Większość jednak odniosła obrażenia, więc zabezpiecz balkon i okna.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "nl": {
+      "title": "Kan een kat een val van de zevende verdieping overleven? 🐱",
+      "description": "In een studie met 132 katten die na een val bij een dierenarts in New York kwamen, overleefde 90% dankzij behandeling, en de verwondingen namen toe tot ongeveer de zevende verdieping en daarna af. Een verklaring: de kat versnelt niet meer, ontspant zich en verdeelt de klap. De meeste raakten toch gewond, dus beveilig balkon en ramen.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "uk": {
+      "title": "Чи може кіт вижити після падіння з сьомого поверху? 🐱",
+      "description": "У дослідженні 132 котів, яких після падіння привезли до ветклініки Нью-Йорка, 90% вижили завдяки лікуванню, а травми ставали важчими приблизно до сьомого поверху, а далі меншали. Одне з пояснень: кіт перестає розганятися, розслабляється й розподіляє удар. Але травмованими були більшість, тож убезпечте балкони й вікна.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "vi": {
+      "title": "Mèo có thể sống sót khi rơi từ tầng bảy không? 🐱",
+      "description": "Trong một nghiên cứu về 132 con mèo được đưa đến bác sĩ thú y ở New York sau khi rơi từ trên cao, 90% sống sót nhờ được chữa trị, và chấn thương nặng dần đến khoảng tầng bảy rồi giảm đi. Một cách giải thích: mèo ngừng tăng tốc, thả lỏng và phân tán lực va chạm. Dù vậy phần lớn vẫn bị thương, nên hãy rào chắn ban công và cửa sổ.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "az": {
+      "title": "Pişik yeddinci mərtəbədən yıxılıb sağ qala bilərmi? 🐱",
+      "description": "Hündürlükdən yıxıldıqdan sonra Nyu-Yorkda baytara gətirilən 132 pişik üzərində aparılan araşdırmada müalicə olunanların 90%-i sağ qaldı, xəsarətlər təxminən yeddinci mərtəbəyədək ağırlaşdı, sonra azaldı. Bir izaha görə pişik müəyyən sürətdən sonra daha sürətlənmir, boşalır və zərbəni bədəninə paylayır. Yenə də çoxu xəsarət aldı, ona görə balkon və pəncərələri qoruyun.\n\n#shorts\n\nSeri: mk-c0099"
+    },
+    "ro": {
+      "title": "Poate o pisică să supraviețuiască unei căderi de la etajul șapte? 🐱",
+      "description": "Într-un studiu pe 132 de pisici aduse la un veterinar din New York după căderi de la înălțime, 90% au supraviețuit cu tratament, iar rănile s-au agravat până pe la etajul șapte, apoi au scăzut. O explicație: pisica nu mai accelerează, se relaxează și împarte șocul pe tot corpul. Totuși, cele mai multe s-au rănit, așa că asigură balcoanele și ferestrele.\n\n#shorts\n\nSeri: mk-c0099"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin balkona çıkıyor mu: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kedi yedinci kattan düştü.",
+      "visual": "close-up of a cat's face on a high apartment balcony railing, looking straight into the camera",
+      "stock_query": "cat face",
+      "source": "stock",
+      "callout": "7. KATTAN DÜŞTÜ"
+    },
+    {
+      "text": "Peki bu yükseklikten yaşayabilir mi?",
+      "visual": "a cat sitting on a balcony ledge looking down at the street far below",
+      "stock_query": "cat balcony",
+      "source": "stock"
+    },
+    {
+      "text": "Tuhafı şu: bir çalışmada yaralanmalar yedinci kata kadar arttı, daha yüksekte azaldı.",
+      "visual": "a veterinarian gently examining a cat on a clinic table",
+      "stock_query": "cat veterinarian",
+      "source": "stock",
+      "callout": "YÜKSEKTE AZ YARA"
+    },
+    {
+      "text": "Cevap evet: veterinere getirilen yüz otuz iki kediden onda dokuzu kurtuldu.",
+      "visual": "a cat landing softly on its feet after a jump, slow motion",
+      "stock_query": "cat jumping",
+      "source": "stock",
+      "callout": "%90 KURTULDU"
+    },
+    {
+      "text": "Çünkü bir noktadan sonra hızlanmayı bırakır, gevşer ve darbeyi gövdesine yayar.",
+      "visual": "a cat in mid-air with its legs spread out, slow motion",
+      "stock_query": "cat leaping",
+      "source": "stock"
+    },
+    {
+      "text": "Yine de çoğu yaralanıyor; balkonu açık bırakma, çünkü...",
+      "visual": "a cat sitting behind a closed window, looking outside",
+      "stock_query": "cat window",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.94,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #152",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0099_1794295556_ig.mp4"
+}
