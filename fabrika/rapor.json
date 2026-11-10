@@ -1,71 +1,18 @@
 {
- "started": "2026-11-10T12:10:00+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-10T13:15:47+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y021",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "61",
-  "videos": "65"
+ "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
+ "chars": 424,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "17910756456572090",
+  "url": "https://www.instagram.com/reel/Dfj_lislH0L/",
+  "at": 1794316660.8428183
  },
- "credits_before": [
-  95449,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261110-0-y069.json",
-  "kalan": 5
- },
- "topic": {
-  "id": "y069",
-  "series": "Ya Olsaydı?",
-  "q": "Uçağın kapısı havada açılsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 856,
- "duration": 56.7,
- "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/m_XagF1CrzE",
- "recent_status": {
-  "y064": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "751",
-   "reason": null
-  },
-  "n013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "207",
-   "reason": null
-  },
-  "y065": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "159",
-   "reason": null
-  },
-  "g013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  },
-  "y069": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  95655,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261110-0-y069.json Uçağın kapısı havada açılsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Dfj_lislH0L/"
  ],
- "finished": "2026-11-10T12:11:43+00:00"
+ "finished": "2026-11-10T13:17:40+00:00"
 }
