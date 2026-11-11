@@ -1,0 +1,275 @@
+{
+ "id": "n015",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir nötron yıldızı ne kadar yoğun?",
+ "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
+ "bar": {
+  "hi": "NÖTRON YILDIZI",
+  "rest": "YOĞUNLUĞU?"
+ },
+ "summary": "Bir nötron yıldızından şeker küpü kadar bir parça, Dünya'da 1 milyar ton gelirdi! Güneş'in 1-2 katı kütle bir şehir büyüklüğünde bir topa sıkışınca neler olduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Şeker küpü kadarı 1 milyar ton: bir dağ ağırlığında!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⛰️",
+    "value": "1.000.000.000",
+    "unit": "ton",
+    "label": "Şeker Küpü Kadarı",
+    "key": "milyar"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Çayıma atsam dağ mı atmış olurum?!",
+   "v": {
+    "t": "question",
+    "bg": "lab",
+    "e": "☕",
+    "label": "Çayda Bir Dağ?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Güneş'in 1-2 katı kütle, 20 kilometrelik topa sıkışmış.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "sun",
+     "label": "Güneş Çapı",
+     "value": "1392000"
+    },
+    "b": {
+     "b": "star",
+     "label": "20 km Top",
+     "value": "20"
+    },
+    "mode": "size",
+    "key": "20"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yüzeyine insen, kaçmak için ışık hızının yarısı gerekir.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Kaçış Hızı",
+    "from": 0,
+    "to": 150000,
+    "unit": "km/sn",
+    "e": "🚀",
+    "key": "yarısı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Elinden marshmallow düşse, bin hidrojen bombası gibi çarpar.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🍡",
+     "label": "Marshmallow"
+    },
+    "right": {
+     "e": "💥",
+     "label": "Bin H-Bombası"
+    },
+    "key": "çarpar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu yoğunlukta tüm insanlık bir şeker küpüne sığardı!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "👥",
+    "do": "shrink",
+    "key": "sığardı",
+    "label": "Tüm İnsanlık"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence evrende bundan yoğun ne var? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "⭐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre nötron yıldızları yaklaşık 20 km çapındadır ve şeker küpü kadar bir parçaları Dünya'da yaklaşık 1 trilyon kilogram (1 milyar ton) gelir; bu, bir dağın ağırlığı kadardır.",
+   "source": "NASA Imagine the Universe",
+   "url": "https://imagine.gsfc.nasa.gov/science/objects/pulsars1.html"
+  },
+  {
+   "text": "Space.com'a göre nötron yıldızlarının kütlesi genellikle Güneş'in 1-2 katıdır ve bu kütle 10-20 km genişliğinde, yani bir şehir büyüklüğünde bir topa sığar.",
+   "source": "Space.com",
+   "url": "https://www.space.com/22180-neutron-stars.html"
+  },
+  {
+   "text": "Space.com'a göre bir nötron yıldızından kaçabilmek için ışık hızının yarısı kadar bir hız gerekir.",
+   "source": "Space.com",
+   "url": "https://www.space.com/22180-neutron-stars.html"
+  },
+  {
+   "text": "Space.com'a göre bir nötron yıldızının yüzeyine bırakılan bir marshmallow, bin hidrojen bombasına denk bir enerjiyle çarpardı.",
+   "source": "Space.com",
+   "url": "https://www.space.com/22180-neutron-stars.html"
+  },
+  {
+   "text": "Space.com'a göre şeker küpü kadar nötron yıldızı maddesi bütün insan ırkı kadar ağırdır; yani bu yoğunlukta insanlığın tamamı bir şeker küpüne sığardı.",
+   "source": "Space.com",
+   "url": "https://www.space.com/22180-neutron-stars.html"
+  }
+ ],
+ "tags": [
+  "nötron yıldızı",
+  "nötron yıldızı yoğunluğu",
+  "nötron yıldızı ne kadar ağır",
+  "pulsar",
+  "yıldızlar",
+  "uzay",
+  "astronomi",
+  "neutron star",
+  "neutron star density",
+  "sugar cube neutron star",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#nötronyıldızı",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://imagine.gsfc.nasa.gov/science/objects/pulsars1.html",
+  "https://www.space.com/22180-neutron-stars.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Dense Is a Neutron Star, Really?",
+   "summary": "A sugar-cube-sized piece of a neutron star would weigh 1 billion tons on Earth! Professor Pi explains what happens when 1 to 2 times the Sun's mass is crushed into a ball the size of a city.",
+   "facts": [
+    "According to NASA, neutron stars are about 20 km across, and a sugar-cube-sized piece of their material would weigh about 1 trillion kilograms (1 billion tons) on Earth, about as much as a mountain.",
+    "According to Space.com, neutron stars typically have 1 to 2 times the mass of the Sun, packed into a ball 10 to 20 km wide, about the size of a city.",
+    "According to Space.com, escaping a neutron star takes a speed of about half the speed of light.",
+    "According to Space.com, a marshmallow dropped onto a neutron star's surface would hit with the energy of a thousand hydrogen bombs.",
+    "According to Space.com, a sugar cube of neutron star material weighs as much as the entire human race, so at this density all of humanity would fit into a single sugar cube."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Densa Es Realmente una Estrella de Neutrones?",
+   "summary": "¡Un trozo de estrella de neutrones del tamaño de un terrón de azúcar pesaría 1.000 millones de toneladas en la Tierra! El Profesor Pi explica qué pasa cuando entre 1 y 2 veces la masa del Sol se comprime en una bola del tamaño de una ciudad.",
+   "facts": [
+    "Según la NASA, las estrellas de neutrones miden unos 20 km de diámetro, y un trozo de su materia del tamaño de un terrón de azúcar pesaría en la Tierra alrededor de 1 billón de kilogramos (1.000 millones de toneladas), más o menos lo que una montaña.",
+    "Según Space.com, las estrellas de neutrones suelen tener entre 1 y 2 veces la masa del Sol, comprimida en una bola de 10 a 20 km de ancho, del tamaño de una ciudad.",
+    "Según Space.com, para escapar de una estrella de neutrones hace falta una velocidad de aproximadamente la mitad de la velocidad de la luz.",
+    "Según Space.com, un malvavisco que cayera sobre la superficie de una estrella de neutrones impactaría con la energía de mil bombas de hidrógeno.",
+    "Según Space.com, un terrón de azúcar de materia de estrella de neutrones pesa tanto como toda la humanidad, así que con esta densidad toda la humanidad cabría en un solo terrón de azúcar."
+   ]
+  },
+  "pt": {
+   "title": "Quão Densa É Realmente uma Estrela de Nêutrons?",
+   "summary": "Um pedaço de estrela de nêutrons do tamanho de um cubo de açúcar pesaria 1 bilhão de toneladas na Terra! O Professor Pi explica o que acontece quando 1 a 2 vezes a massa do Sol é espremida numa bola do tamanho de uma cidade.",
+   "facts": [
+    "Segundo a NASA, as estrelas de nêutrons têm cerca de 20 km de diâmetro, e um pedaço de sua matéria do tamanho de um cubo de açúcar pesaria na Terra cerca de 1 trilhão de quilos (1 bilhão de toneladas), mais ou menos o peso de uma montanha.",
+    "Segundo o Space.com, as estrelas de nêutrons costumam ter de 1 a 2 vezes a massa do Sol, comprimida numa bola de 10 a 20 km de largura, do tamanho de uma cidade.",
+    "Segundo o Space.com, para escapar de uma estrela de nêutrons é preciso uma velocidade de cerca de metade da velocidade da luz.",
+    "Segundo o Space.com, um marshmallow largado na superfície de uma estrela de nêutrons a atingiria com a energia de mil bombas de hidrogênio.",
+    "Segundo o Space.com, um cubo de açúcar de matéria de estrela de nêutrons pesa tanto quanto toda a raça humana; ou seja, nessa densidade toda a humanidade caberia num único cubo de açúcar."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى كثافة النجم النيوتروني حقًا؟",
+   "summary": "قطعة من نجم نيوتروني بحجم مكعب سكر ستزن على الأرض مليار طن! يشرح البروفيسور باي ماذا يحدث عندما تُضغط كتلة تعادل 1 إلى 2 ضعف كتلة الشمس في كرة بحجم مدينة.",
+   "facts": [
+    "وفقًا لناسا، يبلغ قطر النجوم النيوترونية نحو 20 كم، وقطعة من مادتها بحجم مكعب سكر تزن على الأرض نحو تريليون كيلوغرام (مليار طن)، أي ما يعادل وزن جبل تقريبًا.",
+    "وفقًا لـ Space.com، تبلغ كتلة النجوم النيوترونية عادةً 1 إلى 2 ضعف كتلة الشمس، مضغوطة في كرة عرضها 10 إلى 20 كم، أي بحجم مدينة.",
+    "وفقًا لـ Space.com، يتطلب الإفلات من نجم نيوتروني سرعة تعادل نحو نصف سرعة الضوء.",
+    "وفقًا لـ Space.com، لو سقطت قطعة مارشميلو على سطح نجم نيوتروني لاصطدمت بطاقة تعادل ألف قنبلة هيدروجينية.",
+    "وفقًا لـ Space.com، يزن مكعب سكر من مادة النجم النيوتروني ما يعادل وزن الجنس البشري كله، أي أن البشرية جمعاء ستتسع بهذه الكثافة في مكعب سكر واحد."
+   ]
+  },
+  "hi": {
+   "title": "न्यूट्रॉन तारा असल में कितना घना होता है?",
+   "summary": "न्यूट्रॉन तारे का चीनी के एक क्यूब जितना टुकड़ा पृथ्वी पर 1 अरब टन का होगा! प्रोफेसर पाई बताते हैं कि जब सूर्य के 1 से 2 गुना द्रव्यमान को एक शहर जितनी गेंद में ठूंस दिया जाए तो क्या होता है।",
+   "facts": [
+    "NASA के अनुसार, न्यूट्रॉन तारे लगभग 20 किमी चौड़े होते हैं, और उनके पदार्थ का चीनी के क्यूब जितना टुकड़ा पृथ्वी पर लगभग 1 लाख करोड़ किलोग्राम (1 अरब टन) का होगा, यानी लगभग एक पहाड़ जितना।",
+    "Space.com के अनुसार, न्यूट्रॉन तारों का द्रव्यमान आम तौर पर सूर्य का 1 से 2 गुना होता है, जो 10 से 20 किमी चौड़ी, यानी एक शहर जितनी बड़ी गेंद में समाया होता है।",
+    "Space.com के अनुसार, न्यूट्रॉन तारे से बच निकलने के लिए प्रकाश की लगभग आधी गति चाहिए।",
+    "Space.com के अनुसार, न्यूट्रॉन तारे की सतह पर गिराया गया एक मार्शमैलो हज़ार हाइड्रोजन बमों जितनी ऊर्जा से टकराएगा।",
+    "Space.com के अनुसार, न्यूट्रॉन तारे के पदार्थ का एक चीनी का क्यूब पूरी मानव जाति जितना भारी होता है, यानी इस घनत्व पर पूरी मानवता चीनी के एक क्यूब में समा जाएगी।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Padat Sebenarnya Bintang Neutron?",
+   "summary": "Sepotong bintang neutron seukuran gula batu akan berbobot 1 miliar ton di Bumi! Profesor Pi menjelaskan apa yang terjadi saat massa 1 sampai 2 kali Matahari dipadatkan menjadi bola seukuran kota.",
+   "facts": [
+    "Menurut NASA, bintang neutron berdiameter sekitar 20 km, dan sepotong materinya seukuran gula batu akan berbobot sekitar 1 triliun kilogram (1 miliar ton) di Bumi, kira-kira seberat sebuah gunung.",
+    "Menurut Space.com, massa bintang neutron biasanya 1 sampai 2 kali massa Matahari, dipadatkan dalam bola selebar 10 sampai 20 km, seukuran sebuah kota.",
+    "Menurut Space.com, untuk lolos dari bintang neutron dibutuhkan kecepatan sekitar setengah kecepatan cahaya.",
+    "Menurut Space.com, marshmallow yang dijatuhkan ke permukaan bintang neutron akan menghantam dengan energi seribu bom hidrogen.",
+    "Menurut Space.com, materi bintang neutron seukuran gula batu seberat seluruh umat manusia; artinya, pada kepadatan ini seluruh umat manusia muat dalam satu gula batu."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Densité Réelle d'une Étoile à Neutrons ?",
+   "summary": "Un morceau d'étoile à neutrons de la taille d'un morceau de sucre pèserait 1 milliard de tonnes sur Terre ! Le Professeur Pi explique ce qui se passe quand 1 à 2 fois la masse du Soleil est écrasée dans une boule de la taille d'une ville.",
+   "facts": [
+    "Selon la NASA, les étoiles à neutrons mesurent environ 20 km de diamètre, et un morceau de leur matière de la taille d'un morceau de sucre pèserait environ 1 000 milliards de kilogrammes (1 milliard de tonnes) sur Terre, à peu près autant qu'une montagne.",
+    "Selon Space.com, les étoiles à neutrons ont généralement 1 à 2 fois la masse du Soleil, comprimée dans une boule de 10 à 20 km de large, de la taille d'une ville.",
+    "Selon Space.com, pour s'échapper d'une étoile à neutrons, il faut une vitesse d'environ la moitié de celle de la lumière.",
+    "Selon Space.com, une guimauve lâchée sur la surface d'une étoile à neutrons la frapperait avec l'énergie de mille bombes à hydrogène.",
+    "Selon Space.com, un morceau de sucre de matière d'étoile à neutrons pèse autant que toute l'espèce humaine : à cette densité, l'humanité entière tiendrait dans un seul morceau de sucre."
+   ]
+  },
+  "de": {
+   "title": "Wie Dicht Ist ein Neutronenstern Wirklich?",
+   "summary": "Ein Stück Neutronenstern von der Größe eines Zuckerwürfels würde auf der Erde 1 Milliarde Tonnen wiegen! Professor Pi erklärt, was passiert, wenn die 1- bis 2-fache Masse der Sonne in eine Kugel von der Größe einer Stadt gepresst wird.",
+   "facts": [
+    "Laut NASA sind Neutronensterne etwa 20 km groß, und ein zuckerwürfelgroßes Stück ihrer Materie würde auf der Erde etwa 1 Billion Kilogramm (1 Milliarde Tonnen) wiegen, ungefähr so viel wie ein Berg.",
+    "Laut Space.com haben Neutronensterne meist die 1- bis 2-fache Masse der Sonne, zusammengepresst in eine Kugel von 10 bis 20 km Breite, so groß wie eine Stadt.",
+    "Laut Space.com braucht man etwa die halbe Lichtgeschwindigkeit, um einem Neutronenstern zu entkommen.",
+    "Laut Space.com würde ein Marshmallow, der auf die Oberfläche eines Neutronensterns fällt, mit der Energie von tausend Wasserstoffbomben aufschlagen.",
+    "Laut Space.com wiegt ein Zuckerwürfel Neutronensternmaterie so viel wie die gesamte Menschheit; bei dieser Dichte würde also die ganze Menschheit in einen einzigen Zuckerwürfel passen."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Плотная Нейтронная Звезда на Самом Деле?",
+   "summary": "Кусочек нейтронной звезды размером с кубик сахара весил бы на Земле 1 миллиард тонн! Профессор Пи объясняет, что происходит, когда масса в 1–2 раза больше солнечной сжимается в шар размером с город.",
+   "facts": [
+    "По данным NASA, нейтронные звёзды имеют около 20 км в поперечнике, а кусочек их вещества размером с кубик сахара весил бы на Земле около 1 триллиона килограммов (1 миллиард тонн), примерно как гора.",
+    "По данным Space.com, масса нейтронных звёзд обычно в 1–2 раза больше массы Солнца и сжата в шар шириной 10–20 км, размером с город.",
+    "По данным Space.com, чтобы улететь с нейтронной звезды, нужна скорость около половины скорости света.",
+    "По данным Space.com, зефир, упавший на поверхность нейтронной звезды, ударил бы с энергией тысячи водородных бомб.",
+    "По данным Space.com, кубик сахара из вещества нейтронной звезды весит столько же, сколько всё человечество; то есть при такой плотности всё человечество поместилось бы в один кубик сахара."
+   ]
+  },
+  "az": {
+   "title": "Neytron Ulduzu Əslində Nə Qədər Sıxdır?",
+   "summary": "Neytron ulduzundan qənd kubu boyda bir parça Yer üzündə 1 milyard ton gələrdi! Günəşin 1-2 misli kütləsi bir şəhər boyda topa sıxılanda nələr baş verdiyini Professor Pi izah edir.",
+   "facts": [
+    "NASA-ya görə, neytron ulduzlarının diametri təxminən 20 km-dir və onların maddəsindən qənd kubu boyda bir parça Yer üzündə təxminən 1 trilyon kiloqram (1 milyard ton) gələrdi, bu da təxminən bir dağın çəkisi qədərdir.",
+    "Space.com-a görə, neytron ulduzlarının kütləsi adətən Günəşin 1-2 mislidir və bu kütlə eni 10-20 km olan, yəni bir şəhər boyda topa sığır.",
+    "Space.com-a görə, neytron ulduzundan qaçmaq üçün işıq sürətinin təxminən yarısı qədər sürət lazımdır.",
+    "Space.com-a görə, neytron ulduzunun səthinə atılan bir zefir min hidrogen bombasına bərabər enerji ilə çırpılardı.",
+    "Space.com-a görə, qənd kubu boyda neytron ulduzu maddəsi bütün bəşəriyyət qədər ağırdır; yəni bu sıxlıqda bütün bəşəriyyət bir qənd kubuna sığardı."
+   ]
+  }
+ }
+}

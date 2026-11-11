@@ -1,0 +1,264 @@
+{
+ "id": "y068",
+ "series": "Ya Olsaydı?",
+ "q": "Uyurken ağzına örümcek girseydi ne olurdu?",
+ "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
+ "bar": {
+  "hi": "AĞZINA ÖRÜMCEK",
+  "rest": "GİRSEYDİ?"
+ },
+ "summary": "Bir araştırmada evlerdeki odaların %65'inde örümcek bulundu; peki uyurken biri ağzına girse ne olurdu? 'Yılda 8 örümcek yutarız' bilgisinin aslını da Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Odanda şu an örümcek olabilir: bir araştırmada odaların %65'inde çıktı.",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "🕷️",
+    "value": "%65",
+    "unit": "oda",
+    "label": "Örümcekli Odalar",
+    "key": "%65"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Şu an tavanımda mı?!",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "🕸️",
+    "label": "Tavanımda mı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama nefesinin ve kalbinin titreşimi onu kaçırır.",
+   "v": {
+    "t": "icons",
+    "bg": "night",
+    "items": [
+     {
+      "e": "🫁",
+      "label": "Nefes"
+     },
+     {
+      "e": "❤️",
+      "label": "Kalp Atışı"
+     },
+     {
+      "e": "🕷️",
+      "label": "Kaçar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yine de ağzına girse, dudağına değdiği an büyük ihtimalle uyanırdın.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "👄",
+    "do": "shake",
+    "key": "uyanırdın",
+    "label": "Dudağa Dokunuş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yutsan, pH'ı 1'e inen mide asidin onu sindirirdi.",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "Mide Asidi",
+    "from": 7,
+    "to": 1,
+    "unit": "pH",
+    "e": "🧪",
+    "key": "asidin"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "'Yılda 8 örümcek yutarız' uydurma: doğrulanmış tek vaka yok!",
+   "v": {
+    "t": "split",
+    "bg": "night",
+    "left": {
+     "e": "🕷️",
+     "label": "Yılda 8 Örümcek"
+    },
+    "right": {
+     "e": "❌",
+     "label": "Tek Vaka Yok"
+    },
+    "key": "uydurma"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen ağzın açık mı uyuyorsun? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "😴"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NC State Üniversitesi'nin ABD'de 50 evde 554 odayı taradığı araştırmada ağ ören örümcekler (Theridiidae) odaların %65'inde bulundu.",
+   "source": "NC State University",
+   "url": "https://news.ncsu.edu/2016/01/bertone-home-arthropod-2016/"
+  },
+  {
+   "text": "Scientific American'a göre uyuyan bir insanın nefesi, kalp atışı ve horlaması örümcekleri tehlikeye karşı uyaran titreşimler yaratır; yüzünde dolaşıp ağzına giren bir örümcek de pek çok insanı büyük ihtimalle uyandırır.",
+   "source": "Scientific American",
+   "url": "https://www.scientificamerican.com/article/fact-or-fiction-people-swallow-8-spiders-a-year-while-sleeping/"
+  },
+  {
+   "text": "NIH'nin StatPearls kaynağına göre mide içeriğinin pH'ı 1,0 kadar düşük olabilir; bu yüksek asitlik yutulan pek çok bakteriyi öldürür ya da etkisiz bırakır.",
+   "source": "NIH / StatPearls",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK535425/"
+  },
+  {
+   "text": "National Geographic'e göre örümcek uzmanı Rod Crawford, uyuyan birinin ağzına örümcek girdiğini gösteren doğrulanmış hiçbir çalışma, fotoğraf, örnek, tıbbi kayıt ya da kanıtlanmış gözlem olmadığını söylüyor; 'yılda 8 örümcek yutarız' bir efsanedir.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/animals/article/debunking-spider-myths"
+  }
+ ],
+ "tags": [
+  "örümcek",
+  "uykuda örümcek yutmak",
+  "yılda 8 örümcek",
+  "örümcek efsanesi",
+  "ağza örümcek girmesi",
+  "uyku",
+  "mide asidi",
+  "böcekler",
+  "spiders",
+  "swallow spiders in sleep",
+  "spider myth",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#örümcek",
+  "#uyku",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.scientificamerican.com/article/fact-or-fiction-people-swallow-8-spiders-a-year-while-sleeping/",
+  "https://news.ncsu.edu/2016/01/bertone-home-arthropod-2016/",
+  "https://www.nationalgeographic.com/animals/article/debunking-spider-myths",
+  "https://www.ncbi.nlm.nih.gov/books/NBK535425/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If a Spider Crawled Into Your Mouth While You Slept?",
+   "summary": "In one study, spiders turned up in 65% of the rooms in people's homes, so what would happen if one crawled into your mouth while you slept? Professor Pi explains, and reveals the truth about the claim that we swallow 8 spiders a year.",
+   "facts": [
+    "In an NC State University study that surveyed 554 rooms in 50 US homes, cobweb spiders (Theridiidae) were found in 65% of the rooms.",
+    "According to Scientific American, a sleeping person's breathing, heartbeat and snoring create vibrations that warn spiders of danger, and a spider crawling over the face and into the mouth would likely wake many people.",
+    "According to the NIH's StatPearls, stomach contents can reach a pH as low as 1.0, and this high acidity kills or inhibits many swallowed bacteria.",
+    "According to National Geographic, spider expert Rod Crawford says there is no verified study, photo, collected specimen, medical record or proven observation of a spider entering a sleeper's mouth; the '8 spiders a year' claim is a myth."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si una Araña Entrara en Tu Boca Mientras Duermes?",
+   "summary": "En un estudio aparecieron arañas en el 65 % de las habitaciones de las casas. ¿Qué pasaría si una se metiera en tu boca mientras duermes? El Profesor Pi lo explica y revela la verdad sobre eso de que nos tragamos 8 arañas al año.",
+   "facts": [
+    "En un estudio de la Universidad Estatal de Carolina del Norte que revisó 554 habitaciones de 50 casas de EE. UU., se encontraron arañas de la familia Theridiidae en el 65 % de las habitaciones.",
+    "Según Scientific American, la respiración, los latidos y los ronquidos de una persona dormida crean vibraciones que alertan a las arañas del peligro, y una araña que caminara por la cara hasta la boca probablemente despertaría a mucha gente.",
+    "Según StatPearls de los NIH, el contenido del estómago puede llegar a un pH tan bajo como 1,0, y esa gran acidez mata o inhibe muchas bacterias ingeridas.",
+    "Según National Geographic, el experto en arañas Rod Crawford afirma que no existe ningún estudio, foto, ejemplar recogido, registro médico ni observación comprobada de una araña entrando en la boca de alguien dormido; lo de las «8 arañas al año» es un mito."
+   ]
+  },
+  "pt": {
+   "title": "E Se uma Aranha Entrasse na Sua Boca Enquanto Você Dorme?",
+   "summary": "Num estudo, apareceram aranhas em 65% dos cômodos das casas. O que aconteceria se uma entrasse na sua boca enquanto você dorme? O Professor Pi explica e revela a verdade sobre a história de que engolimos 8 aranhas por ano.",
+   "facts": [
+    "Num estudo da Universidade Estadual da Carolina do Norte que vasculhou 554 cômodos de 50 casas nos EUA, aranhas da família Theridiidae foram encontradas em 65% dos cômodos.",
+    "Segundo a Scientific American, a respiração, os batimentos cardíacos e o ronco de quem dorme criam vibrações que alertam as aranhas sobre o perigo, e uma aranha andando pelo rosto até a boca provavelmente acordaria muita gente.",
+    "Segundo o StatPearls, dos NIH, o conteúdo do estômago pode chegar a um pH de apenas 1,0, e essa alta acidez mata ou inibe muitas bactérias engolidas.",
+    "Segundo a National Geographic, o especialista em aranhas Rod Crawford diz que não há nenhum estudo, foto, exemplar coletado, registro médico ou observação comprovada de uma aranha entrando na boca de alguém dormindo; as '8 aranhas por ano' são um mito."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لو دخل عنكبوت فمك وأنت نائم؟",
+   "summary": "في إحدى الدراسات وُجدت العناكب في 65% من غرف المنازل، فماذا سيحدث لو دخل أحدها فمك وأنت نائم؟ يشرح البروفيسور باي ذلك ويكشف حقيقة القول بأننا نبتلع 8 عناكب في السنة.",
+   "facts": [
+    "في دراسة لجامعة ولاية كارولاينا الشمالية فحصت 554 غرفة في 50 منزلًا أمريكيًا، وُجدت عناكب من فصيلة Theridiidae في 65% من الغرف.",
+    "وفقًا لمجلة Scientific American، يُحدث تنفس النائم ونبضات قلبه وشخيره اهتزازات تحذّر العناكب من الخطر، ومن المرجح أن يوقظ عنكبوتٌ يزحف على الوجه إلى الفم كثيرًا من الناس.",
+    "وفقًا لمرجع StatPearls التابع للمعاهد الوطنية للصحة الأمريكية، قد تنخفض درجة حموضة محتوى المعدة حتى pH 1.0، وهذه الحموضة العالية تقتل كثيرًا من البكتيريا المبتلعة أو تثبطها.",
+    "وفقًا لناشيونال جيوغرافيك، يقول خبير العناكب رود كروفورد إنه لا توجد أي دراسة أو صورة أو عينة أو سجل طبي أو ملاحظة مثبتة لعنكبوت دخل فم شخص نائم؛ فقصة «8 عناكب في السنة» خرافة."
+   ]
+  },
+  "hi": {
+   "title": "अगर सोते समय आपके मुंह में मकड़ी घुस जाए तो क्या होगा?",
+   "summary": "एक अध्ययन में घरों के 65% कमरों में मकड़ियां मिलीं, तो अगर सोते समय कोई मकड़ी आपके मुंह में घुस जाए तो क्या होगा? प्रोफेसर पाई बताते हैं और इस दावे का सच भी खोलते हैं कि हम साल में 8 मकड़ियां निगल जाते हैं।",
+   "facts": [
+    "नॉर्थ कैरोलिना स्टेट यूनिवर्सिटी के एक अध्ययन में अमेरिका के 50 घरों के 554 कमरों की जांच हुई, और जाल बुनने वाली Theridiidae मकड़ियां 65% कमरों में मिलीं।",
+    "Scientific American के अनुसार, सोते हुए इंसान की सांस, दिल की धड़कन और खर्राटे ऐसे कंपन पैदा करते हैं जो मकड़ियों को खतरे से आगाह करते हैं, और चेहरे से होकर मुंह में घुसती मकड़ी से बहुत से लोग शायद जाग जाएंगे।",
+    "NIH के StatPearls के अनुसार, पेट की सामग्री का pH 1.0 तक कम हो सकता है, और यह तेज़ अम्लता निगले गए कई बैक्टीरिया को मार देती है या रोक देती है।",
+    "National Geographic के अनुसार, मकड़ी विशेषज्ञ रॉड क्रॉफ़र्ड कहते हैं कि सोते इंसान के मुंह में मकड़ी घुसने का कोई सत्यापित अध्ययन, फ़ोटो, नमूना, मेडिकल रिकॉर्ड या प्रमाणित अवलोकन नहीं है; 'साल में 8 मकड़ियां' एक मिथक है।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Laba-laba Masuk ke Mulutmu Saat Tidur?",
+   "summary": "Dalam sebuah penelitian, laba-laba ditemukan di 65% ruangan rumah. Lalu apa jadinya jika seekor masuk ke mulutmu saat kamu tidur? Profesor Pi menjelaskannya dan mengungkap kebenaran soal klaim bahwa kita menelan 8 laba-laba setahun.",
+   "facts": [
+    "Dalam penelitian NC State University yang memeriksa 554 ruangan di 50 rumah di AS, laba-laba famili Theridiidae ditemukan di 65% ruangan.",
+    "Menurut Scientific American, napas, detak jantung, dan dengkuran orang yang tidur menimbulkan getaran yang memperingatkan laba-laba akan bahaya, dan laba-laba yang merayap di wajah hingga ke mulut kemungkinan besar akan membangunkan banyak orang.",
+    "Menurut StatPearls dari NIH, isi lambung bisa mencapai pH serendah 1,0, dan keasaman tinggi ini membunuh atau menghambat banyak bakteri yang tertelan.",
+    "Menurut National Geographic, pakar laba-laba Rod Crawford mengatakan tidak ada satu pun studi, foto, spesimen, catatan medis, atau pengamatan terbukti tentang laba-laba yang masuk ke mulut orang yang sedang tidur; klaim '8 laba-laba setahun' hanyalah mitos."
+   ]
+  },
+  "fr": {
+   "title": "Et Si une Araignée Entrait Dans Ta Bouche Pendant Que Tu Dors ?",
+   "summary": "Dans une étude, des araignées ont été trouvées dans 65 % des pièces des maisons. Que se passerait-il si l'une d'elles entrait dans ta bouche pendant ton sommeil ? Le Professeur Pi l'explique et révèle la vérité sur l'idée qu'on avale 8 araignées par an.",
+   "facts": [
+    "Dans une étude de l'Université d'État de Caroline du Nord portant sur 554 pièces de 50 maisons américaines, des araignées de la famille des Theridiidae ont été trouvées dans 65 % des pièces.",
+    "Selon Scientific American, la respiration, les battements de cœur et les ronflements d'une personne endormie créent des vibrations qui avertissent les araignées d'un danger, et une araignée qui marcherait sur le visage jusqu'à la bouche réveillerait probablement beaucoup de gens.",
+    "Selon StatPearls, des NIH, le contenu de l'estomac peut atteindre un pH aussi bas que 1,0, et cette forte acidité tue ou inhibe de nombreuses bactéries avalées.",
+    "Selon National Geographic, le spécialiste des araignées Rod Crawford affirme qu'il n'existe aucune étude, photo, spécimen, dossier médical ou observation prouvée d'une araignée entrant dans la bouche d'un dormeur ; les « 8 araignées par an » sont un mythe."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert, Wenn Dir im Schlaf eine Spinne in den Mund Krabbelt?",
+   "summary": "In einer Studie fanden sich in 65 % der Zimmer von Wohnhäusern Spinnen. Was würde passieren, wenn dir im Schlaf eine in den Mund krabbelt? Professor Pi erklärt es und verrät, was an der Behauptung dran ist, dass wir 8 Spinnen im Jahr verschlucken.",
+   "facts": [
+    "In einer Studie der North Carolina State University, die 554 Zimmer in 50 US-Häusern untersuchte, wurden Kugelspinnen (Theridiidae) in 65 % der Zimmer gefunden.",
+    "Laut Scientific American erzeugen Atmung, Herzschlag und Schnarchen eines Schlafenden Vibrationen, die Spinnen vor Gefahr warnen, und eine Spinne, die übers Gesicht in den Mund krabbelt, würde viele Menschen wahrscheinlich aufwecken.",
+    "Laut StatPearls der NIH kann der Mageninhalt einen pH-Wert von nur 1,0 erreichen, und diese hohe Säure tötet viele verschluckte Bakterien ab oder hemmt sie.",
+    "Laut National Geographic sagt der Spinnenexperte Rod Crawford, dass es keine bestätigte Studie, kein Foto, kein gesammeltes Exemplar, keine Krankenakte und keine nachgewiesene Beobachtung einer Spinne gibt, die in den Mund eines Schlafenden gekrochen ist; die „8 Spinnen pro Jahr“ sind ein Mythos."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Во Сне Тебе в Рот Заползёт Паук?",
+   "summary": "В одном исследовании пауков нашли в 65% комнат жилых домов. Что будет, если один из них заползёт тебе в рот во сне? Профессор Пи объясняет и раскрывает правду о том, что мы якобы глотаем 8 пауков в год.",
+   "facts": [
+    "В исследовании Университета штата Северная Каролина, где обследовали 554 комнаты в 50 домах США, пауков-тенетников (Theridiidae) нашли в 65% комнат.",
+    "По данным Scientific American, дыхание, сердцебиение и храп спящего человека создают вибрации, которые предупреждают пауков об опасности, а паук, ползущий по лицу в рот, скорее всего, разбудил бы многих людей.",
+    "По данным StatPearls (NIH), кислотность содержимого желудка может достигать pH 1,0, и такая высокая кислотность убивает или подавляет многие проглоченные бактерии.",
+    "По данным National Geographic, специалист по паукам Род Кроуфорд говорит, что нет ни одного подтверждённого исследования, фото, собранного экземпляра, медицинской записи или доказанного наблюдения паука, заползшего в рот спящему; «8 пауков в год» — это миф."
+   ]
+  },
+  "az": {
+   "title": "Yatanda Ağzına Hörümçək Girsəydi Nə Olardı?",
+   "summary": "Bir araşdırmada evlərdəki otaqların 65%-də hörümçək tapıldı; bəs yatanda biri ağzına girsəydi nə olardı? Professor Pi bunu izah edir və ildə 8 hörümçək uduruq iddiasının həqiqətini açır.",
+   "facts": [
+    "Şimali Karolina Ştat Universitetinin ABŞ-da 50 evdə 554 otağı yoxladığı araşdırmada Theridiidae fəsiləsindən tor toxuyan hörümçəklər otaqların 65%-də tapıldı.",
+    "Scientific American-a görə, yatan insanın nəfəsi, ürək döyüntüsü və xorultusu hörümçəkləri təhlükə barədə xəbərdar edən titrəyişlər yaradır, üzündə gəzib ağzına girən hörümçək isə çox güman ki, bir çox insanı oyadardı.",
+    "NIH-in StatPearls mənbəyinə görə, mədə möhtəviyyatının pH-ı 1,0-a qədər düşə bilər və bu yüksək turşuluq udulan bir çox bakteriyanı öldürür və ya zəiflədir.",
+    "National Geographic-ə görə, hörümçək mütəxəssisi Rod Crawford deyir ki, yatan adamın ağzına hörümçək girdiyini göstərən təsdiqlənmiş heç bir araşdırma, foto, nümunə, tibbi qeyd və ya sübut olunmuş müşahidə yoxdur; 'ildə 8 hörümçək' bir mifdir."
+   ]
+  }
+ }
+}

@@ -1,0 +1,280 @@
+{
+ "id": "g015",
+ "series": "1 Gün Boyunca",
+ "q": "Bir mavi balina 1 günde ne kadar yer?",
+ "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+ "bar": {
+  "hi": "MAVİ BALİNA",
+  "rest": "KAÇ TON YER?"
+ },
+ "summary": "Bir mavi balinanın tek ağız dolusu 457.000 kaloriye ulaşabilir: senin 7 aydan uzun yemeğin! Günde 16 ton krili nasıl yediğini ve kakasının okyanusu nasıl beslediğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Tek ağız dolusu 457.000 kaloriye kadar: senin 7 aydan uzun yemeğin!",
+   "v": {
+    "t": "number",
+    "bg": "underwater",
+    "e": "🐋",
+    "value": "457.000",
+    "unit": "kalori",
+    "label": "Tek Ağız Dolusu",
+    "key": "457.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bir lokmayla 7 ay mı doyarım?!",
+   "v": {
+    "t": "question",
+    "bg": "underwater",
+    "e": "🍽️",
+    "label": "7 Ay Tek Lokma?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Her seferinde 500 kiloya kadar kril ve 110 ton su alır.",
+   "v": {
+    "t": "icons",
+    "bg": "underwater",
+    "items": [
+     {
+      "e": "🦐",
+      "label": "500 kg Kril"
+     },
+     {
+      "e": "🌊",
+      "label": "110 Ton Su"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Günde 16 ton kril: senin ağırlığının 200 katı!",
+   "v": {
+    "t": "compare",
+    "bg": "ocean",
+    "a": {
+     "e": "🧍",
+     "label": "Sen: 80 kg",
+     "value": "80"
+    },
+    "b": {
+     "e": "🦐",
+     "label": "Kril: 16.000 kg",
+     "value": "16.000"
+    },
+    "mode": "bar",
+    "key": "16"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bunu yılda tahminen 80-150 gün, her gün yapar.",
+   "v": {
+    "t": "timeline",
+    "bg": "ocean",
+    "steps": [
+     {
+      "when": "1 AĞIZ",
+      "e": "🦐",
+      "label": "500 kg Kril"
+     },
+     {
+      "when": "1 GÜN",
+      "e": "🐋",
+      "label": "16 Ton Kril"
+     },
+     {
+      "when": "1 YIL",
+      "e": "🗓️",
+      "label": "80-150 Gün"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: demir dolu kakası planktonu besler, plankton da krili!",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "💩",
+     "label": "Demirli Kaka"
+    },
+    "right": {
+     "e": "🦐",
+     "label": "Kril Beslenir"
+    },
+    "key": "besler"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen tek seferde en çok ne yedin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "underwater",
+    "e": "🐋"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "National Geographic'e göre büyük bir mavi balina yoğun bir kril sürüsünde tek ağız dolusunda 457.000 kaloriye kadar enerji alabilir; bunun için 500 kiloya kadar kril ve 110 tona kadar su yutar.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/science/article/blue-whales-can-eat-half-a-million-calories-in-a-single-mouthful"
+  },
+  {
+   "text": "FDA'ya göre beslenme önerilerinde genel rehber olarak günde 2.000 kalori kullanılır; 457.000 kalori bunun yaklaşık 228 günlüğü, yani 7 aydan fazlasıdır.",
+   "source": "FDA",
+   "url": "https://www.fda.gov/food/nutrition-facts-label/how-understand-and-use-nutrition-facts-label"
+  },
+  {
+   "text": "Live Science'a göre 2021'de Nature'da yayımlanan araştırmada Kuzeydoğu Pasifik'teki bir mavi balinanın beslenme günlerinde günde yaklaşık 16 ton kril yediği hesaplandı (80 kiloluk bir insanın 200 katı); balinalar yılda tahminen 80-150 gün beslenir.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/baleen-whales-eat-more-than-once-thought"
+  },
+  {
+   "text": "Smithsonian ve Live Science'a göre balinaların demirden zengin dışkısı fitoplanktonu gübreler; fitoplankton da krillerin besinidir.",
+   "source": "Smithsonian Ocean",
+   "url": "https://ocean.si.edu/ocean-life/marine-mammals/tons-whales-eatand-poop"
+  }
+ ],
+ "tags": [
+  "mavi balina",
+  "mavi balina ne yer",
+  "mavi balina günde ne kadar yer",
+  "kril",
+  "balina",
+  "okyanus",
+  "en büyük hayvan",
+  "blue whale",
+  "blue whale diet",
+  "how much does a blue whale eat",
+  "krill",
+  "1 gün boyunca",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#mavibalina",
+  "#okyanus",
+  "#bilim"
+ ],
+ "cover": 3,
+ "sources": [
+  "https://www.nationalgeographic.com/science/article/blue-whales-can-eat-half-a-million-calories-in-a-single-mouthful",
+  "https://www.livescience.com/baleen-whales-eat-more-than-once-thought",
+  "https://ocean.si.edu/ocean-life/marine-mammals/tons-whales-eatand-poop",
+  "https://www.fda.gov/food/nutrition-facts-label/how-understand-and-use-nutrition-facts-label"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Many Tons Does a Blue Whale Eat in 1 Day?",
+   "summary": "A single mouthful for a blue whale can hold up to 457,000 calories: more than 7 months of your food! Professor Pi explains how it eats 16 tons of krill a day and how its poop feeds the ocean.",
+   "facts": [
+    "According to National Geographic, a large blue whale feeding in a dense krill swarm can take in up to 457,000 calories in a single mouthful, swallowing up to 500 kg of krill and up to 110 tonnes of water.",
+    "According to the FDA, 2,000 calories a day is used as a general guide for nutrition advice; 457,000 calories is about 228 days of that, more than 7 months.",
+    "According to Live Science, a 2021 study in Nature estimated that an eastern North Pacific blue whale eats about 16 tonnes of krill per feeding day (200 times the weight of an 80 kg person); baleen whales feed an estimated 80 to 150 days a year.",
+    "According to the Smithsonian and Live Science, whales' iron-rich poop fertilizes phytoplankton, which is what krill eat."
+   ]
+  },
+  "es": {
+   "title": "¿Cuántas Toneladas Come una Ballena Azul en 1 Día?",
+   "summary": "¡Un solo bocado de una ballena azul puede aportar hasta 457.000 calorías: más de 7 meses de tu comida! El Profesor Pi explica cómo come 16 toneladas de kril al día y cómo su caca alimenta el océano.",
+   "facts": [
+    "Según National Geographic, una ballena azul grande que se alimenta en un banco denso de kril puede obtener hasta 457.000 calorías en un solo bocado, tragando hasta 500 kg de kril y hasta 110 toneladas de agua.",
+    "Según la FDA, se usan 2.000 calorías al día como guía general para consejos de nutrición; 457.000 calorías equivalen a unos 228 días de eso, más de 7 meses.",
+    "Según Live Science, un estudio de 2021 publicado en Nature calculó que una ballena azul del Pacífico Norte oriental come unas 16 toneladas de kril por día de alimentación (200 veces el peso de una persona de 80 kg); las ballenas barbadas se alimentan unos 80 a 150 días al año.",
+    "Según el Smithsonian y Live Science, la caca rica en hierro de las ballenas fertiliza el fitoplancton, que es el alimento del kril."
+   ]
+  },
+  "pt": {
+   "title": "Quantas Toneladas uma Baleia-Azul Come em 1 Dia?",
+   "summary": "Uma única bocada de uma baleia-azul pode ter até 457.000 calorias: mais de 7 meses da sua comida! O Professor Pi explica como ela come 16 toneladas de krill por dia e como o seu cocô alimenta o oceano.",
+   "facts": [
+    "Segundo a National Geographic, uma baleia-azul grande que se alimenta num cardume denso de krill pode obter até 457.000 calorias numa única bocada, engolindo até 500 kg de krill e até 110 toneladas de água.",
+    "Segundo a FDA, 2.000 calorias por dia são usadas como guia geral para orientações de nutrição; 457.000 calorias equivalem a cerca de 228 dias disso, mais de 7 meses.",
+    "Segundo a Live Science, um estudo de 2021 publicado na Nature estimou que uma baleia-azul do Pacífico Norte oriental come cerca de 16 toneladas de krill por dia de alimentação (200 vezes o peso de uma pessoa de 80 kg); as baleias de barbatanas se alimentam cerca de 80 a 150 dias por ano.",
+    "Segundo o Smithsonian e a Live Science, o cocô rico em ferro das baleias fertiliza o fitoplâncton, que é o alimento do krill."
+   ]
+  },
+  "ar": {
+   "title": "كم طنًا يأكل الحوت الأزرق في يوم واحد؟",
+   "summary": "قد تحمل لقمة واحدة للحوت الأزرق ما يصل إلى 457,000 سعرة حرارية، أي طعامك لأكثر من 7 أشهر! يشرح البروفيسور باي كيف يأكل 16 طنًا من الكريل يوميًا وكيف يغذي برازه المحيط.",
+   "facts": [
+    "وفقًا لناشيونال جيوغرافيك، يمكن لحوت أزرق كبير يتغذى في سرب كثيف من الكريل أن يحصل على ما يصل إلى 457,000 سعرة حرارية في لقمة واحدة، فيبتلع ما يصل إلى 500 كغ من الكريل و110 أطنان من الماء.",
+    "وفقًا لإدارة الغذاء والدواء الأمريكية (FDA)، تُستخدم 2,000 سعرة حرارية يوميًا دليلًا عامًا للنصائح الغذائية، و457,000 سعرة تعادل نحو 228 يومًا من ذلك، أي أكثر من 7 أشهر.",
+    "وفقًا لـ Live Science، قدّرت دراسة نُشرت في Nature عام 2021 أن الحوت الأزرق في شمال شرق المحيط الهادئ يأكل نحو 16 طنًا من الكريل في يوم التغذية (200 ضعف وزن شخص يزن 80 كغ)؛ وتتغذى الحيتان البالينية نحو 80 إلى 150 يومًا في السنة.",
+    "وفقًا لسميثسونيان وLive Science، يُخصّب براز الحيتان الغني بالحديد العوالقَ النباتية، وهي غذاء الكريل."
+   ]
+  },
+  "hi": {
+   "title": "नीली व्हेल 1 दिन में कितने टन खाती है?",
+   "summary": "नीली व्हेल का एक निवाला 457,000 कैलोरी तक का हो सकता है: यानी आपके 7 महीने से ज़्यादा का खाना! प्रोफेसर पाई बताते हैं कि यह रोज़ 16 टन क्रिल कैसे खाती है और इसका मल समुद्र को कैसे पोषण देता है।",
+   "facts": [
+    "National Geographic के अनुसार, क्रिल के घने झुंड में खाती एक बड़ी नीली व्हेल एक ही निवाले में 457,000 कैलोरी तक ले सकती है, जिसके लिए वह 500 किलो तक क्रिल और 110 टन तक पानी निगलती है।",
+    "FDA के अनुसार, पोषण सलाह के लिए आम दिशानिर्देश के रूप में रोज़ 2,000 कैलोरी मानी जाती है; 457,000 कैलोरी इसके लगभग 228 दिन, यानी 7 महीने से ज़्यादा के बराबर है।",
+    "Live Science के अनुसार, Nature में 2021 में छपे एक अध्ययन ने अनुमान लगाया कि पूर्वी उत्तरी प्रशांत की एक नीली व्हेल भोजन वाले दिन लगभग 16 टन क्रिल खाती है (80 किलो के इंसान के वज़न का 200 गुना); बेलीन व्हेल साल में अनुमानित 80 से 150 दिन भोजन करती हैं।",
+    "Smithsonian और Live Science के अनुसार, व्हेल का आयरन से भरपूर मल फाइटोप्लैंकटन के लिए खाद का काम करता है, और फाइटोप्लैंकटन ही क्रिल का भोजन है।"
+   ]
+  },
+  "id": {
+   "title": "Berapa Ton Paus Biru Makan dalam 1 Hari?",
+   "summary": "Satu suapan paus biru bisa mengandung hingga 457.000 kalori: lebih dari 7 bulan makananmu! Profesor Pi menjelaskan bagaimana paus ini makan 16 ton krill sehari dan bagaimana kotorannya memberi makan lautan.",
+   "facts": [
+    "Menurut National Geographic, paus biru besar yang makan di kawanan krill yang padat bisa mendapat hingga 457.000 kalori dalam satu suapan, dengan menelan hingga 500 kg krill dan hingga 110 ton air.",
+    "Menurut FDA, 2.000 kalori sehari dipakai sebagai panduan umum untuk saran gizi; 457.000 kalori setara sekitar 228 hari, lebih dari 7 bulan.",
+    "Menurut Live Science, studi tahun 2021 di jurnal Nature memperkirakan paus biru di Pasifik Utara bagian timur makan sekitar 16 ton krill per hari makan (200 kali berat orang 80 kg); paus balin diperkirakan makan 80 sampai 150 hari dalam setahun.",
+    "Menurut Smithsonian dan Live Science, kotoran paus yang kaya zat besi menyuburkan fitoplankton, yang menjadi makanan krill."
+   ]
+  },
+  "fr": {
+   "title": "Combien de Tonnes une Baleine Bleue Mange-t-elle en 1 Jour ?",
+   "summary": "Une seule bouchée de baleine bleue peut contenir jusqu'à 457 000 calories : plus de 7 mois de ta nourriture ! Le Professeur Pi explique comment elle avale 16 tonnes de krill par jour et comment ses excréments nourrissent l'océan.",
+   "facts": [
+    "Selon National Geographic, une grande baleine bleue qui se nourrit dans un essaim dense de krill peut absorber jusqu'à 457 000 calories en une seule bouchée, en avalant jusqu'à 500 kg de krill et jusqu'à 110 tonnes d'eau.",
+    "Selon la FDA, 2 000 calories par jour servent de repère général pour les conseils nutritionnels ; 457 000 calories représentent environ 228 jours de cela, soit plus de 7 mois.",
+    "Selon Live Science, une étude publiée en 2021 dans Nature a estimé qu'une baleine bleue du Pacifique Nord-Est mange environ 16 tonnes de krill par jour d'alimentation (200 fois le poids d'une personne de 80 kg) ; les baleines à fanons se nourrissent environ 80 à 150 jours par an.",
+    "Selon le Smithsonian et Live Science, les excréments riches en fer des baleines fertilisent le phytoplancton, qui est la nourriture du krill."
+   ]
+  },
+  "de": {
+   "title": "Wie Viele Tonnen Frisst ein Blauwal an 1 Tag?",
+   "summary": "Ein einziges Maul voll eines Blauwals kann bis zu 457.000 Kalorien enthalten: mehr als 7 Monate deines Essens! Professor Pi erklärt, wie er 16 Tonnen Krill am Tag frisst und wie sein Kot den Ozean düngt.",
+   "facts": [
+    "Laut National Geographic kann ein großer Blauwal in einem dichten Krillschwarm mit einem einzigen Maul voll bis zu 457.000 Kalorien aufnehmen und schluckt dabei bis zu 500 kg Krill und bis zu 110 Tonnen Wasser.",
+    "Laut FDA gelten 2.000 Kalorien pro Tag als allgemeiner Richtwert für Ernährungsempfehlungen; 457.000 Kalorien entsprechen etwa 228 Tagen davon, also mehr als 7 Monaten.",
+    "Laut Live Science schätzte eine 2021 in Nature veröffentlichte Studie, dass ein Blauwal im nordöstlichen Pazifik an einem Fresstag etwa 16 Tonnen Krill frisst (das 200-Fache des Gewichts eines 80-kg-Menschen); Bartenwale fressen schätzungsweise an 80 bis 150 Tagen im Jahr.",
+    "Laut Smithsonian und Live Science düngt der eisenreiche Kot der Wale das Phytoplankton, von dem sich Krill ernährt."
+   ]
+  },
+  "ru": {
+   "title": "Сколько Тонн Съедает Синий Кит за 1 День?",
+   "summary": "Один глоток синего кита может содержать до 457 000 калорий — это больше 7 месяцев твоей еды! Профессор Пи объясняет, как он съедает 16 тонн криля в день и как его помёт кормит океан.",
+   "facts": [
+    "По данным National Geographic, крупный синий кит, кормящийся в плотном скоплении криля, может получить до 457 000 калорий за один глоток, проглатывая до 500 кг криля и до 110 тонн воды.",
+    "По данным FDA, 2 000 калорий в день используются как общий ориентир для рекомендаций по питанию; 457 000 калорий — это примерно 228 таких дней, больше 7 месяцев.",
+    "По данным Live Science, исследование 2021 года в журнале Nature показало, что синий кит из северо-восточной части Тихого океана съедает около 16 тонн криля в день кормёжки (в 200 раз больше веса человека массой 80 кг); усатые киты кормятся примерно 80–150 дней в году.",
+    "По данным Смитсоновского института и Live Science, богатый железом помёт китов удобряет фитопланктон, которым питается криль."
+   ]
+  },
+  "az": {
+   "title": "Mavi Balina 1 Gündə Neçə Ton Yeyir?",
+   "summary": "Mavi balinanın bir ağız dolusu 457.000 kaloriyə qədər ola bilər: sənin 7 aydan çox yeməyin! Gündə 16 ton krili necə yediyini və nəcisinin okeanı necə qidalandırdığını Professor Pi izah edir.",
+   "facts": [
+    "National Geographic-ə görə, sıx kril sürüsündə qidalanan böyük mavi balina bir ağız dolusunda 457.000 kaloriyə qədər enerji ala bilər; bunun üçün 500 kq-a qədər kril və 110 tona qədər su udur.",
+    "FDA-ya görə, qidalanma tövsiyələrində ümumi bələdçi kimi gündə 2.000 kalori götürülür; 457.000 kalori bunun təxminən 228 günü, yəni 7 aydan çoxudur.",
+    "Live Science-a görə, 2021-ci ildə Nature-da dərc olunan araşdırmada Sakit okeanın şimal-şərqindəki mavi balinanın qidalanma günlərində gündə təxminən 16 ton kril yediyi hesablandı (80 kq-lıq insanın çəkisinin 200 misli); balinalar ildə təxminən 80-150 gün qidalanır.",
+    "Smithsonian və Live Science-a görə, balinaların dəmirlə zəngin nəcisi fitoplanktonu gübrələyir, fitoplankton isə krilin qidasıdır."
+   ]
+  }
+ }
+}

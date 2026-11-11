@@ -1,0 +1,432 @@
+{
+ "id": "y019",
+ "series": "Ya Olsaydı?",
+ "q": "Uzayda ağlasaydın ne olurdu?",
+ "uzun": true,
+ "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
+ "bar": {
+  "hi": "UZAYDA",
+  "rest": "AĞLASAYDIN?"
+ },
+ "summary": "Uzayda gözyaşın düşmez; gözünde büyüyen bir su topuna dönüşür ve kaskın içinde onu silemezsin! Bunun iki gözünü nasıl kör edebileceğini ve 2013'te bir astronotun kaskının gerçekten nasıl suyla dolduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Uzayda gözyaşın düşmez: gözünde büyür ve seni kör edebilir.",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "💧",
+    "do": "grow",
+    "key": "büyür",
+    "label": "Düşmeyen Gözyaşı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uzay yürüyüşündesin. Kasktaki buğu önleyici gözüne kaçtı.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "xl",
+      "at": "b"
+     }
+    ],
+    "do": "none",
+    "target": 0,
+    "key": "yürüyüşündesin",
+    "label": "Uzay Yürüyüşü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gözün yanar, yaşarır. İlk damla düşmez, gözüne yapışır.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👁️",
+    "do": "shake",
+    "key": "yanar",
+    "label": "Buğu Önleyici"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gözyaşım gözümde asılı mı kalıyor?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "💧",
+    "label": "Asılı Gözyaşı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kask var, silemezsin. Damlalar birleşip top olur.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "💧",
+     "label": "Tek Damla"
+    },
+    "right": {
+     "e": "🔵",
+     "label": "Su Topu"
+    },
+    "key": "top"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Top burnunu aşar, öbür gözüne geçer. İki gözün de kör!",
+   "v": {
+    "t": "icons",
+    "bg": "body",
+    "items": [
+     {
+      "e": "👁️",
+      "label": "Sol Göz"
+     },
+     {
+      "e": "👃",
+      "label": "Burun"
+     },
+     {
+      "e": "👁️",
+      "label": "Sağ Göz"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "2001'de astronot Chris Hadfield'ın gözleri böyle yarım saatten uzun yandı.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "30",
+    "unit": "dakika",
+    "label": "Yarım Saatten Uzun",
+    "key": "yarım"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ya su burnuma kadar gelirse?!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "👃",
+    "label": "Burnuma mı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Oldu! 2013'te Luca Parmitano'nun kaskına gözyaşı değil, soğutma suyu sızdı.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "😢",
+     "label": "Gözyaşı Değil"
+    },
+    "right": {
+     "e": "🔧",
+     "label": "Soğutma Suyu"
+    },
+    "key": "sızdı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Onun yerindesin. 44. dakika: ensende su. Kaskta 1,5 litre birikir.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "💧",
+    "value": "1,5",
+    "unit": "litre",
+    "label": "Kasktaki Su",
+    "key": "1,5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gözlerin, burnun, kulakların su altında. Ağzından nefes alırsın.",
+   "v": {
+    "t": "icons",
+    "bg": "underwater",
+    "items": [
+     {
+      "e": "👁️",
+      "label": "Gözler"
+     },
+     {
+      "e": "👃",
+      "label": "Burun"
+     },
+     {
+      "e": "👂",
+      "label": "Kulaklar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Telsizi duyamazsın, güneş batar. Hava kilidini ezberinden bulursun.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🔦",
+    "do": "pulse",
+    "key": "ezberinden",
+    "label": "Karanlıkta Dönüş"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kaskın 56 dakika sonra çıkar. Sonra NASA giysilere şnorkel ekledi!",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "44. DK",
+      "e": "💧",
+      "label": "Ensede Su"
+     },
+     {
+      "when": "72. DK",
+      "e": "🚪",
+      "label": "Hava Kilidi"
+     },
+     {
+      "when": "100. DK",
+      "e": "👨‍🚀",
+      "label": "Kask Çıktı"
+     },
+     {
+      "when": "SONRA",
+      "e": "🤿",
+      "label": "Şnorkel Eklendi"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uzayda seni en çok ne ağlatırdı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "😢"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Kanada Uzay Ajansı astronotu Chris Hadfield, 2013'te Uluslararası Uzay İstasyonu'nda çektiği videoda uzayda gözyaşının düşmediğini, gözün üstünde bir su topu oluşturduğunu ve sonunda burnun üstünden öbür göze geçebileceğini gösterdi.",
+   "source": "Space.com / Kanada Uzay Ajansı (CSA)",
+   "url": "https://www.space.com/20597-how-astronauts-cry-space-video.html"
+  },
+  {
+   "text": "TED'in aktardığına göre Hadfield'ın ilk uzay yürüyüşünde (2001) kaskının vizöründeki buğu önleyici gözüne kaçtı; düşemeyen gözyaşları büyüyen bir damla oluşturdu, damla öbür gözüne geçti ve iki gözüyle de göremez oldu.",
+   "source": "TED Blog",
+   "url": "https://blog.ted.com/the-scariest-thing-youve-ever-done-chris-hadfield-at-ted2014/"
+  },
+  {
+   "text": "Smithsonian Air & Space'e göre Hadfield'ın 2001'deki uzay yürüyüşünde gözyaşlarının buharlaşması ve yanmanın geçmesi yarım saatten uzun sürdü.",
+   "source": "Smithsonian Air & Space",
+   "url": "https://www.smithsonianmag.com/air-space-magazine/spacewalk-almost-killed-him-180950135/"
+  },
+  {
+   "text": "NASA'ya göre 16 Temmuz 2013'teki EVA 23 uzay yürüyüşünde ESA astronotu Luca Parmitano 44. dakikada başının arkasında su hissetti; kaskında yaklaşık 1,5 litre su birikti ve su gözlerini, kulaklarını ve burnunu kaplayınca ağzından nefes almak zorunda kaldı.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/history/10-years-ago-eva-23-how-a-high-visibility-close-call-cut-short-a-spacewalk/"
+  },
+  {
+   "text": "NASA'ya göre bu su gözyaşı değildi: giysinin fan-pompa-ayırıcısındaki delikler inorganik bir birikintiyle tıkanınca soğutma devresindeki su havalandırma devresine, oradan da kaska taştı.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/history/10-years-ago-eva-23-how-a-high-visibility-close-call-cut-short-a-spacewalk/"
+  },
+  {
+   "text": "Space.com ve Smithsonian'a göre Parmitano kulaklarına dolan su yüzünden telsizdeki talimatları duyamadı, güneş batınca neredeyse hiçbir şey göremedi ve hava kilidine istasyonun düzenini ezberinden hatırlayıp emniyet ipini izleyerek döndü.",
+   "source": "Space.com",
+   "url": "https://www.space.com/22485-italian-astronaut-spacesuit-leak-video.html"
+  },
+  {
+   "text": "NASA'ya göre Parmitano'nun kaskı, suyu ilk bildirmesinden 56 dakika sonra çıkarıldı; Space.com'a göre NASA Aralık 2013'ten itibaren giysilere, yüzü su kaplarsa 'son çare' olarak kullanılacak bir şnorkel ve kaska su emici bir ped ekledi.",
+   "source": "Space.com",
+   "url": "https://www.space.com/24027-nasa-spacesuit-snorkels-spacewalk.html"
+  }
+ ],
+ "tags": [
+  "uzayda ağlamak",
+  "uzayda gözyaşı",
+  "astronot",
+  "uzay yürüyüşü",
+  "Luca Parmitano",
+  "Chris Hadfield",
+  "uzay kaskı",
+  "mikro yerçekimi",
+  "crying in space",
+  "tears in space",
+  "spacewalk helmet leak",
+  "astronaut almost drowned",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzay",
+  "#astronot",
+  "#bilim"
+ ],
+ "cover": 9,
+ "sources": [
+  "https://www.nasa.gov/history/10-years-ago-eva-23-how-a-high-visibility-close-call-cut-short-a-spacewalk/",
+  "https://www.space.com/22485-italian-astronaut-spacesuit-leak-video.html",
+  "https://www.smithsonianmag.com/air-space-magazine/spacewalk-almost-killed-him-180950135/",
+  "https://www.asc-csa.gc.ca/eng/multimedia/search/video/17848"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Cried Inside Your Helmet in Space?",
+   "summary": "In space your tears don't fall: they grow into a ball of water on your eye, and inside a helmet you can't wipe it away! Professor Pi explains how that can blind both your eyes, and how in 2013 an astronaut's helmet really did fill with water.",
+   "facts": [
+    "In a video filmed on the International Space Station in 2013, Canadian Space Agency astronaut Chris Hadfield showed that tears don't fall in space: they form a ball of water on the eye that can eventually cross the nose into the other eye.",
+    "As TED reports, on Hadfield's first spacewalk (2001) anti-fog from his helmet visor got into his eye; his tears, unable to fall, formed a growing blob that spread into his other eye and left him unable to see with either.",
+    "According to Smithsonian Air & Space, during Hadfield's 2001 spacewalk it took more than half an hour for the tears to evaporate and the stinging to go away.",
+    "According to NASA, during the EVA 23 spacewalk on July 16, 2013, ESA astronaut Luca Parmitano felt water on the back of his head 44 minutes in; about 1.5 liters collected in his helmet, and when it covered his eyes, ears and nose he had to breathe through his mouth.",
+    "According to NASA, this water was not tears: inorganic material clogged the holes in the suit's fan pump separator, so water from the cooling loop spilled into the ventilation loop and into the helmet.",
+    "According to Space.com and Smithsonian, water in his ears kept Parmitano from hearing instructions over the radio, after sunset he could barely see, and he made it back to the airlock by remembering the station's layout and following his safety tether.",
+    "According to NASA, Parmitano's helmet came off 56 minutes after he first reported the water; according to Space.com, from December 2013 NASA added a snorkel to the suits, a 'last resort' if water covers the face, plus an absorbent helmet pad."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Lloraras Dentro de Tu Casco en el Espacio?",
+   "summary": "En el espacio tus lágrimas no caen: se convierten en una bola de agua que crece sobre tu ojo, ¡y dentro del casco no puedes secarla! El Profesor Pi explica cómo eso puede dejarte ciego de ambos ojos y cómo en 2013 el casco de un astronauta se llenó de agua de verdad.",
+   "facts": [
+    "En un video grabado en la Estación Espacial Internacional en 2013, el astronauta de la Agencia Espacial Canadiense Chris Hadfield mostró que las lágrimas no caen en el espacio: forman una bola de agua sobre el ojo que puede acabar cruzando la nariz hasta el otro ojo.",
+    "Según TED, en la primera caminata espacial de Hadfield (2001) el antiempañante del visor de su casco le entró en el ojo; sus lágrimas, que no podían caer, formaron una gota cada vez mayor que pasó al otro ojo y lo dejó sin poder ver con ninguno.",
+    "Según Smithsonian Air & Space, durante la caminata espacial de Hadfield en 2001 pasó más de media hora hasta que las lágrimas se evaporaron y desapareció el escozor.",
+    "Según la NASA, durante la caminata espacial EVA 23 del 16 de julio de 2013, el astronauta de la ESA Luca Parmitano sintió agua en la parte trasera de la cabeza a los 44 minutos; en su casco se acumularon unos 1,5 litros y, cuando el agua le cubrió los ojos, los oídos y la nariz, tuvo que respirar por la boca.",
+    "Según la NASA, esa agua no eran lágrimas: un material inorgánico obstruyó los orificios del separador de la bomba-ventilador del traje, y el agua del circuito de refrigeración pasó al circuito de ventilación y al casco.",
+    "Según Space.com y Smithsonian, el agua en sus oídos le impidió oír las instrucciones por radio, tras la puesta de sol apenas podía ver, y volvió a la esclusa recordando la distribución de la estación y siguiendo su cable de seguridad.",
+    "Según la NASA, a Parmitano le quitaron el casco 56 minutos después de que informara por primera vez del agua; según Space.com, desde diciembre de 2013 la NASA añadió a los trajes un esnórquel, «último recurso» si el agua cubre la cara, y una almohadilla absorbente en el casco."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Chorasse Dentro do Capacete no Espaço?",
+   "summary": "No espaço suas lágrimas não caem: viram uma bola de água que cresce sobre o olho, e dentro do capacete você não consegue enxugá-la! O Professor Pi explica como isso pode deixar você cego dos dois olhos e como, em 2013, o capacete de um astronauta realmente se encheu de água.",
+   "facts": [
+    "Num vídeo gravado na Estação Espacial Internacional em 2013, o astronauta da Agência Espacial Canadense Chris Hadfield mostrou que as lágrimas não caem no espaço: formam uma bola de água sobre o olho que pode acabar passando pelo nariz até o outro olho.",
+    "Segundo o TED, na primeira caminhada espacial de Hadfield (2001), o antiembaçante da viseira do capacete entrou em seu olho; as lágrimas, sem poder cair, formaram uma gota cada vez maior que passou para o outro olho e o deixou sem enxergar com nenhum dos dois.",
+    "Segundo a Smithsonian Air & Space, na caminhada espacial de Hadfield em 2001 levou mais de meia hora para as lágrimas evaporarem e a ardência passar.",
+    "Segundo a NASA, na caminhada espacial EVA 23, em 16 de julho de 2013, o astronauta da ESA Luca Parmitano sentiu água na parte de trás da cabeça aos 44 minutos; cerca de 1,5 litro se acumulou no capacete e, quando a água cobriu seus olhos, ouvidos e nariz, ele teve de respirar pela boca.",
+    "Segundo a NASA, essa água não era lágrima: material inorgânico entupiu os furos do separador da bomba-ventilador do traje, e a água do circuito de resfriamento passou para o circuito de ventilação e para o capacete.",
+    "Segundo o Space.com e a Smithsonian, a água nos ouvidos impediu Parmitano de ouvir as instruções pelo rádio, depois do pôr do sol ele mal conseguia enxergar, e voltou à câmara de descompressão lembrando o layout da estação e seguindo seu cabo de segurança.",
+    "Segundo a NASA, o capacete de Parmitano foi retirado 56 minutos depois de ele relatar a água pela primeira vez; segundo o Space.com, a partir de dezembro de 2013 a NASA acrescentou aos trajes um snorkel, 'último recurso' se a água cobrir o rosto, e uma almofada absorvente no capacete."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لو بكيت داخل خوذتك في الفضاء؟",
+   "summary": "في الفضاء لا تسقط دموعك، بل تتحول إلى كرة ماء تكبر فوق عينك، ولا يمكنك مسحها داخل الخوذة! يشرح البروفيسور باي كيف يمكن أن يُعميك ذلك في كلتا العينين، وكيف امتلأت خوذة رائد فضاء بالماء فعلًا عام 2013.",
+   "facts": [
+    "في فيديو صُوّر على محطة الفضاء الدولية عام 2013، أظهر رائد الفضاء كريس هادفيلد من وكالة الفضاء الكندية أن الدموع لا تسقط في الفضاء، بل تشكّل كرة ماء على العين قد تعبر الأنف في النهاية إلى العين الأخرى.",
+    "بحسب TED، في أول سير فضائي لهادفيلد (2001) دخلت مادة مانعة للضباب من حاجب خوذته إلى عينه، فشكّلت دموعه التي لا تسقط قطرة تكبر شيئًا فشيئًا، وانتقلت إلى عينه الأخرى فلم يعد يرى بأيٍّ منهما.",
+    "وفقًا لمجلة Smithsonian Air & Space، استغرق تبخر الدموع وزوال الحرقة أكثر من نصف ساعة خلال سير هادفيلد الفضائي عام 2001.",
+    "وفقًا لناسا، خلال السير الفضائي EVA 23 في 16 يوليو 2013، شعر رائد الفضاء في وكالة الفضاء الأوروبية لوكا بارميتانو بالماء خلف رأسه بعد 44 دقيقة؛ وتجمّع في خوذته نحو 1.5 لتر، وعندما غطى الماء عينيه وأذنيه وأنفه اضطر إلى التنفس من فمه.",
+    "وفقًا لناسا، لم يكن هذا الماء دموعًا: فقد سدّت مادة غير عضوية ثقوب فاصل المروحة والمضخة في البدلة، فتسرب الماء من دائرة التبريد إلى دائرة التهوية ثم إلى الخوذة.",
+    "وفقًا لـ Space.com وSmithsonian، منع الماء في أذنيه بارميتانو من سماع التعليمات عبر اللاسلكي، وبعد غروب الشمس كاد لا يرى شيئًا، فعاد إلى غرفة معادلة الضغط متذكرًا تصميم المحطة ومتتبعًا حبل الأمان.",
+    "وفقًا لناسا، نُزعت خوذة بارميتانو بعد 56 دقيقة من إبلاغه الأول عن الماء؛ وبحسب Space.com أضافت ناسا منذ ديسمبر 2013 إلى البدلات أنبوب تنفس (سنوركل) كـ«ملاذ أخير» إذا غطى الماء الوجه، ووسادة ماصّة في الخوذة."
+   ]
+  },
+  "hi": {
+   "title": "अगर अंतरिक्ष में हेलमेट के अंदर आप रो पड़ें तो क्या होगा?",
+   "summary": "अंतरिक्ष में आंसू गिरते नहीं: वे आंख पर पानी की एक बढ़ती गेंद बन जाते हैं, और हेलमेट के अंदर आप उन्हें पोंछ भी नहीं सकते! प्रोफेसर पाई बताते हैं कि इससे दोनों आंखें कैसे अंधी हो सकती हैं और 2013 में एक अंतरिक्ष यात्री का हेलमेट सच में पानी से कैसे भर गया।",
+   "facts": [
+    "2013 में अंतर्राष्ट्रीय अंतरिक्ष स्टेशन पर बनाए एक वीडियो में कनाडाई अंतरिक्ष एजेंसी के अंतरिक्ष यात्री क्रिस हैडफ़ील्ड ने दिखाया कि अंतरिक्ष में आंसू गिरते नहीं: वे आंख पर पानी की गेंद बना लेते हैं, जो आखिर में नाक पार करके दूसरी आंख में जा सकती है।",
+    "TED के अनुसार, हैडफ़ील्ड के पहले स्पेसवॉक (2001) में हेलमेट के वाइज़र का एंटी-फ़ॉग उनकी आंख में चला गया; न गिर पाने वाले आंसुओं ने एक बढ़ती बूंद बना ली, जो दूसरी आंख तक फैल गई और वे किसी भी आंख से देख नहीं पा रहे थे।",
+    "Smithsonian Air & Space के अनुसार, हैडफ़ील्ड के 2001 के स्पेसवॉक में आंसुओं के भाप बनकर उड़ने और जलन मिटने में आधे घंटे से ज़्यादा लगा।",
+    "NASA के अनुसार, 16 जुलाई 2013 के EVA 23 स्पेसवॉक में ESA अंतरिक्ष यात्री लूका पार्मिटानो को 44वें मिनट में सिर के पीछे पानी महसूस हुआ; उनके हेलमेट में लगभग 1.5 लीटर पानी जमा हुआ और जब उसने उनकी आंखें, कान और नाक ढक दीं, तो उन्हें मुंह से सांस लेनी पड़ी।",
+    "NASA के अनुसार, यह पानी आंसू नहीं था: सूट के फ़ैन-पंप-सेपरेटर के छेद अकार्बनिक पदार्थ से बंद हो गए, जिससे कूलिंग लूप का पानी वेंटिलेशन लूप में और फिर हेलमेट में पहुंच गया।",
+    "Space.com और Smithsonian के अनुसार, कानों में पानी भरने से पार्मिटानो रेडियो पर निर्देश नहीं सुन पाए, सूरज डूबने के बाद उन्हें लगभग कुछ नहीं दिख रहा था, और वे स्टेशन का नक्शा याद करके और सेफ़्टी टेथर के सहारे एयरलॉक तक लौटे।",
+    "NASA के अनुसार, पानी की पहली सूचना के 56 मिनट बाद पार्मिटानो का हेलमेट उतारा गया; Space.com के अनुसार, दिसंबर 2013 से NASA ने सूट में एक स्नॉर्कल जोड़ा, जो चेहरा पानी से ढक जाने पर 'आखिरी उपाय' है, और हेलमेट में पानी सोखने वाला पैड भी लगाया।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Menangis di Dalam Helm di Luar Angkasa?",
+   "summary": "Di luar angkasa air matamu tidak jatuh: ia menjadi bola air yang terus membesar di matamu, dan di dalam helm kamu tidak bisa mengusapnya! Profesor Pi menjelaskan bagaimana hal itu bisa membutakan kedua matamu dan bagaimana pada 2013 helm seorang astronaut benar-benar terisi air.",
+   "facts": [
+    "Dalam video yang direkam di Stasiun Luar Angkasa Internasional pada 2013, astronaut Badan Antariksa Kanada Chris Hadfield menunjukkan bahwa air mata tidak jatuh di luar angkasa: air mata membentuk bola air di mata yang akhirnya bisa melintasi hidung ke mata yang lain.",
+    "Menurut TED, pada perjalanan antariksa pertama Hadfield (2001), cairan antiembun dari visor helmnya masuk ke matanya; air matanya yang tidak bisa jatuh membentuk gumpalan yang terus membesar, menyebar ke mata yang lain, dan membuatnya tidak bisa melihat dengan kedua mata.",
+    "Menurut Smithsonian Air & Space, pada perjalanan antariksa Hadfield tahun 2001 butuh lebih dari setengah jam sampai air matanya menguap dan rasa perihnya hilang.",
+    "Menurut NASA, dalam perjalanan antariksa EVA 23 pada 16 Juli 2013, astronaut ESA Luca Parmitano merasakan air di belakang kepalanya pada menit ke-44; sekitar 1,5 liter air terkumpul di helmnya, dan saat air menutupi mata, telinga, dan hidungnya, ia terpaksa bernapas lewat mulut.",
+    "Menurut NASA, air itu bukan air mata: material anorganik menyumbat lubang-lubang pada pemisah pompa-kipas pakaian antariksanya, sehingga air dari sirkuit pendingin tumpah ke sirkuit ventilasi lalu ke helm.",
+    "Menurut Space.com dan Smithsonian, air di telinganya membuat Parmitano tidak bisa mendengar instruksi lewat radio, setelah matahari terbenam ia hampir tidak bisa melihat, dan ia kembali ke airlock dengan mengingat tata letak stasiun dan mengikuti tali pengamannya.",
+    "Menurut NASA, helm Parmitano dilepas 56 menit setelah ia pertama kali melaporkan air; menurut Space.com, sejak Desember 2013 NASA menambahkan snorkel pada pakaian antariksa sebagai 'pilihan terakhir' jika air menutupi wajah, serta bantalan penyerap air di helm."
+   ]
+  },
+  "fr": {
+   "title": "Que Se Passerait-il Si Tu Pleurais Dans Ton Casque Dans l'Espace ?",
+   "summary": "Dans l'espace, tes larmes ne tombent pas : elles forment une boule d'eau qui grossit sur ton œil, et dans un casque tu ne peux pas l'essuyer ! Le Professeur Pi explique comment cela peut te rendre aveugle des deux yeux et comment, en 2013, le casque d'un astronaute s'est vraiment rempli d'eau.",
+   "facts": [
+    "Dans une vidéo tournée à bord de la Station spatiale internationale en 2013, l'astronaute de l'Agence spatiale canadienne Chris Hadfield a montré que les larmes ne tombent pas dans l'espace : elles forment une boule d'eau sur l'œil qui peut finir par passer par-dessus le nez jusqu'à l'autre œil.",
+    "Selon TED, lors de la première sortie dans l'espace de Hadfield (2001), de l'antibuée de la visière de son casque lui est entré dans l'œil ; ses larmes, incapables de tomber, ont formé une goutte de plus en plus grosse qui est passée dans l'autre œil, le laissant incapable de voir des deux yeux.",
+    "Selon Smithsonian Air & Space, lors de la sortie de Hadfield en 2001, il a fallu plus d'une demi-heure pour que les larmes s'évaporent et que la brûlure disparaisse.",
+    "Selon la NASA, pendant la sortie EVA 23 du 16 juillet 2013, l'astronaute de l'ESA Luca Parmitano a senti de l'eau à l'arrière de sa tête au bout de 44 minutes ; environ 1,5 litre s'est accumulé dans son casque et, quand l'eau a recouvert ses yeux, ses oreilles et son nez, il a dû respirer par la bouche.",
+    "Selon la NASA, cette eau n'était pas des larmes : des dépôts inorganiques ont bouché les trous du séparateur de la pompe-ventilateur de la combinaison, si bien que l'eau du circuit de refroidissement a débordé dans le circuit de ventilation, puis dans le casque.",
+    "Selon Space.com et le Smithsonian, l'eau dans ses oreilles empêchait Parmitano d'entendre les instructions à la radio, après le coucher du soleil il ne voyait presque plus rien, et il a regagné le sas en se souvenant de la disposition de la station et en suivant sa longe de sécurité.",
+    "Selon la NASA, le casque de Parmitano a été retiré 56 minutes après son premier signalement de l'eau ; selon Space.com, à partir de décembre 2013, la NASA a ajouté aux combinaisons un tuba, « dernier recours » si l'eau couvre le visage, ainsi qu'un coussinet absorbant dans le casque."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert, Wenn Du im Weltall in Deinem Helm Weinst?",
+   "summary": "Im Weltall fallen deine Tränen nicht: Sie werden zu einer wachsenden Wasserkugel auf deinem Auge, und im Helm kannst du sie nicht wegwischen! Professor Pi erklärt, wie dich das auf beiden Augen blind machen kann und wie sich 2013 der Helm eines Astronauten wirklich mit Wasser füllte.",
+   "facts": [
+    "In einem Video, das 2013 auf der Internationalen Raumstation gedreht wurde, zeigte der Astronaut der Kanadischen Weltraumagentur Chris Hadfield, dass Tränen im Weltall nicht fallen: Sie bilden eine Wasserkugel auf dem Auge, die schließlich über die Nase ins andere Auge wandern kann.",
+    "Laut TED geriet bei Hadfields erstem Weltraumausstieg (2001) Antibeschlagmittel vom Visier seines Helms in sein Auge; seine Tränen, die nicht fallen konnten, bildeten einen wachsenden Tropfen, der ins andere Auge wanderte, sodass er mit keinem Auge mehr sehen konnte.",
+    "Laut Smithsonian Air & Space dauerte es bei Hadfields Außeneinsatz 2001 mehr als eine halbe Stunde, bis die Tränen verdunstet waren und das Brennen nachließ.",
+    "Laut NASA spürte ESA-Astronaut Luca Parmitano beim Außeneinsatz EVA 23 am 16. Juli 2013 nach 44 Minuten Wasser an seinem Hinterkopf; etwa 1,5 Liter sammelten sich in seinem Helm, und als das Wasser Augen, Ohren und Nase bedeckte, musste er durch den Mund atmen.",
+    "Laut NASA war dieses Wasser keine Tränenflüssigkeit: Anorganische Ablagerungen verstopften die Löcher im Lüfter-Pumpen-Separator des Anzugs, sodass Wasser aus dem Kühlkreislauf in den Belüftungskreislauf und in den Helm gelangte.",
+    "Laut Space.com und Smithsonian konnte Parmitano wegen des Wassers in den Ohren die Anweisungen über Funk nicht hören, nach Sonnenuntergang sah er fast nichts mehr, und er fand zur Luftschleuse zurück, indem er sich an den Aufbau der Station erinnerte und seiner Sicherheitsleine folgte.",
+    "Laut NASA wurde Parmitanos Helm 56 Minuten nach seiner ersten Wassermeldung abgenommen; laut Space.com ergänzte die NASA die Anzüge ab Dezember 2013 um einen Schnorchel als „letzten Ausweg“, falls Wasser das Gesicht bedeckt, sowie um ein saugfähiges Helmpolster."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Заплакать в Шлеме в Открытом Космосе?",
+   "summary": "В космосе слёзы не падают: они превращаются в растущий шарик воды на глазу, а в шлеме его не вытереть! Профессор Пи объясняет, как это может ослепить оба глаза и как в 2013 году шлем астронавта на самом деле наполнился водой.",
+   "facts": [
+    "В видео, снятом на Международной космической станции в 2013 году, астронавт Канадского космического агентства Крис Хэдфилд показал, что в космосе слёзы не падают: они образуют на глазу шарик воды, который в итоге может перебраться через нос в другой глаз.",
+    "По данным TED, во время первого выхода Хэдфилда в открытый космос (2001) антизапотевающее средство с визора шлема попало ему в глаз; слёзы, не способные упасть, образовали растущую каплю, которая перешла в другой глаз, и он перестал видеть обоими глазами.",
+    "По данным Smithsonian Air & Space, во время выхода Хэдфилда в 2001 году прошло больше получаса, прежде чем слёзы испарились и жжение прошло.",
+    "По данным NASA, во время выхода EVA 23 16 июля 2013 года астронавт ЕКА Лука Пармитано на 44-й минуте почувствовал воду на затылке; в шлеме скопилось около 1,5 литра, и когда вода закрыла ему глаза, уши и нос, ему пришлось дышать ртом.",
+    "По данным NASA, эта вода не была слезами: неорганические отложения забили отверстия в сепараторе вентилятора-насоса скафандра, и вода из контура охлаждения перелилась в контур вентиляции, а затем в шлем.",
+    "По данным Space.com и Smithsonian, из-за воды в ушах Пармитано не слышал указаний по радио, после захода солнца почти ничего не видел и вернулся к шлюзу, вспоминая устройство станции и следуя за страховочным тросом.",
+    "По данным NASA, шлем с Пармитано сняли через 56 минут после его первого сообщения о воде; по данным Space.com, с декабря 2013 года NASA добавила в скафандры дыхательную трубку, «последнее средство» на случай, если вода закроет лицо, и впитывающую подушку в шлеме."
+   ]
+  },
+  "az": {
+   "title": "Kosmosda Dəbilqənin İçində Ağlasaydın Nə Olardı?",
+   "summary": "Kosmosda göz yaşın düşmür: gözünün üstündə böyüyən su topuna çevrilir və dəbilqənin içində onu silə bilmirsən! Bunun iki gözünü necə kor edə biləcəyini və 2013-cü ildə bir astronavtın dəbilqəsinin həqiqətən necə su ilə dolduğunu Professor Pi izah edir.",
+   "facts": [
+    "Kanada Kosmik Agentliyinin astronavtı Chris Hadfield 2013-cü ildə Beynəlxalq Kosmik Stansiyada çəkdiyi videoda kosmosda göz yaşının düşmədiyini, gözün üstündə su topu yaratdığını və axırda burnun üstündən o biri gözə keçə biləcəyini göstərdi.",
+    "TED-in yazdığına görə, Hadfieldin ilk açıq kosmosa çıxışında (2001) dəbilqə vizorundakı dumanlanma əleyhinə maddə gözünə düşdü; düşə bilməyən göz yaşları böyüyən bir damla yaratdı, damla o biri gözünə keçdi və o, heç bir gözü ilə görə bilmədi.",
+    "Smithsonian Air & Space-ə görə, Hadfieldin 2001-ci ildəki çıxışında göz yaşlarının buxarlanması və yanmanın keçməsi yarım saatdan çox çəkdi.",
+    "NASA-ya görə, 16 iyul 2013-cü ildə EVA 23 çıxışında ESA astronavtı Luca Parmitano 44-cü dəqiqədə başının arxasında su hiss etdi; dəbilqəsində təxminən 1,5 litr su yığıldı və su gözlərini, qulaqlarını və burnunu örtəndə ağzı ilə nəfəs almalı oldu.",
+    "NASA-ya görə, bu su göz yaşı deyildi: skafandrın fan-nasos separatorundakı dəliklər qeyri-üzvi çöküntü ilə tıxandı və soyutma dövrəsindəki su ventilyasiya dövrəsinə, oradan da dəbilqəyə keçdi.",
+    "Space.com və Smithsonian-a görə, qulaqlarına dolan su ucbatından Parmitano radiodakı göstərişləri eşidə bilmədi, gün batandan sonra demək olar ki, heç nə görmədi və stansiyanın quruluşunu yadında saxlayıb təhlükəsizlik ipini izləyərək şlüzə qayıtdı.",
+    "NASA-ya görə, Parmitanonun dəbilqəsi suyu ilk dəfə bildirməsindən 56 dəqiqə sonra çıxarıldı; Space.com-a görə, NASA 2013-cü ilin dekabrından skafandrlara üzü su örtərsə 'son çarə' kimi istifadə olunacaq şnorkel və dəbilqəyə su udan yastıq əlavə etdi."
+   ]
+  }
+ }
+}
