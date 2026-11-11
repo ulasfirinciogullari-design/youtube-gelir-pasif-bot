@@ -1,0 +1,171 @@
+{
+  "topic_id": "mk-c0113",
+  "topic": "Uykuda örümcek yutar mıyız, yılda sekiz örümcek yuttuğumuz doğru mu?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Uykunda yılda sekiz örümcek yutmuyorsun 🕷️",
+  "hook_text": "UYKUDA ÖRÜMCEK YUTAR MISIN?",
+  "description": "Uykuda örümcek yutar mıyız, yılda sekiz örümcek yuttuğumuz doğru mu?\n\nHayır, bu sayının hiçbir bilimsel dayanağı yok. Scientific American'ın görüştüğü uzmanlara göre örümcekler dünyayı büyük ölçüde titreşimle algılar; uyuyan bir insanın nefesi, kalp atışı ve horlaması onlar için tehlike işaretidir. Seattle'daki Burke Müzesi'nin örümcek uzmanı Rod Crawford'a her yıl bir iki kişi ağzında örümcek bacağı bulduğunu anlatıyor, ama kanıtı genelde tuvalete atmış oluyor; bir başka uzmana göre örümcekler bize kocaman bir kayaya bakar gibi bakar.\n\nSen de uykuda örümcek yuttuğumuza inanıyor muydun: evet mi, hayır mı?\n\n#örümcek #hayvanlar #efsaneler #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0113",
+  "tags": [
+    "örümcek",
+    "örümcekler",
+    "uykuda örümcek yutmak",
+    "yılda 8 örümcek",
+    "örümcek yutmak",
+    "uykuda örümcek yutar mıyız",
+    "örümcek efsanesi",
+    "ev örümceği",
+    "örümcek gerçekleri",
+    "örümcek titreşim",
+    "doğru bilinen yanlışlar",
+    "yanlış bilinenler",
+    "efsaneler",
+    "uyku",
+    "hayvanlar",
+    "hayvan gerçekleri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "spider myth",
+    "swallow spiders sleep",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "orumcek",
+    "orumcekler",
+    "uykuda orumcek yutmak",
+    "yilda 8 orumcek",
+    "orumcek yutmak"
+  ],
+  "localizations": {
+    "en": {
+      "title": "You don't swallow eight spiders a year in your sleep 🕷️",
+      "description": "The famous 'eight spiders a year' claim has no scientific basis. Spiders sense the world through vibrations, and a sleeping person's breathing, heartbeat and snoring warn them of danger. A spider curator says people tell him they found a spider leg in their mouth, but they usually flushed the evidence.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "es": {
+      "title": "No te tragas ocho arañas al año mientras duermes 🕷️",
+      "description": "La famosa cifra de 'ocho arañas al año' no tiene ninguna base científica. Las arañas perciben el mundo a través de vibraciones, y la respiración, los latidos y los ronquidos de alguien dormido les avisan de peligro. Un experto en arañas cuenta que cada año alguien le dice que encontró una pata de araña en la boca, pero casi siempre tiró la prueba por el inodoro.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "pt": {
+      "title": "Você não engole oito aranhas por ano dormindo 🕷️",
+      "description": "O famoso número de 'oito aranhas por ano' não tem nenhuma base científica. As aranhas percebem o mundo por vibrações, e a respiração, os batimentos e o ronco de quem dorme são um sinal de perigo para elas. Um especialista em aranhas conta que todo ano alguém diz ter achado uma perna de aranha na boca, mas quase sempre jogou a prova no vaso sanitário.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "de": {
+      "title": "Du verschluckst im Schlaf keine acht Spinnen pro Jahr 🕷️",
+      "description": "Die berühmte Zahl von acht Spinnen pro Jahr hat keine wissenschaftliche Grundlage. Spinnen nehmen die Welt über Vibrationen wahr, und Atem, Herzschlag und Schnarchen eines Schlafenden sind für sie Warnsignale. Ein Spinnenexperte erzählt, dass ihm jedes Jahr jemand von einem Spinnenbein im Mund berichtet, den Beweis aber meist die Toilette hinuntergespült hat.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "fr": {
+      "title": "Tu n'avales pas huit araignées par an en dormant 🕷️",
+      "description": "Le fameux chiffre de « huit araignées par an » ne repose sur aucune base scientifique. Les araignées perçoivent le monde par les vibrations, et la respiration, les battements de cœur et les ronflements d'un dormeur sont pour elles un signal de danger. Un spécialiste raconte que chaque année quelqu'un affirme avoir trouvé une patte d'araignée dans sa bouche, mais a presque toujours jeté la preuve dans les toilettes.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "it": {
+      "title": "Non ingoi otto ragni all'anno mentre dormi 🕷️",
+      "description": "Il famoso numero degli 'otto ragni all'anno' non ha alcuna base scientifica. I ragni percepiscono il mondo attraverso le vibrazioni, e il respiro, il battito cardiaco e il russare di chi dorme per loro sono segnali di pericolo. Un esperto di ragni racconta che ogni anno qualcuno gli dice di aver trovato una zampa di ragno in bocca, ma di solito ha buttato la prova nel water.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "ru": {
+      "title": "Ты не глотаешь во сне восемь пауков в год 🕷️",
+      "description": "Знаменитая цифра «восемь пауков в год» не имеет никаких научных оснований. Пауки воспринимают мир через вибрации, а дыхание, сердцебиение и храп спящего человека для них сигнал опасности. Один специалист по паукам рассказывает, что каждый год кто-нибудь говорит ему, что нашёл во рту паучью лапку, но доказательство обычно смыл в унитаз.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "ar": {
+      "title": "أنت لا تبتلع ثمانية عناكب في السنة أثناء نومك 🕷️",
+      "description": "رقم «ثمانية عناكب في السنة» الشهير ليس له أي أساس علمي. فالعناكب تدرك العالم من خلال الاهتزازات، وأنفاس النائم ونبضات قلبه وشخيره إشارات خطر بالنسبة لها. ويروي خبير في العناكب أن أحدهم يخبره كل عام بأنه وجد ساق عنكبوت في فمه، لكنه غالبًا ما رمى الدليل في المرحاض.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "hi": {
+      "title": "सोते समय आप साल में आठ मकड़ियाँ नहीं निगलते 🕷️",
+      "description": "'साल में आठ मकड़ियाँ' वाली मशहूर बात का कोई वैज्ञानिक आधार नहीं है। मकड़ियाँ दुनिया को कंपन से महसूस करती हैं, और सोते इंसान की साँस, दिल की धड़कन और खर्राटे उनके लिए ख़तरे का संकेत हैं। एक मकड़ी विशेषज्ञ बताते हैं कि हर साल कोई कहता है कि उसे मुँह में मकड़ी की टाँग मिली, लेकिन सबूत अक्सर टॉयलेट में बहा दिया गया होता है।\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "id": {
+      "title": "Kamu tidak menelan delapan laba-laba setahun saat tidur 🕷️",
+      "description": "Angka terkenal 'delapan laba-laba setahun' sama sekali tidak punya dasar ilmiah. Laba-laba mengenali dunia lewat getaran, dan napas, detak jantung, serta dengkuran orang yang tidur adalah tanda bahaya bagi mereka. Seorang ahli laba-laba bercerita bahwa setiap tahun ada orang yang mengaku menemukan kaki laba-laba di mulutnya, tapi buktinya biasanya sudah dibuang ke toilet.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "ja": {
+      "title": "寝ている間にクモを年8匹も飲み込んではいない 🕷️",
+      "description": "「人は寝ている間に年8匹のクモを飲み込む」という話に科学的な根拠はありません。クモは振動で周りを感じ取るため、眠っている人の呼吸や心臓の鼓動、いびきは危険のサインになります。あるクモの専門家によると、口の中でクモの脚を見つけたという人が毎年いるものの、証拠はたいていトイレに流されているそうです。\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "ko": {
+      "title": "자는 동안 1년에 거미 8마리를 삼킨다는 건 사실이 아니다 🕷️",
+      "description": "'1년에 거미 8마리'라는 유명한 숫자에는 과학적 근거가 전혀 없습니다. 거미는 진동으로 세상을 느끼는데, 자는 사람의 숨소리와 심장 박동, 코골이는 거미에게 위험 신호입니다. 한 거미 전문가는 매년 입안에서 거미 다리를 발견했다는 사람이 있지만, 증거는 대개 변기에 내려보냈다고 말합니다.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "pl": {
+      "title": "We śnie nie połykasz ośmiu pająków rocznie 🕷️",
+      "description": "Słynna liczba „ośmiu pająków rocznie” nie ma żadnych podstaw naukowych. Pająki odbierają świat przez drgania, a oddech, bicie serca i chrapanie śpiącego człowieka to dla nich sygnał zagrożenia. Pewien ekspert od pająków opowiada, że co roku ktoś mówi mu o nóżce pająka znalezionej w ustach, ale dowód zwykle spłukał w toalecie.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "nl": {
+      "title": "Je slikt in je slaap geen acht spinnen per jaar in 🕷️",
+      "description": "Het beroemde getal van 'acht spinnen per jaar' heeft geen enkele wetenschappelijke basis. Spinnen nemen de wereld waar via trillingen, en de ademhaling, hartslag en het gesnurk van een slaper zijn voor hen een gevaarsignaal. Een spinnenexpert vertelt dat er elk jaar iemand beweert een spinnenpoot in zijn mond te hebben gevonden, maar het bewijs meestal door de wc heeft gespoeld.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "uk": {
+      "title": "Ти не ковтаєш уві сні вісім павуків на рік 🕷️",
+      "description": "Відома цифра «вісім павуків на рік» не має жодного наукового підґрунтя. Павуки сприймають світ через вібрації, а дихання, серцебиття й хропіння сплячої людини для них сигнал небезпеки. Один фахівець із павуків розповідає, що щороку хтось каже йому, ніби знайшов у роті павучу лапку, але доказ зазвичай змив в унітаз.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "vi": {
+      "title": "Bạn không nuốt tám con nhện mỗi năm khi ngủ 🕷️",
+      "description": "Con số nổi tiếng 'tám con nhện mỗi năm' hoàn toàn không có cơ sở khoa học. Nhện cảm nhận thế giới qua rung động, và hơi thở, nhịp tim, tiếng ngáy của người đang ngủ là tín hiệu nguy hiểm với chúng. Một chuyên gia về nhện kể rằng năm nào cũng có người bảo đã thấy chân nhện trong miệng, nhưng bằng chứng thường đã bị xả xuống bồn cầu.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "az": {
+      "title": "Yuxuda ildə səkkiz hörümçək udmursan 🕷️",
+      "description": "Məşhur “ildə səkkiz hörümçək” rəqəminin heç bir elmi əsası yoxdur. Hörümçəklər dünyanı titrəyişlərlə hiss edir, yatan insanın nəfəsi, ürək döyüntüsü və xorultusu isə onlar üçün təhlükə siqnalıdır. Bir hörümçək mütəxəssisi deyir ki, hər il kimsə ağzında hörümçək ayağı tapdığını danışır, amma sübutu adətən unitaza atmış olur.\n\n#shorts\n\nSeri: mk-c0113"
+    },
+    "ro": {
+      "title": "Nu înghiți opt păianjeni pe an în somn 🕷️",
+      "description": "Faimoasa cifră de „opt păianjeni pe an” nu are nicio bază științifică. Păianjenii percep lumea prin vibrații, iar respirația, bătăile inimii și sforăitul unui om care doarme sunt pentru ei semnale de pericol. Un specialist în păianjeni povestește că în fiecare an cineva îi spune că a găsit un picior de păianjen în gură, dar de obicei a aruncat dovada în toaletă.\n\n#shorts\n\nSeri: mk-c0113"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de uykuda örümcek yuttuğumuza inanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu örümcekten yılda sekiz tane yutmuyorsun.",
+      "visual": "macro close-up of a house spider's eyes and fangs facing the camera",
+      "stock_query": "spider macro",
+      "source": "stock",
+      "callout": "8 ÖRÜMCEK YALANI"
+    },
+    {
+      "text": "Bu sayının hiçbir bilimsel dayanağı yok.",
+      "visual": "a spider crawling on a white wall at night",
+      "stock_query": "spider wall",
+      "source": "stock"
+    },
+    {
+      "text": "Bir örümcek uzmanına her yıl biri ağzında örümcek bacağı bulduğunu anlatıyor; kanıtı da genelde tuvalete atmış.",
+      "visual": "a spider sitting in the middle of its web, close up",
+      "stock_query": "spider web",
+      "source": "stock",
+      "callout": "KANIT TUVALETTE"
+    },
+    {
+      "text": "Çünkü örümcek dünyayı titreşimle algılar; nefesin, kalp atışın ve horlaman ona tehlike çanı çalar.",
+      "visual": "macro shot of a spider's hairy legs on a web",
+      "stock_query": "spider legs",
+      "source": "stock",
+      "callout": "NEFESİN = ALARM"
+    },
+    {
+      "text": "Onun gözünde uyuyan sen, titreyen dev bir kayasın; o yüzden...",
+      "visual": "a spider walking quickly away across the floor",
+      "stock_query": "spider walking",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.61,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #166",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0113_1794420255_ig.mp4"
+}
