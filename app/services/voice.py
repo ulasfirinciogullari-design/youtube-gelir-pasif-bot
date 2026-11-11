@@ -775,6 +775,30 @@ def _scene_pause(scene: dict, is_last: bool, short_preview: bool) -> float:
     return 0.32
 
 
+def _scene_allocations_for_measured_audio(scene_durations: list[float], audio_seconds: float) -> list[float]:
+    """Allocate visual scene lengths, not word alignment or an audio-QA pass.
+
+    Chunk/container durations can drift from the decoded and re-encoded joined
+    file. Preserve their relative visual weights but bind the final boundary to
+    the independently measured audio. This calculation never changes audio.
+    """
+    if (
+        not scene_durations
+        or any(type(value) not in (int, float) or not math.isfinite(value) or value <= 0
+               for value in scene_durations)
+        or type(audio_seconds) not in (int, float) or not math.isfinite(audio_seconds) or audio_seconds <= 0
+    ):
+        raise VoiceQualityError('Invalid measured visual scene allocation')
+    total = math.fsum(scene_durations)
+    if not math.isfinite(total) or total <= 0:
+        raise VoiceQualityError('Invalid measured visual scene allocation')
+    allocated = [duration * (audio_seconds / total) for duration in scene_durations]
+    allocated[-1] = audio_seconds - sum(allocated[:-1])
+    if any(not math.isfinite(value) or value <= 0 for value in allocated):
+        raise VoiceQualityError('Invalid measured visual scene allocation')
+    return allocated
+
+
 def _fit_duration(
     output: Path,
     scene_durations: list[float],
@@ -840,8 +864,11 @@ def _fit_duration(
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         fitted.replace(output)
         after = _media_duration(output)
-        scale = after / before if before else 1.0
-        scene_durations = [duration * scale for duration in scene_durations]
+        if short_preview:
+            scale = after / before if before else 1.0
+            scene_durations = [duration * scale for duration in scene_durations]
+    if not short_preview:
+        scene_durations = _scene_allocations_for_measured_audio(scene_durations, after)
     return scene_durations, before, after, tempo_rate
 
 
