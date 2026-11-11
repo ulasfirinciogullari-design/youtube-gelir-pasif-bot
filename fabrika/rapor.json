@@ -1,18 +1,71 @@
 {
- "started": "2026-11-11T09:07:33+00:00",
- "mod": "igbolum",
- "gate": "instagram: y041",
+ "started": "2026-11-11T10:08:03+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
- "chars": 369,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18119618327019124",
-  "url": "https://www.instagram.com/reel/DfmH70iEiXz/",
-  "at": 1794388140.7708807
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "62",
+  "videos": "69"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfmH70iEiXz/"
+ "credits_before": [
+  97332,
+  613902
  ],
- "finished": "2026-11-11T09:09:00+00:00"
+ "kuyruk": {
+  "dosya": "20261110-4-y067.json",
+  "kalan": 5
+ },
+ "topic": {
+  "id": "y067",
+  "series": "Ya Olsaydı?",
+  "q": "Hiç su içmeseydin kaç gün dayanırdın?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 370,
+ "duration": 25.1,
+ "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
+ "url": "https://youtube.com/shorts/O1WLYgc1whA",
+ "recent_status": {
+  "y069": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "902",
+   "reason": null
+  },
+  "y030": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1145",
+   "reason": null
+  },
+  "y066": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "588",
+   "reason": null
+  },
+  "n014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "57",
+   "reason": null
+  },
+  "y067": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  97422,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261110-4-y067.json Hiç su içmeseydin kaç gün dayanırdın? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-11T10:08:49+00:00"
 }

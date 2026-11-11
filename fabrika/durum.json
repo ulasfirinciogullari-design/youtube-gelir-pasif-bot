@@ -1526,7 +1526,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1248",
+    "views": "1253",
     "reason": null
    }
   },
@@ -1556,7 +1556,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1011",
+    "views": "1015",
     "reason": null
    }
   },
@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1037",
+    "views": "1055",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1189",
+    "views": "1210",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1125",
+    "views": "1132",
     "reason": null
    }
   },
@@ -1676,7 +1676,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1054",
+    "views": "1056",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "524",
+    "views": "585",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "996",
+    "views": "1053",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1107",
+    "views": "1143",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "971",
+    "views": "972",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "906",
+    "views": "904",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "608",
+    "views": "816",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "864",
+    "views": "936",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "159",
+    "views": "216",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "788",
+    "views": "902",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "856",
+    "views": "1145",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "4",
+    "views": "588",
     "reason": null
    }
   },
@@ -2033,6 +2033,36 @@
    "thumbnail": true,
    "at": 1794341325.4626594,
    "chars": 410,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "57",
+    "reason": null
+   }
+  },
+  {
+   "id": "y067",
+   "video_id": "O1WLYgc1whA",
+   "url": "https://youtube.com/shorts/O1WLYgc1whA",
+   "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Days Could You Survive Without Drinking Water?",
+    "es": "¿Cuántos Días Aguantarías Sin Beber Agua?",
+    "pt": "Quantos Dias Você Aguentaria Sem Beber Água?",
+    "ar": "كم يومًا يمكنك الصمود دون شرب الماء؟",
+    "hi": "बिना पानी पिए आप कितने दिन जीवित रह सकते हैं?",
+    "id": "Berapa Hari Kamu Bisa Bertahan Tanpa Minum Air?",
+    "fr": "Combien de Jours Tiendrais-tu Sans Boire d'Eau ?",
+    "de": "Wie Viele Tage Würdest Du Ohne Wasser Überleben?",
+    "ru": "Сколько Дней Ты Продержишься Без Воды?",
+    "az": "Heç Su İçməsəydin Neçə Gün Dözərdin?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794391727.8738446,
+   "chars": 370,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2109,7 +2139,8 @@
   "y069",
   "y030",
   "y066",
-  "n014"
+  "n014",
+  "y067"
  ],
  "extra": [
   {
@@ -2175,12 +2206,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-03T17:10:15+00:00",
-   "mod": "igbolum",
-   "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
-   "chars": 376
-  },
   {
    "finished": "2026-11-03T18:08:49+00:00",
    "mod": "saatlik",
@@ -2604,6 +2629,14 @@
    "mod": "igbolum",
    "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
    "chars": 369
+  },
+  {
+   "finished": "2026-11-11T10:08:49+00:00",
+   "mod": "saatlik",
+   "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
+   "url": "https://youtube.com/shorts/O1WLYgc1whA",
+   "duration": 25.1,
+   "chars": 370
   }
  ],
  "last_fail": 1794133491.1438286,
