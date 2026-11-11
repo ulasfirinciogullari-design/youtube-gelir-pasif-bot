@@ -1,71 +1,18 @@
 {
- "started": "2026-11-10T20:07:45+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-11T09:07:33+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y041",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "62",
-  "videos": "68"
+ "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+ "chars": 369,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18119618327019124",
+  "url": "https://www.instagram.com/reel/DfmH70iEiXz/",
+  "at": 1794388140.7708807
  },
- "credits_before": [
-  96386,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261110-3-n014.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "n014",
-  "series": "Ne Kadar Büyük?",
-  "q": "En büyük dinozor ne kadar büyüktü?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 410,
- "duration": 27.8,
- "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
- "url": "https://youtube.com/shorts/nFBLtsB59Uw",
- "recent_status": {
-  "g013": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "159",
-   "reason": null
-  },
-  "y069": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "788",
-   "reason": null
-  },
-  "y030": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "856",
-   "reason": null
-  },
-  "y066": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "4",
-   "reason": null
-  },
-  "n014": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  96386,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261110-3-n014.json En büyük dinozor ne kadar büyüktü? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/DfmH70iEiXz/"
  ],
- "finished": "2026-11-10T20:08:47+00:00"
+ "finished": "2026-11-11T09:09:00+00:00"
 }

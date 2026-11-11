@@ -2176,14 +2176,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-03T14:10:30+00:00",
-   "mod": "saatlik",
-   "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
-   "url": "https://youtube.com/shorts/wvA035c4dvw",
-   "duration": 24.2,
-   "chars": 351
-  },
-  {
    "finished": "2026-11-03T17:10:15+00:00",
    "mod": "igbolum",
    "title": "Dünya'nın Satürn Gibi Halkası Olsaydı Sana Ne Olurdu?",
@@ -2606,6 +2598,12 @@
    "url": "https://youtube.com/shorts/nFBLtsB59Uw",
    "duration": 27.8,
    "chars": 410
+  },
+  {
+   "finished": "2026-11-11T09:09:00+00:00",
+   "mod": "igbolum",
+   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+   "chars": 369
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2865,6 +2863,11 @@
     "media_id": "18386896900236347",
     "url": "https://www.instagram.com/reel/DfkaNGtjjWx/",
     "at": 1794330615.0566885
+   },
+   "y041": {
+    "media_id": "18119618327019124",
+    "url": "https://www.instagram.com/reel/DfmH70iEiXz/",
+    "at": 1794388140.7708807
    }
   },
   "eski": [
