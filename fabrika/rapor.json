@@ -1,18 +1,33 @@
 {
- "started": "2026-11-11T13:09:19+00:00",
- "mod": "igbolum",
- "gate": "instagram: y030",
+ "started": "2026-11-11T15:18:40+00:00",
+ "mod": "zorla",
+ "gate": "zorla",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
- "chars": 355,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18083824961422475",
-  "url": "https://www.instagram.com/reel/DfmjleWnMZ-/",
-  "at": 1794402643.977216
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "62",
+  "videos": "71"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfmjleWnMZ-/"
+ "credits_before": [
+  97782,
+  613902
  ],
- "finished": "2026-11-11T13:10:43+00:00"
+ "kuyruk": {
+  "dosya": "20261111-1-y019.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y019",
+  "series": "Ya Olsaydı?",
+  "q": "Uzayda ağlasaydın ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "error": "FileNotFoundError: [Errno 2] No such file or directory: 'ffmpeg'",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 454, in main\n    else produce(state, a.mod, report))\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 382, in produce\n    timings, mix, chars = ses.make(ep, WORK)\n                          ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 190, in make\n    audio = decode(mp3, filt)\n            ^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 57, in decode\n    return np.frombuffer(subprocess.run(cmd, check=True, capture_output=True).stdout, dtype=np.float32).copy()\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/subprocess.py\", line 548, in run\n    with Popen(*popenargs, **kwargs) as process:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/subprocess.py\", line 1026, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/subprocess.py\", line 1955, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nFileNotFoundError: [Errno 2] No such file or directory: 'ffmpeg'\n",
+ "log": [
+  "Kuyruktan: 20261111-1-y019.json Uzayda ağlasaydın ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-11T15:18:44+00:00"
 }
