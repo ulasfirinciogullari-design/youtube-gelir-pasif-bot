@@ -1586,7 +1586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1055",
+    "views": "1054",
     "reason": null
    }
   },
@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1210",
+    "views": "1211",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1132",
+    "views": "1133",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1053",
+    "views": "1085",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1140",
+    "views": "1276",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "972",
+    "views": "975",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "904",
+    "views": "936",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "816",
+    "views": "846",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "936",
+    "views": "937",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "212",
+    "views": "248",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "902",
+    "views": "914",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1151",
+    "views": "1173",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "562",
+    "views": "694",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "56",
+    "views": "109",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "5",
+    "views": "232",
     "reason": null
    }
   },
@@ -2093,6 +2093,36 @@
    "thumbnail": true,
    "at": 1794399003.0507996,
    "chars": 365,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "212",
+    "reason": null
+   }
+  },
+  {
+   "id": "n015",
+   "video_id": "agyOZTY5PCE",
+   "url": "https://youtube.com/shorts/agyOZTY5PCE",
+   "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Dense Is a Neutron Star, Really?",
+    "es": "¿Qué Tan Densa Es Realmente una Estrella de Neutrones?",
+    "pt": "Quão Densa É Realmente uma Estrela de Nêutrons?",
+    "ar": "ما مدى كثافة النجم النيوتروني حقًا؟",
+    "hi": "न्यूट्रॉन तारा असल में कितना घना होता है?",
+    "id": "Seberapa Padat Sebenarnya Bintang Neutron?",
+    "fr": "Quelle Est la Densité Réelle d'une Étoile à Neutrons ?",
+    "de": "Wie Dicht Ist ein Neutronenstern Wirklich?",
+    "ru": "Насколько Плотная Нейтронная Звезда на Самом Деле?",
+    "az": "Neytron Ulduzu Əslində Nə Qədər Sıxdır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794420532.9179332,
+   "chars": 367,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2171,7 +2201,8 @@
   "y066",
   "n014",
   "y067",
-  "g014"
+  "g014",
+  "n015"
  ],
  "extra": [
   {
@@ -2237,14 +2268,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-04T10:08:25+00:00",
-   "mod": "saatlik",
-   "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
-   "url": "https://youtube.com/shorts/m0HqyZ1pins",
-   "duration": 25.5,
-   "chars": 374
-  },
   {
    "finished": "2026-11-04T13:10:55+00:00",
    "mod": "igbolum",
@@ -2664,6 +2687,14 @@
    "mod": "igbolum",
    "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
    "chars": 358
+  },
+  {
+   "finished": "2026-11-11T18:08:54+00:00",
+   "mod": "saatlik",
+   "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
+   "url": "https://youtube.com/shorts/agyOZTY5PCE",
+   "duration": 24.2,
+   "chars": 367
   }
  ],
  "last_fail": 1794410324.353765,

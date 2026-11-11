@@ -1,18 +1,71 @@
 {
- "started": "2026-11-11T17:08:50+00:00",
- "mod": "igbolum",
- "gate": "instagram: y042",
+ "started": "2026-11-11T18:07:52+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
- "chars": 358,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18457862338131540",
-  "url": "https://www.instagram.com/reel/Dfm_FVmCK_U/",
-  "at": 1794417054.2324007
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "63",
+  "videos": "71"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfm_FVmCK_U/"
+ "credits_before": [
+  97970,
+  613902
  ],
- "finished": "2026-11-11T17:10:54+00:00"
+ "kuyruk": {
+  "dosya": "20261111-2-n015.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "n015",
+  "series": "Ne Kadar Büyük?",
+  "q": "Bir nötron yıldızı ne kadar yoğun?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 367,
+ "duration": 24.2,
+ "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
+ "url": "https://youtube.com/shorts/agyOZTY5PCE",
+ "recent_status": {
+  "y066": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "694",
+   "reason": null
+  },
+  "n014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "109",
+   "reason": null
+  },
+  "y067": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "232",
+   "reason": null
+  },
+  "g014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "212",
+   "reason": null
+  },
+  "n015": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  97970,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261111-2-n015.json Bir nötron yıldızı ne kadar yoğun? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-11T18:08:54+00:00"
 }
