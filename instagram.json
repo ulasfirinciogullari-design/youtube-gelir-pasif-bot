@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-19T18": "HVLl6Fm8pUE https://www.instagram.com/reel/Der2oOEAaQ0/",
   "2026-10-20T10": "B1WUrxV1qgU https://www.instagram.com/reel/DetkehOjjBi/",
   "2026-10-20T14": "ufNrrRaumVM https://www.instagram.com/reel/Det_3JklrHu/",
   "2026-10-20T18": "lUzrJ7tIkTc https://www.instagram.com/reel/DeubU14H1pN/",
@@ -48,16 +47,17 @@
   "2026-11-09T18": "K9JGmD_QiPg https://www.instagram.com/reel/Dfh7NS2kYhL/",
   "2026-11-10T10": "mccbXMW6PR8 https://www.instagram.com/reel/DfjpJ-rEndB/",
   "2026-11-10T14": "cnUHdK51l4w https://www.instagram.com/reel/DfkEnpsDdq6/",
-  "2026-11-10T18": "GV9PqnGc_TI https://www.instagram.com/reel/DfkgAXkDDcK/"
+  "2026-11-10T18": "GV9PqnGc_TI https://www.instagram.com/reel/DfkgAXkDDcK/",
+  "2026-11-11T10": "1cMOZL90y_Q https://www.instagram.com/reel/DfmN8nvES17/"
  },
  "nobet": {
   "basladi": "2026-11-11T07:51:44+00:00",
   "run": "42981345660",
-  "tur": 124,
+  "tur": 130,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-11T09:54:45+00:00"
+  "son_tur": "2026-11-11T10:01:33+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -360,6 +360,13 @@
    "at": 1794333653,
    "title": "Kedin adını biliyor, sadece seni duymazdan geliyor 🐱",
    "topic_id": "mk-c0088"
+  },
+  "1cMOZL90y_Q": {
+   "media_id": "18041758202821413",
+   "url": "https://www.instagram.com/reel/DfmN8nvES17/",
+   "at": 1794391293,
+   "title": "Devekuşu aslında başını hiç kuma gömmez 🪶",
+   "topic_id": "mk-c0100"
   }
  }
 }
