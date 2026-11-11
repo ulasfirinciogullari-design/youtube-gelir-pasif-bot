@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-20T14": "ufNrrRaumVM https://www.instagram.com/reel/Det_3JklrHu/",
   "2026-10-20T18": "lUzrJ7tIkTc https://www.instagram.com/reel/DeubU14H1pN/",
   "2026-10-21T10": "syjCIdu7idw https://www.instagram.com/reel/DewJRmwiulP/",
   "2026-10-21T14": "PGdsZfAcU8E https://www.instagram.com/reel/DewkruXHaNF/",
@@ -48,16 +47,17 @@
   "2026-11-10T14": "cnUHdK51l4w https://www.instagram.com/reel/DfkEnpsDdq6/",
   "2026-11-10T18": "GV9PqnGc_TI https://www.instagram.com/reel/DfkgAXkDDcK/",
   "2026-11-11T10": "1cMOZL90y_Q https://www.instagram.com/reel/DfmN8nvES17/",
-  "2026-11-11T14": "ffIiQH5yS6Q https://www.instagram.com/reel/DfmpW0WEShu/"
+  "2026-11-11T14": "ffIiQH5yS6Q https://www.instagram.com/reel/DfmpW0WEShu/",
+  "2026-11-11T18": "vw3pPy748ls https://www.instagram.com/reel/DfnE0cLD04W/"
  },
  "nobet": {
   "basladi": "2026-11-11T13:32:12+00:00",
   "run": "43028432711",
-  "tur": 244,
+  "tur": 269,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-11T17:35:13+00:00"
+  "son_tur": "2026-11-11T18:01:02+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -374,6 +374,13 @@
    "at": 1794405663,
    "title": "Kediler zifiri karanlıkta senin kadar kördür 🐱",
    "topic_id": "mk-c0082"
+  },
+  "vw3pPy748ls": {
+   "media_id": "18106989659148329",
+   "url": "https://www.instagram.com/reel/DfnE0cLD04W/",
+   "at": 1794420062,
+   "title": "Telefonda gülümsediğini karşındaki duyar 😊",
+   "topic_id": "mk-c0073"
   }
  }
 }
