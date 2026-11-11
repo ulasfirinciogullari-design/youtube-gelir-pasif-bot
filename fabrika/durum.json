@@ -2238,14 +2238,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-03T20:08:26+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
-   "url": "https://youtube.com/shorts/sKXUwUMgkt0",
-   "duration": 24.0,
-   "chars": 353
-  },
-  {
    "finished": "2026-11-04T07:31:45+00:00",
    "mod": "ornek",
    "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
@@ -2668,6 +2660,12 @@
    "url": "https://youtube.com/shorts/mTcbQupGjWQ",
    "duration": 25.7,
    "chars": 365
+  },
+  {
+   "finished": "2026-11-11T13:10:43+00:00",
+   "mod": "igbolum",
+   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+   "chars": 355
   }
  ],
  "last_fail": 1794133491.1438286,
@@ -2932,6 +2930,11 @@
     "media_id": "18119618327019124",
     "url": "https://www.instagram.com/reel/DfmH70iEiXz/",
     "at": 1794388140.7708807
+   },
+   "y030": {
+    "media_id": "18083824961422475",
+    "url": "https://www.instagram.com/reel/DfmjleWnMZ-/",
+    "at": 1794402643.977216
    }
   },
   "eski": [

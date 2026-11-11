@@ -1,71 +1,18 @@
 {
- "started": "2026-11-11T12:09:03+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-11T13:09:19+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y030",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "62",
-  "videos": "70"
+ "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+ "chars": 355,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18083824961422475",
+  "url": "https://www.instagram.com/reel/DfmjleWnMZ-/",
+  "at": 1794402643.977216
  },
- "credits_before": [
-  97514,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261110-5-g014.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "g014",
-  "series": "1 Gün Boyunca",
-  "q": "1 günde ne kadar tükürük üretirsin?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 365,
- "duration": 25.7,
- "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
- "url": "https://youtube.com/shorts/mTcbQupGjWQ",
- "recent_status": {
-  "y030": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1151",
-   "reason": null
-  },
-  "y066": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "562",
-   "reason": null
-  },
-  "n014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "56",
-   "reason": null
-  },
-  "y067": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "5",
-   "reason": null
-  },
-  "g014": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  97603,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261110-5-g014.json 1 günde ne kadar tükürük üretirsin? (1 Gün Boyunca)"
+  "Instagram: https://www.instagram.com/reel/DfmjleWnMZ-/"
  ],
- "finished": "2026-11-11T12:10:04+00:00"
+ "finished": "2026-11-11T13:10:43+00:00"
 }
