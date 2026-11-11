@@ -67,10 +67,18 @@ fi
 # Every install step has a time limit: on 2026-11-11 14:11 UTC the runner could not resolve the Ubuntu mirrors and a
 # step hung silently until the 45-minute job limit, so the TR 17:00 slot was lost. A stuck step now fails in minutes.
 echo "Kurulum başlıyor $(date -u +%H:%M:%S)"
-timeout 300 sudo apt-get update -qq || echo "apt-get update hata verdi, kuruluma yine de geçiliyor"  # one broken mirror must not stop it
-timeout 600 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
-  || echo "apt-get install olmadı (hata ya da zaman aşımı) $(date -u +%H:%M:%S)"
+timeout 300 sudo apt-get update -qq 2>&1 | tee fabrika/_apt.log  # one broken mirror must not stop it
+APT=1  # when the runner cannot resolve the Ubuntu mirrors at all, apt install only waits for its time limit
+grep -q "Temporary failure resolving" fabrika/_apt.log && { APT=0; echo "Ubuntu paket sunucularına ulaşılamıyor, apt atlanıyor"; }
+[ "$APT" = 1 ] && { timeout 600 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
+  || echo "apt-get install olmadı (hata ya da zaman aşımı) $(date -u +%H:%M:%S)"; }
 pip install -q numpy requests cryptography
+if ! command -v ffmpeg >/dev/null; then  # the emoji font is bundled in fabrika/motor/emoji, ffmpeg is the only must
+  echo "ffmpeg apt'tan gelmedi, PyPI'deki imageio-ffmpeg kuruluyor $(date -u +%H:%M:%S)"
+  timeout 300 pip install -q imageio-ffmpeg \
+    && sudo ln -sf "$(python3 -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg \
+    || echo "imageio-ffmpeg de olmadı"
+fi
 if [ "$MOD" = "nasa" ]; then  # tetik.txt "nasa ara" or "nasa al": NASA photos for the engine (fabrika/nasa.py)
   pip install -q pillow
   out=$(python3 fabrika/nasa.py "$(awk '{print $2}' fabrika/tetik.txt)" | tail -n 1); echo "$out"
@@ -84,8 +92,12 @@ timeout 300 npm install -q --no-save playwright@1.55.0 || echo "npm install olma
 . /etc/os-release
 case "${VERSION_ID:-}" in 2[0-4].*) ;; *) export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64 ;; esac
 # --with-deps needs apt; when that step fails the browser alone still downloads
-timeout 600 npx playwright install --with-deps chromium > fabrika/_pw.log 2>&1 \
-  || { echo "--with-deps olmadı, yalnız tarayıcı kuruluyor" >> fabrika/_pw.log; timeout 300 npx playwright install chromium >> fabrika/_pw.log 2>&1; }
+if [ "$APT" = 1 ]; then
+  timeout 600 npx playwright install --with-deps chromium > fabrika/_pw.log 2>&1 \
+    || { echo "--with-deps olmadı, yalnız tarayıcı kuruluyor" >> fabrika/_pw.log; timeout 300 npx playwright install chromium >> fabrika/_pw.log 2>&1; }
+else
+  timeout 300 npx playwright install chromium > fabrika/_pw.log 2>&1
+fi
 echo "Kurulum bitti $(date -u +%H:%M:%S)"
 if ! ls "$HOME"/.cache/ms-playwright/chromium_headless_shell-*/chrome-linux/headless_shell >/dev/null 2>&1; then
   export CHROME_PATH="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"

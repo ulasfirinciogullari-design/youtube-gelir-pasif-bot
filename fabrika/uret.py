@@ -12,6 +12,8 @@ when the queue is empty. State: fabrika/durum.json (uploaded episodes, used topi
 import argparse
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 import time
@@ -136,6 +138,16 @@ def gate(state, mod):
         return False, "üst üste 6 deneme başarısız oldu, 3 saat bekleniyor"
     return True, "saat boş"
 
+
+def video_len(path):
+    """Seconds. ffprobe comes with apt's ffmpeg; the PyPI fallback (calistir.sh, 2026-11-11) has only ffmpeg,
+    whose banner carries the same duration."""
+    if shutil.which("ffprobe"):
+        return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                     str(path)], capture_output=True, text=True, check=True).stdout.strip())
+    err = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(path)], capture_output=True, text=True).stderr
+    h, m, s = re.search(r"Duration: (\d+):(\d+):([\d.]+)", err).groups()
+    return int(h) * 3600 + int(m) * 60 + float(s)
 
 # Words every question shares; the rest name its subject (Güneş, kara delik, oksijen...).
 COMMON = {w[:5] for w in ("olurdu olsaydı olur olsa olmasaydı kadar gerçekte büyük günde boyunca nasıl neler bütün "
@@ -268,8 +280,7 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
-    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
-                                str(out_video)], capture_output=True, text=True, check=True).stdout.strip())
+    dur = video_len(out_video)
     if not 14 <= dur <= (90 if ep.get("uzun") else 60):
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
