@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1143",
+    "views": "1140",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "216",
+    "views": "212",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1145",
+    "views": "1151",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "588",
+    "views": "562",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "57",
+    "views": "56",
     "reason": null
    }
   },
@@ -2063,6 +2063,36 @@
    "thumbnail": true,
    "at": 1794391727.8738446,
    "chars": 370,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "5",
+    "reason": null
+   }
+  },
+  {
+   "id": "g014",
+   "video_id": "mTcbQupGjWQ",
+   "url": "https://youtube.com/shorts/mTcbQupGjWQ",
+   "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Much Saliva Do You Make in 1 Day?",
+    "es": "¿Cuánta Saliva Produces en 1 Día?",
+    "pt": "Quanta Saliva Você Produz em 1 Dia?",
+    "ar": "كم من اللعاب تفرز في يوم واحد؟",
+    "hi": "आप 1 दिन में कितनी लार बनाते हैं?",
+    "id": "Berapa Banyak Air Liur yang Kamu Hasilkan dalam 1 Hari?",
+    "fr": "Combien de Salive Produis-tu en 1 Jour ?",
+    "de": "Wie Viel Speichel Produzierst Du an 1 Tag?",
+    "ru": "Сколько Слюны Ты Вырабатываешь за 1 День?",
+    "az": "1 Gündə Nə Qədər Tüpürcək İfraz Edirsən?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794399003.0507996,
+   "chars": 365,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2140,7 +2170,8 @@
   "y030",
   "y066",
   "n014",
-  "y067"
+  "y067",
+  "g014"
  ],
  "extra": [
   {
@@ -2206,14 +2237,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-03T18:08:49+00:00",
-   "mod": "saatlik",
-   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
-   "url": "https://youtube.com/shorts/9j_jigCDW7s",
-   "duration": 26.3,
-   "chars": 370
-  },
   {
    "finished": "2026-11-03T20:08:26+00:00",
    "mod": "saatlik",
@@ -2637,6 +2660,14 @@
    "url": "https://youtube.com/shorts/O1WLYgc1whA",
    "duration": 25.1,
    "chars": 370
+  },
+  {
+   "finished": "2026-11-11T12:10:04+00:00",
+   "mod": "saatlik",
+   "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
+   "url": "https://youtube.com/shorts/mTcbQupGjWQ",
+   "duration": 25.7,
+   "chars": 365
   }
  ],
  "last_fail": 1794133491.1438286,

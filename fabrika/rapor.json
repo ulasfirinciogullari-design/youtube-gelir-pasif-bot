@@ -1,5 +1,5 @@
 {
- "started": "2026-11-11T10:08:03+00:00",
+ "started": "2026-11-11T12:09:03+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "62",
-  "videos": "69"
+  "videos": "70"
  },
  "credits_before": [
-  97332,
+  97514,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261110-4-y067.json",
-  "kalan": 5
+  "dosya": "20261110-5-g014.json",
+  "kalan": 4
  },
  "topic": {
-  "id": "y067",
-  "series": "Ya Olsaydı?",
-  "q": "Hiç su içmeseydin kaç gün dayanırdın?"
+  "id": "g014",
+  "series": "1 Gün Boyunca",
+  "q": "1 günde ne kadar tükürük üretirsin?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 370,
- "duration": 25.1,
- "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
- "url": "https://youtube.com/shorts/O1WLYgc1whA",
+ "chars": 365,
+ "duration": 25.7,
+ "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
+ "url": "https://youtube.com/shorts/mTcbQupGjWQ",
  "recent_status": {
-  "y069": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "902",
-   "reason": null
-  },
   "y030": {
    "upload": "processed",
    "privacy": "public",
-   "views": "1145",
+   "views": "1151",
    "reason": null
   },
   "y066": {
    "upload": "processed",
    "privacy": "public",
-   "views": "588",
+   "views": "562",
    "reason": null
   },
   "n014": {
    "upload": "processed",
    "privacy": "public",
-   "views": "57",
+   "views": "56",
    "reason": null
   },
   "y067": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "5",
+   "reason": null
+  },
+  "g014": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  97422,
+  97603,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261110-4-y067.json Hiç su içmeseydin kaç gün dayanırdın? (Ya Olsaydı?)"
+  "Kuyruktan: 20261110-5-g014.json 1 günde ne kadar tükürük üretirsin? (1 Gün Boyunca)"
  ],
- "finished": "2026-11-11T10:08:49+00:00"
+ "finished": "2026-11-11T12:10:04+00:00"
 }
