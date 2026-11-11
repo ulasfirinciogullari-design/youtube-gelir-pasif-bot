@@ -1,0 +1,180 @@
+{
+  "topic_id": "mk-c0108",
+  "topic": "Ekrana bakarken neden az göz kırparız, gözler neden kurur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Ekrana bakarken göz kırpmayı yarı yarıya unutursun 📱",
+  "hook_text": "EKRANDA NEDEN AZ GÖZ KIRPARSIN?",
+  "description": "Ekrana bakarken neden az göz kırparız, gözler neden kurur?\n\nAmerikan Oftalmoloji Akademisi'ne göre insan normalde dakikada yaklaşık 15 kez göz kırpar; bilgisayar, tablet ya da telefon ekranına bakarken bu sayı dakikada 5 ila 7'ye kadar düşebilir. Kitap okumak gibi yakına odaklanmayı gerektiren işlerde de aynı şey olur; seyrek göz kırpmak gözlerin kurumasına, yanmasına ve yorulmasına yol açar. Akademi her 20 dakikada bir, 20 saniye boyunca yaklaşık 6 metre uzağa bakmayı ve gerekirse suni gözyaşı kullanmayı öneriyor. Bir göz kırpışı yaklaşık 0,1-0,4 saniye sürer. University College London'dan araştırmacıların 2005'te Current Biology'de yayımladığı çalışmaya göre göz kırparken beynin görme bölgelerinin etkinliği bastırılıyor; bu yüzden her kırpışta dünyanın kararmasını fark etmiyoruz.\n\nSen günde kaç saat ekrana bakıyorsun: beş saatten az mı, fazla mı?\n\n#göz #gözsağlığı #insanvücudu #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0108",
+  "tags": [
+    "göz kırpmak",
+    "göz kırpma",
+    "neden göz kırparız",
+    "ekrana bakmak",
+    "göz kuruluğu",
+    "göz yorgunluğu",
+    "gözler neden kurur",
+    "telefon ve göz sağlığı",
+    "ekran süresi",
+    "göz sağlığı",
+    "dijital göz yorgunluğu",
+    "göz",
+    "beyin",
+    "beyin nasıl çalışır",
+    "insan vücudu",
+    "vücudumuz",
+    "sağlık",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "blink rate",
+    "eye strain",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "goz kirpmak",
+    "goz kirpma",
+    "neden goz kirpariz",
+    "goz kurulugu",
+    "goz yorgunlugu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Staring at a screen, you blink less than half as often 📱",
+      "description": "Normally you blink about 15 times a minute, but looking at a screen it can drop to 5 to 7. Focusing up close makes you forget to blink, so your eyes dry out and sting, and reading a book does the same. And during every blink your brain briefly dims its visual areas, which is why you never notice the world going dark.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "es": {
+      "title": "Mirando una pantalla parpadeas menos de la mitad 📱",
+      "description": "Normalmente parpadeas unas 15 veces por minuto, pero frente a una pantalla puede bajar a entre 5 y 7. Al enfocar de cerca te olvidas de parpadear, y los ojos se secan y arden; leer un libro produce lo mismo. Además, en cada parpadeo el cerebro atenúa por un instante sus áreas visuales, por eso nunca notas que el mundo se oscurece.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "pt": {
+      "title": "Olhando para a tela, você pisca menos da metade 📱",
+      "description": "Normalmente você pisca umas 15 vezes por minuto, mas diante de uma tela isso pode cair para 5 a 7. Ao focar de perto, você esquece de piscar, e os olhos ficam secos e ardem; ler um livro faz o mesmo. E a cada piscada o cérebro atenua por um instante suas áreas visuais, por isso você nunca percebe o mundo escurecer.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "de": {
+      "title": "Vor dem Bildschirm blinzelst du nicht mal halb so oft 📱",
+      "description": "Normalerweise blinzelst du etwa 15-mal pro Minute, vor einem Bildschirm kann es auf 5 bis 7 sinken. Wenn du in die Nähe fokussierst, vergisst du das Blinzeln, die Augen werden trocken und brennen; beim Lesen eines Buchs passiert dasselbe. Und bei jedem Lidschlag dämpft dein Gehirn kurz seine Sehzentren, deshalb merkst du nie, dass die Welt dunkel wird.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "fr": {
+      "title": "Devant un écran, tu clignes des yeux plus de deux fois moins 📱",
+      "description": "Normalement, on cligne des yeux environ 15 fois par minute, mais devant un écran cela peut tomber à 5 à 7. En fixant de près, on oublie de cligner, et les yeux s'assèchent et piquent ; lire un livre fait pareil. Et à chaque clignement, le cerveau atténue brièvement ses zones visuelles : c'est pour ça qu'on ne remarque jamais le monde s'assombrir.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "it": {
+      "title": "Davanti a uno schermo sbatti le palpebre meno della metà delle volte 📱",
+      "description": "Normalmente sbatti le palpebre circa 15 volte al minuto, ma davanti a uno schermo puoi scendere a 5-7. Mettendo a fuoco da vicino ti dimentichi di farlo, e gli occhi si seccano e bruciano; leggere un libro fa lo stesso. E a ogni battito di ciglia il cervello attenua per un attimo le sue aree visive: per questo non ti accorgi mai che il mondo si oscura.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "ru": {
+      "title": "Глядя в экран, ты моргаешь более чем вдвое реже 📱",
+      "description": "Обычно человек моргает около 15 раз в минуту, а перед экраном частота может падать до 5–7. Фокусируясь на близком, мы забываем моргать, глаза сохнут и жгут; при чтении книги происходит то же самое. А при каждом моргании мозг на миг приглушает свои зрительные зоны, поэтому мы не замечаем, как мир темнеет.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "ar": {
+      "title": "أمام الشاشة ترمش أقل من نصف المعتاد 📱",
+      "description": "يرمش الإنسان عادة نحو 15 مرة في الدقيقة، لكن أمام الشاشة قد ينخفض ذلك إلى 5 أو 7 مرات. فعند التركيز على شيء قريب ننسى أن نرمش، فتجف العينان وتحرقان، والقراءة في كتاب تفعل الشيء نفسه. ومع كل رمشة يخفّض الدماغ نشاط مناطق الإبصار للحظة، ولهذا لا نلاحظ أبدًا أن العالم يظلم.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "hi": {
+      "title": "स्क्रीन देखते समय आप आधे से भी कम पलक झपकाते हैं 📱",
+      "description": "आम तौर पर हम एक मिनट में लगभग 15 बार पलक झपकाते हैं, लेकिन स्क्रीन देखते समय यह 5 से 7 तक गिर सकता है। पास की चीज़ पर ध्यान लगाने पर हम पलक झपकाना भूल जाते हैं, आँखें सूखती और जलती हैं; किताब पढ़ते समय भी यही होता है। और हर बार पलक झपकने पर दिमाग़ अपने देखने वाले हिस्सों को पल भर के लिए धीमा कर देता है, इसलिए हमें दुनिया का अँधेरा होना कभी पता नहीं चलता।\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "id": {
+      "title": "Saat menatap layar, kedipanmu berkurang lebih dari separuh 📱",
+      "description": "Normalnya kita berkedip sekitar 15 kali per menit, tetapi saat menatap layar bisa turun menjadi 5 sampai 7. Saat fokus ke jarak dekat kita lupa berkedip, sehingga mata kering dan perih; membaca buku pun sama. Dan setiap kali berkedip, otak meredam sejenak area penglihatannya, itulah sebabnya kita tak pernah sadar dunia menjadi gelap.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "ja": {
+      "title": "画面を見ていると、まばたきは半分以下になる 📱",
+      "description": "ふだん人は1分間に約15回まばたきしますが、画面を見ていると5〜7回に減ることがあります。近くに集中するとまばたきを忘れ、目が乾いてヒリヒリします。本を読むときも同じです。しかも、まばたきのたびに脳は視覚の領域を一瞬おさえるので、世界が暗くなることに気づかないのです。\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "ko": {
+      "title": "화면을 볼 때 눈 깜빡임은 절반 이하로 줄어든다 📱",
+      "description": "보통 사람은 1분에 약 15번 눈을 깜빡이지만, 화면을 볼 때는 5~7번까지 줄어들 수 있습니다. 가까운 곳에 집중하면 깜빡이는 걸 잊어 눈이 마르고 따가워지며, 책을 읽을 때도 마찬가지입니다. 게다가 깜빡일 때마다 뇌가 시각 영역의 활동을 잠깐 낮추기 때문에 세상이 어두워지는 걸 알아채지 못합니다.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "pl": {
+      "title": "Patrząc w ekran, mrugasz ponad dwa razy rzadziej 📱",
+      "description": "Zwykle mrugamy około 15 razy na minutę, ale przed ekranem może to spaść do 5–7. Skupiając wzrok z bliska, zapominamy mrugać, a oczy wysychają i pieką; przy czytaniu książki dzieje się to samo. Do tego przy każdym mrugnięciu mózg na chwilę wycisza swoje obszary wzrokowe, dlatego nigdy nie zauważamy, że świat ciemnieje.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "nl": {
+      "title": "Kijk je naar een scherm, dan knipper je minder dan half zo vaak 📱",
+      "description": "Normaal knipper je zo'n 15 keer per minuut, maar voor een scherm kan dat dalen tot 5 à 7. Als je dichtbij focust, vergeet je te knipperen, waardoor je ogen droog worden en branden; bij het lezen van een boek gebeurt hetzelfde. En bij elke knipper dempt je brein heel even zijn visuele gebieden, daarom merk je nooit dat de wereld donker wordt.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "uk": {
+      "title": "Дивлячись в екран, ти кліпаєш більш ніж удвічі рідше 📱",
+      "description": "Зазвичай людина кліпає близько 15 разів на хвилину, а перед екраном частота може падати до 5–7. Зосереджуючись на близькому, ми забуваємо кліпати, очі сохнуть і печуть; під час читання книжки відбувається те саме. А при кожному кліпанні мозок на мить приглушує свої зорові ділянки, тому ми не помічаємо, як світ темніє.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "vi": {
+      "title": "Khi nhìn màn hình, bạn chớp mắt chưa tới một nửa 📱",
+      "description": "Bình thường ta chớp mắt khoảng 15 lần mỗi phút, nhưng khi nhìn màn hình có thể giảm còn 5 đến 7 lần. Khi tập trung nhìn gần, ta quên chớp mắt khiến mắt khô và cay; đọc sách cũng vậy. Hơn nữa, mỗi lần chớp mắt, não tạm giảm hoạt động của các vùng thị giác trong tích tắc, nên ta không bao giờ nhận ra thế giới tối đi.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "az": {
+      "title": "Ekrana baxanda gözünü yarıdan da az qırpırsan 📱",
+      "description": "Adətən insan dəqiqədə təxminən 15 dəfə göz qırpır, ekrana baxanda isə bu, 5-7 dəfəyə qədər düşə bilər. Yaxına fokuslananda göz qırpmağı unuduruq, gözlər quruyur və göynəyir; kitab oxuyanda da eyni şey olur. Üstəlik hər göz qırpımında beyin görmə sahələrini bir anlıq zəiflədir, buna görə dünyanın qaraldığını heç vaxt hiss etmirik.\n\n#shorts\n\nSeri: mk-c0108"
+    },
+    "ro": {
+      "title": "La ecran clipești de peste două ori mai rar 📱",
+      "description": "În mod normal clipim de circa 15 ori pe minut, dar în fața unui ecran poate scădea la 5-7. Când privim de aproape uităm să clipim, iar ochii se usucă și ustură; la cititul unei cărți se întâmplă la fel. În plus, la fiecare clipit creierul își atenuează o clipă zonele vizuale, de aceea nu observăm niciodată că lumea se întunecă.\n\n#shorts\n\nSeri: mk-c0108"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen günde kaç saat ekrana bakıyorsun: beş saatten az mı, fazla mı?",
+  "scenes": [
+    {
+      "text": "Şu an normalin yarısından az göz kırpıyorsun.",
+      "visual": "extreme close-up of a wide-open eye staring at a phone, the glowing screen reflected in the pupil",
+      "stock_query": "eye blinking",
+      "source": "stock",
+      "callout": "YARISINDAN AZ"
+    },
+    {
+      "text": "Normalde dakikada on beş kez kırparsın; ekrana bakarken beş ile yedi arasına iner.",
+      "visual": "a woman staring intently at her phone screen in the dark",
+      "stock_query": "woman phone screen",
+      "source": "stock",
+      "subject": [
+        "phone"
+      ],
+      "callout": "DAKİKADA 15'TEN 5'E"
+    },
+    {
+      "text": "Üstelik her kırpışta beynin görme bölgeleri bir anlığına kısılır; dünyanın karardığını bu yüzden fark etmezsin.",
+      "visual": "extreme close-up of a human eye blinking in slow motion",
+      "stock_query": "eye close up",
+      "source": "stock",
+      "callout": "KARARMAYI GİZLER"
+    },
+    {
+      "text": "Çünkü yakına odaklanınca kırpmayı unutursun; gözün kurur, yanar, kitap okurken de böyle olur.",
+      "visual": "a tired man rubbing his dry eyes in front of a computer",
+      "stock_query": "man rubbing eyes",
+      "source": "stock",
+      "subject": [
+        "eyes",
+        "eye"
+      ],
+      "callout": "GÖZ KURUR"
+    },
+    {
+      "text": "Şimdi bilerek birkaç kez kırp; çünkü...",
+      "visual": "close-up of a woman deliberately blinking several times",
+      "stock_query": "woman eye blinking",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.61,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #161",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0108_1794374531_ig.mp4"
+}
