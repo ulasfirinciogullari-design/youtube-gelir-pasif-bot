@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1211",
+    "views": "1210",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1133",
+    "views": "1132",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1085",
+    "views": "1072",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1276",
+    "views": "1436",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "936",
+    "views": "914",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "846",
+    "views": "862",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "248",
+    "views": "266",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "914",
+    "views": "913",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1173",
+    "views": "1187",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "694",
+    "views": "698",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "109",
+    "views": "127",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "232",
+    "views": "226",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "212",
+    "views": "210",
     "reason": null
    }
   },
@@ -2123,6 +2123,36 @@
    "thumbnail": true,
    "at": 1794420532.9179332,
    "chars": 367,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "8",
+    "reason": null
+   }
+  },
+  {
+   "id": "y068",
+   "video_id": "xLGCGQYwSmE",
+   "url": "https://youtube.com/shorts/xLGCGQYwSmE",
+   "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If a Spider Crawled Into Your Mouth While You Slept?",
+    "es": "¿Qué Pasaría Si una Araña Entrara en Tu Boca Mientras Duermes?",
+    "pt": "E Se uma Aranha Entrasse na Sua Boca Enquanto Você Dorme?",
+    "ar": "ماذا سيحدث لو دخل عنكبوت فمك وأنت نائم؟",
+    "hi": "अगर सोते समय आपके मुंह में मकड़ी घुस जाए तो क्या होगा?",
+    "id": "Apa Jadinya Jika Laba-laba Masuk ke Mulutmu Saat Tidur?",
+    "fr": "Et Si une Araignée Entrait Dans Ta Bouche Pendant Que Tu Dors ?",
+    "de": "Was Passiert, Wenn Dir im Schlaf eine Spinne in den Mund Krabbelt?",
+    "ru": "Что Будет, Если Во Сне Тебе в Рот Заползёт Паук?",
+    "az": "Yatanda Ağzına Hörümçək Girsəydi Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794427689.27516,
+   "chars": 376,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2202,7 +2232,8 @@
   "n014",
   "y067",
   "g014",
-  "n015"
+  "n015",
+  "y068"
  ],
  "extra": [
   {
@@ -2268,12 +2299,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-04T13:10:55+00:00",
-   "mod": "igbolum",
-   "title": "Ay Gerçekte Ne Kadar Uzak?",
-   "chars": 420
-  },
   {
    "finished": "2026-11-04T14:12:33+00:00",
    "mod": "saatlik",
@@ -2695,6 +2720,14 @@
    "url": "https://youtube.com/shorts/agyOZTY5PCE",
    "duration": 24.2,
    "chars": 367
+  },
+  {
+   "finished": "2026-11-11T20:08:10+00:00",
+   "mod": "saatlik",
+   "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
+   "url": "https://youtube.com/shorts/xLGCGQYwSmE",
+   "duration": 24.6,
+   "chars": 376
   }
  ],
  "last_fail": 1794410324.353765,
