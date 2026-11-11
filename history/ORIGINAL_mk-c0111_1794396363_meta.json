@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0111",
+  "topic": "Kediye yün yumağıyla oynatmak tehlikeli mi, kedi ip yutarsa ne olur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yün yumağı kedin için sandığın kadar masum değil 🧶",
+  "hook_text": "KEDİYE YÜN YUMAĞI VERİLİR Mİ?",
+  "description": "Kediye yün yumağıyla oynatmak tehlikeli mi, kedi ip yutarsa ne olur?\n\nTehlike oyunda değil, ipi yutmasında. Georgia Teknoloji Enstitüsü'nün araştırmasına göre kedinin dilindeki dikenler geriye, boğaza doğru kıvrıktır; VCA veteriner hastanelerine göre bu dikenler ağza giren ipi içeride tutar ve tükürmeyi zorlaştırır. İpin bir ucu dilin dibine ya da mideye takılırsa bağırsak ipin üstünde akordeon gibi toplanır, ip bağırsağı kesebilir ve çoğu zaman ameliyat gerekir. Veterinerler ip ve yünü kedinin ulaşamayacağı bir yere kaldırmayı, ağzından sarkan ipi ise kendin çekmeyip veterinere gitmeyi öneriyor.\n\nSenin kedin iple oynamayı sever mi: evet mi, hayır mı?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0111",
+  "tags": [
+    "kedi ip yuttu",
+    "kedi ip yutarsa ne olur",
+    "kedi yün yumağı",
+    "yün yumağı",
+    "kedi oyuncağı",
+    "kedi dili",
+    "kedi dili neden pürüzlü",
+    "kedi bağırsak tıkanması",
+    "kedi kusması",
+    "kedi sağlığı",
+    "kedi bakımı",
+    "kedi",
+    "kediler",
+    "kedi sahibi",
+    "evcil hayvan",
+    "hayvanlar",
+    "hayvan gerçekleri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "cat yarn",
+    "cat string",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi yun yumagi",
+    "yun yumagi",
+    "kedi oyuncagi",
+    "kedi dili neden puruzlu",
+    "kedi bagirsak tikanmasi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A ball of yarn isn't as harmless for your cat as you think 🧶",
+      "description": "Play isn't the problem; swallowing the string is. The spines on a cat's tongue curve back toward the throat, so string in its mouth is hard to spit out. If one end catches under the tongue or in the stomach, the intestines can bunch up along it and be cut, which usually means surgery.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "es": {
+      "title": "Un ovillo de lana no es tan inofensivo para tu gato como crees 🧶",
+      "description": "El peligro no es el juego, sino tragarse el hilo. Las espinas de la lengua del gato apuntan hacia la garganta, así que le cuesta escupir el hilo que entra en su boca. Si un extremo se engancha en la lengua o el estómago, el intestino puede fruncirse a lo largo del hilo y cortarse, lo que suele requerir cirugía.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "pt": {
+      "title": "Novelo de lã não é tão inofensivo para o seu gato quanto parece 🧶",
+      "description": "O perigo não é a brincadeira, e sim engolir o fio. As espinhas da língua do gato apontam para a garganta, então é difícil para ele cuspir um fio que entra na boca. Se uma ponta fica presa na língua ou no estômago, o intestino pode franzir ao longo do fio e ser cortado, o que geralmente exige cirurgia.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "de": {
+      "title": "Ein Wollknäuel ist für deine Katze nicht so harmlos, wie du denkst 🧶",
+      "description": "Gefährlich ist nicht das Spielen, sondern das Verschlucken des Fadens. Die Stacheln auf der Katzenzunge zeigen nach hinten zum Rachen, deshalb kann sie einen Faden im Maul kaum ausspucken. Verhakt sich ein Ende an der Zunge oder im Magen, kann sich der Darm am Faden zusammenziehen und eingeschnitten werden, was meist eine Operation bedeutet.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "fr": {
+      "title": "Une pelote de laine n'est pas si inoffensive pour ton chat 🧶",
+      "description": "Le danger, ce n'est pas le jeu, c'est d'avaler le fil. Les papilles de la langue du chat sont tournées vers la gorge, il a donc du mal à recracher un fil qui entre dans sa bouche. Si un bout se coince sous la langue ou dans l'estomac, l'intestin peut se plisser le long du fil et être coupé, ce qui demande souvent une opération.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "it": {
+      "title": "Un gomitolo di lana non è così innocuo per il tuo gatto 🧶",
+      "description": "Il pericolo non è il gioco, ma ingoiare il filo. Le spine sulla lingua del gatto sono rivolte verso la gola, quindi gli è difficile sputare un filo che gli entra in bocca. Se un'estremità si incastra sotto la lingua o nello stomaco, l'intestino può arricciarsi lungo il filo ed esserne tagliato, cosa che di solito richiede un intervento.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "ru": {
+      "title": "Клубок шерсти не так безобиден для кошки, как кажется 🧶",
+      "description": "Опасна не игра, а проглоченная нитка. Шипики на языке кошки направлены назад, к горлу, поэтому ей трудно выплюнуть попавшую в рот нить. Если один конец зацепится за язык или застрянет в желудке, кишечник может собраться на нитке гармошкой и порезаться, и обычно тогда нужна операция.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "ar": {
+      "title": "كبة الصوف ليست بريئة لقطتك كما تظن 🧶",
+      "description": "الخطر ليس في اللعب بل في ابتلاع الخيط. فالأشواك على لسان القطة متجهة إلى الخلف نحو الحلق، لذا يصعب عليها لفظ الخيط إذا دخل فمها. وإذا علق أحد طرفيه تحت اللسان أو في المعدة، قد تتجمع الأمعاء على الخيط كالأكورديون ويقطعها، وغالبًا ما يتطلب ذلك جراحة.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "hi": {
+      "title": "ऊन का गोला आपकी बिल्ली के लिए उतना मासूम नहीं जितना लगता है 🧶",
+      "description": "ख़तरा खेलने में नहीं, धागा निगलने में है। बिल्ली की जीभ के काँटे पीछे गले की ओर मुड़े होते हैं, इसलिए मुँह में गया धागा थूकना उसके लिए मुश्किल होता है। अगर एक सिरा जीभ के नीचे या पेट में अटक जाए, तो आँतें धागे पर सिकुड़ सकती हैं और कट सकती हैं, जिसके लिए अक्सर ऑपरेशन करना पड़ता है।\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "id": {
+      "title": "Gulungan benang wol tak seaman yang kamu kira untuk kucingmu 🧶",
+      "description": "Bahayanya bukan pada bermain, tapi saat benangnya tertelan. Duri di lidah kucing mengarah ke belakang, ke tenggorokan, jadi benang yang masuk ke mulutnya sulit dimuntahkan. Kalau salah satu ujungnya tersangkut di lidah atau lambung, usus bisa mengerut di sepanjang benang dan teriris, yang biasanya butuh operasi.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "ja": {
+      "title": "毛糸玉は猫にとって思うほど安全じゃない 🧶",
+      "description": "危ないのは遊ぶことではなく、糸を飲み込むことです。猫の舌のトゲはのどの方向に向いているため、口に入った糸を吐き出すのが難しいのです。糸の端が舌の付け根や胃に引っかかると、腸が糸に沿ってアコーディオンのように縮み、糸で傷つくことがあり、たいてい手術が必要になります。\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "ko": {
+      "title": "털실 뭉치는 생각만큼 고양이에게 안전하지 않다 🧶",
+      "description": "위험한 건 노는 게 아니라 실을 삼키는 것입니다. 고양이 혀의 돌기는 목구멍 쪽으로 휘어 있어서 입에 들어간 실을 뱉기 어렵습니다. 실 한쪽 끝이 혀 밑이나 위에 걸리면 장이 실을 따라 아코디언처럼 주름지고 실에 베일 수 있어 대개 수술이 필요합니다.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "pl": {
+      "title": "Kłębek włóczki nie jest dla kota tak niewinny, jak myślisz 🧶",
+      "description": "Niebezpieczna jest nie zabawa, lecz połknięcie nitki. Kolce na języku kota są skierowane do tyłu, w stronę gardła, więc trudno mu wypluć nitkę, która trafi do pyska. Jeśli jeden koniec zaczepi się o język lub w żołądku, jelito może się na niej marszczyć jak harmonijka i zostać przecięte, co zwykle oznacza operację.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "nl": {
+      "title": "Een bol wol is niet zo onschuldig voor je kat als je denkt 🧶",
+      "description": "Het gevaar zit niet in het spelen, maar in het inslikken van de draad. De stekeltjes op de kattentong wijzen naar achteren, richting keel, waardoor een kat een draad in zijn bek moeilijk kan uitspugen. Blijft een uiteinde haken onder de tong of in de maag, dan kan de darm zich langs de draad samentrekken en insnijden, wat meestal een operatie betekent.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "uk": {
+      "title": "Клубок вовни не такий безпечний для кота, як здається 🧶",
+      "description": "Небезпечна не гра, а проковтнута нитка. Шипики на язиці кота спрямовані назад, до горла, тож йому важко виплюнути нитку, що потрапила до рота. Якщо один кінець зачепиться за язик або застрягне в шлунку, кишечник може зібратися на нитці гармошкою й порізатися, і зазвичай тоді потрібна операція.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "vi": {
+      "title": "Cuộn len không vô hại với mèo như bạn nghĩ 🧶",
+      "description": "Nguy hiểm không nằm ở việc chơi mà ở việc nuốt sợi len. Gai trên lưỡi mèo hướng ngược vào cổ họng, nên sợi len lọt vào miệng rất khó nhả ra. Nếu một đầu mắc dưới lưỡi hoặc trong dạ dày, ruột có thể co rúm dọc theo sợi len và bị cứa rách, thường phải phẫu thuật.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "az": {
+      "title": "Yun yumağı pişiyin üçün düşündüyün qədər zərərsiz deyil 🧶",
+      "description": "Təhlükə oyunda deyil, sapı udmaqdadır. Pişiyin dilindəki tikanlar geriyə, boğaza doğru baxır, buna görə ağzına girən sapı tüpürmək ona çətin olur. Sapın bir ucu dilin altına və ya mədəyə ilişsə, bağırsaq sapın üstündə qarmon kimi yığıla və kəsilə bilər, bu da adətən əməliyyat tələb edir.\n\n#shorts\n\nSeri: mk-c0111"
+    },
+    "ro": {
+      "title": "Ghemul de lână nu e atât de inofensiv pentru pisica ta 🧶",
+      "description": "Pericolul nu e joaca, ci înghițirea firului. Țepii de pe limba pisicii sunt orientați spre gât, așa că îi e greu să scuipe un fir ajuns în gură. Dacă un capăt se agață sub limbă sau în stomac, intestinul se poate încreți de-a lungul firului și poate fi tăiat, ceea ce de obicei înseamnă operație.\n\n#shorts\n\nSeri: mk-c0111"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin iple oynamayı sever mi: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu yün yumağı kedini ameliyat masasına yatırabilir.",
+      "visual": "close-up of a cat's face and paws batting a ball of yarn",
+      "stock_query": "cat yarn",
+      "source": "stock",
+      "callout": "AMELİYAT RİSKİ"
+    },
+    {
+      "text": "Tehlike oyunda değil, ipten kopan bir parçayı yutmasında.",
+      "visual": "a kitten playing with a piece of string",
+      "stock_query": "kitten string",
+      "source": "stock",
+      "subject": [
+        "kitten"
+      ]
+    },
+    {
+      "text": "Dilindeki dikenler geriye, boğazına doğru bakar; ağzına giren ipi tükürmesi zordur.",
+      "visual": "macro close-up of a cat's rough tongue while it licks",
+      "stock_query": "cat tongue",
+      "source": "stock",
+      "callout": "DİKENLER GERİYE"
+    },
+    {
+      "text": "Çünkü ipin ucu dilin dibine ya da mideye takılınca bağırsak ipin üstünde akordeon gibi toplanır, ip onu kesebilir.",
+      "visual": "a cat being examined by a veterinarian",
+      "stock_query": "cat veterinarian",
+      "source": "stock",
+      "callout": "AKORDEON GİBİ"
+    },
+    {
+      "text": "Oyun bitince ipi kaldır, sarkan ipi asla çekme; çünkü...",
+      "visual": "a cat sitting next to a ball of wool on the floor",
+      "stock_query": "cat wool",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.09,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #164",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0111_1794396363_ig.mp4"
+}
