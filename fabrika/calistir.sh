@@ -64,8 +64,12 @@ if [ "$MOD" = "saatlik" ]; then
   if [ "$go" != "true" ]; then echo "Bu tur üretim yok."; push "$out; $(head -n 1 fabrika/_kapi.out)"; exit 0; fi
 fi
 
-sudo apt-get update -qq || echo "apt-get update hata verdi, kuruluma yine de geçiliyor"  # one broken mirror must not stop it
-sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null
+# Every install step has a time limit: on 2026-11-11 14:11 UTC the runner could not resolve the Ubuntu mirrors and a
+# step hung silently until the 45-minute job limit, so the TR 17:00 slot was lost. A stuck step now fails in minutes.
+echo "Kurulum başlıyor $(date -u +%H:%M:%S)"
+timeout 300 sudo apt-get update -qq || echo "apt-get update hata verdi, kuruluma yine de geçiliyor"  # one broken mirror must not stop it
+timeout 600 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
+  || echo "apt-get install olmadı (hata ya da zaman aşımı) $(date -u +%H:%M:%S)"
 pip install -q numpy requests cryptography
 if [ "$MOD" = "nasa" ]; then  # tetik.txt "nasa ara" or "nasa al": NASA photos for the engine (fabrika/nasa.py)
   pip install -q pillow
@@ -74,14 +78,15 @@ if [ "$MOD" = "nasa" ]; then  # tetik.txt "nasa ara" or "nasa al": NASA photos f
   push "$out"; exit 0
 fi
 [ -f package.json ] || npm init -y >/dev/null
-npm install -q --no-save playwright@1.55.0
+timeout 300 npm install -q --no-save playwright@1.55.0 || echo "npm install olmadı $(date -u +%H:%M:%S)"
 # 2026-10-20 ubuntu-latest became Ubuntu 26.04, which Playwright 1.55 refuses ("does not support chromium on
 # ubuntu26.04-x64"): newer systems get the 24.04 build, which runs there.
 . /etc/os-release
 case "${VERSION_ID:-}" in 2[0-4].*) ;; *) export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64 ;; esac
 # --with-deps needs apt; when that step fails the browser alone still downloads
-npx playwright install --with-deps chromium > fabrika/_pw.log 2>&1 \
-  || { echo "--with-deps olmadı, yalnız tarayıcı kuruluyor" >> fabrika/_pw.log; npx playwright install chromium >> fabrika/_pw.log 2>&1; }
+timeout 600 npx playwright install --with-deps chromium > fabrika/_pw.log 2>&1 \
+  || { echo "--with-deps olmadı, yalnız tarayıcı kuruluyor" >> fabrika/_pw.log; timeout 300 npx playwright install chromium >> fabrika/_pw.log 2>&1; }
+echo "Kurulum bitti $(date -u +%H:%M:%S)"
 if ! ls "$HOME"/.cache/ms-playwright/chromium_headless_shell-*/chrome-linux/headless_shell >/dev/null 2>&1; then
   export CHROME_PATH="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
   echo "Playwright tarayıcısı yok, sistemdeki kullanılıyor: ${CHROME_PATH:-yok}" | tee -a fabrika/_pw.log
