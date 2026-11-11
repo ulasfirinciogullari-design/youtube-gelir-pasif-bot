@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0121",
+ "topic": "Tavuk horoz olmadan yumurtlar mı, yumurta için horoz gerekir mi?",
+ "kategori": "hayvan",
+ "subject": [
+  "chicken",
+  "hen"
+ ],
+ "stock_hint": "chicken head",
+ "script": {
+  "title": "Tavuk yumurtlamak için horoza ihtiyaç duymaz 🥚",
+  "hook_text": "YUMURTA İÇİN HOROZ ŞART MI?",
+  "scenes": [
+   {
+    "text": "Bu tavuk yumurtlamak için horoza ihtiyaç duymaz.",
+    "visual": "close-up of a hen's head and eye looking into the camera",
+    "stock_query": "chicken head",
+    "source": "stock",
+    "callout": "HOROZ GEREKMEZ"
+   },
+   {
+    "text": "Horoz olmasa da neredeyse her gün yumurtlayabilir.",
+    "visual": "a hen sitting in a straw nest",
+    "stock_query": "hen nest",
+    "source": "stock",
+    "callout": "NEREDEYSE HER GÜN"
+   },
+   {
+    "text": "Kabuğun rengini de tavuğun ırkı belirler; kahverengi yumurta beyazdan daha besleyici değil.",
+    "visual": "brown and white eggs side by side",
+    "stock_query": "egg brown white",
+    "source": "stock",
+    "callout": "RENGİ IRK BELİRLER",
+    "subject": [
+     "egg"
+    ]
+   },
+   {
+    "text": "Çünkü yumurtlama, tavuğun kendi döngüsü; horoz yalnızca yumurtayı döller, o da civciv çıkması için gerekir.",
+    "visual": "a rooster standing in a farmyard",
+    "stock_query": "rooster farm",
+    "source": "stock",
+    "callout": "HOROZ SADECE DÖLLER",
+    "subject": [
+     "rooster"
+    ]
+   },
+   {
+    "text": "Marketteki yumurtaların çoğu döllenmemiştir, onlardan civciv çıkmaz; çünkü...",
+    "visual": "eggs in a carton on a kitchen counter",
+    "stock_query": "egg carton",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "egg"
+    ]
+   }
+  ],
+  "description": "Tavukta yumurtlama döllenmeden bağımsız işler: yumurta yaklaşık her 24-26 saatte bir bırakılır, bu yüzden tavuk horoz olmadan da neredeyse her gün yumurtlayabilir. Horoz yalnızca yumurtayı döller ve civciv çıkması için gerekir. Kabuğun rengini tavuğun ırkı belirler; renk besin değerini göstermez.",
+  "tags": [
+   "tavuk",
+   "horoz",
+   "yumurta",
+   "döllenmiş yumurta",
+   "kahverengi yumurta",
+   "civciv",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de yumurta için horoz gerektiğini sanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Hens don't need a rooster to lay eggs 🥚",
+  "en_description": "A hen ovulates every 24 to 26 hours whether or not she has mated, so she can lay almost daily with no rooster around. The rooster only fertilizes the egg, which is needed for a chick; eggs from commercial layer farms are infertile. Shell color comes from the hen's breed and says nothing about nutrition.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Tavuk horoz olmadan yumurtlar mı, yumurta için horoz gerekir mi?\n\nGerekmez. Wisconsin Üniversitesi'nin anlatımına göre tavukta yumurtlama döllenmeden bağımsız işler ve yaklaşık her 24-26 saatte bir tekrarlanır; bu yüzden tavuk horoz olmadan da neredeyse her gün yumurtlayabilir. Horoz yalnızca yumurtayı döller ve civciv çıkması için gerekir; Georgia Üniversitesi'ne göre ticari yumurta çiftliklerinden gelen yumurtalar döllenmemiştir. Kabuğun rengini tavuğun ırkı belirler; renk, yumurtanın tadını, kalitesini ya da besin değerini göstermez.\n\nSen de yumurta için horoz gerektiğini sanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#tavuk",
+   "#yumurta",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tavuk",
+   "horoz",
+   "tavuk horozsuz yumurtlar mı",
+   "yumurta için horoz gerekir mi",
+   "döllenmiş yumurta",
+   "döllenmemiş yumurta",
+   "kahverengi yumurta",
+   "beyaz yumurta",
+   "kahverengi yumurta daha mı iyi",
+   "yumurta",
+   "tavuk günde kaç yumurta",
+   "civciv",
+   "köy tavuğu",
+   "kümes hayvanları",
+   "çiftlik hayvanları",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "do hens need roosters",
+   "chicken eggs"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Hens don't need a rooster to lay eggs 🥚",
+    "description": "A hen ovulates every 24 to 26 hours whether or not she has mated, so she can lay almost daily without a rooster. The rooster is only needed to fertilize the egg for a chick. Shell color depends on the breed, not on nutrition."
+   },
+   "es": {
+    "title": "Las gallinas no necesitan un gallo para poner huevos 🥚",
+    "description": "La gallina ovula cada 24 a 26 horas haya o no apareamiento, así que puede poner casi a diario sin gallo. El gallo solo hace falta para fecundar el huevo y que salga un pollito. El color de la cáscara depende de la raza, no del valor nutritivo."
+   },
+   "pt": {
+    "title": "Galinhas não precisam de galo para botar ovos 🥚",
+    "description": "A galinha ovula a cada 24 a 26 horas, com ou sem acasalamento, então pode botar quase todo dia sem galo. O galo só é necessário para fecundar o ovo e gerar um pintinho. A cor da casca depende da raça, não do valor nutritivo."
+   },
+   "de": {
+    "title": "Hühner brauchen keinen Hahn, um Eier zu legen 🥚",
+    "description": "Eine Henne hat alle 24 bis 26 Stunden einen Eisprung, ob sie gedeckt wurde oder nicht – sie legt also auch ohne Hahn fast täglich. Den Hahn braucht es nur zur Befruchtung, damit ein Küken schlüpfen kann. Die Schalenfarbe hängt von der Rasse ab, nicht vom Nährwert."
+   },
+   "fr": {
+    "title": "Les poules n'ont pas besoin d'un coq pour pondre 🥚",
+    "description": "Une poule ovule toutes les 24 à 26 heures, qu'elle se soit accouplée ou non : elle peut donc pondre presque chaque jour sans coq. Le coq ne sert qu'à féconder l'œuf pour qu'un poussin naisse. La couleur de la coquille dépend de la race, pas de la valeur nutritive."
+   },
+   "it": {
+    "title": "Le galline non hanno bisogno del gallo per fare le uova 🥚",
+    "description": "La gallina ovula ogni 24-26 ore che si sia accoppiata o no, quindi può deporre quasi ogni giorno anche senza gallo. Il gallo serve solo a fecondare l'uovo perché nasca un pulcino. Il colore del guscio dipende dalla razza, non dal valore nutritivo."
+   },
+   "ru": {
+    "title": "Курице не нужен петух, чтобы нести яйца 🥚",
+    "description": "У курицы овуляция происходит каждые 24–26 часов независимо от спаривания, поэтому она несётся почти каждый день и без петуха. Петух нужен только для оплодотворения, чтобы вылупился цыплёнок. Цвет скорлупы зависит от породы, а не от питательности."
+   },
+   "ar": {
+    "title": "الدجاجة لا تحتاج إلى ديك لتبيض 🥚",
+    "description": "تحدث الإباضة لدى الدجاجة كل 24 إلى 26 ساعة سواء تزاوجت أم لا، لذلك تبيض تقريبًا كل يوم من دون ديك. الديك ضروري فقط لتخصيب البيضة كي يخرج منها كتكوت. ولون القشرة تحدده السلالة لا القيمة الغذائية."
+   },
+   "hi": {
+    "title": "मुर्गी को अंडा देने के लिए मुर्गे की ज़रूरत नहीं होती 🥚",
+    "description": "मुर्गी में हर 24 से 26 घंटे में अंडोत्सर्ग होता है, चाहे मुर्गा हो या न हो, इसलिए वह लगभग रोज़ अंडा दे सकती है। मुर्गा सिर्फ़ अंडे को निषेचित करने के लिए चाहिए, ताकि उससे चूज़ा निकले। छिलके का रंग नस्ल पर निर्भर करता है, पोषण पर नहीं।"
+   },
+   "id": {
+    "title": "Ayam betina tidak butuh jago untuk bertelur 🥚",
+    "description": "Ayam betina berovulasi setiap 24 sampai 26 jam, sudah kawin atau belum, jadi ia bisa bertelur hampir setiap hari tanpa pejantan. Ayam jago hanya diperlukan untuk membuahi telur agar menetas jadi anak ayam. Warna cangkang ditentukan oleh rasnya, bukan oleh nilai gizinya."
+   },
+   "ja": {
+    "title": "ニワトリは卵を産むのにオンドリを必要としない 🥚",
+    "description": "メンドリは交尾の有無に関係なく24〜26時間ごとに排卵するので、オンドリがいなくてもほぼ毎日卵を産めます。オンドリが必要なのは、ヒヨコが生まれるように卵を受精させるときだけ。殻の色は品種で決まり、栄養価とは関係ありません。"
+   },
+   "ko": {
+    "title": "암탉은 알을 낳는 데 수탉이 필요 없다 🥚",
+    "description": "암탉은 짝짓기 여부와 상관없이 24~26시간마다 배란하기 때문에 수탉이 없어도 거의 매일 알을 낳을 수 있습니다. 수탉은 병아리가 나오도록 알을 수정시킬 때만 필요합니다. 껍데기 색은 품종이 정하며 영양가와는 관계가 없습니다."
+   },
+   "pl": {
+    "title": "Kura nie potrzebuje koguta, żeby znosić jajka 🥚",
+    "description": "Kura owuluje co 24–26 godzin bez względu na to, czy była kryta, więc może znosić jajka niemal codziennie bez koguta. Kogut jest potrzebny tylko do zapłodnienia jajka, by wykluło się pisklę. Kolor skorupki zależy od rasy, a nie od wartości odżywczej."
+   },
+   "nl": {
+    "title": "Kippen hebben geen haan nodig om eieren te leggen 🥚",
+    "description": "Een kip heeft elke 24 tot 26 uur een eisprong, of ze nu gedekt is of niet, dus ze kan zonder haan bijna dagelijks leggen. De haan is alleen nodig om het ei te bevruchten zodat er een kuiken uitkomt. De kleur van de schaal hangt af van het ras, niet van de voedingswaarde."
+   },
+   "uk": {
+    "title": "Курці не потрібен півень, щоб нести яйця 🥚",
+    "description": "У курки овуляція відбувається кожні 24–26 годин незалежно від парування, тож вона несеться майже щодня і без півня. Півень потрібен лише для запліднення, щоб вилупилося курча. Колір шкаралупи залежить від породи, а не від поживності."
+   },
+   "vi": {
+    "title": "Gà mái không cần gà trống mới đẻ được trứng 🥚",
+    "description": "Gà mái rụng trứng mỗi 24 đến 26 giờ dù có giao phối hay không, nên không có gà trống nó vẫn đẻ gần như mỗi ngày. Gà trống chỉ cần để thụ tinh cho trứng nở ra gà con. Màu vỏ trứng do giống gà quyết định, không phản ánh giá trị dinh dưỡng."
+   },
+   "az": {
+    "title": "Toyuğun yumurtlamaq üçün xoruza ehtiyacı yoxdur 🥚",
+    "description": "Toyuqda yumurtlama cütləşmədən asılı olmayaraq hər 24-26 saatdan bir baş verir, ona görə də xoruz olmadan da demək olar ki, hər gün yumurtlaya bilir. Xoruz yalnız yumurtanı mayalandırmaq, yəni cücə çıxması üçün lazımdır. Qabığın rəngini cins müəyyən edir, qida dəyərini yox."
+   },
+   "ro": {
+    "title": "Găinile nu au nevoie de cocoș ca să facă ouă 🥚",
+    "description": "Găina ovulează la fiecare 24–26 de ore, indiferent dacă s-a împerecheat sau nu, așa că poate oua aproape zilnic și fără cocoș. Cocoșul e necesar doar pentru a fecunda oul, ca să iasă un pui. Culoarea cojii ține de rasă, nu de valoarea nutritivă."
+   }
+  }
+ }
+}

@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0120",
+ "topic": "Bir iş neden hep tahmin ettiğimizden uzun sürer? Planlama yanılgısı nedir?",
+ "kategori": "psikoloji",
+ "subject": [
+  "student"
+ ],
+ "stock_hint": "stressed student",
+ "script": {
+  "title": "Bir işin ne kadar süreceğini hep az tahmin edersin ⏳",
+  "hook_text": "İŞLER NEDEN HEP UZAR?",
+  "scenes": [
+   {
+    "text": "Bu işi bitirmen, tahmininden çok daha uzun sürecek.",
+    "visual": "close-up of a stressed young student's face looking at a laptop late at night",
+    "stock_query": "stressed student",
+    "source": "stock",
+    "callout": "TAHMİNİNDEN UZUN"
+   },
+   {
+    "text": "Doksan dörtteki bir deneyde öğrenciler tezlerine ortalama otuz dört gün biçti; elli beş gün sürdü.",
+    "visual": "university students studying in a library",
+    "stock_query": "students library",
+    "source": "stock",
+    "callout": "34 DEĞİL 55 GÜN"
+   },
+   {
+    "text": "Üstelik en kötü ihtimal tahmininde bile yarıdan azı yetişebildi.",
+    "visual": "close-up of a clock with its second hand moving",
+    "stock_query": "clock time",
+    "source": "stock",
+    "callout": "YARIDAN AZI YETİŞTİ",
+    "subject": [
+     "clock"
+    ]
+   },
+   {
+    "text": "Çünkü plan yaparken işin yolunda gideceği senaryoyu düşünürsün; geçen seferki gecikmeleri hesaba katmazsın.",
+    "visual": "a young man writing a to-do list in a notebook",
+    "stock_query": "writing notebook",
+    "source": "stock",
+    "callout": "GEÇMİŞİ UNUTURSUN",
+    "subject": [
+     "notebook"
+    ]
+   },
+   {
+    "text": "Sonraki planında önce geçen seferki süreye bak; çünkü...",
+    "visual": "a woman checking a calendar on her phone",
+    "stock_query": "calendar planning",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "calendar"
+    ]
+   }
+  ],
+  "description": "1994'te yayımlanan bir deneyde üniversite öğrencileri bitirme tezlerini ortalama 34 günde bitireceklerini tahmin etti; tez ortalama 55,5 gün sürdü ve 'her şey ters giderse' diye verdikleri en kötü ihtimal tahmininde bile yarıdan azı yetişebildi. Plan yaparken işin nasıl ilerleyeceğine odaklanıp geçmişteki gecikmeleri hesaba katmayız; buna planlama yanılgısı denir.",
+  "tags": [
+   "planlama yanılgısı",
+   "zaman yönetimi",
+   "erteleme",
+   "psikoloji",
+   "bilişsel yanılgı",
+   "verimlilik",
+   "ders çalışma",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin işlerin genelde ne kadar uzar: biraz mı, iki katı mı?",
+  "en_title": "You always underestimate how long a task will take ⏳",
+  "en_description": "In a 1994 experiment, students predicted they would finish their theses in about 34 days on average; it took about 55. Even by their worst-case estimate, fewer than half were done. When we plan, we picture the task going smoothly and ignore how long similar tasks took before: the planning fallacy.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Bir iş neden hep tahmin ettiğimizden uzun sürer, planlama yanılgısı nedir?\n\nRoger Buehler, Dale Griffin ve Michael Ross'un 1994'te yayımlanan deneyinde üniversite öğrencileri bitirme tezlerini ortalama 33,9 günde bitireceklerini tahmin etti; tez ortalama 55,5 gün sürdü ve öğrencilerin yalnızca yüzde 30 kadarı tahmin ettiği sürede bitirdi. 'Her şey ters giderse' diye verdikleri en kötü ihtimal tahmininde bile yarıdan azı yetişebildi. Araştırmacılara göre plan yaparken işin nasıl ilerleyeceğine odaklanıp geçmişteki benzer gecikmeleri hesaba katmıyoruz; bu yanılgı farklı kişilik ve kültürlerde, küçük işlerden büyük projelere kadar tekrar tekrar gözlendi.\n\nSenin işlerin genelde ne kadar uzar: biraz mı, iki katı mı?",
+  "hashtags": [
+   "#psikoloji",
+   "#planlamayanılgısı",
+   "#zamanyönetimi",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "planlama yanılgısı",
+   "işler neden hep uzar",
+   "zamanı yanlış tahmin etmek",
+   "işi zamanında bitirmek",
+   "erteleme",
+   "son dakikacılık",
+   "zaman yönetimi",
+   "ders çalışma",
+   "tez yazmak",
+   "ödev yetiştirmek",
+   "verimlilik",
+   "plan yapmak",
+   "öz disiplin",
+   "bilişsel yanılgı",
+   "düşünme hataları",
+   "psikoloji",
+   "insan psikolojisi",
+   "beyin",
+   "davranış bilimi",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "planning fallacy",
+   "cognitive bias"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You always underestimate how long a task will take ⏳",
+    "description": "In a 1994 experiment, students expected to finish their theses in about 34 days; it took about 55, and fewer than half made it even by their worst-case estimate. We plan for the best-case scenario and forget how long similar tasks took before."
+   },
+   "es": {
+    "title": "Siempre subestimas cuánto vas a tardar en algo ⏳",
+    "description": "En un experimento de 1994, unos estudiantes calcularon que terminarían su tesis en unos 34 días; tardaron unos 55, y ni siquiera con su estimación más pesimista llegó a tiempo la mitad. Planificamos pensando en que todo saldrá bien y olvidamos cuánto tardamos la última vez."
+   },
+   "pt": {
+    "title": "Você sempre subestima quanto tempo uma tarefa vai levar ⏳",
+    "description": "Num experimento de 1994, estudantes previram terminar a monografia em cerca de 34 dias; levaram uns 55, e menos da metade terminou até mesmo no prazo do pior cenário. Planejamos imaginando que tudo vai dar certo e esquecemos quanto tempo tarefas parecidas levaram antes."
+   },
+   "de": {
+    "title": "Du unterschätzt immer, wie lange eine Aufgabe dauert ⏳",
+    "description": "In einem Experiment von 1994 rechneten Studierende damit, ihre Abschlussarbeit in rund 34 Tagen fertigzustellen; es dauerte etwa 55, und selbst bis zu ihrer Worst-Case-Schätzung schaffte es weniger als die Hälfte. Wir planen mit dem besten Fall und vergessen, wie lange Ähnliches beim letzten Mal gedauert hat."
+   },
+   "fr": {
+    "title": "Tu sous-estimes toujours le temps qu'une tâche va prendre ⏳",
+    "description": "Dans une expérience de 1994, des étudiants pensaient finir leur mémoire en 34 jours environ ; il leur en a fallu environ 55, et moins de la moitié avait terminé même à la date de leur pire scénario. On planifie en imaginant que tout ira bien et on oublie combien de temps ont pris les tâches semblables."
+   },
+   "it": {
+    "title": "Sottovaluti sempre quanto tempo ti servirà per un lavoro ⏳",
+    "description": "In un esperimento del 1994 alcuni studenti pensavano di finire la tesi in circa 34 giorni; ne servirono circa 55, e meno della metà ce la fece perfino entro la stima del caso peggiore. Pianifichiamo immaginando che tutto vada liscio e dimentichiamo quanto ci hanno messo compiti simili."
+   },
+   "ru": {
+    "title": "Ты всегда недооцениваешь, сколько времени займёт дело ⏳",
+    "description": "В эксперименте 1994 года студенты рассчитывали закончить дипломную работу примерно за 34 дня, а ушло около 55; даже к сроку из самого пессимистичного прогноза успели меньше половины. Мы планируем, представляя, что всё пойдёт гладко, и забываем, сколько длились похожие дела раньше."
+   },
+   "ar": {
+    "title": "أنت دائمًا تقلل من الوقت الذي ستستغرقه أي مهمة ⏳",
+    "description": "في تجربة أُجريت عام 1994 توقع طلاب إنهاء أطروحاتهم في نحو 34 يومًا، لكنها استغرقت نحو 55 يومًا، وحتى بحلول موعد أسوأ تقديراتهم لم يُنهها سوى أقل من النصف. فنحن نخطط متخيلين أن كل شيء سيسير على ما يرام، وننسى كم استغرقت مهام مشابهة من قبل."
+   },
+   "hi": {
+    "title": "किसी काम में कितना समय लगेगा, आप हमेशा कम आंकते हैं ⏳",
+    "description": "1994 के एक प्रयोग में छात्रों ने सोचा कि वे अपनी थीसिस लगभग 34 दिनों में पूरी कर लेंगे; इसमें लगभग 55 दिन लगे, और अपने सबसे बुरे अनुमान तक भी आधे से कम छात्र काम पूरा कर पाए। योजना बनाते समय हम सब कुछ ठीक चलने की कल्पना करते हैं और भूल जाते हैं कि पिछली बार ऐसे काम में कितना समय लगा था।"
+   },
+   "id": {
+    "title": "Kamu selalu meremehkan berapa lama sebuah pekerjaan selesai ⏳",
+    "description": "Dalam eksperimen tahun 1994, mahasiswa memperkirakan skripsi mereka selesai sekitar 34 hari; nyatanya butuh sekitar 55 hari, dan bahkan pada batas perkiraan terburuk pun kurang dari separuh yang selesai. Saat merencanakan, kita membayangkan semuanya lancar dan lupa berapa lama tugas serupa dulu."
+   },
+   "ja": {
+    "title": "作業にかかる時間を、あなたはいつも少なく見積もる ⏳",
+    "description": "1994年の実験で、学生たちは卒業論文を平均34日ほどで終えると予想しましたが、実際は約55日かかり、最悪の場合の見積もりまでに終えられたのも半数に届きませんでした。計画を立てるとき、人は順調に進む場面を思い描き、以前似た作業にどれだけかかったかを忘れてしまうのです。"
+   },
+   "ko": {
+    "title": "어떤 일이 얼마나 걸릴지 당신은 늘 적게 잡는다 ⏳",
+    "description": "1994년 한 실험에서 학생들은 졸업 논문을 평균 34일쯤이면 끝낼 거라 예상했지만 실제로는 약 55일이 걸렸고, 최악의 경우로 잡은 날짜까지도 절반이 채 못 끝냈습니다. 우리는 계획할 때 일이 순조롭게 풀리는 장면만 떠올리고, 비슷한 일이 예전에 얼마나 걸렸는지는 잊어버립니다."
+   },
+   "pl": {
+    "title": "Zawsze nie doceniasz, ile czasu zajmie ci zadanie ⏳",
+    "description": "W eksperymencie z 1994 roku studenci zakładali, że skończą pracę dyplomową w około 34 dni; zajęło to około 55, a nawet do terminu z najczarniejszego scenariusza zdążyła mniej niż połowa. Planując, wyobrażamy sobie, że wszystko pójdzie gładko, i zapominamy, ile trwały podobne zadania wcześniej."
+   },
+   "nl": {
+    "title": "Je onderschat altijd hoe lang een klus gaat duren ⏳",
+    "description": "In een experiment uit 1994 dachten studenten hun scriptie in zo'n 34 dagen af te ronden; het duurde ongeveer 55 dagen, en zelfs op hun slechtst denkbare schatting was minder dan de helft klaar. We plannen alsof alles meezit en vergeten hoe lang vergelijkbare taken eerder duurden."
+   },
+   "uk": {
+    "title": "Ти завжди недооцінюєш, скільки часу забере справа ⏳",
+    "description": "В експерименті 1994 року студенти розраховували завершити дипломну роботу приблизно за 34 дні, а знадобилося близько 55; навіть до терміну з найпесимістичнішого прогнозу встигли менше половини. Плануючи, ми уявляємо, що все піде гладко, і забуваємо, скільки тривали схожі справи раніше."
+   },
+   "vi": {
+    "title": "Bạn luôn đánh giá thấp thời gian để làm xong một việc ⏳",
+    "description": "Trong một thí nghiệm năm 1994, sinh viên dự tính hoàn thành luận văn trong khoảng 34 ngày; thực tế mất khoảng 55 ngày, và ngay cả theo dự đoán tệ nhất của mình, chưa đến một nửa kịp xong. Khi lập kế hoạch, ta hình dung mọi thứ suôn sẻ và quên mất những việc tương tự trước đây đã tốn bao lâu."
+   },
+   "az": {
+    "title": "Bir işin nə qədər çəkəcəyini həmişə az təxmin edirsən ⏳",
+    "description": "1994-cü ildə aparılan təcrübədə tələbələr diplom işlərini təxminən 34 günə bitirəcəklərini düşünürdülər; iş təxminən 55 gün çəkdi, ən pis ehtimal təxminlərinə görə belə yarıdan azı vaxtında bitirə bildi. Plan quranda hər şeyin yaxşı gedəcəyini təsəvvür edir, oxşar işlərin əvvəllər nə qədər çəkdiyini unuduruq."
+   },
+   "ro": {
+    "title": "Subestimezi mereu cât îți va lua o sarcină ⏳",
+    "description": "Într-un experiment din 1994, niște studenți estimau că își vor termina lucrarea de licență în circa 34 de zile; le-a luat aproximativ 55, iar chiar și până la termenul din cel mai pesimist scenariu au terminat mai puțin de jumătate. Plănuim imaginându-ne că totul va merge bine și uităm cât au durat sarcini asemănătoare înainte."
+   }
+  }
+ }
+}

@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0125",
+ "topic": "Köpeğin burnu kuruysa hasta mıdır, köpeğin burnu neden ıslak olur?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog nose",
+ "script": {
+  "title": "Kuru burun köpeğinin hasta olduğunu göstermez 🐶",
+  "hook_text": "KURU BURUN ATEŞ Mİ DEMEK?",
+  "scenes": [
+   {
+    "text": "Kuru burun, bu köpeğin hasta olduğunu göstermez.",
+    "visual": "extreme close-up of a dog's nose and face looking into the camera",
+    "stock_query": "dog nose",
+    "source": "stock",
+    "callout": "HASTALIK İŞARETİ DEĞİL"
+   },
+   {
+    "text": "Birçok sahip, kuru burnu ateş sanır.",
+    "visual": "an owner gently touching her dog's nose",
+    "stock_query": "dog owner",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Üstelik bir deneyde köpekler, burunlarıyla bir buçuk metre öteden zayıf ısıyı seçti.",
+    "visual": "a dog sniffing the air outdoors",
+    "stock_query": "dog sniffing",
+    "source": "stock",
+    "callout": "ISIYI HİSSEDER"
+   },
+   {
+    "text": "Çünkü uyurken burun ısınıp kurur, uyanıp yalayınca yeniden soğur; kuru hava da onu kurutabilir.",
+    "visual": "a dog sleeping curled up on a rug",
+    "stock_query": "dog sleeping",
+    "source": "stock",
+    "callout": "UYKUDA KURUR"
+   },
+   {
+    "text": "Çatlak, ağrı ya da akıntı yoksa telaşlanma; çünkü...",
+    "visual": "close-up of a dog's face looking at the camera",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Texas A&M Üniversitesi veteriner fakültesinden bir hekime göre kuru burun, çatlak ya da ağrılı değilse tek başına genelde endişe verici değil. Köpeğin burnu uyurken ısınıp kurur, uyanıp yalayınca yeniden soğur; kuru iklim de burnu kurutabilir. 2020'deki bir deneyde köpekler yaklaşık bir buçuk metre öteden zayıf ısıyı ayırt edebildi.",
+  "tags": [
+   "köpek",
+   "köpeğin burnu kuru",
+   "köpek ateşi",
+   "köpek sağlığı",
+   "köpek burnu",
+   "köpekler",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de köpeğinin kuru burnunu ateş sanmış mıydın: evet mi, hayır mı?",
+  "en_title": "A dry nose doesn't mean your dog is sick 🐶",
+  "en_description": "A dry nose on its own is usually not a concern unless it looks cracked or painful, says a Texas A&M veterinarian. Dogs' noses warm up and dry out while they sleep and cool down again when they wake up and lick them; dry air can also dry them. In a 2020 experiment, dogs even picked out a faint heat source about five feet away.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpeğin burnu kuruysa hasta mıdır, köpeğin burnu neden ıslak olur?\n\nTexas A&M Üniversitesi Veteriner Fakültesi'nden Dr. Erin Ray'e göre kuru burnun hastalık işareti olduğu inancı her zaman doğru değil: burun çatlak ya da ağrılı görünmüyorsa kuruluk tek başına genelde endişe verici değil, ama yoğun akıntı ya da ıslaktan kuruya ani bir değişim veterinere gösterilmeli. Köpeğin burnu uyurken ısınıp kurur, uyanıp yalayınca yeniden soğur; kuru ve sıcak iklim de burnu kurutabilir. Eötvös Loránd Üniversitesi'nden Anna Bálint ve ekibinin 2020'de Scientific Reports'ta yayımlanan deneyinde köpekler, yaklaşık bir buçuk metre öteden zayıf ısıyı ayırt edebildi.\n\nSen de köpeğinin kuru burnunu ateş sanmış mıydın: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpeğin burnu kuru",
+   "köpek burnu neden ıslak",
+   "kuru burun hastalık mı",
+   "köpek ateşi",
+   "köpek hasta mı",
+   "köpek burnu sıcak",
+   "köpek sağlığı",
+   "köpek bakımı",
+   "köpek sahibi",
+   "köpek burnu",
+   "köpek koku alma",
+   "köpek",
+   "köpekler",
+   "köpek davranışları",
+   "evcil hayvan",
+   "hayvanlar",
+   "efsaneler",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "veteriner",
+   "dog dry nose",
+   "dog nose"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A dry nose doesn't mean your dog is sick 🐶",
+    "description": "A dry nose alone is usually no cause for concern unless it's cracked or painful. Dogs' noses warm up and dry out during sleep and cool again once they wake and lick them. In a 2020 experiment, dogs even detected faint heat about five feet away."
+   },
+   "es": {
+    "title": "Una nariz seca no significa que tu perro esté enfermo 🐶",
+    "description": "Una nariz seca por sí sola no suele ser motivo de preocupación, salvo que esté agrietada o le duela. La nariz del perro se calienta y se seca mientras duerme, y vuelve a enfriarse cuando despierta y se la lame. En un experimento de 2020, los perros incluso detectaron un calor débil a metro y medio."
+   },
+   "pt": {
+    "title": "Nariz seco não significa que seu cachorro está doente 🐶",
+    "description": "Nariz seco, por si só, geralmente não preocupa, a menos que esteja rachado ou dolorido. O nariz do cão esquenta e resseca durante o sono e volta a esfriar quando ele acorda e o lambe. Num experimento de 2020, cães chegaram a detectar um calor fraco a um metro e meio."
+   },
+   "de": {
+    "title": "Eine trockene Nase heißt nicht, dass dein Hund krank ist 🐶",
+    "description": "Eine trockene Nase allein ist meist kein Grund zur Sorge, außer sie ist rissig oder schmerzt. Im Schlaf wird die Hundenase warm und trocken, nach dem Aufwachen und Lecken wieder kühl. In einem Experiment von 2020 erkannten Hunde sogar schwache Wärme aus etwa anderthalb Metern Entfernung."
+   },
+   "fr": {
+    "title": "Un nez sec ne veut pas dire que ton chien est malade 🐶",
+    "description": "Un nez sec, à lui seul, n'est généralement pas inquiétant, sauf s'il est craquelé ou douloureux. La truffe du chien se réchauffe et sèche pendant le sommeil, puis se refroidit quand il se réveille et la lèche. Dans une expérience de 2020, des chiens ont même détecté une faible chaleur à environ un mètre et demi."
+   },
+   "it": {
+    "title": "Un naso secco non vuol dire che il tuo cane sia malato 🐶",
+    "description": "Un naso secco, da solo, di solito non è preoccupante, a meno che non sia screpolato o dolorante. Il tartufo del cane si scalda e si asciuga durante il sonno e torna fresco quando si sveglia e se lo lecca. In un esperimento del 2020 alcuni cani hanno perfino percepito un debole calore a circa un metro e mezzo."
+   },
+   "ru": {
+    "title": "Сухой нос не значит, что твоя собака больна 🐶",
+    "description": "Сухой нос сам по себе обычно не повод для беспокойства, если он не потрескался и не болит. Во сне нос собаки нагревается и подсыхает, а когда она просыпается и облизывает его, снова становится прохладным. В эксперименте 2020 года собаки даже улавливали слабое тепло примерно в полутора метрах."
+   },
+   "ar": {
+    "title": "الأنف الجاف لا يعني أن كلبك مريض 🐶",
+    "description": "الأنف الجاف وحده لا يدعو عادةً إلى القلق ما لم يكن متشققًا أو مؤلمًا. يسخن أنف الكلب ويجف أثناء النوم، ثم يبرد من جديد عندما يستيقظ ويلعقه. وفي تجربة عام 2020 استطاعت الكلاب أن تلتقط حرارة ضعيفة من مسافة متر ونصف تقريبًا."
+   },
+   "hi": {
+    "title": "सूखी नाक का मतलब यह नहीं कि आपका कुत्ता बीमार है 🐶",
+    "description": "सिर्फ़ सूखी नाक आमतौर पर चिंता की बात नहीं, जब तक उसमें दरारें या दर्द न हो। सोते समय कुत्ते की नाक गर्म होकर सूख जाती है और जागकर चाटने पर फिर ठंडी हो जाती है। 2020 के एक प्रयोग में कुत्तों ने करीब डेढ़ मीटर दूर की हल्की गर्मी तक पहचान ली।"
+   },
+   "id": {
+    "title": "Hidung kering bukan berarti anjingmu sakit 🐶",
+    "description": "Hidung kering saja biasanya bukan hal yang perlu dikhawatirkan, kecuali pecah-pecah atau terasa sakit. Hidung anjing menghangat dan mengering saat tidur, lalu dingin lagi setelah ia bangun dan menjilatnya. Dalam eksperimen tahun 2020, anjing bahkan bisa mendeteksi panas lemah dari jarak sekitar satu setengah meter."
+   },
+   "ja": {
+    "title": "鼻が乾いていても犬が病気とは限らない 🐶",
+    "description": "鼻が乾いているだけなら、ひび割れや痛みがない限りたいてい心配はいりません。犬の鼻は寝ている間に温まって乾き、起きてなめるとまた冷たくなります。2020年の実験では、犬が約1.5メートル先のかすかな熱まで感じ取りました。"
+   },
+   "ko": {
+    "title": "코가 말랐다고 개가 아픈 건 아니다 🐶",
+    "description": "코가 마른 것만으로는 갈라지거나 아파 보이지 않는 한 대개 걱정할 일이 아닙니다. 개의 코는 자는 동안 따뜻해지고 마르며, 깨어나 핥으면 다시 차가워집니다. 2020년 한 실험에서는 개들이 약 1.5미터 떨어진 약한 열까지 알아챘습니다."
+   },
+   "pl": {
+    "title": "Suchy nos nie znaczy, że twój pies jest chory 🐶",
+    "description": "Sam suchy nos zwykle nie jest powodem do niepokoju, chyba że jest popękany lub bolesny. Podczas snu nos psa się nagrzewa i wysycha, a po przebudzeniu i oblizaniu znów robi się chłodny. W eksperymencie z 2020 roku psy wyczuwały nawet słabe ciepło z odległości około półtora metra."
+   },
+   "nl": {
+    "title": "Een droge neus betekent niet dat je hond ziek is 🐶",
+    "description": "Een droge neus alleen is meestal geen reden tot zorg, tenzij hij gebarsten of pijnlijk is. Tijdens het slapen wordt de hondenneus warm en droog; na het wakker worden en likken is hij weer koel. In een experiment uit 2020 merkten honden zelfs zwakke warmte op van zo'n anderhalve meter afstand."
+   },
+   "uk": {
+    "title": "Сухий ніс не означає, що твій собака хворий 🐶",
+    "description": "Сухий ніс сам по собі зазвичай не привід для хвилювання, якщо він не потріскався й не болить. Уві сні ніс собаки нагрівається й підсихає, а коли тварина прокидається й облизує його, знову стає прохолодним. В експерименті 2020 року собаки навіть відчували слабке тепло на відстані близько півтора метра."
+   },
+   "vi": {
+    "title": "Mũi khô không có nghĩa là chó của bạn bị ốm 🐶",
+    "description": "Chỉ riêng mũi khô thường không đáng lo, trừ khi mũi nứt nẻ hoặc đau. Mũi chó ấm lên và khô đi khi ngủ, rồi mát lại khi nó thức dậy và liếm mũi. Trong một thí nghiệm năm 2020, chó còn phát hiện được nguồn nhiệt yếu cách khoảng một mét rưỡi."
+   },
+   "az": {
+    "title": "Quru burun itin xəstə olduğunu göstərmir 🐶",
+    "description": "Təkcə quru burun, çatlamayıbsa və ağrımırsa, adətən narahatlıq səbəbi deyil. İtin burnu yatarkən isinir və quruyur, oyanıb yalayanda yenidən soyuyur. 2020-ci ildə aparılan təcrübədə itlər təxminən bir yarım metr uzaqdakı zəif istiliyi belə hiss edə bildilər."
+   },
+   "ro": {
+    "title": "Un nas uscat nu înseamnă că câinele tău e bolnav 🐶",
+    "description": "Un nas uscat, în sine, nu e de obicei motiv de îngrijorare, decât dacă e crăpat sau dureros. Nasul câinelui se încălzește și se usucă în somn, apoi se răcește din nou când se trezește și și-l linge. Într-un experiment din 2020, câinii au detectat chiar și o căldură slabă de la aproximativ un metru și jumătate."
+   }
+  }
+ }
+}

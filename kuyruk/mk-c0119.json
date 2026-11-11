@@ -1,0 +1,186 @@
+{
+ "id": "mk-c0119",
+ "topic": "Köpeğe alfa olmak gerekir mi, alfa kurt gerçek mi, köpekler sahibine liderlik kavgası verir mi?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog face",
+ "script": {
+  "title": "Köpeğine alfa olman gerekmiyor, alfa kurt da efsane 🐶",
+  "hook_text": "KÖPEĞİNE ALFA OLMALI MISIN?",
+  "scenes": [
+   {
+    "text": "Bu köpeğe alfa olmana hiç gerek yok.",
+    "visual": "close-up of a dog's face looking straight into the camera",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": "ALFA GEREKMEZ"
+   },
+   {
+    "text": "Fikir, kurtların sürekli liderlik kavgası verdiği inancından çıktı.",
+    "visual": "a pack of grey wolves walking through snow",
+    "stock_query": "wolf pack",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "wolf"
+    ]
+   },
+   {
+    "text": "Tuhafı şu: alfa terimini yayan bilim insanı, yıllarca kitabının basılmamasını istedi.",
+    "visual": "a grey wolf howling",
+    "stock_query": "wolf howling",
+    "source": "stock",
+    "callout": "KİTABINI GERİ İSTEDİ",
+    "subject": [
+     "wolf"
+    ]
+   },
+   {
+    "text": "Çünkü doğadaki kurt sürüsü bir aile; liderler anne ile baba. Kavgalı sıralama, birbirine yabancı esir kurtlarda görülmüştü.",
+    "visual": "adult wolves resting with their pups",
+    "stock_query": "wolf pups",
+    "source": "stock",
+    "callout": "SÜRÜ = AİLE",
+    "subject": [
+     "wolf"
+    ]
+   },
+   {
+    "text": "Köpeğinin yaramazlığı da çoğu zaman rütbe kavgası değil; o yüzden...",
+    "visual": "a happy dog playing with its owner in a park",
+    "stock_query": "dog owner playing",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Alfa fikri, kurtların liderlik için sürekli kavga ettiği inancından çıktı. Kurt araştırmacısı L. David Mech, doğadaki kurt sürüsünün anne ile babanın yönettiği bir aile olduğunu, kavgalı sıralamanın birbirine yabancı esir kurtlarda görüldüğünü gösterdi ve terimi yayan kitabının basılmaması için yayıncısına defalarca başvurdu. Veteriner davranış uzmanlarına göre köpeklerin çoğu yaramazlığı da rütbe kazanma isteğinden kaynaklanmaz.",
+  "tags": [
+   "köpek",
+   "alfa köpek",
+   "alfa kurt",
+   "köpek eğitimi",
+   "kurt sürüsü",
+   "köpek davranışları",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de köpeğine alfa olman gerektiğini duymuş muydun: evet mi, hayır mı?",
+  "en_title": "You don't need to be your dog's alpha, even the alpha wolf is a myth 🐶",
+  "en_description": "The 'alpha' idea came from the belief that wolves constantly fight for rank. Wolf researcher L. David Mech showed that a wild wolf pack is a family led by the parents; the rank fights had been seen in captive, unrelated wolves, and he spent years asking his publisher to stop printing the book that popularized the term. Most unruly dog behavior isn't a bid for higher rank either.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpeğe alfa olmak gerekir mi, alfa kurt gerçek mi?\n\nAlfa fikri, kurt sürülerinin liderlik için sürekli kavga eden bireylerden oluştuğu inancından doğdu. Kurt araştırmacısı L. David Mech, doğadaki tipik kurt sürüsünün aslında bir aile olduğunu, sürüyü çoğunlukla anne ile babanın yönettiğini gösterdi; eski gözlemler birbirine yabancı esir kurtlarla yapılmıştı. Mech, alfa terimini yaygınlaştıran 1970 tarihli kitabının basılmaması için yayıncısına defalarca başvurdu. Amerikan Veteriner Hayvan Davranışı Derneği'ne göre köpeklerin çoğu yaramazlığı da daha yüksek rütbe kazanma isteğinden kaynaklanmaz.\n\nSen de köpeğine alfa olman gerektiğini duymuş muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekeğitimi",
+   "#kurt",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "alfa köpek",
+   "köpeğe alfa olmak",
+   "alfa kurt efsanesi",
+   "alfa kurt gerçek mi",
+   "köpek liderlik",
+   "köpek eğitimi",
+   "köpek sahibi",
+   "köpek davranışları",
+   "köpek neden söz dinlemez",
+   "köpek baskınlık",
+   "kurt sürüsü",
+   "kurtlar",
+   "kurt ailesi",
+   "köpek",
+   "köpekler",
+   "evcil hayvan",
+   "hayvanlar",
+   "hayvan gerçekleri",
+   "efsaneler",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "alpha dog myth",
+   "alpha wolf"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You don't need to be your dog's alpha – even the alpha wolf is a myth 🐶",
+    "description": "The 'alpha' idea came from the belief that wolves constantly fight for rank. In the wild, a wolf pack is a family led by the parents; the rank fights were seen in captive, unrelated wolves, and the researcher who popularized the term spent years asking his publisher to stop printing his book."
+   },
+   "es": {
+    "title": "No necesitas ser el alfa de tu perro: hasta el lobo alfa es un mito 🐶",
+    "description": "La idea del 'alfa' nació de creer que los lobos pelean sin parar por el rango. En libertad, una manada es una familia guiada por los padres; esas peleas se vieron en lobos cautivos sin parentesco, y el científico que popularizó el término pidió durante años que dejaran de imprimir su libro."
+   },
+   "pt": {
+    "title": "Você não precisa ser o alfa do seu cachorro: até o lobo alfa é mito 🐶",
+    "description": "A ideia do 'alfa' surgiu da crença de que lobos brigam o tempo todo por hierarquia. Na natureza, a alcateia é uma família liderada pelos pais; as brigas foram vistas em lobos de cativeiro sem parentesco, e o pesquisador que popularizou o termo pediu por anos que parassem de imprimir seu livro."
+   },
+   "de": {
+    "title": "Du musst nicht der Alpha deines Hundes sein – selbst der Alphawolf ist ein Mythos 🐶",
+    "description": "Die Alpha-Idee entstand aus dem Glauben, Wölfe kämpften ständig um ihren Rang. In freier Wildbahn ist ein Rudel eine Familie, angeführt von den Eltern; die Rangkämpfe sah man bei nicht verwandten Wölfen in Gefangenschaft. Der Forscher, der den Begriff bekannt machte, bat seinen Verlag jahrelang, sein Buch nicht mehr zu drucken."
+   },
+   "fr": {
+    "title": "Pas besoin d'être l'alpha de ton chien : même le loup alpha est un mythe 🐶",
+    "description": "L'idée de l'« alpha » vient de la croyance que les loups se battent sans cesse pour leur rang. Dans la nature, une meute est une famille menée par les parents ; ces combats avaient été observés chez des loups captifs sans lien de parenté, et le chercheur qui a popularisé le terme a demandé pendant des années à son éditeur de ne plus imprimer son livre."
+   },
+   "it": {
+    "title": "Non devi essere l'alfa del tuo cane: anche il lupo alfa è un mito 🐶",
+    "description": "L'idea dell'«alfa» nasce dalla convinzione che i lupi lottino di continuo per il rango. In natura un branco è una famiglia guidata dai genitori; quelle lotte erano state osservate in lupi in cattività non imparentati, e il ricercatore che rese famoso il termine chiese per anni all'editore di smettere di stampare il suo libro."
+   },
+   "ru": {
+    "title": "Тебе не нужно быть альфой для своей собаки: даже альфа-волк — миф 🐶",
+    "description": "Идея «альфы» родилась из убеждения, что волки постоянно борются за ранг. В дикой природе стая — это семья во главе с родителями; драки за ранг наблюдали у неродственных волков в неволе, а учёный, прославивший этот термин, годами просил издателя перестать печатать его книгу."
+   },
+   "ar": {
+    "title": "لا تحتاج أن تكون «ألفا» لكلبك، فحتى الذئب ألفا خرافة 🐶",
+    "description": "نشأت فكرة «ألفا» من الاعتقاد بأن الذئاب تتقاتل باستمرار على المرتبة. أما في البرية فالقطيع عائلة يقودها الأبوان، وتلك المعارك شوهدت لدى ذئاب أسيرة لا تجمعها قرابة، والباحث الذي نشر المصطلح طلب من ناشره لسنوات أن يتوقف عن طباعة كتابه."
+   },
+   "hi": {
+    "title": "कुत्ते का 'अल्फा' बनने की ज़रूरत नहीं, अल्फा भेड़िया भी एक मिथक है 🐶",
+    "description": "'अल्फा' का विचार इस धारणा से आया कि भेड़िये पद के लिए लगातार लड़ते हैं। जंगल में भेड़ियों का झुंड असल में एक परिवार होता है जिसकी अगुवाई माता-पिता करते हैं; वे लड़ाइयाँ कैद में रखे गए आपस में अनजान भेड़ियों में देखी गई थीं, और यह शब्द मशहूर करने वाले वैज्ञानिक ने सालों तक प्रकाशक से अपनी किताब छापना बंद करने को कहा।"
+   },
+   "id": {
+    "title": "Kamu tak perlu jadi alfa bagi anjingmu, serigala alfa pun cuma mitos 🐶",
+    "description": "Gagasan 'alfa' berasal dari anggapan bahwa serigala terus bertarung demi peringkat. Di alam liar, kawanan serigala adalah keluarga yang dipimpin induknya; pertarungan itu terlihat pada serigala tangkapan yang tak saling berkerabat, dan peneliti yang mempopulerkan istilah itu bertahun-tahun meminta penerbit berhenti mencetak bukunya."
+   },
+   "ja": {
+    "title": "犬のアルファになる必要はない、アルファオオカミも作り話 🐶",
+    "description": "「アルファ」という考えは、オオカミが順位をめぐって絶えず争うという思い込みから生まれました。野生の群れは両親が率いる家族で、順位争いは血縁のない飼育下のオオカミで見られたものでした。この言葉を広めた研究者は、何年も出版社に自著の印刷をやめるよう求めました。"
+   },
+   "ko": {
+    "title": "개에게 '알파'가 될 필요는 없다, 알파 늑대도 신화다 🐶",
+    "description": "'알파'라는 생각은 늑대가 서열을 두고 끊임없이 싸운다는 믿음에서 나왔습니다. 야생의 늑대 무리는 부모가 이끄는 가족이고, 서열 다툼은 서로 남남인 사육 늑대에게서 관찰된 것이었습니다. 이 용어를 널리 알린 연구자는 수년간 출판사에 자기 책의 인쇄를 멈춰 달라고 요청했습니다."
+   },
+   "pl": {
+    "title": "Nie musisz być alfą dla swojego psa – nawet wilk alfa to mit 🐶",
+    "description": "Pomysł „alfy” wziął się z przekonania, że wilki bez przerwy walczą o pozycję. Na wolności wataha to rodzina prowadzona przez rodziców; walki o rangę obserwowano u niespokrewnionych wilków w niewoli, a badacz, który spopularyzował ten termin, latami prosił wydawcę, by przestał drukować jego książkę."
+   },
+   "nl": {
+    "title": "Je hoeft niet de alfa van je hond te zijn, zelfs de alfawolf is een mythe 🐶",
+    "description": "Het idee van de 'alfa' komt voort uit de overtuiging dat wolven voortdurend om rang vechten. In het wild is een roedel een familie onder leiding van de ouders; die gevechten zag men bij niet-verwante wolven in gevangenschap, en de onderzoeker die de term bekend maakte, vroeg zijn uitgever jarenlang om zijn boek niet meer te drukken."
+   },
+   "uk": {
+    "title": "Тобі не треба бути альфою для свого собаки: навіть альфа-вовк — міф 🐶",
+    "description": "Ідея «альфи» виникла з переконання, що вовки постійно б'ються за ранг. У дикій природі зграя — це родина на чолі з батьками; бійки за ранг бачили в неспоріднених вовків у неволі, а науковець, який зробив термін відомим, роками просив видавця припинити друкувати його книжку."
+   },
+   "vi": {
+    "title": "Bạn không cần làm 'alpha' của chó, ngay cả sói alpha cũng chỉ là huyền thoại 🐶",
+    "description": "Ý tưởng 'alpha' xuất phát từ niềm tin rằng sói luôn tranh giành thứ bậc. Ngoài tự nhiên, bầy sói là một gia đình do sói bố mẹ dẫn dắt; những trận tranh giành đó được thấy ở sói nuôi nhốt không có quan hệ họ hàng, và nhà nghiên cứu phổ biến thuật ngữ này đã nhiều năm đề nghị nhà xuất bản ngừng in cuốn sách của ông."
+   },
+   "az": {
+    "title": "İtin üçün alfa olmağa ehtiyac yoxdur, alfa canavar belə mifdir 🐶",
+    "description": "'Alfa' fikri canavarların rütbə üçün daim döyüşdüyü inancından yaranıb. Təbiətdə canavar sürüsü valideynlərin başçılıq etdiyi bir ailədir; o döyüşlər bir-birinə yad, əsirlikdə saxlanan canavarlarda müşahidə olunmuşdu, termini məşhurlaşdıran alim isə illərlə naşirdən kitabını çap etməyi dayandırmağı xahiş edib."
+   },
+   "ro": {
+    "title": "Nu trebuie să fii alfa pentru câinele tău, chiar și lupul alfa e un mit 🐶",
+    "description": "Ideea de „alfa” vine din credința că lupii se luptă continuu pentru rang. În sălbăticie, haita e o familie condusă de părinți; luptele pentru rang au fost văzute la lupi captivi, fără legătură de rudenie, iar cercetătorul care a popularizat termenul și-a rugat ani la rând editorul să nu-i mai tipărească cartea."
+   }
+  }
+ }
+}
