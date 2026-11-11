@@ -1,5 +1,5 @@
 {
- "at": "2026-11-11T18:06:53+00:00",
+ "at": "2026-11-11T18:43:43+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 63,
   "viewCount": 67969,
-  "videoCount": 71
+  "videoCount": 72
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -267,7 +267,7 @@
    "baslik": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın? 😳"
   },
   "Ze43ZrXANSQ": {
-   "view": 1745,
+   "view": 1743,
    "like": 15,
    "comment": 2,
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
@@ -297,7 +297,7 @@
    "baslik": "Lav Gölüne Düşseydin Batar Mıydın? 😳"
   },
   "hvgNbZMhWPg": {
-   "view": 2100,
+   "view": 2097,
    "like": 20,
    "comment": 0,
    "baslik": "Bir Kara Delik Gerçekte Ne Kadar Ağır? 🤯"
@@ -369,7 +369,7 @@
    "baslik": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu? 😳"
   },
   "aiJ_NUnr84M": {
-   "view": 1186,
+   "view": 1275,
    "like": 6,
    "comment": 2,
    "baslik": "Dünya'da 1 Günde Kaç Deprem Olur? 😮"
@@ -423,8 +423,8 @@
    "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
   },
   "nFBLtsB59Uw": {
-   "view": 81,
-   "like": 1,
+   "view": 108,
+   "like": 0,
    "comment": 0,
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
@@ -439,6 +439,12 @@
    "like": 1,
    "comment": 0,
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
+  },
+  "agyOZTY5PCE": {
+   "view": 0,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun? 🤯"
   }
  },
  "videos": {
@@ -473,13 +479,7 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
-   "sources": {
-    "SHORTS": 1812,
-    "YT_SEARCH": 203,
-    "YT_CHANNEL": 6,
-    "YT_OTHER_PAGE": 3,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 1202,
    "devam_yuzde": 59.4
   },
@@ -493,13 +493,7 @@
    "comments": 1,
    "subscribersGained": 2,
    "title": "Işık Gerçekte Ne Kadar Hızlı?",
-   "sources": {
-    "SHORTS": 1683,
-    "YT_SEARCH": 52,
-    "YT_OTHER_PAGE": 5,
-    "YT_CHANNEL": 4,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 994,
    "devam_yuzde": 57.0
   },
@@ -680,14 +674,7 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1225,
-    "YT_SEARCH": 76,
-    "YT_CHANNEL": 11,
-    "YT_OTHER_PAGE": 1,
-    "HASHTAGS": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 661,
    "devam_yuzde": 50.3
   },
@@ -762,13 +749,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Kalbin Durursa Kaç Saniyede Bayılırsın?",
-   "sources": {
-    "SHORTS": 1236,
-    "YT_SEARCH": 37,
-    "YT_CHANNEL": 3,
-    "EXT_URL": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 654,
    "devam_yuzde": 51.2
   },
@@ -782,14 +763,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Okyanus Gerçekte Ne Kadar Derin?",
-   "sources": {
-    "SHORTS": 1169,
-    "YT_SEARCH": 61,
-    "YT_CHANNEL": 10,
-    "SUBSCRIBER": 1,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 602,
    "devam_yuzde": 48.5
   },
@@ -863,13 +837,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Dünya'daki Bütün Buzlar Erise Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1089,
-    "YT_SEARCH": 39,
-    "YT_CHANNEL": 17,
-    "YT_OTHER_PAGE": 3,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 421,
    "devam_yuzde": 36.7
   },
@@ -904,11 +872,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
-   "sources": {
-    "SHORTS": 1105,
-    "YT_SEARCH": 26,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 632,
    "devam_yuzde": 55.9
   },
@@ -1042,12 +1006,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1053,
-    "YT_SEARCH": 37,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 349,
    "devam_yuzde": 32.0
   },
@@ -1061,13 +1020,7 @@
    "comments": 2,
    "subscribersGained": 1,
    "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
-   "sources": {
-    "SHORTS": 1021,
-    "YT_SEARCH": 41,
-    "YT_OTHER_PAGE": 6,
-    "YT_CHANNEL": 4,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 561,
    "devam_yuzde": 52.3
   },
@@ -1141,14 +1094,7 @@
    "comments": 2,
    "subscribersGained": 0,
    "title": "Vücudun 1 Günde Kaç Hücre Yeniler?",
-   "sources": {
-    "SHORTS": 980,
-    "YT_SEARCH": 27,
-    "YT_CHANNEL": 11,
-    "YT_OTHER_PAGE": 4,
-    "SOUND_PAGE": 3,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 248,
    "devam_yuzde": 24.2
   },
@@ -1202,14 +1148,7 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Karbondioksit 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 964,
-    "YT_SEARCH": 27,
-    "YT_CHANNEL": 6,
-    "YT_OTHER_PAGE": 2,
-    "EXT_URL": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 456,
    "devam_yuzde": 45.6
   },
@@ -1244,12 +1183,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
-   "sources": {
-    "SHORTS": 958,
-    "YT_SEARCH": 33,
-    "YT_CHANNEL": 3,
-    "NO_LINK_OTHER": 1
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 416,
    "devam_yuzde": 41.8
   },
@@ -1283,13 +1217,7 @@
    "comments": 2,
    "subscribersGained": 0,
    "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
-   "sources": {
-    "SHORTS": 888,
-    "YT_SEARCH": 85,
-    "YT_CHANNEL": 14,
-    "HASHTAGS": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 565,
    "devam_yuzde": 57.2
   },
@@ -1303,12 +1231,7 @@
    "comments": 0,
    "subscribersGained": 1,
    "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
-   "sources": {
-    "SHORTS": 961,
-    "YT_SEARCH": 21,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 435,
    "devam_yuzde": 44.3
   },
@@ -1380,14 +1303,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
-   "sources": {
-    "SHORTS": 866,
-    "YT_SEARCH": 25,
-    "YT_OTHER_PAGE": 5,
-    "YT_CHANNEL": 4,
-    "IMMERSIVE_LIVE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 265,
    "devam_yuzde": 29.4
   },
@@ -1401,13 +1317,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
-   "sources": {
-    "SHORTS": 819,
-    "YT_SEARCH": 12,
-    "YT_CHANNEL": 1,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 357,
    "devam_yuzde": 42.9
   },
@@ -1421,12 +1331,7 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
-   "sources": {
-    "SHORTS": 740,
-    "YT_SEARCH": 14,
-    "YT_CHANNEL": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 196,
    "devam_yuzde": 25.9
   },
@@ -1502,13 +1407,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Güneş Kara Delik Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 257,
-    "YT_SEARCH": 60,
-    "YT_CHANNEL": 17,
-    "PLAYLIST": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 175,
    "devam_yuzde": 52.1
   },
@@ -1522,12 +1421,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "DNA'n Gerçekte Ne Kadar Uzun?",
-   "sources": {
-    "SHORTS": 270,
-    "YT_SEARCH": 10,
-    "YT_OTHER_PAGE": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 115,
    "devam_yuzde": 40.8
   },
@@ -1541,12 +1435,7 @@
    "comments": 3,
    "subscribersGained": 2,
    "title": "",
-   "sources": {
-    "SHORTS": 200,
-    "YT_CHANNEL": 14,
-    "YT_SEARCH": 8,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
    "engagedViews": 93,
    "devam_yuzde": 41.9
   },
@@ -1626,181 +1515,6 @@
    "devam_yuzde": 38.2
   }
  },
- "days": [
-  {
-   "day": "2026-10-15",
-   "views": 112,
-   "engagedViews": 48,
-   "estimatedMinutesWatched": 27,
-   "subscribersGained": 2
-  },
-  {
-   "day": "2026-10-16",
-   "views": 1674,
-   "engagedViews": 773,
-   "estimatedMinutesWatched": 285,
-   "subscribersGained": 7
-  },
-  {
-   "day": "2026-10-17",
-   "views": 749,
-   "engagedViews": 324,
-   "estimatedMinutesWatched": 113,
-   "subscribersGained": 2
-  },
-  {
-   "day": "2026-10-18",
-   "views": 8104,
-   "engagedViews": 3785,
-   "estimatedMinutesWatched": 1432,
-   "subscribersGained": 26
-  },
-  {
-   "day": "2026-10-19",
-   "views": 3364,
-   "engagedViews": 1721,
-   "estimatedMinutesWatched": 535,
-   "subscribersGained": 4
-  },
-  {
-   "day": "2026-10-20",
-   "views": 3477,
-   "engagedViews": 1717,
-   "estimatedMinutesWatched": 527,
-   "subscribersGained": 3
-  },
-  {
-   "day": "2026-10-21",
-   "views": 3842,
-   "engagedViews": 1522,
-   "estimatedMinutesWatched": 402,
-   "subscribersGained": 2
-  },
-  {
-   "day": "2026-10-22",
-   "views": 2794,
-   "engagedViews": 1098,
-   "estimatedMinutesWatched": 302,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-23",
-   "views": 3703,
-   "engagedViews": 1566,
-   "estimatedMinutesWatched": 452,
-   "subscribersGained": 2
-  },
-  {
-   "day": "2026-10-24",
-   "views": 790,
-   "engagedViews": 377,
-   "estimatedMinutesWatched": 108,
-   "subscribersGained": 1
-  },
-  {
-   "day": "2026-10-25",
-   "views": 442,
-   "engagedViews": 197,
-   "estimatedMinutesWatched": 58,
-   "subscribersGained": 1
-  },
-  {
-   "day": "2026-10-26",
-   "views": 170,
-   "engagedViews": 88,
-   "estimatedMinutesWatched": 25,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-27",
-   "views": 137,
-   "engagedViews": 68,
-   "estimatedMinutesWatched": 20,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-28",
-   "views": 19,
-   "engagedViews": 9,
-   "estimatedMinutesWatched": 2,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-29",
-   "views": 17,
-   "engagedViews": 11,
-   "estimatedMinutesWatched": 2,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-30",
-   "views": 9,
-   "engagedViews": 2,
-   "estimatedMinutesWatched": 0,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-10-31",
-   "views": 23,
-   "engagedViews": 11,
-   "estimatedMinutesWatched": 2,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-11-01",
-   "views": 9,
-   "engagedViews": 4,
-   "estimatedMinutesWatched": 0,
-   "subscribersGained": 0
-  },
-  {
-   "day": "2026-11-02",
-   "views": 2745,
-   "engagedViews": 978,
-   "estimatedMinutesWatched": 281,
-   "subscribersGained": 3
-  },
-  {
-   "day": "2026-11-03",
-   "views": 3845,
-   "engagedViews": 1757,
-   "estimatedMinutesWatched": 541,
-   "subscribersGained": 4
-  },
-  {
-   "day": "2026-11-04",
-   "views": 3104,
-   "engagedViews": 1202,
-   "estimatedMinutesWatched": 385,
-   "subscribersGained": 1
-  },
-  {
-   "day": "2026-11-05",
-   "views": 5491,
-   "engagedViews": 2664,
-   "estimatedMinutesWatched": 847,
-   "subscribersGained": 3
-  },
-  {
-   "day": "2026-11-06",
-   "views": 5325,
-   "engagedViews": 2841,
-   "estimatedMinutesWatched": 789,
-   "subscribersGained": 2
-  },
-  {
-   "day": "2026-11-07",
-   "views": 6325,
-   "engagedViews": 2986,
-   "estimatedMinutesWatched": 1075,
-   "subscribersGained": 4
-  },
-  {
-   "day": "2026-11-08",
-   "views": 4609,
-   "engagedViews": 2267,
-   "estimatedMinutesWatched": 781,
-   "subscribersGained": 3
-  }
- ]
+ "days_engaged_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n       ",
+ "error": "RuntimeError: 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"An internal error has occurred.\",\n    \"errors\": [\n      {\n        \"message\": \"An internal error has occurred.\",\n        \"domain\": \"global\",\n        \"reason\": \"internalError\"\n      }\n    ]\n  }\n}\n"
 }
