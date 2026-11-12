@@ -9,37 +9,307 @@
  "lines": [
   {
    "text": "Biri sana sahip çıksın istiyorsan, yanında olmasına güvenme: önce ona söz verdir.",
-   "keys": ["güvenme", "söz"],
-   "v": {"t": "kanca", "no": "güvenme", "back": "önce", "yes": "söz", "no_label": "Sadece yanında", "yes_label": "Önce söz verdir", "sfx": [["güvenme", 0.5, "whoosh", 0.3, -0.15], ["güvenme", 0.5, "stamp", 0.4, 0.1], ["önce", 0.7, "riser", 0.25, -0.3], ["söz", 0.85, "impact", 0.4, 0.05], ["söz", 0.85, "shimmer", 0.4, 0.15]]}
+   "keys": [
+    "güvenme",
+    "söz"
+   ],
+   "v": {
+    "t": "kanca",
+    "no": "güvenme",
+    "back": "önce",
+    "yes": "söz",
+    "no_label": "Sadece yanında",
+    "yes_label": "Önce söz verdir",
+    "sfx": [
+     [
+      "yanında",
+      0.4,
+      "whoosh",
+      0.3,
+      -0.1
+     ],
+     [
+      "güvenme",
+      0.5,
+      "stamp",
+      0.4,
+      0.05
+     ],
+     [
+      "önce",
+      0.7,
+      "riser",
+      0.25,
+      -0.3
+     ],
+     [
+      "söz",
+      0.85,
+      "impact",
+      0.4,
+      0.05
+     ],
+     [
+      "söz",
+      0.85,
+      "shimmer",
+      0.4,
+      0.15
+     ]
+    ],
+    "grab": "yanında"
+   }
   },
   {
    "text": "1972'de New York'ta bir plajda, bir araştırmacı radyosunu havlusunun üstünde bırakıp uzaklaştı.",
-   "keys": ["radyosunu", "uzaklaştı"],
-   "v": {"t": "plaj", "year": "1972 · Moriarty deneyi", "radio": "radyosunu", "leave": "bırakıp", "sfx": [[null, 0.1, "paper", 0.25, 0.0], ["radyosunu", 0.4, "pop", 0.3, 0.0], ["uzaklaştı", 0.85, "whoosh", 0.25, -0.1]]}
+   "keys": [
+    "radyosunu",
+    "uzaklaştı"
+   ],
+   "v": {
+    "t": "plaj",
+    "year": "1972 · Moriarty deneyi",
+    "radio": "radyosunu",
+    "leave": "bırakıp",
+    "sfx": [
+     [
+      null,
+      0.1,
+      "paper",
+      0.25,
+      0.0
+     ],
+     [
+      "radyosunu",
+      0.4,
+      "pop",
+      0.3,
+      0.0
+     ],
+     [
+      "uzaklaştı",
+      0.85,
+      "whoosh",
+      0.25,
+      -0.1
+     ]
+    ]
+   }
   },
   {
    "text": "Birkaç dakika sonra başka bir araştırmacı, hırsız gibi radyoyu kapıp kaçtı.",
-   "keys": ["hırsız", "kapıp"],
-   "v": {"t": "hirsiz", "role": "hırsız", "grab": "kapıp", "run": "kaçtı", "sfx": [[null, 0.05, "tick", 0.25, 0.0], ["hırsız", 0.55, "stamp", 0.35, 0.0], ["kapıp", 0.8, "whoosh", 0.35, -0.05], ["kaçtı", 0.9, "pop", 0.3, 0.0]]}
+   "keys": [
+    "hırsız",
+    "kapıp"
+   ],
+   "v": {
+    "t": "hirsiz",
+    "role": "hırsız",
+    "grab": "kapıp",
+    "run": "kaçtı",
+    "sfx": [
+     [
+      null,
+      0.05,
+      "tick",
+      0.25,
+      0.0
+     ],
+     [
+      "hırsız",
+      0.55,
+      "stamp",
+      0.35,
+      0.0
+     ],
+     [
+      "kapıp",
+      0.8,
+      "whoosh",
+      0.35,
+      -0.05
+     ],
+     [
+      "kaçtı",
+      0.9,
+      "pop",
+      0.3,
+      0.0
+     ]
+    ]
+   }
   },
   {
    "text": "Giderken yanındakinden sadece ateş istediyse, yirmi kişiden yalnızca dördü müdahale etti.",
-   "keys": ["ateş", "yirmi", "dördü"],
-   "v": {"t": "ates", "ask": "ateş", "key": "yirmi", "n": "dördü", "sfx": [["ateş", 0.3, "pop", 0.3, 0.0], ["yirmi", 0.55, "whoosh", 0.3, -0.1], ["dördü", 0.75, "tick", 0.28, -0.2], ["dördü", 0.75, "tick", 0.28, 0.0], ["dördü", 0.75, "stamp", 0.3, 0.25]]}
+   "keys": [
+    "ateş",
+    "yirmi",
+    "dördü"
+   ],
+   "v": {
+    "t": "ates",
+    "ask": "ateş",
+    "key": "yirmi",
+    "n": "dördü",
+    "sfx": [
+     [
+      "ateş",
+      0.3,
+      "pop",
+      0.3,
+      0.0
+     ],
+     [
+      "yirmi",
+      0.55,
+      "whoosh",
+      0.3,
+      -0.1
+     ],
+     [
+      "dördü",
+      0.75,
+      "tick",
+      0.28,
+      -0.2
+     ],
+     [
+      "dördü",
+      0.75,
+      "tick",
+      0.28,
+      0.0
+     ],
+     [
+      "dördü",
+      0.75,
+      "stamp",
+      0.3,
+      0.25
+     ]
+    ]
+   }
   },
   {
    "text": "Ama giderken 'Eşyalarıma göz kulak olur musun?' diye sorduysa, yirmi kişiden on dokuzu hırsızı durdurmaya kalktı!",
-   "keys": ["göz", "kulak", "on", "dokuzu"],
-   "v": {"t": "soz", "ask": "eşyalarıma", "yes": "diye", "key": "yirmi", "n": "dokuzu", "act": "kalktı", "sfx": [["ama", 0.05, "stamp", 0.3, 0.0], ["eşyalarıma", 0.25, "pop", 0.3, 0.0], ["diye", 0.45, "shimmer", 0.35, 0.0], ["yirmi", 0.6, "whoosh", 0.3, -0.1], ["dokuzu", 0.8, "riser", 0.3, -0.5], ["kalktı", 0.95, "impact", 0.4, 0.0]]}
+   "keys": [
+    "göz",
+    "kulak",
+    "on",
+    "dokuzu"
+   ],
+   "v": {
+    "t": "soz",
+    "ask": "eşyalarıma",
+    "yes": "diye",
+    "key": "yirmi",
+    "n": "dokuzu",
+    "act": "kalktı",
+    "sfx": [
+     [
+      "ama",
+      0.05,
+      "stamp",
+      0.3,
+      0.0
+     ],
+     [
+      "eşyalarıma",
+      0.25,
+      "pop",
+      0.3,
+      0.0
+     ],
+     [
+      "diye",
+      0.45,
+      "shimmer",
+      0.35,
+      0.0
+     ],
+     [
+      "yirmi",
+      0.6,
+      "whoosh",
+      0.3,
+      -0.1
+     ],
+     [
+      "dokuzu",
+      0.8,
+      "riser",
+      0.3,
+      -0.5
+     ],
+     [
+      "kalktı",
+      0.95,
+      "impact",
+      0.4,
+      0.0
+     ]
+    ]
+   }
   },
   {
    "text": "Çünkü 'tamam' diyen kişi artık seyirci değil, söz vermiş biri. İnsan verdiği sözü tutmak ister.",
-   "keys": ["seyirci", "söz", "sözü"],
-   "v": {"t": "neden", "ok": "tamam", "watcher": "seyirci", "key": "söz", "cut": "insan", "keep": "tutmak", "sfx": [["tamam", 0.15, "pop", 0.3, 0.0], ["seyirci", 0.35, "stamp", 0.35, 0.0], ["söz", 0.5, "shimmer", 0.4, 0.0], ["insan", 0.7, "whoosh", 0.3, -0.1], ["tutmak", 0.9, "pop", 0.35, 0.0]]}
+   "keys": [
+    "seyirci",
+    "söz",
+    "sözü"
+   ],
+   "v": {
+    "t": "neden",
+    "ok": "tamam",
+    "watcher": "seyirci",
+    "key": "söz",
+    "cut": "insan",
+    "keep": "tutmak",
+    "sfx": [
+     [
+      "tamam",
+      0.15,
+      "pop",
+      0.3,
+      0.0
+     ],
+     [
+      "seyirci",
+      0.35,
+      "stamp",
+      0.35,
+      0.0
+     ],
+     [
+      "söz",
+      0.5,
+      "shimmer",
+      0.4,
+      0.0
+     ],
+     [
+      "insan",
+      0.7,
+      "whoosh",
+      0.3,
+      -0.1
+     ],
+     [
+      "tutmak",
+      0.9,
+      "pop",
+      0.35,
+      0.0
+     ]
+    ]
+   }
   },
   {
    "text": "Bu yüzden unutma:",
-   "v": {"t": "usta", "end": true}
+   "v": {
+    "t": "usta",
+    "end": true
+   }
   }
  ],
  "facts": [

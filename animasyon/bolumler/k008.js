@@ -300,12 +300,12 @@ function k8Wide(t, o = {}) {
 Object.assign(SAHNE, {
   kanca(V, L, t, lt) {
     // the hook, from the very first frame: today, a thief creeps up on a beach bag next to a man on his phone. On
-    // "güvenme" he takes it and tiptoes off while the man only looks. On "önce" it rewinds and a gold "SÖZ" badge marks the
+    // "yanında" he takes it and tiptoes off while the man only looks; "güvenme" brings the red plate. On "önce" it rewinds and a gold "SÖZ" badge marks the
     // man; on "söz" he jumps up, points and shouts, and the thief freezes with his hands up
     K8.day();
-    const tn = wordTime(L, V.no, .45), tb = wordTime(L, V.back, .7), ty = wordTime(L, V.yes, .85);
-    const before = t < tn - .1, gone = t >= tn - .1 && t < tb - .15, again = t >= tb - .15;
-    const creep = eio(prog(t, 0, tn - .1)), away = prog(t, tn + .1, tb - .2), stand = prog(t, ty - .2, ty + .1);
+    const tg = wordTime(L, V.grab, .35), tn = wordTime(L, V.no, .45), tb = wordTime(L, V.back, .7), ty = wordTime(L, V.yes, .85);
+    const before = t < tg - .05, gone = t >= tg - .05 && t < tb - .15, again = t >= tb - .15;
+    const creep = eio(prog(t, 0, tg - .05)), away = prog(t, tg + .1, tb - .2), stand = prog(t, ty - .2, ty + .1);
     cam(540, 900, lerp(1.0, 1.04, eio(prog(lt, 0, 5))), () => {
       k8Beach(t, {});
       k8Towel(300, 1346, 470, 112, '#3a8ac8', '#f6efe0');
