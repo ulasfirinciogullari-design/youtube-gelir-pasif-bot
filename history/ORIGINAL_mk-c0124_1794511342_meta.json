@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0124",
+  "topic": "Bir arı ömrü boyunca ne kadar bal yapar, bir çay kaşığı bal kaç arının emeği?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Bir arı ömrü boyunca bir çay kaşığı bal bile yapamaz 🐝",
+  "hook_text": "BİR ARI NE KADAR BAL YAPAR?",
+  "description": "Bir arı ömrü boyunca ne kadar bal yapar, bir çay kaşığı bal kaç arının emeği?\n\nFlorida Üniversitesi IFAS uzmanlarına göre tek bir bal arısı ömrü boyunca yalnızca bir çay kaşığının on ikide biri kadar bal üretir; bir işçi arının ortalama ömrü de 45 gün kadardır. Sussex Üniversitesi'nin anlatımına göre nektar çoğunlukla sudur ve şeker oranı genellikle yüzde 25 ile 50 arasındadır; arılar kanatlarıyla kovanı havalandırarak suyu buharlaştırır, bal yaklaşık yüzde 17 suya inene kadar koyulaşır. Kahvaltıdaki bir çay kaşığı bal, yaklaşık on iki arının bütün ömrünün emeği.\n\nSence hangisi daha şaşırtıcı: arının ömür boyu bu kadar az bal yapması mı, sadece kırk beş gün yaşaması mı?\n\n#arı #bal #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0124",
+  "tags": [
+    "arı",
+    "bal arısı",
+    "bir arı ne kadar bal yapar",
+    "arı ömrü",
+    "işçi arı",
+    "arı kaç gün yaşar",
+    "bal nasıl yapılır",
+    "bal",
+    "nektar",
+    "arıcılık",
+    "kovan",
+    "petek",
+    "çay kaşığı bal",
+    "böcekler",
+    "hayvanlar",
+    "hayvan gerçekleri",
+    "doğa",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "honey bee",
+    "how bees make honey",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "ari",
+    "bal arisi",
+    "bir ari ne kadar bal yapar",
+    "ari omru",
+    "isci ari"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A bee can't make even a teaspoon of honey in its lifetime 🐝",
+      "description": "A single honey bee makes only about 1/12 of a teaspoon of honey in its whole life, and a worker lives about 45 days on average. Nectar is mostly water, which bees evaporate by fanning their wings, so a teaspoon of honey is roughly twelve bees' lifetime work.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "es": {
+      "title": "Una abeja no produce ni una cucharadita de miel en toda su vida 🐝",
+      "description": "Una abeja melífera produce solo una doceava parte de una cucharadita de miel en toda su vida, y una obrera vive unos 45 días de media. El néctar es sobre todo agua, que las abejas evaporan batiendo las alas: una cucharadita de miel es el trabajo de toda la vida de unas doce abejas.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "pt": {
+      "title": "Uma abelha não faz nem uma colher de chá de mel na vida inteira 🐝",
+      "description": "Uma abelha produz só cerca de 1/12 de colher de chá de mel em toda a vida, e uma operária vive em média uns 45 dias. O néctar é principalmente água, que as abelhas evaporam batendo as asas; uma colher de chá de mel é o trabalho de uma vida de umas doze abelhas.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "de": {
+      "title": "Eine Biene schafft im ganzen Leben nicht mal einen Teelöffel Honig 🐝",
+      "description": "Eine Honigbiene erzeugt in ihrem ganzen Leben nur etwa ein Zwölftel Teelöffel Honig, und eine Arbeiterin lebt im Schnitt rund 45 Tage. Nektar besteht größtenteils aus Wasser, das die Bienen durch Flügelfächeln verdunsten lassen – ein Teelöffel Honig ist also die Lebensarbeit von etwa zwölf Bienen.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "fr": {
+      "title": "Une abeille ne produit même pas une cuillère à café de miel dans sa vie 🐝",
+      "description": "Une abeille ne produit qu'environ un douzième de cuillère à café de miel au cours de sa vie, et une ouvrière vit en moyenne 45 jours. Le nectar est surtout de l'eau, que les abeilles évaporent en battant des ailes : une cuillère à café de miel, c'est le travail d'une vie d'une douzaine d'abeilles.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "it": {
+      "title": "Un'ape non produce nemmeno un cucchiaino di miele in tutta la vita 🐝",
+      "description": "Un'ape produce solo circa un dodicesimo di cucchiaino di miele in tutta la vita, e un'operaia vive in media 45 giorni. Il nettare è soprattutto acqua, che le api fanno evaporare battendo le ali: un cucchiaino di miele è il lavoro di una vita di circa dodici api.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "ru": {
+      "title": "Пчела за всю жизнь не делает даже чайной ложки мёда 🐝",
+      "description": "Одна медоносная пчела за всю жизнь производит лишь около 1/12 чайной ложки мёда, а рабочая пчела живёт в среднем около 45 дней. Нектар в основном состоит из воды, которую пчёлы выпаривают, обмахивая крыльями, так что чайная ложка мёда — это труд всей жизни примерно двенадцати пчёл.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "ar": {
+      "title": "النحلة لا تصنع ولو ملعقة صغيرة من العسل طوال حياتها 🐝",
+      "description": "تنتج نحلة العسل الواحدة نحو جزء من اثني عشر من ملعقة صغيرة من العسل طوال حياتها، وتعيش العاملة في المتوسط نحو 45 يومًا. الرحيق في معظمه ماء يبخّره النحل بتحريك أجنحته، لذا فملعقة صغيرة من العسل هي عمل حياة نحو اثنتي عشرة نحلة.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "hi": {
+      "title": "एक मधुमक्खी पूरी ज़िंदगी में एक चम्मच शहद भी नहीं बना पाती 🐝",
+      "description": "एक मधुमक्खी अपने पूरे जीवन में सिर्फ़ लगभग 1/12 छोटा चम्मच शहद बनाती है, और एक श्रमिक मधुमक्खी औसतन करीब 45 दिन जीती है। फूलों का रस ज़्यादातर पानी होता है, जिसे मधुमक्खियाँ पंख फड़फड़ाकर उड़ा देती हैं; यानी एक छोटा चम्मच शहद लगभग बारह मधुमक्खियों की उम्र भर की मेहनत है।\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "id": {
+      "title": "Seekor lebah tak bisa membuat satu sendok teh madu seumur hidupnya 🐝",
+      "description": "Seekor lebah madu hanya menghasilkan sekitar 1/12 sendok teh madu sepanjang hidupnya, dan lebah pekerja rata-rata hidup sekitar 45 hari. Nektar sebagian besar berupa air yang diuapkan lebah dengan mengipaskan sayap, jadi satu sendok teh madu adalah hasil kerja seumur hidup sekitar dua belas lebah.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "ja": {
+      "title": "ミツバチ1匹は一生でティースプーン1杯の蜂蜜も作れない 🐝",
+      "description": "ミツバチ1匹が一生で作る蜂蜜は、ティースプーンの約12分の1。働きバチの寿命は平均で約45日です。花の蜜はほとんどが水で、ハチは羽であおいで水分を飛ばします。ティースプーン1杯の蜂蜜は、およそ12匹のミツバチの一生分の仕事なのです。\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "ko": {
+      "title": "꿀벌 한 마리는 평생 꿀 한 티스푼도 못 만든다 🐝",
+      "description": "꿀벌 한 마리가 평생 만드는 꿀은 티스푼의 약 12분의 1에 불과하고, 일벌의 평균 수명은 약 45일입니다. 꽃꿀은 대부분 물이라 벌들이 날갯짓으로 수분을 날려 보냅니다. 꿀 한 티스푼은 꿀벌 열두 마리쯤의 평생 노동인 셈입니다.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "pl": {
+      "title": "Pszczoła przez całe życie nie zrobi nawet łyżeczki miodu 🐝",
+      "description": "Jedna pszczoła miodna wytwarza przez całe życie tylko około 1/12 łyżeczki miodu, a robotnica żyje średnio około 45 dni. Nektar to głównie woda, którą pszczoły odparowują, wachlując skrzydłami – łyżeczka miodu to praca całego życia mniej więcej dwunastu pszczół.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "nl": {
+      "title": "Een bij maakt in haar hele leven nog geen theelepel honing 🐝",
+      "description": "Eén honingbij maakt in haar hele leven maar zo'n 1/12 theelepel honing, en een werkbij leeft gemiddeld ongeveer 45 dagen. Nectar bestaat vooral uit water, dat bijen laten verdampen door met hun vleugels te wapperen: een theelepel honing is het levenswerk van zo'n twaalf bijen.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "uk": {
+      "title": "Бджола за все життя не робить навіть чайної ложки меду 🐝",
+      "description": "Одна медоносна бджола за все життя виробляє лише близько 1/12 чайної ложки меду, а робоча бджола живе в середньому приблизно 45 днів. Нектар здебільшого складається з води, яку бджоли випаровують, обмахуючи крильми, тож чайна ложка меду — це праця всього життя приблизно дванадцяти бджіл.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "vi": {
+      "title": "Một con ong cả đời không làm nổi một thìa cà phê mật 🐝",
+      "description": "Một con ong mật cả đời chỉ làm ra khoảng 1/12 thìa cà phê mật, và ong thợ trung bình sống khoảng 45 ngày. Mật hoa chủ yếu là nước, ong vỗ cánh để làm bay hơi nước, nên một thìa cà phê mật ong là công sức cả đời của khoảng mười hai con ong.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "az": {
+      "title": "Bir arı bütün ömründə bir çay qaşığı bal da düzəldə bilmir 🐝",
+      "description": "Tək bir bal arısı bütün ömrü boyu təxminən çay qaşığının on ikidə biri qədər bal hazırlayır, işçi arı isə orta hesabla 45 gün yaşayır. Nektarın çoxu sudur, arılar qanad çalaraq bu suyu buxarlandırır; yəni bir çay qaşığı bal təxminən on iki arının bütün ömrünün zəhmətidir.\n\n#shorts\n\nSeri: mk-c0124"
+    },
+    "ro": {
+      "title": "O albină nu face nici măcar o linguriță de miere toată viața 🐝",
+      "description": "O singură albină produce în toată viața doar circa 1/12 dintr-o linguriță de miere, iar o lucrătoare trăiește în medie aproximativ 45 de zile. Nectarul e în mare parte apă, pe care albinele o evaporă bătând din aripi, așa că o linguriță de miere e munca de-o viață a vreo douăsprezece albine.\n\n#shorts\n\nSeri: mk-c0124"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: arının ömür boyu bu kadar az bal yapması mı, sadece kırk beş gün yaşaması mı?",
+  "scenes": [
+    {
+      "text": "Bu arı ömründe bir kaşık bal bile yapamaz.",
+      "visual": "macro close-up of a honey bee's face and eyes on a flower",
+      "stock_query": "bee macro",
+      "source": "stock",
+      "callout": "1/12 ÇAY KAŞIĞI"
+    },
+    {
+      "text": "Bütün ömrünün emeği, bir çay kaşığının on ikide biri kadar.",
+      "visual": "a honey bee collecting nectar from a flower",
+      "stock_query": "bee flower",
+      "source": "stock"
+    },
+    {
+      "text": "Üstelik bir işçi arı ortalama kırk beş gün yaşar.",
+      "visual": "worker bees crawling over a honeycomb",
+      "stock_query": "bees honeycomb",
+      "source": "stock",
+      "callout": "45 GÜNLÜK ÖMÜR"
+    },
+    {
+      "text": "Çünkü topladığı nektar çoğunlukla sudur; arılar kanat çırparak bu suyu uçurur, geriye azıcık bal kalır.",
+      "visual": "bees fanning their wings at the entrance of a hive",
+      "stock_query": "bee hive",
+      "source": "stock",
+      "callout": "NEKTARIN ÇOĞU SU"
+    },
+    {
+      "text": "Kahvaltıdaki bir çay kaşığı bal, on iki arının ömrü; çünkü...",
+      "visual": "golden honey dripping slowly from a spoon",
+      "stock_query": "honey spoon",
+      "source": "stock",
+      "subject": [
+        "honey"
+      ]
+    }
+  ],
+  "duration_seconds": 14.76,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #177",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0124_1794511342_ig.mp4"
+}
