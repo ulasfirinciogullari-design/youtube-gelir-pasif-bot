@@ -2362,14 +2362,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-04T20:07:50+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
-   "url": "https://youtube.com/shorts/5lbPgaPW58Y",
-   "duration": 25.7,
-   "chars": 389
-  },
-  {
    "finished": "2026-11-05T09:10:24+00:00",
    "mod": "igbolum",
    "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
@@ -2790,6 +2782,12 @@
    "url": "https://youtube.com/shorts/Pxik5vC4NHU",
    "duration": 56.1,
    "chars": 845
+  },
+  {
+   "finished": "2026-11-12T13:10:30+00:00",
+   "mod": "igbolum",
+   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+   "chars": 369
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3069,6 +3067,11 @@
     "media_id": "18117767306104523",
     "url": "https://www.instagram.com/reel/Dfoszv2gNxh/",
     "at": 1794474582.5715437
+   },
+   "g008": {
+    "media_id": "18143110750623244",
+    "url": "https://www.instagram.com/reel/DfpIXdxEbes/",
+    "at": 1794489030.4901507
    }
   },
   "eski": [

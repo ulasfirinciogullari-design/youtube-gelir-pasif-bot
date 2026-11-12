@@ -1,71 +1,18 @@
 {
- "started": "2026-11-12T12:09:15+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-12T13:09:11+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g008",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "63",
-  "videos": "74"
+ "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+ "chars": 369,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18143110750623244",
+  "url": "https://www.instagram.com/reel/DfpIXdxEbes/",
+  "at": 1794489030.4901507
  },
- "credits_before": [
-  99126,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261112-0-y019.json",
-  "kalan": 4
- },
- "topic": {
-  "id": "y019",
-  "series": "Ya Olsaydı?",
-  "q": "Uzayda ağlasaydın ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 845,
- "duration": 56.1,
- "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/Pxik5vC4NHU",
- "recent_status": {
-  "g014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "271",
-   "reason": null
-  },
-  "n015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "26",
-   "reason": null
-  },
-  "y068": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "220",
-   "reason": null
-  },
-  "g015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "1",
-   "reason": null
-  },
-  "y019": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  99330,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261112-0-y019.json Uzayda ağlasaydın ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfpIXdxEbes/"
  ],
- "finished": "2026-11-12T12:11:27+00:00"
+ "finished": "2026-11-12T13:10:30+00:00"
 }
