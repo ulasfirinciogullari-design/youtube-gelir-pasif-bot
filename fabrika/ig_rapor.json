@@ -1,11 +1,11 @@
 {
- "started": "2026-11-11T07:29:45+00:00",
+ "started": "2026-11-12T07:27:17+00:00",
  "mod": "kontrol",
  "anahtar_bitis": "2027-01-08T07:30+00:00",
  "hesap": {
   "username": "yaolsaydi.bilim",
   "account_type": "MEDIA_CREATOR",
-  "media_count": 49,
+  "media_count": 52,
   "followers_count": 41
  },
  "paylasim_hakki": {
@@ -73,17 +73,59 @@
  ],
  "medya": [
   {
+   "link": "https://www.instagram.com/reel/Dfm_FVmCK_U/",
+   "zaman": "2026-11-11T17:10:46+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1319,
+    "reach": 1146,
+    "saved": 2,
+    "shares": 0,
+    "likes": 2,
+    "ig_reels_avg_watch_time": 10292
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DfmjleWnMZ-/",
+   "zaman": "2026-11-11T13:10:30+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1390,
+    "reach": 1200,
+    "saved": 2,
+    "shares": 0,
+    "likes": 9,
+    "ig_reels_avg_watch_time": 14122
+   }
+  },
+  {
+   "link": "https://www.instagram.com/reel/DfmH70iEiXz/",
+   "zaman": "2026-11-11T09:08:51+0000",
+   "yorum_sayisi": 0,
+   "api_yorum": 0,
+   "istatistik": {
+    "views": 1223,
+    "reach": 1075,
+    "saved": 0,
+    "shares": 0,
+    "likes": 0,
+    "ig_reels_avg_watch_time": 10278
+   }
+  },
+  {
    "link": "https://www.instagram.com/reel/DfkaNGtjjWx/",
    "zaman": "2026-11-10T17:10:02+0000",
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1313,
-    "reach": 1122,
+    "views": 1318,
+    "reach": 1129,
     "saved": 0,
     "shares": 0,
     "likes": 8,
-    "ig_reels_avg_watch_time": 11905
+    "ig_reels_avg_watch_time": 11854
    }
   },
   {
@@ -92,12 +134,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 144,
-    "reach": 120,
+    "views": 149,
+    "reach": 125,
     "saved": 0,
     "shares": 0,
     "likes": 0,
-    "ig_reels_avg_watch_time": 10927
+    "ig_reels_avg_watch_time": 10606
    }
   },
   {
@@ -106,12 +148,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1290,
+    "views": 1291,
     "reach": 1086,
     "saved": 0,
     "shares": 0,
     "likes": 10,
-    "ig_reels_avg_watch_time": 11343
+    "ig_reels_avg_watch_time": 11337
    }
   },
   {
@@ -120,12 +162,12 @@
    "yorum_sayisi": 0,
    "api_yorum": 0,
    "istatistik": {
-    "views": 1210,
-    "reach": 1086,
+    "views": 1212,
+    "reach": 1088,
     "saved": 0,
     "shares": 0,
     "likes": 7,
-    "ig_reels_avg_watch_time": 8635
+    "ig_reels_avg_watch_time": 8625
    }
   },
   {
@@ -149,7 +191,7 @@
    "api_yorum": 0,
    "istatistik": {
     "views": 1235,
-    "reach": 1096,
+    "reach": 1098,
     "saved": 0,
     "shares": 0,
     "likes": 2,
@@ -330,12 +372,12 @@
    "yorum_sayisi": 2,
    "api_yorum": 2,
    "istatistik": {
-    "views": 1615,
-    "reach": 1337,
+    "views": 1617,
+    "reach": 1339,
     "saved": 1,
     "shares": 0,
     "likes": 12,
-    "ig_reels_avg_watch_time": 12804
+    "ig_reels_avg_watch_time": 12814
    }
   },
   {
@@ -379,49 +421,7 @@
     "likes": 2,
     "ig_reels_avg_watch_time": 15728
    }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DfR9CPigQlJ/",
-   "zaman": "2026-11-03T13:08:48+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 41,
-    "reach": 34,
-    "saved": 0,
-    "shares": 0,
-    "likes": 0,
-    "ig_reels_avg_watch_time": 5547
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DfRhd6xDray/",
-   "zaman": "2026-11-03T09:07:55+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1209,
-    "reach": 1066,
-    "saved": 0,
-    "shares": 0,
-    "likes": 4,
-    "ig_reels_avg_watch_time": 9192
-   }
-  },
-  {
-   "link": "https://www.instagram.com/reel/DfP18XUj5xR/",
-   "zaman": "2026-11-02T17:28:20+0000",
-   "yorum_sayisi": 0,
-   "api_yorum": 0,
-   "istatistik": {
-    "views": 1424,
-    "reach": 1169,
-    "saved": 2,
-    "shares": 0,
-    "likes": 5,
-    "ig_reels_avg_watch_time": 9016
-   }
   }
  ],
- "finished": "2026-11-11T07:30:20+00:00"
+ "finished": "2026-11-12T07:27:55+00:00"
 }
