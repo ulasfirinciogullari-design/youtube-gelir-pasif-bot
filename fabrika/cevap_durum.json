@@ -579,6 +579,12 @@
     "r",
     "Geçmiş olsun, çok korkutucu olmalı! Yıldırımlar metal antenleri ve elektrik hatl",
     "dc937b598926"
+   ],
+   "18109158380211249": [
+    1794506286.4796386,
+    "r",
+    "Klavyen biraz coşmuş galiba, olsun sevgiler gönderiyoruz!\n— Bit 🤖",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -641,6 +647,12 @@
     "kind": "yorum",
     "text": "bizim tv antenine düştü tv anteni tv patladı sonra yangın çıktı baya çatı fln yandı",
     "reply": "Geçmiş olsun, çok korkutucu olmalı! Yıldırımlar metal antenleri ve elektrik hatlarını çok sever, iyi ki büyümeden atlatmışsınız ⚡\n— Bit 🤖"
+   },
+   {
+    "at": 1794506286.4796386,
+    "kind": "yorum",
+    "text": "Abi 1 sabiyed",
+    "reply": "Klavyen biraz coşmuş galiba, olsun sevgiler gönderiyoruz!\n— Bit 🤖"
    }
   ]
  },
@@ -648,10 +660,10 @@
  "nobet": {
   "basladi": "2026-11-12T17:53:06+00:00",
   "run": "43272343492",
-  "tur": 1,
-  "ig_cevap": 0,
+  "tur": 6,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-12T17:53:12+00:00"
+  "son_tur": "2026-11-12T17:58:10+00:00"
  }
 }
