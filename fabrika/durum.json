@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "588",
+    "views": "591",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1155",
+    "views": "1160",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "374",
+    "views": "376",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "929",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1208",
+    "views": "1226",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "915",
+    "views": "930",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "173",
+    "views": "182",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "364",
+    "views": "380",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "267",
+    "views": "271",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "23",
+    "views": "26",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "168",
+    "views": "220",
     "reason": null
    }
   },
@@ -2183,6 +2183,36 @@
    "thumbnail": true,
    "at": 1794478114.687316,
    "chars": 405,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "1",
+    "reason": null
+   }
+  },
+  {
+   "id": "y019",
+   "video_id": "Pxik5vC4NHU",
+   "url": "https://youtube.com/shorts/Pxik5vC4NHU",
+   "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Cried Inside Your Helmet in Space?",
+    "es": "¿Qué Pasaría Si Lloraras Dentro de Tu Casco en el Espacio?",
+    "pt": "O Que Aconteceria Se Você Chorasse Dentro do Capacete no Espaço?",
+    "ar": "ماذا سيحدث لو بكيت داخل خوذتك في الفضاء؟",
+    "hi": "अगर अंतरिक्ष में हेलमेट के अंदर आप रो पड़ें तो क्या होगा?",
+    "id": "Apa Jadinya Jika Kamu Menangis di Dalam Helm di Luar Angkasa?",
+    "fr": "Que Se Passerait-il Si Tu Pleurais Dans Ton Casque Dans l'Espace ?",
+    "de": "Was Passiert, Wenn Du im Weltall in Deinem Helm Weinst?",
+    "ru": "Что Будет, Если Заплакать в Шлеме в Открытом Космосе?",
+    "az": "Kosmosda Dəbilqənin İçində Ağlasaydın Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794485485.5870006,
+   "chars": 845,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2264,7 +2294,8 @@
   "g014",
   "n015",
   "y068",
-  "g015"
+  "g015",
+  "y019"
  ],
  "extra": [
   {
@@ -2330,14 +2361,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-04T18:12:28+00:00",
-   "mod": "saatlik",
-   "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
-   "url": "https://youtube.com/shorts/F9Hkco1HKiA",
-   "duration": 26.7,
-   "chars": 392
-  },
   {
    "finished": "2026-11-04T20:07:50+00:00",
    "mod": "saatlik",
@@ -2759,6 +2782,14 @@
    "url": "https://youtube.com/shorts/WR_w6VSOY-s",
    "duration": 26.8,
    "chars": 405
+  },
+  {
+   "finished": "2026-11-12T12:11:27+00:00",
+   "mod": "saatlik",
+   "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/Pxik5vC4NHU",
+   "duration": 56.1,
+   "chars": 845
   }
  ],
  "last_fail": 1794410324.353765,

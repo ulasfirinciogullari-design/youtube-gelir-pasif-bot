@@ -1,5 +1,5 @@
 {
- "started": "2026-11-12T10:07:31+00:00",
+ "started": "2026-11-12T12:09:15+00:00",
  "mod": "saatlik",
  "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
@@ -8,52 +8,52 @@
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
   "subscribers": "63",
-  "videos": "73"
+  "videos": "74"
  },
  "credits_before": [
-  98937,
+  99126,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261111-4-g015.json",
-  "kalan": 5
+  "dosya": "20261112-0-y019.json",
+  "kalan": 4
  },
  "topic": {
-  "id": "g015",
-  "series": "1 Gün Boyunca",
-  "q": "Bir mavi balina 1 günde ne kadar yer?"
+  "id": "y019",
+  "series": "Ya Olsaydı?",
+  "q": "Uzayda ağlasaydın ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "chars": 405,
- "duration": 26.8,
- "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
- "url": "https://youtube.com/shorts/WR_w6VSOY-s",
+ "chars": 845,
+ "duration": 56.1,
+ "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
+ "url": "https://youtube.com/shorts/Pxik5vC4NHU",
  "recent_status": {
-  "y067": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "364",
-   "reason": null
-  },
   "g014": {
    "upload": "processed",
    "privacy": "public",
-   "views": "267",
+   "views": "271",
    "reason": null
   },
   "n015": {
    "upload": "processed",
    "privacy": "public",
-   "views": "23",
+   "views": "26",
    "reason": null
   },
   "y068": {
    "upload": "processed",
    "privacy": "public",
-   "views": "168",
+   "views": "220",
    "reason": null
   },
   "g015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "1",
+   "reason": null
+  },
+  "y019": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -61,11 +61,11 @@
   }
  },
  "credits_after": [
-  99034,
+  99330,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261111-4-g015.json Bir mavi balina 1 günde ne kadar yer? (1 Gün Boyunca)"
+  "Kuyruktan: 20261112-0-y019.json Uzayda ağlasaydın ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-12T10:08:35+00:00"
+ "finished": "2026-11-12T12:11:27+00:00"
 }
