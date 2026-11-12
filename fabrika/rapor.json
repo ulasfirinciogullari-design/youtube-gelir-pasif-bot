@@ -1,18 +1,71 @@
 {
- "started": "2026-11-12T09:07:16+00:00",
- "mod": "igbolum",
- "gate": "instagram: y063",
+ "started": "2026-11-12T10:07:31+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Hapşırığını Tutsaydın Ne Olurdu?",
- "chars": 370,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18117767306104523",
-  "url": "https://www.instagram.com/reel/Dfoszv2gNxh/",
-  "at": 1794474582.5715437
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "63",
+  "videos": "73"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dfoszv2gNxh/"
+ "credits_before": [
+  98937,
+  613902
  ],
- "finished": "2026-11-12T09:09:42+00:00"
+ "kuyruk": {
+  "dosya": "20261111-4-g015.json",
+  "kalan": 5
+ },
+ "topic": {
+  "id": "g015",
+  "series": "1 Gün Boyunca",
+  "q": "Bir mavi balina 1 günde ne kadar yer?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 405,
+ "duration": 26.8,
+ "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+ "url": "https://youtube.com/shorts/WR_w6VSOY-s",
+ "recent_status": {
+  "y067": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "364",
+   "reason": null
+  },
+  "g014": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "267",
+   "reason": null
+  },
+  "n015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "23",
+   "reason": null
+  },
+  "y068": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "168",
+   "reason": null
+  },
+  "g015": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  99034,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261111-4-g015.json Bir mavi balina 1 günde ne kadar yer? (1 Gün Boyunca)"
+ ],
+ "finished": "2026-11-12T10:08:35+00:00"
 }

@@ -1616,7 +1616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1210",
+    "views": "1217",
     "reason": null
    }
   },
@@ -1646,7 +1646,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1132",
+    "views": "1138",
     "reason": null
    }
   },
@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "585",
+    "views": "588",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1072",
+    "views": "1155",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1436",
+    "views": "1523",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "975",
+    "views": "976",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "914",
+    "views": "942",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "862",
+    "views": "948",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "937",
+    "views": "938",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "266",
+    "views": "374",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "913",
+    "views": "928",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1187",
+    "views": "1208",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "698",
+    "views": "915",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "127",
+    "views": "173",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "226",
+    "views": "364",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "210",
+    "views": "267",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "8",
+    "views": "23",
     "reason": null
    }
   },
@@ -2153,6 +2153,36 @@
    "thumbnail": true,
    "at": 1794427689.27516,
    "chars": 376,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "168",
+    "reason": null
+   }
+  },
+  {
+   "id": "g015",
+   "video_id": "WR_w6VSOY-s",
+   "url": "https://youtube.com/shorts/WR_w6VSOY-s",
+   "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+   "series": "1 Gün Boyunca",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Many Tons Does a Blue Whale Eat in 1 Day?",
+    "es": "¿Cuántas Toneladas Come una Ballena Azul en 1 Día?",
+    "pt": "Quantas Toneladas uma Baleia-Azul Come em 1 Dia?",
+    "ar": "كم طنًا يأكل الحوت الأزرق في يوم واحد؟",
+    "hi": "नीली व्हेल 1 दिन में कितने टन खाती है?",
+    "id": "Berapa Ton Paus Biru Makan dalam 1 Hari?",
+    "fr": "Combien de Tonnes une Baleine Bleue Mange-t-elle en 1 Jour ?",
+    "de": "Wie Viele Tonnen Frisst ein Blauwal an 1 Tag?",
+    "ru": "Сколько Тонн Съедает Синий Кит за 1 День?",
+    "az": "Mavi Balina 1 Gündə Neçə Ton Yeyir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794478114.687316,
+   "chars": 405,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2233,7 +2263,8 @@
   "y067",
   "g014",
   "n015",
-  "y068"
+  "y068",
+  "g015"
  ],
  "extra": [
   {
@@ -2299,12 +2330,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-04T17:10:25+00:00",
-   "mod": "igbolum",
-   "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
-   "chars": 370
-  },
   {
    "finished": "2026-11-04T18:12:28+00:00",
    "mod": "saatlik",
@@ -2726,6 +2751,14 @@
    "mod": "igbolum",
    "title": "Hapşırığını Tutsaydın Ne Olurdu?",
    "chars": 370
+  },
+  {
+   "finished": "2026-11-12T10:08:35+00:00",
+   "mod": "saatlik",
+   "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+   "url": "https://youtube.com/shorts/WR_w6VSOY-s",
+   "duration": 26.8,
+   "chars": 405
   }
  ],
  "last_fail": 1794410324.353765,
