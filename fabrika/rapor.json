@@ -1,71 +1,18 @@
 {
- "started": "2026-11-12T14:08:29+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-12T17:07:57+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n013",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "64",
-  "videos": "75"
+ "title": "Damarların Gerçekte Ne Kadar Uzun?",
+ "chars": 407,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "17990998611096834",
+  "url": "https://www.instagram.com/reel/DfpjuJXgWZg/",
+  "at": 1794503372.842214
  },
- "credits_before": [
-  99511,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261112-1-y034.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y034",
-  "series": "Ya Olsaydı?",
-  "q": "Hiç bakterimiz olmasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 362,
- "duration": 25.1,
- "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/RKGn39tzpn4",
- "recent_status": {
-  "n015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "26",
-   "reason": null
-  },
-  "y068": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "357",
-   "reason": null
-  },
-  "g015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "201",
-   "reason": null
-  },
-  "y019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  },
-  "y034": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  99511,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261112-1-y034.json Hiç bakterimiz olmasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfpjuJXgWZg/"
  ],
- "finished": "2026-11-12T14:09:22+00:00"
+ "finished": "2026-11-12T17:09:32+00:00"
 }

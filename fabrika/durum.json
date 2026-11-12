@@ -2393,14 +2393,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-05T10:09:12+00:00",
-   "mod": "saatlik",
-   "title": "Işık Gerçekte Ne Kadar Hızlı?",
-   "url": "https://youtube.com/shorts/Ze43ZrXANSQ",
-   "duration": 26.1,
-   "chars": 403
-  },
-  {
    "finished": "2026-11-05T13:09:48+00:00",
    "mod": "igbolum",
    "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
@@ -2821,6 +2813,12 @@
    "url": "https://youtube.com/shorts/RKGn39tzpn4",
    "duration": 25.1,
    "chars": 362
+  },
+  {
+   "finished": "2026-11-12T17:09:32+00:00",
+   "mod": "igbolum",
+   "title": "Damarların Gerçekte Ne Kadar Uzun?",
+   "chars": 407
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3105,6 +3103,11 @@
     "media_id": "18143110750623244",
     "url": "https://www.instagram.com/reel/DfpIXdxEbes/",
     "at": 1794489030.4901507
+   },
+   "n013": {
+    "media_id": "17990998611096834",
+    "url": "https://www.instagram.com/reel/DfpjuJXgWZg/",
+    "at": 1794503372.842214
    }
   },
   "eski": [
