@@ -2300,14 +2300,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-04T14:12:33+00:00",
-   "mod": "saatlik",
-   "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
-   "url": "https://youtube.com/shorts/Gyz1vK-E-D4",
-   "duration": 27.0,
-   "chars": 407
-  },
-  {
    "finished": "2026-11-04T17:10:25+00:00",
    "mod": "igbolum",
    "title": "Jüpiter Gerçekte Ne Kadar Büyük?",
@@ -2728,6 +2720,12 @@
    "url": "https://youtube.com/shorts/xLGCGQYwSmE",
    "duration": 24.6,
    "chars": 376
+  },
+  {
+   "finished": "2026-11-12T09:09:42+00:00",
+   "mod": "igbolum",
+   "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+   "chars": 370
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3002,6 +3000,11 @@
     "media_id": "18457862338131540",
     "url": "https://www.instagram.com/reel/Dfm_FVmCK_U/",
     "at": 1794417054.2324007
+   },
+   "y063": {
+    "media_id": "18117767306104523",
+    "url": "https://www.instagram.com/reel/Dfoszv2gNxh/",
+    "at": 1794474582.5715437
    }
   },
   "eski": [

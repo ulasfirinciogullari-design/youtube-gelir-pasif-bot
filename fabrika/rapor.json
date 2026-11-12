@@ -1,71 +1,18 @@
 {
- "started": "2026-11-11T20:07:14+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-12T09:07:16+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y063",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "63",
-  "videos": "72"
+ "title": "Hapşırığını Tutsaydın Ne Olurdu?",
+ "chars": 370,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18117767306104523",
+  "url": "https://www.instagram.com/reel/Dfoszv2gNxh/",
+  "at": 1794474582.5715437
  },
- "credits_before": [
-  98138,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261111-3-y068.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y068",
-  "series": "Ya Olsaydı?",
-  "q": "Uyurken ağzına örümcek girseydi ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 376,
- "duration": 24.6,
- "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
- "url": "https://youtube.com/shorts/xLGCGQYwSmE",
- "recent_status": {
-  "n014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "127",
-   "reason": null
-  },
-  "y067": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "226",
-   "reason": null
-  },
-  "g014": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "210",
-   "reason": null
-  },
-  "n015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "8",
-   "reason": null
-  },
-  "y068": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  98229,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261111-3-y068.json Uyurken ağzına örümcek girseydi ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Dfoszv2gNxh/"
  ],
- "finished": "2026-11-11T20:08:10+00:00"
+ "finished": "2026-11-12T09:09:42+00:00"
 }
