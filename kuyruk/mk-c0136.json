@@ -1,0 +1,180 @@
+{
+ "id": "mk-c0136",
+ "topic": "Vücut ısısının çoğu baştan mı kaybedilir, bere takmazsak ısının yarısı başımızdan mı gider?",
+ "kategori": "vücut",
+ "subject": [
+  "winter",
+  "cold",
+  "snow"
+ ],
+ "stock_hint": "winter face cold",
+ "script": {
+  "title": "Vücut ısının yarısı başından kaçmıyor 🥶",
+  "hook_text": "ISI GERÇEKTEN BAŞTAN MI KAÇAR?",
+  "scenes": [
+   {
+    "text": "Vücut ısının yarısı başından kaçmıyor.",
+    "visual": "close-up of a person's face and bare head outdoors in the cold, breath steaming",
+    "stock_query": "winter face cold",
+    "source": "stock",
+    "callout": "YARISI DEĞİL"
+   },
+   {
+    "text": "Amerikan ordusunun bir kılavuzu bile ısının neredeyse yarısının baştan gittiğini yazıyordu.",
+    "visual": "soldiers walking through deep snow in winter uniforms",
+    "stock_query": "soldiers snow",
+    "source": "stock",
+    "callout": "%40-45 EFSANESİ",
+    "subject": [
+     "soldier",
+     "soldiers",
+     "army"
+    ]
+   },
+   {
+    "text": "Efsane muhtemelen eski bir askeri deneyden çıktı: deneklere kutup giysisi giydirilmiş ama şapka verilmemişti.",
+    "visual": "a person in a thick winter coat, hood down, head bare in falling snow",
+    "stock_query": "winter coat snow",
+    "source": "stock",
+    "callout": "ŞAPKASIZ DENEK"
+   },
+   {
+    "text": "Çünkü ısı açıktaki her yerden kaçar; o deneyde açıkta kalan tek yer baştı.",
+    "visual": "close-up of a man's bare head with snowflakes landing in his hair",
+    "stock_query": "snow man head",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Mayoyla olsalar başın payı yüzde onu geçmezdi; o yüzden...",
+    "visual": "a smiling person wearing a knitted beanie in the snow",
+    "stock_query": "winter hat snow",
+    "source": "stock",
+    "callout": "EN FAZLA %10"
+   }
+  ],
+  "description": "Vücut ısının yarısı başından kaçmıyor. Amerikan ordusunun bir hayatta kalma kılavuzu ısının yüzde kırk ile kırk beşinin baştan gittiğini yazıyordu; bu inanç muhtemelen deneklere kutup giysisi giydirilip şapka verilmeyen eski bir askeri deneyden çıktı. Isı açıktaki her yerden kaçar; denekler mayoyla olsaydı baştan kayıp yüzde onu geçmezdi.",
+  "tags": [
+   "vücut ısısı",
+   "ısı baştan mı kaybedilir",
+   "bere",
+   "kış",
+   "insan vücudu",
+   "efsaneler",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de ısının çoğunun baştan kaçtığına inanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Most of your body heat doesn't escape through your head 🥶",
+  "en_description": "A US Army survival manual once claimed 40 to 45 percent of body heat is lost through the head. The idea probably came from an old military study in which subjects wore arctic survival suits but no hats, so the head was the only uncovered part. In swimsuits, they would have lost no more than about 10 percent through their heads.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Vücut ısısının çoğu baştan mı kaybedilir, bere takmazsak ısının yarısı başımızdan mı gider?\n\nHayır. Indiana Üniversitesi'nden Rachel Vreeman ve Aaron Carroll, 2008'de BMJ'de yayımlanan yazılarında bu inancı ele aldı. Amerikan ordusunun hayatta kalma kılavuzu ısının yüzde kırk ile kırk beşinin baştan kaybedildiğini yazıyordu; bu fikir muhtemelen deneklere kutup giysisi giydirilip şapka verilmeyen eski bir askeri deneyden çıktı. Denekler ısının çoğunu başlarından kaybetti, çünkü açıkta kalan tek yer orasıydı. Uzmanlara göre denekler sadece mayoyla olsaydı, ısılarının yüzde onundan fazlasını başlarından kaybetmezlerdi. Açıkta kalan her bölge vücut ısısını düşürür; soğukta bere kadar atkı, eldiven ve mont da önemli.\n\nSen de ısının çoğunun baştan kaçtığına inanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#vücutısısı",
+   "#kış",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "ısı baştan mı kaybedilir",
+   "vücut ısısı",
+   "vücut ısısı baştan gider mi",
+   "bere takmak",
+   "bere takmazsak ne olur",
+   "kışın bere",
+   "soğukta üşümek",
+   "baştan ısı kaybı",
+   "ısının yarısı baştan",
+   "soğuk hava",
+   "kış",
+   "üşümek",
+   "insan vücudu",
+   "vücut",
+   "sağlık bilgileri",
+   "efsaneler",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "heat loss through head",
+   "body heat myth"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Most of your body heat doesn't escape through your head 🥶",
+    "description": "A US Army survival manual once said 40 to 45 percent of body heat is lost through the head. The idea likely came from an old military study where subjects wore arctic suits but no hats. In swimsuits, they'd have lost no more than about 10 percent through their heads."
+   },
+   "es": {
+    "title": "La mayor parte de tu calor no se escapa por la cabeza 🥶",
+    "description": "Un manual de supervivencia del ejército de EE. UU. afirmaba que entre el 40 y el 45 % del calor se pierde por la cabeza. La idea probablemente salió de un viejo estudio militar con trajes árticos pero sin gorro. En bañador, no habrían perdido más de un 10 % por la cabeza."
+   },
+   "pt": {
+    "title": "A maior parte do seu calor não escapa pela cabeça 🥶",
+    "description": "Um manual de sobrevivência do Exército dos EUA dizia que 40 a 45% do calor do corpo sai pela cabeça. A ideia provavelmente veio de um antigo estudo militar com roupas árticas, mas sem gorro. De roupa de banho, os voluntários não perderiam mais de 10% pela cabeça."
+   },
+   "de": {
+    "title": "Den Großteil deiner Körperwärme verlierst du nicht über den Kopf 🥶",
+    "description": "Ein Überlebenshandbuch der US-Armee behauptete, 40 bis 45 Prozent der Körperwärme gingen über den Kopf verloren. Die Idee stammt vermutlich aus einer alten Militärstudie mit Polaranzügen, aber ohne Mützen. In Badekleidung hätten die Probanden höchstens etwa 10 Prozent über den Kopf verloren."
+   },
+   "fr": {
+    "title": "La plupart de ta chaleur ne s'échappe pas par la tête 🥶",
+    "description": "Un manuel de survie de l'armée américaine affirmait que 40 à 45 % de la chaleur corporelle se perd par la tête. L'idée vient sans doute d'une vieille étude militaire où les sujets portaient des combinaisons polaires mais pas de bonnet. En maillot de bain, ils n'auraient pas perdu plus de 10 % par la tête."
+   },
+   "it": {
+    "title": "La maggior parte del calore non esce dalla testa 🥶",
+    "description": "Un manuale di sopravvivenza dell'esercito USA sosteneva che dalla testa si perde il 40-45% del calore corporeo. L'idea viene probabilmente da un vecchio studio militare con tute artiche ma senza berretto. In costume da bagno, dalla testa non avrebbero perso più del 10% circa."
+   },
+   "ru": {
+    "title": "Большая часть тепла уходит вовсе не через голову 🥶",
+    "description": "В руководстве по выживанию армии США говорилось, что через голову теряется 40–45% тепла тела. Скорее всего, идея пошла от старого военного эксперимента: испытуемых одели в арктические костюмы, но без шапок. В одних плавках через голову они потеряли бы не больше 10%."
+   },
+   "ar": {
+    "title": "معظم حرارة جسمك لا تخرج من رأسك 🥶",
+    "description": "ذكر دليل للنجاة تابع للجيش الأمريكي أن 40 إلى 45% من حرارة الجسم تُفقد عبر الرأس. وعلى الأرجح جاءت الفكرة من تجربة عسكرية قديمة ارتدى فيها المشاركون بدلات قطبية دون قبعات. ولو كانوا بملابس السباحة لما فقدوا عبر رؤوسهم أكثر من 10% تقريبًا."
+   },
+   "hi": {
+    "title": "शरीर की ज़्यादातर गर्मी सिर से नहीं निकलती 🥶",
+    "description": "अमेरिकी सेना की एक सर्वाइवल पुस्तिका में लिखा था कि शरीर की 40 से 45 प्रतिशत गर्मी सिर से निकलती है। यह धारणा शायद एक पुराने सैन्य प्रयोग से आई, जिसमें लोगों को आर्कटिक सूट पहनाए गए पर टोपी नहीं दी गई। तैराकी के कपड़ों में होते तो सिर से 10 प्रतिशत से ज़्यादा गर्मी नहीं जाती।"
+   },
+   "id": {
+    "title": "Sebagian besar panas tubuhmu tidak hilang lewat kepala 🥶",
+    "description": "Buku panduan bertahan hidup Angkatan Darat AS pernah menyebut 40–45% panas tubuh hilang lewat kepala. Gagasan itu kemungkinan berasal dari studi militer lama yang memakaikan baju kutub tanpa topi. Jika hanya memakai baju renang, panas yang hilang lewat kepala tak akan lebih dari sekitar 10%."
+   },
+   "ja": {
+    "title": "体の熱の大半は頭から逃げていない 🥶",
+    "description": "米陸軍のサバイバル手引きには、体温の40〜45%が頭から失われると書かれていました。この説はおそらく、被験者に極地用スーツを着せながら帽子をかぶらせなかった昔の軍の実験に由来します。水着姿なら、頭から失われる熱は約10%以下だったはずです。"
+   },
+   "ko": {
+    "title": "체온의 대부분은 머리로 빠져나가지 않는다 🥶",
+    "description": "미 육군 생존 교범에는 체온의 40~45%가 머리로 빠져나간다고 적혀 있었습니다. 이 생각은 아마 피험자에게 극지용 방한복만 입히고 모자는 씌우지 않은 옛 군사 실험에서 나왔을 겁니다. 수영복 차림이었다면 머리로 잃는 열은 10% 정도를 넘지 않았을 것입니다."
+   },
+   "pl": {
+    "title": "Większość ciepła nie ucieka ci przez głowę 🥶",
+    "description": "Podręcznik przetrwania armii USA podawał, że przez głowę tracimy 40–45% ciepła. Pomysł wziął się zapewne ze starego wojskowego badania, w którym badani mieli kombinezony arktyczne, ale bez czapek. W samych strojach kąpielowych przez głowę straciliby najwyżej około 10%."
+   },
+   "nl": {
+    "title": "Het grootste deel van je lichaamswarmte ontsnapt niet via je hoofd 🥶",
+    "description": "Een overlevingshandboek van het Amerikaanse leger beweerde dat 40 tot 45 procent van je lichaamswarmte via je hoofd verdwijnt. Het idee komt waarschijnlijk uit een oud militair onderzoek met poolpakken maar zonder mutsen. In zwemkleding hadden de proefpersonen hooguit zo'n 10 procent via hun hoofd verloren."
+   },
+   "uk": {
+    "title": "Більша частина тепла тіла втрачається зовсім не через голову 🥶",
+    "description": "У посібнику з виживання армії США писали, що через голову втрачається 40–45% тепла тіла. Імовірно, ця ідея пішла від старого військового експерименту: учасників одягли в арктичні костюми, але без шапок. У самих купальниках через голову вони втратили б не більше 10%."
+   },
+   "vi": {
+    "title": "Phần lớn thân nhiệt của bạn không thoát ra qua đầu 🥶",
+    "description": "Một sổ tay sinh tồn của Quân đội Mỹ từng ghi rằng 40–45% thân nhiệt mất qua đầu. Ý tưởng này có lẽ bắt nguồn từ một thí nghiệm quân sự cũ cho người tham gia mặc đồ chống rét Bắc Cực nhưng không đội mũ. Nếu chỉ mặc đồ bơi, nhiệt mất qua đầu sẽ không quá khoảng 10%."
+   },
+   "az": {
+    "title": "Bədən istiliyinin çoxu başından getmir 🥶",
+    "description": "ABŞ ordusunun sağ qalma təlimatında bədən istiliyinin 40-45 faizinin başdan itirildiyi yazılırdı. Bu fikir yəqin ki, iştirakçılara qütb kostyumu geyindirilib papaq verilməyən köhnə bir hərbi təcrübədən çıxıb. Çimərlik geyimində olsaydılar, başdan itki təxminən 10 faizi keçməzdi."
+   },
+   "ro": {
+    "title": "Cea mai mare parte din căldura corpului nu se pierde prin cap 🥶",
+    "description": "Un manual de supraviețuire al armatei SUA susținea că 40–45% din căldura corpului se pierde prin cap. Ideea vine probabil dintr-un vechi studiu militar în care subiecții purtau costume arctice, dar fără căciulă. În costum de baie, n-ar fi pierdut prin cap mai mult de aproximativ 10%."
+   }
+  }
+ }
+}

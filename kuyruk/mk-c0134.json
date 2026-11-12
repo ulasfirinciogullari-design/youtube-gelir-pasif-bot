@@ -1,0 +1,176 @@
+{
+ "id": "mk-c0134",
+ "topic": "Tek gözü açık uyumak mümkün mü, ördekler tek gözü açık mı uyur?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "duck"
+ ],
+ "stock_hint": "duck close up",
+ "script": {
+  "title": "Tek gözü açık uyumak gerçekten mümkün mü? 🦆",
+  "hook_text": "TEK GÖZÜ AÇIK UYUNUR MU?",
+  "scenes": [
+   {
+    "text": "Bu ördek uyuyor ama nöbeti de bırakmıyor.",
+    "visual": "close-up of a mallard duck's head resting, one eye open, looking at the camera",
+    "stock_query": "duck close up",
+    "source": "stock",
+    "callout": "UYURKEN NÖBET"
+   },
+   {
+    "text": "Peki tek gözü açık uyumak gerçekten mümkün mü?",
+    "visual": "a few ducks resting side by side on a riverbank",
+    "stock_query": "ducks resting",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deneyde, yeni bir yerdeki ilk gece insanların beyninin sol yarısı daha hafif uyudu.",
+    "visual": "rotating medical 3D model of a human brain",
+    "stock_query": "brain model",
+    "source": "stock",
+    "callout": "SOL YARI TETİKTE",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Cevap evet: ördeğin beyninin yarısı uyurken öbür yarısı açık gözle tehlikeyi izler.",
+    "visual": "extreme close-up of a duck's eye",
+    "stock_query": "duck eye",
+    "source": "stock",
+    "callout": "YARIM BEYİNLE UYKU"
+   },
+   {
+    "text": "Sıranın ucundaki ördek açık gözünü dışarı çevirir; çünkü...",
+    "visual": "a row of ducks sleeping on a log by the water",
+    "stock_query": "ducks sleeping",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Tek gözü açık uyumak ördekler için gerçek: beyinlerinin yarısı uyurken öbür yarısı açık gözle tehlikeyi izler. 1999'daki bir deneyde sıranın ucundaki ördekler bunu ortadakilerden çok daha sık yaptı ve açık gözlerini dışarı çevirdi. Bir başka deneyde, yeni bir yerdeki ilk gece insanların beyninin sol yarısı daha hafif uyudu.",
+  "tags": [
+   "ördek",
+   "tek gözü açık uyumak",
+   "yarım beyin uykusu",
+   "uyku",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: yarım beyinle uyuyan ördek mi, yeni bir yerde tetikte kalan senin beynin mi?",
+  "en_title": "Is it really possible to sleep with one eye open? 🦆",
+  "en_description": "Mallard ducks can: one half of the brain sleeps while the other stays awake and watches through the open eye. In a 1999 study, ducks at the ends of a row did this far more than those in the middle and kept the open eye facing outward. Even people sleep lighter with the left half of the brain on their first night in a new place.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Tek gözü açık uyumak mümkün mü, ördekler tek gözü açık mı uyur?\n\nEvet, yaban ördekleri bunu yapabiliyor. Niels Rattenborg ve ekibinin 1999'da Nature dergisinde yayımlanan deneyinde ördekler yan yana sıralar halinde uyutuldu; sıranın uçlarındaki ördekler beyinlerinin yalnızca yarısıyla uyumaya ortadakilerden çok daha fazla zaman ayırdı ve açık gözlerini grubun dışına, tehlikenin gelebileceği yöne çevirdi. Beynin uyanık yarısı açık gözle çevreyi izliyor. İnsanlarda bunun tam karşılığı yok, ama Brown Üniversitesi'nin 2016'da Current Biology'de yayımlanan deneyinde, yeni bir yerdeki ilk gece katılımcıların beyninin sol yarısı daha hafif uyudu ve alışılmadık seslere daha güçlü tepki verdi. Bu fark ikinci gece kayboldu.\n\nSence hangisi daha tuhaf: yarım beyinle uyuyan ördek mi, yeni bir yerde tetikte kalan senin beynin mi?",
+  "hashtags": [
+   "#ördek",
+   "#uyku",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tek gözü açık uyumak",
+   "ördek",
+   "ördekler nasıl uyur",
+   "ördek tek gözü açık uyur mu",
+   "yarım beyin uykusu",
+   "yarım beyinle uyumak",
+   "hayvanlar nasıl uyur",
+   "uyurken nöbet tutmak",
+   "yeni yerde uyuyamamak",
+   "ilk gece etkisi",
+   "otelde uyuyamıyorum",
+   "uyku",
+   "beyin",
+   "kuşlar",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "sleep with one eye open",
+   "unihemispheric sleep"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Is it really possible to sleep with one eye open? 🦆",
+    "description": "Mallard ducks can: one half of the brain sleeps while the other watches through the open eye. In a 1999 study, ducks at the ends of a row did this far more often and kept the open eye facing outward. Even people sleep lighter with the left half of the brain on a first night somewhere new."
+   },
+   "es": {
+    "title": "¿De verdad se puede dormir con un ojo abierto? 🦆",
+    "description": "Los patos sí pueden: una mitad del cerebro duerme mientras la otra vigila por el ojo abierto. En un estudio de 1999, los patos de los extremos de una fila lo hacían mucho más y mantenían el ojo abierto hacia fuera. Incluso las personas duermen más ligero con la mitad izquierda del cerebro la primera noche en un lugar nuevo."
+   },
+   "pt": {
+    "title": "Dá mesmo para dormir com um olho aberto? 🦆",
+    "description": "Os patos conseguem: metade do cérebro dorme enquanto a outra vigia pelo olho aberto. Num estudo de 1999, os patos nas pontas de uma fila faziam isso muito mais e mantinham o olho aberto voltado para fora. Até nós dormimos mais leve com o lado esquerdo do cérebro na primeira noite num lugar novo."
+   },
+   "de": {
+    "title": "Kann man wirklich mit einem offenen Auge schlafen? 🦆",
+    "description": "Stockenten können es: Eine Gehirnhälfte schläft, die andere wacht über das offene Auge. In einer Studie von 1999 taten das die Enten am Rand einer Reihe viel häufiger und richteten das offene Auge nach außen. Selbst Menschen schlafen in der ersten Nacht an einem neuen Ort mit der linken Hirnhälfte leichter."
+   },
+   "fr": {
+    "title": "Peut-on vraiment dormir d'un œil ? 🦆",
+    "description": "Les canards colverts, oui : une moitié du cerveau dort pendant que l'autre surveille par l'œil ouvert. Dans une étude de 1999, les canards placés au bout d'une rangée le faisaient bien plus souvent, l'œil ouvert tourné vers l'extérieur. Même nous, la première nuit dans un lieu inconnu, dormons plus légèrement avec la moitié gauche du cerveau."
+   },
+   "it": {
+    "title": "Si può davvero dormire con un occhio aperto? 🦆",
+    "description": "I germani reali sì: metà del cervello dorme mentre l'altra veglia attraverso l'occhio aperto. In uno studio del 1999 le anatre alle estremità di una fila lo facevano molto più spesso, con l'occhio aperto rivolto verso l'esterno. Anche noi, la prima notte in un posto nuovo, dormiamo più leggeri con la metà sinistra del cervello."
+   },
+   "ru": {
+    "title": "Можно ли на самом деле спать с одним открытым глазом? 🦆",
+    "description": "Утки-кряквы могут: одно полушарие мозга спит, а другое следит за обстановкой через открытый глаз. В исследовании 1999 года утки с краю ряда делали так гораздо чаще и держали открытый глаз обращённым наружу. Даже у людей в первую ночь на новом месте левое полушарие спит более чутко."
+   },
+   "ar": {
+    "title": "هل يمكن حقًا النوم بعين مفتوحة؟ 🦆",
+    "description": "البط البري يستطيع ذلك: ينام نصف الدماغ بينما يراقب النصف الآخر عبر العين المفتوحة. وفي دراسة عام 1999 فعلت البطات الواقفة في طرفي الصف ذلك أكثر بكثير، ووجّهت عينها المفتوحة نحو الخارج. وحتى البشر ينام النصف الأيسر من أدمغتهم نومًا أخف في الليلة الأولى بمكان جديد."
+   },
+   "hi": {
+    "title": "क्या सच में एक आँख खोलकर सोना मुमकिन है? 🦆",
+    "description": "बत्तखें ऐसा कर सकती हैं: दिमाग़ का आधा हिस्सा सोता है और दूसरा आधा खुली आँख से निगरानी करता है। 1999 के एक अध्ययन में कतार के किनारों पर बैठी बत्तखों ने ऐसा कहीं ज़्यादा किया और खुली आँख बाहर की ओर रखी। नई जगह पर पहली रात इंसानों के दिमाग़ का बायाँ हिस्सा भी हल्की नींद सोता है।"
+   },
+   "id": {
+    "title": "Benarkah kita bisa tidur dengan satu mata terbuka? 🦆",
+    "description": "Bebek bisa: separuh otaknya tidur, separuh lainnya berjaga lewat mata yang terbuka. Dalam studi tahun 1999, bebek di ujung barisan lebih sering melakukannya dan mengarahkan mata yang terbuka ke luar. Bahkan pada malam pertama di tempat baru, belahan otak kiri manusia tidur lebih dangkal."
+   },
+   "ja": {
+    "title": "片目を開けたまま眠ることは本当にできる? 🦆",
+    "description": "マガモにはできます。脳の半分が眠り、もう半分は開いた目で周りを見張ります。1999年の研究では、列の端にいるカモほどこの眠り方が多く、開いた目を外側に向けていました。人間も、初めての場所で眠る最初の夜は脳の左半分の眠りが浅くなります。"
+   },
+   "ko": {
+    "title": "한쪽 눈을 뜨고 자는 게 정말 가능할까? 🦆",
+    "description": "청둥오리는 가능합니다. 뇌의 절반이 자는 동안 나머지 절반이 뜬 눈으로 주변을 지킵니다. 1999년 연구에서 줄 끝에 있던 오리들은 이렇게 훨씬 자주 잤고, 뜬 눈을 바깥쪽으로 향했습니다. 사람도 낯선 곳에서 자는 첫날 밤에는 좌뇌가 더 얕게 잡니다."
+   },
+   "pl": {
+    "title": "Czy naprawdę da się spać z jednym okiem otwartym? 🦆",
+    "description": "Krzyżówki potrafią: jedna połowa mózgu śpi, a druga czuwa przez otwarte oko. W badaniu z 1999 roku kaczki na końcach rzędu robiły tak znacznie częściej, kierując otwarte oko na zewnątrz. Nawet ludzie pierwszej nocy w nowym miejscu śpią płycej lewą półkulą mózgu."
+   },
+   "nl": {
+    "title": "Kun je echt met één oog open slapen? 🦆",
+    "description": "Wilde eenden wel: de ene hersenhelft slaapt terwijl de andere via het open oog de wacht houdt. In een studie uit 1999 deden eenden aan het eind van een rij dat veel vaker, met het open oog naar buiten gericht. Zelfs mensen slapen de eerste nacht op een nieuwe plek lichter met hun linkerhersenhelft."
+   },
+   "uk": {
+    "title": "Чи справді можна спати з одним розплющеним оком? 🦆",
+    "description": "Качки-крижні можуть: одна півкуля мозку спить, а друга стежить за всім через розплющене око. У дослідженні 1999 року качки на краях ряду робили так значно частіше й тримали розплющене око зверненим назовні. Навіть у людей першої ночі на новому місці ліва півкуля спить чуткіше."
+   },
+   "vi": {
+    "title": "Ngủ mà vẫn mở một mắt có thật sự được không? 🦆",
+    "description": "Vịt trời làm được: một nửa não ngủ, nửa còn lại canh chừng qua con mắt đang mở. Trong một nghiên cứu năm 1999, những con vịt ở hai đầu hàng làm vậy thường xuyên hơn nhiều và hướng mắt mở ra phía ngoài. Ngay cả con người, đêm đầu ở nơi lạ, nửa não trái cũng ngủ nông hơn."
+   },
+   "az": {
+    "title": "Bir gözü açıq yatmaq doğrudan da mümkündürmü? 🦆",
+    "description": "Yaşılbaş ördəklər bunu bacarır: beynin yarısı yatarkən o biri yarısı açıq gözlə ətrafı izləyir. 1999-cu ildəki araşdırmada cərgənin kənarındakı ördəklər bunu daha çox etdi və açıq gözünü çölə tərəf çevirdi. Hətta insanlarda da yeni yerdəki ilk gecə beynin sol yarısı daha yüngül yatır."
+   },
+   "ro": {
+    "title": "Chiar se poate dormi cu un ochi deschis? 🦆",
+    "description": "Rațele mari pot: o jumătate a creierului doarme, iar cealaltă veghează prin ochiul deschis. Într-un studiu din 1999, rațele de la capetele unui rând făceau asta mult mai des și țineau ochiul deschis spre exterior. Chiar și oamenii dorm mai superficial cu emisfera stângă în prima noapte într-un loc nou."
+   }
+  }
+ }
+}

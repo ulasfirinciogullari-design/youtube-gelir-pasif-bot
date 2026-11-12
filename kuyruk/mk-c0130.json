@@ -1,0 +1,176 @@
+{
+ "id": "mk-c0130",
+ "topic": "Kedi ile köpek aynı evde dost olabilir mi, kedi ve köpek anlaşır mı?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "cat",
+  "dog"
+ ],
+ "stock_hint": "cat and dog",
+ "script": {
+  "title": "Kedi ile köpek aynı evde dost olabilir mi? 🐱",
+  "hook_text": "KEDİ İLE KÖPEK DOST OLUR MU?",
+  "scenes": [
+   {
+    "text": "Bu kedi ile köpek kavga etmiyor, selamlaşıyor.",
+    "visual": "close-up of a cat and a dog face to face, touching noses",
+    "stock_query": "cat and dog",
+    "source": "stock",
+    "callout": "KAVGA YOK"
+   },
+   {
+    "text": "Peki kedi ile köpek aynı evde gerçekten dost olabilir mi?",
+    "visual": "a cat and a dog sitting side by side on a sofa",
+    "stock_query": "cat dog sofa",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kedisi ve köpeği olan iki yüze yakın evde, kavga edenler sadece onda birdi.",
+    "visual": "a dog and a cat playing together on the floor at home",
+    "stock_query": "dog cat playing",
+    "source": "stock",
+    "callout": "%10 KAVGA"
+   },
+   {
+    "text": "Cevap evet: üçte ikisi dosttu; özellikle kedi eve önce gelmiş, ikisi de küçükken tanışmışsa.",
+    "visual": "a kitten and a puppy cuddling together",
+    "stock_query": "kitten and puppy",
+    "source": "stock",
+    "callout": "ÜÇTE İKİSİ DOST"
+   },
+   {
+    "text": "Çünkü zamanla birbirlerinin beden dilini öğreniyorlar; o yüzden...",
+    "visual": "a cat and a dog sleeping curled up together",
+    "stock_query": "cat dog sleeping",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedi ile köpek aynı evde dost olabilir mi? 2008'de yayımlanan bir araştırmada, hem kedisi hem köpeği olan yaklaşık iki yüz evin üçte ikisinde iki hayvan dosttu; kavga sadece onda birinde vardı. Kedi eve önce gelmiş ve ikisi küçükken tanışmışsa ihtimal en yüksek; zamanla birbirlerinin beden dilini de öğreniyorlar.",
+  "tags": [
+   "kedi ve köpek",
+   "kedi köpek dost olur mu",
+   "kedi",
+   "köpek",
+   "evcil hayvan",
+   "mümkün mü",
+   "hayvan davranışları",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin evinde kedi ile köpek dost mu, düşman mı?",
+  "en_title": "Can a cat and a dog really be friends at home? 🐱",
+  "en_description": "In a 2008 Tel Aviv University study of nearly 200 homes with both a cat and a dog, about two-thirds of the pairs got along and only one in ten fought. The odds were best when the cat arrived first and both met young. Over time they even learned to read each other's body language.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi ile köpek aynı evde dost olabilir mi, kedi ve köpek anlaşır mı?\n\nEvet. Hayvan davranışı araştırmacıları Neta-li Feuerstein ve Joseph Terkel, hem kedisi hem köpeği olan yaklaşık iki yüz ev sahibiyle görüştü ve hayvanları kameraya kaydetti. 2008'de Applied Animal Behaviour Science dergisinde yayımlanan sonuçlara göre evlerin yaklaşık üçte ikisinde kedi ile köpek dosttu, dörtte birinde birbirine kayıtsızdı, kavga ise sadece onda birinde vardı. Dostluk ihtimali, kedi eve köpekten önce geldiğinde ve kedi altı aydan, köpek bir yaşından küçükken tanıştıklarında en yüksekti. Anlaşan evlerde hayvanlar birbirinin beden dilini okumayı öğrenmişti; burun buruna selamlaşıyor, birlikte oynuyor, aynı kanepede uyuyorlardı.\n\nSenin evinde kedi ile köpek dost mu, düşman mı?",
+  "hashtags": [
+   "#kedi",
+   "#köpek",
+   "#evcilhayvan",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi köpek dost olur mu",
+   "kedi ile köpek anlaşır mı",
+   "kedi ve köpek",
+   "kedi köpek aynı evde",
+   "kedi köpek arkadaşlığı",
+   "kedi köpek düşman mı",
+   "kedi köpeğe nasıl alışır",
+   "köpeğe kedi nasıl alıştırılır",
+   "kedi köpek tanıştırma",
+   "evde kedi ve köpek",
+   "kedi köpek kavgası",
+   "kedi",
+   "köpek",
+   "kediler",
+   "köpekler",
+   "evcil hayvan",
+   "hayvan davranışları",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim",
+   "can cats and dogs be friends",
+   "cats and dogs"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a cat and a dog really be friends at home? 🐱",
+    "description": "In a 2008 Tel Aviv University study of nearly 200 homes with both pets, about two-thirds of cat-dog pairs got along and only one in ten fought. The odds were best when the cat arrived first and both met young, and the friendly pairs learned each other's body language."
+   },
+   "es": {
+    "title": "¿Pueden un gato y un perro ser amigos en casa? 🐱",
+    "description": "En un estudio de la Universidad de Tel Aviv de 2008 con casi 200 hogares, cerca de dos tercios de las parejas de gato y perro se llevaban bien y solo una de cada diez peleaba. Lo ideal es que el gato llegue primero y que se conozcan de pequeños; con el tiempo aprenden el lenguaje corporal del otro."
+   },
+   "pt": {
+    "title": "Gato e cachorro podem ser amigos na mesma casa? 🐱",
+    "description": "Num estudo da Universidade de Tel Aviv de 2008 com quase 200 lares, cerca de dois terços dos pares de gato e cachorro se davam bem e só um em cada dez brigava. A chance é maior quando o gato chega primeiro e os dois se conhecem filhotes; com o tempo, aprendem a linguagem corporal um do outro."
+   },
+   "de": {
+    "title": "Können Katze und Hund zu Hause Freunde werden? 🐱",
+    "description": "In einer Studie der Universität Tel Aviv von 2008 mit fast 200 Haushalten verstanden sich rund zwei Drittel der Katze-Hund-Paare gut, nur in jedem zehnten Haus gab es Streit. Am besten klappt es, wenn die Katze zuerst einzieht und beide sich jung kennenlernen; mit der Zeit lernen sie sogar die Körpersprache des anderen."
+   },
+   "fr": {
+    "title": "Un chat et un chien peuvent-ils être amis à la maison ? 🐱",
+    "description": "Dans une étude de l'université de Tel-Aviv de 2008 portant sur près de 200 foyers, environ deux tiers des duos chat-chien s'entendaient bien et seulement un sur dix se battait. Les chances sont meilleures si le chat arrive en premier et qu'ils se rencontrent jeunes ; avec le temps, ils apprennent même le langage corporel de l'autre."
+   },
+   "it": {
+    "title": "Cane e gatto possono essere amici in casa? 🐱",
+    "description": "In uno studio dell'Università di Tel Aviv del 2008 su quasi 200 case, circa due terzi delle coppie cane-gatto andavano d'accordo e solo una su dieci litigava. Le probabilità sono più alte se il gatto arriva per primo e si conoscono da piccoli; col tempo imparano persino il linguaggio del corpo dell'altro."
+   },
+   "ru": {
+    "title": "Могут ли кошка и собака дружить в одном доме? 🐱",
+    "description": "В исследовании Тель-Авивского университета 2008 года почти в 200 домах примерно две трети пар кошек и собак ладили, а дрались лишь в одном доме из десяти. Лучше всего, если кошка появилась первой и оба познакомились в юном возрасте; со временем они даже учатся понимать язык тела друг друга."
+   },
+   "ar": {
+    "title": "هل يمكن أن يصبح القط والكلب صديقين في البيت نفسه؟ 🐱",
+    "description": "في دراسة أُجريت عام 2008 على نحو 200 منزل، كان نحو ثلثي أزواج القطط والكلاب على وفاق، ولم يتشاجر إلا واحد من كل عشرة. وتزداد الفرص إذا جاء القط أولًا وتعارفا وهما صغيران، ومع الوقت يتعلم كلٌّ منهما لغة جسد الآخر."
+   },
+   "hi": {
+    "title": "क्या बिल्ली और कुत्ता एक ही घर में दोस्त बन सकते हैं? 🐱",
+    "description": "2008 के एक अध्ययन में लगभग 200 घरों में से करीब दो-तिहाई में बिल्ली और कुत्ते की अच्छी बनती थी, और सिर्फ़ दस में से एक घर में लड़ाई होती थी। सबसे अच्छा तब होता है जब बिल्ली पहले आए और दोनों छोटी उम्र में मिलें; समय के साथ वे एक-दूसरे की बॉडी लैंग्वेज भी सीख लेते हैं।"
+   },
+   "id": {
+    "title": "Bisakah kucing dan anjing bersahabat di satu rumah? 🐱",
+    "description": "Dalam sebuah studi tahun 2008 di hampir 200 rumah, sekitar dua pertiga pasangan kucing dan anjing akur, dan hanya satu dari sepuluh yang bertengkar. Peluangnya paling besar jika kucing datang lebih dulu dan keduanya bertemu saat masih kecil; lama-lama mereka bahkan belajar membaca bahasa tubuh satu sama lain."
+   },
+   "ja": {
+    "title": "猫と犬は同じ家で友だちになれる? 🐱",
+    "description": "2008年にテルアビブ大学が約200世帯を調べた研究では、猫と犬の組み合わせの約3分の2が仲良しで、けんかが見られたのは10軒に1軒だけでした。猫が先に家にいて、どちらも幼いうちに出会うと最もうまくいきます。やがて互いのボディランゲージまで読み取れるようになります。"
+   },
+   "ko": {
+    "title": "고양이와 개는 한집에서 친구가 될 수 있을까? 🐱",
+    "description": "2008년 텔아비브대 연구에서 약 200가구를 조사한 결과, 고양이와 개 커플의 약 3분의 2가 사이좋게 지냈고 싸우는 집은 10곳 중 1곳뿐이었습니다. 고양이가 먼저 들어오고 둘 다 어릴 때 만나면 가장 잘 지냈습니다. 시간이 지나면 서로의 몸짓 언어까지 배웁니다."
+   },
+   "pl": {
+    "title": "Czy kot i pies mogą się przyjaźnić pod jednym dachem? 🐱",
+    "description": "W badaniu Uniwersytetu w Tel Awiwie z 2008 roku, obejmującym prawie 200 domów, około dwóch trzecich par kot–pies żyło w zgodzie, a bójki zdarzały się tylko w co dziesiątym domu. Najlepiej, gdy kot pojawia się pierwszy, a oba zwierzaki poznają się za młodu; z czasem uczą się nawet nawzajem swojej mowy ciała."
+   },
+   "nl": {
+    "title": "Kunnen een kat en een hond vrienden worden in huis? 🐱",
+    "description": "In een onderzoek van de Universiteit van Tel Aviv uit 2008 onder bijna 200 huishoudens kon ongeveer twee derde van de kat-hondduo's goed met elkaar overweg en werd er maar in één op de tien gevochten. De kans is het grootst als de kat er eerst was en ze elkaar jong leren kennen; na verloop van tijd leren ze zelfs elkaars lichaamstaal."
+   },
+   "uk": {
+    "title": "Чи можуть кіт і собака дружити в одному домі? 🐱",
+    "description": "У дослідженні Тель-Авівського університету 2008 року майже в 200 домівках приблизно дві третини пар котів і собак ладнали, а билися лише в одному домі з десяти. Найкраще, коли кіт з'являється першим і обоє знайомляться змалку; згодом вони навіть вчаться розуміти мову тіла одне одного."
+   },
+   "vi": {
+    "title": "Chó và mèo có thể làm bạn trong cùng một nhà không? 🐱",
+    "description": "Trong một nghiên cứu năm 2008 của Đại học Tel Aviv với gần 200 gia đình, khoảng hai phần ba cặp chó mèo sống hòa thuận, chỉ một trong mười nhà có đánh nhau. Khả năng cao nhất khi mèo về nhà trước và cả hai gặp nhau từ nhỏ; dần dần chúng còn học được ngôn ngữ cơ thể của nhau."
+   },
+   "az": {
+    "title": "Pişik və it eyni evdə dost ola bilərmi? 🐱",
+    "description": "2008-ci ildə Təl-Əviv Universitetinin təxminən 200 evdə apardığı araşdırmada pişik-it cütlərinin təxminən üçdə ikisi yola gedirdi, dava isə yalnız hər on evdən birində vardı. Pişik evə əvvəl gələndə və hər ikisi kiçik yaşda tanış olanda şans ən yüksəkdir; zamanla bir-birinin bədən dilini də öyrənirlər."
+   },
+   "ro": {
+    "title": "Pot o pisică și un câine să fie prieteni în aceeași casă? 🐱",
+    "description": "Într-un studiu al Universității din Tel Aviv din 2008, în aproape 200 de case, cam două treimi dintre perechile pisică–câine se înțelegeau bine și doar într-una din zece erau certuri. Șansele sunt cele mai mari când pisica vine prima și se cunosc de mici; cu timpul învață chiar limbajul corporal al celuilalt."
+   }
+  }
+ }
+}
