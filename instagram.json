@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-21T10": "syjCIdu7idw https://www.instagram.com/reel/DewJRmwiulP/",
   "2026-10-21T14": "PGdsZfAcU8E https://www.instagram.com/reel/DewkruXHaNF/",
   "2026-10-21T18": "6Pr2ex3xuOU https://www.instagram.com/reel/DexALdnE0Vh/",
   "2026-10-22T10": "f3V2BKqQYbI https://www.instagram.com/reel/DeyuCeNCaFe/",
@@ -48,16 +47,17 @@
   "2026-11-11T10": "1cMOZL90y_Q https://www.instagram.com/reel/DfmN8nvES17/",
   "2026-11-11T14": "ffIiQH5yS6Q https://www.instagram.com/reel/DfmpW0WEShu/",
   "2026-11-11T18": "vw3pPy748ls https://www.instagram.com/reel/DfnE0cLD04W/",
-  "2026-11-12T10": "hvdLNneZI24 https://www.instagram.com/reel/Dfoy26HEpAK/"
+  "2026-11-12T10": "hvdLNneZI24 https://www.instagram.com/reel/Dfoy26HEpAK/",
+  "2026-11-12T14": "8SURN77PlTQ https://www.instagram.com/reel/DfpOKAWjsoR/"
  },
  "nobet": {
   "basladi": "2026-11-12T12:13:08+00:00",
   "run": "43214485449",
-  "tur": 94,
+  "tur": 108,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-12T13:46:08+00:00"
+  "son_tur": "2026-11-12T14:01:09+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -388,6 +388,13 @@
    "at": 1794477753,
    "title": "Sana sağlıklı gelen üzüm köpeğin için zehir 🍇",
    "topic_id": "mk-c0093"
+  },
+  "8SURN77PlTQ": {
+   "media_id": "17943868704370515",
+   "url": "https://www.instagram.com/reel/DfpOKAWjsoR/",
+   "at": 1794492069,
+   "title": "Eşek inatçı değil, sadece aklını kullanıyor 🫏",
+   "topic_id": "mk-c0086"
   }
  }
 }
