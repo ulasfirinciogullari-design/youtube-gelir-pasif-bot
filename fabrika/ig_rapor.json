@@ -1,21 +1,21 @@
 {
- "started": "2026-11-12T17:58:06+00:00",
+ "started": "2026-11-12T18:07:06+00:00",
  "mod": "nöbet",
  "anahtar_bitis": "2027-01-08T07:30+00:00",
  "new": 1,
  "quiet": 0,
  "room": 20,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "later": 0,
  "items": [
   {
-   "id": "18109158380211249",
+   "id": "18042312752671192",
    "kind": "yorum",
    "author": "dc937b598926",
-   "text": "Abi 1 sabiyed",
-   "reply": "Klavyen biraz coşmuş galiba, olsun sevgiler gönderiyoruz!\n— Bit 🤖",
+   "text": "Benimki beyazlaştıpemdeleşmedi",
+   "reply": "Tırnak yatağı testi kişiden kişiye değişebilir, cilt tonu veya soğuk hava da süreyi etkiler. Endişeniz varsa bir doktora danışabilirsiniz.\n— Profesör Pi 🔭",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-12T17:58:10+00:00"
+ "finished": "2026-11-12T18:07:10+00:00"
 }
