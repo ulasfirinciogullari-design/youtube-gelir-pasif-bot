@@ -1,5 +1,5 @@
 {
- "at": "2026-11-12T13:08:24+00:00",
+ "at": "2026-11-12T14:07:38+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,7 +15,7 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 63,
+  "subscriberCount": 64,
   "viewCount": 71972,
   "videoCount": 75
  },
@@ -297,7 +297,7 @@
    "baslik": "Lav Gölüne Düşseydin Batar Mıydın? 😳"
   },
   "hvgNbZMhWPg": {
-   "view": 2169,
+   "view": 2171,
    "like": 20,
    "comment": 0,
    "baslik": "Bir Kara Delik Gerçekte Ne Kadar Ağır? 🤯"
@@ -345,7 +345,7 @@
    "baslik": "Bir Fil 1 Günde Ne Kadar Yemek Yer? 😮"
   },
   "33I8lo_Kk18": {
-   "view": 1139,
+   "view": 1138,
    "like": 6,
    "comment": 2,
    "baslik": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın? 😳"
@@ -363,13 +363,13 @@
    "baslik": "DNA'n Gerçekte Ne Kadar Uzun? 🤯"
   },
   "Tk6wA4QlShk": {
-   "view": 1159,
+   "view": 1160,
    "like": 19,
    "comment": 0,
    "baslik": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu? 😳"
   },
   "aiJ_NUnr84M": {
-   "view": 1526,
+   "view": 1523,
    "like": 6,
    "comment": 2,
    "baslik": "Dünya'da 1 Günde Kaç Deprem Olur? 😮"
@@ -387,7 +387,7 @@
    "baslik": "Düşen Asansörde Zıplasan Kurtulur Muydun? 😳"
   },
   "Sr9y1BY4FPk": {
-   "view": 951,
+   "view": 948,
    "like": 8,
    "comment": 2,
    "baslik": "Damarların Gerçekte Ne Kadar Uzun? 🤯"
@@ -399,25 +399,25 @@
    "baslik": "Bir Hafta Hiç Uyumasaydın Ne Olurdu? 😳"
   },
   "uTmyAqqF5qU": {
-   "view": 379,
+   "view": 376,
    "like": 5,
    "comment": 0,
    "baslik": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar? 😮"
   },
   "m_XagF1CrzE": {
-   "view": 928,
+   "view": 929,
    "like": 1,
    "comment": 0,
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 1220,
+   "view": 1226,
    "like": 8,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
   },
   "6pHVAozelhE": {
-   "view": 929,
+   "view": 930,
    "like": 9,
    "comment": 0,
    "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
@@ -429,8 +429,8 @@
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
   "O1WLYgc1whA": {
-   "view": 374,
-   "like": 1,
+   "view": 380,
+   "like": 2,
    "comment": 0,
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
   },
@@ -441,19 +441,19 @@
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
   },
   "agyOZTY5PCE": {
-   "view": 25,
+   "view": 26,
    "like": 0,
    "comment": 0,
    "baslik": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun? 🤯"
   },
   "xLGCGQYwSmE": {
-   "view": 282,
-   "like": 7,
+   "view": 357,
+   "like": 8,
    "comment": 0,
    "baslik": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu? 😳"
   },
   "WR_w6VSOY-s": {
-   "view": 127,
+   "view": 201,
    "like": 0,
    "comment": 0,
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
@@ -986,14 +986,7 @@
    "comments": 0,
    "subscribersGained": 1,
    "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1052,
-    "YT_SEARCH": 56,
-    "YT_CHANNEL": 4,
-    "EXT_URL": 2,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 434,
    "devam_yuzde": 38.9
   },

@@ -1,18 +1,71 @@
 {
- "started": "2026-11-12T13:09:11+00:00",
- "mod": "igbolum",
- "gate": "instagram: g008",
+ "started": "2026-11-12T14:08:29+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
- "chars": 369,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18143110750623244",
-  "url": "https://www.instagram.com/reel/DfpIXdxEbes/",
-  "at": 1794489030.4901507
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "64",
+  "videos": "75"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfpIXdxEbes/"
+ "credits_before": [
+  99511,
+  613902
  ],
- "finished": "2026-11-12T13:10:30+00:00"
+ "kuyruk": {
+  "dosya": "20261112-1-y034.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y034",
+  "series": "Ya Olsaydı?",
+  "q": "Hiç bakterimiz olmasaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 362,
+ "duration": 25.1,
+ "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+ "url": "https://youtube.com/shorts/RKGn39tzpn4",
+ "recent_status": {
+  "n015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "26",
+   "reason": null
+  },
+  "y068": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "357",
+   "reason": null
+  },
+  "g015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "201",
+   "reason": null
+  },
+  "y019": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  },
+  "y034": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  99511,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261112-1-y034.json Hiç bakterimiz olmasaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-12T14:09:22+00:00"
 }

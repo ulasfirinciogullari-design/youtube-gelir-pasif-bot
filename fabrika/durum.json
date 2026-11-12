@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1523",
+    "views": "1526",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "948",
+    "views": "951",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "376",
+    "views": "380",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "271",
+    "views": "275",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "220",
+    "views": "357",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1",
+    "views": "201",
     "reason": null
    }
   },
@@ -2213,6 +2213,36 @@
    "thumbnail": true,
    "at": 1794485485.5870006,
    "chars": 845,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "0",
+    "reason": null
+   }
+  },
+  {
+   "id": "y034",
+   "video_id": "RKGn39tzpn4",
+   "url": "https://youtube.com/shorts/RKGn39tzpn4",
+   "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Had No Bacteria at All?",
+    "es": "¿Qué Pasaría Si No Tuvieras Ni Una Sola Bacteria?",
+    "pt": "O Que Aconteceria Se Você Não Tivesse Nenhuma Bactéria?",
+    "ar": "ماذا كان سيحدث لو لم تكن في جسمك أي بكتيريا؟",
+    "hi": "अगर आपके शरीर में एक भी बैक्टीरिया न होता तो क्या होता?",
+    "id": "Apa Jadinya Jika Kamu Sama Sekali Tak Punya Bakteri?",
+    "fr": "Et Si Tu N'avais Aucune Bactérie Dans Ton Corps ?",
+    "de": "Was Wäre, Wenn Du Gar Keine Bakterien Hättest?",
+    "ru": "Что Было Бы, Если Бы в Тебе Не Было Ни Одной Бактерии?",
+    "az": "Bədənində Heç Bakteriya Olmasaydı Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794492560.5899549,
+   "chars": 362,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2295,7 +2325,8 @@
   "n015",
   "y068",
   "g015",
-  "y019"
+  "y019",
+  "y034"
  ],
  "extra": [
   {
@@ -2361,12 +2392,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-05T09:10:24+00:00",
-   "mod": "igbolum",
-   "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
-   "chars": 353
-  },
   {
    "finished": "2026-11-05T10:09:12+00:00",
    "mod": "saatlik",
@@ -2788,6 +2813,14 @@
    "mod": "igbolum",
    "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
    "chars": 369
+  },
+  {
+   "finished": "2026-11-12T14:09:22+00:00",
+   "mod": "saatlik",
+   "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/RKGn39tzpn4",
+   "duration": 25.1,
+   "chars": 362
   }
  ],
  "last_fail": 1794410324.353765,
