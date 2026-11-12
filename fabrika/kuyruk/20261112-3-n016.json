@@ -1,0 +1,290 @@
+{
+ "id": "n016",
+ "series": "Ne Kadar Büyük?",
+ "q": "Dünya'nın çekirdeği ne kadar sıcak?",
+ "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+ "bar": {
+  "hi": "ÇEKİRDEK",
+  "rest": "NE KADAR SICAK?"
+ },
+ "summary": "Ayaklarının altında, Güneş'in yüzeyi kadar sıcak bir demir top var. Peki bu sıcakta demir neden erimiyor ve telefonundaki pusulayla ne ilgisi var?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Ayaklarının altında Güneş'in yüzeyi kadar sıcak bir demir top var!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "l"
+     },
+     {
+      "b": "sun",
+      "size": "m",
+      "at": "r"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "Güneş'in",
+    "label": "Güneş Kadar Sıcak"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yerin altında ikinci bir Güneş mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🦶",
+    "do": "burn",
+    "key": "ikinci",
+    "label": "Ayağının Altı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "En sıcak lav 1.200 derece; iç çekirdek yaklaşık 5.200!",
+   "v": {
+    "t": "compare",
+    "bg": "volcano",
+    "a": {
+     "e": "🌋",
+     "label": "En Sıcak Lav",
+     "value": 1200
+    },
+    "b": {
+     "e": "🔥",
+     "label": "İç Çekirdek",
+     "value": 5200
+    },
+    "mode": "bar",
+    "key": "çekirdek"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yine de erimez: basınç, omzundaki havanın neredeyse 3,6 milyon katı!",
+   "v": {
+    "t": "number",
+    "bg": "volcano",
+    "e": "🪨",
+    "value": "3,6 milyon",
+    "unit": "kat",
+    "label": "Basınç",
+    "key": "3,6"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hem pişer hem ezilir miydim?!",
+   "v": {
+    "t": "icons",
+    "bg": "volcano",
+    "items": [
+     {
+      "e": "🔥",
+      "label": "Pişmek"
+     },
+     {
+      "e": "🪨",
+      "label": "Ezilmek"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Telefonundaki pusulayı yöneten de çekirdekteki sıvı demir!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🧭",
+    "do": "spin",
+    "key": "pusulayı",
+    "label": "Manyetik Alan"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Çekirdeğe kadar iner miydin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🌍"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "National Geographic'e göre iç çekirdeğin sıcaklığı yaklaşık 5.200 °C'dir; iç ve dış çekirdeğin sınırı ise yaklaşık 6.000 °C ile Güneş'in yüzeyi kadar sıcaktır.",
+   "source": "National Geographic",
+   "url": "https://education.nationalgeographic.org/resource/core/"
+  },
+  {
+   "text": "NASA'ya göre Güneş'in yüzeyi (fotosfer) yaklaşık 5.500 °C'dir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/sun/facts"
+  },
+  {
+   "text": "Britannica'ya göre taze lavın sıcaklığı 700 ile 1.200 °C arasındadır.",
+   "source": "Britannica",
+   "url": "https://kids.britannica.com/students/article/lava-and-magma/275395"
+  },
+  {
+   "text": "National Geographic'e göre iç çekirdekteki basınç neredeyse 3,6 milyon atmosferdir ve bu muazzam basınç demirin erimesini engeller.",
+   "source": "National Geographic",
+   "url": "https://education.nationalgeographic.org/resource/core/"
+  },
+  {
+   "text": "National Geographic'e göre dış çekirdekte çalkalanan sıvı demir ve nikel, 'jeodinamo' denen süreçle Dünya'nın manyetik alanını oluşturur.",
+   "source": "National Geographic",
+   "url": "https://education.nationalgeographic.org/resource/core/"
+  }
+ ],
+ "tags": [
+  "dünyanın çekirdeği",
+  "çekirdek sıcaklığı",
+  "iç çekirdek",
+  "dünyanın merkezi",
+  "yer bilimi",
+  "manyetik alan",
+  "lav",
+  "earth's core",
+  "how hot is earth's core",
+  "inner core",
+  "geology",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dünyanınçekirdeği",
+  "#yerbilimi",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://education.nationalgeographic.org/resource/core/",
+  "https://science.nasa.gov/sun/facts",
+  "https://kids.britannica.com/students/article/lava-and-magma/275395"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Hot Is Earth's Core, Really?",
+   "summary": "Beneath your feet there is an iron ball as hot as the surface of the Sun. So why doesn't the iron melt in that heat, and what does it have to do with the compass on your phone?",
+   "facts": [
+    "According to National Geographic, the inner core is about 5,200°C; the boundary between the inner and outer core reaches about 6,000°C, as hot as the surface of the Sun.",
+    "According to NASA, the Sun's surface (photosphere) is about 5,500°C.",
+    "According to Britannica, fresh lava ranges from 700 to 1,200°C.",
+    "According to National Geographic, the pressure in the inner core is nearly 3.6 million atmospheres, and this immense pressure keeps the iron from melting.",
+    "According to National Geographic, churning liquid iron and nickel in the outer core create Earth's magnetic field through a process called the geodynamo."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Caliente Está Realmente el Núcleo de la Tierra?",
+   "summary": "Bajo tus pies hay una bola de hierro tan caliente como la superficie del Sol. ¿Por qué no se derrite el hierro con ese calor y qué tiene que ver con la brújula de tu teléfono?",
+   "facts": [
+    "Según National Geographic, el núcleo interno está a unos 5200 °C; el límite entre el núcleo interno y el externo alcanza unos 6000 °C, tan caliente como la superficie del Sol.",
+    "Según la NASA, la superficie del Sol (fotosfera) está a unos 5500 °C.",
+    "Según Britannica, la lava fresca está entre 700 y 1200 °C.",
+    "Según National Geographic, la presión en el núcleo interno es de casi 3,6 millones de atmósferas, y esa enorme presión impide que el hierro se funda.",
+    "Según National Geographic, el hierro y el níquel líquidos que se agitan en el núcleo externo crean el campo magnético de la Tierra mediante un proceso llamado geodinamo."
+   ]
+  },
+  "pt": {
+   "title": "Quão Quente É, de Verdade, o Núcleo da Terra?",
+   "summary": "Sob os seus pés existe uma bola de ferro tão quente quanto a superfície do Sol. Por que o ferro não derrete com esse calor e o que isso tem a ver com a bússola do seu celular?",
+   "facts": [
+    "Segundo a National Geographic, o núcleo interno está a cerca de 5.200 °C; o limite entre o núcleo interno e o externo chega a cerca de 6.000 °C, tão quente quanto a superfície do Sol.",
+    "Segundo a NASA, a superfície do Sol (fotosfera) está a cerca de 5.500 °C.",
+    "Segundo a Britannica, a lava fresca fica entre 700 e 1.200 °C.",
+    "Segundo a National Geographic, a pressão no núcleo interno é de quase 3,6 milhões de atmosferas, e essa pressão imensa impede o ferro de derreter.",
+    "Segundo a National Geographic, o ferro e o níquel líquidos que se agitam no núcleo externo criam o campo magnético da Terra por meio de um processo chamado geodínamo."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى سخونة نواة الأرض حقًا؟",
+   "summary": "تحت قدميك كرة من الحديد بسخونة سطح الشمس. فلماذا لا ينصهر الحديد في هذه الحرارة، وما علاقة ذلك ببوصلة هاتفك؟",
+   "facts": [
+    "وفقًا لناشيونال جيوغرافيك، تبلغ حرارة النواة الداخلية نحو 5200 درجة مئوية، وتصل الحدود بين النواة الداخلية والخارجية إلى نحو 6000 درجة مئوية، أي بسخونة سطح الشمس.",
+    "وفقًا لناسا، تبلغ حرارة سطح الشمس (الفوتوسفير) نحو 5500 درجة مئوية.",
+    "وفقًا لبريتانيكا، تتراوح حرارة الحمم الطازجة بين 700 و1200 درجة مئوية.",
+    "وفقًا لناشيونال جيوغرافيك، يبلغ الضغط في النواة الداخلية نحو 3.6 مليون ضغط جوي، وهذا الضغط الهائل يمنع الحديد من الانصهار.",
+    "وفقًا لناشيونال جيوغرافيك، يولّد الحديد والنيكل السائلان المضطربان في النواة الخارجية المجال المغناطيسي للأرض عبر عملية تسمى الدينامو الأرضي."
+   ]
+  },
+  "hi": {
+   "title": "पृथ्वी का कोर असल में कितना गर्म है?",
+   "summary": "आपके पैरों के नीचे सूरज की सतह जितनी गर्म लोहे की एक गेंद है। तो इतनी गर्मी में भी लोहा पिघलता क्यों नहीं, और इसका आपके फोन के कंपास से क्या लेना-देना है?",
+   "facts": [
+    "National Geographic के अनुसार, भीतरी कोर का तापमान लगभग 5,200°C है; भीतरी और बाहरी कोर की सीमा लगभग 6,000°C तक पहुंचती है, यानी सूरज की सतह जितनी गर्म।",
+    "NASA के अनुसार, सूरज की सतह (फोटोस्फीयर) लगभग 5,500°C है।",
+    "Britannica के अनुसार, ताज़ा लावा 700 से 1,200°C के बीच होता है।",
+    "National Geographic के अनुसार, भीतरी कोर में दबाव लगभग 3.6 मिलियन वायुमंडल है, और यही भारी दबाव लोहे को पिघलने से रोकता है।",
+    "National Geographic के अनुसार, बाहरी कोर में घूमता तरल लोहा और निकल 'जियोडायनेमो' नाम की प्रक्रिया से पृथ्वी का चुंबकीय क्षेत्र बनाते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Panas Sebenarnya Inti Bumi?",
+   "summary": "Di bawah kakimu ada bola besi yang sepanas permukaan Matahari. Lalu kenapa besi itu tidak meleleh dalam panas sebesar itu, dan apa hubungannya dengan kompas di ponselmu?",
+   "facts": [
+    "Menurut National Geographic, suhu inti dalam sekitar 5.200 °C; batas antara inti dalam dan inti luar mencapai sekitar 6.000 °C, sepanas permukaan Matahari.",
+    "Menurut NASA, permukaan Matahari (fotosfer) bersuhu sekitar 5.500 °C.",
+    "Menurut Britannica, lava segar bersuhu antara 700 hingga 1.200 °C.",
+    "Menurut National Geographic, tekanan di inti dalam hampir 3,6 juta atmosfer, dan tekanan luar biasa ini mencegah besi meleleh.",
+    "Menurut National Geographic, besi dan nikel cair yang bergolak di inti luar menciptakan medan magnet Bumi melalui proses yang disebut geodinamo."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Température du Noyau de la Terre ?",
+   "summary": "Sous tes pieds se trouve une boule de fer aussi chaude que la surface du Soleil. Alors pourquoi ce fer ne fond-il pas, et quel rapport avec la boussole de ton téléphone ?",
+   "facts": [
+    "Selon National Geographic, le noyau interne est à environ 5 200 °C ; la limite entre noyau interne et noyau externe atteint environ 6 000 °C, aussi chaude que la surface du Soleil.",
+    "Selon la NASA, la surface du Soleil (photosphère) est à environ 5 500 °C.",
+    "Selon Britannica, la lave fraîche se situe entre 700 et 1 200 °C.",
+    "Selon National Geographic, la pression dans le noyau interne atteint près de 3,6 millions d'atmosphères, et cette pression immense empêche le fer de fondre.",
+    "Selon National Geographic, le fer et le nickel liquides qui s'agitent dans le noyau externe créent le champ magnétique terrestre grâce à un processus appelé géodynamo."
+   ]
+  },
+  "de": {
+   "title": "Wie Heiß Ist der Erdkern Wirklich?",
+   "summary": "Unter deinen Füßen liegt eine Eisenkugel, so heiß wie die Oberfläche der Sonne. Warum schmilzt das Eisen bei dieser Hitze nicht, und was hat das mit dem Kompass in deinem Handy zu tun?",
+   "facts": [
+    "Laut National Geographic ist der innere Kern etwa 5.200 °C heiß; die Grenze zwischen innerem und äußerem Kern erreicht etwa 6.000 °C und ist damit so heiß wie die Sonnenoberfläche.",
+    "Laut NASA ist die Oberfläche der Sonne (Photosphäre) etwa 5.500 °C heiß.",
+    "Laut Britannica ist frische Lava 700 bis 1.200 °C heiß.",
+    "Laut National Geographic beträgt der Druck im inneren Kern fast 3,6 Millionen Atmosphären, und dieser enorme Druck verhindert, dass das Eisen schmilzt.",
+    "Laut National Geographic erzeugen flüssiges Eisen und Nickel, die im äußeren Kern wirbeln, durch den sogenannten Geodynamo das Magnetfeld der Erde."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Горячо Ядро Земли на Самом Деле?",
+   "summary": "У тебя под ногами железный шар, горячий, как поверхность Солнца. Почему же железо не плавится при такой жаре и при чём тут компас в твоём телефоне?",
+   "facts": [
+    "По данным National Geographic, температура внутреннего ядра около 5200 °C; граница между внутренним и внешним ядром нагрета примерно до 6000 °C — как поверхность Солнца.",
+    "По данным NASA, поверхность Солнца (фотосфера) нагрета примерно до 5500 °C.",
+    "По данным Britannica, свежая лава имеет температуру от 700 до 1200 °C.",
+    "По данным National Geographic, давление во внутреннем ядре почти 3,6 миллиона атмосфер, и это огромное давление не даёт железу расплавиться.",
+    "По данным National Geographic, бурлящие жидкие железо и никель во внешнем ядре создают магнитное поле Земли в процессе, который называют геодинамо."
+   ]
+  },
+  "az": {
+   "title": "Yerin Nüvəsi Əslində Nə Qədər İstidir?",
+   "summary": "Ayaqlarının altında Günəşin səthi qədər isti bir dəmir kürə var. Bəs bu istidə dəmir niyə ərimir və bunun telefonundakı kompasla nə əlaqəsi var?",
+   "facts": [
+    "National Geographic-ə görə, daxili nüvənin temperaturu təxminən 5.200 °C-dir; daxili və xarici nüvənin sərhədi isə təxminən 6.000 °C-yə çatır, yəni Günəşin səthi qədər istidir.",
+    "NASA-ya görə, Günəşin səthi (fotosfer) təxminən 5.500 °C-dir.",
+    "Britannica-ya görə, təzə lavanın temperaturu 700 ilə 1.200 °C arasındadır.",
+    "National Geographic-ə görə, daxili nüvədəki təzyiq təxminən 3,6 milyon atmosferdir və bu nəhəng təzyiq dəmirin əriməsinin qarşısını alır.",
+    "National Geographic-ə görə, xarici nüvədə çalxalanan maye dəmir və nikel 'geodinamo' adlanan proseslə Yerin maqnit sahəsini yaradır."
+   ]
+  }
+ }
+}

@@ -1,0 +1,256 @@
+{
+ "id": "y059",
+ "series": "Ya Olsaydı?",
+ "q": "Uzayda bir yıl kalsaydın vücuduna ne olurdu?",
+ "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+ "bar": {
+  "hi": "UZAYDA 1 YIL",
+  "rest": "KALSAYDIN?"
+ },
+ "summary": "Uzayda bir yıl geçirsen boyun 5 santime kadar uzar, kalbin bile şekil değiştirirdi. Peki astronotları asıl endişelendiren değişiklik ne?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Boyun 5 santime kadar uzardı: omurların arası açılır!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "📏",
+    "value": "5",
+    "unit": "cm",
+    "label": "Boy Uzaması",
+    "key": "5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sonunda üst rafa yetişirim!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🧑‍🚀",
+    "do": "rise",
+    "key": "rafa",
+    "label": "Üst Raf"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama bacaklarından yukarı 2 litre sıvı kayar, yüzün şişerdi.",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🦵",
+     "label": "2 Litre Sıvı"
+    },
+    "right": {
+     "e": "🎈",
+     "label": "Şişen Yüz"
+    },
+    "key": "şişerdi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kalbin bile şekil değiştirirdi: %9,4 daha yuvarlak!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "❤️",
+    "value": "%9,4",
+    "unit": "daha yuvarlak",
+    "label": "Kalp Şekli",
+    "key": "%9,4"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kalbim futbol topuna mı dönüyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "⚽",
+    "do": "spin",
+    "key": "futbol",
+    "label": "Top Kalp"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tehlike gözlerde: uzun kalanların %70'inde göz yapısı değişiyor.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Göz Değişimi",
+    "from": 0,
+    "to": 70,
+    "unit": "%",
+    "e": "👁️",
+    "key": "%70'inde"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "5 santim için 1 yıl uzayda kalır mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Scientific American'a göre astronotlar mikro yerçekiminde omurlar genişleyip gevşediği için %3'e kadar uzayabilir; 1,8 metrelik biri için bu 5 santime kadar eder ve boy Dünya'ya dönünce birkaç ayda normale iner.",
+   "source": "Scientific American",
+   "url": "https://scientificamerican.com/article/astronauts-get-taller-in-space"
+  },
+  {
+   "text": "NASA'ya göre ağırlıksız ortama girince yaklaşık 2 litre sıvı vücudun alt kısmından üst kısmına kayar; birçok astronot yüzünde ve başında dolgunluk hisseder.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision"
+  },
+  {
+   "text": "Space.com'a göre 12 astronotla yapılan araştırmada kalp uzayda %9,4 daha küresel hale geldi ve Dünya'ya dönünce eski şekline kavuştu.",
+   "source": "Space.com",
+   "url": "https://www.space.com/25452-zero-gravity-affects-astronauts-hearts.html"
+  },
+  {
+   "text": "NASA'ya göre Uluslararası Uzay İstasyonu'ndaki yaklaşık 6 aylık uzun görevlere katılanların yaklaşık %70'inde, göz sinirinde şişme ve göz arkasında düzleşme gibi SANS bulguları gelişir.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision"
+  }
+ ],
+ "tags": [
+  "uzayda 1 yıl",
+  "astronot",
+  "uzayda vücut",
+  "scott kelly",
+  "uzay istasyonu",
+  "mikro yerçekimi",
+  "uzayda boy uzaması",
+  "nasa",
+  "year in space",
+  "astronaut body",
+  "space health",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzay",
+  "#astronot",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://scientificamerican.com/article/astronauts-get-taller-in-space",
+  "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision",
+  "https://www.space.com/25452-zero-gravity-affects-astronauts-hearts.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would 1 Year in Space Do to Your Body?",
+   "summary": "Spend a year in space and you could grow up to 5 centimeters taller, and even your heart would change shape. So which change worries astronauts the most?",
+   "facts": [
+    "According to Scientific American, astronauts can grow up to 3% taller in microgravity as the vertebrae expand and relax; for a 1.8-meter person that is up to 5 centimeters, and height returns to normal within a few months back on Earth.",
+    "According to NASA, upon entering weightlessness approximately 2 liters of fluid move from the lower to the upper body, and many astronauts feel fullness in their face and head.",
+    "According to Space.com, a study of 12 astronauts found the heart becomes 9.4% more spherical in space and returns to its normal shape back on Earth.",
+    "According to NASA, approximately 70% of crew members on long-duration (about 6-month) ISS missions develop SANS findings such as swelling of the nerve at the back of the eye and flattening of the back of the eye."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Le Haría a Tu Cuerpo Pasar 1 Año en el Espacio?",
+   "summary": "Si pasaras un año en el espacio podrías crecer hasta 5 centímetros, y hasta tu corazón cambiaría de forma. ¿Cuál es el cambio que más preocupa a los astronautas?",
+   "facts": [
+    "Según Scientific American, los astronautas pueden crecer hasta un 3 % en microgravedad porque las vértebras se expanden y relajan; para una persona de 1,8 metros son hasta 5 centímetros, y la estatura vuelve a la normalidad en unos meses en la Tierra.",
+    "Según la NASA, al entrar en ingravidez unos 2 litros de líquido se desplazan de la parte inferior a la superior del cuerpo, y muchos astronautas sienten la cara y la cabeza llenas.",
+    "Según Space.com, un estudio con 12 astronautas halló que el corazón se vuelve un 9,4 % más esférico en el espacio y recupera su forma normal al volver a la Tierra.",
+    "Según la NASA, cerca del 70 % de los tripulantes de misiones largas (unos 6 meses) en la EEI desarrollan signos de SANS, como inflamación del nervio del fondo del ojo y aplanamiento de la parte posterior del ojo."
+   ]
+  },
+  "pt": {
+   "title": "O Que 1 Ano no Espaço Faria com o Seu Corpo?",
+   "summary": "Passe um ano no espaço e você pode crescer até 5 centímetros, e até o seu coração mudaria de forma. Qual é a mudança que mais preocupa os astronautas?",
+   "facts": [
+    "Segundo a Scientific American, astronautas podem ficar até 3% mais altos na microgravidade porque as vértebras se expandem e relaxam; para uma pessoa de 1,8 metro isso dá até 5 centímetros, e a altura volta ao normal em alguns meses na Terra.",
+    "Segundo a NASA, ao entrar na ausência de peso cerca de 2 litros de líquido migram da parte inferior para a parte superior do corpo, e muitos astronautas sentem o rosto e a cabeça cheios.",
+    "Segundo o Space.com, um estudo com 12 astronautas mostrou que o coração fica 9,4% mais esférico no espaço e volta ao formato normal na Terra.",
+    "Segundo a NASA, cerca de 70% dos tripulantes de missões longas (cerca de 6 meses) na ISS desenvolvem sinais de SANS, como inchaço do nervo no fundo do olho e achatamento da parte de trás do olho."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لجسمك لو بقيت عامًا واحدًا في الفضاء؟",
+   "summary": "لو قضيت عامًا في الفضاء لازداد طولك حتى 5 سنتيمترات، بل ولتغير شكل قلبك. فما التغير الذي يقلق رواد الفضاء أكثر من غيره؟",
+   "facts": [
+    "وفقًا لمجلة ساينتفك أمريكان، قد يزداد طول رواد الفضاء حتى 3% في الجاذبية الصغرى لأن الفقرات تتمدد وترتخي؛ ولشخص طوله 1.8 متر يعني ذلك حتى 5 سنتيمترات، ويعود الطول إلى طبيعته خلال بضعة أشهر على الأرض.",
+    "وفقًا لناسا، عند الدخول في انعدام الوزن ينتقل نحو 2 لتر من السوائل من الجزء السفلي من الجسم إلى الجزء العلوي، ويشعر كثير من الرواد بامتلاء في الوجه والرأس.",
+    "وفقًا لموقع Space.com، وجدت دراسة على 12 رائد فضاء أن القلب يصبح أكثر كروية بنسبة 9.4% في الفضاء ويعود إلى شكله الطبيعي على الأرض.",
+    "وفقًا لناسا، تظهر لدى نحو 70% من أفراد الطاقم في المهمات الطويلة (نحو 6 أشهر) على محطة الفضاء الدولية علامات متلازمة SANS، مثل تورم العصب في مؤخرة العين وتسطح الجزء الخلفي منها."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप 1 साल अंतरिक्ष में रहते तो आपके शरीर का क्या होता?",
+   "summary": "अंतरिक्ष में एक साल बिताने पर आपकी लंबाई 5 सेंटीमीटर तक बढ़ सकती है, और आपके दिल का आकार भी बदल जाता। तो वह कौन-सा बदलाव है जो अंतरिक्ष यात्रियों को सबसे ज़्यादा चिंता में डालता है?",
+   "facts": [
+    "Scientific American के अनुसार, माइक्रोग्रैविटी में कशेरुकाओं के फैलने और ढीले होने से अंतरिक्ष यात्री 3% तक लंबे हो सकते हैं; 1.8 मीटर के इंसान के लिए यह 5 सेंटीमीटर तक है, और पृथ्वी पर लौटने के कुछ महीनों में लंबाई सामान्य हो जाती है।",
+    "NASA के अनुसार, भारहीनता में पहुंचते ही लगभग 2 लीटर तरल शरीर के निचले हिस्से से ऊपरी हिस्से में चला जाता है, और कई अंतरिक्ष यात्री चेहरे और सिर में भरापन महसूस करते हैं।",
+    "Space.com के अनुसार, 12 अंतरिक्ष यात्रियों पर हुए अध्ययन में पाया गया कि अंतरिक्ष में दिल 9.4% ज़्यादा गोल हो जाता है और पृथ्वी पर लौटकर फिर सामान्य आकार में आ जाता है।",
+    "NASA के अनुसार, ISS पर लंबे (लगभग 6 महीने के) मिशनों में लगभग 70% क्रू सदस्यों में SANS के लक्षण विकसित होते हैं, जैसे आंख के पीछे की नस में सूजन और आंख के पिछले हिस्से का चपटा होना।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi pada Tubuhmu Jika 1 Tahun di Luar Angkasa?",
+   "summary": "Setahun di luar angkasa bisa membuat tinggimu bertambah hingga 5 sentimeter, bahkan jantungmu ikut berubah bentuk. Lalu perubahan apa yang paling dikhawatirkan para astronaut?",
+   "facts": [
+    "Menurut Scientific American, astronaut bisa bertambah tinggi hingga 3% dalam gravitasi mikro karena ruas tulang belakang mengembang dan rileks; bagi orang setinggi 1,8 meter itu berarti hingga 5 sentimeter, dan tinggi badan kembali normal dalam beberapa bulan di Bumi.",
+    "Menurut NASA, saat memasuki kondisi tanpa bobot sekitar 2 liter cairan berpindah dari tubuh bagian bawah ke bagian atas, dan banyak astronaut merasakan wajah serta kepalanya terasa penuh.",
+    "Menurut Space.com, studi pada 12 astronaut menemukan jantung menjadi 9,4% lebih bulat di luar angkasa dan kembali ke bentuk normal setelah kembali ke Bumi.",
+    "Menurut NASA, sekitar 70% awak misi panjang (sekitar 6 bulan) di ISS mengalami tanda-tanda SANS, seperti pembengkakan saraf di belakang mata dan pendataran bagian belakang mata."
+   ]
+  },
+  "fr": {
+   "title": "Que Ferait 1 An dans l'Espace à Ton Corps ?",
+   "summary": "Passe un an dans l'espace et tu pourrais grandir jusqu'à 5 centimètres, et même ton cœur changerait de forme. Mais quel est le changement qui inquiète le plus les astronautes ?",
+   "facts": [
+    "Selon Scientific American, les astronautes peuvent grandir jusqu'à 3 % en microgravité car les vertèbres se dilatent et se détendent ; pour une personne de 1,8 mètre, cela fait jusqu'à 5 centimètres, et la taille redevient normale en quelques mois sur Terre.",
+    "Selon la NASA, en entrant en apesanteur, environ 2 litres de liquide passent du bas vers le haut du corps, et beaucoup d'astronautes ressentent une sensation de plénitude au visage et à la tête.",
+    "Selon Space.com, une étude sur 12 astronautes a montré que le cœur devient 9,4 % plus sphérique dans l'espace et retrouve sa forme normale sur Terre.",
+    "Selon la NASA, environ 70 % des membres d'équipage des missions longues (environ 6 mois) sur l'ISS développent des signes de SANS, comme un gonflement du nerf au fond de l'œil et un aplatissement de l'arrière de l'œil."
+   ]
+  },
+  "de": {
+   "title": "Was Würde 1 Jahr im All mit Deinem Körper Machen?",
+   "summary": "Nach einem Jahr im All könntest du bis zu 5 Zentimeter größer sein, und sogar dein Herz würde seine Form ändern. Doch welche Veränderung macht Astronauten am meisten Sorgen?",
+   "facts": [
+    "Laut Scientific American können Astronauten in der Mikrogravitation bis zu 3 % größer werden, weil sich die Wirbel dehnen und entspannen; bei einem 1,8 Meter großen Menschen sind das bis zu 5 Zentimeter, und auf der Erde normalisiert sich die Größe in einigen Monaten.",
+    "Laut NASA verlagern sich beim Eintritt in die Schwerelosigkeit etwa 2 Liter Flüssigkeit vom Unter- in den Oberkörper, und viele Astronauten spüren ein Völlegefühl in Gesicht und Kopf.",
+    "Laut Space.com ergab eine Studie mit 12 Astronauten, dass das Herz im All 9,4 % kugelförmiger wird und auf der Erde wieder seine normale Form annimmt.",
+    "Laut NASA entwickeln etwa 70 % der Crewmitglieder auf Langzeitmissionen (etwa 6 Monate) auf der ISS SANS-Befunde wie eine Schwellung des Nervs hinten im Auge und eine Abflachung der Augenrückseite."
+   ]
+  },
+  "ru": {
+   "title": "Что 1 Год в Космосе Сделал Бы с Твоим Телом?",
+   "summary": "За год в космосе ты мог бы вырасти до 5 сантиметров, а твоё сердце даже изменило бы форму. Но какое изменение больше всего тревожит астронавтов?",
+   "facts": [
+    "По данным Scientific American, в микрогравитации астронавты могут вырасти до 3%, потому что позвонки растягиваются и расслабляются; для человека ростом 1,8 метра это до 5 сантиметров, а на Земле рост возвращается к норме за несколько месяцев.",
+    "По данным NASA, при попадании в невесомость около 2 литров жидкости перемещается из нижней части тела в верхнюю, и многие астронавты ощущают распирание в лице и голове.",
+    "По данным Space.com, исследование 12 астронавтов показало, что в космосе сердце становится на 9,4% более сферическим, а на Земле возвращается к обычной форме.",
+    "По данным NASA, примерно у 70% членов экипажа длительных (около 6 месяцев) экспедиций на МКС развиваются признаки SANS, например отёк нерва в глубине глаза и уплощение задней части глазного яблока."
+   ]
+  },
+  "az": {
+   "title": "Kosmosda 1 İl Qalsaydın Bədəninə Nə Olardı?",
+   "summary": "Kosmosda bir il keçirsən, boyun 5 santimetrə qədər uzana, hətta ürəyin də formasını dəyişə bilərdi. Bəs astronavtları ən çox narahat edən dəyişiklik hansıdır?",
+   "facts": [
+    "Scientific American-ə görə, mikroqravitasiyada fəqərələr genişlənib boşaldığı üçün astronavtlar 3%-ə qədər uzana bilər; 1,8 metrlik biri üçün bu, 5 santimetrə qədərdir və Yerə qayıtdıqdan sonra bir neçə aya boy normala qayıdır.",
+    "NASA-ya görə, çəkisizliyə düşəndə təxminən 2 litr maye bədənin aşağı hissəsindən yuxarı hissəsinə keçir və bir çox astronavt üzündə və başında dolğunluq hiss edir.",
+    "Space.com-a görə, 12 astronavt üzərində aparılan araşdırma ürəyin kosmosda 9,4% daha kürəvi olduğunu və Yerə qayıdanda əvvəlki formasına döndüyünü göstərdi.",
+    "NASA-ya görə, BKS-də uzunmüddətli (təxminən 6 aylıq) missiyalarda ekipaj üzvlərinin təxminən 70%-ində gözün arxasındakı sinirin şişməsi və göz almasının arxa hissəsinin yastılaşması kimi SANS əlamətləri yaranır."
+   ]
+  }
+ }
+}

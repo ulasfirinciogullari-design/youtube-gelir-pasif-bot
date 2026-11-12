@@ -1,0 +1,259 @@
+{
+ "id": "y038",
+ "series": "Ya Olsaydı?",
+ "q": "İnsanlar kediler gibi karanlıkta görebilseydi?",
+ "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+ "bar": {
+  "hi": "KEDİ GÖZÜN",
+  "rest": "OLSAYDI?"
+ },
+ "summary": "Kedi gözlerin olsaydı karanlıkta 8 kata kadar daha iyi görür, far ışığında gözlerin parlardı. Peki bu süper gücün gündüz sana ödettiği şaşırtıcı bedeli biliyor musun?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Gözlerin karanlıkta parlardı: far ışığında kedininki gibi!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "👀",
+    "do": "pulse",
+    "key": "parlardı",
+    "label": "Parlayan Gözler"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Fotoğraflarda canavar gibi mi çıkarım?!",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "📸",
+    "label": "Canavar Gibi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gözünün arkasında ışığı geri yansıtan bir ayna olurdu.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🪞",
+    "do": "pulse",
+    "key": "ayna",
+    "label": "Yansıtıcı Katman"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Karanlıkta 8 kata kadar daha iyi görürdün.",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "🐱",
+    "value": "8",
+    "unit": "kat",
+    "label": "Gece Görüşü",
+    "key": "8"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Aynaya bak: gözbebeğin 15 kat büyür, kedininki 135 kat!",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "e": "👁️",
+     "label": "Senin Gözbebeğin",
+     "value": 15
+    },
+    "b": {
+     "e": "🐱",
+     "label": "Kedi Gözbebeği",
+     "value": 135
+    },
+    "mode": "bar",
+    "key": "kedininki"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama gündüz 7 kat bulanık görürdün, renkler de solardı.",
+   "v": {
+    "t": "split",
+    "bg": "sky",
+    "left": {
+     "e": "🌙",
+     "label": "Gece: Keskin"
+    },
+    "right": {
+     "e": "☀️",
+     "label": "Gündüz: Bulanık"
+    },
+    "key": "bulanık"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gece görüşü için renkleri verir miydin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🐈"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Britannica'ya göre kedilerin gözündeki tapetum lucidum adlı yansıtıcı katman ışığı geri yansıtır ve aydınlatıldıklarında gözlerinin geceleri parlamasına yol açar.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/science/tapetum-lucidum"
+  },
+  {
+   "text": "Live Science'ın aktardığına göre kediler karanlıkta insanlardan 6 ila 8 kat daha iyi görür.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/can-cats-see-in-dark"
+  },
+  {
+   "text": "UC Berkeley araştırmacılarının çalışmasına göre evcil kedinin dikey yarık gözbebeğinin alanı 135 kat değişebilirken insanın yuvarlak gözbebeği yaklaşık 15 kat değişir.",
+   "source": "UC Berkeley / Science Advances",
+   "url": "https://escholarship.org/content/qt1zs03987/qt1zs03987_noSplash_e68429da71e9e73351e8f411e5ac7ecd.pdf"
+  },
+  {
+   "text": "Live Science'a göre kedilerin gündüz görme keskinliği bizimkinin yaklaşık 7'de 1'idir; kedilerde iki tip koni hücresi vardır, insanlarda ise üç.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/can-cats-see-in-dark"
+  }
+ ],
+ "tags": [
+  "kedi gözü",
+  "gece görüşü",
+  "karanlıkta görmek",
+  "kediler",
+  "göz",
+  "gözbebeği",
+  "tapetum lucidum",
+  "cat vision",
+  "night vision",
+  "cat eyes",
+  "see in the dark",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#kedi",
+  "#gecegörüşü",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.livescience.com/can-cats-see-in-dark",
+  "https://www.britannica.com/science/tapetum-lucidum",
+  "https://escholarship.org/content/qt1zs03987/qt1zs03987_noSplash_e68429da71e9e73351e8f411e5ac7ecd.pdf"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Could See in the Dark Like a Cat?",
+   "summary": "With cat eyes you would see up to 8 times better in the dark, and your eyes would glow in headlights. But do you know the surprising price this superpower would make you pay in daylight?",
+   "facts": [
+    "According to Britannica, a reflective layer in cats' eyes called the tapetum lucidum reflects light back and makes their eyes shine at night when illuminated.",
+    "According to Live Science, cats see 6 to 8 times better than humans in the dark.",
+    "According to a study by UC Berkeley researchers, the vertical slit pupil of the domestic cat can change in area 135-fold, while the round human pupil changes about 15-fold.",
+    "According to Live Science, cats' daytime visual acuity is only about 1/7 of ours; cats have two types of cone cells, while humans have three."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Pudieras Ver en la Oscuridad Como un Gato?",
+   "summary": "Con ojos de gato verías hasta 8 veces mejor en la oscuridad y tus ojos brillarían con los faros. Pero ¿sabes qué sorprendente precio te haría pagar este superpoder durante el día?",
+   "facts": [
+    "Según Britannica, una capa reflectante del ojo de los gatos llamada tapetum lucidum devuelve la luz y hace que sus ojos brillen de noche cuando se iluminan.",
+    "Según Live Science, los gatos ven de 6 a 8 veces mejor que los humanos en la oscuridad.",
+    "Según un estudio de investigadores de UC Berkeley, el área de la pupila vertical en rendija del gato doméstico puede cambiar 135 veces, mientras que la pupila redonda humana cambia unas 15 veces.",
+    "Según Live Science, la agudeza visual diurna de los gatos es solo de alrededor de 1/7 de la nuestra; los gatos tienen dos tipos de conos y los humanos, tres."
+   ]
+  },
+  "pt": {
+   "title": "E Se Você Enxergasse no Escuro Como um Gato?",
+   "summary": "Com olhos de gato você enxergaria até 8 vezes melhor no escuro, e seus olhos brilhariam sob os faróis. Mas você sabe o preço surpreendente que esse superpoder cobraria durante o dia?",
+   "facts": [
+    "Segundo a Britannica, uma camada refletora do olho dos gatos chamada tapetum lucidum reflete a luz de volta e faz seus olhos brilharem à noite quando iluminados.",
+    "Segundo a Live Science, os gatos enxergam de 6 a 8 vezes melhor que os humanos no escuro.",
+    "Segundo um estudo de pesquisadores da UC Berkeley, a área da pupila vertical em fenda do gato doméstico pode variar 135 vezes, enquanto a pupila redonda humana varia cerca de 15 vezes.",
+    "Segundo a Live Science, a acuidade visual diurna dos gatos é só cerca de 1/7 da nossa; os gatos têm dois tipos de cones, e os humanos, três."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو استطعت الرؤية في الظلام مثل القطط؟",
+   "summary": "لو كانت لديك عينا قطة لرأيت في الظلام أفضل بما يصل إلى 8 مرات، ولتوهجت عيناك في أضواء السيارات. لكن هل تعرف الثمن المفاجئ الذي ستدفعه مقابل هذه القوة الخارقة في النهار؟",
+   "facts": [
+    "وفقًا لموسوعة بريتانيكا، تعكس طبقة عاكسة في عين القطط تسمى البساط الشفاف (tapetum lucidum) الضوء إلى الخلف، فتجعل عيونها تلمع ليلًا عند إضاءتها.",
+    "وفقًا لموقع لايف ساينس، ترى القطط في الظلام أفضل من البشر بـ6 إلى 8 مرات.",
+    "وفقًا لدراسة لباحثين في جامعة كاليفورنيا في بيركلي، يمكن أن تتغير مساحة بؤبؤ القطة المنزلية الشقي العمودي 135 ضعفًا، بينما يتغير بؤبؤ الإنسان المستدير نحو 15 ضعفًا.",
+    "وفقًا لموقع لايف ساينس، تبلغ حدة إبصار القطط في النهار نحو 1/7 فقط من حدة إبصارنا، ولدى القطط نوعان من الخلايا المخروطية مقابل ثلاثة أنواع لدى البشر."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप बिल्ली की तरह अंधेरे में देख पाते तो क्या होता?",
+   "summary": "बिल्ली जैसी आंखों से आप अंधेरे में 8 गुना तक बेहतर देखते, और गाड़ियों की हेडलाइट में आपकी आंखें चमकतीं। लेकिन क्या आप जानते हैं कि दिन में इस सुपरपावर की चौंकाने वाली कीमत क्या होती?",
+   "facts": [
+    "Britannica के अनुसार, बिल्लियों की आंख में tapetum lucidum नाम की एक परावर्तक परत रोशनी को वापस लौटाती है, जिससे रोशनी पड़ने पर रात में उनकी आंखें चमकती हैं।",
+    "Live Science के अनुसार, बिल्लियां अंधेरे में इंसानों से 6 से 8 गुना बेहतर देखती हैं।",
+    "UC Berkeley के शोधकर्ताओं के अध्ययन के अनुसार, पालतू बिल्ली की खड़ी पतली पुतली का क्षेत्रफल 135 गुना तक बदल सकता है, जबकि इंसान की गोल पुतली लगभग 15 गुना बदलती है।",
+    "Live Science के अनुसार, दिन में बिल्लियों की देखने की तीक्ष्णता हमारी लगभग 1/7 ही होती है; बिल्लियों में दो तरह की कोन कोशिकाएं होती हैं, जबकि इंसानों में तीन।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Bisa Melihat dalam Gelap Seperti Kucing?",
+   "summary": "Dengan mata kucing, kamu bisa melihat hingga 8 kali lebih baik dalam gelap, dan matamu akan berkilau terkena lampu mobil. Tapi tahukah kamu harga mengejutkan yang harus dibayar untuk kekuatan super ini di siang hari?",
+   "facts": [
+    "Menurut Britannica, lapisan pemantul di mata kucing yang disebut tapetum lucidum memantulkan cahaya kembali dan membuat mata mereka bersinar di malam hari saat terkena cahaya.",
+    "Menurut Live Science, kucing bisa melihat 6 hingga 8 kali lebih baik daripada manusia dalam gelap.",
+    "Menurut studi peneliti UC Berkeley, luas pupil celah vertikal kucing peliharaan bisa berubah 135 kali lipat, sedangkan pupil bulat manusia berubah sekitar 15 kali lipat.",
+    "Menurut Live Science, ketajaman penglihatan kucing di siang hari hanya sekitar 1/7 dari milik kita; kucing punya dua jenis sel kerucut, sedangkan manusia punya tiga."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tu Voyais dans le Noir Comme un Chat ?",
+   "summary": "Avec des yeux de chat, tu verrais jusqu'à 8 fois mieux dans le noir et tes yeux brilleraient dans les phares. Mais connais-tu le prix étonnant que ce super-pouvoir te ferait payer en plein jour ?",
+   "facts": [
+    "Selon Britannica, une couche réfléchissante de l'œil du chat appelée tapetum lucidum renvoie la lumière et fait briller ses yeux la nuit lorsqu'ils sont éclairés.",
+    "Selon Live Science, les chats voient 6 à 8 fois mieux que les humains dans le noir.",
+    "Selon une étude de chercheurs de l'UC Berkeley, la surface de la pupille verticale en fente du chat domestique peut varier d'un facteur 135, contre environ 15 pour la pupille ronde humaine.",
+    "Selon Live Science, l'acuité visuelle diurne des chats n'est qu'environ 1/7 de la nôtre ; les chats ont deux types de cônes, contre trois chez l'humain."
+   ]
+  },
+  "de": {
+   "title": "Was Wäre, Wenn Du im Dunkeln Sehen Könntest Wie eine Katze?",
+   "summary": "Mit Katzenaugen würdest du im Dunkeln bis zu 8-mal besser sehen, und deine Augen würden im Scheinwerferlicht leuchten. Aber kennst du den überraschenden Preis, den diese Superkraft dich am Tag kosten würde?",
+   "facts": [
+    "Laut Britannica wirft eine reflektierende Schicht im Katzenauge, das Tapetum lucidum, das Licht zurück und lässt die Augen nachts leuchten, wenn sie angestrahlt werden.",
+    "Laut Live Science sehen Katzen im Dunkeln 6- bis 8-mal besser als Menschen.",
+    "Laut einer Studie von Forschenden der UC Berkeley kann sich die Fläche der senkrechten Schlitzpupille der Hauskatze um das 135-Fache ändern, die runde Pupille des Menschen nur um etwa das 15-Fache.",
+    "Laut Live Science beträgt die Sehschärfe von Katzen am Tag nur etwa 1/7 der unseren; Katzen haben zwei Arten von Zapfen, Menschen drei."
+   ]
+  },
+  "ru": {
+   "title": "Что Было Бы, Если Бы Ты Видел в Темноте Как Кошка?",
+   "summary": "С кошачьими глазами ты видел бы в темноте до 8 раз лучше, а твои глаза светились бы в свете фар. Но знаешь ли ты, какую неожиданную цену эта суперсила заставила бы тебя платить днём?",
+   "facts": [
+    "По данным Britannica, отражающий слой в глазу кошки, тапетум (tapetum lucidum), возвращает свет обратно, поэтому её глаза светятся ночью, когда на них падает свет.",
+    "По данным Live Science, кошки видят в темноте в 6–8 раз лучше людей.",
+    "Согласно исследованию учёных Калифорнийского университета в Беркли, площадь вертикального щелевидного зрачка домашней кошки может меняться в 135 раз, а круглого зрачка человека — примерно в 15 раз.",
+    "По данным Live Science, острота дневного зрения кошек составляет лишь около 1/7 от нашей; у кошек два типа колбочек, а у людей — три."
+   ]
+  },
+  "az": {
+   "title": "Pişik Kimi Qaranlıqda Görə Bilsəydin Nə Olardı?",
+   "summary": "Pişik gözlərin olsaydı, qaranlıqda 8 qata qədər daha yaxşı görər, maşın faralarının işığında gözlərin parıldayardı. Bəs bu super gücün gündüz sənə ödədəcəyi təəccüblü bədəli bilirsənmi?",
+   "facts": [
+    "Britannica-ya görə, pişiklərin gözündəki tapetum lucidum adlı əksetdirici təbəqə işığı geri qaytarır və işıq düşəndə onların gözlərinin gecə parlamasına səbəb olur.",
+    "Live Science-ə görə, pişiklər qaranlıqda insanlardan 6-8 dəfə daha yaxşı görür.",
+    "UC Berkeley tədqiqatçılarının araşdırmasına görə, ev pişiyinin şaquli yarıq bəbəyinin sahəsi 135 dəfə dəyişə bilir, insanın yumru bəbəyi isə təxminən 15 dəfə dəyişir.",
+    "Live Science-ə görə, pişiklərin gündüz görmə itiliyi bizimkinin təxminən 1/7-i qədərdir; pişiklərdə iki növ kolbacıq hüceyrəsi, insanlarda isə üç növ var."
+   ]
+  }
+ }
+}

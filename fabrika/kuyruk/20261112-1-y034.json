@@ -1,0 +1,251 @@
+{
+ "id": "y034",
+ "series": "Ya Olsaydı?",
+ "q": "Hiç bakterimiz olmasaydı ne olurdu?",
+ "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "BAKTERİN",
+  "rest": "OLMASAYDI?"
+ },
+ "summary": "Şu an içinde kendi hücrelerinden fazla bakteri yaşıyor; peki hiç olmasalardı vücuduna ne olurdu? Terinin kokusundan bağışıklığına kadar, bakterisiz bir hayatın şaşırtıcı bedelini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "İçinde 39 trilyon kadar bakteri yaşıyor: kendi hücrelerinden fazla!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "🧍",
+     "label": "Senin Hücrelerin",
+     "value": 30
+    },
+    "b": {
+     "e": "🦠",
+     "label": "Bakteriler",
+     "value": 39
+    },
+    "mode": "bar",
+    "key": "bakteri"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kendi bedenimde azınlık mıyım?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🦠",
+    "do": "multiply",
+    "key": "azınlık",
+    "label": "Azınlık Sensin"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hiç olmasalardı terin kokmazdı; kokuyu bakteriler yapar!",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "💦",
+     "label": "Ter: Kokusuz"
+    },
+    "right": {
+     "e": "🦠",
+     "label": "Bakteri: Koku"
+    },
+    "key": "kokmazdı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama yemekten az enerji alırdın: mikropsuz fareler %30 fazla yiyor!",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🐭",
+    "value": "%30",
+    "unit": "fazla yemek",
+    "label": "Mikropsuz Fare",
+    "key": "%30"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tehlike: bağışıklığın eğitilmez, mikroplara karşı zayıf kalabilirdin.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🛡️",
+    "do": "shrink",
+    "key": "bağışıklığın",
+    "label": "Zayıf Savunma"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bakterilerin olmasa ilk neyi özlerdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "body",
+    "e": "🦠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Smithsonian'ın aktardığı araştırmaya göre ortalama bir insanda yaklaşık 30 trilyon insan hücresine karşılık yaklaşık 39 trilyon mikrop bulunur; oran kabaca 1,3'e 1'dir.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/smart-news/microbe-cells-dont-outnumber-your-own-180957762/"
+  },
+  {
+   "text": "York Üniversitesi'ne göre terlerken koltuk altına salgıladığımız bileşikler kokusuzdur; en keskin ter kokusunu birkaç Staphylococcus bakteri türü üretir.",
+   "source": "University of York",
+   "url": "https://york.ac.uk/news-and-events/news/2018/research/key-step-in-production-of-body-odour/"
+  },
+  {
+   "text": "Washington Üniversitesi'nin (St. Louis) araştırmasına göre mikropsuz fareler normal farelerden %30 daha fazla yer ama %50 daha az vücut yağı taşır.",
+   "source": "Washington University in St. Louis",
+   "url": "https://source.washu.edu/2004/11/gut-microbes-can-increase-body-fat/"
+  },
+  {
+   "text": "Harvard Gazette'e göre bağışıklık sisteminin düzgün gelişmesi için bağırsak mikropları gerekir; uygun bakterisi olmayan farelerde bağırsak bağışıklık hücreleri mikropsuz farelerdeki kadar düşük kaldı ve Salmonella düzeyleri ilk günden çok daha yüksekti.",
+   "source": "Harvard University",
+   "url": "https://news.harvard.edu/gazette/story/2012/06/my-microbes/"
+  }
+ ],
+ "tags": [
+  "bakteri",
+  "mikrobiyota",
+  "bağırsak bakterileri",
+  "vücuttaki bakteriler",
+  "ter kokusu",
+  "bağışıklık sistemi",
+  "mikroplar",
+  "biyoloji",
+  "bacteria",
+  "gut microbiome",
+  "human microbiome",
+  "no bacteria",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#bakteri",
+  "#mikrobiyota",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.smithsonianmag.com/smart-news/microbe-cells-dont-outnumber-your-own-180957762/",
+  "https://york.ac.uk/news-and-events/news/2018/research/key-step-in-production-of-body-odour/",
+  "https://source.washu.edu/2004/11/gut-microbes-can-increase-body-fat/",
+  "https://news.harvard.edu/gazette/story/2012/06/my-microbes/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Had No Bacteria at All?",
+   "summary": "Right now more bacteria live in you than you have human cells, so what would happen to your body if you had none at all? From the smell of your sweat to your immune system, Professor Pi reveals the surprising price of a life without bacteria.",
+   "facts": [
+    "According to research reported by Smithsonian, an average person carries about 39 trillion microbes against about 30 trillion human cells, a ratio of roughly 1.3 to 1.",
+    "According to the University of York, the compounds we secrete into our underarms when we sweat are odourless; a few species of Staphylococcus bacteria produce the most pungent part of body odour.",
+    "According to research at Washington University in St. Louis, germ-free mice eat 30% more than normal mice yet have 50% less body fat.",
+    "According to the Harvard Gazette, the immune system needs gut microbes to develop properly; in mice without suitable bacteria, intestinal immune cell levels stayed as low as in germ-free mice and their Salmonella levels were much higher from day one."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si No Tuvieras Ni Una Sola Bacteria?",
+   "summary": "Ahora mismo viven en ti más bacterias que células humanas tienes. ¿Qué le pasaría a tu cuerpo si no tuvieras ninguna? Del olor del sudor a tu sistema inmunitario, el Profesor Pi revela el sorprendente precio de una vida sin bacterias.",
+   "facts": [
+    "Según una investigación citada por Smithsonian, una persona promedio tiene unos 39 billones de microbios frente a unos 30 billones de células humanas, una proporción de aproximadamente 1,3 a 1.",
+    "Según la Universidad de York, los compuestos que segregamos en las axilas al sudar no tienen olor; unas pocas especies de bacterias Staphylococcus producen el componente más intenso del olor corporal.",
+    "Según una investigación de la Universidad Washington en San Luis, los ratones libres de gérmenes comen un 30 % más que los ratones normales y aun así tienen un 50 % menos de grasa corporal.",
+    "Según la Harvard Gazette, el sistema inmunitario necesita microbios intestinales para desarrollarse bien; en ratones sin bacterias adecuadas, las células inmunitarias del intestino se quedaron tan bajas como en ratones libres de gérmenes y sus niveles de Salmonella fueron mucho más altos desde el primer día."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Não Tivesse Nenhuma Bactéria?",
+   "summary": "Agora mesmo vivem em você mais bactérias do que células humanas. O que aconteceria com o seu corpo se você não tivesse nenhuma? Do cheiro do suor ao sistema imunológico, o Professor Pi revela o preço surpreendente de uma vida sem bactérias.",
+   "facts": [
+    "Segundo uma pesquisa citada pela Smithsonian, uma pessoa média tem cerca de 39 trilhões de micróbios contra cerca de 30 trilhões de células humanas, uma proporção de aproximadamente 1,3 para 1.",
+    "Segundo a Universidade de York, os compostos que liberamos nas axilas ao suar não têm cheiro; algumas poucas espécies de bactérias Staphylococcus produzem o componente mais forte do odor corporal.",
+    "Segundo uma pesquisa da Universidade Washington em St. Louis, camundongos livres de germes comem 30% mais que camundongos normais e mesmo assim têm 50% menos gordura corporal.",
+    "Segundo a Harvard Gazette, o sistema imunológico precisa de micróbios intestinais para se desenvolver bem; em camundongos sem as bactérias adequadas, as células imunes do intestino ficaram tão baixas quanto em camundongos livres de germes e os níveis de Salmonella foram muito maiores desde o primeiro dia."
+   ]
+  },
+  "ar": {
+   "title": "ماذا كان سيحدث لو لم تكن في جسمك أي بكتيريا؟",
+   "summary": "يعيش فيك الآن من البكتيريا أكثر مما لديك من خلايا بشرية، فماذا كان سيحدث لجسمك لو لم تكن لديك أي بكتيريا؟ من رائحة عرقك إلى جهازك المناعي، يكشف البروفيسور باي الثمن المفاجئ لحياة بلا بكتيريا.",
+   "facts": [
+    "وفقًا لبحث نقلته مجلة سميثسونيان، يحمل الإنسان المتوسط نحو 39 تريليون ميكروب مقابل نحو 30 تريليون خلية بشرية، أي بنسبة تقارب 1.3 إلى 1.",
+    "وفقًا لجامعة يورك، فإن المركبات التي نفرزها في الإبطين عند التعرق عديمة الرائحة، وتنتج بضعة أنواع من بكتيريا المكورات العنقودية الجزء الأشد من رائحة الجسم.",
+    "وفقًا لبحث من جامعة واشنطن في سانت لويس، تأكل الفئران الخالية من الجراثيم أكثر من الفئران العادية بنسبة 30% ومع ذلك تقل دهون جسمها بنسبة 50%.",
+    "وفقًا لصحيفة هارفارد غازيت، يحتاج الجهاز المناعي إلى ميكروبات الأمعاء كي ينمو بشكل سليم؛ ففي الفئران التي تفتقر إلى البكتيريا المناسبة بقيت خلايا المناعة المعوية منخفضة كما في الفئران الخالية من الجراثيم، وكانت مستويات السالمونيلا لديها أعلى بكثير منذ اليوم الأول."
+   ]
+  },
+  "hi": {
+   "title": "अगर आपके शरीर में एक भी बैक्टीरिया न होता तो क्या होता?",
+   "summary": "इस समय आपके अंदर आपकी अपनी कोशिकाओं से ज़्यादा बैक्टीरिया रहते हैं, तो अगर एक भी न होता तो आपके शरीर का क्या होता? पसीने की गंध से लेकर इम्यून सिस्टम तक, प्रोफेसर पाई बताते हैं कि बिना बैक्टीरिया की ज़िंदगी की कीमत कितनी चौंकाने वाली है।",
+   "facts": [
+    "Smithsonian में बताए गए शोध के अनुसार, एक औसत इंसान में लगभग 30 ट्रिलियन मानव कोशिकाओं के मुकाबले लगभग 39 ट्रिलियन सूक्ष्मजीव होते हैं, यानी अनुपात लगभग 1.3 और 1 का है।",
+    "यूनिवर्सिटी ऑफ यॉर्क के अनुसार, पसीने के साथ बगल में निकलने वाले यौगिक गंधहीन होते हैं; शरीर की सबसे तीखी गंध Staphylococcus बैक्टीरिया की कुछ प्रजातियां बनाती हैं।",
+    "सेंट लुइस की वॉशिंगटन यूनिवर्सिटी के शोध के अनुसार, कीटाणु-मुक्त चूहे सामान्य चूहों से 30% ज़्यादा खाते हैं, फिर भी उनमें 50% कम चर्बी होती है।",
+    "Harvard Gazette के अनुसार, इम्यून सिस्टम को ठीक से विकसित होने के लिए आंत के सूक्ष्मजीवों की ज़रूरत होती है; सही बैक्टीरिया के बिना चूहों में आंत की इम्यून कोशिकाएं कीटाणु-मुक्त चूहों जितनी कम रहीं और उनमें पहले दिन से ही Salmonella का स्तर कहीं ज़्यादा था।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Sama Sekali Tak Punya Bakteri?",
+   "summary": "Saat ini ada lebih banyak bakteri yang hidup di tubuhmu daripada sel manusiamu sendiri, lalu apa jadinya jika kamu tidak punya satu pun? Dari bau keringat hingga sistem kekebalan, Profesor Pi mengungkap harga mengejutkan dari hidup tanpa bakteri.",
+   "facts": [
+    "Menurut penelitian yang dilaporkan Smithsonian, rata-rata manusia membawa sekitar 39 triliun mikroba dibandingkan sekitar 30 triliun sel manusia, dengan rasio kira-kira 1,3 banding 1.",
+    "Menurut University of York, senyawa yang kita keluarkan di ketiak saat berkeringat tidak berbau; beberapa spesies bakteri Staphylococcus menghasilkan komponen bau badan yang paling menyengat.",
+    "Menurut penelitian Washington University di St. Louis, tikus bebas kuman makan 30% lebih banyak daripada tikus normal tetapi lemak tubuhnya 50% lebih sedikit.",
+    "Menurut Harvard Gazette, sistem kekebalan tubuh membutuhkan mikroba usus agar berkembang dengan baik; pada tikus tanpa bakteri yang sesuai, sel kekebalan usus tetap serendah tikus bebas kuman dan kadar Salmonella-nya jauh lebih tinggi sejak hari pertama."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tu N'avais Aucune Bactérie Dans Ton Corps ?",
+   "summary": "En ce moment, plus de bactéries vivent en toi que tu n'as de cellules humaines. Que deviendrait ton corps si tu n'en avais aucune ? De l'odeur de ta sueur à ton système immunitaire, le Professeur Pi révèle le prix étonnant d'une vie sans bactéries.",
+   "facts": [
+    "Selon une étude relayée par Smithsonian, une personne moyenne abrite environ 39 000 milliards de microbes pour environ 30 000 milliards de cellules humaines, soit un rapport d'environ 1,3 pour 1.",
+    "Selon l'Université d'York, les composés que nous sécrétons sous les aisselles en transpirant sont inodores ; quelques espèces de bactéries Staphylococcus produisent la composante la plus forte de l'odeur corporelle.",
+    "Selon une étude de l'Université Washington à Saint-Louis, les souris axéniques mangent 30 % de plus que les souris normales mais ont 50 % de graisse corporelle en moins.",
+    "Selon la Harvard Gazette, le système immunitaire a besoin des microbes intestinaux pour se développer correctement ; chez des souris sans bactéries adaptées, les cellules immunitaires de l'intestin sont restées aussi basses que chez des souris axéniques et leurs niveaux de salmonelles étaient bien plus élevés dès le premier jour."
+   ]
+  },
+  "de": {
+   "title": "Was Wäre, Wenn Du Gar Keine Bakterien Hättest?",
+   "summary": "Gerade jetzt leben in dir mehr Bakterien, als du eigene Körperzellen hast. Was würde mit deinem Körper passieren, wenn du gar keine hättest? Vom Schweißgeruch bis zum Immunsystem verrät Professor Pi den überraschenden Preis eines Lebens ohne Bakterien.",
+   "facts": [
+    "Laut einer von Smithsonian berichteten Studie trägt ein durchschnittlicher Mensch etwa 39 Billionen Mikroben gegenüber etwa 30 Billionen menschlichen Zellen in sich, ein Verhältnis von ungefähr 1,3 zu 1.",
+    "Laut der University of York sind die Stoffe, die wir beim Schwitzen in die Achseln abgeben, geruchlos; einige wenige Arten von Staphylococcus-Bakterien erzeugen den stechendsten Bestandteil des Körpergeruchs.",
+    "Laut einer Studie der Washington University in St. Louis fressen keimfreie Mäuse 30 % mehr als normale Mäuse und haben trotzdem 50 % weniger Körperfett.",
+    "Laut der Harvard Gazette braucht das Immunsystem Darmmikroben, um sich richtig zu entwickeln; bei Mäusen ohne passende Bakterien blieben die Immunzellen im Darm so niedrig wie bei keimfreien Mäusen, und ihre Salmonellenwerte waren vom ersten Tag an deutlich höher."
+   ]
+  },
+  "ru": {
+   "title": "Что Было Бы, Если Бы в Тебе Не Было Ни Одной Бактерии?",
+   "summary": "Прямо сейчас в тебе живёт больше бактерий, чем у тебя собственных клеток. Что стало бы с твоим телом, если бы их не было совсем? От запаха пота до иммунитета: Профессор Пи раскрывает неожиданную цену жизни без бактерий.",
+   "facts": [
+    "По данным исследования, о котором писал Smithsonian, в среднем человеке около 39 триллионов микробов и около 30 триллионов человеческих клеток, то есть соотношение примерно 1,3 к 1.",
+    "По данным Йоркского университета, вещества, которые мы выделяем в подмышках с потом, не имеют запаха; самый резкий компонент запаха тела производят несколько видов бактерий Staphylococcus.",
+    "По данным исследования Вашингтонского университета в Сент-Луисе, безмикробные мыши едят на 30% больше обычных, но имеют на 50% меньше жира.",
+    "По данным Harvard Gazette, иммунной системе для правильного развития нужны кишечные микробы; у мышей без подходящих бактерий уровень иммунных клеток в кишечнике оставался таким же низким, как у безмикробных мышей, а уровень сальмонелл был намного выше с первого дня."
+   ]
+  },
+  "az": {
+   "title": "Bədənində Heç Bakteriya Olmasaydı Nə Olardı?",
+   "summary": "İndi daxilində öz hüceyrələrindən çox bakteriya yaşayır; bəs heç olmasaydılar bədəninə nə olardı? Tərinin iyindən immunitetinə qədər, Professor Pi bakteriyasız həyatın təəccüblü bədəlini danışır.",
+   "facts": [
+    "Smithsonian-ın xəbər verdiyi araşdırmaya görə, orta insanda təxminən 30 trilyon insan hüceyrəsinə qarşı təxminən 39 trilyon mikrob var; nisbət təxminən 1,3-ə 1-dir.",
+    "York Universitetinə görə, tərləyəndə qoltuqaltına ifraz etdiyimiz birləşmələr iysizdir; bədən iyinin ən kəskin hissəsini Staphylococcus bakteriyalarının bir neçə növü yaradır.",
+    "Sent-Luisdəki Vaşinqton Universitetinin araşdırmasına görə, mikrobsuz siçanlar adi siçanlardan 30% çox yeyir, amma bədənlərində 50% az yağ olur.",
+    "Harvard Gazette-ə görə, immun sistemin düzgün inkişafı üçün bağırsaq mikrobları lazımdır; uyğun bakteriyası olmayan siçanlarda bağırsaq immun hüceyrələri mikrobsuz siçanlardakı qədər aşağı qaldı və onlarda Salmonella səviyyəsi ilk gündən xeyli yüksək oldu."
+   ]
+  }
+ }
+}
