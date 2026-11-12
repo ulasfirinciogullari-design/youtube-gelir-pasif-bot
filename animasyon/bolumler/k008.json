@@ -1,0 +1,82 @@
+{
+ "id": "k008",
+ "kanun": "VIII",
+ "title": {
+  "top": "Biri sana sahip çıksın istiyorsan",
+  "hi": "önce ona söz verdir"
+ },
+ "yt_title": "Eşyanı Bırakmadan Önce Bu Soruyu Sor 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Biri sana sahip çıksın istiyorsan, yanında olmasına güvenme: önce ona söz verdir.",
+   "keys": ["güvenme", "söz"],
+   "v": {"t": "kanca", "no": "güvenme", "back": "önce", "yes": "söz", "no_label": "Sadece yanında", "yes_label": "Önce söz verdir", "sfx": [["güvenme", 0.5, "whoosh", 0.3, -0.15], ["güvenme", 0.5, "stamp", 0.4, 0.1], ["önce", 0.7, "riser", 0.25, -0.3], ["söz", 0.85, "impact", 0.4, 0.05], ["söz", 0.85, "shimmer", 0.4, 0.15]]}
+  },
+  {
+   "text": "1972'de New York'ta bir plajda, bir araştırmacı radyosunu havlusunun üstünde bırakıp uzaklaştı.",
+   "keys": ["radyosunu", "uzaklaştı"],
+   "v": {"t": "plaj", "year": "1972 · Moriarty deneyi", "radio": "radyosunu", "leave": "bırakıp", "sfx": [[null, 0.1, "paper", 0.25, 0.0], ["radyosunu", 0.4, "pop", 0.3, 0.0], ["uzaklaştı", 0.85, "whoosh", 0.25, -0.1]]}
+  },
+  {
+   "text": "Birkaç dakika sonra başka bir araştırmacı, hırsız gibi radyoyu kapıp kaçtı.",
+   "keys": ["hırsız", "kapıp"],
+   "v": {"t": "hirsiz", "role": "hırsız", "grab": "kapıp", "run": "kaçtı", "sfx": [[null, 0.05, "tick", 0.25, 0.0], ["hırsız", 0.55, "stamp", 0.35, 0.0], ["kapıp", 0.8, "whoosh", 0.35, -0.05], ["kaçtı", 0.9, "pop", 0.3, 0.0]]}
+  },
+  {
+   "text": "Giderken yanındakinden sadece ateş istediyse, yirmi kişiden yalnızca dördü müdahale etti.",
+   "keys": ["ateş", "yirmi", "dördü"],
+   "v": {"t": "ates", "ask": "ateş", "key": "yirmi", "n": "dördü", "sfx": [["ateş", 0.3, "pop", 0.3, 0.0], ["yirmi", 0.55, "whoosh", 0.3, -0.1], ["dördü", 0.75, "tick", 0.28, -0.2], ["dördü", 0.75, "tick", 0.28, 0.0], ["dördü", 0.75, "stamp", 0.3, 0.25]]}
+  },
+  {
+   "text": "Ama giderken 'Eşyalarıma göz kulak olur musun?' diye sorduysa, yirmi kişiden on dokuzu hırsızı durdurmaya kalktı!",
+   "keys": ["göz", "kulak", "on", "dokuzu"],
+   "v": {"t": "soz", "ask": "eşyalarıma", "yes": "diye", "key": "yirmi", "n": "dokuzu", "act": "kalktı", "sfx": [["ama", 0.05, "stamp", 0.3, 0.0], ["eşyalarıma", 0.25, "pop", 0.3, 0.0], ["diye", 0.45, "shimmer", 0.35, 0.0], ["yirmi", 0.6, "whoosh", 0.3, -0.1], ["dokuzu", 0.8, "riser", 0.3, -0.5], ["kalktı", 0.95, "impact", 0.4, 0.0]]}
+  },
+  {
+   "text": "Çünkü 'tamam' diyen kişi artık seyirci değil, söz vermiş biri. İnsan verdiği sözü tutmak ister.",
+   "keys": ["seyirci", "söz", "sözü"],
+   "v": {"t": "neden", "ok": "tamam", "watcher": "seyirci", "key": "söz", "cut": "insan", "keep": "tutmak", "sfx": [["tamam", 0.15, "pop", 0.3, 0.0], ["seyirci", 0.35, "stamp", 0.35, 0.0], ["söz", 0.5, "shimmer", 0.4, 0.0], ["insan", 0.7, "whoosh", 0.3, -0.1], ["tutmak", 0.9, "pop", 0.35, 0.0]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Thomas Moriarty (1975), \"Crime, commitment, and the responsive bystander: Two field experiments\", Journal of Personality and Social Psychology 31(2), 370-376. İlk deney 1972 yazında, Temmuz ve Ağustos'taki altı hafta içi günde, New York'taki Jones Beach plajında yapıldı.",
+  "Düzen: Deneyci 'kurban', denekten yaklaşık 1,5 metre (beş fit) uzağa havlusunu serdi ve portatif bir radyoda yerel bir rock istasyonunu oldukça yüksek sesle açtı. 1-2 dakika uzandıktan sonra kalkıp deneğe kısaca konuştu ve tahta yola doğru yürüyüp gözden kayboldu. İki-üç dakika sonra ikinci bir deneyci 'hırsız' olarak gelip hâlâ çalan radyoyu boş havludan aldı ve ters yöne yürüyüp gitti. Kurban ve hırsız rolleri, yirmili yaşlarda bir kadın ve bir erkek deneyci arasında dönüşümlü oynandı.",
+  "Söz koşulu: Kurban giderken 'Affedersiniz, birkaç dakikalığına tahta yola çıkıyorum... eşyalarıma göz kulak olur musunuz?' dedi; her denek kabul etti. Sözsüz koşul: Kurban yalnızca 'Affedersiniz, buraya yalnız geldim ve kibritim yok. Ateşiniz var mı?' diye sordu.",
+  "Sonuç: 56 denekten 16'sı hırsızlığı fark etmediğini söyledi; analiz 40 denekle, koşul başına 20 kişiyle yapıldı. Sözsüz koşulda 20 kişiden 4'ü (%20) tepki verdi, yani hırsızlıkların %80'i başarılı oldu. Söz koşulunda 20 kişiden 19'u (%95) tepki verdi. 'Tepki' hırsıza durmasını seslenmek, peşinden koşmak ya da açıklama istemekti.",
+  "Moriarty aynı makalede New York'taki Automat lokantalarında bavulla yapılan ikinci bir deneyde de söz veren kişilerin hırsızlığı daha sık durdurduğunu bildirir. Yazarın yorumu: seyirciler çoğu zaman ne yapacakları konusunda çatışma yaşar; önceden verilen söz bu kararı basitleştirir ve onları harekete geçirir. Robert Cialdini 'Influence' kitabında bu deneyi tutarlılık ve bağlılık ilkesine örnek gösterir."
+ ],
+ "sources": [
+  "https://files.eric.ed.gov/fulltext/ED076923.pdf",
+  "https://cbsm.com/articles/32144-crime-commitment-and-the-responsive-bystander-two-field-experiments",
+  "https://www.scienceabc.com/humans/if-you-ask-someone-to-watch-your-stuff-are-they-likely-to-steal-it"
+ ],
+ "summary": "Biri sana sahip çıksın istiyorsan, yanında olmasına güvenme: önce ona söz verdir. 1972 yazında New York'taki Jones Beach plajında yapılan deneyde (Thomas Moriarty, 1975) bir araştırmacı radyosunu havlusunun üstünde bırakıp uzaklaştı; birkaç dakika sonra başka bir araştırmacı hırsız gibi radyoyu alıp gitti. Araştırmacı giderken yanındakinden yalnızca ateş istediğinde, 20 kişiden sadece 4'ü hırsıza müdahale etti. Giderken 'Eşyalarıma göz kulak olur musun?' diye sorduğunda ise 20 kişiden 19'u hırsızı durdurmaya kalktı: seslendi, peşinden koştu ya da hesap sordu. Çünkü 'tamam' diyen kişi artık seyirci değil, söz vermiş biri olur; insan verdiği sözü tutmak ister.",
+ "tags": [
+  "tutarlılık ilkesi",
+  "bağlılık",
+  "söz vermek",
+  "seyirci etkisi",
+  "bystander effect",
+  "commitment",
+  "cialdini",
+  "ikna",
+  "ikna teknikleri",
+  "psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "güç psikolojisi",
+  "hırsızlık deneyi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#ikna",
+  "#zirveninkanunu"
+ ]
+}
