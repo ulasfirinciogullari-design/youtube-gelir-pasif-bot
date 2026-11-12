@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0122",
+  "topic": "Hamileyken kedi beslenir mi, hamilelikte kediyi vermek gerekir mi, toksoplazma kediden mi bulaşır?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Hamileyken kediyle aynı evde yaşamak mümkün mü? 🐱",
+  "hook_text": "HAMİLEYKEN KEDİ BESLENİR Mİ?",
+  "description": "Hamileyken kedi beslenir mi, hamilelikte kediyi vermek gerekir mi?\n\nABD Hastalık Kontrol ve Önleme Merkezleri'ne (CDC) göre hamileyken kediyi vermek gerekmez; kum kabını mümkünse başkası temizlemeli ve kum her gün değiştirilmeli, çünkü dışkıdaki toksoplazma ancak 1-5 gün sonra bulaşıcı hale gelir. Kedi enfekte olduktan sonra paraziti yaklaşık iki hafta kadar dışkısıyla saçabilir. Cornell Üniversitesi Kedi Sağlığı Merkezi'ne göre insanlar bu paraziti kedi dışkısından çok çiğ et yiyerek kapıyor; avlanmayan ve çiğ et yemeyen ev kedilerinin enfekte olması da pek olası değil.\n\nSenin çevrende hamilelikte kedi evden gönderildi mi: evet mi, hayır mı?\n\n#kedi #hamilelik #toksoplazma #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0122",
+  "tags": [
+    "hamileyken kedi beslenir mi",
+    "hamilelikte kedi",
+    "toksoplazma",
+    "toksoplazma kediden bulaşır mı",
+    "kedi ve hamilelik",
+    "hamilelikte kedi kumu",
+    "kedi kumu",
+    "kediyi vermek",
+    "kedi sahibi",
+    "kedi bakımı",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hamilelik",
+    "gebelik",
+    "çiğ et",
+    "mümkün mü",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "sağlık",
+    "toxoplasmosis",
+    "cats and pregnancy",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "toksoplazma kediden bulasir mi",
+    "kedi bakimi",
+    "cig et",
+    "mumkun mu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can you live with a cat while you're pregnant? 🐱",
+      "description": "According to the US CDC, you don't have to give up your cat during pregnancy: have someone else change the litter, daily, because Toxoplasma in cat feces only becomes infectious after one to five days. People are much more likely to catch it from raw meat.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "es": {
+      "title": "¿Se puede vivir con un gato durante el embarazo? 🐱",
+      "description": "Según los CDC de Estados Unidos, no hace falta deshacerse del gato al quedar embarazada: que otra persona limpie el arenero, y a diario, porque el toxoplasma de las heces tarda de uno a cinco días en volverse infeccioso. Es mucho más probable contagiarse por comer carne cruda.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "pt": {
+      "title": "Dá para morar com um gato durante a gravidez? 🐱",
+      "description": "Segundo o CDC dos Estados Unidos, não é preciso doar o gato na gravidez: peça que outra pessoa limpe a caixa de areia, todos os dias, porque o toxoplasma nas fezes só se torna infeccioso depois de um a cinco dias. É muito mais provável pegar o parasita comendo carne crua.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "de": {
+      "title": "Kann man in der Schwangerschaft mit einer Katze zusammenleben? 🐱",
+      "description": "Laut der US-Gesundheitsbehörde CDC musst du deine Katze in der Schwangerschaft nicht abgeben: Lass jemand anderen das Katzenklo reinigen, und zwar täglich, denn Toxoplasmen im Kot werden erst nach ein bis fünf Tagen ansteckend. Viel wahrscheinlicher steckt man sich über rohes Fleisch an.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "fr": {
+      "title": "Peut-on vivre avec un chat pendant la grossesse ? 🐱",
+      "description": "Selon les CDC américains, inutile de se séparer de son chat pendant la grossesse : demande à quelqu'un d'autre de changer la litière, chaque jour, car le toxoplasme des excréments ne devient infectieux qu'après un à cinq jours. On l'attrape bien plus souvent en mangeant de la viande crue.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "it": {
+      "title": "Si può vivere con un gatto in gravidanza? 🐱",
+      "description": "Secondo i CDC statunitensi non serve dare via il gatto in gravidanza: fai pulire la lettiera a qualcun altro, ogni giorno, perché il toxoplasma nelle feci diventa infettivo solo dopo uno-cinque giorni. È molto più probabile contagiarsi mangiando carne cruda.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "ru": {
+      "title": "Можно ли жить с кошкой во время беременности? 🐱",
+      "description": "По данным американских CDC, отдавать кошку во время беременности не нужно: пусть лоток каждый день чистит кто-то другой, ведь токсоплазма в кале становится заразной только через один–пять дней. Гораздо чаще люди заражаются, поедая сырое мясо.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "ar": {
+      "title": "هل يمكن العيش مع قطة أثناء الحمل؟ 🐱",
+      "description": "بحسب المراكز الأمريكية لمكافحة الأمراض والوقاية منها، لا داعي للتخلي عن القطة أثناء الحمل: اطلبي من شخص آخر تنظيف صندوق الفضلات يوميًا، لأن طفيلي التوكسوبلازما في البراز لا يصبح معديًا إلا بعد يوم إلى خمسة أيام. والعدوى عن طريق اللحم النيء أكثر احتمالًا بكثير.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "hi": {
+      "title": "क्या गर्भावस्था में बिल्ली के साथ रहना संभव है? 🐱",
+      "description": "अमेरिका की CDC के अनुसार गर्भावस्था में बिल्ली को छोड़ने की ज़रूरत नहीं है: लिटर बॉक्स कोई और रोज़ साफ़ करे, क्योंकि मल में मौजूद टॉक्सोप्लाज़्मा एक से पाँच दिन बाद ही संक्रामक बनता है। लोगों को यह परजीवी कच्चा मांस खाने से कहीं ज़्यादा लगता है।\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "id": {
+      "title": "Bisakah tinggal bersama kucing saat hamil? 🐱",
+      "description": "Menurut CDC Amerika Serikat, kucing tidak perlu diberikan ke orang lain saat hamil: minta orang lain membersihkan kotak pasir setiap hari, karena toksoplasma dalam kotoran baru menular setelah satu sampai lima hari. Orang jauh lebih mungkin tertular dari daging mentah.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "ja": {
+      "title": "妊娠中に猫と一緒に暮らすことはできる？ 🐱",
+      "description": "米国CDCによると、妊娠しても猫を手放す必要はありません。トイレの掃除は毎日、ほかの人に頼みましょう。ふんの中のトキソプラズマは1〜5日たたないと感染力を持たないからです。人が感染するのは、猫よりも生肉からのほうがはるかに多いとされています。\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "ko": {
+      "title": "임신 중에 고양이와 함께 살 수 있을까? 🐱",
+      "description": "미국 CDC에 따르면 임신했다고 고양이를 보낼 필요는 없습니다. 화장실 청소는 매일, 다른 사람에게 맡기세요. 배설물 속 톡소플라스마는 1~5일이 지나야 감염력이 생기기 때문입니다. 사람은 고양이보다 날고기를 통해 감염될 가능성이 훨씬 큽니다.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "pl": {
+      "title": "Czy w ciąży można mieszkać z kotem? 🐱",
+      "description": "Według amerykańskich CDC w ciąży nie trzeba oddawać kota: niech kuwetę codziennie sprząta ktoś inny, bo toksoplazma w kale staje się zakaźna dopiero po jednym–pięciu dniach. Znacznie łatwiej zarazić się, jedząc surowe mięso.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "nl": {
+      "title": "Kun je zwanger samenwonen met een kat? 🐱",
+      "description": "Volgens de Amerikaanse CDC hoef je je kat tijdens de zwangerschap niet weg te doen: laat iemand anders de kattenbak verschonen, elke dag, want toxoplasma in de ontlasting wordt pas na één tot vijf dagen besmettelijk. Via rauw vlees raak je veel eerder besmet.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "uk": {
+      "title": "Чи можна жити з котом під час вагітності? 🐱",
+      "description": "За даними американських CDC, віддавати кота під час вагітності не потрібно: нехай лоток щодня чистить хтось інший, бо токсоплазма в калі стає заразною лише через один–п'ять днів. Значно частіше люди заражаються через сире м'ясо.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "vi": {
+      "title": "Có thể sống chung với mèo khi đang mang thai không? 🐱",
+      "description": "Theo CDC Hoa Kỳ, mang thai không có nghĩa là phải cho mèo đi: hãy nhờ người khác dọn khay cát mỗi ngày, vì ký sinh trùng Toxoplasma trong phân chỉ có khả năng lây sau một đến năm ngày. Con người dễ nhiễm nó từ thịt sống hơn nhiều.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "az": {
+      "title": "Hamiləlikdə pişiklə bir evdə yaşamaq mümkündürmü? 🐱",
+      "description": "ABŞ-ın CDC qurumuna görə hamiləlikdə pişiyi vermək lazım deyil: qum qabını hər gün başqası təmizləsin, çünki nəcisdəki toksoplazma yalnız bir-beş gündən sonra yoluxucu olur. İnsanlar bu paraziti çiy ətdən daha çox alırlar.\n\n#shorts\n\nSeri: mk-c0122"
+    },
+    "ro": {
+      "title": "Se poate locui cu o pisică în timpul sarcinii? 🐱",
+      "description": "Potrivit CDC din SUA, nu trebuie să renunți la pisică în sarcină: roagă pe altcineva să schimbe zilnic litiera, pentru că toxoplasma din fecale devine infecțioasă abia după una până la cinci zile. E mult mai probabil să te infectezi din carne crudă.\n\n#shorts\n\nSeri: mk-c0122"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin çevrende hamilelikte kedi evden gönderildi mi: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kedi, hamilelik haberiyle evden gönderilmek üzere.",
+      "visual": "close-up of a cat's face looking sadly into the camera",
+      "stock_query": "cat face",
+      "source": "stock",
+      "callout": "EVDEN GÖNDERİLECEK"
+    },
+    {
+      "text": "Peki hamileyken kediyle aynı evde yaşamak mümkün mü?",
+      "visual": "a woman gently holding a cat on the sofa",
+      "stock_query": "woman cat",
+      "source": "stock"
+    },
+    {
+      "text": "Korkulan parazit toksoplazma; oysa insanlara kediden çok çiğ etten bulaşıyor.",
+      "visual": "raw meat on a cutting board in a kitchen",
+      "stock_query": "raw meat",
+      "source": "stock",
+      "subject": [
+        "meat"
+      ],
+      "callout": "ASIL RİSK ÇİĞ ET"
+    },
+    {
+      "text": "Cevap evet: ABD hastalık kontrol merkezine göre kediyi vermek gerekmez; kumunu her gün başkası temizlesin.",
+      "visual": "a person scooping a cat litter box",
+      "stock_query": "cat litter",
+      "source": "stock",
+      "callout": "KEDİYİ VERMEK GEREKMEZ"
+    },
+    {
+      "text": "Dışkıdaki parazit en erken bir gün sonra bulaşıcı olur; bunu bilmeyen evlerde ise...",
+      "visual": "a cat looking out of a window at home",
+      "stock_query": "cat window",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.3,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #175",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0122_1794496955_ig.mp4"
+}
