@@ -1,7 +1,7 @@
 {
- "started": "2026-11-10T22:49:43+00:00",
+ "started": "2026-11-12T22:26:33+00:00",
  "bolum": "k007",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 562,
  "voice": {
@@ -12,7 +12,15 @@
   "similarity_boost": 0.8
  },
  "duration": 31.87,
- "render_seconds": 125,
+ "render_seconds": 81,
  "title": "Garsonun Bu Tek Hareketi Bahşişi %21 Artırdı 🤯 #psikoloji",
- "finished": "2026-11-10T22:51:54+00:00"
+ "video_id": "aGlv2O0hw-A",
+ "url": "https://youtube.com/shorts/aGlv2O0hw-A",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-13T17:00:00+00:00",
+ "finished": "2026-11-12T22:28:00+00:00"
 }
