@@ -1,9 +1,9 @@
 {
- "started": "2026-11-12T22:26:33+00:00",
- "bolum": "k007",
- "mod": "zamanla",
+ "started": "2026-11-12T22:42:40+00:00",
+ "bolum": "k008",
+ "mod": "deneme",
  "tablolar": {},
- "chars": 562,
+ "chars": 590,
  "voice": {
   "model": "eleven_flash_v2_5",
   "speed": 1.1,
@@ -11,16 +11,8 @@
   "style": 0.5,
   "similarity_boost": 0.8
  },
- "duration": 31.87,
- "render_seconds": 81,
- "title": "Garsonun Bu Tek Hareketi Bahşişi %21 Artırdı 🤯 #psikoloji",
- "video_id": "aGlv2O0hw-A",
- "url": "https://youtube.com/shorts/aGlv2O0hw-A",
- "privacy": "private",
- "channel": {
-  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "title": "Zirvenin Kanunu"
- },
- "publish_at": "2026-11-13T17:00:00+00:00",
- "finished": "2026-11-12T22:28:00+00:00"
+ "duration": 35.4,
+ "render_seconds": 119,
+ "title": "Eşyanı Bırakmadan Önce Bu Soruyu Sor 🤯 #psikoloji",
+ "finished": "2026-11-12T22:44:44+00:00"
 }
