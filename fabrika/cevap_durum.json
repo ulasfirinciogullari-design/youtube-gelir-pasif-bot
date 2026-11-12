@@ -573,6 +573,12 @@
     "r",
     "Ekranı izlemekten dalmış olmalısın, hadi şimdi kocaman bir göz kırpma kampanyası",
     "dc937b598926"
+   ],
+   "17915381331574256": [
+    1794492655.2015934,
+    "r",
+    "Geçmiş olsun, çok korkutucu olmalı! Yıldırımlar metal antenleri ve elektrik hatl",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -629,6 +635,12 @@
     "kind": "yorum",
     "text": "Ben gözümü kıramıyor ki",
     "reply": "Ekranı izlemekten dalmış olmalısın, hadi şimdi kocaman bir göz kırpma kampanyası yapalım! 😉\n— Bit 🤖"
+   },
+   {
+    "at": 1794492655.2015934,
+    "kind": "yorum",
+    "text": "bizim tv antenine düştü tv anteni tv patladı sonra yangın çıktı baya çatı fln yandı",
+    "reply": "Geçmiş olsun, çok korkutucu olmalı! Yıldırımlar metal antenleri ve elektrik hatlarını çok sever, iyi ki büyümeden atlatmışsınız ⚡\n— Bit 🤖"
    }
   ]
  },
@@ -636,10 +648,10 @@
  "nobet": {
   "basladi": "2026-11-12T12:12:54+00:00",
   "run": "43214354921",
-  "tur": 116,
-  "ig_cevap": 0,
+  "tur": 119,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-12T14:07:57+00:00"
+  "son_tur": "2026-11-12T14:10:58+00:00"
  }
 }
