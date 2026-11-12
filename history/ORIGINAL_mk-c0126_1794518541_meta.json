@@ -1,0 +1,171 @@
+{
+  "topic_id": "mk-c0126",
+  "topic": "Solucan ikiye bölününce iki solucan olur mu, kesilen solucan yaşar mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Solucan ikiye bölünüp iki solucan olabilir mi? 🪱",
+  "hook_text": "İKİYE BÖLÜNEN SOLUCAN İKİ OLUR MU?",
+  "description": "Solucan ikiye bölününce iki solucan olur mu, kesilen solucan yaşar mı?\n\nOlmaz. Britanya Toprak Solucanı Derneği'ne (Earthworm Society of Britain) göre ikiye bölünen toprak solucanı iki solucana dönüşmez: kesik, kalın kuşak denen klitellumun gerisindeyse baş tarafı yeni bir kuyruk çıkarabilir, ama kopan kuyruk ölür; çünkü beyin ve solunum sisteminin ana kısmı baş ile kuşak arasındadır. Solucanın kalp görevi gören beş çift kaslı damarı da vücudunun ön ucundadır. Bazı yassı solucanlar ise minicik bir parçalarından bile bütün vücudu yeniden oluşturabilir.\n\nSen de ikiye bölünen solucanın iki solucan olduğunu sanıyor muydun: evet mi, hayır mı?\n\n#solucan #hayvanlar #mümkünmü #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0126",
+  "tags": [
+    "solucan",
+    "toprak solucanı",
+    "solucan ikiye bölünürse",
+    "ikiye bölünen solucan",
+    "kesilen solucan yaşar mı",
+    "solucanın kaç kalbi var",
+    "solucan kalbi",
+    "yassı solucan",
+    "planarya",
+    "yenilenme",
+    "rejenerasyon",
+    "solucan efsanesi",
+    "bahçe",
+    "toprak",
+    "hayvanlar",
+    "hayvan gerçekleri",
+    "mümkün mü",
+    "efsaneler",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "earthworm",
+    "cut worm in half",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "toprak solucani",
+    "solucan ikiye bolunurse",
+    "ikiye bolunen solucan"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can an earthworm cut in half become two worms? 🪱",
+      "description": "No. If cut behind its clitellum, the head end may regrow a tail, but the cut-off tail dies: the brain and main respiratory system sit between the head and the clitellum, and the worm's five pairs of hearts are at the front. Some flatworms, though, can regrow a whole body from a tiny piece.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "es": {
+      "title": "¿Una lombriz cortada por la mitad puede convertirse en dos? 🪱",
+      "description": "No. Si se corta detrás del clitelo, la parte de la cabeza puede regenerar la cola, pero la cola cortada muere: el cerebro y la mayor parte del sistema respiratorio están entre la cabeza y el clitelo, y sus cinco pares de corazones están delante. Algunos gusanos planos, en cambio, sí regeneran el cuerpo entero a partir de un trocito.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "pt": {
+      "title": "Uma minhoca cortada ao meio pode virar duas? 🪱",
+      "description": "Não. Se for cortada atrás do clitelo, a parte da cabeça pode regenerar a cauda, mas a cauda cortada morre: o cérebro e a maior parte do sistema respiratório ficam entre a cabeça e o clitelo, e os cinco pares de corações ficam na frente. Já alguns vermes achatados conseguem refazer o corpo inteiro a partir de um pedacinho.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "de": {
+      "title": "Kann ein halbierter Regenwurm zu zwei Würmern werden? 🪱",
+      "description": "Nein. Wird er hinter dem Gürtel (Clitellum) durchtrennt, kann das Kopfende einen neuen Schwanz bilden, doch das abgetrennte Hinterende stirbt: Gehirn und der Großteil der Atmungsorgane liegen zwischen Kopf und Gürtel, und seine fünf Paar Herzen sitzen vorne. Manche Plattwürmer dagegen bilden aus einem winzigen Stück einen ganzen Körper neu.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "fr": {
+      "title": "Un ver de terre coupé en deux peut-il devenir deux vers ? 🪱",
+      "description": "Non. S'il est coupé derrière le clitellum, la partie avec la tête peut refaire une queue, mais la queue coupée meurt : le cerveau et l'essentiel du système respiratoire se trouvent entre la tête et le clitellum, et ses cinq paires de cœurs sont à l'avant. Certains vers plats, eux, peuvent reformer un corps entier à partir d'un minuscule morceau.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "it": {
+      "title": "Un lombrico tagliato a metà può diventare due lombrichi? 🪱",
+      "description": "No. Se il taglio è dietro il clitello, la parte con la testa può rigenerare la coda, ma la coda staccata muore: il cervello e gran parte del sistema respiratorio si trovano tra la testa e il clitello, e i suoi cinque paia di cuori sono davanti. Alcuni vermi piatti, invece, rigenerano un corpo intero da un pezzettino.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "ru": {
+      "title": "Может ли разрезанный пополам дождевой червь стать двумя? 🪱",
+      "description": "Нет. Если разрез прошёл позади пояска, передняя часть может отрастить новый хвост, но отрезанный хвост погибает: мозг и основная часть дыхательной системы находятся между головой и пояском, а пять пар «сердец» — в передней части тела. А вот некоторые плоские черви способны восстановить всё тело из крошечного кусочка.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "ar": {
+      "title": "هل يمكن أن تصبح دودة الأرض المقطوعة نصفين دودتين؟ 🪱",
+      "description": "لا. إذا قُطعت خلف الحزام (السرج) قد ينمو للجزء الأمامي ذيل جديد، أما الذيل المقطوع فيموت، لأن الدماغ ومعظم الجهاز التنفسي يقعان بين الرأس والحزام، كما أن أزواج قلوبها الخمسة في المقدمة. في المقابل، تستطيع بعض الديدان المسطحة إعادة بناء جسم كامل من قطعة صغيرة.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "hi": {
+      "title": "क्या आधा कटा केंचुआ दो केंचुए बन सकता है? 🪱",
+      "description": "नहीं। अगर कट क्लाइटेलम (मोटी पट्टी) के पीछे हो, तो सिर वाला हिस्सा नई पूँछ उगा सकता है, लेकिन कटी हुई पूँछ मर जाती है, क्योंकि दिमाग़ और श्वसन तंत्र का मुख्य हिस्सा सिर और पट्टी के बीच होता है और उसके पाँच जोड़ी दिल भी आगे की ओर होते हैं। हाँ, कुछ चपटे कृमि एक छोटे से टुकड़े से पूरा शरीर फिर बना लेते हैं।\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "id": {
+      "title": "Bisakah cacing tanah yang dipotong dua jadi dua cacing? 🪱",
+      "description": "Tidak. Jika dipotong di belakang klitelum, bagian kepala bisa menumbuhkan ekor baru, tetapi ekor yang terpotong akan mati, karena otak dan sebagian besar sistem pernapasan ada di antara kepala dan klitelum, dan lima pasang jantungnya juga di bagian depan. Sebaliknya, beberapa cacing pipih bisa membentuk tubuh utuh dari potongan kecil.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "ja": {
+      "title": "ミミズは半分に切ると2匹になれる？ 🪱",
+      "description": "なれません。環帯より後ろで切れた場合、頭側は新しい尾を再生できることがありますが、切れた尾側は死んでしまいます。脳や呼吸に関わる主な部分は頭と環帯の間にあり、5対の心臓も体の前のほうにあるからです。一方、プラナリアなど一部の扁形動物は、小さなかけらから体全体を作り直せます。\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "ko": {
+      "title": "지렁이를 반으로 자르면 두 마리가 될 수 있을까? 🪱",
+      "description": "아닙니다. 환대 뒤쪽이 잘리면 머리 쪽은 새 꼬리를 만들 수 있지만, 잘려 나간 꼬리 쪽은 죽습니다. 뇌와 호흡계의 주요 부분이 머리와 환대 사이에 있고, 다섯 쌍의 심장도 앞쪽에 있기 때문입니다. 반면 일부 편형동물은 아주 작은 조각에서도 몸 전체를 다시 만들어 냅니다.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "pl": {
+      "title": "Czy przecięta na pół dżdżownica może stać się dwiema? 🪱",
+      "description": "Nie. Jeśli cięcie wypadnie za siodełkiem, przednia część może odtworzyć ogon, ale odcięty ogon ginie: mózg i główna część układu oddechowego leżą między głową a siodełkiem, a pięć par serc znajduje się z przodu. Niektóre płazińce potrafią za to odtworzyć całe ciało z malutkiego kawałka.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "nl": {
+      "title": "Kan een doormidden gesneden regenworm twee wormen worden? 🪱",
+      "description": "Nee. Wordt hij achter het zadel (clitellum) doorgesneden, dan kan het kopeinde een nieuwe staart vormen, maar de afgesneden staart sterft: de hersenen en het grootste deel van het ademhalingssysteem zitten tussen kop en zadel, en zijn vijf paar harten zitten vooraan. Sommige platwormen kunnen wel een heel lichaam uit een piepklein stukje laten aangroeien.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "uk": {
+      "title": "Чи може розрізаний навпіл дощовий черв'як стати двома? 🪱",
+      "description": "Ні. Якщо розріз пройшов позаду пояска, передня частина може відростити новий хвіст, але відрізаний хвіст гине: мозок і основна частина дихальної системи розташовані між головою та пояском, а п'ять пар «сердець» — спереду. Натомість деякі плоскі черви здатні відновити все тіло з крихітного шматочка.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "vi": {
+      "title": "Giun đất bị cắt đôi có thể thành hai con không? 🪱",
+      "description": "Không. Nếu bị cắt phía sau đai sinh dục, phần đầu có thể mọc lại đuôi, nhưng phần đuôi bị cắt sẽ chết, vì não và phần chính của hệ hô hấp nằm giữa đầu và đai, còn năm đôi tim cũng ở phía trước. Ngược lại, một số loài giun dẹp có thể tái tạo cả cơ thể từ một mẩu nhỏ.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "az": {
+      "title": "İkiyə bölünən yağış qurdu iki qurd ola bilərmi? 🪱",
+      "description": "Xeyr. Kəsik qalın qurşağın (klitellumun) arxasındadırsa, baş tərəf yeni quyruq çıxara bilər, amma qopan quyruq ölür: beyin və tənəffüs sisteminin əsas hissəsi baş ilə qurşaq arasındadır, beş cüt ürəyi də öndədir. Bəzi yastı qurdlar isə kiçicik bir parçadan bütün bədəni yenidən qura bilir.\n\n#shorts\n\nSeri: mk-c0126"
+    },
+    "ro": {
+      "title": "Poate o râmă tăiată în două să devină două râme? 🪱",
+      "description": "Nu. Dacă tăietura e în spatele clitelului, partea cu capul își poate reface coada, dar coada tăiată moare: creierul și cea mai mare parte a sistemului respirator se află între cap și clitel, iar cele cinci perechi de inimi sunt în față. În schimb, unii viermi plați își pot reface tot corpul dintr-o bucățică.\n\n#shorts\n\nSeri: mk-c0126"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de ikiye bölünen solucanın iki solucan olduğunu sanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu solucanın tam beş çift kalbi var.",
+      "visual": "macro close-up of an earthworm's head on wet soil",
+      "stock_query": "earthworm macro",
+      "source": "stock",
+      "callout": "5 ÇİFT KALP"
+    },
+    {
+      "text": "Peki ikiye bölünse iki solucan olabilir mi?",
+      "visual": "an earthworm crawling across damp soil",
+      "stock_query": "earthworm soil",
+      "source": "stock"
+    },
+    {
+      "text": "Bazı yassı solucanlar bunu gerçekten yapar; minicik bir parçaları bile yeni bir vücut oluşturur.",
+      "visual": "close-up of an earthworm stretching its body",
+      "stock_query": "earthworm close up",
+      "source": "stock",
+      "callout": "YASSI SOLUCAN YAPAR"
+    },
+    {
+      "text": "Toprak solucanında cevap hayır: arka parça ölür, baş tarafı ancak kesik kalın kuşağın gerisindeyse kuyruk çıkarabilir.",
+      "visual": "an earthworm in garden soil next to a gardener's trowel",
+      "stock_query": "earthworm garden",
+      "source": "stock",
+      "callout": "ARKA PARÇA ÖLÜR"
+    },
+    {
+      "text": "Arka parçada ne beyin var ne de kalp; oysa...",
+      "visual": "an earthworm slowly crawling on soil",
+      "stock_query": "earthworm crawling",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.71,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #179",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0126_1794518541_ig.mp4"
+}
