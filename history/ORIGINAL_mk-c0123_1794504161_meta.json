@@ -1,0 +1,179 @@
+{
+  "topic_id": "mk-c0123",
+  "topic": "Yutulan sakız yedi yıl midede kalır mı, sakız yutarsan ne olur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Yuttuğun sakız yedi yıl midende kalmıyor 🍬",
+  "hook_text": "SAKIZ YUTARSAN NE OLUR?",
+  "description": "Yutulan sakız yedi yıl midede kalır mı, sakız yutarsan ne olur?\n\nKalmaz. Mayo Clinic'ten Dr. Larson'a göre vücut sakızı sindiremez ama onu sindiremediği diğer yabancı cisimler gibi ilerletir; ara sıra yutulan bir sakız sorunsuzca yol alır ve genellikle oldukça hızlı bir şekilde dışarı atılır. Yine de sakız yutmayı alışkanlık haline getirmek, özellikle küçük çocuklarda önerilmiyor: Pediatrics dergisinde 1998'de yayımlanan bir makalede, sık sık sakız yutan üç çocukta biriken sakızın sindirim yolunu tıkadığı anlatılıyor.\n\nSen de çocukken yuttuğun sakızın yedi yıl kalacağına inanmış mıydın: evet mi, hayır mı?\n\n#sakız #insanvücudu #efsaneler #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0123",
+  "tags": [
+    "sakız",
+    "sakız yutmak",
+    "sakız yutarsan ne olur",
+    "yutulan sakız yedi yıl",
+    "sakız midede kalır mı",
+    "sakız sindirilir mi",
+    "çocuk sakız yuttu",
+    "sakız efsanesi",
+    "sindirim sistemi",
+    "mide",
+    "bağırsak",
+    "insan vücudu",
+    "vücut",
+    "sağlık",
+    "efsaneler",
+    "doğru bilinen yanlışlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "swallowing gum",
+    "chewing gum myth",
+    "sakız yedi yıl",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "sakiz",
+    "sakiz yutmak",
+    "sakiz yutarsan ne olur",
+    "yutulan sakiz yedi yil"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Swallowed gum doesn't stay in your stomach for seven years 🍬",
+      "description": "Your body can't digest gum, but it doesn't sit in your stomach for seven years: your gut moves it along like any other indigestible object, and it usually passes quickly. Still, a 1998 paper described three children who habitually swallowed gum and developed blockages.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "es": {
+      "title": "El chicle que tragas no se queda siete años en tu estómago 🍬",
+      "description": "Tu cuerpo no puede digerir el chicle, pero no se queda siete años en el estómago: el intestino lo empuja como a cualquier otra cosa que no digiere y suele salir pronto. Aun así, un artículo de 1998 describió a tres niños que tragaban chicle a menudo y sufrieron obstrucciones.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "pt": {
+      "title": "O chiclete engolido não fica sete anos no seu estômago 🍬",
+      "description": "O corpo não consegue digerir chiclete, mas ele não fica sete anos no estômago: o intestino o empurra como qualquer outra coisa que não digere, e ele costuma sair rápido. Ainda assim, um artigo de 1998 descreveu três crianças que engoliam chiclete com frequência e tiveram obstruções.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "de": {
+      "title": "Verschluckter Kaugummi bleibt nicht sieben Jahre im Magen 🍬",
+      "description": "Dein Körper kann Kaugummi nicht verdauen, doch er bleibt nicht sieben Jahre im Magen: Der Darm schiebt ihn weiter wie alles Unverdauliche, und meist ist er schnell wieder draußen. Ein Fachartikel von 1998 beschrieb allerdings drei Kinder, die ständig Kaugummi schluckten und bei denen sich der Verdauungstrakt verstopfte.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "fr": {
+      "title": "Le chewing-gum avalé ne reste pas sept ans dans ton estomac 🍬",
+      "description": "Ton corps ne peut pas digérer le chewing-gum, mais il ne reste pas sept ans dans l'estomac : l'intestin le fait avancer comme tout ce qu'il ne digère pas, et il est généralement vite évacué. Un article de 1998 a toutefois décrit trois enfants qui en avalaient souvent et dont le tube digestif s'est bouché.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "it": {
+      "title": "La gomma inghiottita non resta sette anni nello stomaco 🍬",
+      "description": "Il corpo non riesce a digerire la gomma da masticare, ma non resta sette anni nello stomaco: l'intestino la spinge avanti come qualsiasi cosa indigeribile e di solito viene espulsa in fretta. Un articolo del 1998 ha però descritto tre bambini che la inghiottivano spesso e hanno avuto un'ostruzione.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "ru": {
+      "title": "Проглоченная жвачка не остаётся в желудке на семь лет 🍬",
+      "description": "Организм не переваривает жевательную резинку, но семь лет в желудке она не лежит: кишечник продвигает её дальше, как любой непереваримый предмет, и обычно она быстро выходит. Правда, в статье 1998 года описаны трое детей, которые часто глотали жвачку, и у них возникла непроходимость.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "ar": {
+      "title": "العلكة التي تبتلعها لا تبقى في معدتك سبع سنوات 🍬",
+      "description": "لا يستطيع جسمك هضم العلكة، لكنها لا تبقى في المعدة سبع سنوات: فالأمعاء تدفعها مثل أي شيء آخر لا يُهضم، وغالبًا ما تخرج سريعًا. ومع ذلك وصفت ورقة طبية عام 1998 ثلاثة أطفال اعتادوا ابتلاع العلكة فأصيبوا بانسداد.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "hi": {
+      "title": "निगली हुई च्युइंग गम सात साल तक पेट में नहीं रहती 🍬",
+      "description": "शरीर च्युइंग गम को पचा नहीं पाता, लेकिन वह सात साल पेट में नहीं रहती: आँतें उसे किसी भी न पचने वाली चीज़ की तरह आगे बढ़ा देती हैं और वह आमतौर पर जल्दी बाहर निकल जाती है। फिर भी 1998 के एक शोध-पत्र में ऐसे तीन बच्चों का ज़िक्र है जो अक्सर गम निगलते थे और उनके पाचन तंत्र में रुकावट हो गई।\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "id": {
+      "title": "Permen karet yang tertelan tidak tinggal tujuh tahun di lambung 🍬",
+      "description": "Tubuh tidak bisa mencerna permen karet, tetapi ia tidak menetap tujuh tahun di lambung: usus mendorongnya seperti benda lain yang tak tercerna, dan biasanya cepat keluar. Meski begitu, sebuah makalah tahun 1998 menggambarkan tiga anak yang sering menelan permen karet hingga saluran cernanya tersumbat.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "ja": {
+      "title": "飲み込んだガムが7年も胃に残ることはない 🍬",
+      "description": "体はガムを消化できませんが、7年も胃にとどまるわけではありません。腸は消化できないほかの物と同じようにガムを送り出し、たいていすぐに排出されます。ただし1998年の論文では、ガムをよく飲み込んでいた子ども3人で消化管が詰まった例が報告されています。\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "ko": {
+      "title": "삼킨 껌은 7년 동안 위에 남아 있지 않는다 🍬",
+      "description": "몸은 껌을 소화하지 못하지만, 껌이 7년이나 위에 머무르지는 않습니다. 장은 소화되지 않는 다른 물질처럼 껌을 밀어내고, 보통 금방 배출됩니다. 다만 1998년 한 논문에는 껌을 습관적으로 삼키다 소화관이 막힌 아이 세 명의 사례가 실렸습니다.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "pl": {
+      "title": "Połknięta guma nie zostaje w żołądku na siedem lat 🍬",
+      "description": "Organizm nie trawi gumy do żucia, ale nie zalega ona w żołądku przez siedem lat: jelita przesuwają ją dalej jak każdą niestrawną rzecz i zwykle szybko zostaje wydalona. W artykule z 1998 roku opisano jednak troje dzieci, które często połykały gumę, aż doszło u nich do niedrożności.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "nl": {
+      "title": "Ingeslikte kauwgom blijft geen zeven jaar in je maag 🍬",
+      "description": "Je lichaam kan kauwgom niet verteren, maar hij blijft geen zeven jaar in je maag: je darmen duwen hem verder zoals alles wat onverteerbaar is, en meestal ben je hem snel kwijt. Toch beschreef een artikel uit 1998 drie kinderen die vaak kauwgom inslikten en bij wie het spijsverteringskanaal verstopt raakte.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "uk": {
+      "title": "Проковтнута жуйка не залишається в шлунку на сім років 🍬",
+      "description": "Організм не перетравлює жувальну гумку, але сім років у шлунку вона не лежить: кишечник просуває її далі, як будь-яку неперетравну річ, і зазвичай вона швидко виходить. Утім, у статті 1998 року описано трьох дітей, які часто ковтали жуйку, і в них виникла непрохідність.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "vi": {
+      "title": "Kẹo cao su nuốt vào không nằm trong dạ dày bảy năm 🍬",
+      "description": "Cơ thể không tiêu hóa được kẹo cao su, nhưng nó không ở lại dạ dày bảy năm: ruột đẩy nó đi như mọi thứ khó tiêu khác và thường nó được thải ra khá nhanh. Dù vậy, một bài báo năm 1998 đã mô tả ba đứa trẻ hay nuốt kẹo cao su đến mức bị tắc đường tiêu hóa.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "az": {
+      "title": "Udduğun saqqız yeddi il mədəndə qalmır 🍬",
+      "description": "Bədən saqqızı həzm edə bilmir, amma o, yeddi il mədədə qalmır: bağırsaqlar onu həzm olunmayan hər şey kimi irəli itələyir və adətən tez xaric olur. Yenə də 1998-ci ildə dərc olunan bir məqalədə tez-tez saqqız udan üç uşaqda həzm yolunun tıxandığı təsvir edilib.\n\n#shorts\n\nSeri: mk-c0123"
+    },
+    "ro": {
+      "title": "Guma înghițită nu stă șapte ani în stomac 🍬",
+      "description": "Corpul nu poate digera guma de mestecat, dar ea nu rămâne șapte ani în stomac: intestinul o împinge mai departe ca pe orice lucru nedigerabil și de obicei iese repede. Totuși, un articol din 1998 a descris trei copii care înghițeau des gumă și au ajuns la blocaje digestive.\n\n#shorts\n\nSeri: mk-c0123"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de çocukken yuttuğun sakızın yedi yıl kalacağına inanmış mıydın: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Yuttuğun bu sakız yedi yıl midende kalmaz.",
+      "visual": "close-up of a mouth chewing gum and blowing a pink bubble",
+      "stock_query": "chewing gum mouth",
+      "source": "stock",
+      "callout": "7 YIL EFSANESİ"
+    },
+    {
+      "text": "Ama efsanenin bir yarısı doğru: miden sakızı gerçekten sindiremez.",
+      "visual": "3D animation of the human stomach",
+      "stock_query": "stomach anatomy",
+      "source": "stock",
+      "subject": [
+        "stomach"
+      ],
+      "callout": "SİNDİREMEZ"
+    },
+    {
+      "text": "Hatta sık sık sakız yutan üç çocukta, biriken sakız sindirim yolunu tıkamıştı.",
+      "visual": "a child blowing a bubble with bubble gum",
+      "stock_query": "child bubble gum",
+      "source": "stock",
+      "callout": "3 ÇOCUKTA TIKANMA"
+    },
+    {
+      "text": "Çünkü bağırsakların sindiremediği şeyi de ileri iter; tek bir sakız kısa sürede dışarı çıkar.",
+      "visual": "anatomical model of the human intestines",
+      "stock_query": "intestine anatomy",
+      "source": "stock",
+      "subject": [
+        "intestine"
+      ],
+      "callout": "KISA SÜREDE ÇIKAR"
+    },
+    {
+      "text": "Yanlışlıkla yuttuysan panik yapma; çünkü...",
+      "visual": "a young woman chewing gum and smiling",
+      "stock_query": "woman chewing gum",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 14.94,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #176",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0123_1794504161_ig.mp4"
+}
