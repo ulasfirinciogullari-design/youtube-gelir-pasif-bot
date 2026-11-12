@@ -1,0 +1,172 @@
+{
+  "topic_id": "mk-c0118",
+  "topic": "Parmak izi olmadan doğmak mümkün mü, parmak izi olmayan insan var mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Parmak izi olmadan doğmak mümkün mü? 👆",
+  "hook_text": "PARMAK İZSİZ DOĞULUR MU?",
+  "description": "Parmak izi olmadan doğmak mümkün mü, parmak izi olmayan insan var mı?\n\nParmak izi çizgileri anne karnının üçüncü ayında belirmeye başlar, altıncı ayda tamamlanır ve ömür boyu aynı kalır; aynı DNA'yı taşıyan tek yumurta ikizlerinin bile parmak izleri farklıdır. Yine de çok nadir görülen adermatoglifide parmak uçlarında hiç çizgi olmaz. SMARCAD1 genindeki değişikliklerden kaynaklanan bu durum dünyada yalnızca birkaç ailede bulunmuş; parmak izi isteyen ülkelere girişte sorun yaşadıkları için ona 'göçmenlik gecikmesi hastalığı' da deniyor.\n\nSence hangisi daha şaşırtıcı: ikizlerin farklı parmak izi mi, parmak izsiz doğan aileler mi?\n\n#parmakizi #insanvücudu #genetik #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0118",
+  "tags": [
+    "parmak izi",
+    "parmak izi olmadan doğmak",
+    "parmak izi olmayan insan",
+    "adermatoglifi",
+    "göçmenlik gecikmesi hastalığı",
+    "ikizlerin parmak izi aynı mı",
+    "parmak izi nasıl oluşur",
+    "parmak izi değişir mi",
+    "parmak izi neden farklı",
+    "tek yumurta ikizleri",
+    "parmak ucu",
+    "deri",
+    "genetik",
+    "nadir hastalık",
+    "insan vücudu",
+    "vücut",
+    "mümkün mü",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "fingerprints",
+    "adermatoglyphia",
+    "ikizlerin parmak izi",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a person be born without fingerprints? 👆",
+      "description": "Fingerprint ridges form in the womb and never change; even identical twins have different prints. Yet a rare SMARCAD1 mutation leaves a few families worldwide with completely smooth fingertips, a condition nicknamed 'immigration delay disease'.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "es": {
+      "title": "¿Se puede nacer sin huellas dactilares? 👆",
+      "description": "Las crestas de las huellas se forman en el útero y no cambian en toda la vida; ni siquiera los gemelos idénticos las comparten. Pero una rara mutación del gen SMARCAD1 deja a unas pocas familias en el mundo con las yemas lisas, una condición apodada 'enfermedad del retraso en inmigración'.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "pt": {
+      "title": "É possível nascer sem impressões digitais? 👆",
+      "description": "As cristas das digitais se formam no útero e não mudam pela vida toda; nem gêmeos idênticos têm digitais iguais. Mas uma mutação rara no gene SMARCAD1 deixa algumas poucas famílias no mundo com as pontas dos dedos lisas, condição apelidada de 'doença do atraso na imigração'.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "de": {
+      "title": "Kann man ohne Fingerabdrücke geboren werden? 👆",
+      "description": "Die Papillarleisten entstehen im Mutterleib und bleiben ein Leben lang gleich; selbst eineiige Zwillinge haben verschiedene Fingerabdrücke. Eine seltene Mutation im Gen SMARCAD1 lässt bei einigen wenigen Familien weltweit die Fingerkuppen glatt – man nennt das auch „Einwanderungsverzögerungskrankheit“.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "fr": {
+      "title": "Peut-on naître sans empreintes digitales ? 👆",
+      "description": "Les crêtes des empreintes se forment dans l'utérus et ne changent plus de toute la vie ; même les vrais jumeaux ont des empreintes différentes. Mais une mutation rare du gène SMARCAD1 laisse à quelques familles dans le monde le bout des doigts parfaitement lisse, une maladie surnommée « maladie du retard à l'immigration ».\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "it": {
+      "title": "Si può nascere senza impronte digitali? 👆",
+      "description": "Le creste delle impronte si formano nell'utero e restano uguali per tutta la vita; perfino i gemelli identici hanno impronte diverse. Una rara mutazione del gene SMARCAD1, però, lascia i polpastrelli lisci in poche famiglie al mondo: è soprannominata «malattia del ritardo all'immigrazione».\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "ru": {
+      "title": "Можно ли родиться без отпечатков пальцев? 👆",
+      "description": "Папиллярные линии формируются ещё в утробе и не меняются всю жизнь; даже у однояйцевых близнецов отпечатки разные. Но редкая мутация гена SMARCAD1 оставляет подушечки пальцев гладкими у нескольких семей в мире — это состояние прозвали «болезнью задержки на границе».\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "ar": {
+      "title": "هل يمكن أن يولد الإنسان بلا بصمات أصابع؟ 👆",
+      "description": "تتشكل خطوط البصمات في الرحم ولا تتغير طوال الحياة، وحتى التوائم المتطابقة تختلف بصماتهم. لكن طفرة نادرة في جين SMARCAD1 تجعل أطراف الأصابع ملساء تمامًا لدى بضع عائلات في العالم، وتُلقَّب هذه الحالة بـ«مرض تأخير الهجرة».\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "hi": {
+      "title": "क्या कोई बिना उंगलियों के निशान के पैदा हो सकता है? 👆",
+      "description": "उंगलियों के निशान की रेखाएँ गर्भ में ही बन जाती हैं और जीवन भर नहीं बदलतीं; हूबहू जुड़वाँ बच्चों के निशान भी अलग होते हैं। फिर भी SMARCAD1 जीन में एक दुर्लभ बदलाव से दुनिया के कुछ ही परिवारों में उंगलियों के सिरे बिल्कुल सपाट होते हैं, जिसे 'इमिग्रेशन डिले डिज़ीज़' भी कहा जाता है।\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "id": {
+      "title": "Mungkinkah lahir tanpa sidik jari? 👆",
+      "description": "Guratan sidik jari terbentuk di dalam rahim dan tidak berubah seumur hidup; bahkan kembar identik punya sidik jari berbeda. Namun mutasi langka pada gen SMARCAD1 membuat ujung jari beberapa keluarga di dunia benar-benar mulus, kondisi yang dijuluki 'penyakit penundaan imigrasi'.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "ja": {
+      "title": "指紋がないまま生まれることはある？ 👆",
+      "description": "指紋の隆線はお腹の中にいるうちにでき、一生変わりません。一卵性双生児でさえ指紋は違います。ところがSMARCAD1遺伝子のまれな変異により、世界でごく数家族だけ指先がつるつるの人たちがいて、「入国遅延病」とも呼ばれています。\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "ko": {
+      "title": "지문 없이 태어나는 것이 가능할까? 👆",
+      "description": "지문의 융선은 엄마 배 속에서 만들어지고 평생 변하지 않습니다. 일란성 쌍둥이도 지문은 서로 다릅니다. 그런데 SMARCAD1 유전자의 드문 변이 때문에 전 세계 몇몇 가족은 손끝이 완전히 매끈하며, 이 증상은 '입국 지연병'이라는 별명으로도 불립니다.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "pl": {
+      "title": "Czy można urodzić się bez odcisków palców? 👆",
+      "description": "Linie papilarne powstają jeszcze w łonie matki i nie zmieniają się przez całe życie; nawet bliźnięta jednojajowe mają różne odciski. Rzadka mutacja genu SMARCAD1 sprawia jednak, że w kilku rodzinach na świecie opuszki palców są zupełnie gładkie – to tak zwana „choroba opóźnionej imigracji”.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "nl": {
+      "title": "Kun je geboren worden zonder vingerafdrukken? 👆",
+      "description": "De lijntjes van je vingerafdruk ontstaan in de baarmoeder en blijven je hele leven gelijk; zelfs eeneiige tweelingen hebben verschillende vingerafdrukken. Door een zeldzame mutatie in het gen SMARCAD1 hebben een paar families wereldwijd toch volkomen gladde vingertoppen, ook wel 'immigratievertragingsziekte' genoemd.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "uk": {
+      "title": "Чи можна народитися без відбитків пальців? 👆",
+      "description": "Папілярні лінії утворюються ще в утробі й не змінюються все життя; навіть в однояйцевих близнюків відбитки різні. Але рідкісна мутація гена SMARCAD1 залишає подушечки пальців гладенькими в кількох родинах у світі — цей стан прозвали «хворобою затримки на кордоні».\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "vi": {
+      "title": "Có thể sinh ra mà không có dấu vân tay không? 👆",
+      "description": "Các đường vân tay hình thành từ trong bụng mẹ và không thay đổi suốt đời; ngay cả cặp song sinh cùng trứng cũng có vân tay khác nhau. Thế nhưng một đột biến hiếm trên gen SMARCAD1 khiến đầu ngón tay của vài gia đình trên thế giới nhẵn hoàn toàn, tình trạng này còn được gọi là 'bệnh chậm nhập cảnh'.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "az": {
+      "title": "Barmaq izi olmadan doğulmaq mümkündürmü? 👆",
+      "description": "Barmaq izinin xətləri ana bətnində yaranır və ömür boyu dəyişmir; hətta eyniyumurta əkizlərin də barmaq izləri fərqlidir. Lakin SMARCAD1 genindəki nadir mutasiya dünyada cəmi bir neçə ailədə barmaq uclarını tamamilə hamar edir; bu vəziyyətə 'immiqrasiya gecikməsi xəstəliyi' də deyirlər.\n\n#shorts\n\nSeri: mk-c0118"
+    },
+    "ro": {
+      "title": "Te poți naște fără amprente? 👆",
+      "description": "Crestele amprentelor se formează încă din uter și nu se schimbă toată viața; chiar și gemenii identici au amprente diferite. Totuși, o mutație rară a genei SMARCAD1 lasă câteva familii din lume cu vârfurile degetelor complet netede, o afecțiune poreclită „boala întârzierii la imigrare”.\n\n#shorts\n\nSeri: mk-c0118"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: ikizlerin farklı parmak izi mi, parmak izsiz doğan aileler mi?",
+  "scenes": [
+    {
+      "text": "Bu parmak izi, ikizinde bile aynı değil.",
+      "visual": "extreme close-up of a human fingertip showing the swirling ridges of a fingerprint",
+      "stock_query": "fingerprint finger",
+      "source": "stock",
+      "callout": "İKİZDE BİLE FARKLI"
+    },
+    {
+      "text": "Peki hiç parmak izi olmadan doğmak mümkün mü?",
+      "visual": "a person slowly turning their hand to look at their fingertips",
+      "stock_query": "finger hand close up",
+      "source": "stock"
+    },
+    {
+      "text": "Çizgiler anne karnında oluşur ve ömür boyu değişmez.",
+      "visual": "ultrasound scan of a baby in the womb shown on a monitor",
+      "stock_query": "ultrasound baby",
+      "source": "stock",
+      "subject": [
+        "ultrasound"
+      ],
+      "callout": "ANNE KARNINDA OLUŞUR"
+    },
+    {
+      "text": "Cevap evet: nadir bir gen değişikliği olan birkaç ailede parmak uçları dümdüz; sınırda iz veremedikleri için ona göçmenlik gecikmesi hastalığı deniyor.",
+      "visual": "a finger pressed on a fingerprint scanner at a border control desk",
+      "stock_query": "fingerprint scanner",
+      "source": "stock",
+      "callout": "PARMAK UCU DÜMDÜZ"
+    },
+    {
+      "text": "Şimdi parmak ucuna bak; o çizgiler sadece senin, çünkü...",
+      "visual": "close-up of a person looking at their own fingertips",
+      "stock_query": "finger close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.55,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #171",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0118_1794468152_ig.mp4"
+}
