@@ -225,15 +225,14 @@
     1794339079,
     "r",
     "UgwMixoUgrr1NAA0iFJ4AaABAg.Ad2AAjSg1hrAd2AIFkBJpO"
+   ],
+   "UgxZc8OzSK0Jf5CEdLp4AaABAg": [
+    1794506590,
+    "r",
+    "UgxZc8OzSK0Jf5CEdLp4AaABAg.Ad79duVhIU7Ad79nONOiZ8"
    ]
   },
   "son": [
-   {
-    "at": 1792335766,
-    "video": "f6WyXXJWASs",
-    "comment": "Ya denizler yok olsaydı",
-    "reply": "Oksijenimizin yarısından fazlasını denizlerdeki mikroskobik canlılar üretir; sular yok olsaydı nefes bile alamazdık. Bu konuyu hemen listemize ekledik.\n— Profesör Pi 🔭"
-   },
    {
     "at": 1792336058,
     "video": "xMYUnZVVITU",
@@ -467,6 +466,12 @@
     "video": "Sr9y1BY4FPk",
     "comment": "2 çıktı",
     "reply": "Testi hemen geçmişsin bile, harika! 🚀\n— Bit 🤖"
+   },
+   {
+    "at": 1794506590,
+    "video": "xLGCGQYwSmE",
+    "comment": "Aynen",
+    "reply": "Haklısın valla, bazen uykuda neler olduğunu düşünmek bile yetiyor! 🕷️\n— Bit 🤖"
    }
   ],
   "sayilar": {
@@ -660,10 +665,10 @@
  "nobet": {
   "basladi": "2026-11-12T17:53:06+00:00",
   "run": "43272343492",
-  "tur": 6,
+  "tur": 11,
   "ig_cevap": 1,
-  "yt_cevap": 0,
+  "yt_cevap": 1,
   "son_hata": null,
-  "son_tur": "2026-11-12T17:58:10+00:00"
+  "son_tur": "2026-11-12T18:03:09+00:00"
  }
 }
