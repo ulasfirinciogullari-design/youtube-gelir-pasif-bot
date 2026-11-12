@@ -1706,7 +1706,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "591",
+    "views": "596",
     "reason": null
    }
   },
@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1160",
+    "views": "1200",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1526",
+    "views": "1527",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "938",
+    "views": "941",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "380",
+    "views": "381",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "929",
+    "views": "934",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1226",
+    "views": "1348",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "930",
+    "views": "933",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "182",
+    "views": "195",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "380",
+    "views": "393",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "275",
+    "views": "282",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "26",
+    "views": "57",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "357",
+    "views": "736",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "201",
+    "views": "259",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "0",
+    "views": "39",
     "reason": null
    }
   },
@@ -2243,6 +2243,36 @@
    "thumbnail": true,
    "at": 1794492560.5899549,
    "chars": 362,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "102",
+    "reason": null
+   }
+  },
+  {
+   "id": "y038",
+   "video_id": "2F-iAcfk3X4",
+   "url": "https://youtube.com/shorts/2F-iAcfk3X4",
+   "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Could See in the Dark Like a Cat?",
+    "es": "¿Qué Pasaría Si Pudieras Ver en la Oscuridad Como un Gato?",
+    "pt": "E Se Você Enxergasse no Escuro Como um Gato?",
+    "ar": "ماذا لو استطعت الرؤية في الظلام مثل القطط؟",
+    "hi": "अगर आप बिल्ली की तरह अंधेरे में देख पाते तो क्या होता?",
+    "id": "Apa Jadinya Jika Kamu Bisa Melihat dalam Gelap Seperti Kucing?",
+    "fr": "Et Si Tu Voyais dans le Noir Comme un Chat ?",
+    "de": "Was Wäre, Wenn Du im Dunkeln Sehen Könntest Wie eine Katze?",
+    "ru": "Что Было Бы, Если Бы Ты Видел в Темноте Как Кошка?",
+    "az": "Pişik Kimi Qaranlıqda Görə Bilsəydin Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794506899.164156,
+   "chars": 376,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2326,7 +2356,8 @@
   "y068",
   "g015",
   "y019",
-  "y034"
+  "y034",
+  "y038"
  ],
  "extra": [
   {
@@ -2392,12 +2423,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-05T13:09:48+00:00",
-   "mod": "igbolum",
-   "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
-   "chars": 374
-  },
   {
    "finished": "2026-11-05T14:08:19+00:00",
    "mod": "saatlik",
@@ -2819,6 +2844,14 @@
    "mod": "igbolum",
    "title": "Damarların Gerçekte Ne Kadar Uzun?",
    "chars": 407
+  },
+  {
+   "finished": "2026-11-12T18:08:20+00:00",
+   "mod": "saatlik",
+   "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/2F-iAcfk3X4",
+   "duration": 25.1,
+   "chars": 376
   }
  ],
  "last_fail": 1794410324.353765,

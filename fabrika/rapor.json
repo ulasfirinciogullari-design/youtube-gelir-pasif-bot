@@ -1,18 +1,71 @@
 {
- "started": "2026-11-12T17:07:57+00:00",
- "mod": "igbolum",
- "gate": "instagram: n013",
+ "started": "2026-11-12T18:07:06+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Damarların Gerçekte Ne Kadar Uzun?",
- "chars": 407,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "17990998611096834",
-  "url": "https://www.instagram.com/reel/DfpjuJXgWZg/",
-  "at": 1794503372.842214
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "64",
+  "videos": "76"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfpjuJXgWZg/"
+ "credits_before": [
+  99869,
+  613902
  ],
- "finished": "2026-11-12T17:09:32+00:00"
+ "kuyruk": {
+  "dosya": "20261112-2-y038.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y038",
+  "series": "Ya Olsaydı?",
+  "q": "İnsanlar kediler gibi karanlıkta görebilseydi?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 376,
+ "duration": 25.1,
+ "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+ "url": "https://youtube.com/shorts/2F-iAcfk3X4",
+ "recent_status": {
+  "y068": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "736",
+   "reason": null
+  },
+  "g015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "259",
+   "reason": null
+  },
+  "y019": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "39",
+   "reason": null
+  },
+  "y034": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "102",
+   "reason": null
+  },
+  "y038": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  99959,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261112-2-y038.json İnsanlar kediler gibi karanlıkta görebilseydi? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-12T18:08:20+00:00"
 }
