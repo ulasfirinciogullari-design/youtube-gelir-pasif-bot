@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-20T18": "lUzrJ7tIkTc https://www.instagram.com/reel/DeubU14H1pN/",
   "2026-10-21T10": "syjCIdu7idw https://www.instagram.com/reel/DewJRmwiulP/",
   "2026-10-21T14": "PGdsZfAcU8E https://www.instagram.com/reel/DewkruXHaNF/",
   "2026-10-21T18": "6Pr2ex3xuOU https://www.instagram.com/reel/DexALdnE0Vh/",
@@ -48,16 +47,17 @@
   "2026-11-10T18": "GV9PqnGc_TI https://www.instagram.com/reel/DfkgAXkDDcK/",
   "2026-11-11T10": "1cMOZL90y_Q https://www.instagram.com/reel/DfmN8nvES17/",
   "2026-11-11T14": "ffIiQH5yS6Q https://www.instagram.com/reel/DfmpW0WEShu/",
-  "2026-11-11T18": "vw3pPy748ls https://www.instagram.com/reel/DfnE0cLD04W/"
+  "2026-11-11T18": "vw3pPy748ls https://www.instagram.com/reel/DfnE0cLD04W/",
+  "2026-11-12T10": "hvdLNneZI24 https://www.instagram.com/reel/Dfoy26HEpAK/"
  },
  "nobet": {
   "basladi": "2026-11-12T06:32:55+00:00",
   "run": "43167713966",
-  "tur": 185,
+  "tur": 209,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-12T09:36:56+00:00"
+  "son_tur": "2026-11-12T10:02:33+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -381,6 +381,13 @@
    "at": 1794420062,
    "title": "Telefonda gülümsediğini karşındaki duyar 😊",
    "topic_id": "mk-c0073"
+  },
+  "hvdLNneZI24": {
+   "media_id": "18130244882488476",
+   "url": "https://www.instagram.com/reel/Dfoy26HEpAK/",
+   "at": 1794477753,
+   "title": "Sana sağlıklı gelen üzüm köpeğin için zehir 🍇",
+   "topic_id": "mk-c0093"
   }
  }
 }
