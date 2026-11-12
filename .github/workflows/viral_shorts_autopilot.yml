@@ -173,9 +173,27 @@ jobs:
 
       - name: 🎥 FFmpeg ve Fontları Kur
         if: steps.gate.outputs.go == 'true'
+        # 2026-11-11 15:22 UTC: apt hung on this step until the 60-minute job timeout and the slot was lost
+        # (it normally takes ~20 s). Each attempt is now bounded and retried, so a stuck mirror costs minutes.
+        timeout-minutes: 15
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat
+          APT_OPTS="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 -o DPkg::Lock::Timeout=60"
+          installed=0
+          for attempt in 1 2 3; do
+            if sudo timeout 180 apt-get $APT_OPTS update -qq && \
+               sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends \
+                 ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat; then
+              installed=1
+              break
+            fi
+            echo "::warning::apt denemesi $attempt yarıda kaldı, tekrar deneniyor"
+            sudo dpkg --configure -a || true
+            sleep 10
+          done
+          if [ "$installed" != 1 ]; then
+            echo "::error::FFmpeg ve fontlar 3 denemede de kurulamadı"
+            exit 1
+          fi
           ffmpeg -version | head -1
 
       - name: 📦 Python Bağımlılıklarını Kur
