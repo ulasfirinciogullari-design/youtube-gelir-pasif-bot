@@ -1,0 +1,170 @@
+{
+  "topic_id": "mk-c0117",
+  "topic": "Kedi okşanırken neden ısırır, kedi severken neden birden saldırır?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Okşanırken ısıran kedi çoğu zaman önce uyarır 🐱",
+  "hook_text": "OKŞANAN KEDİ NEDEN ISIRIR?",
+  "description": "Kedi okşanırken neden ısırır, kedi severken neden birden saldırır?\n\nCornell Üniversitesi Kedi Sağlığı Merkezi'ne göre bazı kediler okşanırken aniden saldırganlaşabilir, ama çoğu zaman önce işaret verir: göz bebekleri büyür, kuyruğu kamçı gibi savrulur, kulakları geriye yatar. Sebebi tam bilinmiyor; olası açıklamalar aşırı uyarılma ve kedinin okşamanın ne zaman biteceğine kendisi karar vermek istemesi. Merkez, bu işaretleri görünce okşamayı bırakıp kediye fiziksel temas olmadan sakinleşmesi için zaman tanımayı öneriyor.\n\nSenin kedin okşanırken seni hiç ısırdı mı: evet mi, hayır mı?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0117",
+  "tags": [
+    "kedi neden ısırır",
+    "kedi okşanırken ısırıyor",
+    "kedi severken ısırıyor",
+    "kedi birden saldırıyor",
+    "kedi ısırması",
+    "kedi kuyruk sallama",
+    "kedi kulak geriye",
+    "kedi beden dili",
+    "kedi davranışları",
+    "kedi psikolojisi",
+    "kedi sevmek",
+    "kedi bakımı",
+    "kedi",
+    "kediler",
+    "kedi sahibi",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "cat biting",
+    "petting aggression",
+    "okşanırken ısıran kedi",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi neden isirir",
+    "kedi severken isiriyor"
+  ],
+  "localizations": {
+    "en": {
+      "title": "A cat that bites while being petted usually warns you first 🐱",
+      "description": "Biting during petting rarely comes out of nowhere: before biting, cats often show dilated pupils, a lashing tail and ears turned back. According to Cornell's Feline Health Center the cause isn't fully known; it may be overstimulation or the cat wanting to decide when the petting ends.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "es": {
+      "title": "Un gato que muerde mientras lo acaricias suele avisarte antes 🐱",
+      "description": "La agresión por caricias rara vez llega de la nada: antes de morder, el gato suele dilatar las pupilas, sacudir la cola como un látigo y echar las orejas hacia atrás. Según el Centro de Salud Felina de Cornell, la causa no se conoce del todo; podría ser sobreestimulación o que el gato quiere decidir cuándo terminan las caricias.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "pt": {
+      "title": "O gato que morde durante o carinho costuma avisar antes 🐱",
+      "description": "A agressão durante o carinho quase nunca surge do nada: antes de morder, o gato costuma dilatar as pupilas, chicotear o rabo e virar as orelhas para trás. Segundo o Centro de Saúde Felina de Cornell, a causa não é totalmente conhecida; pode ser excesso de estímulo ou o gato querer decidir quando o carinho termina.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "de": {
+      "title": "Eine Katze, die beim Streicheln beißt, warnt dich meist vorher 🐱",
+      "description": "Beißen beim Streicheln kommt selten aus heiterem Himmel: Vorher werden die Pupillen oft weit, der Schwanz peitscht und die Ohren drehen sich nach hinten. Laut dem Cornell Feline Health Center ist die Ursache nicht ganz geklärt; mögliche Gründe sind Überreizung oder dass die Katze selbst bestimmen will, wann das Streicheln endet.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "fr": {
+      "title": "Un chat qui mord pendant les caresses te prévient souvent avant 🐱",
+      "description": "La morsure pendant les caresses arrive rarement sans prévenir : avant de mordre, le chat dilate souvent ses pupilles, fouette de la queue et rabat ses oreilles en arrière. Selon le centre de santé féline de Cornell, la cause n'est pas entièrement connue ; ce pourrait être une surstimulation ou l'envie de décider lui-même quand les caresses s'arrêtent.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "it": {
+      "title": "Il gatto che morde mentre lo accarezzi di solito ti avverte prima 🐱",
+      "description": "L'aggressività da carezze raramente arriva dal nulla: prima di mordere, il gatto spesso dilata le pupille, frusta la coda e porta le orecchie all'indietro. Secondo il Feline Health Center della Cornell, la causa non è del tutto nota; potrebbe essere sovrastimolazione o il desiderio del gatto di decidere quando finiscono le carezze.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "ru": {
+      "title": "Кошка, которая кусает во время поглаживания, обычно сначала предупреждает 🐱",
+      "description": "Укус во время поглаживания редко бывает внезапным: перед ним у кошки часто расширяются зрачки, хвост хлещет из стороны в сторону, а уши поворачиваются назад. По данным Центра здоровья кошек Корнеллского университета, причина до конца не известна; возможно, это перевозбуждение или желание кошки самой решать, когда закончить ласку.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "ar": {
+      "title": "القطة التي تعضك أثناء المداعبة تحذّرك غالبًا أولًا 🐱",
+      "description": "العض أثناء المداعبة نادرًا ما يأتي فجأة: فقبله كثيرًا ما تتسع حدقتا القطة ويضرب ذيلها كالسوط وتنثني أذناها إلى الخلف. وبحسب مركز صحة القطط في جامعة كورنيل، السبب غير معروف تمامًا، وربما يكون فرط التحفيز أو رغبة القطة في أن تقرر بنفسها متى تنتهي المداعبة.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "hi": {
+      "title": "सहलाते समय काटने वाली बिल्ली अक्सर पहले चेतावनी देती है 🐱",
+      "description": "सहलाते समय बिल्ली का काटना अक्सर अचानक नहीं होता: काटने से पहले उसकी पुतलियाँ फैल जाती हैं, पूँछ चाबुक की तरह फटकने लगती है और कान पीछे मुड़ जाते हैं। कॉर्नेल के फ़ेलाइन हेल्थ सेंटर के मुताबिक़ इसकी वजह पूरी तरह पता नहीं; शायद ज़्यादा उत्तेजना हो या बिल्ली ख़ुद तय करना चाहती हो कि सहलाना कब रुके।\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "id": {
+      "title": "Kucing yang menggigit saat dielus biasanya memberi tanda dulu 🐱",
+      "description": "Gigitan saat dielus jarang muncul tiba-tiba: sebelum menggigit, pupil kucing sering membesar, ekornya menyabet seperti cambuk, dan telinganya mengarah ke belakang. Menurut Cornell Feline Health Center, penyebabnya belum sepenuhnya diketahui; mungkin karena terlalu terstimulasi atau kucing ingin menentukan sendiri kapan elusan berhenti.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "ja": {
+      "title": "なでている猫が噛むときは、たいてい先にサインを出している 🐱",
+      "description": "なでているときの猫の噛みつきは、たいてい突然ではありません。噛む前に瞳孔が開き、しっぽをムチのように振り、耳を後ろに倒すことがよくあります。コーネル大学猫健康センターによると原因ははっきりしていませんが、刺激が多すぎることや、なでるのをやめるタイミングを猫が自分で決めたいことが考えられています。\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "ko": {
+      "title": "쓰다듬다 무는 고양이는 대개 먼저 신호를 보낸다 🐱",
+      "description": "쓰다듬을 때 무는 행동은 갑자기 나오는 경우가 드뭅니다. 물기 전에 고양이는 동공이 커지고, 꼬리를 채찍처럼 휘두르고, 귀를 뒤로 젖히는 경우가 많습니다. 코넬대 고양이 건강 센터에 따르면 원인은 아직 정확히 밝혀지지 않았고, 과도한 자극이나 언제 그만둘지 스스로 정하고 싶어서일 수 있습니다.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "pl": {
+      "title": "Kot, który gryzie podczas głaskania, zwykle najpierw ostrzega 🐱",
+      "description": "Gryzienie podczas głaskania rzadko pojawia się znikąd: wcześniej kot często ma rozszerzone źrenice, smaga ogonem jak batem i kładzie uszy do tyłu. Według Cornell Feline Health Center przyczyna nie jest do końca znana; może to być nadmierna stymulacja albo chęć samodzielnego zdecydowania, kiedy głaskanie ma się skończyć.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "nl": {
+      "title": "Een kat die bijt tijdens het aaien, waarschuwt je meestal eerst 🐱",
+      "description": "Bijten tijdens het aaien komt zelden uit het niets: vooraf worden de pupillen vaak groot, zwiept de staart als een zweep en draaien de oren naar achteren. Volgens het Cornell Feline Health Center is de oorzaak niet helemaal bekend; mogelijk is het overprikkeling of wil de kat zelf bepalen wanneer het aaien stopt.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "uk": {
+      "title": "Кіт, який кусає під час погладжування, зазвичай спершу попереджає 🐱",
+      "description": "Укус під час погладжування рідко буває раптовим: перед ним у кота часто розширюються зіниці, хвіст б'є, як батіг, а вуха повертаються назад. За даними Центру здоров'я котів Корнельського університету, причина до кінця невідома; можливо, це перезбудження або бажання кота самому вирішувати, коли закінчити ласку.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "vi": {
+      "title": "Mèo cắn khi được vuốt ve thường đã cảnh báo bạn trước 🐱",
+      "description": "Mèo cắn khi được vuốt ve hiếm khi xảy ra bất ngờ: trước khi cắn, đồng tử mèo thường giãn ra, đuôi quất như roi và tai cụp ra sau. Theo Trung tâm Sức khỏe Mèo của Đại học Cornell, nguyên nhân chưa được biết rõ; có thể do bị kích thích quá mức hoặc mèo muốn tự quyết định khi nào dừng vuốt ve.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "az": {
+      "title": "Sığallanarkən dişləyən pişik adətən əvvəlcə xəbərdarlıq edir 🐱",
+      "description": "Sığallanarkən dişləmə nadir hallarda birdən olur: dişləməzdən əvvəl pişiyin göz bəbəkləri böyüyür, quyruğu qamçı kimi çırpılır, qulaqları geriyə yatır. Kornell Universitetinin Pişik Sağlamlığı Mərkəzinə görə səbəb tam bilinmir; ola bilsin, sığal ona həddindən artıq gəlir və ya sığalın nə vaxt bitəcəyinə özü qərar vermək istəyir.\n\n#shorts\n\nSeri: mk-c0117"
+    },
+    "ro": {
+      "title": "Pisica ce mușcă în timp ce o mângâi de obicei te avertizează mai întâi 🐱",
+      "description": "Mușcătura la mângâiere rareori apare din senin: înainte, pisica are adesea pupilele dilatate, dă din coadă ca dintr-un bici și își culcă urechile pe spate. Potrivit Cornell Feline Health Center, cauza nu e pe deplin cunoscută; ar putea fi suprastimularea sau dorința pisicii de a hotărî singură când se termină mângâiatul.\n\n#shorts\n\nSeri: mk-c0117"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin okşanırken seni hiç ısırdı mı: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kedi okşanırken birazdan ısıracak.",
+      "visual": "close-up of a cat's face while a hand strokes its head",
+      "stock_query": "cat petting",
+      "source": "stock",
+      "callout": "BİRAZDAN ISIRACAK"
+    },
+    {
+      "text": "Sen bunu birdenbire sanırsın; oysa kedi çoğu zaman önceden haber verir.",
+      "visual": "a cat lying on a sofa being stroked by a hand",
+      "stock_query": "cat sofa hand",
+      "source": "stock"
+    },
+    {
+      "text": "Göz bebekleri büyür, kuyruğu kamçı gibi savrulur, kulakları geriye yatar.",
+      "visual": "close-up of a cat's eyes with wide black pupils",
+      "stock_query": "cat eyes",
+      "source": "stock",
+      "callout": "KUYRUK KAMÇI GİBİ"
+    },
+    {
+      "text": "Sebebi tam bilinmiyor; muhtemelen okşama ona fazla gelir ya da ne zaman biteceğine kendi karar vermek ister.",
+      "visual": "a cat gently biting a person's hand",
+      "stock_query": "cat biting hand",
+      "source": "stock",
+      "callout": "FAZLA GELİR"
+    },
+    {
+      "text": "Kuyruk savrulmaya başlayınca elini çek; çünkü...",
+      "visual": "a cat's tail swishing from side to side",
+      "stock_query": "cat tail",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.65,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #170",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0117_1794460969_ig.mp4"
+}
