@@ -134,6 +134,15 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   "mümkün mü?" biçimi (aşağıda), 1 insan vücudu, 4 tanıdık hayvan. Hayvan ve "mümkün mü?" dosyalarının en az 3'ü
   kedi ya da köpek olsun ve sahibine dokunsun (art arda değil). Kuyrukta her 4 dosyadan biri "mümkün mü?" olsun,
   psikoloji 8'de bir gelsin. Aynı biçim ya da aynı canlı art arda gelmesin.
+- 12 Kasım kararı (deney 12, deyim efsaneleri): Türkçede deyim ya da yaygın söz olarak yaşayan bir hayvan ya da
+  vücut inancını ele alan Short'lar öne çıkıyor, çünkü izleyici o sözü kendisi de söylemiş oluyor. "Devekuşu
+  aslında başını hiç kuma gömmez" 47 saatte 9.743, "Boğayı kızdıran şey kırmızı renk değil" 5.258, "Eşek inatçı
+  değil" 3.559, "Kuş sütü gerçekten var" 2.967, "Japon balığı 3 saniyede unutmaz" 2.461 (ortanca ~3.000; merak
+  Short'larının ortancası ~1.700). Her 8 dosyanın en az 1'i (hayvan, vücut ya da "mümkün mü?" slotunda) böyle bir
+  deyimi ya da sözü çürütsün ya da şaşırtıcı biçimde doğrulasın; başlıkta ve ilk cümlede deyimin kendisi geçsin.
+  Örnek yönler (kullanılmadıysa, kaynağını doğrula): "tavuk beyinli", "timsah gözyaşı", "saksağan parlak şey
+  çalar", "yarasa kördür", "köstebek kördür". Dosyaya `"deyim": true`
+  alanını ekle (analiz bununla gruplar; mk-c0123 ve mk-c0134 bu alanla işaretlendi).
 
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
