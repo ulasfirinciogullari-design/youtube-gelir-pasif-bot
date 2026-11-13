@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1532",
+    "views": "1533",
     "reason": null
    }
   },
@@ -1826,7 +1826,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "942",
+    "views": "943",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "382",
+    "views": "383",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "940",
+    "views": "941",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1450",
+    "views": "1519",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "936",
+    "views": "938",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "209",
+    "views": "213",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "295",
+    "views": "298",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "84",
+    "views": "86",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "999",
+    "views": "1010",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "325",
+    "views": "367",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "91",
+    "views": "121",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "254",
+    "views": "331",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "186",
+    "views": "370",
     "reason": null
    }
   },
@@ -2304,6 +2304,37 @@
    "at": 1794564563.742364,
    "chars": 380,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "579",
+    "reason": null
+   }
+  },
+  {
+   "id": "y043",
+   "video_id": "6XodpIbEU8A",
+   "url": "https://youtube.com/shorts/6XodpIbEU8A",
+   "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen to Your Brain If You Never Dreamed?",
+    "es": "¿Qué le pasaría a tu cerebro si nunca soñaras?",
+    "pt": "O que aconteceria com seu cérebro se você nunca sonhasse?",
+    "ar": "ماذا سيحدث لدماغك لو لم تحلم أبدًا؟",
+    "hi": "अगर आप कभी सपने न देखते तो आपके दिमाग का क्या होता?",
+    "id": "Apa yang Terjadi pada Otakmu Jika Kamu Tak Pernah Bermimpi?",
+    "fr": "Que deviendrait ton cerveau si tu ne rêvais jamais ?",
+    "de": "Was würde mit deinem Gehirn passieren, wenn du nie träumen würdest?",
+    "ru": "Что случилось бы с твоим мозгом, если бы ты никогда не видел снов?",
+    "az": "Heç Yuxu Görməsəydin Beyninə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794582709.3129485,
+   "chars": 802,
+   "ilk": null,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2389,7 +2420,8 @@
   "y019",
   "y034",
   "y038",
-  "n016"
+  "n016",
+  "y043"
  ],
  "extra": [
   {
@@ -2455,12 +2487,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-06T09:08:18+00:00",
-   "mod": "igbolum",
-   "title": "Işık Gerçekte Ne Kadar Hızlı?",
-   "chars": 403
-  },
   {
    "finished": "2026-11-06T10:08:42+00:00",
    "mod": "saatlik",
@@ -2880,6 +2906,14 @@
    "url": "https://youtube.com/shorts/325eJNknZqk",
    "duration": 25.3,
    "chars": 380
+  },
+  {
+   "finished": "2026-11-13T15:11:50+00:00",
+   "mod": "zorla",
+   "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
+   "url": "https://youtube.com/shorts/6XodpIbEU8A",
+   "duration": 55.4,
+   "chars": 802
   }
  ],
  "last_fail": 1794410324.353765,

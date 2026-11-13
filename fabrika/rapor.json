@@ -1,60 +1,59 @@
 {
- "started": "2026-11-13T10:08:17+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-13T15:09:55+00:00",
+ "mod": "zorla",
+ "gate": "zorla",
  "tarayici": "playwright ubuntu24.04-x64",
  "channel": {
   "id": "UCFGTEF-fXFWNOJnunGWyYEg",
   "title": "Ya Olsaydı?",
   "handle": "@yaolsaydibilim",
-  "subscribers": "65",
-  "videos": "77"
+  "subscribers": "66",
+  "videos": "78"
  },
  "credits_before": [
-  100997,
+  101256,
   613902
  ],
  "kuyruk": {
-  "dosya": "20261112-3-n016.json",
-  "kalan": 4
+  "dosya": "20261113-1-y043.json",
+  "kalan": 3
  },
  "topic": {
-  "id": "n016",
-  "series": "Ne Kadar Büyük?",
-  "q": "Dünya'nın çekirdeği ne kadar sıcak?"
+  "id": "y043",
+  "series": "Ya Olsaydı?",
+  "q": "Hiç rüya görmeseydik ne olurdu?"
  },
  "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 380,
- "duration": 25.3,
- "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
- "url": "https://youtube.com/shorts/325eJNknZqk",
+ "chars": 802,
+ "duration": 55.4,
+ "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
+ "url": "https://youtube.com/shorts/6XodpIbEU8A",
  "recent_status": {
-  "g015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "325",
-   "reason": null
-  },
   "y019": {
    "upload": "processed",
    "privacy": "public",
-   "views": "91",
+   "views": "121",
    "reason": null
   },
   "y034": {
    "upload": "processed",
    "privacy": "public",
-   "views": "254",
+   "views": "331",
    "reason": null
   },
   "y038": {
    "upload": "processed",
    "privacy": "public",
-   "views": "186",
+   "views": "370",
    "reason": null
   },
   "n016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "579",
+   "reason": null
+  },
+  "y043": {
    "upload": "uploaded",
    "privacy": "public",
    "views": "0",
@@ -62,11 +61,11 @@
   }
  },
  "credits_after": [
-  101088,
+  101256,
   613902
  ],
  "log": [
-  "Kuyruktan: 20261112-3-n016.json Dünya'nın çekirdeği ne kadar sıcak? (Ne Kadar Büyük?)"
+  "Kuyruktan: 20261113-1-y043.json Hiç rüya görmeseydik ne olurdu? (Ya Olsaydı?)"
  ],
- "finished": "2026-11-13T10:09:25+00:00"
+ "finished": "2026-11-13T15:11:50+00:00"
 }
