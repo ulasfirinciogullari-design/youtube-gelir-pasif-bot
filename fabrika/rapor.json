@@ -1,18 +1,72 @@
 {
- "started": "2026-11-13T17:08:06+00:00",
- "mod": "igbolum",
- "gate": "instagram: y068",
+ "started": "2026-11-13T18:07:25+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
- "chars": 376,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18343308001261439",
-  "url": "https://www.instagram.com/reel/DfsIitujlct/",
-  "at": 1794589784.9580328
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "66",
+  "videos": "79"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfsIitujlct/"
+ "credits_before": [
+  101622,
+  613902
  ],
- "finished": "2026-11-13T17:09:44+00:00"
+ "kuyruk": {
+  "dosya": "20261113-2-y024.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y024",
+  "series": "Ya Olsaydı?",
+  "q": "İnsanlar fotosentez yapabilseydi ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": false,
+ "chars": 362,
+ "duration": 23.9,
+ "title": "Fotosentez Yapabilseydin Aç Kalır Mıydın?",
+ "url": "https://youtube.com/shorts/Z7Pj4q9UTCs",
+ "recent_status": {
+  "y034": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "492",
+   "reason": null
+  },
+  "y038": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "600",
+   "reason": null
+  },
+  "n016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "791",
+   "reason": null
+  },
+  "y043": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "127",
+   "reason": null
+  },
+  "y024": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  101622,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261113-2-y024.json İnsanlar fotosentez yapabilseydi ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-13T18:08:11+00:00"
 }
