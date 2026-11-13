@@ -1,0 +1,170 @@
+{
+  "topic_id": "mk-c0127",
+  "topic": "Kedi intikam için mi çişini dışarı yapar, kedi neden kum kabı dışına işer?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kedin halına sana kızdığı için işemiyor 🐱",
+  "hook_text": "KEDİ İNTİKAM ALIR MI?",
+  "description": "Kedi intikam için mi kum kabı dışına işer, kedi neden halıya çiş yapar?\n\nCornell Üniversitesi Kedi Sağlığı Merkezi'ne göre kum kabı dışına tuvalet yapmak, kedi sahiplerinin en sık bildirdiği davranış sorunu; sahipler bunu çoğu zaman intikam sanıyor, ama kedilerin böyle bir plan yapacak karmaşık bilişsel yetenekleri muhtemelen yok. Amerikan Kedi Hekimleri Derneği (AAFP) ve Uluslararası Kedi Tıbbı Derneği'ne (ISFM) göre de kedi bunu inat ya da öfkeden yapmaz; sebep karşılanmayan fiziksel, sosyal ya da tıbbi ihtiyaçlardır: idrar yolu sorunları, stres, kirli ya da yeri sevilmeyen bir kum kabı gibi. Bazı kediler içinde azıcık idrar ya da dışkı kalan kabı hiç kullanmaz. Ceza korkuyu artırıp sorunu büyütebileceğinden ilk adım veterinere başvurmak.\n\nSen de kedinin intikam için işediğini düşünmüş müydün: evet mi, hayır mı?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0127",
+  "tags": [
+    "kedi intikam alır mı",
+    "kedi neden dışarı işer",
+    "kedi kum kabı dışına işiyor",
+    "kedi halıya çiş yapıyor",
+    "kedi yatağa işiyor",
+    "kedi kum kabı",
+    "kedi kumu",
+    "kedi stres",
+    "kedi idrar yolu",
+    "kedi davranışları",
+    "kedi sahibi",
+    "kedi bakımı",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "efsaneler",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "veteriner",
+    "cat peeing outside box",
+    "do cats pee out of spite",
+    "kedi halıya işiyor",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi intikam alir mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat isn't peeing on the rug to get back at you 🐱",
+      "description": "Many owners think house soiling is revenge, but cats probably lack the cognitive ability for that kind of plan. The usual causes are a medical problem, stress or the litter box itself, and some cats refuse a box with any waste left in it. Punishment only adds fear: see a vet first.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "es": {
+      "title": "Tu gato no orina en la alfombra para vengarse de ti 🐱",
+      "description": "Muchos dueños creen que es venganza, pero los gatos probablemente no tienen la capacidad cognitiva para planear algo así. Las causas habituales son un problema médico, el estrés o el propio arenero, y algunos gatos rechazan un arenero con el más mínimo resto. El castigo solo añade miedo: primero, al veterinario.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "pt": {
+      "title": "Seu gato não faz xixi no tapete para se vingar de você 🐱",
+      "description": "Muitos tutores acham que é vingança, mas os gatos provavelmente não têm capacidade cognitiva para planejar algo assim. As causas comuns são um problema de saúde, estresse ou a própria caixa de areia, e alguns gatos recusam uma caixa com qualquer resto de sujeira. Castigo só aumenta o medo: leve primeiro ao veterinário.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "de": {
+      "title": "Deine Katze pinkelt nicht aus Rache auf den Teppich 🐱",
+      "description": "Viele Halter halten Unsauberkeit für Rache, doch Katzen fehlen dafür wahrscheinlich die nötigen kognitiven Fähigkeiten. Meist stecken eine Erkrankung, Stress oder das Katzenklo selbst dahinter, und manche Katzen meiden eine Toilette, in der noch die kleinste Hinterlassenschaft liegt. Strafe macht nur Angst – geh zuerst zum Tierarzt.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "fr": {
+      "title": "Ton chat ne fait pas pipi sur le tapis pour se venger 🐱",
+      "description": "Beaucoup de propriétaires y voient une vengeance, mais le chat n'a sans doute pas les capacités cognitives pour planifier cela. Les causes habituelles sont un problème de santé, le stress ou la litière elle-même, et certains chats refusent un bac où il reste la moindre souillure. La punition ne fait qu'ajouter de la peur : va d'abord chez le vétérinaire.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "it": {
+      "title": "Il tuo gatto non fa pipì sul tappeto per vendicarsi di te 🐱",
+      "description": "Molti proprietari pensano a una vendetta, ma probabilmente i gatti non hanno le capacità cognitive per pianificarla. Di solito la causa è un problema di salute, lo stress o la lettiera stessa, e alcuni gatti rifiutano una lettiera con anche il minimo residuo. La punizione aggiunge solo paura: prima di tutto, dal veterinario.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "ru": {
+      "title": "Твоя кошка писает на ковёр не из мести 🐱",
+      "description": "Многие хозяева считают это местью, но у кошек, скорее всего, нет когнитивных способностей для подобных планов. Обычные причины — болезнь, стресс или сам лоток, а некоторые кошки не ходят в лоток, где осталась хоть капля грязи. Наказание лишь добавляет страха: сначала к ветеринару.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "ar": {
+      "title": "قطتك لا تتبول على السجادة انتقامًا منك 🐱",
+      "description": "يظن كثير من المالكين أن الأمر انتقام، لكن القطط على الأرجح لا تملك القدرات الذهنية لتخطيط شيء كهذا. الأسباب المعتادة مشكلة صحية أو توتر أو صندوق الفضلات نفسه، وبعض القطط ترفض صندوقًا فيه أدنى أثر للفضلات. العقاب لا يزيد إلا الخوف، فابدأ بزيارة الطبيب البيطري.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "hi": {
+      "title": "आपकी बिल्ली बदला लेने के लिए कालीन पर पेशाब नहीं करती 🐱",
+      "description": "कई मालिक इसे बदला समझते हैं, लेकिन बिल्लियों में ऐसी योजना बनाने लायक जटिल सोच शायद होती ही नहीं। आम वजहें होती हैं कोई बीमारी, तनाव या खुद लिटर बॉक्स, और कुछ बिल्लियाँ ज़रा-सी भी गंदगी वाले बॉक्स में नहीं जातीं। सज़ा सिर्फ़ डर बढ़ाती है, इसलिए पहले पशु-चिकित्सक को दिखाएँ।\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "id": {
+      "title": "Kucingmu tidak pipis di karpet untuk membalas dendam 🐱",
+      "description": "Banyak pemilik mengira itu balas dendam, padahal kucing kemungkinan besar tak punya kemampuan kognitif untuk merencanakannya. Penyebab umumnya masalah kesehatan, stres, atau kotak pasirnya sendiri, dan sebagian kucing menolak kotak yang masih menyisakan sedikit kotoran. Hukuman hanya menambah rasa takut, jadi bawa dulu ke dokter hewan.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "ja": {
+      "title": "猫がじゅうたんにおしっこするのは仕返しではない 🐱",
+      "description": "多くの飼い主は仕返しだと思いがちですが、猫にはそんな計画を立てるほど複雑な認知能力はおそらくありません。よくある原因は病気、ストレス、またはトイレそのもので、少しでも汚れが残ったトイレを使わない猫もいます。叱ると怖がらせるだけなので、まずは動物病院へ。\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "ko": {
+      "title": "고양이는 복수하려고 카펫에 오줌 싸지 않는다 🐱",
+      "description": "많은 보호자가 복수라고 생각하지만, 고양이에게는 그런 계획을 세울 만한 복잡한 인지 능력이 아마 없을 겁니다. 흔한 원인은 질병, 스트레스, 또는 화장실 자체이며, 조금이라도 배설물이 남은 화장실은 아예 쓰지 않는 고양이도 있습니다. 혼내면 두려움만 커지니 먼저 동물병원에 가세요.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "pl": {
+      "title": "Twój kot nie sika na dywan, żeby się na tobie zemścić 🐱",
+      "description": "Wielu opiekunów uważa to za zemstę, ale koty najpewniej nie mają zdolności poznawczych, by coś takiego zaplanować. Zwykle przyczyną jest choroba, stres albo sama kuweta, a niektóre koty omijają kuwetę, w której zostało choć trochę nieczystości. Kara tylko dokłada strachu – najpierw idź do weterynarza.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "nl": {
+      "title": "Je kat plast niet op het tapijt om wraak te nemen 🐱",
+      "description": "Veel eigenaren denken aan wraak, maar katten hebben waarschijnlijk niet het denkvermogen om zoiets te plannen. Meestal zit er een medisch probleem, stress of de kattenbak zelf achter, en sommige katten weigeren een bak waar nog maar een klein beetje in ligt. Straffen maakt ze alleen bang: ga eerst naar de dierenarts.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "uk": {
+      "title": "Твій кіт пісяє на килим не з помсти 🐱",
+      "description": "Багато власників вважають це помстою, але коти, найімовірніше, не мають когнітивних здібностей для таких планів. Звичайні причини — хвороба, стрес або сам лоток, а деякі коти не ходять у лоток, де лишилося хоч трохи бруду. Покарання лише додає страху: спершу до ветеринара.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "vi": {
+      "title": "Mèo của bạn không tè lên thảm để trả thù bạn 🐱",
+      "description": "Nhiều người nghĩ đó là trả thù, nhưng mèo có lẽ không đủ khả năng nhận thức phức tạp để lên kế hoạch như vậy. Nguyên nhân thường gặp là bệnh, căng thẳng hoặc chính cái khay cát, và có con mèo không chịu dùng khay còn sót chút chất thải. Trừng phạt chỉ khiến nó sợ hơn, hãy đưa đi bác sĩ thú y trước.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "az": {
+      "title": "Pişiyin xalçaya səndən qisas almaq üçün işəmir 🐱",
+      "description": "Bir çox sahib bunu qisas sanır, amma pişiklərin belə plan quracaq mürəkkəb idrak qabiliyyəti çox güman ki, yoxdur. Adi səbəblər xəstəlik, stres və ya qum qabının özüdür; bəzi pişiklər içində azacıq çirk qalan qabdan heç istifadə etmir. Cəza yalnız qorxunu artırır: əvvəlcə baytara apar.\n\n#shorts\n\nSeri: mk-c0127"
+    },
+    "ro": {
+      "title": "Pisica ta nu face pipi pe covor ca să se răzbune pe tine 🐱",
+      "description": "Mulți stăpâni cred că e răzbunare, dar pisicile probabil nu au capacitatea cognitivă de a plănui așa ceva. Cauzele obișnuite sunt o problemă medicală, stresul sau litiera în sine, iar unele pisici refuză o litieră în care a rămas cea mai mică urmă de murdărie. Pedeapsa doar adaugă frică: mergi întâi la veterinar.\n\n#shorts\n\nSeri: mk-c0127"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de kedinin intikam için işediğini düşünmüş müydün: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kedi halına sana kızdığı için işemedi.",
+      "visual": "close-up of a cat's face looking straight into the camera while sitting on a carpet",
+      "stock_query": "cat face",
+      "source": "stock",
+      "callout": "İNTİKAM DEĞİL"
+    },
+    {
+      "text": "Birçok sahip bunu intikam sanıp kediyi cezalandırır.",
+      "visual": "a cat owner pointing a finger at a cat",
+      "stock_query": "cat owner",
+      "source": "stock"
+    },
+    {
+      "text": "Tuhafı şu: bazı kediler, içinde azıcık kir kalan kum kabını hiç kullanmaz.",
+      "visual": "a cat sitting next to its litter box",
+      "stock_query": "cat litter box",
+      "source": "stock",
+      "callout": "KİRLİ KABA GİRMEZ"
+    },
+    {
+      "text": "Çünkü kedinin intikam planlayacak kadar karmaşık bir aklı muhtemelen yok; sebep hastalık, stres ya da kum kabıdır.",
+      "visual": "a veterinarian gently examining a cat",
+      "stock_query": "cat veterinarian",
+      "source": "stock",
+      "callout": "HASTALIK YA DA STRES"
+    },
+    {
+      "text": "Ceza onu korkutup sorunu büyütür; önce veterinere götür, çünkü...",
+      "visual": "close-up of a cat's eyes",
+      "stock_query": "cat eyes",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.38,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #180",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0127_1794547363_ig.mp4"
+}
