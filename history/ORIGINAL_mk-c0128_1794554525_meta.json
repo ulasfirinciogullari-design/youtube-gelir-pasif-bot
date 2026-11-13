@@ -1,0 +1,179 @@
+{
+  "topic_id": "mk-c0128",
+  "topic": "Fermuarın nasıl çalıştığını gerçekten biliyor musun? Açıklama derinliği yanılsaması",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Fermuarın nasıl çalıştığını bildiğini sanıyorsun 🤐",
+  "hook_text": "FERMUARI ANLATABİLİR MİSİN?",
+  "description": "Fermuarın nasıl çalıştığını gerçekten biliyor musun, açıklama derinliği yanılsaması nedir?\n\n2002'de Yale Üniversitesi'nde Leonid Rozenblit ve Frank Keil, insanlardan fermuar, sifon ya da kilit gibi eşyaları ne kadar iyi anladıklarını yedi üzerinden puanlamalarını, sonra nasıl çalıştıklarını adım adım yazmalarını istedi; açıklamayı yazdıktan sonra puanlar düştü. Liverpool Üniversitesi'nden Rebecca Lawson'ın 2006'daki çalışmasında bisiklet sürmeyenlerin üçte birinden fazlası, bisiklet çizerken zinciri arka tekerle birlikte ön tekere de doladı. Bir şeyi her gün görmek beyne onu anlamış gibi gelir; boşluklar ancak anlatmaya kalkınca ortaya çıkar. Psikolojide buna açıklama derinliği yanılsaması denir.\n\nSen bir fermuarın nasıl çalıştığını baştan sona anlatabilir misin: evet mi, hayır mı?\n\n#fermuar #psikoloji #beyin #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0128",
+  "tags": [
+    "açıklama derinliği yanılsaması",
+    "fermuar nasıl çalışır",
+    "fermuar",
+    "bildiğini sanmak",
+    "bilgi yanılsaması",
+    "bisiklet çizme testi",
+    "bisiklet çizemiyorum",
+    "anlatınca anlamak",
+    "yale deneyi",
+    "frank keil",
+    "bilişsel yanılgı",
+    "bilişsel önyargı",
+    "beyin bizi kandırıyor",
+    "insan psikolojisi",
+    "gündelik psikoloji",
+    "psikoloji",
+    "beyin",
+    "bilim",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "illusion of explanatory depth",
+    "how zippers work",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "fermuar nasil calisir"
+  ],
+  "localizations": {
+    "en": {
+      "title": "You think you know how a zipper works 🤐",
+      "description": "In Yale experiments, people rated how well they understood things like zippers, then had to explain them step by step, and their ratings fell. Over a third of non-cyclists even drew a bike chain looping around the front wheel. Seeing something every day feels like understanding it.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "es": {
+      "title": "Crees que sabes cómo funciona una cremallera 🤐",
+      "description": "En experimentos de Yale, la gente puntuó lo bien que entendía objetos como una cremallera; al tener que explicarlos paso a paso, su nota bajó. Más de un tercio de quienes no montan en bici dibujó la cadena rodeando también la rueda delantera. Ver algo a diario se confunde con entenderlo.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "pt": {
+      "title": "Você acha que sabe como funciona um zíper 🤐",
+      "description": "Em experimentos em Yale, as pessoas avaliaram o quanto entendiam objetos como o zíper; ao explicar passo a passo, a nota caiu. Mais de um terço de quem não anda de bicicleta desenhou a corrente passando também pela roda da frente. Ver algo todo dia dá a sensação de entender.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "de": {
+      "title": "Du glaubst zu wissen, wie ein Reißverschluss funktioniert 🤐",
+      "description": "In Experimenten in Yale schätzten Menschen ein, wie gut sie Dinge wie Reißverschlüsse verstehen – sollten sie es Schritt für Schritt erklären, sank die Einschätzung. Über ein Drittel der Nicht-Radfahrer zeichnete die Fahrradkette sogar um das Vorderrad. Etwas täglich zu sehen, fühlt sich wie Verstehen an.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "fr": {
+      "title": "Tu crois savoir comment marche une fermeture éclair 🤐",
+      "description": "Lors d'expériences à Yale, des gens ont noté leur compréhension d'objets comme la fermeture éclair ; après avoir dû l'expliquer étape par étape, leur note a chuté. Plus d'un tiers des non-cyclistes ont même dessiné la chaîne autour de la roue avant. Voir une chose tous les jours donne l'impression de la comprendre.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "it": {
+      "title": "Credi di sapere come funziona una cerniera lampo 🤐",
+      "description": "In alcuni esperimenti a Yale le persone hanno valutato quanto capivano oggetti come la cerniera; dopo averli spiegati passo per passo, il voto è sceso. Più di un terzo di chi non va in bici ha disegnato la catena intorno anche alla ruota anteriore. Vedere una cosa ogni giorno ci sembra capirla.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "ru": {
+      "title": "Тебе кажется, что ты знаешь, как работает молния 🤐",
+      "description": "В экспериментах в Йеле люди оценивали, насколько хорошо понимают устройство вещей вроде застёжки-молнии, а после попытки объяснить всё по шагам их оценки падали. Больше трети людей, не катающихся на велосипеде, нарисовали цепь, огибающую и переднее колесо. Видеть что-то каждый день — ещё не значит понимать.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "ar": {
+      "title": "تظن أنك تعرف كيف يعمل السحّاب 🤐",
+      "description": "في تجارب بجامعة ييل قيّم الناس مدى فهمهم لأشياء مثل السحّاب، ثم طُلب منهم شرحها خطوة بخطوة فانخفض تقييمهم. وأكثر من ثلث من لا يركبون الدراجة رسموا السلسلة تلتف حول العجلة الأمامية أيضًا. رؤية الشيء كل يوم تُشعرنا بأننا نفهمه.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "hi": {
+      "title": "आपको लगता है कि आप जानते हैं ज़िप कैसे काम करती है 🤐",
+      "description": "येल के प्रयोगों में लोगों ने ज़िप जैसी चीज़ों की अपनी समझ को अंक दिए, फिर क़दम-दर-क़दम समझाने को कहा गया तो उनके अंक गिर गए। साइकिल न चलाने वाले एक-तिहाई से ज़्यादा लोगों ने चेन को आगे के पहिये पर भी चढ़ा दिया। रोज़ देखना हमें समझने जैसा लगता है।\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "id": {
+      "title": "Kamu merasa tahu cara kerja ritsleting 🤐",
+      "description": "Dalam eksperimen di Yale, orang menilai seberapa paham mereka tentang benda seperti ritsleting; setelah diminta menjelaskan langkah demi langkah, nilainya turun. Lebih dari sepertiga orang yang tidak bersepeda bahkan menggambar rantai melingkari roda depan juga. Melihat sesuatu tiap hari terasa seperti memahaminya.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "ja": {
+      "title": "ファスナーの仕組み、実はわかっていないかも 🤐",
+      "description": "イェール大学の実験では、ファスナーなどの仕組みをどれだけ理解しているか自己評価してもらい、手順を説明させると評価が下がりました。自転車に乗らない人の3分の1以上は、チェーンを前輪にもかけて描きました。毎日見ていると、わかった気になってしまうのです。\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "ko": {
+      "title": "지퍼 작동 원리, 안다고 착각하고 있다 🤐",
+      "description": "예일대 실험에서 사람들은 지퍼 같은 물건을 얼마나 잘 이해하는지 점수를 매겼지만, 단계별로 설명하게 하자 점수가 떨어졌습니다. 자전거를 타지 않는 사람의 3분의 1 이상은 체인을 앞바퀴에도 걸어 그렸습니다. 매일 보는 것을 이해한다고 착각하는 것이죠.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "pl": {
+      "title": "Myślisz, że wiesz, jak działa zamek błyskawiczny 🤐",
+      "description": "W eksperymentach w Yale ludzie oceniali, jak dobrze rozumieją rzeczy takie jak zamek błyskawiczny; gdy mieli to wyjaśnić krok po kroku, ich ocena spadała. Ponad jedna trzecia osób niejeżdżących na rowerze narysowała łańcuch biegnący także wokół przedniego koła. Codzienne oglądanie myli się nam ze zrozumieniem.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "nl": {
+      "title": "Je denkt dat je weet hoe een rits werkt 🤐",
+      "description": "In experimenten aan Yale gaven mensen aan hoe goed ze dingen als een rits begrepen; toen ze het stap voor stap moesten uitleggen, daalde hun score. Meer dan een derde van de niet-fietsers tekende de ketting zelfs om het voorwiel. Iets elke dag zien voelt als het begrijpen.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "uk": {
+      "title": "Тобі здається, що ти знаєш, як працює блискавка 🤐",
+      "description": "В експериментах у Єльському університеті люди оцінювали, наскільки добре розуміють речі на кшталт блискавки, а після спроби пояснити все крок за кроком оцінки падали. Понад третина людей, які не їздять велосипедом, намалювали ланцюг і навколо переднього колеса. Бачити щось щодня — ще не означає розуміти.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "vi": {
+      "title": "Bạn tưởng mình biết khóa kéo hoạt động thế nào 🤐",
+      "description": "Trong các thí nghiệm ở Yale, người tham gia tự chấm mức hiểu biết về những thứ như khóa kéo; khi phải giải thích từng bước, điểm tự chấm giảm xuống. Hơn một phần ba người không đi xe đạp còn vẽ xích vòng qua cả bánh trước. Thấy một thứ mỗi ngày dễ khiến ta tưởng mình hiểu nó.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "az": {
+      "title": "Fermuarın necə işlədiyini bildiyini düşünürsən 🤐",
+      "description": "Yeyldə aparılan təcrübələrdə insanlar fermuar kimi əşyaları nə qədər yaxşı anladıqlarını qiymətləndirdi, addım-addım izah etməli olanda isə balları düşdü. Velosiped sürməyənlərin üçdə birindən çoxu zənciri ön təkərə də doladı. Bir şeyi hər gün görmək beyinə onu anlamış kimi gəlir.\n\n#shorts\n\nSeri: mk-c0128"
+    },
+    "ro": {
+      "title": "Crezi că știi cum funcționează un fermoar 🤐",
+      "description": "În experimente de la Yale, oamenii și-au evaluat înțelegerea unor obiecte precum fermoarul; când au trebuit să le explice pas cu pas, nota a scăzut. Peste o treime dintre cei care nu merg cu bicicleta au desenat lanțul trecând și pe roata din față. Să vezi ceva zilnic pare că înseamnă să-l înțelegi.\n\n#shorts\n\nSeri: mk-c0128"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen bir fermuarın nasıl çalıştığını baştan sona anlatabilir misin: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu fermuarı her gün kullanıyorsun ama anlatamazsın.",
+      "visual": "extreme close-up of a metal zipper being pulled open, its teeth separating",
+      "stock_query": "zipper close up",
+      "source": "stock",
+      "callout": "ANLATAMAZSIN"
+    },
+    {
+      "text": "Bir deneyde insanlar fermuarı iyi bildiklerini söyledi; adım adım anlatmaya çalışınca puanları düştü.",
+      "visual": "a young woman writing in a notebook, pausing and frowning",
+      "stock_query": "woman writing notebook",
+      "source": "stock",
+      "subject": [
+        "notebook",
+        "writing"
+      ],
+      "callout": "PUANLAR DÜŞTÜ"
+    },
+    {
+      "text": "Bisiklet sürmeyenlerin üçte birinden fazlası, bisiklet çizerken zinciri ön tekere de doladı.",
+      "visual": "close-up of a bicycle chain running over the rear gear",
+      "stock_query": "bicycle chain",
+      "source": "stock",
+      "subject": [
+        "bicycle"
+      ],
+      "callout": "ZİNCİR ÖN TEKERDE"
+    },
+    {
+      "text": "Çünkü her gün görmek beyne anlamış gibi gelir; boşlukları ancak anlatırken fark edersin.",
+      "visual": "close-up of a confused man's face, thinking hard",
+      "stock_query": "confused man face",
+      "source": "stock",
+      "subject": [
+        "face"
+      ],
+      "callout": "GÖRMEK ANLAMAK DEĞİL"
+    },
+    {
+      "text": "Şimdi birine fermuarın nasıl kapandığını anlatmayı dene; çünkü...",
+      "visual": "close-up of a jacket zipper being zipped up",
+      "stock_query": "zipper jacket",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 19.43,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 14,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #181",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0128_1794554525_ig.mp4"
+}
