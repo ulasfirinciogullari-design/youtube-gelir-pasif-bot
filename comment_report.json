@@ -1,12 +1,30 @@
 {
- "started": "2026-11-13T06:45:13+00:00",
+ "started": "2026-11-13T07:45:22+00:00",
  "deneme": false,
- "threads": 195,
+ "threads": 197,
  "reply_threads_read": 0,
- "new": 1,
+ "new": 2,
  "quiet": 0,
  "sent_last_24h": 0,
  "room": 10,
- "error": "RuntimeError: Gemini cevap vermedi: gemini-flash-latest: boş cevap (None)",
- "finished": "2026-11-13T06:45:15+00:00"
+ "model": "gemini-flash-latest",
+ "items": [
+  {
+   "id": "Ugy_504s6l60t0tBbOR4AaABAg",
+   "kind": "comment",
+   "video": "gcatVWG4Nbk",
+   "comment": "😽🐈‍⬛🥫",
+   "reply": "Konserve mamasını kapıp keyfine bakan tatlı bir kedi tablosu olmuş bu! 🥫",
+   "result": "gönderildi"
+  },
+  {
+   "id": "Ugwj2tNtvhAEAU4cN7l4AaABAg",
+   "kind": "comment",
+   "video": "5mRx62PPThE",
+   "comment": "Bi keresinde bi kedi kendini gayet uysal bi şekilde sevdiriyodu ısırabildiklerini bildiğim için onu darlamak istememiştim o yüzden kendim sevmeyi bırakıp sadece",
+   "reply": "Çok geçmiş olsun, kedilerde aşırı uyarılma anında sevgi ile avlanma refleksi saniyesinde birbirine karışabiliyor. Çekinmekte çok haklısın.",
+   "result": "gönderildi"
+  }
+ ],
+ "finished": "2026-11-13T07:45:33+00:00"
 }
