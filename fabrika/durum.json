@@ -2424,12 +2424,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-05T17:09:24+00:00",
-   "mod": "igbolum",
-   "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
-   "chars": 380
-  },
-  {
    "finished": "2026-11-05T18:04:39+00:00",
    "mod": "saatlik",
    "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
@@ -2849,6 +2843,13 @@
    "finished": "2026-11-13T07:49:55+00:00",
    "mod": "ornek",
    "error": "SystemExit: bölüm bulunamadı: 20261112-3-n016"
+  },
+  {
+   "finished": "2026-11-13T07:51:57+00:00",
+   "mod": "ornek",
+   "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+   "duration": 24.9,
+   "chars": 380
   }
  ],
  "last_fail": 1794410324.353765,

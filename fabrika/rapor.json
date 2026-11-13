@@ -1,10 +1,12 @@
 {
- "started": "2026-11-13T07:49:55+00:00",
+ "started": "2026-11-13T07:51:09+00:00",
  "mod": "ornek",
  "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "error": "SystemExit: bölüm bulunamadı: 20261112-3-n016",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 501, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 336, in ornek\n    raise SystemExit(f\"bölüm bulunamadı: {ep_id}\")\nSystemExit: bölüm bulunamadı: 20261112-3-n016\n",
+ "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+ "chars": 380,
+ "duration": 24.9,
+ "deneme": "fabrika/deneme/ornek-n016.mp4",
  "log": [],
- "finished": "2026-11-13T07:49:55+00:00"
+ "finished": "2026-11-13T07:51:57+00:00"
 }
