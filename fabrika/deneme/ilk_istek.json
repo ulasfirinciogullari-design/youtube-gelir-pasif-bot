@@ -1,10 +1,10 @@
 {
  "ara": {
-  "n016": ["lava flow Kilauea", "lava fountain eruption USGS"],
-  "y043": ["sleeping man bed night", "person sleeping bedroom"],
-  "y024": ["green leaf sunlight macro", "leaf backlit sun"],
-  "y056": ["elderly hands wrinkles", "old woman face portrait"],
-  "y059": ["astronaut spacewalk International Space Station", "astronaut ISS window Earth"]
+  "n016": ["lava flow Kilauea", "lava lake Halemaumau"],
+  "y043": ["woman sleeping in bed", "man asleep bed -HABS -NARA"],
+  "y024": ["leaf backlit sunlight", "green leaves sunlight macro"],
+  "y056": ["elderly person hands", "very old woman portrait"],
+  "y059": ["astronaut spacewalk ISS", "astronaut cupola ISS Earth"]
  },
  "al": {}
 }

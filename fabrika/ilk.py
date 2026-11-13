@@ -16,6 +16,7 @@ import io
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -30,9 +31,14 @@ FREE = re.compile(r"public domain|^pd\b|^pd-|cc0|cc-zero", re.I)
 
 
 def get(url, **kw):
-    r = requests.get(url, headers=UA, timeout=60, **kw)
-    r.raise_for_status()
-    return r
+    """Commons throttles the shared GitHub runners (429 on the first run, 2026-11-13): wait and try again."""
+    for k in range(5):
+        time.sleep(1.5)
+        r = requests.get(url, headers=UA, timeout=60, **kw)
+        if r.status_code not in (429, 500, 502, 503, 504) or k == 4:
+            r.raise_for_status()
+            return r
+        time.sleep(min(60, int(r.headers.get("Retry-After") or 0) or 10 * (k + 1)))
 
 
 def strip(s):
@@ -45,8 +51,8 @@ def candidates(query, n=8):
                             "srsearch": f"{query} filetype:bitmap"}).json()["query"]["search"]
     titles = [h["title"] for h in hits]
     out = []
-    for i in range(0, len(titles), 20):
-        pages = get(API, params={"action": "query", "format": "json", "prop": "imageinfo", "titles": "|".join(titles[i:i + 20]),
+    if titles:  # one call for all of them: fewer requests, less throttling
+        pages = get(API, params={"action": "query", "format": "json", "prop": "imageinfo", "titles": "|".join(titles),
                                  "iiprop": "url|size|extmetadata|mime", "iiurlwidth": 1600}).json()["query"]["pages"]
         order = {t: k for k, t in enumerate(titles)}
         for p in sorted(pages.values(), key=lambda p: order.get(p.get("title"), 99)):
@@ -71,7 +77,8 @@ def sheet(items, path):
     d = ImageDraw.Draw(out)
     for k, it in enumerate(items):
         try:
-            im = Image.open(io.BytesIO(get(it["url"]).content)).convert("RGB")
+            small = it["url"].replace("/1600px-", "/400px-")  # Commons keeps standard thumbnail sizes ready
+            im = Image.open(io.BytesIO(get(small).content)).convert("RGB")
         except Exception as e:  # noqa: BLE001
             it["hata"] = str(e)[:100]
             continue
