@@ -2424,14 +2424,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-05T14:08:19+00:00",
-   "mod": "saatlik",
-   "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
-   "url": "https://youtube.com/shorts/QCM7IT8jkhc",
-   "duration": 25.8,
-   "chars": 367
-  },
-  {
    "finished": "2026-11-05T17:09:24+00:00",
    "mod": "igbolum",
    "title": "Bir Gün 48 Saat Olsaydı Vücuduna Ne Olurdu?",
@@ -2852,6 +2844,11 @@
    "url": "https://youtube.com/shorts/2F-iAcfk3X4",
    "duration": 25.1,
    "chars": 376
+  },
+  {
+   "finished": "2026-11-13T07:49:55+00:00",
+   "mod": "ornek",
+   "error": "SystemExit: bölüm bulunamadı: 20261112-3-n016"
   }
  ],
  "last_fail": 1794410324.353765,

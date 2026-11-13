@@ -1,71 +1,10 @@
 {
- "started": "2026-11-12T18:07:06+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-13T07:49:55+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "64",
-  "videos": "76"
- },
- "credits_before": [
-  99869,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261112-2-y038.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y038",
-  "series": "Ya Olsaydı?",
-  "q": "İnsanlar kediler gibi karanlıkta görebilseydi?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 376,
- "duration": 25.1,
- "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
- "url": "https://youtube.com/shorts/2F-iAcfk3X4",
- "recent_status": {
-  "y068": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "736",
-   "reason": null
-  },
-  "g015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "259",
-   "reason": null
-  },
-  "y019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "39",
-   "reason": null
-  },
-  "y034": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "102",
-   "reason": null
-  },
-  "y038": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  99959,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261112-2-y038.json İnsanlar kediler gibi karanlıkta görebilseydi? (Ya Olsaydı?)"
- ],
- "finished": "2026-11-12T18:08:20+00:00"
+ "error": "SystemExit: bölüm bulunamadı: 20261112-3-n016",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 501, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 336, in ornek\n    raise SystemExit(f\"bölüm bulunamadı: {ep_id}\")\nSystemExit: bölüm bulunamadı: 20261112-3-n016\n",
+ "log": [],
+ "finished": "2026-11-13T07:49:55+00:00"
 }
