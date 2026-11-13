@@ -1,5 +1,5 @@
 {
- "at": "2026-11-13T10:07:04+00:00",
+ "at": "2026-11-13T11:02:32+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 65,
   "viewCount": 74269,
-  "videoCount": 77
+  "videoCount": 78
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -297,7 +297,7 @@
    "baslik": "Lav Gölüne Düşseydin Batar Mıydın? 😳"
   },
   "hvgNbZMhWPg": {
-   "view": 2226,
+   "view": 2225,
    "like": 20,
    "comment": 0,
    "baslik": "Bir Kara Delik Gerçekte Ne Kadar Ağır? 🤯"
@@ -363,7 +363,7 @@
    "baslik": "DNA'n Gerçekte Ne Kadar Uzun? 🤯"
   },
   "Tk6wA4QlShk": {
-   "view": 1223,
+   "view": 1224,
    "like": 20,
    "comment": 0,
    "baslik": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu? 😳"
@@ -411,70 +411,76 @@
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 1450,
+   "view": 1445,
    "like": 8,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
   },
   "6pHVAozelhE": {
-   "view": 936,
+   "view": 935,
    "like": 9,
    "comment": 0,
    "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
   },
   "nFBLtsB59Uw": {
-   "view": 209,
+   "view": 208,
    "like": 1,
    "comment": 0,
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
   "O1WLYgc1whA": {
-   "view": 398,
+   "view": 397,
    "like": 2,
    "comment": 0,
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
   },
   "mTcbQupGjWQ": {
-   "view": 295,
+   "view": 294,
    "like": 1,
    "comment": 0,
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
   },
   "agyOZTY5PCE": {
-   "view": 84,
+   "view": 83,
    "like": 0,
    "comment": 0,
    "baslik": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun? 🤯"
   },
   "xLGCGQYwSmE": {
-   "view": 999,
+   "view": 1002,
    "like": 13,
    "comment": 2,
    "baslik": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu? 😳"
   },
   "WR_w6VSOY-s": {
-   "view": 325,
+   "view": 319,
    "like": 0,
    "comment": 0,
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
   },
   "Pxik5vC4NHU": {
-   "view": 91,
+   "view": 90,
    "like": 0,
    "comment": 0,
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
   },
   "RKGn39tzpn4": {
-   "view": 254,
+   "view": 249,
    "like": 2,
    "comment": 0,
    "baslik": "Hiç Bakterin Olmasaydı Ne Olurdu? 😳"
   },
   "2F-iAcfk3X4": {
-   "view": 186,
+   "view": 160,
    "like": 2,
    "comment": 0,
    "baslik": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu? 😳"
+  },
+  "325eJNknZqk": {
+   "view": 4,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   }
  },
  "videos": {
@@ -1871,9 +1877,9 @@
   },
   {
    "day": "2026-10-16",
-   "views": 1674,
-   "engagedViews": 773,
-   "estimatedMinutesWatched": 285,
+   "views": 1616,
+   "engagedViews": 768,
+   "estimatedMinutesWatched": 283,
    "subscribersGained": 7
   },
   {
@@ -1892,9 +1898,9 @@
   },
   {
    "day": "2026-10-19",
-   "views": 3364,
-   "engagedViews": 1721,
-   "estimatedMinutesWatched": 535,
+   "views": 3352,
+   "engagedViews": 1718,
+   "estimatedMinutesWatched": 534,
    "subscribersGained": 4
   },
   {
@@ -1927,9 +1933,9 @@
   },
   {
    "day": "2026-10-24",
-   "views": 790,
-   "engagedViews": 377,
-   "estimatedMinutesWatched": 108,
+   "views": 785,
+   "engagedViews": 376,
+   "estimatedMinutesWatched": 107,
    "subscribersGained": 1
   },
   {
