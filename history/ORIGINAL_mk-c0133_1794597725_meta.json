@@ -1,0 +1,168 @@
+{
+  "topic_id": "mk-c0133",
+  "topic": "Köpekle bebek gibi konuşmak işe yarar mı, köpekler ince sesle konuşulmasını sever mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Köpeğinle bebek gibi konuşman boşuna değil 🐶",
+  "hook_text": "KÖPEĞİNLE NASIL KONUŞMALISIN?",
+  "description": "Köpekle bebek gibi konuşmak işe yarar mı, köpekler ince sesle konuşulmasını sever mi?\n\nEvet, işe yarıyor gibi görünüyor. Budapeşte'deki Eötvös Loránd Üniversitesi'nin 2023'te Communications Biology dergisinde yayımlanan MR çalışmasında, köpeklerin beynindeki işitme bölgeleri köpeğe ve bebeğe yönelik konuşmaya, yetişkinle konuşmaya göre daha güçlü tepki verdi; etki kadın seslerinde daha belirgindi. York Üniversitesi'nin 2018'de Animal Cognition dergisinde yayımlanan deneyinde de yetişkin köpekler, ince ve abartılı bir sesle 'aferin sana' gibi köpeğe dair sözler söyleyen kişiye daha uzun baktı ve onun yanında daha çok vakit geçirdi. Ses ile sözler uyuşmadığında bu tercih kayboldu.\n\nSen köpeğinle nasıl konuşuyorsun: bebek sesiyle mi, normal sesinle mi?\n\n#köpek #köpekler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0133",
+  "tags": [
+    "köpekle konuşmak",
+    "köpeğe bebek gibi konuşmak",
+    "köpekle nasıl konuşulur",
+    "köpekler bizi anlar mı",
+    "köpek sesimizi anlar mı",
+    "köpekler kadın sesini sever mi",
+    "köpek ince ses",
+    "köpek aferin",
+    "köpek iletişimi",
+    "köpek sahibi",
+    "köpek eğitimi",
+    "köpek davranışları",
+    "köpek",
+    "köpekler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "dog directed speech",
+    "talking to dogs",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kopekle konusmak",
+    "kopege bebek gibi konusmak"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Talking to your dog in a baby voice isn't silly 🐶",
+      "description": "In a Hungarian brain-scan study, dogs' hearing regions responded more strongly to dog-directed speech, especially from women. In a University of York experiment, adult dogs stayed longer with the person who used that voice with words like \"good dog\".\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "es": {
+      "title": "Hablarle a tu perro como a un bebé no es una tontería 🐶",
+      "description": "En un estudio húngaro con resonancia magnética, las zonas auditivas del cerebro de los perros respondieron más a ese tono, sobre todo con voces de mujer. En un experimento de la Universidad de York, los perros adultos se quedaron más tiempo junto a quien usaba ese tono con frases como «buen perro».\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "pt": {
+      "title": "Falar com o cachorro como se fosse um bebê não é bobagem 🐶",
+      "description": "Num estudo húngaro com ressonância magnética, as áreas auditivas do cérebro dos cães reagiram mais a esse jeito de falar, principalmente na voz de mulheres. Num experimento da Universidade de York, cães adultos ficaram mais tempo perto de quem usava esse tom com frases como \"bom garoto\".\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "de": {
+      "title": "Mit deinem Hund in Babysprache zu reden, ist nicht albern 🐶",
+      "description": "In einer ungarischen MRT-Studie reagierten die Hörzentren von Hunden stärker auf an Hunde gerichtete Sprache, besonders bei Frauenstimmen. In einem Experiment der Universität York blieben erwachsene Hunde länger bei der Person, die in diesem Ton Sätze wie „Braver Hund“ sagte.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "fr": {
+      "title": "Parler à ton chien comme à un bébé n'a rien de ridicule 🐶",
+      "description": "Dans une étude hongroise par IRM, les zones auditives du cerveau des chiens ont réagi plus fort à ce ton, surtout avec des voix de femmes. Dans une expérience de l'université d'York, des chiens adultes sont restés plus longtemps près de la personne qui disait « bon chien » sur ce ton.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "it": {
+      "title": "Parlare al tuo cane come a un bambino non è sciocco 🐶",
+      "description": "In uno studio ungherese con la risonanza magnetica, le aree uditive del cervello dei cani hanno reagito di più a questo modo di parlare, soprattutto con voci femminili. In un esperimento dell'Università di York, i cani adulti sono rimasti più a lungo vicino a chi usava quel tono con frasi come «bravo cane».\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "ru": {
+      "title": "Сюсюкать с собакой — вовсе не глупо 🐶",
+      "description": "В венгерском исследовании с МРТ слуховые зоны мозга собак сильнее реагировали на речь, обращённую к собаке, особенно на женские голоса. В эксперименте Йоркского университета взрослые собаки дольше оставались рядом с человеком, который таким тоном говорил «хорошая собака».\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "ar": {
+      "title": "التحدث إلى كلبك كأنه طفل ليس أمرًا سخيفًا 🐶",
+      "description": "في دراسة مجرية بالرنين المغناطيسي، استجابت مناطق السمع في أدمغة الكلاب أكثر لنبرة الكلام الموجّه إليها، خاصة بأصوات النساء. وفي تجربة بجامعة يورك، بقيت الكلاب البالغة مدة أطول قرب من يستخدم هذه النبرة مع عبارات مثل «كلب شاطر».\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "hi": {
+      "title": "अपने कुत्ते से बच्चे जैसी आवाज़ में बात करना बेकार नहीं 🐶",
+      "description": "हंगरी के एक एमआरआई अध्ययन में कुत्तों के दिमाग़ के सुनने वाले हिस्सों ने इस तरह की बोली पर, ख़ासकर महिलाओं की आवाज़ पर, ज़्यादा तेज़ प्रतिक्रिया दी। यूनिवर्सिटी ऑफ़ यॉर्क के एक प्रयोग में बड़े कुत्ते उस व्यक्ति के पास ज़्यादा देर रहे जो इसी लहजे में \"गुड डॉग\" जैसे शब्द बोलता था।\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "id": {
+      "title": "Ngomong ke anjing seperti ke bayi itu tidak konyol 🐶",
+      "description": "Dalam studi MRI di Hungaria, area pendengaran di otak anjing lebih aktif saat mendengar cara bicara khusus untuk anjing, terutama dari suara perempuan. Dalam eksperimen Universitas York, anjing dewasa lebih lama berada di dekat orang yang memakai nada itu dengan kata-kata seperti \"anjing pintar\".\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "ja": {
+      "title": "犬に赤ちゃん言葉で話しかけるのは無意味じゃない 🐶",
+      "description": "ハンガリーのMRI研究では、犬の脳の聴覚領域が犬向けの話し方、特に女性の声により強く反応しました。英ヨーク大学の実験では、成犬はその口調で「いい子だね」と声をかけた人のそばに長くとどまりました。\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "ko": {
+      "title": "강아지에게 아기 말투로 말하는 건 바보 같은 일이 아니다 🐶",
+      "description": "헝가리의 MRI 연구에서 개의 뇌 청각 영역은 개에게 하는 말투, 특히 여성의 목소리에 더 강하게 반응했습니다. 영국 요크대 실험에서는 성견들이 그 말투로 \"착하지\" 같은 말을 해 준 사람 곁에 더 오래 머물렀습니다.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "pl": {
+      "title": "Mówienie do psa jak do niemowlęcia to nie głupota 🐶",
+      "description": "W węgierskim badaniu z użyciem rezonansu magnetycznego obszary słuchowe w mózgu psów silniej reagowały na mowę kierowaną do psa, zwłaszcza w wykonaniu kobiet. W eksperymencie Uniwersytetu w Yorku dorosłe psy dłużej zostawały przy osobie, która tym tonem mówiła „dobry pies”.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "nl": {
+      "title": "Babypraat tegen je hond is helemaal niet gek 🐶",
+      "description": "In een Hongaarse MRI-studie reageerden de gehoorgebieden in het hondenbrein sterker op tegen honden gerichte spraak, vooral van vrouwen. In een experiment van de Universiteit van York bleven volwassen honden langer bij de persoon die op die toon dingen als 'brave hond' zei.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "uk": {
+      "title": "Сюсюкати з собакою — зовсім не безглуздо 🐶",
+      "description": "В угорському дослідженні з МРТ слухові ділянки мозку собак сильніше реагували на мовлення, звернене до собак, особливо на жіночі голоси. В експерименті Йоркського університету дорослі собаки довше лишалися біля людини, яка таким тоном казала «хороший пес».\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "vi": {
+      "title": "Nói chuyện với chó bằng giọng em bé không hề ngớ ngẩn 🐶",
+      "description": "Trong một nghiên cứu chụp MRI ở Hungary, vùng thính giác trong não chó phản ứng mạnh hơn với giọng nói dành cho chó, nhất là giọng phụ nữ. Trong thí nghiệm của Đại học York, chó trưởng thành ở lâu hơn bên người dùng giọng đó kèm những câu như \"giỏi lắm\".\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "az": {
+      "title": "İtinlə körpə kimi danışmağın boşuna deyil 🐶",
+      "description": "Macarıstanda aparılan MRT araşdırmasında itlərin beynindəki eşitmə sahələri itə yönəlik danışığa, xüsusən qadın səsinə daha güclü reaksiya verdi. York Universitetinin təcrübəsində yetkin itlər bu tonla \"afərin sənə\" kimi sözlər deyən adamın yanında daha uzun qaldı.\n\n#shorts\n\nSeri: mk-c0133"
+    },
+    "ro": {
+      "title": "Să-i vorbești câinelui ca unui bebeluș nu e o prostie 🐶",
+      "description": "Într-un studiu maghiar cu RMN, zonele auditive din creierul câinilor au reacționat mai puternic la vorbirea adresată câinilor, mai ales la vocile femeilor. Într-un experiment al Universității din York, câinii adulți au stat mai mult lângă persoana care folosea acel ton cu vorbe ca „câine cuminte”.\n\n#shorts\n\nSeri: mk-c0133"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen köpeğinle nasıl konuşuyorsun: bebek sesiyle mi, normal sesinle mi?",
+  "scenes": [
+    {
+      "text": "Bu köpekle bebek gibi konuşman boşuna değil.",
+      "visual": "close-up of a dog's face with ears perked and head tilted, looking at the camera",
+      "stock_query": "dog face",
+      "source": "stock",
+      "callout": "BOŞUNA DEĞİL"
+    },
+    {
+      "text": "Çoğumuz köpeğe ince bir sesle, kelimeleri uzatarak konuşuruz.",
+      "visual": "a woman talking affectionately to her dog",
+      "stock_query": "woman dog",
+      "source": "stock"
+    },
+    {
+      "text": "MR'da köpeklerin beyni bu sese, en çok da kadın sesine daha güçlü tepki verdi.",
+      "visual": "close-up of a dog's ear twitching as it listens",
+      "stock_query": "dog ear",
+      "source": "stock",
+      "callout": "KADIN SESİNE DAHA ÇOK"
+    },
+    {
+      "text": "Çünkü bu ses dikkat çeker; bir deneyde köpekler, bu sesle 'aferin sana' diyenin yanında daha uzun kaldı.",
+      "visual": "a happy dog sitting close to its owner on a couch",
+      "stock_query": "dog owner",
+      "source": "stock",
+      "callout": "YANINDA KALDI"
+    },
+    {
+      "text": "Bu akşam ona ince sesle aferin de; çünkü...",
+      "visual": "close-up of a dog looking up lovingly at the camera",
+      "stock_query": "dog close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 15.73,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #186",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0133_1794597725_ig.mp4"
+}
