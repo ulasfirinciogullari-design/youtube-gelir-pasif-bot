@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0143",
+ "topic": "Martı yemeğini çalmasın diye ne yapmalı, martıya bakmak işe yarar mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "seagull",
+  "gull"
+ ],
+ "stock_hint": "seagull close up",
+ "script": {
+  "title": "Yemeğine göz diken martıya dik dik bakmak işe yarıyor 👀",
+  "hook_text": "MARTIYI NASIL DURDURURSUN?",
+  "scenes": [
+   {
+    "text": "Bu martı yemeğine değil, gözlerine bakıyor.",
+    "visual": "extreme close-up of a herring gull's head, its yellow eye staring into the camera",
+    "stock_query": "seagull close up",
+    "source": "stock",
+    "callout": "GÖZÜNE BAKIYOR"
+   },
+   {
+    "text": "Bir deneyde yere patates kızartması bırakılıp yetmiş dört martıya yaklaşıldı.",
+    "visual": "seagull standing on a pavement next to a bag of french fries",
+    "stock_query": "seagull food",
+    "source": "stock",
+    "callout": "74 MARTI"
+   },
+   {
+    "text": "Saldırgan sanılan martıların çoğu yemeğe yaklaşmaya bile cesaret edemedi.",
+    "visual": "seagulls flying away from a promenade",
+    "stock_query": "seagull flying",
+    "source": "stock",
+    "callout": "ÇOĞU YAKLAŞMADI"
+   },
+   {
+    "text": "Çünkü bakışını okuyorlar: insan dik dik bakınca yemeğe ortalama yirmi bir saniye geç geldiler.",
+    "visual": "seagull walking cautiously on a pier, glancing sideways",
+    "stock_query": "seagull walking",
+    "source": "stock",
+    "callout": "+21 SANİYE"
+   },
+   {
+    "text": "Vapurda simidine göz diken martıya sen de gözünü dik; çünkü...",
+    "visual": "seagull hovering in the wind beside a ferry at sea",
+    "stock_query": "seagull sea",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yemeğine göz diken martıya dik dik bakmak işe yarıyor. 2019'daki bir deneyde yere patates kızartması bırakılıp yetmiş dört martıya yaklaşıldı; çoğu yemeğe yaklaşmadı bile. Yaklaşanlar, bir insan onlara dik dik bakınca yemeğe ortalama yirmi bir saniye daha geç geldi.",
+  "tags": [
+   "martı",
+   "martılar",
+   "simit",
+   "vapur",
+   "kuşlar",
+   "hayvan davranışları",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin simidini hiç martı kaptı mı: evet mi, hayır mı?",
+  "en_title": "Staring at a gull really helps protect your food 👀",
+  "en_description": "In a 2019 University of Exeter study, researchers set down a bag of chips and approached 74 herring gulls; most wouldn't come near it. Those that did took on average 21 seconds longer to approach when a person stared at them. Gulls read the direction of human gaze.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Martı yemeğini çalmasın diye ne yapmalı, martıya bakmak işe yarar mı?\n\nExeter Üniversitesi'nden Madeleine Goumas ve ekibinin 2019'da Biology Letters dergisinde yayımlanan deneyinde, İngiltere'nin Cornwall kıyısındaki kasabalarda yere bir paket patates kızartması bırakılıp yetmiş dört gümüş martıya yaklaşıldı. Saldırgan diye bilinen martıların çoğu uçup gitti ya da yemeğe yaklaşmadı; yalnızca yirmi yedisi yaklaştı. İki denemeyi de tamamlayan on dokuz martı, bir insan kendilerine dik dik bakarken yemeğe ortalama yirmi bir saniye daha geç yaklaştı. Aynı ekibin 2020'deki bir başka deneyine göre martılar, insanların eline alıp bıraktığı yiyeceğe daha çok yöneliyor.\n\nSenin simidini hiç martı kaptı mı: evet mi, hayır mı?",
+  "hashtags": [
+   "#martı",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "martı",
+   "martılar",
+   "martı yemek çalar mı",
+   "martı simit kapıyor",
+   "martıdan nasıl korunulur",
+   "martıya bakmak",
+   "martı deneyi",
+   "martılar insanı anlar mı",
+   "gümüş martı",
+   "vapurda simit",
+   "simit",
+   "kuş davranışları",
+   "hayvan davranışları",
+   "hayvan zekası",
+   "kuşlar",
+   "deniz kuşları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "seagull",
+   "herring gull"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Staring at a gull really helps protect your food 👀",
+    "description": "In a 2019 study, researchers set down a bag of chips and approached 74 herring gulls; most wouldn't even come near. Those that did took on average 21 seconds longer to approach when a person stared at them. Gulls read the direction of our gaze."
+   },
+   "es": {
+    "title": "Mirar fijamente a una gaviota sí protege tu comida 👀",
+    "description": "En un estudio de 2019, los investigadores dejaron una bolsa de patatas fritas y se acercaron a 74 gaviotas; la mayoría ni se acercó. Las que sí lo hicieron tardaron de media 21 segundos más cuando una persona las miraba fijamente. Las gaviotas leen la dirección de nuestra mirada."
+   },
+   "pt": {
+    "title": "Encarar uma gaivota ajuda mesmo a proteger sua comida 👀",
+    "description": "Num estudo de 2019, pesquisadores deixaram um saco de batatas fritas no chão e se aproximaram de 74 gaivotas; a maioria nem chegou perto. As que vieram demoraram em média 21 segundos a mais quando uma pessoa as encarava. As gaivotas leem a direção do nosso olhar."
+   },
+   "de": {
+    "title": "Eine Möwe anzustarren schützt wirklich dein Essen 👀",
+    "description": "In einer Studie von 2019 legten Forschende eine Tüte Pommes ab und näherten sich 74 Silbermöwen; die meisten kamen nicht einmal heran. Die mutigen brauchten im Schnitt 21 Sekunden länger, wenn ein Mensch sie anstarrte. Möwen lesen, wohin wir schauen."
+   },
+   "fr": {
+    "title": "Fixer un goéland du regard protège vraiment ton repas 👀",
+    "description": "Dans une étude de 2019, des chercheurs ont posé un sachet de frites et se sont approchés de 74 goélands ; la plupart ne sont même pas venus. Ceux qui ont osé ont mis en moyenne 21 secondes de plus à approcher quand une personne les fixait. Les goélands lisent la direction de notre regard."
+   },
+   "it": {
+    "title": "Fissare un gabbiano protegge davvero il tuo cibo 👀",
+    "description": "In uno studio del 2019 i ricercatori hanno lasciato a terra un sacchetto di patatine e si sono avvicinati a 74 gabbiani; la maggior parte non si è nemmeno avvicinata. Quelli che lo hanno fatto ci hanno messo in media 21 secondi in più quando una persona li fissava. I gabbiani leggono la direzione del nostro sguardo."
+   },
+   "ru": {
+    "title": "Пристальный взгляд на чайку правда спасает твою еду 👀",
+    "description": "В исследовании 2019 года учёные клали на землю пакет картошки фри и подходили к 74 серебристым чайкам; большинство даже не приблизилось. Те, что решились, подходили к еде в среднем на 21 секунду позже, если человек пристально на них смотрел. Чайки считывают направление нашего взгляда."
+   },
+   "ar": {
+    "title": "التحديق في النورس يحمي طعامك فعلًا 👀",
+    "description": "في دراسة عام 2019 وضع الباحثون كيسًا من البطاطس المقلية على الأرض واقتربوا من 74 نورسًا، فلم يقترب معظمها أصلًا. أما التي اقتربت فتأخرت في المتوسط 21 ثانية حين كان إنسان يحدّق فيها. النوارس تقرأ اتجاه نظراتنا."
+   },
+   "hi": {
+    "title": "सीगल को घूरकर देखना सच में तुम्हारा खाना बचाता है 👀",
+    "description": "2019 के एक अध्ययन में शोधकर्ताओं ने ज़मीन पर फ्रेंच फ्राइज़ का पैकेट रखा और 74 सीगल के पास गए; ज़्यादातर पास तक नहीं आए। जो आए, वे किसी इंसान के घूरने पर औसतन 21 सेकंड देर से खाने तक पहुँचे। सीगल हमारी नज़र की दिशा पढ़ लेते हैं।"
+   },
+   "id": {
+    "title": "Menatap camar lekat-lekat bisa melindungi makananmu 👀",
+    "description": "Dalam studi tahun 2019, peneliti menaruh sebungkus kentang goreng dan mendekati 74 burung camar; kebanyakan bahkan tidak mau mendekat. Yang berani mendekat butuh rata-rata 21 detik lebih lama saat ada orang yang menatapnya. Camar bisa membaca arah tatapan kita."
+   },
+   "ja": {
+    "title": "カモメをじっと見つめると食べ物を守れる 👀",
+    "description": "2019年の研究で、研究者はフライドポテトの袋を地面に置き、74羽のセグロカモメに近づきました。ほとんどは近寄りもしませんでした。近づいたカモメも、人にじっと見つめられると平均21秒遅れて食べ物に向かいました。カモメは人の視線の向きを読んでいるのです。"
+   },
+   "ko": {
+    "title": "갈매기를 빤히 쳐다보면 음식을 지킬 수 있다 👀",
+    "description": "2019년 연구에서 연구진은 감자튀김 봉지를 바닥에 두고 갈매기 74마리에게 다가갔습니다. 대부분은 아예 다가오지도 않았습니다. 다가온 갈매기도 사람이 빤히 쳐다보면 평균 21초 늦게 음식에 접근했습니다. 갈매기는 사람의 시선 방향을 읽습니다."
+   },
+   "pl": {
+    "title": "Wpatrywanie się w mewę naprawdę chroni twoje jedzenie 👀",
+    "description": "W badaniu z 2019 roku naukowcy kładli na ziemi torebkę frytek i podchodzili do 74 mew srebrzystych; większość w ogóle się nie zbliżyła. Te, które podeszły, potrzebowały średnio 21 sekund dłużej, gdy człowiek się w nie wpatrywał. Mewy odczytują kierunek naszego spojrzenia."
+   },
+   "nl": {
+    "title": "Een meeuw strak aankijken beschermt echt je eten 👀",
+    "description": "In een studie uit 2019 legden onderzoekers een zak friet neer en benaderden 74 zilvermeeuwen; de meeste kwamen niet eens dichterbij. De meeuwen die het wel deden, deden er gemiddeld 21 seconden langer over als iemand ze strak aankeek. Meeuwen lezen waar wij naar kijken."
+   },
+   "uk": {
+    "title": "Пильний погляд на чайку справді захищає твою їжу 👀",
+    "description": "У дослідженні 2019 року науковці клали на землю пакет картоплі фрі й підходили до 74 сріблястих мартинів; більшість навіть не наблизилася. Ті, що наважилися, підходили до їжі в середньому на 21 секунду пізніше, коли людина пильно на них дивилася. Чайки зчитують напрямок нашого погляду."
+   },
+   "vi": {
+    "title": "Nhìn chằm chằm vào mòng biển thật sự giúp giữ đồ ăn 👀",
+    "description": "Trong một nghiên cứu năm 2019, các nhà khoa học đặt một túi khoai tây chiên xuống đất và tiến lại gần 74 con mòng biển; phần lớn thậm chí không dám lại gần. Những con lại gần thì chậm hơn trung bình 21 giây khi có người nhìn chằm chằm vào chúng. Mòng biển đọc được hướng ánh mắt của con người."
+   },
+   "az": {
+    "title": "Qağayıya gözünü zilləmək yeməyini həqiqətən qoruyur 👀",
+    "description": "2019-cu ildəki araşdırmada alimlər yerə bir paket kartof fri qoyub 74 qağayıya yaxınlaşdı; çoxu yeməyə heç yaxınlaşmadı. Yaxınlaşanlar isə insan onlara gözünü zilləyəndə yeməyə orta hesabla 21 saniyə gec gəldi. Qağayılar baxışımızın istiqamətini oxuyur."
+   },
+   "ro": {
+    "title": "Dacă te uiți fix la un pescăruș, chiar îți aperi mâncarea 👀",
+    "description": "Într-un studiu din 2019, cercetătorii au lăsat jos o pungă de cartofi prăjiți și s-au apropiat de 74 de pescăruși; cei mai mulți nici nu s-au apropiat. Cei care au venit au întârziat în medie 21 de secunde când un om se uita fix la ei. Pescărușii citesc direcția privirii noastre."
+   }
+  }
+ }
+}

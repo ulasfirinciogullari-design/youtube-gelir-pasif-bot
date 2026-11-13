@@ -1,0 +1,172 @@
+{
+ "id": "mk-c0144",
+ "topic": "Köpekler dilinden mi terler, köpekler nereden terler?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog tongue",
+ "script": {
+  "title": "Köpekler dilinden terlemez, patilerinden terler 🐶",
+  "hook_text": "KÖPEK NEREDEN TERLER?",
+  "scenes": [
+   {
+    "text": "Bu köpek dilinden terlemiyor, ama terliyor.",
+    "visual": "close-up of a panting dog with its tongue hanging out, looking at the camera",
+    "stock_query": "dog tongue",
+    "source": "stock",
+    "callout": "DİLDEN TER YOK"
+   },
+   {
+    "text": "Gerçek ter bezleri pati yastıklarında; sıcak günlerde yerde ıslak pati izi bırakabilir.",
+    "visual": "close-up of a dog's paw pads",
+    "stock_query": "dog paw",
+    "source": "stock",
+    "callout": "TER PATİDE"
+   },
+   {
+    "text": "Ama bu ter, onu serinletmeye neredeyse hiç yetmez.",
+    "visual": "dog lying in the shade on a hot day",
+    "stock_query": "dog lying",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Asıl serinlik solukta: dilindeki, burnundaki ve akciğerlerindeki nem buharlaşıp ısıyı alır.",
+    "visual": "close-up of a dog panting heavily",
+    "stock_query": "dog panting",
+    "source": "stock",
+    "callout": "SOLUYARAK SERİNLER"
+   },
+   {
+    "text": "Sıcak bir günde köpeğinin patisine dokun; çünkü...",
+    "visual": "owner's hand gently holding a dog's paw",
+    "stock_query": "dog paw hand",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpekler dilinden terlemez. Gerçek ter bezleri pati yastıklarındadır ve sıcak günlerde yerde ıslak pati izi bırakabilir, ama bu ter onları serinletmeye neredeyse hiç yetmez. Asıl serinleme solumakla olur: dil, burun ve akciğerlerdeki nem buharlaşıp ısıyı alır.",
+  "tags": [
+   "köpek",
+   "köpekler nasıl terler",
+   "köpek patisi",
+   "solumak",
+   "köpek sağlığı",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de köpeklerin dilinden terlediğini sanıyor muydun: evet mi, hayır mı?",
+  "en_title": "Dogs don't sweat through their tongues, they sweat through their paws 🐶",
+  "en_description": "A dog's true sweat glands sit in its paw pads, which is why you may spot damp paw prints on hot days. That sweat does very little to cool it down. Panting does the real work: moisture evaporates from the tongue, nasal passages and lungs and carries heat away.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler dilinden mi terler, köpekler nereden terler?\n\nHayır, köpekler dilinden terlemez. Amerikan Köpek Kulübü'ne (AKC) göre köpeklerin insanlarınkine benzeyen ter bezleri pati yastıklarındadır ve köpek ısınınca çalışır; çok sıcak günlerde yerde nemli pati izleri görebilirsin. Ama veteriner Catherine Carrier'ın Live Science'a anlattığına göre bu ter köpeği serinletmeye yetmez. Asıl serinleme solumakla olur: köpek hızlı hızlı soluduğunda dilindeki, burun boşluklarındaki ve akciğerlerindeki nem buharlaşır ve vücut ısısını düşürür.\n\nSen de köpeklerin dilinden terlediğini sanıyor muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpekler nereden terler",
+   "köpekler dilinden terler mi",
+   "köpekler terler mi",
+   "köpek neden dilini çıkarır",
+   "köpek neden solur",
+   "köpek patisi",
+   "köpek pati terlemesi",
+   "köpek nasıl serinler",
+   "köpeklerde sıcak çarpması",
+   "köpek sıcakta",
+   "köpek bakımı",
+   "köpek sahibi",
+   "köpek sağlığı",
+   "köpekler",
+   "köpek",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "do dogs sweat",
+   "dog panting"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Dogs don't sweat through their tongues, they sweat through their paws 🐶",
+    "description": "A dog's true sweat glands sit in its paw pads, which is why you may spot damp paw prints on hot days. That sweat does very little to cool it down. Panting does the real work: moisture evaporates from the tongue, nasal passages and lungs and carries heat away."
+   },
+   "es": {
+    "title": "Los perros no sudan por la lengua, sudan por las patas 🐶",
+    "description": "Las verdaderas glándulas sudoríparas del perro están en las almohadillas, por eso en días de calor puede dejar huellas húmedas. Pero ese sudor apenas lo refresca. El trabajo lo hace el jadeo: la humedad de la lengua, la nariz y los pulmones se evapora y se lleva el calor."
+   },
+   "pt": {
+    "title": "Cachorro não sua pela língua, sua pelas patas 🐶",
+    "description": "As verdadeiras glândulas de suor do cachorro ficam nas almofadinhas das patas; por isso, em dias quentes, ele pode deixar pegadas úmidas. Mas esse suor quase não o refresca. Quem faz o trabalho é o ofegar: a umidade da língua, do nariz e dos pulmões evapora e leva o calor embora."
+   },
+   "de": {
+    "title": "Hunde schwitzen nicht über die Zunge, sondern über die Pfoten 🐶",
+    "description": "Die echten Schweißdrüsen des Hundes sitzen in den Pfotenballen, deshalb hinterlässt er an heißen Tagen manchmal feuchte Abdrücke. Kühlen kann ihn dieser Schweiß aber kaum. Das erledigt das Hecheln: Feuchtigkeit auf der Zunge, in Nase und Lunge verdunstet und nimmt Wärme mit."
+   },
+   "fr": {
+    "title": "Les chiens ne transpirent pas par la langue, mais par les pattes 🐶",
+    "description": "Les vraies glandes sudoripares du chien se trouvent dans ses coussinets : par forte chaleur, il peut laisser des traces humides. Mais cette sueur le rafraîchit à peine. C'est le halètement qui fait le travail : l'humidité de la langue, du nez et des poumons s'évapore et emporte la chaleur."
+   },
+   "it": {
+    "title": "I cani non sudano dalla lingua, ma dalle zampe 🐶",
+    "description": "Le vere ghiandole sudoripare del cane sono nei cuscinetti delle zampe: nelle giornate calde può lasciare impronte umide. Ma quel sudore lo rinfresca pochissimo. Il lavoro lo fa l'ansimare: l'umidità di lingua, naso e polmoni evapora e porta via il calore."
+   },
+   "ru": {
+    "title": "Собаки потеют не языком, а лапами 🐶",
+    "description": "Настоящие потовые железы у собаки находятся в подушечках лап, поэтому в жару она может оставлять влажные следы. Но этот пот почти не охлаждает. Главное делает частое дыхание: влага с языка, из носа и лёгких испаряется и уносит тепло."
+   },
+   "ar": {
+    "title": "الكلاب لا تتعرق من ألسنتها بل من وسائد أقدامها 🐶",
+    "description": "توجد الغدد العرقية الحقيقية لدى الكلب في وسائد أقدامه، لذلك قد يترك آثار أقدام رطبة في الأيام الحارة. لكن هذا العرق لا يبرّده إلا قليلًا. اللهاث هو ما يقوم بالمهمة: تتبخر الرطوبة من اللسان والأنف والرئتين فتحمل الحرارة معها."
+   },
+   "hi": {
+    "title": "कुत्ते जीभ से नहीं, अपने पंजों से पसीना छोड़ते हैं 🐶",
+    "description": "कुत्ते की असली पसीने की ग्रंथियाँ उसके पंजों की गद्दियों में होती हैं, इसलिए गर्म दिनों में वह गीले पंजों के निशान छोड़ सकता है। लेकिन यह पसीना उसे मुश्किल से ठंडा करता है। असली काम हाँफना करता है: जीभ, नाक और फेफड़ों की नमी भाप बनकर गर्मी ले जाती है।"
+   },
+   "id": {
+    "title": "Anjing tidak berkeringat lewat lidah, tapi lewat telapak kaki 🐶",
+    "description": "Kelenjar keringat sejati anjing ada di bantalan telapak kakinya, jadi di hari panas ia bisa meninggalkan jejak kaki basah. Tapi keringat itu hampir tidak mendinginkannya. Yang bekerja adalah terengah-engah: uap air dari lidah, hidung, dan paru-paru menguap sambil membawa panas."
+   },
+   "ja": {
+    "title": "犬は舌ではなく肉球から汗をかく 🐶",
+    "description": "犬の本当の汗腺は肉球にあり、暑い日には床に湿った足跡が残ることもあります。でもこの汗では体はほとんど冷えません。体を冷やすのはハアハアという呼吸で、舌や鼻、肺の水分が蒸発して熱を逃がします。"
+   },
+   "ko": {
+    "title": "개는 혀가 아니라 발바닥으로 땀을 흘린다 🐶",
+    "description": "개의 진짜 땀샘은 발바닥 패드에 있어서 더운 날엔 바닥에 젖은 발자국이 남기도 합니다. 하지만 이 땀으로는 몸이 거의 식지 않습니다. 진짜 냉각은 헐떡임이 맡습니다. 혀와 코, 폐의 수분이 증발하며 열을 가져갑니다."
+   },
+   "pl": {
+    "title": "Psy nie pocą się językiem, tylko łapami 🐶",
+    "description": "Prawdziwe gruczoły potowe psa są w opuszkach łap, dlatego w upał może zostawiać wilgotne ślady. Ten pot prawie go jednak nie chłodzi. Robi to dyszenie: wilgoć z języka, nosa i płuc paruje i zabiera ciepło."
+   },
+   "nl": {
+    "title": "Honden zweten niet via hun tong, maar via hun poten 🐶",
+    "description": "De echte zweetklieren van een hond zitten in zijn voetzooltjes, daarom laat hij op warme dagen soms natte pootafdrukken achter. Maar dat zweet koelt hem nauwelijks af. Hijgen doet het echte werk: vocht op de tong, in neus en longen verdampt en neemt warmte mee."
+   },
+   "uk": {
+    "title": "Собаки пітніють не язиком, а лапами 🐶",
+    "description": "Справжні потові залози собаки містяться в подушечках лап, тому в спеку вона може лишати вологі сліди. Але цей піт майже не охолоджує. Головне робить часте дихання: волога з язика, носа й легень випаровується і забирає тепло."
+   },
+   "vi": {
+    "title": "Chó không đổ mồ hôi qua lưỡi mà qua bàn chân 🐶",
+    "description": "Tuyến mồ hôi thật sự của chó nằm ở đệm bàn chân, nên những ngày nóng chó có thể để lại dấu chân ướt. Nhưng lượng mồ hôi đó hầu như không làm chó mát hơn. Việc chính là thở hổn hển: hơi ẩm trên lưỡi, mũi và phổi bay hơi, mang nhiệt đi."
+   },
+   "az": {
+    "title": "İtlər dilləri ilə deyil, pəncələri ilə tərləyir 🐶",
+    "description": "İtin əsl tər vəziləri pəncə yastıqlarındadır, ona görə isti günlərdə yerdə yaş pəncə izləri qoya bilər. Amma bu tər onu demək olar ki, sərinlətmir. Əsas işi ləhləmə görür: dil, burun və ağciyərlərdəki nəm buxarlanaraq istini aparır."
+   },
+   "ro": {
+    "title": "Câinii nu transpiră prin limbă, ci prin labe 🐶",
+    "description": "Adevăratele glande sudoripare ale câinelui sunt în pernuțele labelor, așa că în zilele toride poate lăsa urme umede. Dar transpirația asta abia îl răcorește. Gâfâitul face treaba: umezeala de pe limbă, din nas și din plămâni se evaporă și ia căldura cu ea."
+   }
+  }
+ }
+}

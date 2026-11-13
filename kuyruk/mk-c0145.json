@@ -1,0 +1,183 @@
+{
+ "id": "mk-c0145",
+ "topic": "Tavuklar aptal mı, tavuk beyinli sözü doğru mu?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "chick",
+  "chicks",
+  "chicken"
+ ],
+ "stock_hint": "chick close up",
+ "script": {
+  "title": "Tavuk beyinli denen civciv üç günlükken hesap yapıyor 🐥",
+  "hook_text": "TAVUKLAR GERÇEKTEN APTAL MI?",
+  "scenes": [
+   {
+    "text": "Tavuk beyinli denen bu civciv hesap yapabiliyor.",
+    "visual": "close-up of a fluffy yellow chick looking straight at the camera",
+    "stock_query": "chick close up",
+    "source": "stock",
+    "callout": "HESAP YAPAR"
+   },
+   {
+    "text": "Bir deneyde üç günlük civcivler, iki perdenin arkasına saklanan topları izledi.",
+    "visual": "group of tiny chicks huddled together",
+    "stock_query": "chicks",
+    "source": "stock",
+    "callout": "3 GÜNLÜK"
+   },
+   {
+    "text": "Toplar yer değiştirince çoğu, daha fazla top kalan perdeye gitti.",
+    "visual": "small chicks walking across a floor",
+    "stock_query": "chicks walking",
+    "source": "stock",
+    "callout": "TOPLAMA ÇIKARMA"
+   },
+   {
+    "text": "Üstelik küçük sayıları sola, büyükleri sağa yerleştiriyorlar; tıpkı senin gibi.",
+    "visual": "close-up of a chick turning its head",
+    "stock_query": "chick head",
+    "source": "stock",
+    "callout": "SOLDAN SAĞA"
+   },
+   {
+    "text": "Bunu kimse öğretmedi; sayı duygusu doğuştan geliyor.",
+    "visual": "hen sitting with her chicks",
+    "stock_query": "hen chicks",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Birine tavuk beyinli demeden önce düşün; çünkü...",
+    "visual": "close-up of a chick's face",
+    "stock_query": "chick face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Tavuk beyinli denen civcivler sanıldığı kadar akılsız değil. 2009'daki bir deneyde üç dört günlük civcivler perdelerin arkasında yer değiştiren nesneleri izleyip çoğunlukla daha kalabalık tarafı seçti. 2015'teki bir deneyde ise küçük sayıları sola, büyükleri sağa yerleştirdiler; tıpkı insanlar gibi.",
+  "tags": [
+   "tavuk",
+   "civciv",
+   "tavuk beyinli",
+   "deyimler",
+   "hayvan zekası",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: hesap yapan civciv mi, sayıları soldan sağa dizen civciv mi?",
+  "en_title": "The 'bird-brained' chick can do math at three days old 🐥",
+  "en_description": "In a 2009 study, chicks only three or four days old watched objects being moved between two screens and mostly chose the screen hiding more. In a 2015 study, three-day-old chicks placed smaller numbers on the left and larger ones on the right, much like people do. Nobody taught them.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Tavuklar aptal mı, 'tavuk beyinli' sözü doğru mu?\n\nPadova Üniversitesi'nden Rosa Rugani ve ekibinin 2009'da Proceedings of the Royal Society B dergisinde yayımlanan deneyinde, üç dört günlük civcivler arkadaş gibi benimsedikleri küçük nesnelerin iki perdenin arkasına saklanışını, sonra bir kısmının öbür perdeye taşınışını izledi. Hiçbir eğitim almamış civcivler çoğunlukla daha fazla nesne kalan perdeye gitti; toplama ve çıkarmayı takip edebildiler. Aynı ekibin 2015'te Science dergisinde yayımlanan deneyinde üç günlük civcivler küçük sayıları sola, büyük sayıları sağa yerleştirdi; tıpkı insanların zihnindeki sayı doğrusu gibi.\n\nSence hangisi daha şaşırtıcı: hesap yapan civciv mi, sayıları soldan sağa dizen civciv mi?",
+  "hashtags": [
+   "#tavuk",
+   "#civciv",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "tavuk beyinli",
+   "tavuk beyinli ne demek",
+   "tavuklar aptal mı",
+   "tavuklar akıllı mı",
+   "civciv",
+   "civcivler sayı sayabilir mi",
+   "tavuk zekası",
+   "hayvanlar sayabilir mi",
+   "hayvan zekası",
+   "sayı doğrusu",
+   "tavuk",
+   "tavuklar",
+   "kümes hayvanları",
+   "deyimler",
+   "deyimlerin anlamı",
+   "deyim efsaneleri",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "chicken intelligence",
+   "bird brain"
+  ],
+  "localizations": {
+   "en": {
+    "title": "The 'bird-brained' chick can do math at three days old 🐥",
+    "description": "In a 2009 study, chicks only three or four days old watched objects being moved between two screens and mostly chose the screen hiding more. In 2015, three-day-old chicks placed smaller numbers on the left and larger ones on the right, much like people do. Nobody taught them."
+   },
+   "es": {
+    "title": "El pollito con «cerebro de pájaro» ya hace cuentas a los tres días 🐥",
+    "description": "En un estudio de 2009, pollitos de tres o cuatro días vieron cómo se movían objetos entre dos pantallas y casi siempre eligieron la que escondía más. En otro de 2015, pollitos de tres días colocaron los números pequeños a la izquierda y los grandes a la derecha, como hacemos nosotros. Nadie se lo enseñó."
+   },
+   "pt": {
+    "title": "O pintinho de «cérebro de galinha» já faz contas com três dias 🐥",
+    "description": "Num estudo de 2009, pintinhos de três ou quatro dias viram objetos sendo trocados entre duas telas e quase sempre escolheram a que escondia mais. Em outro, de 2015, pintinhos de três dias puseram os números pequenos à esquerda e os grandes à direita, como nós fazemos. Ninguém os ensinou."
+   },
+   "de": {
+    "title": "Das angeblich dumme Küken rechnet schon mit drei Tagen 🐥",
+    "description": "In einer Studie von 2009 sahen drei bis vier Tage alte Küken zu, wie Gegenstände zwischen zwei Wänden hin- und hergeschoben wurden, und wählten meist die Seite mit mehr. 2015 ordneten drei Tage alte Küken kleine Zahlen links und große rechts an, so wie wir. Beigebracht hat es ihnen niemand."
+   },
+   "fr": {
+    "title": "Le poussin, cette « cervelle d'oiseau », sait déjà compter à trois jours 🐥",
+    "description": "Dans une étude de 2009, des poussins de trois ou quatre jours ont regardé des objets passer d'un écran à l'autre et ont surtout choisi celui qui en cachait le plus. En 2015, des poussins de trois jours ont placé les petits nombres à gauche et les grands à droite, comme nous. Personne ne le leur a appris."
+   },
+   "it": {
+    "title": "Il pulcino dal «cervello di gallina» fa i conti a tre giorni 🐥",
+    "description": "In uno studio del 2009 pulcini di tre o quattro giorni guardavano degli oggetti spostarsi tra due schermi e sceglievano quasi sempre quello che ne nascondeva di più. In uno del 2015 pulcini di tre giorni mettevano i numeri piccoli a sinistra e quelli grandi a destra, proprio come noi. Nessuno glielo aveva insegnato."
+   },
+   "ru": {
+    "title": "«Куриные мозги»? Цыплёнок считает уже в три дня 🐥",
+    "description": "В исследовании 2009 года цыплята трёх-четырёх дней от роду следили, как предметы перекладывают между двумя ширмами, и чаще выбирали ту, где их больше. В 2015 году трёхдневные цыплята располагали маленькие числа слева, а большие справа, как люди. Никто их этому не учил."
+   },
+   "ar": {
+    "title": "الكتكوت الذي نصفه بالغباء يحسب وعمره ثلاثة أيام 🐥",
+    "description": "في دراسة عام 2009 شاهدت كتاكيت بعمر ثلاثة أو أربعة أيام أشياء تُنقل بين حاجزين، واختارت غالبًا الحاجز الذي يخفي العدد الأكبر. وفي دراسة عام 2015 وضعت كتاكيت بعمر ثلاثة أيام الأعداد الصغيرة على اليسار والكبيرة على اليمين، كما يفعل البشر. ولم يعلّمها أحد ذلك."
+   },
+   "hi": {
+    "title": "जिस चूज़े को बेवकूफ़ समझते हैं, वह तीन दिन की उम्र में हिसाब लगाता है 🐥",
+    "description": "2009 के एक अध्ययन में तीन-चार दिन के चूज़ों ने दो परदों के बीच चीज़ें इधर-उधर होते देखीं और ज़्यादातर उस परदे के पास गए जिसके पीछे ज़्यादा चीज़ें थीं। 2015 के अध्ययन में तीन दिन के चूज़ों ने छोटी संख्याएँ बाईं ओर और बड़ी दाईं ओर रखीं, बिल्कुल इंसानों की तरह। किसी ने उन्हें यह सिखाया नहीं था।"
+   },
+   "id": {
+    "title": "Anak ayam yang dibilang 'otak udang' sudah bisa berhitung umur tiga hari 🐥",
+    "description": "Dalam studi tahun 2009, anak ayam berumur tiga atau empat hari melihat benda dipindahkan di balik dua layar dan kebanyakan memilih layar yang menyembunyikan lebih banyak. Di studi tahun 2015, anak ayam umur tiga hari menaruh angka kecil di kiri dan angka besar di kanan, seperti manusia. Tak ada yang mengajari mereka."
+   },
+   "ja": {
+    "title": "「鳥頭」と言われるヒヨコ、生後3日で計算できる 🐥",
+    "description": "2009年の研究では、生後3〜4日のヒヨコが、2枚のついたての間で物が移される様子を見て、多く隠れている方をほとんどの場合選びました。2015年の研究では、生後3日のヒヨコが小さい数を左、大きい数を右に置きました。人間と同じです。誰も教えていません。"
+   },
+   "ko": {
+    "title": "'닭대가리'라 불리는 병아리, 태어난 지 3일 만에 계산한다 🐥",
+    "description": "2009년 연구에서 생후 3~4일 된 병아리들은 두 칸막이 사이로 물건이 옮겨지는 것을 보고 대부분 더 많이 숨겨진 쪽을 골랐습니다. 2015년 연구에서는 생후 3일 된 병아리들이 작은 수는 왼쪽, 큰 수는 오른쪽에 두었습니다. 사람과 똑같죠. 아무도 가르쳐 주지 않았습니다."
+   },
+   "pl": {
+    "title": "„Kurzy móżdżek”? To pisklę liczy już w trzecim dniu życia 🐥",
+    "description": "W badaniu z 2009 roku trzy-, czterodniowe pisklęta patrzyły, jak przedmioty przenosi się między dwiema zasłonami, i zwykle wybierały tę, za którą było ich więcej. W 2015 roku trzydniowe pisklęta umieszczały małe liczby po lewej, a duże po prawej, tak jak ludzie. Nikt ich tego nie uczył."
+   },
+   "nl": {
+    "title": "Het 'kippenbrein' kan al rekenen als het drie dagen oud is 🐥",
+    "description": "In een studie uit 2009 keken kuikens van drie of vier dagen oud hoe voorwerpen tussen twee schermen werden verplaatst en kozen ze meestal het scherm waarachter er meer lagen. In 2015 legden kuikens van drie dagen oud kleine getallen links en grote rechts, net als mensen. Niemand had het ze geleerd."
+   },
+   "uk": {
+    "title": "«Курячі мізки»? Курча рахує вже у три дні 🐥",
+    "description": "У дослідженні 2009 року курчата віком три-чотири дні дивилися, як предмети переносять між двома ширмами, і здебільшого обирали ту, за якою їх більше. У 2015 році триденні курчата розміщували малі числа ліворуч, а великі праворуч, як люди. Ніхто їх цього не вчив."
+   },
+   "vi": {
+    "title": "Bị chê ngốc, gà con mới ba ngày tuổi đã biết làm toán 🐥",
+    "description": "Trong một nghiên cứu năm 2009, gà con ba bốn ngày tuổi xem đồ vật được chuyển qua lại giữa hai tấm chắn và phần lớn chọn tấm chắn giấu nhiều hơn. Năm 2015, gà con ba ngày tuổi đặt số nhỏ bên trái, số lớn bên phải, giống hệt con người. Không ai dạy chúng điều đó."
+   },
+   "az": {
+    "title": "'Toyuq beyinli' deyilən cücə üç günlükkən hesab aparır 🐥",
+    "description": "2009-cu ildəki araşdırmada üç-dörd günlük cücələr əşyaların iki pərdə arasında yerini dəyişdiyini izlədi və çox vaxt daha çox əşya qalan pərdəni seçdi. 2015-ci ildə üç günlük cücələr kiçik ədədləri sola, böyükləri sağa qoydu, eynilə insanlar kimi. Bunu onlara heç kim öyrətməmişdi."
+   },
+   "ro": {
+    "title": "Puiul cu „creier de găină” face calcule la trei zile 🐥",
+    "description": "Într-un studiu din 2009, pui de trei-patru zile au urmărit cum obiectele erau mutate între două paravane și au ales de cele mai multe ori paravanul în spatele căruia rămăseseră mai multe. În 2015, pui de trei zile au așezat numerele mici la stânga și pe cele mari la dreapta, ca oamenii. Nimeni nu i-a învățat."
+   }
+  }
+ }
+}

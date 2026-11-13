@@ -1,0 +1,185 @@
+{
+ "id": "mk-c0138",
+ "topic": "Köpekler korkuyu koklayabilir mi, köpek korktuğunu anlar mı?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog nose",
+ "script": {
+  "title": "Köpek korktuğunu kokundan anlayabilir mi? 🐶",
+  "hook_text": "KORKU GERÇEKTEN KOKAR MI?",
+  "scenes": [
+   {
+    "text": "Bu köpeğin önünde korkunu gizlediğini sanıyorsun.",
+    "visual": "extreme close-up of a dog's wet nose sniffing toward the camera",
+    "stock_query": "dog nose",
+    "source": "stock",
+    "callout": "GİZLİ KORKU"
+   },
+   {
+    "text": "Peki köpek korkunu kokundan anlayabilir mi?",
+    "visual": "close-up of a dog's face looking straight at the camera",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deneyde insanlar hızlı bir hesap testiyle strese sokuldu; nefesleri, terleri toplandı.",
+    "visual": "stressed young woman doing math on paper, close-up of her face",
+    "stock_query": "stressed woman",
+    "source": "stock",
+    "callout": "HESAP STRESİ",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Köpekler kimseyi görmedi; sadece örnekleri kokladı.",
+    "visual": "dog sniffing carefully along the floor",
+    "stock_query": "dog sniffing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Cevap evet: dört köpek, stresli örneği yüzde doksan dört isabetle buldu.",
+    "visual": "close-up of an attentive dog's eyes",
+    "stock_query": "dog eyes",
+    "source": "stock",
+    "callout": "%94 İSABET"
+   },
+   {
+    "text": "Başka bir deneyde korku teri koklayan köpeklerin kalbi hızlandı; yanında sakin kal, çünkü...",
+    "visual": "dog resting its head on its owner's lap",
+    "stock_query": "dog owner",
+    "source": "stock",
+    "callout": "KALBİ HIZLANDI"
+   }
+  ],
+  "description": "Köpek korktuğunu kokundan anlayabilir mi? 2022'deki bir deneyde dört köpek, hızlı bir hesap testinden önce ve sonra alınan nefes ve ter örnekleri arasından stresli olanı yüzde doksan dört isabetle buldu. Başka bir deneyde korku teri koklayan köpeklerin kalp atışı hızlandı.",
+  "tags": [
+   "köpek",
+   "köpekler korkuyu koklar mı",
+   "köpek burnu",
+   "koku",
+   "stres",
+   "evcil hayvan",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence köpeğin seni neyle daha iyi anlıyor: yüz ifadenle mi, kokunla mı?",
+  "en_title": "Can a dog really smell that you're afraid? 🐶",
+  "en_description": "In a 2022 study, four dogs picked out breath and sweat samples taken after a stressful math task with about 94% accuracy, without ever seeing the people. In another study, dogs that smelled human fear sweat had faster heart rates and sought out their owners.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Köpekler korkuyu koklayabilir mi, köpek korktuğunu gerçekten anlar mı?\n\nBüyük ihtimalle evet. Queen's University Belfast'tan Clara Wilson ve ekibinin 2022'de PLOS ONE dergisinde yayımlanan deneyinde otuz altı kişiden hızlı bir hesap testinden önce ve sonra nefes ve ter örneği alındı. Dört köpek, aynı kişinin rahat ve stresli örnekleri arasından stresliyi yüzde doksan dört isabetle seçti; insanları hiç görmeden, yalnızca kokuyla. 2018'de Animal Cognition dergisinde yayımlanan bir başka deneyde ise korku anında toplanmış insan terini koklayan köpeklerin kalp atışı hızlandı, daha çok stres davranışı gösterdiler ve sahiplerine yöneldiler.\n\nSence köpeğin seni neyle daha iyi anlıyor: yüz ifadenle mi, kokunla mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek korkuyu koklar mı",
+   "köpek korktuğunu anlar mı",
+   "köpekler korkuyu hisseder mi",
+   "köpekler stresi koklar mı",
+   "köpek burnu",
+   "köpeğin koku alma duyusu",
+   "korkunun kokusu",
+   "stres kokusu",
+   "köpek davranışları",
+   "köpek eğitimi",
+   "köpek sahibi",
+   "köpekten korkmak",
+   "köpekler",
+   "köpek",
+   "evcil hayvan",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "can dogs smell fear",
+   "dog sense of smell"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a dog really smell that you're afraid? 🐶",
+    "description": "In a 2022 study, four dogs picked out breath and sweat samples taken after a stressful math task with about 94% accuracy, without ever seeing the people. In another study, dogs that smelled human fear sweat had faster heart rates and sought out their owners."
+   },
+   "es": {
+    "title": "¿Puede un perro oler que tienes miedo? 🐶",
+    "description": "En un estudio de 2022, cuatro perros distinguieron con un 94 % de acierto las muestras de aliento y sudor tomadas tras una tarea de cálculo estresante, sin ver nunca a las personas. En otro estudio, los perros que olían sudor de miedo tenían el corazón más acelerado y buscaban a sus dueños."
+   },
+   "pt": {
+    "title": "Um cachorro consegue sentir o cheiro do seu medo? 🐶",
+    "description": "Num estudo de 2022, quatro cães identificaram com cerca de 94% de acerto amostras de hálito e suor colhidas depois de um teste de contas estressante, sem nunca ver as pessoas. Em outro estudo, cães que cheiraram suor de medo ficaram com o coração acelerado e procuraram os donos."
+   },
+   "de": {
+    "title": "Kann ein Hund riechen, dass du Angst hast? 🐶",
+    "description": "In einer Studie von 2022 erkannten vier Hunde Atem- und Schweißproben nach einer stressigen Rechenaufgabe mit rund 94 % Trefferquote, ohne die Menschen je zu sehen. In einer anderen Studie schlug das Herz von Hunden, die Angstschweiß rochen, schneller, und sie suchten die Nähe ihrer Besitzer."
+   },
+   "fr": {
+    "title": "Un chien peut-il sentir que tu as peur ? 🐶",
+    "description": "Dans une étude de 2022, quatre chiens ont reconnu à 94 % les échantillons d'haleine et de sueur prélevés après un calcul mental stressant, sans jamais voir les personnes. Dans une autre étude, les chiens qui sentaient de la sueur de peur avaient le cœur qui s'accélérait et se tournaient vers leur maître."
+   },
+   "it": {
+    "title": "Un cane può sentire l'odore della tua paura? 🐶",
+    "description": "In uno studio del 2022 quattro cani hanno riconosciuto con il 94% di precisione i campioni di respiro e sudore raccolti dopo un compito di calcolo stressante, senza mai vedere le persone. In un altro studio, i cani che annusavano sudore di paura avevano il battito accelerato e cercavano il padrone."
+   },
+   "ru": {
+    "title": "Может ли собака учуять, что тебе страшно? 🐶",
+    "description": "В исследовании 2022 года четыре собаки с точностью около 94% находили образцы дыхания и пота, взятые после напряжённой задачи на счёт, ни разу не видя самих людей. В другом исследовании у собак, нюхавших пот страха, учащалось сердцебиение, и они искали хозяина."
+   },
+   "ar": {
+    "title": "هل يستطيع الكلب أن يشمّ خوفك؟ 🐶",
+    "description": "في دراسة عام 2022 ميّزت أربعة كلاب عينات النفس والعرق المأخوذة بعد اختبار حسابي مُجهِد بدقة بلغت نحو 94٪ من دون أن ترى الأشخاص أبدًا. وفي دراسة أخرى تسارعت نبضات قلوب الكلاب التي شمّت عرق الخوف واتجهت نحو أصحابها."
+   },
+   "hi": {
+    "title": "क्या कुत्ता सूँघकर जान सकता है कि तुम डरे हुए हो? 🐶",
+    "description": "2022 के एक अध्ययन में चार कुत्तों ने तनाव वाले गणित टेस्ट के बाद ली गई साँस और पसीने के नमूनों को लगभग 94% सटीकता से पहचाना, वह भी लोगों को देखे बिना। एक दूसरे अध्ययन में डर का पसीना सूँघने वाले कुत्तों की धड़कन तेज़ हो गई और वे अपने मालिक के पास गए।"
+   },
+   "id": {
+    "title": "Bisakah anjing mencium bau rasa takutmu? 🐶",
+    "description": "Dalam studi tahun 2022, empat anjing mengenali sampel napas dan keringat yang diambil setelah tes hitungan yang bikin stres dengan akurasi sekitar 94%, tanpa pernah melihat orangnya. Di studi lain, jantung anjing yang mencium keringat ketakutan berdetak lebih cepat dan mereka mendekati pemiliknya."
+   },
+   "ja": {
+    "title": "犬はあなたの恐怖をにおいで感じ取れる? 🐶",
+    "description": "2022年の研究では、4頭の犬がストレスのかかる計算課題の後に採った息と汗のサンプルを約94%の精度で見分けました。人の姿は一度も見ていません。別の研究では、恐怖の汗のにおいをかいだ犬は心拍が上がり、飼い主に寄っていきました。"
+   },
+   "ko": {
+    "title": "개는 네가 무서워하는 걸 냄새로 알 수 있을까? 🐶",
+    "description": "2022년 연구에서 개 네 마리는 스트레스를 주는 계산 과제 뒤에 채취한 숨과 땀 샘플을 약 94% 정확도로 골라냈습니다. 사람은 한 번도 보지 않았죠. 다른 연구에서는 공포의 땀 냄새를 맡은 개의 심박이 빨라지고 보호자에게 다가갔습니다."
+   },
+   "pl": {
+    "title": "Czy pies wyczuje węchem, że się boisz? 🐶",
+    "description": "W badaniu z 2022 roku cztery psy z około 94-procentową trafnością rozpoznawały próbki oddechu i potu pobrane po stresującym zadaniu z liczenia, choć nigdy nie widziały tych ludzi. W innym badaniu psom wąchającym pot strachu przyspieszało serce i szukały bliskości opiekuna."
+   },
+   "nl": {
+    "title": "Kan een hond ruiken dat je bang bent? 🐶",
+    "description": "In een studie uit 2022 herkenden vier honden adem- en zweetmonsters van na een stressvolle rekentaak met zo'n 94% nauwkeurigheid, zonder de mensen ooit te zien. In een andere studie ging het hart van honden die angstzweet roken sneller kloppen en zochten ze hun baasje op."
+   },
+   "uk": {
+    "title": "Чи може собака відчути нюхом, що тобі страшно? 🐶",
+    "description": "У дослідженні 2022 року чотири собаки з точністю близько 94% розпізнавали зразки дихання й поту, взяті після стресового завдання з лічби, жодного разу не бачивши самих людей. В іншому дослідженні в собак, які нюхали піт страху, частішало серцебиття, і вони тягнулися до господаря."
+   },
+   "vi": {
+    "title": "Chó có thể ngửi ra nỗi sợ của bạn không? 🐶",
+    "description": "Trong một nghiên cứu năm 2022, bốn chú chó nhận ra mẫu hơi thở và mồ hôi lấy sau một bài tính nhẩm căng thẳng với độ chính xác khoảng 94%, mà không hề nhìn thấy người. Ở một nghiên cứu khác, chó ngửi mồ hôi sợ hãi thì tim đập nhanh hơn và tìm đến chủ."
+   },
+   "az": {
+    "title": "İt qorxduğunu qoxundan bilə bilərmi? 🐶",
+    "description": "2022-ci ildəki araşdırmada dörd it, stresli hesab tapşırığından sonra götürülmüş nəfəs və tər nümunələrini insanları heç görmədən təxminən 94% dəqiqliklə tapdı. Başqa bir araşdırmada qorxu tərini iyləyən itlərin ürək döyüntüsü sürətləndi və onlar sahiblərinə yaxınlaşdı."
+   },
+   "ro": {
+    "title": "Poate un câine să miroasă că ți-e frică? 🐶",
+    "description": "Într-un studiu din 2022, patru câini au recunoscut cu o precizie de circa 94% probele de respirație și transpirație luate după un test de calcul stresant, fără să vadă vreodată oamenii. Într-un alt studiu, câinii care au mirosit transpirație de frică au avut pulsul mai rapid și s-au apropiat de stăpâni."
+   }
+  }
+ }
+}

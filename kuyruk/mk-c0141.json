@@ -1,0 +1,177 @@
+{
+ "id": "mk-c0141",
+ "topic": "Kediye ciğer vermek zararlı mı, kedi her gün ciğer yerse ne olur?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat face",
+ "script": {
+  "title": "Kedinin ciğere bakışına kanma, fazlası onu sakatlar 🐱",
+  "hook_text": "KEDİYE HER GÜN CİĞER VERİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu kedinin baktığı ciğer onu sakatlayabilir.",
+    "visual": "close-up of a cat's face licking its lips and staring hungrily at the camera",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": "CİĞER SAKATLAR"
+   },
+   {
+    "text": "Aylarca çoğunlukla ciğerle beslenen kedinin boynu kaskatı kesilir, ön ayağı aksar.",
+    "visual": "cat lying stiffly on the floor, barely moving its head",
+    "stock_query": "cat lying",
+    "source": "stock",
+    "callout": "BOYUN KASKATI"
+   },
+   {
+    "text": "Röntgende omurlarının çevresinde fazladan kemik büyüdüğü görülür.",
+    "visual": "veterinarian gently examining a cat's neck on a table",
+    "stock_query": "cat veterinarian",
+    "source": "stock",
+    "callout": "FAZLADAN KEMİK"
+   },
+   {
+    "text": "Çünkü ciğer, A vitamininin depolandığı organdır; fazlası aylar içinde kemik büyütür.",
+    "visual": "pieces of raw liver on a cutting board, close-up",
+    "stock_query": "raw liver meat",
+    "source": "stock",
+    "callout": "A VİTAMİNİ FAZLASI",
+    "subject": [
+     "liver"
+    ]
+   },
+   {
+    "text": "Ciğer kesilince büyüyen kemik geri gitmez; o bakışa her gün kanma, çünkü...",
+    "visual": "close-up of a cat's big eyes looking up pleadingly",
+    "stock_query": "cat eyes",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kediye her gün ciğer vermek onu sakatlayabilir. Aylarca çoğunlukla ciğerle beslenen kedilerde A vitamini zehirlenmesi görülür: boyun kaskatı kesilir, ön ayak aksar ve omurların çevresinde fazladan kemik büyür. Ciğer kesilince ilerleme durur ama büyüyen kemik geri gitmez.",
+  "tags": [
+   "kedi",
+   "kediye ciğer",
+   "kedi beslenmesi",
+   "a vitamini",
+   "kedi sağlığı",
+   "sokak kedileri",
+   "evcil hayvan",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sen sokak kedilerine en çok ne veriyorsun: ciğer mi, kedi maması mı?",
+  "en_title": "Cats love liver, but too much can cripple them 🐱",
+  "en_description": "Cats fed mostly liver for months can develop vitamin A poisoning: a stiff, painful neck, a limping front leg and extra bone growing around the vertebrae. Liver is where the body stores vitamin A. Cutting it out stops the damage, but the extra bone doesn't go away.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediye ciğer vermek zararlı mı, kedi her gün ciğer yerse ne olur?\n\n'Kedinin ciğere baktığı gibi' deyimindeki iştah gerçek, ama ciğer kedi için günlük yemek değil. Merck Veteriner El Kitabı'na göre aylarca ağırlıklı olarak ciğerle beslenen kedi ve köpeklerde kronik A vitamini zehirlenmesi gelişebilir; kediler köpeklerden daha hassastır. Boyunda ağrı ve kaskatılık, ön ayakta topallama görülür; röntgende özellikle boyun ve sırt omurlarının çevresinde fazladan kemik çıkıntıları belirir. Çünkü ciğer, A vitamininin depolandığı organdır. Ciğer kesilince yeni kemik oluşumu durur ama var olan çıkıntılar geri gitmez; bu yüzden dengeli mamanın yerine her gün ciğer verilmemeli.\n\nSen sokak kedilerine en çok ne veriyorsun: ciğer mi, kedi maması mı?",
+  "hashtags": [
+   "#kedi",
+   "#sokakkedileri",
+   "#kediler",
+   "#deyimler",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kediye ciğer vermek",
+   "kedi ciğer yer mi",
+   "kediye ciğer zararlı mı",
+   "kedinin ciğere baktığı gibi",
+   "kedi ciğer",
+   "kedi a vitamini zehirlenmesi",
+   "a vitamini fazlası",
+   "kedi beslenmesi",
+   "kedi ne yer",
+   "kediye ne verilmez",
+   "sokak kedisine ne verilir",
+   "kedi sağlığı",
+   "kedi bakımı",
+   "deyimler",
+   "deyim efsaneleri",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "cat liver vitamin a"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Cats love liver, but too much can cripple them 🐱",
+    "description": "Cats fed mostly liver for months can develop vitamin A poisoning: a stiff, painful neck, a limping front leg and extra bone around the vertebrae. Liver is where vitamin A is stored. Stopping the liver halts the damage, but the extra bone stays."
+   },
+   "es": {
+    "title": "Al gato le encanta el hígado, pero en exceso puede dejarlo cojo 🐱",
+    "description": "Los gatos alimentados sobre todo con hígado durante meses pueden sufrir intoxicación por vitamina A: cuello rígido y dolorido, cojera en las patas delanteras y hueso de más alrededor de las vértebras. Al quitar el hígado el daño se frena, pero ese hueso no desaparece."
+   },
+   "pt": {
+    "title": "Gato adora fígado, mas o excesso pode deixá-lo travado 🐱",
+    "description": "Gatos alimentados principalmente com fígado por meses podem ter intoxicação por vitamina A: pescoço rígido e dolorido, pata dianteira mancando e osso extra em volta das vértebras. Tirando o fígado, o dano para, mas esse osso não some."
+   },
+   "de": {
+    "title": "Katzen lieben Leber, doch zu viel davon macht sie steif und lahm 🐱",
+    "description": "Katzen, die monatelang hauptsächlich Leber fressen, können eine Vitamin-A-Vergiftung bekommen: steifer, schmerzender Nacken, lahmende Vorderbeine und zusätzlicher Knochen an den Wirbeln. Ohne Leber stoppt der Schaden, doch der neue Knochen bleibt."
+   },
+   "fr": {
+    "title": "Les chats adorent le foie, mais trop peut les estropier 🐱",
+    "description": "Un chat nourri surtout de foie pendant des mois peut développer une intoxication à la vitamine A : cou raide et douloureux, boiterie des pattes avant et os en trop autour des vertèbres. Sans foie, les dégâts cessent, mais cet os ne disparaît pas."
+   },
+   "it": {
+    "title": "I gatti adorano il fegato, ma troppo può azzopparli 🐱",
+    "description": "I gatti nutriti per mesi soprattutto con fegato possono sviluppare un'intossicazione da vitamina A: collo rigido e dolorante, zoppia alle zampe anteriori e osso in più attorno alle vertebre. Togliendo il fegato il danno si ferma, ma quell'osso resta."
+   },
+   "ru": {
+    "title": "Кошки обожают печень, но её избыток может их покалечить 🐱",
+    "description": "У кошек, которых месяцами кормят в основном печенью, может развиться отравление витамином А: скованная больная шея, хромота на передние лапы и лишняя костная ткань вокруг позвонков. Если убрать печень, болезнь остановится, но наросты не исчезнут."
+   },
+   "ar": {
+    "title": "القطط تعشق الكبد، لكن الإفراط فيه قد يُقعدها 🐱",
+    "description": "القطط التي تتغذى على الكبد غالبًا لعدة أشهر قد تصاب بتسمم فيتامين أ: رقبة متيبسة ومؤلمة، وعرج في القوائم الأمامية، وعظم زائد حول الفقرات. إيقاف الكبد يوقف الضرر، لكن العظم الزائد لا يزول."
+   },
+   "hi": {
+    "title": "बिल्ली को कलेजी बहुत पसंद है, पर ज़्यादा कलेजी उसे लंगड़ा बना सकती है 🐱",
+    "description": "जिन बिल्लियों को महीनों तक ज़्यादातर कलेजी खिलाई जाती है, उनमें विटामिन ए की विषाक्तता हो सकती है: गर्दन अकड़ जाती है, अगले पैर लंगड़ाते हैं और रीढ़ की हड्डियों के आसपास अतिरिक्त हड्डी बन जाती है। कलेजी बंद करने से नुकसान रुकता है, पर वह हड्डी नहीं जाती।"
+   },
+   "id": {
+    "title": "Kucing suka hati, tapi kebanyakan bisa membuatnya pincang 🐱",
+    "description": "Kucing yang berbulan-bulan diberi makan sebagian besar hati bisa keracunan vitamin A: leher kaku dan nyeri, kaki depan pincang, dan tumbuh tulang tambahan di sekitar ruas tulang belakang. Jika hati dihentikan kerusakannya berhenti, tetapi tulang itu tidak hilang."
+   },
+   "ja": {
+    "title": "猫はレバーが大好き、でも与えすぎると体が不自由に 🐱",
+    "description": "何か月もレバー中心の食事を続けた猫は、ビタミンA過剰症になることがあります。首がこわばって痛み、前脚を引きずり、背骨の周りに余分な骨ができます。レバーをやめれば進行は止まりますが、できた骨は消えません。"
+   },
+   "ko": {
+    "title": "고양이는 간을 좋아하지만 너무 많이 먹으면 몸이 굳는다 🐱",
+    "description": "몇 달 동안 주로 간을 먹은 고양이는 비타민 A 중독에 걸릴 수 있습니다. 목이 뻣뻣하고 아프며 앞다리를 절고, 척추 주변에 뼈가 더 자랍니다. 간을 끊으면 진행은 멈추지만 이미 자란 뼈는 사라지지 않습니다."
+   },
+   "pl": {
+    "title": "Koty uwielbiają wątróbkę, ale jej nadmiar może je okaleczyć 🐱",
+    "description": "Koty karmione miesiącami głównie wątróbką mogą zatruć się witaminą A: sztywna, bolesna szyja, kulawizna przednich łap i nadmiar kości wokół kręgów. Po odstawieniu wątróbki choroba się zatrzymuje, ale ta kość nie znika."
+   },
+   "nl": {
+    "title": "Katten zijn dol op lever, maar te veel kan ze kreupel maken 🐱",
+    "description": "Katten die maandenlang vooral lever eten, kunnen een vitamine A-vergiftiging krijgen: een stijve, pijnlijke nek, kreupele voorpoten en extra bot rond de wervels. Stop je met lever, dan stopt de schade, maar dat bot verdwijnt niet."
+   },
+   "uk": {
+    "title": "Коти обожнюють печінку, але її надлишок може їх покалічити 🐱",
+    "description": "У котів, яких місяцями годують переважно печінкою, може розвинутися отруєння вітаміном А: скута болюча шия, кульгання на передні лапи і зайва кістка навколо хребців. Без печінки хвороба зупиняється, але ця кістка не зникає."
+   },
+   "vi": {
+    "title": "Mèo mê gan, nhưng ăn quá nhiều có thể khiến mèo bị tật 🐱",
+    "description": "Mèo ăn chủ yếu là gan trong nhiều tháng có thể bị ngộ độc vitamin A: cổ cứng và đau, chân trước đi khập khiễng, xương mọc thừa quanh đốt sống. Ngừng cho ăn gan thì bệnh dừng lại, nhưng phần xương thừa không mất đi."
+   },
+   "az": {
+    "title": "Pişik ciyərə bayılır, amma çoxu onu şikəst edə bilər 🐱",
+    "description": "Aylarla əsasən ciyərlə bəslənən pişiklərdə A vitamini zəhərlənməsi yarana bilər: boyun qıc olur və ağrıyır, ön ayaq axsayır, fəqərələrin ətrafında artıq sümük böyüyür. Ciyər kəsiləndə zərər dayanır, amma o sümük getmir."
+   },
+   "ro": {
+    "title": "Pisicile adoră ficatul, dar prea mult le poate infirma 🐱",
+    "description": "Pisicile hrănite luni la rând mai ales cu ficat pot face intoxicație cu vitamina A: gât țeapăn și dureros, șchiopătat la picioarele din față și os în plus în jurul vertebrelor. Fără ficat, boala se oprește, dar osul acela nu dispare."
+   }
+  }
+ }
+}

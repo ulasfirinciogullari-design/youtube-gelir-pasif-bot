@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0146",
+ "topic": "Zambak kediler için zehirli mi, bir çiçek kediyi öldürebilir mi?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat flower",
+ "script": {
+  "title": "Bir buket çiçek kediyi öldürebilir mi? 🐱",
+  "hook_text": "ÇİÇEK KEDİYİ ÖLDÜRÜR MÜ?",
+  "scenes": [
+   {
+    "text": "Bu kedi, masum görünen bir buketi kokluyor.",
+    "visual": "close-up of a cat's face sniffing a bouquet of white lilies",
+    "stock_query": "cat flower",
+    "source": "stock",
+    "callout": "MASUM GÖRÜNÜR"
+   },
+   {
+    "text": "Peki bir çiçek gerçekten kediyi öldürebilir mi?",
+    "visual": "cat sitting next to a vase of flowers, looking at them",
+    "stock_query": "cat flowers",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Kedi yaprağı yemese bile, tüyüne bulaşan birkaç polen tanesini yalaması yetebilir.",
+    "visual": "close-up of a cat licking its fur",
+    "stock_query": "cat licking",
+    "source": "stock",
+    "callout": "BİRKAÇ POLEN"
+   },
+   {
+    "text": "Vazodaki suyu içmesi bile tehlikeli.",
+    "visual": "cat drinking water, close-up",
+    "stock_query": "cat drinking water",
+    "source": "stock",
+    "callout": "VAZO SUYU BİLE"
+   },
+   {
+    "text": "Cevap evet: zambak, kedinin böbreklerini üç gün içinde durdurabilir.",
+    "visual": "close-up of white lily flowers",
+    "stock_query": "lily flower",
+    "source": "stock",
+    "callout": "3 GÜNDE BÖBREK",
+    "subject": [
+     "lily"
+    ]
+   },
+   {
+    "text": "Kedin varsa zambağı eve sokma; çünkü...",
+    "visual": "close-up of a cat's face looking at the camera",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Bir buket çiçek kediyi öldürebilir mi? Evet: zambak ve gün zambağının her parçası kediler için zehirli. Tüyüne bulaşan birkaç polen tanesini yalamak ya da vazodaki suyu içmek bile yetebilir; tedavi edilmezse böbrekler bir ila üç gün içinde iflas edebilir.",
+  "tags": [
+   "kedi",
+   "zambak",
+   "zehirli bitkiler",
+   "kedi sağlığı",
+   "evcil hayvan",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Evinde kedi varken çiçek alırken dikkat ediyor musun: evet mi, hayır mı?",
+  "en_title": "Can a bouquet of flowers kill a cat? 🐱",
+  "en_description": "Yes. Every part of true lilies and daylilies is toxic to cats: a bite of a leaf, a few pollen grains licked off the fur or a sip of vase water can be enough. Without fast treatment, a cat's kidneys can fail within one to three days. In dogs the same flowers cause only a mild upset stomach.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Zambak kediler için zehirli mi, bir çiçek kediyi öldürebilir mi?\n\nEvet. ABD Gıda ve İlaç Dairesi'ne (FDA) göre zambak (Lilium) ve gün zambağı (Hemerocallis) türlerinin sapı, yaprağı, çiçeği, poleni ve hatta vazodaki suyu kediler için zehirlidir. Bir yaprak ya da taç yaprağı ısırmak, tüyüne bulaşan birkaç polen tanesini yalamak ya da vazodaki sudan içmek yetebilir. İlk belirtiler (halsizlik, salya, kusma, iştahsızlık) on iki saat içinde başlar, böbrek yetmezliği bir ila üç gün içinde gelişebilir; tedavi on sekiz saatten fazla gecikirse hasar genellikle kalıcı olur. Aynı çiçek köpeklerde yalnızca hafif mide rahatsızlığı yapar.\n\nEvinde kedi varken çiçek alırken dikkat ediyor musun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kedi",
+   "#zambak",
+   "#kediler",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kediler için zehirli çiçekler",
+   "zambak kediye zararlı mı",
+   "zambak zehirli mi",
+   "kedi zambak",
+   "gün zambağı",
+   "kedi zehirlenmesi belirtileri",
+   "kediye zararlı bitkiler",
+   "kedi böbrek yetmezliği",
+   "evde kedi varsa çiçek",
+   "kedi çiçek yerse",
+   "çiçek buketi",
+   "kedi sağlığı",
+   "kedi bakımı",
+   "kedi sahibi",
+   "kediler",
+   "kedi",
+   "evcil hayvan",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "lily toxicity cats"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a bouquet of flowers kill a cat? 🐱",
+    "description": "Yes. Every part of true lilies and daylilies is toxic to cats: a bite of a leaf, a few pollen grains licked off the fur or a sip of vase water can be enough. Without fast treatment, a cat's kidneys can fail within one to three days."
+   },
+   "es": {
+    "title": "¿Puede un ramo de flores matar a un gato? 🐱",
+    "description": "Sí. Todas las partes de los lirios y de los hemerocallis son tóxicas para los gatos: un mordisco a una hoja, unos granos de polen lamidos del pelaje o un sorbo del agua del florero pueden bastar. Sin tratamiento rápido, sus riñones pueden fallar en uno a tres días."
+   },
+   "pt": {
+    "title": "Um buquê de flores pode matar um gato? 🐱",
+    "description": "Pode. Todas as partes dos lírios e dos hemerocales são tóxicas para gatos: uma mordida numa folha, alguns grãos de pólen lambidos do pelo ou um gole da água do vaso podem bastar. Sem tratamento rápido, os rins podem parar em um a três dias."
+   },
+   "de": {
+    "title": "Kann ein Blumenstrauß eine Katze töten? 🐱",
+    "description": "Ja. Alle Teile von Lilien und Taglilien sind für Katzen giftig: ein Biss in ein Blatt, ein paar aus dem Fell geleckte Pollenkörner oder ein Schluck Vasenwasser können reichen. Ohne schnelle Behandlung können die Nieren innerhalb von ein bis drei Tagen versagen."
+   },
+   "fr": {
+    "title": "Un bouquet de fleurs peut-il tuer un chat ? 🐱",
+    "description": "Oui. Toutes les parties des lys et des hémérocalles sont toxiques pour les chats : une bouchée de feuille, quelques grains de pollen léchés sur le pelage ou une gorgée d'eau du vase peuvent suffire. Sans traitement rapide, les reins peuvent lâcher en un à trois jours."
+   },
+   "it": {
+    "title": "Un mazzo di fiori può uccidere un gatto? 🐱",
+    "description": "Sì. Ogni parte di gigli ed emerocallidi è tossica per i gatti: un morso a una foglia, qualche granello di polline leccato dal pelo o un sorso dell'acqua del vaso possono bastare. Senza cure rapide, i reni possono cedere in uno-tre giorni."
+   },
+   "ru": {
+    "title": "Может ли букет цветов убить кошку? 🐱",
+    "description": "Да. Все части лилий и лилейников ядовиты для кошек: надкусить лист, слизать с шерсти несколько крупинок пыльцы или глотнуть воды из вазы может быть достаточно. Без быстрого лечения почки могут отказать за один-три дня."
+   },
+   "ar": {
+    "title": "هل يمكن لباقة زهور أن تقتل قطة؟ 🐱",
+    "description": "نعم. كل أجزاء الزنبق وزنبق النهار سامة للقطط: قضمة من ورقة، أو بضع حبات لقاح تلعقها من فرائها، أو رشفة من ماء المزهرية قد تكفي. ومن دون علاج سريع قد تتوقف الكليتان خلال يوم إلى ثلاثة أيام."
+   },
+   "hi": {
+    "title": "क्या फूलों का एक गुलदस्ता बिल्ली की जान ले सकता है? 🐱",
+    "description": "हाँ। लिली और डे-लिली का हर हिस्सा बिल्लियों के लिए ज़हरीला है: एक पत्ती चबाना, फर से पराग के कुछ कण चाटना या फूलदान का पानी पीना भी काफ़ी हो सकता है। जल्दी इलाज न मिले तो एक से तीन दिन में गुर्दे काम करना बंद कर सकते हैं।"
+   },
+   "id": {
+    "title": "Bisakah sebuket bunga membunuh kucing? 🐱",
+    "description": "Bisa. Semua bagian bunga lili dan lili siang beracun bagi kucing: menggigit sehelai daun, menjilat beberapa butir serbuk sari dari bulunya, atau meminum air vas saja bisa cukup. Tanpa penanganan cepat, ginjalnya bisa gagal dalam satu sampai tiga hari."
+   },
+   "ja": {
+    "title": "花束が猫の命を奪うことはある? 🐱",
+    "description": "あります。ユリやワスレグサ(デイリリー)は、どの部分も猫にとって有毒です。葉をひとかじりしたり、毛についた花粉を数粒なめたり、花瓶の水を飲んだりするだけでも危険です。すぐに治療しないと、1〜3日で腎臓が機能しなくなることがあります。"
+   },
+   "ko": {
+    "title": "꽃다발 하나가 고양이를 죽일 수 있을까? 🐱",
+    "description": "그렇습니다. 백합과 원추리는 모든 부분이 고양이에게 독입니다. 잎을 한 입 깨물거나, 털에 묻은 꽃가루 몇 알을 핥거나, 꽃병 물을 마시는 것만으로도 충분할 수 있습니다. 빨리 치료하지 않으면 하루에서 사흘 안에 신장이 멈출 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy bukiet kwiatów może zabić kota? 🐱",
+    "description": "Tak. Każda część lilii i liliowców jest dla kotów trująca: ugryzienie liścia, zlizanie z sierści kilku ziarenek pyłku czy łyk wody z wazonu mogą wystarczyć. Bez szybkiego leczenia nerki mogą przestać działać w ciągu jednego do trzech dni."
+   },
+   "nl": {
+    "title": "Kan een boeket bloemen een kat doden? 🐱",
+    "description": "Ja. Alle delen van lelies en daglelies zijn giftig voor katten: een hapje van een blad, een paar pollenkorrels van de vacht likken of een slok vaaswater kan genoeg zijn. Zonder snelle behandeling kunnen de nieren binnen één tot drie dagen falen."
+   },
+   "uk": {
+    "title": "Чи може букет квітів убити кота? 🐱",
+    "description": "Так. Усі частини лілій і лілійників отруйні для котів: надкусити листок, злизати з шерсті кілька порошинок пилку чи ковтнути води з вази може бути досить. Без швидкого лікування нирки можуть відмовити за один-три дні."
+   },
+   "vi": {
+    "title": "Một bó hoa có thể giết chết một chú mèo không? 🐱",
+    "description": "Có. Mọi bộ phận của hoa ly và hoa hiên đều độc với mèo: cắn một chiếc lá, liếm vài hạt phấn hoa dính trên lông hay uống chút nước trong bình cũng có thể đủ. Nếu không chữa trị kịp, thận của mèo có thể suy trong một đến ba ngày."
+   },
+   "az": {
+    "title": "Bir dəstə gül pişiyi öldürə bilərmi? 🐱",
+    "description": "Bəli. Zanbaq və gündüz zanbağının bütün hissələri pişiklər üçün zəhərlidir: bir yarpağı dişləmək, tükündən bir neçə tozcuq dənəsini yalamaq və ya vazanın suyundan içmək kifayət edə bilər. Tez müalicə olunmasa, böyrəklər bir-üç gün ərzində dayana bilər."
+   },
+   "ro": {
+    "title": "Poate un buchet de flori să omoare o pisică? 🐱",
+    "description": "Da. Toate părțile crinilor și ale crinilor de zi sunt toxice pentru pisici: o mușcătură dintr-o frunză, câteva fire de polen linse de pe blană sau o gură de apă din vază pot fi de ajuns. Fără tratament rapid, rinichii pot ceda în una până la trei zile."
+   }
+  }
+ }
+}

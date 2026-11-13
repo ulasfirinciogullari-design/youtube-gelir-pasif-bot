@@ -1,0 +1,194 @@
+{
+ "id": "mk-c0142",
+ "topic": "Kalp gerçekten kırılabilir mi, kırık kalp sendromu nedir?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "deyim": true,
+ "subject": [
+  "human heart",
+  "heart anatomy"
+ ],
+ "stock_hint": "heart anatomy",
+ "script": {
+  "title": "Kalp gerçekten kırılabilir mi? 💔",
+  "hook_text": "KALBİM KIRILDI SÖZÜ GERÇEK Mİ?",
+  "scenes": [
+   {
+    "text": "'Kalbim kırıldı' diyen birinin kalbi bu.",
+    "visual": "close-up of a rotating 3D medical model of a beating human heart",
+    "stock_query": "heart anatomy",
+    "source": "stock",
+    "callout": "KIRIK KALP"
+   },
+   {
+    "text": "Peki kalp gerçekten kırılabilir mi?",
+    "visual": "close-up of a sad woman's face, hand pressed to her chest",
+    "stock_query": "sad woman",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Belirtileri kalp krizine benzer, ama damarlar tıkalı değildir.",
+    "visual": "doctor looking at a heart monitor in a hospital",
+    "stock_query": "doctor heart monitor",
+    "source": "stock",
+    "callout": "KRİZ DEĞİL",
+    "subject": [
+     "doctor"
+    ]
+   },
+   {
+    "text": "Cevap evet: ani bir acı adrenalin seli yaratır, sol karıncık geçici olarak balon gibi şişer.",
+    "visual": "3D medical animation of a human heart, close-up",
+    "stock_query": "heart anatomy",
+    "source": "stock",
+    "callout": "BALON GİBİ ŞİŞER"
+   },
+   {
+    "text": "Japonlar bu şekli ahtapot tuzağına benzetti; çoğu kişi haftalar içinde iyileşir.",
+    "visual": "close-up of an octopus",
+    "stock_query": "octopus",
+    "source": "stock",
+    "callout": "AHTAPOT TUZAĞI",
+    "subject": [
+     "octopus"
+    ]
+   },
+   {
+    "text": "O yüzden bu sözü hafife alma; çünkü...",
+    "visual": "two women hugging warmly, close-up",
+    "stock_query": "woman hugging",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "woman"
+    ]
+   }
+  ],
+  "description": "Kalp gerçekten kırılabilir mi? Kırık kalp sendromu (takotsubo) gerçek: ani bir duygusal acı adrenalin gibi stres hormonlarını boşaltır ve kalbin sol karıncığı geçici olarak balon gibi şişer. Belirtiler kalp krizine benzer ama damarlar tıkalı değildir; çoğu kişi haftalar içinde iyileşir.",
+  "tags": [
+   "kırık kalp sendromu",
+   "takotsubo",
+   "kalp",
+   "kalbi kırılmak",
+   "stres",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence kalbi en çok ne kırar: kötü bir haber mi, birinin sözü mü?",
+  "en_title": "Can a heart really break? 💔",
+  "en_description": "Yes: broken heart syndrome (takotsubo) is real. A sudden emotional shock floods the body with stress hormones like adrenaline, and the heart's left ventricle temporarily balloons into a shape Japanese doctors likened to an octopus trap. It mimics a heart attack, but the arteries aren't blocked, and most people recover within weeks.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Kalp gerçekten kırılabilir mi, kırık kalp sendromu nedir?\n\nEvet, bir anlamda. Tıpta takotsubo sendromu ya da kırık kalp sendromu denen durumda, sevilen birinin ölümü gibi ani bir duygusal ya da fiziksel stres adrenalin gibi stres hormonlarını boşaltır ve kalbin sol karıncığı kasılacağı yerde geçici olarak balon gibi şişer. Adını 1990'ların başında onu tanımlayan Japon doktorlar verdi: takotsubo, balıkçıların ahtapot yakalamak için kullandığı çömlek tuzaktır. Mayo Clinic'e göre belirtiler kalp krizine benzer ama kalp damarları tıkalı değildir; daha çok elli yaş üstü kadınlarda görülür ve çoğu kişi haftalar içinde iyileşir. Zürih'teki uluslararası bir kayıt çalışmasına göre duygusal tetikleyicisi olan vakaların yaklaşık yüzde dördünde tetikleyici bir düğün ya da doğum günü gibi mutlu bir olaydı.\n\nSence kalbi en çok ne kırar: kötü bir haber mi, birinin sözü mü?",
+  "hashtags": [
+   "#kalp",
+   "#kırıkkalp",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kalp kırılabilir mi",
+   "kırık kalp sendromu",
+   "takotsubo sendromu",
+   "takotsubo kardiyomiyopati",
+   "kalbi kırılmak",
+   "kalbim kırıldı",
+   "kalp kırıklığı",
+   "stres kalbi etkiler mi",
+   "üzüntüden kalp krizi",
+   "kalp krizi belirtileri",
+   "adrenalin",
+   "kalp sağlığı",
+   "kalp",
+   "deyimler",
+   "deyim efsaneleri",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "broken heart syndrome"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a heart really break? 💔",
+    "description": "Yes: broken heart syndrome (takotsubo) is real. A sudden emotional shock floods the body with stress hormones like adrenaline, and the left ventricle temporarily balloons into a shape Japanese doctors likened to an octopus trap. It mimics a heart attack, but the arteries aren't blocked, and most people recover within weeks."
+   },
+   "es": {
+    "title": "¿Puede romperse de verdad un corazón? 💔",
+    "description": "Sí: el síndrome del corazón roto (takotsubo) existe. Un golpe emocional repentino libera hormonas del estrés como la adrenalina, y el ventrículo izquierdo se hincha temporalmente como un globo, con forma de trampa japonesa para pulpos. Parece un infarto, pero las arterias no están obstruidas y la mayoría se recupera en semanas."
+   },
+   "pt": {
+    "title": "Um coração pode mesmo se partir? 💔",
+    "description": "Sim: a síndrome do coração partido (takotsubo) existe. Um choque emocional súbito libera hormônios do estresse como a adrenalina, e o ventrículo esquerdo incha temporariamente como um balão, no formato de uma armadilha japonesa para polvos. Parece um infarto, mas as artérias não estão entupidas, e a maioria se recupera em semanas."
+   },
+   "de": {
+    "title": "Kann ein Herz wirklich brechen? 💔",
+    "description": "Ja: Das Broken-Heart-Syndrom (Takotsubo) gibt es. Ein plötzlicher seelischer Schock schüttet Stresshormone wie Adrenalin aus, und die linke Herzkammer bläht sich vorübergehend wie ein Ballon auf, in der Form einer japanischen Tintenfischfalle. Es ähnelt einem Herzinfarkt, doch die Gefäße sind nicht verstopft, und die meisten erholen sich in Wochen."
+   },
+   "fr": {
+    "title": "Un cœur peut-il vraiment se briser ? 💔",
+    "description": "Oui : le syndrome du cœur brisé (takotsubo) existe. Un choc émotionnel soudain libère des hormones de stress comme l'adrénaline, et le ventricule gauche se gonfle temporairement comme un ballon, en forme de piège à poulpe japonais. On dirait un infarctus, mais les artères ne sont pas bouchées et la plupart des gens guérissent en quelques semaines."
+   },
+   "it": {
+    "title": "Un cuore può davvero spezzarsi? 💔",
+    "description": "Sì: la sindrome del cuore spezzato (takotsubo) esiste. Uno shock emotivo improvviso rilascia ormoni dello stress come l'adrenalina e il ventricolo sinistro si gonfia temporaneamente come un palloncino, a forma di trappola giapponese per polpi. Sembra un infarto, ma le arterie non sono ostruite e quasi tutti guariscono in poche settimane."
+   },
+   "ru": {
+    "title": "Может ли сердце на самом деле разбиться? 💔",
+    "description": "Да: синдром разбитого сердца (такоцубо) существует. Внезапное эмоциональное потрясение выбрасывает гормоны стресса вроде адреналина, и левый желудочек временно раздувается, как шар, принимая форму японской ловушки для осьминогов. Это похоже на инфаркт, но сосуды не закупорены, и большинство восстанавливается за несколько недель."
+   },
+   "ar": {
+    "title": "هل يمكن للقلب أن ينكسر حقًا؟ 💔",
+    "description": "نعم، متلازمة القلب المكسور (تاكوتسوبو) حقيقية. صدمة عاطفية مفاجئة تطلق هرمونات التوتر مثل الأدرينالين، فينتفخ البطين الأيسر مؤقتًا كالبالون على شكل فخ ياباني لصيد الأخطبوط. تشبه النوبة القلبية، لكن الشرايين ليست مسدودة، ويتعافى معظم الناس خلال أسابيع."
+   },
+   "hi": {
+    "title": "क्या दिल सच में टूट सकता है? 💔",
+    "description": "हाँ, ब्रोकन हार्ट सिंड्रोम (ताकोत्सुबो) असली है। अचानक लगा भावनात्मक सदमा एड्रेनालिन जैसे तनाव हार्मोन छोड़ता है और दिल का बायाँ निलय कुछ समय के लिए गुब्बारे की तरह फूल जाता है, जिसका आकार जापानी ऑक्टोपस फँसाने वाले बर्तन जैसा होता है। यह हार्ट अटैक जैसा लगता है, पर धमनियाँ बंद नहीं होतीं और ज़्यादातर लोग कुछ हफ़्तों में ठीक हो जाते हैं।"
+   },
+   "id": {
+    "title": "Bisakah jantung benar-benar ikut patah hati? 💔",
+    "description": "Bisa: sindrom patah hati (takotsubo) itu nyata. Guncangan emosi mendadak melepaskan hormon stres seperti adrenalin, dan bilik kiri jantung sementara menggembung seperti balon, mirip perangkap gurita Jepang. Gejalanya mirip serangan jantung, tetapi pembuluh darahnya tidak tersumbat, dan kebanyakan orang pulih dalam beberapa minggu."
+   },
+   "ja": {
+    "title": "悲しみで心臓の形が本当に変わることはある? 💔",
+    "description": "あります。たこつぼ症候群(ブロークンハート症候群)では、突然の強いショックでアドレナリンなどのストレスホルモンが一気に出て、左心室が一時的に風船のようにふくらみます。その形がたこつぼに似ていることから日本の医師が名づけました。心筋梗塞に似ていますが血管は詰まっておらず、多くの人は数週間で回復します。"
+   },
+   "ko": {
+    "title": "마음이 아프면 심장도 정말 다칠 수 있을까? 💔",
+    "description": "그렇습니다. 상심 증후군(타코츠보 증후군)에서는 갑작스러운 감정적 충격이 아드레날린 같은 스트레스 호르몬을 쏟아내고, 좌심실이 일시적으로 풍선처럼 부풀어 일본의 문어잡이 항아리 모양이 됩니다. 심장마비와 비슷해 보이지만 혈관은 막히지 않았고, 대부분 몇 주 안에 회복합니다."
+   },
+   "pl": {
+    "title": "Czy serce naprawdę może pęknąć? 💔",
+    "description": "Tak: zespół złamanego serca (takotsubo) istnieje. Nagły wstrząs emocjonalny uwalnia hormony stresu, takie jak adrenalina, a lewa komora chwilowo nadyma się jak balon, przypominając japońską pułapkę na ośmiornice. Wygląda to jak zawał, ale tętnice nie są zatkane i większość ludzi wraca do zdrowia w ciągu kilku tygodni."
+   },
+   "nl": {
+    "title": "Kan een hart echt breken? 💔",
+    "description": "Ja: het gebrokenhartsyndroom (takotsubo) bestaat. Een plotselinge emotionele schok laat stresshormonen zoals adrenaline vrij, en de linkerkamer zwelt tijdelijk op als een ballon, in de vorm van een Japanse octopusval. Het lijkt op een hartaanval, maar de kransslagaders zijn niet verstopt en de meeste mensen herstellen binnen enkele weken."
+   },
+   "uk": {
+    "title": "Чи може серце справді розбитися? 💔",
+    "description": "Так: синдром розбитого серця (такоцубо) існує. Раптовий емоційний удар викидає гормони стресу, як-от адреналін, і лівий шлуночок тимчасово роздувається, мов кулька, набуваючи форми японської пастки для восьминогів. Це схоже на інфаркт, але судини не закупорені, і більшість людей одужує за кілька тижнів."
+   },
+   "vi": {
+    "title": "Trái tim có thể thật sự tan vỡ không? 💔",
+    "description": "Có: hội chứng trái tim tan vỡ (takotsubo) là có thật. Một cú sốc cảm xúc đột ngột giải phóng hormone căng thẳng như adrenaline, và tâm thất trái tạm thời phình lên như quả bóng, giống chiếc bẫy bạch tuộc của Nhật. Nó giống cơn đau tim nhưng mạch máu không bị tắc, và đa số hồi phục trong vài tuần."
+   },
+   "az": {
+    "title": "Ürək doğrudan da qırıla bilərmi? 💔",
+    "description": "Bəli: sınıq ürək sindromu (takotsubo) həqiqətdir. Qəfil emosional sarsıntı adrenalin kimi stres hormonlarını ifraz edir və sol mədəcik müvəqqəti olaraq şar kimi şişib yapon ahtapot tələsinə bənzəyir. Ürək tutmasına oxşayır, amma damarlar tıxanmayıb və insanların çoxu bir neçə həftəyə sağalır."
+   },
+   "ro": {
+    "title": "Poate o inimă să se frângă cu adevărat? 💔",
+    "description": "Da: sindromul inimii frânte (takotsubo) există. Un șoc emoțional brusc eliberează hormoni de stres precum adrenalina, iar ventriculul stâng se umflă temporar ca un balon, în forma unei capcane japoneze pentru caracatițe. Seamănă cu un infarct, dar arterele nu sunt blocate și majoritatea oamenilor își revin în câteva săptămâni."
+   }
+  }
+ }
+}

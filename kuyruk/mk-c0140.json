@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0140",
+ "topic": "Havuç göze iyi gelir mi, havuç yemek gözleri keskinleştirir mi?",
+ "kategori": "vücut",
+ "subject": [
+  "eye"
+ ],
+ "stock_hint": "eye closeup",
+ "script": {
+  "title": "Havuç yemek gözlerini keskinleştirmez 🥕",
+  "hook_text": "HAVUÇ GÖZE İYİ GELİR Mİ?",
+  "scenes": [
+   {
+    "text": "Havuç yemek bu gözü keskinleştirmez.",
+    "visual": "extreme close-up of a human eye, iris in sharp focus",
+    "stock_query": "eye closeup",
+    "source": "stock",
+    "callout": "KESKİNLEŞTİRMEZ"
+   },
+   {
+    "text": "İkinci Dünya Savaşı'nda geceleri düşman uçağı düşüren bir İngiliz pilotun sırrı havuç diye duyuruldu.",
+    "visual": "old propeller fighter plane flying in the sky",
+    "stock_query": "vintage airplane",
+    "source": "stock",
+    "callout": "PİLOTUN SIRRI",
+    "subject": [
+     "airplane"
+    ]
+   },
+   {
+    "text": "Bir görüşe göre amaç, uçaklardaki gizli radarı düşmandan saklamaktı.",
+    "visual": "rotating radar antenna against the sky",
+    "stock_query": "radar antenna",
+    "source": "stock",
+    "callout": "GİZLİ RADAR",
+    "subject": [
+     "radar"
+    ]
+   },
+   {
+    "text": "Havuçtaki beta karoten A vitaminine dönüşür; eksikliği gerçekten gece körlüğü yapar.",
+    "visual": "fresh orange carrots piled up, close-up",
+    "stock_query": "fresh carrots",
+    "source": "stock",
+    "callout": "GECE KÖRLÜĞÜ",
+    "subject": [
+     "carrot",
+     "carrots"
+    ]
+   },
+   {
+    "text": "Ama eksiği olmayan göze fazladan keskinlik katmaz; o yüzden...",
+    "visual": "close-up of a human eye blinking",
+    "stock_query": "eye blinking",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Havuç yemek sağlıklı gözü keskinleştirmez. İkinci Dünya Savaşı'nda geceleri düşman uçağı düşüren İngiliz pilot John Cunningham'ın başarısı havuca bağlandı; bir görüşe göre amaç, uçaklardaki gizli radarı saklamaktı. Havuçtaki beta karoten A vitaminine dönüşür ve eksikliği gece körlüğü yapar, ama eksiği olmayan göze fazladan keskinlik katmaz.",
+  "tags": [
+   "havuç",
+   "göz sağlığı",
+   "a vitamini",
+   "gece körlüğü",
+   "efsaneler",
+   "insan vücudu",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de çocukken gözlerin için zorla havuç yedin mi: evet mi, hayır mı?",
+  "en_title": "Eating carrots won't sharpen your eyesight 🥕",
+  "en_description": "During World War II, Britain credited night-fighter pilot John Cunningham's success to eating carrots; one view holds that the story hid the new airborne radar. Carrots supply beta carotene, which the body turns into vitamin A, and a deficiency causes night blindness. But for healthy eyes, extra carrots add no sharpness.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Havuç göze iyi gelir mi, havuç yemek gözleri keskinleştirir mi?\n\nTam olarak değil. Smithsonian dergisinin aktardığına göre İkinci Dünya Savaşı'nda geceleri çok sayıda Alman uçağı düşüren İngiliz pilot John Cunningham'a 'Kedi Gözlü' lakabı takıldı ve başarısı havuçla beslenmesine bağlandı. Bazı tarihçilere göre bu, uçaklardaki yeni radarı gizlemek için yayılan bir hikâyeydi; bazıları ise buna katılmıyor. Havuçtaki beta karoten vücutta A vitaminine dönüşür ve A vitamini eksikliği gerçekten gece körlüğüne yol açar. Ancak eksikliği olmayan sağlıklı birinde fazla havuç görmeyi keskinleştirmez.\n\nSen de çocukken gözlerin için zorla havuç yedin mi: evet mi, hayır mı?",
+  "hashtags": [
+   "#havuç",
+   "#göz",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "havuç göze iyi gelir mi",
+   "havuç ve göz sağlığı",
+   "havuç gözü keskinleştirir mi",
+   "havuç yemek",
+   "havucun faydaları",
+   "göz sağlığı",
+   "gece görüşü",
+   "gece körlüğü",
+   "a vitamini",
+   "beta karoten",
+   "göze iyi gelen besinler",
+   "ikinci dünya savaşı",
+   "efsaneler",
+   "yanlış bilinenler",
+   "göz",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "carrots eyesight myth"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Eating carrots won't sharpen your eyesight 🥕",
+    "description": "During World War II, Britain credited night-fighter pilot John Cunningham's success to carrots; one view holds that the story hid the new airborne radar. Carrots supply beta carotene, which becomes vitamin A, and a deficiency causes night blindness. Healthy eyes, though, get no sharper."
+   },
+   "es": {
+    "title": "Comer zanahorias no te afina la vista 🥕",
+    "description": "En la Segunda Guerra Mundial, Reino Unido atribuyó a las zanahorias los éxitos nocturnos del piloto John Cunningham; según una versión, para ocultar el nuevo radar de los aviones. El betacaroteno de la zanahoria se convierte en vitamina A y su falta causa ceguera nocturna, pero a un ojo sano no le da más agudeza."
+   },
+   "pt": {
+    "title": "Comer cenoura não deixa a sua visão mais aguçada 🥕",
+    "description": "Na Segunda Guerra Mundial, o Reino Unido atribuiu às cenouras o sucesso noturno do piloto John Cunningham; segundo uma versão, para esconder o novo radar dos aviões. O betacaroteno da cenoura vira vitamina A, e a falta dela causa cegueira noturna, mas num olho saudável não aumenta a nitidez."
+   },
+   "de": {
+    "title": "Karotten essen macht deine Augen nicht schärfer 🥕",
+    "description": "Im Zweiten Weltkrieg schrieb Großbritannien die Erfolge des Nachtjägerpiloten John Cunningham den Karotten zu, einer Lesart nach, um das neue Bordradar zu verschleiern. Das Betacarotin der Karotte wird zu Vitamin A, dessen Mangel Nachtblindheit verursacht. Gesunden Augen bringen zusätzliche Karotten aber keine Extraschärfe."
+   },
+   "fr": {
+    "title": "Manger des carottes ne rend pas la vue plus perçante 🥕",
+    "description": "Pendant la Seconde Guerre mondiale, le Royaume-Uni a attribué aux carottes les succès nocturnes du pilote John Cunningham, peut-être pour cacher le nouveau radar embarqué. Le bêta-carotène des carottes devient de la vitamine A, dont le manque cause la cécité nocturne, mais un œil en bonne santé n'y gagne aucune netteté."
+   },
+   "it": {
+    "title": "Mangiare carote non rende la vista più acuta 🥕",
+    "description": "Durante la Seconda guerra mondiale il Regno Unito attribuì alle carote i successi notturni del pilota John Cunningham, forse per nascondere il nuovo radar di bordo. Il betacarotene delle carote diventa vitamina A, la cui carenza provoca cecità notturna, ma a un occhio sano non dà alcuna nitidezza in più."
+   },
+   "ru": {
+    "title": "Морковь не делает зрение острее 🥕",
+    "description": "Во время Второй мировой Британия объясняла ночные победы пилота Джона Каннингема морковью — по одной версии, чтобы скрыть новый бортовой радар. Бета-каротин из моркови превращается в витамин А, а его нехватка вызывает куриную слепоту, но здоровым глазам лишняя морковь остроты не добавит."
+   },
+   "ar": {
+    "title": "أكل الجزر لا يجعل نظرك أحدّ 🥕",
+    "description": "في الحرب العالمية الثانية نسبت بريطانيا نجاحات الطيار الليلي جون كانينغهام إلى أكل الجزر، وبحسب إحدى الروايات كان ذلك لإخفاء الرادار الجديد في الطائرات. يتحول البيتا كاروتين في الجزر إلى فيتامين أ، ونقصه يسبب العشى الليلي، لكنه لا يزيد حدة البصر لدى العين السليمة."
+   },
+   "hi": {
+    "title": "गाजर खाने से तुम्हारी नज़र तेज़ नहीं होती 🥕",
+    "description": "दूसरे विश्व युद्ध में ब्रिटेन ने रात में लड़ने वाले पायलट जॉन कनिंघम की कामयाबी का श्रेय गाजर को दिया; एक मत के अनुसार ऐसा विमानों के नए रडार को छिपाने के लिए किया गया। गाजर का बीटा-कैरोटीन विटामिन ए बनता है और इसकी कमी से रतौंधी होती है, लेकिन स्वस्थ आँखों की नज़र इससे और तेज़ नहीं होती।"
+   },
+   "id": {
+    "title": "Makan wortel tidak membuat penglihatanmu makin tajam 🥕",
+    "description": "Pada Perang Dunia II, Inggris mengaitkan keberhasilan pilot malam John Cunningham dengan wortel; menurut satu pendapat, itu untuk menutupi radar pesawat yang baru. Beta karoten dalam wortel diubah menjadi vitamin A, dan kekurangannya menyebabkan rabun senja, tetapi mata yang sehat tidak jadi lebih tajam."
+   },
+   "ja": {
+    "title": "ニンジンを食べても視力は良くならない 🥕",
+    "description": "第二次世界大戦中、イギリスは夜間戦闘機パイロット、ジョン・カニンガムの戦果をニンジンのおかげだと宣伝しました。新型レーダーを隠すためだったという説もあります。ニンジンのβカロテンはビタミンAになり、不足すると夜盲症になりますが、健康な目がさらによく見えるようにはなりません。"
+   },
+   "ko": {
+    "title": "당근을 먹는다고 시력이 좋아지지는 않는다 🥕",
+    "description": "제2차 세계대전 때 영국은 야간 전투기 조종사 존 커닝햄의 활약을 당근 덕분이라고 알렸습니다. 새로 개발한 레이더를 숨기려는 것이었다는 견해도 있습니다. 당근의 베타카로틴은 비타민 A가 되고, 부족하면 야맹증이 생기지만 건강한 눈을 더 잘 보이게 해 주지는 않습니다."
+   },
+   "pl": {
+    "title": "Jedzenie marchewki nie wyostrza wzroku 🥕",
+    "description": "Podczas II wojny światowej Brytyjczycy przypisywali nocne sukcesy pilota Johna Cunninghama marchewce; według jednej z wersji, by ukryć nowy radar pokładowy. Beta-karoten z marchwi zamienia się w witaminę A, której brak powoduje kurzą ślepotę, ale zdrowym oczom dodatkowa marchewka ostrości nie doda."
+   },
+   "nl": {
+    "title": "Wortels eten maakt je ogen niet scherper 🥕",
+    "description": "In de Tweede Wereldoorlog schreef Groot-Brittannië de nachtelijke successen van piloot John Cunningham toe aan wortels, volgens sommigen om de nieuwe boordradar geheim te houden. Bètacaroteen uit wortels wordt vitamine A, en een tekort veroorzaakt nachtblindheid, maar gezonde ogen worden er niet scherper van."
+   },
+   "uk": {
+    "title": "Морква не робить зір гострішим 🥕",
+    "description": "Під час Другої світової Британія пояснювала нічні перемоги пілота Джона Каннінгема морквою — за однією з версій, щоб приховати новий бортовий радар. Бета-каротин із моркви перетворюється на вітамін А, нестача якого спричиняє курячу сліпоту, але здоровим очам зайва морква гостроти не додасть."
+   },
+   "vi": {
+    "title": "Ăn cà rốt không giúp mắt bạn tinh hơn 🥕",
+    "description": "Trong Thế chiến II, Anh gán thành tích bay đêm của phi công John Cunningham cho việc ăn cà rốt; theo một quan điểm, đó là để che giấu radar mới trên máy bay. Beta-caroten trong cà rốt chuyển thành vitamin A, thiếu chất này gây quáng gà, nhưng với mắt khỏe thì ăn thêm cũng không tinh hơn."
+   },
+   "az": {
+    "title": "Yerkökü yemək gözlərini itiləşdirmir 🥕",
+    "description": "İkinci Dünya Müharibəsində Britaniya gecə pilotu Con Kanninqemin uğurlarını yerkökü yeməsinə bağladı; bir fikrə görə məqsəd təyyarələrdəki yeni radarı gizlətmək idi. Yerkökündəki beta-karotin A vitamininə çevrilir və onun çatışmazlığı toyuq korluğuna səbəb olur, amma sağlam gözü daha iti etmir."
+   },
+   "ro": {
+    "title": "Morcovii nu îți ascut vederea 🥕",
+    "description": "În Al Doilea Război Mondial, Marea Britanie a pus succesele nocturne ale pilotului John Cunningham pe seama morcovilor, poate ca să ascundă noul radar de bord. Betacarotenul din morcovi devine vitamina A, iar lipsa ei duce la orbire nocturnă, dar unui ochi sănătos nu îi dă claritate în plus."
+   }
+  }
+ }
+}
