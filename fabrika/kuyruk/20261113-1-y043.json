@@ -1,0 +1,367 @@
+{
+ "id": "y043",
+ "series": "Ya Olsaydı?",
+ "q": "Hiç rüya görmeseydik ne olurdu?",
+ "uzun": true,
+ "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
+ "bar": {
+  "hi": "RÜYASIZ",
+  "rest": "KALSAYDIN?"
+ },
+ "summary": "Rüya uykusu %5 azalınca ölüm riski %13 artıyor! Rüyaların bu gece çalınsa 1. geceden yıllar sonrasına kadar beynine neler olacağını ve beyninin şaşırtıcı inadını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Rüyaların seni hayatta tutuyor olabilir: rüya uykusu %5 azalınca ölüm riski %13 artıyor!",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "⚠️",
+    "value": "%13",
+    "unit": "risk",
+    "label": "Ölüm Riski",
+    "key": "%13"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Rüyam can simidim mi çıktı?!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🛟",
+    "do": "float",
+    "key": "simidim",
+    "label": "Can Simidi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hatırlamasan da her gece yaklaşık 2 saat rüya görürsün, çoğunu REM uykusunda.",
+   "v": {
+    "t": "compare",
+    "bg": "night",
+    "a": {
+     "e": "😴",
+     "label": "Gece Uykusu",
+     "value": 8
+    },
+    "b": {
+     "e": "💭",
+     "label": "Rüya",
+     "value": 2
+    },
+    "mode": "bar",
+    "key": "2"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu gece rüyalarını çalıyoruz: REM her başladığında seni uyandırıyoruz.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "⏰",
+    "do": "shake",
+    "key": "uyandırıyoruz",
+    "label": "Rüya Hırsızı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1. gece: İlk rüya 90. dakikada gelir, uyanırsın. Beynin sabaha kadar yeniden dener.",
+   "v": {
+    "t": "number",
+    "bg": "night",
+    "e": "😴",
+    "value": "90",
+    "unit": "dakika",
+    "label": "İlk Rüya",
+    "key": "90."
+   }
+  },
+  {
+   "who": "pi",
+   "text": "5. gece: Beynin daha da inatçı; seni her gece daha sık uyandırmak gerekiyor.",
+   "v": {
+    "t": "timeline",
+    "bg": "night",
+    "steps": [
+     {
+      "when": "1. GECE",
+      "e": "⏰",
+      "label": "Uyandırıldın"
+     },
+     {
+      "when": "3. GECE",
+      "e": "🔁",
+      "label": "Daha Sık Dener"
+     },
+     {
+      "when": "5. GECE",
+      "e": "🚪",
+      "label": "Kapıyı Zorlar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Beynim rüyaya kapı mı kırıyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🚪",
+    "do": "shake",
+    "key": "kapı",
+    "label": "Rüya Kapısı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik kötü anılarının acısı zor söner: beynin gece terapisi REM'de.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🩹",
+     "label": "REM ile Söner"
+    },
+    "right": {
+     "e": "💔",
+     "label": "REM'siz Kalır"
+    },
+    "key": "terapisi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yıllar sonra: REM'i %1 azalanlarda bunama riski %9 artıyor.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🧠",
+    "value": "%9",
+    "unit": "risk",
+    "label": "Bunama Riski",
+    "key": "%9"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Hafızamın bekçisi rüyalar mıymış?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🧠",
+    "label": "Hafıza Bekçisi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: beynin bu borcu unutmaz. Uyandırmayı bıraktığımız gece doğrudan rüyaya dalarsın!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🌀",
+    "do": "spin",
+    "key": "dalarsın",
+    "label": "REM Geri Döner"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen dün gece ne rüya gördün? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "💭"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NIH'ye (NHLBI) göre JAMA Neurology'de yayımlanan bir araştırmada yaş ortalaması 76 olan 2.675 erkek yaklaşık 12 yıl izlendi; REM (rüya) uykusundaki her %5'lik azalma, ölüm oranında %13-17'lik artışla ilişkiliydi. Yaş ortalaması 52 olan yaklaşık 1.400 kişide de benzer sonuç çıktı.",
+   "source": "NIH / NHLBI",
+   "url": "https://www.nhlbi.nih.gov/news/2020/study-links-poor-dream-stage-rem-sleep-higher-risk-death"
+  },
+  {
+   "text": "NIH'ye (NINDS) göre herkes rüya görür; her gece yaklaşık 2 saat rüya görürüz ama çoğunu hatırlamayız. Rüyaların çoğu REM uykusunda görülür ve ilk REM, uykuya daldıktan yaklaşık 90 dakika sonra başlar.",
+   "source": "NIH / NINDS",
+   "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep"
+  },
+  {
+   "text": "Smithsonian'a göre yetişkinler gecede yaklaşık 2 saatini, yani uykusunun %25'ini REM'de geçirir; REM'den mahrum kalan biri ilk fırsatta bunu telafi eder ve doğrudan REM evresine dalar (REM geri tepmesi).",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/science-nature/the-stubborn-scientist-who-unraveled-a-mystery-of-the-night-91514538/"
+  },
+  {
+   "text": "Britannica'ya göre seçici REM yoksunluğu deneylerinde REM uykusunu engellemek için her gece giderek daha fazla uyandırma gerekir.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/science/sleep/Sleep-deprivation"
+  },
+  {
+   "text": "National Geographic'e göre UC Berkeley'den Matthew Walker'ın 34 gönüllüyle yaptığı araştırmada, iki gösterim arasında uyuyanlar duygusal görüntülere çok daha hafif tepki verdi; REM sırasında beynin duygu merkezi amigdalanın etkinliği düştü. Walker bunu 'gece terapisi' olarak tanımlıyor.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/science/article/111129-sleep-dreaming-rem-brain-emotions-science-health"
+  },
+  {
+   "text": "Boston Üniversitesi'ne göre 60 yaş üstü 321 kişinin ortalama 12 yıl izlendiği Framingham araştırmasında REM uykusundaki her %1'lik azalma, bunama riskinde %9'luk artışla ilişkiliydi.",
+   "source": "Boston University",
+   "url": "https://www.bu.edu/articles/2017/lack-of-rem-sleep-and-dementia"
+  }
+ ],
+ "tags": [
+  "rüya",
+  "rüya görmemek",
+  "REM uykusu",
+  "rüya uykusu",
+  "uyku",
+  "beyin",
+  "hafıza",
+  "bunama",
+  "uyku bilimi",
+  "dreams",
+  "REM sleep",
+  "what if you never dreamed",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#rüya",
+  "#uyku",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.nhlbi.nih.gov/news/2020/study-links-poor-dream-stage-rem-sleep-higher-risk-death",
+  "https://www.bu.edu/articles/2017/lack-of-rem-sleep-and-dementia",
+  "https://www.nationalgeographic.com/science/article/111129-sleep-dreaming-rem-brain-emotions-science-health",
+  "https://www.smithsonianmag.com/science-nature/the-stubborn-scientist-who-unraveled-a-mystery-of-the-night-91514538/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen to Your Brain If You Never Dreamed?",
+   "summary": "When dream sleep drops by 5%, the risk of death rises by 13%! Professor Pi walks you through what would happen to your brain if your dreams were stolen tonight, from the first night to years later, and reveals your brain's surprising stubbornness.",
+   "facts": [
+    "According to the NIH (NHLBI), a study in JAMA Neurology followed 2,675 men with an average age of 76 for about 12 years; every 5% reduction in REM (dream) sleep was associated with a 13-17% higher death rate. Similar results were found in about 1,400 people with an average age of 52.",
+    "According to the NIH (NINDS), everyone dreams; we spend about 2 hours each night dreaming but don't remember most of it. Most dreaming happens in REM sleep, which first occurs about 90 minutes after falling asleep.",
+    "According to Smithsonian, adults spend about 2 hours a night, or 25% of their sleep, in REM; a person deprived of REM sleep recoups it at the first chance, plunging directly into the REM phase (REM rebound).",
+    "According to Britannica, in selective REM deprivation experiments an increasing number of awakenings is needed each night to suppress REM sleep.",
+    "According to National Geographic, in a study of 34 volunteers by Matthew Walker of UC Berkeley, those who slept between two viewings reacted much more mildly to emotional images; activity in the amygdala, the brain's emotional center, dropped during REM. Walker calls it 'overnight therapy'.",
+    "According to Boston University, in the Framingham study that followed 321 people over age 60 for an average of 12 years, every 1% reduction in REM sleep was associated with a 9% increase in dementia risk."
+   ]
+  },
+  "es": {
+   "title": "¿Qué le pasaría a tu cerebro si nunca soñaras?",
+   "summary": "¡Cuando el sueño REM, la fase en la que soñamos, baja un 5%, el riesgo de muerte sube un 13%! El profesor Pi te cuenta qué le pasaría a tu cerebro si esta noche te robaran los sueños, desde la primera noche hasta años después, y revela su sorprendente terquedad.",
+   "facts": [
+    "Según los NIH (NHLBI), un estudio publicado en JAMA Neurology siguió durante unos 12 años a 2.675 hombres con una edad media de 76 años; cada reducción del 5% del sueño REM (el de los sueños) se asoció con un aumento del 13-17% en la tasa de mortalidad. Se observaron resultados similares en unas 1.400 personas con una edad media de 52 años.",
+    "Según los NIH (NINDS), todo el mundo sueña; pasamos unas 2 horas cada noche soñando, pero no recordamos la mayoría de los sueños. La mayor parte ocurre en el sueño REM, que aparece por primera vez unos 90 minutos después de dormirnos.",
+    "Según Smithsonian, los adultos pasan unas 2 horas por noche, el 25% de su sueño, en fase REM; quien se ve privado de ella la recupera a la primera oportunidad y entra directamente en la fase REM (rebote REM).",
+    "Según Britannica, en los experimentos de privación selectiva del sueño REM hace falta un número creciente de despertares cada noche para suprimirlo.",
+    "Según National Geographic, en un estudio de Matthew Walker (UC Berkeley) con 34 voluntarios, quienes durmieron entre dos visualizaciones reaccionaron de forma mucho más leve a imágenes emocionales; la actividad de la amígdala, el centro emocional del cerebro, bajó durante el sueño REM. Walker lo llama «terapia nocturna».",
+    "Según la Universidad de Boston, en el estudio de Framingham, que siguió a 321 personas mayores de 60 años durante 12 años de media, cada reducción del 1% del sueño REM se asoció con un aumento del 9% en el riesgo de demencia."
+   ]
+  },
+  "pt": {
+   "title": "O que aconteceria com seu cérebro se você nunca sonhasse?",
+   "summary": "Quando o sono REM, a fase em que sonhamos, cai 5%, o risco de morte sobe 13%! O professor Pi mostra o que aconteceria com seu cérebro se seus sonhos fossem roubados esta noite, da primeira noite até anos depois, e revela a surpreendente teimosia dele.",
+   "facts": [
+    "Segundo os NIH (NHLBI), um estudo publicado na JAMA Neurology acompanhou por cerca de 12 anos 2.675 homens com idade média de 76 anos; cada redução de 5% no sono REM (o sono dos sonhos) foi associada a um aumento de 13-17% na taxa de mortalidade. Resultados semelhantes apareceram em cerca de 1.400 pessoas com idade média de 52 anos.",
+    "Segundo os NIH (NINDS), todo mundo sonha; passamos cerca de 2 horas por noite sonhando, mas não lembramos a maioria dos sonhos. A maior parte acontece no sono REM, que surge pela primeira vez cerca de 90 minutos depois de adormecermos.",
+    "Segundo a Smithsonian, adultos passam cerca de 2 horas por noite, ou 25% do sono, em REM; quem é privado dele o recupera na primeira chance, mergulhando direto na fase REM (rebote de REM).",
+    "Segundo a Britannica, em experimentos de privação seletiva de sono REM é preciso um número cada vez maior de despertares a cada noite para suprimi-lo.",
+    "Segundo a National Geographic, num estudo de Matthew Walker (UC Berkeley) com 34 voluntários, quem dormiu entre duas sessões reagiu de forma bem mais branda a imagens emocionais; a atividade da amígdala, o centro emocional do cérebro, caiu durante o sono REM. Walker chama isso de 'terapia noturna'.",
+    "Segundo a Universidade de Boston, no estudo de Framingham, que acompanhou 321 pessoas com mais de 60 anos por 12 anos em média, cada redução de 1% no sono REM foi associada a um aumento de 9% no risco de demência."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لدماغك لو لم تحلم أبدًا؟",
+   "summary": "عندما ينخفض نوم حركة العين السريعة، مرحلة الأحلام، بنسبة 5% يرتفع خطر الوفاة بنسبة 13%! يشرح البروفيسور باي ما سيحدث لدماغك لو سُرقت أحلامك الليلة، من الليلة الأولى حتى بعد سنوات، ويكشف عن عناد دماغك المدهش.",
+   "facts": [
+    "وفقًا للمعاهد الوطنية للصحة الأمريكية (NHLBI)، تابعت دراسة نُشرت في JAMA Neurology ‏2675 رجلًا متوسط أعمارهم 76 عامًا لنحو 12 عامًا؛ وارتبط كل انخفاض بنسبة 5% في نوم حركة العين السريعة (نوم الأحلام) بارتفاع معدل الوفيات بنسبة 13-17%. وظهرت نتائج مشابهة لدى نحو 1400 شخص متوسط أعمارهم 52 عامًا.",
+    "وفقًا للمعاهد الوطنية للصحة الأمريكية (NINDS)، الجميع يحلمون؛ نقضي نحو ساعتين كل ليلة في الأحلام لكننا لا نتذكر معظمها. ومعظم الأحلام تحدث في نوم حركة العين السريعة الذي يبدأ أول مرة بعد نحو 90 دقيقة من الخلود إلى النوم.",
+    "وفقًا لمجلة سميثسونيان، يقضي البالغون نحو ساعتين كل ليلة، أي 25% من نومهم، في نوم حركة العين السريعة؛ ومن يُحرم منه يعوّضه في أول فرصة ويدخل مباشرة في هذه المرحلة (ارتداد نوم REM).",
+    "وفقًا لموسوعة بريتانيكا، في تجارب الحرمان الانتقائي من نوم حركة العين السريعة يلزم عدد متزايد من الإيقاظات كل ليلة لمنعه.",
+    "وفقًا لناشيونال جيوغرافيك، في دراسة أجراها ماثيو ووكر من جامعة كاليفورنيا في بيركلي على 34 متطوعًا، تفاعل الذين ناموا بين مشاهدتين مع الصور العاطفية بشكل أخف بكثير، وانخفض نشاط اللوزة الدماغية، مركز العواطف في الدماغ، أثناء نوم حركة العين السريعة. ويسمي ووكر ذلك «العلاج الليلي».",
+    "وفقًا لجامعة بوسطن، في دراسة فرامنغهام التي تابعت 321 شخصًا فوق سن 60 عامًا لمدة 12 عامًا في المتوسط، ارتبط كل انخفاض بنسبة 1% في نوم حركة العين السريعة بزيادة خطر الخرف بنسبة 9%."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप कभी सपने न देखते तो आपके दिमाग का क्या होता?",
+   "summary": "जब REM नींद, यानी सपनों वाली नींद, 5% घटती है तो मौत का जोखिम 13% बढ़ जाता है! प्रोफ़ेसर पाई बताते हैं कि अगर आज रात आपके सपने चुरा लिए जाएँ तो पहली रात से लेकर सालों बाद तक आपके दिमाग का क्या होगा, और आपके दिमाग की हैरान करने वाली ज़िद भी दिखाते हैं।",
+   "facts": [
+    "NIH (NHLBI) के अनुसार, JAMA Neurology में प्रकाशित एक अध्ययन में औसतन 76 वर्ष के 2,675 पुरुषों पर लगभग 12 साल तक नज़र रखी गई; REM (सपनों वाली) नींद में हर 5% की कमी मृत्यु दर में 13-17% की बढ़ोतरी से जुड़ी थी। औसतन 52 वर्ष के लगभग 1,400 लोगों में भी ऐसे ही नतीजे मिले।",
+    "NIH (NINDS) के अनुसार, हर कोई सपने देखता है; हम हर रात लगभग 2 घंटे सपने देखते हैं, लेकिन ज़्यादातर याद नहीं रहते। ज़्यादातर सपने REM नींद में आते हैं, जो सोने के लगभग 90 मिनट बाद पहली बार शुरू होती है।",
+    "स्मिथसोनियन के अनुसार, वयस्क हर रात लगभग 2 घंटे, यानी अपनी नींद का 25%, REM में बिताते हैं; REM से वंचित व्यक्ति पहला मौका मिलते ही इसकी भरपाई करता है और सीधे REM चरण में चला जाता है (REM रिबाउंड)।",
+    "ब्रिटानिका के अनुसार, चुनिंदा REM वंचन प्रयोगों में REM नींद को रोकने के लिए हर रात पहले से ज़्यादा बार जगाना पड़ता है।",
+    "नेशनल ज्योग्राफ़िक के अनुसार, UC बर्कले के मैथ्यू वॉकर के 34 स्वयंसेवकों पर किए गए अध्ययन में, दो बार तस्वीरें देखने के बीच सोने वालों की भावनात्मक तस्वीरों पर प्रतिक्रिया कहीं हल्की थी; REM के दौरान दिमाग के भावना केंद्र एमिग्डाला की गतिविधि घट गई। वॉकर इसे 'रातभर की थेरेपी' कहते हैं।",
+    "बोस्टन यूनिवर्सिटी के अनुसार, 60 वर्ष से अधिक उम्र के 321 लोगों पर औसतन 12 साल चले फ्रेमिंघम अध्ययन में REM नींद में हर 1% की कमी डिमेंशिया के जोखिम में 9% की बढ़ोतरी से जुड़ी थी।"
+   ]
+  },
+  "id": {
+   "title": "Apa yang Terjadi pada Otakmu Jika Kamu Tak Pernah Bermimpi?",
+   "summary": "Saat tidur REM, fase ketika kita bermimpi, berkurang 5%, risiko kematian naik 13%! Profesor Pi menjelaskan apa yang terjadi pada otakmu jika mimpimu dicuri malam ini, dari malam pertama hingga bertahun-tahun kemudian, dan mengungkap betapa keras kepalanya otakmu.",
+   "facts": [
+    "Menurut NIH (NHLBI), sebuah studi di JAMA Neurology mengikuti 2.675 pria berusia rata-rata 76 tahun selama sekitar 12 tahun; setiap penurunan 5% tidur REM (tidur saat bermimpi) dikaitkan dengan kenaikan angka kematian 13-17%. Hasil serupa ditemukan pada sekitar 1.400 orang berusia rata-rata 52 tahun.",
+    "Menurut NIH (NINDS), semua orang bermimpi; kita menghabiskan sekitar 2 jam setiap malam untuk bermimpi, tetapi tidak ingat sebagian besarnya. Sebagian besar mimpi terjadi saat tidur REM, yang pertama kali muncul sekitar 90 menit setelah tertidur.",
+    "Menurut Smithsonian, orang dewasa menghabiskan sekitar 2 jam per malam, atau 25% dari tidurnya, dalam fase REM; orang yang kekurangan tidur REM akan menggantinya pada kesempatan pertama dan langsung masuk ke fase REM (REM rebound).",
+    "Menurut Britannica, dalam eksperimen perampasan tidur REM secara selektif, peserta harus dibangunkan semakin sering setiap malam untuk menekan tidur REM.",
+    "Menurut National Geographic, dalam studi Matthew Walker dari UC Berkeley terhadap 34 relawan, mereka yang tidur di antara dua sesi melihat gambar bereaksi jauh lebih ringan terhadap gambar emosional; aktivitas amigdala, pusat emosi otak, menurun selama tidur REM. Walker menyebutnya 'terapi semalam'.",
+    "Menurut Boston University, dalam studi Framingham yang mengikuti 321 orang berusia di atas 60 tahun selama rata-rata 12 tahun, setiap penurunan 1% tidur REM dikaitkan dengan kenaikan risiko demensia sebesar 9%."
+   ]
+  },
+  "fr": {
+   "title": "Que deviendrait ton cerveau si tu ne rêvais jamais ?",
+   "summary": "Quand le sommeil paradoxal, celui des rêves, baisse de 5 %, le risque de décès augmente de 13 % ! Le professeur Pi te montre ce qui arriverait à ton cerveau si on te volait tes rêves cette nuit, de la première nuit à des années plus tard, et révèle son étonnante obstination.",
+   "facts": [
+    "Selon les NIH (NHLBI), une étude publiée dans JAMA Neurology a suivi pendant environ 12 ans 2 675 hommes âgés en moyenne de 76 ans ; chaque baisse de 5 % du sommeil paradoxal (celui des rêves) était associée à une hausse de 13 à 17 % du taux de mortalité. Des résultats similaires ont été observés chez environ 1 400 personnes âgées en moyenne de 52 ans.",
+    "Selon les NIH (NINDS), tout le monde rêve ; nous passons environ 2 heures par nuit à rêver, mais nous oublions la plupart de nos rêves. La plupart surviennent pendant le sommeil paradoxal, qui apparaît pour la première fois environ 90 minutes après l'endormissement.",
+    "Selon Smithsonian, les adultes passent environ 2 heures par nuit, soit 25 % de leur sommeil, en sommeil paradoxal ; une personne qui en est privée le récupère à la première occasion en plongeant directement dans cette phase (rebond de sommeil paradoxal).",
+    "Selon Britannica, dans les expériences de privation sélective de sommeil paradoxal, il faut chaque nuit un nombre croissant de réveils pour le supprimer.",
+    "Selon National Geographic, dans une étude de Matthew Walker (UC Berkeley) sur 34 volontaires, ceux qui avaient dormi entre deux visionnages réagissaient beaucoup plus faiblement aux images émotionnelles ; l'activité de l'amygdale, le centre des émotions du cerveau, baissait pendant le sommeil paradoxal. Walker parle de « thérapie nocturne ».",
+    "Selon l'université de Boston, dans l'étude de Framingham qui a suivi 321 personnes de plus de 60 ans pendant 12 ans en moyenne, chaque baisse de 1 % du sommeil paradoxal était associée à une hausse de 9 % du risque de démence."
+   ]
+  },
+  "de": {
+   "title": "Was würde mit deinem Gehirn passieren, wenn du nie träumen würdest?",
+   "summary": "Sinkt der REM-Schlaf, die Traumphase, um 5 %, steigt das Sterberisiko um 13 %! Professor Pi zeigt, was mit deinem Gehirn passieren würde, wenn dir heute Nacht deine Träume gestohlen würden, von der ersten Nacht bis Jahre später, und enthüllt seine erstaunliche Hartnäckigkeit.",
+   "facts": [
+    "Laut den NIH (NHLBI) begleitete eine in JAMA Neurology veröffentlichte Studie 2.675 Männer mit einem Durchschnittsalter von 76 Jahren rund 12 Jahre lang; jede Abnahme des REM-Schlafs (Traumschlafs) um 5 % ging mit einer um 13–17 % höheren Sterberate einher. Bei rund 1.400 Menschen mit einem Durchschnittsalter von 52 Jahren zeigten sich ähnliche Ergebnisse.",
+    "Laut den NIH (NINDS) träumt jeder; wir verbringen jede Nacht etwa 2 Stunden mit Träumen, erinnern uns aber an die meisten nicht. Die meisten Träume entstehen im REM-Schlaf, der etwa 90 Minuten nach dem Einschlafen zum ersten Mal einsetzt.",
+    "Laut Smithsonian verbringen Erwachsene etwa 2 Stunden pro Nacht, also 25 % ihres Schlafs, im REM-Schlaf; wem er entzogen wird, der holt ihn bei der ersten Gelegenheit nach und taucht direkt in die REM-Phase ein (REM-Rebound).",
+    "Laut Britannica sind bei Experimenten mit gezieltem REM-Schlafentzug jede Nacht immer mehr Weckungen nötig, um den REM-Schlaf zu unterdrücken.",
+    "Laut National Geographic reagierten in einer Studie von Matthew Walker (UC Berkeley) mit 34 Freiwilligen diejenigen, die zwischen zwei Durchgängen geschlafen hatten, viel schwächer auf emotionale Bilder; die Aktivität der Amygdala, des Gefühlszentrums des Gehirns, sank im REM-Schlaf. Walker nennt das „Therapie über Nacht“.",
+    "Laut der Boston University war in der Framingham-Studie, die 321 Menschen über 60 Jahre durchschnittlich 12 Jahre lang begleitete, jede Abnahme des REM-Schlafs um 1 % mit einem um 9 % höheren Demenzrisiko verbunden."
+   ]
+  },
+  "ru": {
+   "title": "Что случилось бы с твоим мозгом, если бы ты никогда не видел снов?",
+   "summary": "Когда фаза быстрого сна, в которой мы видим сны, сокращается на 5%, риск смерти растёт на 13%! Профессор Пи рассказывает, что случилось бы с твоим мозгом, если бы этой ночью у тебя украли сны, от первой ночи до многих лет спустя, и раскрывает его удивительное упрямство.",
+   "facts": [
+    "По данным NIH (NHLBI), в исследовании, опубликованном в JAMA Neurology, около 12 лет наблюдали 2675 мужчин со средним возрастом 76 лет; каждое снижение фазы быстрого сна (сна со сновидениями) на 5% было связано с ростом смертности на 13–17%. Похожие результаты получены примерно у 1400 человек со средним возрастом 52 года.",
+    "По данным NIH (NINDS), сны видят все; каждую ночь мы около 2 часов видим сны, но большинство из них не помним. Большая часть снов приходится на фазу быстрого сна, которая впервые наступает примерно через 90 минут после засыпания.",
+    "По данным Smithsonian, взрослые проводят в фазе быстрого сна около 2 часов за ночь, или 25% сна; человек, лишённый её, наверстывает её при первой возможности, сразу погружаясь в фазу быстрого сна (REM-отдача).",
+    "По данным «Британники», в экспериментах по избирательному лишению быстрого сна, чтобы подавить его, каждую ночь требуется всё больше пробуждений.",
+    "По данным National Geographic, в исследовании Мэттью Уокера (Калифорнийский университет в Беркли) с 34 добровольцами те, кто спал между двумя просмотрами, реагировали на эмоциональные изображения гораздо слабее; активность миндалевидного тела, эмоционального центра мозга, во время быстрого сна снижалась. Уокер называет это «ночной терапией».",
+    "По данным Бостонского университета, во Фрамингемском исследовании, где 321 человека старше 60 лет наблюдали в среднем 12 лет, каждое снижение быстрого сна на 1% было связано с ростом риска деменции на 9%."
+   ]
+  },
+  "az": {
+   "title": "Heç Yuxu Görməsəydin Beyninə Nə Olardı?",
+   "summary": "Yuxu görülən REM yuxusu 5% azalanda ölüm riski 13% artır! Professor Pi bu gecə yuxuların oğurlansaydı, ilk gecədən illər sonrasına qədər beyninə nə olacağını və beyninin təəccüblü inadını izah edir.",
+   "facts": [
+    "NIH-ə (NHLBI) görə, JAMA Neurology-də dərc olunan bir araşdırmada orta yaşı 76 olan 2.675 kişi təxminən 12 il izlənildi; REM (yuxu görülən) yuxusunda hər 5% azalma ölüm göstəricisində 13-17% artımla əlaqəli idi. Orta yaşı 52 olan təxminən 1.400 nəfərdə də oxşar nəticə alındı.",
+    "NIH-ə (NINDS) görə, hər kəs yuxu görür; hər gecə təxminən 2 saat yuxu görürük, amma çoxunu xatırlamırıq. Yuxuların çoxu REM yuxusunda görülür və ilk REM yuxuya getdikdən təxminən 90 dəqiqə sonra başlayır.",
+    "Smithsonian-a görə, böyüklər gecədə təxminən 2 saatını, yəni yuxusunun 25%-ni REM-də keçirir; REM-dən məhrum qalan insan ilk fürsətdə bunu kompensasiya edir və birbaşa REM fazasına keçir (REM geri qayıdışı).",
+    "Britannica-ya görə, seçici REM məhrumiyyəti təcrübələrində REM yuxusunu dayandırmaq üçün hər gecə getdikcə daha çox oyatmaq lazım gəlir.",
+    "National Geographic-ə görə, UC Berkeley-dən Metyu Uokerin 34 könüllü ilə apardığı araşdırmada iki baxış arasında yatanlar emosional şəkillərə xeyli zəif reaksiya verdi; REM zamanı beynin emosiya mərkəzi olan amiqdalanın fəallığı azaldı. Uoker bunu 'gecə terapiyası' adlandırır.",
+    "Boston Universitetinə görə, 60 yaşdan yuxarı 321 nəfərin orta hesabla 12 il izləndiyi Framingem araşdırmasında REM yuxusunda hər 1% azalma demensiya riskində 9% artımla əlaqəli idi."
+   ]
+  }
+ }
+}

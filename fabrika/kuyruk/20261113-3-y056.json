@@ -1,0 +1,262 @@
+{
+ "id": "y056",
+ "series": "Ya Olsaydı?",
+ "q": "İnsanlar 200 yıl yaşasaydı ne olurdu?",
+ "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
+ "bar": {
+  "hi": "200 YIL",
+  "rest": "YAŞASAYDIN?"
+ },
+ "summary": "Bilim insanlarına göre vücudun en geç 150 yaşında hastalıktan toparlanma gücünü tamamen yitiriyor! 200 yaşına gelsen kalbine ve gözlerine neler olacağını ve 211 yaşına ulaşan balinanın sırrını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Vücudun 150'ye kadar pes eder: bilim insanlarına göre hastalıktan toparlanamazsın!",
+   "v": {
+    "t": "meter",
+    "bg": "body",
+    "label": "Toparlanma Gücü",
+    "from": 100,
+    "to": 0,
+    "unit": "%",
+    "e": "🔋",
+    "key": "pes"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Vücudumun garantisi mi bitiyor?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🛠️",
+    "label": "Garanti Bitti mi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "200'e gelsen kalbin 7 milyar kezden fazla atmış olurdu.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "❤️",
+    "value": "7.000.000.000",
+    "unit": "atış",
+    "label": "Kalp Atışı",
+    "key": "7"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gözündeki mercek proteinleri hiç yenilenmez: onlar da 200 yaşında olurdu!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👁️",
+    "do": "pulse",
+    "key": "proteinleri",
+    "label": "200 Yıllık Mercek"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: 211 yaşında bir balina bulundu; yaşını gözü ele verdi!",
+   "v": {
+    "t": "compare",
+    "bg": "ocean",
+    "a": {
+     "e": "🧓",
+     "label": "İnsan Rekoru",
+     "value": 122
+    },
+    "b": {
+     "e": "🐋",
+     "label": "Balina",
+     "value": 211
+    },
+    "mode": "bar",
+    "key": "211"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "200 yıl yaşasan ilk ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "sky",
+    "e": "🎂"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre 2021'de Nature Communications'ta yayımlanan ve 500.000'den fazla kişinin verisini inceleyen bir araştırmaya göre insan vücudu 120 ile 150 yaş arasında hastalık ve yaralanma gibi streslerden toparlanma yeteneğini tamamen kaybeder; bu, insan ömrünün mutlak sınırı olabilir.",
+   "source": "Live Science (Nature Communications)",
+   "url": "https://www.livescience.com/human-life-span-limit-150-found.html"
+  },
+  {
+   "text": "Live Science'a göre yetişkin bir kalp günde 100.000'den fazla atar ve 70'li yaşların sonunda yaklaşık 3 milyar atışa ulaşır; bu hızla 200 yılda atış sayısı 7 milyarı aşar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/34655-human-heart.html"
+  },
+  {
+   "text": "NIH'nin PMC arşivindeki bir bilimsel incelemeye göre göz merceğindeki proteinler yenilenmez ve ömür boyu kalır (karbon-14 yöntemiyle doğrulandı); Harvard'ın BioNumbers veritabanına göre merceğin çekirdeğindeki proteinlerin neredeyse tamamı doğum civarında oluşur.",
+   "source": "NIH PMC (Truscott & Friedrich) / Harvard BioNumbers",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5489112/"
+  },
+  {
+   "text": "Alaska Fairbanks Üniversitesi'ne göre göz merceğindeki aspartik asit ölçümüyle yapılan yaş tahmininde bir Grönland balinasının öldüğünde 211 yaşında olduğu bulundu; yöntemin hata payı yaklaşık %16.",
+   "source": "University of Alaska Fairbanks",
+   "url": "https://www.gi.alaska.edu/alaska-science-forum/bowhead-whales-may-be-worlds-oldest-mammals"
+  },
+  {
+   "text": "Guinness Dünya Rekorları'na göre yaşı doğrulanmış en uzun yaşayan insan, 122 yıl 164 gün yaşayan Jeanne Calment'tir.",
+   "source": "Guinness World Records",
+   "url": "https://www.guinnessworldrecords.com/world-records/oldest-person"
+  }
+ ],
+ "tags": [
+  "200 yıl yaşamak",
+  "uzun ömür",
+  "insan ömrü",
+  "yaşlanma",
+  "ömür sınırı",
+  "Grönland balinası",
+  "Jeanne Calment",
+  "kalp atışı",
+  "göz merceği",
+  "human lifespan",
+  "live to 200",
+  "longevity",
+  "bowhead whale",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzunömür",
+  "#yaşlanma",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://www.livescience.com/human-life-span-limit-150-found.html",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC5489112/",
+  "https://www.gi.alaska.edu/alaska-science-forum/bowhead-whales-may-be-worlds-oldest-mammals",
+  "https://www.guinnessworldrecords.com/world-records/oldest-person"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If You Lived to 200, Could Your Body Handle It?",
+   "summary": "Scientists say your body completely loses its power to recover from illness by age 150 at the latest! Professor Pi reveals what would happen to your heart and eyes if you reached 200, and the secret of a whale that lived to 211.",
+   "facts": [
+    "According to Live Science, a 2021 study in Nature Communications that analyzed data from more than 500,000 people found that somewhere between 120 and 150 years the human body would completely lose its ability to recover from stresses like illness and injury; this may be an absolute limit on human lifespan.",
+    "According to Live Science, an adult heart beats more than 100,000 times a day and logs nearly 3 billion beats by a person's late 70s; at that rate it would pass 7 billion beats in 200 years.",
+    "According to a scientific review in the NIH's PMC archive, the proteins in the eye lens are not replaced and stay for life (confirmed with carbon-14 dating); according to Harvard's BioNumbers database, almost all the proteins in the lens core form around the time of birth.",
+    "According to the University of Alaska Fairbanks, an age estimate based on aspartic acid in the eye lens found that one bowhead whale was 211 years old when it died; the method's margin of error is about 16%.",
+    "According to Guinness World Records, the oldest verified person ever is Jeanne Calment, who lived 122 years and 164 days."
+   ]
+  },
+  "es": {
+   "title": "Si llegaras a los 200 años, ¿lo aguantaría tu cuerpo?",
+   "summary": "¡Según los científicos, tu cuerpo pierde por completo su capacidad de recuperarse de una enfermedad a los 150 años como muy tarde! El profesor Pi revela qué les pasaría a tu corazón y a tus ojos si llegaras a los 200, y el secreto de una ballena que vivió 211 años.",
+   "facts": [
+    "Según Live Science, un estudio de 2021 publicado en Nature Communications que analizó datos de más de 500.000 personas concluyó que, entre los 120 y los 150 años, el cuerpo humano perdería por completo su capacidad de recuperarse de tensiones como enfermedades y lesiones; podría ser un límite absoluto de la vida humana.",
+    "Según Live Science, el corazón de un adulto late más de 100.000 veces al día y acumula casi 3.000 millones de latidos hacia el final de los 70 años; a ese ritmo superaría los 7.000 millones en 200 años.",
+    "Según una revisión científica del archivo PMC de los NIH, las proteínas del cristalino del ojo no se renuevan y duran toda la vida (confirmado con carbono 14); según la base de datos BioNumbers de Harvard, casi todas las proteínas del núcleo del cristalino se forman alrededor del nacimiento.",
+    "Según la Universidad de Alaska Fairbanks, una estimación de edad basada en el ácido aspártico del cristalino determinó que una ballena de Groenlandia tenía 211 años al morir; el margen de error del método es de alrededor del 16%.",
+    "Según Guinness World Records, la persona más longeva verificada de la historia es Jeanne Calment, que vivió 122 años y 164 días."
+   ]
+  },
+  "pt": {
+   "title": "Se você chegasse aos 200 anos, seu corpo aguentaria?",
+   "summary": "Segundo os cientistas, seu corpo perde totalmente a capacidade de se recuperar de doenças aos 150 anos, no máximo! O professor Pi revela o que aconteceria com seu coração e seus olhos se você chegasse aos 200, e o segredo de uma baleia que viveu 211 anos.",
+   "facts": [
+    "Segundo a Live Science, um estudo de 2021 na Nature Communications, que analisou dados de mais de 500.000 pessoas, concluiu que entre 120 e 150 anos o corpo humano perderia totalmente a capacidade de se recuperar de estresses como doenças e lesões; esse pode ser um limite absoluto da vida humana.",
+    "Segundo a Live Science, o coração de um adulto bate mais de 100.000 vezes por dia e chega a quase 3 bilhões de batidas no fim dos 70 anos; nesse ritmo, passaria de 7 bilhões em 200 anos.",
+    "Segundo uma revisão científica no arquivo PMC dos NIH, as proteínas do cristalino do olho não são renovadas e duram a vida toda (confirmado por carbono-14); segundo o banco de dados BioNumbers de Harvard, quase todas as proteínas do núcleo do cristalino se formam por volta do nascimento.",
+    "Segundo a Universidade do Alasca em Fairbanks, uma estimativa de idade baseada no ácido aspártico do cristalino mostrou que uma baleia-da-groenlândia tinha 211 anos ao morrer; a margem de erro do método é de cerca de 16%.",
+    "Segundo o Guinness World Records, a pessoa mais velha já verificada é Jeanne Calment, que viveu 122 anos e 164 dias."
+   ]
+  },
+  "ar": {
+   "title": "لو عشت حتى 200 عام، هل كان جسدك سيصمد؟",
+   "summary": "يقول العلماء إن جسمك يفقد تمامًا قدرته على التعافي من المرض في سن 150 عامًا على أقصى تقدير! يكشف البروفيسور باي ما سيحدث لقلبك وعينيك لو بلغت 200 عام، وسرّ حوت عاش 211 عامًا.",
+   "facts": [
+    "وفقًا لموقع لايف ساينس، توصلت دراسة نُشرت عام 2021 في مجلة Nature Communications وحللت بيانات أكثر من 500000 شخص إلى أن جسم الإنسان سيفقد تمامًا قدرته على التعافي من الضغوط مثل المرض والإصابة في عمر ما بين 120 و150 عامًا؛ وقد يكون هذا حدًا مطلقًا لعمر الإنسان.",
+    "وفقًا لموقع لايف ساينس، ينبض قلب الإنسان البالغ أكثر من 100000 مرة يوميًا ويصل إلى نحو 3 مليارات نبضة في أواخر السبعينيات من العمر؛ وبهذا المعدل سيتجاوز 7 مليارات نبضة خلال 200 عام.",
+    "وفقًا لمراجعة علمية في أرشيف PMC التابع للمعاهد الوطنية للصحة الأمريكية، لا تتجدد بروتينات عدسة العين وتبقى مدى الحياة (وقد تأكد ذلك بطريقة الكربون 14)؛ ووفقًا لقاعدة بيانات BioNumbers التابعة لجامعة هارفارد، تتكوّن كل بروتينات نواة العدسة تقريبًا في وقت قريب من الولادة.",
+    "وفقًا لجامعة ألاسكا فيربانكس، أظهر تقدير للعمر يعتمد على حمض الأسبارتيك في عدسة العين أن أحد حيتان غرينلاند (الحوت مقوّس الرأس) كان عمره 211 عامًا عند موته؛ وهامش خطأ الطريقة نحو 16%.",
+    "وفقًا لموسوعة غينيس للأرقام القياسية، أكبر إنسان موثّق عمره على الإطلاق هي جان كالمان التي عاشت 122 عامًا و164 يومًا."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप 200 साल तक जीते, तो क्या आपका शरीर टिक पाता?",
+   "summary": "वैज्ञानिकों के अनुसार, आपका शरीर ज़्यादा से ज़्यादा 150 साल की उम्र तक बीमारी से उबरने की ताक़त पूरी तरह खो देता है! प्रोफ़ेसर पाई बताते हैं कि अगर आप 200 साल तक जीते तो आपके दिल और आँखों का क्या होता, और 211 साल जीने वाली व्हेल का राज़ क्या है।",
+   "facts": [
+    "लाइव साइंस के अनुसार, 2021 में नेचर कम्युनिकेशंस में छपे एक अध्ययन ने 5,00,000 से ज़्यादा लोगों के आँकड़ों का विश्लेषण किया और पाया कि 120 से 150 साल की उम्र के बीच इंसानी शरीर बीमारी और चोट जैसे तनावों से उबरने की क्षमता पूरी तरह खो देगा; यह इंसानी उम्र की अंतिम सीमा हो सकती है।",
+    "लाइव साइंस के अनुसार, एक वयस्क का दिल रोज़ 1,00,000 से ज़्यादा बार धड़कता है और 70 के दशक के आख़िर तक लगभग 3 अरब धड़कनें पूरी कर लेता है; इसी रफ़्तार से 200 साल में यह संख्या 7 अरब से ज़्यादा हो जाएगी।",
+    "NIH के PMC संग्रह में छपी एक वैज्ञानिक समीक्षा के अनुसार, आँख के लेंस के प्रोटीन बदले नहीं जाते और ज़िंदगी भर रहते हैं (कार्बन-14 से पुष्टि हुई); हार्वर्ड के BioNumbers डेटाबेस के अनुसार, लेंस के केंद्र के लगभग सारे प्रोटीन जन्म के आसपास बनते हैं।",
+    "अलास्का फ़ेयरबैंक्स विश्वविद्यालय के अनुसार, आँख के लेंस के एस्पार्टिक एसिड पर आधारित उम्र के अनुमान में पाया गया कि एक बोहेड व्हेल मरते समय 211 साल की थी; इस तरीक़े में लगभग 16% की त्रुटि हो सकती है।",
+    "गिनीज़ वर्ल्ड रिकॉर्ड्स के अनुसार, अब तक की सबसे उम्रदराज़ प्रमाणित इंसान ज़ान कालमां हैं, जो 122 साल 164 दिन जीवित रहीं।"
+   ]
+  },
+  "id": {
+   "title": "Jika Kamu Hidup Sampai 200 Tahun, Apakah Tubuhmu Sanggup?",
+   "summary": "Menurut ilmuwan, tubuhmu sepenuhnya kehilangan kemampuan pulih dari penyakit paling lambat di usia 150 tahun! Profesor Pi mengungkap apa yang terjadi pada jantung dan matamu jika kamu mencapai usia 200, serta rahasia paus yang hidup sampai 211 tahun.",
+   "facts": [
+    "Menurut Live Science, sebuah studi tahun 2021 di Nature Communications yang menganalisis data lebih dari 500.000 orang menemukan bahwa di usia antara 120 dan 150 tahun tubuh manusia akan sepenuhnya kehilangan kemampuan pulih dari tekanan seperti penyakit dan cedera; ini mungkin batas mutlak usia manusia.",
+    "Menurut Live Science, jantung orang dewasa berdetak lebih dari 100.000 kali sehari dan mencapai hampir 3 miliar detak di akhir usia 70-an; dengan laju itu, dalam 200 tahun jumlahnya akan melewati 7 miliar.",
+    "Menurut sebuah tinjauan ilmiah di arsip PMC milik NIH, protein di lensa mata tidak diganti dan bertahan seumur hidup (dikonfirmasi dengan karbon-14); menurut basis data BioNumbers dari Harvard, hampir semua protein di inti lensa terbentuk sekitar waktu kelahiran.",
+    "Menurut University of Alaska Fairbanks, perkiraan usia berdasarkan asam aspartat di lensa mata menunjukkan seekor paus kepala busur berusia 211 tahun saat mati; margin kesalahan metode ini sekitar 16%.",
+    "Menurut Guinness World Records, manusia tertua yang usianya terverifikasi adalah Jeanne Calment, yang hidup 122 tahun 164 hari."
+   ]
+  },
+  "fr": {
+   "title": "Si tu vivais jusqu'à 200 ans, ton corps tiendrait-il le coup ?",
+   "summary": "Selon les scientifiques, ton corps perd totalement sa capacité à se remettre d'une maladie à 150 ans au plus tard ! Le professeur Pi révèle ce qui arriverait à ton cœur et à tes yeux si tu atteignais 200 ans, et le secret d'une baleine qui a vécu 211 ans.",
+   "facts": [
+    "Selon Live Science, une étude de 2021 parue dans Nature Communications, qui a analysé les données de plus de 500 000 personnes, a conclu qu'entre 120 et 150 ans le corps humain perdrait totalement sa capacité à se remettre de stress comme la maladie ou les blessures ; ce pourrait être une limite absolue de la vie humaine.",
+    "Selon Live Science, le cœur d'un adulte bat plus de 100 000 fois par jour et atteint près de 3 milliards de battements à l'approche des 80 ans ; à ce rythme, il dépasserait 7 milliards en 200 ans.",
+    "Selon une revue scientifique de l'archive PMC des NIH, les protéines du cristallin de l'œil ne sont pas renouvelées et restent toute la vie (confirmé par le carbone 14) ; selon la base de données BioNumbers de Harvard, presque toutes les protéines du noyau du cristallin se forment autour de la naissance.",
+    "Selon l'université d'Alaska à Fairbanks, une estimation de l'âge fondée sur l'acide aspartique du cristallin a montré qu'une baleine boréale avait 211 ans à sa mort ; la marge d'erreur de la méthode est d'environ 16 %.",
+    "Selon le Guinness World Records, la personne la plus âgée dont l'âge a été vérifié est Jeanne Calment, qui a vécu 122 ans et 164 jours."
+   ]
+  },
+  "de": {
+   "title": "Würde dein Körper es aushalten, 200 Jahre alt zu werden?",
+   "summary": "Laut Wissenschaftlern verliert dein Körper spätestens mit 150 Jahren vollständig die Fähigkeit, sich von Krankheiten zu erholen! Professor Pi verrät, was mit deinem Herzen und deinen Augen passieren würde, wenn du 200 würdest, und das Geheimnis eines Wals, der 211 Jahre alt wurde.",
+   "facts": [
+    "Laut Live Science ergab eine Studie von 2021 in Nature Communications, die Daten von mehr als 500.000 Menschen auswertete, dass der menschliche Körper zwischen 120 und 150 Jahren die Fähigkeit vollständig verlieren würde, sich von Belastungen wie Krankheit und Verletzung zu erholen; das könnte eine absolute Grenze der menschlichen Lebensdauer sein.",
+    "Laut Live Science schlägt das Herz eines Erwachsenen mehr als 100.000-mal am Tag und kommt bis Ende 70 auf fast 3 Milliarden Schläge; bei diesem Tempo wären es in 200 Jahren über 7 Milliarden.",
+    "Laut einer wissenschaftlichen Übersichtsarbeit im PMC-Archiv der NIH werden die Proteine der Augenlinse nicht erneuert und bleiben ein Leben lang erhalten (mit der C-14-Methode bestätigt); laut Harvards Datenbank BioNumbers entstehen fast alle Proteine im Linsenkern um die Zeit der Geburt.",
+    "Laut der University of Alaska Fairbanks ergab eine Altersschätzung anhand von Asparaginsäure in der Augenlinse, dass ein Grönlandwal bei seinem Tod 211 Jahre alt war; die Fehlerspanne der Methode liegt bei etwa 16 %.",
+    "Laut Guinness World Records ist der älteste bestätigte Mensch aller Zeiten Jeanne Calment, die 122 Jahre und 164 Tage alt wurde."
+   ]
+  },
+  "ru": {
+   "title": "Если бы ты дожил до 200 лет, выдержало бы твоё тело?",
+   "summary": "По мнению учёных, самое позднее к 150 годам твой организм полностью теряет способность восстанавливаться после болезней! Профессор Пи рассказывает, что стало бы с твоим сердцем и глазами, доживи ты до 200 лет, и раскрывает секрет кита, прожившего 211 лет.",
+   "facts": [
+    "По данным Live Science, исследование 2021 года в Nature Communications, где проанализировали данные более 500 000 человек, показало, что в возрасте от 120 до 150 лет человеческий организм полностью утратил бы способность восстанавливаться после стрессов вроде болезней и травм; это может быть абсолютным пределом человеческой жизни.",
+    "По данным Live Science, сердце взрослого бьётся более 100 000 раз в сутки и к концу восьмого десятка набирает почти 3 миллиарда ударов; в таком темпе за 200 лет их было бы больше 7 миллиардов.",
+    "Согласно научному обзору в архиве PMC Национальных институтов здравоохранения США, белки хрусталика глаза не обновляются и остаются на всю жизнь (это подтверждено методом углерода-14); по данным базы BioNumbers Гарвардского университета, почти все белки ядра хрусталика образуются примерно во время рождения.",
+    "По данным Университета Аляски в Фэрбанксе, оценка возраста по аспарагиновой кислоте в хрусталике глаза показала, что одному гренландскому киту на момент смерти было 211 лет; погрешность метода около 16%.",
+    "По данным Книги рекордов Гиннесса, самый старый человек с подтверждённым возрастом — Жанна Кальман, прожившая 122 года и 164 дня."
+   ]
+  },
+  "az": {
+   "title": "200 Yaşına Çatsaydın, Bədənin Dözərdimi?",
+   "summary": "Alimlərə görə bədənin ən gec 150 yaşında xəstəlikdən özünə gəlmək gücünü tamamilə itirir! 200 yaşına çatsaydın ürəyinə və gözlərinə nə olacağını və 211 il yaşamış balinanın sirrini Professor Pi izah edir.",
+   "facts": [
+    "Live Science-a görə, 2021-ci ildə Nature Communications jurnalında dərc olunan və 500.000-dən çox insanın məlumatlarını təhlil edən araşdırmaya əsasən insan bədəni 120 ilə 150 yaş arasında xəstəlik və zədə kimi streslərdən özünə gəlmək qabiliyyətini tamamilə itirir; bu, insan ömrünün mütləq həddi ola bilər.",
+    "Live Science-a görə, yetkin insanın ürəyi gündə 100.000-dən çox döyünür və 80 yaşa yaxın təxminən 3 milyard döyüntüyə çatır; bu sürətlə 200 ildə döyüntülərin sayı 7 milyardı keçərdi.",
+    "NIH-in PMC arxivindəki elmi icmala görə, göz büllurunun zülalları yenilənmir və ömür boyu qalır (karbon-14 üsulu ilə təsdiqlənib); Harvardın BioNumbers məlumat bazasına görə büllurun nüvəsindəki zülalların demək olar ki, hamısı doğum ərəfəsində yaranır.",
+    "Alyaska Ferbenks Universitetinə görə, göz büllurundakı aspartik turşuya əsaslanan yaş təxmini bir Qrenlandiya balinasının öləndə 211 yaşında olduğunu göstərdi; üsulun xəta payı təxminən 16%-dir.",
+    "Ginnesin Rekordlar Kitabına görə, yaşı təsdiqlənmiş ən uzunömürlü insan 122 il 164 gün yaşamış Jeanne Calment-dır."
+   ]
+  }
+ }
+}

@@ -1,0 +1,248 @@
+{
+ "id": "y024",
+ "series": "Ya Olsaydı?",
+ "q": "İnsanlar fotosentez yapabilseydi ne olurdu?",
+ "title": "Fotosentez Yapabilseydin Aç Kalır Mıydın?",
+ "bar": {
+  "hi": "FOTOSENTEZ",
+  "rest": "YAPSAYDIN?"
+ },
+ "summary": "Derin yaprak gibi fotosentez yapsa bile günlük enerjinin ancak %1'ini karşılardı! Doymak için ne kadar deri gerektiğini ve bunu başaran şaşırtıcı hayvanı Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Yeşil derinle bile aç kalırdın: güneş ihtiyacının ancak %1'ini verirdi!",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "☀️",
+    "value": "%1",
+    "unit": "enerji",
+    "label": "Güneşten Gelen",
+    "key": "%1'ini"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Doymak için tenis kortu kadar deri gerekirdi!",
+   "v": {
+    "t": "compare",
+    "bg": "sky",
+    "a": {
+     "e": "🧍",
+     "label": "Senin Derin",
+     "value": 2
+    },
+    "b": {
+     "e": "🎾",
+     "label": "Gereken Deri",
+     "value": 200
+    },
+    "mode": "size",
+    "key": "tenis"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Tenis kortu kadar pelerin mi giyeceğim?!",
+   "v": {
+    "t": "question",
+    "bg": "sky",
+    "e": "🧥",
+    "label": "Dev Pelerin?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bir deniz sümüklüböceği ise yosundan kloroplast çalıp aylarca yemeksiz yaşayabiliyor!",
+   "v": {
+    "t": "icon",
+    "bg": "underwater",
+    "e": "🐌",
+    "do": "pulse",
+    "key": "kloroplast",
+    "label": "Yeşil Sümüklüböcek"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: derin zaten güneşle bir şey üretiyor, D vitamini!",
+   "v": {
+    "t": "split",
+    "bg": "sky",
+    "left": {
+     "e": "☀️",
+     "label": "Güneş Işığı"
+    },
+    "right": {
+     "e": "💊",
+     "label": "D Vitamini"
+    },
+    "key": "vitamini"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Güneşle doysan yemeği bırakır mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "sky",
+    "e": "🍽️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Live Science'a göre Oxford Üniversitesi'nden bitki ekolojisti Lindsay Turnbull'un hesabıyla, bir yetişkinin derisi yaprak gibi fotosentez yapsa günlük enerji ihtiyacının yalnızca %1'ini karşılardı; tamamı için yaklaşık bir tenis kortu kadar deri gerekirdi. Bitkiler ise çok daha az hareket ettikleri için çok daha az enerjiye ihtiyaç duyar.",
+   "source": "Live Science (University of Oxford)",
+   "url": "https://www.livescience.com/what-if-humans-had-green-skin-photosynthesis.html"
+  },
+  {
+   "text": "Live Science'a göre bir yetişkinin derisi yaklaşık 2 metrekarelik bir alanı kaplar.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/health/skin-facts-about-the-bodys-largest-organ-and-its-functions"
+  },
+  {
+   "text": "Smithsonian'a göre yeşil deniz sümüklüböceği Elysia chlorotica yediği yosunların kloroplastlarını saklar; çalınan kloroplastlar aylarca çalışır ve sümüklüböceği iyi aydınlatılmış ortamda aylarca yemeksiz yaşayabilir.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/smart-news/green-sea-slug-steals-photosynthesizing-power-algae-it-eats-180954147/"
+  },
+  {
+   "text": "ABD Ulusal Sağlık Enstitüleri'ne (NIH) göre çıplak derin güneş gördüğünde vücudun D vitamini üretir.",
+   "source": "NIH Office of Dietary Supplements",
+   "url": "https://ods.od.nih.gov/factsheets/VitaminD-Consumer/"
+  }
+ ],
+ "tags": [
+  "fotosentez",
+  "insan fotosentez yapsaydı",
+  "yeşil deri",
+  "güneşle beslenmek",
+  "klorofil",
+  "kloroplast",
+  "deniz sümüklüböceği",
+  "Elysia chlorotica",
+  "D vitamini",
+  "photosynthesis",
+  "photosynthetic humans",
+  "green skin",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#fotosentez",
+  "#güneş",
+  "#bilim"
+ ],
+ "cover": 1,
+ "sources": [
+  "https://www.livescience.com/what-if-humans-had-green-skin-photosynthesis.html",
+  "https://www.smithsonianmag.com/smart-news/green-sea-slug-steals-photosynthesizing-power-algae-it-eats-180954147/",
+  "https://ods.od.nih.gov/factsheets/VitaminD-Consumer/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If You Could Photosynthesize, Would You Still Go Hungry?",
+   "summary": "Even if your skin photosynthesized like a leaf, it would cover only 1% of your daily energy! Professor Pi reveals how much skin you would need to get full, and the surprising animal that actually pulls it off.",
+   "facts": [
+    "According to Live Science, Oxford University plant ecologist Lindsay Turnbull estimated that if an adult's skin photosynthesized like a leaf, it would cover only 1% of their daily energy needs; meeting all of them would take about a tennis court's worth of skin. Plants get by because they are far less active and need much less energy.",
+    "According to Live Science, an adult's skin covers an area of about 2 square meters.",
+    "According to Smithsonian, the green sea slug Elysia chlorotica keeps the chloroplasts of the algae it eats; the stolen chloroplasts keep working for months, and the slug can live for months without food in a well-lit setting.",
+    "According to the US National Institutes of Health (NIH), your body makes vitamin D when your bare skin is exposed to the sun."
+   ]
+  },
+  "es": {
+   "title": "Si pudieras hacer la fotosíntesis, ¿seguirías pasando hambre?",
+   "summary": "¡Aunque tu piel hiciera la fotosíntesis como una hoja, solo cubriría el 1% de tu energía diaria! El profesor Pi revela cuánta piel necesitarías para saciarte y el sorprendente animal que sí lo consigue.",
+   "facts": [
+    "Según Live Science, la ecóloga vegetal Lindsay Turnbull, de la Universidad de Oxford, calculó que si la piel de un adulto hiciera la fotosíntesis como una hoja, cubriría solo el 1% de su energía diaria; para cubrirla entera haría falta piel del tamaño de una pista de tenis. Las plantas lo logran porque son mucho menos activas y necesitan mucha menos energía.",
+    "Según Live Science, la piel de un adulto cubre una superficie de unos 2 metros cuadrados.",
+    "Según Smithsonian, la babosa marina verde Elysia chlorotica guarda los cloroplastos de las algas que come; esos cloroplastos robados siguen funcionando durante meses y la babosa puede vivir meses sin comer en un lugar bien iluminado.",
+    "Según los Institutos Nacionales de Salud de EE. UU. (NIH), tu cuerpo produce vitamina D cuando tu piel desnuda recibe el sol."
+   ]
+  },
+  "pt": {
+   "title": "Se você fizesse fotossíntese, ainda passaria fome?",
+   "summary": "Mesmo que sua pele fizesse fotossíntese como uma folha, cobriria só 1% da sua energia diária! O professor Pi revela quanta pele você precisaria para matar a fome e o animal surpreendente que consegue fazer isso.",
+   "facts": [
+    "Segundo a Live Science, a ecóloga vegetal Lindsay Turnbull, da Universidade de Oxford, calculou que, se a pele de um adulto fizesse fotossíntese como uma folha, cobriria só 1% da energia diária; para cobrir tudo seria preciso pele do tamanho de uma quadra de tênis. As plantas conseguem porque são muito menos ativas e precisam de muito menos energia.",
+    "Segundo a Live Science, a pele de um adulto cobre uma área de cerca de 2 metros quadrados.",
+    "Segundo a Smithsonian, a lesma-do-mar verde Elysia chlorotica guarda os cloroplastos das algas que come; os cloroplastos roubados continuam funcionando por meses, e a lesma pode viver meses sem comer em um ambiente bem iluminado.",
+    "Segundo os Institutos Nacionais de Saúde dos EUA (NIH), seu corpo produz vitamina D quando a pele nua é exposta ao sol."
+   ]
+  },
+  "ar": {
+   "title": "لو استطعت القيام بالبناء الضوئي، هل كنت ستبقى جائعًا؟",
+   "summary": "حتى لو قام جلدك بالبناء الضوئي مثل ورقة الشجر، لغطّى 1% فقط من طاقتك اليومية! يكشف البروفيسور باي كم من الجلد ستحتاج لتشبع، والحيوان المدهش الذي ينجح في ذلك فعلًا.",
+   "facts": [
+    "وفقًا لموقع لايف ساينس، قدّرت عالمة البيئة النباتية ليندسي تيرنبول من جامعة أكسفورد أن جلد الإنسان البالغ لو قام بالبناء الضوئي مثل ورقة الشجر لغطّى 1% فقط من احتياجه اليومي من الطاقة؛ ولتغطية الاحتياج كله يلزم جلد بمساحة ملعب تنس تقريبًا. أما النباتات فتنجح لأنها أقل نشاطًا بكثير وتحتاج طاقة أقل بكثير.",
+    "وفقًا لموقع لايف ساينس، يغطي جلد الإنسان البالغ مساحة تقارب 2 متر مربع.",
+    "وفقًا لمجلة سميثسونيان، تحتفظ البزاقة البحرية الخضراء إليسيا كلوروتيكا بالبلاستيدات الخضراء من الطحالب التي تأكلها؛ وتظل هذه البلاستيدات المسروقة تعمل لأشهر، ويمكن للبزاقة أن تعيش أشهرًا دون طعام في مكان جيد الإضاءة.",
+    "وفقًا للمعاهد الوطنية للصحة الأمريكية (NIH)، ينتج جسمك فيتامين د عندما يتعرض جلدك المكشوف للشمس."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप प्रकाश संश्लेषण कर पाते, तो क्या फिर भी भूखे रहते?",
+   "summary": "अगर आपकी त्वचा पत्ती की तरह प्रकाश संश्लेषण भी करती, तो भी रोज़ की ऊर्जा का सिर्फ़ 1% मिलता! प्रोफ़ेसर पाई बताते हैं कि पेट भरने के लिए कितनी त्वचा चाहिए होती, और वह हैरान करने वाला जीव कौन है जो सच में ऐसा करता है।",
+   "facts": [
+    "लाइव साइंस के अनुसार, ऑक्सफ़ोर्ड विश्वविद्यालय की पादप पारिस्थितिकीविद् लिंडसे टर्नबुल का अनुमान है कि अगर किसी वयस्क की त्वचा पत्ती की तरह प्रकाश संश्लेषण करती, तो वह रोज़ की ऊर्जा ज़रूरत का सिर्फ़ 1% पूरा करती; पूरी ज़रूरत के लिए लगभग एक टेनिस कोर्ट जितनी त्वचा चाहिए होती। पौधे इसलिए काम चला लेते हैं क्योंकि वे बहुत कम सक्रिय होते हैं और उन्हें बहुत कम ऊर्जा चाहिए।",
+    "लाइव साइंस के अनुसार, एक वयस्क की त्वचा लगभग 2 वर्ग मीटर क्षेत्र को ढकती है।",
+    "स्मिथसोनियन के अनुसार, हरा समुद्री स्लग एलिसिया क्लोरोटिका अपने खाए शैवाल के क्लोरोप्लास्ट अपने पास रख लेता है; ये चुराए गए क्लोरोप्लास्ट महीनों तक काम करते हैं, और अच्छी रोशनी में यह स्लग महीनों तक बिना खाए जी सकता है।",
+    "अमेरिकी राष्ट्रीय स्वास्थ्य संस्थान (NIH) के अनुसार, जब आपकी खुली त्वचा पर धूप पड़ती है तो आपका शरीर विटामिन D बनाता है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Kamu Bisa Berfotosintesis, Apakah Kamu Tetap Kelaparan?",
+   "summary": "Bahkan jika kulitmu berfotosintesis seperti daun, kulit itu hanya memenuhi 1% energi harianmu! Profesor Pi mengungkap seberapa luas kulit yang kamu butuhkan agar kenyang, dan hewan mengejutkan yang benar-benar bisa melakukannya.",
+   "facts": [
+    "Menurut Live Science, ahli ekologi tumbuhan Lindsay Turnbull dari Universitas Oxford memperkirakan bahwa jika kulit orang dewasa berfotosintesis seperti daun, kulit itu hanya akan memenuhi 1% kebutuhan energi hariannya; untuk memenuhi semuanya dibutuhkan kulit seluas kira-kira lapangan tenis. Tumbuhan bisa bertahan karena jauh kurang aktif dan butuh energi jauh lebih sedikit.",
+    "Menurut Live Science, kulit orang dewasa menutupi area sekitar 2 meter persegi.",
+    "Menurut Smithsonian, siput laut hijau Elysia chlorotica menyimpan kloroplas dari alga yang dimakannya; kloroplas curian itu tetap bekerja selama berbulan-bulan, dan siput ini bisa hidup berbulan-bulan tanpa makan di tempat yang terang.",
+    "Menurut Institut Kesehatan Nasional AS (NIH), tubuhmu membuat vitamin D saat kulitmu yang terbuka terkena sinar matahari."
+   ]
+  },
+  "fr": {
+   "title": "Si tu pouvais faire la photosynthèse, aurais-tu encore faim ?",
+   "summary": "Même si ta peau faisait la photosynthèse comme une feuille, elle ne couvrirait que 1 % de ton énergie quotidienne ! Le professeur Pi révèle combien de peau il te faudrait pour être rassasié, et l'animal étonnant qui y parvient vraiment.",
+   "facts": [
+    "Selon Live Science, l'écologue végétale Lindsay Turnbull, de l'université d'Oxford, a estimé que si la peau d'un adulte faisait la photosynthèse comme une feuille, elle ne couvrirait que 1 % de ses besoins énergétiques quotidiens ; pour tout couvrir, il faudrait environ un court de tennis de peau. Les plantes s'en sortent parce qu'elles sont bien moins actives et ont besoin de beaucoup moins d'énergie.",
+    "Selon Live Science, la peau d'un adulte couvre une surface d'environ 2 mètres carrés.",
+    "Selon Smithsonian, la limace de mer verte Elysia chlorotica conserve les chloroplastes des algues qu'elle mange ; ces chloroplastes volés fonctionnent pendant des mois et la limace peut vivre des mois sans manger dans un endroit bien éclairé.",
+    "Selon les Instituts nationaux de la santé américains (NIH), ton corps fabrique de la vitamine D quand ta peau nue est exposée au soleil."
+   ]
+  },
+  "de": {
+   "title": "Würdest du hungern, wenn du Photosynthese betreiben könntest?",
+   "summary": "Selbst wenn deine Haut wie ein Blatt Photosynthese betreiben würde, deckte sie nur 1 % deiner täglichen Energie! Professor Pi verrät, wie viel Haut du bräuchtest, um satt zu werden, und welches erstaunliche Tier es wirklich schafft.",
+   "facts": [
+    "Laut Live Science schätzte die Pflanzenökologin Lindsay Turnbull von der Universität Oxford, dass die Haut eines Erwachsenen, die wie ein Blatt Photosynthese betreibt, nur 1 % des täglichen Energiebedarfs decken würde; für den ganzen Bedarf bräuchte man Haut von etwa der Größe eines Tennisplatzes. Pflanzen kommen damit aus, weil sie viel weniger aktiv sind und viel weniger Energie brauchen.",
+    "Laut Live Science bedeckt die Haut eines Erwachsenen eine Fläche von etwa 2 Quadratmetern.",
+    "Laut Smithsonian behält die grüne Meeresschnecke Elysia chlorotica die Chloroplasten der Algen, die sie frisst; die gestohlenen Chloroplasten arbeiten monatelang weiter, und die Schnecke kann bei guter Beleuchtung monatelang ohne Nahrung leben.",
+    "Laut den US-amerikanischen National Institutes of Health (NIH) bildet dein Körper Vitamin D, wenn deine nackte Haut der Sonne ausgesetzt ist."
+   ]
+  },
+  "ru": {
+   "title": "Если бы ты умел фотосинтезировать, остался бы ты голодным?",
+   "summary": "Даже если бы твоя кожа фотосинтезировала, как лист, она давала бы лишь 1% дневной энергии! Профессор Пи рассказывает, сколько кожи понадобилось бы, чтобы наесться, и какое удивительное животное действительно так умеет.",
+   "facts": [
+    "По данным Live Science, эколог растений Линдси Тёрнбулл из Оксфордского университета подсчитала, что если бы кожа взрослого человека фотосинтезировала, как лист, она покрывала бы лишь 1% суточной потребности в энергии; чтобы покрыть её целиком, понадобилась бы кожа размером примерно с теннисный корт. Растениям этого хватает, потому что они гораздо менее активны и тратят намного меньше энергии.",
+    "По данным Live Science, кожа взрослого человека занимает площадь около 2 квадратных метров.",
+    "По данным Smithsonian, зелёный морской слизень Elysia chlorotica сохраняет хлоропласты съеденных водорослей; украденные хлоропласты работают месяцами, и при хорошем освещении слизень может месяцами жить без еды.",
+    "По данным Национальных институтов здравоохранения США (NIH), твой организм вырабатывает витамин D, когда солнце попадает на открытую кожу."
+   ]
+  },
+  "az": {
+   "title": "Fotosintez Edə Bilsəydin, Yenə Ac Qalardınmı?",
+   "summary": "Dərin yarpaq kimi fotosintez etsəydi belə, gündəlik enerjinin yalnız 1%-ni verərdi! Doymaq üçün nə qədər dəri lazım olduğunu və bunu bacaran təəccüblü heyvanı Professor Pi izah edir.",
+   "facts": [
+    "Live Science-a görə, Oksford Universitetindən bitki ekoloqu Lindsi Ternbullun hesablamasına əsasən, yetkin insanın dərisi yarpaq kimi fotosintez etsəydi, gündəlik enerji ehtiyacının yalnız 1%-ni ödəyərdi; hamısı üçün təxminən bir tennis kortu boyda dəri lazım olardı. Bitkilər isə çox az hərəkət etdikləri üçün çox az enerjiyə ehtiyac duyur.",
+    "Live Science-a görə, yetkin insanın dərisi təxminən 2 kvadratmetr sahəni örtür.",
+    "Smithsonian-a görə, yaşıl dəniz şlakı Elysia chlorotica yediyi yosunların xloroplastlarını saxlayır; oğurlanmış xloroplastlar aylarla işləyir və şlak yaxşı işıqlı mühitdə aylarla yeməksiz yaşaya bilir.",
+    "ABŞ Milli Səhiyyə İnstitutlarına (NIH) görə, çılpaq dərin günəş görəndə bədənin D vitamini istehsal edir."
+   ]
+  }
+ }
+}
