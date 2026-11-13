@@ -1,0 +1,172 @@
+{
+  "topic_id": "mk-c0129",
+  "topic": "Kirpiye süt verilir mi, kirpiler süt içer mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kirpiye bıraktığın süt ona iyilik değil 🦔",
+  "hook_text": "KİRPİ SÜT İÇER Mİ?",
+  "description": "Kirpiye süt verilir mi, kirpiler süt içer mi?\n\nHayır. Woodland Trust'a göre kirpiye süt vermek en yaygın kirpi efsanelerinden biri: kirpiler laktozu, yani sütteki şekeri sindiremez ve süt onları hasta edebilir; Wildlife Trusts ile Hedgehog Street de sütün ishale yol açabileceğini söylüyor. Ortaçağdan beri anlatılan, sırtında meyve taşıyan kirpi de büyük ihtimalle bir efsane; üstelik elma gibi meyveleri düzgün sindiremezler. Doğadaki asıl yemekleri böcekler, tırtıllar ve solucanlar. Bahçene uğrayan kirpiye sadece sığ bir kapta su bırakmak en doğrusu.\n\nSen de kirpiye hiç süt bıraktın mı: evet mi, hayır mı?\n\n#kirpi #hayvanlar #efsaneler #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0129",
+  "tags": [
+    "kirpi",
+    "kirpi süt içer mi",
+    "kirpiye süt verilir mi",
+    "kirpi ne yer",
+    "kirpi ne içer",
+    "kirpi elma yer mi",
+    "kirpi elma taşır mı",
+    "kirpiye ne verilir",
+    "bahçeye gelen kirpi",
+    "kirpi beslemek",
+    "kirpi laktoz",
+    "laktoz intoleransı",
+    "hayvan efsaneleri",
+    "yaban hayatı",
+    "hayvanlar",
+    "efsaneler",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "doğa",
+    "hedgehog milk",
+    "hedgehog facts",
+    "laktoz",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kirpi sut icer mi",
+    "kirpiye sut verilir mi",
+    "kirpi ne icer"
+  ],
+  "localizations": {
+    "en": {
+      "title": "The milk you leave for a hedgehog does it no favors 🦔",
+      "description": "Hedgehogs can't digest lactose, and milk can give them diarrhoea. They don't carry apples on their spines either: their natural food is mostly beetles, caterpillars and worms. Leave a shallow dish of water instead.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "es": {
+      "title": "La leche que le dejas a un erizo no le hace ningún favor 🦔",
+      "description": "Los erizos no digieren la lactosa y la leche puede provocarles diarrea. Tampoco llevan manzanas en las púas: en la naturaleza comen sobre todo escarabajos, orugas y lombrices. Mejor déjale un plato poco hondo con agua.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "pt": {
+      "title": "O leite que você deixa para o ouriço-cacheiro não ajuda 🦔",
+      "description": "Ouriços-cacheiros não digerem a lactose, e o leite pode causar diarreia. Também não carregam maçãs nos espinhos: na natureza comem principalmente besouros, lagartas e minhocas. Deixe só um potinho raso com água.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "de": {
+      "title": "Die Milch, die du dem Igel hinstellst, tut ihm nicht gut 🦔",
+      "description": "Igel vertragen keinen Milchzucker, Milch kann bei ihnen Durchfall auslösen. Äpfel tragen sie auch nicht auf den Stacheln: In der Natur fressen sie vor allem Käfer, Raupen und Regenwürmer. Stell lieber eine flache Schale Wasser hin.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "fr": {
+      "title": "Le lait que tu laisses au hérisson ne lui rend pas service 🦔",
+      "description": "Les hérissons ne digèrent pas le lactose et le lait peut leur donner la diarrhée. Ils ne transportent pas non plus de pommes sur leurs piquants : dans la nature, ils mangent surtout des coléoptères, des chenilles et des vers. Laisse-leur plutôt une coupelle d'eau.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "it": {
+      "title": "Il latte che lasci al riccio non gli fa bene 🦔",
+      "description": "I ricci non digeriscono il lattosio e il latte può dar loro diarrea. Non portano nemmeno mele sugli aculei: in natura mangiano soprattutto coleotteri, bruchi e lombrichi. Meglio lasciargli una ciotola bassa d'acqua.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "ru": {
+      "title": "Молоко, которое ты оставляешь ежу, ему не на пользу 🦔",
+      "description": "Ежи не переваривают лактозу, и от молока у них может начаться диарея. Яблоки на иголках они тоже не носят: в природе едят в основном жуков, гусениц и дождевых червей. Лучше поставь неглубокую миску с водой.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "ar": {
+      "title": "الحليب الذي تتركه للقنفذ لا يفيده بل يضره 🦔",
+      "description": "لا تستطيع القنافذ هضم اللاكتوز، وقد يسبب لها الحليب الإسهال. ولا تحمل التفاح على أشواكها أيضًا، فغذاؤها الطبيعي في الغالب خنافس ويرقات وديدان. اترك لها بدلًا من ذلك طبقًا ضحلًا من الماء.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "hi": {
+      "title": "हेजहॉग के लिए रखा दूध उसका भला नहीं करता 🦔",
+      "description": "हेजहॉग लैक्टोज़ नहीं पचा पाते और दूध से उन्हें दस्त हो सकते हैं। वे अपने काँटों पर सेब भी नहीं ढोते: प्रकृति में वे ज़्यादातर भृंग, इल्लियाँ और केंचुए खाते हैं। उनके लिए बस एक उथले बर्तन में पानी रखें।\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "id": {
+      "title": "Susu untuk landak mini justru bikin dia sakit 🦔",
+      "description": "Landak mini tidak bisa mencerna laktosa, dan susu bisa membuatnya diare. Mereka juga tidak membawa apel di durinya: di alam, makanannya terutama kumbang, ulat, dan cacing. Lebih baik sediakan wadah dangkal berisi air.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "ja": {
+      "title": "ハリネズミにミルクをあげるのは逆効果 🦔",
+      "description": "ハリネズミは乳糖をうまく消化できず、ミルクで下痢をすることがあります。背中のトゲにリンゴを刺して運ぶこともありません。野生では主に甲虫やイモムシ、ミミズを食べます。置くなら浅い皿の水にしましょう。\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "ko": {
+      "title": "고슴도치에게 우유를 주면 오히려 해롭다 🦔",
+      "description": "고슴도치는 유당을 소화하지 못해 우유를 먹으면 설사를 할 수 있습니다. 가시에 사과를 꽂아 나르지도 않습니다. 야생에서는 주로 딱정벌레, 애벌레, 지렁이를 먹습니다. 대신 얕은 그릇에 물을 놓아 주세요.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "pl": {
+      "title": "Mleko, które zostawiasz jeżowi, wcale mu nie pomaga 🦔",
+      "description": "Jeże nie trawią laktozy, a mleko może wywołać u nich biegunkę. Nie noszą też jabłek na kolcach: w naturze jedzą głównie chrząszcze, gąsienice i dżdżownice. Zostaw im raczej płytką miseczkę z wodą.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "nl": {
+      "title": "De melk die je voor een egel neerzet, doet hem geen goed 🦔",
+      "description": "Egels kunnen lactose niet verteren en melk kan diarree veroorzaken. Appels dragen ze ook niet op hun stekels: in de natuur eten ze vooral kevers, rupsen en regenwormen. Zet liever een ondiep schaaltje water neer.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "uk": {
+      "title": "Молоко, яке ти лишаєш їжакові, йому шкодить 🦔",
+      "description": "Їжаки не перетравлюють лактозу, і молоко може спричинити в них діарею. Яблук на голках вони теж не носять: у природі їдять переважно жуків, гусениць і дощових черв'яків. Краще постав неглибоку мисочку з водою.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "vi": {
+      "title": "Sữa bạn để cho nhím lại không tốt cho nó 🦔",
+      "description": "Nhím không tiêu hóa được đường lactose, và sữa có thể khiến chúng bị tiêu chảy. Chúng cũng không cõng táo trên lưng: ngoài tự nhiên, chúng chủ yếu ăn bọ cánh cứng, sâu bướm và giun. Hãy để cho chúng một đĩa nước nông thay vào đó.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "az": {
+      "title": "Kirpiyə qoyduğun süd ona yaxşılıq deyil 🦔",
+      "description": "Kirpilər laktozanı həzm edə bilmir, süd onlarda ishala səbəb ola bilər. Tikanlarının üstündə alma da daşımırlar: təbiətdə əsasən böcək, tırtıl və soxulcan yeyirlər. Onun üçün sadəcə dayaz bir qabda su qoy.\n\n#shorts\n\nSeri: mk-c0129"
+    },
+    "ro": {
+      "title": "Laptele pe care i-l lași ariciului nu-i face bine 🦔",
+      "description": "Aricii nu pot digera lactoza, iar laptele le poate provoca diaree. Nici nu cară mere în țepi: în natură mănâncă mai ales gândaci, omizi și râme. Lasă-le mai bine un vas puțin adânc cu apă.\n\n#shorts\n\nSeri: mk-c0129"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de kirpiye hiç süt bıraktın mı: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu kirpiye bıraktığın süt onu hasta edebilir.",
+      "visual": "close-up of a hedgehog's face and nose looking at the camera",
+      "stock_query": "hedgehog face",
+      "source": "stock",
+      "callout": "SÜT HASTA EDER"
+    },
+    {
+      "text": "Bahçeye süt koyan çoğu kişi, ona iyilik yaptığını sanır.",
+      "visual": "a hedgehog walking across a garden lawn at dusk",
+      "stock_query": "hedgehog garden",
+      "source": "stock"
+    },
+    {
+      "text": "Masallardaki gibi sırtında elma da taşımaz; zaten elmayı düzgün sindiremez.",
+      "visual": "close-up of a hedgehog's spiny back",
+      "stock_query": "hedgehog close up",
+      "source": "stock",
+      "callout": "ELMA DA YOK"
+    },
+    {
+      "text": "Çünkü kirpiler sütteki şekeri sindiremez, süt onlarda ishal yapar; asıl yemekleri böcek ve solucandır.",
+      "visual": "a hedgehog sniffing the ground for insects",
+      "stock_query": "hedgehog eating",
+      "source": "stock",
+      "callout": "LAKTOZ SİNDİREMEZ"
+    },
+    {
+      "text": "Kapının önüne sadece bir kap su bırak; çünkü...",
+      "visual": "a hedgehog drinking water from a shallow dish",
+      "stock_query": "hedgehog drinking",
+      "source": "stock",
+      "callout": "SADECE SU"
+    }
+  ],
+  "duration_seconds": 15.93,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #182",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0129_1794561727_ig.mp4"
+}
