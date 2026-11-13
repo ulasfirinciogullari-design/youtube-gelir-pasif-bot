@@ -1,24 +1,24 @@
 {
- "started": "2026-11-12T18:03:06+00:00",
+ "started": "2026-11-13T16:44:15+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 39,
+ "threads": 40,
  "quiet": 0,
  "new": 1,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgxZc8OzSK0Jf5CEdLp4AaABAg",
-   "video": "xLGCGQYwSmE",
-   "comment": "Aynen",
-   "reply": "Haklısın valla, bazen uykuda neler olduğunu düşünmek bile yetiyor! 🕷️\n— Bit 🤖",
+   "id": "UgyI5ro9W-kN120UhVp4AaABAg",
+   "video": "RKGn39tzpn4",
+   "comment": "Arkadaşlar iyi bakterilere var ha.",
+   "reply": "Kesinlikle öyle, vücudumuzdaki mikropların büyük kısmı sağlığımız için süper kahraman gibi çalışıyor! 🦠\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-12T18:03:09+00:00"
+ "finished": "2026-11-13T16:44:18+00:00"
 }
