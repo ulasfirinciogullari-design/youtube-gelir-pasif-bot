@@ -1,5 +1,5 @@
 {
- "started": "2026-11-13T17:45:12+00:00",
+ "started": "2026-11-13T18:45:12+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
@@ -7,6 +7,16 @@
  "quiet": 0,
  "sent_last_24h": 2,
  "room": 10,
- "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 128 (char 127)",
- "finished": "2026-11-13T17:45:28+00:00"
+ "model": "gemini-2.5-flash",
+ "items": [
+  {
+   "id": "UgzSWwop5FlmA3eoPYB4AaABAg",
+   "kind": "comment",
+   "video": "7UmdF_VL9M4",
+   "comment": "Başıboş değil kaybolmuş beş yıl sonra bulunmuştu",
+   "reply": "Evet, haklısın, beş yıl sonra bulunması da ayrı bir hikaye! 😮 Kim bilir o süreçte neler yaşadı...",
+   "result": "gönderildi"
+  }
+ ],
+ "finished": "2026-11-13T18:45:24+00:00"
 }
