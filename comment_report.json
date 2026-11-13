@@ -1,22 +1,12 @@
 {
- "started": "2026-11-11T12:45:11+00:00",
+ "started": "2026-11-13T03:39:06+00:00",
  "deneme": false,
- "threads": 100,
+ "threads": 194,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
  "sent_last_24h": 0,
  "room": 10,
- "model": "gemini-2.5-flash",
- "items": [
-  {
-   "id": "UgyDxfC2eCBd6Q5LynZ4AaABAg",
-   "kind": "comment",
-   "video": "f1MyRfdotbI",
-   "comment": ".ol",
-   "reply": "Klavye heyecanlanmış sanki! 😊",
-   "result": "gönderildi"
-  }
- ],
- "finished": "2026-11-11T12:45:15+00:00"
+ "error": "RuntimeError: Gemini cevap vermedi: gemini-flash-latest: boş cevap (None)",
+ "finished": "2026-11-13T03:39:07+00:00"
 }
