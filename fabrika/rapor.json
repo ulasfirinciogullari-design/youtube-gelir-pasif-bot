@@ -1,71 +1,18 @@
 {
- "started": "2026-11-13T15:09:55+00:00",
- "mod": "zorla",
- "gate": "zorla",
+ "started": "2026-11-13T17:08:06+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y068",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "66",
-  "videos": "78"
+ "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
+ "chars": 376,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18343308001261439",
+  "url": "https://www.instagram.com/reel/DfsIitujlct/",
+  "at": 1794589784.9580328
  },
- "credits_before": [
-  101256,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261113-1-y043.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y043",
-  "series": "Ya Olsaydı?",
-  "q": "Hiç rüya görmeseydik ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 802,
- "duration": 55.4,
- "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
- "url": "https://youtube.com/shorts/6XodpIbEU8A",
- "recent_status": {
-  "y019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "121",
-   "reason": null
-  },
-  "y034": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "331",
-   "reason": null
-  },
-  "y038": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "370",
-   "reason": null
-  },
-  "n016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "579",
-   "reason": null
-  },
-  "y043": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  101256,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261113-1-y043.json Hiç rüya görmeseydik ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfsIitujlct/"
  ],
- "finished": "2026-11-13T15:11:50+00:00"
+ "finished": "2026-11-13T17:09:44+00:00"
 }

@@ -2488,14 +2488,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-06T10:08:42+00:00",
-   "mod": "saatlik",
-   "title": "Lav Gölüne Düşseydin Batar Mıydın?",
-   "url": "https://youtube.com/shorts/MM3s0q-j2q0",
-   "duration": 24.5,
-   "chars": 372
-  },
-  {
    "finished": "2026-11-06T13:09:21+00:00",
    "mod": "igbolum",
    "title": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu?",
@@ -2914,6 +2906,12 @@
    "url": "https://youtube.com/shorts/6XodpIbEU8A",
    "duration": 55.4,
    "chars": 802
+  },
+  {
+   "finished": "2026-11-13T17:09:44+00:00",
+   "mod": "igbolum",
+   "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
+   "chars": 376
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3208,6 +3206,11 @@
     "media_id": "18112408193462776",
     "url": "https://www.instagram.com/reel/DfrRkazgNH_/",
     "at": 1794560988.6862009
+   },
+   "y068": {
+    "media_id": "18343308001261439",
+    "url": "https://www.instagram.com/reel/DfsIitujlct/",
+    "at": 1794589784.9580328
    }
   },
   "eski": [
