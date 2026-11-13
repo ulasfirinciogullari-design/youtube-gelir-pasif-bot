@@ -1736,7 +1736,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1200",
+    "views": "1223",
     "reason": null
    }
   },
@@ -1766,7 +1766,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1527",
+    "views": "1532",
     "reason": null
    }
   },
@@ -1796,7 +1796,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "976",
+    "views": "978",
     "reason": null
    }
   },
@@ -1856,7 +1856,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "951",
+    "views": "954",
     "reason": null
    }
   },
@@ -1886,7 +1886,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "941",
+    "views": "943",
     "reason": null
    }
   },
@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "381",
+    "views": "382",
     "reason": null
    }
   },
@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "934",
+    "views": "940",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1348",
+    "views": "1450",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "933",
+    "views": "936",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "195",
+    "views": "209",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "393",
+    "views": "398",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "282",
+    "views": "295",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "57",
+    "views": "84",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "736",
+    "views": "999",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "259",
+    "views": "325",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "39",
+    "views": "91",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "102",
+    "views": "254",
     "reason": null
    }
   },
@@ -2273,6 +2273,37 @@
    "thumbnail": true,
    "at": 1794506899.164156,
    "chars": 376,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "186",
+    "reason": null
+   }
+  },
+  {
+   "id": "n016",
+   "video_id": "325eJNknZqk",
+   "url": "https://youtube.com/shorts/325eJNknZqk",
+   "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Hot Is Earth's Core, Really?",
+    "es": "¿Qué Tan Caliente Está Realmente el Núcleo de la Tierra?",
+    "pt": "Quão Quente É, de Verdade, o Núcleo da Terra?",
+    "ar": "ما مدى سخونة نواة الأرض حقًا؟",
+    "hi": "पृथ्वी का कोर असल में कितना गर्म है?",
+    "id": "Seberapa Panas Sebenarnya Inti Bumi?",
+    "fr": "Quelle Est la Vraie Température du Noyau de la Terre ?",
+    "de": "Wie Heiß Ist der Erdkern Wirklich?",
+    "ru": "Насколько Горячо Ядро Земли на Самом Деле?",
+    "az": "Yerin Nüvəsi Əslində Nə Qədər İstidir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794564563.742364,
+   "chars": 380,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2357,7 +2388,8 @@
   "g015",
   "y019",
   "y034",
-  "y038"
+  "y038",
+  "n016"
  ],
  "extra": [
   {
@@ -2423,14 +2455,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-05T20:42:08+00:00",
-   "mod": "saatlik",
-   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
-   "url": "https://youtube.com/shorts/1EK5IR8nYDE",
-   "duration": 23.7,
-   "chars": 375
-  },
   {
    "finished": "2026-11-06T09:08:18+00:00",
    "mod": "igbolum",
@@ -2848,6 +2872,14 @@
    "mod": "igbolum",
    "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
    "chars": 398
+  },
+  {
+   "finished": "2026-11-13T10:09:25+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+   "url": "https://youtube.com/shorts/325eJNknZqk",
+   "duration": 25.3,
+   "chars": 380
   }
  ],
  "last_fail": 1794410324.353765,

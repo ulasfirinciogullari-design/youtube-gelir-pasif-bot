@@ -1,18 +1,72 @@
 {
- "started": "2026-11-13T09:07:46+00:00",
- "mod": "igbolum",
- "gate": "instagram: y064",
+ "started": "2026-11-13T10:08:17+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
- "chars": 398,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18112408193462776",
-  "url": "https://www.instagram.com/reel/DfrRkazgNH_/",
-  "at": 1794560988.6862009
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "65",
+  "videos": "77"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfrRkazgNH_/"
+ "credits_before": [
+  100997,
+  613902
  ],
- "finished": "2026-11-13T09:09:48+00:00"
+ "kuyruk": {
+  "dosya": "20261112-3-n016.json",
+  "kalan": 4
+ },
+ "topic": {
+  "id": "n016",
+  "series": "Ne Kadar Büyük?",
+  "q": "Dünya'nın çekirdeği ne kadar sıcak?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": true,
+ "chars": 380,
+ "duration": 25.3,
+ "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+ "url": "https://youtube.com/shorts/325eJNknZqk",
+ "recent_status": {
+  "g015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "325",
+   "reason": null
+  },
+  "y019": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "91",
+   "reason": null
+  },
+  "y034": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "254",
+   "reason": null
+  },
+  "y038": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "186",
+   "reason": null
+  },
+  "n016": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  101088,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261112-3-n016.json Dünya'nın çekirdeği ne kadar sıcak? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-13T10:09:25+00:00"
 }
