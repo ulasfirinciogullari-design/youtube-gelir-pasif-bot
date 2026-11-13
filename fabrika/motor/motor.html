@@ -53,6 +53,20 @@ const FOTO = {};
 const FOTO_READY = EP.foto && window.NASA ? Promise.all(Object.entries(window.NASA).map(([k, f]) => new Promise(res => {
   const im = new Image(); im.onload = () => { FOTO[k] = im; res(); }; im.onerror = () => res(); im.src = 'nasa/' + f;
 }))) : Promise.resolve();
+// First-frame photo (uret.py ILK, test from 2026-11-13): line 1 opens full-frame on a real photo of its most extreme
+// moment (motor/ilk/<id>.jpg), the characters hidden, so the first thing a viewer sees is the thing itself.
+let ILKIMG = null;
+const ILK_READY = EP.ilk ? new Promise(res => {
+  const im = new Image(); im.onload = () => { ILKIMG = im; res(); }; im.onerror = () => res(); im.src = EP.ilk;
+}) : Promise.resolve();
+function ilkPhoto(t) {
+  const z = 1.1 - .025 * Math.min(t, 4);  // a slow pull-out keeps the still photo alive
+  ctx.drawImage(ILKIMG, 540 - 540 * z, 960 - 960 * z, 1080 * z, 1920 * z);
+  const g = ctx.createLinearGradient(0, 0, 0, H);  // dark at the top for the title bar, at the bottom for the subtitles
+  g.addColorStop(0, 'rgba(5,7,25,.55)'); g.addColorStop(.16, 'rgba(5,7,25,0)');
+  g.addColorStop(.68, 'rgba(5,7,25,0)'); g.addColorStop(1, 'rgba(5,7,25,.7)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
 let BGM = null;  // the backdrop always fills the frame, even when the 'ig' layout shrinks the scene
 const norm = w => w.toLocaleLowerCase('tr').replace(/[.,!?;:"“”'’()]/g, '');
 // time of the first word in line L starting with prefix (fallback: a share of the line)
@@ -570,8 +584,15 @@ window.draw = function (t) {
   }
   let li = TL.findIndex(l => t < l.t1 + 0.2); if (li < 0) li = TL.length - 1;
   const line = TL[li];
+  if (ILKIMG && li === 0 && !window.COVER) {
+    ilkPhoto(t);
+    titleBar(t);
+    subtitles(t, t >= line.t0 - .05 ? line : null);
+    return;
+  }
   // a scene lasts while consecutive lines share the same visual
   let si = li; while (si > 0 && same(TL[si - 1].v, line.v)) si--;
+  if (ILKIMG && si === 0 && !window.COVER) si = 1;  // after the photo, line 2's scene starts fresh with the cut
   const sceneStart = si === 0 ? 0 : TL[si].t0 - 0.15;
   const lt = Math.max(0, t - sceneStart);
   const z = 1 + .05 * (1 - eo(prog(lt, 0, .35)));
@@ -604,5 +625,6 @@ window.ready = document.fonts.load(`900 40px ${F}`).then(() => document.fonts.lo
     return Promise.all([...em].map(e => document.fonts.load(`100px ${EMOJI}`, e)));
   })
   .then(() => FOTO_READY)
+  .then(() => ILK_READY)
   .then(() => { draw(0); return true; });
 </script></body></html>

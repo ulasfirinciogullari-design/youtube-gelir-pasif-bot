@@ -63,6 +63,28 @@ FOTO = (os.environ.get("YO_FOTO") or "1") == "1"
 # stayed-to-watch median 48.5% vs 44.5%, average % viewed 65.5 vs 60.7, views equal at ~1,100). YO_SAHNE=0 turns it
 # off; "ornek" always uses it.
 SAHNE = (os.environ.get("YO_SAHNE") or "1") == "1"
+# First frame (karar-defteri item 8, from 2026-11-13): line 1 opens full-frame on a real public-domain/CC0 photo of
+# its most extreme moment (fabrika/ilk.py puts it in motor/ilk/<id>.jpg), the characters hidden until line 2. Of the
+# episodes that have such a photo every other one uses it, so each day has Shorts with and without it; the episode
+# record keeps "ilk" true/false for the verdict (8 Shorts with it at 48 h: stayed-to-watch and 24 h views against the
+# same days' Shorts without it). Why: 11-09/10 body Shorts kept only 25-31% and the channel's reach fell after them.
+# YO_ILK=0 turns it off.
+ILK = (os.environ.get("YO_ILK") or "1") == "1"
+
+
+def ilk_foto(ep_id):
+    """The first-frame photo chosen for an episode (motor/ilk/liste.json), or None."""
+    p = HERE / "motor" / "ilk" / "liste.json"
+    f = json.loads(p.read_text(encoding="utf-8")).get(ep_id) if p.exists() else None
+    return f if f and (HERE / "motor" / "ilk" / f["file"]).exists() else None
+
+
+def ilk_sec(ep, state):
+    """Test arm: of the episodes that have a photo, every other one opens on it."""
+    if not (ILK and ilk_foto(ep["id"])):
+        return None
+    prev = [e["ilk"] for e in state.get("episodes", []) if e.get("ilk") is not None]
+    return not prev[-1] if prev else True
 
 
 def nasa_used(ep):
@@ -278,11 +300,15 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
     motor = HERE / "motor"
     foto = FOTO if foto is None else foto
     layout = layout or ("buyuk" if SAHNE else None)
-    if foto and nasa_used(ep):
-        ep["kredi"] = "NASA"
+    kredi = ["NASA"] if foto and nasa_used(ep) else []
+    ilk = ilk_foto(ep["id"]) if ep.get("ilk") else None
+    if ilk:
+        kredi.append(f"Wikimedia Commons / {ilk['kredi']} ({ilk['lisans']})")
+    if kredi:
+        ep["kredi"] = "; ".join(kredi)
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
         {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout, "cover": ep.get("cover", 1),
-         "hook": ACILIS if hook is None else hook, "foto": foto},
+         "hook": ACILIS if hook is None else hook, "foto": foto, "ilk": f"ilk/{ilk['file']}" if ilk else None},
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
@@ -309,6 +335,8 @@ def ornek(ep_id, report):
     if not p.exists():
         raise SystemExit(f"bölüm bulunamadı: {ep_id}")
     ep = json.loads(p.read_text(encoding="utf-8"))
+    ep.setdefault("id", ep_id)
+    ep["ilk"] = bool(ilk_foto(ep["id"]))
     WORK.mkdir(exist_ok=True)
     timings, mix, chars = ses.make(ep, WORK)
     video, cover = WORK / "video.mp4", WORK / "kapak.jpg"
@@ -395,6 +423,9 @@ def produce(state, mod, report):
             report[k.strip("_")] = len(ep[k]) if k == "_chunks" else ep[k]
             ep.pop(k, None)
 
+    ep["ilk"] = ilk_sec(ep, state)
+    if ep["ilk"] is not None:
+        report["ilk_kare"] = ep["ilk"]
     WORK.mkdir(exist_ok=True)
     timings, mix, chars = ses.make(ep, WORK)
     report["chars"] = chars
@@ -417,7 +448,7 @@ def produce(state, mod, report):
     import yukle
     ystate["fabrika"] = state.get("episodes", [])
     rec = yukle.upload(yt, ep, video, cover, ystate, report, privacy=os.environ.get("YO_GORUNURLUK") or "public")
-    rec.update({"at": now(), "chars": chars})
+    rec.update({"at": now(), "chars": chars, "ilk": ep.get("ilk")})
     state.setdefault("episodes", []).append(rec)
     state.setdefault("used", []).append(topic["id"])
     save(state)  # never lose an uploaded video's id
