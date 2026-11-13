@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs one factory tick on GitHub Actions: metrics -> reply watcher check -> gate -> tools -> episode -> commit.
 # Replies run in the reply watcher (fabrika/nobet.py, ya_olsaydi_nobet.yml); the yorum modes answer once by hand.
-# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|rakip|instagram|igdeneme|igdmtest|igbolum|ornek|nasa
+# Usage: bash fabrika/calistir.sh saatlik|zorla|deneme|yorum|yorumdeneme|metrik|rakip|instagram|igdeneme|igdmtest|igbolum|ornek|nasa|ilk
 set -uo pipefail
 MOD="${1:-saatlik}"
 cd "$(dirname "$0")/.."
@@ -83,6 +83,12 @@ if [ "$MOD" = "nasa" ]; then  # tetik.txt "nasa ara" or "nasa al": NASA photos f
   pip install -q pillow
   out=$(python3 fabrika/nasa.py "$(awk '{print $2}' fabrika/tetik.txt)" | tail -n 1); echo "$out"
   git add -A fabrika/motor/nasa 2>/dev/null || true
+  push "$out"; exit 0
+fi
+if [ "$MOD" = "ilk" ]; then  # tetik.txt "ilk ara" or "ilk al": first-frame photos from Wikimedia Commons (fabrika/ilk.py)
+  pip install -q pillow
+  out=$(python3 fabrika/ilk.py "$(awk '{print $2}' fabrika/tetik.txt)" 2>&1 | tail -n 1); echo "$out"
+  git add -A fabrika/motor/ilk fabrika/deneme 2>/dev/null || true
   push "$out"; exit 0
 fi
 [ -f package.json ] || npm init -y >/dev/null
