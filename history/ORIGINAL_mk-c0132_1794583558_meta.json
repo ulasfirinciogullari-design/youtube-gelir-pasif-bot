@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0132",
+  "topic": "Koyun kırkılmazsa ne olur, koyunun yünü kendiliğinden dökülür mü?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kırkılmayan koyunun yünü hiç durmadan uzar 🐑",
+  "hook_text": "KOYUN KIRKILMAZSA NE OLUR?",
+  "description": "Koyun kırkılmazsa ne olur, koyunun yünü kendiliğinden dökülür mü?\n\nYün için yetiştirilen çoğu koyunda dökülmez. Avustralya Ulusal Müzesi'ne göre bugünkü yün koyunları, yabani atalarının aksine yününü dökmeyecek şekilde ıslah edildi; kırkılmazsa yün uzamaya devam eder. 2015'te Canberra yakınlarında başıboş bulunan merinos Chris en az beş yıldır kırkılmamıştı: üstünden kırk bir virgül bir kilo yün çıktı, ortalama bir merinos yapağısının sekiz katından fazla. Ağır yün yüzünden zor yürüyordu. Genetics Research dergisindeki bir derlemeye göre de yabani koyunların tüyü her yıl uzayıp dökülürken merinosun yapağısı sürekli uzar.\n\nSence hangisi daha şaşırtıcı: kırk bir kiloluk yün mü, yününü kendi dökemeyen koyun mu?\n\n#koyun #yün #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0132",
+  "tags": [
+    "koyun",
+    "koyun kırkılmazsa ne olur",
+    "koyun yünü",
+    "koyun kırkımı",
+    "koyun neden kırkılır",
+    "koyun yünü dökülür mü",
+    "merinos koyunu",
+    "merinos",
+    "yapağı",
+    "dünyanın en yünlü koyunu",
+    "chris koyun",
+    "yün nasıl elde edilir",
+    "yabani koyun",
+    "muflon",
+    "çiftlik hayvanları",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "doğa",
+    "sheep shearing",
+    "chris the sheep",
+    "yün",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "koyun kirkilmazsa ne olur",
+    "koyun yunu",
+    "koyun kirkimi",
+    "koyun neden kirkilir"
+  ],
+  "localizations": {
+    "en": {
+      "title": "An unshorn sheep's wool never stops growing 🐑",
+      "description": "Wild sheep shed their coat every year, but wool sheep were bred not to. Chris, a stray merino found near Canberra in 2015, hadn't been shorn for at least five years: his fleece weighed 41.1 kg, about eight times a normal one.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "es": {
+      "title": "La lana de una oveja sin esquilar nunca deja de crecer 🐑",
+      "description": "Las ovejas salvajes mudan el pelo cada año, pero las ovejas de lana se criaron para no hacerlo. Chris, un merino hallado cerca de Canberra en 2015, llevaba al menos cinco años sin esquilar: su vellón pesó 41,1 kg, unas ocho veces lo normal.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "pt": {
+      "title": "A lã de uma ovelha não tosquiada nunca para de crescer 🐑",
+      "description": "Ovelhas selvagens trocam a pelagem todo ano, mas as ovelhas de lã foram selecionadas para não trocar. Chris, um merino encontrado perto de Camberra em 2015, estava havia pelo menos cinco anos sem tosa: seu velo pesou 41,1 kg, cerca de oito vezes o normal.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "de": {
+      "title": "Die Wolle eines ungeschorenen Schafs hört nie auf zu wachsen 🐑",
+      "description": "Wildschafe verlieren ihr Fell jedes Jahr, Wollschafe wurden dagegen so gezüchtet, dass sie es behalten. Chris, ein 2015 bei Canberra gefundener Merino, war mindestens fünf Jahre nicht geschoren worden: Sein Vlies wog 41,1 kg – etwa achtmal so viel wie üblich.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "fr": {
+      "title": "La laine d'un mouton non tondu ne s'arrête jamais de pousser 🐑",
+      "description": "Les moutons sauvages muent chaque année, mais les moutons à laine ont été sélectionnés pour ne plus le faire. Chris, un mérinos retrouvé près de Canberra en 2015, n'avait pas été tondu depuis au moins cinq ans : sa toison pesait 41,1 kg, environ huit fois la normale.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "it": {
+      "title": "La lana di una pecora non tosata non smette mai di crescere 🐑",
+      "description": "Le pecore selvatiche mutano il mantello ogni anno, ma le pecore da lana sono state selezionate per non farlo. Chris, un merino trovato vicino a Canberra nel 2015, non veniva tosato da almeno cinque anni: il suo vello pesava 41,1 kg, circa otto volte il normale.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "ru": {
+      "title": "Шерсть нестриженой овцы растёт без остановки 🐑",
+      "description": "Дикие бараны линяют каждый год, а шерстных овец вывели так, чтобы они не линяли. Мериноса Криса, найденного у Канберры в 2015 году, не стригли минимум пять лет: его руно весило 41,1 кг — примерно в восемь раз больше обычного.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "ar": {
+      "title": "صوف الخروف الذي لا يُجزّ لا يتوقف عن النمو أبدًا 🐑",
+      "description": "تتخلص الأغنام البرية من صوفها كل عام، لكن أغنام الصوف رُبّيت كي لا تفعل ذلك. والخروف المرينو كريس، الذي عُثر عليه قرب كانبرا عام 2015، لم يُجزّ صوفه خمس سنوات على الأقل، فبلغ وزن صوفه 41.1 كغ، أي نحو ثمانية أضعاف المعتاد.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "hi": {
+      "title": "बिना कतरी भेड़ का ऊन कभी बढ़ना बंद नहीं करता 🐑",
+      "description": "जंगली भेड़ें हर साल अपना ऊन गिरा देती हैं, लेकिन ऊन वाली भेड़ों को ऐसा न करने के लिए पाला गया है। 2015 में कैनबरा के पास मिली मेरिनो भेड़ क्रिस की कम से कम पाँच साल से कतरन नहीं हुई थी: उसका ऊन 41.1 किलो निकला, सामान्य से लगभग आठ गुना।\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "id": {
+      "title": "Bulu domba yang tak dicukur tidak pernah berhenti tumbuh 🐑",
+      "description": "Domba liar merontokkan bulunya setiap tahun, tetapi domba wol dikembangbiakkan agar tidak rontok. Chris, domba merino yang ditemukan dekat Canberra pada 2015, tidak dicukur setidaknya lima tahun: bulunya seberat 41,1 kg, sekitar delapan kali bulu normal.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "ja": {
+      "title": "毛刈りをしないヒツジの毛は伸び続ける 🐑",
+      "description": "野生のヒツジは毎年毛が生え替わりますが、羊毛用のヒツジは毛が抜けないように改良されてきました。2015年にキャンベラ近郊で見つかったメリノのクリスは少なくとも5年間毛を刈られておらず、刈った毛は41.1キロ、普通の約8倍もありました。\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "ko": {
+      "title": "털을 깎지 않은 양의 털은 끝없이 자란다 🐑",
+      "description": "야생 양은 해마다 털갈이를 하지만, 털을 얻기 위한 양은 털이 빠지지 않도록 개량되었습니다. 2015년 캔버라 근처에서 발견된 메리노 양 크리스는 최소 5년 동안 털을 깎지 않아 털 무게가 41.1kg, 보통의 약 8배였습니다.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "pl": {
+      "title": "Wełna nieostrzyżonej owcy nigdy nie przestaje rosnąć 🐑",
+      "description": "Dzikie owce co roku linieją, ale owce wełniste wyhodowano tak, by tego nie robiły. Chris, merynos znaleziony w 2015 roku pod Canberrą, nie był strzyżony od co najmniej pięciu lat: jego runo ważyło 41,1 kg, mniej więcej osiem razy więcej niż zwykle.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "nl": {
+      "title": "De wol van een ongeschoren schaap groeit eindeloos door 🐑",
+      "description": "Wilde schapen verliezen elk jaar hun vacht, maar wolschapen zijn zo gefokt dat ze dat niet doen. Chris, een merino die in 2015 bij Canberra werd gevonden, was minstens vijf jaar niet geschoren: zijn vacht woog 41,1 kilo, zo'n acht keer zoveel als normaal.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "uk": {
+      "title": "Вовна нестриженої вівці росте без упину 🐑",
+      "description": "Дикі вівці линяють щороку, а вовнових овець вивели так, щоб вони не линяли. Мериноса Кріса, знайденого біля Канберри у 2015 році, не стригли щонайменше п'ять років: його руно важило 41,1 кг — приблизно вісім разів більше за звичайне.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "vi": {
+      "title": "Lông cừu không được xén sẽ mọc mãi không ngừng 🐑",
+      "description": "Cừu hoang thay lông mỗi năm, nhưng cừu lấy len đã được lai tạo để không rụng lông. Chú cừu merino Chris, được tìm thấy gần Canberra năm 2015, đã ít nhất năm năm không được xén: bộ lông nặng 41,1 kg, gấp khoảng tám lần bình thường.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "az": {
+      "title": "Qırxılmayan qoyunun yunu heç dayanmadan uzanır 🐑",
+      "description": "Vəhşi qoyunlar yunlarını hər il tökür, amma yun qoyunları tökməyəcək şəkildə seçilib çoxaldılıb. 2015-ci ildə Kanberra yaxınlığında tapılan merinos Kris ən azı beş il qırxılmamışdı: üstündən 41,1 kq yun çıxdı, adi yapağının təxminən səkkiz qatı.\n\n#shorts\n\nSeri: mk-c0132"
+    },
+    "ro": {
+      "title": "Lâna unei oi netunse nu se oprește niciodată din crescut 🐑",
+      "description": "Oile sălbatice năpârlesc în fiecare an, dar oile de lână au fost selecționate să nu o mai facă. Chris, un merinos găsit lângă Canberra în 2015, nu fusese tuns de cel puțin cinci ani: lâna lui a cântărit 41,1 kg, de vreo opt ori mai mult decât de obicei.\n\n#shorts\n\nSeri: mk-c0132"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kırk bir kiloluk yün mü, yününü kendi dökemeyen koyun mu?",
+  "scenes": [
+    {
+      "text": "Bu koyunun yünü kırkılmazsa hiç durmadan uzar.",
+      "visual": "close-up of a woolly sheep's face looking straight at the camera",
+      "stock_query": "sheep face",
+      "source": "stock",
+      "callout": "HİÇ DURMADAN UZAR"
+    },
+    {
+      "text": "Avustralya'da başıboş bulunan bir koyun, en az beş yıldır kırkılmamıştı.",
+      "visual": "a very woolly sheep standing alone in a paddock",
+      "stock_query": "sheep wool",
+      "source": "stock",
+      "callout": "5 YIL KIRKILMADI"
+    },
+    {
+      "text": "Üstünden kırk bir kilo yün çıktı, normal bir yapağının sekiz katı.",
+      "visual": "a shearer clipping a thick fleece off a sheep",
+      "stock_query": "sheep shearing",
+      "source": "stock",
+      "callout": "41 KİLO YÜN"
+    },
+    {
+      "text": "Çünkü yabani koyunlar yünlerini her yıl döker; insanlar ise yünü dökülmeyen koyunları seçip çoğalttı.",
+      "visual": "wild mouflon sheep with a short brown coat on a rocky hillside",
+      "stock_query": "mouflon sheep",
+      "source": "stock",
+      "subject": [
+        "mouflon"
+      ],
+      "callout": "YABANİSİ DÖKER"
+    },
+    {
+      "text": "O koyun yünün ağırlığından zor yürüyordu; çünkü...",
+      "visual": "close-up of a sheep's face peeking out from thick wool",
+      "stock_query": "sheep close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.99,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #185",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0132_1794583558_ig.mp4"
+}
