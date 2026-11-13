@@ -1,12 +1,18 @@
 {
- "started": "2026-11-13T07:51:09+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-13T09:07:46+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y064",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
- "chars": 380,
- "duration": 24.9,
- "deneme": "fabrika/deneme/ornek-n016.mp4",
- "log": [],
- "finished": "2026-11-13T07:51:57+00:00"
+ "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
+ "chars": 398,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18112408193462776",
+  "url": "https://www.instagram.com/reel/DfrRkazgNH_/",
+  "at": 1794560988.6862009
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfrRkazgNH_/"
+ ],
+ "finished": "2026-11-13T09:09:48+00:00"
 }

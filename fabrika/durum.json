@@ -2424,14 +2424,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-05T18:04:39+00:00",
-   "mod": "saatlik",
-   "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
-   "url": "https://youtube.com/shorts/V93tM_0-ll4",
-   "duration": 24.0,
-   "chars": 360
-  },
-  {
    "finished": "2026-11-05T20:42:08+00:00",
    "mod": "saatlik",
    "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
@@ -2850,6 +2842,12 @@
    "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
    "duration": 24.9,
    "chars": 380
+  },
+  {
+   "finished": "2026-11-13T09:09:48+00:00",
+   "mod": "igbolum",
+   "title": "Düşen Asansörde Zıplasan Kurtulur Muydun?",
+   "chars": 398
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3139,6 +3137,11 @@
     "media_id": "17990998611096834",
     "url": "https://www.instagram.com/reel/DfpjuJXgWZg/",
     "at": 1794503372.842214
+   },
+   "y064": {
+    "media_id": "18112408193462776",
+    "url": "https://www.instagram.com/reel/DfrRkazgNH_/",
+    "at": 1794560988.6862009
    }
   },
   "eski": [
