@@ -143,6 +143,14 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   Örnek yönler (kullanılmadıysa, kaynağını doğrula): "tavuk beyinli", "timsah gözyaşı", "saksağan parlak şey
   çalar", "yarasa kördür", "köstebek kördür". Dosyaya `"deyim": true`
   alanını ekle (analiz bununla gruplar; mk-c0123 ve mk-c0134 bu alanla işaretlendi).
+- 13 Kasım kararı (kedi ve köpek ayrımı): 3-12 Kasım'ın 24 saati dolmuş Short'larında kedi ortancası 3.746
+  (10 Short; süt 12.420, miyav 8.929, isim 6.263, okşarken ısırma 4.669, karanlık 4.133), köpek 1.711 (10 Short;
+  yalnızca "yaşını yediyle çarpma" 5 bin üstü), öbür tanıdık hayvanlar ~2.900, vücut 2.060, psikoloji 1.642.
+  Kedilerde kazananlar sahibin evde her gün gördüğü bir davranışı açıklıyor (süt içmesi, sana miyavlaması, adını
+  duymazdan gelmesi, okşarken ısırması); "kediler nankör değil" 1.035, tüysüz kedi alerjisi 1.003, gözle
+  gülümseme 1.544 kaldı. Bu yüzden 8 dosyadaki en az 3 kedi/köpek dosyasının en az 2'si kedi olsun ve kedinin
+  sahibine yaptığı, onun evde gördüğü bir davranışı ele alsın; köpek 8'de en fazla 1 (herkesin söylediği bir
+  efsane değilse). Kalan hayvan slotları tanıdık hayvanlara (devekuşu, hamamböceği, tavuk gibi) gitsin.
 
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
