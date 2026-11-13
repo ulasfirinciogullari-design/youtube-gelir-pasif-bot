@@ -1,5 +1,5 @@
 {
- "started": "2026-11-13T05:45:12+00:00",
+ "started": "2026-11-13T06:45:13+00:00",
  "deneme": false,
  "threads": 195,
  "reply_threads_read": 0,
@@ -8,5 +8,5 @@
  "sent_last_24h": 0,
  "room": 10,
  "error": "RuntimeError: Gemini cevap vermedi: gemini-flash-latest: boş cevap (None)",
- "finished": "2026-11-13T05:45:14+00:00"
+ "finished": "2026-11-13T06:45:15+00:00"
 }
