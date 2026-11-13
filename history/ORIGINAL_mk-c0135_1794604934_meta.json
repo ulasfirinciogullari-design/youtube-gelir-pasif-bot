@@ -1,0 +1,170 @@
+{
+  "topic_id": "mk-c0135",
+  "topic": "Kediler mama isterken neden farklı mırlar, kedi mırlarken ne demek ister?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x5",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Kedin mama isterken mırıltısına ağlama gizliyor 🐱",
+  "hook_text": "KEDİN SENİ NASIL YÖNETİYOR?",
+  "description": "Kediler mama isterken neden farklı mırlar, kedi mırlarken ne demek ister?\n\nSussex Üniversitesi'nden Karen McComb ve ekibinin 2009'da Current Biology dergisinde yayımlanan çalışmasında, sahipler on kedinin mama isterken ve başka durumlarda çıkardığı mırıltıları evde kaydetti. Aralarında kedisi hiç olmamış kişilerin de bulunduğu elli dinleyici, mama mırlamalarını daha acil ve daha az hoş buldu. Sebep, alçak mırıltının içine gömülü, bebek ağlamasınınkine benzer frekansta ince bir ses: araştırmacılar bu sesi silince mırıltılar daha az acil gelmeye başladı. McComb'a göre bu mırlama en çok sahibiyle baş başa yaşayan kedilerde gelişiyor.\n\nSenin kedin mama isterken mırlıyor mu, miyavlıyor mu?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0135",
+  "tags": [
+    "kedi mırlaması",
+    "kedi neden mırlar",
+    "kedi mırlarken ne ister",
+    "kedi mama isterken",
+    "kedi mırlaması anlamı",
+    "kediler sahibini kandırır mı",
+    "kedi bebek ağlaması",
+    "kedi sesi",
+    "kedi dili",
+    "kedi sahibi",
+    "kedi davranışları",
+    "kedi bakımı",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "cat purr",
+    "solicitation purr",
+    "kedi mama ister",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi mirlamasi",
+    "kedi neden mirlar",
+    "kedi mirlarken ne ister"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat hides a cry inside its purr when it wants food 🐱",
+      "description": "In a 2009 University of Sussex study, even people who had never owned a cat rated food-begging purrs as more urgent. The cats were mixing a high-pitched, cry-like sound into the low purr; when it was removed, the purrs sounded less urgent.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "es": {
+      "title": "Tu gato esconde un llanto en su ronroneo cuando quiere comida 🐱",
+      "description": "En un estudio de la Universidad de Sussex de 2009, incluso personas que nunca habían tenido gato percibieron como más urgentes los ronroneos para pedir comida. El gato mezcla en el ronroneo grave un sonido agudo parecido a un llanto; al quitarlo, la urgencia bajaba.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "pt": {
+      "title": "Seu gato esconde um choro no ronronar quando quer comida 🐱",
+      "description": "Num estudo de 2009 da Universidade de Sussex, até quem nunca teve gato achou mais urgentes os ronronados de pedir comida. O gato mistura ao ronronar grave um som agudo parecido com choro; quando ele foi removido, a urgência caiu.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "de": {
+      "title": "Deine Katze versteckt ein Weinen in ihrem Schnurren, wenn sie Futter will 🐱",
+      "description": "In einer Studie der Universität Sussex von 2009 empfanden sogar Menschen ohne Katze das bettelnde Schnurren als dringlicher. Die Katzen mischen dem tiefen Schnurren einen hohen, weinähnlichen Ton bei; wurde er entfernt, klang das Schnurren weniger dringend.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "fr": {
+      "title": "Ton chat cache un pleur dans son ronronnement quand il veut manger 🐱",
+      "description": "Dans une étude de l'université du Sussex de 2009, même des personnes n'ayant jamais eu de chat trouvaient plus urgents les ronronnements pour réclamer à manger. Le chat glisse dans son ronron grave un son aigu proche d'un pleur ; une fois ce son retiré, l'urgence baissait.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "it": {
+      "title": "Il tuo gatto nasconde un pianto nelle fusa quando vuole cibo 🐱",
+      "description": "In uno studio dell'Università del Sussex del 2009, persino chi non aveva mai avuto un gatto giudicava più urgenti le fusa per chiedere cibo. Il gatto mescola alle fusa gravi un suono acuto simile a un pianto; togliendolo, l'urgenza calava.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "ru": {
+      "title": "Кошка прячет плач в мурлыканье, когда просит еду 🐱",
+      "description": "В исследовании Университета Сассекса 2009 года даже люди, у которых никогда не было кошки, сочли «голодное» мурлыканье более настойчивым. Кошка подмешивает к низкому мурлыканью высокий звук, похожий на плач; если его убрать, мурлыканье звучит менее срочно.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "ar": {
+      "title": "قطتك تخفي بكاءً داخل خرخرتها عندما تطلب الطعام 🐱",
+      "description": "في دراسة لجامعة ساسكس عام 2009، رأى حتى من لم يربّوا قطة قط أن خرخرة طلب الطعام أكثر إلحاحًا. فالقطة تمزج بالخرخرة المنخفضة صوتًا حادًا يشبه البكاء، وعند حذفه قلّ الإحساس بالإلحاح.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "hi": {
+      "title": "खाना माँगते वक़्त आपकी बिल्ली घुरघुराहट में रोना छिपाती है 🐱",
+      "description": "2009 में यूनिवर्सिटी ऑफ़ ससेक्स के एक अध्ययन में उन लोगों को भी, जिन्होंने कभी बिल्ली नहीं पाली थी, खाना माँगने वाली घुरघुराहट ज़्यादा ज़रूरी लगी। बिल्ली धीमी घुरघुराहट में रोने जैसी एक ऊँची आवाज़ मिला देती है; उसे हटाने पर वह कम ज़रूरी लगने लगी।\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "id": {
+      "title": "Kucingmu menyelipkan suara tangis di dengkurannya saat minta makan 🐱",
+      "description": "Dalam studi Universitas Sussex tahun 2009, bahkan orang yang tak pernah memelihara kucing menilai dengkuran minta makan terdengar lebih mendesak. Kucing mencampurkan suara melengking mirip tangisan ke dalam dengkuran yang rendah; saat suara itu dihapus, kesan mendesaknya berkurang.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "ja": {
+      "title": "猫はごはんをねだるとき、ゴロゴロに泣き声を混ぜている 🐱",
+      "description": "2009年の英サセックス大学の研究では、猫を飼ったことがない人でも、ごはんをねだるゴロゴロ音をより切迫していると感じました。猫は低いゴロゴロ音に泣き声に似た高い音を混ぜていて、その音を取り除くと切迫感が下がりました。\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "ko": {
+      "title": "고양이는 밥 달라고 할 때 골골송에 울음소리를 숨긴다 🐱",
+      "description": "2009년 영국 서식스대 연구에서 고양이를 키워 본 적 없는 사람들도 밥을 조르는 골골송을 더 급하게 느꼈습니다. 고양이가 낮은 골골 소리에 울음과 비슷한 높은 소리를 섞기 때문인데, 이 소리를 지우자 급한 느낌이 줄었습니다.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "pl": {
+      "title": "Kot ukrywa płacz w mruczeniu, gdy domaga się jedzenia 🐱",
+      "description": "W badaniu Uniwersytetu Sussex z 2009 roku nawet osoby, które nigdy nie miały kota, uznały mruczenie o jedzenie za bardziej naglące. Kot dodaje do niskiego mruczenia wysoki dźwięk podobny do płaczu; gdy go usunięto, mruczenie brzmiało mniej pilnie.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "nl": {
+      "title": "Je kat verstopt een huiltje in zijn spinnen als hij eten wil 🐱",
+      "description": "In een studie van de Universiteit van Sussex uit 2009 vonden zelfs mensen die nooit een kat hadden het spinnen om eten dringender klinken. De kat mengt een hoog, huilachtig geluid door het lage spinnen; zonder dat geluid klonk het minder dringend.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "uk": {
+      "title": "Кіт ховає плач у муркотінні, коли просить їсти 🐱",
+      "description": "У дослідженні Університету Сассекса 2009 року навіть люди, які ніколи не мали кота, вважали «голодне» муркотіння наполегливішим. Кіт домішує до низького муркотіння високий звук, схожий на плач; коли його прибрали, муркотіння звучало менш терміново.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "vi": {
+      "title": "Mèo giấu tiếng khóc trong tiếng gừ gừ khi đòi ăn 🐱",
+      "description": "Trong một nghiên cứu năm 2009 của Đại học Sussex, ngay cả người chưa từng nuôi mèo cũng thấy tiếng gừ gừ đòi ăn nghe gấp gáp hơn. Mèo trộn vào tiếng gừ trầm một âm thanh cao giống tiếng khóc; khi bỏ âm đó đi, cảm giác gấp gáp giảm xuống.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "az": {
+      "title": "Pişiyin yemək istəyəndə mırıltısında ağlama gizlədir 🐱",
+      "description": "Sasseks Universitetinin 2009-cu il araşdırmasında heç vaxt pişik saxlamamış insanlar belə yemək istəyən mırıltını daha təcili hesab etdi. Pişik alçaq mırıltıya ağlamaya bənzəyən incə bir səs qatır; həmin səs silinəndə təcililik hissi azaldı.\n\n#shorts\n\nSeri: mk-c0135"
+    },
+    "ro": {
+      "title": "Pisica ta ascunde un plânset în tors când vrea mâncare 🐱",
+      "description": "Într-un studiu al Universității Sussex din 2009, chiar și oameni care nu avuseseră niciodată pisică au considerat mai urgent torsul prin care se cere mâncare. Pisica amestecă în torsul grav un sunet ascuțit, asemănător plânsului; când a fost eliminat, urgența a scăzut.\n\n#shorts\n\nSeri: mk-c0135"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin mama isterken mırlıyor mu, miyavlıyor mu?",
+  "scenes": [
+    {
+      "text": "Bu kedi mırlarken içine bir ağlama gizliyor.",
+      "visual": "close-up of a purring cat's face looking straight at the camera",
+      "stock_query": "cat face",
+      "source": "stock",
+      "callout": "GİZLİ AĞLAMA"
+    },
+    {
+      "text": "Bir deneyde sahipler, kedilerinin mama isterken ve dinlenirken mırlamasını kaydetti.",
+      "visual": "a cat sitting next to its food bowl and looking up",
+      "stock_query": "cat food bowl",
+      "source": "stock"
+    },
+    {
+      "text": "Kedisi hiç olmamış insanlar bile mama mırlamasını daha acil buldu.",
+      "visual": "a cat rubbing against its owner's legs in the kitchen",
+      "stock_query": "cat owner",
+      "source": "stock",
+      "callout": "DAHA ACİL"
+    },
+    {
+      "text": "Çünkü kedi alçak mırıltıya, bebek ağlamasına benzeyen ince bir ses katıyor; o ses silinince aciliyet düştü.",
+      "visual": "close-up of a cat's mouth and whiskers",
+      "stock_query": "cat close up",
+      "source": "stock",
+      "callout": "BEBEK AĞLAMASI GİBİ"
+    },
+    {
+      "text": "Mama kabının başında mırlıyorsa iyi dinle; çünkü...",
+      "visual": "close-up of a cat's eyes",
+      "stock_query": "cat eyes",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.71,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 11,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #188",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0135_1794604934_ig.mp4"
+}
