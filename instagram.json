@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-22T18": "CaqDaNCHfY0 https://www.instagram.com/reel/Dezk6OYCXqn/",
   "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/",
   "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/",
   "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
@@ -48,16 +47,17 @@
   "2026-11-12T18": "EPFPaT4rj5k https://www.instagram.com/reel/DfppqFYGdmS/",
   "2026-11-13T10": "5mRx62PPThE https://www.instagram.com/reel/DfrXqBvDMnP/",
   "2026-11-13T14": "rBj0xDErOrs https://www.instagram.com/reel/DfrzADnDTym/",
-  "2026-11-13T18": "7q4TC7a8Bko https://www.instagram.com/reel/DfsOb6Ak9uV/"
+  "2026-11-13T18": "7q4TC7a8Bko https://www.instagram.com/reel/DfsOb6Ak9uV/",
+  "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/"
  },
  "nobet": {
   "basladi": "2026-11-14T09:35:08+00:00",
   "run": "43580442505",
-  "tur": 1,
+  "tur": 26,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-14T09:35:10+00:00"
+  "son_tur": "2026-11-14T10:01:09+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -423,6 +423,13 @@
    "at": 1794592887,
    "title": "Kedi yedinci kattan düşüp yaşayabilir mi? 🐱",
    "topic_id": "mk-c0099"
+  },
+  "oSyRiH0vkBI": {
+   "media_id": "18649957522028601",
+   "url": "https://www.instagram.com/reel/Dft8SpZlNoE/",
+   "at": 1794650470,
+   "title": "Yuttuğun sakız yedi yıl midende kalmıyor 🍬",
+   "topic_id": "mk-c0123"
   }
  }
 }
