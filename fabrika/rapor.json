@@ -1,18 +1,72 @@
 {
- "started": "2026-11-14T17:08:16+00:00",
- "mod": "igbolum",
- "gate": "instagram: y066",
+ "started": "2026-11-14T18:07:07+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
- "chars": 370,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18015821258978041",
-  "url": "https://www.instagram.com/reel/DfutYUikpcQ/",
-  "at": 1794676210.4610317
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "69",
+  "videos": "82"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfutYUikpcQ/"
+ "credits_before": [
+  103357,
+  613902
  ],
- "finished": "2026-11-14T17:10:10+00:00"
+ "kuyruk": {
+  "dosya": "20261114-1-y060.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "y060",
+  "series": "Ya Olsaydı?",
+  "q": "Dünyanın en acı biberini yeseydin ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": true,
+ "chars": 803,
+ "duration": 55.7,
+ "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+ "url": "https://youtube.com/shorts/MXkhpdIxoFM",
+ "recent_status": {
+  "y043": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "536",
+   "reason": null
+  },
+  "y024": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "91",
+   "reason": null
+  },
+  "y056": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "710",
+   "reason": null
+  },
+  "y059": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "471",
+   "reason": null
+  },
+  "y060": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  103552,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261114-1-y060.json Dünyanın en acı biberini yeseydin ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-14T18:08:43+00:00"
 }

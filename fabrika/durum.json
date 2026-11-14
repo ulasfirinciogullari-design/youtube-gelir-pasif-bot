@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1628",
+    "views": "1634",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "417",
+    "views": "418",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "298",
+    "views": "300",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1037",
+    "views": "1039",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "650",
+    "views": "661",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "924",
+    "views": "932",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "454",
+    "views": "536",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "492",
+    "views": "710",
     "reason": null
    }
   },
@@ -2428,6 +2428,37 @@
    "at": 1794665320.605394,
    "chars": 382,
    "ilk": false,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "471",
+    "reason": null
+   }
+  },
+  {
+   "id": "y060",
+   "video_id": "MXkhpdIxoFM",
+   "url": "https://youtube.com/shorts/MXkhpdIxoFM",
+   "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would Happen If You Ate the World's Hottest Pepper?",
+    "es": "¿Qué Pasaría Si Comieras el Chile Más Picante del Mundo?",
+    "pt": "O Que Aconteceria Se Você Comesse a Pimenta Mais Ardida do Mundo?",
+    "ar": "ماذا سيحدث لو أكلت أشد فلفل حرارة في العالم؟",
+    "hi": "अगर आप दुनिया की सबसे तीखी मिर्च खा लें तो क्या होगा?",
+    "id": "Apa Jadinya Jika Kamu Makan Cabai Terpedas di Dunia?",
+    "fr": "Et Si Tu Mangeais le Piment le Plus Fort du Monde ?",
+    "de": "Was Passiert, Wenn Du die Schärfste Chili der Welt Isst?",
+    "ru": "Что Будет, Если Съесть Самый Острый Перец в Мире?",
+    "az": "Dünyanın Ən Acı Bibərini Yesəydin Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794679722.3230033,
+   "chars": 803,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2517,7 +2548,8 @@
   "y043",
   "y024",
   "y056",
-  "y059"
+  "y059",
+  "y060"
  ],
  "extra": [
   {
@@ -2583,14 +2615,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-07T10:07:28+00:00",
-   "mod": "saatlik",
-   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
-   "url": "https://youtube.com/shorts/VMFzMO2A2CY",
-   "duration": 25.7,
-   "chars": 384
-  },
   {
    "finished": "2026-11-07T13:08:55+00:00",
    "mod": "igbolum",
@@ -3008,6 +3032,14 @@
    "mod": "igbolum",
    "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
    "chars": 370
+  },
+  {
+   "finished": "2026-11-14T18:08:43+00:00",
+   "mod": "saatlik",
+   "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/MXkhpdIxoFM",
+   "duration": 55.7,
+   "chars": 803
   }
  ],
  "last_fail": 1794410324.353765,
