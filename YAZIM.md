@@ -152,6 +152,15 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   sahibine yaptığı, onun evde gördüğü bir davranışı ele alsın; köpek 8'de en fazla 1 (herkesin söylediği bir
   efsane değilse). Kalan hayvan slotları tanıdık hayvanlara (devekuşu, hamamböceği, tavuk gibi) gitsin.
 
+- 14 Kasım kararı (psikoloji merak Short'larından çıktı): 2-13 Kasım'ın 24 saati dolmuş Short'larında psikoloji
+  ortancası 1.332 (22 Short), vücut 2.168 (17), hayvan 2.895 (51). Hiç gösterilmeyen (24 saatte 200'ün altında)
+  Short'ların yarısı psikolojiydi: 22'de 3 (burç, mesajda şaka, fermuar), hayvanda 52'de 2, vücutta 17'de 1.
+  Kaydırmadan izleme oranı da en düşük psikolojide. Kanalın izleyicisi hayvan ve vücut merakı için geliyor;
+  güç psikolojisi animasyonlarda kalıyor. Bu yüzden mk-c0156'dan itibaren merak metinlerinde psikoloji yok. Her 8
+  dosya: 2 "mümkün mü?" (hayvan ya da vücut), 1 insan vücudu, 5 tanıdık hayvan; kedi en az 2, köpek en fazla 1,
+  kedi ve köpek toplam en az 3; deyim en az 1. Kuyruktaki iki psikoloji dosyası (mk-c0147, mk-c0155) arsiv/
+  klasörüne alındı, yüklenmeyecek.
+
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
 Hedef (Ulaş, 3 Kasım): 31 Ocak'a kadar 90 günde 10 milyon izlenme. Bunun için Short başına 1.200'den çok daha
