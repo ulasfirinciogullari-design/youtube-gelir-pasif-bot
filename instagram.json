@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/",
   "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
   "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
   "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
@@ -48,16 +47,17 @@
   "2026-11-13T14": "rBj0xDErOrs https://www.instagram.com/reel/DfrzADnDTym/",
   "2026-11-13T18": "7q4TC7a8Bko https://www.instagram.com/reel/DfsOb6Ak9uV/",
   "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/",
-  "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/"
+  "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/",
+  "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/"
  },
  "nobet": {
   "basladi": "2026-11-14T15:15:21+00:00",
   "run": "43608367442",
-  "tur": 155,
+  "tur": 166,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-14T17:49:22+00:00"
+  "son_tur": "2026-11-14T18:01:08+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -437,6 +437,13 @@
    "at": 1794664862,
    "title": "Tavuk yumurtlamak için horoza ihtiyaç duymaz 🥚",
    "topic_id": "mk-c0121"
+  },
+  "hYGpuFlzr_M": {
+   "media_id": "18101282888663263",
+   "url": "https://www.instagram.com/reel/DfuzN4AD2fG/",
+   "at": 1794679269,
+   "title": "Solucan ikiye bölünüp iki solucan olabilir mi? 🪱",
+   "topic_id": "mk-c0126"
   }
  }
 }
