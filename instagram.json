@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-23T10": "uudSt02-Evk https://www.instagram.com/reel/De1S17XnECl/",
   "2026-10-23T14": "PGBCfKuO8kI https://www.instagram.com/reel/De1uUS8CjIH/",
   "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
   "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
@@ -48,16 +47,17 @@
   "2026-11-13T10": "5mRx62PPThE https://www.instagram.com/reel/DfrXqBvDMnP/",
   "2026-11-13T14": "rBj0xDErOrs https://www.instagram.com/reel/DfrzADnDTym/",
   "2026-11-13T18": "7q4TC7a8Bko https://www.instagram.com/reel/DfsOb6Ak9uV/",
-  "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/"
+  "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/",
+  "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/"
  },
  "nobet": {
   "basladi": "2026-11-14T09:35:08+00:00",
   "run": "43580442505",
-  "tur": 240,
+  "tur": 266,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-14T13:34:14+00:00"
+  "son_tur": "2026-11-14T14:01:01+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -430,6 +430,13 @@
    "at": 1794650470,
    "title": "Yuttuğun sakız yedi yıl midende kalmıyor 🍬",
    "topic_id": "mk-c0123"
+  },
+  "NjtcYi4kzXA": {
+   "media_id": "18134087551773740",
+   "url": "https://www.instagram.com/reel/DfuXvQSDy-Z/",
+   "at": 1794664862,
+   "title": "Tavuk yumurtlamak için horoza ihtiyaç duymaz 🥚",
+   "topic_id": "mk-c0121"
   }
  }
 }
