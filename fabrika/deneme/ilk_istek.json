@@ -1,46 +1,13 @@
 {
  "ara": {
-  "n016": [
-   "lava flow Kilauea",
-   "lava lake Halemaumau"
+  "y060": [
+   "Carolina Reaper pepper",
+   "red hot chili pepper close"
   ],
-  "y043": [
-   "woman sleeping in bed",
-   "man asleep bed -HABS -NARA"
-  ],
-  "y024": [
-   "leaf backlit sunlight",
-   "green leaves sunlight macro"
-  ],
-  "y056": [
-   "elderly person hands",
-   "very old woman portrait"
-  ],
-  "y059": [
-   "astronaut spacewalk ISS",
-   "astronaut cupola ISS Earth"
+  "n017": [
+   "lightning strike",
+   "cloud to ground lightning night"
   ]
  },
- "al": {
-  "n016": {
-   "n": 4,
-   "x": 0.45,
-   "y": 0.55
-  },
-  "y024": {
-   "n": 4,
-   "x": 0.64,
-   "y": 0.5
-  },
-  "y056": {
-   "n": 3,
-   "x": 0.42,
-   "y": 0.5
-  },
-  "y059": {
-   "n": 4,
-   "x": 0.55,
-   "y": 0.5
-  }
- }
+ "al": {}
 }
