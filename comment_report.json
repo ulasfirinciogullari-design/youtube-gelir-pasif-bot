@@ -1,22 +1,30 @@
 {
- "started": "2026-11-14T17:45:15+00:00",
+ "started": "2026-11-14T18:45:13+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 1,
- "new": 1,
+ "new": 2,
  "quiet": 0,
  "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdCGYV4USIu",
+   "id": "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdCJIo33ik1",
    "kind": "answer",
    "video": "0ZGe7ZLwk3w",
-   "comment": "Yıllardır ciğer veriyorum ve şükürler olsun hepside iyi ayrıca ciğerde antibiyotik vardır onların iç hastalıklarınada iyi geliyor kuru mama sıkıntılı",
-   "reply": "@MuratMurat-k7l3s Ne güzel ki kediler iyiymiş! Ciğerde doğal antibiyotik bulunmuyor ama yüksek A vitamini içerdiği için fazlası kemik gelişimlerini olumsuz etkileyebilir, dikkatli olmak lazım. 🐱",
+   "comment": "şöyle diyeyim kocaman isimli kedim var doğumundada kardeşlerinden biraz iriydi şuan 26 aylık vaşak gibi evin içinde geziyor bacaklar uzun vücut iri Tekir bu",
+   "reply": "@MuratMurat-k7l3s Vay be, 26 aylık ve vaşak gibi! Tekir kediler arasında da genetik ve beslenmeyle boyu bosu gelişenler olabiliyor, ne güzel. 🥰",
+   "result": "gönderildi"
+  },
+  {
+   "id": "UgyUPHpWLr-LgIkeXPl4AaABAg",
+   "kind": "comment",
+   "video": "gcatVWG4Nbk",
+   "comment": "kedi kum kabında kum varsa sıçmaaaaaaazzzz",
+   "reply": "Aslında bazı kediler kum kabında azıcık kir bile olsa kullanmayı reddedebiliyor. 🧐 Temizlik konusunda çok hassaslar!",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-14T17:45:26+00:00"
+ "finished": "2026-11-14T18:45:25+00:00"
 }
