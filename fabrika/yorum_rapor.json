@@ -1,8 +1,8 @@
 {
- "started": "2026-11-13T16:44:15+00:00",
+ "started": "2026-11-14T15:55:11+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 40,
+ "threads": 41,
  "quiet": 0,
  "new": 1,
  "sent_last_24h": 1,
@@ -10,15 +10,15 @@
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "UgyI5ro9W-kN120UhVp4AaABAg",
-   "video": "RKGn39tzpn4",
-   "comment": "Arkadaşlar iyi bakterilere var ha.",
-   "reply": "Kesinlikle öyle, vücudumuzdaki mikropların büyük kısmı sağlığımız için süper kahraman gibi çalışıyor! 🦠\n— Bit 🤖",
+   "id": "Ugy8rjJMS_d2rPO2p8N4AaABAg",
+   "video": "6XodpIbEU8A",
+   "comment": "Hayır hiçbir şekilde 2 saat rüya görülemez araştır",
+   "reply": "Smithsonian verilerine göre yetişkinler uykusunun yaklaşık yüzde 25'ini yani ortalama iki saatini REM evresinde geçirir.\n— Profesör Pi 🔭",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-13T16:44:18+00:00"
+ "finished": "2026-11-14T15:55:14+00:00"
 }
