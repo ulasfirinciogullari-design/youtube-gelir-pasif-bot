@@ -47,7 +47,7 @@ def get(url, **kw):
 
 
 def strip(s):
-    return html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s or ""))).strip()  # one line for the description
 
 
 def candidates(query, n=8):
