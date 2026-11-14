@@ -275,6 +275,12 @@
    "r",
    "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdB81b3Qc-I",
    "UCW__qHKbHZbstXxASbtDGhg"
+  ],
+  "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdB9o4wJDF0": [
+   1794642314,
+   "r",
+   "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdBCg9hZ8xQ",
+   "UCW__qHKbHZbstXxASbtDGhg"
   ]
  },
  "tracked": {
@@ -392,7 +398,7 @@
   },
   "UgxYXk2pKsm1DZJL5Bt4AaABAg": {
    "at": 1794639867,
-   "n": 2
+   "n": 4
   }
  },
  "channel": {
@@ -400,12 +406,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792274758,
-   "video": "ttnTksT5RFo",
-   "comment": "1",
-   "reply": "@GörkemTemel-e6w Tony Montana'nın o hırsı ve deliliği gerçekten başka bir seviyeydi! 🚀 İlginçtir ki, Scarface filmi aslında 1932 yapımı aynı adlı bir filmin yeniden çevrimi."
-  },
   {
    "at": 1792435513,
    "video": "K38rqvuk5VM",
@@ -639,6 +639,12 @@
    "video": "NjtcYi4kzXA",
    "comment": "Abi benim iki tane tavuğum vardı makine tavuguydu hergun ikiside yumurtluyodu bide neydi gurk olan tavuğun civcivide yumurtlar mı",
    "reply": "@BeratÇapkın-r3z Ne güzel, kendi deneyiminle görmüşsün demek ki! Gurk tavuğun civcivleri de büyüyünce yumurtlar tabii, eğer dişi olurlarsa. Bir tavuk ortalama 5-6 aylıkken yumurtlamaya başlar. 🥚"
+  },
+  {
+   "at": 1794642314,
+   "video": "NjtcYi4kzXA",
+   "comment": "Horoz olmadan mi",
+   "reply": "@BeratÇapkın-r3z Evet, horoz olmadan da yumurtlayabiliyorlar! Hatta marketteki yumurtaların çoğu döllenmemiş olur, yani onlardan civciv çıkmaz. 🥚"
   }
  ]
 }

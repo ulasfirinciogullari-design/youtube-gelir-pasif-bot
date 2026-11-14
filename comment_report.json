@@ -1,22 +1,22 @@
 {
- "started": "2026-11-14T07:04:26+00:00",
+ "started": "2026-11-14T07:45:13+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 3,
+ "sent_last_24h": 4,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdB7_IRU303",
+   "id": "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdB9o4wJDF0",
    "kind": "answer",
    "video": "NjtcYi4kzXA",
-   "comment": "Abi benim iki tane tavuğum vardı makine tavuguydu hergun ikiside yumurtluyodu bide neydi gurk olan tavuğun civcivide yumurtlar mı",
-   "reply": "@BeratÇapkın-r3z Ne güzel, kendi deneyiminle görmüşsün demek ki! Gurk tavuğun civcivleri de büyüyünce yumurtlar tabii, eğer dişi olurlarsa. Bir tavuk ortalama 5-6 aylıkken yumurtlamaya başlar. 🥚",
+   "comment": "Horoz olmadan mi",
+   "reply": "@BeratÇapkın-r3z Evet, horoz olmadan da yumurtlayabiliyorlar! Hatta marketteki yumurtaların çoğu döllenmemiş olur, yani onlardan civciv çıkmaz. 🥚",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-14T07:04:43+00:00"
+ "finished": "2026-11-14T07:45:21+00:00"
 }
