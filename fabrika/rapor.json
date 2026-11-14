@@ -1,18 +1,72 @@
 {
- "started": "2026-11-14T09:07:27+00:00",
- "mod": "igbolum",
- "gate": "instagram: y065",
+ "started": "2026-11-14T10:07:19+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
- "chars": 360,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18121050290069759",
-  "url": "https://www.instagram.com/reel/Dft2bATE-uZ/",
-  "at": 1794647397.2096894
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "68",
+  "videos": "80"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/Dft2bATE-uZ/"
+ "credits_before": [
+  102523,
+  613902
  ],
- "finished": "2026-11-14T09:09:57+00:00"
+ "kuyruk": {
+  "dosya": "20261113-3-y056.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y056",
+  "series": "Ya Olsaydı?",
+  "q": "İnsanlar 200 yıl yaşasaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": true,
+ "chars": 386,
+ "duration": 25.4,
+ "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
+ "url": "https://youtube.com/shorts/5X21vqv32gg",
+ "recent_status": {
+  "y038": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "930",
+   "reason": null
+  },
+  "n016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "923",
+   "reason": null
+  },
+  "y043": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "444",
+   "reason": null
+  },
+  "y024": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "91",
+   "reason": null
+  },
+  "y056": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  102617,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261113-3-y056.json İnsanlar 200 yıl yaşasaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-14T10:08:14+00:00"
 }
