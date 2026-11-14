@@ -1,22 +1,22 @@
 {
- "started": "2026-11-14T07:45:13+00:00",
+ "started": "2026-11-14T17:45:15+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 4,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdB9o4wJDF0",
+   "id": "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdCGYV4USIu",
    "kind": "answer",
-   "video": "NjtcYi4kzXA",
-   "comment": "Horoz olmadan mi",
-   "reply": "@BeratÇapkın-r3z Evet, horoz olmadan da yumurtlayabiliyorlar! Hatta marketteki yumurtaların çoğu döllenmemiş olur, yani onlardan civciv çıkmaz. 🥚",
+   "video": "0ZGe7ZLwk3w",
+   "comment": "Yıllardır ciğer veriyorum ve şükürler olsun hepside iyi ayrıca ciğerde antibiyotik vardır onların iç hastalıklarınada iyi geliyor kuru mama sıkıntılı",
+   "reply": "@MuratMurat-k7l3s Ne güzel ki kediler iyiymiş! Ciğerde doğal antibiyotik bulunmuyor ama yüksek A vitamini içerdiği için fazlası kemik gelişimlerini olumsuz etkileyebilir, dikkatli olmak lazım. 🐱",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-14T07:45:21+00:00"
+ "finished": "2026-11-14T17:45:26+00:00"
 }

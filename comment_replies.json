@@ -281,6 +281,12 @@
    "r",
    "UgxYXk2pKsm1DZJL5Bt4AaABAg.Ad6fANQ2J7WAdBCg9hZ8xQ",
    "UCW__qHKbHZbstXxASbtDGhg"
+  ],
+  "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdCGYV4USIu": [
+   1794678316,
+   "r",
+   "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdCHMQC5EZG",
+   "UCIxvrJBajt6eoxVQeNkmv4w"
   ]
  },
  "tracked": {
@@ -399,6 +405,10 @@
   "UgxYXk2pKsm1DZJL5Bt4AaABAg": {
    "at": 1794639867,
    "n": 4
+  },
+  "Ugx_bke0FejGMjxw3G54AaABAg": {
+   "at": 1794678316,
+   "n": 2
   }
  },
  "channel": {
@@ -406,12 +416,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792435513,
-   "video": "K38rqvuk5VM",
-   "comment": "​@zirveninkanunusagolun",
-   "reply": "@ayazege13 Ne demek, zihnin hep keskin kalsın! ✨"
-  },
   {
    "at": 1792439113,
    "video": "K38rqvuk5VM",
@@ -645,6 +649,12 @@
    "video": "NjtcYi4kzXA",
    "comment": "Horoz olmadan mi",
    "reply": "@BeratÇapkın-r3z Evet, horoz olmadan da yumurtlayabiliyorlar! Hatta marketteki yumurtaların çoğu döllenmemiş olur, yani onlardan civciv çıkmaz. 🥚"
+  },
+  {
+   "at": 1794678316,
+   "video": "0ZGe7ZLwk3w",
+   "comment": "Yıllardır ciğer veriyorum ve şükürler olsun hepside iyi ayrıca ciğerde antibiyotik vardır onların iç hastalıklarınada iyi geliyor kuru mama sıkıntılı",
+   "reply": "@MuratMurat-k7l3s Ne güzel ki kediler iyiymiş! Ciğerde doğal antibiyotik bulunmuyor ama yüksek A vitamini içerdiği için fazlası kemik gelişimlerini olumsuz etkileyebilir, dikkatli olmak lazım. 🐱"
   }
  ]
 }
