@@ -1,0 +1,191 @@
+{
+ "id": "mk-c0147",
+ "topic": "Yeni tanıştığın birinin adını neden unutursun da mesleğini hatırlarsın? Fırıncı-fırıncı (Baker-baker) paradoksu",
+ "kategori": "psikoloji",
+ "subject": [
+  "man"
+ ],
+ "stock_hint": "man face smiling",
+ "script": {
+  "title": "Tanıştığın kişinin adını unutursun, mesleğini değil 🤝",
+  "hook_text": "İSİMLERİ NEDEN UNUTURUZ?",
+  "scenes": [
+   {
+    "text": "Bu adamın adını unutacaksın ama mesleğini hatırlayacaksın.",
+    "visual": "close-up of a friendly man's face looking straight into the camera and smiling",
+    "stock_query": "man face smiling",
+    "source": "stock",
+    "callout": "ADINI UNUTACAKSIN"
+   },
+   {
+    "text": "Bir deneyde aynı kelime kimine soyadı, kimine meslek diye söylendi: Fırıncı.",
+    "visual": "close-up of two people shaking hands as they meet",
+    "stock_query": "handshake close up",
+    "source": "stock",
+    "callout": "AYNI KELİME",
+    "subject": [
+     "handshake"
+    ]
+   },
+   {
+    "text": "Meslek diye duyanlar onu daha kolay hatırladı.",
+    "visual": "a baker taking fresh loaves of bread out of an oven",
+    "stock_query": "baker bread oven",
+    "source": "stock",
+    "callout": "MESLEK AKILDA KALIR",
+    "subject": [
+     "baker",
+     "bread"
+    ]
+   },
+   {
+    "text": "Çünkü fırıncı kelimesi beyninde ekmeğe, fırına, sabah kokusuna bağlanır.",
+    "visual": "close-up of warm fresh bread loaves on a bakery shelf",
+    "stock_query": "fresh bread",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "bread"
+    ]
+   },
+   {
+    "text": "Soyadı ise hiçbir şeye tutunmayan boş bir etiket.",
+    "visual": "close-up of a thoughtful man's face looking slightly away",
+    "stock_query": "man thinking face",
+    "source": "stock",
+    "callout": "BOŞ ETİKET"
+   },
+   {
+    "text": "Adı bir şeye bağla; yoksa...",
+    "visual": "close-up of a smiling man's face looking into the camera",
+    "stock_query": "man portrait smiling",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yeni tanıştığın birinin adını unutup ne iş yaptığını hatırlaman tesadüf değil. 1987'deki bir deneyde 'Baker' gibi hem soyadı hem meslek olabilen bir kelime, meslek olarak verildiğinde soyadı olarak verildiğinden daha iyi hatırlandı; bulgu sonraki çalışmalarda da tekrarlandı. Meslek bellekte pek çok bilgiye bağlanır, soyadı ise anlamı olmayan bir etikettir.",
+  "tags": [
+   "isim unutmak",
+   "isimleri neden unuturuz",
+   "fırıncı paradoksu",
+   "hafıza",
+   "bellek",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen hangisini daha çabuk unutursun: isimleri mi, yüzleri mi?",
+  "en_title": "You'll forget his name, but not his job 🤝",
+  "en_description": "In a 1987 experiment, the same word was learned either as a surname or as an occupation: Baker or baker. People remembered it better as a job. An occupation links to lots of things you already know, like bread, ovens and early mornings, while a surname is an empty label. The finding has been replicated since and is known as the Baker/baker paradox.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Yeni tanıştığın birinin adını neden hemen unutursun da ne iş yaptığını hatırlarsın?\n\nİngiltere'de 1987'de McWeeny ve arkadaşlarının yaptığı deneyde katılımcılar yüzlerle birlikte isimler ve meslekler öğrendi. 'Baker' (fırıncı) gibi hem soyadı hem meslek olabilen aynı kelime, meslek olarak verildiğinde soyadı olarak verildiğinden daha iyi hatırlandı. Psikologlar buna Baker-baker (fırıncı-fırıncı) paradoksu diyor; bulgu 2005'te genç ve yaşlı yetişkinlerle yapılan bir çalışmada da tekrarlandı. Açıklaması şu: meslek bellekteki pek çok bilgiye (ekmek, fırın, sabah erken kalkmak) bağlanır, soyadı ise hiçbir şeye tutunmayan boş bir etikettir. Bu yüzden yeni bir adı akılda tutmanın yolu onu anlamlı bir şeye bağlamaktır.\n\nSen hangisini daha çabuk unutursun: isimleri mi, yüzleri mi?",
+  "hashtags": [
+   "#hafıza",
+   "#isimunutmak",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "isim unutmak",
+   "isimleri neden unuturuz",
+   "tanıştığım kişinin adı",
+   "adını unutmak",
+   "isim hatırlama",
+   "isim akılda tutma",
+   "fırıncı paradoksu",
+   "baker baker paradoksu",
+   "yüz ve isim",
+   "unutkanlık",
+   "hafıza",
+   "hafıza teknikleri",
+   "bellek",
+   "beyin nasıl hatırlar",
+   "insan psikolojisi",
+   "bilişsel psikoloji",
+   "psikoloji",
+   "beyin",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "baker baker paradox",
+   "remembering names"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You'll forget his name, but not his job 🤝",
+    "description": "In a 1987 experiment, the same word was learned either as a surname or as an occupation: Mr Baker or a baker. People remembered it more easily as a job. An occupation hooks onto things you already know, like bread and ovens, while a surname is an empty label."
+   },
+   "es": {
+    "title": "Olvidarás su nombre, pero no a qué se dedica 🤝",
+    "description": "En un experimento de 1987, la misma palabra se presentó como apellido o como profesión: Baker (panadero en inglés). La gente la recordó mejor como profesión. Un oficio se engancha a cosas que ya conoces, como el pan o el horno; un apellido es una etiqueta vacía."
+   },
+   "pt": {
+    "title": "Você vai esquecer o nome dele, mas não a profissão 🤝",
+    "description": "Num experimento de 1987, a mesma palavra foi apresentada como sobrenome ou como profissão: Baker (padeiro, em inglês). As pessoas lembraram melhor quando era profissão. Um ofício se liga a coisas que você já conhece, como pão e forno; um sobrenome é só um rótulo vazio."
+   },
+   "de": {
+    "title": "Seinen Namen vergisst du, seinen Beruf nicht 🤝",
+    "description": "In einem Experiment von 1987 lernten Leute dasselbe Wort entweder als Nachnamen oder als Beruf: Herr Bäcker oder ein Bäcker. Als Beruf blieb es deutlich besser hängen. Ein Beruf knüpft an vieles an, was du schon kennst, etwa Brot und Ofen; ein Nachname ist nur ein leeres Etikett."
+   },
+   "fr": {
+    "title": "Tu oublieras son nom, mais pas son métier 🤝",
+    "description": "Dans une expérience de 1987, le même mot était présenté soit comme nom de famille, soit comme métier : Monsieur Boulanger ou un boulanger. On s'en souvenait mieux comme métier. Un métier s'accroche à plein de choses que tu connais déjà, le pain, le four ; un nom de famille n'est qu'une étiquette vide."
+   },
+   "it": {
+    "title": "Dimenticherai il suo nome, ma non il suo lavoro 🤝",
+    "description": "In un esperimento del 1987 la stessa parola veniva presentata come cognome o come mestiere: il signor Fornaio o un fornaio. Come mestiere veniva ricordata meglio. Un lavoro si aggancia a tante cose che conosci già, il pane, il forno; un cognome è solo un'etichetta vuota."
+   },
+   "ru": {
+    "title": "Ты забудешь его имя, но запомнишь профессию 🤝",
+    "description": "В эксперименте 1987 года одно и то же слово давали то как фамилию, то как профессию: господин Пекарь или пекарь. Как профессию его запоминали лучше. Профессия цепляется за то, что ты уже знаешь, например хлеб и печь, а фамилия остаётся пустым ярлыком."
+   },
+   "ar": {
+    "title": "ستنسى اسمه لكنك ستتذكر مهنته 🤝",
+    "description": "في تجربة أُجريت عام 1987 قُدِّمت الكلمة نفسها مرة كاسم عائلة ومرة كمهنة: السيد خبّاز أو خبّاز. وتذكّرها الناس أسهل حين كانت مهنة. فالمهنة ترتبط بأشياء تعرفها مسبقًا كالخبز والفرن، أما اسم العائلة فمجرد ملصق فارغ."
+   },
+   "hi": {
+    "title": "आप उसका नाम भूल जाएँगे, पर उसका काम नहीं 🤝",
+    "description": "1987 के एक प्रयोग में एक ही शब्द कभी उपनाम और कभी पेशे के रूप में बताया गया: Baker यानी नानबाई। लोगों को वह पेशे के रूप में ज़्यादा आसानी से याद रहा। पेशा उन चीज़ों से जुड़ जाता है जिन्हें आप पहले से जानते हैं, जैसे ब्रेड और तंदूर; उपनाम बस एक ख़ाली लेबल है।"
+   },
+   "id": {
+    "title": "Kamu akan lupa namanya, tapi ingat pekerjaannya 🤝",
+    "description": "Dalam eksperimen tahun 1987, kata yang sama diberikan sebagai nama keluarga atau sebagai pekerjaan: Baker, yang berarti tukang roti. Orang lebih mudah mengingatnya sebagai pekerjaan. Pekerjaan terhubung dengan hal yang sudah kamu kenal, seperti roti dan oven; nama keluarga hanya label kosong."
+   },
+   "ja": {
+    "title": "名前は忘れても、職業は覚えている 🤝",
+    "description": "1987年の実験では、同じ単語を名字として、あるいは職業として覚えてもらいました。英語のBaker（パン屋）です。職業として聞いた人のほうがよく覚えていました。職業はパンやオーブンなど、すでに知っている多くのことと結びつきますが、名字は意味のない空のラベルだからです。"
+   },
+   "ko": {
+    "title": "이름은 잊어도 직업은 기억한다 🤝",
+    "description": "1987년 실험에서 같은 단어를 성 또는 직업으로 알려 주었습니다. 영어 Baker, 즉 제빵사입니다. 사람들은 직업으로 들었을 때 더 잘 기억했습니다. 직업은 빵이나 오븐처럼 이미 아는 많은 것과 연결되지만, 성은 아무것도 붙잡지 못하는 빈 이름표이기 때문입니다."
+   },
+   "pl": {
+    "title": "Zapomnisz jego imię, ale nie zawód 🤝",
+    "description": "W eksperymencie z 1987 roku to samo słowo podawano jako nazwisko albo jako zawód: pan Piekarz lub piekarz. Jako zawód zapamiętywano je lepiej. Zawód łączy się z tym, co już znasz, jak chleb i piec, a nazwisko jest tylko pustą etykietą."
+   },
+   "nl": {
+    "title": "Zijn naam vergeet je, zijn beroep niet 🤝",
+    "description": "In een experiment uit 1987 leerden mensen hetzelfde woord als achternaam of als beroep: meneer Bakker of een bakker. Als beroep onthielden ze het beter. Een beroep haakt in op dingen die je al kent, zoals brood en een oven; een achternaam is een leeg etiket."
+   },
+   "uk": {
+    "title": "Ти забудеш його ім'я, але запам'ятаєш професію 🤝",
+    "description": "В експерименті 1987 року одне й те саме слово подавали то як прізвище, то як професію: пан Пекар або пекар. Як професію його запам'ятовували краще. Професія чіпляється за те, що ти вже знаєш, наприклад хліб і піч, а прізвище лишається порожньою етикеткою."
+   },
+   "vi": {
+    "title": "Bạn sẽ quên tên anh ấy nhưng nhớ nghề của anh ấy 🤝",
+    "description": "Trong một thí nghiệm năm 1987, cùng một từ được đưa ra khi là họ, khi là nghề nghiệp: Baker, nghĩa là thợ làm bánh. Mọi người nhớ nó dễ hơn khi đó là nghề. Nghề nghiệp gắn với những thứ bạn đã biết như bánh mì, lò nướng; còn họ chỉ là một cái nhãn trống."
+   },
+   "az": {
+    "title": "Onun adını unudacaqsan, peşəsini yox 🤝",
+    "description": "1987-ci ildəki bir təcrübədə eyni söz bəzilərinə soyad, bəzilərinə peşə kimi deyildi: Baker, yəni çörəkçi. Peşə kimi eşidənlər onu daha asan xatırladı. Peşə çörək, təndir kimi artıq bildiyin şeylərə bağlanır, soyad isə heç nəyə bağlanmayan boş etiketdir."
+   },
+   "ro": {
+    "title": "O să-i uiți numele, dar nu și meseria 🤝",
+    "description": "Într-un experiment din 1987, același cuvânt era prezentat fie ca nume de familie, fie ca meserie: domnul Brutaru sau un brutar. Ca meserie a fost ținut minte mai ușor. O meserie se leagă de lucruri pe care le știi deja, pâine și cuptor; un nume de familie e doar o etichetă goală."
+   }
+  }
+ }
+}

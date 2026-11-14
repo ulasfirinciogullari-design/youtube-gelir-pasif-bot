@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0150",
+ "topic": "Bir elle daire, öbür elle kare çizmek mümkün mü? İki el neden birbirine karışır?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "hand",
+  "pencil"
+ ],
+ "stock_hint": "hands drawing pencil",
+ "script": {
+  "title": "Bir elinle daire, öbürüyle kare çizmek mümkün mü? ✍️",
+  "hook_text": "İKİ ELLE İKİ ŞEKİL ÇİZİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Sol el daire, sağ el kare çizmeye çalışıyor.",
+    "visual": "close-up of two hands each holding a pencil, drawing on white paper at the same time",
+    "stock_query": "hands drawing pencil",
+    "source": "stock",
+    "callout": "DAİRE + KARE"
+   },
+   {
+    "text": "Kolay sanırsın; ama çoğu insanda iki şekil birbirine benzemeye başlar.",
+    "visual": "close-up of a hand drawing a circle with a pencil on paper",
+    "stock_query": "hand drawing circle",
+    "source": "stock",
+    "callout": "ŞEKİLLER KARIŞIR"
+   },
+   {
+    "text": "Beynin iki yarısını bağlayan köprüsü ameliyatla kesilmiş hastalar ise bunu daha düzgün yapıyor.",
+    "visual": "close-up of an anatomical model of the human brain showing the two hemispheres",
+    "stock_query": "brain model",
+    "source": "stock",
+    "callout": "KÖPRÜSÜ KESİK BEYİN",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Cevap: mümkün ama zor, çünkü o köprü sağlamken iki elin hareket planı birbirine sızar.",
+    "visual": "glowing illustration of a human brain with signals passing between the two halves",
+    "stock_query": "human brain",
+    "source": "stock",
+    "callout": "PLANLAR SIZAR",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Kâğıdı al, sıra sende:",
+    "visual": "close-up of a hand holding a pencil above a blank sheet of paper",
+    "stock_query": "hand pencil paper",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Bir elinle daire, öbürüyle kare çizmeyi denediğinde iki şekil birbirine benzemeye başlar. 1996'da yayımlanan bir çalışmada, epilepsi tedavisi için beyninin iki yarısını bağlayan köprüsü (korpus kallozum) kesilmiş hastalarda bu karışma görülmedi; iki elleriyle farklı şekilleri daha düzgün çizebildiler. Köprü sağlamken iki elin hareket planı birbirine sızar.",
+  "tags": [
+   "iki elle farklı şekil",
+   "daire kare çizme testi",
+   "beyin",
+   "korpus kallozum",
+   "split beyin",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen denedin mi: hangisi bozuldu, daire mi, kare mi?",
+  "en_title": "Can you draw a circle with one hand and a square with the other? ✍️",
+  "en_description": "Try it: for most people the two shapes start to look alike. In a 1996 study, patients whose corpus callosum, the bridge between the brain's two halves, had been cut drew different shapes with each hand more accurately than people with intact brains. With the bridge intact, the movement plans of the two hands leak into each other.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Bir elle daire, öbür elle kare çizmek mümkün mü, iki el neden birbirine karışır?\n\nMümkün ama çoğu insan için zor: iki el aynı anda farklı şekiller çizmeye çalışınca şekiller birbirine benzemeye başlar. Elizabeth Franz, Richard Ivry, Michael Gazzaniga ve arkadaşlarının 1996'da Psychological Science dergisinde yayımlanan çalışmasında, sağlıklı katılımcıların iki eli birbirinin yönünü ve boyunu bozarken, epilepsi tedavisi için beynin iki yarısını bağlayan köprüsü (korpus kallozum) kesilmiş hastalarda bu karışma görülmedi; bir hasta iki eliyle farklı şekilleri sağlıklı katılımcılardan daha düzgün çizdi. Araştırmacılara göre iki elin uzaydaki hareketinin birbirine bağlanması, beynin iki yarısının bu köprü üzerinden konuşmasından kaynaklanıyor. Psikoloji ders kitapları da beyni ikiye ayrılmış kişilerin aynı anda iki farklı şekil çizebildiğini anlatır.\n\nSen denedin mi: hangisi bozuldu, daire mi, kare mi?",
+  "hashtags": [
+   "#beyin",
+   "#mümkünmü",
+   "#insanvücudu",
+   "#deney",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "iki elle farklı şekil",
+   "bir elle daire bir elle kare",
+   "daire kare çizme testi",
+   "iki elle aynı anda çizmek",
+   "iki el koordinasyonu",
+   "beyin testi",
+   "beynin iki yarısı",
+   "korpus kallozum",
+   "split beyin",
+   "bölünmüş beyin deneyi",
+   "sağ beyin sol beyin",
+   "beyin nasıl çalışır",
+   "el koordinasyonu",
+   "evde deney",
+   "mümkün mü",
+   "insan vücudu",
+   "beyin",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "split brain",
+   "bimanual coordination"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can you draw a circle with one hand and a square with the other? ✍️",
+    "description": "For most people the two shapes start to look alike. In a 1996 study, patients whose corpus callosum, the bridge between the brain's halves, had been cut drew different shapes with each hand more accurately. With the bridge intact, the plans of the two hands leak into each other."
+   },
+   "es": {
+    "title": "¿Puedes dibujar un círculo con una mano y un cuadrado con la otra? ✍️",
+    "description": "A la mayoría se le acaban pareciendo las dos figuras. En un estudio de 1996, pacientes a los que se les había cortado el cuerpo calloso, el puente entre las dos mitades del cerebro, dibujaron figuras distintas con cada mano con más precisión. Con el puente intacto, los planes de ambas manos se mezclan."
+   },
+   "pt": {
+    "title": "Dá para desenhar um círculo com uma mão e um quadrado com a outra? ✍️",
+    "description": "Para a maioria das pessoas, as duas formas começam a ficar parecidas. Num estudo de 1996, pacientes que tiveram o corpo caloso cortado, a ponte entre as metades do cérebro, desenharam formas diferentes com cada mão com mais precisão. Com a ponte intacta, os planos das duas mãos se misturam."
+   },
+   "de": {
+    "title": "Kannst du mit einer Hand einen Kreis und mit der anderen ein Quadrat zeichnen? ✍️",
+    "description": "Bei den meisten gleichen sich die beiden Formen an. In einer Studie von 1996 zeichneten Patienten, deren Balken, also die Brücke zwischen den Hirnhälften, durchtrennt war, mit jeder Hand genauer verschiedene Formen. Ist die Brücke intakt, vermischen sich die Bewegungspläne beider Hände."
+   },
+   "fr": {
+    "title": "Peux-tu dessiner un cercle d'une main et un carré de l'autre ? ✍️",
+    "description": "Chez la plupart des gens, les deux formes finissent par se ressembler. Dans une étude de 1996, des patients dont le corps calleux, le pont entre les deux moitiés du cerveau, avait été sectionné dessinaient deux formes différentes avec plus de précision. Quand le pont est intact, les plans des deux mains se mélangent."
+   },
+   "it": {
+    "title": "Riesci a disegnare un cerchio con una mano e un quadrato con l'altra? ✍️",
+    "description": "Per quasi tutti le due figure finiscono per somigliarsi. In uno studio del 1996, pazienti a cui era stato reciso il corpo calloso, il ponte tra le due metà del cervello, disegnavano forme diverse con ciascuna mano in modo più preciso. Con il ponte intatto, i piani delle due mani si mescolano."
+   },
+   "ru": {
+    "title": "Можно ли одной рукой рисовать круг, а другой квадрат? ✍️",
+    "description": "У большинства людей две фигуры начинают походить друг на друга. В исследовании 1996 года пациенты с рассечённым мозолистым телом, мостом между полушариями, рисовали разными руками разные фигуры точнее. Пока мост цел, планы движений двух рук смешиваются."
+   },
+   "ar": {
+    "title": "هل يمكنك رسم دائرة بيد ومربع باليد الأخرى في الوقت نفسه؟ ✍️",
+    "description": "عند معظم الناس يبدأ الشكلان في التشابه. وفي دراسة عام 1996 رسم مرضى قُطع لديهم الجسم الثفني، وهو الجسر بين نصفي الدماغ، شكلين مختلفين بيديهم بدقة أكبر. فعندما يكون الجسر سليمًا تتسرب خطة حركة كل يد إلى الأخرى."
+   },
+   "hi": {
+    "title": "क्या एक हाथ से गोला और दूसरे से चौकोर बनाना मुमकिन है? ✍️",
+    "description": "ज़्यादातर लोगों में दोनों आकृतियाँ एक-दूसरे जैसी बनने लगती हैं। 1996 के एक अध्ययन में जिन मरीज़ों के दिमाग़ के दोनों हिस्सों को जोड़ने वाला पुल, कॉर्पस कैलोसम, काटा गया था, उन्होंने दोनों हाथों से अलग आकृतियाँ ज़्यादा सटीक बनाईं। पुल सलामत हो तो दोनों हाथों की योजना आपस में घुल जाती है।"
+   },
+   "id": {
+    "title": "Bisakah menggambar lingkaran dengan satu tangan dan kotak dengan tangan lain? ✍️",
+    "description": "Pada kebanyakan orang, kedua bentuk itu mulai mirip satu sama lain. Dalam studi tahun 1996, pasien yang corpus callosum-nya, jembatan antara dua belahan otak, telah dipotong menggambar bentuk berbeda dengan tiap tangan secara lebih tepat. Selama jembatan itu utuh, rencana gerak kedua tangan saling bocor."
+   },
+   "ja": {
+    "title": "片手で円、もう片手で四角を同時に描ける？ ✍️",
+    "description": "ほとんどの人は、二つの形がだんだん似てきてしまいます。1996年の研究では、左右の脳をつなぐ橋である脳梁を切断した患者のほうが、両手で別々の形を正確に描けました。橋がつながっていると、左右の手の動きの計画が互いに混ざってしまうのです。"
+   },
+   "ko": {
+    "title": "한 손으로 원, 다른 손으로 네모를 동시에 그릴 수 있을까? ✍️",
+    "description": "대부분의 사람은 두 도형이 점점 비슷해집니다. 1996년 연구에서 좌우 뇌를 잇는 다리인 뇌량을 절단한 환자들은 양손으로 서로 다른 도형을 더 정확하게 그렸습니다. 다리가 온전하면 두 손의 움직임 계획이 서로 섞이기 때문입니다."
+   },
+   "pl": {
+    "title": "Czy da się narysować koło jedną ręką, a kwadrat drugą? ✍️",
+    "description": "U większości ludzi oba kształty zaczynają się do siebie upodabniać. W badaniu z 1996 roku pacjenci z przeciętym ciałem modzelowatym, mostem między półkulami mózgu, rysowali różne kształty każdą ręką dokładniej. Gdy most jest cały, plany ruchu obu rąk się mieszają."
+   },
+   "nl": {
+    "title": "Kun je met de ene hand een cirkel en met de andere een vierkant tekenen? ✍️",
+    "description": "Bij de meeste mensen gaan de twee vormen op elkaar lijken. In een studie uit 1996 tekenden patiënten bij wie de hersenbalk, de brug tussen de twee hersenhelften, was doorgesneden met elke hand nauwkeuriger een andere vorm. Is de brug intact, dan lekken de plannen van beide handen in elkaar over."
+   },
+   "uk": {
+    "title": "Чи можна однією рукою малювати коло, а іншою квадрат? ✍️",
+    "description": "У більшості людей дві фігури починають бути схожими. У дослідженні 1996 року пацієнти з перерізаним мозолистим тілом, мостом між півкулями, малювали різними руками різні фігури точніше. Поки міст цілий, плани рухів двох рук змішуються."
+   },
+   "vi": {
+    "title": "Có thể vẽ hình tròn bằng tay này và hình vuông bằng tay kia không? ✍️",
+    "description": "Với hầu hết mọi người, hai hình bắt đầu giống nhau. Trong một nghiên cứu năm 1996, những bệnh nhân đã bị cắt thể chai, cây cầu nối hai nửa não, vẽ hai hình khác nhau bằng hai tay chính xác hơn. Khi cây cầu còn nguyên, kế hoạch cử động của hai tay lẫn vào nhau."
+   },
+   "az": {
+    "title": "Bir əllə dairə, o biri əllə kvadrat çəkmək mümkündürmü? ✍️",
+    "description": "Çox insanda iki fiqur bir-birinə bənzəməyə başlayır. 1996-cı il araşdırmasında beynin iki yarısını birləşdirən körpü, yəni döyənəkli cisim kəsilmiş xəstələr iki əllə fərqli fiqurları daha dəqiq çəkdi. Körpü sağlam olanda iki əlin hərəkət planı bir-birinə qarışır."
+   },
+   "ro": {
+    "title": "Poți desena un cerc cu o mână și un pătrat cu cealaltă? ✍️",
+    "description": "La majoritatea oamenilor, cele două forme încep să semene între ele. Într-un studiu din 1996, pacienții cărora li se secționase corpul calos, puntea dintre cele două emisfere, au desenat cu fiecare mână forme diferite mai precis. Cât timp puntea e intactă, planurile celor două mâini se amestecă."
+   }
+  }
+ }
+}

@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0153",
+ "topic": "Kedi sabah erken neden uyandırır? Kedim beni sabah beşte uyandırıyor, ne yapmalıyım?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat face close up",
+ "script": {
+  "title": "Seni sabah erken uyandıran kediyi sen eğittin 🐱",
+  "hook_text": "KEDİN SENİ NEDEN ERKEN UYANDIRIR?",
+  "scenes": [
+   {
+    "text": "Bu kedi seni yine şafakta uyandıracak.",
+    "visual": "close-up of a cat's face staring straight into the camera from a pillow in soft early morning light",
+    "stock_query": "cat face close up",
+    "source": "stock",
+    "callout": "ŞAFAKTA ALARM"
+   },
+   {
+    "text": "Kediler gece hayvanı sanılır ama değil; en hareketli oldukları saatler şafak ve alacakaranlık.",
+    "visual": "close-up of a cat's eyes glowing in dim light",
+    "stock_query": "cat eyes",
+    "source": "stock",
+    "callout": "GECE HAYVANI DEĞİL"
+   },
+   {
+    "text": "Doğada avladığı kuşlar ve fareler de en çok o saatlerde ortalıkta.",
+    "visual": "a cat crouching and watching birds through a window",
+    "stock_query": "cat window watching",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Ama seni yataktan kaldıran asıl sebep sensin.",
+    "visual": "a cat sitting on a bed looking at the camera",
+    "stock_query": "cat bed",
+    "source": "stock",
+    "callout": "SEBEP SENSİN"
+   },
+   {
+    "text": "Uyandırdığında kalkıp mama veriyorsan, ona bunun işe yaradığını öğretiyorsun.",
+    "visual": "a cat eating dry food from a bowl",
+    "stock_query": "cat eating food",
+    "source": "stock",
+    "callout": "MAMA = ÖDÜL"
+   },
+   {
+    "text": "Yarın da kalkarsan, emin ol:",
+    "visual": "close-up of a cat's face looking into the camera",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kediler gece hayvanı değil; şafakta ve alacakaranlıkta en hareketli olan, avlarının da en çok ortalıkta olduğu saatlerde uyanan hayvanlar. Cornell Üniversitesi'nden hayvan davranışı uzmanı Katherine Houpt'a göre kedin seni uyandırdığında kalkıp mama verirsen bu davranışı farkında olmadan ödüllendirmiş olursun; kedi uyandırmanın işe yaradığını öğrenir.",
+  "tags": [
+   "kedi",
+   "kedi sabah erken uyandırıyor",
+   "kedi neden uyandırır",
+   "kedi davranışları",
+   "kedi eğitimi",
+   "kediler",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin kedin seni en çok ne zaman uyandırıyor: şafakta mı, gece yarısı mı?",
+  "en_title": "You trained your cat to wake you up at dawn 🐱",
+  "en_description": "Cats aren't truly nocturnal: they're crepuscular, most active at dawn and dusk, when birds and mice are on the move. But the real reason your cat wakes you is you. According to Cornell animal behaviorist Katherine Houpt, getting up to feed a cat that wakes you positively reinforces the behavior, so it learns that waking you works.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi sabah erken neden uyandırır, kedim beni şafakta uyandırıyorsa ne yapmalıyım?\n\nKediler aslında gece hayvanı değil; şafakta ve akşam alacakaranlığında en hareketli olan (krepüsküler) hayvanlar. Hayvan davranışı uzmanı Stephen Quandt'a göre kuşlar ve fareler şafakta çok hareketlidir ve kediler bunu kullanacak şekilde evrilmiştir; bu içgüdü evde yaşayan kedilerde de sürer. Ama asıl mesele senin tepkin: Cornell Üniversitesi Veteriner Fakültesi'nden Katherine Houpt'a göre seni uyandıran kediye kalkıp mama verirsen bu istenmeyen davranışı farkında olmadan ödüllendirirsin. San Francisco SPCA da kedin seni uyandırınca onu beslememeyi ya da onunla oynamamayı, yoksa her sabah tekrarlayacağını söylüyor. Önerilenler: sabah mamasını geciktirmek, yatmadan önce kısa bir oyunla enerjisini atmak ve küçük bir öğün vermek.\n\nSenin kedin seni en çok ne zaman uyandırıyor: şafakta mı, gece yarısı mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi sabah erken uyandırıyor",
+   "kedi neden uyandırır",
+   "kedim beni uyandırıyor",
+   "kedi sabah miyavlıyor",
+   "kedi gece uyutmuyor",
+   "kedi gece hayvanı mı",
+   "kedi şafakta neden uyanır",
+   "kedi mama saati",
+   "kedi eğitimi",
+   "kedi davranışları",
+   "kedi psikolojisi",
+   "kedi bakımı",
+   "kedi sahibi",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat wakes me up",
+   "crepuscular cats"
+  ],
+  "localizations": {
+   "en": {
+    "title": "You trained your cat to wake you up at dawn 🐱",
+    "description": "Cats aren't truly nocturnal: they're most active at dawn and dusk, when birds and mice are on the move. But the real reason your cat wakes you is you. Getting up to feed a cat that wakes you rewards the behavior, so it learns that waking you works."
+   },
+   "es": {
+    "title": "Tú le enseñaste a tu gato a despertarte al amanecer 🐱",
+    "description": "Los gatos no son realmente nocturnos: están más activos al amanecer y al anochecer, cuando pájaros y ratones se mueven más. Pero la verdadera razón de que te despierte eres tú. Si te levantas a darle comida cuando te despierta, premias esa conducta y aprende que funciona."
+   },
+   "pt": {
+    "title": "Foi você que ensinou seu gato a te acordar de madrugada 🐱",
+    "description": "Gatos não são realmente noturnos: ficam mais ativos ao amanhecer e ao anoitecer, quando pássaros e ratos estão em movimento. Mas o verdadeiro motivo de ele te acordar é você. Se você levanta para dar comida quando ele te acorda, recompensa o comportamento e ele aprende que funciona."
+   },
+   "de": {
+    "title": "Du hast deiner Katze beigebracht, dich im Morgengrauen zu wecken 🐱",
+    "description": "Katzen sind eigentlich nicht nachtaktiv, sondern in der Dämmerung am aktivsten, wenn Vögel und Mäuse unterwegs sind. Der wahre Grund fürs frühe Wecken bist aber du. Wer aufsteht und füttert, wenn die Katze weckt, belohnt das Verhalten, und sie lernt, dass es funktioniert."
+   },
+   "fr": {
+    "title": "C'est toi qui as appris à ton chat à te réveiller à l'aube 🐱",
+    "description": "Les chats ne sont pas vraiment nocturnes : ils sont surtout actifs à l'aube et au crépuscule, quand oiseaux et souris s'activent. Mais la vraie raison de ces réveils, c'est toi. Te lever pour le nourrir quand il te réveille récompense ce comportement, et il apprend que ça marche."
+   },
+   "it": {
+    "title": "Sei stato tu a insegnare al tuo gatto a svegliarti all'alba 🐱",
+    "description": "I gatti non sono davvero notturni: sono più attivi all'alba e al tramonto, quando uccelli e topi si muovono. Ma il vero motivo per cui ti sveglia sei tu. Se ti alzi a dargli da mangiare quando ti sveglia, premi quel comportamento e lui impara che funziona."
+   },
+   "ru": {
+    "title": "Это ты научил кошку будить тебя на рассвете 🐱",
+    "description": "Кошки на самом деле не ночные животные: они активнее всего на рассвете и в сумерках, когда двигаются птицы и мыши. Но настоящая причина ранних побудок — ты. Если ты встаёшь и кормишь кошку, когда она будит, ты поощряешь это поведение, и она понимает, что оно работает."
+   },
+   "ar": {
+    "title": "أنت من علّم قطتك أن توقظك عند الفجر 🐱",
+    "description": "القطط ليست ليلية حقًا، فهي أنشط ما تكون عند الفجر والغسق حين تتحرك الطيور والفئران. لكن السبب الحقيقي لإيقاظك هو أنت. فإذا نهضت لإطعامها كلما أيقظتك فأنت تكافئ هذا السلوك، فتتعلم أنه ينجح."
+   },
+   "hi": {
+    "title": "बिल्ली को सुबह-सुबह जगाना आपने ही सिखाया है 🐱",
+    "description": "बिल्लियाँ असल में रात की जीव नहीं हैं; वे भोर और शाम के धुंधलके में सबसे सक्रिय होती हैं, जब पक्षी और चूहे घूमते हैं। लेकिन आपको जगाने की असली वजह आप ख़ुद हैं। अगर बिल्ली के जगाने पर आप उठकर खाना देते हैं, तो आप इस आदत को इनाम देते हैं और वह सीख जाती है कि यह तरीका काम करता है।"
+   },
+   "id": {
+    "title": "Kamulah yang melatih kucingmu membangunkanmu saat subuh 🐱",
+    "description": "Kucing sebenarnya bukan hewan malam; mereka paling aktif saat fajar dan senja, ketika burung dan tikus banyak bergerak. Tapi alasan sebenarnya kucing membangunkanmu adalah kamu. Kalau kamu bangun dan memberinya makan setiap kali dibangunkan, kamu memberi hadiah pada kebiasaan itu dan ia belajar bahwa caranya berhasil."
+   },
+   "ja": {
+    "title": "猫に早朝起こされるのは、あなたがそう教えたから 🐱",
+    "description": "猫は実は夜行性ではなく、鳥やネズミが動き回る明け方と夕暮れに最も活発になります。でも、あなたを起こす本当の理由はあなた自身です。起こされるたびに起きてごはんをあげると、その行動にごほうびを与えることになり、猫は「起こせばうまくいく」と覚えます。"
+   },
+   "ko": {
+    "title": "새벽마다 깨우는 고양이, 사실 네가 가르친 것 🐱",
+    "description": "고양이는 사실 야행성이 아니라 새와 쥐가 활발한 새벽과 해 질 녘에 가장 활동적입니다. 하지만 고양이가 당신을 깨우는 진짜 이유는 당신입니다. 깨울 때마다 일어나 밥을 주면 그 행동에 보상을 주는 셈이라, 고양이는 깨우면 통한다는 걸 배웁니다."
+   },
+   "pl": {
+    "title": "To ty nauczyłeś kota budzić cię o świcie 🐱",
+    "description": "Koty nie są tak naprawdę nocne: najaktywniejsze są o świcie i o zmierzchu, gdy ruszają się ptaki i myszy. Ale prawdziwym powodem pobudek jesteś ty. Jeśli wstajesz i karmisz kota, gdy cię budzi, nagradzasz to zachowanie, a on uczy się, że to działa."
+   },
+   "nl": {
+    "title": "Jij hebt je kat geleerd je bij zonsopgang te wekken 🐱",
+    "description": "Katten zijn niet echt nachtdieren: ze zijn het actiefst bij zonsopgang en schemering, als vogels en muizen in beweging zijn. Maar de echte reden dat je kat je wekt, ben jij. Sta je op om eten te geven als hij je wekt, dan beloon je dat gedrag en leert hij dat het werkt."
+   },
+   "uk": {
+    "title": "Це ти навчив кота будити тебе на світанку 🐱",
+    "description": "Коти насправді не нічні тварини: вони найактивніші на світанку й у сутінках, коли рухаються птахи та миші. Але справжня причина ранніх побудок — ти. Якщо ти встаєш і годуєш кота, коли він будить, ти заохочуєш цю поведінку, і він засвоює, що це працює."
+   },
+   "vi": {
+    "title": "Chính bạn đã dạy mèo đánh thức bạn lúc rạng sáng 🐱",
+    "description": "Mèo thật ra không phải loài sống về đêm; chúng hoạt động mạnh nhất lúc bình minh và chạng vạng, khi chim và chuột ra ngoài. Nhưng lý do thật sự khiến mèo đánh thức bạn chính là bạn. Nếu bạn dậy cho mèo ăn mỗi lần bị gọi dậy, bạn đang thưởng cho hành vi đó và mèo học được rằng cách này hiệu quả."
+   },
+   "az": {
+    "title": "Səni sübh tezdən oyadan pişiyi sən öyrətmisən 🐱",
+    "description": "Pişiklər əslində gecə heyvanı deyil; quşların və siçanların hərəkətdə olduğu sübh və axşam alaqaranlığında ən aktiv olurlar. Amma səni oyatmasının əsl səbəbi sənsən. Oyadanda qalxıb yem versən, bu davranışı mükafatlandırırsan və pişik bunun işə yaradığını öyrənir."
+   },
+   "ro": {
+    "title": "Tu ți-ai învățat pisica să te trezească în zori 🐱",
+    "description": "Pisicile nu sunt cu adevărat nocturne: sunt cele mai active în zori și la amurg, când păsările și șoarecii se mișcă. Dar adevăratul motiv pentru care te trezește ești tu. Dacă te ridici să-i dai de mâncare când te trezește, îi răsplătești comportamentul și ea învață că funcționează."
+   }
+  }
+ }
+}

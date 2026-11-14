@@ -1,0 +1,194 @@
+{
+ "id": "mk-c0148",
+ "topic": "Yüzümüzde akar yaşar mı? Demodex akarları neden geceleri yüzümüzde çiftleşir?",
+ "kategori": "vücut",
+ "subject": [
+  "face",
+  "skin"
+ ],
+ "stock_hint": "face skin closeup",
+ "script": {
+  "title": "Yüzünde akarlar yaşıyor, sen uyurken çiftleşiyorlar 🔬",
+  "hook_text": "YÜZÜNDE NE YAŞIYOR?",
+  "scenes": [
+   {
+    "text": "Bu tertemiz yüzde bile şu an akarlar yaşıyor.",
+    "visual": "extreme close-up of clean human facial skin with visible pores on the cheek and nose",
+    "stock_query": "face skin closeup",
+    "source": "stock",
+    "callout": "YÜZÜNDE AKAR"
+   },
+   {
+    "text": "Neredeyse her yetişkinde varlar; doğarken ya da hemen sonra annemizden geçiyorlar.",
+    "visual": "close-up of a mother's cheek gently touching her newborn baby's face",
+    "stock_query": "mother baby face",
+    "source": "stock",
+    "callout": "NEREDEYSE HERKESTE",
+    "subject": [
+     "baby"
+    ]
+   },
+   {
+    "text": "Boyları milimetrenin üçte biri; kirpiklerinin ve gözeneklerinin dibinde yağ yiyorlar.",
+    "visual": "extreme close-up of human eyelashes and the skin around the eye",
+    "stock_query": "eye eyelashes closeup",
+    "source": "stock",
+    "callout": "0,3 MM",
+    "subject": [
+     "eye",
+     "eyelashes"
+    ]
+   },
+   {
+    "text": "Gündüz saklanırlar; geceleri yüzünde gezip çiftleşirler.",
+    "visual": "scientist looking through a microscope in a laboratory, close-up",
+    "stock_query": "microscope laboratory",
+    "source": "stock",
+    "callout": "GECE ÇİFTLEŞİR",
+    "subject": [
+     "microscope"
+    ]
+   },
+   {
+    "text": "Neden gece? Melatonin üretemiyorlar; akşamları cildinin salgıladığı melatoninle hareketleniyorlar.",
+    "visual": "side profile of a calm human face in soft evening light",
+    "stock_query": "face profile",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Aynada göremezsin, ama...",
+    "visual": "close-up of a woman's face looking at herself in a bathroom mirror",
+    "stock_query": "woman face mirror",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "mirror"
+    ]
+   }
+  ],
+  "description": "Yüzündeki gözeneklerde ve kirpiklerinin dibinde Demodex adlı minik akarlar yaşıyor; neredeyse her yetişkinde var. Boyları yaklaşık 0,3 milimetre, gözeneklerdeki yağla (sebum) besleniyorlar ve geceleri yüzünde gezip çiftleşiyorlar. Kendileri melatonin üretemedikleri için akşamları insan derisinin salgıladığı melatonini kullanıyorlar.",
+  "tags": [
+   "yüz akarı",
+   "demodex",
+   "yüzümüzde yaşayan canlılar",
+   "kirpik akarı",
+   "cilt",
+   "insan vücudu",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: yüzünde akar yaşaması mı, gece çiftleşmeleri mi?",
+  "en_title": "Mites live on your face and mate while you sleep 🔬",
+  "en_description": "Almost every adult carries Demodex mites in the pores and eyelash follicles of the face. They are about 0.3 mm long and feed on skin oil. At night they leave their pores and mate on your face. They can't make melatonin, so they use the melatonin your skin releases at dusk to fuel their night activity.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Yüzümüzde akar yaşar mı, Demodex akarı nedir ve neden geceleri hareketlenir?\n\nReading ve Bangor üniversitelerinin 2022'de Molecular Biology and Evolution dergisinde yayımlanan araştırmasına göre Demodex folliculorum akarları neredeyse her insanda yaşıyor. Doğum sırasında ya da hemen sonra anneden bebeğe geçiyorlar, sayıları gözenekler büyüdükçe yetişkinlikte en yükseğe çıkıyor. Boyları yaklaşık 0,3 milimetre; yüzdeki ve kirpik dibindeki kıl köklerinde yaşayıp gözeneklerin salgıladığı yağla (sebum) besleniyorlar. Gündüz gözeneklerde kalıyor, geceleri kıl kökleri arasında gezip yüzümüzde çiftleşiyorlar. Kendileri melatonin üretemedikleri için akşamları insan derisinin salgıladığı melatonini kullanıyorlar. Araştırmacılar bu akarların parazitlikten zararsız bir ortak yaşama doğru evrildiğini, hatta gözeneklerin tıkanmasını önlemek gibi yararlı bir rolleri olabileceğini düşünüyor.\n\nSence hangisi daha tuhaf: yüzünde akar yaşaması mı, gece çiftleşmeleri mi?",
+  "hashtags": [
+   "#yüzakarı",
+   "#demodex",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "yüz akarı",
+   "yüzümüzde akar yaşar mı",
+   "demodex",
+   "demodex akarı",
+   "demodex folliculorum",
+   "kirpik akarı",
+   "yüzde yaşayan akarlar",
+   "yüzümüzde yaşayan canlılar",
+   "akarlar gece çiftleşir",
+   "gözenek",
+   "sebum",
+   "cilt sağlığı",
+   "cilt",
+   "melatonin",
+   "insan vücudu",
+   "vücudumuz hakkında",
+   "mikroskobik canlılar",
+   "biyoloji",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "face mites",
+   "demodex mites"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Mites live on your face and mate while you sleep 🔬",
+    "description": "Almost every adult carries tiny Demodex mites in the pores and eyelash follicles of the face. They are about 0.3 mm long, feed on skin oil and come out at night to mate. They can't make melatonin, so they use the melatonin your skin releases at dusk."
+   },
+   "es": {
+    "title": "En tu cara viven ácaros que se aparean mientras duermes 🔬",
+    "description": "Casi todos los adultos tienen diminutos ácaros Demodex en los poros y en la raíz de las pestañas. Miden unos 0,3 mm, comen la grasa de la piel y salen de noche a aparearse. No producen melatonina, así que usan la que segrega tu piel al anochecer."
+   },
+   "pt": {
+    "title": "Ácaros vivem no seu rosto e acasalam enquanto você dorme 🔬",
+    "description": "Quase todo adulto carrega minúsculos ácaros Demodex nos poros e na raiz dos cílios. Eles medem cerca de 0,3 mm, comem a oleosidade da pele e saem à noite para acasalar. Como não produzem melatonina, usam a que a sua pele libera ao anoitecer."
+   },
+   "de": {
+    "title": "In deinem Gesicht leben Milben, die sich nachts paaren 🔬",
+    "description": "Fast jeder Erwachsene trägt winzige Demodex-Milben in den Poren und Wimpernwurzeln des Gesichts. Sie sind etwa 0,3 mm lang, fressen Hauttalg und kommen nachts zur Paarung heraus. Melatonin können sie nicht selbst bilden, sie nutzen das, was deine Haut in der Dämmerung abgibt."
+   },
+   "fr": {
+    "title": "Des acariens vivent sur ton visage et s'accouplent la nuit 🔬",
+    "description": "Presque tous les adultes portent de minuscules acariens Demodex dans les pores et à la racine des cils. Ils mesurent environ 0,3 mm, se nourrissent du sébum et sortent la nuit pour s'accoupler. Incapables de fabriquer de la mélatonine, ils utilisent celle que ta peau libère au crépuscule."
+   },
+   "it": {
+    "title": "Sul tuo viso vivono acari che si accoppiano mentre dormi 🔬",
+    "description": "Quasi ogni adulto ospita minuscoli acari Demodex nei pori e alla radice delle ciglia. Sono lunghi circa 0,3 mm, si nutrono di sebo e di notte escono per accoppiarsi. Non producono melatonina, quindi sfruttano quella che la tua pelle rilascia al tramonto."
+   },
+   "ru": {
+    "title": "На твоём лице живут клещи, и ночью они спариваются 🔬",
+    "description": "Почти у каждого взрослого в порах и у корней ресниц живут крошечные клещи демодекс. Их длина около 0,3 мм, они питаются кожным салом и по ночам выходят спариваться. Сами вырабатывать мелатонин они не могут и используют тот, что кожа выделяет в сумерках."
+   },
+   "ar": {
+    "title": "على وجهك تعيش عثّات تتزاوج وأنت نائم 🔬",
+    "description": "يحمل كل بالغ تقريبًا عثّات دقيقة اسمها ديموديكس في مسام الوجه وجذور الرموش. يبلغ طولها نحو 0.3 مم وتتغذى على دهون الجلد وتخرج ليلًا للتزاوج. ولأنها لا تستطيع إنتاج الميلاتونين فهي تستخدم ما تفرزه بشرتك عند الغروب."
+   },
+   "hi": {
+    "title": "आपके चेहरे पर घुन रहते हैं, जो आपके सोते समय मिलन करते हैं 🔬",
+    "description": "लगभग हर वयस्क के चेहरे के रोमछिद्रों और पलकों की जड़ों में नन्हे डेमोडेक्स घुन रहते हैं। ये करीब 0.3 मिमी लंबे होते हैं, त्वचा का तेल खाते हैं और रात में मिलन के लिए बाहर निकलते हैं। ये ख़ुद मेलाटोनिन नहीं बना पाते, इसलिए शाम को आपकी त्वचा से निकलने वाला मेलाटोनिन इस्तेमाल करते हैं।"
+   },
+   "id": {
+    "title": "Tungau hidup di wajahmu dan kawin saat kamu tidur 🔬",
+    "description": "Hampir setiap orang dewasa membawa tungau Demodex kecil di pori-pori dan akar bulu mata. Panjangnya sekitar 0,3 mm, makan minyak kulit, dan keluar pada malam hari untuk kawin. Karena tidak bisa membuat melatonin, mereka memakai melatonin yang dilepaskan kulitmu saat senja."
+   },
+   "ja": {
+    "title": "あなたの顔にはダニが住み、寝ている間に交尾している 🔬",
+    "description": "ほぼすべての大人の顔の毛穴やまつ毛の根元には、ニキビダニ（デモデックス）がいます。体長は約0.3ミリで皮脂を食べ、夜になると出てきて交尾します。自分ではメラトニンを作れないため、夕方に人の皮膚が出すメラトニンを利用しています。"
+   },
+   "ko": {
+    "title": "네 얼굴엔 진드기가 살고, 네가 자는 동안 짝짓기한다 🔬",
+    "description": "거의 모든 성인의 얼굴 모공과 속눈썹 뿌리에는 작은 모낭충(데모덱스)이 삽니다. 길이는 약 0.3mm로 피지를 먹고, 밤이 되면 나와서 짝짓기를 합니다. 스스로 멜라토닌을 만들지 못해 해 질 무렵 피부가 내보내는 멜라토닌을 이용합니다."
+   },
+   "pl": {
+    "title": "Na twojej twarzy żyją roztocza, które parzą się, gdy śpisz 🔬",
+    "description": "Prawie każdy dorosły ma w porach i u nasady rzęs maleńkie roztocza Demodex. Mają około 0,3 mm, żywią się łojem i nocą wychodzą, by się rozmnażać. Same nie wytwarzają melatoniny, więc korzystają z tej, którą twoja skóra wydziela o zmierzchu."
+   },
+   "nl": {
+    "title": "Op je gezicht leven mijten die paren terwijl je slaapt 🔬",
+    "description": "Bijna elke volwassene draagt piepkleine Demodex-mijten in de poriën en aan de wortels van de wimpers. Ze zijn zo'n 0,3 mm lang, eten huidvet en komen 's nachts tevoorschijn om te paren. Zelf maken ze geen melatonine, dus gebruiken ze wat jouw huid in de schemering afgeeft."
+   },
+   "uk": {
+    "title": "На твоєму обличчі живуть кліщі, які паруються, поки ти спиш 🔬",
+    "description": "Майже кожен дорослий має в порах і біля коренів вій крихітних кліщів демодекс. Їхня довжина близько 0,3 мм, вони живляться шкірним салом і вночі виходять паруватися. Самі виробляти мелатонін вони не можуть, тож використовують той, що шкіра виділяє в сутінках."
+   },
+   "vi": {
+    "title": "Trên mặt bạn có những con ve giao phối khi bạn ngủ 🔬",
+    "description": "Hầu hết người trưởng thành đều mang những con ve Demodex tí hon trong lỗ chân lông và chân lông mi. Chúng dài khoảng 0,3 mm, ăn dầu trên da và ra ngoài vào ban đêm để giao phối. Vì không tự tạo được melatonin, chúng dùng melatonin mà da bạn tiết ra lúc chạng vạng."
+   },
+   "az": {
+    "title": "Üzündə gənələr yaşayır, sən yatanda cütləşirlər 🔬",
+    "description": "Demək olar ki, hər yetkin insanın üz məsamələrində və kirpik diblərində kiçik Demodex gənələri yaşayır. Boyları təxminən 0,3 mm-dir, dəri yağı ilə qidalanır və gecə cütləşmək üçün çölə çıxırlar. Özləri melatonin hasil edə bilmədikləri üçün axşam dərinin ifraz etdiyi melatonindən istifadə edirlər."
+   },
+   "ro": {
+    "title": "Pe fața ta trăiesc acarieni care se împerechează cât dormi 🔬",
+    "description": "Aproape fiecare adult are acarieni Demodex minusculi în porii feței și la rădăcina genelor. Au cam 0,3 mm, se hrănesc cu sebum și ies noaptea să se împerecheze. Nu pot produce melatonină, așa că o folosesc pe cea pe care pielea ta o eliberează la amurg."
+   }
+  }
+ }
+}

@@ -1,0 +1,173 @@
+{
+ "id": "mk-c0154",
+ "topic": "Kertenkele kopan kuyruğunu yeniden çıkarabilir mi? Kertenkelenin kuyruğu neden kopar?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "lizard",
+  "gecko"
+ ],
+ "stock_hint": "lizard close up",
+ "script": {
+  "title": "Kertenkele kopan kuyruğunu yeniden çıkarabilir mi? 🦎",
+  "hook_text": "KOPAN KUYRUK GERİ ÇIKAR MI?",
+  "scenes": [
+   {
+    "text": "Bu kertenkele kuyruğunu kendisi koparıp atabilir.",
+    "visual": "close-up of a lizard's head and long tail on a sunny rock, the lizard looking into the camera",
+    "stock_query": "lizard close up",
+    "source": "stock",
+    "callout": "KUYRUĞUNU ATAR"
+   },
+   {
+    "text": "Kuyruğunda doğuştan kırılma çizgileri var; kopunca damarları anında büzülür.",
+    "visual": "close-up of a lizard's long scaly tail on a stone",
+    "stock_query": "lizard tail",
+    "source": "stock",
+    "callout": "KIRILMA ÇİZGİSİ"
+   },
+   {
+    "text": "Bir deneyde kopan kuyruk yarım saat zıplayıp kıvrıldı; düşman onunla uğraşırken kertenkele kaçar.",
+    "visual": "a gecko scurrying quickly across a wall",
+    "stock_query": "gecko lizard",
+    "source": "stock",
+    "callout": "30 DAKİKA DANS"
+   },
+   {
+    "text": "Cevap evet: kuyruk geri çıkar ama aylar sürer ve içinde kemik yerine kıkırdak olur.",
+    "visual": "close-up of a lizard with a short, newly regrown tail of a different colour",
+    "stock_query": "lizard rock",
+    "source": "stock",
+    "callout": "KEMİK YERİNE KIKIRDAK"
+   },
+   {
+    "text": "Bu kadar pahalıya patlasa da, gerekirse...",
+    "visual": "close-up of a lizard's face looking at the camera",
+    "stock_query": "lizard head",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Pek çok kertenkele tehlike anında kuyruğunu kendisi koparıp atabilir: kuyruk omurlarında doğuştan kırılma çizgileri vardır ve kopunca damarlar hemen büzülür. Kopan kuyruk bir süre zıplayıp kıvrılarak düşmanın dikkatini dağıtır. Kuyruk yeniden çıkar ama bu aylar sürer; yeni kuyrukta omurlar yerine kıkırdaktan bir çubuk bulunur ve genelde eskisinden kısadır.",
+  "tags": [
+   "kertenkele",
+   "kertenkele kuyruğu",
+   "kuyruk yeniden çıkar mı",
+   "kertenkele kuyruğu neden kopar",
+   "hayvanlar",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kopan kuyruğun yarım saat zıplaması mı, yeni kuyruğun kemiksiz olması mı?",
+  "en_title": "Can a lizard regrow its lost tail? 🦎",
+  "en_description": "Many lizards can drop their tail on purpose: the tail vertebrae have built-in fracture planes, and the blood vessels clamp shut at once. In one experiment, detached gecko tails kept jumping and flipping for about 30 minutes, distracting predators. The tail does grow back, but it takes months, and the new one has a rod of cartilage instead of bones.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kertenkele kopan kuyruğunu yeniden çıkarabilir mi, kertenkelenin kuyruğu neden kopar?\n\nEvet, pek çok kertenkele türü kuyruğunu yeniden çıkarabilir. Bu kertenkelelerin kuyruk omurlarında doğuştan bir kırılma çizgisi bulunur; saldırı anında kuyruk buradan kopar ve kuyruğu besleyen damarlar hemen büzülerek kanamayı durdurur. Clemson ve Calgary üniversitelerinden araştırmacıların Biology Letters dergisinde yayımladığı deneyde, kopan geko kuyrukları yaklaşık otuz dakika boyunca zıplayıp kıvrıldı; araştırmacılara göre bu hareketler düşmanı oyalıyor. Arizona Devlet Üniversitesi'nin yeşil anolis kertenkelesiyle yaptığı 2014 araştırmasına göre işlevsel bir kuyruğun yeniden çıkması altmış günden fazla sürüyor. Yeni kuyrukta omurlar yerine kıkırdaktan bir çubuk bulunur ve kuyruk genelde eskisinden kısa ve soluk olur. Bukalemunlar ve varanlar gibi bazı kertenkeleler ise kuyruğunu koparamaz.\n\nSence hangisi daha şaşırtıcı: kopan kuyruğun yarım saat zıplaması mı, yeni kuyruğun kemiksiz olması mı?",
+  "hashtags": [
+   "#kertenkele",
+   "#hayvanlar",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kertenkele",
+   "kertenkele kuyruğu",
+   "kertenkele kuyruğu neden kopar",
+   "kopan kuyruk yeniden çıkar mı",
+   "kertenkele kuyruğu geri çıkar",
+   "kopan kuyruk neden kıpırdar",
+   "kuyruk koparma",
+   "geko",
+   "sürüngenler",
+   "hayvanların yenilenmesi",
+   "kendini yenileyen hayvanlar",
+   "hayvan savunması",
+   "mümkün mü",
+   "hayvan bilgileri",
+   "hayvanlar",
+   "doğa",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "lizard tail",
+   "tail regeneration"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a lizard regrow its lost tail? 🦎",
+    "description": "Many lizards can drop their tail on purpose along built-in fracture planes. In one experiment, detached gecko tails kept jumping for about half an hour to distract predators. The tail does grow back, but it takes months and the new one has cartilage instead of bones."
+   },
+   "es": {
+    "title": "¿Puede una lagartija regenerar la cola que perdió? 🦎",
+    "description": "Muchas lagartijas pueden soltar la cola a propósito por unos puntos de rotura que traen de nacimiento. En un experimento, colas de geco desprendidas siguieron saltando cerca de media hora para distraer al depredador. La cola vuelve a crecer, pero tarda meses y la nueva tiene cartílago en lugar de huesos."
+   },
+   "pt": {
+    "title": "A lagartixa consegue fazer crescer de novo o rabo perdido? 🦎",
+    "description": "Muitos lagartos soltam o rabo de propósito em pontos de ruptura que já nascem com eles. Num experimento, rabos de lagartixa soltos continuaram pulando por cerca de meia hora para distrair o predador. O rabo volta a crescer, mas leva meses e o novo tem cartilagem no lugar dos ossos."
+   },
+   "de": {
+    "title": "Kann eine Eidechse ihren verlorenen Schwanz nachwachsen lassen? 🦎",
+    "description": "Viele Eidechsen werfen ihren Schwanz gezielt an angeborenen Bruchstellen ab. In einem Experiment zuckten und sprangen abgeworfene Geckoschwänze etwa eine halbe Stunde lang und lenkten so Fressfeinde ab. Der Schwanz wächst nach, aber das dauert Monate, und der neue enthält Knorpel statt Knochen."
+   },
+   "fr": {
+    "title": "Un lézard peut-il faire repousser sa queue perdue ? 🦎",
+    "description": "Beaucoup de lézards lâchent volontairement leur queue grâce à des plans de rupture présents dès la naissance. Dans une expérience, des queues de gecko détachées ont continué à sauter environ une demi-heure pour distraire le prédateur. La queue repousse, mais il faut des mois et la nouvelle contient du cartilage au lieu d'os."
+   },
+   "it": {
+    "title": "Una lucertola può far ricrescere la coda persa? 🦎",
+    "description": "Molte lucertole possono staccare la coda di proposito lungo punti di rottura presenti dalla nascita. In un esperimento, code di geco staccate hanno continuato a saltare per circa mezz'ora per distrarre il predatore. La coda ricresce, ma ci vogliono mesi e quella nuova ha cartilagine al posto delle ossa."
+   },
+   "ru": {
+    "title": "Может ли ящерица отрастить потерянный хвост? 🦎",
+    "description": "Многие ящерицы умеют сами отбрасывать хвост по врождённым линиям разлома. В одном эксперименте оторванные хвосты гекконов около получаса прыгали и извивались, отвлекая хищника. Хвост отрастает, но на это уходят месяцы, а в новом вместо костей хрящ."
+   },
+   "ar": {
+    "title": "هل تستطيع السحلية أن تُنبت ذيلها المقطوع من جديد؟ 🦎",
+    "description": "كثير من السحالي تستطيع التخلي عن ذيلها عمدًا عند خطوط كسر تولد بها. وفي إحدى التجارب ظلت ذيول أبو بريص المنفصلة تقفز وتتلوى نحو نصف ساعة لتلهي المفترس. ينمو الذيل من جديد لكن ذلك يستغرق شهورًا، والذيل الجديد فيه غضروف بدل العظام."
+   },
+   "hi": {
+    "title": "क्या छिपकली अपनी कटी पूँछ दोबारा उगा सकती है? 🦎",
+    "description": "कई छिपकलियाँ जन्म से मौजूद टूटने की रेखाओं पर अपनी पूँछ ख़ुद गिरा सकती हैं। एक प्रयोग में गेको की अलग हुई पूँछें करीब आधे घंटे तक उछलती-तड़पती रहीं, ताकि शिकारी का ध्यान बँटे। पूँछ दोबारा उगती है, पर इसमें महीनों लगते हैं और नई पूँछ में हड्डियों की जगह उपास्थि होती है।"
+   },
+   "id": {
+    "title": "Bisakah kadal menumbuhkan lagi ekornya yang putus? 🦎",
+    "description": "Banyak kadal bisa memutus ekornya sendiri di garis patahan yang sudah ada sejak lahir. Dalam sebuah eksperimen, ekor tokek yang lepas terus melompat dan menggeliat sekitar setengah jam untuk mengalihkan perhatian pemangsa. Ekornya tumbuh lagi, tapi butuh berbulan-bulan dan ekor baru berisi tulang rawan, bukan tulang."
+   },
+   "ja": {
+    "title": "トカゲは切れたしっぽをまた生やせる？ 🦎",
+    "description": "多くのトカゲは、生まれつきある「切れ目」でしっぽを自分から切り離せます。ある実験では、切れたヤモリのしっぽが約30分も跳ねたりくねったりして、天敵の気をそらしました。しっぽは再生しますが数か月かかり、新しいしっぽには骨の代わりに軟骨が入っています。"
+   },
+   "ko": {
+    "title": "도마뱀은 끊어진 꼬리를 다시 자라게 할 수 있을까? 🦎",
+    "description": "많은 도마뱀은 태어날 때부터 있는 절단면을 따라 스스로 꼬리를 끊을 수 있습니다. 한 실험에서 떨어져 나간 도마뱀붙이 꼬리는 약 30분 동안 튀어 오르고 꿈틀대며 포식자의 주의를 끌었습니다. 꼬리는 다시 자라지만 몇 달이 걸리고, 새 꼬리 안에는 뼈 대신 연골이 들어 있습니다."
+   },
+   "pl": {
+    "title": "Czy jaszczurka może odrosnąć utracony ogon? 🦎",
+    "description": "Wiele jaszczurek potrafi celowo odrzucić ogon w miejscach pęknięcia, z którymi się rodzi. W jednym eksperymencie odrzucone ogony gekonów skakały i wiły się przez około pół godziny, odciągając uwagę drapieżnika. Ogon odrasta, ale trwa to miesiące, a nowy ma chrząstkę zamiast kości."
+   },
+   "nl": {
+    "title": "Kan een hagedis zijn verloren staart laten teruggroeien? 🦎",
+    "description": "Veel hagedissen kunnen hun staart bewust afwerpen op aangeboren breukvlakken. In een experiment bleven losse gekkostaarten ongeveer een halfuur springen en kronkelen om de belager af te leiden. De staart groeit terug, maar dat duurt maanden en de nieuwe heeft kraakbeen in plaats van botten."
+   },
+   "uk": {
+    "title": "Чи може ящірка відростити втрачений хвіст? 🦎",
+    "description": "Багато ящірок уміють самі відкидати хвіст по вроджених лініях розлому. В одному експерименті відірвані хвости гекконів близько пів години стрибали й звивалися, відволікаючи хижака. Хвіст відростає, але це займає місяці, а в новому замість кісток хрящ."
+   },
+   "vi": {
+    "title": "Thằn lằn có mọc lại được chiếc đuôi đã đứt không? 🦎",
+    "description": "Nhiều loài thằn lằn có thể tự cắt đuôi ở những đường gãy có sẵn từ khi sinh ra. Trong một thí nghiệm, đuôi tắc kè bị đứt vẫn nhảy và quẫy khoảng nửa giờ để đánh lạc hướng kẻ săn mồi. Đuôi sẽ mọc lại nhưng mất nhiều tháng, và đuôi mới có sụn thay cho xương."
+   },
+   "az": {
+    "title": "Kərtənkələ qopan quyruğunu yenidən çıxara bilərmi? 🦎",
+    "description": "Bir çox kərtənkələ anadangəlmə qırılma xətləri boyunca quyruğunu özü qopara bilir. Bir təcrübədə qopan gekkon quyruqları təxminən yarım saat tullanıb qıvrılaraq yırtıcını yayındırdı. Quyruq yenidən çıxır, amma bu aylar çəkir və yeni quyruqda sümük əvəzinə qığırdaq olur."
+   },
+   "ro": {
+    "title": "Își poate crește o șopârlă la loc coada pierdută? 🦎",
+    "description": "Multe șopârle își pot lepăda coada intenționat, de-a lungul unor linii de rupere cu care se nasc. Într-un experiment, cozi de gecko desprinse au continuat să sară și să se zvârcolească vreo jumătate de oră, distrăgând prădătorul. Coada crește la loc, dar durează luni, iar cea nouă are cartilaj în loc de oase."
+   }
+  }
+ }
+}

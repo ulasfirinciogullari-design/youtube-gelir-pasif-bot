@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0149",
+ "topic": "Kedi neden bacağına sürtünür? Kedinin sahibine sürtünmesi ne anlama gelir?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat rubbing head",
+ "script": {
+  "title": "Bacağına sürtünen kedin seni kokusuyla işaretliyor 🐱",
+  "hook_text": "KEDİ NEDEN BACAĞINA SÜRTÜNÜR?",
+  "scenes": [
+   {
+    "text": "Bu kedi şu an seni işaretliyor.",
+    "visual": "close-up of a cat's face rubbing its cheek against a person's leg, looking up at the camera",
+    "stock_query": "cat rubbing head",
+    "source": "stock",
+    "callout": "SENİ İŞARETLİYOR"
+   },
+   {
+    "text": "Sen bunu sevgi ya da mama isteği sanırsın; aslında yanağıyla sana bir şey sürüyor.",
+    "visual": "a cat pressing its cheek and head into a person's hand",
+    "stock_query": "cat head hand",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Yanağında, çenesinde, kuyruk dibinde koku bezleri var; sen o kokuyu alamazsın.",
+    "visual": "extreme close-up of a cat's cheek, chin and whiskers",
+    "stock_query": "cat whiskers closeup",
+    "source": "stock",
+    "callout": "YANAKTA KOKU BEZİ"
+   },
+   {
+    "text": "Aynı evin kedileri birbirine sürtünüp ortak koku yapar; seni de o gruba katıyor.",
+    "visual": "two cats rubbing their heads against each other",
+    "stock_query": "two cats cuddling",
+    "source": "stock",
+    "callout": "ORTAK KOKU"
+   },
+   {
+    "text": "Eve gelince seni ilk karşılaması da bundan;",
+    "visual": "a cat walking towards the camera with its tail up at the front door",
+    "stock_query": "cat walking tail",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedin bacağına sürtündüğünde sadece sevgi göstermiyor ya da mama istemiyor; seni kokusuyla işaretliyor. Kedilerin yanaklarında, çenesinde, başının üstünde ve kuyruk dibinde koku bezleri var. Sürtünürken bu kokuyu sana bırakır; aynı evdeki kediler de birbirine sürtünerek ortak bir koku oluşturur ve seni de o gruba katar.",
+  "tags": [
+   "kedi",
+   "kedi neden sürtünür",
+   "kedi bacağa sürtünme",
+   "kedi koku bezleri",
+   "kedi davranışları",
+   "kediler",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin kedin en çok neye sürtünüyor: senin bacağına mı, eşyalara mı?",
+  "en_title": "When your cat rubs your legs, it's marking you with its scent 🐱",
+  "en_description": "Cats have scent glands on their cheeks, chin, the top of the head and the base of the tail. When your cat rubs against your legs, it leaves its scent on you, a smell you can't detect but other cats can. Cats in the same group rub on each other to build a shared scent, and your cat is adding you to that group.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden bacağına sürtünür, kedinin sahibine sürtünmesi ne anlama gelir?\n\nVCA Hayvan Hastaneleri'ne ve İngiliz hayvan yardım kuruluşu Cats Protection'a göre kedilerin yanaklarında, ağzının çevresinde, çenesinde, başının üstünde ve kuyruk dibinde koku bezleri bulunur. Kedi başını ya da vücudunu sana sürttüğünde bu bezlerden çıkan feromonları üzerine bırakır. Sen bu kokuyu hiç fark etmezsin ama öbür kediler hemen anlar. Aynı sosyal gruptaki kediler de birbirine sürtünerek ortak bir koku oluşturur; kedin bacağına sürtünerek seni de bu gruba katar, güvenli ve kendine ait sayar. Bir süre ayrı kaldıktan sonra kapıda bacağına sürtünmesi de dostça bir selamdır.\n\nSenin kedin en çok neye sürtünüyor: senin bacağına mı, eşyalara mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi neden sürtünür",
+   "kedi bacağa sürtünüyor",
+   "kedi bacağıma sürtünüyor",
+   "kedi kafa sürtme",
+   "kedi yanak sürtme",
+   "kedi koku bezleri",
+   "kedi feromon",
+   "kedi işaretleme",
+   "kedi sevgisi nasıl anlaşılır",
+   "kedi beden dili",
+   "kedi davranışları",
+   "kedi psikolojisi",
+   "kedi sahibi",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat rubbing legs",
+   "cat scent marking"
+  ],
+  "localizations": {
+   "en": {
+    "title": "When your cat rubs your legs, it's marking you with its scent 🐱",
+    "description": "Cats have scent glands on their cheeks, chin, head and at the base of the tail. Rubbing against your legs leaves their scent on you, a smell you can't detect but other cats can. Cats in a group rub on each other to share one scent, and your cat is adding you to it."
+   },
+   "es": {
+    "title": "Tu gato se frota en tus piernas para marcarte con su olor 🐱",
+    "description": "Los gatos tienen glándulas de olor en las mejillas, la barbilla, la cabeza y la base de la cola. Al frotarse contra tus piernas te dejan su olor, que tú no notas pero otros gatos sí. Los gatos de un mismo grupo se frotan entre sí para compartir un olor, y tu gato te está sumando a ese grupo."
+   },
+   "pt": {
+    "title": "Seu gato se esfrega nas suas pernas para marcar você com o cheiro dele 🐱",
+    "description": "Os gatos têm glândulas de cheiro nas bochechas, no queixo, na cabeça e na base do rabo. Ao se esfregar nas suas pernas, ele deixa esse cheiro em você, que você não sente, mas outros gatos sentem. Gatos do mesmo grupo se esfregam uns nos outros para ter um cheiro comum, e o seu está incluindo você nele."
+   },
+   "de": {
+    "title": "Wenn deine Katze um deine Beine streicht, markiert sie dich 🐱",
+    "description": "Katzen haben Duftdrüsen an Wangen, Kinn, Kopf und Schwanzansatz. Streichen sie dir um die Beine, hinterlassen sie ihren Duft auf dir, den du nicht riechst, andere Katzen aber schon. Katzen einer Gruppe reiben sich aneinander, um einen gemeinsamen Geruch zu teilen, und deine Katze nimmt dich da mit auf."
+   },
+   "fr": {
+    "title": "Ton chat se frotte à tes jambes pour te marquer de son odeur 🐱",
+    "description": "Les chats ont des glandes odorantes sur les joues, le menton, le dessus de la tête et à la base de la queue. En se frottant à tes jambes, il dépose son odeur sur toi : tu ne la sens pas, mais les autres chats si. Les chats d'un même groupe se frottent entre eux pour partager une odeur commune, et le tien t'ajoute au groupe."
+   },
+   "it": {
+    "title": "Il tuo gatto si struscia sulle tue gambe per marcarti col suo odore 🐱",
+    "description": "I gatti hanno ghiandole odorose su guance, mento, testa e alla base della coda. Strusciandosi sulle tue gambe ti lasciano il loro odore, che tu non senti ma gli altri gatti sì. I gatti dello stesso gruppo si strofinano tra loro per condividere un odore comune, e il tuo gatto ti sta includendo."
+   },
+   "ru": {
+    "title": "Кошка трётся о твои ноги, чтобы пометить тебя своим запахом 🐱",
+    "description": "У кошек есть пахучие железы на щеках, подбородке, макушке и у основания хвоста. Когда кошка трётся о твои ноги, она оставляет на тебе свой запах: ты его не чувствуешь, а другие кошки чувствуют. Кошки одной группы трутся друг о друга, создавая общий запах, и твоя кошка включает в эту группу тебя."
+   },
+   "ar": {
+    "title": "قطتك تحتك بساقيك لتضع عليك رائحتها 🐱",
+    "description": "للقطط غدد رائحة على الخدين والذقن وأعلى الرأس وعند قاعدة الذيل. وحين تحتك قطتك بساقيك تترك رائحتها عليك، رائحة لا تشمّها أنت لكن القطط الأخرى تشمّها. فالقطط في المجموعة الواحدة تحتك ببعضها لتصنع رائحة مشتركة، وقطتك تضمك إلى هذه المجموعة."
+   },
+   "hi": {
+    "title": "बिल्ली आपके पैरों से रगड़कर आप पर अपनी गंध लगाती है 🐱",
+    "description": "बिल्लियों के गालों, ठुड्डी, सिर के ऊपर और पूँछ की जड़ में गंध ग्रंथियाँ होती हैं। जब बिल्ली आपके पैरों से रगड़ती है तो अपनी गंध आप पर छोड़ देती है, जिसे आप नहीं सूँघ पाते पर दूसरी बिल्लियाँ पहचान लेती हैं। एक समूह की बिल्लियाँ आपस में रगड़कर साझा गंध बनाती हैं, और आपकी बिल्ली आपको भी उसमें शामिल कर रही है।"
+   },
+   "id": {
+    "title": "Kucing menggosok kakimu untuk menandaimu dengan baunya 🐱",
+    "description": "Kucing punya kelenjar bau di pipi, dagu, atas kepala, dan pangkal ekor. Saat menggosokkan badan ke kakimu, ia meninggalkan baunya padamu; kamu tidak bisa menciumnya, tapi kucing lain bisa. Kucing dalam satu kelompok saling menggosok untuk berbagi bau yang sama, dan kucingmu sedang memasukkanmu ke kelompok itu."
+   },
+   "ja": {
+    "title": "足にすりすりする猫は、あなたに自分のにおいをつけている 🐱",
+    "description": "猫のほお、あご、頭のてっぺん、しっぽの付け根にはにおいを出す腺があります。足にすりすりすると、そのにおいがあなたにつきます。人間には感じられませんが、ほかの猫にはわかります。同じグループの猫はこすり合って共通のにおいを作り、あなたもその仲間に加えているのです。"
+   },
+   "ko": {
+    "title": "다리에 몸을 비비는 고양이는 너에게 자기 냄새를 묻히는 중 🐱",
+    "description": "고양이는 볼, 턱, 정수리, 꼬리 밑동에 냄새샘이 있습니다. 다리에 몸을 비비면 그 냄새가 당신에게 남는데, 사람은 못 맡지만 다른 고양이는 알아챕니다. 같은 무리의 고양이들은 서로 비비며 공동의 냄새를 만들고, 당신의 고양이는 당신도 그 무리에 넣고 있는 것입니다."
+   },
+   "pl": {
+    "title": "Kot ociera się o twoje nogi, żeby oznaczyć cię swoim zapachem 🐱",
+    "description": "Koty mają gruczoły zapachowe na policzkach, brodzie, czubku głowy i u nasady ogona. Ocierając się o twoje nogi, zostawiają na tobie zapach, którego nie czujesz, ale inne koty tak. Koty z jednej grupy ocierają się o siebie, tworząc wspólny zapach, a twój kot właśnie dołącza do niej ciebie."
+   },
+   "nl": {
+    "title": "Je kat schurkt langs je benen om je met zijn geur te markeren 🐱",
+    "description": "Katten hebben geurklieren op hun wangen, kin, kruin en bij de staartbasis. Als je kat langs je benen schurkt, laat hij zijn geur op je achter: jij ruikt het niet, andere katten wel. Katten uit één groep schurken langs elkaar voor een gedeelde geur, en jouw kat neemt jou daarin op."
+   },
+   "uk": {
+    "title": "Кіт треться об твої ноги, щоб позначити тебе своїм запахом 🐱",
+    "description": "У котів є пахучі залози на щоках, підборідді, маківці й біля основи хвоста. Коли кіт треться об твої ноги, він залишає на тобі свій запах: ти його не відчуваєш, а інші коти відчувають. Коти однієї групи труться один об одного, створюючи спільний запах, і твій кіт додає до цієї групи тебе."
+   },
+   "vi": {
+    "title": "Mèo cọ vào chân bạn để đánh dấu bạn bằng mùi của nó 🐱",
+    "description": "Mèo có tuyến mùi ở má, cằm, đỉnh đầu và gốc đuôi. Khi cọ vào chân bạn, mèo để lại mùi của nó trên người bạn; bạn không ngửi thấy nhưng những con mèo khác thì có. Mèo trong cùng một nhóm cọ vào nhau để có mùi chung, và mèo của bạn đang kết nạp bạn vào nhóm đó."
+   },
+   "az": {
+    "title": "Ayağına sürtünən pişik səni öz qoxusu ilə nişanlayır 🐱",
+    "description": "Pişiklərin yanaqlarında, çənəsində, başının üstündə və quyruq dibində qoxu vəziləri var. Ayağına sürtünəndə qoxusunu sənin üstündə qoyur: sən bu qoxunu hiss etmirsən, amma digər pişiklər dərhal anlayır. Eyni qrupdakı pişiklər bir-birinə sürtünərək ortaq qoxu yaradır, pişiyin də səni bu qrupa qatır."
+   },
+   "ro": {
+    "title": "Pisica se freacă de picioarele tale ca să te marcheze cu mirosul ei 🐱",
+    "description": "Pisicile au glande de miros pe obraji, bărbie, creștetul capului și la baza cozii. Când se freacă de picioarele tale, își lasă mirosul pe tine: tu nu-l simți, dar alte pisici da. Pisicile din același grup se freacă unele de altele ca să aibă un miros comun, iar pisica ta te adaugă și pe tine."
+   }
+  }
+ }
+}

@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0151",
+ "topic": "Karıncalar gerçekten çalışkan mı? 'Karınca gibi çalışkan' sözü ve tembel karıncalar",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "ant",
+  "ants"
+ ],
+ "stock_hint": "ant macro",
+ "script": {
+  "title": "Her karınca, karınca gibi çalışkan değil 🐜",
+  "hook_text": "KARINCALAR GERÇEKTEN ÇALIŞKAN MI?",
+  "scenes": [
+   {
+    "text": "Bu yuvada her karınca, karınca gibi çalışkan değil.",
+    "visual": "macro close-up of ants at the entrance of their nest, one ant facing the camera",
+    "stock_query": "ant macro",
+    "source": "stock",
+    "callout": "HER KARINCA DEĞİL"
+   },
+   {
+    "text": "Bir araştırmada bir türün işçilerinin yüzde kırkı çoğu zaman hiçbir şey yapmıyordu.",
+    "visual": "macro shot of several ants standing still inside a nest",
+    "stock_query": "ants nest",
+    "source": "stock",
+    "callout": "%40 BOŞ DURUYOR"
+   },
+   {
+    "text": "Araştırmacılar en çalışkan karıncaları yuvadan alınca ilginç bir şey oldu.",
+    "visual": "busy ants carrying food along a trail",
+    "stock_query": "ants carrying food",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir hafta içinde boşluğu o tembeller doldurdu.",
+    "visual": "macro shot of an ant carrying a piece of leaf",
+    "stock_query": "ant carrying leaf",
+    "source": "stock",
+    "callout": "BİR HAFTADA"
+   },
+   {
+    "text": "Araştırmacılara göre onlar yedek işçi; yuva çalışanlarını kaybederse devreye giriyorlar.",
+    "visual": "an ant colony swarming over the ground",
+    "stock_query": "ant colony",
+    "source": "stock",
+    "callout": "YEDEK İŞÇİ"
+   },
+   {
+    "text": "Yine de kabul et:",
+    "visual": "macro close-up of an ant's head facing the camera",
+    "stock_query": "ant head macro",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Karınca gibi çalışkan' sözü her karınca için doğru değil. Arizona Üniversitesi'nin bir araştırmasında Temnothorax rugatulus türünün işçilerinin ortalama yüzde kırkı çoğu zaman hareketsizdi. En çalışkan karıncalar yuvadan alındığında, boşluğu bir hafta içinde büyük ölçüde bu tembel karıncalar doldurdu; araştırmacılara göre onlar yuvanın yedek iş gücü.",
+  "tags": [
+   "karınca",
+   "karınca gibi çalışkan",
+   "tembel karıncalar",
+   "karıncalar",
+   "deyimler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen bir karınca yuvasında hangisi olurdun: çalışan karınca mı, yedek karınca mı?",
+  "en_title": "Not every ant is as hard-working as an ant 🐜",
+  "en_description": "In a University of Arizona study of the ant Temnothorax rugatulus, about 40 percent of workers were mostly inactive. When researchers removed the most active workers, the 'lazy' ants filled the gap within a week. The researchers think they act as a reserve workforce for the colony.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Karıncalar gerçekten çalışkan mı, 'karınca gibi çalışkan' sözü doğru mu?\n\nHer karınca için değil. Arizona Üniversitesi'nden Daniel Charbonneau ve Anna Dornhaus'un çalışmalarında Temnothorax rugatulus türünün kolonilerinde işçilerin ortalama yüzde kırkı zamanının çoğunu hareketsiz geçiriyordu; oran mevsime, koloniye ve türe göre değişiyor. 2017'de PLOS ONE dergisinde yayımlanan deneyde araştırmacılar en hareketli yüzde yirmilik işçi grubunu yuvadan aldı. Bir hafta içinde boşluk büyük ölçüde bu 'tembel' karıncaların daha çok çalışmaya başlamasıyla doldu. En tembel grup alındığında ise yerlerine kimse geçmedi. Araştırmacılara göre tembel görünen karıncalar, yuva işçilerini kaybettiğinde devreye giren yedek iş gücü.\n\nSen bir karınca yuvasında hangisi olurdun: çalışan karınca mı, yedek karınca mı?",
+  "hashtags": [
+   "#karınca",
+   "#karıncalar",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "karınca",
+   "karınca gibi çalışkan",
+   "karıncalar çalışkan mı",
+   "tembel karıncalar",
+   "tembel karınca",
+   "karınca yuvası",
+   "karınca kolonisi",
+   "işçi karınca",
+   "karıncalar nasıl çalışır",
+   "ağustos böceği ile karınca",
+   "karınca hakkında bilgiler",
+   "karıncalar",
+   "böcekler",
+   "deyimler",
+   "deyimlerin aslı",
+   "hayvan davranışları",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "lazy ants",
+   "ant colony"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Not every ant is as hard-working as an ant 🐜",
+    "description": "In a University of Arizona study of one ant species, about 40% of workers were mostly inactive. When the busiest workers were removed, these 'lazy' ants filled the gap within a week. Researchers think they are the colony's reserve workforce."
+   },
+   "es": {
+    "title": "No todas las hormigas son trabajadoras como una hormiga 🐜",
+    "description": "En un estudio de la Universidad de Arizona con una especie de hormiga, cerca del 40 % de las obreras pasaba casi todo el tiempo sin hacer nada. Al retirar a las más activas, esas hormigas 'vagas' ocuparon su lugar en una semana. Los investigadores creen que son la reserva de trabajo de la colonia."
+   },
+   "pt": {
+    "title": "Nem toda formiga é trabalhadora como uma formiga 🐜",
+    "description": "Num estudo da Universidade do Arizona com uma espécie de formiga, cerca de 40% das operárias passavam a maior parte do tempo paradas. Quando as mais ativas foram retiradas, essas formigas 'preguiçosas' preencheram o vazio em uma semana. Os pesquisadores acham que elas são a reserva de mão de obra da colônia."
+   },
+   "de": {
+    "title": "Nicht jede Ameise ist fleißig wie eine Ameise 🐜",
+    "description": "In einer Studie der University of Arizona war bei einer Ameisenart rund 40 % der Arbeiterinnen die meiste Zeit untätig. Als die fleißigsten entfernt wurden, sprangen innerhalb einer Woche genau diese 'faulen' Ameisen ein. Die Forschenden halten sie für die Arbeitsreserve der Kolonie."
+   },
+   "fr": {
+    "title": "Toutes les fourmis ne sont pas travailleuses comme des fourmis 🐜",
+    "description": "Dans une étude de l'université de l'Arizona sur une espèce de fourmi, environ 40 % des ouvrières restaient inactives la plupart du temps. Quand on a retiré les plus actives, ces fourmis 'paresseuses' ont pris le relais en une semaine. Pour les chercheurs, elles forment la main-d'œuvre de réserve de la colonie."
+   },
+   "it": {
+    "title": "Non tutte le formiche sono laboriose come una formica 🐜",
+    "description": "In uno studio dell'Università dell'Arizona su una specie di formica, circa il 40% delle operaie restava quasi sempre inattivo. Quando sono state tolte le più attive, queste formiche 'pigre' hanno colmato il vuoto in una settimana. Secondo i ricercatori sono la riserva di lavoro della colonia."
+   },
+   "ru": {
+    "title": "Не каждый муравей трудится как муравей 🐜",
+    "description": "В исследовании Аризонского университета у одного вида муравьёв около 40% рабочих большую часть времени бездельничали. Когда самых активных убрали, эти «ленивцы» заняли их место в течение недели. Учёные считают их резервной рабочей силой колонии."
+   },
+   "ar": {
+    "title": "ليست كل نملة مجتهدة كالنملة 🐜",
+    "description": "في دراسة لجامعة أريزونا على أحد أنواع النمل، كان نحو 40% من العاملات خاملات معظم الوقت. وعندما أُبعدت أنشط العاملات، سدّت هذه النملات «الكسولة» الفراغ خلال أسبوع. ويرى الباحثون أنها قوة عمل احتياطية للمستعمرة."
+   },
+   "hi": {
+    "title": "हर चींटी, चींटी जैसी मेहनती नहीं होती 🐜",
+    "description": "एरिज़ोना विश्वविद्यालय के एक अध्ययन में एक प्रजाति की लगभग 40% मज़दूर चींटियाँ ज़्यादातर समय कुछ नहीं करती थीं। जब सबसे मेहनती चींटियों को हटाया गया, तो इन्हीं 'आलसी' चींटियों ने एक हफ़्ते में उनकी जगह ले ली। शोधकर्ताओं के मुताबिक़ ये कॉलोनी की रिज़र्व फ़ौज हैं।"
+   },
+   "id": {
+    "title": "Tidak semua semut serajin semut 🐜",
+    "description": "Dalam studi University of Arizona pada satu spesies semut, sekitar 40% pekerja hampir selalu diam. Saat pekerja paling aktif dipindahkan, semut 'malas' inilah yang mengisi kekosongan dalam seminggu. Para peneliti menduga mereka adalah tenaga cadangan koloni."
+   },
+   "ja": {
+    "title": "すべてのアリが働き者とは限らない 🐜",
+    "description": "アリゾナ大学の研究では、あるアリの種で働きアリの約40％がほとんどの時間何もしていませんでした。よく働くアリを取り除くと、1週間以内にその「怠け者」たちが穴を埋めました。研究者は、彼らがコロニーの予備の労働力だと考えています。"
+   },
+   "ko": {
+    "title": "모든 개미가 개미처럼 부지런하진 않다 🐜",
+    "description": "애리조나대 연구에서 한 개미 종의 일개미 약 40%는 대부분의 시간 동안 아무것도 하지 않았습니다. 가장 부지런한 개미들을 빼내자 일주일 안에 바로 이 '게으른' 개미들이 빈자리를 채웠습니다. 연구진은 이들이 군락의 예비 일손이라고 봅니다."
+   },
+   "pl": {
+    "title": "Nie każda mrówka jest pracowita jak mrówka 🐜",
+    "description": "W badaniu Uniwersytetu Arizony u jednego gatunku mrówek około 40% robotnic przez większość czasu nic nie robiło. Gdy usunięto najaktywniejsze, właśnie te 'leniwe' mrówki w ciągu tygodnia zajęły ich miejsce. Badacze uważają je za rezerwę siły roboczej kolonii."
+   },
+   "nl": {
+    "title": "Niet elke mier is zo ijverig als een mier 🐜",
+    "description": "In een studie van de Universiteit van Arizona bij één mierensoort deed zo'n 40% van de werksters het grootste deel van de tijd niets. Toen de ijverigste werden weggehaald, vulden juist deze 'luie' mieren binnen een week het gat. Volgens de onderzoekers zijn ze de reservekrachten van de kolonie."
+   },
+   "uk": {
+    "title": "Не кожна мурашка працює як мурашка 🐜",
+    "description": "У дослідженні Університету Аризони в одного виду мурах близько 40% робітниць більшість часу нічого не робили. Коли найактивніших прибрали, саме ці «ледачі» мурахи заповнили прогалину протягом тижня. Дослідники вважають їх резервною робочою силою колонії."
+   },
+   "vi": {
+    "title": "Không phải con kiến nào cũng chăm chỉ như kiến 🐜",
+    "description": "Trong một nghiên cứu của Đại học Arizona về một loài kiến, khoảng 40% kiến thợ gần như luôn đứng yên. Khi những con chăm nhất bị lấy đi, chính những con kiến 'lười' này đã lấp chỗ trống trong vòng một tuần. Các nhà nghiên cứu cho rằng chúng là lực lượng dự bị của tổ."
+   },
+   "az": {
+    "title": "Hər qarışqa qarışqa kimi çalışqan deyil 🐜",
+    "description": "Arizona Universitetinin bir araşdırmasında bir qarışqa növünün işçilərinin təxminən 40 faizi vaxtının çoxunu boş keçirirdi. Ən çalışqanlar yuvadan götürüləndə boşluğu bir həftə ərzində məhz bu 'tənbəl' qarışqalar doldurdu. Tədqiqatçılara görə onlar koloniyanın ehtiyat işçi qüvvəsidir."
+   },
+   "ro": {
+    "title": "Nu orice furnică e harnică precum o furnică 🐜",
+    "description": "Într-un studiu al Universității din Arizona pe o specie de furnici, aproximativ 40% dintre lucrătoare stăteau aproape tot timpul degeaba. Când au fost scoase cele mai active, tocmai aceste furnici 'leneșe' le-au luat locul într-o săptămână. Cercetătorii cred că ele sunt rezerva de muncă a coloniei."
+   }
+  }
+ }
+}

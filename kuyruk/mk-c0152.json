@@ -1,0 +1,183 @@
+{
+ "id": "mk-c0152",
+ "topic": "Kemikler yenilenir mi? İskelet kaç yılda bir yenilenir?",
+ "kategori": "vücut",
+ "subject": [
+  "skeleton"
+ ],
+ "stock_hint": "human skeleton",
+ "script": {
+  "title": "İskeletinin çoğu on yıl önce yoktu 🦴",
+  "hook_text": "KEMİKLER YENİLENİR Mİ?",
+  "scenes": [
+   {
+    "text": "İskeletinin çoğu on yıl önce yoktu.",
+    "visual": "close-up of an anatomical human skeleton model, skull and ribs facing the camera",
+    "stock_query": "human skeleton",
+    "source": "stock",
+    "callout": "10 YILDA YENİ"
+   },
+   {
+    "text": "Kemik taş gibi sanılır; oysa vücudun onu durmadan söküp yeniden yapar.",
+    "visual": "close-up of the bones of a skeleton hand",
+    "stock_query": "skeleton hand",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "İçinde kemiği eriten hücreler var; minik bir parçayı birkaç haftada sökerler.",
+    "visual": "close-up of a skeleton's spine and ribs",
+    "stock_query": "skeleton spine",
+    "source": "stock",
+    "callout": "KEMİK YİYEN HÜCRE"
+   },
+   {
+    "text": "Sonra başka hücreler o boşluğu aylar içinde yeni kemikle doldurur.",
+    "visual": "doctor examining a bone x-ray on a light board",
+    "stock_query": "doctor x-ray",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "doctor"
+    ]
+   },
+   {
+    "text": "Çünkü kemikte biriken minik çatlaklar ancak böyle onarılır.",
+    "visual": "close-up of a skeleton's leg bones and knee joint",
+    "stock_query": "skeleton leg bones",
+    "source": "stock",
+    "callout": "MİNİK ÇATLAKLAR"
+   },
+   {
+    "text": "On yıl sonra da aynısı geçerli:",
+    "visual": "close-up of an anatomical skeleton's skull facing the camera",
+    "stock_query": "skeleton skull",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kemik sabit görünür ama hayat boyu yenilenir. ABD Genel Cerrahlık raporuna göre yeniden yapılanma (remodeling) sayesinde yetişkin iskeletinin çoğu yaklaşık on yılda bir yenilenir. Osteoklast denen hücreler eski kemiği birkaç haftada eritir, osteoblastlar boşluğu aylar içinde yeni kemikle doldurur; böylece biriken minik çatlaklar onarılır.",
+  "tags": [
+   "kemik",
+   "iskelet",
+   "kemikler yenilenir mi",
+   "kemik yenilenmesi",
+   "insan vücudu",
+   "vücut",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: iskeletinin yenilenmesi mi, kemiği eriten hücreler mi?",
+  "en_title": "Most of your skeleton didn't exist ten years ago 🦴",
+  "en_description": "Bone looks permanent, but your body keeps taking it apart and rebuilding it. Cells called osteoclasts dissolve small patches of old bone in a few weeks, and osteoblasts fill the gap with new bone over a few months. This remodeling repairs tiny cracks, and according to a US Surgeon General's report most of the adult skeleton is replaced about every ten years.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Kemikler yenilenir mi, iskelet kaç yılda bir yenilenir?\n\nEvet, kemik hayat boyu yenilenir. ABD Genel Cerrahlık Ofisi'nin kemik sağlığı raporuna (2004) göre bu yeniden yapılanma (remodeling) yaşam boyu sürer ve yetişkin iskeletinin çoğu yaklaşık on yılda bir yenilenir. Önce osteoklast denen hücreler eski kemiğin mineralini çözüp küçük bir bölümünü söker; bu aşamalar insanlarda iki üç hafta sürer. Ardından osteoblastlar boşluğu düzenli katmanlar halinde yeni kemikle doldurur; bu evre üç dört ayı bulabilir. Bu döngü, tekrar eden küçük zorlanmalarla kemikte biriken minik çatlakları onarır ve iskeletin kalsiyum ve fosfor bankası olarak çalışmasını sağlar.\n\nSence hangisi daha şaşırtıcı: iskeletinin yenilenmesi mi, kemiği eriten hücreler mi?",
+  "hashtags": [
+   "#iskelet",
+   "#kemik",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "iskelet",
+   "kemik",
+   "kemikler yenilenir mi",
+   "iskelet kaç yılda yenilenir",
+   "kemik yenilenmesi",
+   "kemik yapımı",
+   "kemik yıkımı",
+   "osteoklast",
+   "osteoblast",
+   "kemik hücreleri",
+   "kemik sağlığı",
+   "kemik çatlağı",
+   "kalsiyum",
+   "insan iskeleti",
+   "vücudumuz yenileniyor mu",
+   "insan vücudu",
+   "anatomi",
+   "biyoloji",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bone remodeling",
+   "skeleton"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Most of your skeleton didn't exist ten years ago 🦴",
+    "description": "Bone looks permanent, but your body keeps taking it apart and rebuilding it. Osteoclasts dissolve small patches of old bone in weeks and osteoblasts refill them over months, repairing tiny cracks. Most of the adult skeleton is replaced about every ten years."
+   },
+   "es": {
+    "title": "La mayor parte de tu esqueleto no existía hace diez años 🦴",
+    "description": "El hueso parece fijo, pero tu cuerpo lo desmonta y lo reconstruye sin parar. Los osteoclastos disuelven pequeñas zonas de hueso viejo en semanas y los osteoblastos las rellenan en meses, reparando microgrietas. La mayor parte del esqueleto adulto se renueva más o menos cada diez años."
+   },
+   "pt": {
+    "title": "A maior parte do seu esqueleto não existia há dez anos 🦴",
+    "description": "O osso parece fixo, mas o corpo o desmonta e reconstrói o tempo todo. Os osteoclastos dissolvem pequenas áreas de osso velho em semanas e os osteoblastos as preenchem em meses, consertando microfissuras. A maior parte do esqueleto adulto é renovada mais ou menos a cada dez anos."
+   },
+   "de": {
+    "title": "Der Großteil deines Skeletts war vor zehn Jahren noch nicht da 🦴",
+    "description": "Knochen wirkt fest, doch dein Körper baut ihn ständig ab und wieder auf. Osteoklasten lösen in wenigen Wochen kleine Stellen alten Knochens auf, Osteoblasten füllen sie über Monate neu auf und reparieren so feine Risse. Der Großteil des erwachsenen Skeletts wird etwa alle zehn Jahre erneuert."
+   },
+   "fr": {
+    "title": "La majeure partie de ton squelette n'existait pas il y a dix ans 🦴",
+    "description": "L'os paraît immuable, mais ton corps le démonte et le reconstruit sans cesse. Les ostéoclastes dissolvent de petites zones d'os ancien en quelques semaines, puis les ostéoblastes les comblent en quelques mois, réparant les microfissures. L'essentiel du squelette adulte est renouvelé environ tous les dix ans."
+   },
+   "it": {
+    "title": "Gran parte del tuo scheletro dieci anni fa non esisteva 🦴",
+    "description": "L'osso sembra immutabile, ma il corpo lo smonta e lo ricostruisce di continuo. Gli osteoclasti sciolgono piccole zone di osso vecchio in poche settimane e gli osteoblasti le riempiono in alcuni mesi, riparando le microfratture. Gran parte dello scheletro adulto si rinnova circa ogni dieci anni."
+   },
+   "ru": {
+    "title": "Большей части твоего скелета десять лет назад не было 🦴",
+    "description": "Кость кажется неизменной, но организм постоянно разбирает её и строит заново. Остеокласты за несколько недель растворяют участки старой кости, а остеобласты за несколько месяцев заполняют их новой, залечивая микротрещины. Большая часть взрослого скелета обновляется примерно раз в десять лет."
+   },
+   "ar": {
+    "title": "معظم هيكلك العظمي لم يكن موجودًا قبل عشر سنوات 🦴",
+    "description": "يبدو العظم ثابتًا، لكن جسمك يفككه ويعيد بناءه باستمرار. تذيب الخلايا الناقضة للعظم أجزاء صغيرة من العظم القديم خلال أسابيع، ثم تملؤها الخلايا البانية بعظم جديد خلال أشهر فتُصلح الشقوق الدقيقة. ويتجدد معظم هيكل البالغ مرة كل عشر سنوات تقريبًا."
+   },
+   "hi": {
+    "title": "आपके कंकाल का ज़्यादातर हिस्सा दस साल पहले था ही नहीं 🦴",
+    "description": "हड्डी स्थायी लगती है, पर शरीर उसे लगातार तोड़कर फिर से बनाता रहता है। ऑस्टियोक्लास्ट कोशिकाएँ कुछ हफ़्तों में पुरानी हड्डी के छोटे हिस्से घोल देती हैं और ऑस्टियोब्लास्ट महीनों में उन्हें नई हड्डी से भर देती हैं, जिससे बारीक दरारें ठीक होती हैं। वयस्क कंकाल का ज़्यादातर हिस्सा लगभग हर दस साल में बदल जाता है।"
+   },
+   "id": {
+    "title": "Sebagian besar kerangkamu belum ada sepuluh tahun lalu 🦴",
+    "description": "Tulang terlihat permanen, tapi tubuhmu terus membongkar dan membangunnya kembali. Osteoklas melarutkan bagian kecil tulang lama dalam beberapa minggu, lalu osteoblas mengisinya dengan tulang baru dalam beberapa bulan sambil memperbaiki retakan halus. Sebagian besar kerangka orang dewasa diganti kira-kira tiap sepuluh tahun."
+   },
+   "ja": {
+    "title": "あなたの骨格の大部分は10年前には存在しなかった 🦴",
+    "description": "骨は変わらないように見えますが、体はたえず骨を壊しては作り直しています。破骨細胞が数週間で古い骨の小さな部分を溶かし、骨芽細胞が数か月かけて新しい骨で埋め、小さなひびを修復します。大人の骨格の大部分は、およそ10年ごとに入れ替わります。"
+   },
+   "ko": {
+    "title": "네 뼈대의 대부분은 10년 전엔 없었다 🦴",
+    "description": "뼈는 변하지 않는 것처럼 보이지만 몸은 끊임없이 뼈를 허물고 다시 짓습니다. 파골세포가 몇 주 만에 오래된 뼈를 조금씩 녹이고, 조골세포가 몇 달에 걸쳐 새 뼈로 채우며 미세한 금을 고칩니다. 성인 골격의 대부분은 약 10년마다 새것으로 바뀝니다."
+   },
+   "pl": {
+    "title": "Większości twojego szkieletu dziesięć lat temu jeszcze nie było 🦴",
+    "description": "Kość wydaje się trwała, ale organizm stale ją rozbiera i buduje od nowa. Osteoklasty w kilka tygodni rozpuszczają małe fragmenty starej kości, a osteoblasty przez kilka miesięcy wypełniają je nową, naprawiając mikropęknięcia. Większość dorosłego szkieletu wymienia się mniej więcej co dziesięć lat."
+   },
+   "nl": {
+    "title": "Het grootste deel van je skelet bestond tien jaar geleden nog niet 🦴",
+    "description": "Bot lijkt blijvend, maar je lichaam breekt het steeds af en bouwt het opnieuw op. Osteoclasten lossen in een paar weken kleine stukjes oud bot op en osteoblasten vullen die in een paar maanden weer aan, waarbij kleine scheurtjes herstellen. Het grootste deel van het volwassen skelet wordt ongeveer elke tien jaar vervangen."
+   },
+   "uk": {
+    "title": "Більшої частини твого скелета десять років тому не було 🦴",
+    "description": "Кістка здається незмінною, але організм постійно розбирає її й будує заново. Остеокласти за кілька тижнів розчиняють ділянки старої кістки, а остеобласти за кілька місяців заповнюють їх новою, заліковуючи мікротріщини. Більша частина дорослого скелета оновлюється приблизно раз на десять років."
+   },
+   "vi": {
+    "title": "Phần lớn bộ xương của bạn chưa hề tồn tại mười năm trước 🦴",
+    "description": "Xương trông có vẻ cố định, nhưng cơ thể liên tục tháo dỡ và xây lại nó. Tế bào hủy xương làm tan từng mảng xương cũ trong vài tuần, rồi tế bào tạo xương lấp đầy bằng xương mới trong vài tháng, vá lại các vết nứt nhỏ. Phần lớn bộ xương người trưởng thành được thay mới khoảng mười năm một lần."
+   },
+   "az": {
+    "title": "Skeletinin çox hissəsi on il əvvəl yox idi 🦴",
+    "description": "Sümük sabit görünür, amma bədənin onu daim söküb yenidən qurur. Osteoklastlar bir neçə həftəyə köhnə sümüyün kiçik hissələrini əridir, osteoblastlar isə bir neçə aya boşluğu yeni sümüklə doldurur və xırda çatları bərpa edir. Yetkin skeletin çox hissəsi təxminən hər on ildən bir yenilənir."
+   },
+   "ro": {
+    "title": "Cea mai mare parte a scheletului tău nu exista acum zece ani 🦴",
+    "description": "Osul pare neschimbat, dar corpul îl demontează și îl reconstruiește încontinuu. Osteoclastele dizolvă în câteva săptămâni mici porțiuni de os vechi, iar osteoblastele le umplu cu os nou în câteva luni, reparând microfisurile. Cea mai mare parte a scheletului adult se înlocuiește cam la fiecare zece ani."
+   }
+  }
+ }
+}

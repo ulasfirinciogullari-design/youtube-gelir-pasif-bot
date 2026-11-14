@@ -1,0 +1,190 @@
+{
+ "id": "mk-c0155",
+ "topic": "Telefonda konuşurken neden el kol hareketi yaparız? Kimse görmese de ellerimiz neden konuşur?",
+ "kategori": "psikoloji",
+ "subject": [
+  "phone"
+ ],
+ "stock_hint": "phone call hand",
+ "script": {
+  "title": "Telefonda seni kimse görmese de ellerin konuşur 🤙",
+  "hook_text": "NEDEN TELEFONDA EL SALLARIZ?",
+  "scenes": [
+   {
+    "text": "Telefonda kimse görmüyor ama bu eller hâlâ anlatıyor.",
+    "visual": "close-up of a man talking on a smartphone and gesturing with his free hand",
+    "stock_query": "phone call hand",
+    "source": "stock",
+    "callout": "KİMSE GÖRMÜYOR"
+   },
+   {
+    "text": "Sen de yaparsın; araştırmalar insanların telefonda da el salladığını gösteriyor.",
+    "visual": "a woman talking on the phone and moving her hand while she speaks",
+    "stock_query": "woman phone call",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Daha tuhafı: doğuştan görmeyen insanlar da konuşurken el hareketi yapıyor.",
+    "visual": "close-up of expressive hands gesturing while a person talks",
+    "stock_query": "hands gesture talking",
+    "source": "stock",
+    "callout": "DOĞUŞTAN GÖRMEYENLER",
+    "subject": [
+     "hands",
+     "hand"
+    ]
+   },
+   {
+    "text": "Karşılarındakinin de görmediğini bilseler bile.",
+    "visual": "two people sitting and talking, hands moving as they speak",
+    "stock_query": "two people talking",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "people",
+     "talking"
+    ]
+   },
+   {
+    "text": "Çünkü el hareketi konuşmanın bir parçası; araştırmacılara göre düşünmene de yardım ediyor olabilir.",
+    "visual": "close-up of a person's hands moving while explaining something",
+    "stock_query": "hands explaining",
+    "source": "stock",
+    "callout": "KONUŞMANIN PARÇASI",
+    "subject": [
+     "hands",
+     "hand"
+    ]
+   },
+   {
+    "text": "Bir dahaki aramada kendi ellerine bak; çünkü...",
+    "visual": "close-up of a man on a phone call gesturing with his hand",
+    "stock_query": "man phone call",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Telefonda seni kimse görmese de el kol hareketi yaparsın. Araştırmalar insanların telefonda da el hareketi yaptığını gösteriyor. 1998'de Nature'da yayımlanan bir çalışmada doğuştan görme engelli konuşmacılar da, karşılarındakinin görmediğini bilseler bile el hareketi yaptı. Araştırmacılara göre el hareketi konuşmanın bir parçası ve düşünmeye yardım ediyor olabilir.",
+  "tags": [
+   "el hareketleri",
+   "telefonda el hareketi",
+   "beden dili",
+   "konuşurken el hareketi",
+   "psikoloji",
+   "beyin",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen telefonda konuşurken ne yaparsın: ellerini sallar mısın, odada dolaşır mısın?",
+  "en_title": "Your hands keep talking on the phone even when no one can see 🤙",
+  "en_description": "People gesture on the phone even though the listener can't see them. In a 1998 study published in Nature, speakers who had been blind from birth gestured too, even when they knew their listener was also blind. Researchers concluded that gesture needs neither a model nor an observer: it seems to be part of speaking itself, and may help the speaker think.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Telefonda konuşurken neden el kol hareketi yaparız, kimse görmese de ellerimiz neden konuşur?\n\nJanet Bavelas ve arkadaşlarının 2008'de Journal of Memory and Language dergisinde yayımlanan çalışmasında insanlar, karşıdaki kişi onları göremediği telefon konuşmasında da el hareketi yaptı. Jana Iverson ve Susan Goldin-Meadow'un 1998'de Nature dergisinde yayımlanan çalışmasında ise doğuştan görme engelli on iki konuşmacının hepsi konuşurken el hareketi yaptı; hızları görenlerinkinden belirgin biçimde farklı değildi. Karşılarındaki kişinin de görme engelli olduğu söylendiğinde bile el hareketi yapmayı sürdürdüler. Araştırmacılara göre el hareketi ne bir örnek görmeyi ne de izleyen birini gerektiriyor; konuşmanın kendisinin bir parçası gibi görünüyor ve konuşmanın altındaki düşünmeye yardım ediyor olabilir.\n\nSen telefonda konuşurken ne yaparsın: ellerini sallar mısın, odada dolaşır mısın?",
+  "hashtags": [
+   "#elhareketleri",
+   "#bedendili",
+   "#psikoloji",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "el hareketleri",
+   "telefonda el hareketi",
+   "telefonda el sallamak",
+   "konuşurken el hareketi",
+   "neden el hareketi yaparız",
+   "el kol hareketi",
+   "beden dili",
+   "jest ve mimik",
+   "jestler",
+   "görme engelliler el hareketi",
+   "konuşma ve düşünme",
+   "iletişim psikolojisi",
+   "insan psikolojisi",
+   "insan davranışı",
+   "psikoloji",
+   "beyin",
+   "bilim",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "gesture",
+   "body language"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your hands keep talking on the phone even when no one can see 🤙",
+    "description": "People gesture on the phone even though nobody can see them. In a 1998 study in Nature, speakers blind from birth gestured too, even when they knew their listener was blind. Gesture seems to be part of speaking itself, and it may help you think."
+   },
+   "es": {
+    "title": "Aunque nadie te vea al teléfono, tus manos siguen hablando 🤙",
+    "description": "Gesticulamos al teléfono aunque nadie nos vea. En un estudio publicado en Nature en 1998, personas ciegas de nacimiento también gesticulaban al hablar, incluso sabiendo que su interlocutor era ciego. El gesto parece ser parte del propio habla y podría ayudarte a pensar."
+   },
+   "pt": {
+    "title": "Mesmo sem ninguém te ver ao telefone, suas mãos continuam falando 🤙",
+    "description": "A gente gesticula ao telefone mesmo sem ninguém ver. Num estudo publicado na Nature em 1998, pessoas cegas de nascença também gesticulavam ao falar, mesmo sabendo que o ouvinte era cego. O gesto parece fazer parte da própria fala e pode ajudar você a pensar."
+   },
+   "de": {
+    "title": "Am Telefon sieht dich keiner, und trotzdem reden deine Hände mit 🤙",
+    "description": "Wir gestikulieren auch am Telefon, obwohl uns niemand sieht. In einer Studie in Nature von 1998 gestikulierten auch von Geburt an blinde Menschen beim Sprechen, selbst wenn sie wussten, dass ihr Gegenüber blind war. Gesten scheinen Teil des Sprechens selbst zu sein und helfen womöglich beim Denken."
+   },
+   "fr": {
+    "title": "Au téléphone, personne ne te voit, mais tes mains parlent quand même 🤙",
+    "description": "On gesticule au téléphone même quand personne ne nous voit. Dans une étude publiée dans Nature en 1998, des personnes aveugles de naissance faisaient aussi des gestes en parlant, même en sachant que leur interlocuteur était aveugle. Le geste semble faire partie de la parole elle-même et pourrait t'aider à réfléchir."
+   },
+   "it": {
+    "title": "Al telefono nessuno ti vede, ma le tue mani continuano a parlare 🤙",
+    "description": "Gesticoliamo al telefono anche se nessuno ci vede. In uno studio pubblicato su Nature nel 1998, anche persone cieche dalla nascita gesticolavano parlando, persino sapendo che chi ascoltava era cieco. Il gesto sembra far parte del parlare stesso e potrebbe aiutarti a pensare."
+   },
+   "ru": {
+    "title": "По телефону тебя никто не видит, а руки всё равно говорят 🤙",
+    "description": "Мы жестикулируем по телефону, хотя нас никто не видит. В исследовании 1998 года в журнале Nature слепые от рождения люди тоже жестикулировали, даже зная, что собеседник слеп. Жесты, похоже, часть самой речи и, возможно, помогают думать."
+   },
+   "ar": {
+    "title": "لا أحد يراك على الهاتف، ومع ذلك تواصل يداك الكلام 🤙",
+    "description": "نحرك أيدينا أثناء المكالمات مع أن أحدًا لا يرانا. وفي دراسة نُشرت في مجلة Nature عام 1998، كان المكفوفون منذ الولادة يستخدمون الإيماءات أيضًا وهم يتكلمون، حتى عندما عرفوا أن مستمعهم كفيف. يبدو أن الإيماءة جزء من الكلام نفسه، وقد تساعدك على التفكير."
+   },
+   "hi": {
+    "title": "फ़ोन पर कोई आपको नहीं देखता, फिर भी आपके हाथ बोलते रहते हैं 🤙",
+    "description": "हम फ़ोन पर भी हाथ हिलाते हैं, जबकि कोई हमें देख नहीं रहा होता। 1998 में Nature में छपे एक अध्ययन में जन्म से दृष्टिहीन लोग भी बोलते समय हाथों से इशारे करते थे, यह जानते हुए भी कि सुनने वाला भी देख नहीं सकता। इशारे बोलने का ही हिस्सा लगते हैं और शायद सोचने में मदद करते हैं।"
+   },
+   "id": {
+    "title": "Tak ada yang melihatmu di telepon, tapi tanganmu tetap bicara 🤙",
+    "description": "Kita tetap menggerakkan tangan saat menelepon meski tak ada yang melihat. Dalam studi yang dimuat di Nature pada 1998, orang yang tunanetra sejak lahir juga bergestur saat bicara, bahkan saat tahu lawan bicaranya tunanetra. Gestur tampaknya bagian dari berbicara itu sendiri dan mungkin membantumu berpikir."
+   },
+   "ja": {
+    "title": "電話では誰も見ていないのに、手は話し続けている 🤙",
+    "description": "相手に見えない電話でも、私たちは身ぶりをします。1998年にNatureに載った研究では、生まれつき目の見えない人も話すときに身ぶりをし、相手も目が見えないと知っていても続けました。身ぶりは話すこと自体の一部で、考える助けにもなっているのかもしれません。"
+   },
+   "ko": {
+    "title": "통화할 땐 아무도 안 보는데, 손은 계속 말하고 있다 🤙",
+    "description": "우리는 아무도 보지 않는 전화 통화 중에도 손짓을 합니다. 1998년 네이처에 실린 연구에서는 선천적 시각장애인도 말할 때 손짓을 했고, 상대도 앞을 못 본다는 걸 알 때조차 마찬가지였습니다. 손짓은 말하기 자체의 일부이며 생각을 돕는 것일 수도 있습니다."
+   },
+   "pl": {
+    "title": "Przez telefon nikt cię nie widzi, a twoje ręce i tak mówią 🤙",
+    "description": "Gestykulujemy przez telefon, choć nikt nas nie widzi. W badaniu opublikowanym w Nature w 1998 roku osoby niewidome od urodzenia też gestykulowały, nawet wiedząc, że słuchacz jest niewidomy. Gesty wydają się częścią samego mówienia i mogą pomagać w myśleniu."
+   },
+   "nl": {
+    "title": "Aan de telefoon ziet niemand je, toch praten je handen mee 🤙",
+    "description": "We gebaren aan de telefoon, ook al ziet niemand ons. In een studie in Nature uit 1998 maakten ook mensen die blind geboren waren gebaren tijdens het praten, zelfs als ze wisten dat hun luisteraar blind was. Gebaren lijken deel van het spreken zelf en helpen je misschien denken."
+   },
+   "uk": {
+    "title": "Телефоном тебе ніхто не бачить, а руки все одно говорять 🤙",
+    "description": "Ми жестикулюємо по телефону, хоча нас ніхто не бачить. У дослідженні 1998 року в журналі Nature люди, незрячі від народження, теж жестикулювали, навіть знаючи, що співрозмовник незрячий. Жести, схоже, є частиною самого мовлення і, можливо, допомагають думати."
+   },
+   "vi": {
+    "title": "Gọi điện không ai thấy bạn, nhưng tay bạn vẫn nói 🤙",
+    "description": "Chúng ta vẫn khoa tay khi gọi điện dù không ai nhìn thấy. Trong một nghiên cứu đăng trên Nature năm 1998, người khiếm thị bẩm sinh cũng khoa tay khi nói, kể cả khi biết người nghe cũng không nhìn thấy. Cử chỉ dường như là một phần của chính việc nói và có thể giúp bạn suy nghĩ."
+   },
+   "az": {
+    "title": "Telefonda səni heç kim görmür, amma əllərin danışmağa davam edir 🤙",
+    "description": "Heç kim görməsə də telefonda danışanda əl hərəkətləri edirik. 1998-ci ildə Nature jurnalında dərc olunan araşdırmada anadangəlmə görməyən insanlar da danışarkən əl hərəkəti etdi, hətta qarşısındakının da görmədiyini bildikdə belə. Əl hərəkəti danışmanın özünün bir hissəsi kimi görünür və düşünməyə kömək edə bilər."
+   },
+   "ro": {
+    "title": "La telefon nu te vede nimeni, dar mâinile tale tot vorbesc 🤙",
+    "description": "Gesticulăm la telefon deși nu ne vede nimeni. Într-un studiu publicat în Nature în 1998, și persoanele nevăzătoare din naștere gesticulau când vorbeau, chiar știind că ascultătorul e nevăzător. Gesturile par să facă parte din vorbirea însăși și te-ar putea ajuta să gândești."
+   }
+  }
+ }
+}
