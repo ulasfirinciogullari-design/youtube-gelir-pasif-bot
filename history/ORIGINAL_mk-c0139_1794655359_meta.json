@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0139",
+  "topic": "Timsah gözyaşı gerçek mi, timsahlar yemek yerken neden ağlar?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "Timsah gözyaşı gerçek: timsahlar yemek yerken ağlıyor 🐊",
+  "hook_text": "TİMSAH NEDEN AĞLIYOR?",
+  "description": "Timsah gözyaşı gerçek mi, timsahlar yemek yerken neden ağlar?\n\nSahte acımaya 'timsah gözyaşı' denmesinin kökeni, ortaçağdan kalma 'Sir John Mandeville'in Seyahatleri' kitabındaki, timsahların öldürdükleri insanları ağlayarak yediği iddiasına uzanıyor. 2007'de BioScience dergisinde yayımlanan çalışmada UCLA'den nörolog Malcolm Shaner ile Florida Üniversitesi'nden zoolog Kent Vliet, St. Augustine'deki bir timsah parkında karada beslenen dört kayman ve üç aligatoru (timsahın yakın akrabaları) videoya kaydetti; yedisinden beşinin gözü yemek yerken yaşardı, bazılarının gözünde köpük ve baloncuk oluştu. Araştırmacılara göre bunun sebebi acıma değil: yerken tıslayıp soluyan hayvanın sinüslerinden geçen hava, gözyaşı bezlerindeki sıvıyı gözlere itiyor olabilir.\n\nSence 'timsah gözyaşı' deyimi haklı mı çıktı: evet mi, hayır mı?\n\n#timsah #deyimler #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0139",
+  "tags": [
+    "timsah gözyaşı",
+    "timsah gözyaşı dökmek",
+    "timsahlar ağlar mı",
+    "timsah neden ağlar",
+    "timsah yemek yerken ağlar",
+    "timsah gözyaşı ne demek",
+    "sahte gözyaşı",
+    "deyimlerin kökeni",
+    "deyimler",
+    "timsah",
+    "aligator",
+    "kayman",
+    "sürüngenler",
+    "vahşi hayvanlar",
+    "hayvanlar",
+    "deyim efsaneleri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "crocodile tears",
+    "do crocodiles cry",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "timsah gozyasi",
+    "timsah gozyasi dokmek",
+    "timsahlar aglar mi",
+    "timsah neden aglar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Crocodile tears are real: crocodilians cry while they eat 🐊",
+      "description": "In a 2007 study, five of seven alligators and caimans fed on dry land teared up while eating, and some eyes even frothed and bubbled. It isn't fake sorrow: air pushed through the sinuses as they hiss and huff may drive tears into the eyes.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "es": {
+      "title": "Las lágrimas de cocodrilo son reales: lloran mientras comen 🐊",
+      "description": "En un estudio de 2007, cinco de siete caimanes y aligátores alimentados en tierra lagrimearon al comer, y a algunos hasta les salió espuma en los ojos. No es falsa pena: el aire que empujan por los senos nasales al bufar podría llevar las lágrimas a los ojos.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "pt": {
+      "title": "Lágrimas de crocodilo existem: eles choram enquanto comem 🐊",
+      "description": "Num estudo de 2007, cinco de sete jacarés e aligátores alimentados em terra lacrimejaram ao comer, e alguns olhos até espumaram. Não é falsa tristeza: o ar empurrado pelos seios nasais enquanto eles bufam pode levar as lágrimas aos olhos.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "de": {
+      "title": "Krokodilstränen gibt es wirklich: Sie weinen beim Fressen 🐊",
+      "description": "In einer Studie von 2007 tränten fünf von sieben an Land gefütterten Kaimanen und Alligatoren beim Fressen die Augen, bei manchen schäumten sie sogar. Falsche Trauer ist es nicht: Luft, die beim Fauchen durch die Nebenhöhlen gepresst wird, könnte die Tränen in die Augen drücken.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "fr": {
+      "title": "Les larmes de crocodile existent : ils pleurent en mangeant 🐊",
+      "description": "Dans une étude de 2007, cinq caïmans et alligators sur sept nourris hors de l'eau ont pleuré en mangeant, certains avec des yeux qui moussaient. Rien de feint : l'air poussé dans les sinus quand ils sifflent pourrait chasser les larmes vers les yeux.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "it": {
+      "title": "Le lacrime di coccodrillo esistono: piangono mentre mangiano 🐊",
+      "description": "In uno studio del 2007, cinque caimani e alligatori su sette nutriti all'asciutto lacrimavano mentre mangiavano, e ad alcuni gli occhi facevano persino schiuma. Nessun finto dolore: l'aria spinta nei seni nasali mentre soffiano potrebbe spingere le lacrime negli occhi.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "ru": {
+      "title": "Крокодиловы слёзы реальны: крокодилы плачут во время еды 🐊",
+      "description": "В исследовании 2007 года у пяти из семи кайманов и аллигаторов, которых кормили на суше, во время еды текли слёзы, а у некоторых глаза даже пенились. Дело не в притворной жалости: воздух, проходящий через пазухи, когда они шипят, может выталкивать слёзы в глаза.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "ar": {
+      "title": "دموع التماسيح حقيقية: التماسيح تبكي وهي تأكل 🐊",
+      "description": "في دراسة عام 2007 دمعت عيون خمسة من أصل سبعة من الكايمن والقاطور أُطعمت على اليابسة أثناء الأكل، بل ظهرت رغوة في عيون بعضها. ليس ذلك حزنًا زائفًا، فالهواء الذي يندفع عبر الجيوب الأنفية حين تفحّ قد يدفع الدموع إلى العينين.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "hi": {
+      "title": "मगरमच्छ के आँसू असली हैं: वे खाते समय सच में रोते हैं 🐊",
+      "description": "2007 के एक अध्ययन में ज़मीन पर खाना खिलाए गए सात केमैन और एलिगेटर में से पाँच की आँखों से खाते समय आँसू निकले, कुछ की आँखों में तो झाग भी बना। यह झूठा दुख नहीं है: फुफकारते समय साइनस से गुज़रती हवा आँसुओं को आँखों तक धकेल सकती है।\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "id": {
+      "title": "Air mata buaya itu nyata: buaya menangis saat makan 🐊",
+      "description": "Dalam studi tahun 2007, lima dari tujuh kaiman dan aligator yang diberi makan di darat mengeluarkan air mata saat makan, bahkan mata beberapa di antaranya berbusa. Bukan kesedihan palsu: udara yang terdorong lewat sinus saat mereka mendesis mungkin mendorong air mata ke mata.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "ja": {
+      "title": "ワニの涙は本当だった:ワニは食べながら泣く 🐊",
+      "description": "2007年の研究では、陸上でえさを与えたカイマンとアリゲーター7頭のうち5頭が、食べている最中に涙を流し、目が泡立つ個体もいました。うそ泣きではありません。シューッと息を吐くときに副鼻腔を通る空気が、涙を目に押し出しているのかもしれません。\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "ko": {
+      "title": "악어의 눈물은 진짜다: 악어는 먹으면서 운다 🐊",
+      "description": "2007년 연구에서 땅 위에서 먹이를 먹은 카이만과 앨리게이터 7마리 중 5마리가 먹는 동안 눈물을 흘렸고, 일부는 눈에 거품까지 생겼습니다. 가짜 슬픔은 아닙니다. 쉭쉭거릴 때 부비동을 지나는 공기가 눈물을 눈으로 밀어내는 것일 수 있습니다.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "pl": {
+      "title": "Krokodyle łzy są prawdziwe: krokodyle płaczą podczas jedzenia 🐊",
+      "description": "W badaniu z 2007 roku u pięciu z siedmiu kajmanów i aligatorów karmionych na lądzie podczas jedzenia pojawiły się łzy, a niektórym oczy nawet się pieniły. To nie udawany żal: powietrze przepychane przez zatoki, gdy syczą, może wypychać łzy do oczu.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "nl": {
+      "title": "Krokodillentranen bestaan echt: ze huilen tijdens het eten 🐊",
+      "description": "In een studie uit 2007 kregen vijf van de zeven kaaimannen en alligators die op het droge werden gevoerd tranen in hun ogen tijdens het eten, bij sommigen schuimden de ogen zelfs. Geen gespeeld verdriet: lucht die bij het sissen door de bijholtes wordt geperst, kan de tranen naar de ogen duwen.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "uk": {
+      "title": "Крокодилячі сльози справжні: крокодили плачуть, коли їдять 🐊",
+      "description": "У дослідженні 2007 року в п'яти із семи кайманів і алігаторів, яких годували на суші, під час їжі текли сльози, а в деяких очі навіть пінилися. Це не вдаваний жаль: повітря, що проходить через пазухи, коли вони шиплять, може виштовхувати сльози в очі.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "vi": {
+      "title": "Nước mắt cá sấu là có thật: cá sấu khóc khi đang ăn 🐊",
+      "description": "Trong một nghiên cứu năm 2007, năm trong bảy con cá sấu caiman và alligator được cho ăn trên cạn đã chảy nước mắt khi ăn, có con mắt còn sủi bọt. Đó không phải nỗi buồn giả tạo: không khí bị đẩy qua xoang khi chúng rít lên có thể đẩy nước mắt ra mắt.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "az": {
+      "title": "Timsah göz yaşları həqiqidir: timsahlar yemək yeyərkən ağlayır 🐊",
+      "description": "2007-ci ildəki araşdırmada quruda yemlənən yeddi kayman və alliqatordan beşinin yemək yeyərkən gözləri yaşardı, bəzilərinin gözü hətta köpükləndi. Bu, saxta kədər deyil: fısıldayarkən sinuslardan keçən hava göz yaşlarını gözlərə itələyə bilər.\n\n#shorts\n\nSeri: mk-c0139"
+    },
+    "ro": {
+      "title": "Lacrimile de crocodil sunt reale: crocodilii plâng când mănâncă 🐊",
+      "description": "Într-un studiu din 2007, cinci din șapte caimani și aligatori hrăniți pe uscat au lăcrimat în timp ce mâncau, iar unora chiar le-au făcut spumă ochii. Nu e tristețe prefăcută: aerul împins prin sinusuri când șuieră ar putea împinge lacrimile spre ochi.\n\n#shorts\n\nSeri: mk-c0139"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence 'timsah gözyaşı' deyimi haklı mı çıktı: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu timsah yemek yerken gerçekten ağlar.",
+      "visual": "extreme close-up of a crocodile's eye just above the water surface",
+      "stock_query": "crocodile eye",
+      "source": "stock",
+      "callout": "YERKEN AĞLAR"
+    },
+    {
+      "text": "Sahte acımaya 'timsah gözyaşı' deriz; söz, avını ağlayarak yiyen timsah efsanesinden gelir.",
+      "visual": "crocodile resting on a riverbank with its jaws wide open",
+      "stock_query": "crocodile mouth",
+      "source": "stock"
+    },
+    {
+      "text": "Bir deneyde karada beslenen yedi aligator ve kaymandan beşi gözyaşı döktü.",
+      "visual": "alligator eating on dry land, close-up of its head",
+      "stock_query": "alligator eating",
+      "source": "stock",
+      "callout": "7'DEN 5'İ AĞLADI"
+    },
+    {
+      "text": "Bazılarının gözü köpürüp baloncuk yaptı.",
+      "visual": "close-up of an alligator's wet eye",
+      "stock_query": "alligator eye",
+      "source": "stock",
+      "callout": "KÖPÜREN GÖZ"
+    },
+    {
+      "text": "Sebep acıma değil; yerken tısladıkları için sinüslerden geçen hava, gözyaşını gözlere itiyor olabilir.",
+      "visual": "close-up of a crocodile's head and nostrils",
+      "stock_query": "crocodile head",
+      "source": "stock",
+      "callout": "TISLAYAN NEFES"
+    },
+    {
+      "text": "Deyim yarı doğru, çünkü...",
+      "visual": "crocodile slowly sinking into the water, eyes above the surface",
+      "stock_query": "crocodile water",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.76,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #192",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0139_1794655359_ig.mp4"
+}
