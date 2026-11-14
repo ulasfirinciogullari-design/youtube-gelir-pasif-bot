@@ -603,6 +603,12 @@
     "r",
     "Tırnak yatağı testi kişiden kişiye değişebilir, cilt tonu veya soğuk hava da sür",
     "dc937b598926"
+   ],
+   "18084612911382726": [
+    1794655738.4232125,
+    "r",
+    "Haklısın, CDC verilerine göre 24 saat uyanık kalmak kanda 1 promil alkol etkisin",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -677,6 +683,12 @@
     "kind": "yorum",
     "text": "Benimki beyazlaştıpemdeleşmedi",
     "reply": "Tırnak yatağı testi kişiden kişiye değişebilir, cilt tonu veya soğuk hava da süreyi etkiler. Endişeniz varsa bir doktora danışabilirsiniz.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1794655738.4232125,
+    "kind": "yorum",
+    "text": "48 gercekden sarhoş gibisin",
+    "reply": "Haklısın, CDC verilerine göre 24 saat uyanık kalmak kanda 1 promil alkol etkisine benzer bir performans düşüşü yaratır.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -684,10 +696,10 @@
  "nobet": {
   "basladi": "2026-11-14T09:34:58+00:00",
   "run": "43580431919",
-  "tur": 109,
-  "ig_cevap": 0,
+  "tur": 115,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-14T11:22:59+00:00"
+  "son_tur": "2026-11-14T11:29:02+00:00"
  }
 }
