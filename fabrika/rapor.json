@@ -1,72 +1,18 @@
 {
- "started": "2026-11-14T10:07:19+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-14T13:07:25+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y069",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "68",
-  "videos": "80"
+ "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+ "chars": 856,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18008144804793980",
+  "url": "https://www.instagram.com/reel/DfuR2pxGSmO/",
+  "at": 1794661794.0714588
  },
- "credits_before": [
-  102523,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261113-3-y056.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y056",
-  "series": "Ya Olsaydı?",
-  "q": "İnsanlar 200 yıl yaşasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 386,
- "duration": 25.4,
- "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
- "url": "https://youtube.com/shorts/5X21vqv32gg",
- "recent_status": {
-  "y038": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "930",
-   "reason": null
-  },
-  "n016": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "923",
-   "reason": null
-  },
-  "y043": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "444",
-   "reason": null
-  },
-  "y024": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "91",
-   "reason": null
-  },
-  "y056": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  102617,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261113-3-y056.json İnsanlar 200 yıl yaşasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/DfuR2pxGSmO/"
  ],
- "finished": "2026-11-14T10:08:14+00:00"
+ "finished": "2026-11-14T13:09:54+00:00"
 }

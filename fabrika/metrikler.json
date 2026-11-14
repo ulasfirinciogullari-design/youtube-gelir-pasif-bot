@@ -1,5 +1,5 @@
 {
- "at": "2026-11-14T10:06:19+00:00",
+ "at": "2026-11-14T13:06:40+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 68,
   "viewCount": 77909,
-  "videoCount": 80
+  "videoCount": 81
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -45,7 +45,7 @@
    "baslik": "Kalbin 1 Günde Kaç Kez Atar?"
   },
   "f6WyXXJWASs": {
-   "view": 340,
+   "view": 341,
    "like": 4,
    "comment": 4,
    "baslik": "Güneş Kara Delik Olsaydı Ne Olurdu?"
@@ -111,7 +111,7 @@
    "baslik": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?"
   },
   "ActwPx-yTCQ": {
-   "view": 994,
+   "view": 1001,
    "like": 9,
    "comment": 4,
    "baslik": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?"
@@ -129,7 +129,7 @@
    "baslik": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?"
   },
   "zkaODqXzaCo": {
-   "view": 1639,
+   "view": 1641,
    "like": 10,
    "comment": 0,
    "baslik": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?"
@@ -231,7 +231,7 @@
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 1072,
+   "view": 1073,
    "like": 7,
    "comment": 6,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
@@ -315,7 +315,7 @@
    "baslik": "Dünya'ya 1 Günde Kaç Yıldırım Düşer? 😮"
   },
   "VMFzMO2A2CY": {
-   "view": 1095,
+   "view": 1096,
    "like": 4,
    "comment": 0,
    "baslik": "Mars'ta Korumasız Kalsaydın Ne Olurdu? 😳"
@@ -327,7 +327,7 @@
    "baslik": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun? 😳"
   },
   "xRibz7N8GmY": {
-   "view": 1023,
+   "view": 1024,
    "like": 5,
    "comment": 0,
    "baslik": "Everest Gerçekte Ne Kadar Yüksek? 🤯"
@@ -405,13 +405,13 @@
    "baslik": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar? 😮"
   },
   "m_XagF1CrzE": {
-   "view": 941,
+   "view": 942,
    "like": 2,
    "comment": 0,
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 1617,
+   "view": 1626,
    "like": 9,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
@@ -447,25 +447,25 @@
    "baslik": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun? 🤯"
   },
   "xLGCGQYwSmE": {
-   "view": 1032,
+   "view": 1035,
    "like": 14,
    "comment": 2,
    "baslik": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu? 😳"
   },
   "WR_w6VSOY-s": {
-   "view": 515,
+   "view": 571,
    "like": 2,
    "comment": 0,
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
   },
   "Pxik5vC4NHU": {
-   "view": 461,
+   "view": 492,
    "like": 2,
    "comment": 0,
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
   },
   "RKGn39tzpn4": {
-   "view": 909,
+   "view": 931,
    "like": 6,
    "comment": 2,
    "baslik": "Hiç Bakterin Olmasaydı Ne Olurdu? 😳"
@@ -483,8 +483,8 @@
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 444,
-   "like": 7,
+   "view": 457,
+   "like": 8,
    "comment": 0,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
   },
@@ -493,6 +493,12 @@
    "like": 0,
    "comment": 0,
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
+  },
+  "5X21vqv32gg": {
+   "view": 300,
+   "like": 6,
+   "comment": 0,
+   "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   }
  },
  "videos": {

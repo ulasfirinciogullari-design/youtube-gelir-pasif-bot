@@ -2552,14 +2552,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-06T18:08:37+00:00",
-   "mod": "saatlik",
-   "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
-   "url": "https://youtube.com/shorts/5-jo5Fr030o",
-   "duration": 25.1,
-   "chars": 378
-  },
-  {
    "finished": "2026-11-06T20:08:39+00:00",
    "mod": "saatlik",
    "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
@@ -2978,6 +2970,12 @@
    "url": "https://youtube.com/shorts/5X21vqv32gg",
    "duration": 25.4,
    "chars": 386
+  },
+  {
+   "finished": "2026-11-14T13:09:54+00:00",
+   "mod": "igbolum",
+   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+   "chars": 856
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3282,6 +3280,11 @@
     "media_id": "18121050290069759",
     "url": "https://www.instagram.com/reel/Dft2bATE-uZ/",
     "at": 1794647397.2096894
+   },
+   "y069": {
+    "media_id": "18008144804793980",
+    "url": "https://www.instagram.com/reel/DfuR2pxGSmO/",
+    "at": 1794661794.0714588
    }
   },
   "eski": [
