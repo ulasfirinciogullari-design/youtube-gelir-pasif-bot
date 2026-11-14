@@ -2520,14 +2520,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-06T14:08:29+00:00",
-   "mod": "saatlik",
-   "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
-   "url": "https://youtube.com/shorts/hvgNbZMhWPg",
-   "duration": 24.2,
-   "chars": 375
-  },
-  {
    "finished": "2026-11-06T17:47:12+00:00",
    "mod": "igbolum",
    "title": "Böbreklerin 1 Günde Ne Kadar Kan Süzer?",
@@ -2946,6 +2938,12 @@
    "url": "https://youtube.com/shorts/Z7Pj4q9UTCs",
    "duration": 23.9,
    "chars": 362
+  },
+  {
+   "finished": "2026-11-14T09:09:57+00:00",
+   "mod": "igbolum",
+   "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
+   "chars": 360
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3245,6 +3243,11 @@
     "media_id": "18343308001261439",
     "url": "https://www.instagram.com/reel/DfsIitujlct/",
     "at": 1794589784.9580328
+   },
+   "y065": {
+    "media_id": "18121050290069759",
+    "url": "https://www.instagram.com/reel/Dft2bATE-uZ/",
+    "at": 1794647397.2096894
    }
   },
   "eski": [
