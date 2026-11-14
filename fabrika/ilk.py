@@ -28,17 +28,22 @@ DIR = HERE / "motor" / "ilk"
 API = "https://commons.wikimedia.org/w/api.php"
 UA = {"User-Agent": "YaOlsaydiFabrika/1.0 (science shorts; first-frame photos)"}
 FREE = re.compile(r"public domain|^pd\b|^pd-|cc0|cc-zero", re.I)
+# The whole run gets 10 minutes: on 2026-11-14 Commons throttled the runner so hard that one search took 26 minutes,
+# and these runs share the factory's concurrency group, so a long one would hold back an upload slot.
+T0, LIMIT = time.time(), 600
 
 
 def get(url, **kw):
     """Commons throttles the shared GitHub runners (429 on the first run, 2026-11-13): wait and try again."""
     for k in range(5):
+        if time.time() - T0 > LIMIT:
+            raise RuntimeError("süre doldu, Commons çok yavaş")
         time.sleep(1.5)
         r = requests.get(url, headers=UA, timeout=60, **kw)
         if r.status_code not in (429, 500, 502, 503, 504) or k == 4:
             r.raise_for_status()
             return r
-        time.sleep(min(60, int(r.headers.get("Retry-After") or 0) or 10 * (k + 1)))
+        time.sleep(min(30, int(r.headers.get("Retry-After") or 0) or 10 * (k + 1)))
 
 
 def strip(s):
@@ -97,7 +102,12 @@ def ara(req):
     for ep_id, queries in req.items():
         seen, items = set(), []
         for q in ([queries] if isinstance(queries, str) else queries):
-            for it in candidates(q):
+            try:
+                found = candidates(q)
+            except Exception as e:  # noqa: BLE001  keep what the other queries found
+                print(f"{ep_id} '{q}': {e}"[:200])
+                continue
+            for it in found:
                 if it["baslik"] not in seen:
                     seen.add(it["baslik"])
                     items.append(it)
@@ -105,6 +115,7 @@ def ara(req):
         (ADAY / f"{ep_id}.json").write_text(json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
         if items:
             sheet(items, ADAY / f"{ep_id}.jpg")
+            (ADAY / f"{ep_id}.json").write_text(json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
         done.append(f"{ep_id} {len(items)}")
     return "İlk kare adayları: " + ", ".join(done)
 
@@ -117,7 +128,11 @@ def al(req):
     done = []
     for ep_id, pick in req.items():
         it = json.loads((ADAY / f"{ep_id}.json").read_text(encoding="utf-8"))[int(pick["n"]) - 1]
-        im = Image.open(io.BytesIO(get(it["url"]).content)).convert("RGB")
+        try:
+            im = Image.open(io.BytesIO(get(it["url"]).content)).convert("RGB")
+        except Exception as e:  # noqa: BLE001  the others still go through; this one can be asked for again
+            done.append(f"{ep_id} alınamadı ({str(e)[:60]})")
+            continue
         w, h = im.size
         cw, ch = (round(h * 9 / 16), h) if w / h > 9 / 16 else (w, round(w * 16 / 9))
         x0 = min(max(0, round(float(pick.get("x", .5)) * w - cw / 2)), w - cw)
