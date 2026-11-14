@@ -10,15 +10,16 @@ actually produce a Short. A dropped or failed run simply leaves its slot open
 and the next tick tries again, so no separate retry loop is needed.
 
 A scheduled tick goes ahead only when all of these hold:
-  - the latest slot (ten a day from 2026-11-08: 08:00, then every two hours
-    from 10:00 to 24:00 Turkey time, plus 23:00) started at most 1 h ago.
-    From 2026-10-15 23:00 UTC the channel published one Short an hour; on
-    2026-10-16 every Short up to 11:26 UTC got 1,000 to 3,000 views, and the
-    eight from 12:30 UTC on got 0 to 12 views after up to 8 hours, with no
-    change to how they were made and no warning in Studio, so Ulaş cut the
-    channel to eight a day. The Shorts of 2026-11-02 to 11-07 had a median of
-    about 1,400 views after 24 h (none under 950), the condition set on 11-03
-    for going to ten;
+  - the latest slot (eight a day, every two hours from 10:00 to 24:00 Turkey
+    time) started at most 1 h ago. From 2026-10-15 23:00 UTC the channel
+    published one Short an hour; on 2026-10-16 every Short up to 11:26 UTC
+    got 1,000 to 3,000 views, and the eight from 12:30 UTC on got 0 to 12
+    views after up to 8 hours, with no change to how they were made and no
+    warning in Studio, so Ulaş cut the channel to eight a day. From
+    2026-11-08 to 11-13 it ran ten a day (08:00 and 23:00 Turkey time added);
+    in those six days six Shorts were never shown (under 200 views after
+    24 h, three of them on 11-13), against none in the ~53 Shorts of 11-01 to
+    11-07 at eight a day, so it went back to eight on 2026-11-14;
   - no public or unlisted upload has happened since that slot started;
   - the newest public or unlisted upload is at least 35 min old, so a late run
     does not put two Shorts back to back. Bursts kill reach: in
@@ -60,7 +61,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 DATA_DIR = BASE_DIR / "channel-data"
-SLOTS_UTC = (5, 7, 9, 11, 13, 15, 17, 19, 20, 21)  # 08:00, 10:00, 12:00, ... 22:00, 23:00, 24:00 in Turkey
+SLOTS_UTC = (7, 9, 11, 13, 15, 17, 19, 21)  # 10:00, 12:00, ... 24:00 in Turkey
 WINDOW = timedelta(hours=1)
 MIN_GAP = timedelta(minutes=35)
 # YouTube's daily quota resets at midnight Pacific time: 07:00 UTC in summer, 08:00 UTC in winter.
