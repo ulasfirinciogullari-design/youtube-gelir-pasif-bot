@@ -1946,7 +1946,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "941",
+    "views": "942",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1616",
+    "views": "1628",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "416",
+    "views": "417",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1032",
+    "views": "1037",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "541",
+    "views": "572",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "374",
+    "views": "650",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "795",
+    "views": "924",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "444",
+    "views": "454",
     "reason": null
    }
   },
@@ -2397,6 +2397,37 @@
    "at": 1794650893.4493093,
    "chars": 386,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "492",
+    "reason": null
+   }
+  },
+  {
+   "id": "y059",
+   "video_id": "L_hk4oVckRM",
+   "url": "https://youtube.com/shorts/L_hk4oVckRM",
+   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What Would 1 Year in Space Do to Your Body?",
+    "es": "¿Qué Le Haría a Tu Cuerpo Pasar 1 Año en el Espacio?",
+    "pt": "O Que 1 Ano no Espaço Faria com o Seu Corpo?",
+    "ar": "ماذا سيحدث لجسمك لو بقيت عامًا واحدًا في الفضاء؟",
+    "hi": "अगर आप 1 साल अंतरिक्ष में रहते तो आपके शरीर का क्या होता?",
+    "id": "Apa yang Terjadi pada Tubuhmu Jika 1 Tahun di Luar Angkasa?",
+    "fr": "Que Ferait 1 An dans l'Espace à Ton Corps ?",
+    "de": "Was Würde 1 Jahr im All mit Deinem Körper Machen?",
+    "ru": "Что 1 Год в Космосе Сделал Бы с Твоим Телом?",
+    "az": "Kosmosda 1 İl Qalsaydın Bədəninə Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794665320.605394,
+   "chars": 382,
+   "ilk": false,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2485,7 +2516,8 @@
   "n016",
   "y043",
   "y024",
-  "y056"
+  "y056",
+  "y059"
  ],
  "extra": [
   {
@@ -2551,14 +2583,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-06T20:08:39+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
-   "url": "https://youtube.com/shorts/yexFsNeB7JM",
-   "duration": 24.4,
-   "chars": 369
-  },
   {
    "finished": "2026-11-07T09:09:06+00:00",
    "mod": "igbolum",
@@ -2976,6 +3000,14 @@
    "mod": "igbolum",
    "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
    "chars": 856
+  },
+  {
+   "finished": "2026-11-14T14:08:41+00:00",
+   "mod": "saatlik",
+   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+   "url": "https://youtube.com/shorts/L_hk4oVckRM",
+   "duration": 26.6,
+   "chars": 382
   }
  ],
  "last_fail": 1794410324.353765,

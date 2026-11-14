@@ -1,18 +1,72 @@
 {
- "started": "2026-11-14T13:07:25+00:00",
- "mod": "igbolum",
- "gate": "instagram: y069",
+ "started": "2026-11-14T14:07:37+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
- "chars": 856,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "18008144804793980",
-  "url": "https://www.instagram.com/reel/DfuR2pxGSmO/",
-  "at": 1794661794.0714588
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "68",
+  "videos": "81"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfuR2pxGSmO/"
+ "credits_before": [
+  103004,
+  613902
  ],
- "finished": "2026-11-14T13:09:54+00:00"
+ "kuyruk": {
+  "dosya": "20261113-4-y059.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y059",
+  "series": "Ya Olsaydı?",
+  "q": "Uzayda bir yıl kalsaydın vücuduna ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": false,
+ "chars": 382,
+ "duration": 26.6,
+ "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+ "url": "https://youtube.com/shorts/L_hk4oVckRM",
+ "recent_status": {
+  "n016": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "923",
+   "reason": null
+  },
+  "y043": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "454",
+   "reason": null
+  },
+  "y024": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "91",
+   "reason": null
+  },
+  "y056": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "492",
+   "reason": null
+  },
+  "y059": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  103004,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261113-4-y059.json Uzayda bir yıl kalsaydın vücuduna ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-14T14:08:41+00:00"
 }
