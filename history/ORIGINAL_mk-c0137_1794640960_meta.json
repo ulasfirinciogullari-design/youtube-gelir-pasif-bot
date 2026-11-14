@@ -1,0 +1,183 @@
+{
+  "topic_id": "mk-c0137",
+  "topic": "Ben demiştim diyenler gerçekten önceden biliyor muydu? Sonradan bilmiş olma yanılgısı",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "elevenlabs x6",
+  "voice": {
+    "voice_id": "HV5rAif1q1ITHdvxqyMw",
+    "model": "eleven_flash_v2_5",
+    "speed": 1.15,
+    "style": 0.6,
+    "stability": 0.35
+  },
+  "title": "'Ben demiştim' diyenin hafızası onu kandırıyor 🙄",
+  "hook_text": "GERÇEKTEN ÖNCEDEN BİLİYOR MUYDU?",
+  "description": "Ben demiştim diyenler gerçekten önceden biliyor muydu, sonradan bilmiş olma yanılgısı nedir?\n\nPsikologlar Baruch Fischhoff ve Ruth Beyth, 1972'de ABD Başkanı Nixon'ın Pekin ve Moskova ziyaretlerinden önce İsrailli üniversite öğrencilerinden olası sonuçlara ihtimal vermelerini istedi. Ziyaretlerden sonra kendi tahminlerini hatırlamaları istendiğinde yaklaşık dörtte üçü, gerçekleştiğine inandığı olaylara verdiği ihtimali olduğundan yüksek hatırladı; aradan üç ila altı ay geçenlerde bu oran yüzde seksen dörde çıktı. Sonucu öğrenen beyin eski tahmini sessizce onunla günceller. Buna sonradan bilmiş olma yanılgısı denir ve sonraki pek çok çalışmada tekrarlandı.\n\nSenin çevrende en çok kim 'ben demiştim' der: annen mi, en yakın arkadaşın mı?\n\n#bendemiştim #psikoloji #hafıza #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0137",
+  "tags": [
+    "ben demiştim",
+    "sonradan bilmiş olma yanılgısı",
+    "geriye dönük yanılgı",
+    "ben biliyordum",
+    "önceden biliyordum",
+    "hafıza yanılgısı",
+    "hafıza bizi kandırır mı",
+    "hafıza neden yanılır",
+    "bilişsel yanılgılar",
+    "bilişsel önyargı",
+    "karar verme",
+    "tahmin",
+    "insan psikolojisi",
+    "psikoloji deneyleri",
+    "psikoloji",
+    "beyin",
+    "hafıza",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "hindsight bias",
+    "knew it all along",
+    "bilişsel yanılgı",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "ben demistim",
+    "onceden biliyordum"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your 'I told you so' friend may be fooled by their own memory 🙄",
+      "description": "In a 1972 study, students predicted how President Nixon's trips to Beijing and Moscow would go. Asked later to recall their predictions, about three in four remembered giving higher odds to what actually happened, and the distortion grew over the months. It's called hindsight bias.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "es": {
+      "title": "Quien dice «te lo dije» puede estar engañado por su propia memoria 🙄",
+      "description": "En un estudio de 1972, unos estudiantes predijeron cómo saldrían los viajes de Nixon a Pekín y Moscú. Al pedirles después que recordaran sus predicciones, unos tres de cada cuatro creyeron haber dado más probabilidad a lo que realmente ocurrió. Es el sesgo retrospectivo, y crece con el tiempo.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "pt": {
+      "title": "Quem diz «eu avisei» pode estar sendo enganado pela própria memória 🙄",
+      "description": "Num estudo de 1972, estudantes previram como seriam as viagens de Nixon a Pequim e Moscou. Quando tiveram de lembrar suas previsões, cerca de três em cada quatro acharam que tinham dado mais chance ao que de fato aconteceu. É o viés retrospectivo, e ele cresce com o tempo.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "de": {
+      "title": "Wer „Hab ich doch gesagt“ sagt, wird oft vom eigenen Gedächtnis getäuscht 🙄",
+      "description": "In einer Studie von 1972 sagten Studierende den Ausgang von Nixons Reisen nach Peking und Moskau voraus. Später sollten sie sich an ihre Prognosen erinnern: Etwa drei von vier glaubten, dem tatsächlich Eingetretenen eine höhere Wahrscheinlichkeit gegeben zu haben. Das ist der Rückschaufehler, und er wächst mit der Zeit.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "fr": {
+      "title": "Celui qui dit « je te l'avais dit » est peut-être trompé par sa mémoire 🙄",
+      "description": "Dans une étude de 1972, des étudiants ont prédit l'issue des voyages de Nixon à Pékin et à Moscou. Invités ensuite à se souvenir de leurs prédictions, environ trois sur quatre pensaient avoir donné plus de chances à ce qui s'était réellement passé. C'est le biais rétrospectif, et il s'aggrave avec le temps.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "it": {
+      "title": "Chi dice «te l'avevo detto» potrebbe essere ingannato dalla sua memoria 🙄",
+      "description": "In uno studio del 1972 alcuni studenti previdero l'esito dei viaggi di Nixon a Pechino e a Mosca. Quando dovettero ricordare le loro previsioni, circa tre su quattro credevano di aver dato più probabilità a ciò che era davvero successo. È il bias del senno di poi, e cresce col tempo.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "ru": {
+      "title": "Тот, кто говорит «я же говорил», часто обманут собственной памятью 🙄",
+      "description": "В исследовании 1972 года студенты предсказывали итоги визитов Никсона в Пекин и Москву. Когда их потом попросили вспомнить свои прогнозы, примерно трое из четырёх решили, что давали больше шансов тому, что действительно произошло. Это ретроспективное искажение, и со временем оно усиливается.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "ar": {
+      "title": "من يقول «ألم أقل لك؟» قد تكون ذاكرته تخدعه 🙄",
+      "description": "في دراسة عام 1972 توقّع طلاب نتائج زيارتَي نيكسون إلى بكين وموسكو. وحين طُلب منهم لاحقًا تذكّر توقعاتهم، ظنّ نحو ثلاثة من كل أربعة أنهم أعطوا ما حدث فعلًا احتمالًا أعلى مما أعطوه. يُسمّى هذا انحياز الإدراك المتأخر، ويزداد مع مرور الوقت.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "hi": {
+      "title": "जो कहता है 'मैंने कहा था न', उसकी याददाश्त उसे धोखा दे रही हो सकती है 🙄",
+      "description": "1972 के एक अध्ययन में छात्रों ने निक्सन की बीजिंग और मॉस्को यात्राओं के नतीजों का अनुमान लगाया। बाद में अपने अनुमान याद करने को कहा गया तो लगभग हर चार में से तीन को लगा कि उन्होंने जो हुआ उसे पहले से ज़्यादा संभावना दी थी। इसे हाइंडसाइट बायस कहते हैं, और समय के साथ यह बढ़ता है।\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "id": {
+      "title": "Orang yang bilang 'kan sudah kubilang' bisa jadi tertipu ingatannya sendiri 🙄",
+      "description": "Dalam studi tahun 1972, mahasiswa menebak hasil kunjungan Nixon ke Beijing dan Moskow. Saat diminta mengingat tebakan mereka, sekitar tiga dari empat merasa dulu memberi peluang lebih besar pada hal yang benar-benar terjadi. Ini disebut bias peninjauan ke belakang, dan makin kuat seiring waktu.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "ja": {
+      "title": "「だから言ったのに」と言う人は、自分の記憶にだまされているかも 🙄",
+      "description": "1972年の研究で、学生たちはニクソン大統領の北京・モスクワ訪問の結果を予想しました。後で自分の予想を思い出してもらうと、約4人に3人が、実際に起きたことに当時より高い確率をつけていたと記憶していました。これは後知恵バイアスと呼ばれ、時間がたつほど強くなります。\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "ko": {
+      "title": "'내가 뭐랬어'라고 말하는 사람은 자기 기억에 속고 있을지도 몰라요 🙄",
+      "description": "1972년 연구에서 학생들은 닉슨 대통령의 베이징·모스크바 방문 결과를 미리 예측했습니다. 나중에 자신의 예측을 떠올려 보라고 하자 약 4명 중 3명이 실제로 일어난 일에 더 높은 확률을 줬다고 기억했습니다. 이를 사후 과잉 확신 편향이라고 하며, 시간이 지날수록 커집니다.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "pl": {
+      "title": "Ten, kto mówi „a nie mówiłem”, może być oszukiwany przez własną pamięć 🙄",
+      "description": "W badaniu z 1972 roku studenci przewidywali wyniki wizyt Nixona w Pekinie i Moskwie. Gdy później mieli przypomnieć sobie swoje prognozy, mniej więcej trzech na czterech uważało, że dawało większe szanse temu, co naprawdę się wydarzyło. To efekt mądrości po fakcie i z czasem się nasila.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "nl": {
+      "title": "Wie 'zie je wel, ik zei het toch' roept, wordt misschien door zijn geheugen bedrogen 🙄",
+      "description": "In een studie uit 1972 voorspelden studenten de uitkomst van Nixons reizen naar Peking en Moskou. Toen ze zich later hun voorspellingen moesten herinneren, dachten ongeveer drie op de vier dat ze meer kans hadden gegeven aan wat echt gebeurde. Dat heet achterafwijsheid, en het wordt sterker naarmate de tijd verstrijkt.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "uk": {
+      "title": "Той, хто каже «я ж казав», може бути ошуканий власною пам'яттю 🙄",
+      "description": "У дослідженні 1972 року студенти передбачали результати візитів Ніксона до Пекіна й Москви. Коли згодом їх попросили пригадати свої прогнози, приблизно троє з чотирьох вважали, що давали більше шансів тому, що справді сталося. Це ретроспективне упередження, і з часом воно посилюється.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "vi": {
+      "title": "Người hay nói 'tôi đã bảo rồi mà' có thể đang bị chính trí nhớ đánh lừa 🙄",
+      "description": "Trong một nghiên cứu năm 1972, sinh viên dự đoán kết quả chuyến thăm Bắc Kinh và Moskva của Tổng thống Nixon. Khi được yêu cầu nhớ lại dự đoán của mình, khoảng ba trên bốn người cho rằng mình từng đánh giá cao hơn khả năng của điều thực sự đã xảy ra. Đó là thiên kiến nhận thức muộn, và nó càng mạnh theo thời gian.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "az": {
+      "title": "'Mən demişdim' deyənin yaddaşı onu aldada bilər 🙄",
+      "description": "1972-ci ildəki araşdırmada tələbələr Niksonun Pekin və Moskva səfərlərinin nəticələrini əvvəlcədən təxmin etdi. Sonra öz təxminlərini xatırlamaq istəndikdə, təxminən dörd nəfərdən üçü baş vermiş hadisələrə daha yüksək ehtimal verdiyini düşündü. Buna sonradan bilmə yanılması deyilir və zaman keçdikcə güclənir.\n\n#shorts\n\nSeri: mk-c0137"
+    },
+    "ro": {
+      "title": "Cine spune „ți-am zis eu” poate fi păcălit de propria memorie 🙄",
+      "description": "Într-un studiu din 1972, studenții au prezis cum vor decurge vizitele lui Nixon la Beijing și Moscova. Când au fost rugați apoi să-și amintească previziunile, cam trei din patru credeau că au dat șanse mai mari la ceea ce s-a întâmplat de fapt. Se numește eroarea retrospectivă și crește cu timpul.\n\n#shorts\n\nSeri: mk-c0137"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin çevrende en çok kim 'ben demiştim' der: annen mi, en yakın arkadaşın mı?",
+  "scenes": [
+    {
+      "text": "'Ben demiştim' diyenin hafızası onu kandırıyor olabilir.",
+      "visual": "close-up of a smug man pointing his finger straight at the camera",
+      "stock_query": "man pointing",
+      "source": "stock",
+      "callout": "BEN DEMİŞTİM"
+    },
+    {
+      "text": "Bir deneyde öğrenciler, bir başkanın Çin ziyaretinin sonuçlarını önceden tahmin etti.",
+      "visual": "university students writing answers on paper in a classroom",
+      "stock_query": "students writing",
+      "source": "stock",
+      "subject": [
+        "student",
+        "students"
+      ]
+    },
+    {
+      "text": "Ziyaretten sonra kendi tahminlerini hatırlamaları istendi.",
+      "visual": "close-up of a young woman thinking hard, eyes looking up",
+      "stock_query": "woman thinking",
+      "source": "stock"
+    },
+    {
+      "text": "Dörtte üçü, gerçekleşen olaylara verdiği ihtimali daha yüksek hatırladı; aylar geçtikçe yanılgı büyüdü.",
+      "visual": "close-up of a surprised man's face",
+      "stock_query": "surprised man",
+      "source": "stock",
+      "callout": "DÖRTTE ÜÇÜ YANILDI"
+    },
+    {
+      "text": "Çünkü sonucu öğrenen beyin, eski tahminini sessizce onunla yeniden yazar.",
+      "visual": "rotating medical 3D model of a human brain",
+      "stock_query": "brain model",
+      "source": "stock",
+      "subject": [
+        "brain"
+      ],
+      "callout": "HAFIZA YENİDEN YAZILIR"
+    },
+    {
+      "text": "Bir dahaki 'ben demiştim'de yazılı kanıt iste; çünkü...",
+      "visual": "two women talking, one of them smiling knowingly",
+      "stock_query": "two women talking",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 19.53,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #190",
+  "share_cta": true,
+  "instagram_video": "ORIGINAL_mk-c0137_1794640960_ig.mp4"
+}
