@@ -2584,12 +2584,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-07T09:09:06+00:00",
-   "mod": "igbolum",
-   "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
-   "chars": 375
-  },
-  {
    "finished": "2026-11-07T10:07:28+00:00",
    "mod": "saatlik",
    "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
@@ -3008,6 +3002,12 @@
    "url": "https://youtube.com/shorts/L_hk4oVckRM",
    "duration": 26.6,
    "chars": 382
+  },
+  {
+   "finished": "2026-11-14T17:10:10+00:00",
+   "mod": "igbolum",
+   "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
+   "chars": 370
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3317,6 +3317,11 @@
     "media_id": "18008144804793980",
     "url": "https://www.instagram.com/reel/DfuR2pxGSmO/",
     "at": 1794661794.0714588
+   },
+   "y066": {
+    "media_id": "18015821258978041",
+    "url": "https://www.instagram.com/reel/DfutYUikpcQ/",
+    "at": 1794676210.4610317
    }
   },
   "eski": [
