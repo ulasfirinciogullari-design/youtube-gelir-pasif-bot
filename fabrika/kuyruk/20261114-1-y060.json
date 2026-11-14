@@ -1,0 +1,406 @@
+{
+ "id": "y060",
+ "series": "Ya Olsaydı?",
+ "q": "Dünyanın en acı biberini yeseydin ne olurdu?",
+ "uzun": true,
+ "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+ "bar": {
+  "hi": "EN ACI BİBER",
+  "rest": "YESEYDİN?"
+ },
+ "summary": "Dünyanın en acı biberi Pepper X, biber gazı spreyinden neredeyse 3 kat acı! Onu ısırdığın ilk saniyeden haftalar sonrasına kadar vücuduna neler olacağını ve ağzındaki ateşin şaşırtıcı sırrını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bu biber, biber gazı spreyinden neredeyse 3 kat acı. Ve sen onu ısırdın!",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "🧴",
+     "label": "Biber Spreyi",
+     "value": 1000000
+    },
+    "b": {
+     "e": "🌶️",
+     "label": "Pepper X",
+     "value": 2690000
+    },
+    "mode": "bar",
+    "key": "3"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ağzımda biber spreyi mi patladı?!",
+   "v": {
+    "t": "question",
+    "bg": "lab",
+    "e": "😵",
+    "label": "Ağzımda Sprey?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Adı Pepper X: jalapenodan yaklaşık 500 kat acı, dünya rekoru!",
+   "v": {
+    "t": "number",
+    "bg": "lab",
+    "e": "🌶️",
+    "value": "500",
+    "unit": "kat",
+    "label": "Jalapenodan Acı",
+    "key": "500"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk saniye: beynin, ocağa dokunmuşsun gibi alarm verir.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🔥",
+    "do": "burn",
+    "key": "ocağa",
+    "label": "Beyin Alarmı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hemen ardından vücudun soğumaya çalışır: ter, hızlı nefes, akan burun.",
+   "v": {
+    "t": "icons",
+    "bg": "body",
+    "items": [
+     {
+      "e": "💦",
+      "label": "Ter"
+     },
+     {
+      "e": "🫁",
+      "label": "Hızlı Nefes"
+     },
+     {
+      "e": "🤧",
+      "label": "Akan Burun"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yüzümde musluk mu açıldı?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🚰",
+    "do": "shake",
+    "key": "musluk",
+    "label": "Açık Musluk"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yaratıcısı bile bir tane yiyince 3,5 saat yandı, sonra krampla 1 saat yağmurda inledi.",
+   "v": {
+    "t": "timeline",
+    "bg": "body",
+    "steps": [
+     {
+      "when": "İLK SANİYE",
+      "e": "🔥",
+      "label": "Ani Yanma"
+     },
+     {
+      "when": "3,5 SAAT",
+      "e": "🥵",
+      "label": "Süren Yanma"
+     },
+     {
+      "when": "SONRA",
+      "e": "🌧️",
+      "label": "1 Saat Kramp"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Daha kötüsü: eski rekortmeni yiyen bir adam, gök gürültüsü gibi baş ağrılarıyla acile koştu.",
+   "v": {
+    "t": "icon",
+    "bg": "storm",
+    "e": "🧠",
+    "do": "shake",
+    "key": "gök",
+    "label": "Gök Gürültüsü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tomografi: beyin damarları daralmıştı! Ancak 5 haftada düzeldi.",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🧠",
+     "label": "Daralan Damar"
+    },
+    "right": {
+     "e": "✅",
+     "label": "5 Hafta Sonra"
+    },
+    "key": "haftada"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Biber beynime kadar mı çıktı?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🌶️",
+    "label": "Beyne Kadar?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Suya koşma; kapsaisin suyla pek karışmaz. Bir deneyde yanmayı en çok süt azalttı!",
+   "v": {
+    "t": "split",
+    "bg": "lab",
+    "left": {
+     "e": "💧",
+     "label": "Su"
+    },
+    "right": {
+     "e": "🥛",
+     "label": "Süt Kazanır"
+    },
+    "key": "süt"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: ağzında hiçbir şey yanmadı! O ateş, beynine kurulan bir tuzaktı.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "👅",
+    "do": "pulse",
+    "key": "tuzaktı",
+    "label": "Hiç Yanık Yok"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen en acı neyi yedin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "lab",
+    "e": "🌶️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Smithsonian'a göre Guinness Dünya Rekorları ölçümüyle Pepper X ortalama 2,69 milyon Scoville birimiyle dünyanın en acı biberidir; Carolina Reaper yaklaşık 1,64 milyon, standart biber spreyi ise ortalama 1 milyon Scoville'dir.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/smart-news/the-world-has-a-new-hottest-pepper-180983099/"
+  },
+  {
+   "text": "Live Science'a göre bir jalapeño yaklaşık 5.000 Scoville'dir; bu, Pepper X'in 2,69 milyonundan yaklaşık 500 kat azdır.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/62255-hot-pepper-thunderclap-headaches.html"
+  },
+  {
+   "text": "Smithsonian'a göre kapsaisin ısıyı algılayan TRPV1 alıcısını harekete geçirir; beyin sıcak bir ocağa dokunmuşsun gibi ağrı sinyali gönderir ama gerçek bir yanık oluşmaz. Johns Hopkins'ten Vivek Kumbhari'ye göre vücut terleyerek ve daha hızlı nefes alarak serinlemeye çalışır, kapsaisin parçacıkları da burnu akıtır.",
+   "source": "Smithsonian Magazine (Johns Hopkins Medicine)",
+   "url": "https://www.smithsonianmag.com/smart-news/the-world-has-a-new-hottest-pepper-180983099/"
+  },
+  {
+   "text": "Smithsonian'a göre Pepper X'in yaratıcısı Ed Currie, bir tanesini yedikten sonra 3,5 saat boyunca yandığını, ardından gelen kramplarla yaklaşık 1 saat yağmur altında bir mermer duvarın üstünde inleyerek yattığını anlattı.",
+   "source": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/smart-news/the-world-has-a-new-hottest-pepper-180983099/"
+  },
+  {
+   "text": "Live Science'a göre BMJ Case Reports'ta yayımlanan vakada 34 yaşındaki bir adam bir yarışmada o dönemin rekortmeni Carolina Reaper'ı yedi; hemen öğürmeye başladı, sonraki günlerde 'gök gürültüsü' denen ani ve şiddetli baş ağrıları yaşadı ve acile gitti. Tomografide beynindeki birkaç atardamarın daraldığı görüldü; 5 hafta sonra damarlar normale döndü.",
+   "source": "Live Science (BMJ Case Reports)",
+   "url": "https://www.livescience.com/62255-hot-pepper-thunderclap-headaches.html"
+  },
+  {
+   "text": "Penn State Üniversitesi'nin 72 kişiyle yaptığı deneyde acı biber yanmasını en çok tam yağlı süt, yağsız süt ve Kool-Aid azalttı; gazlı içecekler ise kötü sonuç verdi.",
+   "source": "Penn State University",
+   "url": "https://www.psu.edu/news/research/story/milk-best-drink-reduce-burn-chili-peppers"
+  },
+  {
+   "text": "The Conversation'daki açıklayıcı bir yazıya göre kapsaisin sudan kaçan (hidrofobik) bir moleküldür, bu yüzden suyla pek karışmaz; sütteki kazein proteini ise kapsaisini güçlü biçimde kendine çeker.",
+   "source": "The Conversation",
+   "url": "https://theconversation.com/why-doesnt-water-help-with-spicy-food-what-about-milk-or-beer-226624"
+  }
+ ],
+ "tags": [
+  "en acı biber",
+  "dünyanın en acı biberi",
+  "Pepper X",
+  "Carolina Reaper",
+  "acı biber yemek",
+  "kapsaisin",
+  "Scoville",
+  "acı yiyince ne olur",
+  "süt mü su mu",
+  "hottest pepper in the world",
+  "eating Pepper X",
+  "capsaicin",
+  "spicy food science",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#acıbiber",
+  "#pepperx",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.smithsonianmag.com/smart-news/the-world-has-a-new-hottest-pepper-180983099/",
+  "https://www.livescience.com/62255-hot-pepper-thunderclap-headaches.html",
+  "https://www.psu.edu/news/research/story/milk-best-drink-reduce-burn-chili-peppers",
+  "https://theconversation.com/why-doesnt-water-help-with-spicy-food-what-about-milk-or-beer-226624"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What Would Happen If You Ate the World's Hottest Pepper?",
+   "summary": "The world's hottest pepper, Pepper X, is almost 3 times hotter than pepper spray! Professor Pi walks you through what would happen to your body from the first second you bite it to weeks later, and reveals the surprising secret of the fire in your mouth.",
+   "facts": [
+    "According to Smithsonian, Guinness World Records measured Pepper X at an average of 2.69 million Scoville units, making it the world's hottest pepper; the Carolina Reaper measures about 1.64 million, and standard pepper spray averages 1 million Scoville units.",
+    "According to Live Science, a jalapeño is around 5,000 Scoville units, about 500 times less than Pepper X's 2.69 million.",
+    "According to Smithsonian, capsaicin activates TRPV1, a heat-sensing receptor; the brain sends a pain signal as if you had touched a hot stove, even though no actual burn occurs. Vivek Kumbhari of Johns Hopkins says the body tries to cool down by sweating and breathing faster, and capsaicin particles make your nose run.",
+    "According to Smithsonian, Pepper X creator Ed Currie said that after eating one he felt the heat for three and a half hours; then the cramps came, and he lay flat on a marble wall in the rain for about an hour, groaning in pain.",
+    "According to Live Science, in a case published in BMJ Case Reports, a 34-year-old man ate a Carolina Reaper, then the world's hottest pepper, at a contest; he immediately began dry heaving, had sudden, severe 'thunderclap' headaches over the following days and went to the emergency room. A CT scan showed that several arteries in his brain had narrowed; five weeks later they were back to normal.",
+    "In a Penn State study of 72 people, whole milk, skim milk and Kool-Aid reduced chili burn the most, while carbonated drinks performed poorly.",
+    "According to an explainer in The Conversation, capsaicin is hydrophobic, so it barely mixes with water; casein, a protein in milk, has a strong affinity for capsaicin."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría Si Comieras el Chile Más Picante del Mundo?",
+   "summary": "¡El chile más picante del mundo, el Pepper X, pica casi 3 veces más que el gas pimienta! El Profesor Pi te cuenta qué le pasaría a tu cuerpo desde el primer segundo del mordisco hasta semanas después, y revela el sorprendente secreto del fuego en tu boca.",
+   "facts": [
+    "Según Smithsonian, Guinness World Records midió el Pepper X en un promedio de 2,69 millones de unidades Scoville, lo que lo convierte en el chile más picante del mundo; el Carolina Reaper mide unos 1,64 millones y el gas pimienta estándar tiene un promedio de 1 millón de unidades Scoville.",
+    "Según Live Science, un jalapeño tiene alrededor de 5.000 unidades Scoville, unas 500 veces menos que los 2,69 millones del Pepper X.",
+    "Según Smithsonian, la capsaicina activa TRPV1, un receptor que detecta el calor; el cerebro envía una señal de dolor como si hubieras tocado una estufa caliente, aunque no se produce ninguna quemadura real. Vivek Kumbhari, de Johns Hopkins, explica que el cuerpo intenta enfriarse sudando y respirando más rápido, y que las partículas de capsaicina hacen que gotee la nariz.",
+    "Según Smithsonian, Ed Currie, creador del Pepper X, contó que tras comerse uno sintió el ardor durante tres horas y media; luego llegaron los calambres y pasó cerca de una hora tendido sobre un muro de mármol bajo la lluvia, gimiendo de dolor.",
+    "Según Live Science, en un caso publicado en BMJ Case Reports, un hombre de 34 años se comió un Carolina Reaper, entonces el chile más picante del mundo, en un concurso; enseguida empezó a tener arcadas, en los días siguientes sufrió dolores de cabeza repentinos e intensísimos llamados 'en trueno' y acudió a urgencias. Una tomografía mostró que varias arterias de su cerebro se habían estrechado; cinco semanas después habían vuelto a la normalidad.",
+    "En un estudio de Penn State con 72 personas, la leche entera, la leche desnatada y el Kool-Aid fueron los que más redujeron el ardor del chile, mientras que las bebidas con gas dieron malos resultados.",
+    "Según un artículo explicativo de The Conversation, la capsaicina es hidrofóbica, por lo que apenas se mezcla con el agua; la caseína, una proteína de la leche, tiene una gran afinidad por la capsaicina."
+   ]
+  },
+  "pt": {
+   "title": "O Que Aconteceria Se Você Comesse a Pimenta Mais Ardida do Mundo?",
+   "summary": "A pimenta mais ardida do mundo, a Pepper X, arde quase 3 vezes mais que spray de pimenta! O Professor Pi mostra o que aconteceria com o seu corpo desde o primeiro segundo da mordida até semanas depois, e revela o segredo surpreendente do fogo na sua boca.",
+   "facts": [
+    "Segundo o Smithsonian, o Guinness World Records mediu a Pepper X em uma média de 2,69 milhões de unidades Scoville, o que a torna a pimenta mais ardida do mundo; a Carolina Reaper mede cerca de 1,64 milhão, e o spray de pimenta padrão tem em média 1 milhão de unidades Scoville.",
+    "Segundo a Live Science, um jalapeño tem cerca de 5.000 unidades Scoville, umas 500 vezes menos que os 2,69 milhões da Pepper X.",
+    "Segundo o Smithsonian, a capsaicina ativa o TRPV1, um receptor que detecta calor; o cérebro envia um sinal de dor como se você tivesse tocado num fogão quente, embora nenhuma queimadura real aconteça. Vivek Kumbhari, da Johns Hopkins, diz que o corpo tenta se resfriar suando e respirando mais rápido, e que partículas de capsaicina fazem o nariz escorrer.",
+    "Segundo o Smithsonian, Ed Currie, criador da Pepper X, contou que depois de comer uma sentiu o ardor por três horas e meia; depois vieram as cólicas, e ele ficou deitado sobre um muro de mármore na chuva por cerca de uma hora, gemendo de dor.",
+    "Segundo a Live Science, em um caso publicado no BMJ Case Reports, um homem de 34 anos comeu uma Carolina Reaper, então a pimenta mais ardida do mundo, num concurso; logo começou a ter ânsia de vômito, nos dias seguintes teve dores de cabeça súbitas e fortíssimas, chamadas 'em trovoada', e foi ao pronto-socorro. Uma tomografia mostrou que várias artérias do seu cérebro tinham se estreitado; cinco semanas depois, estavam normais de novo.",
+    "Em um estudo da Penn State com 72 pessoas, leite integral, leite desnatado e Kool-Aid foram os que mais reduziram o ardor da pimenta, enquanto as bebidas gaseificadas se saíram mal.",
+    "Segundo um artigo explicativo do The Conversation, a capsaicina é hidrofóbica, por isso quase não se mistura com a água; a caseína, uma proteína do leite, tem grande afinidade pela capsaicina."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث لو أكلت أشد فلفل حرارة في العالم؟",
+   "summary": "أشد فلفل حرارة في العالم، Pepper X، أحرّ من رذاذ الفلفل بما يقارب 3 مرات! يشرح البروفيسور باي ما سيحدث لجسمك من الثانية الأولى بعد قضمه حتى أسابيع لاحقة، ويكشف السر المدهش للنار التي في فمك.",
+   "facts": [
+    "وفقًا لمجلة سميثسونيان، قاست موسوعة غينيس للأرقام القياسية فلفل Pepper X بمتوسط 2.69 مليون وحدة سكوفيل، ما يجعله أشد فلفل حرارة في العالم؛ بينما يبلغ فلفل كارولينا ريبر نحو 1.64 مليون، ويبلغ متوسط رذاذ الفلفل القياسي مليون وحدة سكوفيل.",
+    "وفقًا لموقع لايف ساينس، تبلغ حرارة فلفل الهالبينو نحو 5,000 وحدة سكوفيل، أي أقل بنحو 500 مرة من 2.69 مليون وحدة في Pepper X.",
+    "وفقًا لسميثسونيان، يُنشّط الكابسيسين مستقبِل TRPV1 الذي يستشعر الحرارة، فيرسل الدماغ إشارة ألم كأنك لمست موقدًا ساخنًا، مع أنه لا يحدث أي حرق حقيقي. ويقول فيفيك كومباري من جونز هوبكنز إن الجسم يحاول التبرد بالتعرّق وتسريع التنفس، وإن جزيئات الكابسيسين تجعل الأنف يسيل.",
+    "وفقًا لسميثسونيان، قال إد كوري، مبتكر Pepper X، إنه بعد أن أكل واحدة شعر بالحرقة ثلاث ساعات ونصفًا، ثم جاءت التقلصات فبقي ممددًا على جدار رخامي تحت المطر نحو ساعة وهو يئن من الألم.",
+    "وفقًا للايف ساينس، في حالة نُشرت في مجلة BMJ Case Reports، أكل رجل في الرابعة والثلاثين فلفل كارولينا ريبر، وكان آنذاك أشد فلفل حرارة في العالم، خلال مسابقة؛ فبدأ يتقيأ جافًا على الفور، وفي الأيام التالية أصيب بنوبات صداع مفاجئة وشديدة تُعرف بـ«صداع الرعد» وذهب إلى الطوارئ. وأظهر التصوير المقطعي أن عدة شرايين في دماغه قد ضاقت، وبعد خمسة أسابيع عادت إلى طبيعتها.",
+    "في دراسة لجامعة ولاية بنسلفانيا شملت 72 شخصًا، كان الحليب كامل الدسم والحليب خالي الدسم ومشروب Kool-Aid الأكثر تخفيفًا لحرقة الفلفل، بينما كان أداء المشروبات الغازية ضعيفًا.",
+    "وفقًا لمقال توضيحي في The Conversation، الكابسيسين مادة كارهة للماء، لذلك بالكاد يمتزج بالماء؛ أما الكازين، وهو بروتين في الحليب، فينجذب بقوة إلى الكابسيسين."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप दुनिया की सबसे तीखी मिर्च खा लें तो क्या होगा?",
+   "summary": "दुनिया की सबसे तीखी मिर्च, Pepper X, पेपर स्प्रे से लगभग 3 गुना ज़्यादा तीखी है! प्रोफेसर पाई बताते हैं कि इसे काटने के पहले सेकंड से लेकर हफ्तों बाद तक आपके शरीर के साथ क्या होगा, और आपके मुँह की आग का चौंकाने वाला राज़ क्या है।",
+   "facts": [
+    "स्मिथसोनियन के अनुसार, गिनीज़ वर्ल्ड रिकॉर्ड्स ने Pepper X को औसतन 26.9 लाख स्कोविल यूनिट मापा, जिससे यह दुनिया की सबसे तीखी मिर्च है; कैरोलिना रीपर लगभग 16.4 लाख और सामान्य पेपर स्प्रे औसतन 10 लाख स्कोविल यूनिट का होता है।",
+    "लाइव साइंस के अनुसार, एक हालापेन्यो मिर्च लगभग 5,000 स्कोविल यूनिट की होती है, यानी Pepper X के 26.9 लाख से लगभग 500 गुना कम।",
+    "स्मिथसोनियन के अनुसार, कैप्साइसिन गर्मी महसूस करने वाले रिसेप्टर TRPV1 को सक्रिय करता है; दिमाग ऐसा दर्द का संकेत भेजता है मानो आपने गर्म चूल्हा छू लिया हो, जबकि असल में कोई जला हुआ घाव नहीं बनता। जॉन्स हॉपकिन्स के विवेक कुम्भारी के अनुसार शरीर पसीना बहाकर और तेज़ साँस लेकर ठंडा होने की कोशिश करता है, और कैप्साइसिन के कण नाक बहाते हैं।",
+    "स्मिथसोनियन के अनुसार, Pepper X बनाने वाले एड करी ने बताया कि एक मिर्च खाने के बाद वे साढ़े तीन घंटे तक जलन महसूस करते रहे; फिर ऐंठन शुरू हुई और वे बारिश में संगमरमर की एक दीवार पर करीब एक घंटे तक दर्द से कराहते हुए पड़े रहे।",
+    "लाइव साइंस के अनुसार, BMJ Case Reports में छपे एक मामले में 34 साल के एक व्यक्ति ने एक प्रतियोगिता में कैरोलिना रीपर खाई, जो तब दुनिया की सबसे तीखी मिर्च थी; उसे तुरंत सूखी उल्टियाँ होने लगीं, अगले कुछ दिनों में अचानक और बेहद तेज़ 'थंडरक्लैप' सिरदर्द हुए और वह इमरजेंसी में पहुँचा। सीटी स्कैन में दिखा कि उसके दिमाग की कई धमनियाँ सिकुड़ गई थीं; पाँच हफ्ते बाद वे फिर सामान्य हो गईं।",
+    "पेन स्टेट यूनिवर्सिटी के 72 लोगों पर किए गए अध्ययन में फुल-क्रीम दूध, स्किम्ड दूध और Kool-Aid ने मिर्च की जलन सबसे ज़्यादा कम की, जबकि सोडा वाले पेय कमज़ोर साबित हुए।",
+    "The Conversation के एक व्याख्यात्मक लेख के अनुसार, कैप्साइसिन जल-विरोधी (हाइड्रोफोबिक) होता है, इसलिए पानी में मुश्किल से घुलता-मिलता है; दूध का प्रोटीन केसीन कैप्साइसिन को मज़बूती से अपनी ओर खींचता है।"
+   ]
+  },
+  "id": {
+   "title": "Apa Jadinya Jika Kamu Makan Cabai Terpedas di Dunia?",
+   "summary": "Cabai terpedas di dunia, Pepper X, hampir 3 kali lebih pedas dari semprotan merica! Profesor Pi menjelaskan apa yang terjadi pada tubuhmu sejak detik pertama gigitan hingga berminggu-minggu kemudian, dan rahasia mengejutkan di balik api di mulutmu.",
+   "facts": [
+    "Menurut Smithsonian, Guinness World Records mengukur Pepper X rata-rata 2,69 juta unit Scoville sehingga menjadi cabai terpedas di dunia; Carolina Reaper sekitar 1,64 juta, dan semprotan merica standar rata-rata 1 juta unit Scoville.",
+    "Menurut Live Science, sebuah jalapeño sekitar 5.000 unit Scoville, kira-kira 500 kali lebih rendah dari 2,69 juta milik Pepper X.",
+    "Menurut Smithsonian, kapsaisin mengaktifkan TRPV1, reseptor pendeteksi panas; otak mengirim sinyal nyeri seolah kamu menyentuh kompor panas, padahal tidak ada luka bakar sungguhan. Vivek Kumbhari dari Johns Hopkins mengatakan tubuh berusaha mendinginkan diri dengan berkeringat dan bernapas lebih cepat, dan partikel kapsaisin membuat hidung meler.",
+    "Menurut Smithsonian, Ed Currie, pencipta Pepper X, bercerita bahwa setelah memakan satu buah ia merasakan panasnya selama tiga setengah jam; lalu kram datang dan ia terbaring di atas dinding marmer di bawah hujan sekitar satu jam sambil mengerang kesakitan.",
+    "Menurut Live Science, dalam kasus yang dimuat di BMJ Case Reports, seorang pria berusia 34 tahun memakan Carolina Reaper, yang saat itu cabai terpedas di dunia, dalam sebuah lomba; ia langsung muntah-muntah kering, beberapa hari berikutnya mengalami sakit kepala mendadak yang sangat hebat yang disebut 'thunderclap', lalu pergi ke UGD. CT scan menunjukkan beberapa arteri di otaknya menyempit; lima minggu kemudian arterinya kembali normal.",
+    "Dalam studi Penn State terhadap 72 orang, susu full cream, susu skim, dan Kool-Aid paling banyak mengurangi rasa terbakar cabai, sedangkan minuman bersoda hasilnya buruk.",
+    "Menurut artikel penjelasan di The Conversation, kapsaisin bersifat hidrofobik sehingga hampir tidak bercampur dengan air; kasein, protein dalam susu, sangat kuat mengikat kapsaisin."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tu Mangeais le Piment le Plus Fort du Monde ?",
+   "summary": "Le piment le plus fort du monde, le Pepper X, brûle presque 3 fois plus que le spray au poivre ! Le Professeur Pi te montre ce qui arriverait à ton corps de la première seconde de la bouchée jusqu'à des semaines plus tard, et révèle le surprenant secret du feu dans ta bouche.",
+   "facts": [
+    "Selon Smithsonian, le Guinness World Records a mesuré le Pepper X à 2,69 millions d'unités Scoville en moyenne, ce qui en fait le piment le plus fort du monde ; le Carolina Reaper mesure environ 1,64 million et un spray au poivre standard 1 million d'unités Scoville en moyenne.",
+    "Selon Live Science, un jalapeño fait environ 5 000 unités Scoville, soit environ 500 fois moins que les 2,69 millions du Pepper X.",
+    "Selon Smithsonian, la capsaïcine active TRPV1, un récepteur sensible à la chaleur ; le cerveau envoie un signal de douleur comme si tu avais touché une plaque brûlante, alors qu'aucune vraie brûlure ne se produit. Selon Vivek Kumbhari, de Johns Hopkins, le corps tente de se refroidir en transpirant et en respirant plus vite, et les particules de capsaïcine font couler le nez.",
+    "Selon Smithsonian, Ed Currie, le créateur du Pepper X, raconte qu'après en avoir mangé un, il a senti la brûlure pendant trois heures et demie ; puis les crampes sont arrivées et il est resté allongé sur un muret de marbre sous la pluie pendant environ une heure, à gémir de douleur.",
+    "Selon Live Science, dans un cas publié dans BMJ Case Reports, un homme de 34 ans a mangé un Carolina Reaper, alors le piment le plus fort du monde, lors d'un concours ; il a aussitôt eu des haut-le-cœur, puis, les jours suivants, des maux de tête soudains et violents dits « en coup de tonnerre », et il s'est rendu aux urgences. Un scanner a montré que plusieurs artères de son cerveau s'étaient rétrécies ; cinq semaines plus tard, elles étaient redevenues normales.",
+    "Dans une étude de Penn State menée sur 72 personnes, le lait entier, le lait écrémé et le Kool-Aid ont le plus réduit la brûlure du piment, tandis que les boissons gazeuses ont donné de mauvais résultats.",
+    "Selon un article explicatif de The Conversation, la capsaïcine est hydrophobe, elle se mélange donc très mal à l'eau ; la caséine, une protéine du lait, a une forte affinité pour la capsaïcine."
+   ]
+  },
+  "de": {
+   "title": "Was Passiert, Wenn Du die Schärfste Chili der Welt Isst?",
+   "summary": "Die schärfste Chili der Welt, Pepper X, ist fast 3-mal schärfer als Pfefferspray! Professor Pi zeigt dir, was mit deinem Körper passiert, von der ersten Sekunde nach dem Biss bis Wochen später, und verrät das überraschende Geheimnis des Feuers in deinem Mund.",
+   "facts": [
+    "Laut Smithsonian hat Guinness World Records Pepper X mit durchschnittlich 2,69 Millionen Scoville-Einheiten gemessen, damit ist sie die schärfste Chili der Welt; die Carolina Reaper kommt auf etwa 1,64 Millionen, Standard-Pfefferspray im Schnitt auf 1 Million Scoville-Einheiten.",
+    "Laut Live Science hat eine Jalapeño etwa 5.000 Scoville-Einheiten, also rund 500-mal weniger als die 2,69 Millionen von Pepper X.",
+    "Laut Smithsonian aktiviert Capsaicin TRPV1, einen Wärmerezeptor; das Gehirn sendet ein Schmerzsignal, als hättest du eine heiße Herdplatte berührt, obwohl keine echte Verbrennung entsteht. Laut Vivek Kumbhari von Johns Hopkins versucht der Körper, sich durch Schwitzen und schnelleres Atmen abzukühlen, und Capsaicin-Partikel lassen die Nase laufen.",
+    "Laut Smithsonian erzählte Ed Currie, der Züchter von Pepper X, dass er nach dem Verzehr einer Schote dreieinhalb Stunden lang das Brennen spürte; dann kamen Krämpfe, und er lag etwa eine Stunde lang im Regen flach auf einer Marmormauer und stöhnte vor Schmerz.",
+    "Laut Live Science aß in einem in BMJ Case Reports veröffentlichten Fall ein 34-jähriger Mann bei einem Wettbewerb eine Carolina Reaper, damals die schärfste Chili der Welt; er bekam sofort trockenes Würgen, in den folgenden Tagen plötzliche, extrem starke sogenannte Donnerschlagkopfschmerzen und ging in die Notaufnahme. Eine CT zeigte, dass sich mehrere Arterien in seinem Gehirn verengt hatten; fünf Wochen später waren sie wieder normal.",
+    "In einer Studie der Penn State mit 72 Personen linderten Vollmilch, Magermilch und Kool-Aid das Chili-Brennen am stärksten, kohlensäurehaltige Getränke schnitten schlecht ab.",
+    "Laut einem Erklärartikel in The Conversation ist Capsaicin hydrophob und mischt sich daher kaum mit Wasser; Kasein, ein Milchprotein, hat dagegen eine starke Affinität zu Capsaicin."
+   ]
+  },
+  "ru": {
+   "title": "Что Будет, Если Съесть Самый Острый Перец в Мире?",
+   "summary": "Самый острый перец в мире, Pepper X, почти в 3 раза острее перцового баллончика! Профессор Пи рассказывает, что будет с твоим телом с первой секунды после укуса и до нескольких недель спустя, и раскрывает удивительный секрет огня у тебя во рту.",
+   "facts": [
+    "По данным Smithsonian, Книга рекордов Гиннесса оценила остроту Pepper X в среднем в 2,69 млн единиц по шкале Сковилла — это самый острый перец в мире; у Carolina Reaper около 1,64 млн, а у обычного перцового баллончика в среднем 1 млн единиц Сковилла.",
+    "По данным Live Science, острота халапеньо около 5 000 единиц Сковилла — примерно в 500 раз меньше, чем 2,69 млн у Pepper X.",
+    "По данным Smithsonian, капсаицин активирует TRPV1 — рецептор, чувствующий жар; мозг посылает сигнал боли, будто ты дотронулся до горячей плиты, хотя настоящего ожога нет. По словам Вивека Кумбхари из Университета Джонса Хопкинса, тело пытается охладиться: потеет и дышит чаще, а частицы капсаицина вызывают насморк.",
+    "По данным Smithsonian, создатель Pepper X Эд Карри рассказал, что, съев один перец, три с половиной часа чувствовал жжение; потом начались спазмы, и около часа он лежал под дождём на мраморной стене, стоная от боли.",
+    "По данным Live Science, в случае, описанном в BMJ Case Reports, 34-летний мужчина на конкурсе съел Carolina Reaper, тогда самый острый перец в мире; у него сразу начались сухие позывы к рвоте, в следующие дни — внезапные сильнейшие «громоподобные» головные боли, и он обратился в отделение неотложной помощи. КТ показала, что несколько артерий в его мозге сузились; через пять недель они вернулись в норму.",
+    "В исследовании Университета штата Пенсильвания с участием 72 человек жжение от перца сильнее всего уменьшали цельное молоко, обезжиренное молоко и Kool-Aid, а газированные напитки показали плохой результат.",
+    "Согласно поясняющей статье в The Conversation, капсаицин гидрофобен, поэтому почти не смешивается с водой; казеин — белок молока — сильно притягивает капсаицин."
+   ]
+  },
+  "az": {
+   "title": "Dünyanın Ən Acı Bibərini Yesəydin Nə Olardı?",
+   "summary": "Dünyanın ən acı bibəri Pepper X bibər qazı spreyindən təxminən 3 dəfə acıdır! Professor Pi onu dişlədiyin ilk saniyədən həftələr sonrasına qədər bədəninə nə olacağını və ağzındakı odun təəccüblü sirrini danışır.",
+   "facts": [
+    "Smithsonian-a görə, Ginnesin Rekordlar Kitabı Pepper X-i orta hesabla 2,69 milyon Skovill vahidi ölçüb və bu, onu dünyanın ən acı bibəri edir; Carolina Reaper təxminən 1,64 milyon, standart bibər spreyi isə orta hesabla 1 milyon Skovill vahididir.",
+    "Live Science-ə görə, bir jalapeno təxminən 5.000 Skovill vahididir, yəni Pepper X-in 2,69 milyonundan təxminən 500 dəfə azdır.",
+    "Smithsonian-a görə, kapsaisin istiliyi hiss edən TRPV1 reseptorunu işə salır; beyin sanki isti sobaya toxunmusan kimi ağrı siqnalı göndərir, halbuki heç bir real yanıq yaranmır. Johns Hopkins-dən Vivek Kumbhari-yə görə bədən tərləyərək və daha sürətli nəfəs alaraq soyumağa çalışır, kapsaisin hissəcikləri isə burnu axıdır.",
+    "Smithsonian-a görə, Pepper X-in yaradıcısı Ed Currie bir bibəri yedikdən sonra üç saat yarım yandığını, sonra sancılar başladığını və yağış altında mərmər divarın üstündə təxminən bir saat ağrıdan inləyərək uzandığını danışıb.",
+    "Live Science-ə görə, BMJ Case Reports-da dərc olunan bir hadisədə 34 yaşlı kişi yarışmada o vaxt dünyanın ən acı bibəri olan Carolina Reaper-i yeyib; dərhal quru öyümə başlayıb, sonrakı günlərdə \"ildırım\" baş ağrısı adlanan qəfil və çox şiddətli baş ağrıları keçirib və təcili yardıma müraciət edib. Tomoqrafiya beynindəki bir neçə arteriyanın daraldığını göstərib; beş həftə sonra damarlar normala qayıdıb.",
+    "Penn State Universitetinin 72 nəfərlə apardığı araşdırmada bibər yanğısını ən çox tam yağlı süd, yağsız süd və Kool-Aid azaldıb, qazlı içkilər isə zəif nəticə göstərib.",
+    "The Conversation-dakı izahedici məqaləyə görə, kapsaisin hidrofobdur, buna görə də su ilə demək olar ki, qarışmır; südün zülalı olan kazein isə kapsaisini güclü şəkildə özünə çəkir."
+   ]
+  }
+ }
+}

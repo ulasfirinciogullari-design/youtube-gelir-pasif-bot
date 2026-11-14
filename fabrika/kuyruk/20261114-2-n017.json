@@ -1,0 +1,279 @@
+{
+ "id": "n017",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir yıldırım ne kadar sıcak?",
+ "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
+ "bar": {
+  "hi": "YILDIRIM",
+  "rest": "NE KADAR SICAK?"
+ },
+ "summary": "Gökte çakan bir yıldırım, Güneş'in yüzeyinden 5 kat sıcak! Bu ısının parmak kalınlığında bir kanalda nasıl patladığını, 30 metre ötede bile neden güvende olmadığını ve yıldırımın kumu nasıl cama çevirdiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Bu yıldırım, Güneş'in yüzeyinden 5 kat sıcak!",
+   "v": {
+    "t": "compare",
+    "bg": "storm",
+    "a": {
+     "b": "sun",
+     "label": "Güneş Yüzeyi",
+     "value": 5500
+    },
+    "b": {
+     "e": "⚡",
+     "label": "Yıldırım",
+     "value": 28000
+    },
+    "mode": "bar",
+    "key": "5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Parmak kalınlığındaki havayı anında 28.000 dereceye çıkarır!",
+   "v": {
+    "t": "meter",
+    "bg": "storm",
+    "label": "Kanal Sıcaklığı",
+    "from": 20,
+    "to": 28000,
+    "unit": "°C",
+    "e": "🔥",
+    "key": "28.000"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Parmak kadar bir çizgi Güneş'ten mi sıcak?!",
+   "v": {
+    "t": "question",
+    "bg": "storm",
+    "e": "☝️",
+    "label": "Parmak Kadar?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hava patlar gibi genişler: gök gürültüsü bu patlama!",
+   "v": {
+    "t": "icon",
+    "bg": "storm",
+    "e": "💥",
+    "do": "shake",
+    "key": "patlama",
+    "label": "Gök Gürültüsü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "30 metre ötede bile akım topraktan gelip seni öldürebilir!",
+   "v": {
+    "t": "number",
+    "bg": "storm",
+    "e": "⚡",
+    "value": "30",
+    "unit": "metre",
+    "label": "Tehlike Alanı",
+    "key": "30"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: kuma düşerse kumu cama çevirir!",
+   "v": {
+    "t": "split",
+    "bg": "desert",
+    "left": {
+     "e": "🏖️",
+     "label": "Kum"
+    },
+    "right": {
+     "e": "🪨",
+     "label": "Yıldırım Camı"
+    },
+    "key": "cama"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen fırtınada nereye saklanırsın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "storm",
+    "e": "⛈️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "ABD Ulusal Hava Durumu Servisi'ne (NWS) göre yıldırım içinden geçtiği havayı 50.000 °F'ye (yaklaşık 28.000 °C) kadar ısıtabilir; bu, Güneş'in yüzeyinden 5 kat sıcaktır.",
+   "source": "NOAA National Weather Service",
+   "url": "https://www.weather.gov/safety/lightning-temperature"
+  },
+  {
+   "text": "Britannica'ya göre yıldırım kanalında akımı taşıyan çekirdeğin çapı yalnızca 1-2 cm kadardır; kanaldaki en yüksek sıcaklık ise 30.000 °C mertebesindedir.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/science/thunderstorm/Cloud-to-ground-lightning"
+  },
+  {
+   "text": "NOAA Ulusal Şiddetli Fırtınalar Laboratuvarı'na (NSSL) göre yıldırım kanalındaki hava saniyenin yalnızca milyonda birkaçında 50.000 °F'nin üzerine çıkar; genişlemeye vakit bulamayan bu yüksek basınçlı hava patlarcasına genişler ve gök gürültüsü bu şok dalgasıyla başlar.",
+   "source": "NOAA National Severe Storms Laboratory",
+   "url": "https://www.nssl.noaa.gov/education/svrwx101/lightning/faq/"
+  },
+  {
+   "text": "NOAA'ya göre yıldırım yere düşünce akım zemin boyunca dallanarak yayılır ve düştüğü noktadan 100 fit (yaklaşık 30 metre) uzaktakiler için bile ölümcül olabilir; NWS'ye göre yıldırım kaynaklı ölüm ve yaralanmaların çoğuna bu yer akımı yol açar.",
+   "source": "NOAA / National Weather Service",
+   "url": "https://www.noaa.gov/jetstream/lightning/frequently-asked-questions"
+  },
+  {
+   "text": "Utah Jeoloji Araştırmaları Kurumu'na göre yıldırım kuma düştüğünde kum taneleri kaynaşır ve 'fulgurit' denen içi boş bir cam tüp oluşur; NSSL de bunu kıvrımlı tüp şeklinde camsı bir taş olarak tanımlar.",
+   "source": "Utah Geological Survey",
+   "url": "https://geology.utah.gov/fulgurites-when-lightning-strikes-sand-magic-is-formed"
+  }
+ ],
+ "tags": [
+  "yıldırım",
+  "yıldırım ne kadar sıcak",
+  "şimşek",
+  "gök gürültüsü",
+  "yıldırım sıcaklığı",
+  "fulgurit",
+  "yıldırım camı",
+  "fırtına",
+  "lightning",
+  "how hot is lightning",
+  "thunder",
+  "fulgurite",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#yıldırım",
+  "#şimşek",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.weather.gov/safety/lightning-temperature",
+  "https://www.nssl.noaa.gov/education/svrwx101/lightning/faq/",
+  "https://www.britannica.com/science/thunderstorm/Cloud-to-ground-lightning",
+  "https://www.noaa.gov/jetstream/lightning/frequently-asked-questions"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Hot Is a Lightning Bolt, Really?",
+   "summary": "A lightning bolt is 5 times hotter than the surface of the Sun! Professor Pi explains how that heat explodes inside a channel as thin as a finger, why you are not safe even 30 meters away, and how lightning turns sand into glass.",
+   "facts": [
+    "According to the US National Weather Service (NWS), lightning can heat the air it passes through to 50,000 °F (about 28,000 °C), 5 times hotter than the surface of the Sun.",
+    "According to Britannica, the current-carrying core of a lightning channel is only about 1 to 2 cm in diameter, and peak temperatures in the channel are on the order of 30,000 °C.",
+    "According to NOAA's National Severe Storms Laboratory (NSSL), the air in the lightning channel is heated to above 50,000 °F in only a few millionths of a second; with no time to expand, this high-pressure air expands explosively, and thunder starts as that shockwave.",
+    "According to NOAA, when lightning strikes the ground the current branches out along the surface and can be fatal up to 100 feet (about 30 meters) from the point of strike; according to the NWS, this ground current causes the most lightning deaths and injuries.",
+    "According to the Utah Geological Survey, when lightning strikes sand the grains fuse together, forming a hollow glass tube called a fulgurite; NSSL describes it as a glassy rock shaped like a convoluted tube."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Tan Caliente Es un Rayo en Realidad?",
+   "summary": "¡Un rayo es 5 veces más caliente que la superficie del Sol! El Profesor Pi explica cómo ese calor estalla en un canal tan delgado como un dedo, por qué no estás a salvo ni a 30 metros y cómo un rayo convierte la arena en vidrio.",
+   "facts": [
+    "Según el Servicio Meteorológico Nacional de EE. UU. (NWS), un rayo puede calentar el aire por el que pasa hasta 50.000 °F (unos 28.000 °C), 5 veces más que la superficie del Sol.",
+    "Según Britannica, el núcleo que transporta la corriente en el canal de un rayo mide solo 1 o 2 cm de diámetro, y las temperaturas máximas en el canal son del orden de 30.000 °C.",
+    "Según el Laboratorio Nacional de Tormentas Severas de la NOAA (NSSL), el aire del canal del rayo se calienta por encima de 50.000 °F en solo unas millonésimas de segundo; sin tiempo para expandirse, ese aire a altísima presión se expande de forma explosiva y el trueno nace como esa onda de choque.",
+    "Según la NOAA, cuando un rayo cae al suelo, la corriente se ramifica por la superficie y puede ser mortal hasta a 100 pies (unos 30 metros) del punto de impacto; según el NWS, esta corriente de tierra causa la mayoría de las muertes y heridas por rayos.",
+    "Según el Servicio Geológico de Utah, cuando un rayo cae sobre arena, los granos se funden entre sí y forman un tubo hueco de vidrio llamado fulgurita; el NSSL lo describe como una roca vítrea con forma de tubo retorcido."
+   ]
+  },
+  "pt": {
+   "title": "Quão Quente É um Raio de Verdade?",
+   "summary": "Um raio é 5 vezes mais quente que a superfície do Sol! O Professor Pi explica como esse calor explode num canal da grossura de um dedo, por que você não está seguro nem a 30 metros e como o raio transforma areia em vidro.",
+   "facts": [
+    "Segundo o Serviço Nacional de Meteorologia dos EUA (NWS), um raio pode aquecer o ar por onde passa a 50.000 °F (cerca de 28.000 °C), 5 vezes mais que a superfície do Sol.",
+    "Segundo a Britannica, o núcleo que conduz a corrente no canal de um raio tem só cerca de 1 a 2 cm de diâmetro, e as temperaturas máximas no canal são da ordem de 30.000 °C.",
+    "Segundo o Laboratório Nacional de Tempestades Severas da NOAA (NSSL), o ar no canal do raio é aquecido a mais de 50.000 °F em apenas alguns milionésimos de segundo; sem tempo para se expandir, esse ar sob altíssima pressão se expande de forma explosiva, e o trovão começa como essa onda de choque.",
+    "Segundo a NOAA, quando um raio atinge o chão, a corrente se ramifica pela superfície e pode ser fatal a até 100 pés (cerca de 30 metros) do ponto de impacto; segundo o NWS, essa corrente pelo solo causa a maioria das mortes e ferimentos por raios.",
+    "Segundo o Serviço Geológico de Utah, quando um raio atinge a areia, os grãos se fundem e formam um tubo oco de vidro chamado fulgurito; o NSSL o descreve como uma rocha vítrea em forma de tubo retorcido."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى سخونة الصاعقة في الحقيقة؟",
+   "summary": "الصاعقة أسخن من سطح الشمس بـ5 مرات! يشرح البروفيسور باي كيف تنفجر هذه الحرارة داخل قناة بسُمك الإصبع، ولماذا لست في أمان حتى على بُعد 30 مترًا، وكيف تحوّل الصاعقة الرمل إلى زجاج.",
+   "facts": [
+    "وفقًا لهيئة الأرصاد الجوية الوطنية الأمريكية (NWS)، يمكن للبرق أن يسخّن الهواء الذي يمر عبره حتى 50,000 درجة فهرنهايت (نحو 28,000 درجة مئوية)، أي أسخن من سطح الشمس بـ5 مرات.",
+    "وفقًا لموسوعة بريتانيكا، لا يتجاوز قطر اللب الحامل للتيار في قناة البرق نحو 1 إلى 2 سم، وتبلغ أعلى درجات الحرارة في القناة نحو 30,000 درجة مئوية.",
+    "وفقًا للمختبر الوطني للعواصف الشديدة التابع لـNOAA (NSSL)، يسخن الهواء في قناة البرق إلى أكثر من 50,000 درجة فهرنهايت في بضعة أجزاء من المليون من الثانية فقط؛ ولأنه لا يجد وقتًا للتمدد، يتمدد هذا الهواء شديد الضغط بشكل انفجاري، ويبدأ الرعد كموجة صدمية ناتجة عن ذلك.",
+    "وفقًا لـNOAA، عندما يضرب البرق الأرض يتفرع التيار على طول سطحها، ويمكن أن يكون قاتلًا حتى مسافة 100 قدم (نحو 30 مترًا) من نقطة الضربة؛ ووفقًا لـNWS، يسبب هذا التيار الأرضي معظم الوفيات والإصابات الناجمة عن البرق.",
+    "وفقًا لهيئة المسح الجيولوجي في يوتا، عندما يضرب البرق الرمل تلتحم حبيباته وتتكوّن أنبوبة زجاجية مجوفة تُسمى الفلغوريت؛ ويصفها NSSL بأنها صخرة زجاجية على شكل أنبوب ملتوٍ."
+   ]
+  },
+  "hi": {
+   "title": "आकाशीय बिजली असल में कितनी गर्म होती है?",
+   "summary": "आकाशीय बिजली सूरज की सतह से 5 गुना ज़्यादा गर्म होती है! प्रोफेसर पाई बताते हैं कि यह गर्मी उंगली जितनी पतली नली में कैसे फटती है, 30 मीटर दूर भी आप सुरक्षित क्यों नहीं हैं, और बिजली रेत को काँच में कैसे बदल देती है।",
+   "facts": [
+    "अमेरिकी राष्ट्रीय मौसम सेवा (NWS) के अनुसार, बिजली जिस हवा से गुज़रती है उसे 50,000 °F (लगभग 28,000 °C) तक गर्म कर सकती है, जो सूरज की सतह से 5 गुना ज़्यादा गर्म है।",
+    "ब्रिटानिका के अनुसार, बिजली की नली में करंट ले जाने वाला मुख्य भाग सिर्फ़ लगभग 1 से 2 सेमी चौड़ा होता है, और नली में अधिकतम तापमान लगभग 30,000 °C के स्तर का होता है।",
+    "NOAA की नेशनल सीवियर स्टॉर्म्स लैबोरेटरी (NSSL) के अनुसार, बिजली की नली की हवा सेकंड के कुछ दस-लाखवें हिस्से में ही 50,000 °F से ज़्यादा गर्म हो जाती है; फैलने का समय न मिलने से यह बेहद ऊँचे दबाव वाली हवा विस्फोट की तरह फैलती है, और गरज इसी शॉकवेव से शुरू होती है।",
+    "NOAA के अनुसार, जब बिजली ज़मीन पर गिरती है तो करंट सतह पर शाखाओं में फैल जाता है और गिरने की जगह से 100 फीट (लगभग 30 मीटर) दूर तक जानलेवा हो सकता है; NWS के अनुसार, बिजली से होने वाली ज़्यादातर मौतें और चोटें इसी ज़मीनी करंट से होती हैं।",
+    "यूटा जियोलॉजिकल सर्वे के अनुसार, जब बिजली रेत पर गिरती है तो रेत के कण आपस में जुड़ जाते हैं और फुलगुराइट नाम की काँच की एक खोखली नली बन जाती है; NSSL इसे मुड़ी हुई नली के आकार की काँच जैसी चट्टान बताता है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Panas Sebenarnya Sambaran Petir?",
+   "summary": "Petir 5 kali lebih panas dari permukaan Matahari! Profesor Pi menjelaskan bagaimana panas itu meledak di saluran setipis jari, kenapa kamu tidak aman bahkan dari jarak 30 meter, dan bagaimana petir mengubah pasir menjadi kaca.",
+   "facts": [
+    "Menurut Layanan Cuaca Nasional AS (NWS), petir dapat memanaskan udara yang dilaluinya hingga 50.000 °F (sekitar 28.000 °C), 5 kali lebih panas dari permukaan Matahari.",
+    "Menurut Britannica, inti saluran petir yang membawa arus hanya berdiameter sekitar 1 hingga 2 cm, dan suhu puncak di saluran itu sekitar 30.000 °C.",
+    "Menurut Laboratorium Badai Hebat Nasional NOAA (NSSL), udara di saluran petir memanas hingga lebih dari 50.000 °F hanya dalam beberapa sepersejuta detik; karena tak sempat mengembang, udara bertekanan sangat tinggi ini mengembang secara eksplosif, dan guntur berawal dari gelombang kejut itu.",
+    "Menurut NOAA, saat petir menyambar tanah, arusnya bercabang di sepanjang permukaan dan bisa mematikan hingga 100 kaki (sekitar 30 meter) dari titik sambaran; menurut NWS, arus tanah inilah penyebab sebagian besar kematian dan cedera akibat petir.",
+    "Menurut Survei Geologi Utah, saat petir menyambar pasir, butiran pasir menyatu dan membentuk tabung kaca berongga yang disebut fulgurit; NSSL menggambarkannya sebagai batuan seperti kaca berbentuk tabung berliku."
+   ]
+  },
+  "fr": {
+   "title": "Quelle Est la Vraie Température d'un Éclair ?",
+   "summary": "Un éclair est 5 fois plus chaud que la surface du Soleil ! Le Professeur Pi explique comment cette chaleur explose dans un canal aussi fin qu'un doigt, pourquoi tu n'es pas en sécurité même à 30 mètres, et comment la foudre transforme le sable en verre.",
+   "facts": [
+    "Selon le Service météorologique national américain (NWS), la foudre peut chauffer l'air qu'elle traverse jusqu'à 50 000 °F (environ 28 000 °C), soit 5 fois plus chaud que la surface du Soleil.",
+    "Selon Britannica, le cœur qui transporte le courant dans le canal de la foudre ne mesure qu'environ 1 à 2 cm de diamètre, et les températures maximales dans le canal sont de l'ordre de 30 000 °C.",
+    "Selon le National Severe Storms Laboratory de la NOAA (NSSL), l'air du canal de foudre est chauffé à plus de 50 000 °F en quelques millionièmes de seconde seulement ; sans avoir le temps de se dilater, cet air à très haute pression se dilate de façon explosive, et le tonnerre naît de cette onde de choc.",
+    "Selon la NOAA, quand la foudre frappe le sol, le courant se ramifie le long de la surface et peut être mortel jusqu'à 100 pieds (environ 30 mètres) du point d'impact ; selon le NWS, ce courant de sol cause la plupart des décès et blessures dus à la foudre.",
+    "Selon le Service géologique de l'Utah, quand la foudre frappe le sable, les grains fusionnent et forment un tube de verre creux appelé fulgurite ; le NSSL le décrit comme une roche vitreuse en forme de tube tortueux."
+   ]
+  },
+  "de": {
+   "title": "Wie Heiß Ist ein Blitz Wirklich?",
+   "summary": "Ein Blitz ist 5-mal heißer als die Oberfläche der Sonne! Professor Pi erklärt, wie diese Hitze in einem fingerdünnen Kanal explodiert, warum du selbst 30 Meter entfernt nicht sicher bist und wie ein Blitz Sand in Glas verwandelt.",
+   "facts": [
+    "Laut dem US-Wetterdienst (NWS) kann ein Blitz die Luft, durch die er fährt, auf 50.000 °F (etwa 28.000 °C) erhitzen, 5-mal heißer als die Oberfläche der Sonne.",
+    "Laut Britannica hat der stromführende Kern eines Blitzkanals nur etwa 1 bis 2 cm Durchmesser, und die Spitzentemperaturen im Kanal liegen in der Größenordnung von 30.000 °C.",
+    "Laut dem National Severe Storms Laboratory der NOAA (NSSL) wird die Luft im Blitzkanal in nur wenigen Millionstelsekunden auf über 50.000 °F erhitzt; ohne Zeit, sich auszudehnen, dehnt sich diese Luft unter extrem hohem Druck explosionsartig aus, und der Donner beginnt als diese Stoßwelle.",
+    "Laut NOAA verzweigt sich der Strom, wenn ein Blitz in den Boden einschlägt, entlang der Oberfläche und kann bis zu 100 Fuß (etwa 30 Meter) vom Einschlagpunkt entfernt tödlich sein; laut NWS verursacht dieser Erdstrom die meisten Todesfälle und Verletzungen durch Blitze.",
+    "Laut dem Utah Geological Survey verschmelzen die Körner, wenn ein Blitz in Sand einschlägt, zu einer hohlen Glasröhre, einem sogenannten Fulgurit; das NSSL beschreibt ihn als glasartiges Gestein in Form einer gewundenen Röhre."
+   ]
+  },
+  "ru": {
+   "title": "Насколько Горяча Молния на Самом Деле?",
+   "summary": "Молния в 5 раз горячее поверхности Солнца! Профессор Пи объясняет, как этот жар взрывается в канале толщиной с палец, почему ты не в безопасности даже в 30 метрах и как молния превращает песок в стекло.",
+   "facts": [
+    "По данным Национальной метеослужбы США (NWS), молния может нагреть воздух, через который проходит, до 50 000 °F (около 28 000 °C) — это в 5 раз горячее поверхности Солнца.",
+    "По данным Britannica, проводящее ток ядро канала молнии имеет диаметр всего около 1–2 см, а пиковая температура в канале — порядка 30 000 °C.",
+    "По данным Национальной лаборатории сильных штормов NOAA (NSSL), воздух в канале молнии нагревается выше 50 000 °F всего за несколько миллионных долей секунды; не успевая расшириться, этот воздух под огромным давлением расширяется взрывообразно, и гром начинается как эта ударная волна.",
+    "По данным NOAA, когда молния ударяет в землю, ток разветвляется по поверхности и может быть смертельным на расстоянии до 100 футов (около 30 метров) от точки удара; по данным NWS, именно этот ток в земле становится причиной большинства смертей и травм от молний.",
+    "По данным Геологической службы Юты, когда молния ударяет в песок, песчинки спекаются и образуют полую стеклянную трубку — фульгурит; NSSL описывает его как стекловидный камень в форме извилистой трубки."
+   ]
+  },
+  "az": {
+   "title": "Bir İldırım Əslində Nə Qədər İstidir?",
+   "summary": "İldırım Günəşin səthindən 5 dəfə istidir! Professor Pi bu istiliyin barmaq qalınlığında bir kanalda necə partladığını, 30 metr uzaqda belə niyə təhlükəsiz olmadığını və ildırımın qumu necə şüşəyə çevirdiyini danışır.",
+   "facts": [
+    "ABŞ Milli Hava Xidmətinə (NWS) görə, ildırım keçdiyi havanı 50.000 °F-ə (təxminən 28.000 °C) qədər qızdıra bilər; bu, Günəşin səthindən 5 dəfə istidir.",
+    "Britannica-ya görə, ildırım kanalında cərəyan daşıyan nüvənin diametri cəmi 1-2 sm-dir, kanaldakı ən yüksək temperatur isə təxminən 30.000 °C-dir.",
+    "NOAA-nın Milli Şiddətli Fırtınalar Laboratoriyasına (NSSL) görə, ildırım kanalındakı hava saniyənin cəmi bir neçə milyonda birində 50.000 °F-dən yuxarı qızır; genişlənməyə vaxt tapmayan bu yüksək təzyiqli hava partlayışla genişlənir və göy gurultusu bu zərbə dalğası ilə başlayır.",
+    "NOAA-ya görə, ildırım yerə düşəndə cərəyan səth boyunca budaqlanaraq yayılır və düşdüyü nöqtədən 100 fut (təxminən 30 metr) uzaqda belə öldürücü ola bilər; NWS-ə görə, ildırımdan ölüm və xəsarətlərin çoxuna məhz bu yer cərəyanı səbəb olur.",
+    "Yuta Geoloji Xidmətinə görə, ildırım quma düşəndə qum dənələri bir-birinə qaynayır və fulqurit adlanan içi boş şüşə boru yaranır; NSSL onu əyri-üyrü boru formasında şüşəvari daş kimi təsvir edir."
+   ]
+  }
+ }
+}
