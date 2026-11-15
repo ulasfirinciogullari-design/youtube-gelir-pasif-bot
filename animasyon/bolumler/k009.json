@@ -1,0 +1,87 @@
+{
+ "id": "k009",
+ "kanun": "IX",
+ "title": {
+  "top": "Birinden bağış isteyeceksen",
+  "hi": "“Bir kuruş bile yeter” de"
+ },
+ "yt_title": "Bu 4 Kelime Bağış Yapanları %29'dan %50'ye Çıkardı 💸 #psikoloji",
+ "lines": [
+  {
+   "text": "Birinden bağış isteyeceksen, sadece “Yardım eder misin?” deme. Sonuna “Bir kuruş bile yeter” ekle.",
+   "keys": ["deme", "kuruş"],
+   "v": {"t": "kanca", "ask": "yardım", "no": "deme", "back": "sonuna", "yes": "kuruş", "give": "ekle", "no_label": "Sadece “Yardım eder misin?”", "yes_label": "+ “Bir kuruş bile yeter”", "sfx": [[null, 0.02, "knock", 0.25, 0.15], ["deme", 0.4, "impact", 0.4, -0.02], ["deme", 0.4, "stamp", 0.35, 0.22], ["sonuna", 0.55, "whoosh", 0.3, -0.12], ["kuruş", 0.75, "shimmer", 0.45, 0.0], ["ekle", 0.92, "pop", 0.32, 0.05]]}
+  },
+  {
+   "text": "1970'lerde Amerika'da araştırmacılar, kanser derneği için kapı kapı dolaşıp bağış istedi.",
+   "keys": ["kanser", "kapı"],
+   "v": {"t": "deney", "year": "1976 · Cialdini deneyi", "door": "kapı", "key": "istedi", "sfx": [[null, 0.1, "paper", 0.25, 0.0], ["kapı", 0.6, "knock", 0.3, 0.0], ["kapı", 0.6, "knock", 0.3, 0.32], ["istedi", 0.9, "pop", 0.3, 0.0]]}
+  },
+  {
+   "text": "Sadece “Bağış yapar mısınız?” dediklerinde, kapıyı açanların %29'u para verdi.",
+   "keys": ["sadece"],
+   "v": {"t": "sade", "no": "dediklerinde", "key": "%29", "sfx": [["dediklerinde", 0.45, "stamp", 0.3, 0.0], ["%29", 0.75, "tick", 0.28, -0.15], ["%29", 0.75, "tick", 0.28, 0.0], ["verdi", 0.9, "pop", 0.3, 0.0]]}
+  },
+  {
+   "text": "Sonra sonuna tek bir cümle eklediler: “Bir kuruş bile yeter.”",
+   "keys": ["kuruş", "yeter"],
+   "v": {"t": "kurus", "add": "eklediler", "yes": "kuruş", "ok": "yeter", "sfx": [["eklediler", 0.45, "whoosh", 0.25, -0.1], ["kuruş", 0.75, "shimmer", 0.45, 0.0], ["yeter", 0.9, "pop", 0.3, 0.1]]}
+  },
+  {
+   "text": "Para verenlerin oranı %29'dan %50'ye çıktı!",
+   "v": {"t": "sonuc", "from": "%29", "key": "%50", "up": "çıktı", "sfx": [[null, 0.05, "pop", 0.3, 0.3], ["%29", 0.45, "stamp", 0.3, 0.0], ["%50", 0.65, "riser", 0.3, -0.5], ["%50", 0.65, "impact", 0.4, 0.0], ["çıktı", 0.9, "shimmer", 0.45, 0.0]]}
+  },
+  {
+   "text": "Üstelik bağışlar küçülmedi: kişi başı aynı kaldı, toplanan para %64 arttı.",
+   "keys": ["küçülmedi", "aynı"],
+   "v": {"t": "para", "small": "küçülmedi", "same": "aynı", "total": "toplanan", "key": "%64", "sfx": [["küçülmedi", 0.2, "stamp", 0.3, 0.0], ["aynı", 0.45, "tick", 0.25, 0.0], ["toplanan", 0.7, "whoosh", 0.3, -0.1], ["%64", 0.85, "impact", 0.38, 0.0], ["arttı", 0.95, "shimmer", 0.4, 0.0]]}
+  },
+  {
+   "text": "Çünkü bu cümle “Param yok” bahanesini siler. Artık hayır demek cimrilik gibi gelir.",
+   "keys": ["bahanesini", "cimrilik"],
+   "v": {"t": "neden", "excuse": "param", "erase": "siler", "cut": "artık", "no": "hayır", "key": "cimrilik", "pay": "gelir", "sfx": [["param", 0.2, "pop", 0.3, 0.0], ["siler", 0.45, "whoosh", 0.35, -0.08], ["artık", 0.6, "whoosh", 0.25, -0.1], ["cimrilik", 0.8, "stamp", 0.42, 0.0], ["gelir", 0.95, "pop", 0.3, 0.1]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Cialdini, R. B. ve Schroeder, D. A. (1976), \"Increasing compliance by legitimizing paltry contributions: When even a penny helps\", Journal of Personality and Social Psychology 34(4), 599-604. Deney 1: Amerikan Kanser Derneği'nin kapı kapı bağış kampanyası, orta gelirli bir banliyö mahallesinde, Derneğin son bir yıl içinde dolaşmadığı evlerde; ziyaretler öğleden sonra, akşam ve hafta sonu yapıldı. Bağışı, biri kadın biri erkek dört çift üniversite çağında araştırma asistanı istedi (konuşan, kapıdaki kişiyle aynı cinsiyettendi). 84 yetişkin, koşul başına 42 kişi. Makale şehir ve yıl vermez; teşekkür bölümünde Derneğin Phoenix şubesi anılır, yazarlar Arizona State University'dendir. Video bu yüzden \"1970'lerde Amerika'da\" der.",
+  "İki koşulda da asistan \"I'm collecting money for the American Cancer Society. Would you be willing to help by giving a donation?\" dedi; deney koşulunda sonuna yalnızca \"Even a penny will help.\" (Bir kuruş bile yardımcı olur) eklendi.",
+  "Sonuçlar (Deney 1): yalnızca soru sorulduğunda 42 kişiden 12'si (%28,6) bağış yaptı; \"bir kuruş bile\" eklenince 42 kişiden 21'i (%50) bağış yaptı (χ²(1) = 4,04, p < ,05). Bağış yapan kişi başına ortalama 1,44 $ ve 1,54 $ verildi, fark anlamlı değildi (t(31) = 0,51); medyan ve en sık bağış iki koşulda da 1 $'dı. Toplanan para 18,55 $'dan 30,34 $'a çıktı, yani yaklaşık %64 arttı.",
+  "Deney 2 (123 ev sahibi, koşul başına 30-31 kişi) sonucu tekrarladı: sadece soru %32,2 (10/31), \"bir kuruş bile yeter\" %58,1 (18/31), \"bir dolar bile yeter\" %46,7, \"bir kuruştan başlayan bağışlar aldık\" %64,5; ortalama bağış büyüklüğü koşullar arasında farklı değildi (F(3,119) = 1,04). İki deney birlikte: Z = 2,58, p < ,01; meşrulaştıran koşullarda toplam 90,31 $, karşılaştırma koşullarında 58,64 $ toplandı.",
+  "Yazarların açıklaması: \"Bir kuruş bile\" cümlesi, insanların yardım etmemek için normalde öne sürdüğü bahaneleri geçersiz kılar ve reddetmek kişinin yardımsever, sorumlu biri olarak görünme imajını tehlikeye atar; cümle istenenin bir kuruş olduğunu da ima etmediği için insanlar küçük bağışa inmez. Sonraki araştırmalar: Andrews, Carpenter, Shaw ve Boster (2008, Communication Reports 21, 59-69) 19 çalışmayı (2.730 kişi) birleştiren meta-analizde, yüz yüze isteklerde etkinin sürdüğünü buldu (r = ,18). Bolkan ve Rains (2017, Communication Research 44(7), 976-996) 34 çalışmada bağış yapma oranının arttığını (r = ,22), ama ortalama bağışın biraz küçülebildiğini ve toplamın çoğu zaman kontrolle benzer kaldığını bildirdi; video, 1976 deneyinde ölçüleni anlatıyor."
+ ],
+ "sources": [
+  "https://doi.org/10.1037/0022-3514.34.4.599",
+  "https://scispace.com/pdf/increasing-compliance-by-legitimizing-paltry-contributions-4brkuad69h.pdf",
+  "https://persuasion-and-influence.blogspot.com/2015/03/even-penny-will-help.html",
+  "https://doi.org/10.1080/08934210802305028",
+  "https://experts.arizona.edu/en/publications/the-legitimization-of-paltry-contributions-as-a-compliance-gainin/"
+ ],
+ "summary": "Birinden bağış isteyeceksen sadece “Yardım eder misin?” deme, sonuna “Bir kuruş bile yeter” ekle. 1970'lerde Amerika'da psikolog Robert Cialdini ve David Schroeder'in deneyinde (1976) araştırma asistanları Amerikan Kanser Derneği için kapı kapı dolaşıp bağış istedi. Sadece “Bağış yapar mısınız?” diye sorduklarında kapıyı açanların %29'u (42 kişiden 12'si) para verdi. Aynı sorunun sonuna “Bir kuruş bile yeter” eklediklerinde bu oran %50'ye (42 kişiden 21'i) çıktı. Üstelik insanlar bir kuruşa inmedi: bağış yapan kişi başına ortalama yaklaşık 1,5 dolar verildi ve toplanan para 18,55 dolardan 30,34 dolara, yani %64 arttı. Çünkü bu cümle “Param yok” bahanesini ortadan kaldırır; artık hayır demek cimrilik gibi gelir.",
+ "tags": [
+  "bir kuruş bile yeter",
+  "even a penny will help",
+  "cialdini",
+  "bağış",
+  "bağış toplama",
+  "hayır diyememek",
+  "ikna",
+  "ikna teknikleri",
+  "rica etmek",
+  "psikoloji",
+  "sosyal psikoloji",
+  "insan psikolojisi",
+  "güç psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#ikna",
+  "#zirveninkanunu"
+ ]
+}
