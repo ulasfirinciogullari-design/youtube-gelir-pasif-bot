@@ -220,7 +220,8 @@ def test_produce_title_has_no_shorts_hashtag(tmp_path, monkeypatch):
 
     result = original_factory.produce({"id": "mk-028", "topic": "Baykuşlar", "stock_hint": "owl", "subject": ["owl"]},
                                       dict(OWL_SCRIPT), "test", series="merak", label_no=88)
-    assert result["meta"]["series_label"] == "KANUN #88" and result["meta"]["share_cta"] is True and len(ctas) == 1
+    # experiment 6 ended on 2026-11-15: even a Short in the share arm carries no share box now
+    assert result["meta"]["series_label"] == "KANUN #88" and result["meta"]["share_cta"] is False and not ctas
     assert result["meta"]["title"] == OWL_SCRIPT["title"] and "#shorts" not in result["meta"]["title"]
     assert seo_calls[0]["series"] == "merak"
     assert "#shorts" in result["meta"]["description"]
