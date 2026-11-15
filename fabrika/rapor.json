@@ -1,12 +1,18 @@
 {
- "started": "2026-11-15T07:48:11+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-15T09:06:53+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y034",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu? 🌍 (Simitçi Uçtu!)",
- "chars": 1062,
- "duration": 75.0,
- "deneme": "fabrika/deneme/ornek-h001.mp4",
- "log": [],
- "finished": "2026-11-15T07:50:13+00:00"
+ "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+ "chars": 362,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18110432810252857",
+  "url": "https://www.instagram.com/reel/DfwbGt6jOSs/",
+  "at": 1794733733.772533
+ },
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfwbGt6jOSs/"
+ ],
+ "finished": "2026-11-15T09:08:53+00:00"
 }
