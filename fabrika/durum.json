@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "419",
+    "views": "420",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1034",
+    "views": "1036",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "574",
+    "views": "580",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "662",
+    "views": "664",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "942",
+    "views": "947",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "933",
+    "views": "934",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "938",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "612",
+    "views": "633",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "103",
+    "views": "106",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "779",
+    "views": "824",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "921",
+    "views": "924",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "620",
+    "views": "621",
     "reason": null
    }
   },
@@ -2490,6 +2490,37 @@
    "at": 1794737256.9576538,
    "chars": 364,
    "ilk": false,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "229",
+    "reason": null
+   }
+  },
+  {
+   "id": "y028",
+   "video_id": "4MpwenNL9NY",
+   "url": "https://youtube.com/shorts/4MpwenNL9NY",
+   "title": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Dinosaurs Never Died Out, Would You Even Exist?",
+    "es": "Si los Dinosaurios No Se Hubieran Extinguido, ¿Existirías Tú?",
+    "pt": "Se os Dinossauros Não Tivessem Sumido, Você Existiria?",
+    "ar": "لو لم تنقرض الديناصورات، هل كنت ستوجد أصلًا؟",
+    "hi": "अगर डायनासोर खत्म न होते, तो क्या आप होते?",
+    "id": "Kalau Dinosaurus Tak Punah, Apakah Kamu Akan Ada?",
+    "fr": "Si les Dinosaures N'avaient Pas Disparu, Existerais-Tu ?",
+    "de": "Wären die Dinosaurier nicht ausgestorben, gäbe es dich dann?",
+    "ru": "Если бы динозавры не вымерли, существовал бы ты?",
+    "az": "Dinozavrlar Yox Olmasaydı, Sən Var Olardınmı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794751751.159855,
+   "chars": 820,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2581,7 +2612,8 @@
   "y056",
   "y059",
   "y060",
-  "n017"
+  "n017",
+  "y028"
  ],
  "extra": [
   {
@@ -2647,14 +2679,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-07T20:08:06+00:00",
-   "mod": "saatlik",
-   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
-   "url": "https://youtube.com/shorts/EQ0PrGtNYWo",
-   "duration": 28.3,
-   "chars": 424
-  },
   {
    "finished": "2026-11-08T09:08:58+00:00",
    "mod": "igbolum",
@@ -3071,6 +3095,14 @@
    "mod": "igbolum",
    "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
    "chars": 376
+  },
+  {
+   "finished": "2026-11-15T14:09:12+00:00",
+   "mod": "saatlik",
+   "title": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun?",
+   "url": "https://youtube.com/shorts/4MpwenNL9NY",
+   "duration": 56.9,
+   "chars": 820
   }
  ],
  "last_fail": 1794410324.353765,
