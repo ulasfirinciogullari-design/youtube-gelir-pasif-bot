@@ -67,26 +67,23 @@ def test_too_soon_after_the_last_public_upload():
     assert slot_gate.decide(at("14:07"), [upload(at("13:14"))], [])[0]
 
 
-def test_ten_slots_of_the_turkish_day(monkeypatch):
+def test_eight_slots_every_two_hours_of_the_turkish_day(monkeypatch):
     monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
-    assert [(h + 3) % 24 for h in slot_gate.SLOTS_UTC] == [8, 10, 12, 14, 16, 18, 20, 22, 23, 0]
+    assert [(h + 3) % 24 for h in slot_gate.SLOTS_UTC] == [10, 12, 14, 16, 18, 20, 22, 0]
     assert slot_gate.slot_start(at("13:37")) == at("13:00")
     assert slot_gate.slot_start(at("14:20")) == at("13:00")
     assert slot_gate.slot_start(at("03:00")) == at("21:00", day=13)
-    assert slot_gate.slot_start(at("05:07")) == at("05:00")
-    assert slot_gate.slot_start(at("06:30")) == at("05:00")
-    assert slot_gate.slot_start(at("20:37")) == at("20:00")
+    # 2026-11-14: the 05:00 and 20:00 UTC slots (08:00 and 23:00 Turkey time) are gone again.
+    assert slot_gate.slot_start(at("05:07")) == at("21:00", day=13)
+    assert slot_gate.slot_start(at("20:37")) == at("19:00")
 
 
-def test_the_late_evening_slots_are_an_hour_apart(monkeypatch):
-    # 22:00 and 23:00 Turkey time: an on-time 19:00 UTC upload leaves the 20:00 UTC slot free, and an
-    # on-time 20:00 UTC upload leaves the 21:00 UTC slot free; the 35 min gap still holds a late run back.
+def test_no_short_in_the_dropped_slots(monkeypatch):
     monkeypatch.setattr(slot_gate, "SLOTS_UTC", REAL_SLOTS)
-    assert slot_gate.decide(at("20:07"), [upload(at("19:24"))], [])[0]
-    assert slot_gate.decide(at("21:07"), [upload(at("20:24"))], [])[0]
-    go, reasons = slot_gate.decide(at("21:07"), [upload(at("20:50"))], [])
+    go, reasons = slot_gate.decide(at("05:07"), [upload(at("21:24", day=13))], [])
     assert not go
-    assert any("35 dk" in r for r in reasons)
+    go, reasons = slot_gate.decide(at("20:37"), [upload(at("19:24"))], [])
+    assert not go
 
 
 def test_a_slot_older_than_the_window_is_given_up(monkeypatch):
