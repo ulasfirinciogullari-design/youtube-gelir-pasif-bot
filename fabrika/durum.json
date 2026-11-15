@@ -2616,12 +2616,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-07T13:08:55+00:00",
-   "mod": "igbolum",
-   "title": "Lav Gölüne Düşseydin Batar Mıydın?",
-   "chars": 372
-  },
-  {
    "finished": "2026-11-07T14:07:57+00:00",
    "mod": "saatlik",
    "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
@@ -3040,6 +3034,13 @@
    "url": "https://youtube.com/shorts/MXkhpdIxoFM",
    "duration": 55.7,
    "chars": 803
+  },
+  {
+   "finished": "2026-11-15T07:50:13+00:00",
+   "mod": "ornek",
+   "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu? 🌍 (Simitçi Uçtu!)",
+   "duration": 75.0,
+   "chars": 1062
   }
  ],
  "last_fail": 1794410324.353765,
