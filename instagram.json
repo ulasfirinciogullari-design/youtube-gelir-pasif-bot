@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-10-23T18": "S5m3Uy1eUOo https://www.instagram.com/reel/De2J3oijWFD/",
   "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
   "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
@@ -48,16 +47,17 @@
   "2026-11-13T18": "7q4TC7a8Bko https://www.instagram.com/reel/DfsOb6Ak9uV/",
   "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/",
   "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/",
-  "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/"
+  "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/",
+  "2026-11-15T10": "gWEa3MkJvmk https://www.instagram.com/reel/DfwhEZRkiqc/"
  },
  "nobet": {
   "basladi": "2026-11-15T08:16:15+00:00",
   "run": "43692908321",
-  "tur": 92,
+  "tur": 105,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-15T09:47:16+00:00"
+  "son_tur": "2026-11-15T10:00:59+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -444,6 +444,13 @@
    "at": 1794679269,
    "title": "Solucan ikiye bölünüp iki solucan olabilir mi? 🪱",
    "topic_id": "mk-c0126"
+  },
+  "gWEa3MkJvmk": {
+   "media_id": "17960197344266257",
+   "url": "https://www.instagram.com/reel/DfwhEZRkiqc/",
+   "at": 1794736860,
+   "title": "Timsah gözyaşı gerçek: timsahlar yemek yerken ağlıyor 🐊",
+   "topic_id": "mk-c0139"
   }
  }
 }
