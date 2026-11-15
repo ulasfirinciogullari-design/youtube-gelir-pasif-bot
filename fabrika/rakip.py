@@ -93,7 +93,39 @@ def covers():
                 (out / f"{n:02d}_{vid}.jpg").write_bytes(r.content)
                 got += 1
                 break
+    sheet(out)
+    try:  # descriptions and tags say how a channel makes its videos (1 quota unit)
+        access, _ = key_info()
+        for v in get(access, "videos", part="snippet", id=",".join(ids[:50])).get("items", []):
+            sn = v["snippet"]
+            print(f"--- {v['id']} {sn['title']}\n{(sn.get('description') or '')[:400]}\ntags: {sn.get('tags', [])[:12]}",
+                  file=sys.stderr)
+    except Exception as e:
+        print(f"açıklama okunamadı: {e}", file=sys.stderr)
     print(f"Rakip kapak: {got}/{len(ids)}")
+
+
+def sheet(folder):
+    """One small contact sheet of the covers, printed to the run log as base64 between KAPAK markers, because run
+    artifacts can't always be downloaded where the analysis runs. Nothing is committed."""
+    import base64
+    import io
+    from PIL import Image
+    files = sorted(folder.glob("*.jpg"))
+    if not files:
+        return
+    w, h, cols = 200, 356, 7
+    rows = (len(files) + cols - 1) // cols
+    s = Image.new("RGB", (cols * w, rows * h), "white")
+    for n, f in enumerate(files):
+        im = Image.open(f).convert("RGB")
+        r = max(w / im.width, h / im.height)  # cover-crop to an upright tile
+        im = im.resize((round(im.width * r), round(im.height * r)))
+        x, y = (im.width - w) // 2, (im.height - h) // 2
+        s.paste(im.crop((x, y, x + w, y + h)), ((n % cols) * w, (n // cols) * h))
+    b = io.BytesIO()
+    s.save(b, "JPEG", quality=70)
+    print("KAPAK-BASLA\n" + base64.b64encode(b.getvalue()).decode() + "\nKAPAK-BITTI", file=sys.stderr)
 
 
 if __name__ == "__main__":

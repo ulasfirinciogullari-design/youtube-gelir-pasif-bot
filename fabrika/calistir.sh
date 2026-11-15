@@ -28,7 +28,7 @@ case "$MOD" in instagram|igdeneme|igdmtest)
 esac
 
 if [ "$MOD" = "rakip" ]; then  # most-viewed Turkish science Shorts of the last months (fabrika/rakip.py)
-  pip install -q requests
+  pip install -q requests pillow
   out=$(python3 fabrika/rakip.py $(awk '{print $2}' fabrika/tetik.txt | grep -x kapak) | tail -n 1); echo "$out"
   git add fabrika/rakip.json 2>/dev/null || true
   push "$out"; exit 0
