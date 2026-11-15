@@ -1,5 +1,5 @@
 {
- "at": "2026-11-15T02:42:02+00:00",
+ "at": "2026-11-15T07:24:16+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -16,7 +16,7 @@
  ],
  "kanal_istatistik": {
   "subscriberCount": 69,
-  "viewCount": 78498,
+  "viewCount": 81027,
   "videoCount": 83
  },
  "canli": {
@@ -399,7 +399,7 @@
    "baslik": "Bir Hafta Hiç Uyumasaydın Ne Olurdu? 😳"
   },
   "uTmyAqqF5qU": {
-   "view": 388,
+   "view": 389,
    "like": 6,
    "comment": 0,
    "baslik": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar? 😮"
@@ -417,7 +417,7 @@
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
   },
   "6pHVAozelhE": {
-   "view": 932,
+   "view": 930,
    "like": 9,
    "comment": 0,
    "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
@@ -429,13 +429,13 @@
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
   "O1WLYgc1whA": {
-   "view": 420,
+   "view": 419,
    "like": 2,
    "comment": 0,
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
   },
   "mTcbQupGjWQ": {
-   "view": 300,
+   "view": 299,
    "like": 1,
    "comment": 0,
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
@@ -477,14 +477,14 @@
    "baslik": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu? 😳"
   },
   "325eJNknZqk": {
-   "view": 927,
+   "view": 928,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 586,
-   "like": 7,
+   "view": 587,
+   "like": 8,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
   },
@@ -501,13 +501,13 @@
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 913,
+   "view": 915,
    "like": 3,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 547,
+   "view": 614,
    "like": 5,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -1376,7 +1376,12 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 965,
+    "YT_SEARCH": 40,
+    "YT_CHANNEL": 4,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 232,
    "devam_yuzde": 23.0
   },
