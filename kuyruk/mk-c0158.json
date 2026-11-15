@@ -1,0 +1,188 @@
+{
+ "id": "mk-c0158",
+ "topic": "Kulaklarını oynatmak mümkün mü? İnsan kulağını oynatabilir mi, kulak kasları neden var?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "ear",
+  "ears"
+ ],
+ "stock_hint": "human ear close up",
+ "script": {
+  "title": "Kulaklarını oynatmak mümkün mü? 👂",
+  "hook_text": "KULAĞINI OYNATABİLİR MİSİN?",
+  "scenes": [
+   {
+    "text": "Kulağın şu an sen fark etmeden kıpırdıyor.",
+    "visual": "extreme close-up of a human ear in profile with soft side light",
+    "stock_query": "human ear close up",
+    "source": "stock",
+    "callout": "GİZLİ HAREKET"
+   },
+   {
+    "text": "Kulağını kedi gibi oynatmak çoğumuza imkânsız gelir.",
+    "visual": "close-up of a cat turning its ears toward a sound",
+    "stock_query": "cat ears",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "cat"
+    ]
+   },
+   {
+    "text": "Ama kulağı döndüren kaslar sende de var; yaklaşık yirmi beş milyon yıldır körelmiş.",
+    "visual": "close-up of a human ear and the side of the head",
+    "stock_query": "ear close up",
+    "source": "stock",
+    "callout": "25 MİLYON YIL"
+   },
+   {
+    "text": "Cevap evet: bir deneyde ilginç bir ses duyanların kulak kasları sesin geldiği yöne kasıldı.",
+    "visual": "a woman turning her head to listen to a sound",
+    "stock_query": "woman listening",
+    "source": "stock",
+    "callout": "SESE DÖNÜYOR",
+    "subject": [
+     "woman"
+    ]
+   },
+   {
+    "text": "Hareket öyle küçük ki ancak büyütülmüş videoda görünüyor.",
+    "visual": "slow motion extreme close-up of a human ear",
+    "stock_query": "human ear",
+    "source": "stock",
+    "callout": "BÜYÜTÜNCE GÖRÜNÜR"
+   },
+   {
+    "text": "Bu sesi dinlerken unutma:",
+    "visual": "close-up of a person's ear while listening attentively",
+    "stock_query": "ear listening",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kulağını isteyerek oynatamasan bile, kulak çevresindeki kaslar hâlâ sende var; atalarımızda yaklaşık yirmi beş milyon yıl önce körelmişler. 2020'de yayımlanan bir deneyde ilginç bir ses duyan insanların kulak kasları sesin geldiği yöne kasıldı; hareket o kadar küçük ki ancak büyütülmüş videoda görülebiliyor.",
+  "tags": [
+   "kulak oynatmak",
+   "kulak kasları",
+   "insan kulağı",
+   "körelmiş organlar",
+   "insan vücudu",
+   "mümkün mü",
+   "evrim",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen kulaklarını isteyerek oynatabiliyor musun: evet mi, hayır mı?",
+  "en_title": "Can you wiggle your ears? 👂",
+  "en_description": "Most of us think we can't, yet everyone still has the muscles that let cats turn their ears; they went vestigial about 25 million years ago. A 2020 study found these muscles twitch toward sounds we pay attention to, moving our ears so slightly that only magnified video shows it.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Kulaklarını oynatmak mümkün mü, insan kulağını oynatabilir mi?\n\nEvet, hem de hepimiz farkında olmadan. Bazı insanlar kulağını isteyerek oynatabilir; ama Saarland Üniversitesi'nden Daniel Strauss ve ekibinin 2020'de eLife dergisinde yayımladığı çalışmaya göre kulak çevresindeki kaslar, yeni ya da ilginç bir ses duyduğumuzda dikkatimizi verdiğimiz yöne doğru kasılıyor. Kulağı sese çeviren bu sistem atalarımızda yaklaşık yirmi beş milyon yıl önce körelmiş, ama beyinde bir 'sinirsel fosil' olarak duruyor; kulaktaki hareket o kadar küçük ki araştırmacılar onu ancak bilgisayarla büyütülmüş videoda görebildi.\n\nSen kulaklarını isteyerek oynatabiliyor musun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kulak",
+   "#mümkünmü",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kulak oynatmak",
+   "kulağını oynatabilir misin",
+   "kulak oynatma",
+   "kedi gibi kulak oynatmak",
+   "kulak kasları",
+   "kulak nasıl oynatılır",
+   "kulak neden hareket eder",
+   "insan kulağı",
+   "kulak kepçesi",
+   "körelmiş organlar",
+   "körelmiş kaslar",
+   "evrim",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "mümkün mü",
+   "evde deney",
+   "beyin",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "ear wiggling",
+   "auricular muscles"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can you wiggle your ears? 👂",
+    "description": "Most of us think we can't, yet everyone still has the muscles that let cats turn their ears; they went vestigial about 25 million years ago. A 2020 study found these muscles twitch toward sounds we pay attention to, moving our ears so slightly that only magnified video shows it."
+   },
+   "es": {
+    "title": "¿Puedes mover las orejas? 👂",
+    "description": "Casi todos creemos que no, pero conservamos los músculos con los que un gato gira las orejas; se atrofiaron hace unos 25 millones de años. Un estudio de 2020 vio que se contraen hacia los sonidos que nos llaman la atención y mueven la oreja tan poco que solo se ve en vídeo ampliado."
+   },
+   "pt": {
+    "title": "Dá para mexer as orelhas? 👂",
+    "description": "A maioria acha que não, mas todos ainda temos os músculos que permitem ao gato girar as orelhas; eles atrofiaram há cerca de 25 milhões de anos. Um estudo de 2020 mostrou que eles se contraem na direção dos sons que nos chamam a atenção, movendo a orelha tão pouco que só se vê em vídeo ampliado."
+   },
+   "de": {
+    "title": "Kannst du mit den Ohren wackeln? 👂",
+    "description": "Die meisten glauben, sie könnten es nicht, doch wir alle haben noch die Muskeln, mit denen Katzen ihre Ohren drehen; sie verkümmerten vor rund 25 Millionen Jahren. Eine Studie von 2020 zeigte, dass sie in Richtung interessanter Geräusche zucken – so schwach, dass man es nur in vergrößerten Videos sieht."
+   },
+   "fr": {
+    "title": "Peut-on bouger les oreilles ? 👂",
+    "description": "On croit souvent en être incapable, pourtant nous avons tous gardé les muscles qui permettent au chat d'orienter ses oreilles ; ils se sont atrophiés il y a environ 25 millions d'années. Une étude de 2020 a montré qu'ils se contractent vers les sons qui attirent notre attention, si peu que seule une vidéo agrandie le révèle."
+   },
+   "it": {
+    "title": "Si possono muovere le orecchie? 👂",
+    "description": "Quasi tutti pensano di non riuscirci, eppure abbiamo ancora i muscoli con cui il gatto orienta le orecchie; si sono atrofizzati circa 25 milioni di anni fa. Uno studio del 2020 ha visto che si contraggono verso i suoni che ci incuriosiscono, muovendo l'orecchio così poco che si nota solo in un video ingrandito."
+   },
+   "ru": {
+    "title": "Можно ли шевелить ушами? 👂",
+    "description": "Большинство уверены, что не умеют, но у всех нас остались мышцы, которыми кошка поворачивает уши; они атрофировались около 25 миллионов лет назад. Исследование 2020 года показало, что они сокращаются в сторону звука, на который мы обращаем внимание, и двигают ухо так слабо, что это видно только на увеличенном видео."
+   },
+   "ar": {
+    "title": "هل يمكنك تحريك أذنيك؟ 👂",
+    "description": "يظن معظمنا أنه لا يستطيع، لكننا جميعًا ما زلنا نملك العضلات التي تدير بها القطة أذنيها، وقد ضمرت قبل نحو 25 مليون سنة. ووجدت دراسة عام 2020 أنها تنقبض نحو الأصوات التي تلفت انتباهنا، فتتحرك الأذن حركة صغيرة جدًا لا تظهر إلا في فيديو مكبَّر."
+   },
+   "hi": {
+    "title": "क्या आप अपने कान हिला सकते हैं? 👂",
+    "description": "ज़्यादातर लोग सोचते हैं कि वे नहीं हिला सकते, फिर भी हम सबमें वे मांसपेशियाँ मौजूद हैं जिनसे बिल्ली कान घुमाती है; ये लगभग ढाई करोड़ साल पहले निष्क्रिय हो गईं। 2020 के एक अध्ययन में पाया गया कि ध्यान खींचने वाली आवाज़ की ओर ये सिकुड़ती हैं और कान इतना हल्का हिलता है कि सिर्फ़ बड़े किए गए वीडियो में दिखता है।"
+   },
+   "id": {
+    "title": "Bisakah kamu menggerakkan telinga? 👂",
+    "description": "Kebanyakan orang merasa tidak bisa, padahal kita semua masih punya otot yang dipakai kucing untuk memutar telinganya; otot itu menyusut sekitar 25 juta tahun lalu. Studi tahun 2020 menemukan otot ini berkontraksi ke arah suara yang menarik perhatian kita, menggerakkan telinga begitu sedikit sehingga hanya terlihat di video yang diperbesar."
+   },
+   "ja": {
+    "title": "耳を動かすことはできる？ 👂",
+    "description": "多くの人は無理だと思っていますが、猫が耳を向けるのに使う筋肉は誰にでも残っています。約2500万年前に退化した筋肉です。2020年の研究では、気になる音がするとその方向へこの筋肉が収縮し、拡大した映像でしか分からないほどわずかに耳が動くことが分かりました。"
+   },
+   "ko": {
+    "title": "귀를 움직이는 게 가능할까? 👂",
+    "description": "대부분은 못 한다고 생각하지만, 고양이가 귀를 돌릴 때 쓰는 근육은 우리 모두에게 남아 있습니다. 약 2500만 년 전에 퇴화한 근육이죠. 2020년 연구에 따르면 관심을 끄는 소리가 나면 이 근육이 그쪽으로 수축해, 확대한 영상에서만 보일 만큼 귀가 살짝 움직입니다."
+   },
+   "pl": {
+    "title": "Czy da się ruszać uszami? 👂",
+    "description": "Większość z nas myśli, że nie umie, a jednak wszyscy mamy mięśnie, którymi kot obraca uszy; zanikły około 25 milionów lat temu. Badanie z 2020 roku wykazało, że kurczą się w stronę dźwięków, które przykuwają naszą uwagę, poruszając uchem tak słabo, że widać to tylko na powiększonym nagraniu."
+   },
+   "nl": {
+    "title": "Kun je met je oren wiebelen? 👂",
+    "description": "De meesten denken van niet, maar we hebben allemaal nog de spieren waarmee een kat zijn oren draait; ze verkommerden zo'n 25 miljoen jaar geleden. Een studie uit 2020 toonde dat ze samentrekken richting geluiden die onze aandacht trekken, zo licht dat je het alleen in vergrote video ziet."
+   },
+   "uk": {
+    "title": "Чи можна ворушити вухами? 👂",
+    "description": "Більшість упевнені, що не вміють, але в усіх нас лишилися м'язи, якими кіт повертає вуха; вони атрофувалися близько 25 мільйонів років тому. Дослідження 2020 року показало, що вони скорочуються в бік звуку, на який ми звертаємо увагу, і рухають вухо так слабко, що це видно лише на збільшеному відео."
+   },
+   "vi": {
+    "title": "Bạn có thể cử động tai không? 👂",
+    "description": "Phần lớn chúng ta nghĩ là không, nhưng ai cũng còn những cơ mà mèo dùng để xoay tai; chúng đã thoái hóa từ khoảng 25 triệu năm trước. Một nghiên cứu năm 2020 cho thấy các cơ này co về phía âm thanh khiến ta chú ý, làm tai nhúc nhích nhẹ đến mức chỉ thấy được trong video phóng đại."
+   },
+   "az": {
+    "title": "Qulaqlarını tərpətmək mümkündürmü? 👂",
+    "description": "Çoxumuz bacarmadığımızı düşünürük, amma pişiyin qulağını çevirdiyi əzələlər hamımızda var; təxminən 25 milyon il əvvəl körəlib. 2020-ci il araşdırması göstərdi ki, diqqətimizi çəkən səsə doğru bu əzələlər yığılır və qulaq elə az tərpənir ki, bunu yalnız böyüdülmüş videoda görmək olur."
+   },
+   "ro": {
+    "title": "Poți să-ți miști urechile? 👂",
+    "description": "Cei mai mulți cred că nu pot, dar toți avem încă mușchii cu care pisica își rotește urechile; s-au atrofiat acum circa 25 de milioane de ani. Un studiu din 2020 a arătat că se contractă spre sunetele care ne atrag atenția, mișcând urechea atât de puțin încât se vede doar într-un video mărit."
+   }
+  }
+ }
+}

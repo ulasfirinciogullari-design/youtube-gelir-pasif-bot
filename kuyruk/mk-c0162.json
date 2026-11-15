@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0162",
+ "topic": "Fil fareden korkar mı? 'Fil fareden korkar' sözü doğru mu, filler neden arıdan kaçar?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "elephant"
+ ],
+ "stock_hint": "elephant eye close up",
+ "script": {
+  "title": "Fil fareden korkmaz, asıl korktuğu şey arı 🐘",
+  "hook_text": "FİL GERÇEKTEN FAREDEN KORKAR MI?",
+  "scenes": [
+   {
+    "text": "Fil fareden korkar derler, ama korktuğu şey başka.",
+    "visual": "extreme close-up of an elephant's eye and wrinkled skin",
+    "stock_query": "elephant eye",
+    "source": "stock",
+    "callout": "FARE DEĞİL"
+   },
+   {
+    "text": "Fare ayağının dibinde aniden koşarsa ürker; köpek de olsa ürkerdi.",
+    "visual": "close-up of an elephant's feet walking on dusty ground",
+    "stock_query": "elephant feet",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Hortumuna fare girse de fil onu bir nefeste üfler.",
+    "visual": "close-up of the tip of an elephant's trunk moving and sniffing",
+    "stock_query": "elephant trunk",
+    "source": "stock",
+    "callout": "BİR NEFESTE DIŞARI"
+   },
+   {
+    "text": "Asıl kaçtığı şey arı: bir deneyde kızgın arı vızıltısı duyan fillerin çoğu hemen kaçtı.",
+    "visual": "a family of elephants walking quickly away across the savanna",
+    "stock_query": "elephants walking herd",
+    "source": "stock",
+    "callout": "ARI VIZILTISI"
+   },
+   {
+    "text": "Çünkü arılar hortumun içini ve gözlerini sokabiliyor.",
+    "visual": "macro close-up of honey bees swarming on a honeycomb",
+    "stock_query": "bee macro",
+    "source": "stock",
+    "callout": "HORTUMA İĞNE",
+    "subject": [
+     "bee"
+    ]
+   },
+   {
+    "text": "Dilimizde ise hâlâ şu var:",
+    "visual": "close-up of an elephant's face looking toward the camera",
+    "stock_query": "elephant face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Fillerin fareden korktuğu bir efsane; uzmanlara göre fil, ayağının dibinde aniden koşan her hayvandan ürker ve hortumuna giren bir fareyi bir nefeste dışarı üfleyebilir. Filin gerçekten kaçtığı şey arı: 2007'de yayımlanan bir deneyde kızgın arı vızıltısı duyan fil ailelerinin çoğu hemen uzaklaştı.",
+  "tags": [
+   "fil",
+   "fil fareden korkar mı",
+   "fil arıdan korkar",
+   "filler",
+   "deyimler",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: fareden korkmayan fil mi, arıdan kaçan fil mi?",
+  "en_title": "Elephants aren't afraid of mice, what they fear is bees 🐘",
+  "en_description": "Experts say a mouse only startles an elephant the way anything darting past its feet would, and a mouse in the trunk could simply be blown out. What elephants truly flee is bees: in a 2007 Oxford-led experiment, most elephant families walked or ran away as soon as they heard the buzz of disturbed bees.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Fil fareden korkar mı, 'fil fareden korkar' sözü doğru mu?\n\nUzmanlara göre filleri ürküten şey fare değil, ayaklarının dibindeki ani hareket. Live Science'a konuşan fil davranışı araştırmacısı Josh Plotnik'e göre bir filin yanından aniden koşan ya da kayan her şey onu ürkütebilir; Royal Veterinary College'dan John Hutchinson bir köpek yüzünden paniğe kapılan bir fil anlatıyor. Hortumuna fare girmesi korkusu da boş: fil uzmanı Richard Lair'e göre fil fareyi kolayca dışarı üfler. Filin gerçekten kaçtığı şey arı: Oxford Üniversitesi'nden Lucy King ile Save the Elephants ekibinin 2007'de Current Biology'de yayımladığı deneyde, kızgın arı vızıltısını duyan fil ailelerinin büyük çoğunluğu hemen yürüyerek ya da koşarak uzaklaştı, beyaz gürültüyü ise umursamadı. Arılar filleri gözlerinden, kulak arkasından ve hortumun içinden sokabiliyor.\n\nSence hangisi daha şaşırtıcı: fareden korkmayan fil mi, arıdan kaçan fil mi?",
+  "hashtags": [
+   "#fil",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "fil fareden korkar mı",
+   "fil fareden korkar",
+   "filler neden fareden korkar",
+   "fil arıdan korkar",
+   "filler arıdan kaçar",
+   "fil ve fare",
+   "fil hortumu",
+   "fil",
+   "filler",
+   "arı",
+   "deyimler",
+   "deyimlerin aslı",
+   "yanlış bilinen gerçekler",
+   "doğru bilinen yanlışlar",
+   "hayvanlar",
+   "vahşi yaşam",
+   "hayvan bilgileri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "elephant afraid of mice",
+   "elephants bees"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Elephants aren't afraid of mice, what they fear is bees 🐘",
+    "description": "Experts say a mouse only startles an elephant the way anything darting past its feet would, and a mouse in the trunk could simply be blown out. What elephants truly flee is bees: in a 2007 Oxford-led experiment, most elephant families walked or ran away as soon as they heard the buzz of disturbed bees."
+   },
+   "es": {
+    "title": "Los elefantes no temen a los ratones: lo que temen son las abejas 🐘",
+    "description": "Según los expertos, un ratón asusta a un elefante como lo haría cualquier cosa que pase rápido junto a sus patas, y si se le metiera en la trompa lo expulsaría de un soplido. De lo que huyen de verdad es de las abejas: en un experimento de 2007, la mayoría de las familias se alejó al oír el zumbido de abejas alteradas."
+   },
+   "pt": {
+    "title": "Elefante não tem medo de rato: tem medo de abelha 🐘",
+    "description": "Segundo especialistas, um rato só assusta o elefante como qualquer coisa que passe correndo perto das patas, e se entrasse na tromba seria expulso com um sopro. Do que eles fogem de verdade é de abelhas: num experimento de 2007, a maioria das famílias se afastou ao ouvir o zumbido de abelhas agitadas."
+   },
+   "de": {
+    "title": "Elefanten fürchten keine Mäuse, sondern Bienen 🐘",
+    "description": "Laut Experten erschreckt eine Maus einen Elefanten nur so, wie es alles tut, was plötzlich an seinen Füßen vorbeihuscht, und eine Maus im Rüssel würde er einfach hinauspusten. Wirklich fliehen Elefanten vor Bienen: In einem Experiment von 2007 suchten die meisten Familien beim Summen aufgeregter Bienen sofort das Weite."
+   },
+   "fr": {
+    "title": "Les éléphants n'ont pas peur des souris, mais des abeilles 🐘",
+    "description": "Selon les spécialistes, une souris ne fait sursauter un éléphant que comme tout ce qui file soudain près de ses pattes, et une souris dans la trompe serait expulsée d'un souffle. Ce qui le fait vraiment fuir, ce sont les abeilles : dans une expérience de 2007, la plupart des familles se sont éloignées en entendant le bourdonnement d'abeilles dérangées."
+   },
+   "it": {
+    "title": "Gli elefanti non temono i topi, temono le api 🐘",
+    "description": "Secondo gli esperti un topo spaventa l'elefante solo come qualsiasi cosa che sfrecci all'improvviso vicino alle zampe, e un topo nella proboscide verrebbe espulso con un soffio. Ciò da cui fuggono davvero sono le api: in un esperimento del 2007 la maggior parte delle famiglie si è allontanata appena ha sentito il ronzio di api disturbate."
+   },
+   "ru": {
+    "title": "Слоны не боятся мышей — они боятся пчёл 🐘",
+    "description": "По словам специалистов, мышь пугает слона лишь так же, как всё, что внезапно проскакивает у его ног, а мышь в хоботе он просто выдует. По-настоящему слоны бегут от пчёл: в эксперименте 2007 года большинство слоновьих семей сразу уходили, услышав гул потревоженных пчёл."
+   },
+   "ar": {
+    "title": "الفيلة لا تخاف الفئران، بل تخاف النحل 🐘",
+    "description": "يقول الخبراء إن الفأر لا يُفزع الفيل إلا كما يُفزعه أي شيء يمر فجأة قرب قدميه، ولو دخل خرطومه لنفخه خارجًا بسهولة. أما ما يهرب منه الفيل حقًا فهو النحل: ففي تجربة عام 2007 ابتعدت معظم عائلات الفيلة فور سماع طنين نحل غاضب."
+   },
+   "hi": {
+    "title": "हाथी चूहे से नहीं, मधुमक्खी से डरता है 🐘",
+    "description": "विशेषज्ञों के मुताबिक़ चूहा हाथी को उतना ही चौंकाता है जितना पैरों के पास अचानक भागने वाली कोई भी चीज़, और सूँड़ में घुस जाए तो हाथी उसे एक फूँक में बाहर निकाल देगा। हाथी असल में मधुमक्खियों से भागते हैं: 2007 के एक प्रयोग में भड़की मधुमक्खियों की भिनभिनाहट सुनते ही ज़्यादातर हाथी परिवार दूर चले गए।"
+   },
+   "id": {
+    "title": "Gajah tidak takut tikus, yang ia takuti adalah lebah 🐘",
+    "description": "Menurut para ahli, tikus hanya mengagetkan gajah seperti apa pun yang tiba-tiba melintas di dekat kakinya, dan tikus yang masuk belalai bisa langsung ditiup keluar. Yang benar-benar membuat gajah kabur adalah lebah: dalam eksperimen tahun 2007, sebagian besar keluarga gajah langsung menjauh saat mendengar dengung lebah yang terganggu."
+   },
+   "ja": {
+    "title": "ゾウはネズミを怖がらない、本当に怖いのはハチ 🐘",
+    "description": "専門家によると、ネズミがゾウを驚かせるのは、足元を急に何かが走り抜けたときと同じだけ。鼻に入っても一息で吹き飛ばせます。ゾウが本当に逃げ出すのはハチ。2007年の実験では、怒ったハチの羽音を聞いたゾウの家族の多くがすぐにその場を離れました。"
+   },
+   "ko": {
+    "title": "코끼리는 쥐가 아니라 벌을 무서워한다 🐘",
+    "description": "전문가들에 따르면 쥐는 발치를 갑자기 스치는 다른 무엇처럼 코끼리를 놀라게 할 뿐이고, 코에 들어가도 한 번에 불어 내보낼 수 있습니다. 코끼리가 정말 달아나는 건 벌입니다. 2007년 실험에서 성난 벌 소리를 들은 코끼리 가족 대부분이 곧바로 자리를 떴습니다."
+   },
+   "pl": {
+    "title": "Słonie nie boją się myszy, tylko pszczół 🐘",
+    "description": "Według ekspertów mysz płoszy słonia tylko tak, jak wszystko, co nagle przemknie mu przy nogach, a mysz w trąbie po prostu by wydmuchał. Naprawdę słonie uciekają przed pszczołami: w eksperymencie z 2007 roku większość słoniowych rodzin odeszła, gdy tylko usłyszała bzyczenie rozdrażnionych pszczół."
+   },
+   "nl": {
+    "title": "Olifanten zijn niet bang voor muizen, maar voor bijen 🐘",
+    "description": "Volgens experts schrikt een olifant alleen van een muis zoals van alles wat plots langs zijn poten schiet, en een muis in de slurf blaast hij er zo weer uit. Waar olifanten echt voor vluchten, zijn bijen: in een experiment uit 2007 liepen de meeste olifantenfamilies weg zodra ze het gezoem van verstoorde bijen hoorden."
+   },
+   "uk": {
+    "title": "Слони не бояться мишей — вони бояться бджіл 🐘",
+    "description": "За словами фахівців, миша лякає слона лише так, як усе, що раптом прошмигне біля його ніг, а мишу в хоботі він просто видме. Насправді слони тікають від бджіл: в експерименті 2007 року більшість слонових родин одразу йшли, почувши гудіння стривожених бджіл."
+   },
+   "vi": {
+    "title": "Voi không sợ chuột, thứ voi sợ là ong 🐘",
+    "description": "Theo các chuyên gia, chuột chỉ làm voi giật mình như bất cứ thứ gì bất ngờ chạy qua chân nó, và nếu chuột chui vào vòi, voi chỉ cần thổi một hơi là ra. Thứ voi thật sự bỏ chạy là ong: trong một thí nghiệm năm 2007, phần lớn đàn voi bỏ đi ngay khi nghe tiếng ong vo ve giận dữ."
+   },
+   "az": {
+    "title": "Fil siçandan qorxmur, əsl qorxduğu arıdır 🐘",
+    "description": "Mütəxəssislərə görə siçan fili yalnız ayaqlarının yanından qəfil keçən hər şey kimi diksindirir, xortumuna girsə də fil onu bir nəfəslə çölə üfürər. Fillərin həqiqətən qaçdığı şey arıdır: 2007-ci il təcrübəsində hirsli arı vızıltısını eşidən fil ailələrinin çoxu dərhal uzaqlaşdı."
+   },
+   "ro": {
+    "title": "Elefanții nu se tem de șoareci, ci de albine 🐘",
+    "description": "Potrivit experților, un șoarece sperie elefantul doar cum o face orice trece brusc pe lângă picioarele lui, iar unul intrat în trompă ar fi suflat afară dintr-o răsuflare. De fapt, elefanții fug de albine: într-un experiment din 2007, majoritatea familiilor s-au îndepărtat imediat ce au auzit bâzâitul albinelor deranjate."
+   }
+  }
+ }
+}

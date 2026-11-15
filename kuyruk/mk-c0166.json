@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0166",
+ "topic": "Kediler kutuyu neden sever? Kedi aldığım yatağa yatmıyor da neden karton kutuya giriyor?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat in box",
+ "script": {
+  "title": "Kedin aldığın yatağı değil kutuyu seçiyor, sebebi stres 🐱",
+  "hook_text": "KEDİLER KUTUYU NEDEN SEVER?",
+  "scenes": [
+   {
+    "text": "Bu kedi aldığın yatağı bırakıp kutuyu seçiyor.",
+    "visual": "close-up of a cat peeking out of a cardboard box and looking straight into the camera",
+    "stock_query": "cat box",
+    "source": "stock",
+    "callout": "YATAK DEĞİL KUTU"
+   },
+   {
+    "text": "Beğenmedi sanırsın, ama mesele yatak değil.",
+    "visual": "a cat walking past an empty cat bed on the floor",
+    "stock_query": "cat bed",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deneyde bazı kediler yere yapıştırılmış kareye, hatta hayali bir kareye bile oturdu.",
+    "visual": "a cat sitting inside a square outline taped on the floor",
+    "stock_query": "cat sitting floor",
+    "source": "stock",
+    "callout": "HAYALİ KARE"
+   },
+   {
+    "text": "Çünkü saklanmak, kedinin stresle başa çıkma yolu.",
+    "visual": "a cat hiding inside a box with only its eyes visible",
+    "stock_query": "cat hiding box",
+    "source": "stock",
+    "callout": "STRESE KALKAN"
+   },
+   {
+    "text": "Utrecht Üniversitesi'nde barınağa gelen kedilerden saklanma kutusu olanlar yeni yerine daha hızlı alıştı.",
+    "visual": "a cat sleeping curled up inside a cardboard box",
+    "stock_query": "cat sleeping box",
+    "source": "stock",
+    "callout": "DAHA HIZLI ALIŞTI"
+   },
+   {
+    "text": "O yüzden pahalı yatak alsan da:",
+    "visual": "close-up of a cat's face looking out of a cardboard box",
+    "stock_query": "cat face box",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedinin aldığın yatak yerine karton kutuya girmesi beğenmemekten değil: saklanmak, kedinin stresle başa çıkma yolu. Utrecht Üniversitesi'nde barınağa yeni gelen kedilerden saklanma kutusu olanlar yeni yerine daha hızlı alıştı. 2021'de yayımlanan bir deneyde bazı kediler yere yapıştırılmış kareye, hatta hayali bir kareye bile oturdu.",
+  "tags": [
+   "kedi",
+   "kediler kutuyu neden sever",
+   "kedi karton kutu",
+   "kedi yatağı",
+   "kedi davranışları",
+   "kedi stresi",
+   "kediler",
+   "evcil hayvan",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin hangisini seçiyor: pahalı yatağı mı, karton kutuyu mu?",
+  "en_title": "Your cat picks the box over the bed you bought, and stress is why 🐱",
+  "en_description": "It's not that your cat dislikes the bed: hiding is how cats cope with stress. In a Utrecht University study, newly arrived shelter cats given a hiding box adjusted faster than cats without one, and in a 2021 experiment some cats even sat inside a square taped on the floor, or an illusory one.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediler kutuyu neden sever, kedi aldığım yatağa yatmayıp neden karton kutuya giriyor?\n\nSebep yatağı beğenmemek değil, saklanmak. Utrecht Üniversitesi Veteriner Fakültesi'nden Claudia Vinke ve ekibinin barınağa yeni gelen kedilerle yaptığı çalışmada saklanma kutusu verilen kediler, kutusu olmayanlara göre daha az stres gösterdi ve yeni ortama daha hızlı alıştı; Vinke'ye göre saklanmak, kedinin değişime ve strese karşı başa çıkma yöntemi. City University of New York'tan Gabriella Smith ve ekibinin 2021'de Applied Animal Behaviour Science dergisinde yayımladığı yurttaş bilimi deneyinde ise bazı kediler yere yapıştırılmış kâğıt kareye, hatta yalnızca köşeleri çizilmiş hayali (Kanizsa) bir kareye bile oturdu.\n\nSenin kedin hangisini seçiyor: pahalı yatağı mı, karton kutuyu mu?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kediler kutuyu neden sever",
+   "kedi kutuya neden girer",
+   "kedi karton kutu",
+   "kedi yatağa yatmıyor",
+   "kedi yatağı",
+   "kedi kare deneyi",
+   "kedi saklanıyor",
+   "kedi neden saklanır",
+   "kedi stresi",
+   "kedi davranışları",
+   "kedi beden dili",
+   "kedi sahibi",
+   "kedi bakımı",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "if i fits i sits",
+   "cats and boxes",
+   "cat box"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your cat picks the box over the bed you bought, and stress is why 🐱",
+    "description": "It's not that your cat dislikes the bed: hiding is how cats cope with stress. In a Utrecht University study, newly arrived shelter cats given a hiding box adjusted faster than cats without one, and in a 2021 experiment some cats even sat inside a square taped on the floor, or an illusory one."
+   },
+   "es": {
+    "title": "Tu gato elige la caja y no la cama que le compraste, y es por estrés 🐱",
+    "description": "No es que no le guste la cama: esconderse es la forma en que los gatos afrontan el estrés. En un estudio de la Universidad de Utrecht, los gatos recién llegados a un refugio que tenían caja se adaptaron más rápido, y en un experimento de 2021 algunos gatos se sentaron hasta en un cuadrado pegado en el suelo, o en uno ilusorio."
+   },
+   "pt": {
+    "title": "Seu gato troca a caminha que você comprou pela caixa por causa do estresse 🐱",
+    "description": "Não é que ele não goste da caminha: se esconder é o jeito de o gato lidar com o estresse. Num estudo da Universidade de Utrecht, gatos recém-chegados a um abrigo que ganharam uma caixa se adaptaram mais rápido, e num experimento de 2021 alguns gatos sentaram até num quadrado colado no chão, ou num quadrado ilusório."
+   },
+   "de": {
+    "title": "Deine Katze wählt den Karton statt des teuren Betts – wegen Stress 🐱",
+    "description": "Das Bett missfällt ihr nicht: Verstecken ist die Art, wie Katzen mit Stress umgehen. In einer Studie der Universität Utrecht gewöhnten sich neu im Tierheim angekommene Katzen mit Versteckbox schneller ein, und 2021 setzten sich in einem Experiment manche Katzen sogar in ein auf den Boden geklebtes – oder nur angedeutetes – Quadrat."
+   },
+   "fr": {
+    "title": "Ton chat préfère le carton au lit que tu as acheté, à cause du stress 🐱",
+    "description": "Ce n'est pas que le lit lui déplaît : se cacher est la façon dont les chats gèrent le stress. Dans une étude de l'université d'Utrecht, des chats arrivés en refuge avec une boîte pour se cacher se sont adaptés plus vite, et en 2021 certains chats se sont même assis dans un carré collé au sol, voire dans un carré illusoire."
+   },
+   "it": {
+    "title": "Il gatto sceglie la scatola e non la cuccia che hai comprato: colpa dello stress 🐱",
+    "description": "Non è che la cuccia non gli piaccia: nascondersi è il modo in cui i gatti affrontano lo stress. In uno studio dell'Università di Utrecht, i gatti appena arrivati in rifugio con una scatola si sono adattati più in fretta, e in un esperimento del 2021 alcuni gatti si sono seduti persino in un quadrato attaccato al pavimento, o in uno illusorio."
+   },
+   "ru": {
+    "title": "Кошка выбирает коробку, а не купленную лежанку, из-за стресса 🐱",
+    "description": "Дело не в том, что лежанка ей не нравится: прятаться — кошачий способ справляться со стрессом. В исследовании Утрехтского университета кошки, только попавшие в приют и получившие коробку, освоились быстрее, а в эксперименте 2021 года некоторые кошки садились даже в квадрат, наклеенный на пол, и даже в иллюзорный."
+   },
+   "ar": {
+    "title": "قطتك تختار الصندوق بدل السرير الذي اشتريته بسبب التوتر 🐱",
+    "description": "ليست المشكلة أن السرير لا يعجبها، فالاختباء هو طريقة القطط في مواجهة التوتر. ففي دراسة لجامعة أوترخت تأقلمت القطط الواصلة حديثًا إلى الملجأ ومعها صندوق للاختباء أسرع من غيرها، وفي تجربة عام 2021 جلست بعض القطط حتى داخل مربع ملصق على الأرض، بل داخل مربع وهمي."
+   },
+   "hi": {
+    "title": "बिल्ली ख़रीदे हुए बिस्तर की जगह डिब्बा चुनती है, वजह है तनाव 🐱",
+    "description": "बात बिस्तर नापसंद होने की नहीं है: छिपना बिल्लियों का तनाव से निपटने का तरीका है। यूट्रेक्ट यूनिवर्सिटी के एक अध्ययन में शेल्टर में नई आई जिन बिल्लियों को छिपने का डिब्बा मिला, वे जल्दी ढल गईं, और 2021 के एक प्रयोग में कुछ बिल्लियाँ ज़मीन पर चिपकाए चौकोर, यहाँ तक कि भ्रम वाले चौकोर में भी बैठ गईं।"
+   },
+   "id": {
+    "title": "Kucingmu memilih kardus, bukan kasur yang kamu beli, karena stres 🐱",
+    "description": "Bukan karena ia tak suka kasurnya: bersembunyi adalah cara kucing menghadapi stres. Dalam studi Universitas Utrecht, kucing yang baru tiba di penampungan dan diberi kotak persembunyian lebih cepat beradaptasi, dan dalam eksperimen tahun 2021 beberapa kucing bahkan duduk di dalam persegi yang ditempel di lantai, atau persegi ilusi."
+   },
+   "ja": {
+    "title": "買ったベッドより段ボール箱を選ぶ猫、理由はストレス 🐱",
+    "description": "ベッドが気に入らないわけではありません。隠れることは、猫がストレスに対処する方法なのです。ユトレヒト大学の研究では、保護施設に来たばかりで隠れ箱をもらった猫のほうが早く環境に慣れました。2021年の実験では、床にテープで作った四角や、錯視の四角にまで座る猫もいました。"
+   },
+   "ko": {
+    "title": "사 준 침대 대신 상자를 고르는 고양이, 이유는 스트레스 🐱",
+    "description": "침대가 싫어서가 아닙니다. 숨는 건 고양이가 스트레스에 대처하는 방법이죠. 위트레흐트 대학 연구에서 보호소에 새로 온 고양이 중 숨을 상자를 받은 고양이가 더 빨리 적응했고, 2021년 실험에서는 바닥에 붙인 네모, 심지어 착시로 생긴 네모 안에 앉는 고양이도 있었습니다."
+   },
+   "pl": {
+    "title": "Kot wybiera karton zamiast kupionego legowiska – przez stres 🐱",
+    "description": "Nie chodzi o to, że legowisko mu się nie podoba: chowanie się to kocia metoda radzenia sobie ze stresem. W badaniu Uniwersytetu w Utrechcie koty świeżo przyjęte do schroniska, które dostały kryjówkę, szybciej się zaaklimatyzowały, a w eksperymencie z 2021 roku niektóre koty siadały nawet w kwadracie naklejonym na podłogę albo w kwadracie złudnym."
+   },
+   "nl": {
+    "title": "Je kat kiest de doos boven het mandje dat je kocht, door stress 🐱",
+    "description": "Het ligt niet aan het mandje: verstoppen is hoe katten met stress omgaan. In een onderzoek van de Universiteit Utrecht wenden pas aangekomen asielkatten met een schuildoos sneller dan katten zonder, en in een experiment uit 2021 gingen sommige katten zelfs in een op de vloer geplakt vierkant zitten, of in een denkbeeldig vierkant."
+   },
+   "uk": {
+    "title": "Кіт обирає коробку, а не куплену лежанку, через стрес 🐱",
+    "description": "Справа не в тому, що лежанка йому не подобається: ховатися — котячий спосіб упоратися зі стресом. У дослідженні Утрехтського університету коти, що щойно потрапили до притулку й отримали коробку, звикли швидше, а в експерименті 2021 року деякі коти сідали навіть у квадрат, наклеєний на підлогу, і навіть в ілюзорний."
+   },
+   "vi": {
+    "title": "Mèo chọn thùng các-tông thay vì chiếc giường bạn mua, vì căng thẳng 🐱",
+    "description": "Không phải mèo chê giường: trốn là cách mèo đối phó với căng thẳng. Trong một nghiên cứu của Đại học Utrecht, những con mèo mới đến trại cứu hộ được cho hộp để trốn đã thích nghi nhanh hơn, và trong một thí nghiệm năm 2021, vài con mèo còn ngồi vào hình vuông dán trên sàn, thậm chí cả hình vuông ảo giác."
+   },
+   "az": {
+    "title": "Pişik aldığın yatağı yox, qutunu seçir, səbəbi stresdir 🐱",
+    "description": "Məsələ yatağı bəyənməməsində deyil: gizlənmək pişiyin stresin öhdəsindən gəlmə yoludur. Utrext Universitetinin araşdırmasında sığınacağa yeni gələn və gizlənmə qutusu verilən pişiklər yeni yerə daha tez alışdı, 2021-ci il təcrübəsində isə bəzi pişiklər hətta yerə yapışdırılmış kvadratın, hətta xəyali kvadratın içində oturdu."
+   },
+   "ro": {
+    "title": "Pisica alege cutia, nu culcușul pe care i l-ai cumpărat, din cauza stresului 🐱",
+    "description": "Nu e vorba că nu-i place culcușul: ascunsul e modul în care pisicile fac față stresului. Într-un studiu al Universității din Utrecht, pisicile abia ajunse la adăpost care au primit o cutie s-au adaptat mai repede, iar într-un experiment din 2021 unele pisici s-au așezat chiar într-un pătrat lipit pe podea, ba chiar într-unul iluzoriu."
+   }
+  }
+ }
+}

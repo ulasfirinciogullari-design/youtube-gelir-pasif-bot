@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0159",
+ "topic": "Kedi neden karnını gösterir? Sırtüstü yatıp karnını gösteren kedi neden sevdirmiyor, karnını sevince neden tırmalar?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat belly",
+ "script": {
+  "title": "Karnını gösteren kedi 'sev beni' demiyor 🐱",
+  "hook_text": "KEDİ NEDEN KARNINI GÖSTERİR?",
+  "scenes": [
+   {
+    "text": "Karnını gösteren bu kedi seni sevmeye çağırmıyor.",
+    "visual": "close-up of a cat lying on its back showing its fluffy belly and looking into the camera",
+    "stock_query": "cat belly",
+    "source": "stock",
+    "callout": "SEV DEMİYOR"
+   },
+   {
+    "text": "Çoğu sahip elini uzatır, karşılığında tırmık yer.",
+    "visual": "close-up of a cat's paw with claws out, swatting playfully",
+    "stock_query": "cat paw claws",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa sırtüstü yuvarlanmak, kedinin yanında kendini güvende hissettiğinin işareti.",
+    "visual": "a relaxed cat rolling onto its back on a carpet",
+    "stock_query": "cat rolling back",
+    "source": "stock",
+    "callout": "GÜVEN İŞARETİ"
+   },
+   {
+    "text": "Çünkü karın en savunmasız yeri; hayati organları derinin hemen altında.",
+    "visual": "close-up of a sleeping cat lying belly up",
+    "stock_query": "cat sleeping belly",
+    "source": "stock",
+    "callout": "SAVUNMASIZ BÖLGE"
+   },
+   {
+    "text": "Oraya dokununca içgüdüsü devreye girer, pençeleriyle karnını korur.",
+    "visual": "a playful cat on its back grabbing with all four paws",
+    "stock_query": "cat playing paws",
+    "source": "stock",
+    "callout": "İÇGÜDÜ"
+   },
+   {
+    "text": "Başını ya da yanaklarını okşa; unutma:",
+    "visual": "close-up of a hand gently stroking a cat's cheek",
+    "stock_query": "cat head petting",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedinin sırtüstü yuvarlanıp karnını göstermesi seni sevmeye çağırdığı anlamına gelmez; yanında kendini güvende hissettiğini gösterir. Karın kedinin en savunmasız yeridir, hayati organlar derinin hemen altındadır; dokununca içgüdüsüyle pençe ve dişleriyle korur. Çoğu kedi başından ve yanaklarından okşanmayı tercih eder.",
+  "tags": [
+   "kedi",
+   "kedi karnını gösteriyor",
+   "kedi karnı sevilir mi",
+   "kedi tırmalıyor",
+   "kedi davranışları",
+   "kedi beden dili",
+   "kediler",
+   "evcil hayvan",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin karnını sevdiriyor mu: evet mi, hayır mı?",
+  "en_title": "A cat showing you its belly isn't asking for a belly rub 🐱",
+  "en_description": "Rolling over shows your cat feels relaxed and safe with you, but it's not an invitation to touch its tummy. The belly is its most vulnerable spot, with vital organs just under the skin, so a touch can trigger claws and teeth. Most cats prefer strokes on the head and cheeks.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden karnını gösterir, sırtüstü yatan kedinin karnını sevince neden tırmalar?\n\nKedinin sırtüstü yuvarlanıp karnını göstermesi, seni karnını sevmeye çağırdığı anlamına gelmiyor. İngiltere'nin kedi yardım kuruluşu Cats Protection'a göre bu, kedinin yanında kendini rahat ve güvende hissettiğini gösterir; dokunursan ısırabilir ya da tırmalayabilir ve bunun için azarlanmamalı. Toronto Humane Society'ye göre karın kedinin en savunmasız bölgesi, birçok hayati organ derinin hemen altında ve kedi orayı içgüdüsüyle korur. Çoğu kedi başından ve yanaklarından okşanmayı tercih eder.\n\nSenin kedin karnını sevdiriyor mu: evet mi, hayır mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi karnını gösteriyor",
+   "kedi neden karnını gösterir",
+   "kedi sırtüstü yatıyor",
+   "kedi karnını sevdirmiyor",
+   "kedi karnı sevilir mi",
+   "kedi karnını sevince ısırıyor",
+   "kedi tırmalıyor",
+   "kedi güven işareti",
+   "kedi nereden sevilir",
+   "kedi sevme",
+   "kedi beden dili",
+   "kedi davranışları",
+   "kedi sahibi",
+   "kedi bakımı",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "cat belly trap",
+   "cat belly rub"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A cat showing you its belly isn't asking for a belly rub 🐱",
+    "description": "Rolling over shows your cat feels relaxed and safe with you, but it's not an invitation to touch its tummy. The belly is its most vulnerable spot, with vital organs just under the skin, so a touch can trigger claws and teeth. Most cats prefer strokes on the head and cheeks."
+   },
+   "es": {
+    "title": "Un gato que te enseña la barriga no te pide que se la acaricies 🐱",
+    "description": "Tumbarse panza arriba indica que tu gato se siente relajado y seguro contigo, pero no es una invitación a tocarle la barriga. Es su zona más vulnerable, con órganos vitales justo bajo la piel, así que un roce puede activar uñas y dientes. La mayoría prefiere caricias en la cabeza y las mejillas."
+   },
+   "pt": {
+    "title": "Gato de barriga para cima não está pedindo carinho na barriga 🐱",
+    "description": "Rolar de barriga para cima mostra que o gato se sente relaxado e seguro com você, mas não é um convite para tocar ali. A barriga é sua área mais vulnerável, com órgãos vitais logo sob a pele, então um toque pode disparar unhas e dentes. A maioria prefere carinho na cabeça e nas bochechas."
+   },
+   "de": {
+    "title": "Zeigt deine Katze den Bauch, will sie dort nicht gekrault werden 🐱",
+    "description": "Wenn sich deine Katze auf den Rücken rollt, fühlt sie sich bei dir entspannt und sicher – eine Einladung zum Bauchkraulen ist das aber nicht. Der Bauch ist ihre verletzlichste Stelle, lebenswichtige Organe liegen direkt unter der Haut, also können Krallen und Zähne folgen. Die meisten mögen Streicheln an Kopf und Wangen lieber."
+   },
+   "fr": {
+    "title": "Un chat qui montre son ventre ne te demande pas de le caresser 🐱",
+    "description": "Se rouler sur le dos montre que ton chat se sent détendu et en sécurité avec toi, mais ce n'est pas une invitation à toucher son ventre. C'est sa zone la plus vulnérable, avec des organes vitaux juste sous la peau, alors un contact peut déclencher griffes et dents. La plupart préfèrent les caresses sur la tête et les joues."
+   },
+   "it": {
+    "title": "Il gatto che ti mostra la pancia non vuole che gliela accarezzi 🐱",
+    "description": "Rotolarsi a pancia in su indica che il tuo gatto si sente rilassato e al sicuro con te, ma non è un invito a toccargli la pancia. È la sua zona più vulnerabile, con organi vitali proprio sotto la pelle, quindi un tocco può far scattare unghie e denti. La maggior parte preferisce carezze su testa e guance."
+   },
+   "ru": {
+    "title": "Кошка показывает живот не для того, чтобы его гладили 🐱",
+    "description": "Когда кошка переворачивается на спину, она показывает, что расслаблена и чувствует себя с тобой в безопасности, но это не приглашение трогать живот. Это её самое уязвимое место: жизненно важные органы прямо под кожей, поэтому прикосновение может закончиться когтями и зубами. Большинство кошек предпочитают, чтобы их гладили по голове и щекам."
+   },
+   "ar": {
+    "title": "القطة التي تُريك بطنها لا تطلب منك أن تمسح عليه 🐱",
+    "description": "تقلُّب القطة على ظهرها يعني أنها مسترخية وتشعر بالأمان معك، لكنه ليس دعوة للمس بطنها. فالبطن أكثر مناطقها ضعفًا، والأعضاء الحيوية تقع تحت الجلد مباشرة، لذا قد تقابل لمستك بالمخالب والأسنان. ومعظم القطط تفضل المسح على الرأس والخدين."
+   },
+   "hi": {
+    "title": "पेट दिखाने वाली बिल्ली पेट सहलवाना नहीं चाहती 🐱",
+    "description": "पीठ के बल लोटने का मतलब है कि बिल्ली आपके पास सहज और सुरक्षित महसूस करती है, लेकिन यह पेट छूने का न्योता नहीं है। पेट उसकी सबसे नाज़ुक जगह है, जहाँ ज़रूरी अंग त्वचा के ठीक नीचे होते हैं, इसलिए छूते ही पंजे और दाँत निकल सकते हैं। ज़्यादातर बिल्लियाँ सिर और गालों पर सहलाना पसंद करती हैं।"
+   },
+   "id": {
+    "title": "Kucing yang memperlihatkan perutnya tidak minta dielus di situ 🐱",
+    "description": "Berguling telentang berarti kucingmu merasa santai dan aman di dekatmu, tapi itu bukan undangan untuk menyentuh perutnya. Perut adalah bagian paling rentan, organ vitalnya ada tepat di bawah kulit, jadi sentuhan bisa memicu cakar dan gigitan. Kebanyakan kucing lebih suka dielus di kepala dan pipi."
+   },
+   "ja": {
+    "title": "お腹を見せる猫は「なでて」と言っているわけじゃない 🐱",
+    "description": "あおむけになるのは、あなたのそばでリラックスして安心しているサイン。でも、お腹をなでてほしいという意味ではありません。お腹は一番無防備な場所で、大切な臓器が皮膚のすぐ下にあるため、触ると爪や歯が出ることも。多くの猫は頭やほおをなでられるほうが好きです。"
+   },
+   "ko": {
+    "title": "배를 보여 주는 고양이, 배를 만져 달라는 뜻이 아니다 🐱",
+    "description": "벌러덩 눕는 건 당신 곁에서 편하고 안전하다고 느낀다는 신호지만, 배를 만져 달라는 초대는 아닙니다. 배는 중요한 장기가 피부 바로 아래 있는 가장 약한 부위라 손이 닿으면 발톱과 이빨이 나올 수 있죠. 대부분의 고양이는 머리와 볼을 쓰다듬어 주는 걸 더 좋아합니다."
+   },
+   "pl": {
+    "title": "Kot pokazujący brzuch wcale nie prosi o głaskanie 🐱",
+    "description": "Przewracanie się na plecy znaczy, że kot czuje się przy tobie zrelaksowany i bezpieczny, ale to nie zaproszenie do dotykania brzucha. To jego najbardziej bezbronne miejsce, z ważnymi narządami tuż pod skórą, więc dotyk może skończyć się pazurami i zębami. Większość kotów woli głaskanie po głowie i policzkach."
+   },
+   "nl": {
+    "title": "Een kat die zijn buik laat zien, vraagt niet om een buikaai 🐱",
+    "description": "Op zijn rug rollen betekent dat je kat zich ontspannen en veilig bij je voelt, maar het is geen uitnodiging om zijn buik aan te raken. Daar is hij het kwetsbaarst, met vitale organen vlak onder de huid, dus een aanraking kan klauwen en tanden uitlokken. De meeste katten worden liever over hun kop en wangen geaaid."
+   },
+   "uk": {
+    "title": "Кіт показує живіт не для того, щоб його гладили 🐱",
+    "description": "Коли кіт перевертається на спину, він показує, що розслаблений і почувається з тобою в безпеці, але це не запрошення торкатися живота. Це його найвразливіше місце: життєво важливі органи просто під шкірою, тож дотик може закінчитися кігтями й зубами. Більшість котів воліють, щоб їх гладили по голові та щоках."
+   },
+   "vi": {
+    "title": "Mèo phơi bụng không phải đang mời bạn xoa bụng 🐱",
+    "description": "Nằm ngửa cho thấy mèo thấy thư giãn và an toàn bên bạn, nhưng đó không phải lời mời chạm vào bụng. Bụng là chỗ dễ tổn thương nhất, các cơ quan quan trọng nằm ngay dưới da, nên một cái chạm có thể khiến mèo giơ móng và cắn. Phần lớn mèo thích được vuốt đầu và má hơn."
+   },
+   "az": {
+    "title": "Qarnını göstərən pişik 'məni sığalla' demir 🐱",
+    "description": "Arxası üstə uzanmaq pişiyin yanında rahat və təhlükəsiz hiss etdiyini göstərir, amma bu, qarnına toxunmağa dəvət deyil. Qarın onun ən həssas yeridir, həyati orqanlar dərinin dərhal altındadır, ona görə toxunanda caynaq və dişlər işə düşə bilər. Pişiklərin çoxu başından və yanaqlarından sığallanmağı üstün tutur."
+   },
+   "ro": {
+    "title": "Pisica care își arată burta nu-ți cere s-o mângâi acolo 🐱",
+    "description": "Când se dă pe spate, pisica îți arată că e relaxată și se simte în siguranță lângă tine, dar nu te invită să-i atingi burta. E zona ei cea mai vulnerabilă, cu organe vitale chiar sub piele, așa că o atingere poate declanșa gheare și dinți. Majoritatea pisicilor preferă mângâieri pe cap și pe obraji."
+   }
+  }
+ }
+}

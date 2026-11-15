@@ -1,0 +1,183 @@
+{
+ "id": "mk-c0165",
+ "topic": "Kurbağa siğil yapar mı? Kurbağaya dokunursan elinde siğil çıkar mı, siğil neden olur?",
+ "kategori": "hayvan",
+ "subject": [
+  "toad"
+ ],
+ "stock_hint": "toad close up",
+ "script": {
+  "title": "Kurbağaya dokunmak siğil yapmaz, siğili insan bulaştırır 🐸",
+  "hook_text": "KURBAĞA SİĞİL YAPAR MI?",
+  "scenes": [
+   {
+    "text": "Bu kurbağaya dokunsan da elinde siğil çıkmaz.",
+    "visual": "extreme close-up of a toad's bumpy skin and golden eye",
+    "stock_query": "toad close up",
+    "source": "stock",
+    "callout": "SİĞİL YAPMAZ"
+   },
+   {
+    "text": "Derisindeki kabarcıklar siğile benzediği için böyle sanılır.",
+    "visual": "macro close-up of a toad's warty back",
+    "stock_query": "toad skin",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa o kabarcıklar siğil değil, zehir salgılayan bezler.",
+    "visual": "close-up of a toad's head showing the bulging glands behind its eyes",
+    "stock_query": "toad head",
+    "source": "stock",
+    "callout": "ZEHİR BEZLERİ"
+   },
+   {
+    "text": "Bu zehir küçük hayvanları öldürebilir; dokunduktan sonra elini mutlaka yıka.",
+    "visual": "a toad sitting on wet ground among leaves",
+    "stock_query": "toad ground",
+    "source": "stock",
+    "callout": "ELİNİ YIKA"
+   },
+   {
+    "text": "Siğil ise insandan insana geçen bir virüsten, insan papilloma virüsünden çıkıyor.",
+    "visual": "close-up of hands being washed with soap under a tap",
+    "stock_query": "hand washing",
+    "source": "stock",
+    "callout": "İNSAN VİRÜSÜ",
+    "subject": [
+     "hand"
+    ]
+   },
+   {
+    "text": "Siğilin varsa virüsü bir insandan kaptın; çünkü:",
+    "visual": "close-up of a toad's face looking into the camera",
+    "stock_query": "toad face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kurbağaya dokunmak siğil yapmaz. Kara kurbağasının derisindeki kabarcıklar siğil değil, bezlerdir ve bazıları küçük hayvanları öldürebilecek bir zehir salgılar; dokunduktan sonra elleri yıkamak gerekir. Siğil ise insandan insana bulaşan insan papilloma virüsünden kaynaklanır.",
+  "tags": [
+   "kurbağa",
+   "kurbağa siğil yapar mı",
+   "siğil neden olur",
+   "kara kurbağası",
+   "kurbağa zehri",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de kurbağaya dokununca siğil çıkacağını mı duymuştun: evet mi, hayır mı?",
+  "en_title": "Touching a toad won't give you warts, people do 🐸",
+  "en_description": "Those bumps on a toad aren't warts but skin glands, and the big ones behind its eyes release a toxin that can kill small animals, so wash your hands after handling one. Warts come from the human papillomavirus, which spreads from person to person.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kurbağa siğil yapar mı, kurbağaya dokunursan elinde siğil çıkar mı?\n\nHayır. ABD Ulusal Yaban Hayatı Federasyonu'na (NWF) göre kurbağaya dokunmak siğile yol açmaz. Kara kurbağasının derisindeki kabarcıklar siğil değil, bezlerdir; gözlerinin arkasındaki büyük parotoid bezler, avcılara karşı bufotoksin adlı bir zehir salgılar. NWF'ye göre bu zehir küçük hayvanları öldürebilir, insanda tahriş ve alerjiye yol açabilir; ABD Hastalık Kontrol ve Önleme Merkezleri (CDC) kurbağa gibi amfibilere dokunduktan sonra elleri iyice yıkamayı öneriyor. Siğil ise insan papilloma virüsünden (HPV) kaynaklanır ve insandan insana, derideki küçük çatlaklar yoluyla temasla bulaşır.\n\nSen de kurbağaya dokununca siğil çıkacağını mı duymuştun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kurbağa",
+   "#siğil",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kurbağa siğil yapar mı",
+   "kurbağaya dokunmak",
+   "kurbağa siğil",
+   "kurbağaya dokunursan ne olur",
+   "siğil neden olur",
+   "siğil nasıl bulaşır",
+   "siğil virüsü",
+   "hpv siğil",
+   "kara kurbağası",
+   "kurbağa zehirli mi",
+   "kurbağa zehri",
+   "kurbağa",
+   "kurbağalar",
+   "yanlış bilinen gerçekler",
+   "doğru bilinen yanlışlar",
+   "hayvanlar",
+   "hayvan bilgileri",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "do toads cause warts",
+   "toad"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Touching a toad won't give you warts, people do 🐸",
+    "description": "Those bumps on a toad aren't warts but skin glands, and the big ones behind its eyes release a toxin that can kill small animals, so wash your hands after handling one. Warts come from the human papillomavirus, which spreads from person to person."
+   },
+   "es": {
+    "title": "Tocar un sapo no te pega verrugas: te las pega otra persona 🐸",
+    "description": "Los bultos del sapo no son verrugas sino glándulas, y las grandes de detrás de los ojos sueltan una toxina que puede matar a animales pequeños, así que lávate las manos después de tocarlo. Las verrugas las causa el virus del papiloma humano, que pasa de persona a persona."
+   },
+   "pt": {
+    "title": "Pegar num sapo não dá verruga: quem passa verruga é gente 🐸",
+    "description": "Os carocinhos do sapo não são verrugas, e sim glândulas, e as grandes atrás dos olhos soltam uma toxina que pode matar animais pequenos, então lave as mãos depois de pegá-lo. A verruga vem do papilomavírus humano, que passa de pessoa para pessoa."
+   },
+   "de": {
+    "title": "Eine Kröte anfassen macht keine Warzen – die bekommst du von Menschen 🐸",
+    "description": "Die Knubbel auf der Krötenhaut sind keine Warzen, sondern Drüsen; die großen hinter den Augen geben ein Gift ab, das kleine Tiere töten kann, also danach Hände waschen. Warzen verursacht das humane Papillomvirus, das von Mensch zu Mensch übertragen wird."
+   },
+   "fr": {
+    "title": "Toucher un crapaud ne donne pas de verrues, ce sont les humains 🐸",
+    "description": "Les bosses du crapaud ne sont pas des verrues mais des glandes, et les grosses derrière ses yeux libèrent une toxine capable de tuer de petits animaux : lave-toi les mains après l'avoir touché. Les verrues sont dues au papillomavirus humain, qui se transmet d'une personne à l'autre."
+   },
+   "it": {
+    "title": "Toccare un rospo non fa venire le verruche: te le passa un'altra persona 🐸",
+    "description": "I bitorzoli del rospo non sono verruche ma ghiandole, e quelle grandi dietro gli occhi rilasciano una tossina che può uccidere piccoli animali, quindi lavati le mani dopo averlo toccato. Le verruche le causa il papillomavirus umano, che passa da persona a persona."
+   },
+   "ru": {
+    "title": "От жабы не бывает бородавок — их передают люди 🐸",
+    "description": "Бугорки на коже жабы — не бородавки, а железы, а крупные железы за глазами выделяют яд, способный убить мелкое животное, так что после жабы мой руки. Бородавки вызывает вирус папилломы человека, который передаётся от человека к человеку."
+   },
+   "ar": {
+    "title": "لمس العلجوم لا يسبب الثآليل، بل ينقلها إليك البشر 🐸",
+    "description": "النتوءات على جلد العلجوم ليست ثآليل بل غدد، والكبيرة منها خلف عينيه تفرز سمًا قد يقتل الحيوانات الصغيرة، لذا اغسل يديك بعد لمسه. أما الثآليل فسببها فيروس الورم الحليمي البشري الذي ينتقل من شخص إلى آخر."
+   },
+   "hi": {
+    "title": "टोड छूने से मस्से नहीं होते, मस्से इंसान से फैलते हैं 🐸",
+    "description": "टोड की त्वचा के उभार मस्से नहीं, ग्रंथियाँ हैं, और आँखों के पीछे की बड़ी ग्रंथियाँ ऐसा ज़हर छोड़ती हैं जो छोटे जानवरों को मार सकता है, इसलिए छूने के बाद हाथ ज़रूर धोएँ। मस्से ह्यूमन पैपिलोमा वायरस से होते हैं, जो एक इंसान से दूसरे में फैलता है।"
+   },
+   "id": {
+    "title": "Memegang kodok tidak bikin kutil, kutil menular dari manusia 🐸",
+    "description": "Bintil-bintil di kulit kodok bukan kutil, melainkan kelenjar, dan kelenjar besar di belakang matanya mengeluarkan racun yang bisa membunuh hewan kecil, jadi cuci tangan setelah memegangnya. Kutil disebabkan oleh human papillomavirus yang menular dari orang ke orang."
+   },
+   "ja": {
+    "title": "ヒキガエルに触ってもイボはできない、うつすのは人間 🐸",
+    "description": "ヒキガエルのボツボツはイボではなく皮膚の腺で、目の後ろの大きな腺からは小さな動物なら死ぬこともある毒が出ます。触ったあとは手を洗いましょう。イボの原因はヒトパピローマウイルスで、人から人へうつります。"
+   },
+   "ko": {
+    "title": "두꺼비를 만져도 사마귀는 안 생긴다, 사마귀는 사람에게서 옮는다 🐸",
+    "description": "두꺼비 피부의 오돌토돌한 돌기는 사마귀가 아니라 분비샘이고, 눈 뒤의 큰 샘에서는 작은 동물을 죽일 수도 있는 독이 나옵니다. 만진 뒤에는 손을 꼭 씻으세요. 사마귀는 사람에게서 사람으로 옮는 인유두종바이러스 때문에 생깁니다."
+   },
+   "pl": {
+    "title": "Dotknięcie ropuchy nie wywołuje kurzajek – zarażają nimi ludzie 🐸",
+    "description": "Guzki na skórze ropuchy to nie kurzajki, lecz gruczoły, a duże gruczoły za oczami wydzielają jad, który może zabić małe zwierzę, więc po dotknięciu umyj ręce. Kurzajki wywołuje wirus brodawczaka ludzkiego, który przenosi się z człowieka na człowieka."
+   },
+   "nl": {
+    "title": "Van een pad aanraken krijg je geen wratten, die krijg je van mensen 🐸",
+    "description": "De bultjes op een pad zijn geen wratten maar klieren, en de grote achter de ogen scheiden een gif af dat kleine dieren kan doden, dus was daarna je handen. Wratten komen van het humaan papillomavirus, dat van mens op mens overgaat."
+   },
+   "uk": {
+    "title": "Від ропухи не буває бородавок — їх передають люди 🐸",
+    "description": "Горбики на шкірі ропухи — не бородавки, а залози, а великі залози за очима виділяють отруту, здатну вбити дрібну тварину, тож після ропухи помий руки. Бородавки спричиняє вірус папіломи людини, який передається від людини до людини."
+   },
+   "vi": {
+    "title": "Chạm vào cóc không gây mụn cóc, mụn cóc lây từ người 🐸",
+    "description": "Những nốt sần trên da cóc không phải mụn cóc mà là tuyến, và tuyến lớn sau mắt tiết ra chất độc có thể giết động vật nhỏ, nên hãy rửa tay sau khi chạm vào. Mụn cóc do virus u nhú ở người (HPV) gây ra và lây từ người sang người."
+   },
+   "az": {
+    "title": "Qurbağaya toxunmaq ziyil yaratmır, ziyili insan yoluxdurur 🐸",
+    "description": "Quru qurbağasının dərisindəki qabarlar ziyil deyil, vəzilərdir; gözlərinin arxasındakı iri vəzilər kiçik heyvanları öldürə bilən zəhər ifraz edir, ona görə toxunandan sonra əllərini yu. Ziyilə isə insandan insana keçən insan papilloma virusu səbəb olur."
+   },
+   "ro": {
+    "title": "Dacă atingi o broască râioasă nu faci negi, negii ți-i dau oamenii 🐸",
+    "description": "Umflăturile de pe pielea broaștei râioase nu sunt negi, ci glande, iar cele mari din spatele ochilor eliberează o toxină care poate ucide animale mici, așa că spală-te pe mâini după ce o atingi. Negii sunt cauzați de virusul papiloma uman, care trece de la om la om."
+   }
+  }
+ }
+}

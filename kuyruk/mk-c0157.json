@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0157",
+ "topic": "Yarasalar kör mü? 'Yarasa kördür' sözü doğru mu, yarasalar gözleriyle görebilir mi?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "bat"
+ ],
+ "stock_hint": "bat face close up",
+ "script": {
+  "title": "Yarasa kör değil, bazıları morötesi ışığı bile görür 🦇",
+  "hook_text": "YARASALAR GERÇEKTEN KÖR MÜ?",
+  "scenes": [
+   {
+    "text": "Yarasa kördür derler, ama bu yarasa seni görüyor.",
+    "visual": "extreme close-up of a fruit bat's face with large dark eyes looking straight into the camera",
+    "stock_query": "bat face close up",
+    "source": "stock",
+    "callout": "KÖR DEĞİL"
+   },
+   {
+    "text": "Karanlıkta sesle yön bulduğu için gözüne ihtiyacı yok sanılır.",
+    "visual": "a bat flying at dusk against the evening sky",
+    "stock_query": "bat flying night",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa bazı yarasaların gözü, senin göremediğin morötesi ışığı algılıyor.",
+    "visual": "close-up of a bat's eyes in dim light",
+    "stock_query": "bat eyes",
+    "source": "stock",
+    "callout": "MORÖTESİ GÖRÜŞ"
+   },
+   {
+    "text": "Asıl şaşırtıcısı: birçok meyve yarasası sesle hiç yön bulmaz, keskin gözleriyle uçar.",
+    "visual": "a fruit bat (flying fox) hanging from a branch and looking around",
+    "stock_query": "fruit bat",
+    "source": "stock",
+    "callout": "GÖZLE YÖN BULUR"
+   },
+   {
+    "text": "Sesle avlananlar bile yuvalarına gidip gelirken gözlerini kullanır.",
+    "visual": "bats flying out of a cave at dusk",
+    "stock_query": "bats cave",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Peki neden hâlâ şunu söylüyoruz:",
+    "visual": "close-up of a bat hanging upside down and looking at the camera",
+    "stock_query": "bat hanging",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yarasalar kör değil. Karanlıkta sesle yön bulurken gözlerini de kullanırlar; birçok meyve yarasası sesle hiç yön bulmaz ve keskin görüşüyle uçar. Bazı yarasaların gözü ise insanın göremediği morötesi ışığı algılayabilir.",
+  "tags": [
+   "yarasa",
+   "yarasa kör mü",
+   "yarasa kördür",
+   "yarasa gözü",
+   "meyve yarasası",
+   "ekolokasyon",
+   "deyimler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de 'yarasa kördür' diye mi biliyordun: evet mi, hayır mı?",
+  "en_title": "Bats aren't blind, and some can even see ultraviolet light 🦇",
+  "en_description": "\"Blind as a bat\" is a myth. Many fruit bats don't echolocate at all and fly by their sharp eyesight, some bats can detect ultraviolet light we can't see, and even echolocating bats use their eyes to get to and from their roosts.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Yarasalar kör mü, 'yarasa kördür' sözü doğru mu?\n\nHayır, yarasalar kör değil. Karanlıkta yankıyla, yani sesle yön bulurlar (ekolokasyon), ama gözlerini de kullanırlar. Live Science'ın derlediği araştırmalara göre birçok meyve yarasası sesle hiç yön bulmaz ve keskin görüşüyle uçar; bazı yarasaların gözü insanın göremediği morötesi ışığı algılayabilir. BBC Science Focus'a göre yarasalar yiyecek bulmak, düşmandan kaçmak ve yuvalarına gidip gelmek için görme duyusuna da güvenir.\n\nSen de 'yarasa kördür' diye mi biliyordun: evet mi, hayır mı?",
+  "hashtags": [
+   "#yarasa",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "yarasa",
+   "yarasa kör mü",
+   "yarasalar kör müdür",
+   "yarasa kördür",
+   "yarasa gibi kör",
+   "yarasa gözü",
+   "yarasalar görebilir mi",
+   "meyve yarasası",
+   "yarasa ekolokasyon",
+   "ekolokasyon nedir",
+   "morötesi görme",
+   "yarasalar nasıl yön bulur",
+   "deyimler",
+   "deyimlerin aslı",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "hayvan bilgileri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "are bats blind",
+   "fruit bat"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Bats aren't blind, and some can even see ultraviolet light 🦇",
+    "description": "\"Blind as a bat\" is a myth. Many fruit bats don't echolocate at all and fly by their sharp eyesight, some bats can detect ultraviolet light we can't see, and even echolocating bats use their eyes to get to and from their roosts."
+   },
+   "es": {
+    "title": "Los murciélagos no son ciegos: algunos hasta ven la luz ultravioleta 🦇",
+    "description": "Lo de \"ciego como un murciélago\" es un mito. Muchos murciélagos frugívoros ni siquiera usan la ecolocalización y se orientan con su aguda vista; algunos perciben la luz ultravioleta que nosotros no vemos, y hasta los que cazan con ecos usan los ojos para ir y volver a su refugio."
+   },
+   "pt": {
+    "title": "Morcegos não são cegos, e alguns até enxergam luz ultravioleta 🦇",
+    "description": "A ideia de que morcegos são cegos é um mito. Muitos morcegos frugívoros nem usam ecolocalização e voam guiados pela visão aguçada; alguns detectam a luz ultravioleta que não vemos, e até os que caçam por eco usam os olhos para ir e voltar do abrigo."
+   },
+   "de": {
+    "title": "Fledermäuse sind nicht blind – manche sehen sogar UV-Licht 🦇",
+    "description": "Blind wie eine Fledermaus? Ein Mythos. Viele Flughunde orten gar nicht per Echo und fliegen mit ihren scharfen Augen, manche Fledermäuse nehmen UV-Licht wahr, das wir nicht sehen, und selbst Echoortungs-Jäger nutzen die Augen auf dem Weg zum Quartier und zurück."
+   },
+   "fr": {
+    "title": "Les chauves-souris ne sont pas aveugles, certaines voient même l'ultraviolet 🦇",
+    "description": "Les chauves-souris aveugles ? Un mythe. Beaucoup de chauves-souris frugivores n'utilisent pas du tout l'écholocation et se repèrent grâce à leur vue perçante ; certaines perçoivent l'ultraviolet, invisible pour nous, et même celles qui chassent à l'écho se servent de leurs yeux pour rejoindre leur gîte."
+   },
+   "it": {
+    "title": "I pipistrelli non sono ciechi, alcuni vedono perfino l'ultravioletto 🦇",
+    "description": "\"Cieco come un pipistrello\" è un mito. Molti pipistrelli della frutta non usano affatto l'ecolocalizzazione e volano grazie alla vista acuta; alcuni percepiscono la luce ultravioletta che noi non vediamo, e anche quelli che cacciano con l'eco usano gli occhi per tornare al rifugio."
+   },
+   "ru": {
+    "title": "Летучие мыши не слепые, а некоторые даже видят ультрафиолет 🦇",
+    "description": "«Слепая, как летучая мышь» — миф. Многие крыланы вообще не пользуются эхолокацией и летают благодаря острому зрению, некоторые летучие мыши различают ультрафиолет, невидимый для нас, а даже охотники-эхолокаторы находят дорогу к убежищу глазами."
+   },
+   "ar": {
+    "title": "الخفافيش ليست عمياء، وبعضها يرى حتى الأشعة فوق البنفسجية 🦇",
+    "description": "فكرة أن الخفاش أعمى مجرد خرافة. فكثير من خفافيش الفاكهة لا تستخدم تحديد الموقع بالصدى أصلًا وتطير معتمدة على بصرها الحاد، وبعض الخفافيش تلتقط الضوء فوق البنفسجي الذي لا نراه، وحتى الصيادة بالصدى تستعين بعيونها في طريقها إلى مأواها."
+   },
+   "hi": {
+    "title": "चमगादड़ अंधे नहीं होते, कुछ तो पराबैंगनी रोशनी भी देख लेते हैं 🦇",
+    "description": "चमगादड़ के अंधे होने की बात एक मिथक है। कई फल खाने वाले चमगादड़ प्रतिध्वनि का इस्तेमाल ही नहीं करते और अपनी तेज़ नज़र से उड़ते हैं, कुछ चमगादड़ वह पराबैंगनी रोशनी पहचान लेते हैं जो हमें नहीं दिखती, और प्रतिध्वनि से शिकार करने वाले भी अपने ठिकाने तक आने-जाने में आँखों का सहारा लेते हैं।"
+   },
+   "id": {
+    "title": "Kelelawar tidak buta, sebagian bahkan bisa melihat sinar ultraviolet 🦇",
+    "description": "Anggapan kelelawar itu buta hanyalah mitos. Banyak kelelawar buah sama sekali tidak memakai ekolokasi dan terbang mengandalkan penglihatan yang tajam, sebagian kelelawar bisa menangkap sinar ultraviolet yang tak terlihat oleh kita, dan yang berburu dengan gema pun memakai matanya untuk pulang-pergi ke sarang."
+   },
+   "ja": {
+    "title": "コウモリは目が見えないは誤解、紫外線まで見える種もいる 🦇",
+    "description": "「コウモリは目が見えない」は迷信です。多くのフルーツコウモリは超音波を使わず、鋭い視力で飛びます。人には見えない紫外線を感じ取れるコウモリもいて、超音波で狩りをする種でさえ、ねぐらへの行き来には目を使います。"
+   },
+   "ko": {
+    "title": "박쥐는 눈이 멀지 않았다, 자외선까지 보는 박쥐도 있다 🦇",
+    "description": "'박쥐는 장님'이라는 말은 오해입니다. 많은 과일박쥐는 반향정위를 아예 쓰지 않고 날카로운 시력으로 날아다니며, 어떤 박쥐는 사람이 못 보는 자외선을 감지합니다. 초음파로 사냥하는 박쥐도 둥지를 오갈 때는 눈을 씁니다."
+   },
+   "pl": {
+    "title": "Nietoperze nie są ślepe, a niektóre widzą nawet ultrafiolet 🦇",
+    "description": "„Ślepy jak nietoperz” to mit. Wiele nietoperzy owocożernych w ogóle nie używa echolokacji i lata dzięki bystremu wzrokowi, niektóre nietoperze wychwytują ultrafiolet, którego my nie widzimy, a nawet te polujące echem korzystają z oczu w drodze do kryjówki."
+   },
+   "nl": {
+    "title": "Vleermuizen zijn niet blind, sommige zien zelfs ultraviolet licht 🦇",
+    "description": "Dat vleermuizen blind zijn, is een fabel. Veel vruchtenvleermuizen gebruiken helemaal geen echolocatie en vliegen op hun scherpe zicht, sommige vleermuizen nemen uv-licht waar dat wij niet zien, en zelfs echojagers gebruiken hun ogen op weg van en naar hun verblijfplaats."
+   },
+   "uk": {
+    "title": "Кажани не сліпі, а деякі навіть бачать ультрафіолет 🦇",
+    "description": "«Сліпий, як кажан» — міф. Багато плодоїдних кажанів узагалі не користуються ехолокацією й літають завдяки гострому зору, деякі кажани розрізняють ультрафіолет, невидимий для нас, а навіть мисливці-ехолокатори знаходять шлях до сховку очима."
+   },
+   "vi": {
+    "title": "Dơi không hề mù, có loài còn thấy được tia cực tím 🦇",
+    "description": "\"Mù như dơi\" chỉ là ngộ nhận. Nhiều loài dơi ăn quả hoàn toàn không dùng định vị bằng tiếng vang mà bay nhờ đôi mắt tinh tường, một số loài dơi cảm nhận được tia cực tím mà ta không thấy, và ngay cả dơi săn mồi bằng tiếng vang cũng dùng mắt để đi về tổ."
+   },
+   "az": {
+    "title": "Yarasa kor deyil, bəziləri hətta ultrabənövşəyi işığı görür 🦇",
+    "description": "Yarasaların kor olması bir mifdir. Bir çox meyvə yarasası exolokasiyadan heç istifadə etmir və iti gözləri ilə uçur, bəzi yarasalar bizim görmədiyimiz ultrabənövşəyi işığı hiss edir, səslə ov edənlər də yuvalarına gedib-gələndə gözlərindən istifadə edir."
+   },
+   "ro": {
+    "title": "Liliecii nu sunt orbi, unii văd chiar și lumina ultravioletă 🦇",
+    "description": "„Orb ca un liliac” e un mit. Mulți lilieci frugivori nu folosesc deloc ecolocația și zboară ghidați de vederea ageră, unii lilieci percep lumina ultravioletă pe care noi n-o vedem, iar chiar și cei care vânează prin ecou își folosesc ochii ca să ajungă la adăpost."
+   }
+  }
+ }
+}

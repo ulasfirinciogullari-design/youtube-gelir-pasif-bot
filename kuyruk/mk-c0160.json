@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0160",
+ "topic": "Köpeğe kemik verilir mi? Köpeğe tavuk kemiği vermek zararlı mı, köpek kemik yerse ne olur?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog bone",
+ "script": {
+  "title": "Köpekler kemiği sever ama kemik onları yaralayabilir 🦴",
+  "hook_text": "KÖPEĞE KEMİK VERİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu köpeğin kemirdiği kemik ona zarar verebilir.",
+    "visual": "close-up of a dog's mouth and teeth gnawing a bone while the dog looks at the camera",
+    "stock_query": "dog chewing bone",
+    "source": "stock",
+    "callout": "KEMİK TEHLİKESİ"
+   },
+   {
+    "text": "Artan kemiği köpeğe vermek çoğumuza iyilik gibi gelir.",
+    "visual": "a happy dog looking up at its owner in a kitchen, waiting for food",
+    "stock_query": "dog waiting food",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa Amerikan gıda kurumuna, hazır kemik ödülleri yüzünden on beş köpeğin öldüğü bildirildi.",
+    "visual": "a sad dog lying on the table at a veterinary clinic",
+    "stock_query": "dog veterinarian",
+    "source": "stock",
+    "callout": "15 KÖPEK ÖLDÜ"
+   },
+   {
+    "text": "Çünkü kemik çiğnenince sivri parçalara ayrılabiliyor; ağzı kesip boğazda ya da bağırsakta takılabiliyor.",
+    "visual": "close-up of a dog's open mouth showing its teeth",
+    "stock_query": "dog mouth teeth",
+    "source": "stock",
+    "callout": "SİVRİ PARÇALAR"
+   },
+   {
+    "text": "Kurumun tavsiyesi net: sofradan artan kemiği bile verme.",
+    "visual": "close-up of a dog's face looking straight into the camera",
+    "stock_query": "dog face close up",
+    "source": "stock",
+    "callout": "KEMİK VERME"
+   },
+   {
+    "text": "Kemiği uzatmadan önce hatırla:",
+    "visual": "close-up of a dog holding a bone in its mouth",
+    "stock_query": "dog bone",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeklerin kemiği sevdiği doğru, ama kemik onlara zarar verebilir. ABD Gıda ve İlaç Dairesi'ne (FDA) kemik ödülleri yüzünden hastalanan yaklaşık doksan köpek bildirildi, on beşi öldü. Kemik çiğnenince sivri parçalara ayrılıp ağzı kesebilir, boğazda ya da bağırsakta takılabilir; FDA sofradan artan kemiklerin de verilmemesini öneriyor.",
+  "tags": [
+   "köpek",
+   "köpeğe kemik verilir mi",
+   "köpek tavuk kemiği",
+   "köpek beslenmesi",
+   "köpek sağlığı",
+   "köpek bakımı",
+   "köpekler",
+   "evcil hayvan",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin köpeğin neyi daha çok seviyor: kemiği mi, çiğneme oyuncağını mı?",
+  "en_title": "Dogs love bones, but bones can hurt them 🦴",
+  "en_description": "Giving your dog leftover bones feels kind, but the US FDA received reports of about 90 dogs sickened by bone treats, 15 of which died. Bones can break into sharp pieces that cut the mouth or get stuck in the throat or intestines, and the FDA advises not giving dogs bones at all, table scraps included.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Köpeğe kemik verilir mi, köpeğe tavuk kemiği vermek zararlı mı?\n\nKöpeklerin kemiği sevdiği doğru, ama kemik onlara zarar verebilir. ABD Gıda ve İlaç Dairesi'ne (FDA) Kasım 2010 ile Eylül 2017 arasında, paketli kemik ödülleri yüzünden hastalanan yaklaşık doksan köpek bildirildi; bunlardan on beşi öldü. Bildirilen sorunlar arasında boğulma, ağızda ve bademciklerde kesikler, kusma, sindirim kanalında tıkanma ve makattan kanama var; bazı kemiklerin çiğnenirken parçalandığı da bildirildi. FDA'ya göre sofradan artan tavuk kemikleri ve diğer kemikler de köpeği yaralayabilir; kurum köpeklere kemik verilmemesini ve uygun bir çiğneme oyuncağı için veterinere danışılmasını öneriyor.\n\nSenin köpeğin neyi daha çok seviyor: kemiği mi, çiğneme oyuncağını mı?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#köpekbakımı",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpeğe kemik verilir mi",
+   "köpek kemik yer mi",
+   "köpeğe tavuk kemiği",
+   "köpek tavuk kemiği yedi",
+   "köpek kemik yerse ne olur",
+   "köpek kemik zararlı mı",
+   "köpeğe ne verilmez",
+   "köpek beslenmesi",
+   "köpek sağlığı",
+   "köpek bakımı",
+   "köpek sahibi",
+   "köpek ödülü",
+   "köpek maması",
+   "köpek",
+   "köpekler",
+   "evcil hayvan",
+   "hayvanlar",
+   "veteriner",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "dog bones",
+   "can dogs eat bones"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Dogs love bones, but bones can hurt them 🦴",
+    "description": "Giving your dog leftover bones feels kind, but the US FDA received reports of about 90 dogs sickened by bone treats, 15 of which died. Bones can break into sharp pieces that cut the mouth or get stuck in the throat or intestines, and the FDA advises not giving dogs bones at all, table scraps included."
+   },
+   "es": {
+    "title": "Los perros adoran los huesos, pero los huesos pueden herirlos 🦴",
+    "description": "Darle a tu perro los huesos que sobran parece un detalle, pero la FDA de EE. UU. recibió avisos de unos 90 perros enfermos por golosinas de hueso, y 15 murieron. El hueso puede partirse en astillas que cortan la boca o se atascan en la garganta o el intestino; la FDA aconseja no darles huesos, tampoco los de la mesa."
+   },
+   "pt": {
+    "title": "Cachorro ama osso, mas o osso pode machucá-lo 🦴",
+    "description": "Dar ao cachorro os ossos que sobram parece carinho, mas a FDA dos EUA recebeu relatos de cerca de 90 cães que adoeceram com petiscos de osso, e 15 morreram. O osso pode se partir em lascas que cortam a boca ou entalam na garganta ou no intestino; a FDA recomenda não dar ossos, nem os da mesa."
+   },
+   "de": {
+    "title": "Hunde lieben Knochen, aber Knochen können sie verletzen 🦴",
+    "description": "Dem Hund übrig gebliebene Knochen zu geben, fühlt sich nett an, doch die US-Behörde FDA erhielt Meldungen über rund 90 Hunde, die nach Knochen-Leckerlis erkrankten, 15 starben. Knochen können splittern, das Maul verletzen oder in Rachen und Darm stecken bleiben; die FDA rät, Hunden gar keine Knochen zu geben, auch keine Tischreste."
+   },
+   "fr": {
+    "title": "Les chiens adorent les os, mais les os peuvent les blesser 🦴",
+    "description": "Donner les restes d'os à son chien semble gentil, mais la FDA américaine a reçu des signalements pour environ 90 chiens malades après des friandises en os, dont 15 sont morts. L'os peut éclater en morceaux pointus qui coupent la bouche ou se coincent dans la gorge ou l'intestin ; la FDA conseille de ne pas donner d'os, même ceux de la table."
+   },
+   "it": {
+    "title": "I cani adorano le ossa, ma le ossa possono ferirli 🦴",
+    "description": "Dare al cane gli avanzi di ossa sembra un gesto gentile, ma la FDA statunitense ha ricevuto segnalazioni di circa 90 cani stati male per snack d'osso, e 15 sono morti. L'osso può spezzarsi in schegge che tagliano la bocca o si incastrano in gola o nell'intestino; la FDA consiglia di non dare ossa, nemmeno quelle avanzate a tavola."
+   },
+   "ru": {
+    "title": "Собаки любят кости, но кости могут их ранить 🦴",
+    "description": "Отдать собаке оставшиеся кости кажется заботой, но в FDA США поступили сообщения примерно о 90 собаках, заболевших из-за костяных лакомств, 15 из них погибли. Кость может расколоться на острые осколки, поранить пасть или застрять в горле или кишечнике; FDA советует вообще не давать собакам кости, даже со стола."
+   },
+   "ar": {
+    "title": "الكلاب تحب العظام، لكن العظام قد تؤذيها 🦴",
+    "description": "يبدو إعطاء الكلب بقايا العظام لطفًا، لكن إدارة الغذاء والدواء الأمريكية تلقت بلاغات عن نحو 90 كلبًا مرضت بسبب مكافآت العظام، ونفق منها 15. فالعظم قد يتكسر إلى شظايا حادة تجرح الفم أو تعلق في الحلق أو الأمعاء، وتنصح الإدارة بعدم إعطاء الكلاب العظام إطلاقًا، حتى بقايا المائدة."
+   },
+   "hi": {
+    "title": "कुत्तों को हड्डी पसंद है, पर हड्डी उन्हें चोट पहुँचा सकती है 🦴",
+    "description": "बची हुई हड्डी कुत्ते को देना प्यार जैसा लगता है, लेकिन अमेरिका की FDA को हड्डी वाले ट्रीट से बीमार हुए लगभग 90 कुत्तों की रिपोर्ट मिली, जिनमें से 15 की मौत हो गई। हड्डी नुकीले टुकड़ों में टूटकर मुँह काट सकती है या गले और आँतों में फँस सकती है; FDA की सलाह है कि कुत्तों को हड्डी न दें, खाने की मेज़ से बची हड्डी भी नहीं।"
+   },
+   "id": {
+    "title": "Anjing suka tulang, tapi tulang bisa melukainya 🦴",
+    "description": "Memberi anjing sisa tulang terasa baik, tapi FDA Amerika Serikat menerima laporan sekitar 90 anjing yang sakit karena camilan tulang, 15 di antaranya mati. Tulang bisa pecah menjadi serpihan tajam yang melukai mulut atau tersangkut di tenggorokan dan usus; FDA menyarankan tidak memberi anjing tulang sama sekali, termasuk sisa makanan."
+   },
+   "ja": {
+    "title": "犬は骨が好き、でも骨は犬を傷つけることがある 🦴",
+    "description": "残った骨を犬にあげるのは優しさに思えますが、米国FDAには骨のおやつで体調を崩した犬が約90匹報告され、そのうち15匹が死んでいます。骨は鋭い破片に割れて口を傷つけたり、のどや腸に詰まったりすることがあり、FDAは食卓の残りも含めて犬に骨を与えないよう勧めています。"
+   },
+   "ko": {
+    "title": "개는 뼈를 좋아하지만 뼈는 개를 다치게 할 수 있다 🦴",
+    "description": "남은 뼈를 개에게 주는 건 다정해 보이지만, 미국 FDA에는 뼈 간식을 먹고 탈이 난 개 약 90마리가 보고됐고 그중 15마리가 죽었습니다. 뼈는 날카로운 조각으로 부서져 입을 베거나 목과 장에 걸릴 수 있어, FDA는 식탁에서 남은 뼈를 포함해 개에게 뼈를 주지 말라고 권합니다."
+   },
+   "pl": {
+    "title": "Psy kochają kości, ale kości mogą je zranić 🦴",
+    "description": "Oddanie psu resztek kości wydaje się miłe, ale amerykańska FDA otrzymała zgłoszenia o około 90 psach, które zachorowały po kościanych przysmakach, a 15 z nich padło. Kość może pęknąć na ostre odłamki, które kaleczą pysk albo utykają w gardle lub jelitach; FDA radzi w ogóle nie dawać psom kości, także tych ze stołu."
+   },
+   "nl": {
+    "title": "Honden zijn dol op botten, maar botten kunnen ze verwonden 🦴",
+    "description": "Je hond de overgebleven botten geven voelt lief, maar de Amerikaanse FDA kreeg meldingen over zo'n 90 honden die ziek werden van botsnacks, waarvan er 15 stierven. Een bot kan in scherpe stukken breken die de bek verwonden of in keel of darmen blijven steken; de FDA raadt aan honden helemaal geen botten te geven, ook geen etensresten."
+   },
+   "uk": {
+    "title": "Собаки люблять кістки, але кістки можуть їх поранити 🦴",
+    "description": "Віддати собаці залишки кісток здається турботою, але до FDA США надійшли повідомлення про приблизно 90 собак, які захворіли через кісткові ласощі, 15 із них загинули. Кістка може розколотися на гострі уламки, що ранять пащу або застрягають у горлі чи кишечнику; FDA радить узагалі не давати собакам кісток, навіть зі столу."
+   },
+   "vi": {
+    "title": "Chó thích xương, nhưng xương có thể làm chó bị thương 🦴",
+    "description": "Cho chó xương thừa tưởng là thương nó, nhưng FDA Mỹ đã nhận báo cáo về khoảng 90 con chó bị bệnh vì đồ ăn vặt từ xương, 15 con đã chết. Xương có thể vỡ thành mảnh sắc làm rách miệng hoặc mắc ở họng, ruột; FDA khuyên không cho chó ăn xương, kể cả xương thừa trên bàn ăn."
+   },
+   "az": {
+    "title": "İtlər sümüyü sevir, amma sümük onları yaralaya bilər 🦴",
+    "description": "Artıq sümükləri itə vermək yaxşılıq kimi görünür, amma ABŞ-ın FDA qurumuna sümük ləzzətlərindən xəstələnən təxminən 90 it barədə məlumat gəlib, onlardan 15-i ölüb. Sümük iti qırıntılara parçalanıb ağzı kəsə, boğazda və ya bağırsaqda ilişə bilər; FDA itlərə, süfrədən qalanlar da daxil, ümumiyyətlə sümük verməməyi tövsiyə edir."
+   },
+   "ro": {
+    "title": "Câinii iubesc oasele, dar oasele îi pot răni 🦴",
+    "description": "Să-i dai câinelui oasele rămase pare un gest frumos, dar FDA din SUA a primit raportări despre circa 90 de câini îmbolnăviți de recompense din os, dintre care 15 au murit. Osul se poate rupe în așchii ascuțite care taie gura sau se blochează în gât ori în intestin; FDA recomandă să nu le dai câinilor oase deloc, nici cele de la masă."
+   }
+  }
+ }
+}

@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0156",
+ "topic": "Kedi neden poposunu gösterir? Kedim neden kuyruğunu dikip kıçını yüzüme dönüyor?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat tail up",
+ "script": {
+  "title": "Sana poposunu gösteren kedi kaba değil, selam veriyor 🐱",
+  "hook_text": "KEDİ NEDEN POPOSUNU GÖSTERİR?",
+  "scenes": [
+   {
+    "text": "Bu kedi sana poposunu dönerek selam veriyor.",
+    "visual": "close-up of a domestic cat walking away from the camera indoors with its tail held straight up",
+    "stock_query": "cat tail up",
+    "source": "stock",
+    "callout": "BU BİR SELAM"
+   },
+   {
+    "text": "Çoğu sahip bunu kabalık sanıp kediyi iter.",
+    "visual": "a cat standing on a sofa next to its owner with its tail raised high",
+    "stock_query": "cat sofa",
+    "source": "stock",
+    "callout": "KABALIK DEĞİL"
+   },
+   {
+    "text": "Oysa bir araştırmada kediler, kuyruğu dik bir kedi silüetine bile daha çekinmeden yaklaştı.",
+    "visual": "a cat walking toward the camera with its tail raised straight up",
+    "stock_query": "cat walking tail",
+    "source": "stock",
+    "callout": "DİK KUYRUK = DOST"
+   },
+   {
+    "text": "Çünkü kediler birbirini önce burnundan, sonra kuyruk altından koklayarak tanır.",
+    "visual": "two cats touching noses and sniffing each other",
+    "stock_query": "two cats sniffing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oradaki koku her kedinin kimlik kartı; seni de koklamaya davet ediyor.",
+    "visual": "close-up of a cat's face looking straight into the camera",
+    "stock_query": "cat face close up",
+    "source": "stock",
+    "callout": "KOKU KİMLİĞİ"
+   },
+   {
+    "text": "Bir dahaki sefere itmeden önce hatırla:",
+    "visual": "a cat with its tail up walking past a person's legs at home",
+    "stock_query": "cat tail",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kedin sana dönüp kuyruğunu dikerek poposunu gösterdiğinde kaba davranmıyor. Kediler birbirini önce burundan, sonra kuyruk altındaki kokudan tanır; bu koku her kedide farklıdır. Kuyruğu dik yaklaşmak da dostça bir işarettir: bir araştırmada kediler kuyruğu dik silüetlere daha çekinmeden yaklaştı.",
+  "tags": [
+   "kedi",
+   "kedi poposunu gösteriyor",
+   "kedi kuyruğu dik",
+   "kedi selamlaşması",
+   "kedi davranışları",
+   "kedi beden dili",
+   "kediler",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin kedin sana nasıl selam veriyor: kuyruğunu dikip gelerek mi, poposunu dönerek mi?",
+  "en_title": "A cat showing you its butt isn't being rude, it's saying hello 🐱",
+  "en_description": "Cats greet each other nose first, then by sniffing under the tail, where a scent unique to each cat works like an ID card. When your cat turns and raises its tail at you, it's offering you the same friendly hello. In one study, cats approached tail-up cat silhouettes faster and with less hesitation.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden poposunu gösterir, kedim neden kuyruğunu dikip kıçını yüzüme dönüyor?\n\nBu kabalık değil, bir selam. VCA Hastaneleri'nin veterinerlerine göre kediler karşılaşınca önce baş bölgesini, sonra kuyruk altını koklar; oradaki anal bez salgısının kokusu her kedide farklıdır ve kimlik kartı gibi çalışır. Kedi davranışı uzmanı Mikel Delgado'ya göre kedin sana poposunu gösterdiğinde seni de koklamaya davet ediyor ya da dostça selam veriyor olabilir. Kuyruğu dik yaklaşmak da dostluk işareti: Southampton Üniversitesi'nde yapılan bir araştırmada kediler kuyruğu dik kedi silüetlerine, kuyruğu aşağıda olanlardan daha hızlı ve daha çekinmeden yaklaştı.\n\nSenin kedin sana nasıl selam veriyor: kuyruğunu dikip gelerek mi, poposunu dönerek mi?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi poposunu gösteriyor",
+   "kedi neden poposunu gösterir",
+   "kedi kıçını yüzüme dönüyor",
+   "kedi kuyruğunu dik tutuyor",
+   "kedi kuyruğu dik ne demek",
+   "kedi selamlaşması",
+   "kediler nasıl selamlaşır",
+   "kedi koklaşması",
+   "kedi kuyruk dili",
+   "kedi beden dili",
+   "kedi davranışları",
+   "kedi sahibi",
+   "kedi bakımı",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat butt in face",
+   "cat tail up"
+  ],
+  "localizations": {
+   "en": {
+    "title": "A cat showing you its butt isn't being rude, it's saying hello 🐱",
+    "description": "Cats greet each other nose first, then by sniffing under the tail, where a scent unique to each cat works like an ID card. When your cat turns and raises its tail at you, it's offering you the same friendly hello. In one study, cats approached tail-up cat silhouettes faster and with less hesitation."
+   },
+   "es": {
+    "title": "Tu gato no es grosero al enseñarte el trasero: te está saludando 🐱",
+    "description": "Los gatos se saludan primero nariz con nariz y luego oliéndose bajo la cola, donde un olor único funciona como un DNI. Cuando tu gato se gira y levanta la cola ante ti, te ofrece ese mismo saludo amistoso. En un estudio, los gatos se acercaban antes y con menos recelo a siluetas de gato con la cola alzada."
+   },
+   "pt": {
+    "title": "Seu gato não está sendo mal-educado ao mostrar o bumbum: é um oi 🐱",
+    "description": "Gatos se cumprimentam primeiro pelo focinho e depois cheirando embaixo do rabo, onde um cheiro único funciona como uma identidade. Quando seu gato vira e levanta o rabo para você, está oferecendo esse mesmo cumprimento amigável. Num estudo, gatos se aproximavam mais rápido de silhuetas com o rabo erguido."
+   },
+   "de": {
+    "title": "Zeigt dir deine Katze den Po, ist das keine Frechheit, sondern ein Hallo 🐱",
+    "description": "Katzen begrüßen sich erst Nase an Nase und schnuppern dann unter dem Schwanz, wo ein einzigartiger Duft wie ein Ausweis wirkt. Dreht dir deine Katze mit erhobenem Schwanz den Hintern zu, bietet sie dir genau diesen freundlichen Gruß an. In einer Studie näherten sich Katzen Silhouetten mit erhobenem Schwanz schneller und weniger zögerlich."
+   },
+   "fr": {
+    "title": "Ton chat qui te montre ses fesses n'est pas impoli, il te dit bonjour 🐱",
+    "description": "Les chats se saluent d'abord museau contre museau, puis en se reniflant sous la queue, où une odeur propre à chacun sert de carte d'identité. Quand ton chat se retourne queue dressée, il t'offre ce même salut amical. Dans une étude, des chats approchaient plus vite et avec moins d'hésitation des silhouettes de chat à la queue levée."
+   },
+   "it": {
+    "title": "Il gatto che ti mostra il sedere non è maleducato: ti sta salutando 🐱",
+    "description": "I gatti si salutano prima naso contro naso e poi annusandosi sotto la coda, dove un odore unico funziona come una carta d'identità. Quando il tuo gatto si gira con la coda alzata, ti offre lo stesso saluto amichevole. In uno studio i gatti si avvicinavano più in fretta e con meno esitazione alle sagome di gatto con la coda dritta."
+   },
+   "ru": {
+    "title": "Кошка показывает тебе попу не из грубости — она здоровается 🐱",
+    "description": "Кошки здороваются сначала носами, а потом обнюхивают друг друга под хвостом: там у каждой свой запах, как удостоверение личности. Когда кошка поворачивается к тебе с поднятым хвостом, она предлагает тебе то же дружеское приветствие. В одном исследовании кошки быстрее и смелее подходили к силуэтам кошек с поднятым хвостом."
+   },
+   "ar": {
+    "title": "قطتك لا تتصرف بوقاحة حين تُريك مؤخرتها، بل تُلقي عليك التحية 🐱",
+    "description": "تحيي القطط بعضها أولًا بتلامس الأنوف، ثم بشمّ ما تحت الذيل حيث رائحة فريدة لكل قطة تعمل كبطاقة هوية. وعندما تستدير قطتك نحوك رافعة ذيلها فهي تقدم لك التحية الودية نفسها. وفي إحدى الدراسات اقتربت القطط أسرع وبتردد أقل من صور ظلية لقطط ذيلها مرفوع."
+   },
+   "hi": {
+    "title": "बिल्ली आपको अपना पिछला हिस्सा दिखाए तो यह बदतमीज़ी नहीं, नमस्ते है 🐱",
+    "description": "बिल्लियाँ पहले नाक से नाक मिलाकर और फिर पूँछ के नीचे सूँघकर एक-दूसरे का स्वागत करती हैं, जहाँ हर बिल्ली की अलग गंध पहचान पत्र जैसी होती है। जब आपकी बिल्ली पूँछ उठाकर आपकी ओर पीठ करती है, तो वह आपको वही दोस्ताना सलाम दे रही होती है। एक अध्ययन में बिल्लियाँ उठी हुई पूँछ वाली आकृतियों की ओर ज़्यादा जल्दी और बेझिझक गईं।"
+   },
+   "id": {
+    "title": "Kucing yang menunjukkan pantatnya bukan tidak sopan, ia sedang menyapamu 🐱",
+    "description": "Kucing saling menyapa dengan menempelkan hidung, lalu mengendus bagian bawah ekor, tempat bau unik setiap kucing berfungsi seperti KTP. Saat kucingmu berbalik dengan ekor tegak, ia memberimu sapaan ramah yang sama. Dalam sebuah studi, kucing lebih cepat dan tanpa ragu mendekati siluet kucing berekor tegak."
+   },
+   "ja": {
+    "title": "猫がお尻を向けるのは失礼じゃなく「こんにちは」の挨拶 🐱",
+    "description": "猫同士はまず鼻を合わせ、次にしっぽの下のにおいを嗅いで挨拶します。そのにおいは猫ごとに違い、身分証のような役目をします。しっぽを立ててお尻を向けてくるのは、あなたにも同じ親しみの挨拶をしているのです。ある研究では、猫はしっぽを立てた猫のシルエットにより早く、ためらわずに近づきました。"
+   },
+   "ko": {
+    "title": "엉덩이를 들이미는 고양이, 무례한 게 아니라 인사하는 것 🐱",
+    "description": "고양이는 먼저 코를 맞대고, 이어서 꼬리 밑 냄새를 맡으며 인사합니다. 그 냄새는 고양이마다 달라 신분증 역할을 하죠. 꼬리를 세우고 엉덩이를 보여 주는 건 당신에게도 같은 친근한 인사를 건네는 것입니다. 한 연구에서 고양이들은 꼬리를 세운 고양이 실루엣에 더 빨리, 덜 망설이며 다가갔습니다."
+   },
+   "pl": {
+    "title": "Kot, który pokazuje ci tyłek, nie jest niegrzeczny – on się wita 🐱",
+    "description": "Koty witają się najpierw nosami, a potem obwąchując się pod ogonem, gdzie niepowtarzalny zapach działa jak dowód osobisty. Gdy kot odwraca się do ciebie z uniesionym ogonem, oferuje ci to samo przyjazne powitanie. W jednym badaniu koty szybciej i śmielej podchodziły do sylwetek kotów z ogonem w górze."
+   },
+   "nl": {
+    "title": "Laat je kat zijn kont zien? Dat is niet onbeleefd, maar een begroeting 🐱",
+    "description": "Katten begroeten elkaar eerst neus aan neus en snuffelen daarna onder de staart, waar een unieke geur werkt als een identiteitskaart. Draait je kat zich met opgeheven staart naar je om, dan biedt hij jou dezelfde vriendelijke groet aan. In een onderzoek liepen katten sneller en met minder aarzeling op silhouetten met een rechtopstaande staart af."
+   },
+   "uk": {
+    "title": "Кіт показує тобі сідниці не з грубощів — він вітається 🐱",
+    "description": "Коти вітаються спершу носами, а потім обнюхують одне одного під хвостом: там у кожного свій запах, як посвідчення особи. Коли кіт повертається до тебе з піднятим хвостом, він пропонує тобі те саме дружнє привітання. В одному дослідженні коти швидше й сміливіше підходили до силуетів котів із піднятим хвостом."
+   },
+   "vi": {
+    "title": "Mèo chổng mông về phía bạn không phải bất lịch sự, mà là đang chào 🐱",
+    "description": "Mèo chào nhau bằng cách chạm mũi rồi ngửi dưới đuôi, nơi mùi riêng của mỗi con giống như chứng minh thư. Khi mèo quay lưng và dựng đuôi về phía bạn, nó đang dành cho bạn lời chào thân thiện ấy. Trong một nghiên cứu, mèo tiến lại gần hình bóng mèo dựng đuôi nhanh hơn và ít ngần ngại hơn."
+   },
+   "az": {
+    "title": "Sənə arxasını göstərən pişik kobud deyil, salam verir 🐱",
+    "description": "Pişiklər əvvəlcə burun-buruna, sonra quyruğun altını iyləyərək salamlaşır; oradakı qoxu hər pişikdə fərqlidir və şəxsiyyət vəsiqəsi kimidir. Pişiyin quyruğunu dik qaldırıb sənə arxasını çevirəndə, sənə də eyni dostcasına salamı verir. Bir araşdırmada pişiklər quyruğu dik pişik siluetlərinə daha tez və çəkinmədən yaxınlaşdı."
+   },
+   "ro": {
+    "title": "Pisica nu e nepoliticoasă când îți arată fundul, ci te salută 🐱",
+    "description": "Pisicile se salută întâi nas în nas, apoi mirosindu-se sub coadă, unde un miros unic funcționează ca un buletin. Când pisica se întoarce cu coada ridicată spre tine, îți oferă același salut prietenos. Într-un studiu, pisicile s-au apropiat mai repede și cu mai puțină ezitare de siluete de pisici cu coada ridicată."
+   }
+  }
+ }
+}

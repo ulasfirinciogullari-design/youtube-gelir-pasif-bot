@@ -1,0 +1,186 @@
+{
+ "id": "mk-c0161",
+ "topic": "Hapşırınca kalp durur mu? Hapşırırken kalp bir saniyeliğine durur mu, hapşırınca ne olur?",
+ "kategori": "vücut",
+ "subject": [
+  "sneeze",
+  "sneezing"
+ ],
+ "stock_hint": "woman sneezing tissue",
+ "script": {
+  "title": "Hapşırırken kalbin durmuyor, sadece ritmi şaşıyor 🤧",
+  "hook_text": "HAPŞIRINCA KALP DURUR MU?",
+  "scenes": [
+   {
+    "text": "Hapşırırken kalbin bir an bile durmuyor.",
+    "visual": "close-up of a woman's face sneezing into a tissue",
+    "stock_query": "woman sneezing",
+    "source": "stock",
+    "callout": "KALP DURMAZ"
+   },
+   {
+    "text": "Hapşırınca kalbin bir saniyeliğine durduğu sanılır.",
+    "visual": "close-up of a man sneezing",
+    "stock_query": "man sneezing",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa kalbin elektrik sinyali hapşırırken de hiç kesilmiyor.",
+    "visual": "close-up of a heart rate monitor screen showing a steady heartbeat line",
+    "stock_query": "heart monitor",
+    "source": "stock",
+    "callout": "SİNYAL KESİLMEZ",
+    "subject": [
+     "heart"
+    ]
+   },
+   {
+    "text": "O tuhaf his şuradan: hapşırık öncesi derin nefes göğüsteki basıncı artırır, kalbe dönen kan azalır.",
+    "visual": "anatomical model of a human heart on a dark background",
+    "stock_query": "human heart model",
+    "source": "stock",
+    "callout": "GÖĞÜS BASINCI",
+    "subject": [
+     "heart"
+    ]
+   },
+   {
+    "text": "Basınç boşalınca kalp bir anlığına yavaşlar, sonra ritmini toplar.",
+    "visual": "close-up of a person sneezing in slow motion",
+    "stock_query": "sneezing slow motion",
+    "source": "stock",
+    "callout": "RİTİM ŞAŞAR"
+   },
+   {
+    "text": "Bir dahaki hapşırıkta hatırla:",
+    "visual": "a woman holding a tissue about to sneeze",
+    "stock_query": "sneeze tissue",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Hapşırırken kalp durmaz; kalbin elektrik etkinliği hapşırık sırasında da sürer. Hapşırmadan önceki derin nefes göğüs içindeki basıncı artırıp kalbe dönen kanı bir an azaltır; basınç boşalınca kalp bir anlığına yavaşlar ve ritmini yeniden toplar.",
+  "tags": [
+   "hapşırık",
+   "hapşırınca kalp durur mu",
+   "kalp ritmi",
+   "kalp atışı",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de hapşırınca kalbin durduğunu mu duymuştun: evet mi, hayır mı?",
+  "en_title": "Your heart doesn't stop when you sneeze, its rhythm just shifts 🤧",
+  "en_description": "Cardiologists say the heart keeps beating through a sneeze, and its electrical activity never stops. The deep breath before a sneeze raises chest pressure and briefly cuts the blood returning to the heart; when the pressure releases, the heart slows for a moment and then settles back into rhythm.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Hapşırınca kalp durur mu, hapşırırken kalp gerçekten bir saniyeliğine durur mu?\n\nHayır. ABD Kongre Kütüphanesi'nin bilim sorularını yanıtladığı bölüm de Cleveland Clinic kardiyoloğu Kenneth Mayuga da hapşırırken kalbin durmadığını söylüyor; Mayuga'ya göre hapşırık klinik olarak anlamlı bir duraklamaya yol açmıyor. Arkansas Tıp Bilimleri Üniversitesi'ne (UAMS) göre kalbin elektrik etkinliği hapşırık sırasında kesilmiyor. Hapşırmadan önce alınan derin nefes göğüs içindeki basıncı artırıp kalbe dönen kanı bir an azaltıyor; hapşırıkla basınç boşalınca kalp bir anlığına yavaşlayıp ritmini yeniden ayarlıyor. Hissettiğin o 'tekleme' bundan.\n\nSen de hapşırınca kalbin durduğunu mu duymuştun: evet mi, hayır mı?",
+  "hashtags": [
+   "#hapşırık",
+   "#kalp",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "hapşırınca kalp durur mu",
+   "hapşırırken kalp durur mu",
+   "hapşırık",
+   "hapşırmak",
+   "hapşırınca ne olur",
+   "hapşırırken neler olur",
+   "hapşırık kalp",
+   "kalp ritmi",
+   "kalp atışı",
+   "hapşırma refleksi",
+   "çok yaşa",
+   "yanlış bilinen gerçekler",
+   "doğru bilinen yanlışlar",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "sağlık",
+   "kalp",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "sneeze heart stop",
+   "sneezing"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your heart doesn't stop when you sneeze, its rhythm just shifts 🤧",
+    "description": "Cardiologists say the heart keeps beating through a sneeze, and its electrical activity never stops. The deep breath before a sneeze raises chest pressure and briefly cuts the blood returning to the heart; when the pressure releases, the heart slows for a moment and then settles back into rhythm."
+   },
+   "es": {
+    "title": "Tu corazón no se detiene al estornudar, solo cambia de ritmo 🤧",
+    "description": "Según los cardiólogos, el corazón sigue latiendo durante el estornudo y su actividad eléctrica no se interrumpe. La inspiración profunda previa sube la presión del pecho y reduce un instante la sangre que vuelve al corazón; al liberarse la presión, el corazón se frena un momento y recupera su ritmo."
+   },
+   "pt": {
+    "title": "Seu coração não para quando você espirra, só muda o ritmo 🤧",
+    "description": "Segundo cardiologistas, o coração continua batendo durante o espirro e sua atividade elétrica não para. A respiração funda antes do espirro aumenta a pressão no peito e reduz por um instante o sangue que volta ao coração; quando a pressão se solta, ele desacelera um momento e retoma o ritmo."
+   },
+   "de": {
+    "title": "Dein Herz bleibt beim Niesen nicht stehen, nur der Rhythmus wackelt 🤧",
+    "description": "Laut Kardiologen schlägt das Herz beim Niesen weiter, seine elektrische Aktivität setzt nie aus. Das tiefe Einatmen davor erhöht den Druck im Brustkorb und verringert kurz den Blutrückfluss zum Herzen; löst sich der Druck, schlägt das Herz einen Moment langsamer und findet dann zurück in den Takt."
+   },
+   "fr": {
+    "title": "Ton cœur ne s'arrête pas quand tu éternues, son rythme change juste 🤧",
+    "description": "Selon les cardiologues, le cœur continue de battre pendant un éternuement et son activité électrique ne s'interrompt pas. La grande inspiration qui précède augmente la pression dans la poitrine et réduit un instant le sang qui revient au cœur ; quand la pression retombe, il ralentit brièvement puis reprend son rythme."
+   },
+   "it": {
+    "title": "Il cuore non si ferma quando starnutisci, cambia solo ritmo 🤧",
+    "description": "Secondo i cardiologi il cuore continua a battere durante lo starnuto e la sua attività elettrica non si interrompe. Il respiro profondo che lo precede aumenta la pressione nel torace e riduce per un attimo il sangue che torna al cuore; quando la pressione si scarica, il cuore rallenta un istante e poi ritrova il ritmo."
+   },
+   "ru": {
+    "title": "Сердце не останавливается, когда ты чихаешь, — меняется только ритм 🤧",
+    "description": "По словам кардиологов, сердце продолжает биться во время чихания, а его электрическая активность не прерывается. Глубокий вдох перед чихом повышает давление в груди и на миг уменьшает приток крови к сердцу; когда давление сбрасывается, сердце ненадолго замедляется и возвращается к ритму."
+   },
+   "ar": {
+    "title": "قلبك لا يتوقف عندما تعطس، بل يتغير إيقاعه فقط 🤧",
+    "description": "يقول أطباء القلب إن القلب يواصل النبض أثناء العطس، ونشاطه الكهربائي لا ينقطع. فالشهيق العميق قبل العطسة يرفع الضغط داخل الصدر ويقلل للحظة الدم العائد إلى القلب، وحين ينفرج الضغط يتباطأ القلب لحظة ثم يستعيد إيقاعه."
+   },
+   "hi": {
+    "title": "छींकते समय दिल रुकता नहीं, बस उसकी लय थोड़ी बदलती है 🤧",
+    "description": "हृदय रोग विशेषज्ञों के मुताबिक़ छींक के दौरान भी दिल धड़कता रहता है और उसकी विद्युत गतिविधि नहीं रुकती। छींक से पहले की गहरी साँस सीने का दबाव बढ़ाकर दिल तक लौटने वाले ख़ून को पल भर घटा देती है; दबाव छूटते ही दिल एक पल धीमा होकर फिर अपनी लय पकड़ लेता है।"
+   },
+   "id": {
+    "title": "Jantungmu tidak berhenti saat bersin, hanya iramanya berubah 🤧",
+    "description": "Menurut ahli jantung, jantung tetap berdetak saat kamu bersin dan aktivitas listriknya tidak berhenti. Tarikan napas dalam sebelum bersin menaikkan tekanan di dada dan sesaat mengurangi darah yang kembali ke jantung; begitu tekanan lepas, jantung melambat sebentar lalu kembali ke iramanya."
+   },
+   "ja": {
+    "title": "くしゃみで心臓は止まらない、リズムが少し変わるだけ 🤧",
+    "description": "心臓の専門医によると、くしゃみの最中も心臓は動き続け、電気的な活動も途切れません。くしゃみの前の深い吸気で胸の圧力が上がり、心臓に戻る血液が一瞬減ります。圧力が抜けると心拍が一瞬ゆっくりになり、また元のリズムに戻るのです。"
+   },
+   "ko": {
+    "title": "재채기할 때 심장은 멈추지 않는다, 리듬만 잠깐 바뀔 뿐 🤧",
+    "description": "심장 전문의들에 따르면 재채기하는 동안에도 심장은 계속 뛰고 전기 신호도 끊기지 않습니다. 재채기 직전의 깊은 숨이 가슴 압력을 높여 심장으로 돌아오는 피를 잠깐 줄이고, 압력이 풀리면 심장이 잠시 느려졌다가 다시 리듬을 찾습니다."
+   },
+   "pl": {
+    "title": "Serce nie staje, gdy kichasz – zmienia się tylko rytm 🤧",
+    "description": "Według kardiologów serce bije dalej podczas kichnięcia, a jego aktywność elektryczna nie ustaje. Głęboki wdech przed kichnięciem podnosi ciśnienie w klatce piersiowej i na chwilę zmniejsza powrót krwi do serca; gdy ciśnienie puszcza, serce na moment zwalnia, a potem wraca do rytmu."
+   },
+   "nl": {
+    "title": "Je hart staat niet stil als je niest, alleen het ritme hapert 🤧",
+    "description": "Volgens cardiologen blijft het hart tijdens een nies gewoon kloppen en valt de elektrische activiteit nooit stil. De diepe inademing vooraf verhoogt de druk in je borstkas en vermindert even de bloedstroom terug naar het hart; als de druk wegvalt, vertraagt het hart heel kort en vindt het daarna zijn ritme terug."
+   },
+   "uk": {
+    "title": "Серце не зупиняється, коли ти чхаєш, — змінюється лише ритм 🤧",
+    "description": "За словами кардіологів, серце й далі б'ється під час чхання, а його електрична активність не переривається. Глибокий вдих перед чханням підвищує тиск у грудях і на мить зменшує приплив крові до серця; коли тиск спадає, серце ненадовго сповільнюється й повертається до ритму."
+   },
+   "vi": {
+    "title": "Tim không ngừng đập khi bạn hắt hơi, chỉ đổi nhịp một chút 🤧",
+    "description": "Theo các bác sĩ tim mạch, tim vẫn đập khi bạn hắt hơi và hoạt động điện của tim không hề ngắt. Hơi hít sâu trước cú hắt hơi làm tăng áp lực trong lồng ngực, khiến máu về tim giảm trong chốc lát; khi áp lực xả ra, tim chậm lại một nhịp rồi trở về bình thường."
+   },
+   "az": {
+    "title": "Asqıranda ürəyin dayanmır, sadəcə ritmi bir anlıq dəyişir 🤧",
+    "description": "Kardioloqlara görə asqırarkən ürək döyünməyə davam edir və elektrik fəaliyyəti kəsilmir. Asqırmazdan əvvəlki dərin nəfəs döş qəfəsindəki təzyiqi artırıb ürəyə qayıdan qanı bir anlıq azaldır; təzyiq boşalanda ürək bir an yavaşlayır, sonra ritmini bərpa edir."
+   },
+   "ro": {
+    "title": "Inima nu se oprește când strănuți, doar ritmul i se schimbă 🤧",
+    "description": "Potrivit cardiologilor, inima bate în continuare în timpul strănutului, iar activitatea ei electrică nu se întrerupe. Inspirul adânc dinainte crește presiunea din piept și reduce pentru o clipă sângele care se întoarce la inimă; când presiunea se eliberează, inima încetinește o clipă și apoi își reia ritmul."
+   }
+  }
+ }
+}
