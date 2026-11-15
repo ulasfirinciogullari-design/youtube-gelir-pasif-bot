@@ -114,7 +114,7 @@ def sheet(folder):
     files = sorted(folder.glob("*.jpg"))
     if not files:
         return
-    w, h, cols = 200, 356, 7
+    w, h, cols = 160, 284, 7
     rows = (len(files) + cols - 1) // cols
     s = Image.new("RGB", (cols * w, rows * h), "white")
     for n, f in enumerate(files):
@@ -125,7 +125,7 @@ def sheet(folder):
         s.paste(im.crop((x, y, x + w, y + h)), ((n % cols) * w, (n // cols) * h))
     b = io.BytesIO()
     s.save(b, "JPEG", quality=70)
-    print("KAPAK-BASLA\n" + base64.b64encode(b.getvalue()).decode() + "\nKAPAK-BITTI", file=sys.stderr)
+    print("KAPAK-BASLA\n" + base64.encodebytes(b.getvalue()).decode() + "KAPAK-BITTI", file=sys.stderr)  # short lines: the log drops a huge one
 
 
 if __name__ == "__main__":
