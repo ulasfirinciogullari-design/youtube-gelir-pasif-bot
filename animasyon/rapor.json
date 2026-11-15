@@ -1,7 +1,7 @@
 {
- "started": "2026-11-12T22:46:48+00:00",
+ "started": "2026-11-15T22:25:08+00:00",
  "bolum": "k008",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 590,
  "voice": {
@@ -14,5 +14,13 @@
  "duration": 35.4,
  "render_seconds": 118,
  "title": "Eşyanı Bırakmadan Önce Bu Soruyu Sor 🤯 #psikoloji",
- "finished": "2026-11-12T22:48:50+00:00"
+ "video_id": "sHeKOUivy24",
+ "url": "https://youtube.com/shorts/sHeKOUivy24",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-16T17:00:00+00:00",
+ "finished": "2026-11-15T22:27:13+00:00"
 }
