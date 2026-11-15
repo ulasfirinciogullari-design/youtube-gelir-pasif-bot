@@ -161,6 +161,17 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   kedi ve köpek toplam en az 3; deyim en az 1. Kuyruktaki iki psikoloji dosyası (mk-c0147, mk-c0155) arsiv/
   klasörüne alındı, yüklenmeyecek.
 
+- 15 Kasım kararı (herkesin bildiği yanlış): 5 binin üstüne çıkan 14 Short'un 6'sı neredeyse herkesin inandığı bir
+  yanlışı çürütüyor: devekuşu kuma gömmez 13.026, yuttuğun sakız yedi yıl kalmaz 13.148, kediler sütü sindiremez
+  12.607, boğayı kızdıran kırmızı değil 5.271, tavuk horozsuz yumurtlar 5.065, köpek yaşı yediyle çarpılmaz 5.044.
+  Bu Short'lar geç de açılıyor ve günlerce izleniyor (sakız 24 saatte 3.037, 63 saatte 13.148; solucan 1.285'ten
+  4.882'ye). Düz "ilginç bilgi" açıklamaları (köpekle bebek gibi konuşmak, kuru burun, alfa kurt) 900-1.200'de
+  kalıyor. Bu yüzden karışım kuralı aynı kalsa da her slotta konu mümkünse Türkiye'de çoğu insanın inandığı ya da
+  her gün yaptığı bir şeyin yanlış olduğunu gösterecek şekilde kurulsun: başlıkta inanç ve "değil/yanlış/boşuna"
+  gibi çürüten kelime, ilk cümlede inanç ekranda görünenle birlikte. Kedi davranışları da böyle kurulur ("Okşanırken
+  ısıran kedi çoğu zaman önce uyarır", "Kediler sütü sever ama çoğu onu sindiremez"). `"deyim": true` sadece inanç
+  bir deyimde ya da yaygın sözde yaşıyorsa yazılır (deney 12 ayrı ölçülüyor).
+
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
 Hedef (Ulaş, 3 Kasım): 31 Ocak'a kadar 90 günde 10 milyon izlenme. Bunun için Short başına 1.200'den çok daha
