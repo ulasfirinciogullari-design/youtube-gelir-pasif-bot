@@ -1,0 +1,287 @@
+{
+ "id": "h001",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya bir günlüğüne dönmeyi bıraksaydı ne olurdu?",
+ "uzun": true,
+ "hikaye": true,
+ "karakter": {
+  "ad": "Dünya",
+  "b": "earth",
+  "ses": "kalin"
+ },
+ "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu? 🌍 (Simitçi Uçtu!)",
+ "bar": {
+  "hi": "DÜNYA DURSAYDI",
+  "rest": "NE OLURDU?"
+ },
+ "summary": "Dünya bir sabah \"Başım döndü, bugün izinliyim!\" deyip dönmeyi bıraksaydı ne olurdu? Simitler, vapurlar, rüzgâr ve 6 ay süren geceler.",
+ "lines": [
+  {
+   "who": "nesne",
+   "text": "Yeter! 4,5 milyar yıldır dönüyorum, başım döndü. Bugün izinliyim!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "kizgin",
+    "label": "İzindeyim!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dur Dünya! Ekvatorda saatte 1.670 kilometre hızla dönüyorsun.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "1.670",
+    "unit": "km/sa",
+    "label": "Dönüş Hızı",
+    "key": "1.670"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Eminönü'ndeki simitçi ne olacak peki?",
+   "v": {
+    "t": "question",
+    "bg": "city",
+    "e": "🥯",
+    "label": "Simitçi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İstanbul'da her şey doğuya, saatte 1.260 kilometreyle fırlar: simit de, vapur da, sen de!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🥯",
+    "do": "rise",
+    "key": "fırlar",
+    "label": "1.260 km/sa"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Ama ben sadece biraz dinlenmek istemiştim!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "saskin"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hava da durmaz. Rüzgâr, ölçülmüş en güçlü hortumdan iki kat hızlı eser.",
+   "v": {
+    "t": "compare",
+    "bg": "storm",
+    "a": {
+     "e": "🌪️",
+     "label": "En Güçlü Hortum",
+     "value": 486
+    },
+    "b": {
+     "e": "💨",
+     "label": "Dünya Durursa",
+     "value": 1260
+    },
+    "mode": "bar",
+    "key": "hızlı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "O zaman yavaş yavaş dursun!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🐢",
+    "label": "Yavaşça?"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Peki, yavaşça durdum. Bakın, kimse uçmadı!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "mutlu",
+    "label": "Durdum!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu kez gündüz 6 ay, gece 6 ay sürer. Güneş yılda yalnızca bir kez doğar.",
+   "v": {
+    "t": "split",
+    "bg": "sky",
+    "left": {
+     "e": "☀️",
+     "label": "6 Ay Gündüz"
+    },
+    "right": {
+     "e": "🌙",
+     "label": "6 Ay Gece"
+    },
+    "key": "gece"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "6 ay gece mi? Çayı kim demleyecek?",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "☕",
+    "label": "Çay?"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Merak etmeyin, Güneş'in etrafında dönmeye devam ediyorum. Yörüngem yerinde!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "havali",
+    "label": "Yörünge Tamam"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama 6 ay güneş alan taraf kavrulur, 6 ay karanlıkta kalan taraf donar.",
+   "v": {
+    "t": "icons",
+    "bg": "desert",
+    "items": [
+     {
+      "e": "🔥",
+      "label": "Kavrulur"
+     },
+     {
+      "e": "🥶",
+      "label": "Donar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dahası var: dönerken ekvatorun 21 kilometre şişkin. Durunca okyanuslar kutuplara akar.",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "21",
+    "unit": "km",
+    "label": "Ekvator Şişkinliği",
+    "key": "21"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ortada dev bir kara, iki uçta iki okyanus kalır.",
+   "v": {
+    "t": "icons",
+    "bg": "space",
+    "items": [
+     {
+      "e": "🌊",
+      "label": "Kuzey Okyanusu"
+     },
+     {
+      "e": "🏜️",
+      "label": "Dev Kara"
+     },
+     {
+      "e": "🌊",
+      "label": "Güney Okyanusu"
+     }
+    ]
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Tamam, tamam, anladım. Dönmeye devam ediyorum.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "spin",
+    "target": 0,
+    "mood": "uzgun",
+    "key": "devam"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yine de Dünya yavaşlıyor: günler her yüzyılda yaklaşık 2 milisaniye uzuyor.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "⏱️",
+    "value": "2",
+    "unit": "milisaniye",
+    "label": "Yüzyılda",
+    "key": "2"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Dünya bir gün izin alsa sen ilk ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Dünya ekvatorda saatte yaklaşık 1.670 kilometre hızla döner.",
+   "source": "NASA",
+   "url": "https://spaceplace.nasa.gov/days/en/"
+  },
+  {
+   "text": "Dünya dönmeyi bırakırsa atmosfer dönmeye devam eder; ekvatorda rüzgâr saatte yaklaşık 1.670 km olur (enlem 41'de yaklaşık 1.260 km).",
+   "source": "NASA Science",
+   "url": "https://science.nasa.gov/earth/facts/"
+  },
+  {
+   "text": "Radarla ölçülen en hızlı hortum rüzgârı 1999 Bridge Creek-Moore hortumunda saatte yaklaşık 486 km'dir.",
+   "source": "NOAA",
+   "url": "https://www.weather.gov/oun/events-19990503"
+  },
+  {
+   "text": "Dünya'nın ekvator yarıçapı kutup yarıçapından yaklaşık 21 km büyüktür.",
+   "source": "NASA",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+  },
+  {
+   "text": "Gelgit sürtünmesi yüzünden gün uzunluğu yüzyılda yaklaşık 1,7-2,3 milisaniye artar.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/"
+  }
+ ],
+ "tags": [
+  "dünya dönmeyi bıraksaydı",
+  "dünya durursa",
+  "bilim",
+  "uzay"
+ ],
+ "hashtags": [
+  "#dünya",
+  "#bilim",
+  "#uzay"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://spaceplace.nasa.gov/days/en/"
+ ]
+}

@@ -81,7 +81,7 @@ def ilk_foto(ep_id):
 
 def ilk_sec(ep, state):
     """Test arm: of the episodes that have a photo, every other one opens on it."""
-    if not (ILK and ilk_foto(ep["id"])):
+    if not (ILK and ilk_foto(ep["id"])) or ep.get("hikaye"):  # story episodes open on their character
         return None
     prev = [e["ilk"] for e in state.get("episodes", []) if e.get("ilk") is not None]
     return not prev[-1] if prev else True
@@ -308,12 +308,13 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
         ep["kredi"] = "; ".join(kredi)
     (motor / "bolum.js").write_text("window.EP = " + json.dumps(
         {"series": ep["series"], "title": ep["bar"], "lines": ep["lines"], "layout": layout, "cover": ep.get("cover", 1),
-         "hook": ACILIS if hook is None else hook, "foto": foto, "ilk": f"ilk/{ilk['file']}" if ilk else None},
+         "hook": ACILIS if hook is None else hook, "foto": foto, "ilk": f"ilk/{ilk['file']}" if ilk else None,
+         "karakter": ep.get("karakter") if ep.get("hikaye") else None},
         ensure_ascii=False) + ";\n", encoding="utf-8")
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
     dur = video_len(out_video)
-    if not 14 <= dur <= (90 if ep.get("uzun") else 60):
+    if not 14 <= dur <= (110 if ep.get("hikaye") else 90 if ep.get("uzun") else 60):
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
 

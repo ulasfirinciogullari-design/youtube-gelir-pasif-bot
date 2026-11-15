@@ -27,7 +27,16 @@ VOICES = {
            "style": 0.45, "speed": 1.08, "pitch": 1.0},
     "bit": {"voice_id": "A2XgcJ6lQVEFeIaIUyrc", "name": "Damla", "stability": 0.4, "similarity_boost": 0.8,
             "style": 0.5, "speed": 1.1, "pitch": 1.1},
+    # story mode (karar-defteri test 9): the episode's object speaks in one of these, ep["karakter"]["ses"]
+    "nesne_kalin": {"voice_id": "Mcb3pz5eWjKXcBhMLF4v", "name": "Özgür Babal", "stability": 0.35, "similarity_boost": 0.8,
+                    "style": 0.6, "speed": 1.05, "pitch": 1.0},
+    "nesne_ince": {"voice_id": "xgYIZvUB5h2eFY3HUFNj", "name": "Melek", "stability": 0.35, "similarity_boost": 0.8,
+                   "style": 0.6, "speed": 1.08, "pitch": 1.0},
+    "nesne_genc": {"voice_id": "Q5n6GDIjpN0pLOlycRFT", "name": "Yunus", "stability": 0.35, "similarity_boost": 0.8,
+                   "style": 0.6, "speed": 1.08, "pitch": 1.0},
 }
+# if a story voice is gone from the account, the object speaks in Pi's voice a little deeper, so the episode still ships
+NESNE_YEDEK = dict(VOICES["pi"], pitch=0.88)
 SFX = {
     "pop": ("Short soft cartoon UI pop, bubbly and clean, no echo", 1.0),
     "whoosh": ("Quick soft airy whoosh transition, light and clean, no voice", 1.0),
@@ -181,11 +190,21 @@ def make(ep, work):
     timings, clips, t = [], [], 0.35
     lines = ep["lines"]
     for i, line in enumerate(lines):
-        v = VOICES[line["who"]]
+        who = line["who"]
+        if who == "nesne":
+            who = "nesne_" + ((ep.get("karakter") or {}).get("ses") or "kalin")
+        v = VOICES.get(who) or NESNE_YEDEK
         say, groups = sayi.spoken(line["text"])
-        mp3, al = tts(say, v, cache)
+        try:
+            mp3, al = tts(say, v, cache)
+        except RuntimeError as e:
+            if not who.startswith("nesne"):
+                raise
+            print(f"  {v['name']} sesi alınamadı, yedek ses: {e}")
+            v = NESNE_YEDEK
+            mp3, al = tts(say, v, cache)
         p = v.get("pitch", 1.0)
-        filt = (f"asetrate={SR}*{p},aresample={SR},atempo={1 / p:.5f},chorus=0.6:0.8:18:0.25:0.3:2"
+        filt = (f"asetrate={SR}*{p},aresample={SR},atempo={1 / p:.5f}" + (",chorus=0.6:0.8:18:0.25:0.3:2" if who == "bit" else "")
                 if p != 1.0 else None)
         audio = decode(mp3, filt)
         spans = spoken_spans(say, al)
