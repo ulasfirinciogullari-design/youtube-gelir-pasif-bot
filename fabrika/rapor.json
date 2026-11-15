@@ -1,72 +1,18 @@
 {
- "started": "2026-11-15T10:06:32+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-15T13:06:42+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y038",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "69",
-  "videos": "83"
+ "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+ "chars": 376,
+ "instagram": {
+  "anahtar_bitis": "2027-01-08T07:30+00:00",
+  "media_id": "18001359155821960",
+  "url": "https://www.instagram.com/reel/Dfw2gHDCY4O/",
+  "at": 1794748113.1910622
  },
- "credits_before": [
-  104424,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261114-2-n017.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "n017",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bir yıldırım ne kadar sıcak?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 364,
- "duration": 23.9,
- "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
- "url": "https://youtube.com/shorts/YgY6Jzda0Hk",
- "recent_status": {
-  "y024": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "103",
-   "reason": null
-  },
-  "y056": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "779",
-   "reason": null
-  },
-  "y059": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "921",
-   "reason": null
-  },
-  "y060": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "620",
-   "reason": null
-  },
-  "n017": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  104513,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261114-2-n017.json Bir yıldırım ne kadar sıcak? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/Dfw2gHDCY4O/"
  ],
- "finished": "2026-11-15T10:07:38+00:00"
+ "finished": "2026-11-15T13:08:33+00:00"
 }

@@ -2648,14 +2648,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-07T18:07:40+00:00",
-   "mod": "saatlik",
-   "title": "Everest Gerçekte Ne Kadar Yüksek?",
-   "url": "https://youtube.com/shorts/xRibz7N8GmY",
-   "duration": 25.9,
-   "chars": 404
-  },
-  {
    "finished": "2026-11-07T20:08:06+00:00",
    "mod": "saatlik",
    "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
@@ -3073,6 +3065,12 @@
    "url": "https://youtube.com/shorts/YgY6Jzda0Hk",
    "duration": 23.9,
    "chars": 364
+  },
+  {
+   "finished": "2026-11-15T13:08:33+00:00",
+   "mod": "igbolum",
+   "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
+   "chars": 376
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3392,6 +3390,11 @@
     "media_id": "18110432810252857",
     "url": "https://www.instagram.com/reel/DfwbGt6jOSs/",
     "at": 1794733733.772533
+   },
+   "y038": {
+    "media_id": "18001359155821960",
+    "url": "https://www.instagram.com/reel/Dfw2gHDCY4O/",
+    "at": 1794748113.1910622
    }
   },
   "eski": [
