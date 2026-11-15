@@ -9,7 +9,7 @@
   "b": "earth",
   "ses": "kalin"
  },
- "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu? 🌍 (Simitçi Uçtu!)",
+ "title": "Dünya Dönmeyi Bıraksaydı Ne Olurdu? (Simitçi Uçtu!)",
  "bar": {
   "hi": "DÜNYA DURSAYDI",
   "rest": "NE OLURDU?"
@@ -283,5 +283,6 @@
  "cover": 0,
  "sources": [
   "https://spaceplace.nasa.gov/days/en/"
- ]
+ ],
+ "emoji": "🌍"
 }
