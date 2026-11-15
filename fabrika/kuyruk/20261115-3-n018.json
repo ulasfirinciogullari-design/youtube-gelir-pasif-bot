@@ -1,0 +1,314 @@
+{
+ "id": "n018",
+ "series": "Ne Kadar Büyük?",
+ "q": "Mars ne kadar uzak?",
+ "title": "Mars Gerçekte Ne Kadar Uzak?",
+ "bar": {
+  "hi": "MARS",
+  "rest": "NE KADAR UZAK?"
+ },
+ "summary": "Mars'a arabayla gitmeye kalksan yol 257 yıl sürerdi! Roketle kaç ay gideceğini, eve attığın mesajın ne kadar geciktiğini ve NASA'nın bile susmak zorunda kaldığı haftaları Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Mars'a arabayla 100 km hızla gitsen 257 yıl sürer!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "l"
+     },
+     {
+      "b": "mars",
+      "size": "l",
+      "at": "r"
+     }
+    ],
+    "do": "recede",
+    "target": 1,
+    "key": "257",
+    "label": "Arabayla 257 Yıl"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Torunlarım da mı varamaz?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🚗",
+    "do": "shake",
+    "key": "Torunlarım",
+    "label": "Bitmeyen Yol"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ay'dan ortalama 585 kat uzak!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "moon",
+     "label": "Ay",
+     "value": 384400
+    },
+    "b": {
+     "b": "mars",
+     "label": "Mars",
+     "value": 225000000
+    },
+    "mode": "bar",
+    "key": "585"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Roketle bile 7 ay: Perseverance 472 milyon km yol aldı.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🚀",
+    "value": "472 milyon",
+    "unit": "km",
+    "label": "Perseverance Yolu",
+    "key": "472"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Vardın! 'Geldim' mesajın eve 24 dakikaya kadar gider.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Mesaj Gecikmesi",
+    "from": 0,
+    "to": 24,
+    "unit": "dk",
+    "e": "📱",
+    "key": "24"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Annemin cevabı 48 dakika mı?!",
+   "v": {
+    "t": "question",
+    "bg": "city",
+    "e": "⏳",
+    "label": "48 Dakika?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sürpriz: her 2 yılda Güneş araya girer; NASA bile 2 hafta mesaj atmaz!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "l"
+     },
+     {
+      "b": "sun",
+      "size": "l",
+      "at": "c"
+     },
+     {
+      "b": "mars",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "heat",
+    "target": 1,
+    "key": "Güneş",
+    "label": "2 Hafta Sessizlik"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Mars'tan ilk mesajın ne olurdu? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🚀"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Space.com'a göre Dünya ile Mars arasındaki ortalama uzaklık 225 milyon km'dir; saatte 100 km hızla hiç durmadan giden bir araba bu yolu yaklaşık 257 yılda alırdı.",
+   "source": "Space.com",
+   "url": "https://www.space.com/16875-how-far-away-is-mars.html"
+  },
+  {
+   "text": "NASA'ya göre Ay, Dünya'dan ortalama 384.400 km uzaktadır; yani Mars ortalamada Ay'dan yaklaşık 585 kat daha uzaktır.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/moon/facts/"
+  },
+  {
+   "text": "NASA JPL'ye göre Perseverance 30 Temmuz 2020'de fırlatıldı ve 203 günlük, 472 milyon km'lik yolculuğun ardından 18 Şubat 2021'de Mars'a indi.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/news/touchdown-nasas-mars-perseverance-rover-safely-lands-on-red-planet/"
+  },
+  {
+   "text": "ESA'ya göre Dünya ile Mars arasındaki tek yönlü sinyal gecikmesi yaklaşık 4 ile 24 dakika arasında değişir.",
+   "source": "ESA",
+   "url": "https://blogs.esa.int/mex/2012/08/05/time-delay-between-mars-and-earth/"
+  },
+  {
+   "text": "Space.com'a göre Güneş her 2 yılda bir Dünya ile Mars'ın arasına girer; Güneş'ten saçılan gaz radyo sinyallerini bozabileceği için NASA bu dönemde Mars'taki araçlarına yaklaşık 2 hafta komut göndermez.",
+   "source": "Space.com",
+   "url": "https://www.space.com/mars-solar-conjunction-november-2023"
+  }
+ ],
+ "tags": [
+  "mars ne kadar uzak",
+  "mars",
+  "mars uzaklığı",
+  "marsa yolculuk",
+  "marsa kaç ayda gidilir",
+  "perseverance",
+  "kızıl gezegen",
+  "nasa",
+  "how far is mars",
+  "distance to mars",
+  "mars travel time",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#mars",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.space.com/16875-how-far-away-is-mars.html",
+  "https://www.jpl.nasa.gov/news/touchdown-nasas-mars-perseverance-rover-safely-lands-on-red-planet/",
+  "https://blogs.esa.int/mex/2012/08/05/time-delay-between-mars-and-earth/",
+  "https://science.nasa.gov/moon/facts/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Far Away Is Mars, Really?",
+   "summary": "Driving to Mars would take 257 years! Professor Pi reveals how many months the trip takes by rocket, how long your messages home would be delayed, and the weeks when even NASA has to go quiet.",
+   "facts": [
+    "According to Space.com, the average distance between Earth and Mars is 225 million km; a car driving nonstop at 100 km/h would need about 257 years to cover it.",
+    "According to NASA, the Moon is on average 384,400 km from Earth, so Mars is on average about 585 times farther away than the Moon.",
+    "According to NASA JPL, Perseverance launched on July 30, 2020, and landed on Mars on Feb. 18, 2021, after a 203-day journey of 472 million km.",
+    "According to ESA, the one-way signal delay between Earth and Mars ranges from about 4 to 24 minutes.",
+    "According to Space.com, every 2 years the Sun passes between Earth and Mars; because gas from the Sun can corrupt radio signals, NASA stops sending commands to its Mars spacecraft for about 2 weeks."
+   ]
+  },
+  "es": {
+   "title": "¿A Qué Distancia Está Marte Realmente?",
+   "summary": "¡Ir a Marte en coche tardaría 257 años! El Profesor Pi revela cuántos meses dura el viaje en cohete, cuánto tardarían tus mensajes a casa y las semanas en que hasta la NASA tiene que guardar silencio.",
+   "facts": [
+    "Según Space.com, la distancia media entre la Tierra y Marte es de 225 millones de km; un coche que viajara sin parar a 100 km/h tardaría unos 257 años en recorrerla.",
+    "Según la NASA, la Luna está en promedio a 384.400 km de la Tierra, así que Marte está en promedio unas 585 veces más lejos que la Luna.",
+    "Según el JPL de la NASA, Perseverance despegó el 30 de julio de 2020 y aterrizó en Marte el 18 de febrero de 2021, tras un viaje de 203 días y 472 millones de km.",
+    "Según la ESA, el retraso de la señal en un solo sentido entre la Tierra y Marte varía entre unos 4 y 24 minutos.",
+    "Según Space.com, cada 2 años el Sol se interpone entre la Tierra y Marte; como el gas del Sol puede corromper las señales de radio, la NASA deja de enviar órdenes a sus naves en Marte durante unas 2 semanas."
+   ]
+  },
+  "pt": {
+   "title": "A Que Distância Marte Está de Verdade?",
+   "summary": "Ir de carro até Marte levaria 257 anos! O Professor Pi revela quantos meses dura a viagem de foguete, quanto tempo suas mensagens para casa demorariam e as semanas em que até a NASA precisa ficar em silêncio.",
+   "facts": [
+    "Segundo o Space.com, a distância média entre a Terra e Marte é de 225 milhões de km; um carro andando sem parar a 100 km/h levaria cerca de 257 anos para percorrê-la.",
+    "Segundo a NASA, a Lua fica em média a 384.400 km da Terra, então Marte está em média cerca de 585 vezes mais longe que a Lua.",
+    "Segundo o JPL da NASA, o Perseverance foi lançado em 30 de julho de 2020 e pousou em Marte em 18 de fevereiro de 2021, após uma viagem de 203 dias e 472 milhões de km.",
+    "Segundo a ESA, o atraso do sinal em um sentido entre a Terra e Marte varia de cerca de 4 a 24 minutos.",
+    "Segundo o Space.com, a cada 2 anos o Sol fica entre a Terra e Marte; como o gás do Sol pode corromper os sinais de rádio, a NASA para de enviar comandos às suas naves em Marte por cerca de 2 semanas."
+   ]
+  },
+  "ar": {
+   "title": "كم يبعد المريخ عنا في الحقيقة؟",
+   "summary": "الذهاب إلى المريخ بالسيارة سيستغرق 257 عامًا! يكشف البروفيسور باي كم شهرًا تستغرق الرحلة بالصاروخ، وكم ستتأخر رسائلك إلى البيت، والأسابيع التي تضطر فيها حتى ناسا إلى الصمت.",
+   "facts": [
+    "بحسب موقع Space.com، يبلغ متوسط المسافة بين الأرض والمريخ 225 مليون كم؛ وستحتاج سيارة تسير دون توقف بسرعة 100 كم/ساعة إلى نحو 257 عامًا لقطعها.",
+    "بحسب ناسا، يبعد القمر عن الأرض في المتوسط 384,400 كم، أي أن المريخ أبعد من القمر في المتوسط بنحو 585 مرة.",
+    "بحسب مختبر الدفع النفاث التابع لناسا، أُطلقت المركبة برسفيرانس في 30 يوليو 2020 وهبطت على المريخ في 18 فبراير 2021 بعد رحلة استمرت 203 أيام وقطعت 472 مليون كم.",
+    "بحسب وكالة الفضاء الأوروبية، يتراوح تأخر الإشارة في اتجاه واحد بين الأرض والمريخ بين نحو 4 و24 دقيقة.",
+    "بحسب موقع Space.com، تمر الشمس كل عامين بين الأرض والمريخ؛ ولأن غاز الشمس قد يُفسد إشارات الراديو، تتوقف ناسا عن إرسال الأوامر إلى مركباتها على المريخ لنحو أسبوعين."
+   ]
+  },
+  "hi": {
+   "title": "मंगल ग्रह असल में कितनी दूर है?",
+   "summary": "कार से मंगल जाने में 257 साल लगते! प्रोफ़ेसर पाई बताते हैं कि रॉकेट से कितने महीने लगते हैं, घर भेजा आपका मैसेज कितनी देर से पहुँचता, और वे हफ़्ते जब नासा को भी चुप रहना पड़ता है।",
+   "facts": [
+    "स्पेस.कॉम के अनुसार धरती और मंगल के बीच औसत दूरी 22.5 करोड़ (225 मिलियन) किमी है; 100 किमी/घंटा की रफ़्तार से बिना रुके चलने वाली कार को यह दूरी तय करने में लगभग 257 साल लगते।",
+    "नासा के अनुसार चंद्रमा धरती से औसतन 3,84,400 किमी दूर है, यानी मंगल औसतन चंद्रमा से लगभग 585 गुना ज़्यादा दूर है।",
+    "नासा JPL के अनुसार पर्सिवियरेंस 30 जुलाई 2020 को लॉन्च हुआ और 203 दिन में 47.2 करोड़ (472 मिलियन) किमी की यात्रा के बाद 18 फ़रवरी 2021 को मंगल पर उतरा।",
+    "ESA के अनुसार धरती और मंगल के बीच एक तरफ़ का सिग्नल विलंब लगभग 4 से 24 मिनट के बीच होता है।",
+    "स्पेस.कॉम के अनुसार हर 2 साल में सूरज धरती और मंगल के बीच आ जाता है; सूरज की गैस रेडियो सिग्नल बिगाड़ सकती है, इसलिए नासा लगभग 2 हफ़्ते तक मंगल पर मौजूद अपने यानों को कमांड नहीं भेजता।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Jauh Mars Sebenarnya?",
+   "summary": "Naik mobil ke Mars butuh 257 tahun! Profesor Pi mengungkap berapa bulan perjalanan dengan roket, berapa lama pesanmu ke rumah tertunda, dan minggu-minggu saat NASA pun harus diam.",
+   "facts": [
+    "Menurut Space.com, jarak rata-rata Bumi dan Mars adalah 225 juta km; mobil yang melaju tanpa henti 100 km/jam butuh sekitar 257 tahun untuk menempuhnya.",
+    "Menurut NASA, Bulan rata-rata berjarak 384.400 km dari Bumi, jadi Mars rata-rata sekitar 585 kali lebih jauh daripada Bulan.",
+    "Menurut NASA JPL, Perseverance diluncurkan pada 30 Juli 2020 dan mendarat di Mars pada 18 Februari 2021 setelah perjalanan 203 hari sejauh 472 juta km.",
+    "Menurut ESA, jeda sinyal satu arah antara Bumi dan Mars berkisar sekitar 4 hingga 24 menit.",
+    "Menurut Space.com, setiap 2 tahun Matahari berada di antara Bumi dan Mars; karena gas Matahari bisa merusak sinyal radio, NASA berhenti mengirim perintah ke wahana di Mars selama sekitar 2 minggu."
+   ]
+  },
+  "fr": {
+   "title": "À Quelle Distance Se Trouve Vraiment Mars ?",
+   "summary": "Aller sur Mars en voiture prendrait 257 ans ! Le Professeur Pi révèle combien de mois dure le voyage en fusée, le retard de tes messages vers la maison et les semaines où même la NASA doit se taire.",
+   "facts": [
+    "Selon Space.com, la distance moyenne entre la Terre et Mars est de 225 millions de km ; une voiture roulant sans arrêt à 100 km/h mettrait environ 257 ans à la parcourir.",
+    "Selon la NASA, la Lune se trouve en moyenne à 384 400 km de la Terre : Mars est donc en moyenne environ 585 fois plus loin que la Lune.",
+    "Selon le JPL de la NASA, Perseverance a décollé le 30 juillet 2020 et s'est posé sur Mars le 18 février 2021, après un voyage de 203 jours et 472 millions de km.",
+    "Selon l'ESA, le délai d'un signal aller simple entre la Terre et Mars varie d'environ 4 à 24 minutes.",
+    "Selon Space.com, tous les 2 ans le Soleil passe entre la Terre et Mars ; comme le gaz solaire peut altérer les signaux radio, la NASA cesse d'envoyer des commandes à ses engins sur Mars pendant environ 2 semaines."
+   ]
+  },
+  "de": {
+   "title": "Wie weit ist der Mars wirklich entfernt?",
+   "summary": "Mit dem Auto zum Mars würdest du 257 Jahre brauchen! Professor Pi verrät, wie viele Monate die Reise mit der Rakete dauert, wie lange deine Nachrichten nach Hause unterwegs wären und in welchen Wochen sogar die NASA schweigen muss.",
+   "facts": [
+    "Laut Space.com beträgt die durchschnittliche Entfernung zwischen Erde und Mars 225 Millionen km; ein Auto, das ohne Pause mit 100 km/h fährt, bräuchte dafür etwa 257 Jahre.",
+    "Laut NASA ist der Mond im Durchschnitt 384.400 km von der Erde entfernt; der Mars ist also im Schnitt etwa 585-mal weiter weg als der Mond.",
+    "Laut NASA JPL startete Perseverance am 30. Juli 2020 und landete am 18. Februar 2021 auf dem Mars – nach einer 203-tägigen Reise über 472 Millionen km.",
+    "Laut ESA beträgt die Signalverzögerung in eine Richtung zwischen Erde und Mars etwa 4 bis 24 Minuten.",
+    "Laut Space.com schiebt sich alle 2 Jahre die Sonne zwischen Erde und Mars; weil Gas von der Sonne Funksignale stören kann, sendet die NASA etwa 2 Wochen lang keine Befehle an ihre Mars-Sonden."
+   ]
+  },
+  "ru": {
+   "title": "Насколько далеко на самом деле Марс?",
+   "summary": "На машине до Марса пришлось бы ехать 257 лет! Профессор Пи рассказывает, сколько месяцев длится полёт на ракете, насколько задерживаются твои сообщения домой и о неделях, когда даже NASA приходится молчать.",
+   "facts": [
+    "По данным Space.com, среднее расстояние между Землёй и Марсом — 225 миллионов км; машине, едущей без остановок со скоростью 100 км/ч, понадобилось бы около 257 лет.",
+    "По данным NASA, Луна находится в среднем в 384 400 км от Земли, то есть Марс в среднем примерно в 585 раз дальше Луны.",
+    "По данным JPL NASA, Perseverance стартовал 30 июля 2020 года и сел на Марс 18 февраля 2021 года после 203-дневного путешествия длиной 472 миллиона км.",
+    "По данным ЕКА, задержка сигнала в одну сторону между Землёй и Марсом составляет примерно от 4 до 24 минут.",
+    "По данным Space.com, раз в 2 года Солнце оказывается между Землёй и Марсом; поскольку солнечный газ может искажать радиосигналы, NASA примерно на 2 недели прекращает отправлять команды своим аппаратам на Марсе."
+   ]
+  },
+  "az": {
+   "title": "Mars Əslində Nə Qədər Uzaqdır?",
+   "summary": "Marsa maşınla getsən, yol 257 il çəkərdi! Professor Pi raketlə səfərin neçə ay sürdüyünü, evə göndərdiyin mesajın nə qədər gecikdiyini və hətta NASA-nın da susmalı olduğu həftələri danışır.",
+   "facts": [
+    "Space.com-a görə Yer ilə Mars arasındakı orta məsafə 225 milyon km-dir; saatda 100 km sürətlə dayanmadan gedən maşın bu yolu təxminən 257 ilə qət edərdi.",
+    "NASA-ya görə Ay Yerdən orta hesabla 384.400 km uzaqdadır, yəni Mars orta hesabla Aydan təxminən 585 dəfə uzaqdır.",
+    "NASA JPL-ə görə Perseverance 30 iyul 2020-ci ildə buraxıldı və 203 günlük, 472 milyon km-lik səfərdən sonra 18 fevral 2021-ci ildə Marsa endi.",
+    "ESA-ya görə Yer ilə Mars arasında birtərəfli siqnal gecikməsi təxminən 4 ilə 24 dəqiqə arasında dəyişir.",
+    "Space.com-a görə hər 2 ildən bir Günəş Yer ilə Mars arasına girir; Günəşdən gələn qaz radio siqnallarını poza bildiyi üçün NASA təxminən 2 həftə Marsdakı aparatlarına əmr göndərmir."
+   ]
+  }
+ }
+}

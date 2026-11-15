@@ -1,0 +1,265 @@
+{
+ "id": "y023",
+ "series": "Ya Olsaydı?",
+ "q": "Uzayda ses yayılabilseydi ne duyardık?",
+ "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
+ "bar": {
+  "hi": "UZAYDA SES",
+  "rest": "YAYILSAYDI?"
+ },
+ "summary": "Uzayda ses yayılabilseydi, Güneş her gün kulağına bir rock konseri gibi kükrerdi. Bunun kulaklarına ne yapacağını ve uzayda gerçekten ses çıkaran şaşırtıcı nesneyi Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Güneş her gün kulağına 100 desibelle kükrerdi: rock konseri gibi!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "100",
+    "label": "100 Desibel"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Güneşin ses düğmesi nerede?!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🔇",
+    "label": "Ses Düğmesi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu, saç kurutma makinesi kadar; DSÖ'ye göre haftada 20 dakikası bile sınır!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "👂",
+    "value": "20",
+    "unit": "dakika/hafta",
+    "label": "Güvenli Süre",
+    "key": "20"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gündüz sohbet zor; kükreme ancak gece azalır.",
+   "v": {
+    "t": "split",
+    "bg": "sky",
+    "left": {
+     "e": "☀️",
+     "label": "Gündüz Kükreme"
+    },
+    "right": {
+     "e": "🌙",
+     "label": "Gece Azalır"
+    },
+    "key": "gece"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: bir kara delik ses çıkarıyor, ama duyamazsın: 57 oktav pes!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "blackhole",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "shake",
+    "target": 0,
+    "key": "57",
+    "label": "57 Oktav Pes"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kara delik bas mı söylüyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🎸",
+    "do": "shake",
+    "key": "bas",
+    "label": "Kozmik Bas"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Uzayda neyi duymak isterdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "👂"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Astronomy dergisine göre Southwest Research Institute'tan güneş fizikçisi Craig DeForest, ses uzayda yayılabilseydi Güneş'in Dünya'da yaklaşık 100 desibel, yani bir rock konserindeki hoparlörlerden biraz daha sessiz bir gürültü çıkaracağını hesapladı.",
+   "source": "Astronomy",
+   "url": "https://www.astronomy.com/observing/what-would-the-sun-sound-like/"
+  },
+  {
+   "text": "Dünya Sağlık Örgütü'ne göre saç kurutma makinesinin ses düzeyi yaklaşık 100 desibeldir ve bu düzeyde güvenli dinleme süresi haftada yalnızca 20 dakikadır.",
+   "source": "Dünya Sağlık Örgütü (WHO)",
+   "url": "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening"
+  },
+  {
+   "text": "Discover dergisine göre DeForest, Dünya'nın Güneş'e sırtını döndüğü gece saatlerinde bu kükremenin azalacağını ve sohbetin belki ancak o zaman mümkün olacağını söylüyor.",
+   "source": "Discover",
+   "url": "https://discovermagazine.com/the-sciences/what-would-the-sun-sound-like-if-we-could-hear-it-on-earth"
+  },
+  {
+   "text": "NASA'nın Chandra X-ışını Gözlemevi'ne göre Perseus kümesindeki bir kara deliğin yarattığı ses dalgaları, orta do'nun 57 oktav altındaki bir si bemol notasına denk gelir; bu ses, insan kulağının duyabileceği sınırdan milyon kere milyar kattan daha pestir.",
+   "source": "NASA Chandra",
+   "url": "https://chandra.harvard.edu/press/03_releases/press_090903.html"
+  }
+ ],
+ "tags": [
+  "uzayda ses",
+  "uzayda ses yayılsaydı",
+  "güneşin sesi",
+  "güneş kaç desibel",
+  "kara delik sesi",
+  "desibel",
+  "işitme kaybı",
+  "sound in space",
+  "what does the sun sound like",
+  "black hole sound",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzay",
+  "#güneş",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.astronomy.com/observing/what-would-the-sun-sound-like/",
+  "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening",
+  "https://chandra.harvard.edu/press/03_releases/press_090903.html",
+  "https://discovermagazine.com/the-sciences/what-would-the-sun-sound-like-if-we-could-hear-it-on-earth"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Sound Traveled Through Space, What Would It Do to Your Ears?",
+   "summary": "If sound could travel through space, the Sun would roar in your ears every day like a rock concert. Professor Pi explains what that would do to your hearing and reveals the surprising object in space that really does make sound.",
+   "facts": [
+    "According to Astronomy magazine, heliophysicist Craig DeForest of the Southwest Research Institute estimates that if sound could travel through space, the Sun would be about 100 decibels on Earth, a bit quieter than the speakers at a rock concert.",
+    "According to the World Health Organization, a hair dryer is about 100 decibels, and the safe listening time at that level is only 20 minutes per week.",
+    "According to Discover magazine, DeForest says the roar would fade at night, when Earth faces away from the Sun, and conversation might only be possible then.",
+    "According to NASA's Chandra X-ray Observatory, sound waves produced by a black hole in the Perseus cluster correspond to a B-flat 57 octaves below middle C, over a million billion times deeper than the limits of human hearing."
+   ]
+  },
+  "es": {
+   "title": "Si el Sonido Viajara por el Espacio, ¿Qué Les Pasaría a Tus Oídos?",
+   "summary": "Si el sonido pudiera viajar por el espacio, el Sol rugiría cada día en tus oídos como un concierto de rock. El Profesor Pi explica qué le haría eso a tu audición y revela el sorprendente objeto del espacio que sí produce sonido.",
+   "facts": [
+    "Según la revista Astronomy, el heliofísico Craig DeForest, del Southwest Research Institute, calcula que si el sonido viajara por el espacio, el Sol sonaría en la Tierra a unos 100 decibelios, algo menos que los altavoces de un concierto de rock.",
+    "Según la Organización Mundial de la Salud, un secador de pelo produce unos 100 decibelios, y a ese nivel el tiempo de escucha segura es de solo 20 minutos por semana.",
+    "Según la revista Discover, DeForest afirma que el rugido disminuiría de noche, cuando la Tierra da la espalda al Sol, y que quizá solo entonces se podría conversar.",
+    "Según el Observatorio de rayos X Chandra de la NASA, las ondas sonoras generadas por un agujero negro en el cúmulo de Perseo equivalen a un si bemol 57 octavas por debajo del do central, más de mil billones de veces más grave que el límite del oído humano."
+   ]
+  },
+  "pt": {
+   "title": "Se o Som Viajasse pelo Espaço, o Que Aconteceria com Seus Ouvidos?",
+   "summary": "Se o som pudesse viajar pelo espaço, o Sol rugiria nos seus ouvidos todos os dias como um show de rock. O Professor Pi explica o que isso faria com a sua audição e revela o objeto surpreendente do espaço que realmente produz som.",
+   "facts": [
+    "Segundo a revista Astronomy, o heliofísico Craig DeForest, do Southwest Research Institute, calcula que, se o som viajasse pelo espaço, o Sol soaria na Terra a cerca de 100 decibéis, um pouco menos que as caixas de som de um show de rock.",
+    "Segundo a Organização Mundial da Saúde, um secador de cabelo faz cerca de 100 decibéis, e nesse nível o tempo de escuta segura é de apenas 20 minutos por semana.",
+    "Segundo a revista Discover, DeForest diz que o rugido diminuiria à noite, quando a Terra fica de costas para o Sol, e que talvez só então fosse possível conversar.",
+    "Segundo o Observatório de Raios X Chandra, da NASA, as ondas sonoras geradas por um buraco negro no aglomerado de Perseu correspondem a um si bemol 57 oitavas abaixo do dó central, mais de um quatrilhão de vezes mais grave que o limite da audição humana."
+   ]
+  },
+  "ar": {
+   "title": "لو انتقل الصوت عبر الفضاء، ماذا سيحدث لأذنيك؟",
+   "summary": "لو استطاع الصوت الانتقال عبر الفضاء، لزأرت الشمس في أذنيك كل يوم كأنها حفلة روك. يشرح البروفيسور باي ما سيفعله ذلك بسمعك، ويكشف الجسم المدهش في الفضاء الذي يصدر صوتًا بالفعل.",
+   "facts": [
+    "بحسب مجلة Astronomy، يقدّر عالم فيزياء الشمس كريغ ديفورست من معهد ساوث وست للأبحاث أنه لو انتقل الصوت عبر الفضاء لبلغ صوت الشمس على الأرض نحو 100 ديسيبل، أي أقل قليلًا من مكبرات الصوت في حفلة روك.",
+    "بحسب منظمة الصحة العالمية، يبلغ صوت مجفف الشعر نحو 100 ديسيبل، ومدة الاستماع الآمن عند هذا المستوى 20 دقيقة فقط في الأسبوع.",
+    "بحسب مجلة Discover، يقول ديفورست إن الهدير سيخفت ليلًا عندما تدير الأرض ظهرها للشمس، وربما لا تصبح المحادثة ممكنة إلا حينها.",
+    "بحسب مرصد تشاندرا للأشعة السينية التابع لناسا، تعادل الموجات الصوتية التي يولدها ثقب أسود في عنقود فرساوس نغمة سي بيمول أخفض من دو الوسطى بـ57 أوكتافًا، أي أعمق بأكثر من مليون مليار مرة من حدود السمع البشري."
+   ]
+  },
+  "hi": {
+   "title": "अगर अंतरिक्ष में आवाज़ फैलती, तो आपके कानों का क्या होता?",
+   "summary": "अगर अंतरिक्ष में आवाज़ फैल पाती, तो सूरज हर दिन आपके कानों में रॉक कॉन्सर्ट की तरह गरजता। प्रोफ़ेसर पाई बताते हैं कि इसका आपकी सुनने की क्षमता पर क्या असर होता, और अंतरिक्ष की वह हैरान करने वाली चीज़ भी, जो सच में आवाज़ करती है।",
+   "facts": [
+    "एस्ट्रोनॉमी पत्रिका के अनुसार साउथवेस्ट रिसर्च इंस्टीट्यूट के सौर भौतिकविद क्रेग डीफ़ॉरेस्ट का अनुमान है कि अगर आवाज़ अंतरिक्ष में फैल पाती, तो धरती पर सूरज की आवाज़ लगभग 100 डेसिबल होती, जो रॉक कॉन्सर्ट के स्पीकरों से थोड़ी ही कम है।",
+    "विश्व स्वास्थ्य संगठन के अनुसार हेयर ड्रायर की आवाज़ लगभग 100 डेसिबल होती है, और इस स्तर पर सुरक्षित सुनने का समय हफ़्ते में सिर्फ़ 20 मिनट है।",
+    "डिस्कवर पत्रिका के अनुसार डीफ़ॉरेस्ट कहते हैं कि रात में, जब धरती सूरज की ओर पीठ कर लेती है, यह गर्जना कम हो जाती और शायद तभी बातचीत संभव होती।",
+    "नासा की चंद्रा एक्स-रे वेधशाला के अनुसार पर्सियस क्लस्टर के एक ब्लैक होल से बनी ध्वनि तरंगें मध्य C से 57 सप्तक नीचे के B-फ़्लैट सुर के बराबर हैं, जो इंसानी सुनने की सीमा से दस लाख अरब गुना से भी ज़्यादा गहरी है।"
+   ]
+  },
+  "id": {
+   "title": "Jika Suara Merambat di Luar Angkasa, Apa Jadinya Telingamu?",
+   "summary": "Jika suara bisa merambat di luar angkasa, Matahari akan menderu di telingamu setiap hari seperti konser rock. Profesor Pi menjelaskan apa akibatnya bagi pendengaranmu dan mengungkap benda luar angkasa yang benar-benar menghasilkan suara.",
+   "facts": [
+    "Menurut majalah Astronomy, fisikawan Matahari Craig DeForest dari Southwest Research Institute memperkirakan bahwa jika suara bisa merambat di luar angkasa, Matahari akan terdengar sekitar 100 desibel di Bumi, sedikit lebih pelan dari pengeras suara di konser rock.",
+    "Menurut Organisasi Kesehatan Dunia (WHO), pengering rambut menghasilkan sekitar 100 desibel, dan waktu mendengar yang aman pada tingkat itu hanya 20 menit per minggu.",
+    "Menurut majalah Discover, DeForest mengatakan deru itu akan mereda pada malam hari, saat Bumi membelakangi Matahari, dan mungkin hanya saat itulah orang bisa bercakap-cakap.",
+    "Menurut Observatorium Sinar-X Chandra milik NASA, gelombang suara yang dihasilkan lubang hitam di gugus Perseus setara dengan nada B-flat 57 oktaf di bawah C tengah, lebih dari sejuta miliar kali lebih rendah dari batas pendengaran manusia."
+   ]
+  },
+  "fr": {
+   "title": "Si le Son Voyageait dans l'Espace, Que Subiraient Tes Oreilles ?",
+   "summary": "Si le son pouvait voyager dans l'espace, le Soleil rugirait chaque jour dans tes oreilles comme un concert de rock. Le Professeur Pi explique ce que cela ferait à ton audition et révèle l'objet surprenant de l'espace qui produit vraiment un son.",
+   "facts": [
+    "Selon le magazine Astronomy, l'héliophysicien Craig DeForest, du Southwest Research Institute, estime que si le son pouvait voyager dans l'espace, le Soleil atteindrait environ 100 décibels sur Terre, un peu moins que les enceintes d'un concert de rock.",
+    "Selon l'Organisation mondiale de la santé, un sèche-cheveux produit environ 100 décibels, et à ce niveau la durée d'écoute sans risque n'est que de 20 minutes par semaine.",
+    "Selon le magazine Discover, DeForest explique que le grondement diminuerait la nuit, quand la Terre tourne le dos au Soleil, et que ce n'est peut-être qu'alors qu'on pourrait discuter.",
+    "Selon l'observatoire à rayons X Chandra de la NASA, les ondes sonores produites par un trou noir de l'amas de Persée correspondent à un si bémol 57 octaves sous le do central, plus d'un million de milliards de fois plus grave que la limite de l'audition humaine."
+   ]
+  },
+  "de": {
+   "title": "Gäbe es Schall im All, was wäre mit deinen Ohren?",
+   "summary": "Könnte sich Schall im All ausbreiten, würde die Sonne jeden Tag wie ein Rockkonzert in deinen Ohren dröhnen. Professor Pi erklärt, was das mit deinem Gehör machen würde, und verrät, welches Objekt im All wirklich Schall erzeugt.",
+   "facts": [
+    "Laut dem Magazin Astronomy schätzt der Heliophysiker Craig DeForest vom Southwest Research Institute, dass die Sonne auf der Erde etwa 100 Dezibel laut wäre, wenn sich Schall im All ausbreiten könnte – etwas leiser als die Boxen bei einem Rockkonzert.",
+    "Laut der Weltgesundheitsorganisation erreicht ein Haartrockner etwa 100 Dezibel, und bei diesem Pegel beträgt die sichere Hördauer nur 20 Minuten pro Woche.",
+    "Laut dem Magazin Discover sagt DeForest, dass das Dröhnen nachts nachlassen würde, wenn die Erde der Sonne den Rücken zukehrt, und dass man sich vielleicht nur dann unterhalten könnte.",
+    "Laut dem Röntgenobservatorium Chandra der NASA entsprechen die Schallwellen eines Schwarzen Lochs im Perseus-Haufen einem B 57 Oktaven unter dem mittleren C – mehr als eine Billiarde Mal tiefer als die Grenze des menschlichen Gehörs."
+   ]
+  },
+  "ru": {
+   "title": "Если бы звук распространялся в космосе, что стало бы с твоими ушами?",
+   "summary": "Если бы звук мог распространяться в космосе, Солнце каждый день ревело бы у тебя в ушах, как рок-концерт. Профессор Пи объясняет, что это сделало бы с твоим слухом, и раскрывает удивительный объект в космосе, который действительно издаёт звук.",
+   "facts": [
+    "По данным журнала Astronomy, гелиофизик Крейг ДеФорест из Юго-западного исследовательского института подсчитал, что если бы звук распространялся в космосе, Солнце звучало бы на Земле примерно на 100 децибел — чуть тише колонок на рок-концерте.",
+    "По данным Всемирной организации здравоохранения, фен для волос шумит примерно на 100 децибел, а безопасное время прослушивания при таком уровне — всего 20 минут в неделю.",
+    "По данным журнала Discover, ДеФорест говорит, что ночью, когда Земля поворачивается к Солнцу спиной, рёв бы стихал, и, возможно, разговаривать можно было бы только тогда.",
+    "По данным рентгеновской обсерватории NASA «Чандра», звуковые волны, созданные чёрной дырой в скоплении Персея, соответствуют ноте си-бемоль на 57 октав ниже ноты до первой октавы — это более чем в миллион миллиардов раз ниже предела человеческого слуха."
+   ]
+  },
+  "az": {
+   "title": "Kosmosda Səs Yayılsaydı, Qulaqlarına Nə Olardı?",
+   "summary": "Kosmosda səs yayıla bilsəydi, Günəş hər gün qulaqlarında rok konserti kimi gurlayardı. Professor Pi bunun eşitmənə nə edəcəyini izah edir və kosmosda həqiqətən səs çıxaran təəccüblü obyekti açıqlayır.",
+   "facts": [
+    "Astronomy jurnalına görə Southwest Research Institute-dan heliofizik Kreyq DeForest hesablayıb ki, səs kosmosda yayıla bilsəydi, Günəşin səsi Yerdə təxminən 100 desibel olardı, yəni rok konsertindəki dinamiklərdən bir az zəif.",
+    "Ümumdünya Səhiyyə Təşkilatına görə saç qurutma maşınının səsi təxminən 100 desibeldir və bu səviyyədə təhlükəsiz dinləmə müddəti həftədə cəmi 20 dəqiqədir.",
+    "Discover jurnalına görə DeForest deyir ki, gecələr, Yer Günəşə arxasını çevirəndə bu gurultu azalardı və bəlkə də yalnız o zaman söhbət etmək mümkün olardı.",
+    "NASA-nın Çandra Rentgen Rəsədxanasına görə Perseus qalaktika topasındakı bir qara dəliyin yaratdığı səs dalğaları orta do notundan 57 oktava aşağı si-bemol notuna uyğundur; bu səs insan eşitməsinin həddindən milyon milyard dəfədən çox aşağıdır."
+   ]
+  }
+ }
+}

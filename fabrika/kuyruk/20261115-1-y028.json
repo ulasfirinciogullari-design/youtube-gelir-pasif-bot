@@ -1,0 +1,394 @@
+{
+ "id": "y028",
+ "series": "Ya Olsaydı?",
+ "q": "Dinozorlar yok olmasaydı ne olurdu?",
+ "uzun": true,
+ "title": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun?",
+ "bar": {
+  "hi": "DİNOZORLAR",
+  "rest": "YOK OLMASAYDI?"
+ },
+ "summary": "Asteroidin ıskaladığı bir dünyada kapını açıyorsun ve karşında 8 tonluk bir dinozor duruyor. Dakika dakika neler yaşayacağını ve dinozorların aslında neden tamamen yok olmadığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "8 tonluk bir dinozor, kapının önünde seni kokluyor!",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "🦖",
+    "do": "shake",
+    "key": "dinozor",
+    "label": "8 Tonluk Komşu"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kahvaltısı ben miyim?!",
+   "v": {
+    "t": "question",
+    "bg": "forest",
+    "e": "🍳",
+    "label": "Kahvaltı Ben Mi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kapın, asteroidin ıskaladığı dünyaya açıldı: dinozorlar hâlâ hüküm sürüyor.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     },
+     {
+      "b": "asteroid",
+      "size": "s",
+      "at": "tr"
+     }
+    ],
+    "do": "recede",
+    "target": 1,
+    "key": "ıskaladığı",
+    "label": "Asteroit Iskaladı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu hiç uzak bir ihtimal değil: Dünya'nın %87'sine düşseydi dinozorlar yaşayabilirdi.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Güvenli Bölge",
+    "from": 0,
+    "to": 87,
+    "unit": "%",
+    "e": "🌍",
+    "key": "%87'sine"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk saniye: seni koklar. T. rex gibi ısırsa, çenesi 6 tona kadar bastırır!",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🦷",
+    "value": "6",
+    "unit": "ton",
+    "label": "Isırık Baskısı",
+    "key": "6"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Çene mi, hidrolik pres mi?!",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "🗜️",
+    "do": "shake",
+    "key": "pres",
+    "label": "Hidrolik Pres"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1. dakika: ne kedi var ne köpek. 150 milyon yıl hiçbir memeli porsuktan büyümedi.",
+   "v": {
+    "t": "icons",
+    "bg": "forest",
+    "items": [
+     {
+      "e": "🐱",
+      "label": "Kedi Yok"
+     },
+     {
+      "e": "🐶",
+      "label": "Köpek Yok"
+     },
+     {
+      "e": "🦡",
+      "label": "Porsuk Boyu"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "10. dakika: ne şehir var ne insan. Bilim insanlarına göre insan muhtemelen hiç evrimleşmezdi.",
+   "v": {
+    "t": "timeline",
+    "bg": "forest",
+    "steps": [
+     {
+      "when": "1. SN",
+      "e": "🦖",
+      "label": "Koklanırsın"
+     },
+     {
+      "when": "1. DK",
+      "e": "🐾",
+      "label": "Kedi Köpek Yok"
+     },
+     {
+      "when": "10. DK",
+      "e": "🏙️",
+      "label": "İnsan Yok"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bu videoyu izleyen kimse olmaz mıydı?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "📱",
+    "do": "vanish",
+    "key": "videoyu",
+    "label": "İzleyici Yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: dinozorlar tamamen yok olmadı! 10.000'den fazla türü hâlâ aramızda: kuşlar.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "🐦",
+    "value": "10.000",
+    "unit": "tür",
+    "label": "Yaşayan Dinozor",
+    "key": "10.000'den"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "T. rex'in proteini en çok tavuk ve devekuşununkine benziyor: tavuk onun akrabası!",
+   "v": {
+    "t": "split",
+    "bg": "lab",
+    "left": {
+     "e": "🦖",
+     "label": "T. rex"
+    },
+    "right": {
+     "e": "🐔",
+     "label": "Tavuk"
+    },
+    "key": "tavuk"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yani nugget'ım dinozor mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🍗",
+    "do": "pulse",
+    "key": "nugget'ım",
+    "label": "Dinozor Menü"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Dinozorlu dünyada yaşar mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "forest",
+    "e": "🦖"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "National Geographic'e göre T. rex 8 tona kadar ağırlığa ulaşabiliyordu ve ısırığıyla 6 tona varan baskı uygulayabiliyordu.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/animals/facts/tyrannosaurus-rex"
+  },
+  {
+   "text": "Smithsonian'a göre Tohoku Üniversitesi'nden Kunio Kaiho'nun Scientific Reports'ta yayımlanan çalışmasında Dünya yüzeyinin yalnızca %13'ü Güneş'i karartacak kadar hidrokarbon içeriyordu; Kaiho'ya göre asteroit neredeyse başka herhangi bir yere düşseydi dinozorlar bugün hâlâ yaşıyor olabilirdi.",
+   "source": "Smithsonian",
+   "url": "https://www.smithsonianmag.com/smart-news/dinosaurs-might-be-alive-today-if-asteroid-had-hit-another-location-180967181/"
+  },
+  {
+   "text": "Live Science'a göre paleontolog Steve Brusatte, dinozorlar çağında 150 milyon yılı aşkın süre boyunca hiçbir memelinin porsuktan büyük olmadığını anlatıyor.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/rise-reign-mammals-steve-brusatte-book"
+  },
+  {
+   "text": "Live Science'a göre Edinburgh Üniversitesi'nden Steve Brusatte, asteroit ıskalasaydı dev dinozorların memelileri milyonlarca yıl daha küçük tutacağını düşünüyor; Chicago Üniversitesi'nden Paul Sereno'ya göre de insan büyük ihtimalle hiç evrimleşmezdi.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/animals/dinosaurs/what-if-a-giant-asteroid-had-not-wiped-out-the-dinosaurs"
+  },
+  {
+   "text": "National Geographic'e göre kuşlar dinozordur ve bugün 10.000'den fazla kuş türü yaşamaktadır.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/magazine/article/dinosaurs-survivors-birds-fossils"
+  },
+  {
+   "text": "Harvard Gazette'e göre 2008'de Science dergisinde yayımlanan bir çalışmada, 68 milyon yıllık bir T. rex fosilinden elde edilen protein yaşayan hayvanlar arasında en çok tavuk ve devekuşuyla gruplandı.",
+   "source": "Harvard Üniversitesi",
+   "url": "https://news.harvard.edu/gazette/story/2008/04/molecular-analysis-confirms-t-rexs-evolutionary-link-to-birds/"
+  }
+ ],
+ "tags": [
+  "dinozorlar yok olmasaydı",
+  "dinozorlar",
+  "dinozor",
+  "asteroit",
+  "T. rex",
+  "kuşlar dinozor mu",
+  "tavuk dinozor",
+  "memeliler",
+  "insan evrimi",
+  "what if dinosaurs never went extinct",
+  "dinosaurs",
+  "birds are dinosaurs",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dinozor",
+  "#trex",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.nationalgeographic.com/animals/facts/tyrannosaurus-rex",
+  "https://www.smithsonianmag.com/smart-news/dinosaurs-might-be-alive-today-if-asteroid-had-hit-another-location-180967181/",
+  "https://www.livescience.com/animals/dinosaurs/what-if-a-giant-asteroid-had-not-wiped-out-the-dinosaurs",
+  "https://news.harvard.edu/gazette/story/2008/04/molecular-analysis-confirms-t-rexs-evolutionary-link-to-birds/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Dinosaurs Never Died Out, Would You Even Exist?",
+   "summary": "In a world where the asteroid missed, you open your door and an 8-ton dinosaur is standing right there. Professor Pi walks you through it minute by minute and reveals why dinosaurs never fully disappeared.",
+   "facts": [
+    "According to National Geographic, T. rex could weigh up to 8 tons, and its bite delivered up to 6 tons of pressure.",
+    "According to Smithsonian, a study by Kunio Kaiho of Tohoku University published in Scientific Reports found that only 13% of Earth's surface held enough hydrocarbons to block out the Sun; Kaiho says that had the asteroid struck almost anywhere else, dinosaurs could still be alive today.",
+    "According to Live Science, paleontologist Steve Brusatte notes that for more than 150 million years in the age of dinosaurs, no mammal ever grew larger than a badger.",
+    "According to Live Science, Steve Brusatte of the University of Edinburgh thinks that had the asteroid missed, large dinosaurs would have kept mammals small for many millions of years more, and Paul Sereno of the University of Chicago says humans would most likely never have evolved.",
+    "According to National Geographic, birds are dinosaurs, and more than 10,000 bird species are alive today.",
+    "According to the Harvard Gazette, a 2008 study in Science found that protein from a 68-million-year-old T. rex fossil grouped most closely with chickens and ostriches among living animals."
+   ]
+  },
+  "es": {
+   "title": "Si los Dinosaurios No Se Hubieran Extinguido, ¿Existirías Tú?",
+   "summary": "En un mundo donde el asteroide falló, abres la puerta y un dinosaurio de 8 toneladas está justo frente a ti. El Profesor Pi te lo cuenta minuto a minuto y revela por qué los dinosaurios nunca desaparecieron del todo.",
+   "facts": [
+    "Según National Geographic, el T. rex podía pesar hasta 8 toneladas y su mordida ejercía hasta 6 toneladas de presión.",
+    "Según Smithsonian, un estudio de Kunio Kaiho, de la Universidad de Tohoku, publicado en Scientific Reports halló que solo el 13 % de la superficie terrestre tenía suficientes hidrocarburos para oscurecer el Sol; según Kaiho, si el asteroide hubiera caído casi en cualquier otro lugar, los dinosaurios podrían seguir vivos hoy.",
+    "Según Live Science, el paleontólogo Steve Brusatte explica que durante más de 150 millones de años, en la era de los dinosaurios, ningún mamífero fue más grande que un tejón.",
+    "Según Live Science, Steve Brusatte, de la Universidad de Edimburgo, cree que, si el asteroide hubiera fallado, los grandes dinosaurios habrían mantenido pequeños a los mamíferos durante muchos millones de años más; Paul Sereno, de la Universidad de Chicago, afirma que los humanos muy probablemente nunca habrían evolucionado.",
+    "Según National Geographic, las aves son dinosaurios y hoy viven más de 10.000 especies de aves.",
+    "Según la Harvard Gazette, un estudio de 2008 publicado en Science halló que la proteína de un fósil de T. rex de 68 millones de años se agrupaba sobre todo con la gallina y el avestruz entre los animales vivos."
+   ]
+  },
+  "pt": {
+   "title": "Se os Dinossauros Não Tivessem Sumido, Você Existiria?",
+   "summary": "Num mundo em que o asteroide errou o alvo, você abre a porta e dá de cara com um dinossauro de 8 toneladas. O Professor Pi mostra minuto a minuto o que acontece e revela por que os dinossauros nunca desapareceram de vez.",
+   "facts": [
+    "Segundo a National Geographic, o T. rex podia pesar até 8 toneladas, e sua mordida exercia até 6 toneladas de pressão.",
+    "Segundo a Smithsonian, um estudo de Kunio Kaiho, da Universidade de Tohoku, publicado na Scientific Reports, concluiu que só 13% da superfície da Terra tinha hidrocarbonetos suficientes para escurecer o Sol; segundo Kaiho, se o asteroide tivesse caído em quase qualquer outro lugar, os dinossauros poderiam estar vivos até hoje.",
+    "Segundo a Live Science, o paleontólogo Steve Brusatte conta que, por mais de 150 milhões de anos na era dos dinossauros, nenhum mamífero ficou maior que um texugo.",
+    "Segundo a Live Science, Steve Brusatte, da Universidade de Edimburgo, acredita que, se o asteroide tivesse errado, os grandes dinossauros teriam mantido os mamíferos pequenos por muitos milhões de anos a mais; Paul Sereno, da Universidade de Chicago, diz que os humanos muito provavelmente nunca teriam evoluído.",
+    "Segundo a National Geographic, as aves são dinossauros, e hoje existem mais de 10.000 espécies de aves.",
+    "Segundo a Harvard Gazette, um estudo de 2008 publicado na Science mostrou que a proteína de um fóssil de T. rex de 68 milhões de anos se agrupava mais com a galinha e o avestruz entre os animais vivos."
+   ]
+  },
+  "ar": {
+   "title": "لو لم تنقرض الديناصورات، هل كنت ستوجد أصلًا؟",
+   "summary": "في عالم أخطأ فيه الكويكب الأرض، تفتح بابك فتجد ديناصورًا وزنه 8 أطنان أمامك مباشرة. يأخذك البروفيسور باي في هذا العالم دقيقةً بدقيقة، ويكشف لماذا لم تختفِ الديناصورات تمامًا.",
+   "facts": [
+    "بحسب ناشيونال جيوغرافيك، كان وزن التيرانوصور ريكس يصل إلى 8 أطنان، وكانت عضته تولّد ضغطًا يصل إلى 6 أطنان.",
+    "بحسب مجلة سميثسونيان، وجدت دراسة لكونيو كايهو من جامعة توهوكو نُشرت في Scientific Reports أن 13% فقط من سطح الأرض كان يحتوي على ما يكفي من الهيدروكربونات لحجب الشمس؛ ويقول كايهو إنه لو سقط الكويكب في أي مكان آخر تقريبًا لربما كانت الديناصورات لا تزال حية اليوم.",
+    "بحسب لايف ساينس، يوضح عالم الحفريات ستيف بروسات أنه لأكثر من 150 مليون سنة في عصر الديناصورات لم يصبح أي حيوان ثديي أكبر من الغرير.",
+    "بحسب لايف ساينس، يعتقد ستيف بروسات من جامعة إدنبرة أن الديناصورات الكبيرة كانت ستُبقي الثدييات صغيرة لملايين أخرى من السنين لو أخطأ الكويكب، ويقول بول سيرينو من جامعة شيكاغو إن البشر على الأرجح ما كانوا ليتطوروا أبدًا.",
+    "بحسب ناشيونال جيوغرافيك، الطيور ديناصورات، ويعيش اليوم أكثر من 10,000 نوع من الطيور.",
+    "بحسب هارفارد غازيت، وجدت دراسة نُشرت في مجلة Science عام 2008 أن بروتينًا من أحفورة تيرانوصور عمرها 68 مليون سنة كان الأقرب إلى الدجاج والنعام بين الحيوانات الحية."
+   ]
+  },
+  "hi": {
+   "title": "अगर डायनासोर खत्म न होते, तो क्या आप होते?",
+   "summary": "एक ऐसी दुनिया में जहाँ एस्टेरॉयड चूक गया, आप दरवाज़ा खोलते हैं और सामने 8 टन का डायनासोर खड़ा है। प्रोफ़ेसर पाई मिनट-दर-मिनट बताते हैं कि आगे क्या होगा, और यह भी कि डायनासोर पूरी तरह कभी गायब क्यों नहीं हुए।",
+   "facts": [
+    "नेशनल ज्योग्राफ़िक के अनुसार टी. रेक्स का वज़न 8 टन तक हो सकता था और उसका काटना 6 टन तक का दबाव डालता था।",
+    "स्मिथसोनियन के अनुसार तोहोकू विश्वविद्यालय के कुनियो काइहो के Scientific Reports में छपे अध्ययन में पाया गया कि धरती की सतह के सिर्फ़ 13% हिस्से में सूरज को ढकने लायक हाइड्रोकार्बन थे; काइहो के मुताबिक अगर एस्टेरॉयड लगभग कहीं और गिरता, तो डायनासोर आज भी ज़िंदा हो सकते थे।",
+    "लाइव साइंस के अनुसार जीवाश्म विज्ञानी स्टीव ब्रुसैट बताते हैं कि डायनासोरों के युग में 15 करोड़ (150 मिलियन) से ज़्यादा साल तक कोई भी स्तनधारी बिज्जू से बड़ा नहीं हुआ।",
+    "लाइव साइंस के अनुसार एडिनबर्ग विश्वविद्यालय के स्टीव ब्रुसैट मानते हैं कि अगर एस्टेरॉयड चूक जाता तो बड़े डायनासोर स्तनधारियों को कई मिलियन साल और छोटा ही रखते; शिकागो विश्वविद्यालय के पॉल सेरेनो के अनुसार इंसान शायद कभी विकसित ही नहीं होते।",
+    "नेशनल ज्योग्राफ़िक के अनुसार पक्षी डायनासोर ही हैं, और आज पक्षियों की 10,000 से ज़्यादा प्रजातियाँ जीवित हैं।",
+    "हार्वर्ड गज़ट के अनुसार 2008 में Science पत्रिका में छपे एक अध्ययन में 6.8 करोड़ (68 मिलियन) साल पुराने टी. रेक्स जीवाश्म का प्रोटीन जीवित जानवरों में सबसे ज़्यादा मुर्गी और शुतुरमुर्ग से मिलता पाया गया।"
+   ]
+  },
+  "id": {
+   "title": "Kalau Dinosaurus Tak Punah, Apakah Kamu Akan Ada?",
+   "summary": "Di dunia tempat asteroid itu meleset, kamu membuka pintu dan seekor dinosaurus seberat 8 ton berdiri tepat di depanmu. Profesor Pi mengajakmu melewatinya menit demi menit dan mengungkap mengapa dinosaurus tidak pernah benar-benar punah.",
+   "facts": [
+    "Menurut National Geographic, T. rex bisa berbobot hingga 8 ton, dan gigitannya menghasilkan tekanan hingga 6 ton.",
+    "Menurut Smithsonian, studi Kunio Kaiho dari Universitas Tohoku yang terbit di Scientific Reports menemukan bahwa hanya 13% permukaan Bumi yang mengandung cukup hidrokarbon untuk menutupi Matahari; menurut Kaiho, jika asteroid jatuh hampir di tempat lain mana pun, dinosaurus mungkin masih hidup hingga hari ini.",
+    "Menurut Live Science, paleontolog Steve Brusatte menjelaskan bahwa selama lebih dari 150 juta tahun di era dinosaurus, tidak ada mamalia yang tumbuh lebih besar dari seekor luak (badger).",
+    "Menurut Live Science, Steve Brusatte dari Universitas Edinburgh berpendapat bahwa jika asteroid meleset, dinosaurus besar akan membuat mamalia tetap kecil selama jutaan tahun lagi; Paul Sereno dari Universitas Chicago mengatakan manusia kemungkinan besar tidak akan pernah berevolusi.",
+    "Menurut National Geographic, burung adalah dinosaurus, dan saat ini ada lebih dari 10.000 spesies burung yang masih hidup.",
+    "Menurut Harvard Gazette, studi tahun 2008 di jurnal Science menemukan bahwa protein dari fosil T. rex berusia 68 juta tahun paling dekat dengan ayam dan burung unta di antara hewan yang hidup saat ini."
+   ]
+  },
+  "fr": {
+   "title": "Si les Dinosaures N'avaient Pas Disparu, Existerais-Tu ?",
+   "summary": "Dans un monde où l'astéroïde a raté la Terre, tu ouvres ta porte et un dinosaure de 8 tonnes se tient juste devant toi. Le Professeur Pi te fait vivre la scène minute par minute et révèle pourquoi les dinosaures n'ont jamais complètement disparu.",
+   "facts": [
+    "Selon National Geographic, le T. rex pouvait peser jusqu'à 8 tonnes et sa morsure exerçait une pression allant jusqu'à 6 tonnes.",
+    "Selon Smithsonian, une étude de Kunio Kaiho, de l'université de Tohoku, publiée dans Scientific Reports, a montré que seulement 13 % de la surface terrestre contenait assez d'hydrocarbures pour obscurcir le Soleil ; selon Kaiho, si l'astéroïde était tombé presque n'importe où ailleurs, les dinosaures pourraient encore vivre aujourd'hui.",
+    "Selon Live Science, le paléontologue Steve Brusatte explique que pendant plus de 150 millions d'années, à l'ère des dinosaures, aucun mammifère n'a dépassé la taille d'un blaireau.",
+    "Selon Live Science, Steve Brusatte, de l'université d'Édimbourg, pense que si l'astéroïde avait raté la Terre, les grands dinosaures auraient maintenu les mammifères petits pendant encore des millions d'années ; Paul Sereno, de l'université de Chicago, affirme que les humains n'auraient très probablement jamais évolué.",
+    "Selon National Geographic, les oiseaux sont des dinosaures, et plus de 10 000 espèces d'oiseaux vivent aujourd'hui.",
+    "Selon la Harvard Gazette, une étude publiée en 2008 dans Science a montré que la protéine d'un fossile de T. rex vieux de 68 millions d'années se rapprochait le plus de celle du poulet et de l'autruche parmi les animaux actuels."
+   ]
+  },
+  "de": {
+   "title": "Wären die Dinosaurier nicht ausgestorben, gäbe es dich dann?",
+   "summary": "In einer Welt, in der der Asteroid danebenging, öffnest du deine Tür und vor dir steht ein 8 Tonnen schwerer Dinosaurier. Professor Pi führt dich Minute für Minute hindurch und verrät, warum die Dinosaurier nie ganz verschwunden sind.",
+   "facts": [
+    "Laut National Geographic konnte T. rex bis zu 8 Tonnen wiegen, und sein Biss erzeugte einen Druck von bis zu 6 Tonnen.",
+    "Laut Smithsonian ergab eine in Scientific Reports veröffentlichte Studie von Kunio Kaiho von der Universität Tohoku, dass nur 13 % der Erdoberfläche genug Kohlenwasserstoffe enthielten, um die Sonne zu verdunkeln; hätte der Asteroid fast irgendwo anders eingeschlagen, könnten die Dinosaurier laut Kaiho heute noch leben.",
+    "Laut Live Science erklärt der Paläontologe Steve Brusatte, dass im Zeitalter der Dinosaurier über 150 Millionen Jahre lang kein Säugetier größer als ein Dachs wurde.",
+    "Laut Live Science glaubt Steve Brusatte von der Universität Edinburgh, dass große Dinosaurier die Säugetiere noch viele Millionen Jahre klein gehalten hätten, wenn der Asteroid danebengegangen wäre; Paul Sereno von der University of Chicago sagt, dass sich der Mensch höchstwahrscheinlich nie entwickelt hätte.",
+    "Laut National Geographic sind Vögel Dinosaurier, und heute leben mehr als 10.000 Vogelarten.",
+    "Laut Harvard Gazette ergab eine 2008 in Science veröffentlichte Studie, dass Protein aus einem 68 Millionen Jahre alten T.-rex-Fossil unter den heutigen Tieren am engsten mit Huhn und Strauß gruppiert war."
+   ]
+  },
+  "ru": {
+   "title": "Если бы динозавры не вымерли, существовал бы ты?",
+   "summary": "В мире, где астероид промахнулся, ты открываешь дверь, а перед тобой стоит 8-тонный динозавр. Профессор Пи проведёт тебя через это минута за минутой и расскажет, почему динозавры так и не исчезли полностью.",
+   "facts": [
+    "По данным National Geographic, тираннозавр весил до 8 тонн, а его укус создавал давление до 6 тонн.",
+    "По данным Smithsonian, исследование Кунио Кайхо из Университета Тохоку, опубликованное в Scientific Reports, показало, что лишь 13% поверхности Земли содержали достаточно углеводородов, чтобы закрыть Солнце; по словам Кайхо, упади астероид почти в любом другом месте, динозавры могли бы жить и сегодня.",
+    "По данным Live Science, палеонтолог Стив Брусатт рассказывает, что более 150 миллионов лет в эпоху динозавров ни одно млекопитающее не было крупнее барсука.",
+    "По данным Live Science, Стив Брусатт из Эдинбургского университета считает, что если бы астероид промахнулся, крупные динозавры ещё многие миллионы лет не давали бы млекопитающим вырасти; Пол Серено из Чикагского университета говорит, что человек, скорее всего, так и не появился бы.",
+    "По данным National Geographic, птицы — это динозавры, и сегодня на Земле живёт более 10 000 видов птиц.",
+    "По данным Harvard Gazette, исследование 2008 года в журнале Science показало, что белок из окаменелости тираннозавра возрастом 68 миллионов лет среди современных животных ближе всего к белкам курицы и страуса."
+   ]
+  },
+  "az": {
+   "title": "Dinozavrlar Yox Olmasaydı, Sən Var Olardınmı?",
+   "summary": "Asteroidin hədəfi vurmadığı bir dünyada qapını açırsan və qarşında 8 tonluq bir dinozavr dayanıb. Professor Pi səni dəqiqə-dəqiqə bu dünyada gəzdirir və dinozavrların əslində niyə tamamilə yox olmadığını açıqlayır.",
+   "facts": [
+    "National Geographic-ə görə T. rex 8 tona qədər çəkiyə çata bilirdi və dişləməsi 6 tona qədər təzyiq yaradırdı.",
+    "Smithsonian-a görə Tohoku Universitetindən Kunio Kaihonun Scientific Reports jurnalında dərc olunan araşdırması göstərdi ki, Yer səthinin yalnız 13%-i Günəşi qaraltmağa kifayət edəcək qədər karbohidrogen ehtiva edirdi; Kaihoya görə asteroid demək olar ki, başqa istənilən yerə düşsəydi, dinozavrlar bu gün də yaşaya bilərdi.",
+    "Live Science-ə görə paleontoloq Stiv Brusatte bildirir ki, dinozavrlar dövründə 150 milyon ildən çox müddət ərzində heç bir məməli porsuqdan böyük olmayıb.",
+    "Live Science-ə görə Edinburq Universitetindən Stiv Brusatte hesab edir ki, asteroid yan keçsəydi, iri dinozavrlar məməliləri daha milyonlarla il kiçik saxlayardı; Çikaqo Universitetindən Pol Sereno isə deyir ki, insan çox güman ki, heç vaxt təkamül keçirməzdi.",
+    "National Geographic-ə görə quşlar dinozavrdır və bu gün 10.000-dən çox quş növü yaşayır.",
+    "Harvard Gazette-ə görə 2008-ci ildə Science jurnalında dərc olunan araşdırmada 68 milyon illik T. rex qalığından alınan zülal indiki heyvanlar arasında ən çox toyuq və dəvəquşu ilə qruplaşdı."
+   ]
+  }
+ }
+}
