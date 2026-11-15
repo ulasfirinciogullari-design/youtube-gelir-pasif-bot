@@ -1,22 +1,22 @@
 {
- "started": "2026-11-15T08:45:12+00:00",
+ "started": "2026-11-15T11:32:56+00:00",
  "deneme": false,
  "threads": 200,
- "reply_threads_read": 1,
+ "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 5,
+ "sent_last_24h": 6,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugx_bke0FejGMjxw3G54AaABAg.AdC1K5ambVrAdDoBhJHjB7",
-   "kind": "answer",
-   "video": "0ZGe7ZLwk3w",
-   "comment": "Hiçte kısa değildi abartmayalım kedi düşmanı değilim beslediğim bir çok kedim var iyide bakıyorum doğasını bozmadan sonuçta süs hayvanı değil her canlının bir g",
-   "reply": "@tornado01001 Kedilere bu kadar özen göstermeniz çok güzel! Onların doğasına uygun beslenmeleri ve sağlıklı olmaları gerçekten çok önemli. 🐾",
+   "id": "Ugw-8zd73-__tH7rPJF4AaABAg",
+   "kind": "comment",
+   "video": "eFCmdx3yqjI",
+   "comment": "İlk",
+   "reply": "Hızlı olan kazanır! 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-15T08:45:23+00:00"
+ "finished": "2026-11-15T11:33:00+00:00"
 }
