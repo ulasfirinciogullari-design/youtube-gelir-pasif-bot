@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
   "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/",
   "2026-11-03T14": "7xjRSwfX83E https://www.instagram.com/reel/DfSDDsGEquO/",
@@ -48,16 +47,17 @@
   "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/",
   "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/",
   "2026-11-15T10": "gWEa3MkJvmk https://www.instagram.com/reel/DfwhEZRkiqc/",
-  "2026-11-15T14": "K01ltjDN7tc https://www.instagram.com/reel/Dfw8kdHHNHT/"
+  "2026-11-15T14": "K01ltjDN7tc https://www.instagram.com/reel/Dfw8kdHHNHT/",
+  "2026-11-15T18": "0ZGe7ZLwk3w https://www.instagram.com/reel/DfxYCJLnOYp/"
  },
  "nobet": {
   "basladi": "2026-11-15T13:56:34+00:00",
   "run": "43720727893",
-  "tur": 218,
+  "tur": 245,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-15T17:33:35+00:00"
+  "son_tur": "2026-11-15T18:01:18+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -458,6 +458,13 @@
    "at": 1794751279,
    "title": "Hamileyken kediyle aynı evde yaşamak mümkün mü? 🐱",
    "topic_id": "mk-c0122"
+  },
+  "0ZGe7ZLwk3w": {
+   "media_id": "18063946490566263",
+   "url": "https://www.instagram.com/reel/DfxYCJLnOYp/",
+   "at": 1794765678,
+   "title": "Kedinin ciğere bakışına kanma, fazlası onu sakatlar 🐱",
+   "topic_id": "mk-c0141"
   }
  }
 }
