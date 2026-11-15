@@ -1,18 +1,72 @@
 {
- "started": "2026-11-15T17:07:28+00:00",
- "mod": "igbolum",
- "gate": "instagram: n016",
+ "started": "2026-11-15T18:06:37+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
- "chars": 380,
- "instagram": {
-  "anahtar_bitis": "2027-01-08T07:30+00:00",
-  "media_id": "17989062780093610",
-  "url": "https://www.instagram.com/reel/DfxSEGgjzMh/",
-  "at": 1794762548.71018
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "69",
+  "videos": "85"
  },
- "log": [
-  "Instagram: https://www.instagram.com/reel/DfxSEGgjzMh/"
+ "credits_before": [
+  105232,
+  613902
  ],
- "finished": "2026-11-15T17:09:08+00:00"
+ "kuyruk": {
+  "dosya": "20261115-2-y023.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "y023",
+  "series": "Ya Olsaydı?",
+  "q": "Uzayda ses yayılabilseydi ne duyardık?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": false,
+ "chars": 367,
+ "duration": 25.5,
+ "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
+ "url": "https://youtube.com/shorts/2kMaKl9jUoc",
+ "recent_status": {
+  "y059": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "930",
+   "reason": null
+  },
+  "y060": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "929",
+   "reason": null
+  },
+  "n017": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "347",
+   "reason": null
+  },
+  "y028": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "84",
+   "reason": null
+  },
+  "y023": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  105232,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261115-2-y023.json Uzayda ses yayılabilseydi ne duyardık? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-15T18:07:46+00:00"
 }

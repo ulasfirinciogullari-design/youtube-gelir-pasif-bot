@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "229",
+    "views": "230",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "420",
+    "views": "421",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1036",
+    "views": "1039",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "580",
+    "views": "583",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "664",
+    "views": "667",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "938",
+    "views": "941",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "633",
+    "views": "645",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "106",
+    "views": "113",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "824",
+    "views": "842",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "924",
+    "views": "930",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "621",
+    "views": "929",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "229",
+    "views": "347",
     "reason": null
    }
   },
@@ -2521,6 +2521,37 @@
    "at": 1794751751.159855,
    "chars": 820,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "84",
+    "reason": null
+   }
+  },
+  {
+   "id": "y023",
+   "video_id": "2kMaKl9jUoc",
+   "url": "https://youtube.com/shorts/2kMaKl9jUoc",
+   "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Sound Traveled Through Space, What Would It Do to Your Ears?",
+    "es": "Si el Sonido Viajara por el Espacio, ¿Qué Les Pasaría a Tus Oídos?",
+    "pt": "Se o Som Viajasse pelo Espaço, o Que Aconteceria com Seus Ouvidos?",
+    "ar": "لو انتقل الصوت عبر الفضاء، ماذا سيحدث لأذنيك؟",
+    "hi": "अगर अंतरिक्ष में आवाज़ फैलती, तो आपके कानों का क्या होता?",
+    "id": "Jika Suara Merambat di Luar Angkasa, Apa Jadinya Telingamu?",
+    "fr": "Si le Son Voyageait dans l'Espace, Que Subiraient Tes Oreilles ?",
+    "de": "Gäbe es Schall im All, was wäre mit deinen Ohren?",
+    "ru": "Если бы звук распространялся в космосе, что стало бы с твоими ушами?",
+    "az": "Kosmosda Səs Yayılsaydı, Qulaqlarına Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794766065.284118,
+   "chars": 367,
+   "ilk": false,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2613,7 +2644,8 @@
   "y059",
   "y060",
   "n017",
-  "y028"
+  "y028",
+  "y023"
  ],
  "extra": [
   {
@@ -2679,14 +2711,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-08T10:07:56+00:00",
-   "mod": "saatlik",
-   "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
-   "url": "https://youtube.com/shorts/4J5Gbwz3y4E",
-   "duration": 26.3,
-   "chars": 397
-  },
   {
    "finished": "2026-11-08T10:24:51+00:00",
    "mod": "igbolum",
@@ -3102,6 +3126,14 @@
    "mod": "igbolum",
    "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
    "chars": 380
+  },
+  {
+   "finished": "2026-11-15T18:07:46+00:00",
+   "mod": "saatlik",
+   "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
+   "url": "https://youtube.com/shorts/2kMaKl9jUoc",
+   "duration": 25.5,
+   "chars": 367
   }
  ],
  "last_fail": 1794410324.353765,
