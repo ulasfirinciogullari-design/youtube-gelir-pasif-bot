@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-02T10": "v9Ob1P9LBws https://www.instagram.com/reel/DfPCxGuAFrt/",
   "2026-11-02T14": "MQkEdpiR0M0 https://www.instagram.com/reel/DfPePBGEtae/",
   "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
   "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/",
@@ -48,16 +47,17 @@
   "2026-11-14T10": "oSyRiH0vkBI https://www.instagram.com/reel/Dft8SpZlNoE/",
   "2026-11-14T14": "NjtcYi4kzXA https://www.instagram.com/reel/DfuXvQSDy-Z/",
   "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/",
-  "2026-11-15T10": "gWEa3MkJvmk https://www.instagram.com/reel/DfwhEZRkiqc/"
+  "2026-11-15T10": "gWEa3MkJvmk https://www.instagram.com/reel/DfwhEZRkiqc/",
+  "2026-11-15T14": "K01ltjDN7tc https://www.instagram.com/reel/Dfw8kdHHNHT/"
  },
  "nobet": {
   "basladi": "2026-11-15T13:56:34+00:00",
   "run": "43720727893",
-  "tur": 1,
+  "tur": 5,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-15T13:56:35+00:00"
+  "son_tur": "2026-11-15T14:01:19+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -451,6 +451,13 @@
    "at": 1794736860,
    "title": "Timsah gözyaşı gerçek: timsahlar yemek yerken ağlıyor 🐊",
    "topic_id": "mk-c0139"
+  },
+  "K01ltjDN7tc": {
+   "media_id": "18294422743293338",
+   "url": "https://www.instagram.com/reel/Dfw8kdHHNHT/",
+   "at": 1794751279,
+   "title": "Hamileyken kediyle aynı evde yaşamak mümkün mü? 🐱",
+   "topic_id": "mk-c0122"
   }
  }
 }
