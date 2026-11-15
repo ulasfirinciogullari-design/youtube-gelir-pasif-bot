@@ -1916,7 +1916,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "388",
+    "views": "389",
     "reason": null
    }
   },
@@ -1976,7 +1976,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1634",
+    "views": "1636",
     "reason": null
    }
   },
@@ -2006,7 +2006,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "932",
+    "views": "930",
     "reason": null
    }
   },
@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "225",
+    "views": "229",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "418",
+    "views": "419",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "300",
+    "views": "299",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1039",
+    "views": "1034",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "572",
+    "views": "574",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "661",
+    "views": "662",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "932",
+    "views": "942",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "930",
+    "views": "933",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "923",
+    "views": "928",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "536",
+    "views": "612",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "91",
+    "views": "103",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "710",
+    "views": "779",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "471",
+    "views": "921",
     "reason": null
    }
   },
@@ -2459,6 +2459,37 @@
    "at": 1794679722.3230033,
    "chars": 803,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "620",
+    "reason": null
+   }
+  },
+  {
+   "id": "n017",
+   "video_id": "YgY6Jzda0Hk",
+   "url": "https://youtube.com/shorts/YgY6Jzda0Hk",
+   "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Hot Is a Lightning Bolt, Really?",
+    "es": "¿Qué Tan Caliente Es un Rayo en Realidad?",
+    "pt": "Quão Quente É um Raio de Verdade?",
+    "ar": "ما مدى سخونة الصاعقة في الحقيقة؟",
+    "hi": "आकाशीय बिजली असल में कितनी गर्म होती है?",
+    "id": "Seberapa Panas Sebenarnya Sambaran Petir?",
+    "fr": "Quelle Est la Vraie Température d'un Éclair ?",
+    "de": "Wie Heiß Ist ein Blitz Wirklich?",
+    "ru": "Насколько Горяча Молния на Самом Деле?",
+    "az": "Bir İldırım Əslində Nə Qədər İstidir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794737256.9576538,
+   "chars": 364,
+   "ilk": false,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2549,7 +2580,8 @@
   "y024",
   "y056",
   "y059",
-  "y060"
+  "y060",
+  "n017"
  ],
  "extra": [
   {
@@ -2615,12 +2647,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-07T17:09:13+00:00",
-   "mod": "igbolum",
-   "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
-   "chars": 360
-  },
   {
    "finished": "2026-11-07T18:07:40+00:00",
    "mod": "saatlik",
@@ -3039,6 +3065,14 @@
    "mod": "igbolum",
    "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
    "chars": 362
+  },
+  {
+   "finished": "2026-11-15T10:07:38+00:00",
+   "mod": "saatlik",
+   "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
+   "url": "https://youtube.com/shorts/YgY6Jzda0Hk",
+   "duration": 23.9,
+   "chars": 364
   }
  ],
  "last_fail": 1794410324.353765,
