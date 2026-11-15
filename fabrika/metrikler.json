@@ -1,5 +1,5 @@
 {
- "at": "2026-11-14T22:59:34+00:00",
+ "at": "2026-11-15T02:42:02+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -453,7 +453,7 @@
    "baslik": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu? 😳"
   },
   "WR_w6VSOY-s": {
-   "view": 572,
+   "view": 573,
    "like": 2,
    "comment": 0,
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
@@ -465,49 +465,49 @@
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
   },
   "RKGn39tzpn4": {
-   "view": 941,
+   "view": 942,
    "like": 6,
    "comment": 2,
    "baslik": "Hiç Bakterin Olmasaydı Ne Olurdu? 😳"
   },
   "2F-iAcfk3X4": {
-   "view": 931,
+   "view": 932,
    "like": 4,
    "comment": 0,
    "baslik": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu? 😳"
   },
   "325eJNknZqk": {
-   "view": 926,
+   "view": 927,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 544,
+   "view": 586,
    "like": 7,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
   },
   "Z7Pj4q9UTCs": {
-   "view": 91,
+   "view": 96,
    "like": 0,
    "comment": 0,
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
   },
   "5X21vqv32gg": {
-   "view": 755,
+   "view": 777,
    "like": 5,
    "comment": 0,
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 900,
+   "view": 913,
    "like": 3,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 454,
+   "view": 547,
    "like": 5,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -1376,12 +1376,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi?",
-   "sources": {
-    "SHORTS": 965,
-    "YT_SEARCH": 40,
-    "YT_CHANNEL": 4,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 232,
    "devam_yuzde": 23.0
   },
@@ -2060,9 +2055,9 @@
   },
   {
    "day": "2026-10-16",
-   "views": 1616,
-   "engagedViews": 768,
-   "estimatedMinutesWatched": 283,
+   "views": 1674,
+   "engagedViews": 773,
+   "estimatedMinutesWatched": 285,
    "subscribersGained": 7
   },
   {
@@ -2081,9 +2076,9 @@
   },
   {
    "day": "2026-10-19",
-   "views": 3352,
-   "engagedViews": 1718,
-   "estimatedMinutesWatched": 534,
+   "views": 3364,
+   "engagedViews": 1721,
+   "estimatedMinutesWatched": 535,
    "subscribersGained": 4
   },
   {
@@ -2116,9 +2111,9 @@
   },
   {
    "day": "2026-10-24",
-   "views": 785,
-   "engagedViews": 376,
-   "estimatedMinutesWatched": 107,
+   "views": 790,
+   "engagedViews": 377,
+   "estimatedMinutesWatched": 108,
    "subscribersGained": 1
   },
   {
