@@ -330,8 +330,20 @@ function k9House(x, gy, w, t, o = {}) {
   return [dx + dw / 2, dy];
 }
 const K9S = { gy: 1190, houses: [[200, '#ecd8b4', '#b8463e'], [620, '#d8c0a0', '#2f5a7a'], [1040, '#e6cfae', '#3f6a3a'], [1460, '#ecd8b4', '#8a4a2a']] };
+// duskSky only paints x 0..W; the street shot pans right, so the sky and the hills here run wider (else the
+// uncovered strip keeps the previous frames)
+function k9Sky(t, horizon) {
+  const g = ctx.createLinearGradient(0, 0, 0, horizon);
+  g.addColorStop(0, DUSK.skyTop); g.addColorStop(.55, DUSK.skyMid); g.addColorStop(1, DUSK.skyLow);
+  ctx.fillStyle = g; ctx.fillRect(-600, -300, 3000, horizon + 304);
+  glow(180, horizon - 120, 420, 'rgba(255,214,150,1)', .55);
+  circle(180, horizon - 110, 60, 'rgba(255,236,200,.85)');
+  ctx.fillStyle = DUSK.hill; ctx.beginPath(); ctx.moveTo(-600, horizon);
+  for (let x = -600; x <= 2400; x += 60) ctx.lineTo(x, horizon - 70 - 40 * Math.sin(x * .006 + 1) - 20 * Math.sin(x * .017));
+  ctx.lineTo(2400, horizon); ctx.closePath(); ctx.fill();
+}
 function k9Street(t, opens) {
-  duskSky(t, 1000);
+  k9Sky(t, 1000);
   let g = ctx.createLinearGradient(0, 1000, 0, K9S.gy); g.addColorStop(0, '#3e4a34'); g.addColorStop(1, DUSK.lawn2);
   ctx.fillStyle = g; ctx.fillRect(-600, 1000, 3000, K9S.gy - 1000);
   palm(-60, 1010, 380, t, .9, 3); palm(830, 1000, 420, t, 1, 1); palm(1700, 1010, 380, t, .9, 2);
@@ -542,7 +554,7 @@ Object.assign(SAHNE, {
       }
       if (gone > 0) sparks(400, 640, t, 20, 260, gone);
       plate(K9ROW2, 540, 488, 46, back(prog(lt, 0, .3)) * (1 - prog(t, ts - .45, ts - .3)), C.gold);  // the phrase turns into the coin
-      plate('“Param yok” bahanesi silinir', 540, 1330, 50, back(prog(t, ts - .05, ts + .3)), C.gold);
+      plate('“Param yok” bahanesi silinir', 540, 1330, 50, back(prog(t, te + .15, te + .5)), C.gold);
       return;
     }
     // back at the door: "Hayır..." -> CİMRİ? -> the note goes in
