@@ -294,7 +294,7 @@ const VIS = {
     bg(V.bg || 'space', t);
     if (!KAR) return VIS.question(V, L, t, lt);
     const talk = mouthOpen(t, L, 'nesne'), mood = V.mood || 'normal';
-    let x = 540, y = 720 + Math.sin(t * 2.2) * 14 - talk * 10, r = 250 * back(prog(lt, 0, .45));
+    let x = 540, y = 730 + Math.sin(t * 2.2) * 14 - talk * 10, r = 300 * back(prog(lt, 0, .45));
     if (mood === 'kizgin') { x += Math.sin(t * 50) * 6; }
     if (V.e) emoji(V.e, 820, 1010 + Math.sin(t * 3) * 10, 170 * back(prog(lt, .2, .6)));  // a prop: tea glass, suitcase...
     if (KAR.b) body(KAR.b, x, y, r, t);
@@ -667,7 +667,7 @@ window.draw = function (t) {
   titleBar(t);
   if (window.COVER) return;
   nameTag(t, line);
-  if (KAR && line.who === 'nesne' && t >= line.t0 - .05 && t <= line.t1 + .3) pill((KAR.ad || '').toLocaleUpperCase('tr'), 540, LY.subs - 112, 34, C.orange, C.ink);
+  if (KAR && line.who === 'nesne' && t >= line.t0 - .05 && t <= line.t1 + .3) pill((KAR.ad || '').toLocaleUpperCase('tr'), 540, LY.subs - 118, 44, C.orange, C.ink);
   subtitles(t, t >= line.t0 - .05 ? line : null);
 };
 // cover image: the scene of line `li` at its key moment, big title, both characters
