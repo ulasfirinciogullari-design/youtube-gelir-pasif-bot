@@ -2744,14 +2744,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-08T14:07:51+00:00",
-   "mod": "saatlik",
-   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
-   "url": "https://youtube.com/shorts/IVKSORUOwqk",
-   "duration": 24.8,
-   "chars": 369
-  },
-  {
    "finished": "2026-11-08T17:09:01+00:00",
    "mod": "igbolum",
    "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
@@ -3165,6 +3157,12 @@
    "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
    "duration": 32.0,
    "chars": 375
+  },
+  {
+   "finished": "2026-11-16T13:19:50+00:00",
+   "mod": "igbolum",
+   "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+   "chars": 803
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3499,6 +3497,11 @@
     "media_id": "17943589692395392",
     "url": "https://www.instagram.com/reel/Dfy_2iSATwl/",
     "at": 1794820110.0154254
+   },
+   "y060": {
+    "media_id": "18109888274206258",
+    "url": "https://www.instagram.com/reel/DfzckJMAlrP/",
+    "at": 1794835190.2263505
    }
   },
   "eski": [

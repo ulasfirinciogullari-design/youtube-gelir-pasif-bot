@@ -1,15 +1,21 @@
 {
- "started": "2026-11-16T13:12:43+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-16T13:16:35+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y060",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
- "chars": 375,
- "duration": 32.0,
- "deneme": "fabrika/deneme/ornek-y018.mp4",
+ "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+ "chars": 803,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18109888274206258",
+  "url": "https://www.instagram.com/reel/DfzckJMAlrP/",
+  "at": 1794835190.2263505
+ },
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "log": [],
- "finished": "2026-11-16T13:13:49+00:00"
+ "log": [
+  "Instagram: https://www.instagram.com/reel/DfzckJMAlrP/"
+ ],
+ "finished": "2026-11-16T13:19:50+00:00"
 }
