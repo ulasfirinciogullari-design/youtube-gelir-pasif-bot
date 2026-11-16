@@ -2712,13 +2712,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-08T10:24:51+00:00",
-   "mod": "igbolum",
-   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
-   "error": "IGError: Instagram videoyu işleyemedi: ERROR",
-   "chars": 372
-  },
-  {
    "finished": "2026-11-08T10:32:16+00:00",
    "mod": "igbolum",
    "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
@@ -3134,6 +3127,12 @@
    "url": "https://youtube.com/shorts/2kMaKl9jUoc",
    "duration": 25.5,
    "chars": 367
+  },
+  {
+   "finished": "2026-11-16T09:08:30+00:00",
+   "mod": "igbolum",
+   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+   "chars": 382
   }
  ],
  "last_fail": 1794410324.353765,
@@ -3463,6 +3462,11 @@
     "media_id": "17989062780093610",
     "url": "https://www.instagram.com/reel/DfxSEGgjzMh/",
     "at": 1794762548.71018
+   },
+   "y059": {
+    "media_id": "17943589692395392",
+    "url": "https://www.instagram.com/reel/Dfy_2iSATwl/",
+    "at": 1794820110.0154254
    }
   },
   "eski": [

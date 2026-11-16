@@ -1,72 +1,19 @@
 {
- "started": "2026-11-15T18:06:37+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-16T09:06:47+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y059",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "69",
-  "videos": "85"
+ "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+ "chars": 382,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "17943589692395392",
+  "url": "https://www.instagram.com/reel/Dfy_2iSATwl/",
+  "at": 1794820110.0154254
  },
- "credits_before": [
-  105232,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261115-2-y023.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y023",
-  "series": "Ya Olsaydı?",
-  "q": "Uzayda ses yayılabilseydi ne duyardık?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 367,
- "duration": 25.5,
- "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
- "url": "https://youtube.com/shorts/2kMaKl9jUoc",
- "recent_status": {
-  "y059": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "930",
-   "reason": null
-  },
-  "y060": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "929",
-   "reason": null
-  },
-  "n017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "347",
-   "reason": null
-  },
-  "y028": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "84",
-   "reason": null
-  },
-  "y023": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  105232,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261115-2-y023.json Uzayda ses yayılabilseydi ne duyardık? (Ya Olsaydı?)"
+  "Instagram anahtarı yenilendi",
+  "Instagram: https://www.instagram.com/reel/Dfy_2iSATwl/"
  ],
- "finished": "2026-11-15T18:07:46+00:00"
+ "finished": "2026-11-16T09:08:30+00:00"
 }
