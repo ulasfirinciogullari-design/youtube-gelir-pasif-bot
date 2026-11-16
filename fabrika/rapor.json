@@ -1,10 +1,15 @@
 {
- "started": "2026-11-16T13:06:55+00:00",
- "mod": "igbolum",
- "gate": "instagram: y060",
+ "started": "2026-11-16T13:12:43+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "error": "RuntimeError: ElevenLabs ses üretmedi (401): {\"detail\":{\"type\":\"payment_required\",\"code\":\"payment_issue\",\"message\":\"Your subscription has a failed or incomplete payment. Complete the latest invoice to continue usage.\",\"status\":\"payment_issue\",\"request_id\":\"3687347a8570dbe4e925b8a23eaeb581\"}}",
- "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 502, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 368, in ig_bolum\n    timings, mix, chars = ses.make(ep, WORK)\n                          ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 199, in make\n    mp3, al = tts(say, v, cache)\n              ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 104, in tts\n    raise RuntimeError(f\"ElevenLabs ses üretmedi ({r.status_code}): {r.text[:300]}\")\nRuntimeError: ElevenLabs ses üretmedi (401): {\"detail\":{\"type\":\"payment_required\",\"code\":\"payment_issue\",\"message\":\"Your subscription has a failed or incomplete payment. Complete the latest invoice to continue usage.\",\"status\":\"payment_issue\",\"request_id\":\"3687347a8570dbe4e925b8a23eaeb581\"}}\n",
+ "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+ "chars": 375,
+ "duration": 32.0,
+ "deneme": "fabrika/deneme/ornek-y018.mp4",
+ "warnings": [
+  "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
+ ],
  "log": [],
- "finished": "2026-11-16T13:06:58+00:00"
+ "finished": "2026-11-16T13:13:49+00:00"
 }
