@@ -1,19 +1,72 @@
 {
- "started": "2026-11-16T09:06:47+00:00",
- "mod": "igbolum",
- "gate": "instagram: y059",
+ "started": "2026-11-16T10:07:05+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
- "chars": 382,
- "instagram": {
-  "anahtar_bitis": "2027-01-15T09:07+00:00",
-  "media_id": "17943589692395392",
-  "url": "https://www.instagram.com/reel/Dfy_2iSATwl/",
-  "at": 1794820110.0154254
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "69",
+  "videos": "86"
  },
- "log": [
-  "Instagram anahtarı yenilendi",
-  "Instagram: https://www.instagram.com/reel/Dfy_2iSATwl/"
+ "credits_before": [
+  106107,
+  613902
  ],
- "finished": "2026-11-16T09:08:30+00:00"
+ "kuyruk": {
+  "dosya": "20261115-3-n018.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "n018",
+  "series": "Ne Kadar Büyük?",
+  "q": "Mars ne kadar uzak?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": true,
+ "chars": 440,
+ "duration": 30.3,
+ "title": "Mars Gerçekte Ne Kadar Uzak?",
+ "url": "https://youtube.com/shorts/JViBEWB18kw",
+ "recent_status": {
+  "y060": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "980",
+   "reason": null
+  },
+  "n017": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "473",
+   "reason": null
+  },
+  "y028": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "124",
+   "reason": null
+  },
+  "y023": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "82",
+   "reason": null
+  },
+  "n018": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  106214,
+  613902
+ ],
+ "log": [
+  "Kuyruktan: 20261115-3-n018.json Mars ne kadar uzak? (Ne Kadar Büyük?)"
+ ],
+ "finished": "2026-11-16T10:08:01+00:00"
 }

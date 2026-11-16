@@ -2036,7 +2036,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "230",
+    "views": "233",
     "reason": null
    }
   },
@@ -2066,7 +2066,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "421",
+    "views": "422",
     "reason": null
    }
   },
@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "299",
+    "views": "300",
     "reason": null
    }
   },
@@ -2126,7 +2126,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "90",
+    "views": "89",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1039",
+    "views": "1042",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "583",
+    "views": "591",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "667",
+    "views": "678",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "947",
+    "views": "950",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "934",
+    "views": "932",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "941",
+    "views": "947",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "645",
+    "views": "652",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "113",
+    "views": "120",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "842",
+    "views": "871",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "930",
+    "views": "932",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "929",
+    "views": "980",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "347",
+    "views": "473",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "84",
+    "views": "124",
     "reason": null
    }
   },
@@ -2552,6 +2552,37 @@
    "at": 1794766065.284118,
    "chars": 367,
    "ilk": false,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "82",
+    "reason": null
+   }
+  },
+  {
+   "id": "n018",
+   "video_id": "JViBEWB18kw",
+   "url": "https://youtube.com/shorts/JViBEWB18kw",
+   "title": "Mars Gerçekte Ne Kadar Uzak?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Far Away Is Mars, Really?",
+    "es": "¿A Qué Distancia Está Marte Realmente?",
+    "pt": "A Que Distância Marte Está de Verdade?",
+    "ar": "كم يبعد المريخ عنا في الحقيقة؟",
+    "hi": "मंगल ग्रह असल में कितनी दूर है?",
+    "id": "Seberapa Jauh Mars Sebenarnya?",
+    "fr": "À Quelle Distance Se Trouve Vraiment Mars ?",
+    "de": "Wie weit ist der Mars wirklich entfernt?",
+    "ru": "Насколько далеко на самом деле Марс?",
+    "az": "Mars Əslində Nə Qədər Uzaqdır?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794823680.0421834,
+   "chars": 440,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2645,7 +2676,8 @@
   "y060",
   "n017",
   "y028",
-  "y023"
+  "y023",
+  "n018"
  ],
  "extra": [
   {
@@ -2711,12 +2743,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-08T10:32:16+00:00",
-   "mod": "igbolum",
-   "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
-   "chars": 372
-  },
   {
    "finished": "2026-11-08T12:08:15+00:00",
    "mod": "saatlik",
@@ -3133,6 +3159,14 @@
    "mod": "igbolum",
    "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
    "chars": 382
+  },
+  {
+   "finished": "2026-11-16T10:08:01+00:00",
+   "mod": "saatlik",
+   "title": "Mars Gerçekte Ne Kadar Uzak?",
+   "url": "https://youtube.com/shorts/JViBEWB18kw",
+   "duration": 30.3,
+   "chars": 440
   }
  ],
  "last_fail": 1794410324.353765,
