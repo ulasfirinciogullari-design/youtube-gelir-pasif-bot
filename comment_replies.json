@@ -323,6 +323,12 @@
    "r",
    "Ugw-8zd73-__tH7rPJF4AaABAg.AdE9JrCEUPsAdEBXTwmUND",
    "UCZ_aI6DcHcK0BTY_d8l7Wbg"
+  ],
+  "UgydHqC_ddny1_RU9YR4AaABAg": [
+   1794818712,
+   "r",
+   "UgydHqC_ddny1_RU9YR4AaABAg.AdGSYQXfs26AdGT7uUTkZS",
+   "UCiKORu2UzcPH19iVWTXg3PQ"
   ]
  },
  "tracked": {
@@ -455,6 +461,11 @@
    "at": 1794742376,
    "n": 1,
    "reply": "Hızlı olan kazanır! 😉"
+  },
+  "UgydHqC_ddny1_RU9YR4AaABAg": {
+   "at": 1794818712,
+   "n": 1,
+   "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉"
   }
  },
  "channel": {
@@ -462,12 +473,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792680313,
-   "video": "7j-kXv3xblQ",
-   "comment": "İkisideeee",
-   "reply": "@hakkımıistiyorum İkisi de çok ilginç gerçekten! Kuşların bacak yapısı insanlardan çok farklı, bu yüzden bazen yanıltıcı olabiliyor. 🦢"
-  },
   {
    "at": 1792680313,
    "video": "fI8aO5_Nxug",
@@ -701,6 +706,12 @@
    "video": "eFCmdx3yqjI",
    "comment": "İlk",
    "reply": "Hızlı olan kazanır! 😉"
+  },
+  {
+   "at": 1794818712,
+   "video": "NjtcYi4kzXA",
+   "comment": "Ben bilemem ama kayınvalidem horoz yok tavukları var",
+   "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉"
   }
  ]
 }

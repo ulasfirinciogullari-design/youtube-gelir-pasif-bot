@@ -1,22 +1,22 @@
 {
- "started": "2026-11-15T11:32:56+00:00",
+ "started": "2026-11-16T08:45:12+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 6,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugw-8zd73-__tH7rPJF4AaABAg",
+   "id": "UgydHqC_ddny1_RU9YR4AaABAg",
    "kind": "comment",
-   "video": "eFCmdx3yqjI",
-   "comment": "İlk",
-   "reply": "Hızlı olan kazanır! 😉",
+   "video": "NjtcYi4kzXA",
+   "comment": "Ben bilemem ama kayınvalidem horoz yok tavukları var",
+   "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-15T11:33:00+00:00"
+ "finished": "2026-11-16T08:45:17+00:00"
 }
