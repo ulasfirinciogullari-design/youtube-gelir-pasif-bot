@@ -633,6 +633,12 @@
     "r",
     "Biber gazındaki kapsaisin konsantrasyonu gerçekten de çok yüksektir ve Pepper X ",
     "dc937b598926"
+   ],
+   "18124777141989898": [
+    1794852841.660342,
+    "r",
+    "Yok artık, insan vücudu o kadar kolay pes etmez ama 200 yıl kalp için bayağı yor",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -719,6 +725,12 @@
     "kind": "yorum",
     "text": "Dostum biber gazında kapsaisin var saf olarak ama doğrudur bundada baya var kapsaisin ama gerçek biber gazını karıştırma",
     "reply": "Biber gazındaki kapsaisin konsantrasyonu gerçekten de çok yüksektir ve Pepper X gibi aşırı acı biberlerle benzer TRPV1 reseptörlerini uyararak aynı acı sinyalini tetikler.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1794852841.660342,
+    "kind": "yorum",
+    "text": "İlk ölürdüm",
+    "reply": "Yok artık, insan vücudu o kadar kolay pes etmez ama 200 yıl kalp için bayağı yorucu olurdu!\n— Bit 🤖"
    }
   ]
  },
@@ -726,10 +738,10 @@
  "nobet": {
   "basladi": "2026-11-16T12:37:01+00:00",
   "run": "43866655297",
-  "tur": 333,
-  "ig_cevap": 1,
+  "tur": 338,
+  "ig_cevap": 2,
   "yt_cevap": 2,
   "son_hata": null,
-  "son_tur": "2026-11-16T18:09:02+00:00"
+  "son_tur": "2026-11-16T18:14:04+00:00"
  }
 }
