@@ -1,33 +1,17 @@
 {
  "ara": {
-  "y028": [
-   "Tyrannosaurus rex skeleton",
-   "Tyrannosaurus skull"
+  "y015": [
+   "full moon rising over sea",
+   "moonrise ocean beach night"
   ],
-  "y023": [
-   "Sun SDO solar flare",
-   "Solar Dynamics Observatory Sun"
+  "y018": [
+   "Jupiter Juno spacecraft image",
+   "Jupiter Hubble"
   ],
-  "n018": [
-   "Mars Viking global mosaic",
-   "Mars planet true color"
+  "y029": [
+   "volcanic ash cloud eruption plume",
+   "ash fall darkness volcano town"
   ]
  },
- "al": {
-  "y028": {
-   "n": 6,
-   "x": 0.3,
-   "y": 0.55
-  },
-  "y023": {
-   "n": 8,
-   "x": 0.36,
-   "y": 0.5
-  },
-  "n018": {
-   "n": 1,
-   "x": 0.5,
-   "y": 0.5
-  }
- }
+ "al": {}
 }
