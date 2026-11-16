@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-02T18": "3zBY2pSXkrE https://www.instagram.com/reel/DfP5wf7iYoy/",
   "2026-11-03T10": "XNKlvEZVztM https://www.instagram.com/reel/DfRnk0RjbXl/",
   "2026-11-03T14": "7xjRSwfX83E https://www.instagram.com/reel/DfSDDsGEquO/",
   "2026-11-03T18": "LzJyoVpzTyA https://www.instagram.com/reel/DfSeiKagEQb/",
@@ -48,16 +47,17 @@
   "2026-11-14T18": "hYGpuFlzr_M https://www.instagram.com/reel/DfuzN4AD2fG/",
   "2026-11-15T10": "gWEa3MkJvmk https://www.instagram.com/reel/DfwhEZRkiqc/",
   "2026-11-15T14": "K01ltjDN7tc https://www.instagram.com/reel/Dfw8kdHHNHT/",
-  "2026-11-15T18": "0ZGe7ZLwk3w https://www.instagram.com/reel/DfxYCJLnOYp/"
+  "2026-11-15T18": "0ZGe7ZLwk3w https://www.instagram.com/reel/DfxYCJLnOYp/",
+  "2026-11-16T10": "hce6-SPurSw https://www.instagram.com/reel/DfzF6RgjUBw/"
  },
  "nobet": {
   "basladi": "2026-11-16T06:57:35+00:00",
   "run": "43819175295",
-  "tur": 155,
+  "tur": 184,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-16T09:31:36+00:00"
+  "son_tur": "2026-11-16T10:01:36+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -465,6 +465,13 @@
    "at": 1794765678,
    "title": "Kedinin ciğere bakışına kanma, fazlası onu sakatlar 🐱",
    "topic_id": "mk-c0141"
+  },
+  "hce6-SPurSw": {
+   "media_id": "18191397352415723",
+   "url": "https://www.instagram.com/reel/DfzF6RgjUBw/",
+   "at": 1794823297,
+   "title": "Bacağına sürtünen kedin seni kokusuyla işaretliyor 🐱",
+   "topic_id": "mk-c0149"
   }
  }
 }
