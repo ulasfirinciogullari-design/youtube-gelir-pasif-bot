@@ -615,6 +615,12 @@
     "r",
     "Haklısın, CDC verilerine göre 24 saat uyanık kalmak kanda 1 promil alkol etkisin",
     "dc937b598926"
+   ],
+   "18122592910945488": [
+    1794838861.6388617,
+    "r",
+    "Biber gazındaki kapsaisin konsantrasyonu gerçekten de çok yüksektir ve Pepper X ",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -695,6 +701,12 @@
     "kind": "yorum",
     "text": "48 gercekden sarhoş gibisin",
     "reply": "Haklısın, CDC verilerine göre 24 saat uyanık kalmak kanda 1 promil alkol etkisine benzer bir performans düşüşü yaratır.\n— Profesör Pi 🔭"
+   },
+   {
+    "at": 1794838861.6388617,
+    "kind": "yorum",
+    "text": "Dostum biber gazında kapsaisin var saf olarak ama doğrudur bundada baya var kapsaisin ama gerçek biber gazını karıştırma",
+    "reply": "Biber gazındaki kapsaisin konsantrasyonu gerçekten de çok yüksektir ve Pepper X gibi aşırı acı biberlerle benzer TRPV1 reseptörlerini uyararak aynı acı sinyalini tetikler.\n— Profesör Pi 🔭"
    }
   ]
  },
@@ -702,10 +714,10 @@
  "nobet": {
   "basladi": "2026-11-16T12:37:01+00:00",
   "run": "43866655297",
-  "tur": 99,
-  "ig_cevap": 0,
+  "tur": 105,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-16T14:15:02+00:00"
+  "son_tur": "2026-11-16T14:21:04+00:00"
  }
 }
