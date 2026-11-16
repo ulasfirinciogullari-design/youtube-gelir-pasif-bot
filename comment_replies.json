@@ -335,6 +335,12 @@
    "r",
    "UgwONotbfbRYTlYkGo94AaABAg.AdGYlL1XTWaAdG_-siFYAe",
    "UCaHxXFLhBsMvrB_drdfyMow"
+  ],
+  "Ugx5P5raxiByCoyxVsV4AaABAg": [
+   1794840321,
+   "r",
+   "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdH6LkKxJ1U",
+   "UC0DdE-62-tZRp6ZtQmkOf0Q"
   ]
  },
  "tracked": {
@@ -477,6 +483,11 @@
    "at": 1794822318,
    "n": 1,
    "reply": "Kedin seni kendi sosyal grubuna dahil etmek ve ortak bir koku oluşturmak için yapıyor, seni ailesinden sayıyor yani. 😊"
+  },
+  "Ugx5P5raxiByCoyxVsV4AaABAg": {
+   "at": 1794840321,
+   "n": 1,
+   "reply": "Evet, video da ondan bahsediyor! Kulağımız biz fark etmeden de seslere tepki verebiliyor. 👂"
   }
  },
  "channel": {
@@ -484,12 +495,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792697634,
-   "video": "qducKltyWbs",
-   "comment": "İlk",
-   "reply": "İlk yorumu sen kapmışsın, tebrikler! Hızlı olmak güzel. 😉"
-  },
   {
    "at": 1792790202,
    "video": "7xjRSwfX83E",
@@ -723,6 +728,12 @@
    "video": "hce6-SPurSw",
    "comment": "Peki neden bunu yapıyor?",
    "reply": "Kedin seni kendi sosyal grubuna dahil etmek ve ortak bir koku oluşturmak için yapıyor, seni ailesinden sayıyor yani. 😊"
+  },
+  {
+   "at": 1794840321,
+   "video": "g9grbN5SXXQ",
+   "comment": "Kulağım kendi kendine oynuyor",
+   "reply": "Evet, video da ondan bahsediyor! Kulağımız biz fark etmeden de seslere tepki verebiliyor. 👂"
   }
  ]
 }
