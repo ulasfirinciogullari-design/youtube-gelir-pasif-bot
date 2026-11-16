@@ -1,0 +1,254 @@
+{
+ "id": "y029",
+ "series": "Ya Olsaydı?",
+ "q": "Bütün volkanlar aynı anda patlasaydı ne olurdu?",
+ "title": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "TÜM VOLKANLAR",
+  "rest": "PATLASAYDI?"
+ },
+ "summary": "Bütün volkanlar aynı anda patlasaydı, öğlen gökyüzü kapkara olur ve soluduğun kül aslında minik cam kırıkları olurdu! Külün çatıları nasıl çökerttiğini, tek bir volkanın Dünya'yı nasıl 3 °C'ye kadar soğuttuğunu ve şu an kaç volkanın patladığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Öğlen 12, gökyüzü kapkara ve soluduğun kül minik cam kırıkları!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🌋",
+    "do": "shake",
+    "key": "kapkara",
+    "label": "Öğlen Karanlık"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ciğerime cam mı yağıyor?!",
+   "v": {
+    "t": "question",
+    "bg": "body",
+    "e": "🫁",
+    "label": "Ciğerde Cam?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1.350 aktif volkan aynı anda patladı; biriken kül çatıları çökertir.",
+   "v": {
+    "t": "number",
+    "bg": "volcano",
+    "e": "🌋",
+    "value": "1.350",
+    "unit": "volkan",
+    "label": "Aynı Anda",
+    "key": "1.350"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tambora tek başına Dünya'yı 3 °C'ye kadar soğuttu. Hepsi birden: yıllarca kış olabilir!",
+   "v": {
+    "t": "meter",
+    "bg": "ice",
+    "label": "Küresel Sıcaklık",
+    "from": 0,
+    "to": -3,
+    "unit": "°C",
+    "e": "🥶",
+    "key": "3"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: sen bunu izlerken bile 40 ila 50 volkan patlıyor!",
+   "v": {
+    "t": "number",
+    "bg": "volcano",
+    "e": "🌋",
+    "value": "40-50",
+    "unit": "volkan",
+    "label": "Şu An Patlıyor",
+    "key": "40"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kül yağarken ilk ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "volcano",
+    "e": "🌋"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "USGS'ye göre okyanus tabanındaki kesintisiz volkan kuşakları dışında dünyada yaklaşık 1.350 potansiyel olarak aktif volkan var; bunların yaklaşık 500'ü tarihsel dönemde patladı.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/faqs/how-many-active-volcanoes-are-there-earth"
+  },
+  {
+   "text": "National Geographic'e göre volkanik kül, minik kaya parçaları ve cam kırıklarından oluşur; akciğerlere zarar verir ve ağırlığı bazı yapıların çatılarını çökertebilir.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/environment/article/volcano-safety-tips"
+  },
+  {
+   "text": "USGS'ye göre 18 Mayıs 1980'de St. Helens Yanardağı'nın kül bulutu, Washington eyaletinin doğusunda bölgenin büyük kısmını gün boyu süren bir karanlığa gömdü.",
+   "source": "USGS",
+   "url": "https://pubs.usgs.gov/fs/fs027-00/"
+  },
+  {
+   "text": "Britannica'ya göre 1815'teki Tambora patlaması 1816'da küresel ortalama sıcaklığı 3 °C'ye kadar düşürdü; volkanik aerosoller stratosferde birkaç yıl kalıp güneş ışığını yansıtabilir.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/science/volcanic-winter"
+  },
+  {
+   "text": "Smithsonian'ın Küresel Volkanizma Programı'na göre herhangi bir anda dünyada 40 ila 50 volkan patlama halindedir.",
+   "source": "Smithsonian",
+   "url": "https://www.smithsonianmag.com/blogs/national-museum-of-natural-history/2025/12/19/for-25-years-the-smithsonians-global-volcanism-program-has-kept-weekly-tabs-on-volcanic-eruptions-around-the-world-heres-how-they-do-it/"
+  }
+ ],
+ "tags": [
+  "bütün volkanlar patlasaydı",
+  "volkan",
+  "yanardağ",
+  "volkanik kül",
+  "yanardağ patlaması",
+  "tambora",
+  "volkanik kış",
+  "aktif volkanlar",
+  "what if all volcanoes erupted",
+  "volcano",
+  "volcanic ash",
+  "volcanic winter",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#volkan",
+  "#yanardağ",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.usgs.gov/faqs/how-many-active-volcanoes-are-there-earth",
+  "https://www.nationalgeographic.com/environment/article/volcano-safety-tips",
+  "https://www.britannica.com/science/volcanic-winter",
+  "https://www.smithsonianmag.com/blogs/national-museum-of-natural-history/2025/12/19/for-25-years-the-smithsonians-global-volcanism-program-has-kept-weekly-tabs-on-volcanic-eruptions-around-the-world-heres-how-they-do-it/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Every Volcano Erupted at the Same Time?",
+   "summary": "If every volcano erupted at once, the sky would turn pitch black at noon and the ash you breathe would be tiny shards of glass! Professor Pi explains how ash can collapse roofs, how a single volcano cooled Earth by up to 3 °C, and how many volcanoes are erupting right now.",
+   "facts": [
+    "According to the USGS, apart from the continuous belts of volcanoes on the ocean floor, there are about 1,350 potentially active volcanoes worldwide; about 500 of them have erupted in historical time.",
+    "According to National Geographic, volcanic ash is made of tiny fragments of rock and shards of glass; it damages the lungs, and its weight can collapse the roofs of some structures.",
+    "According to the USGS, on May 18, 1980, the ash cloud from Mount St. Helens plunged much of eastern Washington into darkness that lasted all day.",
+    "According to Britannica, the 1815 eruption of Mount Tambora lowered the average global temperature by as much as 3 °C in 1816; volcanic aerosols can stay in the stratosphere and reflect sunlight for several years.",
+    "According to the Smithsonian's Global Volcanism Program, between 40 and 50 volcanoes are erupting around the world at any given moment."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría si Todos los Volcanes Entraran en Erupción a la Vez?",
+   "summary": "¡Si todos los volcanes entraran en erupción a la vez, el cielo se volvería negro al mediodía y la ceniza que respiras serían diminutos fragmentos de vidrio! El Profesor Pi explica cómo la ceniza puede hundir tejados, cómo un solo volcán enfrió la Tierra hasta 3 °C y cuántos volcanes están en erupción ahora mismo.",
+   "facts": [
+    "Según el USGS, sin contar los cinturones continuos de volcanes del fondo oceánico, hay unos 1.350 volcanes potencialmente activos en el mundo; unos 500 de ellos han entrado en erupción en tiempos históricos.",
+    "Según National Geographic, la ceniza volcánica está formada por diminutos fragmentos de roca y esquirlas de vidrio; daña los pulmones y su peso puede hundir los tejados de algunas estructuras.",
+    "Según el USGS, el 18 de mayo de 1980 la nube de ceniza del monte Santa Helena sumió gran parte del este de Washington en una oscuridad que duró todo el día.",
+    "Según Britannica, la erupción del Tambora en 1815 redujo la temperatura media global hasta 3 °C en 1816; los aerosoles volcánicos pueden permanecer en la estratosfera y reflejar la luz solar durante varios años.",
+    "Según el Programa Global de Vulcanismo del Smithsonian, en cualquier momento hay entre 40 y 50 volcanes en erupción en el mundo."
+   ]
+  },
+  "pt": {
+   "title": "E Se Todos os Vulcões Entrassem em Erupção ao Mesmo Tempo?",
+   "summary": "Se todos os vulcões entrassem em erupção ao mesmo tempo, o céu ficaria preto ao meio-dia e a cinza que você respira seria feita de minúsculos cacos de vidro! O Professor Pi explica como a cinza pode derrubar telhados, como um único vulcão esfriou a Terra em até 3 °C e quantos vulcões estão em erupção agora mesmo.",
+   "facts": [
+    "Segundo o USGS, sem contar os cinturões contínuos de vulcões no fundo do oceano, há cerca de 1.350 vulcões potencialmente ativos no mundo; cerca de 500 deles entraram em erupção em tempos históricos.",
+    "Segundo a National Geographic, a cinza vulcânica é formada por minúsculos fragmentos de rocha e cacos de vidro; ela danifica os pulmões e seu peso pode derrubar os telhados de algumas construções.",
+    "Segundo o USGS, em 18 de maio de 1980, a nuvem de cinzas do Monte Santa Helena mergulhou grande parte do leste de Washington numa escuridão que durou o dia inteiro.",
+    "Segundo a Britannica, a erupção do Tambora em 1815 reduziu a temperatura média global em até 3 °C em 1816; aerossóis vulcânicos podem permanecer na estratosfera e refletir a luz do Sol por vários anos.",
+    "Segundo o Programa Global de Vulcanismo do Smithsonian, a qualquer momento há entre 40 e 50 vulcões em erupção no mundo."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو ثارت كل البراكين في الوقت نفسه؟",
+   "summary": "لو ثارت كل البراكين في وقت واحد، لأظلمت السماء تمامًا عند الظهر، ولكان الرماد الذي تتنفسه شظايا زجاج صغيرة! يشرح البروفيسور باي كيف يمكن للرماد أن يُسقط الأسقف، وكيف برّد بركان واحد الأرض بما يصل إلى 3 درجات مئوية، وكم بركانًا يثور الآن.",
+   "facts": [
+    "وفقًا لهيئة المسح الجيولوجي الأمريكية (USGS)، يوجد في العالم نحو 1,350 بركانًا يُحتمل أن تكون نشطة، باستثناء أحزمة البراكين المتصلة في قاع المحيط؛ وقد ثار نحو 500 منها في العصور التاريخية.",
+    "وفقًا لناشيونال جيوغرافيك، يتكوّن الرماد البركاني من شظايا صخرية دقيقة وقطع زجاج؛ وهو يضر الرئتين ويمكن لوزنه أن يُسقط أسقف بعض المباني.",
+    "وفقًا لهيئة المسح الجيولوجي الأمريكية، أغرقت سحابة الرماد من بركان سانت هيلينز في 18 مايو 1980 جزءًا كبيرًا من شرق ولاية واشنطن في ظلام استمر طوال اليوم.",
+    "وفقًا لموسوعة بريتانيكا، خفّض ثوران بركان تامبورا عام 1815 متوسط درجة الحرارة العالمية بما يصل إلى 3 درجات مئوية في عام 1816؛ ويمكن للهباء البركاني أن يبقى في الستراتوسفير ويعكس ضوء الشمس لعدة سنوات.",
+    "وفقًا لبرنامج البراكين العالمي التابع لمؤسسة سميثسونيان، يثور في أي لحظة ما بين 40 و50 بركانًا حول العالم."
+   ]
+  },
+  "hi": {
+   "title": "अगर सारे ज्वालामुखी एक साथ फट जाएँ तो क्या होगा?",
+   "summary": "अगर सारे ज्वालामुखी एक साथ फट जाएँ, तो दोपहर में आसमान काला पड़ जाएगा और जो राख आप साँस में लेंगे, वह असल में काँच के छोटे टुकड़े होगी! प्रोफ़ेसर पाई बताते हैं कि राख छतें कैसे गिरा सकती है, एक अकेले ज्वालामुखी ने पृथ्वी को 3 °C तक कैसे ठंडा किया और इस समय कितने ज्वालामुखी फट रहे हैं।",
+   "facts": [
+    "USGS के अनुसार समुद्र तल पर ज्वालामुखियों की लगातार पट्टियों को छोड़कर दुनिया में लगभग 1,350 संभावित रूप से सक्रिय ज्वालामुखी हैं; इनमें से लगभग 500 ऐतिहासिक काल में फट चुके हैं।",
+    "नेशनल ज्योग्राफ़िक के अनुसार ज्वालामुखी राख चट्टान के छोटे टुकड़ों और काँच की किरचों से बनी होती है; यह फेफड़ों को नुकसान पहुँचाती है और इसका वज़न कुछ इमारतों की छतें गिरा सकता है।",
+    "USGS के अनुसार 18 मई 1980 को माउंट सेंट हेलेंस के राख के बादल ने पूर्वी वॉशिंगटन के बड़े हिस्से को पूरे दिन अँधेरे में डुबो दिया।",
+    "ब्रिटानिका के अनुसार 1815 में तम्बोरा ज्वालामुखी के विस्फोट ने 1816 में वैश्विक औसत तापमान को 3 °C तक घटा दिया; ज्वालामुखी एरोसोल कई साल तक समताप मंडल में रहकर सूरज की रोशनी को परावर्तित कर सकते हैं।",
+    "स्मिथसोनियन के ग्लोबल वॉल्कैनिज़्म प्रोग्राम के अनुसार किसी भी समय दुनिया में 40 से 50 ज्वालामुखी फट रहे होते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Semua Gunung Berapi Meletus Bersamaan?",
+   "summary": "Jika semua gunung berapi meletus bersamaan, langit siang hari akan gelap gulita dan abu yang kamu hirup sebenarnya pecahan kaca kecil! Profesor Pi menjelaskan bagaimana abu bisa meruntuhkan atap, bagaimana satu gunung berapi mendinginkan Bumi hingga 3 °C, dan berapa gunung berapi yang sedang meletus saat ini.",
+   "facts": [
+    "Menurut USGS, di luar sabuk gunung berapi yang menerus di dasar laut, ada sekitar 1.350 gunung berapi yang berpotensi aktif di dunia; sekitar 500 di antaranya pernah meletus dalam masa sejarah.",
+    "Menurut National Geographic, abu vulkanik terdiri dari pecahan batuan kecil dan serpihan kaca; abu ini merusak paru-paru dan beratnya dapat meruntuhkan atap sebagian bangunan.",
+    "Menurut USGS, pada 18 Mei 1980 awan abu Gunung St. Helens membuat sebagian besar wilayah Washington timur gelap sepanjang hari.",
+    "Menurut Britannica, letusan Gunung Tambora tahun 1815 menurunkan suhu rata-rata global hingga 3 °C pada 1816; aerosol vulkanik dapat bertahan di stratosfer dan memantulkan sinar Matahari selama beberapa tahun.",
+    "Menurut Program Vulkanisme Global Smithsonian, pada saat mana pun ada 40 hingga 50 gunung berapi yang sedang meletus di dunia."
+   ]
+  },
+  "fr": {
+   "title": "Et Si Tous les Volcans Entraient en Éruption en Même Temps ?",
+   "summary": "Si tous les volcans entraient en éruption en même temps, le ciel deviendrait noir à midi et la cendre que tu respires serait faite de minuscules éclats de verre ! Le Professeur Pi explique comment la cendre peut effondrer les toits, comment un seul volcan a refroidi la Terre jusqu'à 3 °C et combien de volcans sont en éruption en ce moment.",
+   "facts": [
+    "Selon l'USGS, hors ceintures continues de volcans sur le plancher océanique, il existe environ 1 350 volcans potentiellement actifs dans le monde ; environ 500 d'entre eux sont entrés en éruption à l'époque historique.",
+    "Selon National Geographic, la cendre volcanique est faite de minuscules fragments de roche et d'éclats de verre ; elle abîme les poumons et son poids peut effondrer les toits de certains bâtiments.",
+    "Selon l'USGS, le 18 mai 1980, le nuage de cendres du mont Saint Helens a plongé une grande partie de l'est de l'État de Washington dans une obscurité qui a duré toute la journée.",
+    "Selon Britannica, l'éruption du Tambora en 1815 a fait baisser la température moyenne mondiale de jusqu'à 3 °C en 1816 ; les aérosols volcaniques peuvent rester dans la stratosphère et réfléchir la lumière du Soleil pendant plusieurs années.",
+    "Selon le Global Volcanism Program du Smithsonian, entre 40 et 50 volcans sont en éruption dans le monde à tout moment."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn alle Vulkane gleichzeitig ausbrechen würden?",
+   "summary": "Würden alle Vulkane gleichzeitig ausbrechen, wäre der Himmel mittags pechschwarz und die Asche, die du einatmest, bestünde aus winzigen Glassplittern! Professor Pi erklärt, wie Asche Dächer einstürzen lassen kann, wie ein einziger Vulkan die Erde um bis zu 3 °C abkühlte und wie viele Vulkane gerade jetzt ausbrechen.",
+   "facts": [
+    "Laut USGS gibt es – abgesehen von den durchgehenden Vulkangürteln am Meeresboden – weltweit etwa 1.350 potenziell aktive Vulkane; etwa 500 davon sind in historischer Zeit ausgebrochen.",
+    "Laut National Geographic besteht Vulkanasche aus winzigen Gesteinsbruchstücken und Glassplittern; sie schädigt die Lunge, und ihr Gewicht kann die Dächer mancher Gebäude einstürzen lassen.",
+    "Laut USGS tauchte die Aschewolke des Mount St. Helens am 18. Mai 1980 große Teile des östlichen Washington in eine Dunkelheit, die den ganzen Tag anhielt.",
+    "Laut Britannica senkte der Ausbruch des Tambora 1815 die globale Durchschnittstemperatur im Jahr 1816 um bis zu 3 °C; vulkanische Aerosole können mehrere Jahre in der Stratosphäre bleiben und Sonnenlicht reflektieren.",
+    "Laut dem Global Volcanism Program des Smithsonian brechen weltweit zu jedem Zeitpunkt 40 bis 50 Vulkane aus."
+   ]
+  },
+  "ru": {
+   "title": "Что, если бы все вулканы извергались одновременно?",
+   "summary": "Если бы все вулканы извергались одновременно, в полдень небо стало бы чёрным, а пепел, которым ты дышишь, оказался бы крошечными осколками стекла! Профессор Пи объясняет, как пепел обрушивает крыши, как один вулкан охладил Землю до 3 °C и сколько вулканов извергается прямо сейчас.",
+   "facts": [
+    "По данным USGS, не считая непрерывных вулканических поясов на дне океана, в мире около 1350 потенциально активных вулканов; около 500 из них извергались в исторические времена.",
+    "По данным National Geographic, вулканический пепел состоит из крошечных обломков горных пород и осколков стекла; он вредит лёгким, а его вес может обрушить крыши некоторых зданий.",
+    "По данным USGS, 18 мая 1980 года облако пепла вулкана Сент-Хеленс погрузило большую часть востока штата Вашингтон во тьму, длившуюся весь день.",
+    "По данным Britannica, извержение Тамборы в 1815 году снизило среднюю глобальную температуру в 1816 году на величину до 3 °C; вулканические аэрозоли могут оставаться в стратосфере и отражать солнечный свет несколько лет.",
+    "По данным Глобальной программы вулканизма Смитсоновского института, в любой момент в мире извергаются от 40 до 50 вулканов."
+   ]
+  },
+  "az": {
+   "title": "Bütün Vulkanlar Eyni Anda Püskürsəydi Nə Olardı?",
+   "summary": "Bütün vulkanlar eyni anda püskürsəydi, günorta göy zülmət qaralar, nəfəs aldığın kül əslində xırda şüşə qırıntıları olardı! Professor Pi külün damları necə çökdürdüyünü, tək bir vulkanın Yeri necə 3 °C-yə qədər soyutduğunu və hazırda neçə vulkanın püskürdüyünü izah edir.",
+   "facts": [
+    "USGS-ə görə okean dibindəki fasiləsiz vulkan qurşaqları istisna olmaqla dünyada təxminən 1.350 potensial aktiv vulkan var; onlardan təxminən 500-ü tarixi dövrdə püskürüb.",
+    "National Geographic-ə görə vulkan külü xırda qaya qırıntıları və şüşə qəlpələrindən ibarətdir; ağciyərlərə zərər verir və ağırlığı bəzi binaların damlarını çökdürə bilər.",
+    "USGS-ə görə 18 may 1980-ci ildə Sent-Helens vulkanının kül buludu Vaşinqton ştatının şərqinin böyük hissəsini bütün gün davam edən qaranlığa qərq etdi.",
+    "Britannica-ya görə 1815-ci ildə Tambora vulkanının püskürməsi 1816-cı ildə qlobal orta temperaturu 3 °C-yə qədər aşağı saldı; vulkan aerozolları bir neçə il stratosferdə qalıb günəş işığını əks etdirə bilər.",
+    "Smithsonian-ın Qlobal Vulkanizm Proqramına görə istənilən anda dünyada 40-50 vulkan püskürür."
+   ]
+  }
+ }
+}

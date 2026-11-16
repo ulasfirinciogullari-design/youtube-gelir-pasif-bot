@@ -1,0 +1,292 @@
+{
+ "id": "y018",
+ "series": "Ya Olsaydı?",
+ "q": "Jüpiter bir yıldız olsaydı ne olurdu?",
+ "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+ "bar": {
+  "hi": "JÜPİTER",
+  "rest": "YILDIZ OLSAYDI?"
+ },
+ "summary": "Jüpiter yıldız olsaydı, orada 70 kilo değil, 13 ton gelirdin! Bunun için ne kadar ağırlaşması gerektiğini, neden Satürn boyunda yıldızlar olduğunu ve kızıl Jüpiter'in Güneş'ten bile uzun yaşayacağını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Jüpiter yıldız oldu: orada 70 kilo değil, 13 ton gelirsin!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "jupiter",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "13",
+    "label": "13 Ton Sen"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Göz kapağım vinç mi istiyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "😩",
+    "do": "fall",
+    "key": "kapağım",
+    "label": "Ağır Kapaklar"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bunun için kütlesi 80 katına çıkmalı; çekim Dünya'dakinin 190 katı olur.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "jupiter",
+     "label": "Bugünkü Jüpiter",
+     "value": 1
+    },
+    "b": {
+     "b": "star",
+     "label": "Yıldız Jüpiter",
+     "value": 80
+    },
+    "mode": "bar",
+    "key": "80"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama boyu pek değişmez: en küçük yıldızlardan biri Satürn'den azıcık büyük!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "saturn",
+      "size": "l",
+      "at": "l"
+     },
+     {
+      "b": "star",
+      "size": "l",
+      "at": "r"
+     }
+    ],
+    "do": "grow",
+    "target": 1,
+    "key": "Satürn'den",
+    "label": "Satürn Boyu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: Güneş 5 milyar yıl sonra devleşir, Jüpiter trilyonlarca yıl yanar!",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "BUGÜN",
+      "e": "☀️",
+      "label": "İki Yıldız"
+     },
+     {
+      "when": "5 MİLYAR YIL",
+      "e": "🔴",
+      "label": "Güneş Devleşir"
+     },
+     {
+      "when": "TRİLYON YIL",
+      "e": "⭐",
+      "label": "Jüpiter Yanar"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Orada sen kaç ton gelirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "⚖️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Jüpiter yaklaşık 80 kat daha büyük kütleli olsaydı gezegen değil, yıldız olurdu.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/solar-system/what-is-jupiter-grades-5-8/"
+  },
+  {
+   "text": "NASA'ya göre Jüpiter'de hissedilen çekim Dünya'dakinin yaklaşık 2,4 katıdır; boyu aynı kalıp kütlesi 80 katına çıksa çekim Dünya'dakinin yaklaşık 190 katı olur, yani 70 kilogramlık biri 13 tondan fazla gelirdi.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/solar-system/what-is-jupiter-grades-5-8/"
+  },
+  {
+   "text": "Cambridge Üniversitesi'ne göre bilinen en küçük yıldızlardan EBLM J0555-57Ab, Satürn'den yalnızca biraz büyüktür ve yüzeyindeki çekim Dünya'dakinin yaklaşık 300 katıdır.",
+   "source": "University of Cambridge",
+   "url": "https://www.cam.ac.uk/research/news/smallest-ever-star-discovered-by-astronomers"
+  },
+  {
+   "text": "NASA'ya göre kırmızı cüce TRAPPIST-1'in yarıçapı Güneş'inkinin yaklaşık %12'sidir, yani Jüpiter'den yalnızca biraz büyüktür.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/mission/webb/science-overview/science-explainers/what-is-webb-revealing-about-the-trappist-1-system/"
+  },
+  {
+   "text": "NASA'ya göre Güneş yaklaşık 5 milyar yıl sonra kırmızı deve dönüşecek; kırmızı cüceler ise yakıtlarını trilyonlarca yıl, 14 trilyon yıla kadar yakabilir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/universe/stars/types/"
+  }
+ ],
+ "tags": [
+  "jüpiter yıldız olsaydı",
+  "jüpiter",
+  "jüpiter yıldız olabilir mi",
+  "kırmızı cüce",
+  "en küçük yıldız",
+  "jüpiterde kaç kilo gelirim",
+  "yer çekimi",
+  "güneş sistemi",
+  "what if jupiter was a star",
+  "jupiter star",
+  "red dwarf",
+  "smallest star",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#jüpiter",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.nasa.gov/solar-system/what-is-jupiter-grades-5-8/",
+  "https://www.cam.ac.uk/research/news/smallest-ever-star-discovered-by-astronomers",
+  "https://science.nasa.gov/universe/stars/types/",
+  "https://www.space.com/23772-red-dwarf-stars.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Jupiter Were a Star, How Many Tons Would You Weigh There?",
+   "summary": "If Jupiter became a star, you wouldn't weigh 70 kg there but 13 tons! Professor Pi explains how much heavier Jupiter would need to be, why some stars are barely bigger than Saturn, and why a red Jupiter would outlive even the Sun.",
+   "facts": [
+    "According to NASA, if Jupiter had been about 80 times more massive, it would have become a star rather than a planet.",
+    "According to NASA, the gravity you would feel on Jupiter is about 2.4 times Earth's; if Jupiter kept its size but had 80 times its mass, gravity would be about 190 times Earth's, so a 70 kg person would weigh more than 13 tons.",
+    "According to the University of Cambridge, EBLM J0555-57Ab, one of the smallest stars known, is only slightly larger than Saturn, and the gravity at its surface is about 300 times stronger than on Earth.",
+    "According to NASA, the red dwarf TRAPPIST-1 has about 12% of the Sun's radius, making it just slightly larger than Jupiter.",
+    "According to NASA, the Sun will become a red giant in about 5 billion years, while red dwarfs can burn their fuel for trillions of years, up to about 14 trillion years."
+   ]
+  },
+  "es": {
+   "title": "Si Júpiter Fuera una Estrella, ¿Cuántas Toneladas Pesarías Allí?",
+   "summary": "¡Si Júpiter se convirtiera en estrella, allí no pesarías 70 kg sino 13 toneladas! El Profesor Pi explica cuánta más masa necesitaría Júpiter, por qué hay estrellas apenas más grandes que Saturno y por qué un Júpiter rojo viviría más que el propio Sol.",
+   "facts": [
+    "Según la NASA, si Júpiter hubiera tenido unas 80 veces más masa, se habría convertido en una estrella en lugar de un planeta.",
+    "Según la NASA, la gravedad que sentirías en Júpiter es unas 2,4 veces la de la Tierra; si Júpiter conservara su tamaño pero tuviera 80 veces su masa, la gravedad sería unas 190 veces la terrestre, así que una persona de 70 kg pesaría más de 13 toneladas.",
+    "Según la Universidad de Cambridge, EBLM J0555-57Ab, una de las estrellas más pequeñas conocidas, es solo un poco más grande que Saturno y la gravedad en su superficie es unas 300 veces mayor que en la Tierra.",
+    "Según la NASA, la enana roja TRAPPIST-1 tiene cerca del 12 % del radio del Sol, por lo que es solo un poco más grande que Júpiter.",
+    "Según la NASA, el Sol se convertirá en gigante roja dentro de unos 5.000 millones de años, mientras que las enanas rojas pueden quemar su combustible durante billones de años, hasta unos 14 billones de años."
+   ]
+  },
+  "pt": {
+   "title": "Se Júpiter Fosse uma Estrela, Quantas Toneladas Você Pesaria Lá?",
+   "summary": "Se Júpiter virasse uma estrela, lá você não pesaria 70 kg, mas 13 toneladas! O Professor Pi explica quanta massa a mais Júpiter precisaria, por que existem estrelas só um pouco maiores que Saturno e por que um Júpiter vermelho viveria mais até que o Sol.",
+   "facts": [
+    "Segundo a NASA, se Júpiter tivesse cerca de 80 vezes mais massa, teria se tornado uma estrela em vez de um planeta.",
+    "Segundo a NASA, a gravidade que você sentiria em Júpiter é cerca de 2,4 vezes a da Terra; se Júpiter mantivesse o tamanho, mas tivesse 80 vezes a sua massa, a gravidade seria cerca de 190 vezes a da Terra, e uma pessoa de 70 kg pesaria mais de 13 toneladas.",
+    "Segundo a Universidade de Cambridge, a EBLM J0555-57Ab, uma das menores estrelas conhecidas, é só um pouco maior que Saturno, e a gravidade em sua superfície é cerca de 300 vezes maior que na Terra.",
+    "Segundo a NASA, a anã vermelha TRAPPIST-1 tem cerca de 12% do raio do Sol, sendo apenas um pouco maior que Júpiter.",
+    "Segundo a NASA, o Sol vai se tornar uma gigante vermelha daqui a cerca de 5 bilhões de anos, enquanto as anãs vermelhas podem queimar seu combustível por trilhões de anos, até cerca de 14 trilhões de anos."
+   ]
+  },
+  "ar": {
+   "title": "لو أصبح المشتري نجمًا، كم طنًا ستزن هناك؟",
+   "summary": "لو تحوّل المشتري إلى نجم، فلن تزن هناك 70 كغ بل 13 طنًا! يشرح البروفيسور باي كم يجب أن تزيد كتلة المشتري، ولماذا توجد نجوم أكبر قليلًا فقط من زحل، ولماذا سيعيش المشتري الأحمر أطول حتى من الشمس.",
+   "facts": [
+    "وفقًا لناسا، لو كانت كتلة المشتري أكبر بنحو 80 مرة لأصبح نجمًا بدلًا من كوكب.",
+    "وفقًا لناسا، الجاذبية التي ستشعر بها على المشتري تعادل نحو 2.4 ضعف جاذبية الأرض؛ ولو احتفظ المشتري بحجمه مع كتلة أكبر 80 مرة، لصارت الجاذبية نحو 190 ضعف جاذبية الأرض، أي أن شخصًا وزنه 70 كغ سيزن أكثر من 13 طنًا.",
+    "وفقًا لجامعة كامبريدج، فإن النجم EBLM J0555-57Ab، أحد أصغر النجوم المعروفة، أكبر قليلًا فقط من زحل، والجاذبية على سطحه أقوى بنحو 300 مرة من جاذبية الأرض.",
+    "وفقًا لناسا، يبلغ نصف قطر القزم الأحمر TRAPPIST-1 نحو 12% من نصف قطر الشمس، أي أنه أكبر قليلًا فقط من المشتري.",
+    "وفقًا لناسا، ستتحول الشمس إلى عملاق أحمر بعد نحو 5 مليارات سنة، بينما يمكن للأقزام الحمراء أن تحرق وقودها لتريليونات السنين، حتى نحو 14 تريليون سنة."
+   ]
+  },
+  "hi": {
+   "title": "अगर बृहस्पति एक तारा होता, तो वहाँ आपका वज़न कितने टन होता?",
+   "summary": "अगर बृहस्पति तारा बन जाता, तो वहाँ आपका वज़न 70 किलो नहीं, 13 टन होता! प्रोफ़ेसर पाई बताते हैं कि बृहस्पति को कितना भारी होना पड़ता, कुछ तारे शनि से बस थोड़े बड़े क्यों होते हैं और लाल बृहस्पति सूरज से भी ज़्यादा समय तक क्यों जलता।",
+   "facts": [
+    "NASA के अनुसार अगर बृहस्पति का द्रव्यमान लगभग 80 गुना ज़्यादा होता, तो वह ग्रह की जगह तारा बन जाता।",
+    "NASA के अनुसार बृहस्पति पर महसूस होने वाला गुरुत्व पृथ्वी से लगभग 2.4 गुना है; अगर बृहस्पति का आकार वही रहता और द्रव्यमान 80 गुना हो जाता, तो गुरुत्व पृथ्वी का लगभग 190 गुना होता, यानी 70 किलो के व्यक्ति का वज़न 13 टन से ज़्यादा होता।",
+    "कैम्ब्रिज विश्वविद्यालय के अनुसार सबसे छोटे ज्ञात तारों में से एक, EBLM J0555-57Ab, शनि से बस थोड़ा बड़ा है और उसकी सतह पर गुरुत्व पृथ्वी से लगभग 300 गुना ज़्यादा है।",
+    "NASA के अनुसार लाल बौने तारे TRAPPIST-1 की त्रिज्या सूरज की लगभग 12% है, यानी वह बृहस्पति से बस थोड़ा बड़ा है।",
+    "NASA के अनुसार सूरज लगभग 5 अरब साल बाद लाल दानव तारा बन जाएगा, जबकि लाल बौने तारे ट्रिलियनों साल तक, लगभग 14 ट्रिलियन साल तक, अपना ईंधन जला सकते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Jika Jupiter Menjadi Bintang, Berapa Ton Beratmu di Sana?",
+   "summary": "Jika Jupiter menjadi bintang, beratmu di sana bukan 70 kg, tapi 13 ton! Profesor Pi menjelaskan seberapa berat Jupiter harus bertambah, kenapa ada bintang yang hanya sedikit lebih besar dari Saturnus, dan kenapa Jupiter merah akan hidup lebih lama bahkan dari Matahari.",
+   "facts": [
+    "Menurut NASA, jika massa Jupiter sekitar 80 kali lebih besar, ia akan menjadi bintang, bukan planet.",
+    "Menurut NASA, gravitasi yang kamu rasakan di Jupiter sekitar 2,4 kali gravitasi Bumi; jika ukuran Jupiter tetap tetapi massanya 80 kali lipat, gravitasinya sekitar 190 kali gravitasi Bumi, sehingga orang 70 kg akan berbobot lebih dari 13 ton.",
+    "Menurut University of Cambridge, EBLM J0555-57Ab, salah satu bintang terkecil yang diketahui, hanya sedikit lebih besar dari Saturnus, dan gravitasi di permukaannya sekitar 300 kali lebih kuat daripada di Bumi.",
+    "Menurut NASA, katai merah TRAPPIST-1 memiliki jari-jari sekitar 12% jari-jari Matahari, sehingga hanya sedikit lebih besar dari Jupiter.",
+    "Menurut NASA, Matahari akan menjadi raksasa merah sekitar 5 miliar tahun lagi, sedangkan katai merah dapat membakar bahan bakarnya selama triliunan tahun, hingga sekitar 14 triliun tahun."
+   ]
+  },
+  "fr": {
+   "title": "Si Jupiter Était une Étoile, Combien de Tonnes Pèserais-tu Là-bas ?",
+   "summary": "Si Jupiter devenait une étoile, tu n'y pèserais pas 70 kg mais 13 tonnes ! Le Professeur Pi explique de combien Jupiter devrait s'alourdir, pourquoi certaines étoiles sont à peine plus grandes que Saturne et pourquoi un Jupiter rouge vivrait même plus longtemps que le Soleil.",
+   "facts": [
+    "Selon la NASA, si Jupiter avait été environ 80 fois plus massive, elle serait devenue une étoile plutôt qu'une planète.",
+    "Selon la NASA, la gravité ressentie sur Jupiter est environ 2,4 fois celle de la Terre ; si Jupiter gardait sa taille avec 80 fois sa masse, la gravité serait environ 190 fois celle de la Terre, et une personne de 70 kg pèserait plus de 13 tonnes.",
+    "Selon l'université de Cambridge, EBLM J0555-57Ab, l'une des plus petites étoiles connues, est à peine plus grande que Saturne, et la gravité à sa surface est environ 300 fois plus forte que sur Terre.",
+    "Selon la NASA, la naine rouge TRAPPIST-1 a un rayon d'environ 12 % de celui du Soleil, ce qui la rend à peine plus grande que Jupiter.",
+    "Selon la NASA, le Soleil deviendra une géante rouge dans environ 5 milliards d'années, tandis que les naines rouges peuvent brûler leur combustible pendant des milliers de milliards d'années, jusqu'à environ 14 000 milliards d'années."
+   ]
+  },
+  "de": {
+   "title": "Wäre Jupiter ein Stern: Wie viele Tonnen würdest du dort wiegen?",
+   "summary": "Wäre Jupiter ein Stern, würdest du dort nicht 70 kg, sondern 13 Tonnen wiegen! Professor Pi erklärt, wie viel schwerer Jupiter werden müsste, warum manche Sterne kaum größer als Saturn sind und warum ein roter Jupiter sogar die Sonne überleben würde.",
+   "facts": [
+    "Laut NASA wäre Jupiter ein Stern statt eines Planeten geworden, wenn er etwa 80-mal mehr Masse gehabt hätte.",
+    "Laut NASA ist die Schwerkraft auf Jupiter etwa 2,4-mal so stark wie auf der Erde; behielte Jupiter seine Größe, hätte aber die 80-fache Masse, wäre die Schwerkraft etwa 190-mal so stark wie auf der Erde – ein 70 kg schwerer Mensch würde dann mehr als 13 Tonnen wiegen.",
+    "Laut der University of Cambridge ist EBLM J0555-57Ab, einer der kleinsten bekannten Sterne, nur etwas größer als Saturn, und die Schwerkraft an seiner Oberfläche ist etwa 300-mal stärker als auf der Erde.",
+    "Laut NASA hat der Rote Zwerg TRAPPIST-1 etwa 12 % des Sonnenradius und ist damit nur etwas größer als Jupiter.",
+    "Laut NASA wird die Sonne in etwa 5 Milliarden Jahren zum Roten Riesen, während Rote Zwerge ihren Brennstoff Billionen Jahre lang verbrennen können, bis zu etwa 14 Billionen Jahre."
+   ]
+  },
+  "ru": {
+   "title": "Если бы Юпитер был звездой, сколько тонн ты бы там весил?",
+   "summary": "Если бы Юпитер стал звездой, ты весил бы там не 70 кг, а 13 тонн! Профессор Пи объясняет, насколько тяжелее должен стать Юпитер, почему некоторые звёзды лишь чуть больше Сатурна и почему красный Юпитер прожил бы дольше даже Солнца.",
+   "facts": [
+    "По данным NASA, если бы Юпитер был примерно в 80 раз массивнее, он стал бы звездой, а не планетой.",
+    "По данным NASA, сила тяжести на Юпитере примерно в 2,4 раза больше земной; если бы Юпитер сохранил размер, но стал в 80 раз массивнее, сила тяжести была бы примерно в 190 раз больше земной, и человек весом 70 кг весил бы больше 13 тонн.",
+    "По данным Кембриджского университета, EBLM J0555-57Ab, одна из самых маленьких известных звёзд, лишь немного больше Сатурна, а сила тяжести на её поверхности примерно в 300 раз больше земной.",
+    "По данным NASA, радиус красного карлика TRAPPIST-1 составляет около 12% радиуса Солнца, то есть он лишь немного больше Юпитера.",
+    "По данным NASA, Солнце станет красным гигантом примерно через 5 миллиардов лет, а красные карлики могут сжигать своё топливо триллионы лет — примерно до 14 триллионов лет."
+   ]
+  },
+  "az": {
+   "title": "Yupiter Ulduz Olsaydı, Orada Neçə Ton Gələrdin?",
+   "summary": "Yupiter ulduza çevrilsəydi, orada 70 kilo yox, 13 ton gələrdin! Professor Pi Yupiterin nə qədər ağırlaşmalı olduğunu, niyə bəzi ulduzların Saturndan cəmi bir az böyük olduğunu və qırmızı Yupiterin niyə hətta Günəşdən də uzun yaşayacağını izah edir.",
+   "facts": [
+    "NASA-ya görə Yupiterin kütləsi təxminən 80 dəfə çox olsaydı, o, planet yox, ulduz olardı.",
+    "NASA-ya görə Yupiterdə hiss etdiyin cazibə Yerdəkinin təxminən 2,4 qatıdır; Yupiter ölçüsünü saxlayıb kütləsi 80 qat artsaydı, cazibə Yerdəkinin təxminən 190 qatı olardı, yəni 70 kiloqramlıq insan 13 tondan çox gələrdi.",
+    "Kembric Universitetinə görə məlum ən kiçik ulduzlardan biri olan EBLM J0555-57Ab Saturndan cəmi bir az böyükdür və səthindəki cazibə Yerdəkindən təxminən 300 dəfə güclüdür.",
+    "NASA-ya görə qırmızı cırtdan TRAPPIST-1-in radiusu Günəşinkinin təxminən 12%-i qədərdir, yəni Yupiterdən cəmi bir az böyükdür.",
+    "NASA-ya görə Günəş təxminən 5 milyard ildən sonra qırmızı nəhəngə çevriləcək, qırmızı cırtdanlar isə yanacaqlarını trilyonlarla il, təxminən 14 trilyon ilə qədər yandıra bilər."
+   ]
+  }
+ }
+}

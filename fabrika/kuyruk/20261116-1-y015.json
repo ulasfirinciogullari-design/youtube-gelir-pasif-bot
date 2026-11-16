@@ -1,0 +1,412 @@
+{
+ "id": "y015",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'nın iki Ay'ı olsaydı ne olurdu?",
+ "uzun": true,
+ "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
+ "bar": {
+  "hi": "İKİ AY",
+  "rest": "OLSAYDI?"
+ },
+ "summary": "Gökyüzünde iki ay olsaydı, ilk gece deniz havluna kadar gelir ve gece 5 kat aydınlanırdı! Gelgitin neden 8 kat güçleneceğini, iki ayın sonunda neden çarpışabileceğini ve Dünya'nın belki de gerçekten ikinci bir ayı olduğunu Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Denizden iki dev ay doğuyor ve dalgalar havluna tırmanıyor!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "xl",
+      "at": "b"
+     },
+     {
+      "b": "moon",
+      "size": "s",
+      "at": "tl"
+     },
+     {
+      "b": "moon",
+      "size": "m",
+      "at": "tr"
+     }
+    ],
+    "do": "approach",
+    "target": 2,
+    "key": "ay",
+    "label": "İki Ay"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yeni ay bizimkinin aynısı ama 2 kat yakın: gelgit gücü tam 8 kat!",
+   "v": {
+    "t": "number",
+    "bg": "ocean",
+    "e": "🌊",
+    "value": "8",
+    "unit": "kat",
+    "label": "Gelgit Gücü",
+    "key": "8"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Havlum denize mi gidiyor?!",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🏖️",
+    "do": "float",
+    "key": "Havlum",
+    "label": "Kaçan Havlu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk gece: iki dolunay geceyi 5 kat aydınlatır, lambasız kitap okursun.",
+   "v": {
+    "t": "meter",
+    "bg": "night",
+    "label": "Gece Işığı",
+    "from": 1,
+    "to": 5,
+    "unit": "kat",
+    "e": "📖",
+    "key": "5"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uyku da yok: bugün bile dolunaydan önceki gecelerde daha geç yatıp daha az uyuyoruz.",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "🥱",
+    "do": "pulse",
+    "key": "Uyku",
+    "label": "Uykusuz Gece"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ay ışığı uykumu mu çalıyor?!",
+   "v": {
+    "t": "question",
+    "bg": "night",
+    "e": "🌕",
+    "label": "Uyku Hırsızı?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Gece yarısı: deniz kumsalı yutar.",
+   "v": {
+    "t": "timeline",
+    "bg": "ocean",
+    "steps": [
+     {
+      "when": "İLK GECE",
+      "e": "🌕",
+      "label": "İki Dolunay"
+     },
+     {
+      "when": "GECE YARISI",
+      "e": "🌊",
+      "label": "Kumsal Batar"
+     },
+     {
+      "when": "SABAHA KARŞI",
+      "e": "🏜️",
+      "label": "Deniz Çekilir"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sabaha karşı öyle çekilir ki, akşam yüzdüğün yerde yürürsün!",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "🏊",
+     "label": "Akşam Yüzdün"
+    },
+    "right": {
+     "e": "🚶",
+     "label": "Sabah Yürüdün"
+    },
+    "key": "yürürsün"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama bu ikili kalıcı değil: bir gün çarpışırlar, dev kayalar Dünya'ya yağabilir.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "moon",
+      "size": "m",
+      "at": "l"
+     },
+     {
+      "b": "moon",
+      "size": "l",
+      "at": "r"
+     },
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "b"
+     }
+    ],
+    "do": "explode",
+    "target": 0,
+    "key": "çarpışırlar",
+    "label": "Çarpışma"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Gökten ay parçası mı yağacak?!",
+   "v": {
+    "t": "icon",
+    "bg": "night",
+    "e": "☄️",
+    "do": "fall",
+    "key": "yağacak",
+    "label": "Ay Yağmuru"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: bu olmuş olabilir! Bilim insanlarına göre 1.200 km'lik ikinci bir ayımız vardı.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌑",
+    "value": "1.200",
+    "unit": "km",
+    "label": "İkinci Ay",
+    "key": "1.200"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ay'a yavaşça çarpıp yayıldı; arka yüzündeki dağlar ondan kalma olabilir!",
+   "v": {
+    "t": "split",
+    "bg": "space",
+    "left": {
+     "e": "🌑",
+     "label": "Küçük Ay"
+    },
+    "right": {
+     "e": "⛰️",
+     "label": "Arka Yüz Dağları"
+    },
+    "key": "dağlar"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen iki aylı gecede kumsalda kalır mıydın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🌕"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NOAA'ya göre gelgit oluşturan kuvvet uzaklığın küpüyle ters orantılıdır; bu yüzden Ay'ın aynısı olan ama yarı mesafede (yaklaşık 192.000 km) dönen ikinci bir ay, Ay'ın 8 katı gelgit kuvveti uygulardı.",
+   "source": "NOAA National Ocean Service",
+   "url": "https://oceanservice.noaa.gov/education/tutorial_tides/tides02_cause.html"
+  },
+  {
+   "text": "Maine Üniversitesi astrofizikçisi Neil Comins'e göre böyle bir ikinci ay, bugünkü Ay'ın oluşturduğundan 8 kat yüksek gelgitler yaratırdı.",
+   "source": "Discover Magazine (Neil Comins, University of Maine)",
+   "url": "https://www.discovermagazine.com/5-ways-life-on-earth-would-be-different-if-we-had-two-moons-45611"
+  },
+  {
+   "text": "Comins'e göre iki ay birlikte geceleri bugünkünden 5 kat aydınlık yapardı; ek ışık olmadan rahatça kitap okunabilirdi.",
+   "source": "Discover Magazine (Neil Comins, University of Maine)",
+   "url": "https://www.discovermagazine.com/5-ways-life-on-earth-would-be-different-if-we-had-two-moons-45611"
+  },
+  {
+   "text": "Washington Üniversitesi'nin 2021 çalışmasına göre hem Arjantin'deki Toba-Qom topluluklarında hem de Seattle'daki 464 üniversite öğrencisinde insanlar dolunaydan 3-5 gün önceki gecelerde daha geç yatıp daha az uyudu; Toba-Qom topluluklarında uyku süresi Ay döngüsü boyunca ortalama 46-58 dakika değişti.",
+   "source": "University of Washington",
+   "url": "https://www.washington.edu/news/2021/01/27/moon-sleep/"
+  },
+  {
+   "text": "Comins'e göre iki ay yavaşça birbirinden uzaklaşır ve sonunda çarpışabilirdi; Dünya'ya düşen büyük parçalar kitlesel bir yok oluşa yol açabilirdi.",
+   "source": "Discover Magazine (Neil Comins, University of Maine)",
+   "url": "https://www.discovermagazine.com/5-ways-life-on-earth-would-be-different-if-we-had-two-moons-45611"
+  },
+  {
+   "text": "Space.com'a göre Nature'da yayımlanan bir çalışma, Dünya'nın bir zamanlar yaklaşık 1.200 km genişliğinde ikinci bir ayı olmuş olabileceğini, bunun Ay'a saatte 7.200-10.800 km gibi görece düşük bir hızla çarpıp Ay'ın arka yüzündeki yaylaları oluşturmuş olabileceğini öne sürüyor.",
+   "source": "Space.com",
+   "url": "https://www.space.com/12529-earth-2-moons-collision-moon-formation.html"
+  }
+ ],
+ "tags": [
+  "dünyanın iki ayı olsaydı",
+  "iki ay",
+  "ikinci ay",
+  "ay",
+  "gelgit",
+  "dolunay",
+  "dolunay ve uyku",
+  "ay çarpışması",
+  "neil comins",
+  "what if earth had two moons",
+  "two moons",
+  "tides",
+  "full moon sleep",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.discovermagazine.com/5-ways-life-on-earth-would-be-different-if-we-had-two-moons-45611",
+  "https://oceanservice.noaa.gov/education/tutorial_tides/tides02_cause.html",
+  "https://www.space.com/12529-earth-2-moons-collision-moon-formation.html",
+  "https://www.washington.edu/news/2021/01/27/moon-sleep/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "If Earth Had Two Moons, What Would Happen on the First Night?",
+   "summary": "With two moons in the sky, the sea would reach your beach towel on the very first night and the night would be 5 times brighter! Professor Pi explains why the tides would be 8 times stronger, why the two moons could eventually collide, and how Earth may really have had a second moon once.",
+   "facts": [
+    "According to NOAA, tide-generating force varies inversely with the cube of distance, so a second moon identical to ours but at half the distance (about 192,000 km) would exert 8 times the Moon's tidal force.",
+    "According to University of Maine astrophysicist Neil Comins, such a second moon would create tides 8 times higher than those our Moon creates today.",
+    "According to Comins, the two moons together would make nights 5 times brighter than today, bright enough to easily read a book without extra light.",
+    "A 2021 University of Washington study found that, both in Toba-Qom communities in Argentina and among 464 Seattle college students, people went to bed later and slept less on the nights 3 to 5 days before a full moon; in the Toba-Qom communities, sleep varied by an average of 46 to 58 minutes across the lunar cycle.",
+    "According to Comins, the two moons would slowly drift apart and could eventually collide; large fragments falling to Earth could cause a mass extinction.",
+    "According to Space.com, a study published in Nature suggests Earth may once have had a second moon about 1,200 km wide that hit our Moon at a relatively slow 7,200 to 10,800 km/h and may have formed the highlands on its far side."
+   ]
+  },
+  "es": {
+   "title": "¿Qué Pasaría la Primera Noche si la Tierra Tuviera Dos Lunas?",
+   "summary": "¡Con dos lunas en el cielo, la primera noche el mar llegaría hasta tu toalla y la noche sería 5 veces más brillante! El Profesor Pi explica por qué las mareas serían 8 veces más fuertes, por qué las dos lunas podrían acabar chocando y cómo la Tierra quizá tuvo de verdad una segunda luna.",
+   "facts": [
+    "Según la NOAA, la fuerza que genera las mareas varía de forma inversa al cubo de la distancia, así que una segunda luna idéntica a la nuestra pero a la mitad de distancia (unos 192.000 km) ejercería 8 veces la fuerza de marea de la Luna.",
+    "Según el astrofísico Neil Comins, de la Universidad de Maine, una segunda luna así crearía mareas 8 veces más altas que las que crea hoy nuestra Luna.",
+    "Según Comins, las dos lunas juntas harían las noches 5 veces más brillantes que hoy, lo bastante para leer un libro sin luz adicional.",
+    "Un estudio de 2021 de la Universidad de Washington halló que, tanto en comunidades toba-qom de Argentina como en 464 universitarios de Seattle, la gente se acostaba más tarde y dormía menos las noches de 3 a 5 días antes de la luna llena; en las comunidades toba-qom, el sueño varió de media entre 46 y 58 minutos a lo largo del ciclo lunar.",
+    "Según Comins, las dos lunas se alejarían poco a poco y podrían acabar chocando; grandes fragmentos que cayeran a la Tierra podrían causar una extinción masiva.",
+    "Según Space.com, un estudio publicado en Nature sugiere que la Tierra pudo tener una segunda luna de unos 1.200 km de ancho que chocó con la Luna a una velocidad relativamente baja, de 7.200 a 10.800 km/h, y pudo formar las tierras altas de su cara oculta."
+   ]
+  },
+  "pt": {
+   "title": "Se a Terra Tivesse Duas Luas, o Que Aconteceria na Primeira Noite?",
+   "summary": "Com duas luas no céu, já na primeira noite o mar chegaria até a sua toalha e a noite ficaria 5 vezes mais clara! O Professor Pi explica por que as marés seriam 8 vezes mais fortes, por que as duas luas poderiam acabar colidindo e como a Terra talvez tenha mesmo tido uma segunda lua.",
+   "facts": [
+    "Segundo a NOAA, a força que gera as marés varia inversamente ao cubo da distância; por isso, uma segunda lua idêntica à nossa, mas à metade da distância (cerca de 192.000 km), exerceria 8 vezes a força de maré da Lua.",
+    "Segundo o astrofísico Neil Comins, da Universidade do Maine, uma segunda lua assim criaria marés 8 vezes mais altas do que as que a nossa Lua cria hoje.",
+    "Segundo Comins, as duas luas juntas deixariam as noites 5 vezes mais claras do que hoje, o suficiente para ler um livro sem luz extra.",
+    "Um estudo de 2021 da Universidade de Washington mostrou que, tanto em comunidades toba-qom da Argentina quanto entre 464 universitários de Seattle, as pessoas iam dormir mais tarde e dormiam menos nas noites de 3 a 5 dias antes da lua cheia; nas comunidades toba-qom, o sono variou em média de 46 a 58 minutos ao longo do ciclo lunar.",
+    "Segundo Comins, as duas luas se afastariam lentamente e poderiam acabar colidindo; grandes fragmentos caindo na Terra poderiam causar uma extinção em massa.",
+    "Segundo o Space.com, um estudo publicado na Nature sugere que a Terra pode ter tido uma segunda lua de cerca de 1.200 km de largura, que colidiu com a Lua a uma velocidade relativamente baixa, de 7.200 a 10.800 km/h, e pode ter formado as terras altas do seu lado oculto."
+   ]
+  },
+  "ar": {
+   "title": "ماذا سيحدث في الليلة الأولى لو كان للأرض قمران؟",
+   "summary": "لو كان في السماء قمران، لوصل البحر إلى منشفتك في الليلة الأولى ولصار الليل أكثر سطوعًا 5 مرات! يشرح البروفيسور باي لماذا سيصبح المد أقوى 8 مرات، ولماذا قد يصطدم القمران في النهاية، وكيف ربما امتلكت الأرض فعلًا قمرًا ثانيًا ذات يوم.",
+   "facts": [
+    "وفقًا للإدارة الوطنية للمحيطات والغلاف الجوي (NOAA)، تتناسب قوة المد عكسيًا مع مكعب المسافة، لذا فإن قمرًا ثانيًا مطابقًا لقمرنا لكن على نصف المسافة (نحو 192,000 كم) سيؤثر بقوة مد تعادل 8 أضعاف قوة القمر.",
+    "وفقًا لعالم الفيزياء الفلكية نيل كومينز من جامعة مين، فإن قمرًا ثانيًا كهذا سيُحدث مدًّا أعلى 8 مرات من المد الذي يُحدثه قمرنا اليوم.",
+    "وفقًا لكومينز، سيجعل القمران معًا الليالي أكثر سطوعًا 5 مرات مما هي عليه اليوم، بما يكفي لقراءة كتاب دون إضاءة إضافية.",
+    "وجدت دراسة أجرتها جامعة واشنطن عام 2021 أن الناس، في مجتمعات توبا-كوم في الأرجنتين وبين 464 طالبًا جامعيًا في سياتل، كانوا ينامون متأخرين ولمدة أقل في الليالي التي تسبق اكتمال القمر بـ3 إلى 5 أيام؛ وفي مجتمعات توبا-كوم تغيّرت مدة النوم بمتوسط 46 إلى 58 دقيقة على مدار الدورة القمرية.",
+    "وفقًا لكومينز، سيتباعد القمران ببطء وقد يصطدمان في النهاية؛ وقد تتسبب الشظايا الكبيرة المتساقطة على الأرض في انقراض جماعي.",
+    "وفقًا لموقع Space.com، تشير دراسة نُشرت في مجلة Nature إلى أن الأرض ربما امتلكت ذات يوم قمرًا ثانيًا بعرض نحو 1,200 كم، اصطدم بالقمر بسرعة منخفضة نسبيًا بين 7,200 و10,800 كم/ساعة، وربما شكّل المرتفعات على جانبه البعيد."
+   ]
+  },
+  "hi": {
+   "title": "अगर पृथ्वी के दो चाँद होते, तो पहली रात क्या होता?",
+   "summary": "अगर आसमान में दो चाँद होते, तो पहली ही रात समुद्र आपके तौलिये तक आ जाता और रात 5 गुना ज़्यादा रोशन होती! प्रोफ़ेसर पाई बताते हैं कि ज्वार 8 गुना ताक़तवर क्यों होते, दोनों चाँद आख़िरकार क्यों टकरा सकते थे और कैसे पृथ्वी के पास शायद सच में कभी दूसरा चाँद था।",
+   "facts": [
+    "NOAA के अनुसार ज्वार पैदा करने वाला बल दूरी के घन के व्युत्क्रमानुपाती होता है, इसलिए हमारे चाँद जैसा ही लेकिन आधी दूरी (लगभग 192,000 किमी) पर घूमने वाला दूसरा चाँद, चाँद से 8 गुना ज़्यादा ज्वारीय बल लगाता।",
+    "यूनिवर्सिटी ऑफ़ मेन के खगोल भौतिकविद नील कॉमिन्स के अनुसार ऐसा दूसरा चाँद आज हमारे चाँद से बनने वाले ज्वार से 8 गुना ऊँचे ज्वार पैदा करता।",
+    "कॉमिन्स के अनुसार दोनों चाँद मिलकर रातों को आज से 5 गुना ज़्यादा रोशन कर देते, इतना कि बिना अतिरिक्त रोशनी के किताब पढ़ी जा सके।",
+    "यूनिवर्सिटी ऑफ़ वॉशिंगटन के 2021 के एक अध्ययन में पाया गया कि अर्जेंटीना के टोबा-कोम समुदायों और सिएटल के 464 कॉलेज छात्रों, दोनों में लोग पूर्णिमा से 3 से 5 दिन पहले की रातों में देर से सोए और कम सोए; टोबा-कोम समुदायों में चंद्र चक्र के दौरान नींद औसतन 46 से 58 मिनट तक बदली।",
+    "कॉमिन्स के अनुसार दोनों चाँद धीरे-धीरे एक-दूसरे से दूर होते और आख़िरकार टकरा सकते थे; पृथ्वी पर गिरने वाले बड़े टुकड़े सामूहिक विलुप्ति का कारण बन सकते थे।",
+    "Space.com के अनुसार Nature में प्रकाशित एक अध्ययन बताता है कि पृथ्वी के पास कभी लगभग 1,200 किमी चौड़ा दूसरा चाँद रहा हो सकता है, जो 7,200 से 10,800 किमी/घंटा की अपेक्षाकृत धीमी रफ़्तार से चाँद से टकराया और शायद उसके दूर वाले हिस्से के ऊँचे इलाक़े बनाए।"
+   ]
+  },
+  "id": {
+   "title": "Jika Bumi Punya Dua Bulan, Apa yang Terjadi pada Malam Pertama?",
+   "summary": "Dengan dua bulan di langit, pada malam pertama laut akan sampai ke handukmu dan malam jadi 5 kali lebih terang! Profesor Pi menjelaskan kenapa pasang jadi 8 kali lebih kuat, kenapa kedua bulan itu akhirnya bisa bertabrakan, dan bagaimana Bumi mungkin benar-benar pernah punya bulan kedua.",
+   "facts": [
+    "Menurut NOAA, gaya pembangkit pasang surut berbanding terbalik dengan pangkat tiga jarak, sehingga bulan kedua yang identik dengan Bulan kita tetapi berjarak setengahnya (sekitar 192.000 km) akan memberi gaya pasang 8 kali gaya Bulan.",
+    "Menurut astrofisikawan Neil Comins dari University of Maine, bulan kedua seperti itu akan menciptakan pasang 8 kali lebih tinggi daripada pasang yang diciptakan Bulan kita saat ini.",
+    "Menurut Comins, kedua bulan bersama-sama akan membuat malam 5 kali lebih terang daripada sekarang, cukup terang untuk membaca buku tanpa lampu tambahan.",
+    "Studi University of Washington tahun 2021 menemukan bahwa, baik di komunitas Toba-Qom di Argentina maupun pada 464 mahasiswa di Seattle, orang tidur lebih larut dan lebih sebentar pada malam-malam 3 sampai 5 hari sebelum bulan purnama; di komunitas Toba-Qom, lama tidur bervariasi rata-rata 46 hingga 58 menit sepanjang siklus bulan.",
+    "Menurut Comins, kedua bulan perlahan akan saling menjauh dan akhirnya bisa bertabrakan; pecahan besar yang jatuh ke Bumi bisa memicu kepunahan massal.",
+    "Menurut Space.com, sebuah studi di jurnal Nature menunjukkan Bumi mungkin pernah punya bulan kedua selebar sekitar 1.200 km yang menabrak Bulan dengan kecepatan relatif lambat, 7.200 hingga 10.800 km/jam, dan mungkin membentuk dataran tinggi di sisi jauhnya."
+   ]
+  },
+  "fr": {
+   "title": "Si la Terre Avait Deux Lunes, Que Se Passerait-il la Première Nuit ?",
+   "summary": "Avec deux lunes dans le ciel, dès la première nuit la mer atteindrait ta serviette et la nuit serait 5 fois plus lumineuse ! Le Professeur Pi explique pourquoi les marées seraient 8 fois plus fortes, pourquoi les deux lunes pourraient finir par se percuter et comment la Terre a peut-être vraiment eu une seconde lune.",
+   "facts": [
+    "Selon la NOAA, la force génératrice des marées varie en raison inverse du cube de la distance : une seconde lune identique à la nôtre mais deux fois plus proche (environ 192 000 km) exercerait 8 fois la force de marée de la Lune.",
+    "Selon l'astrophysicien Neil Comins, de l'université du Maine, une telle seconde lune créerait des marées 8 fois plus hautes que celles de notre Lune aujourd'hui.",
+    "Selon Comins, les deux lunes réunies rendraient les nuits 5 fois plus lumineuses qu'aujourd'hui, assez pour lire un livre sans lumière supplémentaire.",
+    "Une étude de 2021 de l'université de Washington a montré que, dans des communautés Toba-Qom d'Argentine comme chez 464 étudiants de Seattle, les gens se couchaient plus tard et dormaient moins les nuits situées 3 à 5 jours avant la pleine lune ; chez les Toba-Qom, la durée du sommeil variait en moyenne de 46 à 58 minutes au fil du cycle lunaire.",
+    "Selon Comins, les deux lunes s'éloigneraient lentement l'une de l'autre et pourraient finir par entrer en collision ; de gros fragments tombant sur Terre pourraient provoquer une extinction de masse.",
+    "Selon Space.com, une étude publiée dans Nature suggère que la Terre a peut-être eu une seconde lune d'environ 1 200 km de large, qui aurait percuté la Lune à une vitesse relativement faible de 7 200 à 10 800 km/h et formé les hautes terres de sa face cachée."
+   ]
+  },
+  "de": {
+   "title": "Zwei Monde am Himmel: Was würde in der ersten Nacht passieren?",
+   "summary": "Mit zwei Monden am Himmel würde das Meer schon in der ersten Nacht dein Handtuch erreichen, und die Nacht wäre 5-mal heller! Professor Pi erklärt, warum die Gezeiten 8-mal stärker wären, warum die beiden Monde irgendwann zusammenstoßen könnten und wie die Erde vielleicht wirklich einmal einen zweiten Mond hatte.",
+   "facts": [
+    "Laut NOAA nimmt die gezeitenerzeugende Kraft mit der dritten Potenz der Entfernung ab; ein zweiter Mond, identisch mit unserem, aber nur halb so weit entfernt (etwa 192.000 km), würde daher die 8-fache Gezeitenkraft des Mondes ausüben.",
+    "Laut dem Astrophysiker Neil Comins von der University of Maine würde ein solcher zweiter Mond 8-mal höhere Gezeiten erzeugen als unser Mond heute.",
+    "Laut Comins würden die beiden Monde zusammen die Nächte 5-mal heller machen als heute – hell genug, um ohne zusätzliches Licht ein Buch zu lesen.",
+    "Eine Studie der University of Washington von 2021 ergab, dass Menschen sowohl in Toba-Qom-Gemeinschaften in Argentinien als auch unter 464 Studierenden in Seattle in den Nächten 3 bis 5 Tage vor Vollmond später ins Bett gingen und weniger schliefen; in den Toba-Qom-Gemeinschaften schwankte die Schlafdauer über den Mondzyklus im Schnitt um 46 bis 58 Minuten.",
+    "Laut Comins würden sich die beiden Monde langsam voneinander entfernen und könnten schließlich kollidieren; große Trümmer, die auf die Erde stürzen, könnten ein Massenaussterben auslösen.",
+    "Laut Space.com legt eine in Nature veröffentlichte Studie nahe, dass die Erde einst einen etwa 1.200 km breiten zweiten Mond gehabt haben könnte, der mit relativ langsamen 7.200 bis 10.800 km/h auf den Mond prallte und womöglich das Hochland auf seiner Rückseite formte."
+   ]
+  },
+  "ru": {
+   "title": "Если бы у Земли было две луны: что случилось бы в первую ночь?",
+   "summary": "С двумя лунами в небе уже в первую ночь море дошло бы до твоего полотенца, а ночь стала бы в 5 раз светлее! Профессор Пи объясняет, почему приливы стали бы в 8 раз сильнее, почему две луны в итоге могли бы столкнуться и как у Земли, возможно, действительно когда-то была вторая луна.",
+   "facts": [
+    "По данным NOAA, приливообразующая сила обратно пропорциональна кубу расстояния, поэтому вторая луна, такая же, как наша, но вдвое ближе (около 192 000 км), действовала бы с приливной силой в 8 раз больше лунной.",
+    "По словам астрофизика Нила Коминса из Университета штата Мэн, такая вторая луна создавала бы приливы в 8 раз выше, чем создаёт наша Луна сегодня.",
+    "По словам Коминса, две луны вместе сделали бы ночи в 5 раз светлее, чем сейчас, — достаточно, чтобы читать книгу без дополнительного света.",
+    "Исследование Вашингтонского университета 2021 года показало, что и в общинах тоба-ком в Аргентине, и среди 464 студентов Сиэтла люди ложились позже и спали меньше в ночи за 3–5 дней до полнолуния; в общинах тоба-ком продолжительность сна за лунный цикл менялась в среднем на 46–58 минут.",
+    "По словам Коминса, две луны медленно удалялись бы друг от друга и в итоге могли бы столкнуться; крупные обломки, упавшие на Землю, могли бы вызвать массовое вымирание.",
+    "По данным Space.com, исследование, опубликованное в Nature, предполагает, что у Земли когда-то могла быть вторая луна шириной около 1200 км, которая врезалась в Луну на относительно небольшой скорости 7200–10 800 км/ч и, возможно, образовала возвышенности на её обратной стороне."
+   ]
+  },
+  "az": {
+   "title": "Yerin İki Ayı Olsaydı İlk Gecə Nə Olardı?",
+   "summary": "Göydə iki ay olsaydı, ilk gecə dəniz dəsmalına qədər gələr, gecə 5 dəfə işıqlı olardı! Professor Pi qabarmaların niyə 8 dəfə güclənəcəyini, iki ayın sonda niyə toqquşa biləcəyini və Yerin bəlkə də həqiqətən ikinci ayı olduğunu izah edir.",
+   "facts": [
+    "NOAA-ya görə qabarma yaradan qüvvə məsafənin kubu ilə tərs mütənasibdir; ona görə də bizim Ayla eyni olan, amma yarı məsafədə (təxminən 192.000 km) fırlanan ikinci ay Ayın 8 qatı qabarma qüvvəsi yaradardı.",
+    "Men Universitetinin astrofiziki Nil Kominsə görə belə ikinci ay bugünkü Ayın yaratdığından 8 dəfə hündür qabarmalar yaradardı.",
+    "Kominsə görə iki ay birlikdə gecələri bugünkündən 5 dəfə işıqlı edərdi; əlavə işıq olmadan kitab oxumaq mümkün olardı.",
+    "Vaşinqton Universitetinin 2021-ci il araşdırmasına görə həm Argentinadakı Toba-Qom icmalarında, həm də Sietldəki 464 universitet tələbəsində insanlar bədirlənmədən 3-5 gün əvvəlki gecələrdə daha gec yatıb daha az yatırdılar; Toba-Qom icmalarında yuxu müddəti Ay dövrü ərzində orta hesabla 46-58 dəqiqə dəyişirdi.",
+    "Kominsə görə iki ay yavaş-yavaş bir-birindən uzaqlaşar və sonda toqquşa bilərdi; Yerə düşən böyük qəlpələr kütləvi məhvə səbəb ola bilərdi.",
+    "Space.com-a görə Nature jurnalında dərc olunan araşdırma Yerin bir vaxtlar təxminən 1.200 km enində ikinci ayı ola biləcəyini, onun Aya saatda 7.200-10.800 km kimi nisbətən aşağı sürətlə çırpılaraq arxa tərəfindəki yaylaları yaratmış ola biləcəyini irəli sürür."
+   ]
+  }
+ }
+}
