@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "300",
+    "views": "301",
     "reason": null
    }
   },
@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1042",
+    "views": "1044",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "958",
+    "views": "961",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "658",
+    "views": "664",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "911",
+    "views": "912",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "984",
+    "views": "996",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "990",
+    "views": "992",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "490",
+    "views": "519",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "130",
+    "views": "140",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "91",
+    "views": "110",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "517",
+    "views": "883",
     "reason": null
    }
   },
@@ -2613,6 +2613,37 @@
    "at": 1794838214.2388918,
    "chars": 770,
    "ilk": false,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "494",
+    "reason": null
+   }
+  },
+  {
+   "id": "y018",
+   "video_id": "sLED9nX8m1w",
+   "url": "https://youtube.com/shorts/sLED9nX8m1w",
+   "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Jupiter Were a Star, How Many Tons Would You Weigh There?",
+    "es": "Si Júpiter Fuera una Estrella, ¿Cuántas Toneladas Pesarías Allí?",
+    "pt": "Se Júpiter Fosse uma Estrela, Quantas Toneladas Você Pesaria Lá?",
+    "ar": "لو أصبح المشتري نجمًا، كم طنًا ستزن هناك؟",
+    "hi": "अगर बृहस्पति एक तारा होता, तो वहाँ आपका वज़न कितने टन होता?",
+    "id": "Jika Jupiter Menjadi Bintang, Berapa Ton Beratmu di Sana?",
+    "fr": "Si Jupiter Était une Étoile, Combien de Tonnes Pèserais-tu Là-bas ?",
+    "de": "Wäre Jupiter ein Stern: Wie viele Tonnen würdest du dort wiegen?",
+    "ru": "Если бы Юпитер был звездой, сколько тонн ты бы там весил?",
+    "az": "Yupiter Ulduz Olsaydı, Orada Neçə Ton Gələrdin?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794852534.6693926,
+   "chars": 375,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2708,7 +2739,8 @@
   "y028",
   "y023",
   "n018",
-  "y015"
+  "y015",
+  "y018"
  ],
  "extra": [
   {
@@ -2774,14 +2806,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-08T20:08:49+00:00",
-   "mod": "saatlik",
-   "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
-   "url": "https://youtube.com/shorts/Tk6wA4QlShk",
-   "duration": 25.2,
-   "chars": 358
-  },
   {
    "finished": "2026-11-09T09:09:26+00:00",
    "mod": "igbolum",
@@ -3194,6 +3218,14 @@
    "mod": "igbolum",
    "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
    "chars": 386
+  },
+  {
+   "finished": "2026-11-16T18:08:56+00:00",
+   "mod": "saatlik",
+   "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+   "url": "https://youtube.com/shorts/sLED9nX8m1w",
+   "duration": 29.1,
+   "chars": 375
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3560,5 +3592,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794848994.553737
+ "yedek_ses": 1794852536.5435555
 }
