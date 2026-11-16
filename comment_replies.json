@@ -341,6 +341,12 @@
    "r",
    "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdH6LkKxJ1U",
    "UC0DdE-62-tZRp6ZtQmkOf0Q"
+  ],
+  "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdH6cGE0ANJ": [
+   1794843916,
+   "r",
+   "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdHDCl9FAL6",
+   "UC0DdE-62-tZRp6ZtQmkOf0Q"
   ]
  },
  "tracked": {
@@ -486,8 +492,8 @@
   },
   "Ugx5P5raxiByCoyxVsV4AaABAg": {
    "at": 1794840321,
-   "n": 1,
-   "reply": "Evet, video da ondan bahsediyor! Kulağımız biz fark etmeden de seslere tepki verebiliyor. 👂"
+   "n": 3,
+   "reply": "@KsbIletsm Katılıyorum, vücudumuzun fark etmediğimiz ne kadar çok özelliği var değil mi? 😊"
   }
  },
  "channel": {
@@ -495,12 +501,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792790202,
-   "video": "7xjRSwfX83E",
-   "comment": "İlk",
-   "reply": "Hızlı çıktın! İlk yorum senin olmuş. 😊"
-  },
   {
    "at": 1792790774,
    "video": "kdEbtK5fwQQ",
@@ -734,6 +734,12 @@
    "video": "g9grbN5SXXQ",
    "comment": "Kulağım kendi kendine oynuyor",
    "reply": "Evet, video da ondan bahsediyor! Kulağımız biz fark etmeden de seslere tepki verebiliyor. 👂"
+  },
+  {
+   "at": 1794843916,
+   "video": "g9grbN5SXXQ",
+   "comment": "evet doğru",
+   "reply": "@KsbIletsm Katılıyorum, vücudumuzun fark etmediğimiz ne kadar çok özelliği var değil mi? 😊"
   }
  ]
 }

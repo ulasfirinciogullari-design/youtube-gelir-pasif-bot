@@ -1,22 +1,22 @@
 {
- "started": "2026-11-16T14:45:20+00:00",
+ "started": "2026-11-16T15:45:15+00:00",
  "deneme": false,
  "threads": 200,
- "reply_threads_read": 0,
+ "reply_threads_read": 1,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 2,
+ "sent_last_24h": 3,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugx5P5raxiByCoyxVsV4AaABAg",
-   "kind": "comment",
+   "id": "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdH6cGE0ANJ",
+   "kind": "followup",
    "video": "g9grbN5SXXQ",
-   "comment": "Kulağım kendi kendine oynuyor",
-   "reply": "Evet, video da ondan bahsediyor! Kulağımız biz fark etmeden de seslere tepki verebiliyor. 👂",
+   "comment": "evet doğru",
+   "reply": "@KsbIletsm Katılıyorum, vücudumuzun fark etmediğimiz ne kadar çok özelliği var değil mi? 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-16T14:45:26+00:00"
+ "finished": "2026-11-16T15:45:22+00:00"
 }
