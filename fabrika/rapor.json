@@ -1,76 +1,21 @@
 {
- "started": "2026-11-16T14:08:09+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-16T17:07:39+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y056",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "69",
-  "videos": "87"
+ "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
+ "chars": 386,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18257548093308477",
+  "url": "https://www.instagram.com/reel/Dfz29PKIZQX/",
+  "at": 1794848994.5536733
  },
- "credits_before": [
-  106307,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261116-1-y015.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y015",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'nın iki Ay'ı olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 770,
- "duration": 59.8,
- "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
  "warnings": [
-  "kapak: POST thumbnails/set?videoId=jxrKlBSJu_s -> 403: The thumbnail can't be set for the specified video. The request might not be properly authorized. [forbidden]",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "url": "https://youtube.com/shorts/jxrKlBSJu_s",
- "recent_status": {
-  "n017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "490",
-   "reason": null
-  },
-  "y028": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "130",
-   "reason": null
-  },
-  "y023": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "91",
-   "reason": null
-  },
-  "n018": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "517",
-   "reason": null
-  },
-  "y015": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261116-1-y015.json Dünya'nın iki Ay'ı olsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Dfz29PKIZQX/"
  ],
- "finished": "2026-11-16T14:10:16+00:00"
+ "finished": "2026-11-16T17:09:54+00:00"
 }

@@ -2775,14 +2775,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-08T18:08:19+00:00",
-   "mod": "saatlik",
-   "title": "DNA'n Gerçekte Ne Kadar Uzun?",
-   "url": "https://youtube.com/shorts/0lt8q81TuOs",
-   "duration": 29.5,
-   "chars": 414
-  },
-  {
    "finished": "2026-11-08T20:08:49+00:00",
    "mod": "saatlik",
    "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
@@ -3196,6 +3188,12 @@
    "url": "https://youtube.com/shorts/jxrKlBSJu_s",
    "duration": 59.8,
    "chars": 770
+  },
+  {
+   "finished": "2026-11-16T17:09:54+00:00",
+   "mod": "igbolum",
+   "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
+   "chars": 386
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3535,6 +3533,11 @@
     "media_id": "18109888274206258",
     "url": "https://www.instagram.com/reel/DfzckJMAlrP/",
     "at": 1794835190.2263505
+   },
+   "y056": {
+    "media_id": "18257548093308477",
+    "url": "https://www.instagram.com/reel/Dfz29PKIZQX/",
+    "at": 1794848994.5536733
    }
   },
   "eski": [
@@ -3557,5 +3560,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794838216.0741384
+ "yedek_ses": 1794848994.553737
 }
