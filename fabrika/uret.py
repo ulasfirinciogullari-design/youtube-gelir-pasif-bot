@@ -253,13 +253,22 @@ def from_queue(state, report):
     next morning's writer sees why and a broken file is not tried again every run."""
     import kuyruk
     used = set(state.get("used", [])) | set(state.get("skipped", []))
-    for p in kuyruk.files():
+    files = kuyruk.files()
+    held = []
+    for p in files:
         try:
             ep = json.loads(p.read_text(encoding="utf-8"))
             probs = kuyruk.problems(ep, used)
         except (OSError, ValueError, TypeError, KeyError, AttributeError) as e:
             ep, probs = None, [f"okunamadı: {type(e).__name__}: {e}"]
+        # A story (test 9) lives on its characters' own voices, so it waits while the last run had to use the edge-tts
+        # backup (ElevenLabs refused, e.g. the unpaid invoice of 2026-11-16) and a later file goes first.
+        if not probs and ep.get("hikaye") and state.get("yedek_ses") and p is not files[-1]:
+            held.append(p.name)
+            continue
         if not probs:
+            if held:
+                report.setdefault("warnings", []).append(f"hikâye bekletildi (yedek ses açık): {', '.join(held)}")
             report["kuyruk"] = {"dosya": p.name, "kalan": len(kuyruk.files()) - 1}
             return p, ep
         report.setdefault("warnings", []).append(f"kuyruk {p.name} kullanılamadı: {'; '.join(probs)}"[:400])
@@ -517,6 +526,9 @@ def main():
         ses = sys.modules.get("ses")
         if ses is not None and ses.YEDEK["on"]:  # ElevenLabs refused (e.g. an unpaid invoice); the episode went out with edge-tts voices
             report.setdefault("warnings", []).append("ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı")
+            state["yedek_ses"] = now()
+        elif ses is not None and report.get("chars") and not report.get("error"):  # ElevenLabs voiced this run again
+            state.pop("yedek_ses", None)
         report["log"] = yazar.LOG[-60:]
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         runs = state.setdefault("runs", [])
