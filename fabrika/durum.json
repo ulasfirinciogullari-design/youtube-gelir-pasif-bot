@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "591",
+    "views": "596",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "950",
+    "views": "958",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "652",
+    "views": "658",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "871",
+    "views": "911",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "932",
+    "views": "984",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "980",
+    "views": "990",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "473",
+    "views": "490",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "124",
+    "views": "130",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "82",
+    "views": "91",
     "reason": null
    }
   },
@@ -2583,6 +2583,36 @@
    "at": 1794823680.0421834,
    "chars": 440,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "517",
+    "reason": null
+   }
+  },
+  {
+   "id": "y015",
+   "video_id": "jxrKlBSJu_s",
+   "url": "https://youtube.com/shorts/jxrKlBSJu_s",
+   "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "If Earth Had Two Moons, What Would Happen on the First Night?",
+    "es": "¿Qué Pasaría la Primera Noche si la Tierra Tuviera Dos Lunas?",
+    "pt": "Se a Terra Tivesse Duas Luas, o Que Aconteceria na Primeira Noite?",
+    "ar": "ماذا سيحدث في الليلة الأولى لو كان للأرض قمران؟",
+    "hi": "अगर पृथ्वी के दो चाँद होते, तो पहली रात क्या होता?",
+    "id": "Jika Bumi Punya Dua Bulan, Apa yang Terjadi pada Malam Pertama?",
+    "fr": "Si la Terre Avait Deux Lunes, Que Se Passerait-il la Première Nuit ?",
+    "de": "Zwei Monde am Himmel: Was würde in der ersten Nacht passieren?",
+    "ru": "Если бы у Земли было две луны: что случилось бы в первую ночь?",
+    "az": "Yerin İki Ayı Olsaydı İlk Gecə Nə Olardı?"
+   },
+   "playlist": true,
+   "at": 1794838214.2388918,
+   "chars": 770,
+   "ilk": false,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2677,7 +2707,8 @@
   "n017",
   "y028",
   "y023",
-  "n018"
+  "n018",
+  "y015"
  ],
  "extra": [
   {
@@ -2743,12 +2774,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-08T17:09:01+00:00",
-   "mod": "igbolum",
-   "title": "Mars'ta Korumasız Kalsaydın Ne Olurdu?",
-   "chars": 384
-  },
   {
    "finished": "2026-11-08T18:08:19+00:00",
    "mod": "saatlik",
@@ -3163,6 +3188,14 @@
    "mod": "igbolum",
    "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
    "chars": 803
+  },
+  {
+   "finished": "2026-11-16T14:10:16+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
+   "url": "https://youtube.com/shorts/jxrKlBSJu_s",
+   "duration": 59.8,
+   "chars": 770
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3523,5 +3556,6 @@
  "skipped": [
   "y008",
   "y013"
- ]
+ ],
+ "yedek_ses": 1794838216.0741384
 }
