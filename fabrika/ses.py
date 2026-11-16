@@ -37,6 +37,15 @@ VOICES = {
 }
 # if a story voice is gone from the account, the object speaks in Pi's voice a little deeper, so the episode still ships
 NESNE_YEDEK = dict(VOICES["pi"], pitch=0.88)
+# Free backup voices (Microsoft edge-tts) for when ElevenLabs refuses: on 2026-11-16 an unpaid ElevenLabs invoice turned
+# every call into 401 payment_required and the slots stopped. The whole episode is then voiced again with these, so the
+# narrator never switches mid-video (as Zirvenin Kanunu's factory does). YO_EDGE=1 forces them.
+EDGE = {"pi": {"name": "tr-TR-AhmetNeural", "rate": "+8%", "pitch": "+0Hz"},
+        "bit": {"name": "tr-TR-EmelNeural", "rate": "+10%", "pitch": "+20Hz"},
+        "nesne_kalin": {"name": "tr-TR-AhmetNeural", "rate": "+2%", "pitch": "-16Hz"},
+        "nesne_ince": {"name": "tr-TR-EmelNeural", "rate": "+6%", "pitch": "-6Hz"},
+        "nesne_genc": {"name": "tr-TR-AhmetNeural", "rate": "+10%", "pitch": "+14Hz"}}
+YEDEK = {"on": os.environ.get("YO_EDGE") == "1"}  # True once ElevenLabs refused in this run; uret.py reports it
 SFX = {
     "pop": ("Short soft cartoon UI pop, bubbly and clean, no echo", 1.0),
     "whoosh": ("Quick soft airy whoosh transition, light and clean, no voice", 1.0),
@@ -105,6 +114,68 @@ def tts(text, v, cache):
         d = r.json()
         mp3.write_bytes(base64.b64decode(d["audio_base64"]))
         js.write_text(json.dumps(d.get("alignment") or d.get("normalized_alignment"), ensure_ascii=False))
+    return mp3, json.loads(js.read_text())
+
+
+def tts_edge(text, who, cache):
+    """edge-tts with word boundaries, returned in ElevenLabs' character-alignment shape for spoken_spans()."""
+    e = EDGE.get(who) or EDGE["pi"]
+    h = sha("edge", text, e)
+    mp3, js = cache / f"edge_{h}.mp3", cache / f"edge_{h}.json"
+    if not mp3.exists():
+        import asyncio
+        import edge_tts
+
+        async def run():
+            try:
+                c = edge_tts.Communicate(text, e["name"], rate=e["rate"], pitch=e["pitch"], boundary="WordBoundary")
+            except TypeError:  # edge-tts < 7 has no boundary argument and sends word boundaries by default
+                c = edge_tts.Communicate(text, e["name"], rate=e["rate"], pitch=e["pitch"])
+            audio, bounds = bytearray(), []
+            async for ch in c.stream():
+                if ch["type"] == "audio":
+                    audio += ch["data"]
+                elif ch["type"] == "WordBoundary":
+                    bounds.append((ch["offset"] / 1e7, (ch["offset"] + ch["duration"]) / 1e7))
+            return bytes(audio), bounds
+
+        audio, bounds = asyncio.run(run())
+        if not audio:
+            raise RuntimeError("edge-tts ses üretmedi")
+        mp3.write_bytes(audio)
+        total = len(decode(mp3)) / SR
+        words = text.split()
+        spans, k = [], 0
+        for w in words:  # punctuation-only tokens get no boundary of their own
+            if norm(w) and k < len(bounds):
+                spans.append(bounds[k])
+                k += 1
+            else:
+                spans.append(None)
+        if k < len(bounds) - 1 or not any(spans):  # boundaries did not line up: spread the words over the audio
+            size = sum(len(w) + 1 for w in words)
+            acc, spans = 0.0, []
+            for w in words:
+                a = acc / size * total
+                acc += len(w) + 1
+                spans.append((a, acc / size * total))
+        prev = 0.0
+        for i, sp in enumerate(spans):
+            spans[i] = sp = sp or (prev, prev)
+            prev = sp[1]
+        chars, st, en = [], [], []
+        for i, w in enumerate(words):
+            a, b = spans[i]
+            for j, c in enumerate(w):
+                chars.append(c)
+                st.append(a + (b - a) * j / len(w))
+                en.append(a + (b - a) * (j + 1) / len(w))
+            if i < len(words) - 1:
+                chars.append(" ")
+                st.append(b)
+                en.append(b)
+        js.write_text(json.dumps({"characters": chars, "character_start_times_seconds": st,
+                                  "character_end_times_seconds": en}, ensure_ascii=False))
     return mp3, json.loads(js.read_text())
 
 
@@ -184,6 +255,16 @@ def cues(ep, timings):
 
 
 def make(ep, work):
+    if not YEDEK["on"]:
+        try:
+            return _make(ep, work, edge=False)
+        except (RuntimeError, requests.RequestException) as e:
+            print(f"⚠️ ElevenLabs ses vermedi, bölüm ücretsiz yedek sesle (edge-tts) baştan seslendiriliyor: {str(e)[:200]}")
+            YEDEK["on"] = True
+    return _make(ep, work, edge=True)
+
+
+def _make(ep, work, edge):
     work = Path(work)
     cache = work / "audio"
     cache.mkdir(parents=True, exist_ok=True)
@@ -195,17 +276,22 @@ def make(ep, work):
             who = "nesne_" + ((ep.get("karakter") or {}).get("ses") or "kalin")
         v = VOICES.get(who) or NESNE_YEDEK
         say, groups = sayi.spoken(line["text"])
-        try:
-            mp3, al = tts(say, v, cache)
-        except RuntimeError as e:
-            if not who.startswith("nesne"):
-                raise
-            print(f"  {v['name']} sesi alınamadı, yedek ses: {e}")
-            v = NESNE_YEDEK
-            mp3, al = tts(say, v, cache)
+        if edge:
+            mp3, al = tts_edge(say, who, cache)
+            v = {"pitch": 1.0}
+        else:
+            try:
+                mp3, al = tts(say, v, cache)
+            except RuntimeError as e:
+                if not who.startswith("nesne") or "payment" in str(e) or "quota" in str(e):
+                    raise
+                print(f"  {v['name']} sesi alınamadı, yedek ses: {e}")
+                v = NESNE_YEDEK
+                mp3, al = tts(say, v, cache)
         p = v.get("pitch", 1.0)
-        filt = (f"asetrate={SR}*{p},aresample={SR},atempo={1 / p:.5f}" + (",chorus=0.6:0.8:18:0.25:0.3:2" if who == "bit" else "")
-                if p != 1.0 else None)
+        chorus = ",chorus=0.6:0.8:18:0.25:0.3:2" if who == "bit" else ""
+        filt = (f"asetrate={SR}*{p},aresample={SR},atempo={1 / p:.5f}" + chorus if p != 1.0
+                else chorus[1:] if edge and chorus else None)
         audio = decode(mp3, filt)
         spans = spoken_spans(say, al)
         words, k = [], 0
@@ -254,5 +340,5 @@ def make(ep, work):
                     str(out)], input=mix.astype(np.float32).tobytes(), check=True)
     (work / "timings.json").write_text(json.dumps(timings, ensure_ascii=False, indent=1))
     chars = sum(len(sayi.spoken(l["text"])[0]) for l in lines)
-    print(f"Ses hazır: {total:.1f} sn, {chars} karakter, model {MODEL}")
+    print(f"Ses hazır: {total:.1f} sn, {chars} karakter, model {'edge-tts (yedek)' if edge else MODEL}")
     return timings, out, chars

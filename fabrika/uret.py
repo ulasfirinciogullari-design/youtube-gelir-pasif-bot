@@ -514,6 +514,9 @@ def main():
             rd[a.bolum] = rd.get(a.bolum, 0) + 1
         print(traceback.format_exc(), file=sys.stderr)
     finally:
+        ses = sys.modules.get("ses")
+        if ses is not None and ses.YEDEK["on"]:  # ElevenLabs refused (e.g. an unpaid invoice); the episode went out with edge-tts voices
+            report.setdefault("warnings", []).append("ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı")
         report["log"] = yazar.LOG[-60:]
         report["finished"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         runs = state.setdefault("runs", [])

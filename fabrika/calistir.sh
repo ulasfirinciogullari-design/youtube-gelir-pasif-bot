@@ -73,6 +73,7 @@ grep -q "Temporary failure resolving" fabrika/_apt.log && { APT=0; echo "Ubuntu 
 [ "$APT" = 1 ] && { timeout 600 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
   || echo "apt-get install olmadı (hata ya da zaman aşımı) $(date -u +%H:%M:%S)"; }
 pip install -q numpy requests cryptography
+timeout 120 pip install -q edge-tts || echo "edge-tts kurulamadı (yalnız ElevenLabs reddederse gerekir)"
 if ! command -v ffmpeg >/dev/null; then  # the emoji font is bundled in fabrika/motor/emoji, ffmpeg is the only must
   echo "ffmpeg apt'tan gelmedi, PyPI'deki imageio-ffmpeg kuruluyor $(date -u +%H:%M:%S)"
   timeout 300 pip install -q imageio-ffmpeg \
