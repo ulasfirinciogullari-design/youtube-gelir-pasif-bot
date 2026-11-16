@@ -1,0 +1,192 @@
+{
+ "id": "mk-c0168",
+ "topic": "Televizyona yakın oturmak gözü bozar mı? Televizyona yakın oturan çocuğun gözü bozulur mu, miyop yapar mı?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "television",
+  "tv"
+ ],
+ "stock_hint": "child watching tv",
+ "script": {
+  "title": "Televizyona yakın oturmak gözünü bozabilir mi? 📺",
+  "hook_text": "TELEVİZYON GÖZÜ BOZAR MI?",
+  "scenes": [
+   {
+    "text": "Bu kadar yakın oturan çocuğun gözü bozulur, denir.",
+    "visual": "close-up of a young child's face lit by the screen, sitting very close to a television",
+    "stock_query": "child watching tv",
+    "source": "stock",
+    "callout": "GÖZÜ BOZULUR MU?"
+   },
+   {
+    "text": "Hepimiz çocukken 'geri çekil' diye uyarıldık.",
+    "visual": "a child sitting on the floor right in front of a television",
+    "stock_query": "kids watching television",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Korkunun bir kökü olabilir: bin dokuz yüz altmış yedide bazı renkli televizyonlar X ışını sızdırdı.",
+    "visual": "an old 1960s color television set glowing in a dark room",
+    "stock_query": "old television",
+    "source": "stock",
+    "callout": "1967: X IŞINI"
+   },
+   {
+    "text": "Ama cevap hayır: çocuklar yakına odaklanmakta yetişkinlerden iyidir.",
+    "visual": "extreme close-up of a child's eye",
+    "stock_query": "child eye close up",
+    "source": "stock",
+    "callout": "GÖZÜ BOZMAZ",
+    "subject": [
+     "eye",
+     "child"
+    ]
+   },
+   {
+    "text": "Asıl işaret tersi: hep yakına oturan çocuk miyop olabilir.",
+    "visual": "a child reading an eye chart during an eye exam",
+    "stock_query": "eye exam child",
+    "source": "stock",
+    "callout": "MİYOP İŞARETİ",
+    "subject": [
+     "eye",
+     "child"
+    ]
+   },
+   {
+    "text": "Ama biz yine de çocuğa kızarız, çünkü:",
+    "visual": "close-up of a child watching TV with wide eyes",
+    "stock_query": "child tv",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Televizyona yakın oturmak gözü bozmaz. Amerikan Oftalmoloji Akademisi'ne göre çocuklar yakına odaklanmada çok iyidir; hep yakına oturan çocuk ise miyop olabilir ve gözlüğe ihtiyacı olabilir. Korkunun bir kökü 1967'de bazı renkli televizyonların fazla X ışını sızdırması olabilir.",
+  "tags": [
+   "televizyona yakın oturmak",
+   "televizyon göz bozar mı",
+   "göz sağlığı",
+   "miyop",
+   "çocuk göz sağlığı",
+   "mümkün mü",
+   "insan vücudu",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sana da çocukken 'televizyona yakın oturma, gözün bozulur' denir miydi: evet mi, hayır mı?",
+  "en_title": "Can sitting close to the TV ruin your eyes? 📺",
+  "en_description": "No. The American Academy of Ophthalmology says sitting close to the TV won't damage children's or adults' vision; kids focus up close very well, and a child who always sits close may actually be nearsighted. The fear may trace back to 1967, when some color TVs were found leaking excess X-rays.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Televizyona yakın oturmak gözü bozar mı, televizyona yakın oturan çocuğun gözü bozulur mu?\n\nHayır. Amerikan Oftalmoloji Akademisi'ne (AAO) göre televizyona yakın oturmak ne çocukların ne de yetişkinlerin görmesine zarar verir; çocukların yakındaki nesnelere odaklanma yeteneği çok güçlüdür. AAO'ya göre hep yakına oturan biri aslında miyop olabilir ve gözlüğe ihtiyaç duyabilir; yani yakın oturmak sebep değil, işaret olabilir. Çocuğun hep ekranın dibine oturuyorsa bir göz muayenesi iyi fikir. Korkunun bir kökü de 1967'de General Electric'in bazı büyük ekranlı renkli televizyonlarında fazla X ışını sızıntısı bulunması olabilir: arızalı tüpler on binlerce cihazda değiştirildi ve ABD'de 1968'de elektronik cihazların radyasyonunu denetleyen yasa çıktı.\n\nSana da çocukken 'televizyona yakın oturma, gözün bozulur' denir miydi: evet mi, hayır mı?",
+  "hashtags": [
+   "#göz",
+   "#televizyon",
+   "#mümkünmü",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "televizyona yakın oturmak",
+   "televizyon göz bozar mı",
+   "televizyona yakın oturma",
+   "yakından televizyon izlemek",
+   "televizyon gözü bozar mı",
+   "çocuk göz sağlığı",
+   "göz bozulması",
+   "göz numarası artar mı",
+   "miyop",
+   "miyop belirtileri",
+   "çocuklarda miyop",
+   "göz sağlığı",
+   "gözlük",
+   "ekran ve göz",
+   "yanlış bilinen gerçekler",
+   "doğru bilinen yanlışlar",
+   "mümkün mü",
+   "insan vücudu",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "sitting close to tv"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can sitting close to the TV ruin your eyes? 📺",
+    "description": "No. The American Academy of Ophthalmology says sitting close to the TV won't damage children's or adults' vision; kids focus up close very well, and a child who always sits close may actually be nearsighted. The fear may trace back to 1967, when some color TVs were found leaking excess X-rays."
+   },
+   "es": {
+    "title": "¿Sentarse cerca de la tele puede dañar la vista? 📺",
+    "description": "No. Según la Academia Americana de Oftalmología, sentarse cerca del televisor no daña la vista; los niños enfocan muy bien de cerca, y un niño que siempre se pega a la pantalla podría ser miope. El miedo quizá venga de 1967, cuando algunos televisores en color emitían rayos X de más."
+   },
+   "pt": {
+    "title": "Sentar perto da TV pode estragar a vista? 📺",
+    "description": "Não. Segundo a Academia Americana de Oftalmologia, sentar perto da TV não prejudica a visão; crianças focam muito bem de perto, e a criança que sempre gruda na tela pode ser míope. O medo talvez venha de 1967, quando alguns televisores em cores vazavam raios X em excesso."
+   },
+   "de": {
+    "title": "Kann man sich die Augen verderben, wenn man nah am Fernseher sitzt? 📺",
+    "description": "Nein. Laut der American Academy of Ophthalmology schadet es den Augen nicht, nah am Fernseher zu sitzen; Kinder stellen auf kurze Distanz sehr gut scharf, und wer immer ganz vorn sitzt, ist womöglich kurzsichtig. Die Angst stammt vielleicht aus dem Jahr 1967, als manche Farbfernseher zu viel Röntgenstrahlung abgaben."
+   },
+   "fr": {
+    "title": "S'asseoir près de la télé peut-il abîmer les yeux ? 📺",
+    "description": "Non. Selon l'Académie américaine d'ophtalmologie, regarder la télé de près n'abîme pas la vue ; les enfants voient très bien de près, et un enfant collé à l'écran est peut-être myope. La peur viendrait peut-être de 1967, quand certains téléviseurs couleur laissaient fuir trop de rayons X."
+   },
+   "it": {
+    "title": "Stare vicino alla TV può rovinare la vista? 📺",
+    "description": "No. Secondo l'American Academy of Ophthalmology, sedersi vicino alla TV non danneggia la vista; i bambini mettono a fuoco benissimo da vicino, e un bambino sempre incollato allo schermo potrebbe essere miope. La paura forse nasce nel 1967, quando alcuni televisori a colori emettevano troppi raggi X."
+   },
+   "ru": {
+    "title": "Можно ли испортить зрение, сидя близко к телевизору? 📺",
+    "description": "Нет. По данным Американской академии офтальмологии, сидеть близко к телевизору для глаз не вредно; дети отлично фокусируются вблизи, а ребёнок, который всегда садится вплотную, может быть близоруким. Страх, возможно, родом из 1967 года, когда часть цветных телевизоров давала лишнее рентгеновское излучение."
+   },
+   "ar": {
+    "title": "هل يمكن أن يُتلف الجلوس قرب التلفاز نظرك؟ 📺",
+    "description": "لا. بحسب الأكاديمية الأمريكية لطب العيون، لا يضر الجلوس قرب التلفاز بالبصر؛ فالأطفال يركزون على القريب جيدًا، والطفل الذي يلتصق دائمًا بالشاشة قد يكون مصابًا بقصر النظر. وربما يعود الخوف إلى عام 1967 حين تبيّن أن بعض أجهزة التلفاز الملونة تسرّب أشعة سينية زائدة."
+   },
+   "hi": {
+    "title": "क्या टीवी के पास बैठने से आँखें ख़राब हो सकती हैं? 📺",
+    "description": "नहीं। अमेरिकन एकेडमी ऑफ़ ऑप्थैल्मोलॉजी के मुताबिक़ टीवी के पास बैठने से नज़र ख़राब नहीं होती; बच्चे पास की चीज़ों पर बहुत अच्छी तरह फ़ोकस कर लेते हैं, और जो बच्चा हमेशा पास बैठता है उसे शायद निकट दृष्टि दोष हो। यह डर शायद 1967 से आया, जब कुछ रंगीन टीवी ज़्यादा एक्स-रे छोड़ रहे थे।"
+   },
+   "id": {
+    "title": "Bisakah duduk dekat TV merusak mata? 📺",
+    "description": "Tidak. Menurut American Academy of Ophthalmology, duduk dekat TV tidak merusak penglihatan; anak-anak sangat mudah fokus ke jarak dekat, dan anak yang selalu menempel ke layar mungkin justru rabun jauh. Ketakutan ini mungkin berasal dari 1967, saat sebagian TV berwarna ketahuan membocorkan sinar-X berlebih."
+   },
+   "ja": {
+    "title": "テレビに近づきすぎると目が悪くなる？ 📺",
+    "description": "いいえ。米国眼科学会によると、テレビの近くで見ても視力は傷つきません。子どもは近くにピントを合わせるのが得意で、いつも近くに座る子はむしろ近視のサインかもしれません。この心配は、一部のカラーテレビから余分なX線が漏れていた1967年にさかのぼるとも言われます。"
+   },
+   "ko": {
+    "title": "TV를 가까이서 보면 정말 눈이 나빠질까? 📺",
+    "description": "아닙니다. 미국안과학회에 따르면 TV를 가까이서 봐도 시력은 손상되지 않습니다. 아이들은 가까운 곳에 초점을 아주 잘 맞추고, 늘 화면에 바짝 붙는 아이는 오히려 근시일 수 있습니다. 이 걱정은 일부 컬러 TV에서 X선이 새어 나온 1967년에서 비롯됐을 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy siedzenie blisko telewizora może zepsuć wzrok? 📺",
+    "description": "Nie. Według Amerykańskiej Akademii Okulistyki siedzenie blisko telewizora nie szkodzi oczom; dzieci świetnie ostrzą wzrok z bliska, a dziecko, które zawsze siada pod ekranem, może być krótkowidzem. Strach mógł się wziąć z 1967 roku, gdy część kolorowych telewizorów emitowała za dużo promieniowania rentgenowskiego."
+   },
+   "nl": {
+    "title": "Kun je je ogen verpesten door dicht op de tv te zitten? 📺",
+    "description": "Nee. Volgens de American Academy of Ophthalmology beschadigt dicht bij de tv zitten je ogen niet; kinderen stellen van dichtbij heel goed scherp, en een kind dat altijd vlak voor het scherm zit, is misschien bijziend. De angst stamt mogelijk uit 1967, toen sommige kleurentelevisies te veel röntgenstraling lekten."
+   },
+   "uk": {
+    "title": "Чи можна зіпсувати зір, сидячи близько до телевізора? 📺",
+    "description": "Ні. За даними Американської академії офтальмології, сидіти близько до телевізора для очей не шкідливо; діти чудово фокусуються зблизька, а дитина, яка завжди сідає впритул, може бути короткозорою. Страх, можливо, походить з 1967 року, коли частина кольорових телевізорів випромінювала зайве рентгенівське проміння."
+   },
+   "vi": {
+    "title": "Ngồi gần tivi có thể làm hỏng mắt không? 📺",
+    "description": "Không. Theo Học viện Nhãn khoa Hoa Kỳ, ngồi gần tivi không làm hại thị lực; trẻ em lấy nét ở gần rất tốt, và đứa trẻ luôn dí sát màn hình có thể đang bị cận thị. Nỗi sợ này có lẽ bắt nguồn từ năm 1967, khi một số tivi màu bị phát hiện rò rỉ tia X quá mức."
+   },
+   "az": {
+    "title": "Televizora yaxın oturmaq gözü korlaya bilərmi? 📺",
+    "description": "Xeyr. Amerika Oftalmologiya Akademiyasına görə televizora yaxın oturmaq görməyə zərər vermir; uşaqlar yaxındakı əşyalara çox yaxşı fokuslanır, həmişə ekrana yapışan uşağın isə miopiyası ola bilər. Bu qorxu bəlkə də 1967-ci ildən qalıb: o vaxt bəzi rəngli televizorların artıq rentgen şüası buraxdığı üzə çıxmışdı."
+   },
+   "ro": {
+    "title": "Poate statul aproape de televizor să-ți strice ochii? 📺",
+    "description": "Nu. Potrivit Academiei Americane de Oftalmologie, statul aproape de televizor nu strică vederea; copiii focalizează foarte bine de aproape, iar copilul care se lipește mereu de ecran ar putea fi miop. Teama vine poate din 1967, când unele televizoare color scăpau raze X în exces."
+   }
+  }
+ }
+}

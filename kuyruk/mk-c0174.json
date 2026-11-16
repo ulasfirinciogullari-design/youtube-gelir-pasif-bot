@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0174",
+ "topic": "Yavru kuşa dokunursan annesi terk eder mi? Yuvadan düşen yavru kuşa dokunulur mu, anne kuş insan kokusunu alır mı?",
+ "kategori": "hayvan",
+ "subject": [
+  "bird"
+ ],
+ "stock_hint": "baby bird nest",
+ "script": {
+  "title": "Yavru kuşa dokunursan annesi terk eder sözü yanlış 🐦",
+  "hook_text": "ANNE KUŞ YAVRUSUNU TERK EDER Mİ?",
+  "scenes": [
+   {
+    "text": "Bu yavruya dokunsan da annesi onu terk etmez.",
+    "visual": "extreme close-up of a baby bird in a nest with its beak wide open",
+    "stock_query": "baby bird nest",
+    "source": "stock",
+    "callout": "TERK ETMEZ"
+   },
+   {
+    "text": "İnsan kokusunu alan anne yavruyu bırakır diye biliriz.",
+    "visual": "a hand gently holding a small baby bird",
+    "stock_query": "baby bird hand",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Yerdeki tüylü yavru ise genelde uçmayı öğreniyor; anne babası onu yakından besliyor.",
+    "visual": "a fledgling bird hopping on the ground and being fed by a parent",
+    "stock_query": "bird feeding chick",
+    "source": "stock",
+    "callout": "UÇMAYI ÖĞRENİYOR"
+   },
+   {
+    "text": "Çünkü kuşların çoğunun koku alma duyusu zayıf; yavrusunu görüntüsünden ve sesinden tanır.",
+    "visual": "a parent bird feeding open-mouthed chicks in a nest",
+    "stock_query": "bird feeding babies",
+    "source": "stock",
+    "callout": "KOKU DEĞİL SES"
+   },
+   {
+    "text": "Tüysüz bir yavru yuvadan düştüyse, onu yuvasına geri koymak güvenli.",
+    "visual": "close-up of nestlings sitting in a nest",
+    "stock_query": "bird nest chicks",
+    "source": "stock",
+    "callout": "YUVAYA GERİ KOY"
+   },
+   {
+    "text": "Annesi gelip besleyecek, çünkü:",
+    "visual": "close-up of a baby bird's face",
+    "stock_query": "baby bird",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Yavru kuşa dokunmak annesinin onu terk etmesine yol açmaz. Cornell Kuşbilim Laboratuvarı'na göre bu bir efsane: çoğu kuşun koku alma duyusu zayıftır ve kuşlar yavrularını görünüşünden ve sesinden tanır. Yuvadan düşmüş tüysüz bir yavruyu yuvasına geri koymak güvenlidir; yerde hoplayan tüylü yavrular ise genelde uçmayı öğrenen yavrulardır ve anne babaları yakındadır.",
+  "tags": [
+   "yavru kuş",
+   "yavru kuşa dokunulur mu",
+   "yuvadan düşen kuş",
+   "anne kuş",
+   "kuş yavrusu",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de yavru kuşa dokunursan annesinin onu bırakacağını mı duymuştun: evet mi, hayır mı?",
+  "en_title": "Touch a baby bird and its mother will abandon it? That's a myth 🐦",
+  "en_description": "Parent birds don't abandon chicks that people have touched. Most birds have a poor sense of smell and recognize their young by sight and sound, so a fallen nestling can safely go back in its nest, and a feathered fledgling hopping on the ground is usually being fed by its parents nearby.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Yavru kuşa dokunursan annesi terk eder mi, yuvadan düşen yavru kuşa dokunulur mu?\n\nHayır. Cornell Üniversitesi Kuşbilim Laboratuvarı'na (Cornell Lab of Ornithology) göre anne babanın insan eli değmiş yavruyu terk ettiği bir efsane: çoğu kuşun koku alma duyusu zayıftır ve kuşlar yavrularını görünüşünden ve sesinden tanır. Laboratuvar, yuvadan düşmüş tüysüz bir yavruyu yuvasına geri koymanın tamamen güvenli olduğunu söylüyor; Audubon da kuşların güçlü bir koku duyusu olmadığını, bu yüzden dokunulan yavruyu bırakmadıklarını belirtiyor. Cornell'in NestWatch programına göre yerde hoplayan tüylü yavrular çoğunlukla yuvadan yeni çıkmış, uçmayı öğrenen yavrulardır; anne babaları yakındadır ve onları birkaç hafta beslemeye devam eder, bu yüzden onları kendi hâline bırakmak gerekir.\n\nSen de yavru kuşa dokunursan annesinin onu bırakacağını mı duymuştun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kuş",
+   "#yavrukuş",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "yavru kuşa dokunulur mu",
+   "yavru kuşa dokunursan ne olur",
+   "anne kuş yavruyu terk eder mi",
+   "yuvadan düşen kuş",
+   "yuvadan düşen yavru kuş",
+   "yavru kuş bulunca ne yapmalı",
+   "yavru kuş",
+   "kuş yavrusu",
+   "kuş yuvası",
+   "anne kuş",
+   "kuşların koku alma duyusu",
+   "yerde yavru kuş",
+   "kuşlar",
+   "kuş bilgileri",
+   "yanlış bilinen gerçekler",
+   "doğru bilinen yanlışlar",
+   "hayvanlar",
+   "hayvan bilgileri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "baby bird",
+   "fledgling"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Touch a baby bird and its mother will abandon it? That's a myth 🐦",
+    "description": "Parent birds don't abandon chicks that people have touched. Most birds have a poor sense of smell and recognize their young by sight and sound, so a fallen nestling can safely go back in its nest, and a feathered fledgling hopping on the ground is usually being fed by its parents nearby."
+   },
+   "es": {
+    "title": "Si tocas un pajarito, ¿su madre lo abandona? Es un mito 🐦",
+    "description": "Los padres no abandonan a las crías que alguien ha tocado. La mayoría de las aves tiene un olfato pobre y reconoce a sus crías por la vista y el oído, así que un polluelo caído puede volver a su nido sin problema, y un volantón con plumas que salta por el suelo suele estar alimentado por sus padres cerca."
+   },
+   "pt": {
+    "title": "Tocar num filhote faz a mãe abandoná-lo? É mito 🐦",
+    "description": "Os pais não abandonam filhotes tocados por pessoas. A maioria das aves tem olfato fraco e reconhece os filhotes pela aparência e pelo som; por isso dá para devolver ao ninho um filhote caído, e o filhote emplumado que pula no chão costuma estar sendo alimentado pelos pais por perto."
+   },
+   "de": {
+    "title": "Fasst du ein Vogeljunges an, verstoßen es die Eltern? Ein Mythos 🐦",
+    "description": "Vogeleltern lassen Junge, die ein Mensch berührt hat, nicht im Stich. Die meisten Vögel riechen schlecht und erkennen ihre Jungen am Aussehen und an der Stimme. Ein aus dem Nest gefallener Nestling darf zurück ins Nest, und ein befiederter Ästling, der am Boden hüpft, wird meist von den Eltern in der Nähe gefüttert."
+   },
+   "fr": {
+    "title": "Toucher un oisillon pousse sa mère à l'abandonner ? C'est un mythe 🐦",
+    "description": "Les parents n'abandonnent pas un oisillon touché par un humain. La plupart des oiseaux ont un odorat faible et reconnaissent leurs petits à leur allure et à leur voix : on peut donc remettre au nid un oisillon tombé, et un jeune à plumes qui sautille au sol est en général nourri par ses parents tout près."
+   },
+   "it": {
+    "title": "Se tocchi un uccellino la madre lo abbandona? È un mito 🐦",
+    "description": "I genitori non abbandonano i piccoli toccati da una persona. La maggior parte degli uccelli ha un olfatto debole e riconosce i piccoli dall'aspetto e dalla voce: un nidiaceo caduto si può rimettere nel nido, e un giovane già piumato che saltella a terra di solito viene nutrito dai genitori lì vicino."
+   },
+   "ru": {
+    "title": "Если тронуть птенца, мать его бросит? Это миф 🐦",
+    "description": "Птицы не бросают птенцов, которых трогал человек. У большинства птиц слабое обоняние, и своих детёнышей они узнают по виду и голосу. Выпавшего голого птенца можно спокойно вернуть в гнездо, а оперённого слётка, который прыгает по земле, обычно кормят родители где-то рядом."
+   },
+   "ar": {
+    "title": "إذا لمست فرخ الطائر تتخلى عنه أمه؟ هذه خرافة 🐦",
+    "description": "لا تتخلى الطيور عن فراخ لمسها إنسان. فمعظم الطيور ضعيفة الشم وتتعرف إلى صغارها بالشكل والصوت، لذا يمكن إعادة الفرخ الساقط إلى عشه بأمان، أما الفرخ المكسو بالريش الذي يقفز على الأرض فعادةً ما يطعمه أبواه من مكان قريب."
+   },
+   "hi": {
+    "title": "चूज़े को छू दो तो माँ उसे छोड़ देती है? यह मिथक है 🐦",
+    "description": "पक्षी उन चूज़ों को नहीं छोड़ते जिन्हें इंसान ने छुआ हो। ज़्यादातर पक्षियों की सूँघने की क्षमता कमज़ोर होती है और वे अपने बच्चों को रूप और आवाज़ से पहचानते हैं, इसलिए घोंसले से गिरे चूज़े को वापस रखना सुरक्षित है, और ज़मीन पर फुदकता पंखों वाला चूज़ा आमतौर पर पास बैठे माता-पिता से खाना पाता है।"
+   },
+   "id": {
+    "title": "Menyentuh anak burung bikin induknya pergi? Itu mitos 🐦",
+    "description": "Induk burung tidak meninggalkan anak yang pernah disentuh manusia. Kebanyakan burung punya penciuman lemah dan mengenali anaknya dari rupa dan suara, jadi anak burung yang jatuh aman dikembalikan ke sarang, sedangkan anak burung berbulu yang melompat-lompat di tanah biasanya masih diberi makan induknya di dekat situ."
+   },
+   "ja": {
+    "title": "ヒナに触ると親鳥が見捨てる？それは迷信 🐦",
+    "description": "人が触ったヒナを親鳥が見捨てることはありません。ほとんどの鳥は嗅覚が弱く、ヒナを見た目と声で見分けます。巣から落ちた羽のないヒナは巣に戻して大丈夫ですし、地面を跳ねている羽の生えた巣立ちビナは、たいてい近くの親から餌をもらっています。"
+   },
+   "ko": {
+    "title": "새끼 새를 만지면 어미가 버린다? 그건 속설이다 🐦",
+    "description": "어미 새는 사람이 만진 새끼를 버리지 않습니다. 대부분의 새는 후각이 약하고 새끼를 생김새와 소리로 알아봅니다. 둥지에서 떨어진 털 없는 새끼는 둥지에 다시 넣어 줘도 되고, 땅에서 깡충거리는 깃털 난 이소 새끼는 대개 근처의 어미에게서 먹이를 받고 있습니다."
+   },
+   "pl": {
+    "title": "Dotkniesz pisklęcia, a matka je porzuci? To mit 🐦",
+    "description": "Ptaki nie porzucają piskląt dotkniętych przez człowieka. Większość ptaków ma słaby węch i rozpoznaje młode po wyglądzie i głosie, więc wypadnięte pisklę można bezpiecznie odłożyć do gniazda, a opierzony podlot skaczący po ziemi zwykle jest karmiony przez rodziców gdzieś w pobliżu."
+   },
+   "nl": {
+    "title": "Raak je een jong vogeltje aan, dan verstoot de moeder het? Een fabel 🐦",
+    "description": "Vogelouders laten jongen die door een mens zijn aangeraakt niet in de steek. De meeste vogels ruiken slecht en herkennen hun jongen aan uiterlijk en geluid. Een uit het nest gevallen kaal jong mag gewoon terug, en een bevederde uitvlieger die over de grond hupt, wordt meestal in de buurt door de ouders gevoerd."
+   },
+   "uk": {
+    "title": "Якщо торкнутися пташеняти, мати його покине? Це міф 🐦",
+    "description": "Птахи не кидають пташенят, яких торкалася людина. Більшість птахів має слабкий нюх і впізнає малят за виглядом і голосом, тож голе пташеня, що випало, можна спокійно повернути в гніздо, а опереного злетка, що стрибає по землі, зазвичай годують батьки десь поруч."
+   },
+   "vi": {
+    "title": "Chạm vào chim non thì chim mẹ bỏ rơi? Chỉ là lời đồn 🐦",
+    "description": "Chim bố mẹ không bỏ rơi chim non chỉ vì bị người chạm vào. Phần lớn loài chim có khứu giác kém và nhận ra con qua hình dáng, tiếng kêu, nên có thể đặt chim non rơi khỏi tổ trở lại an toàn; còn chim non đã có lông nhảy dưới đất thường vẫn được bố mẹ ở gần cho ăn."
+   },
+   "az": {
+    "title": "Quş balasına toxunsan anası onu atar? Bu, mifdir 🐦",
+    "description": "Quşlar insanın toxunduğu balalarını atmır. Əksər quşların qoxu duyğusu zəifdir və balalarını görünüşündən və səsindən tanıyırlar, buna görə yuvadan düşən tüksüz balanı yuvasına qaytarmaq təhlükəsizdir; yerdə atılıb-düşən tüklü bala isə adətən yaxınlıqdakı valideynləri tərəfindən yemlənir."
+   },
+   "ro": {
+    "title": "Dacă atingi un pui de pasăre, mama îl părăsește? E un mit 🐦",
+    "description": "Părinții nu-și părăsesc puii atinși de oameni. Majoritatea păsărilor au mirosul slab și își recunosc puii după înfățișare și voce, așa că un pui golaș căzut din cuib poate fi pus înapoi fără grijă, iar un pui cu pene care țopăie pe jos e de obicei hrănit de părinții aflați în apropiere."
+   }
+  }
+ }
+}

@@ -1,0 +1,186 @@
+{
+ "id": "mk-c0167",
+ "topic": "'Kuş kadar yemek' sözü doğru mu? Kuşlar gerçekten az mı yer, bir kuş günde ne kadar yemek yer?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "bird"
+ ],
+ "stock_hint": "small bird eating close up",
+ "script": {
+  "title": "Kuş kadar yemek az yemek değil, kuşlar obur 🐦",
+  "hook_text": "KUŞLAR GERÇEKTEN AZ MI YER?",
+  "scenes": [
+   {
+    "text": "Kuş kadar yiyor deriz, oysa bu kuş obur.",
+    "visual": "extreme close-up of a small tit bird holding a seed in its beak and looking straight into the camera",
+    "stock_query": "bird eating seed",
+    "source": "stock",
+    "callout": "AZ YEMİYOR"
+   },
+   {
+    "text": "Bir baştankara türü her gün ağırlığının üçte birinden fazlasını yer.",
+    "visual": "a great tit pecking sunflower seeds at a feeder in winter",
+    "stock_query": "great tit eating",
+    "source": "stock",
+    "callout": "AĞIRLIĞININ %35'İ"
+   },
+   {
+    "text": "Altmış kiloluk biri için bu, günde yirmi kilo yemek demek.",
+    "visual": "close-up of a small bird eating seeds one after another",
+    "stock_query": "small bird eating",
+    "source": "stock",
+    "callout": "GÜNDE 20 KİLO"
+   },
+   {
+    "text": "Sinek kuşu ise her gün kendi ağırlığı kadar nektar içer.",
+    "visual": "a hummingbird hovering and drinking nectar from a red flower",
+    "stock_query": "hummingbird flower",
+    "source": "stock",
+    "callout": "KENDİ AĞIRLIĞI KADAR",
+    "subject": [
+     "hummingbird"
+    ]
+   },
+   {
+    "text": "Çünkü küçük vücut ısısını çabuk kaybeder; kuş durmadan yakıt almalı.",
+    "visual": "a small puffed-up bird sitting on a snowy branch in winter",
+    "stock_query": "bird snow branch",
+    "source": "stock",
+    "callout": "ISI KAYBI"
+   },
+   {
+    "text": "Ama az yiyen birini görünce yine:",
+    "visual": "close-up of a small bird's face looking at the camera",
+    "stock_query": "bird close up",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Kuş kadar yemek' az yemek anlamında kullanılır, ama kuşlar vücutlarına göre çok yer. Audubon'da yayımlanan bir yazıya göre bir baştankara türü olan çikadi her gün ağırlığının yaklaşık yüzde otuz beşi kadar yer, sinek kuşu ise kendi ağırlığı kadar nektar içer. Küçük kuşlar ısıyı hızla kaybettiği için durmadan yakıt almak zorundadır.",
+  "tags": [
+   "kuş kadar yemek",
+   "kuşlar ne kadar yer",
+   "baştankara",
+   "sinek kuşu",
+   "kuşlar",
+   "deyimler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sen de 'kuş kadar yemek'i az yemek diye mi biliyordun: evet mi, hayır mı?",
+  "en_title": "Eating like a bird doesn't mean eating little: birds are gluttons 🐦",
+  "en_description": "Small birds eat a lot for their size. A chickadee eats about 35 percent of its body weight a day and a hummingbird drinks about its own weight in nectar, because small bodies lose heat fast and need constant fuel.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kuş kadar yemek ne demek, kuşlar gerçekten az mı yer, bir kuş günde ne kadar yemek yer?\n\n'Kuş kadar yemek' az yiyen biri için söylenir, ama kuşlar vücutlarına göre çok yer. Audubon'da yayımlanan BirdNote yazısına göre baştankaragillerden çikadi (chickadee) her gün ağırlığının yaklaşık yüzde otuz beşi kadar yiyecek tüketir; bu, altmış kiloluk bir insanın günde yirmi kilo yemesi gibi. Sinek kuşu ise her gün yaklaşık kendi ağırlığı kadar nektar içer. Aldo Leopold Vakfı'na göre küçük kuşlar vücut ısısını büyük kuşlardan çok daha hızlı kaybeder ve ısılarını yedikleri besinden üretir; kuş ne kadar küçükse ağırlığına göre o kadar çok yemek zorundadır.\n\nSen de 'kuş kadar yemek'i az yemek diye mi biliyordun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kuş",
+   "#kuşlar",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kuş kadar yemek",
+   "kuş kadar yemek ne demek",
+   "kuş gibi yemek",
+   "kuşlar ne kadar yer",
+   "kuş günde ne kadar yer",
+   "kuşlar ne yer",
+   "baştankara",
+   "sinek kuşu",
+   "sinek kuşu nektar",
+   "küçük kuşlar",
+   "kuşlar kışın nasıl ısınır",
+   "kuş yemi",
+   "deyimler",
+   "deyimlerin aslı",
+   "yanlış bilinen gerçekler",
+   "kuşlar",
+   "hayvanlar",
+   "hayvan bilgileri",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "eat like a bird",
+   "chickadee"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Eating like a bird doesn't mean eating little: birds are gluttons 🐦",
+    "description": "Small birds eat a lot for their size. A chickadee eats about 35 percent of its body weight a day and a hummingbird drinks about its own weight in nectar, because small bodies lose heat fast and need constant fuel."
+   },
+   "es": {
+    "title": "Comer como un pajarito no es comer poco: las aves son glotonas 🐦",
+    "description": "Las aves pequeñas comen muchísimo para su tamaño. Un carbonero come cada día cerca del 35 % de su peso y un colibrí bebe su propio peso en néctar, porque un cuerpo pequeño pierde calor rápido y necesita combustible sin parar."
+   },
+   "pt": {
+    "title": "Comer como um passarinho não é comer pouco: aves são gulosas 🐦",
+    "description": "Aves pequenas comem muito para o tamanho que têm. Um chapim come por dia cerca de 35% do próprio peso e um beija-flor bebe o equivalente ao seu peso em néctar, porque corpos pequenos perdem calor depressa e precisam de combustível o tempo todo."
+   },
+   "de": {
+    "title": "Essen wie ein Spatz heißt nicht wenig essen: Vögel sind Vielfraße 🐦",
+    "description": "Kleine Vögel fressen für ihre Größe enorm viel. Eine Meise frisst täglich rund 35 Prozent ihres Körpergewichts, ein Kolibri trinkt sein eigenes Gewicht an Nektar – denn kleine Körper verlieren schnell Wärme und brauchen ständig Nachschub."
+   },
+   "fr": {
+    "title": "Manger comme un oiseau, ce n'est pas manger peu : les oiseaux sont voraces 🐦",
+    "description": "Les petits oiseaux mangent énormément pour leur taille. Une mésange avale chaque jour environ 35 % de son poids et un colibri boit l'équivalent de son poids en nectar, car un petit corps perd vite sa chaleur et doit sans cesse refaire le plein."
+   },
+   "it": {
+    "title": "Mangiare come un uccellino non vuol dire mangiare poco 🐦",
+    "description": "Gli uccellini mangiano moltissimo per la loro taglia. Una cincia mangia ogni giorno circa il 35% del proprio peso e un colibrì beve l'equivalente del suo peso in nettare, perché un corpo piccolo perde calore in fretta e ha sempre bisogno di carburante."
+   },
+   "ru": {
+    "title": "«Ест как птичка» — это не про мало: птицы настоящие обжоры 🐦",
+    "description": "Маленькие птицы едят очень много для своего размера. Синица за день съедает около 35% своего веса, а колибри выпивает нектара столько, сколько весит сама: маленькое тело быстро теряет тепло, и ему постоянно нужно топливо."
+   },
+   "ar": {
+    "title": "«يأكل مثل العصفور» لا تعني الأكل القليل، فالطيور شرهة 🐦",
+    "description": "تأكل الطيور الصغيرة كثيرًا مقارنة بحجمها. فطائر القرقف يأكل يوميًا نحو 35% من وزنه، والطائر الطنان يشرب من الرحيق ما يعادل وزنه، لأن الجسم الصغير يفقد حرارته بسرعة ويحتاج إلى وقود باستمرار."
+   },
+   "hi": {
+    "title": "चिड़िया जितना खाना कम खाना नहीं, चिड़ियाँ तो पेटू होती हैं 🐦",
+    "description": "छोटे पक्षी अपने आकार के हिसाब से बहुत खाते हैं। एक छोटी टिट चिड़िया रोज़ अपने वज़न का लगभग 35% खा जाती है और हमिंगबर्ड अपने वज़न जितना मकरंद पी जाता है, क्योंकि छोटा शरीर जल्दी गर्मी खोता है और उसे लगातार ईंधन चाहिए।"
+   },
+   "id": {
+    "title": "Makan seperti burung bukan berarti makan sedikit: burung itu rakus 🐦",
+    "description": "Burung kecil makan sangat banyak untuk ukurannya. Sejenis burung gelatik batu makan sekitar 35% berat tubuhnya setiap hari, dan kolibri minum nektar seberat tubuhnya sendiri, karena tubuh kecil cepat kehilangan panas dan butuh bahan bakar terus-menerus."
+   },
+   "ja": {
+    "title": "「小鳥ほどしか食べない」は少食じゃない、鳥は大食い 🐦",
+    "description": "小さな鳥は体の大きさの割にたくさん食べます。コガラの仲間は毎日体重の約35%を食べ、ハチドリは体重と同じくらいの蜜を飲みます。小さな体は熱をすぐ失うため、休まず燃料を補給しなければならないのです。"
+   },
+   "ko": {
+    "title": "'새 모이만큼 먹는다'는 적게 먹는 게 아니다, 새는 대식가 🐦",
+    "description": "작은 새는 몸집에 비해 엄청나게 먹습니다. 박새류인 검은머리박새는 하루에 몸무게의 약 35%를 먹고, 벌새는 제 몸무게만큼 꿀을 마십니다. 작은 몸은 열을 빨리 잃어 쉬지 않고 연료를 채워야 하기 때문입니다."
+   },
+   "pl": {
+    "title": "Jeść jak ptaszek to wcale nie mało: ptaki to żarłoki 🐦",
+    "description": "Małe ptaki jedzą bardzo dużo jak na swój rozmiar. Sikora czarnogłowa zjada dziennie około 35% masy ciała, a koliber wypija tyle nektaru, ile sam waży, bo małe ciało szybko traci ciepło i potrzebuje stałego paliwa."
+   },
+   "nl": {
+    "title": "Eten als een vogeltje is niet weinig eten: vogels zijn veelvraten 🐦",
+    "description": "Kleine vogels eten enorm veel voor hun formaat. Een mees eet dagelijks zo'n 35 procent van zijn gewicht en een kolibrie drinkt zijn eigen gewicht aan nectar, omdat een klein lijf snel warmte verliest en voortdurend brandstof nodig heeft."
+   },
+   "uk": {
+    "title": "«Їсть як пташка» — це не про мало: птахи справжні ненажери 🐦",
+    "description": "Маленькі птахи їдять дуже багато як на свій розмір. Синиця за день з'їдає близько 35% своєї ваги, а колібрі випиває стільки нектару, скільки важить сама: маленьке тіло швидко втрачає тепло, тож йому постійно потрібне паливо."
+   },
+   "vi": {
+    "title": "Ăn ít như chim? Thật ra chim ăn rất nhiều 🐦",
+    "description": "Chim nhỏ ăn rất nhiều so với kích thước. Một loài chim bạc má mỗi ngày ăn khoảng 35% trọng lượng cơ thể, còn chim ruồi uống lượng mật hoa bằng chính cân nặng của nó, vì cơ thể nhỏ mất nhiệt nhanh và cần nạp năng lượng liên tục."
+   },
+   "az": {
+    "title": "Quş qədər yemək az yemək deyil, quşlar qarınqulu olur 🐦",
+    "description": "Kiçik quşlar ölçülərinə görə çox yeyir. Bir arıquşu növü hər gün çəkisinin təxminən 35%-ni yeyir, kolibri isə öz çəkisi qədər nektar içir, çünki kiçik bədən istiliyi tez itirir və daim yanacağa ehtiyac duyur."
+   },
+   "ro": {
+    "title": "A mânca cât o vrăbiuță nu înseamnă puțin: păsările sunt mâncăcioase 🐦",
+    "description": "Păsările mici mănâncă enorm pentru mărimea lor. Un pițigoi mănâncă zilnic aproximativ 35% din greutatea sa, iar o pasăre colibri bea nectar cât propria greutate, pentru că un corp mic pierde repede căldura și are nevoie mereu de combustibil."
+   }
+  }
+ }
+}

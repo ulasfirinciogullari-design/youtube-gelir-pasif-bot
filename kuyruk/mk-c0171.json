@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0171",
+ "topic": "Köpekler yaralarını yalayarak iyileşir mi? Köpeğin yarasını yalaması iyi mi, köpeğe neden huni (yaka) takılır?",
+ "kategori": "hayvan",
+ "subject": [
+  "dog"
+ ],
+ "stock_hint": "dog licking paw",
+ "script": {
+  "title": "Yarasını yalamak köpeği iyileştirmez, huni boşuna değil 🐶",
+  "hook_text": "KÖPEK YARASINI YALAYINCA İYİLEŞİR Mİ?",
+  "scenes": [
+   {
+    "text": "Yarasını yalayan bu köpek onu iyileştirmiyor.",
+    "visual": "close-up of a dog licking its front paw and looking up at the camera",
+    "stock_query": "dog licking paw",
+    "source": "stock",
+    "callout": "İYİLEŞTİRMİYOR"
+   },
+   {
+    "text": "Hayvanlar yarasını yalayarak iyileştirir diye biliriz.",
+    "visual": "a dog lying on the floor and licking its leg",
+    "stock_query": "dog licking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bir deneyde köpek tükürüğü bazı bakterileri gerçekten öldürdü, ama stafilokoka işlemedi.",
+    "visual": "close-up of a dog's tongue and mouth",
+    "stock_query": "dog tongue",
+    "source": "stock",
+    "callout": "BAZI BAKTERİLER"
+   },
+   {
+    "text": "Asıl sorun yalamanın kendisi: ağızdaki mikropları yaraya taşır, dikişleri söker.",
+    "visual": "a dog with a bandaged leg at the veterinary clinic",
+    "stock_query": "dog bandage",
+    "source": "stock",
+    "callout": "DİKİŞ SÖKER"
+   },
+   {
+    "text": "Veterinerin taktığı huni bu yüzden var; o söyleyene kadar çıkarma.",
+    "visual": "a dog wearing a plastic cone collar after surgery",
+    "stock_query": "dog cone collar",
+    "source": "stock",
+    "callout": "HUNİ ŞART"
+   },
+   {
+    "text": "Huniyi acıyıp çıkarmadan önce hatırla:",
+    "visual": "close-up of a dog's face looking at the camera",
+    "stock_query": "dog face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Köpeğin yarasını yalaması onu iyileştirmez. 1990'da yayımlanan bir çalışmada köpek tükürüğü E. coli ve Streptococcus canis bakterilerini öldürdü ama stafilokoka işlemedi. Fazla yalamak ağızdaki bakterileri yaraya taşır, iyileşmeyi geciktirir ve dikişleri sökebilir; veterinerlerin taktığı huni (koruma yakalığı) bu yüzden.",
+  "tags": [
+   "köpek",
+   "köpek yarasını yalıyor",
+   "köpek hunisi",
+   "köpek tükürüğü",
+   "köpek bakımı",
+   "köpekler",
+   "evcil hayvan",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Senin köpeğin huniyi takınca ne yapıyor: alışıyor mu, her yere mi çarpıyor?",
+  "en_title": "Licking a wound doesn't heal your dog, and the cone isn't for nothing 🐶",
+  "en_description": "Dog saliva is only mildly antibacterial: in a 1990 study it killed E. coli and Streptococcus canis but not Staphylococcus. Licking carries mouth bacteria into the wound, delays healing and can pull out stitches, which is why vets send dogs home in a cone.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Köpekler yaralarını yalayarak iyileşir mi, köpeğin yarasını yalamasına izin vermek doğru mu?\n\nHayır, yalamak köpeği iyileştirmez. Kaliforniya Üniversitesi Davis'ten Benjamin Hart'ın ortak yazarı olduğu ve 1990'da Physiology & Behavior dergisinde yayımlanan çalışmada köpek tükürüğü E. coli ve Streptococcus canis bakterilerini öldürdü ama stafilokoklara işlemedi; Amerikan Köpek Kulübü (AKC) bu etkinin yalnızca 'hafif' olduğunu vurguluyor. Royal Kennel Club'a göre yalamak yaraya enfeksiyon taşıyabilir, onu tahriş edip iyileşmeyi geciktirebilir; ameliyattan sonra dikişleri söküp yarayı yeniden açabilir. AKC'ye göre köpeği yalamaktan kesin olarak alıkoymanın yolu, veterinerin önerdiği süre boyunca takılan huni ya da koruma yakalığı. Köpeğin ağzında bakteri bulunduğu için kendi yaranı da ona yalatmamalısın.\n\nSenin köpeğin huniyi takınca ne yapıyor: alışıyor mu, her yere mi çarpıyor?",
+  "hashtags": [
+   "#köpek",
+   "#köpekler",
+   "#evcilhayvan",
+   "#köpekbakımı",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "köpek yarasını yalıyor",
+   "köpekler yaralarını yalar mı",
+   "köpek yara yalarsa iyileşir mi",
+   "köpek tükürüğü",
+   "köpek tükürüğü mikrop öldürür",
+   "köpek hunisi",
+   "köpek yakalığı",
+   "köpek ameliyat sonrası",
+   "köpek dikiş yalama",
+   "köpek yarası",
+   "köpek yara bakımı",
+   "yanlış bilinen gerçekler",
+   "köpek bakımı",
+   "köpek sahibi",
+   "köpek sağlığı",
+   "köpek",
+   "köpekler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim",
+   "dog licking wounds",
+   "dog cone"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Licking a wound doesn't heal your dog, and the cone isn't for nothing 🐶",
+    "description": "Dog saliva is only mildly antibacterial: in a 1990 study it killed E. coli and Streptococcus canis but not Staphylococcus. Licking carries mouth bacteria into the wound, delays healing and can pull out stitches, which is why vets send dogs home in a cone."
+   },
+   "es": {
+    "title": "Lamerse la herida no cura a tu perro, y el cono no es en vano 🐶",
+    "description": "La saliva del perro es apenas antibacteriana: en un estudio de 1990 mató E. coli y Streptococcus canis, pero no estafilococos. Al lamerse, el perro lleva bacterias de la boca a la herida, retrasa la curación y puede arrancarse los puntos; por eso el veterinario lo manda a casa con cono."
+   },
+   "pt": {
+    "title": "Lamber a ferida não cura seu cachorro, e o cone não é à toa 🐶",
+    "description": "A saliva do cachorro é só levemente antibacteriana: num estudo de 1990 ela matou E. coli e Streptococcus canis, mas não estafilococos. Lamber leva bactérias da boca para a ferida, atrasa a cicatrização e pode arrancar os pontos; por isso o veterinário manda o cão para casa de cone."
+   },
+   "de": {
+    "title": "Wundenlecken heilt deinen Hund nicht – der Trichter hat seinen Grund 🐶",
+    "description": "Hundespeichel wirkt nur schwach antibakteriell: In einer Studie von 1990 tötete er E. coli und Streptococcus canis, aber keine Staphylokokken. Lecken trägt Bakterien aus dem Maul in die Wunde, verzögert die Heilung und kann Fäden lösen – deshalb schicken Tierärzte Hunde mit Halskrause nach Hause."
+   },
+   "fr": {
+    "title": "Lécher sa plaie ne soigne pas ton chien, et la collerette sert à quelque chose 🐶",
+    "description": "La salive du chien n'est que faiblement antibactérienne : dans une étude de 1990, elle tuait E. coli et Streptococcus canis, mais pas les staphylocoques. Le léchage apporte des bactéries de la bouche dans la plaie, retarde la guérison et peut arracher les points ; d'où la collerette du vétérinaire."
+   },
+   "it": {
+    "title": "Leccarsi la ferita non guarisce il cane, e il collare non è inutile 🐶",
+    "description": "La saliva del cane è solo debolmente antibatterica: in uno studio del 1990 uccideva E. coli e Streptococcus canis, ma non gli stafilococchi. Leccare porta i batteri della bocca nella ferita, rallenta la guarigione e può far saltare i punti: per questo il veterinario manda il cane a casa con il collare elisabettiano."
+   },
+   "ru": {
+    "title": "Зализывание раны не лечит собаку, и воротник надевают не зря 🐶",
+    "description": "Слюна собаки лишь слабо антибактериальна: в исследовании 1990 года она убивала кишечную палочку и Streptococcus canis, но не стафилококков. Зализывая рану, собака заносит в неё бактерии изо рта, замедляет заживление и может сорвать швы — поэтому ветеринар отпускает её домой в защитном воротнике."
+   },
+   "ar": {
+    "title": "لعق الجرح لا يشفي كلبك، والطوق الواقي ليس بلا سبب 🐶",
+    "description": "لعاب الكلب مضاد للبكتيريا بدرجة ضعيفة فقط: ففي دراسة عام 1990 قتل الإشريكية القولونية والمكورات العقدية الكلبية، لكنه لم يقتل المكورات العنقودية. واللعق ينقل بكتيريا الفم إلى الجرح ويؤخر الشفاء وقد يفك الغرز، ولهذا يرسل البيطري الكلب إلى البيت مرتديًا الطوق."
+   },
+   "hi": {
+    "title": "घाव चाटने से कुत्ता ठीक नहीं होता, कोन बेवजह नहीं लगाया जाता 🐶",
+    "description": "कुत्ते की लार बस हल्की जीवाणुरोधी होती है: 1990 के एक अध्ययन में इसने ई. कोलाई और स्ट्रेप्टोकोकस कैनिस को मारा, पर स्टैफ़ाइलोकोकस को नहीं। चाटने से मुँह के बैक्टीरिया घाव में पहुँचते हैं, भरने में देर होती है और टाँके खुल सकते हैं, इसीलिए पशु-चिकित्सक कोन पहनाकर घर भेजते हैं।"
+   },
+   "id": {
+    "title": "Menjilat luka tidak menyembuhkan anjing, corong itu bukan sia-sia 🐶",
+    "description": "Air liur anjing hanya sedikit antibakteri: dalam studi tahun 1990, air liur itu membunuh E. coli dan Streptococcus canis, tetapi tidak membunuh stafilokokus. Menjilat membawa bakteri mulut ke luka, memperlambat penyembuhan, dan bisa melepas jahitan; karena itu dokter hewan memulangkan anjing dengan corong pelindung."
+   },
+   "ja": {
+    "title": "傷をなめても犬は治らない、エリザベスカラーには理由がある 🐶",
+    "description": "犬の唾液の抗菌作用はわずかです。1990年の研究では大腸菌とストレプトコッカス・カニスは死にましたが、ブドウ球菌には効きませんでした。なめると口の細菌が傷に入り、治りが遅れ、縫い目がほどけることもあります。だから獣医はエリザベスカラーをつけて帰すのです。"
+   },
+   "ko": {
+    "title": "상처를 핥아도 개는 낫지 않는다, 넥카라는 괜히 씌우는 게 아니다 🐶",
+    "description": "개의 침은 항균 효과가 약할 뿐입니다. 1990년 연구에서 대장균과 스트렙토코쿠스 카니스는 죽였지만 포도상구균에는 효과가 없었습니다. 핥으면 입안의 세균이 상처로 들어가 회복이 늦어지고 실밥이 풀릴 수도 있어, 수의사가 넥카라를 씌워 보내는 것입니다."
+   },
+   "pl": {
+    "title": "Lizanie rany nie leczy psa, a kołnierz nie jest bez powodu 🐶",
+    "description": "Ślina psa działa przeciwbakteryjnie tylko słabo: w badaniu z 1990 roku zabijała E. coli i Streptococcus canis, ale nie gronkowce. Lizanie przenosi bakterie z pyska do rany, opóźnia gojenie i może zerwać szwy – dlatego weterynarz odsyła psa do domu w kołnierzu ochronnym."
+   },
+   "nl": {
+    "title": "Wonden likken geneest je hond niet, en die kap heeft een reden 🐶",
+    "description": "Hondenspeeksel is maar licht antibacterieel: in een studie uit 1990 doodde het E. coli en Streptococcus canis, maar geen stafylokokken. Likken brengt bacteriën uit de bek in de wond, vertraagt het herstel en kan hechtingen lostrekken; daarom stuurt de dierenarts je hond met een kap naar huis."
+   },
+   "uk": {
+    "title": "Зализування рани не лікує собаку, і комір надягають не дарма 🐶",
+    "description": "Слина собаки лише слабко антибактеріальна: у дослідженні 1990 року вона вбивала кишкову паличку й Streptococcus canis, але не стафілококів. Зализуючи рану, собака заносить у неї бактерії з рота, сповільнює загоєння і може зірвати шви — тому ветеринар відпускає її додому в захисному комірі."
+   },
+   "vi": {
+    "title": "Liếm vết thương không chữa lành cho chó, vòng chống liếm không vô ích 🐶",
+    "description": "Nước bọt của chó chỉ kháng khuẩn rất nhẹ: trong một nghiên cứu năm 1990, nó diệt được E. coli và Streptococcus canis nhưng không diệt được tụ cầu. Liếm sẽ đưa vi khuẩn trong miệng vào vết thương, làm chậm lành và có thể bung chỉ khâu, vì vậy bác sĩ thú y cho chó đeo vòng chống liếm khi về nhà."
+   },
+   "az": {
+    "title": "Yarasını yalamaq iti sağaltmır, qoruyucu yaxalıq boşuna deyil 🐶",
+    "description": "İt tüpürcəyinin antibakterial təsiri zəifdir: 1990-cı il araşdırmasında o, E. coli və Streptococcus canis bakteriyalarını öldürdü, amma stafilokoklara təsir etmədi. Yalamaq ağızdakı bakteriyaları yaraya daşıyır, sağalmanı gecikdirir və tikişləri sökə bilər; baytar iti buna görə qoruyucu yaxalıqla evə göndərir."
+   },
+   "ro": {
+    "title": "Linsul rănii nu-ți vindecă câinele, iar conul nu e degeaba 🐶",
+    "description": "Saliva câinelui e doar slab antibacteriană: într-un studiu din 1990 a ucis E. coli și Streptococcus canis, dar nu și stafilococii. Linsul duce bacterii din gură în rană, întârzie vindecarea și poate rupe firele; de aceea veterinarul trimite câinele acasă cu guler de protecție."
+   }
+  }
+ }
+}
