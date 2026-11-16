@@ -1,72 +1,10 @@
 {
- "started": "2026-11-16T10:07:05+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-16T13:06:55+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y060",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "69",
-  "videos": "86"
- },
- "credits_before": [
-  106107,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261115-3-n018.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "n018",
-  "series": "Ne Kadar Büyük?",
-  "q": "Mars ne kadar uzak?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 440,
- "duration": 30.3,
- "title": "Mars Gerçekte Ne Kadar Uzak?",
- "url": "https://youtube.com/shorts/JViBEWB18kw",
- "recent_status": {
-  "y060": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "980",
-   "reason": null
-  },
-  "n017": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "473",
-   "reason": null
-  },
-  "y028": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "124",
-   "reason": null
-  },
-  "y023": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "82",
-   "reason": null
-  },
-  "n018": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106214,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261115-3-n018.json Mars ne kadar uzak? (Ne Kadar Büyük?)"
- ],
- "finished": "2026-11-16T10:08:01+00:00"
+ "error": "RuntimeError: ElevenLabs ses üretmedi (401): {\"detail\":{\"type\":\"payment_required\",\"code\":\"payment_issue\",\"message\":\"Your subscription has a failed or incomplete payment. Complete the latest invoice to continue usage.\",\"status\":\"payment_issue\",\"request_id\":\"3687347a8570dbe4e925b8a23eaeb581\"}}",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 502, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 368, in ig_bolum\n    timings, mix, chars = ses.make(ep, WORK)\n                          ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 199, in make\n    mp3, al = tts(say, v, cache)\n              ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 104, in tts\n    raise RuntimeError(f\"ElevenLabs ses üretmedi ({r.status_code}): {r.text[:300]}\")\nRuntimeError: ElevenLabs ses üretmedi (401): {\"detail\":{\"type\":\"payment_required\",\"code\":\"payment_issue\",\"message\":\"Your subscription has a failed or incomplete payment. Complete the latest invoice to continue usage.\",\"status\":\"payment_issue\",\"request_id\":\"3687347a8570dbe4e925b8a23eaeb581\"}}\n",
+ "log": [],
+ "finished": "2026-11-16T13:06:58+00:00"
 }

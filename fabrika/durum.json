@@ -2741,16 +2741,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 0,
+ "fail_streak": 1,
  "runs": [
-  {
-   "finished": "2026-11-08T12:08:15+00:00",
-   "mod": "saatlik",
-   "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
-   "url": "https://youtube.com/shorts/33I8lo_Kk18",
-   "duration": 25.6,
-   "chars": 371
-  },
   {
    "finished": "2026-11-08T13:11:28+00:00",
    "mod": "igbolum",
@@ -3167,9 +3159,14 @@
    "url": "https://youtube.com/shorts/JViBEWB18kw",
    "duration": 30.3,
    "chars": 440
+  },
+  {
+   "finished": "2026-11-16T13:06:58+00:00",
+   "mod": "igbolum",
+   "error": "RuntimeError: ElevenLabs ses üretmedi (401): {\"detail\":{\"type\":\"payment_required\",\"code\":\"payment_issue\",\"message\":\"Your subscription has a failed or incomplete payment. Complete the latest invoice to continue usage.\",\"status\":\"payment_issue\",\"request_id\":\"3687347a8570dbe4e925b8a23eaeb581\"}}"
   }
  ],
- "last_fail": 1794410324.353765,
+ "last_fail": 1794834418.871059,
  "instagram": {
   "user": {
    "user_id": "17841467272692803",
