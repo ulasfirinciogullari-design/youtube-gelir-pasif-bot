@@ -129,6 +129,10 @@ SERIES_LABEL_SIZE = 46
 # Claude's first 34 Shorts got 9 shares in about 98,600 views (0.09 per 1,000). Half the merak Shorts ask for one in
 # their last moments; share_cta_arm picks them by a hash of the topic id, so the every-4th-file psychology topics do
 # not all land in one arm. Two short lines keep the box clear of Instagram's buttons on the right.
+# Verdict 2026-11-15 (experiment 6, ~50 Shorts per arm): the box did not raise shares (10 vs 10) and the arm that
+# carried it had lower views (48 h median 1,771 vs 2,117; behind on 9 of 11 same days) and fewer subscribers per
+# 1,000 views, so no Short carries it any more. share_cta_arm stays for a later test.
+SHARE_CTA_ON = False
 SHARE_CTA_TEXT = r"BUNU BİLMEYEN\NBİRİNE {\c&H0000D7FF&}GÖNDER"
 SHARE_CTA_SECONDS = 1.8
 SHARE_CTA_POS = (540, 1040)  # between a key fact (centred at y 860) and the captions (bottom margin 620)
@@ -947,7 +951,7 @@ def produce(topic: dict, script: dict, provider: str, synthesize=synthesize_line
     label = SERIES_LABEL.format(n=label_no) if label_no else ""
     add_hook_overlay(subs, script.get("hook_text", ""), duration, label=label)
     accents = add_callouts(subs, scenes, durations)
-    share_cta = series == "merak" and share_cta_arm(topic["id"])
+    share_cta = SHARE_CTA_ON and series == "merak" and share_cta_arm(topic["id"])
     if share_cta:
         add_share_cta(subs, duration)
     mood = script.get("mood", "")
