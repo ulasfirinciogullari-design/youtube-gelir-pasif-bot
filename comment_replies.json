@@ -329,6 +329,12 @@
    "r",
    "UgydHqC_ddny1_RU9YR4AaABAg.AdGSYQXfs26AdGT7uUTkZS",
    "UCiKORu2UzcPH19iVWTXg3PQ"
+  ],
+  "UgwONotbfbRYTlYkGo94AaABAg": [
+   1794822318,
+   "r",
+   "UgwONotbfbRYTlYkGo94AaABAg.AdGYlL1XTWaAdG_-siFYAe",
+   "UCaHxXFLhBsMvrB_drdfyMow"
   ]
  },
  "tracked": {
@@ -466,6 +472,11 @@
    "at": 1794818712,
    "n": 1,
    "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉"
+  },
+  "UgwONotbfbRYTlYkGo94AaABAg": {
+   "at": 1794822318,
+   "n": 1,
+   "reply": "Kedin seni kendi sosyal grubuna dahil etmek ve ortak bir koku oluşturmak için yapıyor, seni ailesinden sayıyor yani. 😊"
   }
  },
  "channel": {
@@ -473,12 +484,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792680313,
-   "video": "fI8aO5_Nxug",
-   "comment": "Sol açık şuan",
-   "reply": "Vay, hemen denemişsin! Çoğu kişi fark etmez ama dikkat edince anlaşılıyor değil mi? 😊"
-  },
   {
    "at": 1792697634,
    "video": "qducKltyWbs",
@@ -712,6 +717,12 @@
    "video": "NjtcYi4kzXA",
    "comment": "Ben bilemem ama kayınvalidem horoz yok tavukları var",
    "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉"
+  },
+  {
+   "at": 1794822318,
+   "video": "hce6-SPurSw",
+   "comment": "Peki neden bunu yapıyor?",
+   "reply": "Kedin seni kendi sosyal grubuna dahil etmek ve ortak bir koku oluşturmak için yapıyor, seni ailesinden sayıyor yani. 😊"
   }
  ]
 }

@@ -1,22 +1,22 @@
 {
- "started": "2026-11-16T08:45:12+00:00",
+ "started": "2026-11-16T09:45:17+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgydHqC_ddny1_RU9YR4AaABAg",
+   "id": "UgwONotbfbRYTlYkGo94AaABAg",
    "kind": "comment",
-   "video": "NjtcYi4kzXA",
-   "comment": "Ben bilemem ama kayınvalidem horoz yok tavukları var",
-   "reply": "Kayınvalidenizin gözlemi çok doğru! Tavuklar horoz olmasa da yumurtlayabilirler, sadece o yumurtalardan civciv çıkmaz. 😉",
+   "video": "hce6-SPurSw",
+   "comment": "Peki neden bunu yapıyor?",
+   "reply": "Kedin seni kendi sosyal grubuna dahil etmek ve ortak bir koku oluşturmak için yapıyor, seni ailesinden sayıyor yani. 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-16T08:45:17+00:00"
+ "finished": "2026-11-16T09:45:21+00:00"
 }
