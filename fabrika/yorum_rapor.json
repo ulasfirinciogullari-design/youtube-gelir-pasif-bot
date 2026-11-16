@@ -1,24 +1,24 @@
 {
- "started": "2026-11-14T15:55:11+00:00",
+ "started": "2026-11-16T17:07:01+00:00",
  "deneme": false,
  "mod": "nöbet",
- "threads": 41,
+ "threads": 42,
  "quiet": 0,
  "new": 1,
- "sent_last_24h": 1,
+ "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-3.5-flash-lite",
  "items": [
   {
-   "id": "Ugy8rjJMS_d2rPO2p8N4AaABAg",
-   "video": "6XodpIbEU8A",
-   "comment": "Hayır hiçbir şekilde 2 saat rüya görülemez araştır",
-   "reply": "Smithsonian verilerine göre yetişkinler uykusunun yaklaşık yüzde 25'ini yani ortalama iki saatini REM evresinde geçirir.\n— Profesör Pi 🔭",
+   "id": "UgzVMIP0Ak-RAJhLZ2N4AaABAg",
+   "video": "jxrKlBSJu_s",
+   "comment": "❤😂🎉😢😮😅😊,🤓🤓🤓🤓🤓❤❤❤🌛🌞🌝🌚⭐🧑🏫🧑🏫🧑🏫🧑🏫",
+   "reply": "Klavyen bugün tam bir emoji şöleni yapmış! 🎉\n— Bit 🤖",
    "result": "gönderildi"
   }
  ],
  "log": [
   "Gemini modelleri: gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-2.5-flash; ucuz: gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite"
  ],
- "finished": "2026-11-14T15:55:14+00:00"
+ "finished": "2026-11-16T17:07:04+00:00"
 }
