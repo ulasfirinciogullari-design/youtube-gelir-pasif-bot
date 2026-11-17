@@ -1,0 +1,253 @@
+{
+ "id": "n019",
+ "series": "Ne Kadar Büyük?",
+ "q": "Satürn'ün halkaları ne kadar ince?",
+ "title": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce?",
+ "bar": {
+  "hi": "SATÜRN HALKASI",
+  "rest": "KAÇ METRE?"
+ },
+ "summary": "Satürn'ün halkasına bassan, altındaki kalınlık çoğu yerde sadece 10 metre: 3 katlı bir apartman kadar! Dünya ile Ay arasına ancak sığan bu dev halkaların kâğıttan ince olduğunu ve her yarım saatte Satürn'e yağıp nasıl bittiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Satürn'ün halkasına bassan, altındaki kalınlık çoğu yerde sadece 10 metre!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "saturn",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "none",
+    "target": 0,
+    "key": "10",
+    "label": "Kalınlık: 10 m"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "3 katlı apartman kadar mı?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🏢",
+    "do": "shrink",
+    "key": "apartman",
+    "label": "3 Kat ≈ 10 m"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama çapı 282.000 km: Dünya ile Ay arasına ancak sığar!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "🪐",
+     "label": "Halkaların Çapı",
+     "value": "282.000"
+    },
+    "b": {
+     "b": "moon",
+     "label": "Dünya-Ay Arası",
+     "value": "384.400"
+    },
+    "mode": "bar",
+    "key": "282.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Kâğıttan maketini yapsan, 3 km'lik bir daire kesmen gerekirdi!",
+   "v": {
+    "t": "icon",
+    "bg": "lab",
+    "e": "📄",
+    "do": "grow",
+    "key": "daire",
+    "label": "3 km'lik Kâğıt"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik bitiyor: her yarım saatte bir olimpik havuz dolusu buz Satürn'e yağar!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🏊",
+    "value": "30",
+    "unit": "dakika",
+    "label": "1 Olimpik Havuz",
+    "key": "havuz"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Halkalar bitmeden Satürn'e insan gider mi? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🪐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Satürn'ün ana halkalarının kalınlığı genellikle yaklaşık 10 metredir; halkalar tozla kaplı milyarlarca buz ve kaya parçasından oluşur.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/saturn/facts/"
+  },
+  {
+   "text": "Caltech'in Cool Cosmos sayfasına göre Satürn'ün halkaları bir uçtan öbür uca yaklaşık 282.000 km'dir; Satürn ve halkaları, Dünya ile Ay arasındaki ortalama 384.400 km'lik mesafeye ancak sığar.",
+   "source": "Caltech IPAC (Cool Cosmos), NASA",
+   "url": "https://coolcosmos.ipac.caltech.edu/ask/108-How-large-are-Saturn-s-rings-[4]"
+  },
+  {
+   "text": "NASA JPL'ye göre halkaların kâğıttan ölçekli bir maketini yapmak için çapı 10.000 feeti (yaklaşık 3 km) aşan bir daire kesmek gerekir.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/edu/pdfs/jss_minibook_those-amazing-rings.pdf"
+  },
+  {
+   "text": "NASA'ya göre halkalardan Satürn'e yağan buz, her yarım saatte bir olimpik yüzme havuzunu dolduracak hızdadır; halkalar 300 milyon yıldan kısa sürede yok olabilir.",
+   "source": "NASA Goddard",
+   "url": "https://svs.gsfc.nasa.gov/12672/"
+  }
+ ],
+ "tags": [
+  "satürn'ün halkaları",
+  "satürn halkası ne kadar ince",
+  "satürn halkaları kalınlığı",
+  "satürn",
+  "halka yağmuru",
+  "satürn halkaları yok oluyor",
+  "gezegen halkaları",
+  "nasa",
+  "saturn rings",
+  "how thin are saturn's rings",
+  "ring rain",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#satürn",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/saturn/facts/",
+  "https://coolcosmos.ipac.caltech.edu/ask/108-How-large-are-Saturn-s-rings-[4]",
+  "https://www.jpl.nasa.gov/edu/pdfs/jss_minibook_those-amazing-rings.pdf",
+  "https://svs.gsfc.nasa.gov/12672/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Thin Are Saturn's Rings Really?",
+   "summary": "Step onto Saturn's rings and, in most places, they're only 10 meters thick under your feet, about a 3-story building! Professor Pi shows how rings that barely fit between Earth and the Moon are thinner than paper, and how they're raining into Saturn every half hour.",
+   "facts": [
+    "According to NASA, Saturn's main rings are typically about 10 meters thick; they are made of billions of chunks of ice and rock coated with dust.",
+    "According to Caltech's Cool Cosmos, Saturn's rings are about 282,000 km across; Saturn and its rings would just fit in the 384,400 km average distance between Earth and the Moon.",
+    "According to NASA JPL, a paper scale model of the rings would need a circle more than 10,000 feet (about 3 km) across.",
+    "According to NASA, ice raining from the rings into Saturn could fill an Olympic-sized swimming pool every half hour; the rings could be gone in under 300 million years."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan delgados son realmente los anillos de Saturno?",
+   "summary": "Si pisaras los anillos de Saturno, bajo tus pies solo tendrían 10 metros de grosor en la mayoría de los lugares: ¡como un edificio de 3 pisos! El Profesor Pi muestra cómo estos anillos, que apenas caben entre la Tierra y la Luna, son más finos que el papel y cómo llueven sobre Saturno cada media hora.",
+   "facts": [
+    "Según la NASA, los anillos principales de Saturno suelen tener unos 10 metros de grosor; están formados por miles de millones de trozos de hielo y roca cubiertos de polvo.",
+    "Según Cool Cosmos de Caltech, los anillos de Saturno miden unos 282.000 km de un extremo a otro; Saturno y sus anillos apenas cabrían en los 384.400 km de distancia media entre la Tierra y la Luna.",
+    "Según el JPL de la NASA, una maqueta de papel a escala de los anillos necesitaría un círculo de más de 10.000 pies (unos 3 km) de diámetro.",
+    "Según la NASA, el hielo que llueve de los anillos sobre Saturno podría llenar una piscina olímpica cada media hora; los anillos podrían desaparecer en menos de 300 millones de años."
+   ]
+  },
+  "pt": {
+   "title": "Quão finos são os anéis de Saturno de verdade?",
+   "summary": "Se você pisasse nos anéis de Saturno, na maior parte deles a espessura sob seus pés seria de só 10 metros: um prédio de 3 andares! O Professor Pi mostra como esses anéis, que mal cabem entre a Terra e a Lua, são mais finos que papel e como chovem sobre Saturno a cada meia hora.",
+   "facts": [
+    "Segundo a NASA, os anéis principais de Saturno costumam ter cerca de 10 metros de espessura; são feitos de bilhões de pedaços de gelo e rocha cobertos de poeira.",
+    "Segundo o Cool Cosmos, do Caltech, os anéis de Saturno medem cerca de 282.000 km de uma ponta à outra; Saturno e seus anéis mal caberiam nos 384.400 km de distância média entre a Terra e a Lua.",
+    "Segundo o JPL da NASA, uma maquete de papel em escala dos anéis exigiria um círculo com mais de 10.000 pés (cerca de 3 km) de diâmetro.",
+    "Segundo a NASA, o gelo que chove dos anéis sobre Saturno encheria uma piscina olímpica a cada meia hora; os anéis podem sumir em menos de 300 milhões de anos."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى رقة حلقات زحل في الحقيقة؟",
+   "summary": "لو وطئت حلقات زحل لكان سمكها تحت قدميك في معظم الأماكن 10 أمتار فقط، أي بارتفاع مبنى من 3 طوابق! يشرح البروفيسور باي كيف أن هذه الحلقات التي بالكاد تتسع بين الأرض والقمر أرق من الورق، وكيف تمطر على زحل كل نصف ساعة.",
+   "facts": [
+    "بحسب ناسا، يبلغ سمك حلقات زحل الرئيسية عادة نحو 10 أمتار، وهي مكونة من مليارات القطع من الجليد والصخور المغطاة بالغبار.",
+    "بحسب موقع Cool Cosmos التابع لمعهد كالتك، يبلغ عرض حلقات زحل من طرف إلى طرف نحو 282,000 كم، وبالكاد يتسع زحل وحلقاته للمسافة المتوسطة بين الأرض والقمر البالغة 384,400 كم.",
+    "بحسب مختبر الدفع النفاث التابع لناسا، يتطلب نموذج ورقي مصغر للحلقات قص دائرة يزيد قطرها على 10,000 قدم (نحو 3 كم).",
+    "بحسب ناسا، يتساقط من الحلقات على زحل جليد يكفي لملء حوض سباحة أولمبي كل نصف ساعة، وقد تختفي الحلقات في أقل من 300 مليون سنة."
+   ]
+  },
+  "hi": {
+   "title": "शनि के छल्ले असल में कितने पतले हैं?",
+   "summary": "शनि के छल्लों पर कदम रखो, तो ज़्यादातर जगह तुम्हारे पैरों के नीचे उनकी मोटाई सिर्फ़ 10 मीटर है, यानी 3 मंज़िला इमारत जितनी! प्रोफ़ेसर पाई बताते हैं कि धरती और चाँद के बीच मुश्किल से समाने वाले ये छल्ले कागज़ से भी पतले कैसे हैं और हर आधे घंटे में शनि पर कैसे बरस रहे हैं।",
+   "facts": [
+    "NASA के अनुसार, शनि के मुख्य छल्ले आमतौर पर लगभग 10 मीटर मोटे हैं; ये धूल से ढके बर्फ़ और चट्टान के अरबों टुकड़ों से बने हैं।",
+    "Caltech के Cool Cosmos के अनुसार, शनि के छल्ले एक सिरे से दूसरे सिरे तक लगभग 282,000 किमी चौड़े हैं; शनि और उसके छल्ले धरती और चाँद के बीच की औसत 384,400 किमी दूरी में मुश्किल से समा पाएँगे।",
+    "NASA JPL के अनुसार, छल्लों का कागज़ का स्केल मॉडल बनाने के लिए 10,000 फ़ुट (लगभग 3 किमी) से ज़्यादा व्यास का गोला काटना पड़ेगा।",
+    "NASA के अनुसार, छल्लों से शनि पर बरसने वाली बर्फ़ हर आधे घंटे में एक ओलंपिक स्विमिंग पूल भर सकती है; छल्ले 300 मिलियन साल से कम समय में ख़त्म हो सकते हैं।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Tipis Cincin Saturnus Sebenarnya?",
+   "summary": "Kalau kamu menginjak cincin Saturnus, tebalnya di bawah kakimu di sebagian besar tempat hanya 10 meter, setinggi gedung 3 lantai! Profesor Pi menunjukkan bagaimana cincin yang nyaris muat di antara Bumi dan Bulan ini lebih tipis dari kertas, dan bagaimana cincin itu menghujani Saturnus setiap setengah jam.",
+   "facts": [
+    "Menurut NASA, cincin utama Saturnus umumnya setebal sekitar 10 meter; cincin itu terdiri dari miliaran bongkahan es dan batu yang dilapisi debu.",
+    "Menurut Cool Cosmos dari Caltech, cincin Saturnus membentang sekitar 282.000 km dari ujung ke ujung; Saturnus beserta cincinnya nyaris muat di jarak rata-rata Bumi-Bulan yang 384.400 km.",
+    "Menurut NASA JPL, maket kertas berskala dari cincin itu membutuhkan lingkaran berdiameter lebih dari 10.000 kaki (sekitar 3 km).",
+    "Menurut NASA, es yang jatuh dari cincin ke Saturnus bisa mengisi satu kolam renang olimpiade setiap setengah jam; cincin itu bisa lenyap dalam waktu kurang dari 300 juta tahun."
+   ]
+  },
+  "fr": {
+   "title": "Quelle est la vraie épaisseur des anneaux de Saturne ?",
+   "summary": "Si tu marchais sur les anneaux de Saturne, ils ne feraient souvent que 10 mètres d'épaisseur sous tes pieds : un immeuble de 3 étages ! Le Professeur Pi montre comment ces anneaux, qui tiennent tout juste entre la Terre et la Lune, sont plus fins que du papier et pleuvent sur Saturne toutes les demi-heures.",
+   "facts": [
+    "Selon la NASA, les anneaux principaux de Saturne font généralement environ 10 mètres d'épaisseur ; ils sont formés de milliards de morceaux de glace et de roche couverts de poussière.",
+    "Selon Cool Cosmos (Caltech), les anneaux de Saturne mesurent environ 282 000 km d'un bord à l'autre ; Saturne et ses anneaux tiendraient tout juste dans les 384 400 km qui séparent en moyenne la Terre de la Lune.",
+    "Selon le JPL de la NASA, une maquette en papier des anneaux à l'échelle exigerait un disque de plus de 10 000 pieds (environ 3 km) de diamètre.",
+    "Selon la NASA, la glace qui tombe des anneaux sur Saturne pourrait remplir une piscine olympique toutes les demi-heures ; les anneaux pourraient disparaître en moins de 300 millions d'années."
+   ]
+  },
+  "de": {
+   "title": "Wie dünn sind die Saturnringe wirklich?",
+   "summary": "Würdest du auf die Saturnringe treten, wären sie unter deinen Füßen meist nur 10 Meter dick, so hoch wie ein 3-stöckiges Haus! Professor Pi zeigt, warum Ringe, die gerade so zwischen Erde und Mond passen, dünner als Papier sind und alle halbe Stunde auf Saturn herabregnen.",
+   "facts": [
+    "Laut NASA sind die Hauptringe des Saturn meist etwa 10 Meter dick; sie bestehen aus Milliarden von Eis- und Gesteinsbrocken, die mit Staub überzogen sind.",
+    "Laut Cool Cosmos (Caltech) messen die Saturnringe von Rand zu Rand etwa 282.000 km; Saturn samt Ringen würde gerade so in die durchschnittlich 384.400 km zwischen Erde und Mond passen.",
+    "Laut NASA JPL bräuchte ein maßstabsgetreues Papiermodell der Ringe eine Scheibe mit mehr als 10.000 Fuß (etwa 3 km) Durchmesser.",
+    "Laut NASA regnet so viel Eis aus den Ringen auf Saturn, dass es alle halbe Stunde ein olympisches Schwimmbecken füllen könnte; die Ringe könnten in weniger als 300 Millionen Jahren verschwunden sein."
+   ]
+  },
+  "ru": {
+   "title": "Насколько тонкие кольца Сатурна на самом деле?",
+   "summary": "Встань на кольца Сатурна — почти везде их толщина под твоими ногами всего 10 метров, как у 3-этажного дома! Профессор Пи показывает, почему кольца, которые едва помещаются между Землёй и Луной, тоньше бумаги и как каждые полчаса они проливаются дождём на Сатурн.",
+   "facts": [
+    "По данным NASA, основные кольца Сатурна обычно имеют толщину около 10 метров; они состоят из миллиардов кусков льда и камня, покрытых пылью.",
+    "По данным Cool Cosmos (Калтех), кольца Сатурна в поперечнике около 282 000 км; Сатурн с кольцами едва поместился бы в среднее расстояние 384 400 км между Землёй и Луной.",
+    "По данным JPL NASA, для бумажной масштабной модели колец пришлось бы вырезать круг диаметром более 10 000 футов (около 3 км).",
+    "По данным NASA, лёд, падающий с колец на Сатурн, мог бы наполнять олимпийский бассейн каждые полчаса; кольца могут исчезнуть менее чем за 300 миллионов лет."
+   ]
+  },
+  "az": {
+   "title": "Saturnun Halqaları Əslində Nə Qədər Nazikdir?",
+   "summary": "Saturnun halqasına ayaq bassan, altındakı qalınlıq əksər yerdə cəmi 10 metrdir: 3 mərtəbəli bina boyda! Professor Pi Yerlə Ay arasına güclə sığan bu nəhəng halqaların kağızdan da nazik olduğunu və hər yarım saatdan bir Saturna necə yağdığını danışır.",
+   "facts": [
+    "NASA-ya görə, Saturnun əsas halqalarının qalınlığı adətən təxminən 10 metrdir; halqalar tozla örtülmüş milyardlarla buz və qaya parçasından ibarətdir.",
+    "Caltech-in Cool Cosmos saytına görə, Saturnun halqaları bir ucdan o biri uca təxminən 282.000 km-dir; Saturn halqaları ilə birlikdə Yerlə Ay arasındakı orta 384.400 km-lik məsafəyə güclə sığar.",
+    "NASA JPL-ə görə, halqaların kağızdan miqyaslı maketini düzəltmək üçün diametri 10.000 futdan (təxminən 3 km) böyük dairə kəsmək lazım gələrdi.",
+    "NASA-ya görə, halqalardan Saturna yağan buz hər yarım saatdan bir olimpiya hovuzunu doldura bilər; halqalar 300 milyon ildən az müddətdə yox ola bilər."
+   ]
+  }
+ }
+}

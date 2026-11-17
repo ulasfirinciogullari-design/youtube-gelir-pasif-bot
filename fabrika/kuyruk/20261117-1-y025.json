@@ -1,0 +1,435 @@
+{
+ "id": "y025",
+ "series": "Ya Olsaydı?",
+ "q": "Dünya'nın ekseni hiç eğik olmasaydı ne olurdu?",
+ "uzun": true,
+ "hikaye": true,
+ "karakter": {
+  "ad": "Dünya",
+  "b": "earth",
+  "ses": "kalin"
+ },
+ "emoji": "🌍",
+ "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
+ "bar": {
+  "hi": "DÜNYA DİK",
+  "rest": "DURSAYDI?"
+ },
+ "summary": "\"Of belim! Tam 23,4 derece yamuk duruyorum, yarın dimdik olacağım!\" Dünya eksenini düzeltirse mevsimler, kar tatili, buğday ve simit ne olur; kışın aslında Güneş'e neden en yakınız? Mevsimler bitse en çok neyi özlerdin? Yorumlara yaz 👇",
+ "lines": [
+  {
+   "who": "nesne",
+   "text": "Of belim! Tam 23,4 derece yamuk duruyorum. Yarın fizik tedavi, dimdik olacağım!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "kizgin",
+    "e": "🩼",
+    "label": "Belim Tutuldu!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dur Dünya! Mevsimleri o eğiklik yapıyor. Dimdik durursan yaz da kış da sonsuza dek biter.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "23,4",
+    "unit": "°",
+    "label": "Eksen Eğikliği",
+    "key": "eğiklik"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Oh ne güzel! Kış yok, atkı bere yok, kimse 'Kapat şu camı, üşüteceksin!' demez.",
+   "v": {
+    "t": "karakter",
+    "bg": "sky",
+    "mood": "mutlu",
+    "e": "🧣",
+    "label": "Kış Yok!"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kar tatili de mi yok?! Okul servisi her sabah kapıda!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🚌",
+    "do": "shake",
+    "key": "servisi",
+    "label": "Kar Tatili Yok"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bilim insanlarına göre ekvatordan uzaklaştıkça hava giderek soğur; kutuplara yakın yerlerde kış hiç bitmez.",
+   "v": {
+    "t": "icons",
+    "bg": "ice",
+    "items": [
+     {
+      "e": "🌴",
+      "label": "Ekvator Sıcak"
+     },
+     {
+      "e": "🍂",
+      "label": "Giderek Soğur"
+     },
+     {
+      "e": "🧊",
+      "label": "Bitmeyen Kış"
+     }
+    ]
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Sonsuz kış mı?! Ben sadece belimi düzeltecektim!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "freeze",
+    "target": 0,
+    "mood": "saskin",
+    "key": "kış",
+    "label": "Sonsuz Kış"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl kötüsü: buğday sadece kışı serin ya da soğuk yerlerde yetişir. Mevsim yoksa buğday da yok!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🌾",
+    "do": "vanish",
+    "key": "yok",
+    "label": "Buğday Yok"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Buğday yoksa simit de yok! Vapurda martılara ne atacağız?!",
+   "v": {
+    "t": "question",
+    "bg": "ocean",
+    "e": "🥯",
+    "label": "Simit Yok mu?!"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Simitsiz İstanbul mu? Olmaz! Ama kışı ben yapmıyorum ki, kışın Güneş'ten uzaklaşıyorum!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "havali",
+    "e": "☀️",
+    "label": "Ben Uzaktayım!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Tam tersi! Ocak başında Güneş'e en yakınsın: 147 milyon km. Temmuzdakinden 5 milyon km yakın!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "❄️",
+     "label": "Ocak: Kış",
+     "value": "147"
+    },
+    "b": {
+     "e": "☀️",
+     "label": "Temmuz: Yaz",
+     "value": "152"
+    },
+    "mode": "bar",
+    "key": "147"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kışın Güneş'e en yakınsak kaloriferi niye yakıyoruz?!",
+   "v": {
+    "t": "question",
+    "bg": "city",
+    "e": "🔥",
+    "label": "Kalorifer Niye?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çünkü kışın Güneş ışığı bize eğik gelir. Kışı yapan mesafe değil, eğiklik!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "sun",
+      "size": "m",
+      "at": "tl"
+     },
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "c"
+     }
+    ],
+    "do": "tilt",
+    "target": 1,
+    "mood": "saskin",
+    "key": "eğik",
+    "label": "Kışı Yapan Eğiklik"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Milyarlarca yıldır ben bile yanlış biliyormuşum!",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "uzgun",
+    "e": "🤦",
+    "label": "Bilmiyordum!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik zaten düzeliyorsun: eğikliğin yavaşça azalıyor, en dik hâline 10.000 yıl sonra geleceksin.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "Bugün",
+      "e": "🌍",
+      "label": "23,4°"
+     },
+     {
+      "when": "10.000 Yıl Sonra",
+      "e": "🧘",
+      "label": "En Dik Hâl"
+     }
+    ]
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "10.000 yıl mı? Fizik tedavi sırası bile daha erken gelir! Tamam, yamuk ama mevsimli kalıyorum.",
+   "v": {
+    "t": "karakter",
+    "bg": "space",
+    "mood": "havali",
+    "e": "⏳",
+    "label": "Randevu İptal"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Mevsimler bitse en çok neyi özlerdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "💬"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Dünya'nın ekseni şu an 23,4 derece eğik; son bir milyon yılda bu açı 22,1 ile 24,5 derece arasında değişti.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/science-research/earth-science/climate-science/milankovitch-orbital-cycles-and-their-role-in-earths-climate/"
+  },
+  {
+   "text": "NASA'ya göre mevsimlerin nedeni eğik eksendir: Kuzey Yarımküre'de kış, Dünya Güneş'e en yakınken yaşanır; o mevsimde Güneş ışınları bize daha eğik açıyla gelir.",
+   "source": "NASA Space Place",
+   "url": "https://spaceplace.nasa.gov/seasons/en/"
+  },
+  {
+   "text": "Live Science'a göre eksen eğikliği olmayan bir Dünya, ekvatordan uzaklaştıkça giderek soğuyan iklim kuşaklarına ayrılırdı ve yüksek enlemlerde kış hiç bitmezdi.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/18972-earth-seasons-tilt.html"
+  },
+  {
+   "text": "Live Science'a göre buğday yalnızca kışları serin ya da soğuk olan yerlerde yetişir; mevsimsiz bir dünyada buğday bile olmazdı.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/18972-earth-seasons-tilt.html"
+  },
+  {
+   "text": "NASA'ya göre Dünya her yıl 3 Ocak civarında Güneş'e en yakın noktaya, yaklaşık 147 milyon km'ye gelir; 4 Temmuz civarındaki en uzak noktada yaklaşık 5,1 milyon km daha uzaktadır.",
+   "source": "NASA",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+  },
+  {
+   "text": "NASA'ya göre eksen eğikliği yaklaşık 41.000 yıllık bir döngüde çok yavaş azalıyor ve yaklaşık 10.000 yıl sonra en düşük değerine inecek.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/science-research/earth-science/climate-science/milankovitch-orbital-cycles-and-their-role-in-earths-climate/"
+  }
+ ],
+ "tags": [
+  "dünyanın ekseni",
+  "eksen eğikliği",
+  "dünya eğik olmasaydı",
+  "mevsimler neden olur",
+  "mevsimler",
+  "günberi",
+  "dünya güneşe en yakın",
+  "buğday",
+  "simit",
+  "axial tilt",
+  "what if earth had no tilt",
+  "seasons",
+  "perihelion",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#dünya",
+  "#mevsimler",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/science-research/earth-science/climate-science/milankovitch-orbital-cycles-and-their-role-in-earths-climate/",
+  "https://spaceplace.nasa.gov/seasons/en/",
+  "https://www.livescience.com/18972-earth-seasons-tilt.html",
+  "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Earth's Axis Had No Tilt? (Bread Is in Danger!)",
+   "summary": "\"Oh, my back! I'm leaning exactly 23.4 degrees, tomorrow I'm standing up straight!\" If Earth straightened its axis, what would happen to the seasons, snow days, wheat and bread? And why are we actually closest to the Sun in winter? What would you miss most if the seasons ended? Tell us in the comments 👇",
+   "facts": [
+    "According to NASA, Earth's axis is currently tilted 23.4 degrees; over the last million years the angle has varied between 22.1 and 24.5 degrees.",
+    "According to NASA, Earth's tilted axis causes the seasons: Northern Hemisphere winter happens when Earth is closest to the Sun, and in that season sunlight reaches us at more of an angle.",
+    "According to Live Science, an Earth with no tilt would be divided into climate bands that get progressively colder away from the equator, with a continuous winter at high latitudes.",
+    "According to Live Science, wheat grows only where there are cool or cold winters; in a world without seasons there wouldn't even be wheat.",
+    "According to NASA, Earth reaches its closest point to the Sun, about 147 million km, around January 3 each year; at its farthest point, around July 4, it is about 5.1 million km farther away.",
+    "According to NASA, Earth's tilt is very slowly decreasing in a cycle of about 41,000 years and will reach its minimum about 10,000 years from now."
+   ]
+  },
+  "es": {
+   "title": "¿Y si el eje de la Tierra no estuviera inclinado? (¡Adiós al pan!)",
+   "summary": "\"¡Ay, mi espalda! Llevo justo 23,4 grados de inclinación, ¡mañana me enderezo!\" Si la Tierra enderezara su eje, ¿qué pasaría con las estaciones, los días de nieve, el trigo y el pan? ¿Y por qué en invierno estamos más cerca del Sol? Si se acabaran las estaciones, ¿qué extrañarías más? Escríbelo en los comentarios 👇",
+   "facts": [
+    "Según la NASA, el eje de la Tierra está inclinado actualmente 23,4 grados; en el último millón de años ese ángulo ha variado entre 22,1 y 24,5 grados.",
+    "Según la NASA, las estaciones se deben al eje inclinado de la Tierra: el invierno del hemisferio norte ocurre cuando la Tierra está más cerca del Sol, y en esa época la luz solar nos llega más inclinada.",
+    "Según Live Science, una Tierra sin inclinación se dividiría en franjas climáticas cada vez más frías al alejarse del ecuador, con un invierno continuo en las latitudes altas.",
+    "Según Live Science, el trigo solo crece donde hay inviernos frescos o fríos; en un mundo sin estaciones ni siquiera habría trigo.",
+    "Según la NASA, la Tierra alcanza su punto más cercano al Sol, a unos 147 millones de km, hacia el 3 de enero de cada año; en su punto más lejano, hacia el 4 de julio, está unos 5,1 millones de km más lejos.",
+    "Según la NASA, la inclinación de la Tierra disminuye muy lentamente en un ciclo de unos 41.000 años y llegará a su mínimo dentro de unos 10.000 años."
+   ]
+  },
+  "pt": {
+   "title": "E se o eixo da Terra não fosse inclinado? (Adeus, pão!)",
+   "summary": "\"Ai, minhas costas! Estou com 23,4 graus de inclinação, amanhã eu me endireito!\" Se a Terra endireitasse o eixo, o que aconteceria com as estações, os dias de neve, o trigo e o pão? E por que no inverno estamos mais perto do Sol? Se as estações acabassem, do que você sentiria mais falta? Conta nos comentários 👇",
+   "facts": [
+    "Segundo a NASA, o eixo da Terra está hoje inclinado 23,4 graus; no último milhão de anos, esse ângulo variou entre 22,1 e 24,5 graus.",
+    "Segundo a NASA, as estações vêm do eixo inclinado da Terra: o inverno do Hemisfério Norte acontece quando a Terra está mais perto do Sol, e nessa época a luz do Sol chega até nós mais inclinada.",
+    "Segundo a Live Science, uma Terra sem inclinação seria dividida em faixas climáticas cada vez mais frias à medida que se afasta do equador, com inverno contínuo nas altas latitudes.",
+    "Segundo a Live Science, o trigo só cresce onde há invernos frescos ou frios; num mundo sem estações não haveria nem trigo.",
+    "Segundo a NASA, a Terra chega ao ponto mais próximo do Sol, cerca de 147 milhões de km, por volta de 3 de janeiro de cada ano; no ponto mais distante, por volta de 4 de julho, fica cerca de 5,1 milhões de km mais longe.",
+    "Segundo a NASA, a inclinação da Terra diminui bem devagar num ciclo de cerca de 41.000 anos e chegará ao mínimo daqui a cerca de 10.000 anos."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم يكن محور الأرض مائلًا؟ (وداعًا للخبز!)",
+   "summary": "«آه يا ظهري! أنا مائل 23.4 درجة بالضبط، وغدًا سأقف مستقيمًا!» ماذا يحدث للفصول وعطلات الثلج والقمح والخبز إذا عدّلت الأرض محورها؟ ولماذا نكون في الشتاء أقرب ما يكون إلى الشمس؟ إذا انتهت الفصول، ما أكثر شيء ستفتقده؟ اكتبه في التعليقات 👇",
+   "facts": [
+    "بحسب ناسا، يميل محور الأرض حاليًا بزاوية 23.4 درجة، وقد تراوحت هذه الزاوية خلال المليون سنة الأخيرة بين 22.1 و24.5 درجة.",
+    "بحسب ناسا، سبب الفصول هو ميل محور الأرض: فالشتاء في نصف الكرة الشمالي يحدث عندما تكون الأرض في أقرب نقطة إلى الشمس، وتصلنا أشعة الشمس في هذا الفصل بزاوية أكثر ميلًا.",
+    "بحسب Live Science، لو لم يكن للأرض ميل لانقسمت إلى أحزمة مناخية تزداد برودة كلما ابتعدنا عن خط الاستواء، مع شتاء دائم في خطوط العرض العليا.",
+    "بحسب Live Science، لا ينمو القمح إلا حيث يكون الشتاء باردًا أو معتدل البرودة، وفي عالم بلا فصول لن يوجد القمح أصلًا.",
+    "بحسب ناسا، تصل الأرض إلى أقرب نقطة من الشمس، نحو 147 مليون كم، في حوالي 3 يناير من كل عام، وفي أبعد نقطة، في حوالي 4 يوليو، تكون أبعد بنحو 5.1 مليون كم.",
+    "بحسب ناسا، يتناقص ميل الأرض ببطء شديد ضمن دورة مدتها نحو 41,000 سنة، وسيبلغ أدنى قيمة له بعد نحو 10,000 سنة."
+   ]
+  },
+  "hi": {
+   "title": "अगर धरती की धुरी झुकी न होती तो क्या होता? (रोटी भी गई!)",
+   "summary": "\"हाय मेरी कमर! पूरे 23.4 डिग्री झुककर खड़ा हूँ, कल से एकदम सीधा!\" अगर धरती अपनी धुरी सीधी कर ले तो मौसमों, बर्फ़ की छुट्टियों, गेहूँ और रोटी का क्या होगा? और सर्दियों में हम असल में सूरज के सबसे पास क्यों होते हैं? अगर मौसम ख़त्म हो जाएँ तो तुम्हें सबसे ज़्यादा किसकी याद आएगी? कमेंट में लिखो 👇",
+   "facts": [
+    "NASA के अनुसार, धरती की धुरी अभी 23.4 डिग्री झुकी है; पिछले दस लाख सालों में यह कोण 22.1 से 24.5 डिग्री के बीच बदलता रहा है।",
+    "NASA के अनुसार, मौसम धरती की झुकी धुरी से बनते हैं: उत्तरी गोलार्ध में सर्दी तब होती है जब धरती सूरज के सबसे पास होती है, और उस मौसम में सूरज की किरणें हम तक ज़्यादा तिरछी पहुँचती हैं।",
+    "Live Science के अनुसार, बिना झुकाव वाली धरती ऐसी जलवायु पट्टियों में बँट जाती जो भूमध्य रेखा से दूर जाने पर और ठंडी होती जातीं, और ऊँचे अक्षांशों में सर्दी कभी ख़त्म न होती।",
+    "Live Science के अनुसार, गेहूँ सिर्फ़ वहीं उगता है जहाँ सर्दियाँ ठंडी या हल्की ठंडी होती हैं; बिना मौसमों वाली दुनिया में गेहूँ भी न होता।",
+    "NASA के अनुसार, धरती हर साल लगभग 3 जनवरी को सूरज के सबसे नज़दीक, लगभग 147 मिलियन किमी पर होती है; लगभग 4 जुलाई को सबसे दूर के बिंदु पर वह लगभग 5.1 मिलियन किमी ज़्यादा दूर होती है।",
+    "NASA के अनुसार, धरती का झुकाव लगभग 41,000 साल के चक्र में बहुत धीरे-धीरे घट रहा है और लगभग 10,000 साल बाद अपने न्यूनतम स्तर पर पहुँचेगा।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Sumbu Bumi Tidak Miring? (Roti Pun Lenyap!)",
+   "summary": "\"Aduh, punggungku! Aku miring tepat 23,4 derajat, besok aku mau tegak!\" Kalau Bumi meluruskan sumbunya, apa jadinya musim, libur salju, gandum, dan roti? Dan kenapa saat musim dingin kita justru paling dekat dengan Matahari? Kalau musim-musim hilang, apa yang paling kamu rindukan? Tulis di komentar 👇",
+   "facts": [
+    "Menurut NASA, sumbu Bumi saat ini miring 23,4 derajat; dalam sejuta tahun terakhir sudut ini berubah antara 22,1 dan 24,5 derajat.",
+    "Menurut NASA, musim terjadi karena sumbu Bumi yang miring: musim dingin di belahan utara terjadi saat Bumi paling dekat dengan Matahari, dan pada musim itu sinar Matahari datang lebih miring.",
+    "Menurut Live Science, Bumi tanpa kemiringan akan terbagi menjadi sabuk-sabuk iklim yang makin dingin saat menjauh dari khatulistiwa, dengan musim dingin tanpa akhir di lintang tinggi.",
+    "Menurut Live Science, gandum hanya tumbuh di tempat yang musim dinginnya sejuk atau dingin; di dunia tanpa musim, gandum pun tidak akan ada.",
+    "Menurut NASA, Bumi mencapai titik terdekatnya dengan Matahari, sekitar 147 juta km, sekitar 3 Januari setiap tahun; di titik terjauhnya sekitar 4 Juli, jaraknya sekitar 5,1 juta km lebih jauh.",
+    "Menurut NASA, kemiringan Bumi berkurang sangat perlahan dalam siklus sekitar 41.000 tahun dan akan mencapai titik terendahnya sekitar 10.000 tahun lagi."
+   ]
+  },
+  "fr": {
+   "title": "Et si l'axe de la Terre n'était pas incliné ? (Adieu le pain !)",
+   "summary": "« Aïe, mon dos ! Je penche de 23,4 degrés pile, demain je me redresse ! » Si la Terre redressait son axe, que deviendraient les saisons, les jours de neige, le blé et le pain ? Et pourquoi sommes-nous en fait plus près du Soleil en hiver ? Si les saisons disparaissaient, qu'est-ce qui te manquerait le plus ? Dis-le en commentaire 👇",
+   "facts": [
+    "Selon la NASA, l'axe de la Terre est actuellement incliné de 23,4 degrés ; au cours du dernier million d'années, cet angle a varié entre 22,1 et 24,5 degrés.",
+    "Selon la NASA, les saisons viennent de l'inclinaison de l'axe terrestre : l'hiver de l'hémisphère Nord a lieu quand la Terre est au plus près du Soleil, et la lumière du Soleil nous arrive alors plus en biais.",
+    "Selon Live Science, une Terre sans inclinaison serait divisée en bandes climatiques de plus en plus froides en s'éloignant de l'équateur, avec un hiver permanent aux hautes latitudes.",
+    "Selon Live Science, le blé ne pousse que là où les hivers sont frais ou froids ; dans un monde sans saisons, il n'y aurait même pas de blé.",
+    "Selon la NASA, la Terre atteint son point le plus proche du Soleil, environ 147 millions de km, vers le 3 janvier chaque année ; à son point le plus éloigné, vers le 4 juillet, elle est environ 5,1 millions de km plus loin.",
+    "Selon la NASA, l'inclinaison de la Terre diminue très lentement selon un cycle d'environ 41 000 ans et atteindra son minimum dans environ 10 000 ans."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn die Erdachse nicht geneigt wäre? (Tschüss, Brot!)",
+   "summary": "„Au, mein Rücken! Ich stehe genau 23,4 Grad schief, morgen stehe ich gerade!“ Was würde aus Jahreszeiten, schneefreien Schultagen, Weizen und Brot, wenn die Erde ihre Achse geraderückt? Und warum sind wir im Winter eigentlich der Sonne am nächsten? Was würdest du ohne Jahreszeiten am meisten vermissen? Schreib es in die Kommentare 👇",
+   "facts": [
+    "Laut NASA ist die Erdachse derzeit um 23,4 Grad geneigt; in der letzten Million Jahre schwankte der Winkel zwischen 22,1 und 24,5 Grad.",
+    "Laut NASA entstehen die Jahreszeiten durch die geneigte Erdachse: Der Winter auf der Nordhalbkugel fällt in die Zeit, in der die Erde der Sonne am nächsten ist, und das Sonnenlicht trifft uns dann schräger.",
+    "Laut Live Science wäre eine Erde ohne Neigung in Klimagürtel geteilt, die mit wachsendem Abstand vom Äquator immer kälter werden, mit Dauerwinter in hohen Breiten.",
+    "Laut Live Science wächst Weizen nur dort, wo es kühle oder kalte Winter gibt; in einer Welt ohne Jahreszeiten gäbe es nicht einmal Weizen.",
+    "Laut NASA erreicht die Erde jedes Jahr um den 3. Januar ihren sonnennächsten Punkt, etwa 147 Millionen km; am sonnenfernsten Punkt um den 4. Juli ist sie etwa 5,1 Millionen km weiter entfernt.",
+    "Laut NASA nimmt die Neigung der Erde in einem Zyklus von etwa 41.000 Jahren sehr langsam ab und erreicht in etwa 10.000 Jahren ihr Minimum."
+   ]
+  },
+  "ru": {
+   "title": "Что если бы ось Земли не была наклонена? (Прощай, хлеб!)",
+   "summary": "«Ох, спина! Стою с наклоном ровно 23,4 градуса, завтра выпрямлюсь!» Что стало бы с временами года, снежными выходными, пшеницей и хлебом, если бы Земля выпрямила ось? И почему зимой мы на самом деле ближе всего к Солнцу? Чего бы тебе больше всего не хватало без времён года? Пиши в комментариях 👇",
+   "facts": [
+    "По данным NASA, ось Земли сейчас наклонена на 23,4 градуса; за последний миллион лет этот угол менялся от 22,1 до 24,5 градуса.",
+    "По данным NASA, времена года вызывает наклон земной оси: зима в Северном полушарии наступает, когда Земля ближе всего к Солнцу, и солнечные лучи в это время падают на нас более косо.",
+    "По данным Live Science, Земля без наклона разделилась бы на климатические пояса, всё более холодные по мере удаления от экватора, с непрерывной зимой в высоких широтах.",
+    "По данным Live Science, пшеница растёт только там, где бывают прохладные или холодные зимы; в мире без времён года не было бы даже пшеницы.",
+    "По данным NASA, ближе всего к Солнцу, примерно на 147 млн км, Земля подходит около 3 января каждого года; в самой дальней точке, около 4 июля, она примерно на 5,1 млн км дальше.",
+    "По данным NASA, наклон Земли очень медленно уменьшается в цикле около 41 000 лет и достигнет минимума примерно через 10 000 лет."
+   ]
+  },
+  "az": {
+   "title": "Yerin Oxu Maili Olmasaydı Nə Olardı? (Çörək də Gedir!)",
+   "summary": "\"Ay belim! Düz 23,4 dərəcə əyri dayanmışam, sabah dümdüz olacağam!\" Yer oxunu düzəltsə fəsillər, qar tətili, buğda və çörək nə olar? Bəs niyə qışda əslində Günəşə ən yaxın oluruq? Fəsillər bitsə ən çox nə üçün darıxardın? Şərhlərdə yaz 👇",
+   "facts": [
+    "NASA-ya görə, Yerin oxu hazırda 23,4 dərəcə maildir; son bir milyon ildə bu bucaq 22,1 ilə 24,5 dərəcə arasında dəyişib.",
+    "NASA-ya görə, fəsillərin səbəbi Yerin maili oxudur: Şimal yarımkürəsində qış Yer Günəşə ən yaxın olanda yaşanır və bu fəsildə Günəş şüaları bizə daha maili düşür.",
+    "Live Science-ə görə, oxu maili olmayan Yer ekvatordan uzaqlaşdıqca getdikcə soyuyan iqlim qurşaqlarına bölünər, yüksək enliklərdə isə qış heç bitməzdi.",
+    "Live Science-ə görə, buğda yalnız qışı sərin və ya soyuq olan yerlərdə bitir; fəsilsiz dünyada heç buğda da olmazdı.",
+    "NASA-ya görə, Yer hər il təxminən 3 yanvarda Günəşə ən yaxın nöqtəyə, təxminən 147 milyon km-ə çatır; təxminən 4 iyulda ən uzaq nöqtədə isə təxminən 5,1 milyon km daha uzaqdadır.",
+    "NASA-ya görə, Yerin oxunun mailliyi təxminən 41.000 illik dövrdə çox yavaş azalır və təxminən 10.000 il sonra ən aşağı həddinə enəcək."
+   ]
+  }
+ }
+}

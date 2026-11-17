@@ -1,0 +1,254 @@
+{
+ "id": "y031",
+ "series": "Ya Olsaydı?",
+ "q": "Ağaçlar hiç olmasaydı ne olurdu?",
+ "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "AĞAÇLAR",
+  "rest": "HİÇ OLMASAYDI?"
+ },
+ "summary": "Ağaçlar hiç olmasaydı, şu an telefonu tutan başparmağın bile olmayabilirdi! Bir meşenin yılda havaya terlediği 151.000 litre suyu, Amazon'un yağmur mevsimini nasıl kendisi başlattığını ve kömürün aslında 300 milyon yıllık bataklık ormanlarından geldiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Başparmağın olmazdı! Ağaç olmasaydı telefonu böyle tutamazdın.",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "👍",
+    "do": "vanish",
+    "key": "olmazdı",
+    "label": "Başparmak Yok!"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Telefonu dişimle mi tutacaktım?!",
+   "v": {
+    "t": "question",
+    "bg": "city",
+    "e": "🦷",
+    "label": "Dişle mi?!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bilim insanlarına göre başparmak, dal kavramak için gelişti.",
+   "v": {
+    "t": "icons",
+    "bg": "forest",
+    "items": [
+     {
+      "e": "🌳",
+      "label": "Dal"
+     },
+     {
+      "e": "🐒",
+      "label": "İlk Primatlar"
+     },
+     {
+      "e": "👍",
+      "label": "Başparmak"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yağmur da azalırdı: büyük bir meşe yılda 151.000 litre suyu havaya terler.",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🌳",
+    "value": "151.000",
+    "unit": "litre",
+    "label": "1 Meşe, 1 Yıl",
+    "key": "151.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sürpriz: kömür de eski bataklık ormanlarından geliyor; bazısı 300 milyon yaşında!",
+   "v": {
+    "t": "timeline",
+    "bg": "forest",
+    "steps": [
+     {
+      "when": "300 Milyon Yıl Önce",
+      "e": "🌲",
+      "label": "Bataklık Ormanı"
+     },
+     {
+      "when": "Bugün",
+      "e": "🪨",
+      "label": "Kömür"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ağaçsız dünyada ilk neyi özlerdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "forest",
+    "e": "🌳"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Arizona Eyalet Üniversitesi'ne göre bilim insanları, primatların kavrayan ellerini dallara tutunmak ya da dal uçlarındaki meyvelere uzanmak için geliştirmiş olabileceğini düşünüyor; esnek karşıt başparmak dallara tutunmaya yarar.",
+   "source": "Arizona State University",
+   "url": "https://askanexpert.asu.edu/anthropology/primates"
+  },
+  {
+   "text": "USGS'ye göre büyük bir meşe ağacı, terleme yoluyla yılda yaklaşık 151.000 litre (40.000 galon) suyu havaya verir.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/water-science-school/science/evapotranspiration-and-water-cycle"
+  },
+  {
+   "text": "NASA JPL'ye göre Amazon'da ağaçların terlemesiyle havaya verilen su, bölgenin yağmur mevsimini okyanus rüzgârları gelmeden 2-3 ay önce başlatıyor.",
+   "source": "NASA JPL",
+   "url": "https://www.jpl.nasa.gov/news/new-study-shows-the-amazon-makes-its-own-rainy-season"
+  },
+  {
+   "text": "UC Berkeley Paleontoloji Müzesi'ne göre kömürü, Karbonifer döneminin (yaklaşık 359-299 milyon yıl önce) bataklık ormanları oluşturdu; kömürdeki karbonun ana kaynağı likopsit gibi bitkilerdi.",
+   "source": "UC Berkeley (UCMP)",
+   "url": "https://ucmp.berkeley.edu/carboniferous/carboniferous.php"
+  }
+ ],
+ "tags": [
+  "ağaçlar olmasaydı",
+  "ağaçlar hiç olmasaydı ne olurdu",
+  "ağaç",
+  "orman",
+  "başparmak",
+  "kömür nasıl oluşur",
+  "meşe ağacı",
+  "amazon yağmur ormanı",
+  "what if trees never existed",
+  "trees",
+  "opposable thumb",
+  "coal",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ağaç",
+  "#orman",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://askanexpert.asu.edu/anthropology/primates",
+  "https://www.usgs.gov/water-science-school/science/evapotranspiration-and-water-cycle",
+  "https://www.jpl.nasa.gov/news/new-study-shows-the-amazon-makes-its-own-rainy-season",
+  "https://ucmp.berkeley.edu/carboniferous/carboniferous.php"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Trees Had Never Existed?",
+   "summary": "If trees had never existed, the thumb holding your phone right now might not exist either! Professor Pi explains the 151,000 liters of water one oak breathes into the air each year, how the Amazon starts its own rainy season, and why coal comes from 300-million-year-old swamp forests.",
+   "facts": [
+    "According to Arizona State University, scientists think primates may have evolved grasping hands to cling to branches or to reach fruit at the ends of branches; a flexible opposable thumb helps them hold on to branches.",
+    "According to the USGS, a large oak tree can transpire about 151,000 liters (40,000 gallons) of water into the air per year.",
+    "According to NASA JPL, water transpired by Amazon trees starts the region's rainy season two to three months before the ocean winds arrive.",
+    "According to UC Berkeley's Museum of Paleontology, swamp forests of the Carboniferous period (about 359-299 million years ago) produced coal; plants such as lycopsids were the main source of its carbon."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si los árboles nunca hubieran existido?",
+   "summary": "Si los árboles nunca hubieran existido, ¡quizá ni siquiera tendrías el pulgar con el que sostienes el móvil! El Profesor Pi explica los 151.000 litros de agua que un roble suelta al aire cada año, cómo la Amazonía inicia su propia temporada de lluvias y por qué el carbón viene de bosques pantanosos de 300 millones de años.",
+   "facts": [
+    "Según la Universidad Estatal de Arizona, los científicos creen que los primates pudieron desarrollar manos prensiles para aferrarse a las ramas o alcanzar la fruta de sus puntas; un pulgar oponible flexible les ayuda a agarrarse a las ramas.",
+    "Según el USGS, un roble grande puede transpirar unos 151.000 litros (40.000 galones) de agua al aire al año.",
+    "Según el JPL de la NASA, el agua que transpiran los árboles de la Amazonía inicia la temporada de lluvias de la región dos o tres meses antes de que lleguen los vientos del océano.",
+    "Según el Museo de Paleontología de la UC Berkeley, los bosques pantanosos del Carbonífero (hace unos 359-299 millones de años) produjeron el carbón; plantas como los licópsidos fueron la principal fuente de su carbono."
+   ]
+  },
+  "pt": {
+   "title": "E se as árvores nunca tivessem existido?",
+   "summary": "Se as árvores nunca tivessem existido, talvez nem o polegar que segura seu celular agora existisse! O Professor Pi explica os 151.000 litros de água que um carvalho solta no ar por ano, como a Amazônia começa sua própria estação de chuvas e por que o carvão vem de florestas pantanosas de 300 milhões de anos.",
+   "facts": [
+    "Segundo a Universidade Estadual do Arizona, cientistas acham que os primatas podem ter desenvolvido mãos preênseis para se agarrar a galhos ou alcançar frutas nas pontas deles; um polegar opositor flexível ajuda a segurar os galhos.",
+    "Segundo o USGS, um carvalho grande pode transpirar cerca de 151.000 litros (40.000 galões) de água para o ar por ano.",
+    "Segundo o JPL da NASA, a água transpirada pelas árvores da Amazônia inicia a estação chuvosa da região dois a três meses antes da chegada dos ventos do oceano.",
+    "Segundo o Museu de Paleontologia da UC Berkeley, as florestas pantanosas do período Carbonífero (há cerca de 359-299 milhões de anos) formaram o carvão; plantas como as licófitas foram a principal fonte do seu carbono."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم توجد الأشجار أبدًا؟",
+   "summary": "لو لم توجد الأشجار أبدًا، فربما لم يكن الإبهام الذي تمسك به هاتفك الآن موجودًا أصلًا! يشرح البروفيسور باي كيف تطلق شجرة بلوط واحدة 151,000 لتر من الماء في الهواء كل عام، وكيف تبدأ الأمازون موسم أمطارها بنفسها، ولماذا يأتي الفحم من غابات مستنقعات عمرها 300 مليون سنة.",
+   "facts": [
+    "بحسب جامعة ولاية أريزونا، يرى العلماء أن الرئيسيات ربما طورت أيديًا قابضة للتشبث بالأغصان أو للوصول إلى الثمار في أطرافها، والإبهام المقابل المرن يساعدها على الإمساك بالأغصان.",
+    "بحسب هيئة المسح الجيولوجي الأمريكية، يمكن لشجرة بلوط كبيرة أن تطلق بالنتح نحو 151,000 لتر (40,000 غالون) من الماء في الهواء سنويًا.",
+    "بحسب مختبر الدفع النفاث التابع لناسا، فإن الماء الذي تطلقه أشجار الأمازون بالنتح يبدأ موسم الأمطار في المنطقة قبل وصول رياح المحيط بشهرين إلى ثلاثة أشهر.",
+    "بحسب متحف علم الحفريات في جامعة كاليفورنيا في بيركلي، تكوّن الفحم في غابات المستنقعات في العصر الكربوني (قبل نحو 359-299 مليون سنة)، وكانت نباتات مثل الليكوبسيدات المصدر الرئيسي لكربونه."
+   ]
+  },
+  "hi": {
+   "title": "अगर पेड़ कभी होते ही नहीं, तो क्या होता?",
+   "summary": "अगर पेड़ कभी होते ही नहीं, तो शायद वह अंगूठा भी न होता जिससे तुम अभी फ़ोन पकड़े हो! प्रोफ़ेसर पाई बताते हैं कि एक बलूत का पेड़ हर साल 151,000 लीटर पानी हवा में कैसे छोड़ता है, अमेज़न अपना बारिश का मौसम ख़ुद कैसे शुरू करता है और कोयला 300 मिलियन साल पुराने दलदली जंगलों से क्यों आता है।",
+   "facts": [
+    "Arizona State University के अनुसार, वैज्ञानिकों का मानना है कि प्राइमेट्स ने पकड़ने वाले हाथ शायद डालियों से चिपके रहने या डालियों के सिरों पर लगे फल पाने के लिए विकसित किए; लचीला विपरीत अंगूठा डालियाँ पकड़ने में मदद करता है।",
+    "USGS के अनुसार, एक बड़ा बलूत का पेड़ वाष्पोत्सर्जन से हर साल लगभग 151,000 लीटर (40,000 गैलन) पानी हवा में छोड़ सकता है।",
+    "NASA JPL के अनुसार, अमेज़न के पेड़ों से वाष्पोत्सर्जन द्वारा निकला पानी वहाँ का बारिश का मौसम समुद्री हवाओं के आने से दो-तीन महीने पहले शुरू कर देता है।",
+    "UC Berkeley के जीवाश्म विज्ञान संग्रहालय के अनुसार, कोयला कार्बोनिफ़ेरस काल (लगभग 359-299 मिलियन साल पहले) के दलदली जंगलों से बना; लाइकोप्सिड जैसे पौधे उसके कार्बन का मुख्य स्रोत थे।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Pohon Tidak Pernah Ada?",
+   "summary": "Kalau pohon tidak pernah ada, jempol yang sedang memegang ponselmu mungkin juga tidak akan ada! Profesor Pi menjelaskan 151.000 liter air yang dilepas satu pohon ek ke udara setiap tahun, bagaimana Amazon memulai musim hujannya sendiri, dan mengapa batu bara berasal dari hutan rawa berusia 300 juta tahun.",
+   "facts": [
+    "Menurut Arizona State University, ilmuwan menduga primata mengembangkan tangan penggenggam untuk berpegangan pada dahan atau meraih buah di ujung dahan; ibu jari yang lentur dan dapat dipertemukan membantu mereka berpegangan pada dahan.",
+    "Menurut USGS, satu pohon ek besar dapat melepaskan sekitar 151.000 liter (40.000 galon) air ke udara per tahun melalui transpirasi.",
+    "Menurut NASA JPL, air yang dilepaskan pohon-pohon Amazon lewat transpirasi memulai musim hujan di wilayah itu dua sampai tiga bulan sebelum angin dari samudra tiba.",
+    "Menurut Museum Paleontologi UC Berkeley, batu bara terbentuk di hutan rawa zaman Karbon (sekitar 359-299 juta tahun lalu); tumbuhan seperti likopsida adalah sumber utama karbonnya."
+   ]
+  },
+  "fr": {
+   "title": "Et si les arbres n'avaient jamais existé ?",
+   "summary": "Si les arbres n'avaient jamais existé, le pouce qui tient ton téléphone n'existerait peut-être même pas ! Le Professeur Pi explique les 151 000 litres d'eau qu'un chêne rejette dans l'air chaque année, comment l'Amazonie lance sa propre saison des pluies et pourquoi le charbon vient de forêts marécageuses vieilles de 300 millions d'années.",
+   "facts": [
+    "Selon l'Université d'État de l'Arizona, les scientifiques pensent que les primates ont pu développer des mains préhensiles pour s'agripper aux branches ou atteindre les fruits au bout des branches ; un pouce opposable souple les aide à s'y tenir.",
+    "Selon l'USGS, un grand chêne peut transpirer environ 151 000 litres (40 000 gallons) d'eau dans l'air par an.",
+    "Selon le JPL de la NASA, l'eau transpirée par les arbres d'Amazonie lance la saison des pluies de la région deux à trois mois avant l'arrivée des vents océaniques.",
+    "Selon le musée de paléontologie de l'UC Berkeley, les forêts marécageuses du Carbonifère (il y a environ 359-299 millions d'années) ont formé le charbon ; des plantes comme les lycophytes étaient la principale source de son carbone."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn es nie Bäume gegeben hätte?",
+   "summary": "Hätte es nie Bäume gegeben, gäbe es vielleicht nicht einmal den Daumen, mit dem du gerade dein Handy hältst! Professor Pi erklärt die 151.000 Liter Wasser, die eine Eiche pro Jahr an die Luft abgibt, wie der Amazonas seine eigene Regenzeit startet und warum Kohle aus 300 Millionen Jahre alten Sumpfwäldern stammt.",
+   "facts": [
+    "Laut der Arizona State University vermuten Forscher, dass Primaten Greifhände entwickelten, um sich an Ästen festzuhalten oder Früchte an den Astspitzen zu erreichen; ein beweglicher, opponierbarer Daumen hilft beim Festhalten an Ästen.",
+    "Laut USGS kann eine große Eiche pro Jahr etwa 151.000 Liter (40.000 Gallonen) Wasser über ihre Blätter an die Luft abgeben.",
+    "Laut NASA JPL startet das von den Bäumen des Amazonas abgegebene Wasser die Regenzeit der Region zwei bis drei Monate, bevor die Winde vom Ozean ankommen.",
+    "Laut dem Museum für Paläontologie der UC Berkeley entstand Kohle in den Sumpfwäldern des Karbons (vor etwa 359-299 Millionen Jahren); Pflanzen wie Bärlappgewächse waren die Hauptquelle ihres Kohlenstoffs."
+   ]
+  },
+  "ru": {
+   "title": "Что было бы, если бы деревьев никогда не было?",
+   "summary": "Если бы деревьев никогда не было, может, не было бы даже большого пальца, которым ты сейчас держишь телефон! Профессор Пи рассказывает о 151 000 литров воды, которые один дуб за год отдаёт в воздух, о том, как Амазония сама запускает сезон дождей, и почему уголь — это болотные леса возрастом 300 миллионов лет.",
+   "facts": [
+    "По данным Университета штата Аризона, учёные считают, что хватательные руки могли появиться у приматов, чтобы цепляться за ветки или дотягиваться до плодов на их концах; гибкий противопоставленный большой палец помогает держаться за ветки.",
+    "По данным USGS, большой дуб может испарять в воздух около 151 000 литров (40 000 галлонов) воды в год.",
+    "По данным JPL NASA, вода, испаряемая деревьями Амазонии, запускает сезон дождей в регионе на два-три месяца раньше прихода ветров с океана.",
+    "По данным Музея палеонтологии Калифорнийского университета в Беркли, уголь образовался в болотных лесах каменноугольного периода (около 359-299 миллионов лет назад); главным источником его углерода были плауновидные растения."
+   ]
+  },
+  "az": {
+   "title": "Ağaclar Heç Olmasaydı Nə Olardı?",
+   "summary": "Ağaclar heç olmasaydı, indi telefonu tutan baş barmağın da olmaya bilərdi! Professor Pi bir palıd ağacının ildə havaya buraxdığı 151.000 litr suyu, Amazonun yağış mövsümünü özü necə başlatdığını və kömürün əslində 300 milyon illik bataqlıq meşələrindən gəldiyini danışır.",
+   "facts": [
+    "Arizona Ştat Universitetinə görə, alimlər primatların tutucu əllərini budaqlardan yapışmaq və ya budaqların ucundakı meyvələrə çatmaq üçün inkişaf etdirmiş ola biləcəyini düşünür; çevik, qarşı qoyulan baş barmaq budaqlardan tutmağa kömək edir.",
+    "USGS-ə görə, böyük bir palıd ağacı transpirasiya yolu ilə ildə təxminən 151.000 litr (40.000 qallon) suyu havaya buraxa bilər.",
+    "NASA JPL-ə görə, Amazon ağaclarının transpirasiya ilə havaya verdiyi su bölgədə yağış mövsümünü okean küləklərindən 2-3 ay əvvəl başladır.",
+    "UC Berkeley Paleontologiya Muzeyinə görə, kömür Karbon dövrünün (təxminən 359-299 milyon il əvvəl) bataqlıq meşələrində yaranıb; onun karbonunun əsas mənbəyi likopsidlər kimi bitkilər olub."
+   ]
+  }
+ }
+}
