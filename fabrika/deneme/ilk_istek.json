@@ -1,29 +1,13 @@
 {
  "ara": {
-  "y015": [
-   "Moon over the sea night",
-   "Full moon reflection ocean"
+  "n019": [
+   "Saturn rings Cassini",
+   "Saturn rings edge-on Cassini"
   ],
-  "y029": [
-   "Pinatubo eruption 1991 ash column",
-   "Mount St. Helens eruption plume 1980"
+  "y031": [
+   "chimpanzee hand grasping branch",
+   "primate hand opposable thumb"
   ]
  },
- "al": {
-  "y015": {
-   "n": 3,
-   "x": 0.38,
-   "y": 0.42
-  },
-  "y018": {
-   "n": 4,
-   "x": 0.5,
-   "y": 0.5
-  },
-  "y029": {
-   "n": 4,
-   "x": 0.5,
-   "y": 0.45
-  }
- }
+ "al": {}
 }
