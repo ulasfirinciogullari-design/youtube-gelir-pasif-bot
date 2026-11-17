@@ -1,5 +1,5 @@
 {
- "at": "2026-11-17T11:55:36+00:00",
+ "at": "2026-11-17T13:06:08+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -459,13 +459,13 @@
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
   },
   "Pxik5vC4NHU": {
-   "view": 678,
+   "view": 675,
    "like": 4,
    "comment": 0,
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
   },
   "RKGn39tzpn4": {
-   "view": 964,
+   "view": 965,
    "like": 6,
    "comment": 2,
    "baslik": "Hiç Bakterin Olmasaydı Ne Olurdu? 😳"
@@ -531,14 +531,14 @@
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 944,
-   "like": 6,
+   "view": 945,
+   "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 786,
-   "like": 11,
+   "view": 800,
+   "like": 12,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
@@ -549,8 +549,8 @@
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
   },
   "EXfL-FfCYvc": {
-   "view": 0,
-   "like": 0,
+   "view": 98,
+   "like": 1,
    "comment": 0,
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   }
@@ -1675,7 +1675,13 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 903,
+    "YT_SEARCH": 36,
+    "YT_CHANNEL": 3,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 493,
    "devam_yuzde": 52.3
   },

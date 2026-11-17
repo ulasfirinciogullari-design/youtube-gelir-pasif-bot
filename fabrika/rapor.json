@@ -1,75 +1,21 @@
 {
- "started": "2026-11-17T10:07:00+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-17T13:07:10+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y027",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "89"
+ "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
+ "chars": 392,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18146698330607976",
+  "url": "https://www.instagram.com/reel/Df2ALeAFFQ3/",
+  "at": 1794920946.3421032
  },
- "credits_before": [
-  106307,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261116-3-y029.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y029",
-  "series": "Ya Olsaydı?",
-  "q": "Bütün volkanlar aynı anda patlasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 372,
- "duration": 30.1,
- "title": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/EXfL-FfCYvc",
- "recent_status": {
-  "y023": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "124",
-   "reason": null
-  },
-  "n018": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "940",
-   "reason": null
-  },
-  "y015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "774",
-   "reason": null
-  },
-  "y018": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "275",
-   "reason": null
-  },
-  "y029": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
  "log": [
-  "Kuyruktan: 20261116-3-y029.json Bütün volkanlar aynı anda patlasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df2ALeAFFQ3/"
  ],
- "finished": "2026-11-17T10:08:07+00:00"
+ "finished": "2026-11-17T13:09:06+00:00"
 }
