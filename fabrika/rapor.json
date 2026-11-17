@@ -1,21 +1,75 @@
 {
- "started": "2026-11-17T17:06:58+00:00",
- "mod": "igbolum",
- "gate": "instagram: y015",
+ "started": "2026-11-17T18:07:14+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
- "chars": 770,
- "instagram": {
-  "anahtar_bitis": "2027-01-15T09:07+00:00",
-  "media_id": "17982362028128608",
-  "url": "https://www.instagram.com/reel/Df2buSGFFsF/",
-  "at": 1794935402.5998855
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "71",
+  "videos": "91"
  },
+ "credits_before": [
+  106307,
+  613902
+ ],
  "warnings": [
+  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "log": [
-  "Instagram: https://www.instagram.com/reel/Df2buSGFFsF/"
+ "kuyruk": {
+  "dosya": "20261117-3-y031.json",
+  "kalan": 1
+ },
+ "topic": {
+  "id": "y031",
+  "series": "Ya Olsaydı?",
+  "q": "Ağaçlar hiç olmasaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "chars": 370,
+ "duration": 29.7,
+ "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+ "url": "https://youtube.com/shorts/3Fx81kZhy8s",
+ "recent_status": {
+  "y015": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "818",
+   "reason": null
+  },
+  "y018": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "327",
+   "reason": null
+  },
+  "y029": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "239",
+   "reason": null
+  },
+  "n019": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "16",
+   "reason": null
+  },
+  "y031": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  106307,
+  613902
  ],
- "finished": "2026-11-17T17:10:02+00:00"
+ "log": [
+  "Kuyruktan: 20261117-3-y031.json Ağaçlar hiç olmasaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-17T18:08:33+00:00"
 }

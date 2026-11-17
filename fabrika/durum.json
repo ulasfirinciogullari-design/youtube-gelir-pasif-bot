@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1045",
+    "views": "1046",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "952",
+    "views": "951",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "673",
+    "views": "671",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "997",
+    "views": "1003",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1011",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "630",
+    "views": "633",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "157",
+    "views": "161",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "945",
+    "views": "955",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "800",
+    "views": "818",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "305",
+    "views": "327",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "186",
+    "views": "239",
     "reason": null
    }
   },
@@ -2706,6 +2706,37 @@
    "at": 1794924532.447731,
    "chars": 382,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "16",
+    "reason": null
+   }
+  },
+  {
+   "id": "y031",
+   "video_id": "3Fx81kZhy8s",
+   "url": "https://youtube.com/shorts/3Fx81kZhy8s",
+   "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Trees Had Never Existed?",
+    "es": "¿Qué pasaría si los árboles nunca hubieran existido?",
+    "pt": "E se as árvores nunca tivessem existido?",
+    "ar": "ماذا لو لم توجد الأشجار أبدًا؟",
+    "hi": "अगर पेड़ कभी होते ही नहीं, तो क्या होता?",
+    "id": "Bagaimana Jika Pohon Tidak Pernah Ada?",
+    "fr": "Et si les arbres n'avaient jamais existé ?",
+    "de": "Was wäre, wenn es nie Bäume gegeben hätte?",
+    "ru": "Что было бы, если бы деревьев никогда не было?",
+    "az": "Ağaclar Heç Olmasaydı Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794938911.293719,
+   "chars": 370,
+   "ilk": null,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2804,7 +2835,8 @@
   "y015",
   "y018",
   "y029",
-  "n019"
+  "n019",
+  "y031"
  ],
  "extra": [
   {
@@ -2870,12 +2902,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-09T17:09:22+00:00",
-   "mod": "igbolum",
-   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
-   "chars": 375
-  },
   {
    "finished": "2026-11-09T18:08:56+00:00",
    "mod": "saatlik",
@@ -3288,6 +3314,14 @@
    "mod": "igbolum",
    "title": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu?",
    "chars": 770
+  },
+  {
+   "finished": "2026-11-17T18:08:33+00:00",
+   "mod": "saatlik",
+   "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/3Fx81kZhy8s",
+   "duration": 29.7,
+   "chars": 370
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3669,5 +3703,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794935402.5999658
+ "yedek_ses": 1794938913.2371006
 }
