@@ -1,8 +1,8 @@
 {
- "checked_at": "2026-11-17T08:49:21+00:00",
+ "checked_at": "2026-11-17T09:26:19+00:00",
  "channel": {
   "kind": "youtube#channel",
-  "etag": "lWd433flTDamf-k_fzjXf6oMGD8",
+  "etag": "euE3AIKA3nQDyyoLFiEe-QlMfWU",
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
   "snippet": {
    "title": "Zirvenin Kanunu",
@@ -66,13 +66,13 @@
    }
   },
   "localizations": {
-   "en_US": {
-    "title": "Zirvenin Kanunu",
-    "description": "The unwritten laws of nature and the human mind.\n\nTurkish-language Shorts: every day a surprising, fact-checked truth about animals, the human body and psychology, plus power-psychology animations three times a week."
-   },
    "tr_TR": {
     "title": "Zirvenin Kanunu",
     "description": "Doğanın ve insan zihninin yazılmamış kanunları.\n\nHer gün hayvanlar, insan vücudu ve psikoloji hakkında yanlış bildiğin ya da hiç duymadığın bir gerçek. Her video 15-20 saniye, her bilgi yayından önce kaynaklardan kontrol ediliyor.\n\nHaftada üç gün güç psikolojisi animasyonları: insanları etkileyen, ikna eden ve yöneten görünmez kurallar; gerçek deneyler ve tarihten hikâyelerle.\n\nYeni Short'lar her gün saat 10:00 ile 24:00 arasında, iki saatte bir.\n\nYanlış bulduğun bir bilgi ya da merak ettiğin bir konu varsa yorumlara yaz, her yoruma cevap veriyoruz."
+   },
+   "en_US": {
+    "title": "Zirvenin Kanunu",
+    "description": "The unwritten laws of nature and the human mind.\n\nTurkish-language Shorts: every day a surprising, fact-checked truth about animals, the human body and psychology, plus power-psychology animations three times a week."
    }
   }
  },
@@ -181,6 +181,51 @@
   }
  ],
  "videos": {
+  "yVpdwFI5odg": {
+   "title": "Seni yalayan kedin seni ailesinden sayıyor 🐱",
+   "description": "Kedi neden yalar, kedim beni neden yalıyor ve kedinin dili neden zımpara gibi?\n\nKedinin dili yüzlerce geriye dönük minik dikenle kaplı. Georgia Teknoloji Enstitüsü'nden Alexis Noel ve David Hu'nun 2018'de PNAS dergisinde yayımladığı çalışmaya göre bu dikenlerin ucu kalem ucu gibi oyuk; tükürüğü çekip tüylerin arasından deriye kadar taşıyor. İngiliz hayvan yardım kuruluşu Blue Cross'a göre birbiriyle iyi anlaşan kediler birbirini yalar ve bu, grubun bağını güçlendirir; kedin seni yalıyorsa büyük ihtimalle seni seviyor ve ailesinden sayıyor.\n\nSenin kedin seni en çok nerenden yalıyor: elinden mi, yüzünden mi?\n\n#kedi #kediler #kedidavranışları #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0163",
+   "tags": [
+    "allogrooming",
+    "bilgi",
+    "bilim",
+    "bilmediğin gerçekler",
+    "cat tongue",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "kedi",
+    "kedi beden dili",
+    "kedi beni neden yaliyor",
+    "kedi beni neden yalıyor",
+    "kedi davranışları",
+    "kedi dili",
+    "kedi dili neden pürüzlü",
+    "kedi dili zımpara",
+    "kedi neden yalar",
+    "kedi sahibi",
+    "kedi sevgi gösterisi",
+    "kedi sevgisi",
+    "kedi tımarı",
+    "kedi yalaması",
+    "kediler",
+    "kediler birbirini yalar",
+    "kedim beni yaliyor",
+    "kedim beni yalıyor",
+    "merak",
+    "shorts",
+    "zirvenin kanunu"
+   ],
+   "category": "27",
+   "lang": "tr",
+   "audio_lang": "tr",
+   "made_for_kids": false,
+   "self_declared_kids": false,
+   "privacy": "public",
+   "license": "youtube",
+   "embeddable": true,
+   "region_blocked": null,
+   "content_rating": {}
+  },
   "782kkRLJ7ss": {
    "title": "Fil fareden korkmaz, asıl korktuğu şey arı 🐘",
    "description": "Fil fareden korkar mı, 'fil fareden korkar' sözü doğru mu?\n\nUzmanlara göre filleri ürküten şey fare değil, ayaklarının dibindeki ani hareket. Live Science'a konuşan fil davranışı araştırmacısı Josh Plotnik'e göre bir filin yanından aniden koşan ya da kayan her şey onu ürkütebilir; Royal Veterinary College'dan John Hutchinson bir köpek yüzünden paniğe kapılan bir fil anlatıyor. Hortumuna fare girmesi korkusu da boş: fil uzmanı Richard Lair'e göre fil fareyi kolayca dışarı üfler. Filin gerçekten kaçtığı şey arı: Oxford Üniversitesi'nden Lucy King ile Save the Elephants ekibinin 2007'de Current Biology'de yayımladığı deneyde, kızgın arı vızıltısını duyan fil ailelerinin büyük çoğunluğu hemen yürüyerek ya da koşarak uzaklaştı, beyaz gürültüyü ise umursamadı. Arılar filleri gözlerinden, kulak arkasından ve hortumun içinden sokabiliyor.\n\nSence hangisi daha şaşırtıcı: fareden korkmayan fil mi, arıdan kaçan fil mi?\n\n#fil #deyimler #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0162",
@@ -4603,39 +4648,41 @@
    "region_blocked": null,
    "content_rating": {}
   },
-  "YYvP0VE1rkM": {
-   "title": "Kediler birbirine değil, sana miyavlar 🐱",
-   "description": "Kediler birbirine miyavlar mı, kediler neden insanlara miyavlar?\n\nAmerikan hayvan koruma derneği ASPCA'ya göre yetişkin kediler birbirine miyavlamaz, yalnızca insanlara miyavlar. Yavru kediler üşüdüklerinde ya da acıktıklarında annelerine miyavlar; büyüyünce başka kedilere miyavlamayı bırakır ama insanlara ömür boyu miyavlamayı sürdürür, muhtemelen miyav insanlara istediklerini yaptırdığı için. 2004'te yayımlanan bir araştırmada ev kedilerinin miyavları, yabani atası Afrika yaban kedisininkilerden daha kısa ve daha ince çıktı; dinleyen insanlar da ev kedisinin miyavını çok daha hoş buldu.\n\nSenin kedin sana en çok ne için miyavlıyor: mama için mi, kapıyı açtırmak için mi?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0067",
+  "kkPqwP8hyz4": {
+   "title": "At hiç yatmadan ayakta uyuyabilir mi? 🐴",
+   "description": "Atlar ayakta mı uyur, at hiç yatmadan uyuyabilir mi?\n\nAtların bacaklarında tendon ve bağlardan oluşan, büyük eklemleri kilitleyen bir sistem vardır; bu sayede ayakta düşmeden uyuklayabilirler. Ama rüya uykusunda (REM) kasları gevşer, bu yüzden atlar bu evreye ancak yere yatarak girer. Uzmanlara göre iyi dinlenmiş bir at günde en az yirmi beş dakika REM uykusuna ihtiyaç duyar; yatamayan atlar uykusuz kalır ve ayaktayken dizlerinin üstüne çökebilir. Sürüde biri yatarken çoğu zaman bir başkası ayakta nöbet tutar.\n\nSence hangisi daha şaşırtıcı: atın ayakta uyuyabilmesi mi, yatamayınca dizüstü çökmesi mi?\n\n#at #atlar #hayvanlar #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0066",
    "tags": [
+    "at",
+    "at ayakta uyur mu",
+    "at bakımı",
+    "at nasil uyur",
+    "at nasıl uyur",
+    "at uykusu",
+    "at uykusuzluğu",
+    "at yatar mi",
+    "at yatar mı",
+    "atlar",
+    "atlar ayakta uyur mu",
+    "atlar nasil uyur",
+    "atlar nasıl uyur",
+    "atlar neden ayakta uyur",
     "bilgi",
     "bilim",
     "bilmediğin gerçekler",
-    "cat meow",
-    "ev kedisi",
+    "binicilik",
+    "do horses sleep standing",
     "evcil hayvanlar",
     "hayvan davranışları",
+    "hayvan uykusu",
     "hayvanlar",
+    "hayvanlar nasıl uyur",
+    "horse sleep",
     "ilginç bilgiler",
-    "kedi",
-    "kedi bakımı",
-    "kedi davranışları",
-    "kedi dili",
-    "kedi miyavlamasi",
-    "kedi miyavlaması",
-    "kedi neden miyavlar",
-    "kedi sahipleri",
-    "kedi sesi",
-    "kediler",
-    "kediler birbirine miyavlar mi",
-    "kediler birbirine miyavlar mı",
-    "kediler insanla konuşur mu",
-    "kediler neden miyavlar",
     "merak",
-    "miyav",
-    "miyav ne demek",
+    "mümkün mü",
+    "rem uykusu",
+    "rüya uykusu",
     "shorts",
-    "why do cats meow",
-    "yavru kedi",
     "zirvenin kanunu"
    ],
    "category": "27",
@@ -6838,55 +6885,17 @@
    "embeddable": true,
    "region_blocked": null,
    "content_rating": {}
-  },
-  "fI8aO5_Nxug": {
-   "title": "Burun deliklerin neden sırayla çalışır? 👃",
-   "description": "Neden hep bir burun deliğimiz daha tıkalı?\n\nBurnun içindeki dokular sırayla kanla dolup şişer; bir taraf hafifçe tıkanırken diğeri açılır. Buna burun döngüsü denir ve iki delik birkaç saatte bir rol değiştirir. Bu düzeni otonom sinir sistemi yönetir, çoğu insan fark etmez.\n\nSence şu an hangisi daha açık: sağ burun deliğin mi, sol burun deliğin mi?\n\n#burun #insanvücudu #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0019",
-   "tags": [
-    "bilgi",
-    "bilim",
-    "bir burun deligi tikali",
-    "bir burun deliği tıkalı",
-    "biyoloji",
-    "burun",
-    "burun deligi",
-    "burun deliği",
-    "burun dongusu",
-    "burun döngüsü",
-    "burun neden tikanir",
-    "burun neden tıkanır",
-    "burun tıkanıklığı",
-    "burundan nefes alma",
-    "ilginç bilgiler",
-    "insan vücudu",
-    "merak",
-    "nasal cycle",
-    "nefes",
-    "nefes almak",
-    "nostril",
-    "otonom sinir sistemi",
-    "sağlık",
-    "shorts",
-    "solunum",
-    "tek burun deligi tikali",
-    "tek burun deliği tıkalı",
-    "uyku",
-    "vücut bilgileri",
-    "zirvenin kanunu"
-   ],
-   "category": "27",
-   "lang": "tr",
-   "audio_lang": "tr",
-   "made_for_kids": false,
-   "self_declared_kids": false,
-   "privacy": "public",
-   "license": "youtube",
-   "embeddable": true,
-   "region_blocked": null,
-   "content_rating": {}
   }
  },
  "top_comments": {
+  "yVpdwFI5odg": [
+   {
+    "author": "@zirveninkanunu",
+    "text": "Senin kedin seni en çok nerenden yalıyor: elinden mi, yüzünden mi?",
+    "likes": 0,
+    "replies": 0
+   }
+  ],
   "782kkRLJ7ss": [
    {
     "author": "@zirveninkanunu",
@@ -6918,20 +6927,6 @@
     "text": "Senin kedin karnını sevdiriyor mu: evet mi, hayır mı?",
     "likes": 0,
     "replies": 0
-   }
-  ],
-  "g9grbN5SXXQ": [
-   {
-    "author": "@zirveninkanunu",
-    "text": "Sen kulaklarını isteyerek oynatabiliyor musun: evet mi, hayır mı?",
-    "likes": 0,
-    "replies": 0
-   },
-   {
-    "author": "@KsbIletsm",
-    "text": "Kulağım kendi kendine oynuyor",
-    "likes": 1,
-    "replies": 3
    }
   ]
  },
@@ -7145,15 +7140,6 @@
     91.01
    ],
    [
-    "ulYVGl9guJk",
-    4470,
-    0,
-    0,
-    1,
-    0,
-    86.11
-   ],
-   [
     "kkPqwP8hyz4",
     4470,
     0,
@@ -7161,6 +7147,15 @@
     4,
     0,
     88.09
+   ],
+   [
+    "ulYVGl9guJk",
+    4470,
+    0,
+    0,
+    1,
+    0,
+    86.11
    ],
    [
     "C-gsguJI_VQ",
@@ -7424,15 +7419,6 @@
     84.96
    ],
    [
-    "XNKlvEZVztM",
-    2978,
-    1,
-    0,
-    0,
-    0,
-    103.66
-   ],
-   [
     "T4mLChdc2WM",
     2978,
     0,
@@ -7440,6 +7426,15 @@
     1,
     0,
     78.54
+   ],
+   [
+    "XNKlvEZVztM",
+    2978,
+    1,
+    0,
+    0,
+    0,
+    103.66
    ],
    [
     "DshtAoWYhn8",
@@ -8369,15 +8364,6 @@
     70.48
    ],
    [
-    "4JaO46shfHU",
-    58,
-    0,
-    0,
-    0,
-    0,
-    58.42
-   ],
-   [
     "F6cvfvbDu2g",
     58,
     0,
@@ -8385,6 +8371,15 @@
     0,
     0,
     67.24
+   ],
+   [
+    "4JaO46shfHU",
+    58,
+    0,
+    0,
+    0,
+    0,
+    58.42
    ],
    [
     "SuvCYyIvKv8",
@@ -8513,15 +8508,6 @@
     469.28999999999996
    ],
    [
-    "A_OVF8W4d2U",
-    16,
-    0,
-    0,
-    0,
-    0,
-    83.78
-   ],
-   [
     "dO4sQ-3EC38",
     16,
     0,
@@ -8529,6 +8515,15 @@
     0,
     0,
     84.71
+   ],
+   [
+    "A_OVF8W4d2U",
+    16,
+    0,
+    0,
+    0,
+    0,
+    83.78
    ],
    [
     "1CvkZxAa-Vc",
@@ -9771,7 +9766,7 @@
    ],
    [
     "UNSUBSCRIBED",
-    432342,
+    432357,
     87.89
    ]
   ]
@@ -9965,7 +9960,7 @@
    ],
    [
     "MOBILE",
-    344057
+    344072
    ],
    [
     "TABLET",
@@ -9982,12 +9977,12 @@
   "rows": [
    [
     "SHORTS",
-    416435,
-    52773
+    416450,
+    52774
    ],
    [
     "YT_SEARCH",
-    14569,
+    14570,
     1528
    ],
    [
@@ -9997,7 +9992,7 @@
    ],
    [
     "YT_CHANNEL",
-    654,
+    653,
     178
    ],
    [
@@ -10043,6 +10038,7 @@
   ]
  },
  "retention": {
+  "yVpdwFI5odg": [],
   "782kkRLJ7ss": [],
   "9n3HE8oW8go": [],
   "DsWiyR8r_Qc": [],
@@ -23111,508 +23107,6 @@
     1,
     0.26,
     0.4882
-   ]
-  ],
-  "NF0Mpt36QvA": [
-   [
-    0.01,
-    1.4934,
-    0.6809000000000001
-   ],
-   [
-    0.02,
-    1.4934,
-    0.6805
-   ],
-   [
-    0.03,
-    1.4713999999999998,
-    0.6797500000000001
-   ],
-   [
-    0.04,
-    1.4406999999999999,
-    0.67865
-   ],
-   [
-    0.05,
-    1.3762999999999999,
-    0.6771
-   ],
-   [
-    0.06,
-    1.328,
-    0.67515
-   ],
-   [
-    0.07,
-    1.2913999999999999,
-    0.6727
-   ],
-   [
-    0.08,
-    1.2533,
-    0.6698
-   ],
-   [
-    0.09,
-    1.2225,
-    0.66635
-   ],
-   [
-    0.1,
-    1.205,
-    0.66245
-   ],
-   [
-    0.11,
-    1.1859,
-    0.65805
-   ],
-   [
-    0.12,
-    1.1728,
-    0.6532
-   ],
-   [
-    0.13,
-    1.1654,
-    0.64785
-   ],
-   [
-    0.14,
-    1.1464,
-    0.6421
-   ],
-   [
-    0.15,
-    1.1303,
-    0.6359
-   ],
-   [
-    0.16,
-    1.1245,
-    0.62935
-   ],
-   [
-    0.17,
-    1.1157,
-    0.62245
-   ],
-   [
-    0.18,
-    1.1098000000000001,
-    0.6153
-   ],
-   [
-    0.19,
-    1.1069,
-    0.60785
-   ],
-   [
-    0.2,
-    1.0966,
-    0.60025
-   ],
-   [
-    0.21,
-    1.0908,
-    0.59245
-   ],
-   [
-    0.22,
-    1.0908,
-    0.5846
-   ],
-   [
-    0.23,
-    1.0835,
-    0.57665
-   ],
-   [
-    0.24,
-    1.0776000000000001,
-    0.5687
-   ],
-   [
-    0.25,
-    1.0776000000000001,
-    0.5608
-   ],
-   [
-    0.26,
-    1.0673000000000001,
-    0.553
-   ],
-   [
-    0.27,
-    1.0542,
-    0.54525
-   ],
-   [
-    0.28,
-    1.0512000000000001,
-    0.5377
-   ],
-   [
-    0.29,
-    1.0264,
-    0.53035
-   ],
-   [
-    0.3,
-    1.0102,
-    0.5232
-   ],
-   [
-    0.31,
-    0.9839,
-    0.5163
-   ],
-   [
-    0.32,
-    0.9678,
-    0.50965
-   ],
-   [
-    0.33,
-    0.9444,
-    0.50325
-   ],
-   [
-    0.34,
-    0.9297,
-    0.4972
-   ],
-   [
-    0.35,
-    0.9209,
-    0.49145
-   ],
-   [
-    0.36,
-    0.9048,
-    0.486
-   ],
-   [
-    0.37,
-    0.8902,
-    0.48085
-   ],
-   [
-    0.38,
-    0.8814,
-    0.47605
-   ],
-   [
-    0.39,
-    0.8712000000000001,
-    0.47155
-   ],
-   [
-    0.4,
-    0.8682,
-    0.4674
-   ],
-   [
-    0.41,
-    0.8653,
-    0.4635
-   ],
-   [
-    0.42,
-    0.8609,
-    0.45994999999999997
-   ],
-   [
-    0.43,
-    0.8609,
-    0.45665
-   ],
-   [
-    0.44,
-    0.8565,
-    0.45365
-   ],
-   [
-    0.45,
-    0.8536,
-    0.45089999999999997
-   ],
-   [
-    0.46,
-    0.8506999999999999,
-    0.4484
-   ],
-   [
-    0.47,
-    0.8477,
-    0.44615
-   ],
-   [
-    0.48,
-    0.8448,
-    0.4441
-   ],
-   [
-    0.49,
-    0.8375,
-    0.4423
-   ],
-   [
-    0.5,
-    0.8287,
-    0.44065
-   ],
-   [
-    0.51,
-    0.8140999999999999,
-    0.4392
-   ],
-   [
-    0.52,
-    0.8097,
-    0.43795
-   ],
-   [
-    0.53,
-    0.7892,
-    0.43685
-   ],
-   [
-    0.54,
-    0.7656999999999999,
-    0.4359
-   ],
-   [
-    0.55,
-    0.7584000000000001,
-    0.4351
-   ],
-   [
-    0.56,
-    0.7452,
-    0.4344
-   ],
-   [
-    0.57,
-    0.7291,
-    0.43385
-   ],
-   [
-    0.58,
-    0.7247,
-    0.4334
-   ],
-   [
-    0.59,
-    0.716,
-    0.43305
-   ],
-   [
-    0.6,
-    0.7056999999999999,
-    0.4328
-   ],
-   [
-    0.61,
-    0.6969,
-    0.43265
-   ],
-   [
-    0.62,
-    0.6896,
-    0.4326
-   ],
-   [
-    0.63,
-    0.6808,
-    0.4326
-   ],
-   [
-    0.64,
-    0.6779000000000001,
-    0.4327
-   ],
-   [
-    0.65,
-    0.675,
-    0.4329
-   ],
-   [
-    0.66,
-    0.6706,
-    0.43320000000000003
-   ],
-   [
-    0.67,
-    0.6633,
-    0.43355
-   ],
-   [
-    0.68,
-    0.6589,
-    0.434
-   ],
-   [
-    0.69,
-    0.6589,
-    0.4345
-   ],
-   [
-    0.7,
-    0.6559,
-    0.4351
-   ],
-   [
-    0.71,
-    0.6515000000000001,
-    0.4358
-   ],
-   [
-    0.72,
-    0.6501,
-    0.4366
-   ],
-   [
-    0.73,
-    0.6442,
-    0.4375
-   ],
-   [
-    0.74,
-    0.6397999999999999,
-    0.43845
-   ],
-   [
-    0.75,
-    0.6354,
-    0.43955
-   ],
-   [
-    0.76,
-    0.6252,
-    0.4407
-   ],
-   [
-    0.77,
-    0.6223,
-    0.442
-   ],
-   [
-    0.78,
-    0.6193,
-    0.4434
-   ],
-   [
-    0.79,
-    0.6149,
-    0.4449
-   ],
-   [
-    0.8,
-    0.6104999999999999,
-    0.44655
-   ],
-   [
-    0.81,
-    0.6061,
-    0.44830000000000003
-   ],
-   [
-    0.82,
-    0.6003000000000001,
-    0.45015
-   ],
-   [
-    0.83,
-    0.5915,
-    0.4521
-   ],
-   [
-    0.84,
-    0.5842,
-    0.45415
-   ],
-   [
-    0.85,
-    0.5798,
-    0.4563
-   ],
-   [
-    0.86,
-    0.5754,
-    0.45855
-   ],
-   [
-    0.87,
-    0.5725,
-    0.4609
-   ],
-   [
-    0.88,
-    0.5666,
-    0.4633
-   ],
-   [
-    0.89,
-    0.5593,
-    0.46575
-   ],
-   [
-    0.9,
-    0.5578,
-    0.46825
-   ],
-   [
-    0.91,
-    0.5564,
-    0.4708
-   ],
-   [
-    0.92,
-    0.552,
-    0.47335
-   ],
-   [
-    0.93,
-    0.5534,
-    0.4759
-   ],
-   [
-    0.94,
-    0.5505,
-    0.4784
-   ],
-   [
-    0.95,
-    0.5447,
-    0.4809
-   ],
-   [
-    0.96,
-    0.5447,
-    0.4833
-   ],
-   [
-    0.97,
-    0.5461,
-    0.48565
-   ],
-   [
-    0.98,
-    0.5461,
-    0.48795
-   ],
-   [
-    0.99,
-    0.5461,
-    0.4901
-   ],
-   [
-    1,
-    0.5476,
-    0.49215
    ]
   ]
  }
