@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-04T10": "-7p9KlR5opY https://www.instagram.com/reel/DfUMYodEWT8/",
   "2026-11-04T14": "gdQNqp1lSBE https://www.instagram.com/reel/DfUn7DMHJtR/",
   "2026-11-04T18": "O4CmIhkONV0 https://www.instagram.com/reel/DfVDQyYFDuH/",
   "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/",
@@ -48,16 +47,17 @@
   "2026-11-16T10": "hce6-SPurSw https://www.instagram.com/reel/DfzF6RgjUBw/",
   "2026-11-16T14": "oKJuzNvEaRk https://www.instagram.com/reel/Dfzhac5mVWo/",
   "2026-11-16T18": "eFCmdx3yqjI https://www.instagram.com/reel/Dfz838NnHQW/",
-  "2026-11-17T10": "_1XzptyPihg https://www.instagram.com/reel/Df1qu6SCKlr/"
+  "2026-11-17T10": "_1XzptyPihg https://www.instagram.com/reel/Df1qu6SCKlr/",
+  "2026-11-17T14": "zcng8A73LM4 https://www.instagram.com/reel/Df2GG89k2D-/"
  },
  "nobet": {
   "basladi": "2026-11-17T11:19:05+00:00",
   "run": "44071355542",
-  "tur": 155,
+  "tur": 162,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-17T13:53:06+00:00"
+  "son_tur": "2026-11-17T14:00:53+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -493,6 +493,13 @@
    "at": 1794909714,
    "title": "Yüzünde akarlar yaşıyor, sen uyurken çiftleşiyorlar 🔬",
    "topic_id": "mk-c0148"
+  },
+  "zcng8A73LM4": {
+   "media_id": "17956084410312577",
+   "url": "https://www.instagram.com/reel/Df2GG89k2D-/",
+   "at": 1794924053,
+   "title": "Kertenkele kopan kuyruğunu yeniden çıkarabilir mi? 🦎",
+   "topic_id": "mk-c0154"
   }
  }
 }
