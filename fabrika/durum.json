@@ -2807,12 +2807,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-09T09:09:26+00:00",
-   "mod": "igbolum",
-   "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
-   "chars": 397
-  },
-  {
    "finished": "2026-11-09T10:09:12+00:00",
    "mod": "saatlik",
    "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
@@ -3226,6 +3220,12 @@
    "url": "https://youtube.com/shorts/sLED9nX8m1w",
    "duration": 29.1,
    "chars": 375
+  },
+  {
+   "finished": "2026-11-17T09:09:37+00:00",
+   "mod": "igbolum",
+   "title": "Mars Gerçekte Ne Kadar Uzak?",
+   "chars": 440
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3570,6 +3570,11 @@
     "media_id": "18257548093308477",
     "url": "https://www.instagram.com/reel/Dfz29PKIZQX/",
     "at": 1794848994.5536733
+   },
+   "n018": {
+    "media_id": "18132043595488345",
+    "url": "https://www.instagram.com/reel/Df1kxC6E1uu/",
+    "at": 1794906577.3693697
    }
   },
   "eski": [
@@ -3592,5 +3597,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794852536.5435555
+ "yedek_ses": 1794906577.3694303
 }

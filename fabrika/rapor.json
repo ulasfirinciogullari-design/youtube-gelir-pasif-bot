@@ -1,75 +1,21 @@
 {
- "started": "2026-11-16T18:07:24+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-17T09:07:13+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n018",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "88"
+ "title": "Mars Gerçekte Ne Kadar Uzak?",
+ "chars": 440,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18132043595488345",
+  "url": "https://www.instagram.com/reel/Df1kxC6E1uu/",
+  "at": 1794906577.3693697
  },
- "credits_before": [
-  106307,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261116-2-y018.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y018",
-  "series": "Ya Olsaydı?",
-  "q": "Jüpiter bir yıldız olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 375,
- "duration": 29.1,
- "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
- "url": "https://youtube.com/shorts/sLED9nX8m1w",
- "recent_status": {
-  "y028": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "140",
-   "reason": null
-  },
-  "y023": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "110",
-   "reason": null
-  },
-  "n018": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "883",
-   "reason": null
-  },
-  "y015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "494",
-   "reason": null
-  },
-  "y018": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
  "log": [
-  "Kuyruktan: 20261116-2-y018.json Jüpiter bir yıldız olsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df1kxC6E1uu/"
  ],
- "finished": "2026-11-16T18:08:56+00:00"
+ "finished": "2026-11-17T09:09:37+00:00"
 }
