@@ -1,5 +1,5 @@
 {
- "at": "2026-11-17T10:05:52+00:00",
+ "at": "2026-11-17T11:55:36+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 71,
   "viewCount": 84712,
-  "videoCount": 89
+  "videoCount": 90
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -393,7 +393,7 @@
    "baslik": "Damarların Gerçekte Ne Kadar Uzun? 🤯"
   },
   "mt9KmhllXGQ": {
-   "view": 947,
+   "view": 946,
    "like": 6,
    "comment": 0,
    "baslik": "Bir Hafta Hiç Uyumasaydın Ne Olurdu? 😳"
@@ -429,7 +429,7 @@
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
   "O1WLYgc1whA": {
-   "view": 425,
+   "view": 426,
    "like": 2,
    "comment": 0,
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
@@ -447,13 +447,13 @@
    "baslik": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun? 🤯"
   },
   "xLGCGQYwSmE": {
-   "view": 1044,
+   "view": 1045,
    "like": 14,
    "comment": 2,
    "baslik": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu? 😳"
   },
   "WR_w6VSOY-s": {
-   "view": 596,
+   "view": 595,
    "like": 2,
    "comment": 0,
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
@@ -483,7 +483,7 @@
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 670,
+   "view": 672,
    "like": 8,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
@@ -513,40 +513,46 @@
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
   },
   "YgY6Jzda0Hk": {
-   "view": 593,
-   "like": 5,
+   "view": 628,
+   "like": 6,
    "comment": 0,
    "baslik": "Bir Yıldırım Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "4MpwenNL9NY": {
-   "view": 151,
+   "view": 155,
    "like": 0,
    "comment": 0,
    "baslik": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun? 😳"
   },
   "2kMaKl9jUoc": {
-   "view": 124,
+   "view": 129,
    "like": 1,
    "comment": 0,
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 940,
-   "like": 5,
+   "view": 944,
+   "like": 6,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 774,
-   "like": 10,
+   "view": 786,
+   "like": 11,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
   "sLED9nX8m1w": {
-   "view": 275,
-   "like": 2,
+   "view": 281,
+   "like": 3,
    "comment": 0,
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
+  },
+  "EXfL-FfCYvc": {
+   "view": 0,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -1290,7 +1296,13 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Ay Gerçekte Ne Kadar Uzak?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 1014,
+    "YT_SEARCH": 37,
+    "YT_CHANNEL": 5,
+    "YT_OTHER_PAGE": 2,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 497,
    "devam_yuzde": 47.0
   },
@@ -1663,13 +1675,7 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 903,
-    "YT_SEARCH": 36,
-    "YT_CHANNEL": 3,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 493,
    "devam_yuzde": 52.3
   },
