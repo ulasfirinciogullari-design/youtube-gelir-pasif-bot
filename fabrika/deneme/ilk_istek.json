@@ -1,13 +1,15 @@
 {
  "ara": {
-  "n019": [
-   "Saturn rings Cassini",
-   "Saturn rings edge-on Cassini"
-  ],
   "y031": [
-   "chimpanzee hand grasping branch",
-   "primate hand opposable thumb"
+   "Chimpanzee hand",
+   "Orangutan hand holding branch"
   ]
  },
- "al": {}
+ "al": {
+  "n019": {
+   "n": 1,
+   "x": 0.5,
+   "y": 0.5
+  }
+ }
 }
