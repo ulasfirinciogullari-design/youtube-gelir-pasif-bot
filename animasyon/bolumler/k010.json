@@ -1,0 +1,87 @@
+{
+ "id": "k010",
+ "kanun": "X",
+ "title": {
+  "top": "Pahalısını sattırmak istiyorsan",
+  "hi": "yanına daha pahalısını koy"
+ },
+ "yt_title": "Pahalısını Sattırmak İstiyorsan Yanına Bunu Koy 🤯 #psikoloji",
+ "lines": [
+  {
+   "text": "Pahalısını sattırmak istiyorsan iki seçenek sunma; yanına çok daha pahalısını koy.",
+   "keys": ["sunma", "koy"],
+   "v": {"t": "kanca", "no": "sunma", "back": "yanına", "yes": "çok", "give": "koy", "no_label": "Sadece iki seçenek", "yes_label": "+ Çok daha pahalısı", "sfx": [[null, 0.02, "pop", 0.25, 0.25], ["sunma", 0.4, "stamp", 0.4, -0.02], ["yanına", 0.55, "whoosh", 0.35, -0.3], ["yanına", 0.55, "impact", 0.3, 0.1], ["çok", 0.7, "shimmer", 0.45, 0.0], ["koy", 0.92, "pop", 0.35, -0.2]]}
+  },
+  {
+   "text": "Araştırmacılar öğrencilere iki fotoğraf makinesi gösterdi: 170 ve 240 dolarlık.",
+   "keys": ["fotoğraf"],
+   "v": {"t": "deney", "year": "1992 · Simonson ve Tversky", "cam": "fotoğraf", "a": "170", "b": "240", "sfx": [[null, 0.1, "paper", 0.25, 0.0], ["fotoğraf", 0.5, "pop", 0.3, 0.0], ["fotoğraf", 0.5, "pop", 0.3, 0.15], ["170", 0.75, "tick", 0.3, 0.0], ["240", 0.9, "tick", 0.3, 0.0]]}
+  },
+  {
+   "text": "Yarısı ucuzunu, yarısı pahalısını seçti.",
+   "keys": ["ucuzunu", "pahalısını"],
+   "v": {"t": "iki", "a": "ucuzunu", "b": "pahalısını", "sfx": [["ucuzunu", 0.3, "pop", 0.3, 0.0], ["pahalısını", 0.7, "pop", 0.3, 0.0], ["seçti", 0.9, "stamp", 0.3, 0.05]]}
+  },
+  {
+   "text": "Başka bir gruba üçüncü bir makine de gösterdiler: 470 dolarlık.",
+   "keys": ["üçüncü"],
+   "v": {"t": "ucuncu", "group": "başka", "key": "üçüncü", "price": "470", "sfx": [["başka", 0.1, "whoosh", 0.25, -0.1], ["üçüncü", 0.4, "whoosh", 0.3, -0.15], ["üçüncü", 0.4, "impact", 0.38, 0.05], ["470", 0.85, "shimmer", 0.4, 0.0]]}
+  },
+  {
+   "text": "Ucuzu seçenler %50'den %22'ye düştü.",
+   "v": {"t": "sonuc", "from": "%50", "key": "%22", "down": "düştü", "sfx": [[null, 0.05, "pop", 0.3, 0.3], ["%50", 0.4, "tick", 0.28, 0.0], ["%22", 0.7, "tick", 0.28, -0.2], ["%22", 0.7, "tick", 0.28, -0.08], ["%22", 0.7, "stamp", 0.42, 0.05]]}
+  },
+  {
+   "text": "240'lık makine %57 ile açık ara birinci oldu!",
+   "keys": ["birinci"],
+   "v": {"t": "birinci", "key": "%57", "win": "birinci", "sfx": [["240'lık", 0.1, "pop", 0.25, 0.0], ["%57", 0.45, "riser", 0.3, -0.5], ["%57", 0.45, "impact", 0.4, 0.0], ["birinci", 0.8, "shimmer", 0.45, 0.0]]}
+  },
+  {
+   "text": "Çünkü insan uçlardan kaçar: en ucuzu kalitesiz, en pahalısı fazla gelir. Ortadaki en akıllıca seçim gibi görünür.",
+   "keys": ["uçlardan", "akıllıca"],
+   "v": {"t": "neden", "ends": "uçlardan", "cheap": "kalitesiz", "dear": "fazla", "mid": "ortadaki", "key": "akıllıca", "sfx": [["uçlardan", 0.2, "whoosh", 0.3, -0.05], ["kalitesiz", 0.4, "stamp", 0.4, 0.0], ["fazla", 0.55, "stamp", 0.4, 0.0], ["ortadaki", 0.7, "riser", 0.25, -0.3], ["akıllıca", 0.8, "shimmer", 0.45, 0.0], ["akıllıca", 0.8, "stamp", 0.3, 0.05]]}
+  },
+  {
+   "text": "Bu yüzden unutma:",
+   "v": {"t": "usta", "end": true}
+  }
+ ],
+ "facts": [
+  "Itamar Simonson ve Amos Tversky (1992), \"Choice in Context: Tradeoff Contrast and Extremeness Aversion\", Journal of Marketing Research 29(3), 281-295. Katılımcılar üç Batı Yakası (ABD) üniversitesinde işletme (yaklaşık üçte ikisi) ve psikoloji okuyan lisans ve yüksek lisans öğrencileriydi; ürünler Best adlı genel mağaza kataloğundan alınmış renkli fotoğraflar, açıklamalar ve fiyatlarla gösterildi.",
+  "Fotoğraf makinesi sorusu: bir gruba (106 kişi) Minolta X-370 (169,99 $) ve Minolta Maxxum 3000i (239,99 $) gösterildi; ikisi de %50 seçildi. Başka bir gruba (115 kişi) bunlarla birlikte Minolta Maxxum 7000i (469,99 $) da gösterildi: X-370'i %22, 3000i'yi %57, 7000i'yi %21 seçti. Makalenin ifadesiyle ortadaki makinenin ucuza göre payı %50'den %72'ye çıktı (57/(57+22)). Video fiyatları yuvarlayıp 170, 240 ve 470 dolar diyor; iki grup farklı kişilerdi, video bu yüzden \"başka bir gruba\" diyor.",
+  "Yazarların açıklaması \"uçlardan kaçınma\" (extremeness aversion): bir seçeneğin öbürlerine göre dezavantajları avantajlarından daha ağır basar. Uçtaki seçeneklerin bir yönde büyük bir eksiği vardır (ucuz olanın kalitesi, pahalı olanın fiyatı), ortadakinin iki yönde de eksiği küçük kalır; bu yüzden ortadaki \"uzlaşma\" seçeneği öne çıkar. Simonson'un 1989 tarihli çalışması (Journal of Consumer Research 16(2), 158-174) ortadaki seçeneğin gerekçelendirmesi en kolay seçim olduğunu da gösterdi.",
+  "Bu tek bir deney değil: Neumann, Böckenholt ve Sinha'nın (2016, Journal of Consumer Psychology 26(2), 193-212) 142 deneysel gözlemi birleştiren meta-analizi, uçlardan kaçınmanın sağlam bir etki olduğunu, ama gücünün araştırma desenine göre çok değiştiğini buldu. Müller, Kroll ve Vogt (2012, Marketing Letters 23, 73-92) gerçek markalarla, katılımcıların seçtiğini gerçekten satın almak zorunda olduğu koşulda da etkiyi buldu; gerçek ödeme olunca etki daha zayıftı.",
+  "Kancadaki telefon dükkanı ve fiyatları (17.000, 24.000 ve 47.000 TL) bugünden bir örnek: deneydeki fiyatların oranını taşır, deneyde ölçülmüş bir şey değildir."
+ ],
+ "sources": [
+  "https://doi.org/10.1177/002224379202900301",
+  "https://cognition.aau.at/bg/BA/Simon%20&%20tversky,%201992.pdf",
+  "https://doi.org/10.1016/j.jcps.2015.05.005",
+  "https://opus.cloud1.lib.uts.edu.au/handle/10453/43933",
+  "https://doi.org/10.1007/s11002-011-9137-2"
+ ],
+ "summary": "Pahalısını sattırmak istiyorsan iki seçenek sunma; yanına çok daha pahalısını koy. 1992'de yayımlanan bir deneyde Itamar Simonson ve Amos Tversky, ABD'de üç üniversitenin öğrencilerine katalogdan fotoğraf makineleri gösterdi. 170 ve 240 dolarlık iki makine görenlerin yarısı ucuzunu, yarısı pahalısını seçti. Başka bir gruba aynı ikisinin yanında 470 dolarlık üçüncü bir makine de gösterildi: ucuzu seçenler %22'ye düştü, 240 dolarlık makine %57 ile açık ara birinci oldu, en pahalısını %21 seçti. Çünkü insan uçlardan kaçar: en ucuzu kalitesiz, en pahalısı fazla gelir, ortadaki en akıllıca seçim gibi görünür. Bu \"uzlaşma etkisi\" sonraki araştırmalarda da defalarca bulundu.",
+ "tags": [
+  "uzlaşma etkisi",
+  "compromise effect",
+  "ortadaki seçenek",
+  "tuzak fiyat",
+  "fiyat psikolojisi",
+  "satış teknikleri",
+  "pazarlama psikolojisi",
+  "tüketici psikolojisi",
+  "ikna",
+  "ikna teknikleri",
+  "psikoloji",
+  "güç psikolojisi",
+  "zirvenin kanunu",
+  "kanun",
+  "psikoloji bilgileri",
+  "tversky"
+ ],
+ "hashtags": [
+  "#psikoloji",
+  "#satış",
+  "#zirveninkanunu"
+ ]
+}
