@@ -1,0 +1,170 @@
+{
+  "topic_id": "mk-c0169",
+  "topic": "Kedi neden ağzını açık bırakır? Kedim çorabımı koklayınca neden ağzını açıp yüzünü buruşturuyor, iğreniyor mu?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Çorabını koklayıp ağzını açan kedin iğrenmiyor 🐱",
+  "hook_text": "KEDİ NEDEN AĞZINI AÇIK BIRAKIR?",
+  "description": "Kedi neden ağzını açık bırakır, kedim çorabımı koklayınca neden ağzını açıp yüzünü buruşturuyor?\n\nBu bir iğrenme ifadesi değil, flehmen tepkisi. PetMD'de veteriner hekim Krista Seraydar'ın yazdığına göre flehmen, kedinin kötü bir koku aldığı anlamına gelmez; kedi ilginç ya da yeni bulduğu bir kokuyu daha iyi incelemek için bunu yapar. Kedinin üst ön dişlerinin hemen arkasında, damakta açılan minik kanallar kokuyu vomeronazal (Jacobson) organına taşır; veteriner hekim Joe Mallat'ın Catster'daki açıklamasına göre bu organ özellikle feromonları işler. Kediler bu tepkiyi idrar, başka kedilerin yüz feromonları ve kirli çamaşır gibi kokularda gösterir.\n\nSenin kedin bu yüzü en çok neyi koklayınca yapıyor: çorabını mı, ayakkabını mı?\n\n#kedi #kediler #kedidavranışları #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0169",
+  "tags": [
+    "kedi neden ağzını açık bırakır",
+    "kedi ağzı açık kalıyor",
+    "kedi çorap kokluyor",
+    "kedi koklayınca ağzını açıyor",
+    "kedi iğreniyor mu",
+    "flehmen tepkisi",
+    "flehmen nedir",
+    "jacobson organı",
+    "vomeronazal organ",
+    "kedi koku alma duyusu",
+    "kedi feromon",
+    "kedi yüz buruşturma",
+    "kedi davranışları",
+    "kedi beden dili",
+    "kedi sahibi",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "cat stink face",
+    "flehmen response",
+    "kedi ağzını açık bırakıyor",
+    "kedi koku alma"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat isn't disgusted when it sniffs your sock and gapes 🐱",
+      "description": "That open-mouthed 'stink face' is the flehmen response. Your cat is drawing the scent through tiny ducts behind its upper front teeth to a special scent organ, the vomeronasal organ, to analyze it. Cats do it with new or interesting smells, dirty laundry included.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "es": {
+      "title": "Tu gato no siente asco cuando huele tu calcetín y abre la boca 🐱",
+      "description": "Esa 'cara de asco' con la boca entreabierta es la respuesta de Flehmen. Tu gato lleva el olor por unos conductos diminutos detrás de sus dientes delanteros superiores hasta un órgano olfativo especial, el vomeronasal, para analizarlo. Lo hace con olores nuevos o interesantes, también con la ropa sucia.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "pt": {
+      "title": "Seu gato não está com nojo quando cheira sua meia e abre a boca 🐱",
+      "description": "Essa 'cara de nojo' de boca aberta é a resposta de Flehmen. O gato leva o cheiro por pequenos dutos atrás dos dentes da frente superiores até um órgão olfativo especial, o vomeronasal, para analisá-lo. Ele faz isso com cheiros novos ou interessantes, inclusive roupa suja.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "de": {
+      "title": "Deine Katze ekelt sich nicht, wenn sie an deiner Socke schnuppert und das Maul öffnet 🐱",
+      "description": "Das halb offene Maul ist das Flehmen. Die Katze leitet den Geruch über winzige Gänge hinter den oberen Schneidezähnen zu einem besonderen Riechorgan, dem Vomeronasalorgan, und analysiert ihn. Sie tut das bei neuen oder spannenden Gerüchen – auch bei getragener Wäsche.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "fr": {
+      "title": "Ton chat n'est pas dégoûté quand il renifle ta chaussette, bouche ouverte 🐱",
+      "description": "Cette grimace bouche entrouverte, c'est le flehmen. Le chat fait passer l'odeur par de minuscules canaux derrière ses incisives supérieures jusqu'à un organe olfactif spécial, l'organe voméronasal, pour l'analyser. Il le fait face aux odeurs nouvelles ou intéressantes, linge sale compris.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "it": {
+      "title": "Il tuo gatto non è disgustato quando annusa il calzino e apre la bocca 🐱",
+      "description": "Quella smorfia a bocca socchiusa è il flehmen. Il gatto convoglia l'odore attraverso minuscoli condotti dietro gli incisivi superiori fino a un organo olfattivo speciale, l'organo vomeronasale, per analizzarlo. Lo fa con odori nuovi o interessanti, panni sporchi compresi.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "ru": {
+      "title": "Кошка не брезгует, когда нюхает твой носок и открывает рот 🐱",
+      "description": "Эта гримаса с приоткрытым ртом — реакция Флемена. Кошка направляет запах по крошечным протокам за верхними передними зубами к особому органу обоняния, вомероназальному, чтобы его разобрать. Так она реагирует на новые или интересные запахи, в том числе на грязное бельё.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "ar": {
+      "title": "قطتك لا تشمئز حين تشم جوربك وتفتح فمها 🐱",
+      "description": "تلك التكشيرة بالفم المفتوح قليلًا تُسمّى استجابة فليمن. فالقطة توجّه الرائحة عبر قنوات صغيرة خلف أسنانها الأمامية العليا إلى عضو شمّ خاص هو العضو الميكعي الأنفي لتحليلها، وتفعل ذلك مع الروائح الجديدة أو المثيرة للاهتمام، ومنها الملابس المتسخة.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "hi": {
+      "title": "मोज़ा सूँघकर मुँह खोलने वाली बिल्ली को घिन नहीं आ रही 🐱",
+      "description": "मुँह आधा खोलकर बनने वाला यह चेहरा फ़्लेमेन प्रतिक्रिया है। बिल्ली गंध को ऊपर के आगे के दाँतों के पीछे की छोटी नलियों से एक ख़ास गंध अंग, वोमेरोनेज़ल अंग, तक ले जाकर उसकी जाँच करती है। वह ऐसा नई या दिलचस्प गंध पर करती है, गंदे कपड़ों पर भी।\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "id": {
+      "title": "Kucingmu tidak jijik saat mengendus kaus kakimu sambil membuka mulut 🐱",
+      "description": "Wajah 'jijik' dengan mulut sedikit terbuka itu adalah respons flehmen. Kucing mengalirkan bau lewat saluran kecil di belakang gigi seri atasnya ke organ penciuman khusus, organ vomeronasal, untuk menganalisisnya. Ia melakukannya pada bau baru atau menarik, termasuk pakaian kotor.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "ja": {
+      "title": "靴下を嗅いで口を開ける猫、実は臭がっていない 🐱",
+      "description": "口を半開きにするあの顔は「フレーメン反応」です。猫は上の前歯の裏にある小さな管からにおいを取り込み、鋤鼻器という特別な器官で分析しています。新しいにおいや気になるにおいに出会ったときにする行動で、洗濯前の服もその一つです。\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "ko": {
+      "title": "양말 냄새 맡고 입 벌린 고양이, 역겨운 게 아니다 🐱",
+      "description": "입을 살짝 벌린 그 표정은 '플레멘 반응'입니다. 고양이는 윗앞니 뒤의 작은 관으로 냄새를 끌어들여 서골비기관이라는 특별한 후각 기관에서 분석합니다. 새롭거나 흥미로운 냄새를 맡았을 때 하는 행동으로, 빨래 전 옷도 그중 하나입니다.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "pl": {
+      "title": "Kot nie brzydzi się, gdy wącha twoją skarpetkę z otwartym pyszczkiem 🐱",
+      "description": "Ta mina z uchylonym pyszczkiem to reakcja flehmen. Kot kieruje zapach przez maleńkie kanaliki za górnymi siekaczami do specjalnego narządu węchu, narządu lemieszowo-nosowego, żeby go przeanalizować. Robi tak przy nowych lub ciekawych zapachach, także przy brudnym praniu.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "nl": {
+      "title": "Je kat walgt niet als hij aan je sok ruikt en zijn bek opent 🐱",
+      "description": "Dat gezicht met de half open bek heet flehmen. Je kat leidt de geur via piepkleine kanaaltjes achter de bovenste voortanden naar een speciaal reukorgaan, het vomeronasaal orgaan, om hem te ontleden. Hij doet dat bij nieuwe of interessante geuren, ook bij vuile was.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "uk": {
+      "title": "Кіт не гидує, коли нюхає твою шкарпетку й відкриває рота 🐱",
+      "description": "Ця гримаса з напіввідкритим ротом — реакція Флемена. Кіт спрямовує запах крихітними протоками за верхніми передніми зубами до особливого органа нюху, вомероназального, щоб його розібрати. Так він реагує на нові або цікаві запахи, зокрема на брудну білизну.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "vi": {
+      "title": "Mèo ngửi tất của bạn rồi há miệng không phải vì ghê 🐱",
+      "description": "Vẻ mặt há miệng nhăn nhó ấy là phản xạ flehmen. Mèo dẫn mùi qua những ống nhỏ sau răng cửa hàm trên đến một cơ quan khứu giác đặc biệt, cơ quan lá mía mũi (vomeronasal), để phân tích. Nó làm vậy với mùi mới hoặc thú vị, kể cả quần áo bẩn.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "az": {
+      "title": "Corabını iyləyib ağzını açan pişik iyrənmir 🐱",
+      "description": "Ağzı yarıaçıq qalan bu ifadə flemen reaksiyasıdır. Pişik qoxunu üst ön dişlərinin arxasındakı kiçik kanallarla xüsusi qoxu orqanına, vomeronazal orqana aparıb təhlil edir. Bunu yeni və ya maraqlı qoxularda, o cümlədən çirkli paltarda edir.\n\n#shorts\n\nSeri: mk-c0169"
+    },
+    "ro": {
+      "title": "Pisica nu e dezgustată când îți miroase șoseta și deschide gura 🐱",
+      "description": "Strâmbătura aceea cu gura întredeschisă e reacția flehmen. Pisica trimite mirosul prin canale mici din spatele incisivilor superiori spre un organ olfactiv special, organul vomeronazal, ca să-l analizeze. O face la mirosuri noi sau interesante, inclusiv la rufele murdare.\n\n#shorts\n\nSeri: mk-c0169"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin bu yüzü en çok neyi koklayınca yapıyor: çorabını mı, ayakkabını mı?",
+  "scenes": [
+    {
+      "text": "Çorabını koklayıp ağzı açık kalan bu kedi iğrenmiyor.",
+      "visual": "close-up of a cat's face with its mouth slightly open and upper lip curled after sniffing, looking at the camera",
+      "stock_query": "cat mouth open",
+      "source": "stock",
+      "callout": "İĞRENMİYOR"
+    },
+    {
+      "text": "Çoğumuz 'o kadar mı kokuyor' diye güleriz.",
+      "visual": "a cat sniffing a sock on the floor",
+      "stock_query": "cat sniffing",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa kedi o an kokuyu ağzıyla tadıyor.",
+      "visual": "close-up of a cat's half-open mouth showing its front teeth",
+      "stock_query": "cat face close up",
+      "source": "stock",
+      "callout": "KOKUYU TADIYOR"
+    },
+    {
+      "text": "Üst ön dişlerinin arkasındaki minik kanallar kokuyu gizli bir koku organına taşıyor.",
+      "visual": "macro shot of a cat's mouth and upper front teeth",
+      "stock_query": "cat teeth",
+      "source": "stock",
+      "callout": "GİZLİ KOKU ORGANI"
+    },
+    {
+      "text": "Bu yüze flehmen denir; kedi bunu yeni ya da ilginç bir kokuda yapar.",
+      "visual": "a curious cat sniffing a shoe on the floor",
+      "stock_query": "cat sniffing shoe",
+      "source": "stock",
+      "callout": "FLEHMEN TEPKİSİ"
+    },
+    {
+      "text": "Kirli çorabın onun için ilginç; o yüzden:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.14,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 9,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #220",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0169_1794950578_ig.mp4"
+}
