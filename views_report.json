@@ -1,32 +1,102 @@
 {
- "checked_at": "2026-11-16T08:49:44+00:00",
+ "checked_at": "2026-11-17T08:49:21+00:00",
  "channel": {
   "id": "UCgvESYtYbn2w9R2ExBOF_cw",
-  "viewCount": "499091",
-  "subscriberCount": "165",
+  "viewCount": "531890",
+  "subscriberCount": "171",
   "hiddenSubscriberCount": false,
-  "videoCount": "205"
+  "videoCount": "213"
  },
  "videos": [
+  {
+   "id": "782kkRLJ7ss",
+   "published": "2026-11-17T07:25:30Z",
+   "title": "Fil fareden korkmaz, asıl korktuğu şey arı 🐘",
+   "privacy": "public",
+   "duration": "PT19S",
+   "views": 709,
+   "likes": 3,
+   "comments": 1
+  },
+  {
+   "id": "9n3HE8oW8go",
+   "published": "2026-11-16T21:26:20Z",
+   "title": "Hapşırırken kalbin durmuyor, sadece ritmi şaşıyor 🤧",
+   "privacy": "public",
+   "duration": "PT19S",
+   "views": 855,
+   "likes": 4,
+   "comments": 1
+  },
+  {
+   "id": "DsWiyR8r_Qc",
+   "published": "2026-11-16T19:26:19Z",
+   "title": "Köpekler kemiği sever ama kemik onları yaralayabilir 🦴",
+   "privacy": "public",
+   "duration": "PT20S",
+   "views": 1029,
+   "likes": 4,
+   "comments": 1
+  },
+  {
+   "id": "sHeKOUivy24",
+   "published": "2026-11-16T17:00:36Z",
+   "title": "Eşyanı Bırakmadan Önce Bu Soruyu Sor 🤯 #psikoloji",
+   "privacy": "public",
+   "duration": "PT36S",
+   "views": 1650,
+   "likes": 16,
+   "comments": 0
+  },
+  {
+   "id": "Ox8Alp2WJW4",
+   "published": "2026-11-16T15:26:21Z",
+   "title": "Karnını gösteren kedi 'sev beni' demiyor 🐱",
+   "privacy": "public",
+   "duration": "PT20S",
+   "views": 2060,
+   "likes": 17,
+   "comments": 1
+  },
+  {
+   "id": "g9grbN5SXXQ",
+   "published": "2026-11-16T13:25:22Z",
+   "title": "Kulaklarını oynatmak mümkün mü? 👂",
+   "privacy": "public",
+   "duration": "PT19S",
+   "views": 2278,
+   "likes": 8,
+   "comments": 5
+  },
+  {
+   "id": "rLgj4PkjR7o",
+   "published": "2026-11-16T11:25:39Z",
+   "title": "Yarasa kör değil, bazıları morötesi ışığı bile görür 🦇",
+   "privacy": "public",
+   "duration": "PT18S",
+   "views": 1202,
+   "likes": 12,
+   "comments": 1
+  },
+  {
+   "id": "eGfPjyxwtcM",
+   "published": "2026-11-16T09:24:23Z",
+   "title": "Sana poposunu gösteren kedi kaba değil, selam veriyor 🐱",
+   "privacy": "public",
+   "duration": "PT17S",
+   "views": 2649,
+   "likes": 22,
+   "comments": 1
+  },
   {
    "id": "zcng8A73LM4",
    "published": "2026-11-16T07:24:58Z",
    "title": "Kertenkele kopan kuyruğunu yeniden çıkarabilir mi? 🦎",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 649,
-   "likes": 0,
+   "views": 4083,
+   "likes": 9,
    "comments": 1
-  },
-  {
-   "id": "sHeKOUivy24",
-   "published": "2026-11-15T22:27:10Z",
-   "title": "Eşyanı Bırakmadan Önce Bu Soruyu Sor 🤯 #psikoloji",
-   "privacy": "private",
-   "duration": "PT36S",
-   "views": 0,
-   "likes": 0,
-   "comments": 0
   },
   {
    "id": "h1LPwcBcKn8",
@@ -34,8 +104,8 @@
    "title": "Seni sabah erken uyandıran kediyi sen eğittin 🐱",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1268,
-   "likes": 13,
+   "views": 1802,
+   "likes": 18,
    "comments": 1
   },
   {
@@ -44,8 +114,8 @@
    "title": "İskeletinin çoğu on yıl önce yoktu 🦴",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1068,
-   "likes": 4,
+   "views": 1370,
+   "likes": 5,
    "comments": 1
   },
   {
@@ -54,7 +124,7 @@
    "title": "Her karınca, karınca gibi çalışkan değil 🐜",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1042,
+   "views": 1486,
    "likes": 4,
    "comments": 1
   },
@@ -64,7 +134,7 @@
    "title": "Bir elinle daire, öbürüyle kare çizmek mümkün mü? ✍️",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1162,
+   "views": 1271,
    "likes": 5,
    "comments": 1
   },
@@ -74,9 +144,9 @@
    "title": "Bacağına sürtünen kedin seni kokusuyla işaretliyor 🐱",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 4003,
-   "likes": 80,
-   "comments": 1
+   "views": 11979,
+   "likes": 153,
+   "comments": 3
   },
   {
    "id": "_1XzptyPihg",
@@ -84,8 +154,8 @@
    "title": "Yüzünde akarlar yaşıyor, sen uyurken çiftleşiyorlar 🔬",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 2366,
-   "likes": 9,
+   "views": 4701,
+   "likes": 11,
    "comments": 1
   },
   {
@@ -94,8 +164,8 @@
    "title": "Bir buket çiçek kediyi öldürebilir mi? 🐱",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1940,
-   "likes": 15,
+   "views": 2396,
+   "likes": 16,
    "comments": 1
   },
   {
@@ -104,8 +174,8 @@
    "title": "Tavuk beyinli denen civciv üç günlükken hesap yapıyor 🐥",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1462,
-   "likes": 15,
+   "views": 1639,
+   "likes": 14,
    "comments": 1
   },
   {
@@ -114,8 +184,8 @@
    "title": "Köpekler dilinden terlemez, patilerinden terler 🐶",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1445,
-   "likes": 9,
+   "views": 1556,
+   "likes": 12,
    "comments": 1
   },
   {
@@ -124,7 +194,7 @@
    "title": "Yemeğine göz diken martıya dik dik bakmak işe yarıyor 👀",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1756,
+   "views": 2326,
    "likes": 3,
    "comments": 1
   },
@@ -134,7 +204,7 @@
    "title": "Kalp gerçekten kırılabilir mi? 💔",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 958,
+   "views": 1031,
    "likes": 6,
    "comments": 1
   },
@@ -144,8 +214,8 @@
    "title": "Kedinin ciğere bakışına kanma, fazlası onu sakatlar 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5097,
-   "likes": 39,
+   "views": 5503,
+   "likes": 43,
    "comments": 11
   },
   {
@@ -154,8 +224,8 @@
    "title": "Havuç yemek gözlerini keskinleştirmez 🥕",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1592,
-   "likes": 8,
+   "views": 1687,
+   "likes": 7,
    "comments": 1
   },
   {
@@ -164,7 +234,7 @@
    "title": "Timsah gözyaşı gerçek: timsahlar yemek yerken ağlıyor 🐊",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 7305,
+   "views": 7438,
    "likes": 41,
    "comments": 1
   },
@@ -174,8 +244,8 @@
    "title": "Köpek korktuğunu kokundan anlayabilir mi? 🐶",
    "privacy": "public",
    "duration": "PT20S",
-   "views": 3594,
-   "likes": 10,
+   "views": 4039,
+   "likes": 12,
    "comments": 3
   },
   {
@@ -184,7 +254,7 @@
    "title": "'Ben demiştim' diyenin hafızası onu kandırıyor 🙄",
    "privacy": "public",
    "duration": "PT20S",
-   "views": 1227,
+   "views": 1235,
    "likes": 7,
    "comments": 1
   },
@@ -194,7 +264,7 @@
    "title": "Vücut ısının yarısı başından kaçmıyor 🥶",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 1575,
+   "views": 1576,
    "likes": 4,
    "comments": 1
   },
@@ -204,7 +274,7 @@
    "title": "Kedin mama isterken mırıltısına ağlama gizliyor 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1467,
+   "views": 1470,
    "likes": 4,
    "comments": 1
   },
@@ -214,8 +284,8 @@
    "title": "Tek gözü açık uyumak gerçekten mümkün mü? 🦆",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2963,
-   "likes": 10,
+   "views": 3495,
+   "likes": 13,
    "comments": 1
   },
   {
@@ -224,8 +294,8 @@
    "title": "Köpeğinle bebek gibi konuşman boşuna değil 🐶",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1341,
-   "likes": 13,
+   "views": 1531,
+   "likes": 14,
    "comments": 1
   },
   {
@@ -234,8 +304,8 @@
    "title": "Garsonun Bu Tek Hareketi Bahşişi %21 Artırdı 🤯 #psikoloji",
    "privacy": "public",
    "duration": "PT32S",
-   "views": 2008,
-   "likes": 16,
+   "views": 2085,
+   "likes": 17,
    "comments": 0
   },
   {
@@ -244,7 +314,7 @@
    "title": "Kırkılmayan koyunun yünü hiç durmadan uzar 🐑",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 3415,
+   "views": 3712,
    "likes": 5,
    "comments": 3
   },
@@ -264,8 +334,8 @@
    "title": "Kedi ile köpek aynı evde dost olabilir mi? 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3900,
-   "likes": 19,
+   "views": 4004,
+   "likes": 20,
    "comments": 1
   },
   {
@@ -274,7 +344,7 @@
    "title": "Kirpiye bıraktığın süt ona iyilik değil 🦔",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 50,
+   "views": 51,
    "likes": 1,
    "comments": 1
   },
@@ -294,7 +364,7 @@
    "title": "Kedin halına sana kızdığı için işemiyor 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 2929,
+   "views": 2968,
    "likes": 16,
    "comments": 5
   },
@@ -304,7 +374,7 @@
    "title": "Solucan ikiye bölünüp iki solucan olabilir mi? 🪱",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 5309,
+   "views": 5467,
    "likes": 14,
    "comments": 1
   },
@@ -314,7 +384,7 @@
    "title": "Kuru burun köpeğinin hasta olduğunu göstermez 🐶",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1443,
+   "views": 1445,
    "likes": 6,
    "comments": 1
   },
@@ -324,7 +394,7 @@
    "title": "Bir arı ömrü boyunca bir çay kaşığı bal bile yapamaz 🐝",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1716,
+   "views": 1725,
    "likes": 7,
    "comments": 1
   },
@@ -334,7 +404,7 @@
    "title": "Yuttuğun sakız yedi yıl midende kalmıyor 🍬",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 14063,
+   "views": 14310,
    "likes": 19,
    "comments": 1
   },
@@ -344,7 +414,7 @@
    "title": "Hamileyken kediyle aynı evde yaşamak mümkün mü? 🐱",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 4266,
+   "views": 4283,
    "likes": 33,
    "comments": 1
   },
@@ -354,8 +424,8 @@
    "title": "Tavuk yumurtlamak için horoza ihtiyaç duymaz 🥚",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 5180,
-   "likes": 21,
+   "views": 5350,
+   "likes": 25,
    "comments": 7
   },
   {
@@ -374,7 +444,7 @@
    "title": "Köpeğine alfa olman gerekmiyor, alfa kurt da efsane 🐶",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 1013,
+   "views": 1017,
    "likes": 7,
    "comments": 1
   },
@@ -394,7 +464,7 @@
    "title": "Okşanırken ısıran kedi çoğu zaman önce uyarır 🐱",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 7197,
+   "views": 7227,
    "likes": 53,
    "comments": 3
   },
@@ -404,7 +474,7 @@
    "title": "Havuç tavşanın ana yemeği değil, şekerlemesi 🥕",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3090,
+   "views": 3089,
    "likes": 13,
    "comments": 1
   },
@@ -414,7 +484,7 @@
    "title": "Başın ağrıdığında ağrıyan şey beynin değil 🧠",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1080,
+   "views": 1086,
    "likes": 8,
    "comments": 1
   },
@@ -424,7 +494,7 @@
    "title": "Köpeğinin gözleri seni görünce yaşarabilir mi? 🐶",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 3760,
+   "views": 3766,
    "likes": 26,
    "comments": 1
   },
@@ -444,7 +514,7 @@
    "title": "Bu Tek Kelime İnsanlara Evet Dedirtiyor 🤫 #psikoloji",
    "privacy": "public",
    "duration": "PT34S",
-   "views": 1220,
+   "views": 1222,
    "likes": 13,
    "comments": 0
   },
@@ -464,7 +534,7 @@
    "title": "Yün yumağı kedin için sandığın kadar masum değil 🧶",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1734,
+   "views": 1735,
    "likes": 15,
    "comments": 3
   },
@@ -484,7 +554,7 @@
    "title": "Köpeğin ot yiyorsa büyük ihtimalle hasta değil 🌿",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 17,
+   "views": 23,
    "likes": 0,
    "comments": 1
   },
@@ -504,7 +574,7 @@
    "title": "Tüysüz kedi de alerji yapar, suçlu tüy değil 🤧",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1007,
+   "views": 1008,
    "likes": 11,
    "comments": 1
   },
@@ -514,7 +584,7 @@
    "title": "Hamamböceği kafası olmadan yaşayabilir mi? 🪳",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3563,
+   "views": 3569,
    "likes": 12,
    "comments": 1
   },
@@ -534,7 +604,7 @@
    "title": "Kuyruk sallayan köpek her zaman mutlu değil 🐶",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1038,
+   "views": 1040,
    "likes": 2,
    "comments": 1
   },
@@ -544,7 +614,7 @@
    "title": "İnsan günlerce hiç uyumadan durabilir mi? 😵",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1879,
+   "views": 1880,
    "likes": 8,
    "comments": 1
   },
@@ -554,7 +624,7 @@
    "title": "Kediler nankör değil, sahibine bebek gibi bağlanır 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1039,
+   "views": 1041,
    "likes": 8,
    "comments": 1
   },
@@ -564,7 +634,7 @@
    "title": "Konuştuğun kişi değişse fark etmeyebilirsin 🚪",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 1745,
+   "views": 1746,
    "likes": 9,
    "comments": 1
   },
@@ -574,7 +644,7 @@
    "title": "Devekuşu aslında başını hiç kuma gömmez 🪶",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 13061,
+   "views": 13089,
    "likes": 56,
    "comments": 1
   },
@@ -584,7 +654,7 @@
    "title": "Kedi yedinci kattan düşüp yaşayabilir mi? 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3428,
+   "views": 3433,
    "likes": 23,
    "comments": 3
   },
@@ -594,7 +664,7 @@
    "title": "Pamuklu çubuk kulağını temizlemez, kiri içeri iter 👂",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 4589,
+   "views": 4591,
    "likes": 12,
    "comments": 1
   },
@@ -604,7 +674,7 @@
    "title": "Köpekler sahiplerine gerçekten benziyor, sebebi sensin 🐶",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 2287,
+   "views": 2288,
    "likes": 8,
    "comments": 1
   },
@@ -624,7 +694,7 @@
    "title": "Sivrisinek seni kanın tatlı diye seçmiyor 🦟",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 2106,
+   "views": 2110,
    "likes": 4,
    "comments": 1
   },
@@ -644,7 +714,7 @@
    "title": "Uyurken duman kokusuyla uyanmak mümkün mü? 🔥",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1977,
+   "views": 1979,
    "likes": 7,
    "comments": 1
   },
@@ -654,7 +724,7 @@
    "title": "Sana sağlıklı gelen üzüm köpeğin için zehir 🍇",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3836,
+   "views": 3840,
    "likes": 14,
    "comments": 1
   },
@@ -674,7 +744,7 @@
    "title": "Tıraş olmak kılını kalınlaştırmaz, sadece öyle gösterir 🪒",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2532,
+   "views": 2536,
    "likes": 3,
    "comments": 1
   },
@@ -704,7 +774,7 @@
    "title": "Kedin adını biliyor, sadece seni duymazdan geliyor 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 6310,
+   "views": 6317,
    "likes": 44,
    "comments": 1
   },
@@ -724,7 +794,7 @@
    "title": "Eşek inatçı değil, sadece aklını kullanıyor 🫏",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 3677,
+   "views": 3695,
    "likes": 16,
    "comments": 1
   },
@@ -734,7 +804,7 @@
    "title": "Çocuğu coşturan şeker değil, senin beklentin 🍭",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 1899,
+   "views": 1900,
    "likes": 8,
    "comments": 1
   },
@@ -744,7 +814,7 @@
    "title": "Dil haritası yanlış, dilinin her yeri beş tadı da alır 👅",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 983,
+   "views": 985,
    "likes": 3,
    "comments": 1
   },
@@ -754,7 +824,7 @@
    "title": "Köpeğin seni başka bir köpekten kıskanabilir mi? 🐶",
    "privacy": "public",
    "duration": "PT19S",
-   "views": 1102,
+   "views": 1107,
    "likes": 6,
    "comments": 1
   },
@@ -764,7 +834,7 @@
    "title": "Kediler zifiri karanlıkta senin kadar kördür 🐱",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 4132,
+   "views": 4134,
    "likes": 45,
    "comments": 1
   },
@@ -774,7 +844,7 @@
    "title": "Birinin kaşındığını görmek seni de kaşındırır 🤚",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2647,
+   "views": 2650,
    "likes": 6,
    "comments": 10
   },
@@ -784,7 +854,7 @@
    "title": "Baykuşun bir kulağı öbüründen daha yukarıda 🦉",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 2164,
+   "views": 2170,
    "likes": 14,
    "comments": 1
   },
@@ -864,7 +934,7 @@
    "title": "Köpekbalığı kanı kilometrelerce öteden koklayabilir mi? 🦈",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 2068,
+   "views": 2071,
    "likes": 12,
    "comments": 1
   },
@@ -884,7 +954,7 @@
    "title": "Dinozorların hepsi yok olmadı, biri kümeste 🐔",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 7428,
+   "views": 7434,
    "likes": 33,
    "comments": 6
   },
@@ -896,6 +966,16 @@
    "duration": "P0D",
    "views": 0,
    "likes": 0,
+   "comments": 0
+  },
+  {
+   "id": "lAJb6CDN_v0",
+   "published": "2026-11-06T17:00:28Z",
+   "title": "Pazarlıkta İlk Sayıyı Neden Sen Söylemelisin? 🤯 #psikoloji",
+   "privacy": "public",
+   "duration": "PT34S",
+   "views": 3022,
+   "likes": 21,
    "comments": 0
   },
   {
@@ -924,7 +1004,7 @@
    "title": "Göz kaçırmak yalanın işareti değil 👀",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1805,
+   "views": 1806,
    "likes": 12,
    "comments": 1
   },
@@ -939,22 +1019,12 @@
    "comments": 1
   },
   {
-   "id": "kkPqwP8hyz4",
-   "published": "2026-11-06T09:25:45Z",
-   "title": "At hiç yatmadan ayakta uyuyabilir mi? 🐴",
-   "privacy": "public",
-   "duration": "PT17S",
-   "views": 4466,
-   "likes": 20,
-   "comments": 1
-  },
-  {
    "id": "G0v552Gd__U",
    "published": "2026-11-06T07:25:58Z",
    "title": "Adındaki harfleri öbürlerinden daha çok seversin 🔤",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 1932,
+   "views": 1933,
    "likes": 10,
    "comments": 5
   },
@@ -974,7 +1044,7 @@
    "title": "Köpeğinin yaşını yediyle çarpmak yanlış 🐶",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5045,
+   "views": 5046,
    "likes": 32,
    "comments": 7
   },
@@ -1034,7 +1104,7 @@
    "title": "Gözünün önünden geçen bir gorili görmeyebilirsin 🦍",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3443,
+   "views": 3444,
    "likes": 6,
    "comments": 1
   },
@@ -1044,7 +1114,7 @@
    "title": "Kediler sütü sever ama çoğu onu sindiremez 🥛",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 12614,
+   "views": 12625,
    "likes": 131,
    "comments": 3
   },
@@ -1054,7 +1124,7 @@
    "title": "Gözü açık hapşırmak mümkün mü? 🤧",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 6787,
+   "views": 6789,
    "likes": 13,
    "comments": 5
   },
@@ -1074,7 +1144,7 @@
    "title": "Bir inek günde yüz litre tükürük üretebilir 🐄",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 5872,
+   "views": 5879,
    "likes": 36,
    "comments": 1
   },
@@ -1084,7 +1154,7 @@
    "title": "Hafızan bazen daha uzun acıyı daha hafif hatırlar 🧊",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5865,
+   "views": 5866,
    "likes": 23,
    "comments": 4
   },
@@ -1094,7 +1164,7 @@
    "title": "Tonlarca ağırlıktaki fil zıplayabilir mi? 🐘",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5365,
+   "views": 5366,
    "likes": 15,
    "comments": 1
   },
@@ -1114,7 +1184,7 @@
    "title": "Çita kükreyemez ama kuş gibi cıvıldar 🐆",
    "privacy": "public",
    "duration": "PT15S",
-   "views": 2899,
+   "views": 2902,
    "likes": 24,
    "comments": 1
   },
@@ -1124,7 +1194,7 @@
    "title": "Utandığın anı insanlar sandığın kadar fark etmiyor 😳",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 1090,
+   "views": 1091,
    "likes": 9,
    "comments": 1
   },
@@ -1134,7 +1204,7 @@
    "title": "Kayıttaki o yabancı ses, herkesin duyduğu sesin 🎙️",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1032,
+   "views": 1033,
    "likes": 4,
    "comments": 1
   },
@@ -1194,7 +1264,7 @@
    "title": "Aslanın kükremesi 8 kilometreden duyulur 🦁",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3488,
+   "views": 3489,
    "likes": 23,
    "comments": 1
   },
@@ -1224,7 +1294,7 @@
    "title": "İnsanlara Hayır Dedirtmeyen Küçük Hile 🤫 #psikoloji",
    "privacy": "public",
    "duration": "PT36S",
-   "views": 1469,
+   "views": 1470,
    "likes": 9,
    "comments": 0
   },
@@ -1264,7 +1334,7 @@
    "title": "Japon balığı 3 saniyede unutmaz, aylarca hatırlar 🐟",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 2461,
+   "views": 2462,
    "likes": 10,
    "comments": 1
   },
@@ -1274,7 +1344,7 @@
    "title": "Tavşan arkasını görür ama burnunun dibini göremez 🐰",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 3426,
+   "views": 3427,
    "likes": 14,
    "comments": 1
   },
@@ -1284,7 +1354,7 @@
    "title": "Yılan dilini çıkarınca aslında koku alıyor 🐍",
    "privacy": "public",
    "duration": "PT16S",
-   "views": 1426,
+   "views": 1427,
    "likes": 5,
    "comments": 1
   },
@@ -1304,7 +1374,7 @@
    "title": "Geyik her yıl yepyeni boynuzlar çıkarır 🦌",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 5775,
+   "views": 5780,
    "likes": 19,
    "comments": 1
   },
@@ -1334,7 +1404,7 @@
    "title": "Güvercinin başı aslında hiç geri gitmiyor 🕊️",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 2750,
+   "views": 2751,
    "likes": 16,
    "comments": 1
   },
@@ -1354,7 +1424,7 @@
    "title": "Kangurunun aynı anda üç yavrusu olabilir 🦘",
    "privacy": "public",
    "duration": "PT18S",
-   "views": 2801,
+   "views": 2803,
    "likes": 20,
    "comments": 7
   },
@@ -1374,7 +1444,7 @@
    "title": "Keçi başını eğince gözlerini döndürür 🐐",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 3070,
+   "views": 3071,
    "likes": 19,
    "comments": 1
   },
@@ -1394,7 +1464,7 @@
    "title": "Tavus kuşunun ünlü kuyruğu aslında kuyruk değil 🦚",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 2980,
+   "views": 2984,
    "likes": 23,
    "comments": 1
   },
@@ -1424,7 +1494,7 @@
    "title": "Pandanın altıncı parmağı aslında bilek kemiği 🐼",
    "privacy": "public",
    "duration": "PT17S",
-   "views": 4029,
+   "views": 4030,
    "likes": 12,
    "comments": 1
   },
@@ -1436,76 +1506,6 @@
    "duration": "PT16S",
    "views": 1085,
    "likes": 3,
-   "comments": 3
-  },
-  {
-   "id": "XqbS_t12yhc",
-   "published": "2026-10-22T09:28:16Z",
-   "title": "Kurbağalar gözleriyle yutkunur 🐸",
-   "privacy": "public",
-   "duration": "PT17S",
-   "views": 1432,
-   "likes": 6,
-   "comments": 1
-  },
-  {
-   "id": "rostSoqICFM",
-   "published": "2026-10-22T07:24:50Z",
-   "title": "Kaplan geyiğin gözünde neden yeşil görünür? 🐯",
-   "privacy": "public",
-   "duration": "PT17S",
-   "views": 1397,
-   "likes": 13,
-   "comments": 1
-  },
-  {
-   "id": "kHoLg3UdH18",
-   "published": "2026-10-21T21:25:16Z",
-   "title": "Sabahları akşamdan daha uzunsun 📏",
-   "privacy": "public",
-   "duration": "PT19S",
-   "views": 98,
-   "likes": 0,
-   "comments": 1
-  },
-  {
-   "id": "7j-kXv3xblQ",
-   "published": "2026-10-21T19:24:33Z",
-   "title": "Flamingonun ters bükülen yeri dizi değil 🦩",
-   "privacy": "public",
-   "duration": "PT15S",
-   "views": 1903,
-   "likes": 7,
-   "comments": 3
-  },
-  {
-   "id": "_UkvlpfaqmY",
-   "published": "2026-10-21T17:26:44Z",
-   "title": "Baykuşlar neden neredeyse sessiz uçar? 🦉",
-   "privacy": "public",
-   "duration": "PT16S",
-   "views": 1374,
-   "likes": 9,
-   "comments": 1
-  },
-  {
-   "id": "nPlAI5iPSJA",
-   "published": "2026-10-21T16:41:49Z",
-   "title": "Düşmanını Dosta Çevirmenin En Garip Yolu 🤫 #psikoloji",
-   "privacy": "public",
-   "duration": "PT38S",
-   "views": 1328,
-   "likes": 28,
-   "comments": 0
-  },
-  {
-   "id": "f3V2BKqQYbI",
-   "published": "2026-10-21T15:25:40Z",
-   "title": "Köpekler siyah beyaz görmez ama kırmızıyı göremez 🐶",
-   "privacy": "public",
-   "duration": "PT15S",
-   "views": 15729,
-   "likes": 45,
    "comments": 3
   }
  ],
@@ -1519,14 +1519,6 @@
    "likes"
   ],
   "rows": [
-   [
-    "2026-10-19",
-    9310,
-    1005,
-    98.36,
-    1,
-    68
-   ],
    [
     "2026-10-20",
     11698,
@@ -1726,6 +1718,14 @@
     98.12,
     7,
     85
+   ],
+   [
+    "2026-11-14",
+    35097,
+    4424,
+    83.32,
+    9,
+    132
    ]
   ]
  },
@@ -1736,51 +1736,6 @@
    "views"
   ],
   "rows": [
-   [
-    "2026-10-19",
-    "NO_LINK_OTHER",
-    1
-   ],
-   [
-    "2026-10-19",
-    "SUBSCRIBER",
-    1
-   ],
-   [
-    "2026-10-19",
-    "YT_CHANNEL",
-    99
-   ],
-   [
-    "2026-10-19",
-    "YT_SEARCH",
-    277
-   ],
-   [
-    "2026-10-19",
-    "YT_OTHER_PAGE",
-    8
-   ],
-   [
-    "2026-10-19",
-    "PLAYLIST",
-    3
-   ],
-   [
-    "2026-10-19",
-    "SHORTS",
-    8913
-   ],
-   [
-    "2026-10-19",
-    "HASHTAGS",
-    5
-   ],
-   [
-    "2026-10-19",
-    "SOUND_PAGE",
-    3
-   ],
    [
     "2026-10-20",
     "NO_LINK_OTHER",
@@ -2775,6 +2730,56 @@
     "2026-11-13",
     "HASHTAGS",
     8
+   ],
+   [
+    "2026-11-14",
+    "NO_LINK_OTHER",
+    2
+   ],
+   [
+    "2026-11-14",
+    "SUBSCRIBER",
+    7
+   ],
+   [
+    "2026-11-14",
+    "YT_CHANNEL",
+    38
+   ],
+   [
+    "2026-11-14",
+    "YT_SEARCH",
+    1300
+   ],
+   [
+    "2026-11-14",
+    "RELATED_VIDEO",
+    3
+   ],
+   [
+    "2026-11-14",
+    "YT_OTHER_PAGE",
+    118
+   ],
+   [
+    "2026-11-14",
+    "EXT_URL",
+    14
+   ],
+   [
+    "2026-11-14",
+    "NOTIFICATION",
+    5
+   ],
+   [
+    "2026-11-14",
+    "SHORTS",
+    33606
+   ],
+   [
+    "2026-11-14",
+    "HASHTAGS",
+    4
    ]
   ]
  },
@@ -2797,24 +2802,32 @@
     6
    ],
    [
+    "oSyRiH0vkBI",
+    13236,
+    97.37,
+    14,
+    18,
+    0
+   ],
+   [
     "1cMOZL90y_Q",
-    12596,
-    100.29,
+    13063,
+    100.01,
     16,
     56,
     5
    ],
    [
     "s2YsSOJ_RQs",
-    12568,
-    89.79,
+    12623,
+    89.78,
     14,
     131,
     9
    ],
    [
     "PGBCfKuO8kI",
-    9479,
+    9480,
     108.49,
     17,
     15,
@@ -2822,58 +2835,50 @@
    ],
    [
     "YYvP0VE1rkM",
-    8961,
-    89.37,
+    9016,
+    89.36,
     16,
     86,
     6
    ],
    [
     "PGdsZfAcU8E",
-    8173,
-    92.06,
+    8182,
+    92.02,
     16,
     45,
     1
    ],
    [
     "6iVJA8girRE",
-    7394,
-    100.46,
+    7433,
+    100.41,
     16,
     33,
     0
    ],
    [
+    "5mRx62PPThE",
+    7076,
+    118.80999999999999,
+    19,
+    54,
+    0
+   ],
+   [
     "X9s6--q0k5U",
-    6785,
-    93.11,
+    6787,
+    93.14,
     15,
     13,
     1
    ],
    [
-    "oSyRiH0vkBI",
-    6767,
-    95.23,
-    14,
-    12,
-    0
-   ],
-   [
     "GV9PqnGc_TI",
-    6294,
-    93.6,
+    6311,
+    93.62,
     15,
     44,
-    0
-   ],
-   [
-    "5mRx62PPThE",
-    6293,
-    122.48000000000002,
-    19,
-    50,
     0
    ],
    [
@@ -2886,34 +2891,42 @@
    ],
    [
     "0yonnQV5SMA",
-    5863,
-    76.61,
+    5870,
+    76.6,
     13,
     36,
     5
    ],
    [
     "v9Ob1P9LBws",
-    5762,
-    98.1,
+    5770,
+    98.11,
     16,
     19,
     2
    ],
    [
     "p0eTpBxbXkc",
-    5360,
-    87.75,
+    5364,
+    87.72,
     14,
     15,
     1
    ],
    [
     "cIZHhqGAemo",
-    5269,
+    5273,
     100.64,
     15,
     23,
+    1
+   ],
+   [
+    "NjtcYi4kzXA",
+    5066,
+    84.4,
+    15,
+    21,
     1
    ],
    [
@@ -2933,40 +2946,64 @@
     0
    ],
    [
+    "gWEa3MkJvmk",
+    4949,
+    77.66,
+    13,
+    33,
+    3
+   ],
+   [
+    "hYGpuFlzr_M",
+    4893,
+    94.36,
+    14,
+    14,
+    1
+   ],
+   [
     "EPFPaT4rj5k",
-    4595,
-    91.05,
+    4604,
+    91.01,
     14,
     12,
     1
    ],
    [
-    "kkPqwP8hyz4",
-    4469,
-    88.12,
-    14,
-    20,
-    4
-   ],
-   [
     "ulYVGl9guJk",
-    4468,
-    86.1,
+    4470,
+    86.11,
     15,
     20,
     1
    ],
    [
+    "kkPqwP8hyz4",
+    4470,
+    88.09,
+    14,
+    20,
+    4
+   ],
+   [
     "C-gsguJI_VQ",
-    4376,
+    4378,
     85.46,
     14,
     10,
     1
    ],
    [
+    "K01ltjDN7tc",
+    4216,
+    82.34,
+    14,
+    33,
+    2
+   ],
+   [
     "ffIiQH5yS6Q",
-    4143,
+    4144,
     68.49,
     11,
     45,
@@ -2974,8 +3011,8 @@
    ],
    [
     "mccbXMW6PR8",
-    4061,
-    93.28,
+    4067,
+    93.23,
     13,
     10,
     0
@@ -2990,15 +3027,15 @@
    ],
    [
     "54hA0-qmdaM",
-    3963,
-    91.36,
+    3964,
+    91.32,
     16,
     10,
     0
    ],
    [
     "cnUHdK51l4w",
-    3856,
+    3861,
     74.56,
     11,
     16,
@@ -3006,35 +3043,35 @@
    ],
    [
     "hvdLNneZI24",
-    3826,
-    79.87,
+    3837,
+    79.9,
     13,
     14,
     0
    ],
    [
     "uudSt02-Evk",
-    3783,
+    3786,
     71.62,
     10,
     11,
     2
    ],
    [
+    "ThyFTMj1iK0",
+    3732,
+    89.01,
+    13,
+    26,
+    1
+   ],
+   [
     "8SURN77PlTQ",
-    3665,
-    90.02,
+    3680,
+    89.9,
     14,
     16,
     0
-   ],
-   [
-    "NjtcYi4kzXA",
-    3654,
-    83.66,
-    15,
-    15,
-    1
    ],
    [
     "vw3pPy748ls",
@@ -3046,10 +3083,18 @@
    ],
    [
     "rBj0xDErOrs",
-    3558,
-    97.21,
+    3564,
+    97.15,
     16,
     12,
+    0
+   ],
+   [
+    "oKJuzNvEaRk",
+    3537,
+    79.93,
+    13,
+    16,
     0
    ],
    [
@@ -3062,23 +3107,15 @@
    ],
    [
     "u4Ka-f0WsS8",
-    3478,
-    81.63,
+    3488,
+    81.58,
     13,
     23,
     2
    ],
    [
-    "K01ltjDN7tc",
-    3476,
-    81.8,
-    14,
-    30,
-    2
-   ],
-   [
     "6Pr2ex3xuOU",
-    3470,
+    3472,
     94.41,
     13,
     19,
@@ -3102,7 +3139,7 @@
    ],
    [
     "gdQNqp1lSBE",
-    3422,
+    3424,
     81.64,
     13,
     14,
@@ -3117,14 +3154,6 @@
     1
    ],
    [
-    "hYGpuFlzr_M",
-    3248,
-    95.26,
-    14,
-    13,
-    1
-   ],
-   [
     "ZziBlIDkwWc",
     3200,
     77.44,
@@ -3134,27 +3163,35 @@
    ],
    [
     "ufNrrRaumVM",
-    3196,
-    83.78,
+    3199,
+    83.81,
     12,
     11,
     1
    ],
    [
-    "ThyFTMj1iK0",
-    3173,
-    90.85,
-    13,
-    25,
-    1
-   ],
-   [
     "pK1ClsrRbgs",
-    3156,
-    80,
+    3180,
+    79.92,
     14,
     15,
     1
+   ],
+   [
+    "7UmdF_VL9M4",
+    3144,
+    114.53999999999999,
+    21,
+    4,
+    1
+   ],
+   [
+    "E7adjOWrysI",
+    3094,
+    92.01,
+    15,
+    13,
+    0
    ],
    [
     "3zBY2pSXkrE",
@@ -3166,15 +3203,23 @@
    ],
    [
     "lAJb6CDN_v0",
-    3025,
+    3026,
     75.72,
     25,
     21,
     0
    ],
    [
+    "0ZGe7ZLwk3w",
+    3005,
+    84.96,
+    14,
+    26,
+    1
+   ],
+   [
     "T4mLChdc2WM",
-    2977,
+    2978,
     78.54,
     12,
     25,
@@ -3182,40 +3227,32 @@
    ],
    [
     "XNKlvEZVztM",
-    2976,
-    103.67,
+    2978,
+    103.66,
     17,
     23,
     0
    ],
    [
-    "E7adjOWrysI",
-    2945,
-    92.35,
-    15,
-    13,
-    0
-   ],
-   [
     "DshtAoWYhn8",
-    2896,
-    157.75,
+    2899,
+    157.7,
     23,
     24,
     4
    ],
    [
-    "CaqDaNCHfY0",
-    2810,
-    110.25,
-    16,
-    26,
-    2
+    "gcatVWG4Nbk",
+    2861,
+    107.50999999999999,
+    18,
+    15,
+    1
    ],
    [
     "7xjRSwfX83E",
-    2800,
-    71.68,
+    2801,
+    71.67,
     12,
     20,
     2
@@ -3230,8 +3267,8 @@
    ],
    [
     "a2Zc8jK28L0",
-    2644,
-    85.22,
+    2650,
+    85.25,
     13,
     6,
     0
@@ -3246,11 +3283,19 @@
    ],
    [
     "NfJsGLiUd1I",
-    2527,
+    2531,
     87.52,
     14,
     3,
     0
+   ],
+   [
+    "eFCmdx3yqjI",
+    2518,
+    62.77,
+    12,
+    5,
+    2
    ],
    [
     "NfqiC57Pclw",
@@ -3286,7 +3331,7 @@
    ],
    [
     "HtDjAaaVu9Y",
-    2322,
+    2324,
     79.8,
     14,
     10,
@@ -3302,17 +3347,9 @@
    ],
    [
     "aiZaZxyNYgQ",
-    2292,
+    2295,
     79.87,
     14,
-    8,
-    1
-   ],
-   [
-    "B1WUrxV1qgU",
-    2286,
-    72.44,
-    10,
     8,
     1
    ],
@@ -3334,7 +3371,7 @@
    ],
    [
     "SxsjCZEuNpc",
-    2164,
+    2165,
     73.87,
     12,
     14,
@@ -3342,15 +3379,23 @@
    ],
    [
     "syjCIdu7idw",
-    2138,
+    2139,
     77.83,
     11,
     10,
     0
    ],
    [
+    "YgTjDC45LnQ",
+    2138,
+    75.66,
+    12,
+    7,
+    0
+   ],
+   [
     "zmttqXweEzg",
-    2108,
+    2109,
     75.29,
     13,
     13,
@@ -3358,7 +3403,7 @@
    ],
    [
     "mUuYA4emaE8",
-    2103,
+    2105,
     73.96,
     12,
     4,
@@ -3382,24 +3427,16 @@
    ],
    [
     "tbm7hkhOEAc",
-    1974,
+    1977,
     80.92,
     13,
     5,
     1
    ],
    [
-    "7UmdF_VL9M4",
-    1954,
-    103.03999999999999,
-    19,
-    2,
-    1
-   ],
-   [
     "G0v552Gd__U",
-    1926,
-    96.12,
+    1932,
+    96.24,
     14,
     10,
     0
@@ -3422,7 +3459,7 @@
    ],
    [
     "5mI1Zwd3DfM",
-    1879,
+    1880,
     75.45,
     12,
     8,
@@ -3437,28 +3474,20 @@
     1
    ],
    [
-    "gcatVWG4Nbk",
-    1876,
-    122.83999999999999,
+    "CaqDaNCHfY0",
+    1823,
+    82.13,
+    12,
     20,
-    10,
-    1
+    2
    ],
    [
     "mFv9dfyH-t8",
-    1800,
-    75.03,
-    12,
+    1803,
+    74.97,
+    11,
     12,
     1
-   ],
-   [
-    "oKJuzNvEaRk",
-    1797,
-    87.5,
-    14,
-    9,
-    0
    ],
    [
     "np-1v5zhrjc",
@@ -3478,27 +3507,27 @@
    ],
    [
     "Mh2uUAugu5c",
-    1741,
-    73.39,
+    1747,
+    73.24,
     13,
     9,
     0
    ],
    [
     "f1MyRfdotbI",
-    1716,
-    67.78,
+    1736,
+    67.66,
     12,
     15,
     1
    ],
    [
-    "HVLl6Fm8pUE",
-    1645,
-    75.19,
-    12,
-    3,
-    0
+    "aGlv2O0hw-A",
+    1611,
+    82.73,
+    26,
+    15,
+    1
    ],
    [
     "ZDt501sg2cs",
@@ -3510,19 +3539,27 @@
    ],
    [
     "iJpVnQQRs1s",
-    1563,
-    54.42,
+    1574,
+    54.61,
     10,
     4,
     1
    ],
    [
     "A6mfOVz-mSg",
-    1561,
-    83.06,
+    1565,
+    83.09,
     14,
     9,
     0
+   ],
+   [
+    "TtpUTn9T1EY",
+    1546,
+    81.21,
+    12,
+    6,
+    2
    ],
    [
     "GJth1kOanu0",
@@ -3533,9 +3570,17 @@
     0
    ],
    [
+    "NF0Mpt36QvA",
+    1523,
+    82.41,
+    14,
+    4,
+    0
+   ],
+   [
     "gi3P2CHWrds",
-    1491,
-    79.68,
+    1495,
+    79.74,
     11,
     8,
     1
@@ -3550,8 +3595,8 @@
    ],
    [
     "kIfVzIrvc1I",
-    1450,
-    97.76,
+    1459,
+    97.69,
     16,
     4,
     1
@@ -3565,6 +3610,14 @@
     0
    ],
    [
+    "qWBZS7R8sLs",
+    1430,
+    69.53,
+    10,
+    6,
+    1
+   ],
+   [
     "BBpEl1nzkPk",
     1425,
     137.29,
@@ -3574,7 +3627,7 @@
    ],
    [
     "RuAXVyN79Ak",
-    1411,
+    1412,
     118,
     20,
     3,
@@ -3582,8 +3635,8 @@
    ],
    [
     "rostSoqICFM",
-    1395,
-    85.51,
+    1397,
+    85.38,
     14,
     13,
     0
@@ -3606,26 +3659,10 @@
    ],
    [
     "qducKltyWbs",
-    1312,
+    1313,
     83.86,
     11,
     7,
-    0
-   ],
-   [
-    "qWBZS7R8sLs",
-    1293,
-    70.07,
-    10,
-    6,
-    1
-   ],
-   [
-    "NF0Mpt36QvA",
-    1277,
-    81.18,
-    13,
-    4,
     0
    ],
    [
@@ -3645,12 +3682,28 @@
     0
    ],
    [
-    "YgTjDC45LnQ",
-    1221,
-    70.42,
+    "LZUg3OP-9aM",
+    1228,
+    70.36,
     11,
-    5,
+    1,
     0
+   ],
+   [
+    "vDucBdbU_UA",
+    1217,
+    74.16,
+    25,
+    13,
+    0
+   ],
+   [
+    "EmF5x4gltqw",
+    1210,
+    61.28,
+    12,
+    7,
+    1
    ],
    [
     "lUzrJ7tIkTc",
@@ -3661,11 +3714,11 @@
     0
    ],
    [
-    "vDucBdbU_UA",
-    1191,
-    73.7,
-    25,
+    "yk7e3G8BjAI",
+    1198,
+    74.77,
     13,
+    6,
     0
    ],
    [
@@ -3674,22 +3727,6 @@
     77.07,
     25,
     3,
-    1
-   ],
-   [
-    "TtpUTn9T1EY",
-    1166,
-    82.13,
-    12,
-    6,
-    1
-   ],
-   [
-    "aGlv2O0hw-A",
-    1160,
-    82.75,
-    26,
-    11,
     1
    ],
    [
@@ -3702,10 +3739,18 @@
    ],
    [
     "EfHhTnbNuBI",
-    1140,
+    1141,
     108.35,
     14,
     7,
+    1
+   ],
+   [
+    "MiFpPs1bMs0",
+    1121,
+    93.49,
+    13,
+    5,
     1
    ],
    [
@@ -3717,28 +3762,20 @@
     0
    ],
    [
-    "MiFpPs1bMs0",
-    1120,
-    93.49,
+    "PVD8kPxYwYQ",
+    1111,
+    85.46,
     13,
-    5,
+    8,
     1
    ],
    [
     "b3b7dxG_XYE",
-    1102,
-    62.5,
+    1103,
+    62.59,
     11,
     6,
     0
-   ],
-   [
-    "c35gmT12OGk",
-    1096,
-    105.91,
-    16,
-    11,
-    1
    ],
    [
     "Cpws3UCGfHQ",
@@ -3746,6 +3783,14 @@
     80.71,
     13,
     9,
+    0
+   ],
+   [
+    "n2PrRNMinW4",
+    1088,
+    107.58000000000001,
+    17,
+    8,
     0
    ],
    [
@@ -3781,27 +3826,11 @@
     0
    ],
    [
-    "n2PrRNMinW4",
-    1063,
-    108.59999999999998,
-    17,
-    8,
-    0
-   ],
-   [
     "3rPkhAVH-xw",
-    1055,
-    85.38,
+    1061,
+    85.49,
     14,
     5,
-    0
-   ],
-   [
-    "rHjp41oK2ac",
-    1052,
-    74.25,
-    12,
-    9,
     0
    ],
    [
@@ -3814,7 +3843,7 @@
    ],
    [
     "e6OPjLt8BVA",
-    1036,
+    1037,
     95.04,
     16,
     2,
@@ -3830,7 +3859,7 @@
    ],
    [
     "RUGTcmBfS0Q",
-    1033,
+    1034,
     109.62,
     15,
     2,
@@ -3845,35 +3874,35 @@
     2
    ],
    [
+    "R1I761vyvQI",
+    1024,
+    67.83,
+    10,
+    3,
+    0
+   ],
+   [
     "CAI8pXddo14",
-    1022,
+    1023,
     59.62,
     10,
     2,
     0
    ],
    [
-    "LJU_l-5hOa8",
-    1017,
-    160.21,
-    24,
-    12,
-    0
-   ],
-   [
     "Y3mzNHZ0R3g",
-    1009,
-    66.25,
+    1016,
+    66.68,
     11,
-    10,
+    11,
     0
    ],
    [
-    "1CvkZxAa-Vc",
-    1007,
-    68.33,
-    10,
-    6,
+    "kcpyoNEu7jY",
+    1013,
+    59.84,
+    11,
+    7,
     0
    ],
    [
@@ -3886,7 +3915,7 @@
    ],
    [
     "UkINLCUXkRY",
-    986,
+    989,
     64.94,
     9,
     3,
@@ -3901,115 +3930,67 @@
     0
    ],
    [
-    "SWjxrxslDcI",
-    974,
-    127.86,
-    23,
-    9,
-    0
-   ],
-   [
-    "PVD8kPxYwYQ",
-    952,
-    85.49,
-    13,
-    7,
-    1
-   ],
-   [
     "GHFMkk5gIUs",
-    943,
-    67.38,
+    944,
+    67.18,
     12,
     5,
     0
    ],
    [
-    "kcpyoNEu7jY",
-    911,
-    58.650000000000006,
+    "Abnsfs8nFIo",
+    937,
+    69.97,
     11,
-    5,
+    6,
     0
    ],
    [
+    "B1WUrxV1qgU",
+    794,
+    74.42,
+    11,
+    1,
+    1
+   ],
+   [
     "gAqQxsbSQmk",
-    683,
+    684,
     72.39,
     12,
     2,
     0
    ],
    [
-    "XZWBsVp_kOk",
-    407,
-    55.85,
+    "SWjxrxslDcI",
+    557,
+    58.59000000000001,
     10,
     2,
     0
    ],
    [
-    "PTewgWexXP8",
-    388,
-    77.6,
-    10,
+    "LJU_l-5hOa8",
+    415,
+    76.41,
+    11,
     4,
     0
    ],
    [
-    "IKsp_tXE4EI",
-    253,
-    79.4,
-    15,
+    "HVLl6Fm8pUE",
+    329,
+    93.4,
+    14,
     0,
     0
    ],
    [
-    "2m968K7vOfg",
-    219,
-    103.22,
-    18,
-    0,
-    0
-   ],
-   [
-    "SuvCYyIvKv8",
-    162,
-    114.62999999999998,
-    16,
-    1,
-    0
-   ],
-   [
-    "9RAohHZ0ur4",
-    145,
-    51.6,
+    "XZWBsVp_kOk",
+    236,
+    63.75999999999999,
     11,
-    2,
-    0
-   ],
-   [
-    "kdEbtK5fwQQ",
-    117,
-    82.41,
-    13,
     0,
-    0
-   ],
-   [
-    "F6cvfvbDu2g",
-    116,
-    67.67,
-    10,
-    1,
-    0
-   ],
-   [
-    "LZUWW_pFBIw",
-    108,
-    55.65,
-    12,
-    3,
     0
    ],
    [
@@ -4029,91 +4010,131 @@
     0
    ],
    [
+    "PTewgWexXP8",
+    84,
+    54.56999999999999,
+    7,
+    3,
+    0
+   ],
+   [
+    "c35gmT12OGk",
+    77,
+    96.88,
+    15,
+    0,
+    0
+   ],
+   [
     "6GU0sBGrw9c",
-    75,
+    76,
     116.77,
     23,
     1,
     0
    ],
    [
+    "2m968K7vOfg",
+    70,
+    82.07,
+    14,
+    0,
+    0
+   ],
+   [
+    "LZUWW_pFBIw",
+    67,
+    63.190000000000005,
+    13,
+    0,
+    0
+   ],
+   [
+    "IKsp_tXE4EI",
+    64,
+    70.48,
+    13,
+    0,
+    0
+   ],
+   [
+    "F6cvfvbDu2g",
+    58,
+    67.24,
+    10,
+    0,
+    0
+   ],
+   [
     "4JaO46shfHU",
-    65,
-    59.27,
+    58,
+    58.42,
     8,
     1,
     0
    ],
    [
-    "A_OVF8W4d2U",
-    53,
-    60.31999999999999,
-    10,
+    "SuvCYyIvKv8",
+    51,
+    88.3,
+    12,
     0,
     0
    ],
    [
-    "xH99jEtGQRg",
-    48,
-    63.92,
-    10,
+    "QFmJsL5xaVQ",
+    38,
+    134.4,
+    21,
+    1,
+    0
+   ],
+   [
+    "rHjp41oK2ac",
+    37,
+    80.68,
+    13,
     0,
     0
    ],
    [
     "0x98EpB5kto",
-    46,
-    110.40999999999998,
+    34,
+    110.38,
     14,
     0,
     0
    ],
    [
     "up7HtLq5fk4",
-    44,
-    80.64,
-    29,
-    0,
-    0
-   ],
-   [
-    "eI3Nyrjn2LE",
-    33,
-    62.63000000000001,
-    9,
-    0,
-    0
-   ],
-   [
-    "4gAkxCV7MaA",
+    34,
+    87.91,
     32,
-    75.55,
-    9,
     0,
     0
    ],
    [
     "dlF4a2xvJAs",
-    30,
-    192.21,
-    40,
-    0,
-    0
-   ],
-   [
-    "CGjHVJfvL3A",
-    29,
-    84.55,
-    13,
-    0,
-    0
-   ],
-   [
-    "QFmJsL5xaVQ",
     27,
-    151.6,
-    24,
-    1,
+    201.41,
+    42,
+    0,
+    0
+   ],
+   [
+    "9RAohHZ0ur4",
+    27,
+    26.369999999999997,
+    6,
+    0,
+    0
+   ],
+   [
+    "xH99jEtGQRg",
+    25,
+    75.65,
+    12,
+    0,
     0
    ],
    [
@@ -4125,50 +4146,66 @@
     0
    ],
    [
-    "C0nA-448ifg",
+    "CGjHVJfvL3A",
+    23,
+    74.79,
+    11,
+    0,
+    0
+   ],
+   [
+    "4gAkxCV7MaA",
     22,
-    231.88,
-    39,
-    0,
-    0
-   ],
-   [
-    "JM9R0cATqXU",
-    19,
-    330.95,
-    46,
-    0,
-    0
-   ],
-   [
-    "EmF5x4gltqw",
-    18,
-    67.13,
-    13,
-    0,
-    0
-   ],
-   [
-    "FD6RkHQlEgU",
-    15,
-    56.05,
+    72.63,
     9,
     0,
     0
    ],
    [
-    "vsmgJqjZ8CQ",
-    13,
-    69.98,
-    12,
+    "eI3Nyrjn2LE",
+    18,
+    65.88,
+    9,
     0,
     0
    ],
    [
-    "Ps-3m0_T22s",
-    13,
-    85.83,
-    13,
+    "C0nA-448ifg",
+    18,
+    284.11,
+    48,
+    0,
+    0
+   ],
+   [
+    "JM9R0cATqXU",
+    18,
+    469.28999999999996,
+    65,
+    0,
+    0
+   ],
+   [
+    "dO4sQ-3EC38",
+    16,
+    84.71,
+    14,
+    0,
+    0
+   ],
+   [
+    "A_OVF8W4d2U",
+    16,
+    83.78,
+    14,
+    0,
+    0
+   ],
+   [
+    "1CvkZxAa-Vc",
+    15,
+    66.65,
+    9,
     0,
     0
    ],
@@ -4181,66 +4218,58 @@
     0
    ],
    [
-    "KZmpDSVZ1ss",
-    12,
-    36.29,
-    13,
-    0,
-    0
-   ],
-   [
-    "UUHZ6p74pug",
-    12,
-    68.2,
+    "TquxXcmk094",
     10,
-    0,
-    0
-   ],
-   [
-    "dO4sQ-3EC38",
-    11,
-    80.2,
-    13,
-    0,
-    0
-   ],
-   [
-    "POxMph9Fv2o",
-    11,
-    67.02,
+    141.28,
     22,
     0,
     0
    ],
    [
     "nSxz31RL-ho",
-    11,
-    236.93,
-    78,
+    10,
+    296.17,
+    97,
+    0,
+    0
+   ],
+   [
+    "POxMph9Fv2o",
+    10,
+    74.8,
+    24,
+    0,
+    0
+   ],
+   [
+    "FD6RkHQlEgU",
+    10,
+    47.6,
+    8,
+    0,
+    0
+   ],
+   [
+    "KZmpDSVZ1ss",
+    10,
+    40.05,
+    15,
+    0,
+    0
+   ],
+   [
+    "21tQ_VO3o9M",
+    9,
+    73.29,
+    13,
     0,
     0
    ],
    [
     "qu9sr0JtHHM",
-    10,
+    8,
     24.06,
     7,
-    0,
-    0
-   ],
-   [
-    "TquxXcmk094",
-    10,
-    129.15,
-    20,
-    0,
-    0
-   ],
-   [
-    "0tKaK9DuNx4",
-    9,
-    56.97,
-    13,
     0,
     0
    ],
@@ -4253,66 +4282,18 @@
     0
    ],
    [
-    "5OxXiByHSj4",
-    8,
-    75.36,
-    31,
-    0,
-    0
-   ],
-   [
-    "oaYEpHoMdDo",
-    7,
-    94.62,
-    12,
-    0,
-    0
-   ],
-   [
-    "if3nfLYsuF4",
-    7,
-    24.71,
-    4,
-    0,
-    0
-   ],
-   [
-    "OFWm_FYPo1s",
+    "0tKaK9DuNx4",
     6,
-    87.86,
-    18,
-    0,
-    0
-   ],
-   [
-    "Q7Fdwf2i1KI",
-    6,
-    203.62999999999997,
-    42,
-    0,
-    0
-   ],
-   [
-    "Tepqt4MN0lE",
-    6,
-    60.92999999999999,
+    66.83,
     15,
     0,
     0
    ],
    [
-    "BiGBPujFFtA",
+    "kdEbtK5fwQQ",
     6,
-    18.54,
-    2,
-    0,
-    0
-   ],
-   [
-    "rujHZFOO0nI",
-    6,
-    49.27,
-    22,
+    61.67,
+    9,
     0,
     0
    ],
@@ -4333,35 +4314,59 @@
     0
    ],
    [
-    "qAyQa84-g60",
-    5,
-    118.38,
-    36,
-    0,
-    0
-   ],
-   [
-    "Z1LGmwcsd8Q",
-    5,
-    85.43,
-    19,
-    0,
-    0
-   ],
-   [
-    "LSRR_tONJdo",
+    "if3nfLYsuF4",
+    6,
+    24.71,
     4,
-    145.33,
+    0,
+    0
+   ],
+   [
+    "UUHZ6p74pug",
+    6,
+    63.49,
+    9,
+    0,
+    0
+   ],
+   [
+    "Ps-3m0_T22s",
+    5,
+    51.88,
+    8,
+    0,
+    0
+   ],
+   [
+    "5OxXiByHSj4",
+    5,
+    75.36,
+    31,
+    0,
+    0
+   ],
+   [
+    "OFWm_FYPo1s",
+    4,
+    100,
     21,
     0,
     0
    ],
    [
-    "6GSVlmFIAmM",
+    "Q7Fdwf2i1KI",
     4,
-    26.3,
-    7,
+    203.62999999999997,
+    42,
     0,
+    0
+   ],
+   [
+    "oaYEpHoMdDo",
+    4,
+    90,
+    11,
+    -1,
     0
    ],
    [
@@ -4373,18 +4378,18 @@
     0
    ],
    [
-    "80YGOUFosks",
+    "qAyQa84-g60",
     4,
-    63.04,
-    14,
+    118.38,
+    36,
     0,
     0
    ],
    [
-    "2tSSw4llUPI",
-    4,
-    39.12,
-    6,
+    "Tepqt4MN0lE",
+    3,
+    47.6,
+    11,
     0,
     0
    ]
@@ -4397,11 +4402,6 @@
    "views"
   ],
   "rows": [
-   [
-    "2026-10-19",
-    "shorts",
-    9310
-   ],
    [
     "2026-10-20",
     "shorts",
@@ -4531,179 +4531,20 @@
     "2026-11-13",
     "videoOnDemand",
     1
+   ],
+   [
+    "2026-11-14",
+    "creatorContentTypeUnspecified",
+    2
+   ],
+   [
+    "2026-11-14",
+    "shorts",
+    35095
    ]
   ]
  },
  "daily_content_type_engaged": {
-  "columns": [
-   "day",
-   "creatorContentType",
-   "views",
-   "engagedViews"
-  ],
-  "rows": [
-   [
-    "2026-10-19",
-    "shorts",
-    9310,
-    3314
-   ],
-   [
-    "2026-10-20",
-    "shorts",
-    11698,
-    4430
-   ],
-   [
-    "2026-10-21",
-    "shorts",
-    18189,
-    7942
-   ],
-   [
-    "2026-10-22",
-    "shorts",
-    20349,
-    9168
-   ],
-   [
-    "2026-10-23",
-    "shorts",
-    29478,
-    14466
-   ],
-   [
-    "2026-10-24",
-    "shorts",
-    17281,
-    8677
-   ],
-   [
-    "2026-10-25",
-    "shorts",
-    4440,
-    2168
-   ],
-   [
-    "2026-10-26",
-    "shorts",
-    1745,
-    869
-   ],
-   [
-    "2026-10-27",
-    "shorts",
-    898,
-    340
-   ],
-   [
-    "2026-10-28",
-    "shorts",
-    410,
-    106
-   ],
-   [
-    "2026-10-29",
-    "shorts",
-    295,
-    90
-   ],
-   [
-    "2026-10-30",
-    "shorts",
-    83,
-    29
-   ],
-   [
-    "2026-10-31",
-    "shorts",
-    60,
-    26
-   ],
-   [
-    "2026-11-01",
-    "shorts",
-    1184,
-    493
-   ],
-   [
-    "2026-11-02",
-    "shorts",
-    8595,
-    3415
-   ],
-   [
-    "2026-11-03",
-    "shorts",
-    10633,
-    4452
-   ],
-   [
-    "2026-11-04",
-    "shorts",
-    27156,
-    13185
-   ],
-   [
-    "2026-11-05",
-    "shorts",
-    27537,
-    13143
-   ],
-   [
-    "2026-11-06",
-    "shorts",
-    35086,
-    16718
-   ],
-   [
-    "2026-11-07",
-    "shorts",
-    31854,
-    15222
-   ],
-   [
-    "2026-11-08",
-    "shorts",
-    23148,
-    10774
-   ],
-   [
-    "2026-11-09",
-    "shorts",
-    22305,
-    10041
-   ],
-   [
-    "2026-11-10",
-    "shorts",
-    23899,
-    10363
-   ],
-   [
-    "2026-11-11",
-    "shorts",
-    27091,
-    12699
-   ],
-   [
-    "2026-11-12",
-    "shorts",
-    31000,
-    14087
-   ],
-   [
-    "2026-11-13",
-    "shorts",
-    23732,
-    10852
-   ],
-   [
-    "2026-11-13",
-    "videoOnDemand",
-    1,
-    1
-   ]
-  ]
+  "error": "{\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason\": \"backendError\"\n      }\n    ],\n    \"status\": \"INTERNAL\"\n  }\n}\n"
  }
 }
