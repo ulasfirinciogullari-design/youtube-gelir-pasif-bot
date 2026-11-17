@@ -1,5 +1,5 @@
 {
- "at": "2026-11-17T18:06:04+00:00",
+ "at": "2026-11-17T20:57:47+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -16,8 +16,8 @@
  ],
  "kanal_istatistik": {
   "subscriberCount": 71,
-  "viewCount": 84712,
-  "videoCount": 91
+  "viewCount": 84920,
+  "videoCount": 92
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -33,7 +33,7 @@
    "baslik": "Güneş Gerçekte Ne Kadar Büyük?"
   },
   "HdSKbp0rIz8": {
-   "view": 119,
+   "view": 120,
    "like": 2,
    "comment": 0,
    "baslik": "Güneş Bir Anda Patlasaydı Ne Olurdu?"
@@ -87,7 +87,7 @@
    "baslik": "İnsanlar Hiç Uyumasaydı Ne Olurdu?"
   },
   "oyPgO_oDYlU": {
-   "view": 1031,
+   "view": 1032,
    "like": 10,
    "comment": 0,
    "baslik": "En Büyük Yıldız Ne Kadar Büyük?"
@@ -135,7 +135,7 @@
    "baslik": "Dünya 1 Günde Uzayda Ne Kadar Yol Alır?"
   },
   "iKojt12DL_Y": {
-   "view": 1458,
+   "view": 1459,
    "like": 7,
    "comment": 0,
    "baslik": "Jüpiter Yok Olsaydı Ne Olurdu?"
@@ -153,7 +153,7 @@
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
   },
   "-Ob9VS2V1H4": {
-   "view": 1119,
+   "view": 1120,
    "like": 5,
    "comment": 0,
    "baslik": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?"
@@ -345,7 +345,7 @@
    "baslik": "Bir Fil 1 Günde Ne Kadar Yemek Yer? 😮"
   },
   "33I8lo_Kk18": {
-   "view": 1144,
+   "view": 1145,
    "like": 6,
    "comment": 2,
    "baslik": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın? 😳"
@@ -423,7 +423,7 @@
    "baslik": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu? 😳"
   },
   "nFBLtsB59Uw": {
-   "view": 234,
+   "view": 236,
    "like": 1,
    "comment": 0,
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
@@ -435,7 +435,7 @@
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
   },
   "mTcbQupGjWQ": {
-   "view": 302,
+   "view": 304,
    "like": 2,
    "comment": 0,
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
@@ -465,13 +465,13 @@
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
   },
   "RKGn39tzpn4": {
-   "view": 964,
+   "view": 965,
    "like": 6,
    "comment": 2,
    "baslik": "Hiç Bakterin Olmasaydı Ne Olurdu? 😳"
   },
   "2F-iAcfk3X4": {
-   "view": 928,
+   "view": 929,
    "like": 4,
    "comment": 0,
    "baslik": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu? 😳"
@@ -483,7 +483,7 @@
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 671,
+   "view": 673,
    "like": 8,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
@@ -495,7 +495,7 @@
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
   },
   "5X21vqv32gg": {
-   "view": 922,
+   "view": 929,
    "like": 5,
    "comment": 0,
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
@@ -507,13 +507,13 @@
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 1003,
+   "view": 1015,
    "like": 7,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
   },
   "YgY6Jzda0Hk": {
-   "view": 630,
+   "view": 633,
    "like": 6,
    "comment": 0,
    "baslik": "Bir Yıldırım Gerçekte Ne Kadar Sıcak? 🤯"
@@ -531,34 +531,40 @@
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 947,
+   "view": 967,
    "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 818,
+   "view": 828,
    "like": 12,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
   "sLED9nX8m1w": {
-   "view": 308,
+   "view": 330,
    "like": 3,
    "comment": 0,
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
   },
   "EXfL-FfCYvc": {
-   "view": 239,
+   "view": 246,
    "like": 1,
    "comment": 0,
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 4,
-   "like": 0,
+   "view": 26,
+   "like": 1,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
+  },
+  "3Fx81kZhy8s": {
+   "view": 140,
+   "like": 2,
+   "comment": 0,
+   "baslik": "Ağaçlar Hiç Olmasaydı Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -686,10 +692,10 @@
    "devam_yuzde": 53.1
   },
   "bqFeef1QL08": {
-   "views": 1470,
+   "views": 1472,
    "estimatedMinutesWatched": 357,
    "averageViewDuration": 27,
-   "averageViewPercentage": 72.22,
+   "averageViewPercentage": 72.12,
    "likes": 17,
    "shares": 0,
    "comments": 3,
@@ -697,13 +703,13 @@
    "title": "Oksijen 5 Saniyeliğine Yok Olsaydı Ne Olurdu?",
    "sources": {
     "SHORTS": 1400,
-    "YT_SEARCH": 38,
+    "YT_SEARCH": 40,
     "YT_CHANNEL": 21,
     "PLAYLIST": 7,
     "YT_OTHER_PAGE": 4,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 755,
+   "engagedViews": 756,
    "devam_yuzde": 51.4
   },
   "iKojt12DL_Y": {
@@ -768,7 +774,7 @@
    "devam_yuzde": 52.9
   },
   "pJPCpis147c": {
-   "views": 1371,
+   "views": 1373,
    "estimatedMinutesWatched": 180,
    "averageViewDuration": 17,
    "averageViewPercentage": 65.98,
@@ -779,14 +785,14 @@
    "title": "Ay'ın Yerinde Jüpiter Olsaydı Ne Olurdu?",
    "sources": {
     "SHORTS": 1240,
-    "YT_SEARCH": 108,
+    "YT_SEARCH": 110,
     "YT_CHANNEL": 21,
     "YT_OTHER_PAGE": 1,
     "EXT_URL": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 581,
-   "devam_yuzde": 42.4
+   "devam_yuzde": 42.3
   },
   "RLuGUU-xaYE": {
    "views": 1366,
@@ -934,7 +940,7 @@
    "devam_yuzde": 51.2
   },
   "HVyvxH-huIc": {
-   "views": 1266,
+   "views": 1267,
    "estimatedMinutesWatched": 216,
    "averageViewDuration": 19,
    "averageViewPercentage": 78.4,
@@ -945,7 +951,7 @@
    "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
    "sources": {
     "SHORTS": 1208,
-    "YT_SEARCH": 54,
+    "YT_SEARCH": 55,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0
    },
@@ -994,10 +1000,10 @@
    "devam_yuzde": 54.7
   },
   "4J5Gbwz3y4E": {
-   "views": 1220,
+   "views": 1221,
    "estimatedMinutesWatched": 203,
    "averageViewDuration": 16,
-   "averageViewPercentage": 62.21,
+   "averageViewPercentage": 62.17,
    "likes": 7,
    "shares": 0,
    "comments": 1,
@@ -1005,11 +1011,11 @@
    "title": "Bir Fil 1 Günde Ne Kadar Yemek Yer?",
    "sources": {
     "SHORTS": 1180,
-    "YT_SEARCH": 40,
+    "YT_SEARCH": 41,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 686,
-   "devam_yuzde": 56.2
+   "engagedViews": 687,
+   "devam_yuzde": 56.3
   },
   "gEB2tRsHr5s": {
    "views": 1182,
@@ -1114,7 +1120,7 @@
    "devam_yuzde": 46.0
   },
   "kJHNXA1I-SU": {
-   "views": 1127,
+   "views": 1128,
    "estimatedMinutesWatched": 136,
    "averageViewDuration": 12,
    "averageViewPercentage": 50.77,
@@ -1125,19 +1131,19 @@
    "title": "Bir Atom Gerçekte Ne Kadar Küçük?",
    "sources": {
     "SHORTS": 970,
-    "YT_SEARCH": 151,
+    "YT_SEARCH": 152,
     "YT_CHANNEL": 4,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 596,
-   "devam_yuzde": 52.9
+   "devam_yuzde": 52.8
   },
   "sKXUwUMgkt0": {
-   "views": 1122,
+   "views": 1125,
    "estimatedMinutesWatched": 120,
    "averageViewDuration": 14,
-   "averageViewPercentage": 59.57,
+   "averageViewPercentage": 59.47,
    "likes": 11,
    "shares": 0,
    "comments": 0,
@@ -1145,13 +1151,13 @@
    "title": "Dünya'nın Manyetik Alanı Kaybolsaydı Sana Ne Olurdu?",
    "sources": {
     "SHORTS": 1052,
-    "YT_SEARCH": 63,
+    "YT_SEARCH": 66,
     "YT_CHANNEL": 4,
     "EXT_URL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 436,
+   "engagedViews": 438,
    "devam_yuzde": 38.9
   },
   "-Ob9VS2V1H4": {
@@ -1175,7 +1181,7 @@
    "devam_yuzde": 32.1
   },
   "5-jo5Fr030o": {
-   "views": 1116,
+   "views": 1118,
    "estimatedMinutesWatched": 133,
    "averageViewDuration": 13,
    "averageViewPercentage": 50.95,
@@ -1186,16 +1192,16 @@
    "title": "Okyanusun En Dibine Dalsaydın Ne Olurdu?",
    "sources": {
     "SHORTS": 1083,
-    "YT_SEARCH": 29,
+    "YT_SEARCH": 31,
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 552,
-   "devam_yuzde": 49.5
+   "devam_yuzde": 49.4
   },
   "V93tM_0-ll4": {
-   "views": 1100,
+   "views": 1101,
    "estimatedMinutesWatched": 158,
    "averageViewDuration": 16,
    "averageViewPercentage": 65.36,
@@ -1206,13 +1212,13 @@
    "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
    "sources": {
     "SHORTS": 1023,
-    "YT_SEARCH": 75,
+    "YT_SEARCH": 76,
     "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 541,
-   "devam_yuzde": 49.2
+   "devam_yuzde": 49.1
   },
   "VMFzMO2A2CY": {
    "views": 1097,
@@ -1313,26 +1319,26 @@
    "devam_yuzde": 47.0
   },
   "xLGCGQYwSmE": {
-   "views": 1038,
-   "estimatedMinutesWatched": 220,
+   "views": 1047,
+   "estimatedMinutesWatched": 222,
    "averageViewDuration": 21,
-   "averageViewPercentage": 86.72,
-   "likes": 14,
+   "averageViewPercentage": 86.81,
+   "likes": 15,
    "shares": 0,
    "comments": 1,
    "subscribersGained": 0,
    "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
    "sources": {
-    "SHORTS": 1003,
+    "SHORTS": 1012,
     "YT_SEARCH": 35,
     "NO_LINK_OTHER": 0,
     "YT_CHANNEL": 0
    },
-   "engagedViews": 586,
-   "devam_yuzde": 56.5
+   "engagedViews": 591,
+   "devam_yuzde": 56.4
   },
   "xRibz7N8GmY": {
-   "views": 1036,
+   "views": 1037,
    "estimatedMinutesWatched": 211,
    "averageViewDuration": 23,
    "averageViewPercentage": 91.58,
@@ -1342,20 +1348,20 @@
    "subscribersGained": 0,
    "title": "Everest Gerçekte Ne Kadar Yüksek?",
    "sources": {
-    "SHORTS": 996,
+    "SHORTS": 997,
     "YT_SEARCH": 36,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 1,
     "YT_CHANNEL": 0
    },
    "engagedViews": 501,
-   "devam_yuzde": 48.4
+   "devam_yuzde": 48.3
   },
   "oyPgO_oDYlU": {
-   "views": 1030,
-   "estimatedMinutesWatched": 134,
+   "views": 1031,
+   "estimatedMinutesWatched": 135,
    "averageViewDuration": 16,
-   "averageViewPercentage": 70.27,
+   "averageViewPercentage": 70.17,
    "likes": 10,
    "shares": 0,
    "comments": 0,
@@ -1363,13 +1369,13 @@
    "title": "En Büyük Yıldız Ne Kadar Büyük?",
    "sources": {
     "SHORTS": 886,
-    "YT_SEARCH": 123,
+    "YT_SEARCH": 124,
     "YT_CHANNEL": 20,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 433,
-   "devam_yuzde": 42.0
+   "engagedViews": 434,
+   "devam_yuzde": 42.1
   },
   "fwDsy2Wq4S4": {
    "views": 1030,
@@ -1472,6 +1478,26 @@
    "engagedViews": 419,
    "devam_yuzde": 41.7
   },
+  "ActwPx-yTCQ": {
+   "views": 1004,
+   "estimatedMinutesWatched": 190,
+   "averageViewDuration": 19,
+   "averageViewPercentage": 79.93,
+   "likes": 9,
+   "shares": 0,
+   "comments": 2,
+   "subscribersGained": 0,
+   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
+   "sources": {
+    "SHORTS": 888,
+    "YT_SEARCH": 101,
+    "YT_CHANNEL": 14,
+    "HASHTAGS": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 573,
+   "devam_yuzde": 57.1
+  },
   "rijRRVfG0ZY": {
    "views": 1003,
    "estimatedMinutesWatched": 122,
@@ -1492,26 +1518,6 @@
    },
    "engagedViews": 456,
    "devam_yuzde": 45.5
-  },
-  "ActwPx-yTCQ": {
-   "views": 1003,
-   "estimatedMinutesWatched": 190,
-   "averageViewDuration": 19,
-   "averageViewPercentage": 79.93,
-   "likes": 9,
-   "shares": 0,
-   "comments": 2,
-   "subscribersGained": 0,
-   "title": "Ay'ın Yerine Uranüs Geçseydi Ne Olurdu?",
-   "sources": {
-    "SHORTS": 888,
-    "YT_SEARCH": 100,
-    "YT_CHANNEL": 14,
-    "HASHTAGS": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 572,
-   "devam_yuzde": 57.0
   },
   "LjCJ1NSbCQQ": {
    "views": 996,
@@ -1555,7 +1561,7 @@
    "devam_yuzde": 52.4
   },
   "73hAb835EFE": {
-   "views": 983,
+   "views": 985,
    "estimatedMinutesWatched": 81,
    "averageViewDuration": 14,
    "averageViewPercentage": 57.85,
@@ -1566,13 +1572,32 @@
    "title": "Hapşırığını Tutsaydın Ne Olurdu?",
    "sources": {
     "SHORTS": 963,
-    "YT_SEARCH": 16,
+    "YT_SEARCH": 18,
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 280,
-   "devam_yuzde": 28.5
+   "devam_yuzde": 28.4
+  },
+  "MXkhpdIxoFM": {
+   "views": 979,
+   "estimatedMinutesWatched": 238,
+   "averageViewDuration": 24,
+   "averageViewPercentage": 44.53,
+   "likes": 7,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
+   "sources": {
+    "SHORTS": 935,
+    "YT_SEARCH": 42,
+    "YT_CHANNEL": 2,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 549,
+   "devam_yuzde": 56.1
   },
   "yexFsNeB7JM": {
    "views": 968,
@@ -1594,10 +1619,10 @@
    "devam_yuzde": 43.8
   },
   "Sr9y1BY4FPk": {
-   "views": 962,
+   "views": 964,
    "estimatedMinutesWatched": 199,
    "averageViewDuration": 28,
-   "averageViewPercentage": 100.95999999999998,
+   "averageViewPercentage": 100.62,
    "likes": 8,
    "shares": 0,
    "comments": 1,
@@ -1605,18 +1630,38 @@
    "title": "Damarların Gerçekte Ne Kadar Uzun?",
    "sources": {
     "SHORTS": 941,
-    "YT_SEARCH": 20,
+    "YT_SEARCH": 22,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 398,
-   "devam_yuzde": 41.4
+   "engagedViews": 400,
+   "devam_yuzde": 41.5
+  },
+  "RKGn39tzpn4": {
+   "views": 954,
+   "estimatedMinutesWatched": 127,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 54.44,
+   "likes": 6,
+   "shares": 0,
+   "comments": 1,
+   "subscribersGained": 0,
+   "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 912,
+    "YT_SEARCH": 38,
+    "YT_CHANNEL": 3,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 499,
+   "devam_yuzde": 52.3
   },
   "mt9KmhllXGQ": {
-   "views": 948,
+   "views": 949,
    "estimatedMinutesWatched": 109,
    "averageViewDuration": 14,
-   "averageViewPercentage": 56.16,
+   "averageViewPercentage": 56.08,
    "likes": 6,
    "shares": 2,
    "comments": 0,
@@ -1626,10 +1671,31 @@
     "SHORTS": 918,
     "YT_SEARCH": 28,
     "YT_CHANNEL": 2,
+    "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 416,
+   "engagedViews": 417,
    "devam_yuzde": 43.9
+  },
+  "325eJNknZqk": {
+   "views": 947,
+   "estimatedMinutesWatched": 97,
+   "averageViewDuration": 15,
+   "averageViewPercentage": 57.78,
+   "likes": 11,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 1,
+   "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
+   "sources": {
+    "SHORTS": 893,
+    "YT_SEARCH": 51,
+    "YT_OTHER_PAGE": 2,
+    "YT_CHANNEL": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 335,
+   "devam_yuzde": 35.4
   },
   "I-Tn6aqeA80": {
    "views": 946,
@@ -1671,26 +1737,6 @@
    "engagedViews": 446,
    "devam_yuzde": 47.1
   },
-  "RKGn39tzpn4": {
-   "views": 943,
-   "estimatedMinutesWatched": 125,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 54.39000000000001,
-   "likes": 6,
-   "shares": 0,
-   "comments": 1,
-   "subscribersGained": 0,
-   "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 903,
-    "YT_SEARCH": 36,
-    "YT_CHANNEL": 3,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 493,
-   "devam_yuzde": 52.3
-  },
   "6pHVAozelhE": {
    "views": 938,
    "estimatedMinutesWatched": 84,
@@ -1712,11 +1758,30 @@
    "engagedViews": 304,
    "devam_yuzde": 32.4
   },
+  "L_hk4oVckRM": {
+   "views": 935,
+   "estimatedMinutesWatched": 69,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 53.68999999999999,
+   "likes": 3,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+   "sources": {
+    "SHORTS": 867,
+    "YT_SEARCH": 66,
+    "YT_CHANNEL": 2,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 234,
+   "devam_yuzde": 25.0
+  },
   "2F-iAcfk3X4": {
-   "views": 931,
-   "estimatedMinutesWatched": 97,
+   "views": 933,
+   "estimatedMinutesWatched": 98,
    "averageViewDuration": 17,
-   "averageViewPercentage": 68.1,
+   "averageViewPercentage": 68.18,
    "likes": 4,
    "shares": 0,
    "comments": 0,
@@ -1724,52 +1789,13 @@
    "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
    "sources": {
     "SHORTS": 892,
-    "YT_SEARCH": 36,
+    "YT_SEARCH": 38,
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 283,
+   "engagedViews": 284,
    "devam_yuzde": 30.4
-  },
-  "325eJNknZqk": {
-   "views": 928,
-   "estimatedMinutesWatched": 94,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 57.57,
-   "likes": 11,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 1,
-   "title": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak?",
-   "sources": {
-    "SHORTS": 886,
-    "YT_SEARCH": 40,
-    "YT_CHANNEL": 1,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 326,
-   "devam_yuzde": 35.1
-  },
-  "L_hk4oVckRM": {
-   "views": 924,
-   "estimatedMinutesWatched": 67,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 53.12,
-   "likes": 3,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
-   "sources": {
-    "SHORTS": 865,
-    "YT_SEARCH": 57,
-    "YT_CHANNEL": 2,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 231,
-   "devam_yuzde": 25.0
   },
   "E9dsm0cEDnM": {
    "views": 906,
@@ -1792,6 +1818,25 @@
    "engagedViews": 265,
    "devam_yuzde": 29.2
   },
+  "5X21vqv32gg": {
+   "views": 883,
+   "estimatedMinutesWatched": 108,
+   "averageViewDuration": 17,
+   "averageViewPercentage": 66.01,
+   "likes": 5,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 1,
+   "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
+   "sources": {
+    "SHORTS": 865,
+    "YT_SEARCH": 17,
+    "YT_CHANNEL": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 332,
+   "devam_yuzde": 37.6
+  },
   "F9Hkco1HKiA": {
    "views": 833,
    "estimatedMinutesWatched": 110,
@@ -1811,25 +1856,6 @@
    },
    "engagedViews": 357,
    "devam_yuzde": 42.9
-  },
-  "5X21vqv32gg": {
-   "views": 799,
-   "estimatedMinutesWatched": 94,
-   "averageViewDuration": 16,
-   "averageViewPercentage": 65.32,
-   "likes": 6,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 1,
-   "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
-   "sources": {
-    "SHORTS": 784,
-    "YT_SEARCH": 14,
-    "YT_CHANNEL": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 290,
-   "devam_yuzde": 36.3
   },
   "5lbPgaPW58Y": {
    "views": 756,
@@ -1851,69 +1877,50 @@
    "devam_yuzde": 25.9
   },
   "Pxik5vC4NHU": {
-   "views": 663,
-   "estimatedMinutesWatched": 166,
-   "averageViewDuration": 26,
-   "averageViewPercentage": 46.57,
-   "likes": 2,
+   "views": 679,
+   "estimatedMinutesWatched": 176,
+   "averageViewDuration": 27,
+   "averageViewPercentage": 47.84,
+   "likes": 4,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 1,
    "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
    "sources": {
-    "SHORTS": 642,
-    "YT_SEARCH": 17,
+    "SHORTS": 657,
+    "YT_SEARCH": 18,
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 364,
-   "devam_yuzde": 54.9
-  },
-  "MXkhpdIxoFM": {
-   "views": 617,
-   "estimatedMinutesWatched": 156,
-   "averageViewDuration": 26,
-   "averageViewPercentage": 46.52,
-   "likes": 5,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
-   "sources": {
-    "SHORTS": 597,
-    "YT_SEARCH": 18,
-    "YT_CHANNEL": 2,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 346,
-   "devam_yuzde": 56.1
+   "engagedViews": 375,
+   "devam_yuzde": 55.2
   },
   "6XodpIbEU8A": {
-   "views": 608,
-   "estimatedMinutesWatched": 144,
-   "averageViewDuration": 26,
-   "averageViewPercentage": 46.64,
-   "likes": 8,
+   "views": 653,
+   "estimatedMinutesWatched": 152,
+   "averageViewDuration": 25,
+   "averageViewPercentage": 46.12,
+   "likes": 9,
    "shares": 0,
    "comments": 1,
    "subscribersGained": 1,
    "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
    "sources": {
-    "SHORTS": 580,
-    "YT_SEARCH": 24,
-    "YT_CHANNEL": 2,
+    "SHORTS": 619,
+    "YT_SEARCH": 29,
+    "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 318,
-   "devam_yuzde": 52.3
+   "engagedViews": 339,
+   "devam_yuzde": 51.9
   },
   "0lt8q81TuOs": {
-   "views": 598,
+   "views": 600,
    "estimatedMinutesWatched": 90,
    "averageViewDuration": 19,
-   "averageViewPercentage": 63.75999999999999,
+   "averageViewPercentage": 63.72,
    "likes": 0,
    "shares": 0,
    "comments": 0,
@@ -1921,39 +1928,39 @@
    "title": "DNA'n Gerçekte Ne Kadar Uzun?",
    "sources": {
     "SHORTS": 575,
-    "YT_SEARCH": 17,
+    "YT_SEARCH": 19,
     "YT_OTHER_PAGE": 4,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 264,
-   "devam_yuzde": 44.1
+   "engagedViews": 265,
+   "devam_yuzde": 44.2
   },
   "WR_w6VSOY-s": {
-   "views": 574,
-   "estimatedMinutesWatched": 68,
+   "views": 594,
+   "estimatedMinutesWatched": 71,
    "averageViewDuration": 15,
-   "averageViewPercentage": 58.74,
+   "averageViewPercentage": 58.29,
    "likes": 2,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 0,
    "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
    "sources": {
-    "SHORTS": 526,
+    "SHORTS": 546,
     "YT_SEARCH": 46,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0,
     "YT_OTHER_PAGE": 0
    },
-   "engagedViews": 226,
-   "devam_yuzde": 39.4
+   "engagedViews": 236,
+   "devam_yuzde": 39.7
   },
   "xMYUnZVVITU": {
-   "views": 563,
-   "estimatedMinutesWatched": 105,
+   "views": 564,
+   "estimatedMinutesWatched": 106,
    "averageViewDuration": 22,
-   "averageViewPercentage": 67.04,
+   "averageViewPercentage": 67.14,
    "likes": 12,
    "shares": 0,
    "comments": 1,
@@ -1962,15 +1969,34 @@
    "sources": {
     "SHORTS": 526,
     "YT_CHANNEL": 20,
-    "YT_SEARCH": 16,
+    "YT_SEARCH": 17,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 264,
-   "devam_yuzde": 46.9
+   "engagedViews": 265,
+   "devam_yuzde": 47.0
+  },
+  "YgY6Jzda0Hk": {
+   "views": 472,
+   "estimatedMinutesWatched": 57,
+   "averageViewDuration": 13,
+   "averageViewPercentage": 55.34,
+   "likes": 2,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
+   "sources": {
+    "SHORTS": 457,
+    "YT_SEARCH": 15,
+    "NO_LINK_OTHER": 0,
+    "YT_CHANNEL": 0
+   },
+   "engagedViews": 235,
+   "devam_yuzde": 49.8
   },
   "O1WLYgc1whA": {
-   "views": 418,
+   "views": 423,
    "estimatedMinutesWatched": 34,
    "averageViewDuration": 14,
    "averageViewPercentage": 57.17,
@@ -1981,13 +2007,13 @@
    "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
    "sources": {
     "SHORTS": 375,
-    "YT_SEARCH": 38,
+    "YT_SEARCH": 43,
     "YT_CHANNEL": 3,
     "NO_LINK_OTHER": 1,
     "YT_OTHER_PAGE": 1
    },
    "engagedViews": 114,
-   "devam_yuzde": 27.3
+   "devam_yuzde": 27.0
   },
   "yHElVXfvdsw": {
    "views": 409,
@@ -2051,7 +2077,7 @@
    "devam_yuzde": 52.5
   },
   "mTcbQupGjWQ": {
-   "views": 299,
+   "views": 300,
    "estimatedMinutesWatched": 31,
    "averageViewDuration": 15,
    "averageViewPercentage": 60.46,
@@ -2062,19 +2088,19 @@
    "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
    "sources": {
     "SHORTS": 288,
-    "YT_SEARCH": 8,
+    "YT_SEARCH": 9,
     "YT_OTHER_PAGE": 2,
     "YT_CHANNEL": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 105,
-   "devam_yuzde": 35.1
+   "devam_yuzde": 35.0
   },
   "nFBLtsB59Uw": {
-   "views": 230,
-   "estimatedMinutesWatched": 23,
+   "views": 235,
+   "estimatedMinutesWatched": 24,
    "averageViewDuration": 14,
-   "averageViewPercentage": 50.49,
+   "averageViewPercentage": 50.629999999999995,
    "likes": 1,
    "shares": 0,
    "comments": 0,
@@ -2082,12 +2108,12 @@
    "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
    "sources": {
     "SHORTS": 179,
-    "YT_SEARCH": 47,
+    "YT_SEARCH": 52,
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 88,
+   "engagedViews": 90,
    "devam_yuzde": 38.3
   },
   "-7OxhWXxc8w": {
@@ -2109,6 +2135,24 @@
    "engagedViews": 93,
    "devam_yuzde": 41.9
   },
+  "4MpwenNL9NY": {
+   "views": 128,
+   "estimatedMinutesWatched": 15,
+   "averageViewDuration": 23,
+   "averageViewPercentage": 41.36,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun?",
+   "sources": {
+    "SHORTS": 114,
+    "YT_SEARCH": 14,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 36,
+   "devam_yuzde": 28.1
+  },
   "-PC7chCMp_s": {
    "views": 122,
    "estimatedMinutesWatched": 22,
@@ -2127,6 +2171,24 @@
    },
    "engagedViews": 67,
    "devam_yuzde": 54.9
+  },
+  "Z7Pj4q9UTCs": {
+   "views": 121,
+   "estimatedMinutesWatched": 8,
+   "averageViewDuration": 16,
+   "averageViewPercentage": 68.24,
+   "likes": 0,
+   "shares": 1,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Fotosentez Yapabilseydin Aç Kalır Mıydın?",
+   "sources": {
+    "SHORTS": 112,
+    "YT_SEARCH": 9,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 23,
+   "devam_yuzde": 19.0
   },
   "HdSKbp0rIz8": {
    "views": 119,
@@ -2147,24 +2209,6 @@
    "engagedViews": 52,
    "devam_yuzde": 43.7
   },
-  "Z7Pj4q9UTCs": {
-   "views": 102,
-   "estimatedMinutesWatched": 6,
-   "averageViewDuration": 16,
-   "averageViewPercentage": 68.07,
-   "likes": 0,
-   "shares": 1,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Fotosentez Yapabilseydin Aç Kalır Mıydın?",
-   "sources": {
-    "SHORTS": 96,
-    "YT_SEARCH": 6,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 18,
-   "devam_yuzde": 17.6
-  },
   "agyOZTY5PCE": {
    "views": 90,
    "estimatedMinutesWatched": 12,
@@ -2182,6 +2226,24 @@
    },
    "engagedViews": 37,
    "devam_yuzde": 41.1
+  },
+  "2kMaKl9jUoc": {
+   "views": 82,
+   "estimatedMinutesWatched": 10,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 56.55,
+   "likes": 0,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu?",
+   "sources": {
+    "SHORTS": 58,
+    "YT_SEARCH": 24,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 38,
+   "devam_yuzde": 46.3
   },
   "X9ouBiGHD4Q": {
    "views": 46,
@@ -2438,6 +2500,13 @@
    "engagedViews": 1130,
    "estimatedMinutesWatched": 435,
    "subscribersGained": 1
+  },
+  {
+   "day": "2026-11-15",
+   "views": 1315,
+   "engagedViews": 638,
+   "estimatedMinutesWatched": 212,
+   "subscribersGained": 0
   }
  ]
 }
