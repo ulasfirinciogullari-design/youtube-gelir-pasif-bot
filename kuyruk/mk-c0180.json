@@ -1,0 +1,185 @@
+{
+ "id": "mk-c0180",
+ "topic": "At kusabilir mi? Atlar neden kusamaz, atın midesi bozulursa ne olur?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "horse"
+ ],
+ "stock_hint": "horse face",
+ "script": {
+  "title": "Midesi bozulan bir at kusabilir mi? 🐴",
+  "hook_text": "AT KUSABİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Yarım tonluk bu atın midesi bir kova kadar.",
+    "visual": "close-up of a horse's face chewing and looking into the camera",
+    "stock_query": "horse face",
+    "source": "stock",
+    "callout": "KOVA KADAR MİDE"
+   },
+   {
+    "text": "Peki midesi bozulunca kusabilir mi?",
+    "visual": "a horse eating hay in a stable",
+    "stock_query": "horse eating",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Mesele boyut değil; avucuna sığan sıçan da kusamaz.",
+    "visual": "close-up of a brown rat sniffing the air",
+    "stock_query": "rat close up",
+    "source": "stock",
+    "callout": "SIÇAN DA KUSAMAZ",
+    "subject": [
+     "rat"
+    ]
+   },
+   {
+    "text": "Cevap hayır, neredeyse hiç: midesinin girişindeki güçlü kas yolu tek yönlü kilitler.",
+    "visual": "a horse drinking water, close-up of its neck as it swallows",
+    "stock_query": "horse drinking",
+    "source": "stock",
+    "callout": "TEK YÖNLÜ KAPI"
+   },
+   {
+    "text": "Kusan bir atın çoğu zaman midesi yırtılmıştır; bu genelde ölümcüldür.",
+    "visual": "a veterinarian examining a horse",
+    "stock_query": "horse veterinarian",
+    "source": "stock",
+    "callout": "MİDE YIRTILIR"
+   },
+   {
+    "text": "Ata bir şey yedirmeden önce hatırla:",
+    "visual": "extreme close-up of a horse's eye",
+    "stock_query": "horse eye",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Atlar neredeyse hiç kusamaz. Yemek borusunun mideye girdiği yerdeki güçlü kas tek yönlü bir kapak gibi çalışır; yemek borusu mideye dar bir açıyla girer ve kusma refleksi zayıftır. Smithsonian'a göre kusan bir atın midesi çoğu zaman yırtılmıştır ve bu genellikle ölümcüldür. Sıçanlar da kusamaz; onlarda hem beyindeki refleks devresi hem de güçlü bir diyafram eksiktir.",
+  "tags": [
+   "at",
+   "atlar",
+   "at kusabilir mi",
+   "at midesi",
+   "sıçan",
+   "mümkün mü",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilim"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: atın kusamaması mı, sıçanın kusamaması mı?",
+  "en_title": "Can a horse throw up when its stomach is upset? 🐴",
+  "en_description": "Almost never. A powerful muscle where the esophagus meets the stomach works as a one-way valve, the esophagus enters at a sharp angle and the vomiting reflex is weak. When a horse does vomit, its stomach has usually ruptured, which is typically fatal. Rats can't vomit either, for different reasons.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "At kusabilir mi, atlar neden kusamaz, atın midesi bozulursa ne olur?\n\nNeredeyse hiç kusamaz. Rutgers Üniversitesi Atçılık Bilimi Merkezi'ne göre yaklaşık 450 kiloluk bir atın midesi yalnızca 2-4 galon (yaklaşık 7,5-15 litre) alır ve atlar yediklerini geri çıkaramaz; bu yüzden fazla yediklerinde ya da zehirli bir şey yuttuklarında kusmak bir seçenek değildir. Veteriner hekim Joe Bertone'nin Equus dergisinde açıkladığına göre atın alt yemek borusu kası diğer hayvanlarınkinden çok daha güçlüdür, yemek borusu mideye dar bir açıyla girer, mide göğüs kafesinin derinindedir ve kusma refleksi zayıftır. Smithsonian'a göre kusan bir atın midesi çoğu zaman yırtılmıştır ve bu genellikle ölümcüldür. 2013'te PLOS ONE'da yayımlanan bir çalışmaya göre sıçan ve fareler de kusamaz; onlarda hem kusma için gereken beyin devresi hem de güçlü bir diyafram eksiktir.\n\nSence hangisi daha tuhaf: atın kusamaması mı, sıçanın kusamaması mı?",
+  "hashtags": [
+   "#at",
+   "#atlar",
+   "#mümkünmü",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "at kusabilir mi",
+   "atlar neden kusamaz",
+   "at kusar mı",
+   "atın midesi",
+   "at midesi kaç litre",
+   "atlarda kolik",
+   "atın midesi bozulursa",
+   "kusamayan hayvanlar",
+   "sıçan kusabilir mi",
+   "at bakımı",
+   "at beslenmesi",
+   "atlar",
+   "at",
+   "sıçan",
+   "mümkün mü",
+   "hayvan bilgileri",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "biyoloji",
+   "can horses vomit"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a horse throw up when its stomach is upset? 🐴",
+    "description": "Almost never. A powerful muscle where the esophagus meets the stomach works as a one-way valve, and the vomiting reflex is weak. When a horse does vomit, its stomach has usually ruptured, which is typically fatal."
+   },
+   "es": {
+    "title": "¿Puede vomitar un caballo con el estómago revuelto? 🐴",
+    "description": "Casi nunca. Un músculo muy potente donde el esófago se une al estómago funciona como una válvula de un solo sentido, y además el reflejo del vómito es débil. Cuando un caballo vomita, normalmente es porque se le ha roto el estómago, algo casi siempre mortal."
+   },
+   "pt": {
+    "title": "Um cavalo com dor de barriga consegue vomitar? 🐴",
+    "description": "Quase nunca. Um músculo muito forte na entrada do estômago funciona como uma válvula de mão única, e o reflexo de vômito do cavalo é fraco. Quando um cavalo vomita, geralmente é porque o estômago se rompeu, o que costuma ser fatal."
+   },
+   "de": {
+    "title": "Kann ein Pferd mit verdorbenem Magen erbrechen? 🐴",
+    "description": "Fast nie. Ein sehr kräftiger Muskel am Mageneingang wirkt wie ein Einwegventil, und der Brechreflex ist schwach. Erbricht ein Pferd doch, ist meist der Magen gerissen – das endet in der Regel tödlich."
+   },
+   "fr": {
+    "title": "Un cheval peut-il vomir quand il a mal au ventre ? 🐴",
+    "description": "Presque jamais. Un muscle très puissant à l'entrée de l'estomac agit comme une valve à sens unique, et le réflexe de vomissement est faible. Quand un cheval vomit, c'est en général que son estomac s'est rompu, ce qui est le plus souvent mortel."
+   },
+   "it": {
+    "title": "Un cavallo con il mal di pancia può vomitare? 🐴",
+    "description": "Quasi mai. Un muscolo molto potente all'ingresso dello stomaco funziona come una valvola a senso unico e il riflesso del vomito è debole. Quando un cavallo vomita, di solito lo stomaco si è rotto, e questo è quasi sempre fatale."
+   },
+   "ru": {
+    "title": "Может ли лошадь вырвать, если у неё болит живот? 🐴",
+    "description": "Почти никогда. Очень сильная мышца на входе в желудок работает как клапан в одну сторону, а рвотный рефлекс у лошадей слабый. Если лошадь всё же рвёт, чаще всего это значит, что у неё разорвался желудок, и обычно это смертельно."
+   },
+   "ar": {
+    "title": "هل يستطيع الحصان أن يتقيأ إذا اضطربت معدته؟ 🐴",
+    "description": "نادرًا جدًا. فعضلة قوية عند مدخل المعدة تعمل كصمام باتجاه واحد، ومنعكس التقيؤ لديه ضعيف. وإذا تقيأ الحصان فغالبًا ما تكون معدته قد تمزقت، وهذا قاتل في العادة."
+   },
+   "hi": {
+    "title": "क्या पेट ख़राब होने पर घोड़ा उल्टी कर सकता है? 🐴",
+    "description": "लगभग कभी नहीं। पेट के मुहाने पर एक बेहद मज़बूत मांसपेशी एकतरफ़ा वाल्व की तरह काम करती है और घोड़े में उल्टी की प्रतिक्रिया कमज़ोर होती है। अगर घोड़ा उल्टी करे तो आमतौर पर उसका पेट फट चुका होता है, जो अक्सर जानलेवा होता है।"
+   },
+   "id": {
+    "title": "Bisakah kuda muntah saat perutnya sakit? 🐴",
+    "description": "Hampir tidak pernah. Otot yang sangat kuat di pintu masuk lambung bekerja seperti katup satu arah, dan refleks muntah kuda lemah. Jika kuda sampai muntah, biasanya lambungnya sudah pecah, dan itu umumnya berakibat fatal."
+   },
+   "ja": {
+    "title": "お腹をこわした馬は吐くことができる？ 🐴",
+    "description": "ほとんど吐けません。胃の入り口にある非常に強い筋肉が一方通行の弁のように働き、吐く反射も弱いからです。馬が吐いたときは、たいてい胃が破裂しており、多くの場合命に関わります。"
+   },
+   "ko": {
+    "title": "배탈 난 말은 토할 수 있을까? 🐴",
+    "description": "거의 불가능합니다. 위 입구의 아주 강한 근육이 한쪽으로만 열리는 밸브처럼 작동하고, 구토 반사도 약하기 때문입니다. 말이 토했다면 대개 위가 파열된 것이며, 이는 보통 치명적입니다."
+   },
+   "pl": {
+    "title": "Czy koń z rozstrojonym żołądkiem może zwymiotować? 🐴",
+    "description": "Prawie nigdy. Bardzo silny mięsień przy wejściu do żołądka działa jak zawór jednokierunkowy, a odruch wymiotny jest słaby. Jeśli koń jednak wymiotuje, zwykle oznacza to pęknięcie żołądka, co najczęściej kończy się śmiercią."
+   },
+   "nl": {
+    "title": "Kan een paard overgeven als het buikpijn heeft? 🐴",
+    "description": "Bijna nooit. Een heel sterke spier bij de maagingang werkt als een klep die maar één kant op gaat, en de braakreflex is zwak. Geeft een paard toch over, dan is de maag meestal gescheurd, en dat is doorgaans dodelijk."
+   },
+   "uk": {
+    "title": "Чи може кінь блювати, якщо в нього болить живіт? 🐴",
+    "description": "Майже ніколи. Дуже сильний м'яз на вході в шлунок працює як клапан в один бік, а блювотний рефлекс у коней слабкий. Якщо кінь усе ж блює, найчастіше це означає, що шлунок розірвався, і зазвичай це смертельно."
+   },
+   "vi": {
+    "title": "Ngựa bị đau bụng có nôn được không? 🐴",
+    "description": "Gần như không bao giờ. Một cơ rất khỏe ở cửa vào dạ dày hoạt động như van một chiều, và phản xạ nôn của ngựa rất yếu. Nếu ngựa nôn, thường là dạ dày nó đã bị vỡ, và điều đó hầu như luôn gây tử vong."
+   },
+   "az": {
+    "title": "Mədəsi pozulan at qusa bilərmi? 🐴",
+    "description": "Demək olar ki, heç vaxt. Mədənin girişindəki çox güclü əzələ birtərəfli klapan kimi işləyir, qusma refleksi də zəifdir. At qusursa, adətən mədəsi yırtılmış olur və bu, çox vaxt ölümcül olur."
+   },
+   "ro": {
+    "title": "Poate un cal să vomite când îl doare burta? 🐴",
+    "description": "Aproape niciodată. Un mușchi foarte puternic la intrarea în stomac funcționează ca o supapă cu sens unic, iar reflexul de vomă e slab. Când un cal vomită, de obicei stomacul i s-a rupt, iar asta e de regulă fatal."
+   }
+  }
+ }
+}
