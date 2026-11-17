@@ -2096,7 +2096,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "301",
+    "views": "302",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "961",
+    "views": "964",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "932",
+    "views": "928",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "947",
+    "views": "952",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "664",
+    "views": "670",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "912",
+    "views": "920",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "996",
+    "views": "997",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "992",
+    "views": "1003",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "519",
+    "views": "610",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "140",
+    "views": "151",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "110",
+    "views": "124",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "883",
+    "views": "940",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "494",
+    "views": "774",
     "reason": null
    }
   },
@@ -2644,6 +2644,37 @@
    "at": 1794852534.6693926,
    "chars": 375,
    "ilk": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "275",
+    "reason": null
+   }
+  },
+  {
+   "id": "y029",
+   "video_id": "EXfL-FfCYvc",
+   "url": "https://youtube.com/shorts/EXfL-FfCYvc",
+   "title": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Every Volcano Erupted at the Same Time?",
+    "es": "¿Qué Pasaría si Todos los Volcanes Entraran en Erupción a la Vez?",
+    "pt": "E Se Todos os Vulcões Entrassem em Erupção ao Mesmo Tempo?",
+    "ar": "ماذا لو ثارت كل البراكين في الوقت نفسه؟",
+    "hi": "अगर सारे ज्वालामुखी एक साथ फट जाएँ तो क्या होगा?",
+    "id": "Bagaimana Jika Semua Gunung Berapi Meletus Bersamaan?",
+    "fr": "Et Si Tous les Volcans Entraient en Éruption en Même Temps ?",
+    "de": "Was wäre, wenn alle Vulkane gleichzeitig ausbrechen würden?",
+    "ru": "Что, если бы все вулканы извергались одновременно?",
+    "az": "Bütün Vulkanlar Eyni Anda Püskürsəydi Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794910085.156922,
+   "chars": 372,
+   "ilk": false,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2740,7 +2771,8 @@
   "y023",
   "n018",
   "y015",
-  "y018"
+  "y018",
+  "y029"
  ],
  "extra": [
   {
@@ -2806,14 +2838,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-09T10:09:12+00:00",
-   "mod": "saatlik",
-   "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
-   "url": "https://youtube.com/shorts/aiJ_NUnr84M",
-   "duration": 27.7,
-   "chars": 400
-  },
   {
    "finished": "2026-11-09T12:21:27+00:00",
    "mod": "saatlik",
@@ -3226,6 +3250,14 @@
    "mod": "igbolum",
    "title": "Mars Gerçekte Ne Kadar Uzak?",
    "chars": 440
+  },
+  {
+   "finished": "2026-11-17T10:08:07+00:00",
+   "mod": "saatlik",
+   "title": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu?",
+   "url": "https://youtube.com/shorts/EXfL-FfCYvc",
+   "duration": 30.1,
+   "chars": 372
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3597,5 +3629,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794906577.3694303
+ "yedek_ses": 1794910087.1009076
 }
