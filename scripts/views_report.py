@@ -5,6 +5,7 @@ Stdlib only. Refreshes the key without naming scopes; YouTube Analytics lags 1-3
 from datetime import date, datetime, timedelta, timezone
 import json
 import os
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -48,12 +49,18 @@ A = "https://youtubeanalytics.googleapis.com/v2/reports?ids=channel%3D%3DMINE&"
 
 
 def report(**q):
-    try:
-        data = call(A + urllib.parse.urlencode({"startDate": start.isoformat(), "endDate": end.isoformat(), **q}),
-                    token)
-        return {"columns": [h["name"] for h in data.get("columnHeaders", [])], "rows": data.get("rows", [])}
-    except urllib.error.HTTPError as e:
-        return {"error": e.read().decode()[:300]}
+    # YouTube Analytics sometimes answers 500/503 "Internal error" for one query (2026-11-17: the engaged report
+    # came back empty that way), so a server error is retried a few times before it is recorded.
+    for attempt in range(4):
+        try:
+            data = call(A + urllib.parse.urlencode({"startDate": start.isoformat(), "endDate": end.isoformat(), **q}),
+                        token)
+            return {"columns": [h["name"] for h in data.get("columnHeaders", [])], "rows": data.get("rows", [])}
+        except urllib.error.HTTPError as e:
+            if e.code >= 500 and attempt < 3:
+                time.sleep(5 * (attempt + 1))
+                continue
+            return {"error": e.read().decode()[:300]}
 
 
 out["daily"] = report(dimensions="day", metrics="views,estimatedMinutesWatched,averageViewPercentage,"
