@@ -1,7 +1,7 @@
 {
- "started": "2026-11-15T22:53:49+00:00",
+ "started": "2026-11-17T22:30:14+00:00",
  "bolum": "k009",
- "mod": "deneme",
+ "mod": "zamanla",
  "tablolar": {},
  "chars": 611,
  "voice": {
@@ -12,7 +12,15 @@
   "similarity_boost": 0.8
  },
  "duration": 34.05,
- "render_seconds": 138,
+ "render_seconds": 104,
  "title": "Bu 4 Kelime Bağış Yapanları %29'dan %50'ye Çıkardı 💸 #psikoloji",
- "finished": "2026-11-15T22:56:13+00:00"
+ "video_id": "2_VEAO-Gz0E",
+ "url": "https://youtube.com/shorts/2_VEAO-Gz0E",
+ "privacy": "private",
+ "channel": {
+  "id": "UCgvESYtYbn2w9R2ExBOF_cw",
+  "title": "Zirvenin Kanunu"
+ },
+ "publish_at": "2026-11-18T17:00:00+00:00",
+ "finished": "2026-11-17T22:32:06+00:00"
 }
