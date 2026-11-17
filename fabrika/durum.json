@@ -2156,7 +2156,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1044",
+    "views": "1045",
     "reason": null
    }
   },
@@ -2186,7 +2186,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "596",
+    "views": "595",
     "reason": null
    }
   },
@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "678",
+    "views": "675",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "964",
+    "views": "965",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "670",
+    "views": "673",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "920",
+    "views": "922",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "610",
+    "views": "630",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "151",
+    "views": "157",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "124",
+    "views": "130",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "940",
+    "views": "945",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "774",
+    "views": "800",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "275",
+    "views": "305",
     "reason": null
    }
   },
@@ -2675,6 +2675,37 @@
    "at": 1794910085.156922,
    "chars": 372,
    "ilk": false,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "186",
+    "reason": null
+   }
+  },
+  {
+   "id": "n019",
+   "video_id": "7p1teOqnxmw",
+   "url": "https://youtube.com/shorts/7p1teOqnxmw",
+   "title": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Thin Are Saturn's Rings Really?",
+    "es": "¿Qué tan delgados son realmente los anillos de Saturno?",
+    "pt": "Quão finos são os anéis de Saturno de verdade?",
+    "ar": "ما مدى رقة حلقات زحل في الحقيقة؟",
+    "hi": "शनि के छल्ले असल में कितने पतले हैं?",
+    "id": "Seberapa Tipis Cincin Saturnus Sebenarnya?",
+    "fr": "Quelle est la vraie épaisseur des anneaux de Saturne ?",
+    "de": "Wie dünn sind die Saturnringe wirklich?",
+    "ru": "Насколько тонкие кольца Сатурна на самом деле?",
+    "az": "Saturnun Halqaları Əslində Nə Qədər Nazikdir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794924532.447731,
+   "chars": 382,
+   "ilk": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2772,7 +2803,8 @@
   "n018",
   "y015",
   "y018",
-  "y029"
+  "y029",
+  "n019"
  ],
  "extra": [
   {
@@ -2838,12 +2870,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-09T13:14:21+00:00",
-   "mod": "igbolum",
-   "title": "Ay Dünya'ya Çarpsaydı Sağ Kalır Mıydın?",
-   "chars": 371
-  },
   {
    "finished": "2026-11-09T14:11:34+00:00",
    "mod": "saatlik",
@@ -3256,6 +3282,14 @@
    "mod": "igbolum",
    "title": "Okyanuslar Bir Günde Kurusaydı Sana Ne Olurdu?",
    "chars": 392
+  },
+  {
+   "finished": "2026-11-17T14:08:54+00:00",
+   "mod": "saatlik",
+   "title": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce?",
+   "url": "https://youtube.com/shorts/7p1teOqnxmw",
+   "duration": 29.0,
+   "chars": 382
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3632,5 +3666,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794920946.3421705
+ "yedek_ses": 1794924534.4665048
 }
