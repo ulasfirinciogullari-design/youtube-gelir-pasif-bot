@@ -1,5 +1,5 @@
 {
- "at": "2026-11-18T10:06:10+00:00",
+ "at": "2026-11-18T11:46:03+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 71,
   "viewCount": 85363,
-  "videoCount": 92
+  "videoCount": 93
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -231,7 +231,7 @@
    "baslik": "Kalbin Durursa Kaç Saniyede Bayılırsın?"
   },
   "9j_jigCDW7s": {
-   "view": 1073,
+   "view": 1076,
    "like": 7,
    "comment": 6,
    "baslik": "Jüpiter Gerçekte Ne Kadar Büyük?"
@@ -411,7 +411,7 @@
    "baslik": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu? 😳"
   },
   "zvgB-9sAUUY": {
-   "view": 1635,
+   "view": 1636,
    "like": 9,
    "comment": 0,
    "baslik": "Hiç Ağrı Hissetmeseydin Ne Olurdu? 😳"
@@ -429,13 +429,13 @@
    "baslik": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü? 🤯"
   },
   "O1WLYgc1whA": {
-   "view": 431,
+   "view": 432,
    "like": 2,
    "comment": 0,
    "baslik": "Hiç Su İçmeseydin Kaç Gün Dayanırdın? 😳"
   },
   "mTcbQupGjWQ": {
-   "view": 304,
+   "view": 305,
    "like": 2,
    "comment": 0,
    "baslik": "1 Günde Ne Kadar Tükürük Üretirsin? 😮"
@@ -495,19 +495,19 @@
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
   },
   "5X21vqv32gg": {
-   "view": 928,
+   "view": 930,
    "like": 5,
    "comment": 0,
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 1003,
+   "view": 1000,
    "like": 5,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 1016,
+   "view": 1012,
    "like": 7,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -519,7 +519,7 @@
    "baslik": "Bir Yıldırım Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "4MpwenNL9NY": {
-   "view": 161,
+   "view": 162,
    "like": 0,
    "comment": 0,
    "baslik": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun? 😳"
@@ -531,7 +531,7 @@
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 976,
+   "view": 983,
    "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
@@ -549,7 +549,7 @@
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
   },
   "EXfL-FfCYvc": {
-   "view": 257,
+   "view": 263,
    "like": 2,
    "comment": 0,
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
@@ -565,6 +565,12 @@
    "like": 3,
    "comment": 0,
    "baslik": "Ağaçlar Hiç Olmasaydı Ne Olurdu? 😳"
+  },
+  "BNjOETmygkw": {
+   "view": 64,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Venüs'te 1 Gün Geçirseydin Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -580,7 +586,7 @@
    "title": "Bir Kara Delik Gerçekte Ne Kadar Ağır?",
    "sources": {
     "SHORTS": 1904,
-    "YT_SEARCH": 343,
+    "YT_SEARCH": 342,
     "YT_CHANNEL": 7,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
@@ -640,8 +646,8 @@
    "subscribersGained": 0,
    "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
    "sources": {
-    "SHORTS": 1583,
-    "YT_SEARCH": 52,
+    "SHORTS": 1582,
+    "YT_SEARCH": 53,
     "YT_CHANNEL": 8,
     "YT_OTHER_PAGE": 6,
     "NO_LINK_OTHER": 0
@@ -1329,7 +1335,7 @@
    "subscribersGained": 0,
    "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
    "sources": {
-    "SHORTS": 1012,
+    "SHORTS": 1010,
     "YT_SEARCH": 35,
     "NO_LINK_OTHER": 0,
     "YT_CHANNEL": 0
@@ -1648,7 +1654,7 @@
    "subscribersGained": 0,
    "title": "Hiç Bakterin Olmasaydı Ne Olurdu?",
    "sources": {
-    "SHORTS": 912,
+    "SHORTS": 910,
     "YT_SEARCH": 38,
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
@@ -1788,10 +1794,11 @@
    "subscribersGained": 0,
    "title": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu?",
    "sources": {
-    "SHORTS": 892,
-    "YT_SEARCH": 38,
+    "SHORTS": 887,
+    "YT_SEARCH": 39,
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 1,
+    "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 284,
@@ -1947,7 +1954,7 @@
    "subscribersGained": 0,
    "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
    "sources": {
-    "SHORTS": 546,
+    "SHORTS": 545,
     "YT_SEARCH": 46,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0,
@@ -2006,9 +2013,9 @@
    "subscribersGained": 0,
    "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
    "sources": {
-    "SHORTS": 375,
+    "SHORTS": 376,
     "YT_SEARCH": 43,
-    "YT_CHANNEL": 3,
+    "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 1,
     "YT_OTHER_PAGE": 1
    },
@@ -2220,7 +2227,7 @@
    "subscribersGained": 0,
    "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
    "sources": {
-    "SHORTS": 69,
+    "SHORTS": 68,
     "YT_SEARCH": 20,
     "YT_CHANNEL": 1
    },
