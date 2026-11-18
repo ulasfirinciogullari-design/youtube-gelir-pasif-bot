@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-04T18": "O4CmIhkONV0 https://www.instagram.com/reel/DfVDQyYFDuH/",
   "2026-11-05T10": "ypYAhFbUoHc https://www.instagram.com/reel/DfWxMHVivUQ/",
   "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/",
   "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
@@ -48,16 +47,17 @@
   "2026-11-16T18": "eFCmdx3yqjI https://www.instagram.com/reel/Dfz838NnHQW/",
   "2026-11-17T10": "_1XzptyPihg https://www.instagram.com/reel/Df1qu6SCKlr/",
   "2026-11-17T14": "zcng8A73LM4 https://www.instagram.com/reel/Df2GG89k2D-/",
-  "2026-11-17T18": "ThyFTMj1iK0 https://www.instagram.com/reel/Df2hmk6DSCN/"
+  "2026-11-17T18": "ThyFTMj1iK0 https://www.instagram.com/reel/Df2hmk6DSCN/",
+  "2026-11-18T10": "782kkRLJ7ss https://www.instagram.com/reel/Df4PffciReb/"
  },
  "nobet": {
-  "basladi": "2026-11-18T04:20:02+00:00",
-  "run": "44235371584",
-  "tur": 337,
+  "basladi": "2026-11-18T10:00:28+00:00",
+  "run": "44279621061",
+  "tur": 1,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-18T09:56:03+00:00"
+  "son_tur": "2026-11-18T10:01:21+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -507,6 +507,13 @@
    "at": 1794938470,
    "title": "Köpeğinin gözleri seni görünce yaşarabilir mi? 🐶",
    "topic_id": "mk-c0114"
+  },
+  "782kkRLJ7ss": {
+   "media_id": "17968306079983256",
+   "url": "https://www.instagram.com/reel/Df4PffciReb/",
+   "at": 1794996081,
+   "title": "Fil fareden korkmaz, asıl korktuğu şey arı 🐘",
+   "topic_id": "mk-c0162"
   }
  }
 }
