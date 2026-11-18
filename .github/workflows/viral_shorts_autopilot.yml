@@ -168,29 +168,51 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
+      # 2026-11-18 19:08 UTC: the Ubuntu mirror served the 72 MB of FFmpeg packages at ~60 KB/s, so every apt attempt
+      # ran out of time. The downloaded .deb files are kept in the Actions cache and put back into apt's archive folder,
+      # so a slow mirror only matters for packages that changed since the cache was saved.
+      - name: 🗃️ Apt Paket Önbelleği
+        if: steps.gate.outputs.go == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/apt-debs
+          key: apt-debs-ubuntu-24.04-ffmpeg-fonts-v1
+
       - name: 🎥 FFmpeg ve Fontları Kur
         if: steps.gate.outputs.go == 'true'
         # 2026-11-11 15:22 UTC: apt hung on this step until the 60-minute job timeout and the slot was lost
         # (it normally takes ~20 s). Each attempt is now bounded and retried, so a stuck mirror costs minutes.
-        timeout-minutes: 15
+        # Partial downloads survive between attempts, so a slow mirror still gets through with a fourth try.
+        timeout-minutes: 22
         run: |
-          APT_OPTS="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 -o DPkg::Lock::Timeout=60"
+          APT_OPTS="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 -o DPkg::Lock::Timeout=60 -o APT::Keep-Downloaded-Packages=true"
+          if ls ~/apt-debs/*.deb >/dev/null 2>&1; then
+            sudo cp ~/apt-debs/*.deb /var/cache/apt/archives/
+            echo "Önbellekten $(ls ~/apt-debs/*.deb | wc -l) paket geri kondu"
+          fi
+          PKGS="ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat"
           installed=0
-          for attempt in 1 2 3; do
+          for attempt in 1 2 3 4; do
+            # Download first and copy the .deb files out before dpkg runs, so they reach the cache even if the
+            # image cleans apt's archive folder after installing.
             if sudo timeout 180 apt-get $APT_OPTS update -qq && \
-               sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends \
-                 ffmpeg fonts-liberation fonts-dejavu-core fonts-montserrat; then
-              installed=1
-              break
+               sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends --download-only $PKGS; then
+              mkdir -p ~/apt-debs
+              cp /var/cache/apt/archives/*.deb ~/apt-debs/ 2>/dev/null || true
+              if sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends $PKGS; then
+                installed=1
+                break
+              fi
             fi
             echo "::warning::apt denemesi $attempt yarıda kaldı, tekrar deneniyor"
             sudo dpkg --configure -a || true
             sleep 10
           done
           if [ "$installed" != 1 ]; then
-            echo "::error::FFmpeg ve fontlar 3 denemede de kurulamadı"
+            echo "::error::FFmpeg ve fontlar 4 denemede de kurulamadı"
             exit 1
           fi
+          echo "Önbellek için $(ls ~/apt-debs/*.deb 2>/dev/null | wc -l) paket"
           ffmpeg -version | head -1
 
       - name: 📦 Python Bağımlılıklarını Kur
