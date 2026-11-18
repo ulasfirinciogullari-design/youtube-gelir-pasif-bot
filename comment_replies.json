@@ -347,6 +347,12 @@
    "r",
    "Ugx5P5raxiByCoyxVsV4AaABAg.AdH6Gom2OLIAdHDCl9FAL6",
    "UC0DdE-62-tZRp6ZtQmkOf0Q"
+  ],
+  "UgzliDe1Btv0GtGlR0l4AaABAg": [
+   1794977111,
+   "r",
+   "UgzliDe1Btv0GtGlR0l4AaABAg.AdL7wkFQ4cUAdLBFofzK6g",
+   "UC_H9Xb1_HtDbuYlA5JGeXUA"
   ]
  },
  "tracked": {
@@ -494,6 +500,11 @@
    "at": 1794840321,
    "n": 3,
    "reply": "@KsbIletsm Katılıyorum, vücudumuzun fark etmediğimiz ne kadar çok özelliği var değil mi? 😊"
+  },
+  "UgzliDe1Btv0GtGlR0l4AaABAg": {
+   "at": 1794977111,
+   "n": 1,
+   "reply": "Vay canına, gerçekten mi? O zaman sen o körelmiş kasları yeniden çalıştırmışsın demektir! 😮"
   }
  },
  "channel": {
@@ -501,12 +512,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792790774,
-   "video": "kdEbtK5fwQQ",
-   "comment": "░░░░░░▄▄ ░░░░░█░░█ ▄▄▄▄▄█░░█▄▄▄ ▓▓▓▓█░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ▓▓▓▓█░░░░░░░░█ ███▀▀▀███████ ╱╱┏╮╱╱╱╱╱╱╱╱╱╱ ╱╱┃┃╱╱┳╱┓┳╭┛┳┓ ▉━╯┗━╮┃╱┃┣┻╮┣╱ ▉┈┈┈┈┃┻┛┛┻",
-   "reply": "Vay canına, ne güzel bir sanat eseri bu! 🌸 Teşekkürler."
-  },
   {
    "at": 1792790774,
    "video": "RUyMb5fCIl4",
@@ -740,6 +745,12 @@
    "video": "g9grbN5SXXQ",
    "comment": "evet doğru",
    "reply": "@KsbIletsm Katılıyorum, vücudumuzun fark etmediğimiz ne kadar çok özelliği var değil mi? 😊"
+  },
+  {
+   "at": 1794977111,
+   "video": "g9grbN5SXXQ",
+   "comment": "Kendim arkaya ve one hateket ettirebiliom",
+   "reply": "Vay canına, gerçekten mi? O zaman sen o körelmiş kasları yeniden çalıştırmışsın demektir! 😮"
   }
  ]
 }
