@@ -248,6 +248,9 @@ def write_episode(topic, state, report):
     raise RuntimeError("3 denemede kurallara uyan senaryo çıkmadı: " + "; ".join(last_probs))
 
 
+HIKAYE_BEKLE_SON = datetime(2026, 11, 20, 9, 0, tzinfo=timezone.utc).timestamp()  # story hold for ElevenLabs ends
+
+
 def from_queue(state, report):
     """-> (file, episode) of the oldest usable queue file, or None. Unusable files move to kuyruk/bozuk/, so the
     next morning's writer sees why and a broken file is not tried again every run."""
@@ -263,7 +266,10 @@ def from_queue(state, report):
             ep, probs = None, [f"okunamadı: {type(e).__name__}: {e}"]
         # A story (test 9) lives on its characters' own voices, so it waits while the last run had to use the edge-tts
         # backup (ElevenLabs refused, e.g. the unpaid invoice of 2026-11-16) and a later file goes first.
-        if not probs and ep.get("hikaye") and state.get("yedek_ses") and p is not files[-1]:
+        # The wait ends at HIKAYE_BEKLE_SON (daily analysis 2026-11-18): the story test is the main breakout bet, so after
+        # that it runs on the backup voice too, and those episodes carry "yedek_ses" in durum.json.
+        if (not probs and ep.get("hikaye") and state.get("yedek_ses") and p is not files[-1]
+                and time.time() < HIKAYE_BEKLE_SON):
             held.append(p.name)
             continue
         if not probs:
@@ -459,6 +465,11 @@ def produce(state, mod, report):
     ystate["fabrika"] = state.get("episodes", [])
     rec = yukle.upload(yt, ep, video, cover, ystate, report, privacy=os.environ.get("YO_GORUNURLUK") or "public")
     rec.update({"at": now(), "chars": chars, "ilk": ep.get("ilk")})
+    if ep.get("hikaye"):
+        rec["hikaye"] = True
+    ses = sys.modules.get("ses")
+    if ses is not None and ses.YEDEK["on"]:
+        rec["yedek_ses"] = True  # voiced by the free edge-tts backup; tests judge these separately
     state.setdefault("episodes", []).append(rec)
     state.setdefault("used", []).append(topic["id"])
     save(state)  # never lose an uploaded video's id
