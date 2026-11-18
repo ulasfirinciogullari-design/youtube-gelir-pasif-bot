@@ -158,7 +158,7 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   Kaydırmadan izleme oranı da en düşük psikolojide. Kanalın izleyicisi hayvan ve vücut merakı için geliyor;
   güç psikolojisi animasyonlarda kalıyor. Bu yüzden mk-c0156'dan itibaren merak metinlerinde psikoloji yok. Her 8
   dosya: 2 "mümkün mü?" (hayvan ya da vücut), 1 insan vücudu, 5 tanıdık hayvan; kedi en az 2, köpek en fazla 1,
-  kedi ve köpek toplam en az 3; deyim en az 1. Kuyruktaki iki psikoloji dosyası (mk-c0147, mk-c0155) arsiv/
+  kedi ve köpek toplam en az 3; deyim en az 1 (18 Kasım'dan beri en az 2). Kuyruktaki iki psikoloji dosyası (mk-c0147, mk-c0155) arsiv/
   klasörüne alındı, yüklenmeyecek.
 
 - 15 Kasım kararı (herkesin bildiği yanlış): 5 binin üstüne çıkan 14 Short'un 6'sı neredeyse herkesin inandığı bir
@@ -171,6 +171,14 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   gibi çürüten kelime, ilk cümlede inanç ekranda görünenle birlikte. Kedi davranışları da böyle kurulur ("Okşanırken
   ısıran kedi çoğu zaman önce uyarır", "Kediler sütü sever ama çoğu onu sindiremez"). `"deyim": true` sadece inanç
   bir deyimde ya da yaygın sözde yaşıyorsa yazılır (deney 12 ayrı ölçülüyor).
+
+- 18 Kasım kararı (deney 12 sonucu, deyim 8'de en az 2): 12 Kasım'dan sonra yayınlanan ilk 8 deyimli Short'un 48 saat
+  ortancası 2.161, aynı dönemin öbür Short'ları 1.638 (31 Short): 1,32 kat. Asıl fark kırılmada: 8 deyimlinin 3'ü 5
+  binin üstünde (sakız 14.332, timsah gözyaşı 7.560, kedinin ciğere bakışı 5.573), öbür 36 Short'un 4'ü. Zayıf
+  kalanlar (kalp kırılır mı 1.036, karınca gibi çalışkan 1.553, tavuk beyinli 1.683, yarasa kör 1.346) ya sözün
+  yalnızca mecaz olduğu, ya da çoğu kişinin gerçekten inanmadığı deyimler. Bu yüzden her 8 dosyanın en az 2'si deyim
+  dosyası olsun, ve seçilen söz izleyicinin gerçekten doğru sandığı bir inancı taşısın (sakız midede kalır, timsah
+  yalandan ağlar, kedi ciğere bakar); yalnızca mecaz olan sözler ("karınca gibi çalışkan") seçilmesin.
 
 ## "Mümkün mü?" biçimi (deney 9, 4 Kasım'dan itibaren)
 
