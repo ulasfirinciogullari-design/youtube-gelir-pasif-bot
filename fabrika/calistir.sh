@@ -70,8 +70,11 @@ echo "Kurulum başlıyor $(date -u +%H:%M:%S)"
 timeout 300 sudo apt-get update -qq 2>&1 | tee fabrika/_apt.log  # one broken mirror must not stop it
 APT=1  # when the runner cannot resolve the Ubuntu mirrors at all, apt install only waits for its time limit
 grep -q "Temporary failure resolving" fabrika/_apt.log && { APT=0; echo "Ubuntu paket sunucularına ulaşılamıyor, apt atlanıyor"; }
-[ "$APT" = 1 ] && { timeout 600 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
-  || echo "apt-get install olmadı (hata ya da zaman aşımı) $(date -u +%H:%M:%S)"; }
+# A normal install takes under a minute (whole setup 35-50 s). On 2026-11-18 09:06 UTC apt-get update worked but the
+# install hung for the full 600 s and Playwright's --with-deps then waited on apt too: the run took 15 minutes. So the
+# install gets 180 s, and when it fails apt is skipped for the rest of the run (ffmpeg from PyPI, emoji font bundled).
+[ "$APT" = 1 ] && { timeout 180 sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-color-emoji >/dev/null \
+  || { APT=0; echo "apt-get install olmadı (hata ya da zaman aşımı), apt atlanıyor $(date -u +%H:%M:%S)"; }; }
 pip install -q numpy requests cryptography
 timeout 120 pip install -q edge-tts || echo "edge-tts kurulamadı (yalnız ElevenLabs reddederse gerekir)"
 if ! command -v ffmpeg >/dev/null; then  # the emoji font is bundled in fabrika/motor/emoji, ffmpeg is the only must
