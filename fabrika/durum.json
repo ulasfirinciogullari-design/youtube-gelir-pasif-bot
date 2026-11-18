@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "673",
+    "views": "674",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1000",
+    "views": "1001",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1013",
+    "views": "1016",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "162",
+    "views": "164",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "140",
+    "views": "146",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1035",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "843",
+    "views": "846",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "373",
+    "views": "398",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "270",
+    "views": "280",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "67",
+    "views": "85",
     "reason": null
    }
   },
@@ -2740,7 +2740,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "719",
+    "views": "799",
     "reason": null
    }
   },
@@ -2772,7 +2772,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "587",
+    "views": "954",
     "reason": null
    }
   },
@@ -2800,6 +2800,38 @@
    "at": 1795011067.3238292,
    "chars": 365,
    "ilk": true,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "205",
+    "reason": null
+   }
+  },
+  {
+   "id": "y044",
+   "video_id": "cMccWi1IkfY",
+   "url": "https://youtube.com/shorts/cMccWi1IkfY",
+   "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Lived on the Moon for 1 Month?",
+    "es": "¿Qué pasaría si vivieras 1 mes en la Luna?",
+    "pt": "E se você vivesse 1 mês na Lua?",
+    "ar": "ماذا لو عشت شهرًا واحدًا على القمر؟",
+    "hi": "अगर आप 1 महीना चाँद पर रहते तो क्या होता?",
+    "id": "Bagaimana jika kamu tinggal 1 bulan di Bulan?",
+    "fr": "Et si tu vivais 1 mois sur la Lune ?",
+    "de": "Was wäre, wenn du 1 Monat auf dem Mond leben würdest?",
+    "ru": "Что, если бы ты прожил 1 месяц на Луне?",
+    "az": "Ayda 1 ay yaşasaydın nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795025360.8968387,
+   "chars": 379,
+   "ilk": false,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -2902,7 +2934,8 @@
   "n019",
   "y031",
   "y035",
-  "n021"
+  "n021",
+  "y044"
  ],
  "extra": [
   {
@@ -2968,14 +3001,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-10T14:11:10+00:00",
-   "mod": "saatlik",
-   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
-   "url": "https://youtube.com/shorts/zvgB-9sAUUY",
-   "duration": 23.3,
-   "chars": 355
-  },
   {
    "finished": "2026-11-10T17:10:15+00:00",
    "mod": "igbolum",
@@ -3385,6 +3410,14 @@
    "mod": "igbolum",
    "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
    "chars": 370
+  },
+  {
+   "finished": "2026-11-18T18:09:51+00:00",
+   "mod": "saatlik",
+   "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
+   "url": "https://youtube.com/shorts/cMccWi1IkfY",
+   "duration": 29.2,
+   "chars": 379
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3781,5 +3814,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795021912.1936798
+ "yedek_ses": 1795025391.095941
 }
