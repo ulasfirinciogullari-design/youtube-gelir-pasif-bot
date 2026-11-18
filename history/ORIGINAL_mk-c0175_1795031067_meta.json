@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0175",
+  "topic": "Kedi neden ayağıma saldırıyor? Kedim yürürken neden ayaklarıma atlayıp bileğimi ısırıyor, kedi bana kızgın mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Ayağına saldıran kedin sana kızgın değil, seni avlıyor 🐱",
+  "hook_text": "KEDİN NEDEN AYAĞINA SALDIRIYOR?",
+  "description": "Kedi neden ayağıma saldırıyor, kedim yürürken neden bileğimi ısırıyor, bana kızgın mı?\n\nÇoğu zaman kızgın değil, oyun oynuyor. ASPCA'ya göre oyun saldırganlığı, kedilerin sahiplerine yönelttiği en yaygın saldırganlık türü ve iki yaşından küçük kedilerde sık görülür. Cornell Üniversitesi Kedi Sağlığı Merkezi'ne göre bu kediler hedeflerini sinsice izler ve önünden geçerken saklandığı yerden atlar; en çok kardeşleriyle büyümemiş ya da yeterince oynayamayan genç kedilerde görülür, çünkü yavrular ısırığını, sert ısırınca oyunu kesen kardeşlerinden öğrenir. Uzmanlar kediyi elle ya da ayakla oynatmamayı, saldırıyı bir oyuncağa yönlendirmeyi ve kediyi asla fiziksel olarak cezalandırmamayı öneriyor.\n\nSenin kedin hangisini yapıyor: ayak bileğine pusu mu, battaniyenin altındaki ayağına saldırı mı?\n\n#kedi #kediler #kedidavranışları #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0175",
+  "tags": [
+    "kedi ayağıma saldırıyor",
+    "kedi neden ayağa saldırır",
+    "kedi bileğimi ısırıyor",
+    "kedi neden ısırır",
+    "kedi oyun saldırganlığı",
+    "kedi pusu kuruyor",
+    "kedi ayak ısırma",
+    "yavru kedi ısırıyor",
+    "kedi saldırganlığı",
+    "kedi oltası",
+    "kediyle nasıl oynanır",
+    "kedi davranışları",
+    "kedi eğitimi",
+    "kedi sahibi",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "cat play aggression",
+    "cat attacks feet",
+    "kedi ısırması",
+    "shorts",
+    "bilim",
+    "merak"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat isn't angry when it attacks your feet, it's hunting you 🐱",
+      "description": "Cats that ambush ankles are usually showing play aggression, the most common kind of aggression cats aim at their owners. It's most common in young cats raised without littermates, who never learned that biting too hard ends the game. Play with a wand toy every day instead of using your hands.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "es": {
+      "title": "Tu gato no está enfadado cuando te ataca los pies: te está cazando 🐱",
+      "description": "Los gatos que acechan los tobillos suelen mostrar agresión por juego, la más común que dirigen a sus dueños. Es típica de gatos jóvenes criados sin hermanos, que nunca aprendieron que morder fuerte termina el juego. Juega con él cada día con una caña de plumas en lugar de usar las manos.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "pt": {
+      "title": "Seu gato não está bravo ao atacar seus pés: ele está caçando você 🐱",
+      "description": "Gatos que emboscam os tornozelos geralmente mostram agressão por brincadeira, a mais comum que dirigem aos tutores. Ela aparece mais em gatos jovens criados sem irmãos, que nunca aprenderam que morder forte acaba com a brincadeira. Brinque todo dia com uma varinha de penas em vez de usar as mãos.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "de": {
+      "title": "Deine Katze ist nicht wütend, wenn sie deine Füße angreift – sie jagt dich 🐱",
+      "description": "Katzen, die Knöchel aus dem Hinterhalt angreifen, zeigen meist Spielaggression, die häufigste Form von Aggression gegenüber ihren Menschen. Besonders oft betrifft das junge Katzen, die ohne Geschwister aufgewachsen sind und nie gelernt haben, dass zu festes Beißen das Spiel beendet. Spiel lieber täglich mit einer Federangel statt mit den Händen.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "fr": {
+      "title": "Ton chat n'est pas fâché quand il attaque tes pieds, il te chasse 🐱",
+      "description": "Le chat qui guette tes chevilles fait le plus souvent de l'agression ludique, la forme d'agressivité la plus courante envers ses maîtres. Elle touche surtout les jeunes chats élevés sans frères et sœurs, qui n'ont jamais appris qu'une morsure trop forte arrête le jeu. Joue avec lui chaque jour avec une canne à plumes plutôt qu'avec tes mains.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "it": {
+      "title": "Il tuo gatto non è arrabbiato quando ti attacca i piedi: ti sta cacciando 🐱",
+      "description": "I gatti che tendono agguati alle caviglie di solito mostrano aggressività da gioco, la forma più comune rivolta ai proprietari. È tipica dei gatti giovani cresciuti senza fratelli, che non hanno mai imparato che mordere troppo forte fa finire il gioco. Gioca con lui ogni giorno con una canna con le piume invece che con le mani.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "ru": {
+      "title": "Кот кидается на твои ноги не со зла — он на тебя охотится 🐱",
+      "description": "Кошка, которая подкарауливает щиколотки, обычно проявляет игровую агрессию — самый частый вид агрессии кошек к хозяевам. Чаще всего так ведут себя молодые кошки, выросшие без братьев и сестёр: их никто не научил, что сильный укус заканчивает игру. Играй с ней каждый день удочкой-дразнилкой, а не руками.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "ar": {
+      "title": "قطتك لا تهاجم قدميك لأنها غاضبة، بل لأنها تصطادك 🐱",
+      "description": "القطة التي تكمن لكاحليك تُظهر غالبًا عدوانية اللعب، وهي أكثر أنواع العدوانية التي توجهها القطط إلى أصحابها. وتنتشر أكثر بين القطط الصغيرة التي نشأت دون إخوة، فلم تتعلم أن العض بقوة يُنهي اللعب. العب معها كل يوم بعصا الريش بدلًا من يديك.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "hi": {
+      "title": "पैरों पर झपटने वाली आपकी बिल्ली नाराज़ नहीं, आपका शिकार कर रही है 🐱",
+      "description": "टखनों पर घात लगाकर झपटने वाली बिल्ली आमतौर पर खेल वाली आक्रामकता दिखाती है, जो बिल्लियों की अपने मालिकों के प्रति सबसे आम आक्रामकता है। यह ज़्यादातर उन युवा बिल्लियों में दिखती है जो भाई-बहनों के बिना पलीं और कभी नहीं सीख पाईं कि ज़ोर से काटने पर खेल रुक जाता है। हाथों की बजाय रोज़ पंखों वाली छड़ी से उसके साथ खेलें।\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "id": {
+      "title": "Kucingmu tidak marah saat menyerang kakimu, ia sedang memburumu 🐱",
+      "description": "Kucing yang menyergap pergelangan kaki biasanya menunjukkan agresi bermain, jenis agresi paling umum yang diarahkan kucing kepada pemiliknya. Ini paling sering terjadi pada kucing muda yang tumbuh tanpa saudara, sehingga tak pernah belajar bahwa gigitan keras membuat permainan berhenti. Ajak ia bermain setiap hari dengan tongkat bulu, bukan dengan tangan.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "ja": {
+      "title": "足に飛びかかる猫は怒っていない、あなたを狩っている 🐱",
+      "description": "足首を待ち伏せして襲う猫は、たいてい遊びの攻撃行動を見せています。これは猫が飼い主に向ける攻撃行動の中で最も多いタイプです。特に兄弟と一緒に育たなかった若い猫に多く、強く噛むと遊びが終わることを学べなかったのです。手ではなく、毎日じゃらし棒で遊んであげましょう。\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "ko": {
+      "title": "발을 공격하는 고양이는 화난 게 아니라 당신을 사냥하는 중 🐱",
+      "description": "발목을 노려 덮치는 고양이는 대개 놀이 공격성을 보이는 것으로, 고양이가 보호자에게 보이는 가장 흔한 공격성입니다. 특히 형제 없이 자란 어린 고양이에게 많은데, 세게 물면 놀이가 끝난다는 걸 배우지 못했기 때문입니다. 손 대신 매일 낚싯대 장난감으로 놀아 주세요.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "pl": {
+      "title": "Kot, który atakuje twoje stopy, nie jest zły – on na ciebie poluje 🐱",
+      "description": "Kot czający się na twoje kostki zwykle przejawia agresję w zabawie – najczęstszy rodzaj agresji kotów wobec opiekunów. Najczęściej dotyczy młodych kotów wychowanych bez rodzeństwa, które nie nauczyły się, że zbyt mocne ugryzienie kończy zabawę. Baw się z nim codziennie wędką z piórkami, a nie rękami.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "nl": {
+      "title": "Je kat is niet boos als hij je voeten aanvalt, hij jaagt op je 🐱",
+      "description": "Een kat die je enkels besluipt, vertoont meestal speelagressie, de meest voorkomende vorm van agressie van katten naar hun baasje. Vooral jonge katten die zonder broertjes en zusjes opgroeiden doen het: ze leerden nooit dat te hard bijten het spel beëindigt. Speel elke dag met een hengel met veren in plaats van met je handen.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "uk": {
+      "title": "Кіт кидається на твої ноги не зі злості — він на тебе полює 🐱",
+      "description": "Кіт, який підстерігає твої щиколотки, зазвичай проявляє ігрову агресію — найпоширеніший вид агресії котів до господарів. Найчастіше так поводяться молоді коти, що росли без братів і сестер: їх ніхто не навчив, що сильний укус припиняє гру. Грайся з ним щодня вудочкою-дражнилкою, а не руками.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "vi": {
+      "title": "Mèo vồ chân bạn không phải vì giận, mà vì đang săn bạn 🐱",
+      "description": "Mèo rình vồ mắt cá chân thường đang thể hiện hành vi hung hăng khi chơi, kiểu hung hăng phổ biến nhất mà mèo nhắm vào chủ. Điều này hay gặp nhất ở mèo non lớn lên không có anh chị em, nên chưa từng học được rằng cắn mạnh sẽ khiến cuộc chơi dừng lại. Hãy chơi với mèo mỗi ngày bằng cần câu lông vũ thay vì dùng tay.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "az": {
+      "title": "Ayaqlarına hücum edən pişiyin sənə hirslənməyib, səni ovlayır 🐱",
+      "description": "Topuğuna pusqu quran pişik adətən oyun aqressiyası göstərir; bu, pişiklərin sahiblərinə yönəltdiyi ən geniş yayılmış aqressiya növüdür. Ən çox qardaşları ilə böyüməyən gənc pişiklərdə rast gəlinir: onlar bərk dişləyəndə oyunun bitdiyini öyrənməyiblər. Əllə yox, hər gün lələkli oyuncaq çubuğu ilə oyna.\n\n#shorts\n\nSeri: mk-c0175"
+    },
+    "ro": {
+      "title": "Pisica ta nu e supărată când îți atacă picioarele, te vânează 🐱",
+      "description": "Pisica ce te pândește la glezne arată de obicei agresivitate de joacă, cel mai frecvent tip de agresivitate îndreptat spre stăpâni. Apare mai ales la pisicile tinere crescute fără frați, care n-au învățat niciodată că o mușcătură prea tare oprește joaca. Joacă-te zilnic cu ea folosind o undiță cu pene, nu mâinile.\n\n#shorts\n\nSeri: mk-c0175"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin hangisini yapıyor: ayak bileğine pusu mu, battaniyenin altındaki ayağına saldırı mı?",
+  "scenes": [
+    {
+      "text": "Ayağına saldıran bu kedi sana kızgın değil.",
+      "visual": "close-up of a crouching cat with dilated pupils, about to pounce, looking straight at the camera",
+      "stock_query": "cat attack",
+      "source": "stock",
+      "callout": "KIZGIN DEĞİL"
+    },
+    {
+      "text": "Saklandığı yerden tam sen geçerken fırlar.",
+      "visual": "a cat hiding behind the corner of a sofa, peeking out and waiting",
+      "stock_query": "cat hiding",
+      "source": "stock"
+    },
+    {
+      "text": "En çok da kardeşleriyle büyümemiş genç kediler yapar.",
+      "visual": "a single young kitten playing alone on the floor",
+      "stock_query": "kitten playing",
+      "source": "stock",
+      "subject": [
+        "kitten"
+      ],
+      "callout": "KARDEŞSİZ YAVRU"
+    },
+    {
+      "text": "Çünkü sert ısırınca oyunu kesen kardeşleri olmadı; ayağın ona av gibi geliyor.",
+      "visual": "a playful cat grabbing and biting at a person's foot",
+      "stock_query": "cat biting",
+      "source": "stock",
+      "callout": "AYAĞIN AV"
+    },
+    {
+      "text": "Elinle değil, her gün kedi oltasıyla av oyunu oynat.",
+      "visual": "a cat leaping to catch a feather wand toy",
+      "stock_query": "cat playing toy",
+      "source": "stock",
+      "callout": "KEDİ OLTASI"
+    },
+    {
+      "text": "Bir dahaki pusuda hatırla:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 16.15,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #226",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0175_1795031067_ig.mp4"
+}
