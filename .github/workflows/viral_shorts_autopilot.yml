@@ -171,12 +171,21 @@ jobs:
       # 2026-11-18 19:08 UTC: the Ubuntu mirror served the 72 MB of FFmpeg packages at ~60 KB/s, so every apt attempt
       # ran out of time. The downloaded .deb files are kept in the Actions cache and put back into apt's archive folder,
       # so a slow mirror only matters for packages that changed since the cache was saved.
+      # A cache whose key already exists is never saved again, so the key changes every ISO week and restores the
+      # newest older week: packages Ubuntu updated since then reach the cache within a week.
+      - name: 🗓️ Apt Önbellek Haftası
+        id: aptweek
+        if: steps.gate.outputs.go == 'true'
+        run: echo "week=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
+
       - name: 🗃️ Apt Paket Önbelleği
         if: steps.gate.outputs.go == 'true'
         uses: actions/cache@v4
         with:
           path: ~/apt-debs
-          key: apt-debs-ubuntu-24.04-ffmpeg-fonts-v1
+          key: apt-debs-ubuntu-24.04-ffmpeg-fonts-v1-${{ steps.aptweek.outputs.week }}
+          restore-keys: |
+            apt-debs-ubuntu-24.04-ffmpeg-fonts-v1-
 
       - name: 🎥 FFmpeg ve Fontları Kur
         if: steps.gate.outputs.go == 'true'
@@ -207,7 +216,9 @@ jobs:
             # image cleans apt's archive folder after installing.
             if sudo timeout 180 apt-get $APT_OPTS update -qq && \
                sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends --download-only $PKGS; then
-              mkdir -p ~/apt-debs
+              # autoclean drops versions the mirror no longer offers, so the cache keeps only current packages.
+              sudo apt-get $APT_OPTS autoclean -qq || true
+              rm -rf ~/apt-debs && mkdir -p ~/apt-debs
               cp /var/cache/apt/archives/*.deb ~/apt-debs/ 2>/dev/null || true
               if sudo timeout 300 apt-get $APT_OPTS install -y --no-install-recommends $PKGS; then
                 installed=1
