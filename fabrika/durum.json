@@ -2969,12 +2969,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-10T13:17:40+00:00",
-   "mod": "igbolum",
-   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
-   "chars": 424
-  },
-  {
    "finished": "2026-11-10T14:11:10+00:00",
    "mod": "saatlik",
    "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
@@ -3385,6 +3379,12 @@
    "url": "https://youtube.com/shorts/oc3doP2FMTQ",
    "duration": 27.5,
    "chars": 365
+  },
+  {
+   "finished": "2026-11-18T17:11:52+00:00",
+   "mod": "igbolum",
+   "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+   "chars": 370
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3754,6 +3754,11 @@
     "media_id": "18194544217360649",
     "url": "https://www.instagram.com/reel/Df4lAOYHFZF/",
     "at": 1795007387.0530858
+   },
+   "y031": {
+    "media_id": "17976477753151126",
+    "url": "https://www.instagram.com/reel/Df5AwNeAtU4/",
+    "at": 1795021912.1936219
    }
   },
   "eski": [
@@ -3776,5 +3781,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795011069.3206656
+ "yedek_ses": 1795021912.1936798
 }

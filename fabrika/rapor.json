@@ -1,76 +1,21 @@
 {
- "started": "2026-11-18T14:10:05+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-18T17:06:46+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y031",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "72",
-  "videos": "93"
+ "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
+ "chars": 370,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "17976477753151126",
+  "url": "https://www.instagram.com/reel/Df5AwNeAtU4/",
+  "at": 1795021912.1936219
  },
- "credits_before": [
-  106307,
-  613902
- ],
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261118-2-n021.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "n021",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bir bakteri ne kadar küçük?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 365,
- "duration": 27.5,
- "title": "Bir Bakteri Gerçekte Ne Kadar Küçük?",
- "url": "https://youtube.com/shorts/oc3doP2FMTQ",
- "recent_status": {
-  "y029": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "270",
-   "reason": null
-  },
-  "n019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "67",
-   "reason": null
-  },
-  "y031": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "719",
-   "reason": null
-  },
-  "y035": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "587",
-   "reason": null
-  },
-  "n021": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261118-2-n021.json Bir bakteri ne kadar küçük? (Ne Kadar Büyük?)"
+  "Instagram: https://www.instagram.com/reel/Df5AwNeAtU4/"
  ],
- "finished": "2026-11-18T14:11:09+00:00"
+ "finished": "2026-11-18T17:11:52+00:00"
 }

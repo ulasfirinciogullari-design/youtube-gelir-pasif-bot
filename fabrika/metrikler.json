@@ -1,5 +1,5 @@
 {
- "at": "2026-11-18T14:06:15+00:00",
+ "at": "2026-11-18T17:05:56+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 72,
   "viewCount": 85363,
-  "videoCount": 93
+  "videoCount": 94
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -153,7 +153,7 @@
    "baslik": "Bir Atom Gerçekte Ne Kadar Küçük?"
   },
   "-Ob9VS2V1H4": {
-   "view": 1120,
+   "view": 1122,
    "like": 5,
    "comment": 0,
    "baslik": "Evrende Sadece Dünya Kalsaydı Sana Ne Olurdu?"
@@ -315,7 +315,7 @@
    "baslik": "Dünya'ya 1 Günde Kaç Yıldırım Düşer? 😮"
   },
   "VMFzMO2A2CY": {
-   "view": 1096,
+   "view": 1098,
    "like": 4,
    "comment": 0,
    "baslik": "Mars'ta Korumasız Kalsaydın Ne Olurdu? 😳"
@@ -483,7 +483,7 @@
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 673,
+   "view": 674,
    "like": 8,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
@@ -501,13 +501,13 @@
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 1000,
+   "view": 1001,
    "like": 5,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 1013,
+   "view": 1016,
    "like": 7,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -519,19 +519,19 @@
    "baslik": "Bir Yıldırım Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "4MpwenNL9NY": {
-   "view": 162,
+   "view": 164,
    "like": 0,
    "comment": 0,
    "baslik": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun? 😳"
   },
   "2kMaKl9jUoc": {
-   "view": 140,
+   "view": 146,
    "like": 1,
    "comment": 0,
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 1003,
+   "view": 1032,
    "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
@@ -543,7 +543,7 @@
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
   "sLED9nX8m1w": {
-   "view": 373,
+   "view": 372,
    "like": 3,
    "comment": 0,
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
@@ -555,22 +555,28 @@
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 67,
+   "view": 66,
    "like": 0,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
   },
   "3Fx81kZhy8s": {
-   "view": 716,
-   "like": 4,
+   "view": 673,
+   "like": 5,
    "comment": 0,
    "baslik": "Ağaçlar Hiç Olmasaydı Ne Olurdu? 😳"
   },
   "BNjOETmygkw": {
-   "view": 563,
-   "like": 5,
+   "view": 946,
+   "like": 4,
    "comment": 0,
    "baslik": "Venüs'te 1 Gün Geçirseydin Ne Olurdu? 😳"
+  },
+  "oc3doP2FMTQ": {
+   "view": 204,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Bir Bakteri Gerçekte Ne Kadar Küçük? 🤯"
   }
  },
  "videos": {
@@ -957,7 +963,7 @@
    "title": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun?",
    "sources": {
     "SHORTS": 1202,
-    "YT_SEARCH": 59,
+    "YT_SEARCH": 58,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0
    },
@@ -1597,8 +1603,8 @@
    "subscribersGained": 0,
    "title": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu?",
    "sources": {
-    "SHORTS": 935,
-    "YT_SEARCH": 42,
+    "SHORTS": 929,
+    "YT_SEARCH": 43,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
    },
@@ -1775,8 +1781,8 @@
    "subscribersGained": 0,
    "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
    "sources": {
-    "SHORTS": 867,
-    "YT_SEARCH": 66,
+    "SHORTS": 858,
+    "YT_SEARCH": 67,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
    },
@@ -1836,9 +1842,10 @@
    "subscribersGained": 1,
    "title": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı?",
    "sources": {
-    "SHORTS": 865,
+    "SHORTS": 862,
     "YT_SEARCH": 17,
     "YT_CHANNEL": 1,
+    "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 332,
@@ -1894,7 +1901,7 @@
    "subscribersGained": 1,
    "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
    "sources": {
-    "SHORTS": 657,
+    "SHORTS": 656,
     "YT_SEARCH": 18,
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 2,
@@ -1915,7 +1922,7 @@
    "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
    "sources": {
     "SHORTS": 619,
-    "YT_SEARCH": 29,
+    "YT_SEARCH": 27,
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
@@ -1954,8 +1961,8 @@
    "subscribersGained": 0,
    "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
    "sources": {
-    "SHORTS": 545,
-    "YT_SEARCH": 46,
+    "SHORTS": 546,
+    "YT_SEARCH": 45,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0,
     "YT_OTHER_PAGE": 0
@@ -2190,7 +2197,7 @@
    "subscribersGained": 0,
    "title": "Fotosentez Yapabilseydin Aç Kalır Mıydın?",
    "sources": {
-    "SHORTS": 112,
+    "SHORTS": 111,
     "YT_SEARCH": 9,
     "NO_LINK_OTHER": 0
    },
