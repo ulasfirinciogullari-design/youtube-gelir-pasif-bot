@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "952",
+    "views": "953",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "930",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1003",
+    "views": "1000",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1016",
+    "views": "1013",
     "reason": null
    }
   },
@@ -2524,7 +2524,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "161",
+    "views": "162",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "976",
+    "views": "1003",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "838",
+    "views": "843",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "356",
+    "views": "373",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "257",
+    "views": "270",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "47",
+    "views": "67",
     "reason": null
    }
   },
@@ -2740,7 +2740,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "499",
+    "views": "719",
     "reason": null
    }
   },
@@ -2768,6 +2768,38 @@
    "at": 1794996482.5297081,
    "chars": 410,
    "ilk": false,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "587",
+    "reason": null
+   }
+  },
+  {
+   "id": "n021",
+   "video_id": "oc3doP2FMTQ",
+   "url": "https://youtube.com/shorts/oc3doP2FMTQ",
+   "title": "Bir Bakteri Gerçekte Ne Kadar Küçük?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Small Is a Bacterium, Really?",
+    "es": "¿Qué tan pequeña es realmente una bacteria?",
+    "pt": "Quão pequena é uma bactéria de verdade?",
+    "ar": "ما مدى صِغَر البكتيريا في الحقيقة؟",
+    "hi": "एक बैक्टीरिया असल में कितना छोटा होता है?",
+    "id": "Seberapa kecil sebenarnya sebuah bakteri?",
+    "fr": "Quelle est la vraie taille d'une bactérie ?",
+    "de": "Wie klein ist ein Bakterium wirklich?",
+    "ru": "Насколько на самом деле мала бактерия?",
+    "az": "Bir bakteriya əslində nə qədər kiçikdir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795011067.3238292,
+   "chars": 365,
+   "ilk": true,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -2869,7 +2901,8 @@
   "y029",
   "n019",
   "y031",
-  "y035"
+  "y035",
+  "n021"
  ],
  "extra": [
   {
@@ -2935,14 +2968,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-10T12:11:43+00:00",
-   "mod": "saatlik",
-   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
-   "url": "https://youtube.com/shorts/m_XagF1CrzE",
-   "duration": 56.7,
-   "chars": 856
-  },
   {
    "finished": "2026-11-10T13:17:40+00:00",
    "mod": "igbolum",
@@ -3352,6 +3377,14 @@
    "mod": "igbolum",
    "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
    "chars": 845
+  },
+  {
+   "finished": "2026-11-18T14:11:09+00:00",
+   "mod": "saatlik",
+   "title": "Bir Bakteri Gerçekte Ne Kadar Küçük?",
+   "url": "https://youtube.com/shorts/oc3doP2FMTQ",
+   "duration": 27.5,
+   "chars": 365
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3743,5 +3776,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795007387.0531864
+ "yedek_ses": 1795011069.3206656
 }
