@@ -1,21 +1,76 @@
 {
- "started": "2026-11-18T09:19:21+00:00",
- "mod": "igbolum",
- "gate": "instagram: y014",
+ "started": "2026-11-18T10:07:05+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
- "chars": 389,
- "instagram": {
-  "anahtar_bitis": "2027-01-15T09:07+00:00",
-  "media_id": "18471776182140459",
-  "url": "https://www.instagram.com/reel/Df4K52cgIZW/",
-  "at": 1794993671.0178905
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "71",
+  "videos": "92"
  },
+ "credits_before": [
+  106307,
+  613902
+ ],
  "warnings": [
+  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "log": [
-  "Instagram: https://www.instagram.com/reel/Df4K52cgIZW/"
+ "kuyruk": {
+  "dosya": "20261118-1-y035.json",
+  "kalan": 3
+ },
+ "topic": {
+  "id": "y035",
+  "series": "Ya Olsaydı?",
+  "q": "Venüs'te bir gün geçirseydin ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": false,
+ "chars": 410,
+ "duration": 29.5,
+ "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+ "url": "https://youtube.com/shorts/BNjOETmygkw",
+ "recent_status": {
+  "y018": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "356",
+   "reason": null
+  },
+  "y029": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "257",
+   "reason": null
+  },
+  "n019": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "47",
+   "reason": null
+  },
+  "y031": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "499",
+   "reason": null
+  },
+  "y035": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  106307,
+  613902
  ],
- "finished": "2026-11-18T09:21:11+00:00"
+ "log": [
+  "Kuyruktan: 20261118-1-y035.json Venüs'te bir gün geçirseydin ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-18T10:08:04+00:00"
 }

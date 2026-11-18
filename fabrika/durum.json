@@ -2216,7 +2216,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "675",
+    "views": "674",
     "reason": null
    }
   },
@@ -2246,7 +2246,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "965",
+    "views": "966",
     "reason": null
    }
   },
@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "928",
+    "views": "930",
     "reason": null
    }
   },
@@ -2307,7 +2307,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "951",
+    "views": "952",
     "reason": null
    }
   },
@@ -2338,7 +2338,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "671",
+    "views": "673",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "120",
+    "views": "119",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "922",
+    "views": "928",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1011",
+    "views": "1016",
     "reason": null
    }
   },
@@ -2493,7 +2493,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "633",
+    "views": "634",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "130",
+    "views": "140",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "955",
+    "views": "976",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "818",
+    "views": "838",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "327",
+    "views": "356",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "239",
+    "views": "257",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "16",
+    "views": "47",
     "reason": null
    }
   },
@@ -2737,6 +2737,38 @@
    "at": 1794938911.293719,
    "chars": 370,
    "ilk": null,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "499",
+    "reason": null
+   }
+  },
+  {
+   "id": "y035",
+   "video_id": "BNjOETmygkw",
+   "url": "https://youtube.com/shorts/BNjOETmygkw",
+   "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Spent 1 Day on Venus?",
+    "es": "¿Qué pasaría si pasaras 1 día en Venus?",
+    "pt": "E se você passasse 1 dia em Vênus?",
+    "ar": "ماذا لو قضيت يومًا واحدًا على كوكب الزهرة؟",
+    "hi": "अगर आप शुक्र ग्रह पर 1 दिन बिताते तो क्या होता?",
+    "id": "Bagaimana jika kamu menghabiskan 1 hari di Venus?",
+    "fr": "Et si tu passais 1 jour sur Vénus ?",
+    "de": "Was wäre, wenn du 1 Tag auf der Venus verbringen würdest?",
+    "ru": "Что, если бы ты провёл 1 день на Венере?",
+    "az": "Venerada 1 gün keçirsəydin nə olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1794996482.5297081,
+   "chars": 410,
+   "ilk": false,
+   "yedek_ses": true,
    "status": {
     "upload": "uploaded",
     "privacy": "public",
@@ -2836,7 +2868,8 @@
   "y018",
   "y029",
   "n019",
-  "y031"
+  "y031",
+  "y035"
  ],
  "extra": [
   {
@@ -2902,12 +2935,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-10T09:09:17+00:00",
-   "mod": "igbolum",
-   "title": "Dünya'da 1 Günde Kaç Deprem Olur?",
-   "chars": 400
-  },
   {
    "finished": "2026-11-10T10:09:15+00:00",
    "mod": "saatlik",
@@ -3319,6 +3346,14 @@
    "mod": "igbolum",
    "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
    "chars": 389
+  },
+  {
+   "finished": "2026-11-18T10:08:04+00:00",
+   "mod": "saatlik",
+   "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/BNjOETmygkw",
+   "duration": 29.5,
+   "chars": 410
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3705,5 +3740,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794993671.0179598
+ "yedek_ses": 1794996484.419495
 }

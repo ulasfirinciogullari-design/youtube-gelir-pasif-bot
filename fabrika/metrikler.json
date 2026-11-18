@@ -1,5 +1,5 @@
 {
- "at": "2026-11-18T09:06:10+00:00",
+ "at": "2026-11-18T10:06:10+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -483,7 +483,7 @@
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
   },
   "6XodpIbEU8A": {
-   "view": 675,
+   "view": 673,
    "like": 8,
    "comment": 2,
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
@@ -537,8 +537,8 @@
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 836,
-   "like": 12,
+   "view": 838,
+   "like": 13,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
@@ -742,7 +742,14 @@
    "comments": 2,
    "subscribersGained": 5,
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 1221,
+    "YT_SEARCH": 190,
+    "YT_CHANNEL": 16,
+    "YT_OTHER_PAGE": 3,
+    "SOUND_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 781,
    "devam_yuzde": 54.6
   },
@@ -1203,7 +1210,13 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 1023,
+    "YT_SEARCH": 76,
+    "YT_CHANNEL": 1,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 541,
    "devam_yuzde": 49.1
   },
@@ -1516,7 +1529,14 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 960,
+    "YT_SEARCH": 30,
+    "YT_CHANNEL": 4,
+    "YT_OTHER_PAGE": 1,
+    "SOUND_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 325,
    "devam_yuzde": 32.6
   },
