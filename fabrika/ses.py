@@ -41,11 +41,13 @@ NESNE_YEDEK = dict(VOICES["pi"], pitch=0.88)
 # every call into 401 payment_required and the slots stopped. The whole episode is then voiced again with these, so the
 # narrator never switches mid-video (as Zirvenin Kanunu's factory does). YO_EDGE=1 forces them. Rates are raised because
 # at +8% a 375-character script ran 32 s against ~24 s with ElevenLabs.
-EDGE = {"pi": {"name": "tr-TR-AhmetNeural", "rate": "+20%", "pitch": "+0Hz"},
-        "bit": {"name": "tr-TR-EmelNeural", "rate": "+22%", "pitch": "+20Hz"},
-        "nesne_kalin": {"name": "tr-TR-AhmetNeural", "rate": "+12%", "pitch": "-16Hz"},
-        "nesne_ince": {"name": "tr-TR-EmelNeural", "rate": "+16%", "pitch": "-6Hz"},
-        "nesne_genc": {"name": "tr-TR-AhmetNeural", "rate": "+20%", "pitch": "+14Hz"}}
+# Rates raised on 2026-11-18: the 1,272-character story y025 came out 108 s on the old rates (ElevenLabs pace ~14
+# characters/s, edge-tts was ~12), too close to uret.py's length limit and longer than the 70-90 s story target.
+EDGE = {"pi": {"name": "tr-TR-AhmetNeural", "rate": "+32%", "pitch": "+0Hz"},
+        "bit": {"name": "tr-TR-EmelNeural", "rate": "+34%", "pitch": "+20Hz"},
+        "nesne_kalin": {"name": "tr-TR-AhmetNeural", "rate": "+26%", "pitch": "-16Hz"},
+        "nesne_ince": {"name": "tr-TR-EmelNeural", "rate": "+28%", "pitch": "-6Hz"},
+        "nesne_genc": {"name": "tr-TR-AhmetNeural", "rate": "+32%", "pitch": "+14Hz"}}
 YEDEK = {"on": os.environ.get("YO_EDGE") == "1"}  # True once ElevenLabs refused in this run; uret.py reports it
 SFX = {
     "pop": ("Short soft cartoon UI pop, bubbly and clean, no echo", 1.0),

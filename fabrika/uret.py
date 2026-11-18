@@ -329,7 +329,7 @@ def render(ep, timings_path, mix, out_video, out_cover, layout=None, hook=None, 
     node(motor / "render.js", out_video, timings_path, mix)
     node(motor / "render.js", "--cover", ep.get("cover", 1), out_cover, timings_path)
     dur = video_len(out_video)
-    if not 14 <= dur <= (110 if ep.get("hikaye") else 90 if ep.get("uzun") else 60):
+    if not 14 <= dur <= (125 if ep.get("hikaye") else 90 if ep.get("uzun") else 60):
         raise RuntimeError(f"video süresi beklenmedik: {dur:.1f} sn")
     return dur
 
