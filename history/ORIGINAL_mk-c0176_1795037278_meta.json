@@ -1,0 +1,181 @@
+{
+  "topic_id": "mk-c0176",
+  "topic": "Gözyaşı burundan akar mı? Ağlarken burun neden akar, gözyaşı nereye gider?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Ağlarken gözyaşın burnundan akabilir mi? 😢",
+  "hook_text": "GÖZYAŞI BURUNDAN AKAR MI?",
+  "description": "Gözyaşı burundan akar mı, ağlarken burun neden akar, gözyaşı nereye gider?\n\nEvet, akar. Cleveland Clinic'e göre her gözün alt ve üst kapağının iç köşesinde, buruna yakın birer minik delik (lakrimal punktum) bulunur. Her göz kırpışta bu delikler bir vana gibi çalışarak kullanılmış gözyaşını gözden uzaklaştırır; gözyaşı iç köşedeki küçük bir kesecikte toplanır ve gözyaşı kanallarıyla burnun arkasına boşalır. Ağlarken fazladan üretilen gözyaşı burna her zamankinden hızlı aktığı için burun dolar ve akmaya başlar.\n\nSence hangisi daha tuhaf: gözyaşının burna akması mı, gözdeki minik delikler mi?\n\n#gözyaşı #göz #mümkünmü #insanvücudu #shorts #bilim #merak #keşfet\n\nSeri: mk-c0176",
+  "tags": [
+    "gözyaşı burundan akar mı",
+    "ağlarken burun neden akar",
+    "ağlayınca burun akması",
+    "gözyaşı nereye gider",
+    "gözyaşı kanalı",
+    "gözyaşı kanalı nerede",
+    "göz kapağındaki delik",
+    "lakrimal punktum",
+    "gözyaşı",
+    "ağlamak",
+    "göz",
+    "burun",
+    "göz kırpmak",
+    "mümkün mü",
+    "insan vücudu",
+    "vücut",
+    "sağlık",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "tear duct",
+    "runny nose crying",
+    "ağlarken burun akması",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "gozyasi burundan akar mi",
+    "aglarken burun neden akar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can your tears run out of your nose when you cry? 😢",
+      "description": "Yes. Each upper and lower eyelid has a tiny opening at the inner corner, near the nose. Every blink drains used tears through them into the back of your nose, and when you cry the extra tears flood it, which is why your nose runs.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "es": {
+      "title": "¿Pueden tus lágrimas salir por la nariz cuando lloras? 😢",
+      "description": "Sí. En el rincón interno de cada párpado, junto a la nariz, hay un orificio diminuto. Con cada parpadeo, las lágrimas usadas drenan por ahí hacia el fondo de la nariz; al llorar, el exceso la inunda y por eso te moquea.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "pt": {
+      "title": "Suas lágrimas podem sair pelo nariz quando você chora? 😢",
+      "description": "Sim. No canto interno de cada pálpebra, perto do nariz, há um furinho minúsculo. A cada piscada, a lágrima usada escoa por ali até o fundo do nariz; quando você chora, o excesso inunda o nariz, e por isso ele escorre.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "de": {
+      "title": "Können Tränen beim Weinen aus der Nase laufen? 😢",
+      "description": "Ja. Im inneren Augenwinkel hat jedes Ober- und Unterlid eine winzige Öffnung. Bei jedem Lidschlag fließt verbrauchte Tränenflüssigkeit dort hinein und weiter in den hinteren Nasenraum – beim Weinen ist es so viel, dass die Nase läuft.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "fr": {
+      "title": "Tes larmes peuvent-elles couler par ton nez quand tu pleures ? 😢",
+      "description": "Oui. Au coin interne de chaque paupière, près du nez, se trouve un minuscule orifice. À chaque clignement, les larmes usées s'y écoulent vers l'arrière du nez ; quand tu pleures, le surplus l'inonde et ton nez coule.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "it": {
+      "title": "Le lacrime possono uscire dal naso quando piangi? 😢",
+      "description": "Sì. Nell'angolo interno di ogni palpebra, vicino al naso, c'è un forellino minuscolo. A ogni battito di ciglia le lacrime usate defluiscono da lì verso il fondo del naso; quando piangi, l'eccesso lo riempie ed è per questo che ti cola il naso.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "ru": {
+      "title": "Могут ли слёзы течь из носа, когда ты плачешь? 😢",
+      "description": "Да. Во внутреннем уголке каждого века, у самого носа, есть крошечное отверстие. При каждом моргании использованная слеза уходит через него в заднюю часть носа, а когда ты плачешь, лишние слёзы заполняют нос — поэтому он и течёт.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "ar": {
+      "title": "هل يمكن أن تسيل دموعك من أنفك عندما تبكي؟ 😢",
+      "description": "نعم. في الزاوية الداخلية لكل جفن، قرب الأنف، فتحة صغيرة جدًا. مع كل رمشة تُصرَّف الدموع المستعملة عبرها إلى مؤخرة الأنف، وعندما تبكي تغمر الدموع الزائدة الأنف فيسيل.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "hi": {
+      "title": "क्या रोते समय आँसू नाक से बह सकते हैं? 😢",
+      "description": "हाँ। हर पलक के भीतरी कोने में, नाक के पास, एक छोटा-सा छेद होता है। हर बार पलक झपकाने पर इस्तेमाल हुए आँसू इसी से होकर नाक के पिछले हिस्से में चले जाते हैं; रोते समय ज़्यादा आँसू नाक को भर देते हैं, इसलिए नाक बहने लगती है।\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "id": {
+      "title": "Bisakah air mata keluar lewat hidung saat menangis? 😢",
+      "description": "Bisa. Di sudut dalam setiap kelopak mata, dekat hidung, ada lubang kecil. Setiap berkedip, air mata bekas mengalir lewat lubang itu ke bagian belakang hidung; saat menangis, kelebihannya membanjiri hidung sehingga hidung jadi berair.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "ja": {
+      "title": "泣くと涙は鼻から出てくる？ 😢",
+      "description": "出てきます。上下のまぶたの目頭側には小さな穴があります。まばたきのたびに使い終わった涙はこの穴から鼻の奥へ流れていき、泣くとあふれた涙が鼻を満たして鼻水のように出てくるのです。\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "ko": {
+      "title": "울 때 눈물이 코로 나올 수 있을까? 😢",
+      "description": "그렇습니다. 위아래 눈꺼풀 안쪽 구석, 코 가까이에 아주 작은 구멍이 있습니다. 눈을 깜빡일 때마다 쓰고 난 눈물이 이 구멍을 통해 코 안쪽으로 빠져나가고, 울 때는 넘치는 눈물이 코를 채워 콧물처럼 흐릅니다.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "pl": {
+      "title": "Czy łzy mogą płynąć nosem, kiedy płaczesz? 😢",
+      "description": "Tak. W wewnętrznym kąciku każdej powieki, tuż przy nosie, jest malutki otwór. Przy każdym mrugnięciu zużyte łzy spływają nim do tylnej części nosa, a gdy płaczesz, ich nadmiar zalewa nos – dlatego z niego cieknie.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "nl": {
+      "title": "Kunnen je tranen uit je neus lopen als je huilt? 😢",
+      "description": "Ja. In de binnenste ooghoek heeft elk boven- en onderooglid een piepklein gaatje. Bij elke knipper lopen gebruikte tranen daardoor naar achter in je neus, en als je huilt overspoelt het teveel je neus – daarom gaat hij lopen.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "uk": {
+      "title": "Чи можуть сльози текти з носа, коли ти плачеш? 😢",
+      "description": "Так. У внутрішньому куточку кожної повіки, біля носа, є крихітний отвір. З кожним кліпанням використані сльози стікають крізь нього в задню частину носа, а коли ти плачеш, їхній надлишок заповнює ніс — тому він і тече.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "vi": {
+      "title": "Nước mắt có thể chảy ra từ mũi khi bạn khóc không? 😢",
+      "description": "Có. Ở góc trong của mỗi mí mắt, sát mũi, có một lỗ nhỏ xíu. Mỗi lần chớp mắt, nước mắt đã dùng sẽ thoát qua đó xuống phía sau mũi; khi bạn khóc, lượng nước mắt dư tràn vào mũi nên mũi chảy nước.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "az": {
+      "title": "Ağlayanda göz yaşın burnundan axa bilərmi? 😢",
+      "description": "Bəli. Hər göz qapağının daxili küncündə, burna yaxın, kiçicik bir dəlik var. Hər dəfə gözünü qırpanda istifadə olunmuş göz yaşı oradan burnun arxasına axır; ağlayanda artıq göz yaşı burnu doldurur və burun axmağa başlayır.\n\n#shorts\n\nSeri: mk-c0176"
+    },
+    "ro": {
+      "title": "Pot lacrimile să-ți curgă pe nas când plângi? 😢",
+      "description": "Da. În colțul interior al fiecărei pleoape, lângă nas, există un orificiu minuscul. La fiecare clipire, lacrimile folosite se scurg pe acolo spre partea din spate a nasului; când plângi, surplusul îl inundă, de aceea îți curge nasul.\n\n#shorts\n\nSeri: mk-c0176"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: gözyaşının burna akması mı, gözdeki minik delikler mi?",
+  "scenes": [
+    {
+      "text": "Ağlayan bu kişinin burnu akıyor, ama nezle değil.",
+      "visual": "extreme close-up of a crying woman's face, a tear running from her eye beside her nose",
+      "stock_query": "crying woman",
+      "source": "stock",
+      "callout": "NEZLE DEĞİL"
+    },
+    {
+      "text": "Peki gözyaşı burundan akabilir mi?",
+      "visual": "close-up of a tear rolling down a cheek",
+      "stock_query": "tears face",
+      "source": "stock"
+    },
+    {
+      "text": "Gözünün iç köşesine bak; alt ve üst kapakta birer minik delik var.",
+      "visual": "macro close-up of the inner corner of a human eye next to the nose",
+      "stock_query": "eye close up",
+      "source": "stock",
+      "subject": [
+        "eye"
+      ],
+      "callout": "MİNİK DELİKLER"
+    },
+    {
+      "text": "Cevap evet: her göz kırpışta yaş bu deliklerden burnunun arkasına süzülür.",
+      "visual": "close-up of a human eye blinking",
+      "stock_query": "eye blinking",
+      "source": "stock",
+      "subject": [
+        "eye"
+      ],
+      "callout": "GÖZDEN BURUNA"
+    },
+    {
+      "text": "Ağlarken yaş çoğalınca burnun dolar ve akmaya başlar.",
+      "visual": "a person crying and wiping their nose with a tissue",
+      "stock_query": "crying tissue",
+      "source": "stock",
+      "callout": "BURUN AKAR"
+    },
+    {
+      "text": "Bir dahaki ağlayışta mendile uzanırken hatırla:",
+      "visual": "close-up of a sad woman's face with teary eyes",
+      "stock_query": "sad woman crying",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.6,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #227",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0176_1795037278_ig.mp4"
+}
