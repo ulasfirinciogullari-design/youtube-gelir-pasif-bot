@@ -1,0 +1,171 @@
+{
+  "topic_id": "mk-c0173",
+  "topic": "Kediye balık verilir mi? Kediler balığı neden sever, balık kediler için zararlı mı, kediye çiğ balık verilir mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Kedi balığa bayılır ama balık onun doğal yemeği değil 🐟",
+  "hook_text": "KEDİYE BALIK VERİLİR Mİ?",
+  "description": "Kediye balık verilir mi, kediler balığı neden sever, kediye çiğ balık vermek zararlı mı?\n\nKediler balığı sevebilir ama balık onların doğal yemeği değil. Veteriner hekim Jennifer Coates'un PetMD'de yazdığına göre evcil kediler çölde yaşayan atalardan gelir; muhtemel ataları Afrika yaban kedisi çoğunlukla fare, sıçan ve tavşan, arada bir de kuş ve sürüngen yer. 2016'da BMC Veterinary Research dergisinde yayımlanan bir derlemeye göre kedilerde en sık besin alerjisi yapan gıdalar sığır eti, balık ve tavuk. Bazı çiğ balıklarda tiamini (B1 vitamini) parçalayan bir enzim bulunur; Coates'a göre ağırlıklı çiğ balıkla beslenen kedide iştahsızlık ve nöbetlerle seyreden tiamin eksikliği görülebilir. Balık, tam ve dengeli bir mamanın parçası olarak sorun değil.\n\nSenin kedin hangisini daha çok seviyor: balığı mı, tavuğu mu?\n\n#kedi #kediler #kedibakımı #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0173",
+  "tags": [
+    "kediye balık verilir mi",
+    "kediler balık sever mi",
+    "kediler balığı neden sever",
+    "kediye çiğ balık verilir mi",
+    "kedi balık yer mi",
+    "kediye ton balığı",
+    "kedi beslenmesi",
+    "kedi ne yer",
+    "kedi maması",
+    "kedi besin alerjisi",
+    "kedilerde tiamin eksikliği",
+    "kedinin atası",
+    "afrika yaban kedisi",
+    "kedi bakımı",
+    "kedi sahibi",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "cats and fish",
+    "kedi çiğ balık",
+    "kedi alerjisi",
+    "shorts"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Cats love fish, but fish isn't their natural food 🐟",
+      "description": "Domestic cats descend from the African wildcat, a desert hunter of mice, rats and rabbits, and deserts aren't full of fish. Fish is one of the three most common food allergens in cats, and some raw fish contain an enzyme that destroys thiamine, so cats fed mostly raw fish can fall ill.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "es": {
+      "title": "A los gatos les encanta el pescado, pero no es su comida natural 🐟",
+      "description": "Los gatos domésticos descienden del gato montés africano, un cazador del desierto que come ratones, ratas y conejos, y en el desierto no abunda el pescado. El pescado es uno de los tres alérgenos alimentarios más comunes en gatos, y algunos pescados crudos tienen una enzima que destruye la tiamina.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "pt": {
+      "title": "Gatos adoram peixe, mas peixe não é o alimento natural deles 🐟",
+      "description": "Gatos domésticos descendem do gato-selvagem-africano, um caçador do deserto que come camundongos, ratos e coelhos, e no deserto quase não há peixe. Peixe é um dos três alérgenos alimentares mais comuns em gatos, e alguns peixes crus têm uma enzima que destrói a tiamina.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "de": {
+      "title": "Katzen lieben Fisch, doch Fisch ist nicht ihr natürliches Futter 🐟",
+      "description": "Hauskatzen stammen von der Falbkatze ab, einer Wüstenjägerin, die Mäuse, Ratten und Kaninchen frisst – und in der Wüste gibt es kaum Fisch. Fisch gehört bei Katzen zu den drei häufigsten Futtermittelallergenen, und manche rohen Fische enthalten ein Enzym, das Thiamin zerstört.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "fr": {
+      "title": "Les chats adorent le poisson, mais ce n'est pas leur nourriture naturelle 🐟",
+      "description": "Le chat domestique descend du chat sauvage d'Afrique, un chasseur du désert qui mange souris, rats et lapins ; or le désert ne regorge pas de poissons. Le poisson fait partie des trois allergènes alimentaires les plus fréquents chez le chat, et certains poissons crus contiennent une enzyme qui détruit la thiamine.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "it": {
+      "title": "I gatti adorano il pesce, ma non è il loro cibo naturale 🐟",
+      "description": "Il gatto domestico discende dal gatto selvatico africano, un cacciatore del deserto che mangia topi, ratti e conigli, e nel deserto il pesce scarseggia. Il pesce è tra i tre allergeni alimentari più comuni nei gatti, e alcuni pesci crudi contengono un enzima che distrugge la tiamina.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "ru": {
+      "title": "Кошки обожают рыбу, но рыба — не их естественная еда 🐟",
+      "description": "Домашние кошки произошли от степной кошки — пустынного охотника на мышей, крыс и кроликов, а в пустыне рыбы немного. Рыба входит в тройку самых частых пищевых аллергенов у кошек, а в некоторой сырой рыбе есть фермент, разрушающий тиамин.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "ar": {
+      "title": "القطط تعشق السمك، لكنه ليس طعامها الطبيعي 🐟",
+      "description": "تنحدر القطط المنزلية من القط البري الأفريقي، وهو صياد صحراوي يأكل الفئران والجرذان والأرانب، والصحراء لا تعج بالأسماك. والسمك من أكثر ثلاثة مسببات لحساسية الطعام لدى القطط، وبعض الأسماك النيئة تحتوي على إنزيم يدمّر الثيامين.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "hi": {
+      "title": "बिल्लियों को मछली बहुत पसंद है, पर यह उनका प्राकृतिक भोजन नहीं 🐟",
+      "description": "पालतू बिल्लियाँ अफ़्रीकी जंगली बिल्ली की वंशज हैं, जो रेगिस्तान में चूहों और ख़रगोशों का शिकार करती है, और रेगिस्तान में मछलियाँ कहाँ। मछली बिल्लियों में सबसे आम तीन खाद्य एलर्जी कारकों में है, और कुछ कच्ची मछलियों में एक एंज़ाइम होता है जो थायमिन को नष्ट कर देता है।\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "id": {
+      "title": "Kucing suka ikan, tapi ikan bukan makanan alaminya 🐟",
+      "description": "Kucing rumahan berasal dari kucing liar Afrika, pemburu gurun pemakan tikus dan kelinci, sementara di gurun hampir tak ada ikan. Ikan termasuk tiga alergen makanan paling umum pada kucing, dan beberapa ikan mentah mengandung enzim yang merusak tiamin.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "ja": {
+      "title": "猫は魚が大好き、でも魚は本来の食べ物じゃない 🐟",
+      "description": "イエネコの祖先は、砂漠でネズミやウサギを狩るリビアヤマネコです。砂漠に魚はほとんどいません。魚は猫の食物アレルギーの原因として上位3つに入り、生魚の中にはビタミンB1（チアミン）を壊す酵素を含むものもあります。\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "ko": {
+      "title": "고양이는 생선을 좋아하지만 생선은 원래 먹이가 아니다 🐟",
+      "description": "집고양이의 조상은 사막에서 쥐와 토끼를 사냥하던 아프리카들고양이입니다. 사막에는 물고기가 거의 없죠. 생선은 고양이 식품 알레르기의 3대 원인 중 하나이고, 일부 날생선에는 티아민(비타민 B1)을 파괴하는 효소가 있습니다.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "pl": {
+      "title": "Koty uwielbiają ryby, ale ryba nie jest ich naturalnym pokarmem 🐟",
+      "description": "Koty domowe pochodzą od żbika nubijskiego, pustynnego łowcy myszy, szczurów i królików, a na pustyni ryb nie ma wiele. Ryba należy do trzech najczęstszych alergenów pokarmowych u kotów, a niektóre surowe ryby zawierają enzym niszczący tiaminę.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "nl": {
+      "title": "Katten zijn dol op vis, maar vis is niet hun natuurlijke voedsel 🐟",
+      "description": "Huiskatten stammen af van de Afrikaanse wilde kat, een woestijnjager die muizen, ratten en konijnen eet, en in de woestijn zwemt weinig vis. Vis hoort bij de drie vaakste voedselallergenen bij katten, en sommige rauwe vis bevat een enzym dat thiamine afbreekt.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "uk": {
+      "title": "Коти обожнюють рибу, але риба — не їхня природна їжа 🐟",
+      "description": "Домашні коти походять від степового кота — пустельного мисливця на мишей, щурів і кроликів, а в пустелі риби небагато. Риба входить до трійки найчастіших харчових алергенів у котів, а деяка сира риба містить фермент, що руйнує тіамін.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "vi": {
+      "title": "Mèo mê cá, nhưng cá không phải thức ăn tự nhiên của chúng 🐟",
+      "description": "Mèo nhà có nguồn gốc từ mèo rừng châu Phi, một thợ săn sa mạc chuyên ăn chuột và thỏ, mà sa mạc thì chẳng có mấy cá. Cá là một trong ba tác nhân gây dị ứng thực phẩm phổ biến nhất ở mèo, và một số loại cá sống chứa enzyme phá hủy thiamin.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "az": {
+      "title": "Pişiklər balığı sevir, amma balıq onların təbii yeməyi deyil 🐟",
+      "description": "Ev pişikləri səhrada siçan, siçovul və dovşan ovlayan Afrika çöl pişiyindən gəlir, səhrada isə balıq yox dərəcəsindədir. Balıq pişiklərdə ən çox qida allergiyası yaradan üç qidadan biridir, bəzi çiy balıqlarda isə tiamini parçalayan ferment var.\n\n#shorts\n\nSeri: mk-c0173"
+    },
+    "ro": {
+      "title": "Pisicile adoră peștele, dar peștele nu e hrana lor naturală 🐟",
+      "description": "Pisicile domestice se trag din pisica sălbatică africană, un vânător de deșert care mănâncă șoareci, șobolani și iepuri, iar în deșert nu prea găsești pește. Peștele e unul dintre cei mai frecvenți trei alergeni alimentari la pisici, iar unele specii de pește crud conțin o enzimă care distruge tiamina.\n\n#shorts\n\nSeri: mk-c0173"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin hangisini daha çok seviyor: balığı mı, tavuğu mu?",
+  "scenes": [
+    {
+      "text": "Balığa bayılan bu kedinin atası çölde yaşardı.",
+      "visual": "close-up of a cat's face sniffing a raw fish and looking at the camera",
+      "stock_query": "cat eating fish",
+      "source": "stock",
+      "callout": "ATASI ÇÖLDE"
+    },
+    {
+      "text": "Kediye en güzel ikram balık sanılır.",
+      "visual": "street cats waiting for fish at a fish market",
+      "stock_query": "cat fish market",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa Afrika yaban kedisi fare ve tavşan avlar; çölde balık yoktur.",
+      "visual": "a cat crouching in dry grass and hunting",
+      "stock_query": "cat hunting",
+      "source": "stock",
+      "callout": "FARE, BALIK DEĞİL"
+    },
+    {
+      "text": "Üstelik balık, kedilerde en sık besin alerjisi yapan üç gıdadan biri.",
+      "visual": "a cat scratching its face with its back paw",
+      "stock_query": "cat scratching",
+      "source": "stock",
+      "callout": "İLK 3 ALERJEN"
+    },
+    {
+      "text": "Bazı çiğ balıklar tiamin vitaminini parçalar; hep çiğ balık yiyen kedi hastalanabilir.",
+      "visual": "a cat being examined by a veterinarian",
+      "stock_query": "cat veterinarian",
+      "source": "stock",
+      "callout": "VİTAMİN KAYBI"
+    },
+    {
+      "text": "Balık tabağını uzatmadan önce düşün:",
+      "visual": "close-up of a cat licking its lips and looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.11,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #224",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0173_1795008115_ig.mp4"
+}
