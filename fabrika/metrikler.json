@@ -1,5 +1,5 @@
 {
- "at": "2026-11-18T07:24:55+00:00",
+ "at": "2026-11-18T09:06:10+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -15,7 +15,7 @@
   "Ya Olsaydı? (UCFGTEF-fXFWNOJnunGWyYEg)"
  ],
  "kanal_istatistik": {
-  "subscriberCount": 72,
+  "subscriberCount": 71,
   "viewCount": 85363,
   "videoCount": 92
  },
@@ -321,7 +321,7 @@
    "baslik": "Mars'ta Korumasız Kalsaydın Ne Olurdu? 😳"
   },
   "HVyvxH-huIc": {
-   "view": 1262,
+   "view": 1261,
    "like": 7,
    "comment": 4,
    "baslik": "Göz Kırpmayı Bıraksaydın Kör Olur Muydun? 😳"
@@ -459,7 +459,7 @@
    "baslik": "Mavi Balina 1 Günde Kaç Ton Yer? 😮"
   },
   "Pxik5vC4NHU": {
-   "view": 675,
+   "view": 674,
    "like": 4,
    "comment": 0,
    "baslik": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu? 😳"
@@ -477,7 +477,7 @@
    "baslik": "Kedi Gibi Karanlıkta Görebilseydin Ne Olurdu? 😳"
   },
   "325eJNknZqk": {
-   "view": 951,
+   "view": 952,
    "like": 11,
    "comment": 0,
    "baslik": "Dünya'nın Çekirdeği Gerçekte Ne Kadar Sıcak? 🤯"
@@ -489,7 +489,7 @@
    "baslik": "Hiç Rüya Görmeseydin Beynine Ne Olurdu? 😳"
   },
   "Z7Pj4q9UTCs": {
-   "view": 120,
+   "view": 119,
    "like": 0,
    "comment": 0,
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
@@ -507,7 +507,7 @@
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 1015,
+   "view": 1016,
    "like": 7,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -537,31 +537,31 @@
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 834,
+   "view": 836,
    "like": 12,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
   "sLED9nX8m1w": {
-   "view": 353,
+   "view": 356,
    "like": 3,
    "comment": 0,
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
   },
   "EXfL-FfCYvc": {
-   "view": 254,
+   "view": 257,
    "like": 2,
    "comment": 0,
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 40,
+   "view": 47,
    "like": 0,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
   },
   "3Fx81kZhy8s": {
-   "view": 480,
+   "view": 499,
    "like": 3,
    "comment": 0,
    "baslik": "Ağaçlar Hiç Olmasaydı Ne Olurdu? 😳"
@@ -742,14 +742,7 @@
    "comments": 2,
    "subscribersGained": 5,
    "title": "Mavi Balina Gerçekte Ne Kadar Büyük?",
-   "sources": {
-    "SHORTS": 1221,
-    "YT_SEARCH": 190,
-    "YT_CHANNEL": 16,
-    "YT_OTHER_PAGE": 3,
-    "SOUND_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 781,
    "devam_yuzde": 54.6
   },
@@ -1210,13 +1203,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Saçların 1 Günde Toplam Kaç Metre Uzar?",
-   "sources": {
-    "SHORTS": 1023,
-    "YT_SEARCH": 76,
-    "YT_CHANNEL": 1,
-    "YT_OTHER_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 541,
    "devam_yuzde": 49.1
   },
@@ -1529,14 +1516,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Ay 5 Kat Büyük Olsaydı Evini Su Basar Mıydı?",
-   "sources": {
-    "SHORTS": 960,
-    "YT_SEARCH": 30,
-    "YT_CHANNEL": 4,
-    "YT_OTHER_PAGE": 1,
-    "SOUND_PAGE": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 325,
    "devam_yuzde": 32.6
   },

@@ -1,15 +1,21 @@
 {
- "started": "2026-11-18T07:36:34+00:00",
- "mod": "ornek",
- "gate": "ornek",
+ "started": "2026-11-18T09:19:21+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y014",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
- "chars": 1272,
- "duration": 98.1,
- "deneme": "fabrika/deneme/ornek-y025.mp4",
+ "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
+ "chars": 389,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18471776182140459",
+  "url": "https://www.instagram.com/reel/Df4K52cgIZW/",
+  "at": 1794993671.0178905
+ },
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "log": [],
- "finished": "2026-11-18T07:39:26+00:00"
+ "log": [
+  "Instagram: https://www.instagram.com/reel/Df4K52cgIZW/"
+ ],
+ "finished": "2026-11-18T09:21:11+00:00"
 }
