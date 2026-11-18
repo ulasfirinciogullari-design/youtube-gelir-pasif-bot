@@ -9,7 +9,6 @@
   "son": []
  },
  "slots": {
-  "2026-11-05T14": "LK9xEF2uL_o https://www.instagram.com/reel/DfXMlWOCKuW/",
   "2026-11-05T18": "s2YsSOJ_RQs https://www.instagram.com/reel/DfXoGSJiQp8/",
   "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
   "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
@@ -48,16 +47,17 @@
   "2026-11-17T14": "zcng8A73LM4 https://www.instagram.com/reel/Df2GG89k2D-/",
   "2026-11-17T18": "ThyFTMj1iK0 https://www.instagram.com/reel/Df2hmk6DSCN/",
   "2026-11-18T10": "782kkRLJ7ss https://www.instagram.com/reel/Df4PffciReb/",
-  "2026-11-18T14": "Ox8Alp2WJW4 https://www.instagram.com/reel/Df4q9nhDER3/"
+  "2026-11-18T14": "Ox8Alp2WJW4 https://www.instagram.com/reel/Df4q9nhDER3/",
+  "2026-11-18T18": "eGfPjyxwtcM https://www.instagram.com/reel/Df5GcYwD787/"
  },
  "nobet": {
   "basladi": "2026-11-18T15:40:44+00:00",
   "run": "44336427055",
-  "tur": 122,
+  "tur": 141,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-18T17:41:45+00:00"
+  "son_tur": "2026-11-18T18:01:31+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -521,6 +521,13 @@
    "at": 1795010486,
    "title": "Karnını gösteren kedi 'sev beni' demiyor 🐱",
    "topic_id": "mk-c0159"
+  },
+  "eGfPjyxwtcM": {
+   "media_id": "18120705848043738",
+   "url": "https://www.instagram.com/reel/Df5GcYwD787/",
+   "at": 1795024892,
+   "title": "Sana poposunu gösteren kedi kaba değil, selam veriyor 🐱",
+   "topic_id": "mk-c0156"
   }
  }
 }
