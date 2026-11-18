@@ -1,22 +1,22 @@
 {
- "started": "2026-11-18T11:45:15+00:00",
+ "started": "2026-11-18T20:45:19+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgwOQeeOGB-JEv9eM2h4AaABAg",
+   "id": "UgxfWD5RbtbtM80Yp1F4AaABAg",
    "kind": "comment",
-   "video": "rncHryYfALA",
-   "comment": "Köpeğim yok ama teşekkürler!",
-   "reply": "Rica ederim! Belki ileride bir köpeğin olur da bu bilgi işine yarar. 😊",
+   "video": "2_VEAO-Gz0E",
+   "comment": "❤❤❤❤❤❤❤❤❤❤❤",
+   "reply": "Çok teşekkürler! ❤️",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-18T11:45:21+00:00"
+ "finished": "2026-11-18T20:45:23+00:00"
 }
