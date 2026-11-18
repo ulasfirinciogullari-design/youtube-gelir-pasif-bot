@@ -1,75 +1,15 @@
 {
- "started": "2026-11-17T18:07:14+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-18T07:30:11+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "91"
- },
- "credits_before": [
-  106307,
-  613902
- ],
+ "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
+ "chars": 1272,
+ "duration": 107.9,
+ "deneme": "fabrika/deneme/ornek-y025.mp4",
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261117-3-y031.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y031",
-  "series": "Ya Olsaydı?",
-  "q": "Ağaçlar hiç olmasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 370,
- "duration": 29.7,
- "title": "Ağaçlar Hiç Olmasaydı Ne Olurdu?",
- "url": "https://youtube.com/shorts/3Fx81kZhy8s",
- "recent_status": {
-  "y015": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "818",
-   "reason": null
-  },
-  "y018": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "327",
-   "reason": null
-  },
-  "y029": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "239",
-   "reason": null
-  },
-  "n019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "16",
-   "reason": null
-  },
-  "y031": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261117-3-y031.json Ağaçlar hiç olmasaydı ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-11-17T18:08:33+00:00"
+ "log": [],
+ "finished": "2026-11-18T07:34:07+00:00"
 }

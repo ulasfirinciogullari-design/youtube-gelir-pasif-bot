@@ -2903,14 +2903,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-09T18:08:56+00:00",
-   "mod": "saatlik",
-   "title": "Damarların Gerçekte Ne Kadar Uzun?",
-   "url": "https://youtube.com/shorts/Sr9y1BY4FPk",
-   "duration": 27.5,
-   "chars": 407
-  },
-  {
    "finished": "2026-11-09T20:08:21+00:00",
    "mod": "saatlik",
    "title": "Bir Hafta Hiç Uyumasaydın Ne Olurdu?",
@@ -3322,6 +3314,13 @@
    "url": "https://youtube.com/shorts/3Fx81kZhy8s",
    "duration": 29.7,
    "chars": 370
+  },
+  {
+   "finished": "2026-11-18T07:34:07+00:00",
+   "mod": "ornek",
+   "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
+   "duration": 107.9,
+   "chars": 1272
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3703,5 +3702,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794938913.2371006
+ "yedek_ses": 1794987247.7160296
 }
