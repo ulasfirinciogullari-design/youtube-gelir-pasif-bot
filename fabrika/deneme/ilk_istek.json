@@ -1,8 +1,8 @@
 {
- "ara": {
-  "y035": ["Venus Maat Mons Magellan 3D perspective", "Venus surface Magellan radar"],
-  "n021": ["Escherichia coli scanning electron micrograph NIAID", "Staphylococcus aureus scanning electron micrograph"],
-  "y044": ["Apollo 11 bootprint", "Apollo astronaut walking lunar surface"]
- },
- "al": {}
+ "ara": {},
+ "al": {
+  "y035": {"n": 1, "x": 0.5, "y": 0.6},
+  "n021": {"n": 6, "x": 0.68, "y": 0.5},
+  "y044": {"n": 4, "x": 0.55, "y": 0.62}
+ }
 }
