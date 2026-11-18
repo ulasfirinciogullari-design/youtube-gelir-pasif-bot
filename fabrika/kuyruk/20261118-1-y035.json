@@ -1,0 +1,264 @@
+{
+ "id": "y035",
+ "series": "Ya Olsaydı?",
+ "q": "Venüs'te bir gün geçirseydin ne olurdu?",
+ "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+ "bar": {
+  "hi": "VENÜS'TE",
+  "rest": "1 GÜN KALSAN?"
+ },
+ "summary": "Venüs'e adım attığın an zemin 467 °C: kurşun bile erir! Üstüne çöken 93 kat basıncı, orada sadece 127 dakika dayanabilen Venera 13'ü ve Venüs'te bir günün neden yılından uzun sürdüğünü Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Venüs'e adım attığın an zemin 467 °C: kurşun bile erir!",
+   "v": {
+    "t": "meter",
+    "bg": "volcano",
+    "label": "Venüs Zemini",
+    "from": 0,
+    "to": 467,
+    "unit": "°C",
+    "e": "🔥",
+    "key": "467"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ayakkabım mangal mı oldu?!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "👟",
+    "do": "burn",
+    "key": "mangal",
+    "label": "Yanan Ayakkabı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstüne 93 kat hava basıncı çöker: 900 metre su altındaymışsın gibi!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "earth",
+     "label": "Dünya",
+     "value": "1"
+    },
+    "b": {
+     "b": "venus",
+     "label": "Venüs",
+     "value": "93"
+    },
+    "mode": "bar",
+    "key": "93"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sovyet aracı Venera 13 bile orada ancak 127 dakika dayanabildi.",
+   "v": {
+    "t": "number",
+    "bg": "desert",
+    "e": "🛰️",
+    "value": "127",
+    "unit": "dakika",
+    "label": "Venera 13",
+    "key": "127"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Robot olmak da kurtarmıyor mu?!",
+   "v": {
+    "t": "question",
+    "bg": "desert",
+    "e": "🤖",
+    "label": "Robot da mı?!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "1 gün mü? Orada 1 gün 243 Dünya günü sürer, yılından bile uzun!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "e": "☀️",
+     "label": "1 Venüs Günü",
+     "value": "243"
+    },
+    "b": {
+     "b": "venus",
+     "label": "1 Venüs Yılı",
+     "value": "225"
+    },
+    "mode": "bar",
+    "key": "243"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Venüs'e ne giyip giderdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🔥"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Venüs'ün yüzey sıcaklığı yaklaşık 467 °C'dir; bu, kurşunu eritecek kadar sıcaktır.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/venus/venus-facts/"
+  },
+  {
+   "text": "NASA'ya göre Venüs yüzeyindeki atmosfer basıncı, Dünya'da deniz seviyesindekinin yaklaşık 93 katıdır; bu, Dünya'da 900 metreden (3.000 feet) daha derin suyun altındaki basınca eşittir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/venus/venus-facts/"
+  },
+  {
+   "text": "Space.com'a göre Sovyet iniş aracı Venera 13, 1 Mart 1982'de Venüs'e indi ve ağır koşullara yenik düşmeden önce yüzeyde 127 dakika dayandı.",
+   "source": "Space.com",
+   "url": "https://www.space.com/18551-venera-13.html"
+  },
+  {
+   "text": "NASA'ya göre Venüs'te bir gün 243 Dünya günü sürer, Güneş'in çevresindeki bir tur ise 225 Dünya günüdür; yani Venüs'te bir gün, bir yıldan uzundur.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/venus/venus-facts/"
+  }
+ ],
+ "tags": [
+  "venüs'te bir gün",
+  "venüs",
+  "venüs gezegeni",
+  "venüs yüzeyi",
+  "venüs sıcaklığı",
+  "venera 13",
+  "en sıcak gezegen",
+  "venüste bir gün bir yıldan uzun",
+  "güneş sistemi",
+  "what if you spent a day on venus",
+  "venus",
+  "venus surface",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#venüs",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/venus/venus-facts/",
+  "https://www.space.com/18551-venera-13.html"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Spent 1 Day on Venus?",
+   "summary": "The moment you step onto Venus, the ground is 467 °C: hot enough to melt lead! Professor Pi explains the crushing pressure 93 times Earth's, the Venera 13 lander that lasted only 127 minutes, and why a day on Venus is longer than its year.",
+   "facts": [
+    "According to NASA, the surface temperature of Venus is about 467 °C, hot enough to melt lead.",
+    "According to NASA, the atmospheric pressure on the surface of Venus is about 93 times that at sea level on Earth, the same as being more than 900 meters (3,000 feet) underwater.",
+    "According to Space.com, the Soviet lander Venera 13 touched down on Venus on March 1, 1982, and survived 127 minutes on the surface before the harsh conditions destroyed it.",
+    "According to NASA, a day on Venus lasts 243 Earth days, while one trip around the Sun takes 225 Earth days, so a day on Venus is longer than its year."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si pasaras 1 día en Venus?",
+   "summary": "¡En cuanto pisas Venus, el suelo está a 467 °C: tan caliente que derrite el plomo! El profesor Pi explica la presión 93 veces mayor que en la Tierra, la sonda Venera 13 que solo aguantó 127 minutos y por qué un día en Venus dura más que su año.",
+   "facts": [
+    "Según la NASA, la temperatura de la superficie de Venus es de unos 467 °C, suficiente para derretir el plomo.",
+    "Según la NASA, la presión atmosférica en la superficie de Venus es unas 93 veces la del nivel del mar en la Tierra, como estar a más de 900 metros (3.000 pies) bajo el agua.",
+    "Según Space.com, la sonda soviética Venera 13 aterrizó en Venus el 1 de marzo de 1982 y resistió 127 minutos en la superficie antes de sucumbir a las duras condiciones.",
+    "Según la NASA, un día en Venus dura 243 días terrestres y una vuelta alrededor del Sol, 225 días terrestres: un día en Venus es más largo que su año."
+   ]
+  },
+  "pt": {
+   "title": "E se você passasse 1 dia em Vênus?",
+   "summary": "Assim que você pisa em Vênus, o chão está a 467 °C: quente o bastante para derreter chumbo! O professor Pi explica a pressão 93 vezes maior que a da Terra, a sonda Venera 13 que durou só 127 minutos e por que um dia em Vênus é mais longo que o seu ano.",
+   "facts": [
+    "Segundo a NASA, a temperatura da superfície de Vênus é de cerca de 467 °C, quente o bastante para derreter chumbo.",
+    "Segundo a NASA, a pressão atmosférica na superfície de Vênus é cerca de 93 vezes a do nível do mar na Terra, como estar a mais de 900 metros (3.000 pés) debaixo d'água.",
+    "Segundo o Space.com, a sonda soviética Venera 13 pousou em Vênus em 1º de março de 1982 e resistiu 127 minutos na superfície antes de sucumbir às condições extremas.",
+    "Segundo a NASA, um dia em Vênus dura 243 dias terrestres, enquanto uma volta ao redor do Sol leva 225 dias terrestres: o dia de Vênus é mais longo que o seu ano."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو قضيت يومًا واحدًا على كوكب الزهرة؟",
+   "summary": "في اللحظة التي تطأ فيها قدمك الزهرة تكون حرارة الأرض تحتك 467 درجة مئوية، وهي كافية لصهر الرصاص! يشرح البروفيسور باي الضغط الذي يبلغ 93 ضعف ضغط الأرض، والمسبار فينيرا 13 الذي صمد 127 دقيقة فقط، ولماذا يكون اليوم على الزهرة أطول من سنتها.",
+   "facts": [
+    "وفقًا لناسا، تبلغ حرارة سطح الزهرة نحو 467 درجة مئوية، وهي حرارة كافية لصهر الرصاص.",
+    "وفقًا لناسا، يبلغ الضغط الجوي على سطح الزهرة نحو 93 ضعف الضغط عند مستوى سطح البحر على الأرض، أي ما يعادل الوجود على عمق يزيد على 900 متر (3000 قدم) تحت الماء.",
+    "وفقًا لموقع Space.com، هبط المسبار السوفيتي فينيرا 13 على الزهرة في 1 مارس 1982 وصمد 127 دقيقة على سطحها قبل أن تقضي عليه الظروف القاسية.",
+    "وفقًا لناسا، يستمر اليوم على الزهرة 243 يومًا أرضيًا، بينما تستغرق دورتها حول الشمس 225 يومًا أرضيًا، أي أن يومها أطول من سنتها."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप शुक्र ग्रह पर 1 दिन बिताते तो क्या होता?",
+   "summary": "शुक्र पर कदम रखते ही ज़मीन 467 °C पर होती है: इतनी गर्म कि सीसा भी पिघल जाए! प्रोफ़ेसर पाई बताते हैं पृथ्वी से 93 गुना दबाव, सिर्फ़ 127 मिनट टिकने वाला वेनेरा 13 यान और क्यों शुक्र का एक दिन उसके साल से लंबा है।",
+   "facts": [
+    "NASA के अनुसार शुक्र की सतह का तापमान लगभग 467 °C है, जो सीसा पिघलाने के लिए काफ़ी है।",
+    "NASA के अनुसार शुक्र की सतह पर वायुमंडलीय दबाव पृथ्वी पर समुद्र तल के दबाव का लगभग 93 गुना है, यानी पानी में 900 मीटर (3,000 फ़ुट) से ज़्यादा गहराई जितना।",
+    "Space.com के अनुसार सोवियत लैंडर वेनेरा 13 ने 1 मार्च 1982 को शुक्र पर उतरकर कठोर हालात से नष्ट होने से पहले उसकी सतह पर 127 मिनट तक काम किया।",
+    "NASA के अनुसार शुक्र पर एक दिन 243 पृथ्वी दिनों का होता है, जबकि सूर्य का एक चक्कर 225 पृथ्वी दिनों में पूरा होता है, यानी वहाँ एक दिन एक साल से लंबा है।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana jika kamu menghabiskan 1 hari di Venus?",
+   "summary": "Begitu kamu menginjak Venus, tanahnya bersuhu 467 °C: cukup panas untuk melelehkan timbal! Profesor Pi menjelaskan tekanan 93 kali lipat Bumi, wahana Venera 13 yang hanya bertahan 127 menit, dan mengapa sehari di Venus lebih lama daripada setahunnya.",
+   "facts": [
+    "Menurut NASA, suhu permukaan Venus sekitar 467 °C, cukup panas untuk melelehkan timbal.",
+    "Menurut NASA, tekanan atmosfer di permukaan Venus sekitar 93 kali tekanan di permukaan laut Bumi, setara dengan berada lebih dari 900 meter (3.000 kaki) di bawah air.",
+    "Menurut Space.com, pendarat Soviet Venera 13 mendarat di Venus pada 1 Maret 1982 dan bertahan 127 menit di permukaannya sebelum kalah oleh kondisi yang ganas.",
+    "Menurut NASA, satu hari di Venus berlangsung 243 hari Bumi, sedangkan satu putaran mengelilingi Matahari butuh 225 hari Bumi, jadi sehari di Venus lebih lama daripada setahunnya."
+   ]
+  },
+  "fr": {
+   "title": "Et si tu passais 1 jour sur Vénus ?",
+   "summary": "Dès que tu poses le pied sur Vénus, le sol est à 467 °C : assez chaud pour faire fondre le plomb ! Le professeur Pi explique la pression 93 fois plus forte que sur Terre, la sonde Venera 13 qui n'a tenu que 127 minutes et pourquoi un jour sur Vénus dure plus longtemps que son année.",
+   "facts": [
+    "Selon la NASA, la température à la surface de Vénus est d'environ 467 °C, assez pour faire fondre le plomb.",
+    "Selon la NASA, la pression atmosphérique à la surface de Vénus est environ 93 fois celle du niveau de la mer sur Terre, comme si l'on se trouvait à plus de 900 mètres (3 000 pieds) sous l'eau.",
+    "Selon Space.com, l'atterrisseur soviétique Venera 13 s'est posé sur Vénus le 1er mars 1982 et a tenu 127 minutes à sa surface avant de succomber aux conditions extrêmes.",
+    "Selon la NASA, un jour sur Vénus dure 243 jours terrestres alors qu'un tour autour du Soleil en prend 225 : un jour y est donc plus long qu'une année."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn du 1 Tag auf der Venus verbringen würdest?",
+   "summary": "Sobald du die Venus betrittst, ist der Boden 467 °C heiß: heiß genug, um Blei zu schmelzen! Professor Pi erklärt den 93-mal höheren Druck als auf der Erde, die Sonde Venera 13, die nur 127 Minuten durchhielt, und warum ein Tag auf der Venus länger dauert als ihr Jahr.",
+   "facts": [
+    "Laut NASA beträgt die Oberflächentemperatur der Venus etwa 467 °C, heiß genug, um Blei zu schmelzen.",
+    "Laut NASA ist der Luftdruck an der Venusoberfläche etwa 93-mal so hoch wie auf Meereshöhe auf der Erde, so als wäre man mehr als 900 Meter (3.000 Fuß) unter Wasser.",
+    "Laut Space.com landete die sowjetische Sonde Venera 13 am 1. März 1982 auf der Venus und hielt 127 Minuten auf der Oberfläche durch, bevor die harten Bedingungen sie zerstörten.",
+    "Laut NASA dauert ein Tag auf der Venus 243 Erdtage, eine Runde um die Sonne aber nur 225 Erdtage: Ein Venustag ist also länger als ein Venusjahr."
+   ]
+  },
+  "ru": {
+   "title": "Что, если бы ты провёл 1 день на Венере?",
+   "summary": "Едва ты ступишь на Венеру, под ногами будет 467 °C: достаточно, чтобы расплавить свинец! Профессор Пи рассказывает о давлении в 93 раза выше земного, о станции «Венера-13», продержавшейся всего 127 минут, и о том, почему сутки на Венере длиннее её года.",
+   "facts": [
+    "По данным NASA, температура поверхности Венеры около 467 °C — этого хватит, чтобы расплавить свинец.",
+    "По данным NASA, атмосферное давление на поверхности Венеры примерно в 93 раза выше, чем на уровне моря на Земле, — как на глубине более 900 метров (3000 футов) под водой.",
+    "По данным Space.com, советский спускаемый аппарат «Венера-13» сел на Венеру 1 марта 1982 года и продержался на поверхности 127 минут, прежде чем его погубили суровые условия.",
+    "По данным NASA, сутки на Венере длятся 243 земных дня, а оборот вокруг Солнца — 225 земных дней, то есть день на Венере длиннее её года."
+   ]
+  },
+  "az": {
+   "title": "Venerada 1 gün keçirsəydin nə olardı?",
+   "summary": "Veneraya ayaq basdığın an torpaq 467 °C olur: qurğuşunu belə əridəcək qədər isti! Professor Pi Yerdəkindən 93 dəfə güclü təzyiqi, cəmi 127 dəqiqə dözə bilən Venera 13 aparatını və Venerada bir günün niyə ilindən uzun olduğunu danışır.",
+   "facts": [
+    "NASA-ya görə Veneranın səth temperaturu təxminən 467 °C-dir; bu, qurğuşunu əritmək üçün kifayətdir.",
+    "NASA-ya görə Veneranın səthindəki atmosfer təzyiqi Yerdə dəniz səviyyəsindəkindən təxminən 93 dəfə çoxdur; bu, suyun 900 metrdən (3.000 fut) dərin qatında olmağa bərabərdir.",
+    "Space.com-a görə Sovet eniş aparatı Venera 13 1 mart 1982-ci ildə Veneraya endi və ağır şəraitə tab gətirməyənədək səthdə 127 dəqiqə dözdü.",
+    "NASA-ya görə Venerada bir gün 243 Yer günü çəkir, Günəş ətrafında bir dövrə isə 225 Yer günüdür; yəni Venerada gün ildən uzundur."
+   ]
+  }
+ }
+}

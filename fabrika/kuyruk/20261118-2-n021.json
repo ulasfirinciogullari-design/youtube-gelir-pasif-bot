@@ -1,0 +1,273 @@
+{
+ "id": "n021",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir bakteri ne kadar küçük?",
+ "title": "Bir Bakteri Gerçekte Ne Kadar Küçük?",
+ "bar": {
+  "hi": "BAKTERİ",
+  "rest": "NE KADAR KÜÇÜK?"
+ },
+ "summary": "Şu an vücudunda 38 trilyon bakteri var, yani kendi hücrelerinden fazla! Saç telinin enine kaç bakteri sığdığını, avucunun enine kaç tanesinin dizildiğini ve her büyük tuvaletinde dengenin neden tersine dönebildiğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Şu an vücudunda 38 trilyon bakteri var: kendi hücrelerinden fazla!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🦠",
+    "value": "38",
+    "unit": "trilyon",
+    "label": "Sendeki Bakteri",
+    "key": "38"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ben azınlıkta mıyım?!",
+   "v": {
+    "t": "compare",
+    "bg": "body",
+    "a": {
+     "e": "🦠",
+     "label": "Bakteri",
+     "value": "38"
+    },
+    "b": {
+     "e": "🧬",
+     "label": "Senin Hücrelerin",
+     "value": "30"
+    },
+    "mode": "bar",
+    "key": "azınlıkta"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ama hepsi topu topu 200 gram: saç telinin enine yaklaşık 75 tanesi sığar.",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "💇",
+     "label": "Saç Teli",
+     "value": "75"
+    },
+    "b": {
+     "e": "🦠",
+     "label": "Bakteri",
+     "value": "1"
+    },
+    "mode": "size",
+    "key": "75"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Avucuna bak: enine 100.000 bakteri dizilir!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "✋",
+    "value": "100.000",
+    "unit": "bakteri",
+    "label": "Avucunun Enine",
+    "key": "100.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: her büyük tuvaletinde denge tersine dönebilir!",
+   "v": {
+    "t": "split",
+    "bg": "body",
+    "left": {
+     "e": "🦠",
+     "label": "Bakteri Önde"
+    },
+    "right": {
+     "e": "🧬",
+     "label": "Hücrelerin Önde"
+    },
+    "key": "tersine"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sifonu çekince kazanıyor muyum?!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🚽",
+    "do": "spin",
+    "key": "sifonu",
+    "label": "Sifon Zaferi"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sence şu an elinde kaç bakteri var? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "lab",
+    "e": "🦠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "PLOS Biology'de 2016'da yayımlanan Weizmann Enstitüsü çalışmasına göre 70 kiloluk bir insanda yaklaşık 38 trilyon bakteri ve 30 trilyon insan hücresi bulunur; bakterilerin toplam kütlesi yaklaşık 0,2 kg, yani 200 gramdır.",
+   "source": "PLOS Biology (Weizmann Enstitüsü)",
+   "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002533"
+  },
+  {
+   "text": "Britannica'ya göre Staphylococcus aureus gibi küresel bakterilerin çapı 1 mikrometreye kadar çıkar; HHMI'ye göre bir saç teli yaklaşık 75 mikrometre genişliğindedir, yani saç telinin enine bu bakterilerden yaklaşık 75 tane sığar.",
+   "source": "Britannica, HHMI",
+   "url": "https://www.britannica.com/science/bacteria/Diversity-of-structure-of-bacteria"
+  },
+  {
+   "text": "HHMI'ye göre ortalama bir insan avucunun enine yan yana dizilen bir bakteri sırası 100.000 hücre eder.",
+   "source": "HHMI",
+   "url": "https://www.hhmi.org/beautifulbiology/scroll-and-tell/scale-biology"
+  },
+  {
+   "text": "Çalışmanın yazarlarına göre bakteri ve insan hücresi sayıları birbirine o kadar yakındır ki her dışkılama, kalın bağırsaktaki bakterilerin dörtte biri ile üçte birini dışarı attığı için oranı insan hücreleri lehine çevirebilir.",
+   "source": "Scientific American (Nature), PLOS Biology",
+   "url": "https://www.scientificamerican.com/article/scientists-bust-myth-that-our-bodies-have-more-bacteria-than-human-cells/"
+  }
+ ],
+ "tags": [
+  "bakteri",
+  "bakteri ne kadar küçük",
+  "bakteri boyutu",
+  "vücuttaki bakteri sayısı",
+  "mikrobiyota",
+  "bağırsak bakterileri",
+  "mikrop",
+  "saç teli",
+  "mikroskop",
+  "how small is a bacterium",
+  "bacteria size",
+  "human microbiome",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#bakteri",
+  "#mikrop",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002533",
+  "https://www.hhmi.org/beautifulbiology/scroll-and-tell/scale-biology",
+  "https://www.scientificamerican.com/article/scientists-bust-myth-that-our-bodies-have-more-bacteria-than-human-cells/",
+  "https://www.britannica.com/science/bacteria/Diversity-of-structure-of-bacteria"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Small Is a Bacterium, Really?",
+   "summary": "Right now there are 38 trillion bacteria in your body, more than your own cells! Professor Pi shows how many bacteria fit across a single hair, how many line up across your palm, and why every trip to the toilet can flip the balance.",
+   "facts": [
+    "According to a 2016 Weizmann Institute study in PLOS Biology, a 70 kg person carries about 38 trillion bacteria and 30 trillion human cells; the bacteria weigh about 0.2 kg (200 grams) in total.",
+    "According to Britannica, spherical bacteria such as Staphylococcus aureus are up to 1 micrometer across; according to HHMI, a human hair is about 75 micrometers wide, so about 75 of these bacteria fit across one hair.",
+    "According to HHMI, a line of bacteria stretched across the width of an average human palm would number 100,000 cells.",
+    "According to the study's authors, the two numbers are so close that each bowel movement, which removes a quarter to a third of the bacteria in the colon, may flip the ratio in favor of human cells."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan pequeña es realmente una bacteria?",
+   "summary": "¡Ahora mismo hay 38 billones de bacterias en tu cuerpo, más que tus propias células! El profesor Pi muestra cuántas bacterias caben a lo ancho de un cabello, cuántas se alinean a lo ancho de tu palma y por qué cada visita al baño puede invertir el equilibrio.",
+   "facts": [
+    "Según un estudio del Instituto Weizmann publicado en PLOS Biology en 2016, una persona de 70 kg tiene unos 38 billones de bacterias y 30 billones de células humanas; las bacterias pesan en total unos 0,2 kg (200 gramos).",
+    "Según Britannica, las bacterias esféricas como Staphylococcus aureus miden hasta 1 micrómetro de diámetro; según el HHMI, un cabello humano mide unos 75 micrómetros de ancho, así que caben unas 75 de estas bacterias a lo ancho de un cabello.",
+    "Según el HHMI, una fila de bacterias a lo ancho de la palma de una mano humana promedio sumaría 100.000 células.",
+    "Según los autores del estudio, ambas cifras son tan parecidas que cada deposición, que expulsa entre un cuarto y un tercio de las bacterias del colon, puede invertir la proporción a favor de las células humanas."
+   ]
+  },
+  "pt": {
+   "title": "Quão pequena é uma bactéria de verdade?",
+   "summary": "Agora mesmo há 38 trilhões de bactérias no seu corpo, mais do que as suas próprias células! O professor Pi mostra quantas bactérias cabem na largura de um fio de cabelo, quantas se enfileiram na largura da sua palma e por que cada ida ao banheiro pode inverter o equilíbrio.",
+   "facts": [
+    "Segundo um estudo do Instituto Weizmann publicado na PLOS Biology em 2016, uma pessoa de 70 kg tem cerca de 38 trilhões de bactérias e 30 trilhões de células humanas; as bactérias pesam ao todo cerca de 0,2 kg (200 gramas).",
+    "Segundo a Britannica, bactérias esféricas como Staphylococcus aureus têm até 1 micrômetro de diâmetro; segundo o HHMI, um fio de cabelo humano tem cerca de 75 micrômetros de largura, então cerca de 75 dessas bactérias cabem na largura de um fio.",
+    "Segundo o HHMI, uma fileira de bactérias ao longo da largura da palma de uma mão humana média somaria 100.000 células.",
+    "Segundo os autores do estudo, os dois números são tão próximos que cada evacuação, que elimina de um quarto a um terço das bactérias do intestino grosso, pode inverter a proporção a favor das células humanas."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى صِغَر البكتيريا في الحقيقة؟",
+   "summary": "يعيش في جسمك الآن 38 تريليون بكتيريا، أي أكثر من خلاياك أنت! يوضح البروفيسور باي كم بكتيريا تتسع على عرض شعرة واحدة، وكم واحدة تصطف على عرض راحة يدك، ولماذا قد ينقلب التوازن في كل مرة تذهب فيها إلى الحمّام.",
+   "facts": [
+    "وفقًا لدراسة لمعهد وايزمان نُشرت في مجلة PLOS Biology عام 2016، يحمل شخص وزنه 70 كيلوغرامًا نحو 38 تريليون بكتيريا و30 تريليون خلية بشرية، ويبلغ الوزن الكلي للبكتيريا نحو 0.2 كيلوغرام (200 غرام).",
+    "وفقًا لبريتانيكا، يصل قطر البكتيريا الكروية مثل المكورات العنقودية الذهبية إلى 1 ميكرومتر، ووفقًا لمعهد HHMI يبلغ عرض شعرة الإنسان نحو 75 ميكرومترًا، لذا يتسع عرض الشعرة لنحو 75 من هذه البكتيريا.",
+    "وفقًا لمعهد HHMI، فإن صفًا من البكتيريا ممتدًا على عرض راحة يد إنسان متوسطة يضم 100000 خلية.",
+    "وفقًا لمؤلفي الدراسة، العددان متقاربان لدرجة أن كل عملية تبرّز، التي تُخرج ما بين ربع وثلث بكتيريا القولون، قد تقلب النسبة لصالح الخلايا البشرية."
+   ]
+  },
+  "hi": {
+   "title": "एक बैक्टीरिया असल में कितना छोटा होता है?",
+   "summary": "इस वक़्त आपके शरीर में 38 ट्रिलियन बैक्टीरिया हैं, आपकी अपनी कोशिकाओं से भी ज़्यादा! प्रोफ़ेसर पाई दिखाते हैं कि एक बाल की चौड़ाई में कितने बैक्टीरिया समा जाते हैं, आपकी हथेली की चौड़ाई में कितने कतार में लगते हैं और हर बार टॉयलेट जाने पर संतुलन क्यों पलट सकता है।",
+   "facts": [
+    "PLOS Biology में 2016 में छपे वाइज़मैन इंस्टीट्यूट के अध्ययन के अनुसार 70 किलो के इंसान में लगभग 38 ट्रिलियन बैक्टीरिया और 30 ट्रिलियन मानव कोशिकाएँ होती हैं; सभी बैक्टीरिया का कुल वज़न लगभग 0.2 किलो (200 ग्राम) होता है।",
+    "ब्रिटानिका के अनुसार स्टैफ़िलोकोकस ऑरियस जैसे गोल बैक्टीरिया का व्यास 1 माइक्रोमीटर तक होता है; HHMI के अनुसार इंसान का बाल लगभग 75 माइक्रोमीटर चौड़ा होता है, यानी एक बाल की चौड़ाई में ऐसे लगभग 75 बैक्टीरिया समा जाते हैं।",
+    "HHMI के अनुसार एक औसत इंसानी हथेली की चौड़ाई में कतार में लगे बैक्टीरिया की संख्या 1,00,000 होगी।",
+    "अध्ययन के लेखकों के अनुसार दोनों संख्याएँ इतनी क़रीब हैं कि हर बार मल त्याग, जो बड़ी आँत के एक-चौथाई से एक-तिहाई बैक्टीरिया बाहर निकाल देता है, अनुपात को मानव कोशिकाओं के पक्ष में पलट सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa kecil sebenarnya sebuah bakteri?",
+   "summary": "Saat ini ada 38 triliun bakteri di tubuhmu, lebih banyak daripada sel tubuhmu sendiri! Profesor Pi menunjukkan berapa bakteri yang muat selebar sehelai rambut, berapa yang berjajar selebar telapak tanganmu, dan mengapa setiap kali ke toilet keseimbangannya bisa terbalik.",
+   "facts": [
+    "Menurut studi Weizmann Institute di PLOS Biology tahun 2016, orang dengan berat 70 kg membawa sekitar 38 triliun bakteri dan 30 triliun sel manusia; total berat bakterinya sekitar 0,2 kg (200 gram).",
+    "Menurut Britannica, bakteri bulat seperti Staphylococcus aureus berdiameter hingga 1 mikrometer; menurut HHMI, sehelai rambut manusia lebarnya sekitar 75 mikrometer, jadi sekitar 75 bakteri seperti itu muat selebar sehelai rambut.",
+    "Menurut HHMI, deretan bakteri yang dibentangkan selebar telapak tangan manusia rata-rata akan berjumlah 100.000 sel.",
+    "Menurut para penulis studi itu, kedua angka begitu dekat sehingga setiap kali buang air besar, yang mengeluarkan seperempat hingga sepertiga bakteri di usus besar, rasionya bisa berbalik menguntungkan sel manusia."
+   ]
+  },
+  "fr": {
+   "title": "Quelle est la vraie taille d'une bactérie ?",
+   "summary": "En ce moment, ton corps abrite 38 000 milliards de bactéries, plus que tes propres cellules ! Le professeur Pi montre combien de bactéries tiennent dans la largeur d'un cheveu, combien s'alignent sur la largeur de ta paume et pourquoi chaque passage aux toilettes peut inverser l'équilibre.",
+   "facts": [
+    "Selon une étude de l'Institut Weizmann publiée dans PLOS Biology en 2016, une personne de 70 kg porte environ 38 000 milliards de bactéries et 30 000 milliards de cellules humaines ; les bactéries pèsent au total environ 0,2 kg (200 grammes).",
+    "Selon Britannica, les bactéries sphériques comme Staphylococcus aureus mesurent jusqu'à 1 micromètre de diamètre ; selon le HHMI, un cheveu humain fait environ 75 micromètres de large, donc environ 75 de ces bactéries tiennent dans la largeur d'un cheveu.",
+    "Selon le HHMI, une rangée de bactéries tendue sur la largeur d'une paume humaine moyenne compterait 100 000 cellules.",
+    "Selon les auteurs de l'étude, les deux nombres sont si proches que chaque passage aux toilettes, qui évacue entre un quart et un tiers des bactéries du côlon, peut inverser le rapport en faveur des cellules humaines."
+   ]
+  },
+  "de": {
+   "title": "Wie klein ist ein Bakterium wirklich?",
+   "summary": "Gerade jetzt leben 38 Billionen Bakterien in deinem Körper, mehr als deine eigenen Zellen! Professor Pi zeigt, wie viele Bakterien über die Breite eines einzigen Haares passen, wie viele sich quer über deine Handfläche reihen und warum jeder Toilettengang das Gleichgewicht umkehren kann.",
+   "facts": [
+    "Laut einer Studie des Weizmann-Instituts in PLOS Biology von 2016 trägt ein 70 kg schwerer Mensch etwa 38 Billionen Bakterien und 30 Billionen menschliche Zellen; die Bakterien wiegen zusammen etwa 0,2 kg (200 Gramm).",
+    "Laut Britannica haben kugelförmige Bakterien wie Staphylococcus aureus einen Durchmesser von bis zu 1 Mikrometer; laut HHMI ist ein menschliches Haar etwa 75 Mikrometer breit, also passen etwa 75 dieser Bakterien über die Breite eines Haares.",
+    "Laut HHMI würde eine Reihe von Bakterien quer über die Breite einer durchschnittlichen menschlichen Handfläche 100.000 Zellen umfassen.",
+    "Laut den Autoren der Studie liegen beide Zahlen so nah beieinander, dass jeder Stuhlgang, der ein Viertel bis ein Drittel der Bakterien im Dickdarm ausscheidet, das Verhältnis zugunsten der menschlichen Zellen umkehren kann."
+   ]
+  },
+  "ru": {
+   "title": "Насколько на самом деле мала бактерия?",
+   "summary": "Прямо сейчас в твоём теле 38 триллионов бактерий — больше, чем твоих собственных клеток! Профессор Пи показывает, сколько бактерий помещается поперёк одного волоса, сколько выстраивается поперёк твоей ладони и почему каждый поход в туалет может перевернуть баланс.",
+   "facts": [
+    "Согласно исследованию Института Вейцмана в журнале PLOS Biology (2016), в человеке весом 70 кг живёт около 38 триллионов бактерий и 30 триллионов человеческих клеток; общая масса бактерий — около 0,2 кг (200 граммов).",
+    "По данным «Британники», шаровидные бактерии, например золотистый стафилококк, достигают 1 микрометра в диаметре; по данным HHMI, человеческий волос шириной около 75 микрометров, так что поперёк волоса помещается около 75 таких бактерий.",
+    "По данным HHMI, цепочка бактерий поперёк средней человеческой ладони насчитывала бы 100 000 клеток.",
+    "По словам авторов исследования, эти числа так близки, что каждый поход в туалет, выводящий от четверти до трети бактерий толстой кишки, может сдвинуть соотношение в пользу человеческих клеток."
+   ]
+  },
+  "az": {
+   "title": "Bir bakteriya əslində nə qədər kiçikdir?",
+   "summary": "Hazırda bədənində 38 trilyon bakteriya var, yəni öz hüceyrələrindən çox! Professor Pi bir tük telinin eninə neçə bakteriyanın sığdığını, ovcunun eninə neçəsinin düzüldüyünü və hər dəfə tualetə gedəndə balansın niyə tərsinə çevrilə bildiyini göstərir.",
+   "facts": [
+    "2016-cı ildə PLOS Biology jurnalında dərc olunan Veysman İnstitutunun araşdırmasına görə 70 kiloqramlıq insanda təxminən 38 trilyon bakteriya və 30 trilyon insan hüceyrəsi var; bakteriyaların ümumi kütləsi təxminən 0,2 kq, yəni 200 qramdır.",
+    "Britannica-ya görə Staphylococcus aureus kimi kürəvi bakteriyaların diametri 1 mikrometrə qədər olur; HHMI-yə görə insan tükü təxminən 75 mikrometr enindədir, yəni bir tükün eninə bu bakteriyalardan təxminən 75-i sığır.",
+    "HHMI-yə görə orta insan ovcunun eninə düzülən bakteriya cərgəsi 100.000 hüceyrədən ibarət olardı.",
+    "Araşdırmanın müəlliflərinə görə bu iki rəqəm o qədər yaxındır ki, yoğun bağırsaqdakı bakteriyaların dörddə biri ilə üçdə birini xaric edən hər defekasiya nisbəti insan hüceyrələrinin xeyrinə çevirə bilər."
+   ]
+  }
+ }
+}

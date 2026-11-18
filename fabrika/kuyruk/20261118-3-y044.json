@@ -1,0 +1,284 @@
+{
+ "id": "y044",
+ "series": "Ya Olsaydı?",
+ "q": "Ay'da yaşasaydık nasıl bir hayat olurdu?",
+ "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
+ "bar": {
+  "hi": "AY'DA",
+  "rest": "1 AY YAŞASAN?"
+ },
+ "summary": "Ay'da öğlen bastığın toprak 121 °C, yani kaynar sudan sıcak! 2 hafta süren gündüzü, -133 °C'lik geceyi, Dünya'dakinin 200 katı radyasyonu ve Ay'ın gökyüzünde Dünya'nın neden hiç batmadığını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Ay'da öğlen bastığın toprak 121 °C: kaynar sudan sıcak!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "moon",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "121",
+    "label": "Öğlen: 121 °C"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Botlarım haşlanıyor mu?!",
+   "v": {
+    "t": "icon",
+    "bg": "space",
+    "e": "🥾",
+    "do": "burn",
+    "key": "haşlanıyor",
+    "label": "Haşlanan Bot"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bu gündüz 2 hafta sürer. Sonra 2 hafta gece: -133 °C!",
+   "v": {
+    "t": "meter",
+    "bg": "night",
+    "label": "Ay Gecesi",
+    "from": 121,
+    "to": -133,
+    "unit": "°C",
+    "e": "🥶",
+    "key": "gece"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Üstelik her saat Dünya'dakinin 200 katı radyasyon alırsın.",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "☢️",
+    "value": "200",
+    "unit": "kat",
+    "label": "Radyasyon",
+    "key": "200"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Güneş kremi kurtarmaz mı?!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "🧴",
+    "label": "Güneş Kremi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl tuhafı: Ay'ın bize bakan yüzünde Dünya hiç batmaz, hep asılı durur!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "m",
+      "at": "t"
+     },
+     {
+      "b": "moon",
+      "size": "xl",
+      "at": "b"
+     }
+    ],
+    "do": "none",
+    "target": 0,
+    "key": "batmaz",
+    "label": "Hep Aynı Yerde"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kilonu 6'ya böl: Ay'da kaç gelirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "⚖️"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "NASA'ya göre Ay'ın ekvatoruna yakın yerlerde sıcaklık gündüz 121 °C'nin üzerine çıkabilir, gece ise -133 °C'ye düşer.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/moon/sun-and-weather-overview/weather-on-the-moon/"
+  },
+  {
+   "text": "Space.com'a göre Ay'da herhangi bir nokta yaklaşık 2 hafta aydınlıkta, ardından yaklaşık 2 hafta karanlıkta kalır; bir gün-gece döngüsü yaklaşık 709 saat, yani neredeyse 30 Dünya günüdür.",
+   "source": "Space.com",
+   "url": "https://www.space.com/42886-not-dark-side-of-moon-china-lunar-farside.html"
+  },
+  {
+   "text": "Space.com'a göre Çin'in Chang'e 4 iniş aracının ölçümleri, Ay yüzeyindeki astronotların saatte yaklaşık 60 mikrosievert radyasyon alacağını gösterdi; bu, Dünya yüzeyindekinin yaklaşık 200 katıdır.",
+   "source": "Space.com",
+   "url": "https://www.space.com/moon-radiation-dose-for-astronauts-measured"
+  },
+  {
+   "text": "NASA'ya göre Ay hep aynı yüzünü Dünya'ya döndüğü için o yüzde duran biri Dünya'nın doğduğunu ya da battığını görmez; Dünya gökyüzünde asılı durur.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/image-article/apod-2016-january-4-earthset-from-the-lunar-reconnaissance-orbiter/"
+  },
+  {
+   "text": "Caltech'e göre Ay'ın çekimi Dünya'nınkinin altıda biri kadardır; bu yüzden bir insan Ay'da Dünya'dakinden 6 kat hafif gelir.",
+   "source": "Caltech (Cool Cosmos)",
+   "url": "https://coolcosmos.ipac.caltech.edu/ask/171-How-much-would-I-weigh-on-the-Moon-"
+  }
+ ],
+ "tags": [
+  "ay'da yaşamak",
+  "ay'da yaşasaydık",
+  "ay",
+  "ay'da bir gün",
+  "ay sıcaklığı",
+  "ay'da radyasyon",
+  "ay'da kaç kilo gelirim",
+  "ay yer çekimi",
+  "ay gecesi",
+  "living on the moon",
+  "moon",
+  "moon radiation",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#ay",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://science.nasa.gov/moon/sun-and-weather-overview/weather-on-the-moon/",
+  "https://www.space.com/moon-radiation-dose-for-astronauts-measured",
+  "https://coolcosmos.ipac.caltech.edu/ask/171-How-much-would-I-weigh-on-the-Moon-",
+  "https://www.livescience.com/space/the-moon/what-temperature-is-the-moon"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Lived on the Moon for 1 Month?",
+   "summary": "At noon on the Moon, the ground under your boots is 121 °C, hotter than boiling water! Professor Pi explains the two-week day, the -133 °C night, radiation 200 times stronger than on Earth, and why Earth never sets in the Moon's sky.",
+   "facts": [
+    "According to NASA, near the Moon's equator temperatures can climb above 121 °C in daylight and fall to -133 °C at night.",
+    "According to Space.com, any spot on the Moon spends about two weeks in sunlight and then about two weeks in darkness; a full day-night cycle lasts about 709 hours, nearly 30 Earth days.",
+    "According to Space.com, measurements by China's Chang'e 4 lander show that astronauts on the lunar surface would absorb about 60 microsieverts of radiation per hour, about 200 times the rate on Earth's surface.",
+    "According to NASA, because the Moon always shows the same face to Earth, someone standing on that side never sees Earth rise or set: it just hangs in the sky.",
+    "According to Caltech, the Moon's gravity is one-sixth of Earth's, so a person weighs six times less on the Moon."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si vivieras 1 mes en la Luna?",
+   "summary": "¡Al mediodía en la Luna, el suelo bajo tus botas está a 121 °C, más caliente que el agua hirviendo! El profesor Pi explica el día de dos semanas, la noche a -133 °C, una radiación 200 veces mayor que en la Tierra y por qué la Tierra nunca se pone en el cielo lunar.",
+   "facts": [
+    "Según la NASA, cerca del ecuador lunar la temperatura puede superar los 121 °C de día y bajar a -133 °C de noche.",
+    "Según Space.com, cualquier punto de la Luna pasa unas dos semanas iluminado y luego unas dos semanas a oscuras; un ciclo completo de día y noche dura unas 709 horas, casi 30 días terrestres.",
+    "Según Space.com, las mediciones del módulo chino Chang'e 4 muestran que los astronautas en la superficie lunar recibirían unos 60 microsieverts de radiación por hora, unas 200 veces más que en la superficie de la Tierra.",
+    "Según la NASA, como la Luna siempre muestra la misma cara a la Tierra, quien esté en ese lado nunca ve salir ni ponerse la Tierra: queda suspendida en el cielo.",
+    "Según Caltech, la gravedad de la Luna es la sexta parte de la terrestre, así que una persona pesa seis veces menos en la Luna."
+   ]
+  },
+  "pt": {
+   "title": "E se você vivesse 1 mês na Lua?",
+   "summary": "Ao meio-dia na Lua, o chão sob as suas botas está a 121 °C, mais quente que água fervendo! O professor Pi explica o dia de duas semanas, a noite a -133 °C, a radiação 200 vezes maior que na Terra e por que a Terra nunca se põe no céu lunar.",
+   "facts": [
+    "Segundo a NASA, perto do equador da Lua a temperatura pode passar de 121 °C durante o dia e cair a -133 °C à noite.",
+    "Segundo o Space.com, qualquer ponto da Lua fica cerca de duas semanas iluminado e depois cerca de duas semanas no escuro; um ciclo completo de dia e noite dura cerca de 709 horas, quase 30 dias terrestres.",
+    "Segundo o Space.com, medições do módulo chinês Chang'e 4 mostram que astronautas na superfície lunar receberiam cerca de 60 microsieverts de radiação por hora, cerca de 200 vezes mais que na superfície da Terra.",
+    "Segundo a NASA, como a Lua sempre mostra a mesma face para a Terra, quem está desse lado nunca vê a Terra nascer ou se pôr: ela fica parada no céu.",
+    "Segundo o Caltech, a gravidade da Lua é um sexto da terrestre, por isso uma pessoa pesa seis vezes menos na Lua."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو عشت شهرًا واحدًا على القمر؟",
+   "summary": "عند الظهيرة على القمر تبلغ حرارة التربة تحت حذائك 121 درجة مئوية، أي أسخن من الماء المغلي! يشرح البروفيسور باي النهار الذي يدوم أسبوعين، والليل البالغ -133 درجة مئوية، والإشعاع الأقوى بـ200 مرة مما على الأرض، ولماذا لا تغيب الأرض أبدًا عن سماء القمر.",
+   "facts": [
+    "وفقًا لناسا، قد تتجاوز الحرارة قرب خط استواء القمر 121 درجة مئوية نهارًا، وتهبط إلى -133 درجة مئوية ليلًا.",
+    "وفقًا لموقع Space.com، تبقى أي نقطة على القمر نحو أسبوعين في ضوء الشمس ثم نحو أسبوعين في الظلام، وتستمر دورة النهار والليل الكاملة نحو 709 ساعات، أي قرابة 30 يومًا أرضيًا.",
+    "وفقًا لموقع Space.com، تُظهر قياسات مسبار تشانغ إي 4 الصيني أن رواد الفضاء على سطح القمر سيتلقون نحو 60 ميكروسيفرت من الإشعاع في الساعة، أي نحو 200 ضعف المعدل على سطح الأرض.",
+    "وفقًا لناسا، لأن القمر يُظهر للأرض الوجه نفسه دائمًا، فإن من يقف على ذلك الجانب لا يرى الأرض تشرق أو تغرب أبدًا، بل تبقى معلقة في السماء.",
+    "وفقًا لمعهد كالتك، تبلغ جاذبية القمر سدس جاذبية الأرض، لذا يقل وزن الإنسان على القمر ست مرات."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप 1 महीना चाँद पर रहते तो क्या होता?",
+   "summary": "चाँद पर दोपहर में आपके जूतों के नीचे की ज़मीन 121 °C होती है, यानी उबलते पानी से भी गर्म! प्रोफ़ेसर पाई बताते हैं दो हफ़्ते लंबा दिन, -133 °C की रात, पृथ्वी से 200 गुना ज़्यादा विकिरण और क्यों चाँद के आसमान में पृथ्वी कभी नहीं डूबती।",
+   "facts": [
+    "NASA के अनुसार चाँद की भूमध्य रेखा के पास दिन में तापमान 121 °C से ऊपर जा सकता है और रात में -133 °C तक गिर जाता है।",
+    "Space.com के अनुसार चाँद का हर हिस्सा लगभग दो हफ़्ते धूप में और फिर लगभग दो हफ़्ते अँधेरे में रहता है; दिन-रात का पूरा चक्र लगभग 709 घंटे, यानी क़रीब 30 पृथ्वी दिनों का होता है।",
+    "Space.com के अनुसार चीन के चांग'ई 4 लैंडर के मापों से पता चला कि चाँद की सतह पर अंतरिक्ष यात्री हर घंटे लगभग 60 माइक्रोसीवर्ट विकिरण झेलेंगे, जो पृथ्वी की सतह से लगभग 200 गुना है।",
+    "NASA के अनुसार चाँद हमेशा पृथ्वी की ओर एक ही चेहरा रखता है, इसलिए उस तरफ़ खड़ा व्यक्ति पृथ्वी को कभी उगते या डूबते नहीं देखता: वह आसमान में टँगी रहती है।",
+    "Caltech के अनुसार चाँद का गुरुत्व पृथ्वी का छठा हिस्सा है, इसलिए चाँद पर इंसान का वज़न छह गुना कम हो जाता है।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana jika kamu tinggal 1 bulan di Bulan?",
+   "summary": "Siang hari di Bulan, tanah di bawah sepatumu bersuhu 121 °C, lebih panas dari air mendidih! Profesor Pi menjelaskan siang yang berlangsung dua minggu, malam bersuhu -133 °C, radiasi 200 kali lebih kuat daripada di Bumi, dan mengapa Bumi tak pernah terbenam di langit Bulan.",
+   "facts": [
+    "Menurut NASA, di dekat khatulistiwa Bulan suhu siang hari bisa melampaui 121 °C dan turun hingga -133 °C pada malam hari.",
+    "Menurut Space.com, setiap titik di Bulan mendapat cahaya sekitar dua minggu lalu gelap sekitar dua minggu; satu siklus siang-malam penuh berlangsung sekitar 709 jam, hampir 30 hari Bumi.",
+    "Menurut Space.com, pengukuran wahana pendarat Chang'e 4 milik Tiongkok menunjukkan astronaut di permukaan Bulan akan menerima sekitar 60 mikrosievert radiasi per jam, sekitar 200 kali lipat laju di permukaan Bumi.",
+    "Menurut NASA, karena Bulan selalu menghadapkan sisi yang sama ke Bumi, orang yang berdiri di sisi itu tak pernah melihat Bumi terbit atau terbenam: Bumi seolah tergantung di langit.",
+    "Menurut Caltech, gravitasi Bulan seperenam gravitasi Bumi, sehingga berat seseorang di Bulan enam kali lebih ringan."
+   ]
+  },
+  "fr": {
+   "title": "Et si tu vivais 1 mois sur la Lune ?",
+   "summary": "À midi sur la Lune, le sol sous tes bottes est à 121 °C, plus chaud que l'eau bouillante ! Le professeur Pi explique la journée qui dure deux semaines, la nuit à -133 °C, des radiations 200 fois plus fortes que sur Terre et pourquoi la Terre ne se couche jamais dans le ciel lunaire.",
+   "facts": [
+    "Selon la NASA, près de l'équateur lunaire, la température peut dépasser 121 °C le jour et tomber à -133 °C la nuit.",
+    "Selon Space.com, chaque point de la Lune reste environ deux semaines au soleil puis environ deux semaines dans l'obscurité ; un cycle complet jour-nuit dure environ 709 heures, près de 30 jours terrestres.",
+    "Selon Space.com, les mesures de l'atterrisseur chinois Chang'e 4 montrent que des astronautes à la surface de la Lune recevraient environ 60 microsieverts de radiations par heure, environ 200 fois plus qu'à la surface de la Terre.",
+    "Selon la NASA, comme la Lune montre toujours la même face à la Terre, une personne de ce côté ne voit jamais la Terre se lever ni se coucher : elle reste suspendue dans le ciel.",
+    "Selon Caltech, la gravité de la Lune est un sixième de celle de la Terre : une personne y pèse donc six fois moins."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn du 1 Monat auf dem Mond leben würdest?",
+   "summary": "Mittags auf dem Mond ist der Boden unter deinen Stiefeln 121 °C heiß, heißer als kochendes Wasser! Professor Pi erklärt den zwei Wochen langen Tag, die Nacht mit -133 °C, eine 200-mal stärkere Strahlung als auf der Erde und warum die Erde am Mondhimmel nie untergeht.",
+   "facts": [
+    "Laut NASA können die Temperaturen nahe dem Mondäquator tagsüber über 121 °C steigen und nachts auf -133 °C fallen.",
+    "Laut Space.com liegt jeder Punkt auf dem Mond etwa zwei Wochen im Sonnenlicht und dann etwa zwei Wochen im Dunkeln; ein vollständiger Tag-Nacht-Zyklus dauert etwa 709 Stunden, fast 30 Erdtage.",
+    "Laut Space.com zeigen Messungen der chinesischen Landesonde Chang'e 4, dass Astronauten auf der Mondoberfläche etwa 60 Mikrosievert Strahlung pro Stunde abbekämen, etwa 200-mal so viel wie auf der Erdoberfläche.",
+    "Laut NASA zeigt der Mond der Erde immer dieselbe Seite, deshalb sieht jemand auf dieser Seite die Erde nie auf- oder untergehen: Sie hängt einfach am Himmel.",
+    "Laut Caltech beträgt die Schwerkraft des Mondes ein Sechstel der Erdschwerkraft, deshalb wiegt ein Mensch auf dem Mond sechsmal weniger."
+   ]
+  },
+  "ru": {
+   "title": "Что, если бы ты прожил 1 месяц на Луне?",
+   "summary": "В полдень на Луне грунт под твоими ботинками нагрет до 121 °C — горячее кипятка! Профессор Пи рассказывает о дне длиной в две недели, о ночи с -133 °C, о радиации в 200 раз сильнее земной и о том, почему Земля никогда не заходит на лунном небе.",
+   "facts": [
+    "По данным NASA, у лунного экватора температура днём может превышать 121 °C, а ночью опускается до -133 °C.",
+    "По данным Space.com, любая точка Луны около двух недель освещена Солнцем, а затем около двух недель находится в темноте; полный цикл дня и ночи длится около 709 часов, почти 30 земных суток.",
+    "По данным Space.com, измерения китайского посадочного модуля «Чанъэ-4» показали, что астронавты на поверхности Луны получали бы около 60 микрозивертов радиации в час — примерно в 200 раз больше, чем на поверхности Земли.",
+    "По данным NASA, Луна всегда повёрнута к Земле одной стороной, поэтому человек на этой стороне никогда не увидит восход или заход Земли: она просто висит в небе.",
+    "По данным Калтеха, сила тяжести на Луне составляет шестую часть земной, поэтому человек весит там в шесть раз меньше."
+   ]
+  },
+  "az": {
+   "title": "Ayda 1 ay yaşasaydın nə olardı?",
+   "summary": "Ayda günorta basdığın torpaq 121 °C olur, yəni qaynar sudan isti! Professor Pi 2 həftə çəkən gündüzü, -133 °C-lik gecəni, Yerdəkindən 200 dəfə güclü radiasiyanı və Ayın səmasında Yerin niyə heç batmadığını danışır.",
+   "facts": [
+    "NASA-ya görə Ayın ekvatoruna yaxın yerlərdə temperatur gündüz 121 °C-dən yuxarı qalxa, gecə isə -133 °C-yə düşə bilər.",
+    "Space.com-a görə Ayda istənilən nöqtə təxminən 2 həftə işıqda, sonra təxminən 2 həftə qaranlıqda qalır; tam gecə-gündüz dövrü təxminən 709 saat, yəni demək olar ki, 30 Yer günü çəkir.",
+    "Space.com-a görə Çinin Chang'e 4 eniş aparatının ölçmələri göstərdi ki, Ayın səthindəki astronavtlar saatda təxminən 60 mikrozivert radiasiya alardılar; bu, Yer səthindəkindən təxminən 200 dəfə çoxdur.",
+    "NASA-ya görə Ay Yerə həmişə eyni üzünü çevirdiyi üçün o tərəfdə dayanan adam Yerin doğduğunu və ya batdığını heç vaxt görmür: Yer səmada asılı qalır.",
+    "Caltech-ə görə Ayın cazibə qüvvəsi Yerinkinin altıda biri qədərdir, ona görə də insan Ayda 6 dəfə yüngül olur."
+   ]
+  }
+ }
+}
