@@ -2936,14 +2936,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-10T10:09:15+00:00",
-   "mod": "saatlik",
-   "title": "Uzay İstasyonu 1 Günde Kaç Kez Dünya'yı Turlar?",
-   "url": "https://youtube.com/shorts/uTmyAqqF5qU",
-   "duration": 26.6,
-   "chars": 411
-  },
-  {
    "finished": "2026-11-10T12:11:43+00:00",
    "mod": "saatlik",
    "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
@@ -3354,6 +3346,12 @@
    "url": "https://youtube.com/shorts/BNjOETmygkw",
    "duration": 29.5,
    "chars": 410
+  },
+  {
+   "finished": "2026-11-18T13:09:47+00:00",
+   "mod": "igbolum",
+   "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
+   "chars": 845
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3718,6 +3716,11 @@
     "media_id": "18471776182140459",
     "url": "https://www.instagram.com/reel/Df4K52cgIZW/",
     "at": 1794993671.0178905
+   },
+   "y019": {
+    "media_id": "18194544217360649",
+    "url": "https://www.instagram.com/reel/Df4lAOYHFZF/",
+    "at": 1795007387.0530858
    }
   },
   "eski": [
@@ -3740,5 +3743,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1794996484.419495
+ "yedek_ses": 1795007387.0531864
 }
