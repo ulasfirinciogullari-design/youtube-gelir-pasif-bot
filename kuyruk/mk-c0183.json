@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0183",
+ "topic": "'Papağan gibi tekrarlamak' sözü doğru mu? Papağanlar konuştuğunu anlar mı, papağan söylediği kelimeleri anlayabilir mi?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "parrot"
+ ],
+ "stock_hint": "parrot close up",
+ "script": {
+  "title": "Papağan gibi tekrarlamak sözü yanlış, bazıları anlıyor 🦜",
+  "hook_text": "PAPAĞAN SÖYLEDİĞİNİ ANLAR MI?",
+  "scenes": [
+   {
+    "text": "Papağan gibi tekrarlamak sözü bu kuş için yanlış.",
+    "visual": "close-up of a grey parrot's face looking straight into the camera",
+    "stock_query": "parrot close up",
+    "source": "stock",
+    "callout": "SADECE TAKLİT DEĞİL"
+   },
+   {
+    "text": "Papağanın sesleri anlamadan taklit ettiğini sanırız.",
+    "visual": "a parrot bobbing its head and talking on a perch",
+    "stock_query": "parrot talking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa Alex adlı gri papağan, otuz yılda elli kadar nesnenin ve yedi rengin adını öğrendi.",
+    "visual": "an African grey parrot looking at colorful objects",
+    "stock_query": "grey parrot",
+    "source": "stock",
+    "callout": "50 NESNE, 7 RENK"
+   },
+   {
+    "text": "Kırmızı üçgenle kırmızı daireye bakıp aynı olana 'renk', farklı olana 'şekil' dedi.",
+    "visual": "close-up of a parrot's head tilted, studying something in front of it",
+    "stock_query": "parrot head",
+    "source": "stock",
+    "callout": "RENK AYNI, ŞEKİL FARKLI"
+   },
+   {
+    "text": "Hiçbir şey aynı değilse 'hiç' diyordu.",
+    "visual": "macro close-up of a parrot's eye",
+    "stock_query": "parrot eye",
+    "source": "stock",
+    "callout": "'HİÇ' DEDİ"
+   },
+   {
+    "text": "Birine 'papağan gibi' demeden önce hatırla:",
+    "visual": "a parrot looking at the camera",
+    "stock_query": "parrot face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Papağan gibi tekrarlamak' sözü papağanların söylediklerini anlamadan taklit ettiğini varsayar. Oysa Irene Pepperberg'in otuz yıla yakın çalıştığı gri papağan Alex, elli kadar nesnenin, yedi rengin ve beş şeklin adını öğrendi. Kırmızı bir üçgenle kırmızı bir daireye bakıp aynı olanın renk, farklı olanın şekil olduğunu söyleyebiliyor, hiçbir şey aynı değilse 'hiç' diyordu.",
+  "tags": [
+   "papağan",
+   "papağan gibi",
+   "papağan konuşur mu",
+   "gri papağan",
+   "konuşan papağan",
+   "deyimler",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: renkleri ayıran papağan mı, 'hiç' diyen papağan mı?",
+  "en_title": "'Parroting' is a myth: some parrots know what they're saying 🦜",
+  "en_description": "We assume parrots just mimic sounds. But Alex, a gray parrot studied by Irene Pepperberg for about 30 years, learned names for around 50 objects and seven colors. Shown a red triangle and a red circle, he said 'color' was the same and 'shape' was different, and 'none' when nothing matched.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Papağanlar konuştuğunu anlar mı, 'papağan gibi tekrarlamak' sözü doğru mu?\n\nHer papağan için değil. Hayvan bilişi araştırmacısı Irene Pepperberg, 1977'de aldığı Alex adlı gri papağanla yaklaşık otuz yıl çalıştı. Scientific American'ın aktardığına göre Alex elli kadar nesnenin, yedi rengin, beş şeklin ve altı sayının adını biliyordu; kırmızı bir üçgenle kırmızı bir daire gösterilince aynı olanı 'renk', farklı olanı 'şekil' diye söylüyor, hiçbir şey aynı değilse 'hiç' diyordu. Audubon'a göre Alex yaklaşık yüz elli kelime biliyor ve bunları kategorilere ayırabiliyordu.\n\nSence hangisi daha şaşırtıcı: renkleri ayıran papağan mı, 'hiç' diyen papağan mı?",
+  "hashtags": [
+   "#papağan",
+   "#kuşlar",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "papağan",
+   "papağan gibi tekrarlamak",
+   "papağan gibi ezberlemek",
+   "papağan konuştuğunu anlar mı",
+   "papağan konuşur mu",
+   "konuşan papağan",
+   "gri papağan",
+   "jako papağan",
+   "Alex papağan",
+   "papağan zekası",
+   "kuşlar zeki mi",
+   "hayvan zekası",
+   "deyimler",
+   "deyimlerin anlamı",
+   "atasözleri ve deyimler",
+   "yanlış bilinen gerçekler",
+   "efsane mi gerçek mi",
+   "kuşlar",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "talking parrot",
+   "parrot intelligence"
+  ],
+  "localizations": {
+   "en": {
+    "title": "'Parroting' is a myth: some parrots know what they're saying 🦜",
+    "description": "We assume parrots just mimic sounds. But Alex, a gray parrot studied by Irene Pepperberg for about 30 years, learned names for around 50 objects and seven colors. Shown a red triangle and a red circle, he said 'color' was the same and 'shape' was different, and 'none' when nothing matched."
+   },
+   "es": {
+    "title": "«Repetir como un loro» no siempre es cierto: algunos entienden 🦜",
+    "description": "Creemos que los loros solo imitan sonidos. Pero Alex, un loro gris estudiado por Irene Pepperberg durante unos 30 años, aprendió los nombres de unos 50 objetos y siete colores. Ante un triángulo rojo y un círculo rojo, decía que lo igual era el «color» y lo distinto la «forma», y «ninguno» si nada coincidía."
+   },
+   "pt": {
+    "title": "'Repetir como papagaio' é mito: alguns entendem o que dizem 🦜",
+    "description": "Achamos que papagaios só imitam sons. Mas Alex, um papagaio-cinzento estudado por Irene Pepperberg por cerca de 30 anos, aprendeu o nome de uns 50 objetos e sete cores. Diante de um triângulo e um círculo vermelhos, dizia que o igual era a 'cor' e o diferente, a 'forma' — e 'nenhum' quando nada batia."
+   },
+   "de": {
+    "title": "„Nachplappern wie ein Papagei“? Manche verstehen, was sie sagen 🦜",
+    "description": "Wir glauben, Papageien ahmen nur Laute nach. Doch Alex, ein Graupapagei, mit dem Irene Pepperberg rund 30 Jahre arbeitete, lernte die Namen von etwa 50 Gegenständen und sieben Farben. Vor einem roten Dreieck und einem roten Kreis sagte er, gleich sei die „Farbe“, anders die „Form“ – und „keins“, wenn nichts übereinstimmte."
+   },
+   "fr": {
+    "title": "« Répéter comme un perroquet » ? Certains comprennent ce qu'ils disent 🦜",
+    "description": "On croit que les perroquets imitent sans comprendre. Pourtant Alex, un perroquet gris étudié pendant une trentaine d'années par Irene Pepperberg, connaissait le nom d'environ 50 objets et de sept couleurs. Devant un triangle rouge et un cercle rouge, il disait que le point commun était la « couleur », la différence la « forme », et « aucun » quand rien ne correspondait."
+   },
+   "it": {
+    "title": "«Ripetere a pappagallo»? Alcuni capiscono quello che dicono 🦜",
+    "description": "Pensiamo che i pappagalli imitino e basta. Eppure Alex, un pappagallo cenerino studiato da Irene Pepperberg per circa 30 anni, imparò i nomi di una cinquantina di oggetti e di sette colori. Davanti a un triangolo rosso e a un cerchio rosso diceva che uguale era il «colore», diversa la «forma», e «nessuno» se nulla coincideva."
+   },
+   "ru": {
+    "title": "«Повторять как попугай»? Некоторые понимают, что говорят 🦜",
+    "description": "Мы думаем, что попугаи лишь бездумно подражают звукам. Но жако Алекс, с которым Айрин Пепперберг работала около 30 лет, выучил названия примерно 50 предметов и семи цветов. Глядя на красный треугольник и красный круг, он говорил, что одинаковое — «цвет», а разное — «форма», а если ничего не совпадало — «никакой»."
+   },
+   "ar": {
+    "title": "«يردد كالببغاء»؟ بعض الببغاوات تفهم ما تقول 🦜",
+    "description": "نظن أن الببغاوات تقلد الأصوات دون فهم. لكن «أليكس»، الببغاء الرمادي الذي درسته إيرين بيبربرغ نحو 30 عامًا، تعلّم أسماء نحو 50 شيئًا وسبعة ألوان. وحين عُرض عليه مثلث أحمر ودائرة حمراء قال إن المتشابه هو «اللون» والمختلف هو «الشكل»، وكان يقول «لا شيء» إذا لم يتشابه شيء."
+   },
+   "hi": {
+    "title": "'तोते की तरह रटना' गलत है: कुछ तोते समझकर बोलते हैं 🦜",
+    "description": "हम मानते हैं कि तोते बिना समझे बस नकल करते हैं। लेकिन एलेक्स नाम का एक ग्रे तोता, जिस पर आइरीन पेपरबर्ग ने करीब 30 साल काम किया, लगभग 50 चीज़ों और सात रंगों के नाम सीख गया था। लाल त्रिकोण और लाल गोला देखकर वह बताता था कि एक जैसा 'रंग' है और अलग 'आकार'; कुछ भी एक जैसा न हो तो कहता था 'कुछ नहीं'।"
+   },
+   "id": {
+    "title": "'Membeo' itu keliru: ada burung yang paham ucapannya 🦜",
+    "description": "Kita mengira burung paruh bengkok hanya meniru suara. Namun Alex, nuri abu-abu Afrika yang diteliti Irene Pepperberg selama sekitar 30 tahun, mempelajari nama sekitar 50 benda dan tujuh warna. Saat diperlihatkan segitiga merah dan lingkaran merah, ia menjawab yang sama adalah 'warna' dan yang beda 'bentuk', dan 'tidak ada' bila tak ada yang sama."
+   },
+   "ja": {
+    "title": "「オウム返し」は誤解?意味をわかって話す鳥もいる 🦜",
+    "description": "オウムやインコは意味もわからず音をまねるだけ、と思われがちです。しかし研究者アイリーン・ペパーバーグが約30年研究したヨウムのアレックスは、約50の物と7つの色の名前を覚えました。赤い三角と赤い丸を見せると、同じなのは「色」、違うのは「形」と答え、何も同じでなければ「ない」と答えたのです。"
+   },
+   "ko": {
+    "title": "'앵무새처럼 따라 한다'는 오해, 뜻을 아는 앵무새도 있다 🦜",
+    "description": "앵무새는 뜻도 모르고 소리만 흉내 낸다고들 생각합니다. 하지만 아이린 페퍼버그가 약 30년간 연구한 회색앵무 알렉스는 물건 약 50개와 색 7가지의 이름을 익혔습니다. 빨간 삼각형과 빨간 원을 보여 주면 같은 것은 '색', 다른 것은 '모양'이라고 답했고, 같은 게 없으면 '없음'이라고 했습니다."
+   },
+   "pl": {
+    "title": "„Powtarzać jak papuga”? Niektóre papugi rozumieją, co mówią 🦜",
+    "description": "Myślimy, że papugi tylko naśladują dźwięki. Tymczasem Alex, żako badany przez Irene Pepperberg przez około 30 lat, nauczył się nazw około 50 przedmiotów i siedmiu kolorów. Widząc czerwony trójkąt i czerwone koło, mówił, że wspólny jest „kolor”, a różny „kształt”, a gdy nic się nie zgadzało – „żaden”."
+   },
+   "nl": {
+    "title": "Papegaaien praten niet altijd zomaar na: sommige snappen het 🦜",
+    "description": "We denken dat papegaaien alleen klanken nadoen. Maar Alex, een grijze roodstaart die Irene Pepperberg zo'n 30 jaar bestudeerde, leerde de namen van ongeveer 50 voorwerpen en zeven kleuren. Bij een rode driehoek en een rode cirkel zei hij dat de 'kleur' hetzelfde was en de 'vorm' anders, en 'geen' als niets overeenkwam."
+   },
+   "uk": {
+    "title": "«Повторювати як папуга»? Деякі розуміють, що кажуть 🦜",
+    "description": "Ми думаємо, що папуги лише бездумно наслідують звуки. Але жако Алекс, з яким Айрін Пепперберг працювала близько 30 років, вивчив назви приблизно 50 предметів і семи кольорів. Дивлячись на червоний трикутник і червоне коло, він казав, що однакове — «колір», а різне — «форма», а коли нічого не збігалося — «жодного»."
+   },
+   "vi": {
+    "title": "'Nói như vẹt' là hiểu lầm: có con vẹt hiểu điều nó nói 🦜",
+    "description": "Ta thường nghĩ vẹt chỉ bắt chước âm thanh. Nhưng Alex, chú vẹt xám được Irene Pepperberg nghiên cứu khoảng 30 năm, đã học tên khoảng 50 đồ vật và bảy màu sắc. Khi thấy một hình tam giác đỏ và một hình tròn đỏ, nó nói điểm giống là 'màu', điểm khác là 'hình', và nói 'không có' khi chẳng có gì giống."
+   },
+   "az": {
+    "title": "“Tutuquşu kimi təkrarlamaq” sözü yanlışdır: bəziləri anlayır 🦜",
+    "description": "Elə bilirik ki, tutuquşular sadəcə səsləri təqlid edir. Amma İrene Pepperberqin təxminən 30 il öyrəndiyi boz tutuquşu Aleks 50-yə yaxın əşyanın və yeddi rəngin adını öyrənmişdi. Qırmızı üçbucaq və qırmızı dairəyə baxıb eyni olanın “rəng”, fərqli olanın “forma” olduğunu deyir, heç nə eyni olmayanda “heç biri” cavabını verirdi."
+   },
+   "ro": {
+    "title": "„Repetă ca papagalul”? Unii papagali înțeleg ce spun 🦜",
+    "description": "Credem că papagalii doar imită sunete. Dar Alex, un papagal gri studiat de Irene Pepperberg vreme de aproape 30 de ani, a învățat numele a vreo 50 de obiecte și a șapte culori. Văzând un triunghi roșu și un cerc roșu, spunea că la fel e „culoarea” și diferită „forma”, iar „niciunul” când nimic nu se potrivea."
+   }
+  }
+ }
+}
