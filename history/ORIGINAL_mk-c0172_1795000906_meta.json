@@ -1,0 +1,180 @@
+{
+  "topic_id": "mk-c0172",
+  "topic": "Sinekler kaç gün yaşar? Karasinek gerçekten bir gün mü yaşar, sineğin ömrü 24 saat mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Bir karasinek iki ay yaşayabilir mi? 🪰",
+  "hook_text": "SİNEK İKİ AY YAŞAYABİLİR Mİ?",
+  "description": "Sinekler kaç gün yaşar, karasinek gerçekten bir gün mü yaşar, sineğin ömrü 24 saat mi?\n\nHayır, karasinekler bir günde ölmez. Florida Üniversitesi'nin (UF/IFAS) entomoloji yayınına göre erişkin karasinekler genellikle 15 ila 25 gün, bazen iki aya kadar yaşar; yiyecek bulamazlarsa yalnızca iki üç gün dayanır. Bir günlük ömür ünü mayıs sineklerine ait: Amatör Entomologlar Derneği'ne göre takımın bilimsel adı Ephemeroptera, 'bir gün yaşayan' anlamına gelen Yunanca kökten gelir ve erişkinler beslenmez. Florida Üniversitesi'nin Böcek Rekorları Kitabı'na göre Dolania americana adlı mayıs sineğinin dişisi son deri değişiminden sonra beş dakikadan az yaşar.\n\nSen de sineklerin bir gün yaşadığını mı duymuştun: evet mi, hayır mı?\n\n#sinek #böcekler #mümkünmü #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-c0172",
+  "tags": [
+    "sinekler kaç gün yaşar",
+    "karasinek ne kadar yaşar",
+    "sineğin ömrü",
+    "sineğin ömrü 24 saat mi",
+    "sinek bir gün mü yaşar",
+    "karasinek",
+    "ev sineği",
+    "mayıs sineği",
+    "en kısa ömürlü böcek",
+    "sinek ömrü",
+    "sinekler",
+    "böcekler",
+    "böcek bilgileri",
+    "yanlış bilinen gerçekler",
+    "doğru bilinen yanlışlar",
+    "mümkün mü",
+    "hayvanlar",
+    "hayvan bilgileri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "housefly lifespan",
+    "mayfly",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "sinekler kac gun yasar",
+    "sinegin omru"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a housefly live for two months? 🪰",
+      "description": "Yes. Adult houseflies usually live 15 to 25 days and can reach two months, as long as they find food. The one-day reputation belongs to mayflies, whose scientific name means 'living a day': the adult female of one species lives less than five minutes.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "es": {
+      "title": "¿Puede una mosca doméstica vivir dos meses? 🪰",
+      "description": "Sí. Las moscas domésticas adultas suelen vivir de 15 a 25 días y pueden llegar a dos meses si encuentran comida. La fama de vivir un día es de las efímeras, cuyo nombre científico significa 'que vive un día': la hembra adulta de una especie vive menos de cinco minutos.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "pt": {
+      "title": "Uma mosca doméstica pode viver dois meses? 🪰",
+      "description": "Sim. Moscas domésticas adultas costumam viver de 15 a 25 dias e podem chegar a dois meses se encontrarem comida. A fama de viver um dia é das efêmeras, cujo nome científico significa 'que vive um dia': a fêmea adulta de uma espécie vive menos de cinco minutos.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "de": {
+      "title": "Kann eine Stubenfliege zwei Monate alt werden? 🪰",
+      "description": "Ja. Erwachsene Stubenfliegen leben meist 15 bis 25 Tage und können zwei Monate erreichen, solange sie Futter finden. Den Ruf, nur einen Tag zu leben, haben die Eintagsfliegen, deren wissenschaftlicher Name „einen Tag lebend“ bedeutet: Das erwachsene Weibchen einer Art lebt weniger als fünf Minuten.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "fr": {
+      "title": "Une mouche domestique peut-elle vivre deux mois ? 🪰",
+      "description": "Oui. Les mouches domestiques adultes vivent en général 15 à 25 jours et peuvent atteindre deux mois si elles trouvent à manger. La réputation de ne vivre qu'un jour revient aux éphémères, dont le nom scientifique signifie « qui vit un jour » : la femelle adulte d'une espèce vit moins de cinq minutes.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "it": {
+      "title": "Una mosca domestica può vivere due mesi? 🪰",
+      "description": "Sì. Le mosche domestiche adulte vivono di solito da 15 a 25 giorni e possono arrivare a due mesi, se trovano cibo. La fama di vivere un giorno spetta alle effimere, il cui nome scientifico significa 'che vive un giorno': la femmina adulta di una specie vive meno di cinque minuti.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "ru": {
+      "title": "Может ли комнатная муха прожить два месяца? 🪰",
+      "description": "Да. Взрослые комнатные мухи обычно живут 15–25 дней и могут дожить до двух месяцев, если находят еду. Славу однодневок носят подёнки — их научное название и означает «живущие один день»: взрослая самка одного вида живёт меньше пяти минут.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "ar": {
+      "title": "هل يمكن أن تعيش الذبابة المنزلية شهرين؟ 🪰",
+      "description": "نعم. تعيش الذبابة المنزلية البالغة عادةً من 15 إلى 25 يومًا، وقد تبلغ شهرين إذا وجدت طعامًا. أما شهرة العيش يومًا واحدًا فهي لذباب مايو، إذ يعني اسمه العلمي «الذي يعيش يومًا»، وتعيش الأنثى البالغة من أحد أنواعه أقل من خمس دقائق.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "hi": {
+      "title": "क्या एक घरेलू मक्खी दो महीने जी सकती है? 🪰",
+      "description": "हाँ। वयस्क घरेलू मक्खियाँ आमतौर पर 15 से 25 दिन जीती हैं और खाना मिलता रहे तो दो महीने तक पहुँच सकती हैं। एक दिन जीने की पहचान मेफ़्लाई की है, जिसके वैज्ञानिक नाम का अर्थ ही 'एक दिन जीने वाला' है: एक प्रजाति की वयस्क मादा पाँच मिनट से भी कम जीती है।\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "id": {
+      "title": "Bisakah lalat rumah hidup sampai dua bulan? 🪰",
+      "description": "Bisa. Lalat rumah dewasa biasanya hidup 15 sampai 25 hari dan bisa mencapai dua bulan selama menemukan makanan. Julukan serangga sehari justru milik lalat sehari (Ephemeroptera), yang nama ilmiahnya berarti 'hidup sehari': betina dewasa salah satu spesiesnya hidup kurang dari lima menit.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "ja": {
+      "title": "イエバエは2か月も生きられる？ 🪰",
+      "description": "はい。成虫のイエバエはふつう15〜25日、餌があれば2か月ほど生きることもあります。「1日しか生きない」のはカゲロウの方で、学名は「1日だけ生きる」という意味。ある種のメスは成虫になってから5分もたたずに死にます。\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "ko": {
+      "title": "집파리가 두 달이나 살 수 있을까? 🪰",
+      "description": "네. 다 자란 집파리는 보통 15~25일을 살고, 먹이만 있으면 두 달까지도 삽니다. '하루살이'라는 이름의 주인공은 따로 있습니다. 학명부터 '하루를 사는'이라는 뜻인 하루살이로, 어떤 종의 암컷 성충은 5분도 채 살지 못합니다.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "pl": {
+      "title": "Czy mucha domowa może żyć dwa miesiące? 🪰",
+      "description": "Tak. Dorosłe muchy domowe żyją zwykle od 15 do 25 dni, a jeśli znajdują jedzenie, nawet dwa miesiące. Sława owada jednego dnia należy do jętek, których naukowa nazwa oznacza „żyjące jeden dzień”: dorosła samica jednego gatunku żyje krócej niż pięć minut.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "nl": {
+      "title": "Kan een huisvlieg twee maanden leven? 🪰",
+      "description": "Ja. Volwassen huisvliegen leven meestal 15 tot 25 dagen en kunnen twee maanden halen zolang ze eten vinden. De echte eendagsvliegen zijn de haften, wier wetenschappelijke naam 'één dag levend' betekent: het volwassen vrouwtje van één soort leeft nog geen vijf minuten.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "uk": {
+      "title": "Чи може кімнатна муха прожити два місяці? 🪰",
+      "description": "Так. Дорослі кімнатні мухи зазвичай живуть 15–25 днів і можуть дожити до двох місяців, якщо знаходять їжу. Славу комах-одноденок мають поденки, чия наукова назва означає «ті, що живуть один день»: доросла самка одного виду живе менше п'яти хвилин.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "vi": {
+      "title": "Ruồi nhà có thể sống tới hai tháng không? 🪰",
+      "description": "Có. Ruồi nhà trưởng thành thường sống 15 đến 25 ngày và có thể sống tới hai tháng nếu có thức ăn. Tiếng 'sống một ngày' thật ra thuộc về phù du, loài có tên khoa học nghĩa là 'sống một ngày': con cái trưởng thành của một loài sống chưa tới năm phút.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "az": {
+      "title": "Ev milçəyi iki ay yaşaya bilərmi? 🪰",
+      "description": "Bəli. Yetkin ev milçəkləri adətən 15-25 gün, yemək tapdıqca iki aya qədər yaşaya bilir. Bir gün yaşamaq şöhrəti isə birgünlüklərə məxsusdur: elmi adları 'bir gün yaşayan' deməkdir və bir növün yetkin dişisi beş dəqiqədən az yaşayır.\n\n#shorts\n\nSeri: mk-c0172"
+    },
+    "ro": {
+      "title": "Poate o muscă de casă să trăiască două luni? 🪰",
+      "description": "Da. Muștele de casă adulte trăiesc de obicei 15–25 de zile și pot ajunge la două luni dacă găsesc hrană. Faima de a trăi o zi le aparține efemeridelor, al căror nume științific înseamnă „care trăiește o zi”: femela adultă a unei specii trăiește mai puțin de cinci minute.\n\n#shorts\n\nSeri: mk-c0172"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de sineklerin bir gün yaşadığını mı duymuştun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu karasineğin ömrü bir gün sanılır.",
+      "visual": "extreme macro close-up of a housefly's face and red compound eyes",
+      "stock_query": "fly insect macro",
+      "source": "stock",
+      "callout": "1 GÜN MÜ?"
+    },
+    {
+      "text": "O ün mayıs sineğinin; bilimsel adı bile 'bir günlük' demek.",
+      "visual": "a mayfly resting on a leaf near water",
+      "stock_query": "mayfly insect",
+      "source": "stock",
+      "subject": [
+        "mayfly"
+      ],
+      "callout": "MAYIS SİNEĞİ"
+    },
+    {
+      "text": "Bir türünün dişisi erişkin olarak beş dakikadan az yaşar.",
+      "visual": "close-up of a mayfly with long tail filaments",
+      "stock_query": "mayfly",
+      "source": "stock",
+      "subject": [
+        "mayfly"
+      ],
+      "callout": "5 DAKİKA"
+    },
+    {
+      "text": "Cevap evet: karasinek genelde iki üç hafta, bazen iki ay yaşar.",
+      "visual": "a housefly rubbing its front legs together, macro",
+      "stock_query": "housefly macro",
+      "source": "stock",
+      "callout": "2 AYA KADAR"
+    },
+    {
+      "text": "Farkı yemek: erişkin mayıs sineği yemez, karasinek ise mutfağında beslenir.",
+      "visual": "a housefly walking on a piece of fruit in a kitchen",
+      "stock_query": "fly on food",
+      "source": "stock"
+    },
+    {
+      "text": "Peki seni rahatsız eden o sinek kaç günlük?",
+      "visual": "macro close-up of a housefly looking at the camera",
+      "stock_query": "fly macro",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.32,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 8,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #223",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0172_1795000906_ig.mp4"
+}
