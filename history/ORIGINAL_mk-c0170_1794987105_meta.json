@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0170",
+  "topic": "Çay sudan sayılır mı? Çay idrar söktürür mü, vücudu susuz bırakır mı, çay içmek su yerine geçer mi?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Çay sudan sayılmaz demek yanlış, su yerine geçer ☕",
+  "hook_text": "ÇAY SUDAN SAYILIR MI?",
+  "description": "Çay sudan sayılır mı, çay idrar söktürüp vücudu susuz bırakır mı?\n\nHayır, çay vücudu susuz bırakmaz. Ruxton ve Hart'ın 2011'de British Journal of Nutrition'da yayımladığı randomize kontrollü deneyde sağlıklı erkekler bir gün dört ya da altı kupa (240 ml) siyah çay, başka bir gün aynı miktarda su içti; kan ve idrar ölçümlerinin hiçbirinde iki içecek arasında anlamlı fark çıkmadı. Mayo Clinic'e göre kafein idrarı artırsa da olağan miktarlarda içeceğin kendi suyu bunu karşılıyor; İngiltere'nin sağlık servisi NHS de çay ve kahveyi günlük sıvı alımına sayıyor. Yine de en iyi seçenek su; yetişkinler için günlük kafein sınırı yaklaşık 400 miligram, hamileler için 200 miligram.\n\nSen günlük suyuna çayı da sayıyor muydun: evet mi, hayır mı?\n\n#çay #su #insanvücudu #sağlık #shorts #bilim #merak #keşfet\n\nSeri: mk-c0170",
+  "tags": [
+    "çay sudan sayılır mı",
+    "çay su yerine geçer mi",
+    "çay idrar söktürür mü",
+    "çay vücudu susuz bırakır mı",
+    "çay içmek",
+    "çay ve su",
+    "günde kaç bardak su içilmeli",
+    "günlük su ihtiyacı",
+    "sıvı ihtiyacı",
+    "kafein",
+    "kafein idrar söktürür mü",
+    "çay kafein",
+    "kahve sudan sayılır mı",
+    "susuzluk",
+    "yanlış bilinen gerçekler",
+    "doğru bilinen yanlışlar",
+    "insan vücudu",
+    "sağlık",
+    "beslenme",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "tea hydration",
+    "çay",
+    "su içmek",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Tea doesn't dehydrate you: it counts as water ☕",
+      "description": "In a 2011 trial, men who drank four or six mugs of black tea in a day were just as hydrated as when they drank the same amount of water. Caffeine only causes notable fluid loss at high doses, and the NHS counts tea and coffee toward daily fluid intake.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "es": {
+      "title": "El té no te deshidrata: cuenta como agua ☕",
+      "description": "En un ensayo de 2011, hombres que bebieron cuatro o seis tazas de té negro en un día quedaron tan hidratados como con la misma cantidad de agua. La cafeína solo hace perder líquido de forma notable en dosis altas, y el NHS británico cuenta el té y el café como parte del líquido diario.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "pt": {
+      "title": "Chá não desidrata: ele conta como água ☕",
+      "description": "Num estudo de 2011, homens que tomaram quatro ou seis canecas de chá preto num dia ficaram tão hidratados quanto com a mesma quantidade de água. A cafeína só causa perda de líquido relevante em doses altas, e o NHS britânico conta chá e café na ingestão diária de líquidos.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "de": {
+      "title": "Tee entzieht dir kein Wasser – er zählt als Flüssigkeit ☕",
+      "description": "In einer Studie von 2011 waren Männer nach vier oder sechs Tassen Schwarztee am Tag genauso gut mit Flüssigkeit versorgt wie nach derselben Menge Wasser. Koffein treibt erst in hohen Dosen spürbar Wasser aus, und der britische NHS rechnet Tee und Kaffee zur täglichen Trinkmenge.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "fr": {
+      "title": "Le thé ne déshydrate pas : il compte comme de l'eau ☕",
+      "description": "Dans un essai de 2011, des hommes ayant bu quatre ou six tasses de thé noir dans la journée étaient aussi bien hydratés qu'avec la même quantité d'eau. La caféine ne fait perdre beaucoup d'eau qu'à forte dose, et le NHS britannique compte le thé et le café dans les apports quotidiens en liquide.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "it": {
+      "title": "Il tè non disidrata: conta come acqua ☕",
+      "description": "In uno studio del 2011, uomini che avevano bevuto quattro o sei tazze di tè nero in un giorno erano idratati quanto con la stessa quantità d'acqua. La caffeina fa perdere liquidi in modo rilevante solo a dosi alte, e il servizio sanitario britannico (NHS) conta tè e caffè nei liquidi quotidiani.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "ru": {
+      "title": "Чай не обезвоживает: он засчитывается как вода ☕",
+      "description": "В исследовании 2011 года мужчины, выпившие за день четыре или шесть кружек чёрного чая, были увлажнены так же, как после того же объёма воды. Кофеин заметно выводит жидкость лишь в больших дозах, а британская служба здравоохранения NHS включает чай и кофе в суточную норму жидкости.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "ar": {
+      "title": "الشاي لا يسبب الجفاف، بل يُحتسب من الماء ☕",
+      "description": "في تجربة عام 2011، كان رجال شربوا أربعة أو ستة أكواب كبيرة من الشاي الأسود في يوم واحد مرتوين تمامًا كما عند شرب الكمية نفسها من الماء. فالكافيين لا يسبب فقدانًا ملحوظًا للسوائل إلا بجرعات عالية، وتحتسب هيئة الصحة البريطانية الشاي والقهوة من السوائل اليومية.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "hi": {
+      "title": "चाय शरीर को सुखाती नहीं, पानी में गिनी जाती है ☕",
+      "description": "2011 के एक परीक्षण में जिन पुरुषों ने दिन में चार या छह मग काली चाय पी, उनके शरीर में पानी का स्तर उतना ही ठीक रहा जितना उतना ही पानी पीने पर। कैफ़ीन ज़्यादा मात्रा में ही उल्लेखनीय रूप से पानी निकालता है, और ब्रिटेन की NHS चाय और कॉफ़ी को रोज़ के तरल में गिनती है।\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "id": {
+      "title": "Teh tidak bikin dehidrasi, malah dihitung sebagai air ☕",
+      "description": "Dalam uji coba tahun 2011, pria yang minum empat atau enam cangkir besar teh hitam sehari tetap terhidrasi sama baiknya dengan saat minum air sebanyak itu. Kafein baru membuang cairan secara nyata pada dosis tinggi, dan NHS Inggris menghitung teh dan kopi sebagai asupan cairan harian.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "ja": {
+      "title": "お茶で脱水にはならない、水分としてカウントされる ☕",
+      "description": "2011年の試験では、紅茶をマグで1日4杯または6杯飲んだ男性は、同じ量の水を飲んだときと同じくらい水分が保たれていました。カフェインがはっきり水分を排出させるのは大量にとったときだけで、英国の国民保健サービス（NHS）も紅茶やコーヒーを1日の水分に数えています。\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "ko": {
+      "title": "차는 탈수를 일으키지 않는다, 물로 쳐도 된다 ☕",
+      "description": "2011년 실험에서 하루에 홍차를 머그로 네 잔 또는 여섯 잔 마신 남성들은 같은 양의 물을 마셨을 때와 똑같이 수분이 유지됐습니다. 카페인은 많은 양일 때만 눈에 띄게 수분을 빼내며, 영국 국민보건서비스(NHS)도 차와 커피를 하루 수분 섭취량에 포함합니다.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "pl": {
+      "title": "Herbata nie odwadnia – liczy się jak woda ☕",
+      "description": "W badaniu z 2011 roku mężczyźni, którzy wypili w ciągu dnia cztery lub sześć kubków czarnej herbaty, byli tak samo nawodnieni jak po tej samej ilości wody. Kofeina wyraźnie odwadnia dopiero w dużych dawkach, a brytyjska służba zdrowia NHS wlicza herbatę i kawę do dziennej ilości płynów.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "nl": {
+      "title": "Thee droogt je niet uit: het telt gewoon als water ☕",
+      "description": "In een studie uit 2011 waren mannen die op een dag vier of zes mokken zwarte thee dronken net zo goed gehydrateerd als met dezelfde hoeveelheid water. Cafeïne zorgt pas bij hoge doses voor merkbaar vochtverlies, en de Britse NHS rekent thee en koffie mee bij je dagelijkse vochtinname.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "uk": {
+      "title": "Чай не зневоднює: він рахується як вода ☕",
+      "description": "У дослідженні 2011 року чоловіки, які випили за день чотири або шість кухлів чорного чаю, були зволожені так само, як після такої ж кількості води. Кофеїн помітно виводить рідину лише у великих дозах, а британська служба охорони здоров'я NHS зараховує чай і каву до щоденної норми рідини.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "vi": {
+      "title": "Trà không làm bạn mất nước, mà còn được tính như nước ☕",
+      "description": "Trong một thử nghiệm năm 2011, những người đàn ông uống bốn hoặc sáu cốc lớn trà đen trong một ngày vẫn đủ nước y như khi uống cùng lượng nước lọc. Caffeine chỉ gây mất nước đáng kể ở liều cao, và NHS của Anh tính trà, cà phê vào lượng nước uống mỗi ngày.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "az": {
+      "title": "Çay bədəni susuz qoymur, su yerinə keçir ☕",
+      "description": "2011-ci il sınağında bir gündə dörd və ya altı fincan qara çay içən kişilərin bədənində su balansı eyni miqdarda su içəndəki qədər yaxşı qaldı. Kofein yalnız yüksək dozada nəzərəçarpacaq su itkisinə səbəb olur, Britaniyanın səhiyyə xidməti NHS də çay və qəhvəni gündəlik maye qəbuluna daxil edir.\n\n#shorts\n\nSeri: mk-c0170"
+    },
+    "ro": {
+      "title": "Ceaiul nu te deshidratează: contează ca apă ☕",
+      "description": "Într-un studiu din 2011, bărbații care au băut patru sau șase căni de ceai negru într-o zi au fost la fel de hidratați ca atunci când au băut aceeași cantitate de apă. Cofeina elimină apă în mod vizibil doar în doze mari, iar NHS-ul britanic socotește ceaiul și cafeaua în aportul zilnic de lichide.\n\n#shorts\n\nSeri: mk-c0170"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen günlük suyuna çayı da sayıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Bu çay seni susuz bırakmıyor, su yerine geçiyor.",
+      "visual": "close-up of a man sipping Turkish tea from a tulip-shaped glass",
+      "stock_query": "man drinking tea",
+      "source": "stock",
+      "callout": "SU YERİNE GEÇER"
+    },
+    {
+      "text": "Çay idrar söktürür, sudan sayılmaz diye biliriz.",
+      "visual": "tea being poured into a tulip-shaped Turkish tea glass",
+      "stock_query": "turkish tea",
+      "source": "stock"
+    },
+    {
+      "text": "Bir deneyde erkekler altı kupa çay ya da aynı miktar su içti.",
+      "visual": "a hand lifting a large mug of black tea",
+      "stock_query": "tea mug hand",
+      "source": "stock",
+      "callout": "6 KUPA ÇAY"
+    },
+    {
+      "text": "Kan ve idrar testlerinde ikisi arasında hiçbir fark çıkmadı.",
+      "visual": "a lab technician examining sample tubes in a laboratory",
+      "stock_query": "laboratory test tubes",
+      "source": "stock",
+      "subject": [
+        "laboratory"
+      ],
+      "callout": "FARK YOK"
+    },
+    {
+      "text": "Çünkü kafein ancak yüksek dozda belirgin su attırır; çaydaki su bunu karşılar.",
+      "visual": "steam rising from a glass of black tea",
+      "stock_query": "hot tea steam",
+      "source": "stock",
+      "callout": "KAFEİN AZ"
+    },
+    {
+      "text": "Bir bardak daha koyarken hatırla:",
+      "visual": "close-up of a hand holding a Turkish tea glass",
+      "stock_query": "tea glass hand",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.14,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #221",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0170_1794987105_ig.mp4"
+}
