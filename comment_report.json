@@ -1,22 +1,22 @@
 {
- "started": "2026-11-18T04:45:11+00:00",
+ "started": "2026-11-18T11:45:15+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgzliDe1Btv0GtGlR0l4AaABAg",
+   "id": "UgwOQeeOGB-JEv9eM2h4AaABAg",
    "kind": "comment",
-   "video": "g9grbN5SXXQ",
-   "comment": "Kendim arkaya ve one hateket ettirebiliom",
-   "reply": "Vay canına, gerçekten mi? O zaman sen o körelmiş kasları yeniden çalıştırmışsın demektir! 😮",
+   "video": "rncHryYfALA",
+   "comment": "Köpeğim yok ama teşekkürler!",
+   "reply": "Rica ederim! Belki ileride bir köpeğin olur da bu bilgi işine yarar. 😊",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-18T04:45:17+00:00"
+ "finished": "2026-11-18T11:45:21+00:00"
 }

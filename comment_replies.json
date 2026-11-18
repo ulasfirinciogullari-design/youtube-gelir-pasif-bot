@@ -353,6 +353,12 @@
    "r",
    "UgzliDe1Btv0GtGlR0l4AaABAg.AdL7wkFQ4cUAdLBFofzK6g",
    "UC_H9Xb1_HtDbuYlA5JGeXUA"
+  ],
+  "UgwOQeeOGB-JEv9eM2h4AaABAg": [
+   1795002315,
+   "r",
+   "UgwOQeeOGB-JEv9eM2h4AaABAg.AdLsSFJs0LhAdLwKVqag8v",
+   "UCmv4R6cOcCV9Aaus9-yemuw"
   ]
  },
  "tracked": {
@@ -505,6 +511,11 @@
    "at": 1794977111,
    "n": 1,
    "reply": "Vay canına, gerçekten mi? O zaman sen o körelmiş kasları yeniden çalıştırmışsın demektir! 😮"
+  },
+  "UgwOQeeOGB-JEv9eM2h4AaABAg": {
+   "at": 1795002315,
+   "n": 1,
+   "reply": "Rica ederim! Belki ileride bir köpeğin olur da bu bilgi işine yarar. 😊"
   }
  },
  "channel": {
@@ -512,12 +523,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1792790774,
-   "video": "RUyMb5fCIl4",
-   "comment": "evet doğru çünki zaman keçdikce ateşde söner",
-   "reply": "@KARANLIK55 Zamanın ateşi söndürmesi üzerine bu yorumun çok düşündürücü. 🔥 Zamanın aslında sadece ileri aktığı, geri dönmediği de bilinen bir gerçek!"
-  },
   {
    "at": 1793569512,
    "video": "7xjRSwfX83E",
@@ -751,6 +756,12 @@
    "video": "g9grbN5SXXQ",
    "comment": "Kendim arkaya ve one hateket ettirebiliom",
    "reply": "Vay canına, gerçekten mi? O zaman sen o körelmiş kasları yeniden çalıştırmışsın demektir! 😮"
+  },
+  {
+   "at": 1795002315,
+   "video": "rncHryYfALA",
+   "comment": "Köpeğim yok ama teşekkürler!",
+   "reply": "Rica ederim! Belki ileride bir köpeğin olur da bu bilgi işine yarar. 😊"
   }
  ]
 }
