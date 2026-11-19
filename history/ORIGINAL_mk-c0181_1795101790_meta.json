@@ -1,0 +1,173 @@
+{
+  "topic_id": "mk-c0181",
+  "topic": "Kediler iyi görür mü? Kedim önündeki ödülü neden göremiyor, kediler yakını görebilir mi, kediler ne kadar net görür?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Kedinin gözü sandığın kadar keskin değil 🐱",
+  "hook_text": "KEDİN ÖDÜLÜ NEDEN BULAMIYOR?",
+  "description": "Kediler iyi görür mü, kedim önündeki ödülü neden göremiyor, kediler yakını görebilir mi?\n\nKediler loş ışıkta iyi görse de gözleri sanıldığı kadar keskin değil. Live Science'ın aktardığına göre veteriner Kerry Ketring, insanların 30-60 metreden net gördüğü bir şeyi kedilerin net görmesi için en fazla 6 metre uzakta olması gerektiğini söylüyor; görme keskinliği ölçümleri çalışmadan çalışmaya değişse de kediler bu konuda insanların gerisinde. Washington Üniversitesi'nden evrim biyoloğu Jonathan Losos'a göre kediler yaklaşık 25 santimetreden yakındaki hiçbir şeye tam odaklanamaz ve nesnelerin yerini bıyıklarıyla bulur. Buna karşılık kedilerde loş ışıkta görmeyi sağlayan çubuk hücrelerinden insanlardakinin altı ila sekiz katı kadar bulunur ve karanlıkta hareketi bizden çok daha iyi fark ederler.\n\nSenin kedin hangisini yapıyor: ödülü hemen buluyor mu, koklayarak mı arıyor?\n\n#kedi #kediler #evcilhayvan #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0181",
+  "tags": [
+    "kediler iyi görür mü",
+    "kediler nasıl görür",
+    "kedi gözü",
+    "kedi görme yeteneği",
+    "kediler yakını görür mü",
+    "kedi ödülü bulamıyor",
+    "kedi önündekini görmüyor",
+    "kedi bıyıkları ne işe yarar",
+    "kedi bıyığı",
+    "kediler ne kadar uzağı görür",
+    "kedi davranışları",
+    "kedi sahibi",
+    "kedi bakımı",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "cat vision",
+    "kedi bıyıkları",
+    "kedi ödülü",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat's eyesight isn't as sharp as you think 🐱",
+      "description": "Cats need to be about 6 meters away to see sharply what people see clearly at 30 to 60 meters, and they can't focus on anything closer than about 25 centimeters. That's why your cat sniffs around for a treat right under its nose and finds it with its whiskers and nose, not its eyes.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "es": {
+      "title": "La vista de tu gato no es tan aguda como crees 🐱",
+      "description": "Un gato necesita estar a unos 6 metros para ver nítido lo que una persona distingue a 30 o 60 metros, y no logra enfocar nada a menos de unos 25 centímetros. Por eso busca olfateando el premio que tiene justo bajo la nariz: lo encuentra con los bigotes y el olfato, no con los ojos.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "pt": {
+      "title": "A visão do seu gato não é tão afiada quanto você pensa 🐱",
+      "description": "O gato precisa estar a uns 6 metros para ver com nitidez o que uma pessoa enxerga a 30 ou 60 metros, e não consegue focar nada a menos de uns 25 centímetros. Por isso ele fareja procurando o petisco bem embaixo do nariz: acha com os bigodes e o olfato, não com os olhos.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "de": {
+      "title": "Deine Katze sieht nicht so scharf, wie du denkst 🐱",
+      "description": "Eine Katze muss etwa 6 Meter nah sein, um scharf zu sehen, was ein Mensch auf 30 bis 60 Meter erkennt, und auf weniger als rund 25 Zentimeter kann sie gar nicht scharf stellen. Darum schnüffelt sie nach dem Leckerli direkt vor ihrer Nase und findet es mit Schnurrhaaren und Nase statt mit den Augen.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "fr": {
+      "title": "Ton chat ne voit pas aussi net que tu le crois 🐱",
+      "description": "Un chat doit être à environ 6 mètres pour voir net ce qu'un humain distingue à 30 ou 60 mètres, et il n'arrive pas à faire la mise au point à moins de 25 centimètres environ. C'est pour ça qu'il cherche en reniflant la friandise posée sous son nez : il la trouve avec ses moustaches et son flair, pas avec ses yeux.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "it": {
+      "title": "La vista del tuo gatto non è acuta come pensi 🐱",
+      "description": "Un gatto deve trovarsi a circa 6 metri per vedere nitido ciò che una persona distingue a 30-60 metri, e non riesce a mettere a fuoco nulla a meno di 25 centimetri circa. Per questo cerca annusando il bocconcino che ha proprio sotto il naso: lo trova con i baffi e l'olfatto, non con gli occhi.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "ru": {
+      "title": "Кошка видит далеко не так чётко, как ты думаешь 🐱",
+      "description": "Чтобы чётко увидеть то, что человек различает с 30–60 метров, кошке нужно подойти примерно на 6 метров, а ближе 25 сантиметров она вообще не может сфокусироваться. Поэтому лакомство прямо под носом она ищет на нюх и находит усами и носом, а не глазами.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "ar": {
+      "title": "نظر قطتك ليس حادًا كما تظن 🐱",
+      "description": "تحتاج القطة إلى الاقتراب نحو 6 أمتار لترى بوضوح ما يراه الإنسان من 30 إلى 60 مترًا، ولا تستطيع التركيز على أي شيء أقرب من نحو 25 سنتيمترًا. لهذا تبحث بأنفها عن المكافأة التي أمامها مباشرة، وتجدها بشواربها وحاسة الشم لا بعينيها.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "hi": {
+      "title": "आपकी बिल्ली की नज़र उतनी तेज़ नहीं जितना आप सोचते हैं 🐱",
+      "description": "जो चीज़ इंसान 30 से 60 मीटर दूर से साफ़ देख लेता है, उसे साफ़ देखने के लिए बिल्ली को करीब 6 मीटर पास आना पड़ता है, और लगभग 25 सेंटीमीटर से नज़दीक वह किसी चीज़ पर फ़ोकस ही नहीं कर पाती। इसीलिए नाक के ठीक नीचे रखा ट्रीट वह सूंघकर ढूंढती है और उसे आँखों से नहीं, मूंछों और नाक से पाती है।\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "id": {
+      "title": "Penglihatan kucingmu tak setajam yang kamu kira 🐱",
+      "description": "Kucing harus berada sekitar 6 meter untuk melihat dengan jelas apa yang bisa dilihat manusia dari 30 sampai 60 meter, dan ia tak bisa fokus pada benda yang lebih dekat dari sekitar 25 sentimeter. Itu sebabnya ia mengendus-endus mencari camilan tepat di bawah hidungnya dan menemukannya dengan kumis serta penciuman, bukan dengan mata.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "ja": {
+      "title": "猫の目は思っているほどよく見えていない 🐱",
+      "description": "人が30〜60メートル先からはっきり見えるものを、猫は6メートルほどまで近づかないとくっきり見えません。さらに約25センチより近いものにはピントが合いません。だから鼻先のおやつをクンクン嗅いで探し、目ではなくひげと鼻で見つけるのです。\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "ko": {
+      "title": "고양이 시력은 생각만큼 좋지 않다 🐱",
+      "description": "사람이 30~60미터 거리에서 또렷이 보는 것을 고양이는 약 6미터까지 다가가야 선명하게 볼 수 있고, 약 25센티미터보다 가까운 것에는 초점을 맞추지 못합니다. 그래서 코앞에 둔 간식을 냄새로 찾으며, 눈이 아니라 수염과 코로 찾아냅니다.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "pl": {
+      "title": "Twój kot nie widzi tak ostro, jak myślisz 🐱",
+      "description": "Kot musi podejść na około 6 metrów, by wyraźnie zobaczyć to, co człowiek widzi z 30–60 metrów, a na nic bliżej niż około 25 centymetrów nie potrafi wyostrzyć wzroku. Dlatego przysmaku tuż pod nosem szuka węchem i znajduje go wąsami i nosem, a nie oczami.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "nl": {
+      "title": "Je kat ziet lang niet zo scherp als je denkt 🐱",
+      "description": "Een kat moet op zo'n 6 meter staan om scherp te zien wat een mens op 30 tot 60 meter herkent, en op minder dan ongeveer 25 centimeter kan hij niet scherpstellen. Daarom snuffelt hij naar het snoepje vlak onder zijn neus en vindt hij het met zijn snorharen en neus, niet met zijn ogen.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "uk": {
+      "title": "Кіт бачить зовсім не так чітко, як ти думаєш 🐱",
+      "description": "Щоб чітко побачити те, що людина розрізняє з 30–60 метрів, коту треба підійти приблизно на 6 метрів, а ближче ніж за 25 сантиметрів він узагалі не може сфокусуватися. Тому смаколик просто під носом він шукає нюхом і знаходить вусами й носом, а не очима.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "vi": {
+      "title": "Mắt mèo không tinh như bạn tưởng 🐱",
+      "description": "Thứ con người nhìn rõ từ 30 đến 60 mét, mèo phải lại gần khoảng 6 mét mới thấy sắc nét, và nó không thể lấy nét vật nào gần hơn khoảng 25 cm. Vì vậy mèo hít hít tìm món thưởng ngay dưới mũi mình, và tìm ra bằng ria cùng khứu giác chứ không phải bằng mắt.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "az": {
+      "title": "Pişiyinin gözü düşündüyün qədər iti deyil 🐱",
+      "description": "İnsanın 30-60 metrdən aydın gördüyünü pişik təxminən 6 metrə qədər yaxınlaşanda aydın görür, təxminən 25 santimetrdən yaxın olan şeyə isə fokuslana bilmir. Buna görə burnunun dibindəki mükafatı iyləyərək axtarır və onu gözü ilə yox, bığları və burnu ilə tapır.\n\n#shorts\n\nSeri: mk-c0181"
+    },
+    "ro": {
+      "title": "Pisica ta nu vede atât de clar cum crezi 🐱",
+      "description": "O pisică trebuie să fie la vreo 6 metri ca să vadă clar ce un om distinge de la 30-60 de metri, iar pe nimic mai aproape de circa 25 de centimetri nu poate focaliza. De aceea caută adulmecând recompensa aflată chiar sub nas și o găsește cu mustățile și mirosul, nu cu ochii.\n\n#shorts\n\nSeri: mk-c0181"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin hangisini yapıyor: ödülü hemen buluyor mu, koklayarak mı arıyor?",
+  "scenes": [
+    {
+      "text": "Bu kedinin gözü sandığın kadar keskin değil.",
+      "visual": "extreme close-up of a cat's eye with a vertical pupil, looking into the camera",
+      "stock_query": "cat eye close up",
+      "source": "stock",
+      "callout": "KESKİN DEĞİL"
+    },
+    {
+      "text": "Burnunun önüne koyduğun ödülü bile koklayarak arar.",
+      "visual": "a cat sniffing the floor, searching for a treat",
+      "stock_query": "cat sniffing",
+      "source": "stock"
+    },
+    {
+      "text": "Çoğu ölçüme göre, senin otuz metreden seçtiğini o altı metreden seçer.",
+      "visual": "a cat sitting on the floor and looking across the room",
+      "stock_query": "cat looking",
+      "source": "stock",
+      "callout": "30 M'YE 6 M"
+    },
+    {
+      "text": "Asıl sebep: yirmi beş santimetreden yakınını hiç net göremez.",
+      "visual": "close-up of a cat's face with a treat right in front of its nose",
+      "stock_query": "cat treat",
+      "source": "stock",
+      "callout": "25 CM'DEN YAKIN"
+    },
+    {
+      "text": "Burnunun dibindeki ödülü gözüyle değil, bıyıkları ve burnuyla bulur.",
+      "visual": "macro close-up of a cat's whiskers and nose",
+      "stock_query": "cat whiskers",
+      "source": "stock",
+      "callout": "BIYIKLA BULUR"
+    },
+    {
+      "text": "Ödülü avucuna değil, biraz uzağa at; çünkü:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.19,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #232",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0181_1795101790_ig.mp4"
+}
