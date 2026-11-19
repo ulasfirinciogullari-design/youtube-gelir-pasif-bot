@@ -1,0 +1,273 @@
+{
+ "id": "y048",
+ "series": "Ya Olsaydı?",
+ "q": "Uzay asansörü olsaydı ne olurdu?",
+ "title": "Uzay Asansörüne Binseydin Ne Olurdu?",
+ "bar": {
+  "hi": "UZAY ASANSÖRÜNE",
+  "rest": "BİNSEN?"
+ },
+ "summary": "Uzay asansörüne binsen 36.000 km'ye varman 8 gün sürer ve yolda ölümcül bir radyasyon kuşağından geçersin! 3. saatte Uzay İstasyonu'nu nasıl geçtiğini, Apollo astronotlarının 200 katı radyasyonu ve 36.000 km'de kapıyı açınca neden düşmeyeceğini Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Göğe uzanan bu kabloda, kabin korumasızsa ölümcül radyasyon alırsın!",
+   "v": {
+    "t": "icon",
+    "bg": "sky",
+    "e": "🛗",
+    "do": "rise",
+    "key": "kabloda",
+    "label": "Uzay Asansörü"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Asansör müziği yerine radyasyon mu?!",
+   "v": {
+    "t": "icons",
+    "bg": "space",
+    "items": [
+     {
+      "e": "🎵",
+      "label": "Asansör Müziği"
+     },
+     {
+      "e": "☢️",
+      "label": "Radyasyon"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Saatte 200 km çıkarsın: 3. saatte Uzay İstasyonu'nu geçtin!",
+   "v": {
+    "t": "meter",
+    "bg": "sky",
+    "label": "3 Saatte İrtifa",
+    "from": 0,
+    "to": 600,
+    "unit": "km",
+    "e": "🛰️",
+    "key": "İstasyonu'nu"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra 4 güne yakın radyasyon kuşağındasın: Apollo astronotlarının 200 katı!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "☢️",
+    "value": "200",
+    "unit": "kat",
+    "label": "Apollo'ya Göre",
+    "key": "200"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "En tuhafı: 8. günde, 36.000 km'de kapıyı açsan düşmezsin, süzülürsün!",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "3. SAAT",
+      "e": "🛰️",
+      "label": "İstasyonu Geçtin"
+     },
+     {
+      "when": "4 GÜN",
+      "e": "☢️",
+      "label": "Radyasyon Kuşağı"
+     },
+     {
+      "when": "8. GÜN",
+      "e": "🧑‍🚀",
+      "label": "Süzülürsün"
+     }
+    ]
+   }
+  },
+  {
+   "who": "bit",
+   "text": "8 günlük yolculuğa ne götürürdün? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "🛗"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "IEEE Spectrum'da Bradley Edwards'ın tasarımına göre bir uzay asansörünün kablosu yaklaşık 100.000 km uzunluğunda olur; saatte 190 km hızla tırmanan araçlar yerdurağan yörüngeye yaklaşık 8 günde varır.",
+   "source": "IEEE Spectrum",
+   "url": "https://spectrum.ieee.org/a-hoist-to-the-heavens"
+  },
+  {
+   "text": "NASA'ya göre Uluslararası Uzay İstasyonu ortalama yaklaşık 250 mil (yaklaşık 400 km) yükseklikte dolanır.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/learning-resources/for-kids-and-students/what-is-the-international-space-station-grades-5-8/"
+  },
+  {
+   "text": "Avrupa Yerbilimleri Birliği'nin (EGU) aktardığına göre ESA'dan Iannis Dandouras, saatte 200 km hızla tırmanan yolcuların yaklaşık 1.000-20.000 km yükseklikteki iç radyasyon kuşağını geçmesinin neredeyse 4 gün süreceğini hesapladı.",
+   "source": "European Geosciences Union (EGU)",
+   "url": "https://blogs.egu.eu/geolog/2012/03/05/geosciences-column-promise-and-challenges-of-space-elevators-for-tourism/"
+  },
+  {
+   "text": "EGU'ya göre Los Alamos Ulusal Laboratuvarı'ndan Anders Jorgensen'ın çalışması, korumasız yolcuların radyasyon kuşaklarında ölümcül doz alacağını ve Apollo astronotlarının aldığının 200 katından fazla radyasyona maruz kalacağını gösterdi.",
+   "source": "European Geosciences Union (EGU) / Los Alamos National Laboratory",
+   "url": "https://blogs.egu.eu/geolog/2012/03/05/geosciences-column-promise-and-challenges-of-space-elevators-for-tourism/"
+  },
+  {
+   "text": "Britannica'ya göre yerdurağan yörünge 35.786 km yüksekliktedir; uzay asansörüyle bu yörünge yüksekliğine çıkarılan bir yük bırakıldığında yörüngede kalacak hıza sahip olur.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/technology/space-elevator"
+  }
+ ],
+ "tags": [
+  "uzay asansörü",
+  "uzay asansörü nedir",
+  "asansörle uzaya çıkmak",
+  "van allen kuşağı",
+  "radyasyon kuşağı",
+  "uzay istasyonu",
+  "yerdurağan yörünge",
+  "karbon nanotüp",
+  "space elevator",
+  "van allen belts",
+  "geostationary orbit",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#uzayasansörü",
+  "#uzay",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://spectrum.ieee.org/a-hoist-to-the-heavens",
+  "https://blogs.egu.eu/geolog/2012/03/05/geosciences-column-promise-and-challenges-of-space-elevators-for-tourism/",
+  "https://www.britannica.com/technology/space-elevator",
+  "https://www.nasa.gov/learning-resources/for-kids-and-students/what-is-the-international-space-station-grades-5-8/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If You Rode a Space Elevator?",
+   "summary": "Ride a space elevator and it takes 8 days to reach 36,000 km, crossing a deadly radiation belt on the way! Professor Pi explains how you pass the Space Station in the 3rd hour, the radiation 200 times what the Apollo astronauts got, and why opening the door at 36,000 km wouldn't make you fall.",
+   "facts": [
+    "According to Bradley Edwards's design in IEEE Spectrum, a space elevator cable would be about 100,000 km long, and climbers ascending at 190 km/h would reach geostationary orbit in about 8 days.",
+    "According to NASA, the International Space Station orbits at an average altitude of about 250 miles (about 400 km).",
+    "As reported by the European Geosciences Union (EGU), ESA's Iannis Dandouras calculated that passengers climbing at 200 km/h would need almost 4 days to cross the inner radiation belt, which spans roughly 1,000-20,000 km in altitude.",
+    "According to the EGU, a study by Anders Jorgensen of Los Alamos National Laboratory found that unshielded passengers would receive lethal doses in the radiation belts, more than 200 times the radiation the Apollo astronauts experienced.",
+    "According to Britannica, geostationary orbit lies 35,786 km up; a payload lifted to that orbital height by a space elevator would, when released, have the velocity to remain in orbit."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si subieras a un ascensor espacial?",
+   "summary": "Si subieras a un ascensor espacial, tardarías 8 días en llegar a 36.000 km y cruzarías un cinturón de radiación mortal por el camino. El Profesor Pi explica cómo pasarías la Estación Espacial en la 3.ª hora, la radiación 200 veces mayor que la de los astronautas del Apolo y por qué no caerías si abrieras la puerta a 36.000 km.",
+   "facts": [
+    "Según el diseño de Bradley Edwards en IEEE Spectrum, el cable de un ascensor espacial mediría unos 100.000 km, y los vehículos que suben a 190 km/h llegarían a la órbita geoestacionaria en unos 8 días.",
+    "Según la NASA, la Estación Espacial Internacional orbita a una altitud media de unas 250 millas (unos 400 km).",
+    "Según la Unión Europea de Geociencias (EGU), Iannis Dandouras, de la ESA, calculó que los pasajeros que suben a 200 km/h tardarían casi 4 días en cruzar el cinturón de radiación interior, situado aproximadamente entre 1.000 y 20.000 km de altitud.",
+    "Según la EGU, un estudio de Anders Jorgensen, del Laboratorio Nacional de Los Álamos, concluyó que los pasajeros sin blindaje recibirían dosis letales en los cinturones de radiación, más de 200 veces la radiación que recibieron los astronautas del Apolo.",
+    "Según Britannica, la órbita geoestacionaria está a 35.786 km de altura; una carga elevada hasta esa altura orbital por un ascensor espacial tendría, al soltarla, la velocidad necesaria para quedarse en órbita."
+   ]
+  },
+  "pt": {
+   "title": "E se você subisse num elevador espacial?",
+   "summary": "Num elevador espacial, você levaria 8 dias para chegar a 36.000 km e atravessaria um cinturão de radiação mortal no caminho! O Professor Pi explica como você passaria a Estação Espacial na 3ª hora, a radiação 200 vezes maior que a dos astronautas da Apollo e por que não cairia se abrisse a porta a 36.000 km.",
+   "facts": [
+    "Segundo o projeto de Bradley Edwards na IEEE Spectrum, o cabo de um elevador espacial teria cerca de 100.000 km, e veículos subindo a 190 km/h chegariam à órbita geoestacionária em cerca de 8 dias.",
+    "Segundo a NASA, a Estação Espacial Internacional orbita a uma altitude média de cerca de 250 milhas (cerca de 400 km).",
+    "Segundo a União Europeia de Geociências (EGU), Iannis Dandouras, da ESA, calculou que passageiros subindo a 200 km/h levariam quase 4 dias para atravessar o cinturão de radiação interno, entre cerca de 1.000 e 20.000 km de altitude.",
+    "Segundo a EGU, um estudo de Anders Jorgensen, do Laboratório Nacional de Los Alamos, concluiu que passageiros sem blindagem receberiam doses letais nos cinturões de radiação, mais de 200 vezes a radiação recebida pelos astronautas da Apollo.",
+    "Segundo a Britannica, a órbita geoestacionária fica a 35.786 km de altitude; uma carga levada a essa altura orbital por um elevador espacial teria, ao ser solta, velocidade suficiente para permanecer em órbita."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو ركبت مصعدًا فضائيًا؟",
+   "summary": "لو ركبت مصعدًا فضائيًا لاستغرقت 8 أيام لتصل إلى ارتفاع 36000 كيلومتر، ولعبرت في الطريق حزامًا إشعاعيًا قاتلًا! يشرح البروفيسور باي كيف تتجاوز محطة الفضاء في الساعة الثالثة، والإشعاع الذي يفوق ما تلقاه رواد أبولو بـ200 مرة، ولماذا لن تسقط إن فتحت الباب على ارتفاع 36000 كيلومتر.",
+   "facts": [
+    "وفقًا لتصميم برادلي إدواردز في مجلة IEEE Spectrum، سيبلغ طول كابل المصعد الفضائي نحو 100000 كيلومتر، وستصل المركبات الصاعدة بسرعة 190 كيلومترًا في الساعة إلى المدار الثابت بالنسبة إلى الأرض في نحو 8 أيام.",
+    "وفقًا لناسا، تدور محطة الفضاء الدولية على ارتفاع متوسط يبلغ نحو 250 ميلًا (نحو 400 كيلومتر).",
+    "وفقًا للاتحاد الأوروبي لعلوم الأرض (EGU)، حسب إيانيس داندوراس من وكالة الفضاء الأوروبية أن الركاب الصاعدين بسرعة 200 كيلومتر في الساعة سيحتاجون إلى قرابة 4 أيام لعبور حزام الإشعاع الداخلي الممتد تقريبًا بين ارتفاعي 1000 و20000 كيلومتر.",
+    "وفقًا للاتحاد الأوروبي لعلوم الأرض، وجدت دراسة لأندرس يورغنسن من مختبر لوس ألاموس الوطني أن الركاب غير المحميين سيتلقون جرعات قاتلة في أحزمة الإشعاع، أي أكثر من 200 ضعف الإشعاع الذي تعرّض له رواد أبولو.",
+    "وفقًا لبريتانيكا، يقع المدار الثابت بالنسبة إلى الأرض على ارتفاع 35786 كيلومترًا، وأي حمولة يرفعها المصعد الفضائي إلى هذا الارتفاع المداري ستملك عند إطلاقها السرعة الكافية للبقاء في المدار."
+   ]
+  },
+  "hi": {
+   "title": "अगर आप स्पेस एलिवेटर में बैठ जाएँ तो क्या होगा?",
+   "summary": "स्पेस एलिवेटर से 36,000 किलोमीटर तक पहुँचने में 8 दिन लगेंगे और रास्ते में आप एक जानलेवा रेडिएशन बेल्ट से गुज़रेंगे! प्रोफ़ेसर पाई बताते हैं कि तीसरे घंटे में आप स्पेस स्टेशन से ऊपर कैसे निकल जाते हैं, अपोलो अंतरिक्ष यात्रियों से 200 गुना रेडिएशन का क्या मतलब है, और 36,000 किलोमीटर पर दरवाज़ा खोलने पर भी आप क्यों नहीं गिरेंगे।",
+   "facts": [
+    "IEEE Spectrum में ब्रैडली एडवर्ड्स के डिज़ाइन के अनुसार स्पेस एलिवेटर की केबल लगभग 1,00,000 किलोमीटर लंबी होगी और 190 किमी/घंटा से चढ़ने वाले वाहन लगभग 8 दिन में भूस्थिर कक्षा तक पहुँचेंगे।",
+    "नासा के अनुसार अंतरराष्ट्रीय अंतरिक्ष स्टेशन औसतन लगभग 250 मील (लगभग 400 किलोमीटर) की ऊँचाई पर परिक्रमा करता है।",
+    "यूरोपियन जियोसाइंसेज़ यूनियन (EGU) के अनुसार ESA के इयानिस डांडुरास ने हिसाब लगाया कि 200 किमी/घंटा से चढ़ते यात्रियों को लगभग 1,000 से 20,000 किलोमीटर की ऊँचाई तक फैली भीतरी रेडिएशन बेल्ट पार करने में लगभग 4 दिन लगेंगे।",
+    "EGU के अनुसार लॉस अलामोस नेशनल लैबोरेटरी के एंडर्स योर्गेनसेन के अध्ययन में पाया गया कि बिना सुरक्षा कवच के यात्रियों को रेडिएशन बेल्ट में जानलेवा खुराक मिलेगी, जो अपोलो अंतरिक्ष यात्रियों को मिले रेडिएशन से 200 गुना से भी ज़्यादा है।",
+    "ब्रिटानिका के अनुसार भूस्थिर कक्षा 35,786 किलोमीटर की ऊँचाई पर है; स्पेस एलिवेटर से इस कक्षीय ऊँचाई तक पहुँचाया गया सामान छोड़े जाने पर कक्षा में बने रहने लायक वेग रखेगा।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Kamu Naik Lift Luar Angkasa?",
+   "summary": "Naik lift luar angkasa, kamu butuh 8 hari untuk mencapai 36.000 km dan melewati sabuk radiasi mematikan di jalan! Profesor Pi menjelaskan bagaimana kamu melewati Stasiun Luar Angkasa pada jam ke-3, radiasi 200 kali lipat dari yang diterima astronaut Apollo, dan mengapa kamu tidak jatuh jika membuka pintu di ketinggian 36.000 km.",
+   "facts": [
+    "Menurut rancangan Bradley Edwards di IEEE Spectrum, kabel lift luar angkasa akan sepanjang sekitar 100.000 km, dan kendaraan yang naik dengan kecepatan 190 km/jam akan mencapai orbit geostasioner dalam sekitar 8 hari.",
+    "Menurut NASA, Stasiun Luar Angkasa Internasional mengorbit pada ketinggian rata-rata sekitar 250 mil (sekitar 400 km).",
+    "Menurut European Geosciences Union (EGU), Iannis Dandouras dari ESA menghitung bahwa penumpang yang naik dengan kecepatan 200 km/jam butuh hampir 4 hari untuk melewati sabuk radiasi bagian dalam, yang membentang kira-kira pada ketinggian 1.000-20.000 km.",
+    "Menurut EGU, studi Anders Jorgensen dari Laboratorium Nasional Los Alamos menemukan bahwa penumpang tanpa pelindung akan menerima dosis mematikan di sabuk radiasi, lebih dari 200 kali radiasi yang diterima astronaut Apollo.",
+    "Menurut Britannica, orbit geostasioner berada di ketinggian 35.786 km; muatan yang diangkat lift luar angkasa ke ketinggian orbit itu, saat dilepaskan, akan memiliki kecepatan untuk tetap berada di orbit."
+   ]
+  },
+  "fr": {
+   "title": "Et si tu prenais un ascenseur spatial ?",
+   "summary": "En ascenseur spatial, il te faudrait 8 jours pour atteindre 36 000 km, en traversant une ceinture de radiations mortelle ! Le Professeur Pi explique comment tu dépasserais la Station spatiale dès la 3e heure, les radiations 200 fois supérieures à celles des astronautes d'Apollo, et pourquoi tu ne tomberais pas en ouvrant la porte à 36 000 km.",
+   "facts": [
+    "Selon le projet de Bradley Edwards dans IEEE Spectrum, le câble d'un ascenseur spatial mesurerait environ 100 000 km, et des véhicules montant à 190 km/h atteindraient l'orbite géostationnaire en environ 8 jours.",
+    "Selon la NASA, la Station spatiale internationale orbite à une altitude moyenne d'environ 250 miles (environ 400 km).",
+    "Selon l'Union européenne des géosciences (EGU), Iannis Dandouras, de l'ESA, a calculé que des passagers montant à 200 km/h mettraient presque 4 jours à traverser la ceinture de radiations interne, située à peu près entre 1 000 et 20 000 km d'altitude.",
+    "Selon l'EGU, une étude d'Anders Jorgensen, du Laboratoire national de Los Alamos, a montré que des passagers non protégés recevraient des doses mortelles dans les ceintures de radiations, plus de 200 fois les radiations reçues par les astronautes d'Apollo.",
+    "Selon Britannica, l'orbite géostationnaire se trouve à 35 786 km d'altitude ; une charge hissée à cette hauteur orbitale par un ascenseur spatial aurait, une fois lâchée, la vitesse nécessaire pour rester en orbite."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn du mit einem Weltraumaufzug fahren würdest?",
+   "summary": "Im Weltraumaufzug bräuchtest du 8 Tage bis in 36.000 km Höhe und müsstest unterwegs durch einen tödlichen Strahlungsgürtel! Professor Pi erklärt, wie du schon in der 3. Stunde die Raumstation hinter dir lässt, was 200-mal mehr Strahlung als bei den Apollo-Astronauten bedeutet und warum du in 36.000 km Höhe nicht fällst, wenn du die Tür öffnest.",
+   "facts": [
+    "Laut dem Entwurf von Bradley Edwards in IEEE Spectrum wäre das Kabel eines Weltraumaufzugs etwa 100.000 km lang, und Kletterfahrzeuge mit 190 km/h erreichten die geostationäre Umlaufbahn in etwa 8 Tagen.",
+    "Laut NASA umkreist die Internationale Raumstation die Erde in durchschnittlich etwa 250 Meilen (etwa 400 km) Höhe.",
+    "Laut der European Geosciences Union (EGU) berechnete Iannis Dandouras von der ESA, dass Passagiere bei 200 km/h fast 4 Tage bräuchten, um den inneren Strahlungsgürtel zu durchqueren, der etwa zwischen 1.000 und 20.000 km Höhe liegt.",
+    "Laut EGU ergab eine Studie von Anders Jorgensen vom Los Alamos National Laboratory, dass ungeschützte Passagiere in den Strahlungsgürteln tödliche Dosen abbekämen, mehr als das 200-Fache der Strahlung, der die Apollo-Astronauten ausgesetzt waren.",
+    "Laut Britannica liegt die geostationäre Umlaufbahn in 35.786 km Höhe; eine Nutzlast, die ein Weltraumaufzug auf diese Bahnhöhe bringt, hätte beim Loslassen genug Geschwindigkeit, um im Orbit zu bleiben."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если подняться на космическом лифте?",
+   "summary": "На космическом лифте ты поднимался бы до высоты 36 000 км 8 дней и по пути пересёк бы смертельный радиационный пояс! Профессор Пи объясняет, как уже на 3-й час ты окажешься выше космической станции, что значит радиация в 200 раз больше, чем у астронавтов «Аполлона», и почему, открыв дверь на высоте 36 000 км, ты не упадёшь.",
+   "facts": [
+    "Согласно проекту Брэдли Эдвардса в IEEE Spectrum, трос космического лифта будет длиной около 100 000 км, а подъёмники со скоростью 190 км/ч доберутся до геостационарной орбиты примерно за 8 дней.",
+    "По данным NASA, Международная космическая станция обращается на средней высоте около 250 миль (около 400 км).",
+    "По данным Европейского союза наук о Земле (EGU), Яннис Дандурас из ЕКА подсчитал, что пассажирам, поднимающимся со скоростью 200 км/ч, понадобится почти 4 дня, чтобы пересечь внутренний радиационный пояс, расположенный примерно на высоте от 1000 до 20 000 км.",
+    "По данным EGU, исследование Андерса Йоргенсена из Лос-Аламосской национальной лаборатории показало, что незащищённые пассажиры получили бы в радиационных поясах смертельные дозы — более чем в 200 раз больше радиации, чем астронавты «Аполлона».",
+    "По данным Britannica, геостационарная орбита находится на высоте 35 786 км; груз, поднятый космическим лифтом на эту орбитальную высоту, после отпускания будет иметь скорость, достаточную, чтобы остаться на орбите."
+   ]
+  },
+  "az": {
+   "title": "Kosmik Liftə Minsəydin Nə Olardı?",
+   "summary": "Kosmik liftlə 36.000 km-ə çatmaq 8 gün çəkərdi və yolda ölümcül radiasiya qurşağından keçərdin! Professor Pi 3-cü saatda Kosmik Stansiyanı necə ötdüyünü, Apollo astronavtlarının aldığından 200 dəfə çox radiasiyanı və 36.000 km-də qapını açsan niyə yıxılmayacağını danışır.",
+   "facts": [
+    "IEEE Spectrum-da Bradley Edvardsın layihəsinə görə, kosmik liftin kabeli təxminən 100.000 km uzunluğunda olardı, saatda 190 km sürətlə qalxan nəqliyyat vasitələri isə geostasionar orbitə təxminən 8 günə çatardı.",
+    "NASA-ya görə, Beynəlxalq Kosmik Stansiya orta hesabla təxminən 250 mil (təxminən 400 km) hündürlükdə fırlanır.",
+    "Avropa Geoelmlər İttifaqının (EGU) məlumatına görə, ESA-dan İannis Dandouras saatda 200 km sürətlə qalxan sərnişinlərin təxminən 1.000-20.000 km hündürlükdəki daxili radiasiya qurşağını keçməsinin təxminən 4 gün çəkəcəyini hesablayıb.",
+    "EGU-ya görə, Los Alamos Milli Laboratoriyasından Anders Yorgensenin araşdırması qorunmayan sərnişinlərin radiasiya qurşaqlarında ölümcül doza alacağını, yəni Apollo astronavtlarının aldığından 200 dəfədən çox radiasiyaya məruz qalacağını göstərib.",
+    "Britannica-ya görə, geostasionar orbit 35.786 km hündürlükdədir; kosmik liftlə bu orbit hündürlüyünə qaldırılan yük buraxılanda orbitdə qalmaq üçün kifayət qədər sürətə malik olur."
+   ]
+  }
+ }
+}

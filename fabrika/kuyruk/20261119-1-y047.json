@@ -1,0 +1,433 @@
+{
+ "id": "y047",
+ "series": "Ya Olsaydı?",
+ "q": "Güneş'in yerinde Sirius olsaydı ne olurdu?",
+ "uzun": true,
+ "title": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu?",
+ "bar": {
+  "hi": "SİRİUS",
+  "rest": "GÜNEŞ OLSAYDI?"
+ },
+ "summary": "Güneş'in yerine Sirius geçse tepende 25 kat parlak bir yıldız yanardı! İlk 8 dakika 20 saniyeyi, okyanusların kaderini, Dünya'nın yıldıza doğru düşüşünü ve o kavurucu ilk günün neden yılın en 'hafif' günü olacağını Profesör Pi saniye saniye anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Tepende Güneş'ten 25 kat parlak bir yıldız yanıyor: Sirius!",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "star",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "25",
+    "label": "25 Kat Parlak"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Güneş kremim kaç faktör olmalı?!",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "🧴",
+    "do": "shake",
+    "key": "kremim",
+    "label": "Güneş Kremi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "İlk 8 dakika 20 saniye gök aynı: yeni ışık ancak o zaman gelir.",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "⏱️",
+    "value": "8",
+    "unit": "dk 20 sn",
+    "label": "Işık Yolda",
+    "key": "8"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "9. dakikada gök bembeyaz yanar: Güneş'ten 1,7 kat geniş bir disk!",
+   "v": {
+    "t": "compare",
+    "bg": "sky",
+    "a": {
+     "b": "sun",
+     "label": "Güneş",
+     "value": "1"
+    },
+    "b": {
+     "b": "star",
+     "label": "Sirius",
+     "value": "1,7"
+    },
+    "mode": "size",
+    "key": "1,7"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yüzeyi yaklaşık 10.000 °C, Güneş'inkinin neredeyse 2 katı.",
+   "v": {
+    "t": "meter",
+    "bg": "space",
+    "label": "Yüzey Sıcaklığı",
+    "from": 5500,
+    "to": 10000,
+    "unit": "°C",
+    "e": "🌡️",
+    "key": "10.000"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Öğlen dışarı adım attın: tenine 25 kat fazla ısı vuruyor.",
+   "v": {
+    "t": "icon",
+    "bg": "desert",
+    "e": "🥵",
+    "do": "burn",
+    "key": "tenine",
+    "label": "25 Kat Isı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Venüs bizden sadece 1,9 kat fazla ışık alıyor ve yüzeyi 464 °C.",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "venus",
+     "label": "Venüs",
+     "value": "1,9"
+    },
+    "b": {
+     "e": "🌍",
+     "label": "Sirius'lu Dünya",
+     "value": "25"
+    },
+    "mode": "bar",
+    "key": "Venüs"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Kurşunu eriten Venüs'ü 13 kat mı geçtik?!",
+   "v": {
+    "t": "icon",
+    "bg": "volcano",
+    "e": "🔥",
+    "do": "burn",
+    "key": "Kurşunu",
+    "label": "Kurşun Erir"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Bilim insanlarına göre okyanusları kaynatmaya %10 fazla ışık yeter. Bu 25 kat!",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🌊",
+    "do": "vanish",
+    "key": "okyanusları",
+    "label": "Kaynayan Okyanus"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonraki haftalarda Dünya ona doğru düşer: Sirius 2 kat ağır.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "star",
+      "size": "xl",
+      "at": "l"
+     },
+     {
+      "b": "earth",
+      "size": "s",
+      "at": "r"
+     }
+    ],
+    "do": "approach",
+    "target": 1,
+    "key": "düşer",
+    "label": "2 Kat Ağır"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Fırın bir de yaklaşıyor mu?!",
+   "v": {
+    "t": "question",
+    "bg": "space",
+    "e": "😰",
+    "label": "Fırın Yaklaşıyor"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: bugünkü yerin, yıldıza en uzak noktan olur.",
+   "v": {
+    "t": "timeline",
+    "bg": "space",
+    "steps": [
+     {
+      "when": "8 DK 20 SN",
+      "e": "⭐",
+      "label": "Işık Gelir"
+     },
+     {
+      "when": "1. GÜN",
+      "e": "🥵",
+      "label": "En Uzak Nokta"
+     },
+     {
+      "when": "HAFTALAR",
+      "e": "🔥",
+      "label": "Daha Yakın"
+     }
+    ]
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Yani bu kavurucu ilk gün, yıl boyunca en az ısı aldığın gün!",
+   "v": {
+    "t": "split",
+    "bg": "desert",
+    "left": {
+     "e": "🥵",
+     "label": "İlk Gün"
+    },
+    "right": {
+     "e": "🔥",
+     "label": "Sonraki Günler"
+    },
+    "key": "kavurucu"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "8 dakika 20 saniyende ne yapardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "space",
+    "e": "⭐"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Britannica'ya göre Sirius, Güneş'ten 24,7 kat daha parlaktır; yarıçapı Güneş'inkinin 1,7 katı, yüzey sıcaklığı yaklaşık 9.800 kelvindir (yaklaşık 9.500 °C) ve bize yaklaşık 8,6 ışık yılı uzaklıktadır.",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/place/Sirius-star"
+  },
+  {
+   "text": "NASA'ya göre Sirius A'nın kütlesi Güneş'in 2 katıdır; Hubble ölçümlerine göre yüzey sıcaklığı yaklaşık 10.500 kelvindir (yaklaşık 10.200 °C).",
+   "source": "NASA (Hubble)",
+   "url": "https://science.nasa.gov/missions/hubble/astronomers-use-hubble-to-weigh-dog-stars-companion/"
+  },
+  {
+   "text": "NASA'ya göre Güneş ışığı yaklaşık 150 milyon kilometrelik yolu 8 dakika 20 saniyede aşarak Dünya'ya ulaşır.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/mission/voyager/voyager-1/voyager-1-what-is-a-light-day/"
+  },
+  {
+   "text": "NASA'ya göre Güneş'in yüzeyi (fotosfer) yaklaşık 5.500 °C'dir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/sun/facts/"
+  },
+  {
+   "text": "NASA'nın Venüs bilgi sayfasına göre Venüs, Dünya'nın aldığından 1,911 kat fazla Güneş ışığı alır ve ortalama yüzey sıcaklığı 464 °C'dir; NASA'ya göre bu sıcaklık kurşunu eritmeye yeter.",
+   "source": "NASA (NSSDC Venus Fact Sheet)",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html"
+  },
+  {
+   "text": "Teksas Üniversitesi McDonald Gözlemevi'nin StarDate programına göre Güneş yaklaşık 1 milyar yıl sonra %10 daha parlak olacak ve bu ek enerji Dünya'nın okyanuslarını kaynatıp yok etmeye yetecek.",
+   "source": "StarDate (McDonald Observatory, University of Texas)",
+   "url": "https://stardate.org/podcast/2023-11-28"
+  },
+  {
+   "text": "Illinois Üniversitesi fizikçilerine göre Güneş'in kütlesi 2 katına çıksa Dünya'nın yörüngesi bir elipse döner: Dünya bugünkü uzaklığına yalnızca en uzak noktasında ulaşır ve zamanının çoğunu yıldıza daha yakın geçirir.",
+   "source": "University of Illinois Physics (Ask the Van)",
+   "url": "https://van.physics.illinois.edu/ask/listing/1090"
+  }
+ ],
+ "tags": [
+  "sirius",
+  "sirius yıldızı",
+  "güneşin yerine sirius",
+  "güneş yerine başka yıldız",
+  "en parlak yıldız",
+  "güneş",
+  "venüs",
+  "okyanuslar kaynar",
+  "dünyanın yörüngesi",
+  "sirius instead of the sun",
+  "what if sirius replaced the sun",
+  "brightest star",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#sirius",
+  "#güneş",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.britannica.com/place/Sirius-star",
+  "https://science.nasa.gov/missions/hubble/astronomers-use-hubble-to-weigh-dog-stars-companion/",
+  "https://van.physics.illinois.edu/ask/listing/1090",
+  "https://stardate.org/podcast/2023-11-28"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If Sirius Replaced the Sun?",
+   "summary": "If Sirius took the Sun's place, a star 25 times brighter would blaze above you! Second by second, Professor Pi walks you through the first 8 minutes 20 seconds, the fate of the oceans, Earth's fall toward the star, and why that scorching first day would be the 'mildest' day of the year.",
+   "facts": [
+    "According to Britannica, Sirius is 24.7 times as luminous as the Sun, has a radius 1.7 times the Sun's, a surface temperature of about 9,800 kelvins (about 9,500 °C), and lies about 8.6 light-years away.",
+    "According to NASA, Sirius A has twice the mass of the Sun, and Hubble measurements put its surface temperature at about 10,500 kelvins (about 10,200 °C).",
+    "According to NASA, sunlight takes about 8 minutes and 20 seconds to travel the roughly 150 million kilometers from the Sun to Earth.",
+    "According to NASA, the Sun's surface (the photosphere) is about 5,500 °C.",
+    "According to NASA's Venus fact sheet, Venus receives 1.911 times as much sunlight as Earth and has an average surface temperature of 464 °C; NASA says that is hot enough to melt lead.",
+    "According to StarDate from the University of Texas McDonald Observatory, in about 1 billion years the Sun will be 10% brighter, and that extra energy should be enough to boil away Earth's oceans.",
+    "According to physicists at the University of Illinois, if the Sun's mass doubled, Earth's orbit would become an ellipse: Earth would reach its current distance only at its farthest point and would spend most of its time closer to the star."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si Sirio reemplazara al Sol?",
+   "summary": "Si Sirio ocupara el lugar del Sol, una estrella 25 veces más brillante ardería sobre tu cabeza. Segundo a segundo, el Profesor Pi te cuenta los primeros 8 minutos y 20 segundos, el destino de los océanos, la caída de la Tierra hacia la estrella y por qué ese primer día abrasador sería el más 'suave' del año.",
+   "facts": [
+    "Según Britannica, Sirio es 24,7 veces más luminosa que el Sol, su radio es 1,7 veces el del Sol, su temperatura superficial es de unos 9.800 kelvin (unos 9.500 °C) y está a unos 8,6 años luz.",
+    "Según la NASA, Sirio A tiene el doble de masa que el Sol, y las mediciones del Hubble sitúan su temperatura superficial en unos 10.500 kelvin (unos 10.200 °C).",
+    "Según la NASA, la luz del Sol tarda unos 8 minutos y 20 segundos en recorrer los cerca de 150 millones de kilómetros que la separan de la Tierra.",
+    "Según la NASA, la superficie del Sol (la fotosfera) está a unos 5.500 °C.",
+    "Según la ficha técnica de la NASA sobre Venus, Venus recibe 1,911 veces más luz solar que la Tierra y su temperatura superficial media es de 464 °C; según la NASA, basta para fundir el plomo.",
+    "Según StarDate, del Observatorio McDonald de la Universidad de Texas, dentro de unos 1.000 millones de años el Sol será un 10 % más brillante, y esa energía extra bastará para hacer hervir y desaparecer los océanos de la Tierra.",
+    "Según físicos de la Universidad de Illinois, si la masa del Sol se duplicara, la órbita de la Tierra se volvería una elipse: la Tierra solo alcanzaría su distancia actual en su punto más lejano y pasaría la mayor parte del tiempo más cerca de la estrella."
+   ]
+  },
+  "pt": {
+   "title": "E se Sírius tomasse o lugar do Sol?",
+   "summary": "Se Sírius ocupasse o lugar do Sol, uma estrela 25 vezes mais brilhante arderia sobre você! Segundo a segundo, o Professor Pi mostra os primeiros 8 minutos e 20 segundos, o destino dos oceanos, a queda da Terra em direção à estrela e por que aquele primeiro dia escaldante seria o mais 'ameno' do ano.",
+   "facts": [
+    "Segundo a Britannica, Sírius é 24,7 vezes mais luminosa que o Sol, tem raio 1,7 vez o do Sol, temperatura de superfície de cerca de 9.800 kelvin (cerca de 9.500 °C) e fica a cerca de 8,6 anos-luz de nós.",
+    "Segundo a NASA, Sírius A tem o dobro da massa do Sol, e as medições do Hubble indicam uma temperatura de superfície de cerca de 10.500 kelvin (cerca de 10.200 °C).",
+    "Segundo a NASA, a luz do Sol leva cerca de 8 minutos e 20 segundos para percorrer os cerca de 150 milhões de quilômetros até a Terra.",
+    "Segundo a NASA, a superfície do Sol (a fotosfera) tem cerca de 5.500 °C.",
+    "Segundo a ficha técnica da NASA sobre Vênus, Vênus recebe 1,911 vez mais luz solar que a Terra e tem temperatura média de superfície de 464 °C; segundo a NASA, isso basta para derreter chumbo.",
+    "Segundo o StarDate, do Observatório McDonald da Universidade do Texas, em cerca de 1 bilhão de anos o Sol estará 10% mais brilhante, e essa energia extra deve bastar para ferver e fazer desaparecer os oceanos da Terra.",
+    "Segundo físicos da Universidade de Illinois, se a massa do Sol dobrasse, a órbita da Terra viraria uma elipse: a Terra só chegaria à distância atual no ponto mais distante e passaria a maior parte do tempo mais perto da estrela."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو حلّت الشعرى اليمانية محلّ الشمس؟",
+   "summary": "لو حلّت الشعرى اليمانية محلّ الشمس لتوهّج فوق رأسك نجم أسطع منها بـ25 مرة! يأخذك البروفيسور باي ثانيةً بثانية عبر أول 8 دقائق و20 ثانية، ومصير المحيطات، وسقوط الأرض نحو النجم، ولماذا سيكون ذلك اليوم الأول الحارق أكثر أيام السنة «اعتدالًا».",
+   "facts": [
+    "وفقًا لبريتانيكا، الشعرى اليمانية أسطع من الشمس بـ24.7 مرة، ونصف قطرها 1.7 مرة نصف قطر الشمس، وحرارة سطحها نحو 9800 كلفن (نحو 9500 درجة مئوية)، وتبعد عنا نحو 8.6 سنة ضوئية.",
+    "وفقًا لناسا، كتلة الشعرى اليمانية (أ) ضعف كتلة الشمس، وتشير قياسات هابل إلى أن حرارة سطحها نحو 10500 كلفن (نحو 10200 درجة مئوية).",
+    "وفقًا لناسا، يستغرق ضوء الشمس نحو 8 دقائق و20 ثانية ليقطع نحو 150 مليون كيلومتر حتى الأرض.",
+    "وفقًا لناسا، تبلغ حرارة سطح الشمس (الغلاف الضوئي) نحو 5500 درجة مئوية.",
+    "وفقًا لصحيفة بيانات الزهرة من ناسا، تتلقى الزهرة من ضوء الشمس 1.911 ضعف ما تتلقاه الأرض، ومتوسط حرارة سطحها 464 درجة مئوية؛ وتقول ناسا إن هذه الحرارة كافية لصهر الرصاص.",
+    "وفقًا لبرنامج StarDate التابع لمرصد ماكدونالد في جامعة تكساس، ستصبح الشمس بعد نحو مليار سنة أسطع بنسبة 10%، وستكفي هذه الطاقة الإضافية لغلي محيطات الأرض وتبخيرها بالكامل.",
+    "وفقًا لفيزيائيين في جامعة إلينوي، لو تضاعفت كتلة الشمس لصار مدار الأرض إهليلجيًا: لن تبلغ الأرض بعدها الحالي إلا عند أبعد نقطة، وستقضي معظم وقتها أقرب إلى النجم."
+   ]
+  },
+  "hi": {
+   "title": "अगर सूरज की जगह सिरियस आ जाए तो क्या होगा?",
+   "summary": "अगर सिरियस सूरज की जगह ले ले, तो आपके सिर के ऊपर 25 गुना ज़्यादा चमकीला तारा धधकेगा! प्रोफ़ेसर पाई सेकंड-दर-सेकंड बताते हैं कि पहले 8 मिनट 20 सेकंड में क्या होगा, महासागरों का क्या होगा, धरती तारे की ओर कैसे गिरेगी और वह झुलसाने वाला पहला दिन साल का सबसे 'हल्का' दिन क्यों होगा।",
+   "facts": [
+    "ब्रिटानिका के अनुसार सिरियस सूरज से 24.7 गुना ज़्यादा चमकीला है, उसकी त्रिज्या सूरज से 1.7 गुना है, सतह का तापमान लगभग 9,800 केल्विन (लगभग 9,500 °C) है और यह हमसे लगभग 8.6 प्रकाश-वर्ष दूर है।",
+    "नासा के अनुसार सिरियस A का द्रव्यमान सूरज का 2 गुना है, और हबल के मापों के अनुसार इसकी सतह का तापमान लगभग 10,500 केल्विन (लगभग 10,200 °C) है।",
+    "नासा के अनुसार सूरज की रोशनी को लगभग 15 करोड़ किलोमीटर का सफ़र तय करके धरती तक पहुँचने में लगभग 8 मिनट 20 सेकंड लगते हैं।",
+    "नासा के अनुसार सूरज की सतह (फ़ोटोस्फ़ीयर) का तापमान लगभग 5,500 °C है।",
+    "नासा की शुक्र फ़ैक्ट शीट के अनुसार शुक्र को धरती से 1.911 गुना ज़्यादा धूप मिलती है और उसकी सतह का औसत तापमान 464 °C है; नासा के अनुसार यह सीसा पिघलाने के लिए काफ़ी है।",
+    "टेक्सास विश्वविद्यालय की मैकडॉनल्ड वेधशाला के StarDate के अनुसार लगभग 1 अरब साल में सूरज 10% ज़्यादा चमकीला हो जाएगा, और यह अतिरिक्त ऊर्जा धरती के महासागरों को उबालकर ख़त्म करने के लिए काफ़ी होगी।",
+    "इलिनॉय विश्वविद्यालय के भौतिकविदों के अनुसार अगर सूरज का द्रव्यमान दोगुना हो जाए, तो धरती की कक्षा दीर्घवृत्त बन जाएगी: धरती अपनी मौजूदा दूरी तक सिर्फ़ सबसे दूर वाले बिंदु पर पहुँचेगी और ज़्यादातर समय तारे के और क़रीब रहेगी।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Sirius Menggantikan Matahari?",
+   "summary": "Jika Sirius menggantikan Matahari, bintang yang 25 kali lebih terang akan menyala di atas kepalamu! Detik demi detik, Profesor Pi mengajakmu melewati 8 menit 20 detik pertama, nasib lautan, Bumi yang jatuh ke arah bintang itu, dan mengapa hari pertama yang membakar itu justru hari paling 'sejuk' sepanjang tahun.",
+   "facts": [
+    "Menurut Britannica, Sirius 24,7 kali lebih terang daripada Matahari, jari-jarinya 1,7 kali jari-jari Matahari, suhu permukaannya sekitar 9.800 kelvin (sekitar 9.500 °C), dan jaraknya sekitar 8,6 tahun cahaya dari kita.",
+    "Menurut NASA, massa Sirius A dua kali massa Matahari, dan pengukuran Hubble menunjukkan suhu permukaannya sekitar 10.500 kelvin (sekitar 10.200 °C).",
+    "Menurut NASA, cahaya Matahari butuh sekitar 8 menit 20 detik untuk menempuh sekitar 150 juta kilometer ke Bumi.",
+    "Menurut NASA, permukaan Matahari (fotosfer) bersuhu sekitar 5.500 °C.",
+    "Menurut lembar fakta Venus dari NASA, Venus menerima sinar Matahari 1,911 kali lebih banyak daripada Bumi dan suhu rata-rata permukaannya 464 °C; menurut NASA, panas itu cukup untuk melelehkan timbal.",
+    "Menurut StarDate dari Observatorium McDonald, Universitas Texas, sekitar 1 miliar tahun lagi Matahari akan 10% lebih terang, dan energi tambahan itu cukup untuk mendidihkan hingga menghabiskan lautan Bumi.",
+    "Menurut fisikawan Universitas Illinois, jika massa Matahari menjadi dua kali lipat, orbit Bumi akan berubah menjadi elips: Bumi hanya mencapai jaraknya sekarang di titik terjauh dan menghabiskan sebagian besar waktunya lebih dekat ke bintang."
+   ]
+  },
+  "fr": {
+   "title": "Et si Sirius remplaçait le Soleil ?",
+   "summary": "Si Sirius prenait la place du Soleil, une étoile 25 fois plus lumineuse brûlerait au-dessus de ta tête ! Seconde après seconde, le Professeur Pi te fait vivre les 8 premières minutes et 20 secondes, le sort des océans, la chute de la Terre vers l'étoile, et pourquoi ce premier jour brûlant serait le plus « doux » de l'année.",
+   "facts": [
+    "Selon Britannica, Sirius est 24,7 fois plus lumineuse que le Soleil, son rayon fait 1,7 fois celui du Soleil, sa température de surface atteint environ 9 800 kelvins (environ 9 500 °C) et elle se trouve à environ 8,6 années-lumière.",
+    "Selon la NASA, Sirius A a deux fois la masse du Soleil, et les mesures de Hubble donnent une température de surface d'environ 10 500 kelvins (environ 10 200 °C).",
+    "Selon la NASA, la lumière du Soleil met environ 8 minutes et 20 secondes à parcourir les quelque 150 millions de kilomètres jusqu'à la Terre.",
+    "Selon la NASA, la surface du Soleil (la photosphère) est à environ 5 500 °C.",
+    "Selon la fiche technique de la NASA sur Vénus, Vénus reçoit 1,911 fois plus de lumière solaire que la Terre et sa température moyenne de surface est de 464 °C ; selon la NASA, c'est assez chaud pour faire fondre le plomb.",
+    "Selon StarDate, de l'observatoire McDonald de l'Université du Texas, dans environ 1 milliard d'années le Soleil sera 10 % plus lumineux, et ce surplus d'énergie suffira à faire bouillir et disparaître les océans de la Terre.",
+    "Selon des physiciens de l'Université de l'Illinois, si la masse du Soleil doublait, l'orbite de la Terre deviendrait une ellipse : la Terre n'atteindrait sa distance actuelle qu'à son point le plus éloigné et passerait la plupart du temps plus près de l'étoile."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn Sirius die Sonne ersetzen würde?",
+   "summary": "Würde Sirius den Platz der Sonne einnehmen, würde über dir ein 25-mal hellerer Stern lodern! Sekunde für Sekunde führt dich Professor Pi durch die ersten 8 Minuten und 20 Sekunden, das Schicksal der Ozeane und den Sturz der Erde auf den Stern zu und erklärt, warum dieser glühende erste Tag der „mildeste“ Tag des Jahres wäre.",
+   "facts": [
+    "Laut Britannica leuchtet Sirius 24,7-mal so hell wie die Sonne, hat den 1,7-fachen Sonnenradius, eine Oberflächentemperatur von etwa 9.800 Kelvin (etwa 9.500 °C) und ist rund 8,6 Lichtjahre entfernt.",
+    "Laut NASA hat Sirius A die doppelte Masse der Sonne; Hubble-Messungen zufolge liegt seine Oberflächentemperatur bei etwa 10.500 Kelvin (etwa 10.200 °C).",
+    "Laut NASA braucht Sonnenlicht etwa 8 Minuten und 20 Sekunden für die rund 150 Millionen Kilometer bis zur Erde.",
+    "Laut NASA ist die Sonnenoberfläche (Photosphäre) etwa 5.500 °C heiß.",
+    "Laut dem Venus-Datenblatt der NASA erhält die Venus 1,911-mal so viel Sonnenlicht wie die Erde, und ihre mittlere Oberflächentemperatur beträgt 464 °C; laut NASA ist das heiß genug, um Blei zu schmelzen.",
+    "Laut StarDate vom McDonald-Observatorium der University of Texas wird die Sonne in etwa 1 Milliarde Jahren 10 % heller sein, und diese zusätzliche Energie dürfte reichen, um die Ozeane der Erde wegzukochen.",
+    "Laut Physikern der University of Illinois würde die Erdbahn bei doppelter Sonnenmasse zu einer Ellipse: Die Erde erreichte ihren heutigen Abstand nur noch am fernsten Punkt und verbrächte die meiste Zeit näher am Stern."
+   ]
+  },
+  "ru": {
+   "title": "Что будет, если Сириус займёт место Солнца?",
+   "summary": "Если бы Сириус занял место Солнца, над тобой пылала бы звезда в 25 раз ярче! Секунда за секундой Профессор Пи проводит тебя через первые 8 минут 20 секунд, судьбу океанов, падение Земли к звезде и объясняет, почему тот обжигающий первый день стал бы самым «мягким» днём года.",
+   "facts": [
+    "По данным Britannica, Сириус в 24,7 раза ярче Солнца, его радиус в 1,7 раза больше солнечного, температура поверхности около 9800 кельвинов (около 9500 °C), а расстояние до него около 8,6 светового года.",
+    "По данным NASA, масса Сириуса A вдвое больше массы Солнца, а по измерениям «Хаббла» температура его поверхности около 10 500 кельвинов (около 10 200 °C).",
+    "По данным NASA, солнечному свету нужно около 8 минут 20 секунд, чтобы пройти примерно 150 миллионов километров до Земли.",
+    "По данным NASA, температура поверхности Солнца (фотосферы) около 5500 °C.",
+    "Согласно справочным данным NASA о Венере, Венера получает в 1,911 раза больше солнечного света, чем Земля, а средняя температура её поверхности — 464 °C; по данным NASA, этого достаточно, чтобы расплавить свинец.",
+    "По данным StarDate обсерватории Макдональд Техасского университета, примерно через 1 миллиард лет Солнце станет на 10 % ярче, и этой дополнительной энергии хватит, чтобы выкипятить океаны Земли.",
+    "По словам физиков Иллинойсского университета, если бы масса Солнца удвоилась, орбита Земли стала бы эллипсом: Земля достигала бы нынешнего расстояния только в самой дальней точке и большую часть времени проводила бы ближе к звезде."
+   ]
+  },
+  "az": {
+   "title": "Günəşin Yerinə Sirius Keçsəydi Nə Olardı?",
+   "summary": "Sirius Günəşin yerini tutsaydı, başının üstündə 25 dəfə parlaq bir ulduz alovlanardı! Professor Pi saniyə-saniyə ilk 8 dəqiqə 20 saniyəni, okeanların taleyini, Yerin ulduza doğru düşməsini və o qızmar ilk günün niyə ilin ən 'mülayim' günü olacağını danışır.",
+   "facts": [
+    "Britannica-ya görə, Sirius Günəşdən 24,7 dəfə parlaqdır, radiusu Günəşinkindən 1,7 dəfə böyükdür, səth temperaturu təxminən 9.800 kelvindir (təxminən 9.500 °C) və bizdən təxminən 8,6 işıq ili uzaqdadır.",
+    "NASA-ya görə, Sirius A-nın kütləsi Günəşinkindən 2 dəfə çoxdur, Hubble ölçmələrinə görə isə səth temperaturu təxminən 10.500 kelvindir (təxminən 10.200 °C).",
+    "NASA-ya görə, Günəş işığı təxminən 150 milyon kilometrlik yolu təxminən 8 dəqiqə 20 saniyəyə qət edərək Yerə çatır.",
+    "NASA-ya görə, Günəşin səthi (fotosfer) təxminən 5.500 °C-dir.",
+    "NASA-nın Venera məlumat vərəqinə görə, Venera Yerin aldığından 1,911 dəfə çox Günəş işığı alır və səthinin orta temperaturu 464 °C-dir; NASA-ya görə, bu, qurğuşunu əritməyə kifayət edir.",
+    "Texas Universitetinin McDonald Rəsədxanasının StarDate proqramına görə, təxminən 1 milyard ildən sonra Günəş 10% daha parlaq olacaq və bu əlavə enerji Yerin okeanlarını qaynadıb yox etməyə kifayət edəcək.",
+    "İllinoys Universitetinin fiziklərinə görə, Günəşin kütləsi 2 dəfə artsaydı, Yerin orbiti ellipsə çevrilərdi: Yer indiki məsafəsinə yalnız ən uzaq nöqtədə çatar və vaxtının çoxunu ulduza daha yaxın keçirərdi."
+   ]
+  }
+ }
+}

@@ -1,0 +1,302 @@
+{
+ "id": "n022",
+ "series": "Ne Kadar Büyük?",
+ "q": "Bir virüs ne kadar küçük?",
+ "title": "Bir Virüs Gerçekte Ne Kadar Küçük?",
+ "bar": {
+  "hi": "VİRÜS",
+  "rest": "NE KADAR KÜÇÜK?"
+ },
+ "summary": "Şu an vücudunda yaklaşık 380 trilyon virüs var, yani bakterilerinin 10 katı! Saç telinin enine kaç virüs dizildiğini, grip olunca tek bir hücrenin kaç virüs ürettiğini ve Dünya'daki tüm virüslerin üst üste 200 milyon ışık yılı uzanmasını Profesör Pi anlatıyor.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Şu an vücudunda yaklaşık 380 trilyon virüs var: bakterilerinin 10 katı!",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "🦠",
+    "value": "380",
+    "unit": "trilyon",
+    "label": "Sendeki Virüs",
+    "key": "380"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ben virüs otobüsü müyüm?!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🚌",
+    "do": "shake",
+    "key": "otobüsü",
+    "label": "Virüs Otobüsü"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Saç telinin enine 750 tanesi dizilir.",
+   "v": {
+    "t": "compare",
+    "bg": "lab",
+    "a": {
+     "e": "💇",
+     "label": "Saç Teli",
+     "value": "750"
+    },
+    "b": {
+     "e": "🦠",
+     "label": "Virüs",
+     "value": "1"
+    },
+    "mode": "size",
+    "key": "750"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Grip olunca tek bir hücren 10.000 virüs üretir!",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🤧",
+    "do": "multiply",
+    "key": "10.000",
+    "label": "10.000 Virüs"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Denizde ağzına kaçan tek yudumda milyarlarca virüs var.",
+   "v": {
+    "t": "split",
+    "bg": "ocean",
+    "left": {
+     "e": "🏊",
+     "label": "Tek Yudum"
+    },
+    "right": {
+     "e": "🦠",
+     "label": "Milyarlarca Virüs"
+    },
+    "key": "yudumda"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl sürpriz: Dünya'daki virüsler üst üste 200 milyon ışık yılı uzanır!",
+   "v": {
+    "t": "compare",
+    "bg": "space",
+    "a": {
+     "b": "galaxy",
+     "label": "Samanyolu",
+     "value": "100.000"
+    },
+    "b": {
+     "e": "🦠",
+     "label": "Virüs Kulesi",
+     "value": "200.000.000"
+    },
+    "mode": "bar",
+    "key": "200"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bu yaz denizde kaç yudum yuttun? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "ocean",
+    "e": "🦠"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Scientific American'a göre şu an vücudunun içinde ve üstünde yaklaşık 380 trilyon virüs yaşıyor; bu, bakteri sayısının 10 katı.",
+   "source": "Scientific American",
+   "url": "https://www.scientificamerican.com/article/viruses-can-help-us-as-well-as-harm-us/"
+  },
+  {
+   "text": "HHMI'ye göre HIV gibi bir virüs yaklaşık 100 nanometre genişliğindedir; bir saç teli ise yaklaşık 75 mikrometredir, yani saç telinin enine yaklaşık 750 virüs dizilir.",
+   "source": "HHMI",
+   "url": "https://www.hhmi.org/beautifulbiology/scroll-and-tell/scale-biology"
+  },
+  {
+   "text": "National Geographic'te Carl Zimmer'in yazdığına göre gripte enfekte olan her hava yolu hücresi yaklaşık 10.000 yeni virüs üretir ve birkaç gün içinde vücuttaki grip virüsü sayısı 100 trilyona ulaşabilir.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/science/article/an-infinity-of-viruses"
+  },
+  {
+   "text": "PBS NOVA'ya göre her litre deniz suyunda yaklaşık 100 milyar virüs parçacığı bulunur.",
+   "source": "PBS NOVA",
+   "url": "https://www.pbs.org/wgbh/nova/article/200000-marine-viruses/"
+  },
+  {
+   "text": "National Geographic'te Carl Zimmer'in en sık rastladığı tahmine göre Dünya'da yaklaşık 10³¹, yani 1'in ardından 31 sıfır gelen sayıda virüs var; bunlar üst üste konsa 200 milyon ışık yılı yüksekliğe ulaşırdı.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/science/article/an-infinity-of-viruses"
+  },
+  {
+   "text": "NASA'ya göre Samanyolu Galaksisi yaklaşık 100.000 ışık yılı genişliğindedir.",
+   "source": "NASA",
+   "url": "https://science.nasa.gov/universe/stories/quick-reads/how-big-is-our-galaxy-the-milky-way/"
+  }
+ ],
+ "tags": [
+  "virüs",
+  "virüs ne kadar küçük",
+  "virüs boyutu",
+  "vücuttaki virüs sayısı",
+  "viroma",
+  "grip virüsü",
+  "deniz suyunda virüs",
+  "mikrop",
+  "nanometre",
+  "how small is a virus",
+  "virus size",
+  "human virome",
+  "ne kadar büyük",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#virüs",
+  "#mikrop",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.scientificamerican.com/article/viruses-can-help-us-as-well-as-harm-us/",
+  "https://www.hhmi.org/beautifulbiology/scroll-and-tell/scale-biology",
+  "https://www.nationalgeographic.com/science/article/an-infinity-of-viruses",
+  "https://www.pbs.org/wgbh/nova/article/200000-marine-viruses/"
+ ],
+ "i18n": {
+  "en": {
+   "title": "How Small Is a Virus, Really?",
+   "summary": "Right now about 380 trillion viruses live in and on your body, 10 times more than your bacteria! Professor Pi shows how many viruses line up across a single hair, how many one cell makes when you have the flu, and how all the viruses on Earth stacked up would reach 200 million light-years.",
+   "facts": [
+    "According to Scientific American, about 380 trillion viruses are living on and inside your body right now, 10 times the number of bacteria.",
+    "According to HHMI, a virus such as HIV is about 100 nanometers across, while a human hair is about 75 micrometers wide, so about 750 viruses fit across one hair.",
+    "As Carl Zimmer writes in National Geographic, in a flu infection each infected airway cell produces about 10,000 new viruses, and within a few days the body can hold 100 trillion flu viruses.",
+    "According to PBS NOVA, each liter of seawater holds about 100 billion viral particles.",
+    "According to the estimate Carl Zimmer has seen most often, as he writes in National Geographic, Earth holds about 10³¹ viruses (a 1 followed by 31 zeros); stacked up, they would reach 200 million light-years.",
+    "According to NASA, the Milky Way galaxy is about 100,000 light-years across."
+   ]
+  },
+  "es": {
+   "title": "¿Qué tan pequeño es un virus en realidad?",
+   "summary": "Ahora mismo viven en tu cuerpo unos 380 billones de virus, ¡10 veces más que tus bacterias! El Profesor Pi muestra cuántos virus caben a lo ancho de un solo pelo, cuántos fabrica una sola célula cuando tienes gripe y cómo todos los virus de la Tierra apilados llegarían a 200 millones de años luz.",
+   "facts": [
+    "Según Scientific American, ahora mismo viven en tu cuerpo y sobre él unos 380 billones de virus, 10 veces el número de bacterias.",
+    "Según el HHMI, un virus como el VIH mide unos 100 nanómetros, mientras que un pelo humano mide unos 75 micrómetros de ancho, así que a lo ancho de un pelo caben unos 750 virus.",
+    "Según cuenta Carl Zimmer en National Geographic, en una gripe cada célula infectada de las vías respiratorias produce unos 10.000 virus nuevos, y en pocos días el cuerpo puede albergar 100 billones de virus de la gripe.",
+    "Según PBS NOVA, cada litro de agua de mar contiene unos 100.000 millones de partículas virales.",
+    "Según la estimación que Carl Zimmer dice haber visto con más frecuencia, en National Geographic, en la Tierra hay unos 10³¹ virus (un 1 seguido de 31 ceros); apilados, alcanzarían 200 millones de años luz.",
+    "Según la NASA, la Vía Láctea mide unos 100.000 años luz de ancho."
+   ]
+  },
+  "pt": {
+   "title": "Quão pequeno é um vírus de verdade?",
+   "summary": "Agora mesmo cerca de 380 trilhões de vírus vivem no seu corpo, 10 vezes mais que as suas bactérias! O Professor Pi mostra quantos vírus cabem na largura de um único fio de cabelo, quantos uma só célula fabrica quando você pega gripe e como todos os vírus da Terra empilhados chegariam a 200 milhões de anos-luz.",
+   "facts": [
+    "Segundo a Scientific American, cerca de 380 trilhões de vírus vivem dentro e sobre o seu corpo agora mesmo, 10 vezes o número de bactérias.",
+    "Segundo o HHMI, um vírus como o HIV mede cerca de 100 nanômetros, enquanto um fio de cabelo humano tem cerca de 75 micrômetros de largura; ou seja, cerca de 750 vírus cabem na largura de um fio.",
+    "Como escreve Carl Zimmer na National Geographic, numa gripe cada célula infectada das vias aéreas produz cerca de 10.000 novos vírus, e em poucos dias o corpo pode ter 100 trilhões de vírus da gripe.",
+    "Segundo a PBS NOVA, cada litro de água do mar contém cerca de 100 bilhões de partículas virais.",
+    "Segundo a estimativa que Carl Zimmer diz ver com mais frequência, na National Geographic, a Terra tem cerca de 10³¹ vírus (um 1 seguido de 31 zeros); empilhados, eles alcançariam 200 milhões de anos-luz.",
+    "Segundo a NASA, a Via Láctea tem cerca de 100.000 anos-luz de diâmetro."
+   ]
+  },
+  "ar": {
+   "title": "ما مدى صِغَر الفيروس في الحقيقة؟",
+   "summary": "يعيش في جسمك الآن نحو 380 تريليون فيروس، أي 10 أضعاف بكتيرياك! يوضح البروفيسور باي كم فيروسًا يصطف على عرض شعرة واحدة، وكم فيروسًا تصنعه خلية واحدة عندما تصاب بالإنفلونزا، وكيف تمتد كل فيروسات الأرض إذا كُدّست فوق بعضها إلى 200 مليون سنة ضوئية.",
+   "facts": [
+    "وفقًا لمجلة ساينتفك أمريكان، يعيش داخل جسمك وعليه الآن نحو 380 تريليون فيروس، أي 10 أضعاف عدد البكتيريا.",
+    "وفقًا لمعهد HHMI، يبلغ عرض فيروس مثل فيروس نقص المناعة البشرية نحو 100 نانومتر، بينما يبلغ عرض شعرة الإنسان نحو 75 ميكرومترًا، لذا يصطف على عرض الشعرة نحو 750 فيروسًا.",
+    "كما يكتب كارل زيمر في ناشيونال جيوغرافيك، تنتج كل خلية مصابة في المجاري التنفسية أثناء الإنفلونزا نحو 10000 فيروس جديد، وخلال أيام قليلة قد يحمل الجسم 100 تريليون فيروس إنفلونزا.",
+    "وفقًا لبرنامج NOVA على شبكة PBS، يحتوي كل لتر من ماء البحر على نحو 100 مليار جسيم فيروسي.",
+    "وفقًا للتقدير الذي يقول كارل زيمر في ناشيونال جيوغرافيك إنه صادفه أكثر من غيره، توجد على الأرض نحو 10³¹ فيروس (1 يليه 31 صفرًا)، ولو كُدّست فوق بعضها لبلغت 200 مليون سنة ضوئية.",
+    "وفقًا لناسا، يبلغ عرض مجرة درب التبانة نحو 100000 سنة ضوئية."
+   ]
+  },
+  "hi": {
+   "title": "एक वायरस असल में कितना छोटा होता है?",
+   "summary": "इस वक़्त आपके शरीर में लगभग 380 ट्रिलियन वायरस हैं, आपके बैक्टीरिया से 10 गुना ज़्यादा! प्रोफ़ेसर पाई दिखाते हैं कि एक बाल की चौड़ाई में कितने वायरस कतार में लगते हैं, फ़्लू होने पर एक कोशिका कितने वायरस बनाती है, और धरती के सारे वायरस एक के ऊपर एक रखें तो वे 20 करोड़ प्रकाश-वर्ष तक कैसे पहुँच जाते।",
+   "facts": [
+    "साइंटिफ़िक अमेरिकन के अनुसार इस वक़्त आपके शरीर के अंदर और ऊपर लगभग 380 ट्रिलियन वायरस रहते हैं, जो बैक्टीरिया की संख्या का 10 गुना है।",
+    "HHMI के अनुसार HIV जैसा वायरस लगभग 100 नैनोमीटर चौड़ा होता है, जबकि इंसान का बाल लगभग 75 माइक्रोमीटर चौड़ा होता है, यानी एक बाल की चौड़ाई में लगभग 750 वायरस समा जाते हैं।",
+    "नेशनल जियोग्राफ़िक में कार्ल ज़िमर लिखते हैं कि फ़्लू में श्वसन मार्ग की हर संक्रमित कोशिका लगभग 10,000 नए वायरस बनाती है, और कुछ ही दिनों में शरीर में 100 ट्रिलियन फ़्लू वायरस हो सकते हैं।",
+    "PBS NOVA के अनुसार समुद्र के हर लीटर पानी में लगभग 100 अरब वायरस कण होते हैं।",
+    "नेशनल जियोग्राफ़िक में कार्ल ज़िमर के अनुसार सबसे ज़्यादा दिखने वाला अनुमान है कि धरती पर लगभग 10³¹ वायरस हैं (1 के बाद 31 शून्य); इन्हें एक के ऊपर एक रखें तो ये 20 करोड़ प्रकाश-वर्ष की ऊँचाई तक पहुँचेंगे।",
+    "नासा के अनुसार हमारी आकाशगंगा मिल्की वे लगभग 1,00,000 प्रकाश-वर्ष चौड़ी है।"
+   ]
+  },
+  "id": {
+   "title": "Seberapa Kecil Sebenarnya Sebuah Virus?",
+   "summary": "Saat ini sekitar 380 triliun virus hidup di tubuhmu, 10 kali lebih banyak dari bakterimu! Profesor Pi menunjukkan berapa virus yang berjajar di lebar sehelai rambut, berapa virus yang dibuat satu sel saat kamu flu, dan bagaimana semua virus di Bumi jika ditumpuk akan mencapai 200 juta tahun cahaya.",
+   "facts": [
+    "Menurut Scientific American, sekitar 380 triliun virus hidup di dalam dan di permukaan tubuhmu saat ini, 10 kali jumlah bakteri.",
+    "Menurut HHMI, virus seperti HIV berukuran sekitar 100 nanometer, sedangkan sehelai rambut manusia lebarnya sekitar 75 mikrometer, jadi sekitar 750 virus muat berjajar di lebar sehelai rambut.",
+    "Seperti ditulis Carl Zimmer di National Geographic, saat flu setiap sel saluran napas yang terinfeksi menghasilkan sekitar 10.000 virus baru, dan dalam beberapa hari tubuh bisa berisi 100 triliun virus flu.",
+    "Menurut PBS NOVA, setiap liter air laut berisi sekitar 100 miliar partikel virus.",
+    "Menurut perkiraan yang paling sering dijumpai Carl Zimmer, seperti ditulisnya di National Geographic, ada sekitar 10³¹ virus di Bumi (angka 1 diikuti 31 nol); jika ditumpuk, tingginya mencapai 200 juta tahun cahaya.",
+    "Menurut NASA, galaksi Bima Sakti lebarnya sekitar 100.000 tahun cahaya."
+   ]
+  },
+  "fr": {
+   "title": "À quel point un virus est-il vraiment petit ?",
+   "summary": "En ce moment, environ 380 000 milliards de virus vivent dans ton corps, 10 fois plus que tes bactéries ! Le Professeur Pi montre combien de virus s'alignent sur la largeur d'un seul cheveu, combien une seule cellule en fabrique quand tu as la grippe, et comment tous les virus de la Terre empilés atteindraient 200 millions d'années-lumière.",
+   "facts": [
+    "Selon Scientific American, environ 380 000 milliards de virus vivent en ce moment dans et sur ton corps, soit 10 fois le nombre de bactéries.",
+    "Selon le HHMI, un virus comme le VIH mesure environ 100 nanomètres, alors qu'un cheveu humain fait environ 75 micromètres de large ; environ 750 virus tiennent donc sur la largeur d'un cheveu.",
+    "Comme l'écrit Carl Zimmer dans National Geographic, lors d'une grippe chaque cellule infectée des voies respiratoires produit environ 10 000 nouveaux virus, et en quelques jours le corps peut en contenir 100 000 milliards.",
+    "Selon PBS NOVA, chaque litre d'eau de mer contient environ 100 milliards de particules virales.",
+    "Selon l'estimation que Carl Zimmer dit avoir vue le plus souvent, dans National Geographic, la Terre compte environ 10³¹ virus (un 1 suivi de 31 zéros) ; empilés, ils atteindraient 200 millions d'années-lumière.",
+    "Selon la NASA, la Voie lactée mesure environ 100 000 années-lumière de diamètre."
+   ]
+  },
+  "de": {
+   "title": "Wie klein ist ein Virus wirklich?",
+   "summary": "Gerade jetzt leben rund 380 Billionen Viren in deinem Körper, 10-mal so viele wie deine Bakterien! Professor Pi zeigt, wie viele Viren über die Breite eines einzigen Haares passen, wie viele eine einzige Zelle bei einer Grippe herstellt und wie alle Viren der Erde übereinandergestapelt 200 Millionen Lichtjahre erreichen würden.",
+   "facts": [
+    "Laut Scientific American leben gerade etwa 380 Billionen Viren in und auf deinem Körper, das Zehnfache der Bakterienzahl.",
+    "Laut HHMI ist ein Virus wie HIV etwa 100 Nanometer groß, ein menschliches Haar dagegen etwa 75 Mikrometer breit; über die Breite eines Haares passen also etwa 750 Viren.",
+    "Wie Carl Zimmer in National Geographic schreibt, produziert bei einer Grippe jede infizierte Atemwegszelle etwa 10.000 neue Viren, und innerhalb weniger Tage kann der Körper 100 Billionen Grippeviren enthalten.",
+    "Laut PBS NOVA enthält jeder Liter Meerwasser etwa 100 Milliarden Viruspartikel.",
+    "Nach der Schätzung, die Carl Zimmer laut National Geographic am häufigsten begegnet ist, gibt es auf der Erde etwa 10³¹ Viren (eine 1 mit 31 Nullen); übereinandergestapelt würden sie 200 Millionen Lichtjahre hoch reichen.",
+    "Laut NASA ist die Milchstraße etwa 100.000 Lichtjahre breit."
+   ]
+  },
+  "ru": {
+   "title": "Насколько на самом деле мал вирус?",
+   "summary": "Прямо сейчас в твоём теле живут около 380 триллионов вирусов — в 10 раз больше, чем бактерий! Профессор Пи показывает, сколько вирусов уместится поперёк одного волоса, сколько вирусов производит одна клетка при гриппе и как все вирусы Земли, сложенные друг на друга, протянулись бы на 200 миллионов световых лет.",
+   "facts": [
+    "По данным Scientific American, прямо сейчас в твоём теле и на нём живут около 380 триллионов вирусов — в 10 раз больше, чем бактерий.",
+    "По данным HHMI, вирус вроде ВИЧ имеет размер около 100 нанометров, а человеческий волос — около 75 микрометров в ширину, поэтому поперёк одного волоса умещается около 750 вирусов.",
+    "Как пишет Карл Циммер в National Geographic, при гриппе каждая заражённая клетка дыхательных путей производит около 10 000 новых вирусов, и за несколько дней в организме может оказаться 100 триллионов вирусов гриппа.",
+    "По данным PBS NOVA, в каждом литре морской воды содержится около 100 миллиардов вирусных частиц.",
+    "Согласно оценке, которая, по словам Карла Циммера в National Geographic, встречается чаще всего, на Земле около 10³¹ вирусов (единица с 31 нулём); если сложить их друг на друга, получится столб высотой 200 миллионов световых лет.",
+    "По данным NASA, поперечник галактики Млечный Путь составляет около 100 000 световых лет."
+   ]
+  },
+  "az": {
+   "title": "Bir Virus Əslində Nə Qədər Kiçikdir?",
+   "summary": "Hazırda bədənində təxminən 380 trilyon virus yaşayır, yəni bakteriyalarından 10 dəfə çox! Professor Pi bir saç telinin eninə neçə virusun düzüldüyünü, qripə yoluxanda bir hüceyrənin neçə virus hazırladığını və Yerdəki bütün virusların üst-üstə qoyulsa 200 milyon işıq ilinə çatacağını göstərir.",
+   "facts": [
+    "Scientific American-a görə, hazırda bədəninin içində və üzərində təxminən 380 trilyon virus yaşayır; bu, bakteriyaların sayından 10 dəfə çoxdur.",
+    "HHMI-yə görə, HİV kimi bir virus təxminən 100 nanometr enindədir, insan saçı isə təxminən 75 mikrometrdir; yəni bir saç telinin eninə təxminən 750 virus düzülür.",
+    "Karl Zimmerin National Geographic-də yazdığına görə, qrip zamanı tənəffüs yollarındakı hər yoluxmuş hüceyrə təxminən 10.000 yeni virus hazırlayır və bir neçə gün ərzində bədəndə 100 trilyon qrip virusu ola bilər.",
+    "PBS NOVA-ya görə, hər litr dəniz suyunda təxminən 100 milyard virus hissəciyi var.",
+    "Karl Zimmerin National Geographic-də ən çox rastlaşdığını yazdığı təxminə görə, Yerdə təxminən 10³¹ virus var (1-dən sonra 31 sıfır); onları üst-üstə qoysaq, 200 milyon işıq ili hündürlüyə çatardılar.",
+    "NASA-ya görə, Süd Yolu qalaktikasının eni təxminən 100.000 işıq ilidir."
+   ]
+  }
+ }
+}
