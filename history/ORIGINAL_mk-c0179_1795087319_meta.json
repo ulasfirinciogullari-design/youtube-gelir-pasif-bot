@@ -1,0 +1,172 @@
+{
+  "topic_id": "mk-c0179",
+  "topic": "Havlayan köpek ısırmaz mı? 'Ürüyen köpek ısırmaz' atasözü doğru mu, havlayan köpek ısırır mı, köpek havlarsa ne yapmalı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Havlayan köpek ısırmaz sözü yanlış, havlamak bir uyarı 🐶",
+  "hook_text": "HAVLAYAN KÖPEK ISIRIR MI?",
+  "description": "Havlayan köpek ısırmaz mı, 'ürüyen köpek ısırmaz' atasözü doğru mu, köpek havlayınca ne yapmalı?\n\nKöpekler için doğru değil. ASPCA'ya göre köpekler nadiren hiç uyarmadan ısırır; ısırığa giden uyarı dizisinde kaskatı kesilme, tehditkâr bir havlama, üzerine atılma, hırlama, diş gösterme ve kapma yer alır, ama köpekler bu sırayı her zaman izlemez. Korkmuş bir köpek ise köşeye sıkışınca neredeyse hiç uyarmadan da ısırabilir. Amerikan Veteriner Hekimler Birliği (AVMA) her köpeğin ısırabileceğini hatırlatıyor ve tehdit eden bir köpek karşısında arkanı dönüp koşmamayı, doğrudan göz teması kurmamayı, sakin kalıp yavaşça geri çekilmeyi öneriyor; Harvard Health de köpeğe yan dönerek durmayı ve yavaşça uzaklaşmayı tavsiye ediyor. Atasözü ise insanlar için mecazi anlamda kullanılır: çok bağırıp çağıranın çoğu zaman bir şey yapamayacağını anlatır.\n\nSence hangisi daha tehlikeli: havlayan köpek mi, sessizce bakan köpek mi?\n\n#köpek #atasözleri #deyimler #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-c0179",
+  "tags": [
+    "havlayan köpek ısırmaz",
+    "ürüyen köpek ısırmaz",
+    "havlayan köpek ısırır mı",
+    "köpek havlarsa ne yapmalı",
+    "köpek saldırırsa ne yapmalı",
+    "köpek ısırması",
+    "köpek neden havlar",
+    "köpek hırlaması",
+    "sokak köpekleri",
+    "köpek davranışları",
+    "köpek dili",
+    "atasözleri",
+    "atasözleri ve anlamları",
+    "deyimler",
+    "yanlış bilinen gerçekler",
+    "köpek",
+    "köpekler",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "barking dog never bites",
+    "shorts",
+    "bilim",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "havlayan kopek isirmaz"
+  ],
+  "localizations": {
+    "en": {
+      "title": "'A barking dog never bites' is wrong: barking is a warning 🐶",
+      "description": "Dogs rarely bite without some kind of warning, and a threatening bark is part of that warning sequence along with freezing, growling and snarling. Ignore it and a snap or bite can follow. If a dog threatens you, don't run, avoid eye contact, turn sideways and back away slowly.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "es": {
+      "title": "«Perro que ladra no muerde» es falso: ladrar es un aviso 🐶",
+      "description": "Los perros rara vez muerden sin avisar, y un ladrido amenazante forma parte de esa advertencia, junto con quedarse rígido, gruñir y enseñar los dientes. Si se ignora, puede llegar un mordisco. Si un perro te amenaza, no corras, evita mirarlo a los ojos, ponte de lado y aléjate despacio.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "pt": {
+      "title": "'Cão que ladra não morde' é mito: latir é um aviso 🐶",
+      "description": "Cães raramente mordem sem algum aviso, e o latido ameaçador faz parte dessa sequência, junto com ficar rígido, rosnar e mostrar os dentes. Se o aviso for ignorado, pode vir uma mordida. Se um cão te ameaçar, não corra, evite olhar nos olhos dele, fique de lado e se afaste devagar.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "de": {
+      "title": "„Hunde, die bellen, beißen nicht“ stimmt nicht: Bellen ist eine Warnung 🐶",
+      "description": "Hunde beißen selten ohne jede Vorwarnung, und drohendes Bellen gehört neben Erstarren, Knurren und Zähnefletschen zu dieser Warnfolge. Wer sie ignoriert, riskiert ein Schnappen oder einen Biss. Droht dir ein Hund: nicht wegrennen, keinen direkten Blickkontakt, seitlich hinstellen und langsam zurückweichen.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "fr": {
+      "title": "« Chien qui aboie ne mord pas » est faux : aboyer est un avertissement 🐶",
+      "description": "Les chiens mordent rarement sans prévenir, et l'aboiement menaçant fait partie de cette série d'avertissements, avec l'immobilité, le grognement et les crocs montrés. Si on l'ignore, une morsure peut suivre. Face à un chien menaçant, ne cours pas, évite de le regarder dans les yeux, mets-toi de profil et éloigne-toi lentement.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "it": {
+      "title": "«Can che abbaia non morde» è falso: abbaiare è un avvertimento 🐶",
+      "description": "I cani mordono raramente senza alcun preavviso, e l'abbaio minaccioso fa parte di questa sequenza insieme all'irrigidirsi, al ringhio e ai denti scoperti. Se lo ignori, può arrivare un morso. Se un cane ti minaccia, non scappare, evita di guardarlo negli occhi, mettiti di fianco e allontanati piano.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "ru": {
+      "title": "«Собака, которая лает, не кусает» — неправда: лай это предупреждение 🐶",
+      "description": "Собаки редко кусают совсем без предупреждения, и угрожающий лай — часть этой цепочки вместе с замиранием, рычанием и оскалом. Если её проигнорировать, может последовать укус. Если собака тебе угрожает, не беги, не смотри ей в глаза, встань боком и медленно отходи.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "ar": {
+      "title": "مقولة «الكلب الذي ينبح لا يعض» خاطئة: النباح تحذير 🐶",
+      "description": "نادرًا ما تعض الكلاب من دون أي تحذير، والنباح المهدِّد جزء من سلسلة التحذير هذه مع التجمد والزمجرة وإظهار الأسنان. وإذا تجاهلتها فقد تأتي العضة. إذا هددك كلب فلا تركض، وتجنب النظر في عينيه، وقف بجانبك نحوه وابتعد ببطء.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "hi": {
+      "title": "'भौंकने वाले कुत्ते काटते नहीं' गलत है: भौंकना एक चेतावनी है 🐶",
+      "description": "कुत्ते शायद ही कभी बिना चेतावनी दिए काटते हैं, और धमकी भरा भौंकना अकड़ जाने, गुर्राने और दांत दिखाने के साथ उसी चेतावनी का हिस्सा है। इसे अनदेखा करने पर काटना भी हो सकता है। अगर कोई कुत्ता धमकाए तो भागें नहीं, आँखों में न देखें, बगल की ओर मुड़ें और धीरे-धीरे दूर हटें।\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "id": {
+      "title": "'Anjing menggonggong tidak menggigit' itu keliru: gonggongan adalah peringatan 🐶",
+      "description": "Anjing jarang menggigit tanpa peringatan apa pun, dan gonggongan yang mengancam adalah bagian dari rangkaian peringatan itu, bersama tubuh yang kaku, geraman, dan gigi yang diperlihatkan. Jika diabaikan, gigitan bisa menyusul. Jika anjing mengancammu, jangan lari, hindari menatap matanya, berdiri menyamping, lalu menjauh perlahan.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "ja": {
+      "title": "「吠える犬は噛まない」は間違い、吠えるのは警告 🐶",
+      "description": "犬が何の警告もなく噛むことはめったになく、威嚇の吠え声は、体を硬直させる、うなる、歯をむき出すといった警告の一部です。それを無視すると噛まれることがあります。犬に威嚇されたら走って逃げず、目を合わせず、体を横に向けてゆっくり離れましょう。\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "ko": {
+      "title": "'짖는 개는 물지 않는다'는 틀렸다, 짖는 건 경고다 🐶",
+      "description": "개는 아무 경고 없이 무는 일이 드물며, 위협적으로 짖는 것은 몸이 굳고, 으르렁대고, 이빨을 드러내는 것과 함께 그 경고의 일부입니다. 이를 무시하면 물릴 수 있습니다. 개가 위협하면 뛰지 말고, 눈을 마주치지 말고, 옆으로 선 채 천천히 물러나세요.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "pl": {
+      "title": "„Pies, który szczeka, nie gryzie” to mit: szczekanie to ostrzeżenie 🐶",
+      "description": "Psy rzadko gryzą bez żadnego ostrzeżenia, a groźne szczekanie jest jego częścią – obok zastygnięcia, warczenia i pokazywania zębów. Jeśli je zignorujesz, może dojść do ugryzienia. Gdy pies ci grozi, nie uciekaj, unikaj patrzenia mu w oczy, stań bokiem i powoli się wycofaj.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "nl": {
+      "title": "'Blaffende honden bijten niet' klopt niet: blaffen is een waarschuwing 🐶",
+      "description": "Honden bijten zelden zonder enige waarschuwing, en dreigend blaffen hoort daar net als verstijven, grommen en tanden laten zien bij. Negeer je dat, dan kan er een beet volgen. Bedreigt een hond je, ren dan niet weg, vermijd oogcontact, ga zijdelings staan en loop langzaam achteruit.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "uk": {
+      "title": "«Собака, що гавкає, не кусає» — неправда: гавкіт це попередження 🐶",
+      "description": "Собаки рідко кусають зовсім без попередження, і загрозливий гавкіт — частина цього ланцюжка разом із завмиранням, гарчанням і вишкіром. Якщо його проігнорувати, може статися укус. Якщо собака тобі погрожує, не тікай, не дивись їй в очі, стань боком і повільно відходь.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "vi": {
+      "title": "'Chó sủa là chó không cắn' là sai: sủa là lời cảnh báo 🐶",
+      "description": "Chó hiếm khi cắn mà không cảnh báo trước, và tiếng sủa đe dọa là một phần của chuỗi cảnh báo đó, cùng với đứng cứng người, gầm gừ và nhe răng. Nếu bỏ qua, cú cắn có thể đến. Khi bị chó đe dọa, đừng bỏ chạy, tránh nhìn thẳng vào mắt nó, đứng nghiêng người và lùi lại thật chậm.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "az": {
+      "title": "“Hürən it dişləməz” sözü yanlışdır: hürmək xəbərdarlıqdır 🐶",
+      "description": "İtlər nadir hallarda xəbərdarlıq etmədən dişləyir; hədələyici hürmə donub qalmaq, mırıldamaq və diş göstərməklə birlikdə bu xəbərdarlığın bir hissəsidir. Ona məhəl qoymasan, dişləmə gələ bilər. İt səni hədələyirsə, qaçma, gözünə baxma, yan dön və yavaş-yavaş uzaqlaş.\n\n#shorts\n\nSeri: mk-c0179"
+    },
+    "ro": {
+      "title": "„Câinele care latră nu mușcă” e fals: lătratul e un avertisment 🐶",
+      "description": "Câinii mușcă rar fără niciun avertisment, iar lătratul amenințător face parte din acest șir, alături de încremenire, mârâit și dinți arătați. Dacă îl ignori, poate urma o mușcătură. Când un câine te amenință, nu fugi, evită să-l privești în ochi, întoarce-te lateral și retrage-te încet.\n\n#shorts\n\nSeri: mk-c0179"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tehlikeli: havlayan köpek mi, sessizce bakan köpek mi?",
+  "scenes": [
+    {
+      "text": "Havlayan köpek ısırmaz derler, ama bu köpek ısırabilir.",
+      "visual": "close-up of a dog barking toward the camera, teeth visible",
+      "stock_query": "dog barking",
+      "source": "stock",
+      "callout": "ISIRABİLİR"
+    },
+    {
+      "text": "Çoğumuz havlamayı boş bir gürültü sanırız.",
+      "visual": "a dog barking behind a fence",
+      "stock_query": "dog barking fence",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa köpekler çok nadiren uyarmadan ısırır.",
+      "visual": "close-up of a dog growling and showing its teeth",
+      "stock_query": "dog growling",
+      "source": "stock",
+      "callout": "ÖNCE UYARIR"
+    },
+    {
+      "text": "Havlama o uyarının bir parçası: 'yaklaşma' der; dinlemezsen hırlama, kapma ve ısırık gelebilir.",
+      "visual": "a dog snarling with bared teeth",
+      "stock_query": "angry dog",
+      "source": "stock",
+      "callout": "HAVLA, HIRLA, ISIR"
+    },
+    {
+      "text": "Koşma, gözüne bakma; yan dön ve yavaşça uzaklaş.",
+      "visual": "a stray dog standing on a street watching a person walk slowly away",
+      "stock_query": "dog street",
+      "source": "stock",
+      "callout": "YAVAŞÇA UZAKLAŞ"
+    },
+    {
+      "text": "Çocuğuna 'korkma' demeden önce hatırla:",
+      "visual": "close-up of a dog's face looking at the camera",
+      "stock_query": "dog face",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.24,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #230",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0179_1795087319_ig.mp4"
+}
