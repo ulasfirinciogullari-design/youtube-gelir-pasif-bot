@@ -3035,14 +3035,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-10T20:08:47+00:00",
-   "mod": "saatlik",
-   "title": "En Büyük Dinozor Gerçekte Ne Kadar Büyüktü?",
-   "url": "https://youtube.com/shorts/nFBLtsB59Uw",
-   "duration": 27.8,
-   "chars": 410
-  },
-  {
    "finished": "2026-11-11T09:09:00+00:00",
    "mod": "igbolum",
    "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
@@ -3451,6 +3443,12 @@
    "url": "https://youtube.com/shorts/xAIVnlGvOAk",
    "duration": 60.9,
    "chars": 874
+  },
+  {
+   "finished": "2026-11-19T13:12:02+00:00",
+   "mod": "igbolum",
+   "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
+   "chars": 379
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3830,6 +3828,11 @@
     "media_id": "18139581826632807",
     "url": "https://www.instagram.com/reel/Df6uQnjDCVB/",
     "at": 1795079329.6169853
+   },
+   "y044": {
+    "media_id": "18140175283647837",
+    "url": "https://www.instagram.com/reel/Df7KG4KlFPP/",
+    "at": 1795093922.6899712
    }
   },
   "eski": [
@@ -3852,5 +3855,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795082984.1380112
+ "yedek_ses": 1795093922.690027
 }

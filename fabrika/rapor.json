@@ -1,76 +1,21 @@
 {
- "started": "2026-11-19T10:07:19+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-19T13:10:18+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y044",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "95"
+ "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
+ "chars": 379,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18140175283647837",
+  "url": "https://www.instagram.com/reel/Df7KG4KlFPP/",
+  "at": 1795093922.6899712
  },
- "credits_before": [
-  106307,
-  613902
- ],
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261119-1-y047.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y047",
-  "series": "Ya Olsaydı?",
-  "q": "Güneş'in yerinde Sirius olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 874,
- "duration": 60.9,
- "title": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu?",
- "url": "https://youtube.com/shorts/xAIVnlGvOAk",
- "recent_status": {
-  "y031": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "897",
-   "reason": null
-  },
-  "y035": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "961",
-   "reason": null
-  },
-  "n021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "241",
-   "reason": null
-  },
-  "y044": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "744",
-   "reason": null
-  },
-  "y047": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "log": [
-  "Kuyruktan: 20261119-1-y047.json Güneş'in yerinde Sirius olsaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df7KG4KlFPP/"
  ],
- "finished": "2026-11-19T10:09:44+00:00"
+ "finished": "2026-11-19T13:12:02+00:00"
 }
