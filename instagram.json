@@ -28,7 +28,6 @@
   ]
  },
  "slots": {
-  "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
   "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
   "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
   "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
@@ -67,16 +66,17 @@
   "2026-11-18T14": "Ox8Alp2WJW4 https://www.instagram.com/reel/Df4q9nhDER3/",
   "2026-11-18T18": "eGfPjyxwtcM https://www.instagram.com/reel/Df5GcYwD787/",
   "2026-11-19T10": "7UmdF_VL9M4 https://www.instagram.com/reel/Df60QuEjJrl/",
-  "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/"
+  "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/",
+  "2026-11-19T18": "g9grbN5SXXQ https://www.instagram.com/reel/Df7rSgAFZmx/"
  },
  "nobet": {
   "basladi": "2026-11-19T14:22:23+00:00",
   "run": "44541227635",
-  "tur": 215,
+  "tur": 219,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-19T17:56:24+00:00"
+  "son_tur": "2026-11-19T18:01:54+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -561,6 +561,13 @@
    "at": 1795096880,
    "title": "Tek gözü açık uyumak gerçekten mümkün mü? 🦆",
    "topic_id": "mk-c0134"
+  },
+  "g9grbN5SXXQ": {
+   "media_id": "18028649162927789",
+   "url": "https://www.instagram.com/reel/Df7rSgAFZmx/",
+   "at": 1795111315,
+   "title": "Kulaklarını oynatmak mümkün mü? 👂",
+   "topic_id": "mk-c0158"
   }
  }
 }
