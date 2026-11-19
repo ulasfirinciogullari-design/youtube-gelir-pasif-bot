@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0182",
+  "topic": "Beyaz saç koparınca çoğalır mı? Beyaz saçı koparırsan yerine iki tane mi çıkar, beyaz saç koparmak zararlı mı?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Beyaz saçı koparırsan yerine iki tane çıkmaz 💇",
+  "hook_text": "BEYAZ SAÇ KOPARINCA ÇOĞALIR MI?",
+  "description": "Beyaz saç koparınca çoğalır mı, beyaz saçı koparırsan yerine iki tane mi çıkar?\n\nÇıkmaz. Arkansas Üniversitesi Tıp Bilimleri'nden (UAMS) bir aile hekimine göre her saç kökünden yalnızca bir tel çıkabilir; koparılan telin yerine aynı kökten yine tek ve yine beyaz bir tel uzar. Amerikan Dermatoloji Akademisi de koparılan saçın yine beyaz çıktığını ve koparmanın saçı seyreltebileceğini belirtiyor; dermatolog Mona Mofid'e göre beyaz saç aslında boyasız, teknik olarak şeffaftır. Beyazların zamanla çoğalması koparmaktan değil, kökteki boya hücrelerinin yaşla daha az melanin üretmesinden olur; sık koparmak ise kökü yaralayıp o noktada saçın hiç çıkmamasına yol açabilir.\n\nSen hangisini yapıyorsun: beyaz saçı koparıyor musun, makasla mı kesiyorsun?\n\n#beyazsaç #saç #insanvücudu #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0182",
+  "tags": [
+    "beyaz saç",
+    "beyaz saç koparmak",
+    "beyaz saç koparınca çoğalır mı",
+    "beyaz saç çoğalır mı",
+    "beyaz saç koparılır mı",
+    "beyaz saç neden çıkar",
+    "beyaz saç neden olur",
+    "saç beyazlaması",
+    "ak saç",
+    "kır saç",
+    "saç kökü",
+    "saç teli",
+    "melanin",
+    "cımbızla saç koparmak",
+    "saç dökülmesi",
+    "insan vücudu",
+    "vücut gerçekleri",
+    "yanlış bilinen gerçekler",
+    "efsane mi gerçek mi",
+    "sağlık",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "plucking gray hair",
+    "gray hair myth",
+    "saç",
+    "shorts",
+    "bilim",
+    "merak",
+    "bilgi",
+    "beyaz sac"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Pulling out a gray hair won't make two grow back 💇",
+      "description": "Each hair follicle grows only one hair, so a plucked gray is replaced by a single new one, and it will still be colorless. Gray hair is actually transparent because it lacks pigment. Repeated plucking can damage the follicle and stop hair growing there for good.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "es": {
+      "title": "Arrancarte una cana no hace que salgan dos 💇",
+      "description": "Cada folículo produce un solo pelo, así que en lugar de la cana arrancada crece otra igual de incolora, no dos. En realidad las canas son transparentes porque no tienen pigmento. Arrancarlas a menudo puede dañar el folículo y hacer que allí no vuelva a crecer pelo.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "pt": {
+      "title": "Arrancar um fio branco não faz nascer dois no lugar 💇",
+      "description": "Cada folículo produz um único fio, então no lugar do fio branco arrancado nasce só outro, também sem cor. Na verdade, o cabelo branco é transparente porque não tem pigmento. Arrancar com frequência pode lesionar o folículo e fazer o cabelo parar de nascer ali.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "de": {
+      "title": "Reißt du ein graues Haar aus, wachsen nicht zwei nach 💇",
+      "description": "Jeder Haarfollikel bildet nur ein einziges Haar – nach dem Ausreißen wächst also genau eines nach, und das ist wieder farblos. Graue Haare sind eigentlich durchsichtig, weil ihnen das Pigment fehlt. Wer oft zupft, kann den Follikel schädigen, sodass dort gar kein Haar mehr wächst.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "fr": {
+      "title": "Arracher un cheveu blanc n'en fait pas pousser deux 💇",
+      "description": "Chaque follicule ne produit qu'un seul cheveu : à la place du cheveu blanc arraché, il en repousse un seul, toujours sans couleur. En réalité, un cheveu blanc est transparent, car il n'a plus de pigment. Les arracher souvent peut abîmer le follicule et empêcher tout cheveu d'y repousser.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "it": {
+      "title": "Strappare un capello bianco non ne fa crescere due 💇",
+      "description": "Ogni follicolo produce un solo capello: al posto di quello bianco strappato ne ricresce uno solo, sempre senza colore. In realtà i capelli bianchi sono trasparenti, perché privi di pigmento. Strapparli spesso può danneggiare il follicolo e far sì che lì non ricresca più nulla.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "ru": {
+      "title": "Если вырвать седой волос, на его месте не вырастут два 💇",
+      "description": "Каждый волосяной фолликул даёт только один волос, поэтому вместо вырванного седого вырастет один — и тоже без цвета. На самом деле седой волос прозрачный: в нём просто нет пигмента. А если выдёргивать часто, можно повредить фолликул, и волос там больше не вырастет.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "ar": {
+      "title": "نتف الشعرة البيضاء لا يجعل شعرتين تنبتان مكانها 💇",
+      "description": "كل بصيلة تُنبت شعرة واحدة فقط، لذا تنبت مكان الشعرة البيضاء المنتوفة شعرة واحدة، وتبقى بلا لون. والشعر الأبيض في الحقيقة شفاف لأنه يخلو من الصبغة. أما النتف المتكرر فقد يتلف البصيلة فيتوقف نمو الشعر فيها تمامًا.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "hi": {
+      "title": "सफ़ेद बाल तोड़ने से उसकी जगह दो नहीं उगते 💇",
+      "description": "हर बाल की जड़ से सिर्फ़ एक ही बाल उगता है, इसलिए तोड़े गए सफ़ेद बाल की जगह एक ही नया बाल आता है, और वह भी बेरंग होता है। असल में सफ़ेद बाल पारदर्शी होते हैं, क्योंकि उनमें रंग नहीं होता। बार-बार तोड़ने से जड़ खराब हो सकती है और वहाँ बाल उगना ही बंद हो सकता है।\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "id": {
+      "title": "Mencabut uban tidak membuat dua uban tumbuh 💇",
+      "description": "Setiap folikel hanya menumbuhkan satu helai rambut, jadi uban yang dicabut hanya diganti satu helai baru, dan tetap tak berwarna. Sebenarnya uban itu transparan karena tidak punya pigmen. Sering mencabutnya bisa merusak folikel sampai rambut tidak tumbuh lagi di situ.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "ja": {
+      "title": "白髪を抜いても2本生えてくることはない 💇",
+      "description": "毛包1つから生える髪は1本だけ。抜いた白髪のあとには、また色のない髪が1本生えるだけです。実は白髪は色素がないため、本当は透明なのです。何度も抜くと毛包が傷つき、そこから髪が生えなくなることもあります。\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "ko": {
+      "title": "흰머리를 뽑아도 두 가닥이 나지 않는다 💇",
+      "description": "모낭 하나에서는 머리카락이 한 가닥만 자랍니다. 그래서 뽑은 흰머리 자리에는 여전히 색이 없는 머리카락 한 가닥만 다시 납니다. 사실 흰머리는 색소가 없어서 투명합니다. 자주 뽑으면 모낭이 손상돼 그 자리에서 머리카락이 아예 나지 않을 수도 있습니다.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "pl": {
+      "title": "Wyrwanie siwego włosa nie sprawi, że wyrosną dwa 💇",
+      "description": "Z każdego mieszka włosowego rośnie tylko jeden włos, więc w miejsce wyrwanego siwego wyrośnie jeden, i to znów bez koloru. Siwy włos jest właściwie przezroczysty, bo brakuje w nim pigmentu. Częste wyrywanie może uszkodzić mieszek i włos przestanie tam rosnąć.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "nl": {
+      "title": "Een grijze haar uittrekken laat er geen twee terugkomen 💇",
+      "description": "Elk haarzakje maakt maar één haar, dus op de plek van een uitgetrokken grijze haar groeit er gewoon één terug, en die is weer kleurloos. Grijs haar is eigenlijk doorzichtig, omdat het geen pigment meer heeft. Vaak trekken kan het haarzakje beschadigen, waarna er helemaal geen haar meer groeit.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "uk": {
+      "title": "Якщо висмикнути сиву волосину, на її місці не виростуть дві 💇",
+      "description": "Кожен волосяний фолікул дає лише одну волосину, тож замість висмикнутої сивої виросте одна — і теж безбарвна. Насправді сиве волосся прозоре, бо в ньому немає пігменту. А якщо висмикувати часто, можна пошкодити фолікул, і волосся там більше не ростиме.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "vi": {
+      "title": "Nhổ một sợi tóc bạc không làm mọc ra hai sợi 💇",
+      "description": "Mỗi nang tóc chỉ mọc được một sợi, nên chỗ sợi tóc bạc bị nhổ sẽ chỉ mọc lại đúng một sợi, và vẫn không màu. Thật ra tóc bạc trong suốt vì không còn sắc tố. Nhổ thường xuyên có thể làm tổn thương nang tóc khiến chỗ đó không mọc tóc nữa.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "az": {
+      "title": "Ağ saçı qoparsan, yerində iki dənə çıxmır 💇",
+      "description": "Hər tük kökündən yalnız bir tel çıxır, ona görə qoparılan ağ telin yerinə yenə tək, yenə rəngsiz bir tel uzanır. Əslində ağ saç piqmenti olmadığı üçün şəffafdır. Tez-tez qoparmaq isə kökü zədələyib orada saçın heç çıxmamasına səbəb ola bilər.\n\n#shorts\n\nSeri: mk-c0182"
+    },
+    "ro": {
+      "title": "Dacă smulgi un fir alb, nu cresc două în loc 💇",
+      "description": "Fiecare folicul produce un singur fir de păr, așa că în locul firului alb smuls crește tot unul singur, la fel de incolor. De fapt, părul alb este transparent, pentru că nu mai are pigment. Smulsul repetat poate distruge foliculul, iar acolo părul nu mai crește deloc.\n\n#shorts\n\nSeri: mk-c0182"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen hangisini yapıyorsun: beyaz saçı koparıyor musun, makasla mı kesiyorsun?",
+  "scenes": [
+    {
+      "text": "Bu beyaz saçı koparırsan yerine iki tane çıkmaz.",
+      "visual": "extreme close-up of a single white hair among dark hair on a person's head",
+      "stock_query": "gray hair",
+      "source": "stock",
+      "callout": "ÇOĞALMAZ"
+    },
+    {
+      "text": "Neredeyse hepimiz kopardıkça çoğaldığına inanırız.",
+      "visual": "a woman looking at her hair in a mirror, searching for gray strands",
+      "stock_query": "hair mirror",
+      "source": "stock"
+    },
+    {
+      "text": "Üstelik o tel beyaz bile değil; boyasız olduğu için şeffaf.",
+      "visual": "macro shot of white hair strands catching the light",
+      "stock_query": "white hair",
+      "source": "stock",
+      "callout": "ASLINDA ŞEFFAF"
+    },
+    {
+      "text": "Çünkü her kökten tek bir tel çıkar; kopardığının yerine yine tek, yine renksiz bir tel uzar.",
+      "visual": "macro close-up of single hairs growing from the scalp",
+      "stock_query": "hair macro",
+      "source": "stock",
+      "callout": "KÖK BAŞINA 1 TEL"
+    },
+    {
+      "text": "Sık koparmak ise kökü yaralayıp o noktada saçı tamamen bitirebilir.",
+      "visual": "close-up of a hair parting on a person's head",
+      "stock_query": "hair scalp",
+      "source": "stock",
+      "callout": "KÖK ZARAR GÖRÜR"
+    },
+    {
+      "text": "Cımbızı bırak, makasla dipten kes; çünkü:",
+      "visual": "scissors trimming a strand of hair close to the roots",
+      "stock_query": "hair scissors",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 19.75,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_1.mp3",
+  "music_mood": "sakin",
+  "ai_images": 0,
+  "stock_videos": 15,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #233",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0182_1795108959_ig.mp4"
+}
