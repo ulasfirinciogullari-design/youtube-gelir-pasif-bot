@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0184",
+  "topic": "Kedi köpek gibi top getirir mi? Kediler getir oyunu oynar mı, kedim oyuncağını neden bana getiriyor?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Bir kedi köpek gibi top getirebilir mi? 🐱",
+  "hook_text": "KEDİ TOP GETİREBİLİR Mİ?",
+  "description": "Kedi köpek gibi top getirir mi, kediler getir oyunu oynar mı?\n\nEvet, birçoğu oynuyor. Sussex Üniversitesi'nden Jemma Forman ve Northumbria Üniversitesi'nden Elizabeth Renner'in 2023'te Scientific Reports'ta yayımlanan anketinde 924 kişi, getir oyunu oynayan 1.154 kedisini anlattı. Sahiplerin yüzde 94'ü kedisinin bunu açıkça eğitilmeden kendiliğinden yapmaya başladığını söyledi. Oyunu sahiplerinden çok kediler başlatıp bitiriyordu ve kedi başlattığında son oyun daha uzun sürmüştü; araştırmacılara göre getir oyununu genellikle kedi yönetiyor.\n\nSenin kedin hangisini yapıyor: topu geri getiriyor mu, kapıp kaçıyor mu?\n\n#kedi #kediler #evcilhayvan #mümkünmü #shorts #bilim #merak #keşfet\n\nSeri: mk-c0184",
+  "tags": [
+    "kedi top getirir mi",
+    "kedi getir oyunu",
+    "kediler getir oyunu oynar mı",
+    "kedi oyuncak getiriyor",
+    "kedim oyuncağı bana getiriyor",
+    "kedi köpek gibi davranıyor",
+    "kediyle nasıl oynanır",
+    "kedi oyunları",
+    "kedi oyuncakları",
+    "kedi eğitimi",
+    "kedi davranışları",
+    "kedi sahibi",
+    "kedi bakımı",
+    "mümkün mü",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "cat fetch",
+    "cats playing fetch",
+    "shorts",
+    "bilim",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a cat play fetch like a dog? 🐱",
+      "description": "Yes, and most were never taught. In a 2023 survey of owners of 1,154 fetching cats, 94% said their cat started on its own. Cats also started and ended games more often than their owners, and games lasted longer when the cat began them.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "es": {
+      "title": "¿Puede un gato traerte la pelota como un perro? 🐱",
+      "description": "Sí, y casi nunca se lo enseña nadie. En una encuesta de 2023 sobre 1.154 gatos que juegan a traer cosas, el 94 % de los dueños dijo que su gato empezó solo. Además, los gatos inician y terminan el juego más que sus dueños, y si empieza el gato, dura más.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "pt": {
+      "title": "Um gato consegue buscar a bolinha como um cachorro? 🐱",
+      "description": "Sim, e quase sempre sem treino. Numa pesquisa de 2023 sobre 1.154 gatos que buscam objetos, 94% dos tutores disseram que o gato começou sozinho. Os gatos também iniciam e encerram a brincadeira mais do que os tutores, e quando é o gato que começa, ela dura mais.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "de": {
+      "title": "Kann eine Katze apportieren wie ein Hund? 🐱",
+      "description": "Ja, und meist hat es ihr niemand beigebracht. In einer Umfrage von 2023 zu 1.154 apportierenden Katzen gaben 94 % der Halter an, dass ihre Katze von selbst damit anfing. Katzen beginnen und beenden das Spiel öfter als ihre Menschen – und wenn die Katze anfängt, dauert es länger.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "fr": {
+      "title": "Un chat peut-il rapporter la balle comme un chien ? 🐱",
+      "description": "Oui, et la plupart n'ont jamais été dressés. Dans une enquête de 2023 portant sur 1 154 chats qui rapportent, 94 % des propriétaires ont dit que leur chat s'y était mis tout seul. Le chat lance et arrête le jeu plus souvent que son humain, et la partie dure plus longtemps quand c'est lui qui commence.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "it": {
+      "title": "Un gatto può riportare la pallina come un cane? 🐱",
+      "description": "Sì, e quasi sempre senza addestramento. In un sondaggio del 2023 su 1.154 gatti che riportano oggetti, il 94% dei proprietari ha detto che il gatto ha cominciato da solo. I gatti avviano e chiudono il gioco più spesso dei padroni, e quando inizia il gatto la partita dura di più.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "ru": {
+      "title": "Может ли кошка приносить мячик, как собака? 🐱",
+      "description": "Да, и обычно её этому никто не учил. В опросе 2023 года о 1154 кошках, которые приносят игрушки, 94% владельцев сказали, что кошка начала сама. Причём кошки чаще хозяев начинают и заканчивают игру, а если начала кошка, игра длится дольше.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "ar": {
+      "title": "هل تستطيع القطة إعادة الكرة مثل الكلب؟ 🐱",
+      "description": "نعم، وغالبًا دون أن يعلّمها أحد. ففي استطلاع عام 2023 شمل 1154 قطة تلعب لعبة الإحضار، قال 94% من أصحابها إن القطة بدأت ذلك من تلقاء نفسها. كما أن القطط تبدأ اللعب وتنهيه أكثر من أصحابها، ويطول اللعب حين تبدأه القطة.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "hi": {
+      "title": "क्या बिल्ली कुत्ते की तरह गेंद वापस ला सकती है? 🐱",
+      "description": "हाँ, और ज़्यादातर को यह किसी ने नहीं सिखाया। 2023 के एक सर्वे में गेंद लाने वाली 1,154 बिल्लियों के 94% मालिकों ने बताया कि बिल्ली ने यह खुद ही शुरू किया। बिल्लियाँ अपने मालिकों से ज़्यादा बार खेल शुरू और खत्म करती हैं, और जब बिल्ली शुरू करती है तो खेल ज़्यादा देर चलता है।\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "id": {
+      "title": "Bisakah kucing main lempar-tangkap seperti anjing? 🐱",
+      "description": "Bisa, dan kebanyakan tidak pernah dilatih. Dalam survei 2023 tentang 1.154 kucing yang suka mengambil kembali mainan, 94% pemiliknya bilang kucing mereka mulai sendiri. Kucing juga lebih sering memulai dan mengakhiri permainan daripada pemiliknya, dan permainan lebih lama jika kucing yang memulai.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "ja": {
+      "title": "猫は犬みたいに「取ってこい」ができる? 🐱",
+      "description": "できます。しかもほとんどは誰にも教わっていません。2023年の調査では、物を取ってくる猫1154匹の飼い主の94%が、猫が教わらずに自分から始めたと答えました。遊びを始めるのも終えるのも飼い主より猫のほうが多く、猫から始めた遊びは長く続きました。\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "ko": {
+      "title": "고양이도 강아지처럼 공을 물어 올 수 있을까? 🐱",
+      "description": "네, 그리고 대부분은 아무도 가르치지 않았습니다. 2023년 물어 오기 놀이를 하는 고양이 1,154마리에 대한 설문에서 보호자의 94%가 고양이가 스스로 시작했다고 답했습니다. 놀이를 시작하고 끝내는 쪽도 보호자보다 고양이가 더 많았고, 고양이가 시작하면 놀이가 더 오래 이어졌습니다.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "pl": {
+      "title": "Czy kot może aportować jak pies? 🐱",
+      "description": "Tak, i zwykle nikt go tego nie uczył. W ankiecie z 2023 roku dotyczącej 1154 aportujących kotów 94% opiekunów powiedziało, że kot zaczął sam. Koty też częściej niż ludzie zaczynają i kończą zabawę, a gdy zaczyna kot, trwa ona dłużej.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "nl": {
+      "title": "Kan een kat apporteren zoals een hond? 🐱",
+      "description": "Ja, en meestal heeft niemand het ze geleerd. In een enquête uit 2023 over 1.154 apporterende katten zei 94% van de baasjes dat hun kat er zelf mee begon. Katten beginnen en stoppen het spel ook vaker dan hun baasje, en als de kat begint, duurt het langer.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "uk": {
+      "title": "Чи може кіт приносити м'ячик, як собака? 🐱",
+      "description": "Так, і зазвичай його цього ніхто не вчив. В опитуванні 2023 року про 1154 котів, які приносять іграшки, 94% власників сказали, що кіт почав сам. До того ж коти частіше за господарів починають і закінчують гру, а якщо почав кіт, гра триває довше.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "vi": {
+      "title": "Mèo có thể nhặt bóng mang về như chó không? 🐱",
+      "description": "Có, và hầu hết chẳng ai dạy. Trong một khảo sát năm 2023 về 1.154 chú mèo biết nhặt đồ mang về, 94% chủ nuôi cho biết mèo tự bắt đầu. Mèo cũng là bên bắt đầu và kết thúc trò chơi nhiều hơn chủ, và khi mèo bắt đầu thì trò chơi kéo dài hơn.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "az": {
+      "title": "Pişik it kimi topu geri gətirə bilərmi? 🐱",
+      "description": "Bəli, özü də çoxunu heç kim öyrətməyib. 2023-cü ildə oyuncağı geri gətirən 1154 pişik haqqında sorğuda sahiblərin 94%-i pişiyin bunu özü başladığını dedi. Oyunu sahibindən daha çox pişik başlayıb bitirir, pişik başlayanda isə oyun daha uzun çəkir.\n\n#shorts\n\nSeri: mk-c0184"
+    },
+    "ro": {
+      "title": "Poate o pisică să aducă mingea ca un câine? 🐱",
+      "description": "Da, și de cele mai multe ori nu a învățat-o nimeni. Într-un sondaj din 2023 despre 1.154 de pisici care aduc jucării, 94% dintre stăpâni au spus că pisica a început singură. Pisicile încep și opresc jocul mai des decât stăpânii, iar când începe pisica, jocul durează mai mult.\n\n#shorts\n\nSeri: mk-c0184"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin hangisini yapıyor: topu geri getiriyor mu, kapıp kaçıyor mu?",
+  "scenes": [
+    {
+      "text": "Bu kedi topun peşinden köpek gibi koşuyor.",
+      "visual": "close-up of a cat chasing a small ball across the floor, eyes locked on it",
+      "stock_query": "cat playing ball",
+      "source": "stock",
+      "callout": "KÖPEK GİBİ"
+    },
+    {
+      "text": "Peki köpek gibi geri getirebilir mi?",
+      "visual": "a kitten carrying a small toy in its mouth",
+      "stock_query": "kitten toy",
+      "source": "stock",
+      "subject": [
+        "kitten"
+      ]
+    },
+    {
+      "text": "Eğitim şart sanırsın; oysa bir ankette getiren kedilerin yüzde doksan dördüne bunu kimse öğretmemişti.",
+      "visual": "a cat sitting next to a toy and looking up at its owner",
+      "stock_query": "cat toy",
+      "source": "stock",
+      "callout": "%94 EĞİTİMSİZ"
+    },
+    {
+      "text": "Cevap evet; üstelik oyunu çoğu zaman kedi başlatıyor, kedi bitiriyor.",
+      "visual": "a cat dropping a toy at a person's feet",
+      "stock_query": "cat playing",
+      "source": "stock",
+      "callout": "OYUNU KEDİ YÖNETİR"
+    },
+    {
+      "text": "Kedi başlatınca oyun daha uzun sürüyor.",
+      "visual": "a cat running after a thrown toy",
+      "stock_query": "cat running",
+      "source": "stock",
+      "callout": "KEDİ BAŞLATINCA UZUN"
+    },
+    {
+      "text": "Kedin ayağına bir oyuncak bırakırsa fırlat ve bak:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 17.6,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #235",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0184_1795123362_ig.mp4"
+}
