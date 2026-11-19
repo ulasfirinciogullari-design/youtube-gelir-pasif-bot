@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1010",
+    "views": "1011",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1020",
+    "views": "1022",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "161",
+    "views": "170",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1054",
+    "views": "1055",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "863",
+    "views": "864",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "422",
+    "views": "423",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "132",
+    "views": "136",
     "reason": null
    }
   },
@@ -2868,7 +2868,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "7",
+    "views": "19",
     "reason": null
    }
   },
@@ -2896,6 +2896,38 @@
    "at": 1795097324.0647838,
    "chars": 401,
    "ilk": false,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "3",
+    "reason": null
+   }
+  },
+  {
+   "id": "n022",
+   "video_id": "m9z4HiDxDfA",
+   "url": "https://youtube.com/shorts/m9z4HiDxDfA",
+   "title": "Bir Virüs Gerçekte Ne Kadar Küçük?",
+   "series": "Ne Kadar Büyük?",
+   "privacy": "public",
+   "i18n": {
+    "en": "How Small Is a Virus, Really?",
+    "es": "¿Qué tan pequeño es un virus en realidad?",
+    "pt": "Quão pequeno é um vírus de verdade?",
+    "ar": "ما مدى صِغَر الفيروس في الحقيقة؟",
+    "hi": "एक वायरस असल में कितना छोटा होता है?",
+    "id": "Seberapa Kecil Sebenarnya Sebuah Virus?",
+    "fr": "À quel point un virus est-il vraiment petit ?",
+    "de": "Wie klein ist ein Virus wirklich?",
+    "ru": "Насколько на самом деле мал вирус?",
+    "az": "Bir Virus Əslində Nə Qədər Kiçikdir?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795111703.0767634,
+   "chars": 377,
+   "ilk": true,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -3001,7 +3033,8 @@
   "n021",
   "y044",
   "y047",
-  "y048"
+  "y048",
+  "n022"
  ],
  "extra": [
   {
@@ -3067,12 +3100,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-11T13:10:43+00:00",
-   "mod": "igbolum",
-   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
-   "chars": 355
-  },
   {
    "finished": "2026-11-11T15:18:44+00:00",
    "mod": "zorla",
@@ -3479,6 +3506,14 @@
    "mod": "igbolum",
    "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
    "chars": 802
+  },
+  {
+   "finished": "2026-11-19T18:08:24+00:00",
+   "mod": "saatlik",
+   "title": "Bir Virüs Gerçekte Ne Kadar Küçük?",
+   "url": "https://youtube.com/shorts/m9z4HiDxDfA",
+   "duration": 28.1,
+   "chars": 377
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3890,5 +3925,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795108493.4455557
+ "yedek_ses": 1795111704.9901428
 }
