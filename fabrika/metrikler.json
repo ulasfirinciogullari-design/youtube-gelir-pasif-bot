@@ -1,5 +1,5 @@
 {
- "at": "2026-11-19T09:32:05+00:00",
+ "at": "2026-11-19T10:06:23+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -279,7 +279,7 @@
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
   },
   "V93tM_0-ll4": {
-   "view": 1102,
+   "view": 1101,
    "like": 10,
    "comment": 0,
    "baslik": "Saçların 1 Günde Toplam Kaç Metre Uzar? 😮"
@@ -537,7 +537,7 @@
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 858,
+   "view": 859,
    "like": 13,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
@@ -579,13 +579,12 @@
    "baslik": "Bir Bakteri Gerçekte Ne Kadar Küçük? 🤯"
   },
   "cMccWi1IkfY": {
-   "view": 717,
+   "view": 744,
    "like": 4,
    "comment": 0,
    "baslik": "Ay'da 1 Ay Yaşasaydın Ne Olurdu? 😳"
   }
  },
- "engaged_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
  "videos": {
   "hvgNbZMhWPg": {
    "views": 2249,
@@ -603,7 +602,9 @@
     "YT_CHANNEL": 7,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 1365,
+   "devam_yuzde": 60.7
   },
   "QCM7IT8jkhc": {
    "views": 2109,
@@ -622,7 +623,9 @@
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0,
     "SUBSCRIBER": 0
-   }
+   },
+   "engagedViews": 1223,
+   "devam_yuzde": 58.0
   },
   "Ze43ZrXANSQ": {
    "views": 1743,
@@ -640,7 +643,9 @@
     "YT_CHANNEL": 4,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 994,
+   "devam_yuzde": 57.0
   },
   "zkaODqXzaCo": {
    "views": 1641,
@@ -659,7 +664,9 @@
     "YT_OTHER_PAGE": 2,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 839,
+   "devam_yuzde": 51.1
   },
   "zvgB-9sAUUY": {
    "views": 1635,
@@ -677,7 +684,9 @@
     "YT_CHANNEL": 8,
     "YT_OTHER_PAGE": 5,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 957,
+   "devam_yuzde": 58.5
   },
   "aiJ_NUnr84M": {
    "views": 1534,
@@ -696,7 +705,9 @@
     "YT_OTHER_PAGE": 2,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 819,
+   "devam_yuzde": 53.4
   },
   "bqFeef1QL08": {
    "views": 1473,
@@ -715,7 +726,9 @@
     "PLAYLIST": 7,
     "YT_OTHER_PAGE": 4,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 757,
+   "devam_yuzde": 51.4
   },
   "iKojt12DL_Y": {
    "views": 1458,
@@ -733,7 +746,9 @@
     "YT_CHANNEL": 5,
     "NO_LINK_OTHER": 1,
     "YT_OTHER_PAGE": 1
-   }
+   },
+   "engagedViews": 729,
+   "devam_yuzde": 50.0
   },
   "4GSDZD52uI0": {
    "views": 1431,
@@ -752,7 +767,9 @@
     "YT_OTHER_PAGE": 3,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 781,
+   "devam_yuzde": 54.6
   },
   "MM3s0q-j2q0": {
    "views": 1387,
@@ -770,7 +787,9 @@
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 736,
+   "devam_yuzde": 53.1
   },
   "pJPCpis147c": {
    "views": 1373,
@@ -789,7 +808,9 @@
     "YT_OTHER_PAGE": 1,
     "EXT_URL": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 581,
+   "devam_yuzde": 42.3
   },
   "RLuGUU-xaYE": {
    "views": 1366,
@@ -809,7 +830,9 @@
     "SOUND_PAGE": 2,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 667,
+   "devam_yuzde": 48.8
   },
   "hf5CYGuKU8M": {
    "views": 1327,
@@ -828,7 +851,9 @@
     "SOUND_PAGE": 2,
     "NO_LINK_OTHER": 0,
     "NOTIFICATION": 0
-   }
+   },
+   "engagedViews": 512,
+   "devam_yuzde": 38.6
   },
   "hJaWCEzLO_4": {
    "views": 1315,
@@ -847,7 +872,9 @@
     "YT_OTHER_PAGE": 1,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 661,
+   "devam_yuzde": 50.3
   },
   "Gyz1vK-E-D4": {
    "views": 1313,
@@ -865,7 +892,9 @@
     "YT_OTHER_PAGE": 5,
     "YT_CHANNEL": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 755,
+   "devam_yuzde": 57.5
   },
   "ExIn5xWxSkY": {
    "views": 1301,
@@ -883,7 +912,9 @@
     "YT_OTHER_PAGE": 4,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 578,
+   "devam_yuzde": 44.4
   },
   "8KoJ0-4fHyY": {
    "views": 1299,
@@ -902,7 +933,9 @@
     "YT_OTHER_PAGE": 5,
     "PLAYLIST": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 604,
+   "devam_yuzde": 46.5
   },
   "wvA035c4dvw": {
    "views": 1280,
@@ -920,7 +953,9 @@
     "YT_CHANNEL": 3,
     "EXT_URL": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 656,
+   "devam_yuzde": 51.2
   },
   "HVyvxH-huIc": {
    "views": 1261,
@@ -937,7 +972,9 @@
     "YT_SEARCH": 58,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 630,
+   "devam_yuzde": 50.0
   },
   "5NCDRT4b4M0": {
    "views": 1242,
@@ -956,7 +993,9 @@
     "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 602,
+   "devam_yuzde": 48.5
   },
   "Tk6wA4QlShk": {
    "views": 1231,
@@ -974,7 +1013,9 @@
     "YT_OTHER_PAGE": 7,
     "YT_CHANNEL": 5,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 677,
+   "devam_yuzde": 55.0
   },
   "4J5Gbwz3y4E": {
    "views": 1222,
@@ -990,7 +1031,9 @@
     "SHORTS": 1177,
     "YT_SEARCH": 45,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 686,
+   "devam_yuzde": 56.1
   },
   "gEB2tRsHr5s": {
    "views": 1182,
@@ -1010,7 +1053,9 @@
     "EXT_URL": 1,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 581,
+   "devam_yuzde": 49.2
   },
   "QuUL5G3usPE": {
    "views": 1160,
@@ -1027,7 +1072,9 @@
     "YT_SEARCH": 25,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 388,
+   "devam_yuzde": 33.4
   },
   "0iq7G5-5dds": {
    "views": 1148,
@@ -1045,7 +1092,9 @@
     "YT_CHANNEL": 17,
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 421,
+   "devam_yuzde": 36.7
   },
   "33I8lo_Kk18": {
    "views": 1144,
@@ -1063,7 +1112,9 @@
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 540,
+   "devam_yuzde": 47.2
   },
   "2BcgVPgRmg8": {
    "views": 1131,
@@ -1082,7 +1133,9 @@
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0,
     "NOTIFICATION": 0
-   }
+   },
+   "engagedViews": 520,
+   "devam_yuzde": 46.0
   },
   "kJHNXA1I-SU": {
    "views": 1129,
@@ -1100,7 +1153,9 @@
     "YT_CHANNEL": 4,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 597,
+   "devam_yuzde": 52.9
   },
   "sKXUwUMgkt0": {
    "views": 1125,
@@ -1119,7 +1174,9 @@
     "EXT_URL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 438,
+   "devam_yuzde": 38.9
   },
   "-Ob9VS2V1H4": {
    "views": 1119,
@@ -1137,7 +1194,9 @@
     "YT_CHANNEL": 7,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 359,
+   "devam_yuzde": 32.1
   },
   "5-jo5Fr030o": {
    "views": 1117,
@@ -1155,7 +1214,9 @@
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 552,
+   "devam_yuzde": 49.4
   },
   "V93tM_0-ll4": {
    "views": 1101,
@@ -1173,7 +1234,9 @@
     "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 542,
+   "devam_yuzde": 49.2
   },
   "VMFzMO2A2CY": {
    "views": 1096,
@@ -1190,7 +1253,9 @@
     "YT_SEARCH": 41,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 350,
+   "devam_yuzde": 31.9
   },
   "9j_jigCDW7s": {
    "views": 1073,
@@ -1208,7 +1273,9 @@
     "YT_OTHER_PAGE": 6,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 561,
+   "devam_yuzde": 52.3
   },
   "EQ0PrGtNYWo": {
    "views": 1059,
@@ -1225,7 +1292,9 @@
     "YT_SEARCH": 44,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 431,
+   "devam_yuzde": 40.7
   },
   "kzDr9prfHSw": {
    "views": 1058,
@@ -1243,7 +1312,9 @@
     "YT_CHANNEL": 5,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 497,
+   "devam_yuzde": 47.0
   },
   "IVKSORUOwqk": {
    "views": 1058,
@@ -1261,7 +1332,9 @@
     "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 468,
+   "devam_yuzde": 44.2
   },
   "xLGCGQYwSmE": {
    "views": 1045,
@@ -1279,7 +1352,9 @@
     "PLAYLIST": 1,
     "NO_LINK_OTHER": 0,
     "YT_CHANNEL": 0
-   }
+   },
+   "engagedViews": 592,
+   "devam_yuzde": 56.7
   },
   "oyPgO_oDYlU": {
    "views": 1031,
@@ -1297,7 +1372,9 @@
     "YT_CHANNEL": 20,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 434,
+   "devam_yuzde": 42.1
   },
   "fwDsy2Wq4S4": {
    "views": 1030,
@@ -1315,7 +1392,9 @@
     "YT_CHANNEL": 6,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 343,
+   "devam_yuzde": 33.3
   },
   "xRibz7N8GmY": {
    "views": 1028,
@@ -1333,7 +1412,9 @@
     "YT_OTHER_PAGE": 3,
     "NO_LINK_OTHER": 1,
     "YT_CHANNEL": 1
-   }
+   },
+   "engagedViews": 500,
+   "devam_yuzde": 48.6
   },
   "CK03tB9BVyY": {
    "views": 1025,
@@ -1352,7 +1433,9 @@
     "YT_OTHER_PAGE": 4,
     "SOUND_PAGE": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 248,
+   "devam_yuzde": 24.2
   },
   "VMP8uC3O6jU": {
    "views": 1022,
@@ -1372,7 +1455,9 @@
     "YT_OTHER_PAGE": 2,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 387,
+   "devam_yuzde": 37.9
   },
   "m0HqyZ1pins": {
    "views": 1009,
@@ -1389,7 +1474,9 @@
     "YT_SEARCH": 40,
     "YT_CHANNEL": 4,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 232,
+   "devam_yuzde": 23.0
   },
   "ActwPx-yTCQ": {
    "views": 1004,
@@ -1407,7 +1494,9 @@
     "YT_CHANNEL": 14,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 573,
+   "devam_yuzde": 57.1
   },
   "rijRRVfG0ZY": {
    "views": 1003,
@@ -1426,7 +1515,9 @@
     "YT_OTHER_PAGE": 2,
     "EXT_URL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 456,
+   "devam_yuzde": 45.5
   },
   "1EK5IR8nYDE": {
    "views": 1003,
@@ -1443,7 +1534,9 @@
     "YT_SEARCH": 41,
     "YT_CHANNEL": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 419,
+   "devam_yuzde": 41.8
   },
   "MXkhpdIxoFM": {
    "views": 998,
@@ -1460,7 +1553,9 @@
     "YT_SEARCH": 48,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 561,
+   "devam_yuzde": 56.2
   },
   "LjCJ1NSbCQQ": {
    "views": 996,
@@ -1479,7 +1574,9 @@
     "YT_OTHER_PAGE": 1,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 325,
+   "devam_yuzde": 32.6
   },
   "L_hk4oVckRM": {
    "views": 993,
@@ -1496,7 +1593,9 @@
     "YT_SEARCH": 75,
     "YT_CHANNEL": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 270,
+   "devam_yuzde": 27.2
   },
   "ZX3l0E9HzMw": {
    "views": 991,
@@ -1514,7 +1613,9 @@
     "YT_CHANNEL": 14,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 519,
+   "devam_yuzde": 52.4
   },
   "73hAb835EFE": {
    "views": 987,
@@ -1532,7 +1633,9 @@
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 281,
+   "devam_yuzde": 28.5
   },
   "RKGn39tzpn4": {
    "views": 962,
@@ -1550,7 +1653,9 @@
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 503,
+   "devam_yuzde": 52.3
   },
   "yexFsNeB7JM": {
    "views": 958,
@@ -1567,7 +1672,9 @@
     "YT_SEARCH": 49,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 424,
+   "devam_yuzde": 44.3
   },
   "Sr9y1BY4FPk": {
    "views": 957,
@@ -1584,7 +1691,9 @@
     "YT_SEARCH": 22,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 400,
+   "devam_yuzde": 41.8
   },
   "325eJNknZqk": {
    "views": 951,
@@ -1602,7 +1711,9 @@
     "YT_OTHER_PAGE": 2,
     "YT_CHANNEL": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 337,
+   "devam_yuzde": 35.4
   },
   "mt9KmhllXGQ": {
    "views": 946,
@@ -1620,7 +1731,9 @@
     "YT_CHANNEL": 1,
     "HASHTAGS": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 416,
+   "devam_yuzde": 44.0
   },
   "I-Tn6aqeA80": {
    "views": 943,
@@ -1638,7 +1751,9 @@
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 240,
+   "devam_yuzde": 25.5
   },
   "m_XagF1CrzE": {
    "views": 942,
@@ -1656,7 +1771,9 @@
     "YT_CHANNEL": 7,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 445,
+   "devam_yuzde": 47.2
   },
   "JViBEWB18kw": {
    "views": 939,
@@ -1674,7 +1791,9 @@
     "YT_CHANNEL": 6,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 404,
+   "devam_yuzde": 43.0
   },
   "6pHVAozelhE": {
    "views": 930,
@@ -1693,7 +1812,9 @@
     "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 304,
+   "devam_yuzde": 32.7
   },
   "2F-iAcfk3X4": {
    "views": 928,
@@ -1712,7 +1833,9 @@
     "YT_OTHER_PAGE": 1,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 284,
+   "devam_yuzde": 30.6
   },
   "5X21vqv32gg": {
    "views": 916,
@@ -1730,7 +1853,9 @@
     "YT_CHANNEL": 1,
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 345,
+   "devam_yuzde": 37.7
   },
   "E9dsm0cEDnM": {
    "views": 907,
@@ -1749,7 +1874,9 @@
     "YT_CHANNEL": 4,
     "IMMERSIVE_LIVE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 266,
+   "devam_yuzde": 29.3
   },
   "F9Hkco1HKiA": {
    "views": 833,
@@ -1767,7 +1894,9 @@
     "YT_CHANNEL": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 357,
+   "devam_yuzde": 42.9
   },
   "jxrKlBSJu_s": {
    "views": 771,
@@ -1785,7 +1914,9 @@
     "YT_CHANNEL": 6,
     "SOUND_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 339,
+   "devam_yuzde": 44.0
   },
   "5lbPgaPW58Y": {
    "views": 756,
@@ -1802,7 +1933,9 @@
     "YT_SEARCH": 14,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 196,
+   "devam_yuzde": 25.9
   },
   "Pxik5vC4NHU": {
    "views": 674,
@@ -1820,7 +1953,9 @@
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 373,
+   "devam_yuzde": 55.3
   },
   "6XodpIbEU8A": {
    "views": 666,
@@ -1838,7 +1973,9 @@
     "YT_CHANNEL": 3,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 345,
+   "devam_yuzde": 51.8
   },
   "YgY6Jzda0Hk": {
    "views": 607,
@@ -1855,7 +1992,9 @@
     "YT_SEARCH": 19,
     "NO_LINK_OTHER": 0,
     "YT_CHANNEL": 0
-   }
+   },
+   "engagedViews": 305,
+   "devam_yuzde": 50.2
   },
   "0lt8q81TuOs": {
    "views": 599,
@@ -1873,7 +2012,9 @@
     "YT_OTHER_PAGE": 4,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 265,
+   "devam_yuzde": 44.2
   },
   "WR_w6VSOY-s": {
    "views": 594,
@@ -1891,7 +2032,9 @@
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0,
     "YT_OTHER_PAGE": 0
-   }
+   },
+   "engagedViews": 236,
+   "devam_yuzde": 39.7
   },
   "xMYUnZVVITU": {
    "views": 564,
@@ -1909,7 +2052,9 @@
     "YT_SEARCH": 17,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 265,
+   "devam_yuzde": 47.0
   },
   "O1WLYgc1whA": {
    "views": 425,
@@ -1927,7 +2072,9 @@
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 1,
     "YT_OTHER_PAGE": 1
-   }
+   },
+   "engagedViews": 116,
+   "devam_yuzde": 27.3
   },
   "yHElVXfvdsw": {
    "views": 409,
@@ -1947,7 +2094,9 @@
     "SUBSCRIBER": 1,
     "YT_OTHER_PAGE": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 217,
+   "devam_yuzde": 53.1
   },
   "uTmyAqqF5qU": {
    "views": 389,
@@ -1964,7 +2113,9 @@
     "YT_SEARCH": 11,
     "YT_CHANNEL": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 186,
+   "devam_yuzde": 47.8
   },
   "f6WyXXJWASs": {
    "views": 342,
@@ -1982,7 +2133,9 @@
     "YT_CHANNEL": 18,
     "PLAYLIST": 4,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 180,
+   "devam_yuzde": 52.6
   },
   "mTcbQupGjWQ": {
    "views": 302,
@@ -2000,7 +2153,9 @@
     "YT_OTHER_PAGE": 2,
     "YT_CHANNEL": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 105,
+   "devam_yuzde": 34.8
   },
   "sLED9nX8m1w": {
    "views": 275,
@@ -2017,7 +2172,9 @@
     "YT_SEARCH": 16,
     "YT_CHANNEL": 3,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 105,
+   "devam_yuzde": 38.2
   },
   "nFBLtsB59Uw": {
    "views": 234,
@@ -2035,7 +2192,9 @@
     "YT_CHANNEL": 2,
     "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 90,
+   "devam_yuzde": 38.5
   },
   "-7OxhWXxc8w": {
    "views": 222,
@@ -2052,7 +2211,9 @@
     "YT_CHANNEL": 14,
     "YT_SEARCH": 8,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 93,
+   "devam_yuzde": 41.9
   },
   "4MpwenNL9NY": {
    "views": 156,
@@ -2069,7 +2230,9 @@
     "YT_SEARCH": 22,
     "SUBSCRIBER": 1,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 46,
+   "devam_yuzde": 29.5
   },
   "2kMaKl9jUoc": {
    "views": 123,
@@ -2085,7 +2248,9 @@
     "SHORTS": 69,
     "YT_SEARCH": 54,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 56,
+   "devam_yuzde": 45.5
   },
   "-PC7chCMp_s": {
    "views": 122,
@@ -2102,7 +2267,9 @@
     "SHORTS": 26,
     "YT_CHANNEL": 15,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 67,
+   "devam_yuzde": 54.9
   },
   "Z7Pj4q9UTCs": {
    "views": 120,
@@ -2118,7 +2285,9 @@
     "SHORTS": 111,
     "YT_SEARCH": 9,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 23,
+   "devam_yuzde": 19.2
   },
   "HdSKbp0rIz8": {
    "views": 119,
@@ -2135,7 +2304,9 @@
     "YT_CHANNEL": 18,
     "SHORTS": 18,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 52,
+   "devam_yuzde": 43.7
   },
   "agyOZTY5PCE": {
    "views": 89,
@@ -2151,7 +2322,9 @@
     "SHORTS": 68,
     "YT_SEARCH": 20,
     "YT_CHANNEL": 1
-   }
+   },
+   "engagedViews": 37,
+   "devam_yuzde": 41.6
   },
   "X9ouBiGHD4Q": {
    "views": 47,
@@ -2167,7 +2340,9 @@
     "YT_SEARCH": 27,
     "YT_CHANNEL": 20,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 18,
+   "devam_yuzde": 38.3
   },
   "53rXVX6QpA0": {
    "views": 35,
@@ -2184,7 +2359,9 @@
     "YT_SEARCH": 15,
     "SHORTS": 2,
     "NO_LINK_OTHER": 0
-   }
+   },
+   "engagedViews": 13,
+   "devam_yuzde": 37.1
   }
  },
  "days": [

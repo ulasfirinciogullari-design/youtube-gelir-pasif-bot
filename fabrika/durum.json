@@ -2276,7 +2276,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "930",
+    "views": "932",
     "reason": null
    }
   },
@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "119",
+    "views": "120",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "930",
+    "views": "929",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1001",
+    "views": "1009",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1016",
+    "views": "1017",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "146",
+    "views": "159",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1035",
+    "views": "1047",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "846",
+    "views": "859",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "398",
+    "views": "420",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "280",
+    "views": "303",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "85",
+    "views": "123",
     "reason": null
    }
   },
@@ -2740,7 +2740,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "799",
+    "views": "897",
     "reason": null
    }
   },
@@ -2772,7 +2772,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "954",
+    "views": "961",
     "reason": null
    }
   },
@@ -2804,7 +2804,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "205",
+    "views": "241",
     "reason": null
    }
   },
@@ -2832,6 +2832,38 @@
    "at": 1795025360.8968387,
    "chars": 379,
    "ilk": false,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "744",
+    "reason": null
+   }
+  },
+  {
+   "id": "y047",
+   "video_id": "xAIVnlGvOAk",
+   "url": "https://youtube.com/shorts/xAIVnlGvOAk",
+   "title": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Sirius Replaced the Sun?",
+    "es": "¿Qué pasaría si Sirio reemplazara al Sol?",
+    "pt": "E se Sírius tomasse o lugar do Sol?",
+    "ar": "ماذا لو حلّت الشعرى اليمانية محلّ الشمس؟",
+    "hi": "अगर सूरज की जगह सिरियस आ जाए तो क्या होगा?",
+    "id": "Bagaimana Jika Sirius Menggantikan Matahari?",
+    "fr": "Et si Sirius remplaçait le Soleil ?",
+    "de": "Was wäre, wenn Sirius die Sonne ersetzen würde?",
+    "ru": "Что будет, если Сириус займёт место Солнца?",
+    "az": "Günəşin Yerinə Sirius Keçsəydi Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795082982.2619274,
+   "chars": 874,
+   "ilk": true,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -2935,7 +2967,8 @@
   "y031",
   "y035",
   "n021",
-  "y044"
+  "y044",
+  "y047"
  ],
  "extra": [
   {
@@ -3001,14 +3034,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-10T18:08:06+00:00",
-   "mod": "saatlik",
-   "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
-   "url": "https://youtube.com/shorts/6pHVAozelhE",
-   "duration": 26.7,
-   "chars": 370
-  },
   {
    "finished": "2026-11-10T20:08:47+00:00",
    "mod": "saatlik",
@@ -3418,6 +3443,14 @@
    "mod": "igbolum",
    "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
    "chars": 410
+  },
+  {
+   "finished": "2026-11-19T10:09:44+00:00",
+   "mod": "saatlik",
+   "title": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu?",
+   "url": "https://youtube.com/shorts/xAIVnlGvOAk",
+   "duration": 60.9,
+   "chars": 874
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3819,5 +3852,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795079329.6170728
+ "yedek_ses": 1795082984.1380112
 }
