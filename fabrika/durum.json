@@ -3065,16 +3065,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 1,
+ "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-11T12:10:04+00:00",
-   "mod": "saatlik",
-   "title": "1 Günde Ne Kadar Tükürük Üretirsin?",
-   "url": "https://youtube.com/shorts/mTcbQupGjWQ",
-   "duration": 25.7,
-   "chars": 365
-  },
   {
    "finished": "2026-11-11T13:10:43+00:00",
    "mod": "igbolum",
@@ -3481,6 +3473,12 @@
    "finished": "2026-11-19T17:07:29+00:00",
    "mod": "igbolum",
    "error": "NoAudioReceived: No audio was received. Please verify that your parameters are correct."
+  },
+  {
+   "finished": "2026-11-19T17:14:53+00:00",
+   "mod": "igbolum",
+   "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
+   "chars": 802
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3865,6 +3863,11 @@
     "media_id": "18140175283647837",
     "url": "https://www.instagram.com/reel/Df7KG4KlFPP/",
     "at": 1795093922.6899712
+   },
+   "y043": {
+    "media_id": "18154614376551167",
+    "url": "https://www.instagram.com/reel/Df7l3QhoZHf/",
+    "at": 1795108493.445474
    }
   },
   "eski": [
@@ -3887,5 +3890,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795108049.8281736
+ "yedek_ses": 1795108493.4455557
 }
