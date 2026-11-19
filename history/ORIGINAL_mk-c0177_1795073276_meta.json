@@ -1,0 +1,180 @@
+{
+  "topic_id": "mk-c0177",
+  "topic": "Kahverengi yumurta beyaz yumurtadan daha sağlıklı mı? Köy yumurtası neden kahverengi, yumurtanın kabuk rengini ne belirler?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Kahverengi yumurta beyazdan daha sağlıklı değil 🥚",
+  "hook_text": "KAHVERENGİ YUMURTA DAHA MI SAĞLIKLI?",
+  "description": "Kahverengi yumurta beyazdan daha sağlıklı mı, köy yumurtası neden kahverengi, yumurtanın rengini ne belirler?\n\nHayır, daha sağlıklı değil. ABD Tarım Bakanlığı Gıda Güvenliği Servisi'ne (USDA FSIS) göre kabuk rengini tavuğun cinsi belirler ve beyaz ile kahverengi kabuklu yumurtaların besin değerleri arasında anlamlı bir fark yoktur. Texas A&M AgriLife'tan kanatlı bilimci Gregory Archer'a göre kahverengi renk, kabuk oluşumunun son aşamasında dışına sürülen protoporfirin adlı bir pigmentten gelir; pigment kabuğun içine işlemediği için kahverengi yumurtaların çoğunun kabuğunun içi beyazdır. Archer'a göre beyaz kulak memeli tavuklar genellikle beyaz yumurtlar. Besin içeriğini ise tavuğun beslenmesi etkileyebilir; örneğin merada beslenen tavukların yumurtasında daha fazla omega-3 bulunabilir.\n\nSen markette hangisini alıyorsun: kahverengi yumurta mı, beyaz yumurta mı?\n\n#yumurta #tavuk #hayvanlar #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0177",
+  "tags": [
+    "kahverengi yumurta",
+    "beyaz yumurta",
+    "kahverengi yumurta sağlıklı mı",
+    "köy yumurtası",
+    "yumurta rengi neden farklı",
+    "yumurtanın rengini ne belirler",
+    "kahverengi mi beyaz mı yumurta",
+    "yumurta kabuğu rengi",
+    "tavuğun kulak memesi",
+    "yumurta besin değeri",
+    "yumurta",
+    "tavuk",
+    "tavuk yumurtası",
+    "sağlıklı beslenme",
+    "yanlış bilinen gerçekler",
+    "doğru bilinen yanlışlar",
+    "hayvanlar",
+    "hayvan bilgileri",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "brown vs white eggs",
+    "yumurta rengi",
+    "shorts"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Brown eggs aren't healthier than white ones 🥚",
+      "description": "Shell color depends on the hen's breed, and the USDA says nutrient levels in white and brown eggs are not significantly different. The brown pigment is added late in shell formation, so most brown eggs are white inside the shell.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "es": {
+      "title": "Los huevos marrones no son más sanos que los blancos 🥚",
+      "description": "El color de la cáscara depende de la raza de la gallina, y el USDA afirma que los nutrientes de los huevos blancos y marrones no difieren de forma significativa. El pigmento marrón se añade al final de la formación de la cáscara, por eso casi todos los huevos marrones son blancos por dentro.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "pt": {
+      "title": "Ovo marrom não é mais saudável que o branco 🥚",
+      "description": "A cor da casca depende da raça da galinha, e o USDA diz que os nutrientes dos ovos brancos e marrons não diferem de forma significativa. O pigmento marrom é aplicado no fim da formação da casca, por isso a maioria dos ovos marrons é branca por dentro.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "de": {
+      "title": "Braune Eier sind nicht gesünder als weiße 🥚",
+      "description": "Die Schalenfarbe hängt von der Hühnerrasse ab, und laut US-Landwirtschaftsministerium unterscheiden sich weiße und braune Eier bei den Nährstoffen nicht wesentlich. Das braune Pigment kommt erst spät bei der Schalenbildung dazu, deshalb sind die meisten braunen Eier innen weiß.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "fr": {
+      "title": "Les œufs bruns ne sont pas plus sains que les blancs 🥚",
+      "description": "La couleur de la coquille dépend de la race de la poule, et selon le ministère américain de l'Agriculture, les nutriments des œufs blancs et bruns ne diffèrent pas de façon significative. Le pigment brun est déposé à la fin de la formation de la coquille : la plupart des œufs bruns sont donc blancs à l'intérieur.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "it": {
+      "title": "Le uova marroni non sono più sane di quelle bianche 🥚",
+      "description": "Il colore del guscio dipende dalla razza della gallina e, secondo il Dipartimento dell'Agricoltura statunitense, i nutrienti delle uova bianche e marroni non differiscono in modo significativo. Il pigmento marrone si deposita alla fine della formazione del guscio, per questo quasi tutte le uova marroni sono bianche all'interno.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "ru": {
+      "title": "Коричневые яйца не полезнее белых 🥚",
+      "description": "Цвет скорлупы зависит от породы курицы, а по данным Минсельхоза США, по питательности белые и коричневые яйца существенно не отличаются. Коричневый пигмент наносится в самом конце формирования скорлупы, поэтому изнутри скорлупа у большинства коричневых яиц белая.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "ar": {
+      "title": "البيض البني ليس أفضل صحيًا من الأبيض 🥚",
+      "description": "يتحدد لون القشرة بسلالة الدجاجة، وتقول وزارة الزراعة الأمريكية إن القيم الغذائية للبيض الأبيض والبني لا تختلف اختلافًا يُذكر. يُضاف الصبغ البني في آخر مراحل تكوّن القشرة، لذلك تكون معظم قشور البيض البني بيضاء من الداخل.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "hi": {
+      "title": "भूरे अंडे सफ़ेद अंडों से ज़्यादा सेहतमंद नहीं 🥚",
+      "description": "छिलके का रंग मुर्गी की नस्ल से तय होता है, और अमेरिकी कृषि विभाग के अनुसार सफ़ेद और भूरे अंडों के पोषक तत्वों में कोई ख़ास अंतर नहीं होता। भूरा रंग छिलका बनने के आख़िरी चरण में चढ़ता है, इसलिए ज़्यादातर भूरे अंडों का छिलका अंदर से सफ़ेद होता है।\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "id": {
+      "title": "Telur cokelat tidak lebih sehat daripada telur putih 🥚",
+      "description": "Warna cangkang ditentukan oleh ras ayam, dan menurut Departemen Pertanian AS kandungan gizi telur putih dan cokelat tidak berbeda secara berarti. Pigmen cokelat baru ditambahkan di akhir pembentukan cangkang, jadi kebanyakan telur cokelat berwarna putih di bagian dalam cangkangnya.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "ja": {
+      "title": "赤玉は白玉より栄養があるわけではない 🥚",
+      "description": "殻の色は鶏の品種で決まり、米国農務省によると白い卵と茶色い卵で栄養に大きな差はありません。茶色の色素は殻ができる最後の段階で表面に付くため、ほとんどの赤玉は殻の内側が白いのです。\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "ko": {
+      "title": "갈색 달걀이 흰 달걀보다 몸에 더 좋은 건 아니다 🥚",
+      "description": "껍데기 색은 닭의 품종이 결정하며, 미국 농무부에 따르면 흰 달걀과 갈색 달걀의 영양 성분에는 큰 차이가 없습니다. 갈색 색소는 껍데기가 만들어지는 마지막 단계에 입혀지기 때문에 대부분의 갈색 달걀은 껍데기 안쪽이 하얗습니다.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "pl": {
+      "title": "Brązowe jajka nie są zdrowsze od białych 🥚",
+      "description": "Kolor skorupki zależy od rasy kury, a według Departamentu Rolnictwa USA białe i brązowe jaja nie różnią się istotnie wartością odżywczą. Brązowy barwnik pojawia się dopiero pod koniec tworzenia skorupki, dlatego większość brązowych jajek jest od środka biała.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "nl": {
+      "title": "Bruine eieren zijn niet gezonder dan witte 🥚",
+      "description": "De schaalkleur hangt af van het kippenras, en volgens het Amerikaanse ministerie van Landbouw verschillen witte en bruine eieren niet wezenlijk in voedingswaarde. Het bruine pigment komt pas aan het eind van de schaalvorming, daarom zijn de meeste bruine eieren vanbinnen wit.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "uk": {
+      "title": "Коричневі яйця не корисніші за білі 🥚",
+      "description": "Колір шкаралупи залежить від породи курки, а за даними Мінсільгоспу США, за поживністю білі й коричневі яйця суттєво не відрізняються. Коричневий пігмент наноситься наприкінці формування шкаралупи, тому зсередини шкаралупа більшості коричневих яєць біла.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "vi": {
+      "title": "Trứng vỏ nâu không bổ hơn trứng vỏ trắng 🥚",
+      "description": "Màu vỏ trứng do giống gà quyết định, và theo Bộ Nông nghiệp Hoa Kỳ, dinh dưỡng của trứng vỏ trắng và vỏ nâu không khác nhau đáng kể. Sắc tố nâu chỉ được phủ lên ở giai đoạn cuối khi vỏ hình thành, nên mặt trong vỏ của hầu hết trứng nâu vẫn màu trắng.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "az": {
+      "title": "Qəhvəyi yumurta ağ yumurtadan daha faydalı deyil 🥚",
+      "description": "Qabığın rəngini toyuğun cinsi müəyyən edir; ABŞ Kənd Təsərrüfatı Nazirliyinə görə ağ və qəhvəyi yumurtaların qida dəyəri arasında ciddi fərq yoxdur. Qəhvəyi piqment qabığın formalaşmasının son mərhələsində əlavə olunur, buna görə qəhvəyi yumurtaların çoxunun qabığının içi ağdır.\n\n#shorts\n\nSeri: mk-c0177"
+    },
+    "ro": {
+      "title": "Ouăle maro nu sunt mai sănătoase decât cele albe 🥚",
+      "description": "Culoarea cojii depinde de rasa găinii, iar potrivit Departamentului Agriculturii din SUA, ouăle albe și cele maro nu diferă semnificativ ca valoare nutritivă. Pigmentul maro se adaugă la finalul formării cojii, de aceea majoritatea ouălor maro sunt albe pe interior.\n\n#shorts\n\nSeri: mk-c0177"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen markette hangisini alıyorsun: kahverengi yumurta mı, beyaz yumurta mı?",
+  "scenes": [
+    {
+      "text": "Bu tavuğun kahverengi yumurtası, beyazdan daha sağlıklı değil.",
+      "visual": "close-up of a brown hen's head looking straight into the camera",
+      "stock_query": "hen close up",
+      "source": "stock",
+      "callout": "AYNI BESİN"
+    },
+    {
+      "text": "Köy yumurtası sanıp ona daha çok para veririz.",
+      "visual": "brown eggs in an egg carton at a market",
+      "stock_query": "brown eggs",
+      "source": "stock",
+      "subject": [
+        "egg",
+        "eggs"
+      ]
+    },
+    {
+      "text": "Oysa kırınca kabuğun içi çoğunlukla beyaz; boya sadece dışta.",
+      "visual": "close-up of a brown egg being cracked open, showing the white inside of the shell",
+      "stock_query": "cracking egg",
+      "source": "stock",
+      "subject": [
+        "egg"
+      ],
+      "callout": "İÇİ BEYAZ"
+    },
+    {
+      "text": "Rengi tavuğun cinsi belirler; beyaz kulak memeli tavuklar genelde beyaz yumurtlar.",
+      "visual": "close-up of a white hen's head showing its white earlobe",
+      "stock_query": "chicken head",
+      "source": "stock",
+      "callout": "KULAK MEMESİ"
+    },
+    {
+      "text": "Besin değerini ise kabuk rengi değil, tavuğun beslenmesi etkiler.",
+      "visual": "hens pecking grain on a farm",
+      "stock_query": "chicken eating",
+      "source": "stock",
+      "callout": "BESLENME ETKİLER"
+    },
+    {
+      "text": "Markette pahalısına uzanmadan önce hatırla:",
+      "visual": "close-up of a hand taking a brown egg from a carton",
+      "stock_query": "eggs hand",
+      "source": "stock",
+      "subject": [
+        "egg",
+        "eggs"
+      ]
+    }
+  ],
+  "duration_seconds": 18.91,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #228",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0177_1795073276_ig.mp4"
+}
