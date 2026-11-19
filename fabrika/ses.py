@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import subprocess
+import time
 from pathlib import Path
 
 import numpy as np
@@ -142,7 +143,21 @@ def tts_edge(text, who, cache):
                     bounds.append((ch["offset"] / 1e7, (ch["offset"] + ch["duration"]) / 1e7))
             return bytes(audio), bounds
 
-        audio, bounds = asyncio.run(run())
+        # On 2026-11-19 17:07 UTC edge-tts answered one ordinary line with no audio (NoAudioReceived) and the Instagram
+        # Reel was lost; the same voices worked at 13:10 and 14:07. The service drops a request now and then: try again.
+        for k in range(4):
+            try:
+                audio, bounds = asyncio.run(run())
+                if audio:
+                    break
+                err = "boş ses"
+            except Exception as ex:  # edge_tts.exceptions.NoAudioReceived, WebSocket errors
+                if k == 3:
+                    raise
+                err = f"{type(ex).__name__}: {str(ex)[:120]}"
+            if k < 3:
+                print(f"  edge-tts ses vermedi ({err}), {k + 2}. deneme")
+                time.sleep(4 * (k + 1))
         if not audio:
             raise RuntimeError("edge-tts ses üretmedi")
         mp3.write_bytes(audio)
