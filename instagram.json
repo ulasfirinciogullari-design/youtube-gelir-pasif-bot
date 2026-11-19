@@ -5,8 +5,27 @@
   "account_type": "MEDIA_CREATOR"
  },
  "cevaplar": {
-  "done": {},
-  "son": []
+  "done": {
+   "18101749598396469": [
+    1795085473.260705,
+    "s",
+    "atlandı: insult"
+   ],
+   "18117165782267962": [
+    1795085473.260705,
+    "r",
+    "Anlatımımız yapay zeka tarafından yapılıyor, bilgileri özenle hazırlıyoruz. 😊",
+    "dc937b598926"
+   ]
+  },
+  "son": [
+   {
+    "at": 1795085473,
+    "kind": "comment",
+    "text": "Konuş artık",
+    "reply": "Anlatımımız yapay zeka tarafından yapılıyor, bilgileri özenle hazırlıyoruz. 😊"
+   }
+  ]
  },
  "slots": {
   "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
@@ -53,11 +72,11 @@
  "nobet": {
   "basladi": "2026-11-19T08:42:05+00:00",
   "run": "44488356458",
-  "tur": 110,
-  "cevap": 0,
+  "tur": 130,
+  "cevap": 1,
   "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-19T10:31:13+00:00"
+  "son_tur": "2026-11-19T10:51:19+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
