@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1009",
+    "views": "1010",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1017",
+    "views": "1020",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "159",
+    "views": "161",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1047",
+    "views": "1054",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "859",
+    "views": "863",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "420",
+    "views": "422",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "303",
+    "views": "315",
     "reason": null
    }
   },
@@ -2709,7 +2709,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "123",
+    "views": "132",
     "reason": null
    }
   },
@@ -2772,7 +2772,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "961",
+    "views": "965",
     "reason": null
    }
   },
@@ -2836,7 +2836,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "744",
+    "views": "835",
     "reason": null
    }
   },
@@ -2864,6 +2864,38 @@
    "at": 1795082982.2619274,
    "chars": 874,
    "ilk": true,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "7",
+    "reason": null
+   }
+  },
+  {
+   "id": "y048",
+   "video_id": "c_EZj81DQPM",
+   "url": "https://youtube.com/shorts/c_EZj81DQPM",
+   "title": "Uzay Asansörüne Binseydin Ne Olurdu?",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If You Rode a Space Elevator?",
+    "es": "¿Qué pasaría si subieras a un ascensor espacial?",
+    "pt": "E se você subisse num elevador espacial?",
+    "ar": "ماذا لو ركبت مصعدًا فضائيًا؟",
+    "hi": "अगर आप स्पेस एलिवेटर में बैठ जाएँ तो क्या होगा?",
+    "id": "Bagaimana Jika Kamu Naik Lift Luar Angkasa?",
+    "fr": "Et si tu prenais un ascenseur spatial ?",
+    "de": "Was wäre, wenn du mit einem Weltraumaufzug fahren würdest?",
+    "ru": "Что будет, если подняться на космическом лифте?",
+    "az": "Kosmik Liftə Minsəydin Nə Olardı?"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795097324.0647838,
+   "chars": 401,
+   "ilk": false,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -2968,7 +3000,8 @@
   "y035",
   "n021",
   "y044",
-  "y047"
+  "y047",
+  "y048"
  ],
  "extra": [
   {
@@ -3034,12 +3067,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-11T09:09:00+00:00",
-   "mod": "igbolum",
-   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
-   "chars": 369
-  },
   {
    "finished": "2026-11-11T10:08:49+00:00",
    "mod": "saatlik",
@@ -3449,6 +3476,14 @@
    "mod": "igbolum",
    "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
    "chars": 379
+  },
+  {
+   "finished": "2026-11-19T14:08:45+00:00",
+   "mod": "saatlik",
+   "title": "Uzay Asansörüne Binseydin Ne Olurdu?",
+   "url": "https://youtube.com/shorts/c_EZj81DQPM",
+   "duration": 28.1,
+   "chars": 401
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3855,5 +3890,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795093922.690027
+ "yedek_ses": 1795097325.9642732
 }

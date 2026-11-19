@@ -1,5 +1,5 @@
 {
- "at": "2026-11-19T13:06:23+00:00",
+ "at": "2026-11-19T14:06:26+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -51,7 +51,7 @@
    "baslik": "Güneş Kara Delik Olsaydı Ne Olurdu?"
   },
   "xMYUnZVVITU": {
-   "view": 567,
+   "view": 568,
    "like": 12,
    "comment": 2,
    "baslik": "Güneş Bir Anda Sönseydi Ne Olurdu?"
@@ -501,7 +501,7 @@
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 1009,
+   "view": 1010,
    "like": 5,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
@@ -555,7 +555,7 @@
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 131,
+   "view": 132,
    "like": 0,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
@@ -579,13 +579,13 @@
    "baslik": "Bir Bakteri Gerçekte Ne Kadar Küçük? 🤯"
   },
   "cMccWi1IkfY": {
-   "view": 821,
+   "view": 835,
    "like": 4,
    "comment": 0,
    "baslik": "Ay'da 1 Ay Yaşasaydın Ne Olurdu? 😳"
   },
   "xAIVnlGvOAk": {
-   "view": 8,
+   "view": 11,
    "like": 0,
    "comment": 0,
    "baslik": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu? 😳"
@@ -684,13 +684,7 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1567,
-    "YT_SEARCH": 55,
-    "YT_CHANNEL": 8,
-    "YT_OTHER_PAGE": 5,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 957,
    "devam_yuzde": 58.5
   },

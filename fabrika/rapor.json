@@ -1,21 +1,76 @@
 {
- "started": "2026-11-19T13:10:18+00:00",
- "mod": "igbolum",
- "gate": "instagram: y044",
+ "started": "2026-11-19T14:07:30+00:00",
+ "mod": "saatlik",
+ "gate": "saat boş",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
- "chars": 379,
- "instagram": {
-  "anahtar_bitis": "2027-01-15T09:07+00:00",
-  "media_id": "18140175283647837",
-  "url": "https://www.instagram.com/reel/Df7KG4KlFPP/",
-  "at": 1795093922.6899712
+ "channel": {
+  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
+  "title": "Ya Olsaydı?",
+  "handle": "@yaolsaydibilim",
+  "subscribers": "71",
+  "videos": "96"
  },
+ "credits_before": [
+  106307,
+  613902
+ ],
  "warnings": [
+  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "log": [
-  "Instagram: https://www.instagram.com/reel/Df7KG4KlFPP/"
+ "kuyruk": {
+  "dosya": "20261119-2-y048.json",
+  "kalan": 2
+ },
+ "topic": {
+  "id": "y048",
+  "series": "Ya Olsaydı?",
+  "q": "Uzay asansörü olsaydı ne olurdu?"
+ },
+ "yazar": "Claude (kuyruk)",
+ "ilk_kare": false,
+ "chars": 401,
+ "duration": 28.1,
+ "title": "Uzay Asansörüne Binseydin Ne Olurdu?",
+ "url": "https://youtube.com/shorts/c_EZj81DQPM",
+ "recent_status": {
+  "y035": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "965",
+   "reason": null
+  },
+  "n021": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "241",
+   "reason": null
+  },
+  "y044": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "835",
+   "reason": null
+  },
+  "y047": {
+   "upload": "processed",
+   "privacy": "public",
+   "views": "7",
+   "reason": null
+  },
+  "y048": {
+   "upload": "uploaded",
+   "privacy": "public",
+   "views": "0",
+   "reason": null
+  }
+ },
+ "credits_after": [
+  106307,
+  613902
  ],
- "finished": "2026-11-19T13:12:02+00:00"
+ "log": [
+  "Kuyruktan: 20261119-2-y048.json Uzay asansörü olsaydı ne olurdu? (Ya Olsaydı?)"
+ ],
+ "finished": "2026-11-19T14:08:45+00:00"
 }
