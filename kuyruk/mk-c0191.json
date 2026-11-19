@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0191",
+ "topic": "Kırkayağın gerçekten kırk ayağı var mı? Kırkayak kaç ayaklıdır, kırk ayaklı kırkayak olur mu?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "centipede"
+ ],
+ "stock_hint": "centipede macro",
+ "script": {
+  "title": "Bir kırkayağın tam kırk ayağı olabilir mi? 🐛",
+  "hook_text": "KIRKAYAĞIN KIRK AYAĞI OLUR MU?",
+  "scenes": [
+   {
+    "text": "Bu kırkayağın adı ona kırk ayak veriyor.",
+    "visual": "extreme macro of a centipede's head and front legs, facing the camera",
+    "stock_query": "centipede macro",
+    "source": "stock",
+    "callout": "40 AYAK?"
+   },
+   {
+    "text": "Peki tam kırk ayaklı bir kırkayak olabilir mi?",
+    "visual": "a centipede crawling across the ground",
+    "stock_query": "centipede",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Evinde gördüğün kırkayağın bile otuz ayağı var.",
+    "visual": "a long-legged house centipede on a wall",
+    "stock_query": "centipede legs",
+    "source": "stock",
+    "callout": "EVDEKİNDE 30 AYAK"
+   },
+   {
+    "text": "Ayak çifti türüne göre on beş ile yüz doksan bir arasında değişiyor.",
+    "visual": "a large centipede with many leg pairs moving over a rock",
+    "stock_query": "centipede insect",
+    "source": "stock",
+    "callout": "15-191 ÇİFT"
+   },
+   {
+    "text": "Ama cevap hayır: erişkin kırkayakta ayak çiftlerinin sayısı hep tektir; kırk ayak, yirmi çift demek.",
+    "visual": "close-up of a centipede's body segments, each with one pair of legs",
+    "stock_query": "centipede close up",
+    "source": "stock",
+    "callout": "ÇİFTLER HEP TEK SAYI"
+   },
+   {
+    "text": "Hiçbiri buna uymasa da,",
+    "visual": "macro of a centipede's head with antennae",
+    "stock_query": "centipede head",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Hiçbir erişkin kırkayakta tam kırk ayak yoktur. Cambridge Üniversitesi araştırmacılarına göre kırkayak türlerinde ayak çifti sayısı on beş ile yüz doksan bir arasında değişir ama hep tek sayıdır; kırk ayak ise yirmi çift, yani çift sayı eder. Evlerde görülen ev kırkayağının erişkinlerinde on beş çift, yani otuz ayak bulunur.",
+  "tags": [
+   "kırkayak",
+   "kırkayak kaç ayaklı",
+   "ev kırkayağı",
+   "kırkayağın kırk ayağı var mı",
+   "böcekler",
+   "eklembacaklılar",
+   "mümkün mü",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha tuhaf: kırk ayaklı kırkayağın olmaması mı, yüz doksan bir çift ayaklı kırkayak mı?",
+  "en_title": "Can a centipede have exactly 100 legs? 🐛",
+  "en_description": "No. Centipede species have anywhere from 15 to 191 pairs of legs, but adults always have an odd number of pairs. One hundred legs would be 50 pairs, an even number, so it can't happen. The house centipede you find indoors has 15 pairs: 30 legs.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kırkayağın gerçekten kırk ayağı var mı, kırk ayaklı bir kırkayak olabilir mi?\n\nHayır. Cambridge Üniversitesi araştırmacılarının 2004'te Current Biology dergisinde yayımlanan çalışmasına göre kırkayak türlerinde ayak çifti sayısı 15 ile 191 arasında değişir ama bu sayı her zaman tektir. Kırk ayak 20 çift, yani çift sayı demek; bu yüzden erişkin bir kırkayakta tam kırk ayak görülmez. Britannica ve Penn State Üniversitesi'ne göre evlerde görülen ev kırkayağının (Scutigera coleoptrata) erişkinlerinde 15 çift, yani 30 uzun ayak bulunur; bu kırkayak gümüşçün, hamamböceği ve örümcek gibi küçük canlıları yer.\n\nSence hangisi daha tuhaf: kırk ayaklı kırkayağın olmaması mı, yüz doksan bir çift ayaklı kırkayak mı?",
+  "hashtags": [
+   "#kırkayak",
+   "#böcekler",
+   "#mümkünmü",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kırkayak",
+   "kırkayak kaç ayaklı",
+   "kırkayağın kaç ayağı var",
+   "kırkayağın kırk ayağı var mı",
+   "kırk ayaklı kırkayak",
+   "ev kırkayağı",
+   "evde kırkayak",
+   "banyoda kırkayak",
+   "kırkayak ne yer",
+   "kırkayak türleri",
+   "çıyan",
+   "böcekler",
+   "eklembacaklılar",
+   "mümkün mü",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "centipede legs",
+   "house centipede"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can a centipede have exactly 100 legs? 🐛",
+    "description": "No. Centipede species have anywhere from 15 to 191 pairs of legs, but adults always have an odd number of pairs. One hundred legs would be 50 pairs, an even number, so it can't happen. The house centipede you find indoors has 15 pairs: 30 legs."
+   },
+   "es": {
+    "title": "¿Puede un ciempiés tener exactamente cien patas? 🐛",
+    "description": "No. Según la especie, los ciempiés tienen entre 15 y 191 pares de patas, pero los adultos siempre tienen un número impar de pares. Cien patas serían 50 pares, un número par, así que es imposible. El ciempiés doméstico que ves en casa tiene 15 pares: 30 patas."
+   },
+   "pt": {
+    "title": "Uma centopeia pode ter exatamente cem pernas? 🐛",
+    "description": "Não. Dependendo da espécie, as centopeias têm de 15 a 191 pares de pernas, mas nos adultos o número de pares é sempre ímpar. Cem pernas seriam 50 pares, um número par, por isso é impossível. A centopeia doméstica que aparece em casa tem 15 pares: 30 pernas."
+   },
+   "de": {
+    "title": "Kann ein Hundertfüßer genau hundert Beine haben? 🐛",
+    "description": "Nein. Je nach Art haben Hundertfüßer 15 bis 191 Beinpaare, doch bei erwachsenen Tieren ist die Zahl der Paare immer ungerade. Hundert Beine wären 50 Paare, also eine gerade Zahl – unmöglich. Der Spinnenläufer, den man im Haus findet, hat 15 Paare: 30 Beine."
+   },
+   "fr": {
+    "title": "Une scolopendre peut-elle avoir exactement cent pattes ? 🐛",
+    "description": "Non. Selon l'espèce, les chilopodes (scolopendres, scutigères) ont de 15 à 191 paires de pattes, mais chez l'adulte le nombre de paires est toujours impair. Cent pattes feraient 50 paires, un nombre pair : impossible. La scutigère qu'on croise dans les maisons en a 15 paires, soit 30 pattes."
+   },
+   "it": {
+    "title": "Un centopiedi può avere esattamente cento zampe? 🐛",
+    "description": "No. A seconda della specie i centopiedi hanno da 15 a 191 paia di zampe, ma negli adulti il numero di paia è sempre dispari. Cento zampe sarebbero 50 paia, un numero pari: impossibile. La scutigera che trovi in casa ne ha 15 paia, cioè 30 zampe."
+   },
+   "ru": {
+    "title": "Может ли у сороконожки быть ровно сорок ног? 🐛",
+    "description": "Нет. У разных видов губоногих многоножек от 15 до 191 пары ног, но у взрослых число пар всегда нечётное. Сорок ног — это 20 пар, чётное число, так что такого не бывает. У домашней мухоловки, которую встречают в квартирах, 15 пар — 30 ног."
+   },
+   "ar": {
+    "title": "هل يمكن أن يكون لأم أربعة وأربعين أربع وأربعون رجلًا بالضبط؟ 🐛",
+    "description": "لا. لدى أنواع الحريشيات ما بين 15 و191 زوجًا من الأرجل، لكن عدد الأزواج عند البالغين فردي دائمًا. أربع وأربعون رجلًا تعني 22 زوجًا، أي عددًا زوجيًا، فهذا مستحيل. أما الحريش المنزلي الذي تراه في البيت فله 15 زوجًا، أي 30 رجلًا."
+   },
+   "hi": {
+    "title": "क्या कनखजूरे के ठीक सौ पैर हो सकते हैं? 🐛",
+    "description": "नहीं। प्रजाति के हिसाब से कनखजूरों में 15 से 191 जोड़ी पैर होते हैं, लेकिन वयस्कों में जोड़ों की संख्या हमेशा विषम होती है। सौ पैर यानी 50 जोड़ी, जो सम संख्या है, इसलिए यह असंभव है। घरों में दिखने वाले कनखजूरे के 15 जोड़ी, यानी 30 पैर होते हैं।"
+   },
+   "id": {
+    "title": "Bisakah kelabang punya tepat seratus kaki? 🐛",
+    "description": "Tidak. Tergantung spesiesnya, kelabang punya 15 sampai 191 pasang kaki, tetapi pada kelabang dewasa jumlah pasangannya selalu ganjil. Seratus kaki berarti 50 pasang, bilangan genap, jadi mustahil. Kelabang rumah yang sering terlihat di dalam rumah punya 15 pasang: 30 kaki."
+   },
+   "ja": {
+    "title": "ムカデの足はちょうど百本になりうる？ 🐛",
+    "description": "なりません。ムカデの仲間の脚は種類によって15対から191対までありますが、成体の対の数は必ず奇数です。百本は50対で偶数なので、ありえません。家の中で見かけるゲジは15対、つまり30本です。"
+   },
+   "ko": {
+    "title": "지네 다리가 정확히 백 개일 수 있을까? 🐛",
+    "description": "아닙니다. 지네 다리는 종에 따라 15쌍에서 191쌍까지 다양하지만, 성체의 다리 쌍 수는 항상 홀수입니다. 다리 백 개는 50쌍, 즉 짝수라서 불가능합니다. 집에서 보이는 그리마는 15쌍, 다리 30개입니다."
+   },
+   "pl": {
+    "title": "Czy parecznik może mieć dokładnie sto nóg? 🐛",
+    "description": "Nie. W zależności od gatunku pareczniki mają od 15 do 191 par odnóży, ale u dorosłych liczba par jest zawsze nieparzysta. Sto nóg to 50 par, czyli liczba parzysta – to niemożliwe. Parecznik spotykany w mieszkaniach ma 15 par, czyli 30 odnóży."
+   },
+   "nl": {
+    "title": "Kan een duizendpoot precies honderd poten hebben? 🐛",
+    "description": "Nee. Afhankelijk van de soort hebben duizendpoten uit de groep Chilopoda 15 tot 191 paar poten, maar bij volwassen dieren is het aantal paren altijd oneven. Honderd poten zou 50 paar zijn, een even getal – onmogelijk. De spinduizendpoot die je in huis ziet, heeft 15 paar: 30 poten."
+   },
+   "uk": {
+    "title": "Чи може в сороконіжки бути рівно сорок ніг? 🐛",
+    "description": "Ні. Залежно від виду губоногі багатоніжки мають від 15 до 191 пари ніг, але в дорослих кількість пар завжди непарна. Сорок ніг — це 20 пар, парне число, тож так не буває. Мухоловка, яку зустрічають у домівках, має 15 пар — 30 ніг."
+   },
+   "vi": {
+    "title": "Con rết có thể có đúng một trăm chân không? 🐛",
+    "description": "Không. Tùy loài, rết có từ 15 đến 191 cặp chân, nhưng ở rết trưởng thành số cặp luôn là số lẻ. Một trăm chân là 50 cặp, số chẵn, nên không thể có. Loài rết nhà hay gặp trong nhà có 15 cặp, tức 30 chân."
+   },
+   "az": {
+    "title": "Qırxayağın düz qırx ayağı ola bilərmi? 🐛",
+    "description": "Xeyr. Növündən asılı olaraq qırxayaqların 15-dən 191-ə qədər cüt ayağı olur, amma yetkin fərdlərdə cütlərin sayı həmişə təkdir. Qırx ayaq 20 cüt deməkdir, yəni cüt ədəd, buna görə mümkün deyil. Evlərdə görünən ev qırxayağının 15 cüt, yəni 30 ayağı var."
+   },
+   "ro": {
+    "title": "Poate un centiped să aibă exact o sută de picioare? 🐛",
+    "description": "Nu. În funcție de specie, centipedele au între 15 și 191 de perechi de picioare, dar la adulți numărul perechilor este mereu impar. O sută de picioare ar însemna 50 de perechi, un număr par, deci este imposibil. Centipedul de casă pe care îl vezi prin locuință are 15 perechi: 30 de picioare."
+   }
+  }
+ }
+}

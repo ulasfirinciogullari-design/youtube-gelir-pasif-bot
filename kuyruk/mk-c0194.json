@@ -1,0 +1,186 @@
+{
+ "id": "mk-c0194",
+ "topic": "Kalp solda mı ortada mı? Kalbimiz göğsün neresinde, kalp atışı neden solda hissedilir?",
+ "kategori": "vücut",
+ "subject": [
+  "human heart",
+  "heart anatomy"
+ ],
+ "stock_hint": "human heart anatomy",
+ "script": {
+  "title": "Kalbin solda değil, göğsünün ortasında ❤️",
+  "hook_text": "KALBİN GERÇEKTEN SOLDA MI?",
+  "scenes": [
+   {
+    "text": "Kalbin göğsünün solunda değil, ortasında.",
+    "visual": "close-up 3D anatomical model of a human heart in the chest, centered behind the breastbone",
+    "stock_query": "heart anatomy",
+    "source": "stock",
+    "callout": "SOLDA DEĞİL"
+   },
+   {
+    "text": "Atışını solda hissettiğin için orada sanırsın.",
+    "visual": "close-up of a hand resting on the chest",
+    "stock_query": "hand on chest",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "hand"
+    ]
+   },
+   {
+    "text": "Üstelik yaklaşık on iki bin bebekten birinin kalbi sağ tarafta.",
+    "visual": "rotating 3D model of a human heart",
+    "stock_query": "human heart model",
+    "source": "stock",
+    "callout": "12.000'DE 1 SAĞDA"
+   },
+   {
+    "text": "Kalp, iki akciğerin arasında, göğüs kemiğinin hemen arkasında durur; yalnızca biraz sola kaymıştır.",
+    "visual": "3D anatomy animation of the heart sitting between the two lungs behind the sternum",
+    "stock_query": "human heart",
+    "source": "stock",
+    "callout": "GÖĞÜS KEMİĞİ ARKASI"
+   },
+   {
+    "text": "Solda hissettiğin vuruş, kalbin her atışta göğüs duvarına çarpan sivri ucu.",
+    "visual": "3D animation of a beating human heart, its pointed tip moving toward the left",
+    "stock_query": "human heart beating",
+    "source": "stock",
+    "callout": "SİVRİ UÇ ÇARPAR"
+   },
+   {
+    "text": "Vuruşu solda duysan da unutma:",
+    "visual": "close-up of a doctor's stethoscope on a chest",
+    "stock_query": "doctor stethoscope",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "stethoscope"
+    ]
+   }
+  ],
+  "description": "Kalp göğsün solunda değil, ortasında durur. Texas Kalp Enstitüsü'ne göre kalp iki akciğerin arasında, göğüs kemiğinin arkasında ve yalnızca biraz solundadır. Solda hissedilen vuruş, kalbin sivri ucunun her atımda göğüs duvarına çarpmasıdır; yaklaşık her on iki bin gebelikten birinde ise kalp sağ taraftadır.",
+  "tags": [
+   "kalp",
+   "kalp solda mı",
+   "kalp nerede",
+   "kalp hangi tarafta",
+   "kalp anatomisi",
+   "insan vücudu",
+   "anatomi",
+   "sağlık",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kalbin göğsün ortasında olması mı, bazı insanların kalbinin sağda olması mı?",
+  "en_title": "Your heart isn't on the left, it's in the middle ❤️",
+  "en_description": "Your heart sits between your lungs, right behind the breastbone, shifted only slightly to the left. The beat you feel on the left is the heart's pointed tip tapping the chest wall with every beat. And in about 1 in 12,000 pregnancies, the whole heart ends up on the right.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Kalp solda mı, ortada mı? Kalbimiz göğsün neresinde ve atışını neden solda hissederiz?\n\nTexas Kalp Enstitüsü'ne göre kalp iki akciğerin arasında, göğsün ortasında, göğüs kemiğinin arkasında ve biraz solunda durur; Cleveland Clinic de kalbin göğüs kemiğinin biraz arkasında ve solunda, yaklaşık bir yumruk büyüklüğünde olduğunu belirtir. Cape Town Üniversitesi'nin klinik muayene rehberine göre solda hissedilen vuruş, sol karıncığın sivri ucunun her atımda göğüs duvarına çarpmasıdır. Cleveland Clinic'e göre yaklaşık her 12.000 gebelikten birinde kalbin sağ tarafta olduğu dekstrokardi görülür.\n\nSence hangisi daha şaşırtıcı: kalbin göğsün ortasında olması mı, bazı insanların kalbinin sağda olması mı?",
+  "hashtags": [
+   "#kalp",
+   "#insanvücudu",
+   "#sağlık",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kalp solda mı",
+   "kalp nerede",
+   "kalp hangi tarafta",
+   "kalbimiz nerede",
+   "kalp göğsün neresinde",
+   "kalp ortada mı",
+   "kalp atışı neden solda",
+   "kalp sağda olur mu",
+   "dekstrokardi",
+   "kalp anatomisi",
+   "insan kalbi",
+   "kalp",
+   "insan vücudu",
+   "anatomi",
+   "yanlış bilinen gerçekler",
+   "sağlık",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "heart location",
+   "dextrocardia"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your heart isn't on the left, it's in the middle ❤️",
+    "description": "Your heart sits between your lungs, right behind the breastbone, shifted only slightly to the left. The beat you feel on the left is the heart's pointed tip tapping the chest wall with every beat. And in about 1 in 12,000 pregnancies, the whole heart ends up on the right."
+   },
+   "es": {
+    "title": "Tu corazón no está a la izquierda, sino en el centro ❤️",
+    "description": "El corazón está entre los pulmones, justo detrás del esternón, apenas desplazado a la izquierda. El latido que notas a la izquierda es su punta golpeando la pared del pecho en cada latido. Y en aproximadamente uno de cada 12.000 embarazos, el corazón queda a la derecha."
+   },
+   "pt": {
+    "title": "Seu coração não fica à esquerda, fica no meio do peito ❤️",
+    "description": "O coração fica entre os pulmões, logo atrás do esterno, só um pouco deslocado para a esquerda. A batida que você sente à esquerda é a ponta do coração tocando a parede do peito a cada batimento. E em cerca de uma a cada 12 mil gestações, o coração fica do lado direito."
+   },
+   "de": {
+    "title": "Dein Herz liegt nicht links, sondern in der Mitte ❤️",
+    "description": "Das Herz sitzt zwischen den Lungenflügeln direkt hinter dem Brustbein und ist nur leicht nach links verschoben. Den Schlag links spürst du, weil die Herzspitze bei jedem Schlag gegen die Brustwand tippt. Und bei etwa einer von 12.000 Schwangerschaften liegt das Herz rechts."
+   },
+   "fr": {
+    "title": "Ton cœur n'est pas à gauche, il est au milieu ❤️",
+    "description": "Le cœur se trouve entre les poumons, juste derrière le sternum, à peine décalé vers la gauche. Le battement que tu sens à gauche, c'est sa pointe qui frappe la paroi de la poitrine à chaque battement. Et dans environ une grossesse sur 12 000, le cœur est à droite."
+   },
+   "it": {
+    "title": "Il tuo cuore non è a sinistra, è al centro ❤️",
+    "description": "Il cuore sta tra i polmoni, subito dietro lo sterno, spostato appena a sinistra. Il battito che senti a sinistra è la sua punta che urta la parete del torace a ogni battito. E in circa una gravidanza su 12.000 il cuore si trova a destra."
+   },
+   "ru": {
+    "title": "Сердце не слева, а посередине груди ❤️",
+    "description": "Сердце лежит между лёгкими, прямо за грудиной, лишь немного смещаясь влево. Удар слева — это верхушка сердца, которая при каждом сокращении толкается в грудную стенку. А примерно в одной беременности из 12 000 сердце оказывается справа."
+   },
+   "ar": {
+    "title": "قلبك ليس في اليسار بل في منتصف صدرك ❤️",
+    "description": "يقع القلب بين الرئتين خلف عظمة القص مباشرة، ومائل قليلًا فقط إلى اليسار. النبض الذي تشعر به يسارًا هو طرف القلب المدبب وهو يضرب جدار الصدر مع كل نبضة. وفي نحو حمل واحد من كل 12 ألفًا يكون القلب في الجهة اليمنى."
+   },
+   "hi": {
+    "title": "आपका दिल बाईं ओर नहीं, सीने के बीच में है ❤️",
+    "description": "दिल दोनों फेफड़ों के बीच, सीने की हड्डी के ठीक पीछे होता है और बस थोड़ा-सा बाईं ओर खिसका होता है। बाईं ओर जो धड़कन महसूस होती है, वह हर धड़कन पर सीने की दीवार से टकराता दिल का नुकीला सिरा है। लगभग 12,000 में से एक गर्भावस्था में दिल दाईं ओर होता है।"
+   },
+   "id": {
+    "title": "Jantungmu tidak di kiri, tapi di tengah dada ❤️",
+    "description": "Jantung berada di antara kedua paru-paru, tepat di belakang tulang dada, hanya sedikit bergeser ke kiri. Detak yang terasa di kiri adalah ujung jantung yang runcing mengetuk dinding dada setiap berdetak. Pada sekitar satu dari 12.000 kehamilan, jantung berada di sisi kanan."
+   },
+   "ja": {
+    "title": "心臓は左ではなく、胸の真ん中にある ❤️",
+    "description": "心臓は左右の肺のあいだ、胸骨のすぐ裏にあり、少し左に寄っているだけです。左側で感じる拍動は、心臓のとがった先端が拍動のたびに胸の壁を打つもの。約1万2000件の妊娠に1件の割合で、心臓が右側にある人もいます。"
+   },
+   "ko": {
+    "title": "심장은 왼쪽이 아니라 가슴 한가운데에 있다 ❤️",
+    "description": "심장은 양쪽 폐 사이, 가슴뼈 바로 뒤에 있으며 왼쪽으로 조금 치우쳐 있을 뿐입니다. 왼쪽에서 느껴지는 박동은 심장의 뾰족한 끝이 뛸 때마다 가슴벽을 치는 것입니다. 약 1만 2천 건의 임신 중 1건은 심장이 오른쪽에 있습니다."
+   },
+   "pl": {
+    "title": "Twoje serce nie jest po lewej, tylko pośrodku ❤️",
+    "description": "Serce leży między płucami, tuż za mostkiem, tylko lekko przesunięte w lewo. Bicie, które czujesz po lewej, to koniuszek serca uderzający przy każdym skurczu o ścianę klatki piersiowej. A mniej więcej w jednej ciąży na 12 000 serce znajduje się po prawej."
+   },
+   "nl": {
+    "title": "Je hart zit niet links, maar in het midden ❤️",
+    "description": "Het hart ligt tussen de longen, vlak achter het borstbeen, en is maar een klein beetje naar links verschoven. Wat je links voelt kloppen, is de punt van het hart die bij elke slag tegen de borstwand tikt. En bij ongeveer één op de 12.000 zwangerschappen ligt het hart rechts."
+   },
+   "uk": {
+    "title": "Серце не зліва, а посередині грудей ❤️",
+    "description": "Серце лежить між легенями, просто за грудниною, лише трохи зміщене вліво. Поштовх зліва — це верхівка серця, яка з кожним скороченням б'ється об грудну стінку. А приблизно в одній вагітності з 12 000 серце розташоване праворуч."
+   },
+   "vi": {
+    "title": "Tim bạn không nằm bên trái mà ở giữa ngực ❤️",
+    "description": "Tim nằm giữa hai lá phổi, ngay sau xương ức, chỉ hơi lệch sang trái. Nhịp đập bạn cảm thấy bên trái là phần mỏm nhọn của tim chạm vào thành ngực sau mỗi nhịp. Cứ khoảng 12.000 ca mang thai thì có một ca tim nằm bên phải."
+   },
+   "az": {
+    "title": "Ürəyin solda deyil, sinənin ortasındadır ❤️",
+    "description": "Ürək iki ağciyərin arasında, döş sümüyünün düz arxasında yerləşir və cəmi bir az sola sürüşüb. Solda hiss etdiyin vuruş ürəyin iti ucunun hər döyüntüdə sinə divarına toxunmasıdır. Təxminən hər 12.000 hamiləlikdən birində ürək sağ tərəfdə olur."
+   },
+   "ro": {
+    "title": "Inima ta nu e în stânga, ci în mijlocul pieptului ❤️",
+    "description": "Inima stă între plămâni, chiar în spatele sternului, deplasată doar puțin spre stânga. Bătaia pe care o simți în stânga este vârful inimii care lovește peretele toracic la fiecare bătaie. Iar la aproximativ una din 12.000 de sarcini, inima se află în dreapta."
+   }
+  }
+ }
+}

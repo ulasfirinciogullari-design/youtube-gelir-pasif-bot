@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0192",
+ "topic": "Kelebek ömrü kaç gündür? Kelebekler gerçekten bir gün mü yaşar, 'kelebek ömürlü' sözü doğru mu?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "butterfly"
+ ],
+ "stock_hint": "butterfly macro",
+ "script": {
+  "title": "Kelebek ömrü bir gün değil, bazıları bir yıl yaşıyor 🦋",
+  "hook_text": "KELEBEK KAÇ GÜN YAŞAR?",
+  "scenes": [
+   {
+    "text": "Kelebek ömrü sözü bu kelebek için yanlış.",
+    "visual": "extreme close-up of a butterfly's head with compound eyes and curled proboscis",
+    "stock_query": "butterfly macro",
+    "source": "stock",
+    "callout": "1 GÜN DEĞİL"
+   },
+   {
+    "text": "Kelebeğin tek bir gün yaşadığına neredeyse hepimiz inanırız.",
+    "visual": "a butterfly resting on a flower, slowly opening its wings",
+    "stock_query": "butterfly flower",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa bazıları kışı bir ağaç kovuğunda uyuyarak geçirir.",
+    "visual": "a butterfly with folded wings resting motionless on tree bark",
+    "stock_query": "butterfly wings",
+    "source": "stock",
+    "callout": "KIŞI UYUYARAK GEÇİRİR"
+   },
+   {
+    "text": "Çoğu kelebek iki ila dört hafta yaşar.",
+    "visual": "a butterfly flying between flowers",
+    "stock_query": "butterfly flying",
+    "source": "stock",
+    "callout": "2-4 HAFTA"
+   },
+   {
+    "text": "Göç eden monark kelebekleri dokuz aya, bazı türler bir yıla kadar yaşar.",
+    "visual": "a monarch butterfly on a flower, orange wings in close-up",
+    "stock_query": "monarch butterfly",
+    "source": "stock",
+    "callout": "1 YILA KADAR"
+   },
+   {
+    "text": "Birine kelebek ömürlü demeden önce hatırla:",
+    "visual": "close-up of a butterfly's face",
+    "stock_query": "butterfly close up",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Kelebek ömürlü' sözü kelebeğin bir gün yaşadığı inancına dayanır ama doğru değil. BBC Science Focus'a göre kelebek türlerinin çoğu erişkin olarak iki ila dört hafta yaşar, bazıları kışı ağaç kovuklarında uyuyarak geçirir. Göç eden monark kelebekleri dokuz aya, kışı uyuyarak geçiren bazı türler bir yıla kadar yaşayabilir.",
+  "tags": [
+   "kelebek",
+   "kelebek ömrü",
+   "kelebek ömürlü",
+   "kelebekler kaç gün yaşar",
+   "monark kelebeği",
+   "deyimler",
+   "böcekler",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kelebeğin bir yıla kadar yaşaması mı, kışı ağaç kovuğunda uyuyarak geçirmesi mi?",
+  "en_title": "Butterflies don't live for just one day 🦋",
+  "en_description": "In Turkish, a 'butterfly's life' means something that lasts a single day. Real butterflies live much longer: most species fly for two to four weeks as adults, migrating monarchs can live up to nine months, and some butterflies sleep through winter in tree hollows and live close to a year.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kelebeğin ömrü kaç gündür, kelebekler gerçekten bir gün mü yaşar?\n\nHayır. BBC Science Focus'a göre kelebek türlerinin çoğunun erişkin ömrü ortalama iki ila dört haftadır; en uzun yaşayanlar dokuz ay ile bir yıl arasında yaşar ve bazı türler kışı ağaç kovuklarında ya da binalarda uyuyarak geçirir. ABD Orman Servisi'ne göre sonbaharda göç eden monark kelebeklerinin ömrü dokuz aya kadar uzayabilir; İngiltere'deki Woodland Trust'a göre kışı uyuyarak geçiren orakkanat kelebeği (Gonepteryx rhamni) de bir yıla kadar yaşayabilir. Bir gün, hatta birkaç saat yaşayan böcek ise kelebek değil, mayıs sineğidir.\n\nSence hangisi daha şaşırtıcı: kelebeğin bir yıla kadar yaşaması mı, kışı ağaç kovuğunda uyuyarak geçirmesi mi?",
+  "hashtags": [
+   "#kelebek",
+   "#deyimler",
+   "#böcekler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kelebek ömrü",
+   "kelebek ömrü kaç gün",
+   "kelebekler kaç gün yaşar",
+   "kelebek bir gün mü yaşar",
+   "kelebek ömürlü",
+   "kelebek ömürlü ne demek",
+   "kelebek ne kadar yaşar",
+   "monark kelebeği",
+   "kelebek kış uykusu",
+   "orakkanat kelebeği",
+   "kelebekler",
+   "kelebek",
+   "deyimler",
+   "deyimlerin anlamı",
+   "böcekler",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "butterfly lifespan"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Butterflies don't live for just one day 🦋",
+    "description": "In Turkish, a 'butterfly's life' means something that lasts a single day. Real butterflies live much longer: most species fly for two to four weeks as adults, migrating monarchs can live up to nine months, and some butterflies sleep through winter in tree hollows and live close to a year."
+   },
+   "es": {
+    "title": "Las mariposas no viven solo un día 🦋",
+    "description": "La mayoría de las mariposas adultas vive entre dos y cuatro semanas. Las monarcas que migran pueden llegar a nueve meses, y algunas especies pasan el invierno dormidas en huecos de árboles y viven cerca de un año."
+   },
+   "pt": {
+    "title": "Borboletas não vivem só um dia 🦋",
+    "description": "A maioria das borboletas adultas vive de duas a quatro semanas. As monarcas migratórias podem chegar a nove meses, e algumas espécies passam o inverno dormindo em ocos de árvores e vivem perto de um ano."
+   },
+   "de": {
+    "title": "Schmetterlinge leben nicht nur einen Tag 🦋",
+    "description": "Die meisten Schmetterlinge leben als Falter zwei bis vier Wochen. Wandernde Monarchfalter werden bis zu neun Monate alt, und manche Arten überwintern schlafend in Baumhöhlen – der Zitronenfalter lebt fast ein Jahr."
+   },
+   "fr": {
+    "title": "Les papillons ne vivent pas qu'un seul jour 🦋",
+    "description": "La plupart des papillons adultes vivent de deux à quatre semaines. Les monarques migrateurs peuvent atteindre neuf mois, et certaines espèces passent l'hiver endormies dans des creux d'arbres : le citron vit près d'un an."
+   },
+   "it": {
+    "title": "Le farfalle non vivono un giorno solo 🦋",
+    "description": "La maggior parte delle farfalle adulte vive da due a quattro settimane. Le monarca migratrici arrivano a nove mesi e alcune specie passano l'inverno addormentate nelle cavità degli alberi: la cedronella vive quasi un anno."
+   },
+   "ru": {
+    "title": "Бабочки живут вовсе не один день 🦋",
+    "description": "Большинство взрослых бабочек живёт от двух до четырёх недель. Мигрирующие монархи доживают до девяти месяцев, а некоторые виды зимуют в дуплах деревьев: лимонница живёт почти год."
+   },
+   "ar": {
+    "title": "الفراشات لا تعيش يومًا واحدًا فقط 🦋",
+    "description": "تعيش معظم الفراشات البالغة بين أسبوعين وأربعة أسابيع. أما فراشات الملك المهاجرة فقد تعيش حتى تسعة أشهر، وبعض الأنواع تقضي الشتاء نائمة في تجاويف الأشجار وتعيش قرابة عام."
+   },
+   "hi": {
+    "title": "तितलियाँ सिर्फ़ एक दिन नहीं जीतीं 🦋",
+    "description": "ज़्यादातर वयस्क तितलियाँ दो से चार हफ़्ते जीती हैं। प्रवास करने वाली मोनार्क तितलियाँ नौ महीने तक जी सकती हैं, और कुछ प्रजातियाँ सर्दियाँ पेड़ों के खोखलों में सोकर बिताती हैं और लगभग एक साल जीती हैं।"
+   },
+   "id": {
+    "title": "Kupu-kupu tidak hidup cuma sehari 🦋",
+    "description": "Sebagian besar kupu-kupu dewasa hidup dua sampai empat minggu. Kupu-kupu raja yang bermigrasi bisa hidup hingga sembilan bulan, dan beberapa spesies melewati musim dingin dengan tidur di lubang pohon serta hidup hampir setahun."
+   },
+   "ja": {
+    "title": "チョウの命は一日だけではない 🦋",
+    "description": "多くのチョウは成虫になってから2〜4週間生きます。渡りをするオオカバマダラは最長9か月、木のうろなどで眠って冬を越す種類には1年近く生きるものもいます。"
+   },
+   "ko": {
+    "title": "나비는 하루만 살지 않는다 🦋",
+    "description": "대부분의 나비는 성충으로 2~4주를 삽니다. 이동하는 제왕나비는 최대 9개월, 나무 구멍에서 잠든 채 겨울을 나는 종은 거의 1년을 살기도 합니다."
+   },
+   "pl": {
+    "title": "Motyle nie żyją tylko jeden dzień 🦋",
+    "description": "Większość dorosłych motyli żyje od dwóch do czterech tygodni. Wędrujące monarchy dożywają nawet dziewięciu miesięcy, a niektóre gatunki przesypiają zimę w dziuplach – latolistek cytrynek żyje prawie rok."
+   },
+   "nl": {
+    "title": "Vlinders leven niet maar één dag 🦋",
+    "description": "De meeste volwassen vlinders leven twee tot vier weken. Trekkende monarchvlinders worden tot negen maanden oud, en sommige soorten overwinteren slapend in boomholtes: de citroenvlinder leeft bijna een jaar."
+   },
+   "uk": {
+    "title": "Метелики живуть зовсім не один день 🦋",
+    "description": "Більшість дорослих метеликів живе від двох до чотирьох тижнів. Мігруючі монархи доживають до дев'яти місяців, а деякі види зимують у дуплах дерев: лимонниця живе майже рік."
+   },
+   "vi": {
+    "title": "Bướm không chỉ sống một ngày 🦋",
+    "description": "Phần lớn bướm trưởng thành sống từ hai đến bốn tuần. Bướm vua di cư có thể sống tới chín tháng, và một số loài ngủ qua mùa đông trong hốc cây, sống gần một năm."
+   },
+   "az": {
+    "title": "Kəpənəyin ömrü bir gün deyil, bəziləri bir il yaşayır 🦋",
+    "description": "Kəpənəklərin çoxu yetkin halda iki-dörd həftə yaşayır. Köç edən monarx kəpənəkləri doqquz aya qədər, qışı ağac koğuşlarında yataraq keçirən bəzi növlər isə təxminən bir il yaşayır."
+   },
+   "ro": {
+    "title": "Fluturii nu trăiesc doar o zi 🦋",
+    "description": "Majoritatea fluturilor adulți trăiesc două până la patru săptămâni. Monarhii migratori pot ajunge la nouă luni, iar unele specii iernează adormite în scorburi: lămâița trăiește aproape un an."
+   }
+  }
+ }
+}

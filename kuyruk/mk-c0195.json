@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0195",
+ "topic": "Kediler solak olabilir mi? Kedim hangi patisini kullanıyor, kedilerde sağlak ve solak var mı?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat paw close up",
+ "script": {
+  "title": "Kedin solak olabilir mi? 🐱",
+  "hook_text": "KEDİ SOLAK OLABİLİR Mİ?",
+  "scenes": [
+   {
+    "text": "Bu kedi mamasını hep sol patisiyle alıyor.",
+    "visual": "close-up of a cat reaching out with one front paw toward the camera",
+    "stock_query": "cat paw",
+    "source": "stock",
+    "callout": "SOL PATİ"
+   },
+   {
+    "text": "Peki bir kedi gerçekten solak olabilir mi?",
+    "visual": "a cat looking straight at the camera",
+    "stock_query": "cat face",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oyuncak fareye uzanırken patilerini rastgele seçiyor; bu yüzden fark edilmiyor.",
+    "visual": "a cat batting a toy mouse with both front paws",
+    "stock_query": "cat toy",
+    "source": "stock",
+    "callout": "OYUNDA RASTGELE"
+   },
+   {
+    "text": "Cevap evet: kavanozdan ton balığı çıkarma deneyinde yirmi bir erkekten yirmisi sol patisini kullandı.",
+    "visual": "close-up of a cat's paw reaching into a glass jar for food",
+    "stock_query": "cat paw close up",
+    "source": "stock",
+    "callout": "21 ERKEKTEN 20'Sİ SOL"
+   },
+   {
+    "text": "Dişilerde ise yirmi birden yirmisi sağ patiyi seçti.",
+    "visual": "a cat stretching out a front paw to touch something",
+    "stock_query": "cat paws",
+    "source": "stock",
+    "callout": "DİŞİLER SAĞLAK"
+   },
+   {
+    "text": "Bir kavanoza ödül koy ve kedini izle:",
+    "visual": "close-up of a cat's face looking at the camera",
+    "stock_query": "cat face close up",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Evet, kediler de solak ya da sağlak olabilir. Queen's University Belfast'tan araştırmacıların deneyinde kediler oyuncak fareye uzanırken belirgin bir pati tercihi göstermedi; ama dar bir kavanozdan ton balığı çıkarmaları gerektiğinde yirmi bir erkekten yirmisi sol, yirmi bir dişiden yirmisi sağ patisini kullandı. Aynı üniversitenin 2018 çalışmasında kedilerin neredeyse dörtte üçünün bir patiyi daha çok kullandığı görüldü.",
+  "tags": [
+   "kedi",
+   "kedi solak olur mu",
+   "kedi pati tercihi",
+   "kedi patisi",
+   "kedi davranışları",
+   "kediler",
+   "evcil hayvan",
+   "mümkün mü",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin hangisi: solak mı, sağlak mı?",
+  "en_title": "Can your cat be left-pawed? 🐱",
+  "en_description": "Yes. In a Queen's University Belfast study, cats showed no paw preference when batting a toy mouse, but when they had to fish tuna out of a narrow jar, 20 of 21 males used the left paw and 20 of 21 females the right. Put a treat in a jar at home and watch which paw goes in.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediler solak olabilir mi, kedilerde sağlak ve solak ayrımı var mı?\n\nEvet. Smithsonian'ın aktardığına göre Queen's University Belfast'tan psikologların Animal Behaviour dergisinde yayımlanan çalışmasında 42 kedi, oyuncak fareye uzanırken belirgin bir pati tercihi göstermedi; ama dar bir kavanozdan ton balığı çıkarmaları gerektiğinde 21 erkekten 20'si sol, 21 dişiden 20'si sağ patisini kullandı. National Geographic'e göre aynı üniversitenin 2018'de 44 ev kedisini kendi evlerinde izlediği çalışmada kedilerin neredeyse dörtte üçü bir patiyi daha çok kullandı; dişiler sağa, erkekler sola yatkındı.\n\nSenin kedin hangisi: solak mı, sağlak mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#mümkünmü",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi solak olur mu",
+   "kediler solak mı",
+   "kedi sağlak mı solak mı",
+   "kedi hangi patisini kullanır",
+   "kedi pati tercihi",
+   "kedim solak mı",
+   "erkek kedi solak",
+   "dişi kedi sağlak",
+   "kedi patisi",
+   "kedi deneyi",
+   "kedi davranışları",
+   "kedi sahibi",
+   "mümkün mü",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "left pawed cat"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can your cat be left-pawed? 🐱",
+    "description": "Yes. In a Queen's University Belfast study, cats showed no paw preference when batting a toy mouse, but when they had to fish tuna out of a narrow jar, 20 of 21 males used the left paw and 20 of 21 females the right. Put a treat in a jar at home and watch which paw goes in."
+   },
+   "es": {
+    "title": "¿Tu gato puede ser zurdo? 🐱",
+    "description": "Sí. En un estudio de la Queen's University de Belfast, los gatos no mostraron preferencia al jugar con un ratón de juguete, pero al tener que sacar atún de un frasco estrecho, 20 de 21 machos usaron la pata izquierda y 20 de 21 hembras la derecha."
+   },
+   "pt": {
+    "title": "Seu gato pode ser canhoto? 🐱",
+    "description": "Sim. Num estudo da Queen's University de Belfast, os gatos não mostraram preferência ao brincar com um ratinho de brinquedo, mas ao tirar atum de um pote estreito, 20 de 21 machos usaram a pata esquerda e 20 de 21 fêmeas, a direita."
+   },
+   "de": {
+    "title": "Kann deine Katze Linkspfoter sein? 🐱",
+    "description": "Ja. In einer Studie der Queen's University Belfast zeigten Katzen beim Spiel mit einer Spielzeugmaus keine Vorliebe. Mussten sie aber Thunfisch aus einem engen Glas angeln, nahmen 20 von 21 Katern die linke und 20 von 21 Katzen die rechte Pfote."
+   },
+   "fr": {
+    "title": "Ton chat peut-il être gaucher ? 🐱",
+    "description": "Oui. Dans une étude de la Queen's University de Belfast, les chats n'avaient aucune préférence en jouant avec une souris jouet, mais pour pêcher du thon dans un bocal étroit, 20 mâles sur 21 utilisaient la patte gauche et 20 femelles sur 21 la droite."
+   },
+   "it": {
+    "title": "Il tuo gatto può essere mancino? 🐱",
+    "description": "Sì. In uno studio della Queen's University di Belfast i gatti non mostravano preferenze giocando con un topolino finto, ma dovendo pescare tonno da un barattolo stretto, 20 maschi su 21 usavano la zampa sinistra e 20 femmine su 21 la destra."
+   },
+   "ru": {
+    "title": "Может ли кошка быть левшой? 🐱",
+    "description": "Да. В исследовании Королевского университета Белфаста кошки не выбирали лапу, играя с игрушечной мышью, но когда нужно было достать тунца из узкой банки, 20 из 21 кота брали левой лапой, а 20 из 21 кошки — правой."
+   },
+   "ar": {
+    "title": "هل يمكن أن تكون قطتك عسراء؟ 🐱",
+    "description": "نعم. في دراسة لجامعة كوينز في بلفاست لم تُظهر القطط تفضيلًا لمخلب معيّن عند اللعب بفأر لعبة، لكن عند إخراج التونة من برطمان ضيق استخدم 20 من 21 ذكرًا المخلب الأيسر، واستخدمت 20 من 21 أنثى المخلب الأيمن."
+   },
+   "hi": {
+    "title": "क्या आपकी बिल्ली खब्बू हो सकती है? 🐱",
+    "description": "हाँ। क्वीन्स यूनिवर्सिटी बेलफ़ास्ट के एक अध्ययन में खिलौना चूहे से खेलते समय बिल्लियों ने किसी पंजे को तरजीह नहीं दी, लेकिन तंग जार से टूना निकालते समय 21 में से 20 नर बिल्लियों ने बायाँ और 21 में से 20 मादाओं ने दायाँ पंजा इस्तेमाल किया।"
+   },
+   "id": {
+    "title": "Bisakah kucingmu kidal? 🐱",
+    "description": "Bisa. Dalam studi Queen's University Belfast, kucing tidak memilih kaki tertentu saat bermain tikus mainan, tetapi saat harus mengambil tuna dari stoples sempit, 20 dari 21 kucing jantan memakai kaki kiri dan 20 dari 21 betina memakai kaki kanan."
+   },
+   "ja": {
+    "title": "猫にも左利きはいる？ 🐱",
+    "description": "います。ベルファスト・クイーンズ大学の研究では、おもちゃのネズミで遊ぶときは利き足が見られませんでしたが、細いびんからツナを取り出すときは、オス21匹中20匹が左前足、メス21匹中20匹が右前足を使いました。"
+   },
+   "ko": {
+    "title": "고양이도 왼손잡이일 수 있을까? 🐱",
+    "description": "그렇습니다. 퀸스 대학교 벨파스트 연구에서 고양이들은 장난감 쥐를 칠 때는 선호하는 발이 없었지만, 좁은 병에서 참치를 꺼낼 때는 수컷 21마리 중 20마리가 왼발, 암컷 21마리 중 20마리가 오른발을 썼습니다."
+   },
+   "pl": {
+    "title": "Czy twój kot może być leworęczny? 🐱",
+    "description": "Tak. W badaniu Queen's University w Belfaście koty bawiące się zabawkową myszką nie wybierały łapy, ale gdy musiały wyłowić tuńczyka z wąskiego słoika, 20 z 21 kocurów używało lewej łapy, a 20 z 21 kotek – prawej."
+   },
+   "nl": {
+    "title": "Kan je kat linkspotig zijn? 🐱",
+    "description": "Ja. In een studie van Queen's University Belfast hadden katten geen voorkeur bij het spelen met een speelgoedmuis, maar toen ze tonijn uit een smalle pot moesten vissen, gebruikten 20 van de 21 katers de linkerpoot en 20 van de 21 poezen de rechter."
+   },
+   "uk": {
+    "title": "Чи може кіт бути шульгою? 🐱",
+    "description": "Так. У дослідженні Королівського університету Белфаста коти не надавали переваги жодній лапі, граючись з іграшковою мишею, але коли треба було дістати тунця з вузької банки, 20 з 21 кота брали лівою лапою, а 20 з 21 кішки — правою."
+   },
+   "vi": {
+    "title": "Mèo nhà bạn có thể thuận tay trái không? 🐱",
+    "description": "Có. Trong một nghiên cứu của Đại học Queen's Belfast, mèo không ưu tiên chân nào khi vờn chuột đồ chơi, nhưng khi phải lấy cá ngừ từ một chiếc lọ hẹp, 20 trên 21 con đực dùng chân trái và 20 trên 21 con cái dùng chân phải."
+   },
+   "az": {
+    "title": "Pişiyin solaxay ola bilərmi? 🐱",
+    "description": "Bəli. Belfast Kraliça Universitetinin araşdırmasında pişiklər oyuncaq siçanla oynayanda heç bir pəncəyə üstünlük vermədi, amma dar bankadan tunes çıxarmalı olanda 21 erkəkdən 20-si sol, 21 dişidən 20-si sağ pəncəsini işlətdi."
+   },
+   "ro": {
+    "title": "Poate pisica ta să fie stângace? 🐱",
+    "description": "Da. Într-un studiu al Queen's University din Belfast, pisicile nu aveau o preferință când se jucau cu un șoricel de jucărie, dar când trebuiau să scoată ton dintr-un borcan îngust, 20 din 21 de masculi au folosit laba stângă, iar 20 din 21 de femele pe cea dreaptă."
+   }
+  }
+ }
+}

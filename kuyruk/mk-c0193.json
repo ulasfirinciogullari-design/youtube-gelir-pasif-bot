@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0193",
+ "topic": "Kedi neden duvara bakar? Kedim boşluğa bakıyor; kediler bizim göremediğimiz neyi görür ya da duyar?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat staring close up",
+ "script": {
+  "title": "Duvara bakan kedin boşluğa bakmıyor 🐱",
+  "hook_text": "KEDİN DUVARA NEDEN BAKIYOR?",
+  "scenes": [
+   {
+    "text": "Duvara bakan bu kedi boşluğa bakmıyor.",
+    "visual": "close-up of a cat's face staring intently at a blank wall, ears pricked forward",
+    "stock_query": "cat staring",
+    "source": "stock",
+    "callout": "BOŞLUK DEĞİL"
+   },
+   {
+    "text": "Orada hiçbir şey olmadığını sanırız.",
+    "visual": "a cat sitting completely still, looking at an empty wall",
+    "stock_query": "cat looking",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa bir görüşe göre senin göremediğin morötesi ışığı bile görebiliyor.",
+    "visual": "extreme close-up of a cat's eye with a wide pupil",
+    "stock_query": "cat eye close up",
+    "source": "stock",
+    "callout": "MORÖTESİ IŞIK"
+   },
+   {
+    "text": "Asıl sebep büyük ihtimalle kulakları: kedi, senin duyamadığın kadar tiz sesleri duyar.",
+    "visual": "close-up of a cat's ears swiveling toward a sound",
+    "stock_query": "cat ears",
+    "source": "stock",
+    "callout": "64.000 HZ'E KADAR"
+   },
+   {
+    "text": "Duvarın ardındaki farenin tiz çığlıkları senin için sessizlik.",
+    "visual": "a cat crouching alert next to a wall, head tilted",
+    "stock_query": "cat hunting",
+    "source": "stock",
+    "callout": "SENİN İÇİN SESSİZ"
+   },
+   {
+    "text": "Kedin bir dahaki sefere duvara dikilirse hatırla:",
+    "visual": "close-up of a cat's face looking at the camera",
+    "stock_query": "cat face close up",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Duvara bakan kedi çoğu zaman boşluğa bakmıyor. VCA Hayvan Hastaneleri'ne göre kedi, bizim fark etmediğimiz küçük bir canlıyı izliyor ya da duyamadığımız bir sesi dinliyor olabilir. Kediler yaklaşık 64.000 hertze kadar sesleri duyar; farelerin ultrasonik sesleri de buna dahil. Bir çalışmaya göre göz mercekleri morötesi ışığı geçirdiği için bu ışığı da görebiliyor olabilirler.",
+  "tags": [
+   "kedi",
+   "kedi neden duvara bakar",
+   "kedi boşluğa bakıyor",
+   "kedi kulağı",
+   "kedi davranışları",
+   "kediler",
+   "evcil hayvan",
+   "kedi sahibi",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin en çok nereye dikiliyor: duvara mı, tavana mı?",
+  "en_title": "Your cat isn't staring at nothing 🐱",
+  "en_description": "When your cat locks onto a blank wall, it is probably tracking something you can't sense. Cats hear sounds up to about 64,000 Hz, far above the human limit, including the ultrasonic squeaks mice use, and their lenses let ultraviolet light through, so they may even see UV.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden duvara bakar, kedim boşluğa bakarken ne görüyor ya da duyuyor?\n\nVCA Hayvan Hastaneleri'ne göre duvara ya da boşluğa bakan kedi çoğu zaman bizim fark etmediğimiz bir şeyi izliyor ya da dinliyor olabilir: duvardaki küçük bir örümcek, başka bir odadan gelen bir ses ya da duvarın ardında koşturan bir fare. Louisiana Eyalet Üniversitesi'nin derlediği verilere göre kediler yaklaşık 64.000 hertze kadar sesleri duyar; insanın üst sınırı ise 20.000 hertz civarındadır. Amerikan Doğa Tarihi Müzesi'ne göre fareler birbirleriyle insan kulağının duyamadığı ultrasonik seslerle iletişim kurar. City University London'ın 2014 tarihli çalışmasına göre kedilerin göz merceği morötesi ışığı geçirir; bu yüzden bu ışığı görebildikleri düşünülüyor.\n\nSenin kedin en çok nereye dikiliyor: duvara mı, tavana mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi neden duvara bakar",
+   "kedi boşluğa bakıyor",
+   "kedim boşluğa bakıyor",
+   "kedi duvara bakıyor",
+   "kedi ne görür",
+   "kediler ne duyar",
+   "kedi kulağı",
+   "kedi duyma yeteneği",
+   "kedi morötesi görür mü",
+   "kediler cin görür mü",
+   "kedi davranışları",
+   "kedi sahibi",
+   "yanlış bilinen gerçekler",
+   "kedi",
+   "kediler",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat staring at wall",
+   "cat hearing"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your cat isn't staring at nothing 🐱",
+    "description": "When your cat locks onto a blank wall, it is probably tracking something you can't sense. Cats hear sounds up to about 64,000 Hz, far above the human limit, including the ultrasonic squeaks mice use, and their lenses let ultraviolet light through, so they may even see UV."
+   },
+   "es": {
+    "title": "Tu gato no está mirando a la nada 🐱",
+    "description": "Cuando tu gato se queda fijo mirando una pared, probablemente está siguiendo algo que tú no percibes. Los gatos oyen sonidos de hasta unos 64.000 Hz, muy por encima del límite humano, como los chillidos ultrasónicos de los ratones, y su cristalino deja pasar la luz ultravioleta."
+   },
+   "pt": {
+    "title": "Seu gato não está olhando para o nada 🐱",
+    "description": "Quando seu gato fica fixo olhando para a parede, provavelmente está acompanhando algo que você não percebe. Gatos ouvem sons de até cerca de 64.000 Hz, bem acima do limite humano, incluindo os guinchos ultrassônicos dos ratos, e o cristalino deles deixa passar luz ultravioleta."
+   },
+   "de": {
+    "title": "Deine Katze starrt nicht ins Leere 🐱",
+    "description": "Wenn deine Katze eine leere Wand fixiert, verfolgt sie wahrscheinlich etwas, das du nicht wahrnimmst. Katzen hören Töne bis etwa 64.000 Hertz, weit über der menschlichen Grenze – auch das Ultraschallfiepen von Mäusen. Ihre Linse lässt zudem UV-Licht durch."
+   },
+   "fr": {
+    "title": "Ton chat ne fixe pas le vide 🐱",
+    "description": "Quand ton chat fixe un mur vide, il suit probablement quelque chose que tu ne perçois pas. Les chats entendent jusqu'à environ 64 000 Hz, bien au-delà de la limite humaine, y compris les cris ultrasonores des souris, et leur cristallin laisse passer les ultraviolets."
+   },
+   "it": {
+    "title": "Il tuo gatto non sta fissando il vuoto 🐱",
+    "description": "Quando il tuo gatto fissa una parete vuota, probabilmente sta seguendo qualcosa che tu non percepisci. I gatti sentono suoni fino a circa 64.000 Hz, ben oltre il limite umano, compresi gli squittii ultrasonici dei topi, e il loro cristallino lascia passare l'ultravioletto."
+   },
+   "ru": {
+    "title": "Кошка смотрит в стену, но не в пустоту 🐱",
+    "description": "Когда кошка уставилась в пустую стену, она, скорее всего, следит за тем, чего вы не замечаете. Кошки слышат звуки примерно до 64 000 Гц — гораздо выше человеческого предела, в том числе ультразвуковой писк мышей. А их хрусталик пропускает ультрафиолет."
+   },
+   "ar": {
+    "title": "قطتك لا تحدّق في الفراغ 🐱",
+    "description": "عندما تحدّق قطتك في جدار فارغ، فهي على الأرجح تتابع شيئًا لا تدركه أنت. تسمع القطط أصواتًا تصل إلى نحو 64 ألف هرتز، أعلى بكثير من حدود سمع الإنسان، ومنها صرير الفئران فوق الصوتي، كما تسمح عدسة عينها بمرور الأشعة فوق البنفسجية."
+   },
+   "hi": {
+    "title": "दीवार को घूरती बिल्ली ख़ाली जगह नहीं देख रही 🐱",
+    "description": "जब बिल्ली किसी ख़ाली दीवार पर नज़र गड़ाए रहती है, तो वह शायद कुछ ऐसा ट्रैक कर रही होती है जिसे आप महसूस नहीं कर सकते। बिल्लियाँ लगभग 64,000 हर्ट्ज़ तक की आवाज़ें सुनती हैं, जो इंसान की सीमा से बहुत ऊपर है, जैसे चूहों की अल्ट्रासोनिक चीं-चीं।"
+   },
+   "id": {
+    "title": "Kucingmu tidak sedang menatap kekosongan 🐱",
+    "description": "Saat kucingmu menatap dinding kosong, kemungkinan ia sedang mengikuti sesuatu yang tidak bisa kamu tangkap. Kucing mendengar suara hingga sekitar 64.000 Hz, jauh di atas batas manusia, termasuk cicitan ultrasonik tikus, dan lensa matanya meloloskan sinar ultraviolet."
+   },
+   "ja": {
+    "title": "壁を見つめる猫は、何もない所を見ているわけではない 🐱",
+    "description": "猫が何もない壁をじっと見ているとき、あなたには感じ取れない何かを追っている可能性があります。猫は約64,000ヘルツまでの高い音を聞き取れ、人間の限界をはるかに超えます。ネズミの超音波の鳴き声も聞こえ、水晶体は紫外線も通します。"
+   },
+   "ko": {
+    "title": "벽을 보는 고양이는 허공을 보는 게 아니다 🐱",
+    "description": "고양이가 빈 벽을 뚫어지게 볼 때는 당신이 느끼지 못하는 무언가를 쫓고 있을 가능성이 큽니다. 고양이는 약 64,000Hz까지 들을 수 있어 사람의 한계를 훨씬 넘고, 쥐의 초음파 소리도 듣습니다. 수정체는 자외선도 통과시킵니다."
+   },
+   "pl": {
+    "title": "Twój kot nie gapi się w pustkę 🐱",
+    "description": "Gdy kot wpatruje się w pustą ścianę, najpewniej śledzi coś, czego ty nie odbierasz. Koty słyszą dźwięki do około 64 000 Hz, daleko poza granicą ludzkiego słuchu, w tym ultradźwiękowe piski myszy, a ich soczewka przepuszcza ultrafiolet."
+   },
+   "nl": {
+    "title": "Je kat staart niet naar niets 🐱",
+    "description": "Als je kat strak naar een lege muur kijkt, volgt hij waarschijnlijk iets wat jij niet waarneemt. Katten horen geluiden tot zo'n 64.000 Hz, ver boven de menselijke grens, zoals het ultrasone gepiep van muizen, en hun ooglens laat uv-licht door."
+   },
+   "uk": {
+    "title": "Кіт дивиться в стіну, але не в порожнечу 🐱",
+    "description": "Коли кіт утупився в порожню стіну, він, найімовірніше, стежить за тим, чого ви не помічаєте. Коти чують звуки приблизно до 64 000 Гц — значно вище за людську межу, зокрема ультразвуковий писк мишей. А їхній кришталик пропускає ультрафіолет."
+   },
+   "vi": {
+    "title": "Mèo nhìn chằm chằm vào tường không phải đang nhìn vào khoảng không 🐱",
+    "description": "Khi mèo nhìn chằm chằm vào một bức tường trống, rất có thể nó đang theo dõi thứ bạn không cảm nhận được. Mèo nghe được âm thanh tới khoảng 64.000 Hz, cao hơn nhiều so với giới hạn của người, kể cả tiếng kêu siêu âm của chuột."
+   },
+   "az": {
+    "title": "Divara baxan pişiyin boşluğa baxmır 🐱",
+    "description": "Pişik boş divara zillənəndə, çox güman ki, sənin hiss etmədiyin bir şeyi izləyir. Pişiklər təxminən 64.000 hersə qədər səsləri eşidir, bu insan həddindən xeyli yuxarıdır; siçanların ultrasəs ciyiltiləri də buna daxildir."
+   },
+   "ro": {
+    "title": "Pisica ta nu se uită în gol 🐱",
+    "description": "Când pisica fixează un perete gol, probabil urmărește ceva ce tu nu percepi. Pisicile aud sunete de până la aproximativ 64.000 Hz, mult peste limita omului, inclusiv chițăiturile ultrasonice ale șoarecilor, iar cristalinul lor lasă să treacă lumina ultravioletă."
+   }
+  }
+ }
+}

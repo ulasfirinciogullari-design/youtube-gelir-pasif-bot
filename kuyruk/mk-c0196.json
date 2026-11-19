@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0196",
+ "topic": "Soğukkanlı hayvanların kanı soğuk mu? Kertenkelenin vücut sıcaklığı kaç derece, sürüngenlere neden soğukkanlı denir?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "lizard"
+ ],
+ "stock_hint": "lizard close up",
+ "script": {
+  "title": "Soğukkanlı denen kertenkelenin kanı soğuk değil 🦎",
+  "hook_text": "KERTENKELENİN KANI SOĞUK MU?",
+  "scenes": [
+   {
+    "text": "Soğukkanlı dediğimiz bu kertenkelenin kanı soğuk değil.",
+    "visual": "extreme close-up of a lizard's head and eye looking at the camera",
+    "stock_query": "lizard close up",
+    "source": "stock",
+    "callout": "SOĞUK DEĞİL"
+   },
+   {
+    "text": "Sürüngenlerin kanının buz gibi olduğunu sanırız.",
+    "visual": "a lizard resting still on a rock",
+    "stock_query": "lizard rock",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Hatta hastalanınca kendine ateş yapabiliyor: bir deneyde mikrop verilen iguanalar ısı lambasının altına gitti.",
+    "visual": "close-up of an iguana basking under a warm lamp",
+    "stock_query": "iguana close up",
+    "source": "stock",
+    "callout": "KENDİNE ATEŞ YAPAR",
+    "subject": [
+     "iguana"
+    ]
+   },
+   {
+    "text": "Çünkü ısısını kendi üretmez, güneşten toplar; çöl iguanası vücudunu otuz sekiz buçuk derecede tutar.",
+    "visual": "a lizard basking in bright sunlight on a stone",
+    "stock_query": "lizard sun",
+    "source": "stock",
+    "callout": "38,5°C"
+   },
+   {
+    "text": "Senin vücudun ise otuz yedi derece.",
+    "visual": "close-up of a lizard's eye",
+    "stock_query": "lizard eye",
+    "source": "stock",
+    "callout": "SEN: 37°C"
+   },
+   {
+    "text": "Güneşlenen bir kertenkele görürsen hatırla:",
+    "visual": "a lizard sunbathing on a warm wall",
+    "stock_query": "lizard stone",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Soğukkanlı' sözü kanın soğuk olduğunu düşündürse de kertenkelenin kanı soğuk değil. Soğukkanlılık, vücut ısısının içeriden üretilmeyip çevreden alınması demek: çöl iguanası güneşlenerek vücudunu otuz sekiz buçuk derece civarında tutar, bu da insanın otuz yedi derecesinden yüksek. Bir deneyde mikrop verilen çöl iguanaları ısı lambasının altına geçip kendilerine ateş yaptı.",
+  "tags": [
+   "kertenkele",
+   "soğukkanlı",
+   "soğukkanlı hayvanlar",
+   "sürüngenler",
+   "iguana",
+   "deyimler",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: kertenkelenin senden sıcak olabilmesi mi, kendine ateş yapması mı?",
+  "en_title": "Cold-blooded lizards don't have cold blood 🦎",
+  "en_description": "'Cold-blooded' only means a lizard takes its heat from outside instead of making it. A desert iguana keeps its body near 38.5 °C, warmer than your 37. And in an experiment, infected desert iguanas moved under a heat lamp and gave themselves a fever.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Soğukkanlı hayvanların kanı gerçekten soğuk mu, kertenkelenin vücut sıcaklığı kaç derece?\n\nHayır. Britannica'ya göre soğukkanlılık, vücut sıcaklığının çevre sıcaklığına bağlı olarak değişmesi demektir; bu hayvanlar ısıyı kendileri üretmez, örneğin güneşlenerek ısınır. Nature dergisinde 1974'te yayımlanan bir çalışmaya göre çöl iguanası, sıcaklık farkı olan bir ortamda vücut sıcaklığını 38,5 derece civarında tutar; bu, insanın yaklaşık 37 derecelik vücut sıcaklığından yüksektir. Matthew Kluger'in deneylerinde bakteri verilen çöl iguanaları ısı lambasının altına geçerek vücut sıcaklıklarını yükseltti, yani kendilerine ateş yaptı; ısınabilenlerin çoğu hayatta kaldı.\n\nSence hangisi daha şaşırtıcı: kertenkelenin senden sıcak olabilmesi mi, kendine ateş yapması mı?",
+  "hashtags": [
+   "#kertenkele",
+   "#sürüngenler",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "soğukkanlı",
+   "soğukkanlı hayvanlar",
+   "soğukkanlı ne demek",
+   "soğukkanlı hayvanların kanı",
+   "kertenkele",
+   "kertenkele vücut sıcaklığı",
+   "sürüngenler soğukkanlı mı",
+   "iguana",
+   "çöl iguanası",
+   "değişken sıcaklıklı",
+   "hayvanlarda ateş",
+   "sürüngenler",
+   "deyimler",
+   "deyimlerin anlamı",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cold blooded"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Cold-blooded lizards don't have cold blood 🦎",
+    "description": "'Cold-blooded' only means a lizard takes its heat from outside instead of making it. A desert iguana keeps its body near 38.5 °C, warmer than your 37. And in an experiment, infected desert iguanas moved under a heat lamp and gave themselves a fever."
+   },
+   "es": {
+    "title": "Los lagartos de «sangre fría» no tienen la sangre fría 🦎",
+    "description": "«Sangre fría» solo significa que el lagarto toma el calor del entorno en lugar de producirlo. Una iguana del desierto mantiene su cuerpo cerca de 38,5 °C, más que tus 37. Y en un experimento, las iguanas infectadas se pusieron bajo una lámpara de calor y se provocaron fiebre."
+   },
+   "pt": {
+    "title": "Lagartos de sangue frio não têm sangue frio 🦎",
+    "description": "“Sangue frio” só quer dizer que o lagarto tira o calor do ambiente em vez de produzi-lo. A iguana-do-deserto mantém o corpo perto de 38,5 °C, mais que os seus 37. E num experimento, iguanas infectadas foram para baixo de uma lâmpada de calor e provocaram febre em si mesmas."
+   },
+   "de": {
+    "title": "Kaltblütige Echsen haben gar kein kaltes Blut 🦎",
+    "description": "„Kaltblütig“ heißt nur, dass eine Echse ihre Wärme von außen bezieht, statt sie selbst zu erzeugen. Ein Wüstenleguan hält seinen Körper bei etwa 38,5 °C – wärmer als deine 37. Und infizierte Wüstenleguane suchten im Experiment eine Wärmelampe auf und gaben sich selbst Fieber."
+   },
+   "fr": {
+    "title": "Les lézards à « sang froid » n'ont pas le sang froid 🦎",
+    "description": "« Sang froid » signifie seulement que le lézard tire sa chaleur de l'extérieur au lieu de la produire. L'iguane du désert maintient son corps vers 38,5 °C, plus que tes 37. Et dans une expérience, des iguanes infectés se sont placés sous une lampe chauffante pour se donner de la fièvre."
+   },
+   "it": {
+    "title": "Le lucertole «a sangue freddo» non hanno il sangue freddo 🦎",
+    "description": "«A sangue freddo» significa solo che la lucertola prende il calore dall'esterno invece di produrlo. L'iguana del deserto mantiene il corpo intorno ai 38,5 °C, più dei tuoi 37. E in un esperimento le iguane infettate si sono messe sotto una lampada riscaldante e si sono date la febbre."
+   },
+   "ru": {
+    "title": "У «холоднокровной» ящерицы кровь не холодная 🦎",
+    "description": "«Холоднокровный» значит лишь, что ящерица берёт тепло снаружи, а не вырабатывает его сама. Пустынная игуана держит температуру тела около 38,5 °C — выше ваших 37. А в одном эксперименте заражённые игуаны перебирались под тепловую лампу и сами устраивали себе жар."
+   },
+   "ar": {
+    "title": "السحلية «ذات الدم البارد» دمها ليس باردًا 🦎",
+    "description": "تعني عبارة «ذات الدم البارد» فقط أن السحلية تستمد حرارتها من محيطها بدلًا من إنتاجها. تحافظ إغوانا الصحراء على حرارة جسمها قرب 38.5 درجة مئوية، أي أعلى من 37 درجة لديك. وفي تجربة، انتقلت الإغوانات المصابة بالعدوى إلى تحت مصباح حراري وأصابت نفسها بالحمّى."
+   },
+   "hi": {
+    "title": "ठंडे खून वाली छिपकली का खून ठंडा नहीं होता 🦎",
+    "description": "'ठंडे खून वाला' होने का मतलब बस इतना है कि छिपकली गर्मी ख़ुद नहीं बनाती, बाहर से लेती है। रेगिस्तानी इगुआना अपने शरीर को लगभग 38.5 डिग्री सेल्सियस पर रखता है, जो आपके 37 से ज़्यादा है। एक प्रयोग में संक्रमित इगुआना गर्म लैंप के नीचे चले गए और ख़ुद को बुख़ार दे दिया।"
+   },
+   "id": {
+    "title": "Kadal 'berdarah dingin' darahnya tidak dingin 🦎",
+    "description": "'Berdarah dingin' hanya berarti kadal mengambil panas dari lingkungan, bukan membuatnya sendiri. Iguana gurun menjaga suhu tubuhnya sekitar 38,5 °C, lebih hangat dari 37 °C milikmu. Dalam sebuah percobaan, iguana yang terinfeksi pindah ke bawah lampu pemanas dan membuat dirinya demam."
+   },
+   "ja": {
+    "title": "「冷血動物」のトカゲの血は冷たくない 🦎",
+    "description": "冷血（変温）とは、熱を自分で作らず外から得るという意味にすぎません。サバクイグアナは体温を約38.5℃に保ち、あなたの37℃より高いほど。ある実験では、感染したイグアナが保温ランプの下へ移動し、自ら熱を出しました。"
+   },
+   "ko": {
+    "title": "'냉혈동물' 도마뱀의 피는 차갑지 않다 🦎",
+    "description": "냉혈이란 도마뱀이 열을 스스로 만들지 않고 바깥에서 얻는다는 뜻일 뿐입니다. 사막이구아나는 체온을 약 38.5°C로 유지해 사람의 37°C보다 높습니다. 한 실험에서는 감염된 이구아나들이 열 램프 아래로 가서 스스로 열을 냈습니다."
+   },
+   "pl": {
+    "title": "Zimnokrwiste jaszczurki wcale nie mają zimnej krwi 🦎",
+    "description": "„Zimnokrwisty” oznacza tylko, że jaszczurka czerpie ciepło z otoczenia, zamiast je wytwarzać. Legwan pustynny utrzymuje ciało w okolicach 38,5°C, cieplej niż twoje 37. A w jednym eksperymencie zakażone legwany przechodziły pod lampę grzewczą i same wywoływały u siebie gorączkę."
+   },
+   "nl": {
+    "title": "Koudbloedige hagedissen hebben helemaal geen koud bloed 🦎",
+    "description": "'Koudbloedig' betekent alleen dat een hagedis zijn warmte van buitenaf haalt in plaats van die zelf te maken. Een woestijnleguaan houdt zijn lichaam rond 38,5 °C, warmer dan jouw 37. En in een experiment kropen geïnfecteerde leguanen onder een warmtelamp en gaven zichzelf koorts."
+   },
+   "uk": {
+    "title": "У «холоднокровної» ящірки кров не холодна 🦎",
+    "description": "«Холоднокровний» означає лише, що ящірка бере тепло ззовні, а не виробляє його сама. Пустельна ігуана тримає температуру тіла близько 38,5 °C — вище за ваші 37. А в одному експерименті заражені ігуани переходили під теплову лампу й самі влаштовували собі гарячку."
+   },
+   "vi": {
+    "title": "Thằn lằn 'máu lạnh' thật ra không hề lạnh máu 🦎",
+    "description": "'Máu lạnh' chỉ có nghĩa là thằn lằn lấy nhiệt từ môi trường thay vì tự tạo ra. Cự đà sa mạc giữ thân nhiệt khoảng 38,5 °C, cao hơn mức 37 °C của bạn. Trong một thí nghiệm, những con bị nhiễm khuẩn đã bò tới dưới đèn sưởi và tự gây sốt cho mình."
+   },
+   "az": {
+    "title": "Soyuqqanlı kərtənkələnin qanı soyuq deyil 🦎",
+    "description": "'Soyuqqanlı' sadəcə o deməkdir ki, kərtənkələ istiliyi özü yaratmır, çöldən alır. Səhra iquanası bədənini təxminən 38,5 dərəcədə saxlayır, bu sənin 37 dərəcəndən çoxdur. Bir təcrübədə yoluxmuş iquanalar istilik lampasının altına keçib özlərinə hərarət yaratdılar."
+   },
+   "ro": {
+    "title": "Șopârlele „cu sânge rece” nu au sângele rece 🦎",
+    "description": "„Cu sânge rece” înseamnă doar că șopârla își ia căldura din mediu, în loc să o producă. Iguana de deșert își ține corpul la circa 38,5 °C, mai cald decât cei 37 ai tăi. Iar într-un experiment, iguanele infectate s-au mutat sub o lampă de încălzire și și-au provocat singure febră."
+   }
+  }
+ }
+}
