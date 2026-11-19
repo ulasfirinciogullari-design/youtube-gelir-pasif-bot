@@ -28,7 +28,6 @@
   ]
  },
  "slots": {
-  "2026-11-06T10": "0yonnQV5SMA https://www.instagram.com/reel/DfZV-4Dmny9/",
   "2026-11-06T14": "ulYVGl9guJk https://www.instagram.com/reel/DfZxcw2gKrA/",
   "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
   "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
@@ -67,16 +66,17 @@
   "2026-11-18T10": "782kkRLJ7ss https://www.instagram.com/reel/Df4PffciReb/",
   "2026-11-18T14": "Ox8Alp2WJW4 https://www.instagram.com/reel/Df4q9nhDER3/",
   "2026-11-18T18": "eGfPjyxwtcM https://www.instagram.com/reel/Df5GcYwD787/",
-  "2026-11-19T10": "7UmdF_VL9M4 https://www.instagram.com/reel/Df60QuEjJrl/"
+  "2026-11-19T10": "7UmdF_VL9M4 https://www.instagram.com/reel/Df60QuEjJrl/",
+  "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/"
  },
  "nobet": {
   "basladi": "2026-11-19T08:42:05+00:00",
   "run": "44488356458",
-  "tur": 313,
+  "tur": 319,
   "cevap": 1,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-19T13:54:13+00:00"
+  "son_tur": "2026-11-19T14:01:20+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -554,6 +554,13 @@
    "at": 1795082470,
    "title": "Kırkılmayan koyunun yünü hiç durmadan uzar 🐑",
    "topic_id": "mk-c0132"
+  },
+  "YgTjDC45LnQ": {
+   "media_id": "18105138734656085",
+   "url": "https://www.instagram.com/reel/Df7Pu8qD4Q9/",
+   "at": 1795096880,
+   "title": "Tek gözü açık uyumak gerçekten mümkün mü? 🦆",
+   "topic_id": "mk-c0134"
   }
  }
 }

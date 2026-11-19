@@ -1,29 +1,14 @@
 {
- "started": "2026-11-19T10:51:12+00:00",
+ "started": "2026-11-19T14:00:12+00:00",
  "mod": "nöbet",
  "anahtar_bitis": "2027-01-14T21:03",
- "new": 2,
+ "new": 0,
  "quiet": 0,
  "room": 20,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "later": 0,
- "model": "gemini-2.5-flash",
- "items": [
-  {
-   "id": "18101749598396469",
-   "kind": "comment",
-   "author": "dc937b598926",
-   "text": "Yapay zeka gibi ananı",
-   "result": "atlandı: insult"
-  },
-  {
-   "id": "18117165782267962",
-   "kind": "comment",
-   "author": "dc937b598926",
-   "text": "Konuş artık",
-   "reply": "Anlatımımız yapay zeka tarafından yapılıyor, bilgileri özenle hazırlıyoruz. 😊",
-   "result": "gönderildi"
-  }
- ],
- "finished": "2026-11-19T10:51:19+00:00"
+ "reel": {
+  "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/"
+ },
+ "finished": "2026-11-19T14:01:20+00:00"
 }
