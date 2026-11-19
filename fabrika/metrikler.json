@@ -1,5 +1,5 @@
 {
- "at": "2026-11-19T07:24:48+00:00",
+ "at": "2026-11-19T09:05:59+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -249,7 +249,7 @@
    "baslik": "Ay Hiç Olmasaydı Bir Gün Kaç Saat Sürerdi? 😳"
   },
   "Gyz1vK-E-D4": {
-   "view": 1315,
+   "view": 1316,
    "like": 10,
    "comment": 0,
    "baslik": "Böbreklerin 1 Günde Ne Kadar Kan Süzer? 😮"
@@ -495,13 +495,13 @@
    "baslik": "Fotosentez Yapabilseydin Aç Kalır Mıydın? 😳"
   },
   "5X21vqv32gg": {
-   "view": 928,
+   "view": 929,
    "like": 5,
    "comment": 0,
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 1007,
+   "view": 1009,
    "like": 5,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
@@ -525,7 +525,7 @@
    "baslik": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun? 😳"
   },
   "2kMaKl9jUoc": {
-   "view": 157,
+   "view": 159,
    "like": 1,
    "comment": 0,
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
@@ -537,7 +537,7 @@
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
   },
   "jxrKlBSJu_s": {
-   "view": 858,
+   "view": 859,
    "like": 13,
    "comment": 4,
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
@@ -555,7 +555,7 @@
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 118,
+   "view": 123,
    "like": 0,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
@@ -579,7 +579,7 @@
    "baslik": "Bir Bakteri Gerçekte Ne Kadar Küçük? 🤯"
   },
   "cMccWi1IkfY": {
-   "view": 682,
+   "view": 703,
    "like": 4,
    "comment": 0,
    "baslik": "Ay'da 1 Ay Yaşasaydın Ne Olurdu? 😳"
@@ -587,8 +587,8 @@
  },
  "videos": {
   "hvgNbZMhWPg": {
-   "views": 2258,
-   "estimatedMinutesWatched": 388,
+   "views": 2249,
+   "estimatedMinutesWatched": 387,
    "averageViewDuration": 16,
    "averageViewPercentage": 65.77,
    "likes": 20,
@@ -607,8 +607,8 @@
    "devam_yuzde": 60.7
   },
   "QCM7IT8jkhc": {
-   "views": 2114,
-   "estimatedMinutesWatched": 441,
+   "views": 2109,
+   "estimatedMinutesWatched": 440,
    "averageViewDuration": 20,
    "averageViewPercentage": 79.64,
    "likes": 6,
@@ -628,8 +628,8 @@
    "devam_yuzde": 58.0
   },
   "Ze43ZrXANSQ": {
-   "views": 1745,
-   "estimatedMinutesWatched": 347,
+   "views": 1743,
+   "estimatedMinutesWatched": 346,
    "averageViewDuration": 19,
    "averageViewPercentage": 73.88,
    "likes": 15,
@@ -646,26 +646,6 @@
    },
    "engagedViews": 994,
    "devam_yuzde": 57.0
-  },
-  "zvgB-9sAUUY": {
-   "views": 1649,
-   "estimatedMinutesWatched": 277,
-   "averageViewDuration": 16,
-   "averageViewPercentage": 69.11,
-   "likes": 9,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1567,
-    "YT_SEARCH": 55,
-    "YT_CHANNEL": 8,
-    "YT_OTHER_PAGE": 5,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 957,
-   "devam_yuzde": 58.5
   },
   "zkaODqXzaCo": {
    "views": 1641,
@@ -688,8 +668,28 @@
    "engagedViews": 839,
    "devam_yuzde": 51.1
   },
+  "zvgB-9sAUUY": {
+   "views": 1635,
+   "estimatedMinutesWatched": 274,
+   "averageViewDuration": 16,
+   "averageViewPercentage": 69.11,
+   "likes": 9,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
+   "sources": {
+    "SHORTS": 1567,
+    "YT_SEARCH": 55,
+    "YT_CHANNEL": 8,
+    "YT_OTHER_PAGE": 5,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 957,
+   "devam_yuzde": 58.5
+  },
   "aiJ_NUnr84M": {
-   "views": 1539,
+   "views": 1534,
    "estimatedMinutesWatched": 290,
    "averageViewDuration": 20,
    "averageViewPercentage": 71.89,
@@ -772,8 +772,8 @@
    "devam_yuzde": 54.6
   },
   "MM3s0q-j2q0": {
-   "views": 1392,
-   "estimatedMinutesWatched": 213,
+   "views": 1387,
+   "estimatedMinutesWatched": 212,
    "averageViewDuration": 16,
    "averageViewPercentage": 64.69,
    "likes": 7,
@@ -958,7 +958,7 @@
    "devam_yuzde": 51.2
   },
   "HVyvxH-huIc": {
-   "views": 1267,
+   "views": 1261,
    "estimatedMinutesWatched": 216,
    "averageViewDuration": 19,
    "averageViewPercentage": 78.4,
@@ -998,7 +998,7 @@
    "devam_yuzde": 48.5
   },
   "Tk6wA4QlShk": {
-   "views": 1235,
+   "views": 1231,
    "estimatedMinutesWatched": 315,
    "averageViewDuration": 26,
    "averageViewPercentage": 103.1,
@@ -1018,7 +1018,7 @@
    "devam_yuzde": 55.0
   },
   "4J5Gbwz3y4E": {
-   "views": 1223,
+   "views": 1222,
    "estimatedMinutesWatched": 203,
    "averageViewDuration": 16,
    "averageViewPercentage": 62.17,
@@ -1097,7 +1097,7 @@
    "devam_yuzde": 36.7
   },
   "33I8lo_Kk18": {
-   "views": 1145,
+   "views": 1144,
    "estimatedMinutesWatched": 174,
    "averageViewDuration": 17,
    "averageViewPercentage": 68.57,
@@ -1199,7 +1199,7 @@
    "devam_yuzde": 32.1
   },
   "5-jo5Fr030o": {
-   "views": 1118,
+   "views": 1117,
    "estimatedMinutesWatched": 133,
    "averageViewDuration": 13,
    "averageViewPercentage": 50.95,
@@ -1219,7 +1219,7 @@
    "devam_yuzde": 49.4
   },
   "V93tM_0-ll4": {
-   "views": 1102,
+   "views": 1101,
    "estimatedMinutesWatched": 158,
    "averageViewDuration": 16,
    "averageViewPercentage": 65.41,
@@ -1239,7 +1239,7 @@
    "devam_yuzde": 49.2
   },
   "VMFzMO2A2CY": {
-   "views": 1097,
+   "views": 1096,
    "estimatedMinutesWatched": 100,
    "averageViewDuration": 14,
    "averageViewPercentage": 56.67,
@@ -1256,25 +1256,6 @@
    },
    "engagedViews": 350,
    "devam_yuzde": 31.9
-  },
-  "EQ0PrGtNYWo": {
-   "views": 1077,
-   "estimatedMinutesWatched": 173,
-   "averageViewDuration": 22,
-   "averageViewPercentage": 75.89,
-   "likes": 8,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 1,
-   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1013,
-    "YT_SEARCH": 44,
-    "YT_OTHER_PAGE": 2,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 431,
-   "devam_yuzde": 40.7
   },
   "9j_jigCDW7s": {
    "views": 1073,
@@ -1296,25 +1277,24 @@
    "engagedViews": 561,
    "devam_yuzde": 52.3
   },
-  "IVKSORUOwqk": {
-   "views": 1062,
-   "estimatedMinutesWatched": 120,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 56.13,
-   "likes": 1,
+  "EQ0PrGtNYWo": {
+   "views": 1059,
+   "estimatedMinutesWatched": 172,
+   "averageViewDuration": 22,
+   "averageViewPercentage": 75.89,
+   "likes": 8,
    "shares": 0,
    "comments": 0,
    "subscribersGained": 1,
-   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+   "title": "Dinozor Katili Asteroit İstanbul'a Düşseydi Ne Olurdu?",
    "sources": {
-    "SHORTS": 1025,
-    "YT_SEARCH": 31,
-    "YT_CHANNEL": 1,
-    "YT_OTHER_PAGE": 1,
+    "SHORTS": 1013,
+    "YT_SEARCH": 44,
+    "YT_OTHER_PAGE": 2,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 468,
-   "devam_yuzde": 44.2
+   "engagedViews": 431,
+   "devam_yuzde": 40.7
   },
   "kzDr9prfHSw": {
    "views": 1058,
@@ -1336,8 +1316,28 @@
    "engagedViews": 497,
    "devam_yuzde": 47.0
   },
+  "IVKSORUOwqk": {
+   "views": 1058,
+   "estimatedMinutesWatched": 119,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 56.13,
+   "likes": 1,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 1,
+   "title": "Derin Şeffaf Olsaydı Aynada Ne Görürdün?",
+   "sources": {
+    "SHORTS": 1025,
+    "YT_SEARCH": 31,
+    "YT_CHANNEL": 1,
+    "YT_OTHER_PAGE": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 468,
+   "devam_yuzde": 44.2
+  },
   "xLGCGQYwSmE": {
-   "views": 1050,
+   "views": 1045,
    "estimatedMinutesWatched": 222,
    "averageViewDuration": 21,
    "averageViewPercentage": 86.7,
@@ -1355,26 +1355,6 @@
    },
    "engagedViews": 592,
    "devam_yuzde": 56.7
-  },
-  "xRibz7N8GmY": {
-   "views": 1037,
-   "estimatedMinutesWatched": 211,
-   "averageViewDuration": 23,
-   "averageViewPercentage": 91.58,
-   "likes": 5,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Everest Gerçekte Ne Kadar Yüksek?",
-   "sources": {
-    "SHORTS": 988,
-    "YT_SEARCH": 35,
-    "YT_OTHER_PAGE": 3,
-    "NO_LINK_OTHER": 1,
-    "YT_CHANNEL": 1
-   },
-   "engagedViews": 500,
-   "devam_yuzde": 48.6
   },
   "oyPgO_oDYlU": {
    "views": 1031,
@@ -1415,6 +1395,26 @@
    },
    "engagedViews": 343,
    "devam_yuzde": 33.3
+  },
+  "xRibz7N8GmY": {
+   "views": 1028,
+   "estimatedMinutesWatched": 211,
+   "averageViewDuration": 23,
+   "averageViewPercentage": 91.58,
+   "likes": 5,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Everest Gerçekte Ne Kadar Yüksek?",
+   "sources": {
+    "SHORTS": 988,
+    "YT_SEARCH": 35,
+    "YT_OTHER_PAGE": 3,
+    "NO_LINK_OTHER": 1,
+    "YT_CHANNEL": 1
+   },
+   "engagedViews": 500,
+   "devam_yuzde": 48.6
   },
   "CK03tB9BVyY": {
    "views": 1025,
@@ -1478,25 +1478,6 @@
    "engagedViews": 232,
    "devam_yuzde": 23.0
   },
-  "1EK5IR8nYDE": {
-   "views": 1004,
-   "estimatedMinutesWatched": 114,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 60.8,
-   "likes": 9,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
-   "sources": {
-    "SHORTS": 959,
-    "YT_SEARCH": 41,
-    "YT_CHANNEL": 3,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 419,
-   "devam_yuzde": 41.8
-  },
   "ActwPx-yTCQ": {
    "views": 1004,
    "estimatedMinutesWatched": 190,
@@ -1538,8 +1519,27 @@
    "engagedViews": 456,
    "devam_yuzde": 45.5
   },
-  "MXkhpdIxoFM": {
+  "1EK5IR8nYDE": {
    "views": 1003,
+   "estimatedMinutesWatched": 114,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 60.8,
+   "likes": 9,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Yıldırım Sana Çarpsaydı Sağ Kalır Mıydın?",
+   "sources": {
+    "SHORTS": 959,
+    "YT_SEARCH": 41,
+    "YT_CHANNEL": 3,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 419,
+   "devam_yuzde": 41.8
+  },
+  "MXkhpdIxoFM": {
+   "views": 998,
    "estimatedMinutesWatched": 244,
    "averageViewDuration": 24,
    "averageViewPercentage": 44.48,
@@ -1556,25 +1556,6 @@
    },
    "engagedViews": 561,
    "devam_yuzde": 56.2
-  },
-  "L_hk4oVckRM": {
-   "views": 1001,
-   "estimatedMinutesWatched": 80,
-   "averageViewDuration": 14,
-   "averageViewPercentage": 54.50000000000001,
-   "likes": 5,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
-   "sources": {
-    "SHORTS": 915,
-    "YT_SEARCH": 75,
-    "YT_CHANNEL": 3,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 270,
-   "devam_yuzde": 27.2
   },
   "LjCJ1NSbCQQ": {
    "views": 996,
@@ -1596,6 +1577,25 @@
    },
    "engagedViews": 325,
    "devam_yuzde": 32.6
+  },
+  "L_hk4oVckRM": {
+   "views": 993,
+   "estimatedMinutesWatched": 80,
+   "averageViewDuration": 14,
+   "averageViewPercentage": 54.50000000000001,
+   "likes": 5,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu?",
+   "sources": {
+    "SHORTS": 915,
+    "YT_SEARCH": 75,
+    "YT_CHANNEL": 3,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 270,
+   "devam_yuzde": 27.2
   },
   "ZX3l0E9HzMw": {
    "views": 991,
@@ -1637,27 +1637,8 @@
    "engagedViews": 281,
    "devam_yuzde": 28.5
   },
-  "yexFsNeB7JM": {
-   "views": 968,
-   "estimatedMinutesWatched": 107,
-   "averageViewDuration": 13,
-   "averageViewPercentage": 54.120000000000005,
-   "likes": 5,
-   "shares": 0,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
-   "sources": {
-    "SHORTS": 907,
-    "YT_SEARCH": 49,
-    "YT_OTHER_PAGE": 2,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 424,
-   "devam_yuzde": 44.3
-  },
   "RKGn39tzpn4": {
-   "views": 967,
+   "views": 962,
    "estimatedMinutesWatched": 128,
    "averageViewDuration": 14,
    "averageViewPercentage": 54.339999999999996,
@@ -1676,8 +1657,27 @@
    "engagedViews": 503,
    "devam_yuzde": 52.3
   },
+  "yexFsNeB7JM": {
+   "views": 958,
+   "estimatedMinutesWatched": 106,
+   "averageViewDuration": 13,
+   "averageViewPercentage": 54.120000000000005,
+   "likes": 5,
+   "shares": 0,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
+   "sources": {
+    "SHORTS": 907,
+    "YT_SEARCH": 49,
+    "YT_OTHER_PAGE": 2,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 424,
+   "devam_yuzde": 44.3
+  },
   "Sr9y1BY4FPk": {
-   "views": 964,
+   "views": 957,
    "estimatedMinutesWatched": 199,
    "averageViewDuration": 28,
    "averageViewPercentage": 100.62,
@@ -1696,7 +1696,7 @@
    "devam_yuzde": 41.8
   },
   "325eJNknZqk": {
-   "views": 952,
+   "views": 951,
    "estimatedMinutesWatched": 98,
    "averageViewDuration": 14,
    "averageViewPercentage": 57.58,
@@ -1716,7 +1716,7 @@
    "devam_yuzde": 35.4
   },
   "mt9KmhllXGQ": {
-   "views": 951,
+   "views": 946,
    "estimatedMinutesWatched": 109,
    "averageViewDuration": 14,
    "averageViewPercentage": 56.08,
@@ -1735,28 +1735,8 @@
    "engagedViews": 416,
    "devam_yuzde": 44.0
   },
-  "m_XagF1CrzE": {
-   "views": 946,
-   "estimatedMinutesWatched": 175,
-   "averageViewDuration": 22,
-   "averageViewPercentage": 38.91,
-   "likes": 2,
-   "shares": 1,
-   "comments": 0,
-   "subscribersGained": 0,
-   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 913,
-    "YT_SEARCH": 21,
-    "YT_CHANNEL": 7,
-    "SUBSCRIBER": 1,
-    "NO_LINK_OTHER": 0
-   },
-   "engagedViews": 445,
-   "devam_yuzde": 47.2
-  },
   "I-Tn6aqeA80": {
-   "views": 946,
+   "views": 943,
    "estimatedMinutesWatched": 75,
    "averageViewDuration": 14,
    "averageViewPercentage": 54.77000000000001,
@@ -1774,6 +1754,26 @@
    },
    "engagedViews": 240,
    "devam_yuzde": 25.5
+  },
+  "m_XagF1CrzE": {
+   "views": 942,
+   "estimatedMinutesWatched": 174,
+   "averageViewDuration": 22,
+   "averageViewPercentage": 38.91,
+   "likes": 2,
+   "shares": 1,
+   "comments": 0,
+   "subscribersGained": 0,
+   "title": "Uçağın Kapısı Havada Açılsaydı Ne Olurdu?",
+   "sources": {
+    "SHORTS": 913,
+    "YT_SEARCH": 21,
+    "YT_CHANNEL": 7,
+    "SUBSCRIBER": 1,
+    "NO_LINK_OTHER": 0
+   },
+   "engagedViews": 445,
+   "devam_yuzde": 47.2
   },
   "JViBEWB18kw": {
    "views": 939,
@@ -1796,7 +1796,7 @@
    "devam_yuzde": 43.0
   },
   "6pHVAozelhE": {
-   "views": 938,
+   "views": 930,
    "estimatedMinutesWatched": 84,
    "averageViewDuration": 13,
    "averageViewPercentage": 51.46000000000001,
@@ -1817,8 +1817,8 @@
    "devam_yuzde": 32.7
   },
   "2F-iAcfk3X4": {
-   "views": 933,
-   "estimatedMinutesWatched": 98,
+   "views": 928,
+   "estimatedMinutesWatched": 97,
    "averageViewDuration": 17,
    "averageViewPercentage": 68.18,
    "likes": 4,
@@ -1838,7 +1838,7 @@
    "devam_yuzde": 30.6
   },
   "5X21vqv32gg": {
-   "views": 918,
+   "views": 916,
    "estimatedMinutesWatched": 116,
    "averageViewDuration": 17,
    "averageViewPercentage": 67.27,
@@ -1938,7 +1938,7 @@
    "devam_yuzde": 25.9
   },
   "Pxik5vC4NHU": {
-   "views": 679,
+   "views": 674,
    "estimatedMinutesWatched": 176,
    "averageViewDuration": 27,
    "averageViewPercentage": 47.84,
@@ -1958,7 +1958,7 @@
    "devam_yuzde": 55.3
   },
   "6XodpIbEU8A": {
-   "views": 670,
+   "views": 666,
    "estimatedMinutesWatched": 156,
    "averageViewDuration": 25,
    "averageViewPercentage": 46.11,
@@ -1997,7 +1997,7 @@
    "devam_yuzde": 50.2
   },
   "0lt8q81TuOs": {
-   "views": 600,
+   "views": 599,
    "estimatedMinutesWatched": 90,
    "averageViewDuration": 19,
    "averageViewPercentage": 63.72,
@@ -2017,8 +2017,8 @@
    "devam_yuzde": 44.2
   },
   "WR_w6VSOY-s": {
-   "views": 597,
-   "estimatedMinutesWatched": 72,
+   "views": 594,
+   "estimatedMinutesWatched": 71,
    "averageViewDuration": 15,
    "averageViewPercentage": 58.62,
    "likes": 2,
@@ -2057,7 +2057,7 @@
    "devam_yuzde": 47.0
   },
   "O1WLYgc1whA": {
-   "views": 426,
+   "views": 425,
    "estimatedMinutesWatched": 34,
    "averageViewDuration": 14,
    "averageViewPercentage": 57.32000000000001,
@@ -2099,7 +2099,7 @@
    "devam_yuzde": 53.1
   },
   "uTmyAqqF5qU": {
-   "views": 391,
+   "views": 389,
    "estimatedMinutesWatched": 59,
    "averageViewDuration": 18,
    "averageViewPercentage": 66.89,
@@ -2177,7 +2177,7 @@
    "devam_yuzde": 38.2
   },
   "nFBLtsB59Uw": {
-   "views": 236,
+   "views": 234,
    "estimatedMinutesWatched": 24,
    "averageViewDuration": 14,
    "averageViewPercentage": 50.629999999999995,
@@ -2272,7 +2272,7 @@
    "devam_yuzde": 54.9
   },
   "Z7Pj4q9UTCs": {
-   "views": 121,
+   "views": 120,
    "estimatedMinutesWatched": 8,
    "averageViewDuration": 16,
    "averageViewPercentage": 68.24,
@@ -2309,7 +2309,7 @@
    "devam_yuzde": 43.7
   },
   "agyOZTY5PCE": {
-   "views": 90,
+   "views": 89,
    "estimatedMinutesWatched": 12,
    "averageViewDuration": 18,
    "averageViewPercentage": 72.25,

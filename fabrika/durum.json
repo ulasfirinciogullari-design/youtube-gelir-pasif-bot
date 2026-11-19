@@ -3002,12 +3002,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-10T17:10:15+00:00",
-   "mod": "igbolum",
-   "title": "Everest Gerçekte Ne Kadar Yüksek?",
-   "chars": 404
-  },
-  {
    "finished": "2026-11-10T18:08:06+00:00",
    "mod": "saatlik",
    "title": "Buz Gibi Suya Düşseydin İlk Dakikada Ne Olurdu?",
@@ -3418,6 +3412,12 @@
    "url": "https://youtube.com/shorts/cMccWi1IkfY",
    "duration": 29.2,
    "chars": 379
+  },
+  {
+   "finished": "2026-11-19T09:08:49+00:00",
+   "mod": "igbolum",
+   "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+   "chars": 410
   }
  ],
  "last_fail": 1794834418.871059,
@@ -3792,6 +3792,11 @@
     "media_id": "17976477753151126",
     "url": "https://www.instagram.com/reel/Df5AwNeAtU4/",
     "at": 1795021912.1936219
+   },
+   "y035": {
+    "media_id": "18139581826632807",
+    "url": "https://www.instagram.com/reel/Df6uQnjDCVB/",
+    "at": 1795079329.6169853
    }
   },
   "eski": [
@@ -3814,5 +3819,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795025391.095941
+ "yedek_ses": 1795079329.6170728
 }

@@ -1,70 +1,21 @@
 {
- "started": "2026-11-18T18:07:09+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-19T09:07:01+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y035",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "72",
-  "videos": "94"
+ "title": "Venüs'te 1 Gün Geçirseydin Ne Olurdu?",
+ "chars": 410,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18139581826632807",
+  "url": "https://www.instagram.com/reel/Df6uQnjDCVB/",
+  "at": 1795079329.6169853
  },
- "credits_before": null,
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261118-3-y044.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "y044",
-  "series": "Ya Olsaydı?",
-  "q": "Ay'da yaşasaydık nasıl bir hayat olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 379,
- "duration": 29.2,
- "title": "Ay'da 1 Ay Yaşasaydın Ne Olurdu?",
- "url": "https://youtube.com/shorts/cMccWi1IkfY",
- "recent_status": {
-  "n019": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "85",
-   "reason": null
-  },
-  "y031": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "799",
-   "reason": null
-  },
-  "y035": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "954",
-   "reason": null
-  },
-  "n021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "205",
-   "reason": null
-  },
-  "y044": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": null,
  "log": [
-  "Kuyruktan: 20261118-3-y044.json Ay'da yaşasaydık nasıl bir hayat olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df6uQnjDCVB/"
  ],
- "finished": "2026-11-18T18:09:51+00:00"
+ "finished": "2026-11-19T09:08:49+00:00"
 }
