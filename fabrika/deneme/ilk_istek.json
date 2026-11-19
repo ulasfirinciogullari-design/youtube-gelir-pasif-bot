@@ -1,8 +1,8 @@
 {
- "ara": {
-  "y047": ["Sirius star", "Sirius night sky bright star", "Sun overexposed sky blinding"],
-  "y048": ["space elevator", "space elevator NASA concept", "tether cable into sky"],
-  "n022": ["influenza virus electron micrograph", "virus transmission electron microscope CDC", "virions micrograph"]
- },
- "al": {}
+ "ara": {},
+ "al": {
+  "y047": {"n": 1, "x": 0.28, "y": 0.55},
+  "y048": {"n": 1, "x": 0.5, "y": 0.5},
+  "n022": {"n": 2, "x": 0.52, "y": 0.5}
+ }
 }
