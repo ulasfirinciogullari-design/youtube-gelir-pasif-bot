@@ -3065,16 +3065,8 @@
    "oneri": true
   }
  ],
- "fail_streak": 0,
+ "fail_streak": 1,
  "runs": [
-  {
-   "finished": "2026-11-11T10:08:49+00:00",
-   "mod": "saatlik",
-   "title": "Hiç Su İçmeseydin Kaç Gün Dayanırdın?",
-   "url": "https://youtube.com/shorts/O1WLYgc1whA",
-   "duration": 25.1,
-   "chars": 370
-  },
   {
    "finished": "2026-11-11T12:10:04+00:00",
    "mod": "saatlik",
@@ -3484,9 +3476,14 @@
    "url": "https://youtube.com/shorts/c_EZj81DQPM",
    "duration": 28.1,
    "chars": 401
+  },
+  {
+   "finished": "2026-11-19T17:07:29+00:00",
+   "mod": "igbolum",
+   "error": "NoAudioReceived: No audio was received. Please verify that your parameters are correct."
   }
  ],
- "last_fail": 1794834418.871059,
+ "last_fail": 1795108049.8274572,
  "instagram": {
   "user": {
    "user_id": "17841467272692803",
@@ -3890,5 +3887,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795097325.9642732
+ "yedek_ses": 1795108049.8281736
 }

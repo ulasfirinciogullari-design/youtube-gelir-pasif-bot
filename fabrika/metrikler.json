@@ -1,5 +1,5 @@
 {
- "at": "2026-11-19T14:06:26+00:00",
+ "at": "2026-11-19T17:06:10+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -17,7 +17,7 @@
  "kanal_istatistik": {
   "subscriberCount": 71,
   "viewCount": 87600,
-  "videoCount": 96
+  "videoCount": 97
  },
  "canli": {
   "8KoJ0-4fHyY": {
@@ -273,7 +273,7 @@
    "baslik": "Işık Gerçekte Ne Kadar Hızlı? 🤯"
   },
   "QCM7IT8jkhc": {
-   "view": 2110,
+   "view": 2111,
    "like": 6,
    "comment": 0,
    "baslik": "Sadece Deniz Suyu İçseydin Vücuduna Ne Olurdu? 😳"
@@ -501,13 +501,13 @@
    "baslik": "200 Yaşına Gelseydin Vücudun Dayanır Mıydı? 😳"
   },
   "L_hk4oVckRM": {
-   "view": 1010,
+   "view": 1011,
    "like": 5,
    "comment": 0,
    "baslik": "Uzayda 1 Yıl Kalsaydın Vücuduna Ne Olurdu? 😳"
   },
   "MXkhpdIxoFM": {
-   "view": 1020,
+   "view": 1021,
    "like": 7,
    "comment": 0,
    "baslik": "Dünyanın En Acı Biberini Yeseydin Ne Olurdu? 😳"
@@ -525,13 +525,13 @@
    "baslik": "Dinozorlar Yok Olmasaydı Sen Var Olur Muydun? 😳"
   },
   "2kMaKl9jUoc": {
-   "view": 163,
+   "view": 170,
    "like": 1,
    "comment": 0,
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 1054,
+   "view": 1056,
    "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
@@ -543,7 +543,7 @@
    "baslik": "Dünya'nın İki Ay'ı Olsaydı İlk Gece Ne Olurdu? 😳"
   },
   "sLED9nX8m1w": {
-   "view": 422,
+   "view": 423,
    "like": 4,
    "comment": 0,
    "baslik": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin? 😳"
@@ -555,13 +555,13 @@
    "baslik": "Bütün Volkanlar Aynı Anda Patlasaydı Ne Olurdu? 😳"
   },
   "7p1teOqnxmw": {
-   "view": 132,
+   "view": 136,
    "like": 0,
    "comment": 0,
    "baslik": "Satürn'ün Halkaları Gerçekte Ne Kadar İnce? 🤯"
   },
   "3Fx81kZhy8s": {
-   "view": 897,
+   "view": 944,
    "like": 4,
    "comment": 0,
    "baslik": "Ağaçlar Hiç Olmasaydı Ne Olurdu? 😳"
@@ -579,16 +579,22 @@
    "baslik": "Bir Bakteri Gerçekte Ne Kadar Küçük? 🤯"
   },
   "cMccWi1IkfY": {
-   "view": 835,
+   "view": 871,
    "like": 4,
    "comment": 0,
    "baslik": "Ay'da 1 Ay Yaşasaydın Ne Olurdu? 😳"
   },
   "xAIVnlGvOAk": {
-   "view": 11,
+   "view": 16,
    "like": 0,
    "comment": 0,
    "baslik": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu? 😳"
+  },
+  "c_EZj81DQPM": {
+   "view": 3,
+   "like": 0,
+   "comment": 0,
+   "baslik": "Uzay Asansörüne Binseydin Ne Olurdu? 😳"
   }
  },
  "videos": {
@@ -684,7 +690,13 @@
    "comments": 0,
    "subscribersGained": 0,
    "title": "Hiç Ağrı Hissetmeseydin Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 1567,
+    "YT_SEARCH": 55,
+    "YT_CHANNEL": 8,
+    "YT_OTHER_PAGE": 5,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 957,
    "devam_yuzde": 58.5
   },

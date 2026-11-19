@@ -1,76 +1,13 @@
 {
- "started": "2026-11-19T14:07:30+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-19T17:07:07+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: y043",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "96"
- },
- "credits_before": [
-  106307,
-  613902
- ],
+ "error": "NoAudioReceived: No audio was received. Please verify that your parameters are correct.",
+ "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 522, in main\n    ep = (ig_bolum(state, a.bolum, report) if a.mod == \"igbolum\" else ornek(a.bolum, report) if a.mod == \"ornek\"\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/uret.py\", line 383, in ig_bolum\n    timings, mix, chars = ses.make(ep, WORK)\n                          ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 267, in make\n    return _make(ep, work, edge=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 283, in _make\n    mp3, al = tts_edge(say, who, cache)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 145, in tts_edge\n    audio, bounds = asyncio.run(run())\n                    ^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py\", line 190, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/base_events.py\", line 654, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"/home/runner/work/youtube-gelir-pasif-bot/youtube-gelir-pasif-bot/fabrika/ses.py\", line 138, in run\n    async for ch in c.stream():\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/edge_tts/communicate.py\", line 588, in stream\n    async for message in self.__stream():\n  File \"/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/edge_tts/communicate.py\", line 562, in __stream\n    raise NoAudioReceived(\nedge_tts.exceptions.NoAudioReceived: No audio was received. Please verify that your parameters are correct.\n",
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261119-2-y048.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y048",
-  "series": "Ya Olsaydı?",
-  "q": "Uzay asansörü olsaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": false,
- "chars": 401,
- "duration": 28.1,
- "title": "Uzay Asansörüne Binseydin Ne Olurdu?",
- "url": "https://youtube.com/shorts/c_EZj81DQPM",
- "recent_status": {
-  "y035": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "965",
-   "reason": null
-  },
-  "n021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "241",
-   "reason": null
-  },
-  "y044": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "835",
-   "reason": null
-  },
-  "y047": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "7",
-   "reason": null
-  },
-  "y048": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261119-2-y048.json Uzay asansörü olsaydı ne olurdu? (Ya Olsaydı?)"
- ],
- "finished": "2026-11-19T14:08:45+00:00"
+ "log": [],
+ "finished": "2026-11-19T17:07:29+00:00"
 }
