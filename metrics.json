@@ -5,8 +5,8 @@
     "title": "Su içen kedin dilini kaşık gibi kullanmıyor 🐱",
     "published_at": "2026-11-20T17:30:52Z",
     "privacy": "public",
-    "views": 988,
-    "likes": 4,
+    "views": 1319,
+    "likes": 7,
     "comments": 1
   },
   {
@@ -15,8 +15,8 @@
     "title": "Atın ölümü arpadan olsun sözü şaka değil, gerçek 🐴",
     "published_at": "2026-11-20T15:25:19Z",
     "privacy": "public",
-    "views": 855,
-    "likes": 6,
+    "views": 1073,
+    "likes": 5,
     "comments": 1
   },
   {
@@ -25,8 +25,8 @@
     "title": "Bir martı deniz suyu içip yaşayabilir mi? 🐦",
     "published_at": "2026-11-20T13:26:29Z",
     "privacy": "public",
-    "views": 1329,
-    "likes": 3,
+    "views": 1442,
+    "likes": 4,
     "comments": 1
   },
   {
@@ -35,7 +35,7 @@
     "title": "Yağmurda çıkan solucan boğulmaktan kaçmıyor 🪱",
     "published_at": "2026-11-20T11:25:31Z",
     "privacy": "public",
-    "views": 934,
+    "views": 1041,
     "likes": 3,
     "comments": 1
   },
@@ -47,7 +47,8 @@
     "privacy": "public",
     "views": 1133,
     "likes": 7,
-    "comments": 3
+    "comments": 3,
+    "views_per_hour": 94.24
   },
   {
     "video_id": "s41y_8hfsl4",
@@ -55,10 +56,10 @@
     "title": "Vakitsiz öten horoz sözü kümeste de doğru çıktı 🐓",
     "published_at": "2026-11-20T07:24:59Z",
     "privacy": "public",
-    "views": 1100,
+    "views": 1135,
     "likes": 5,
     "comments": 1,
-    "views_per_hour": 89.07
+    "views_per_hour": 80.97
   },
   {
     "video_id": "-YLD345MHxg",
@@ -66,10 +67,10 @@
     "title": "Bir kedi köpek gibi top getirebilir mi? 🐱",
     "published_at": "2026-11-19T21:25:51Z",
     "privacy": "public",
-    "views": 1066,
+    "views": 1068,
     "likes": 4,
     "comments": 1,
-    "views_per_hour": 47.73
+    "views_per_hour": 44.49
   },
   {
     "video_id": "35SUIwYpaDQ",
@@ -80,7 +81,7 @@
     "views": 949,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 39.0
+    "views_per_hour": 36.5
   },
   {
     "video_id": "-Z4IYlJwEVA",
@@ -88,10 +89,10 @@
     "title": "Beyaz saçı koparırsan yerine iki tane çıkmaz 💇",
     "published_at": "2026-11-19T17:25:47Z",
     "privacy": "public",
-    "views": 7144,
+    "views": 7638,
     "likes": 9,
     "comments": 1,
-    "views_per_hour": 271.26
+    "views_per_hour": 272.74
   },
   {
     "video_id": "aUUsOSN3VV8",
@@ -102,7 +103,7 @@
     "views": 1065,
     "likes": 8,
     "comments": 1,
-    "views_per_hour": 37.6
+    "views_per_hour": 35.5
   },
   {
     "video_id": "Zsxf1KSeO6c",
@@ -110,10 +111,10 @@
     "title": "Midesi bozulan bir at kusabilir mi? 🐴",
     "published_at": "2026-11-19T13:25:19Z",
     "privacy": "public",
-    "views": 1375,
+    "views": 1380,
     "likes": 2,
     "comments": 1,
-    "views_per_hour": 45.31
+    "views_per_hour": 43.11
   },
   {
     "video_id": "Ok770sV6zhk",
@@ -121,10 +122,10 @@
     "title": "Havlayan köpek ısırmaz sözü yanlış, havlamak bir uyarı 🐶",
     "published_at": "2026-11-19T11:25:09Z",
     "privacy": "public",
-    "views": 6066,
-    "likes": 37,
+    "views": 6280,
+    "likes": 36,
     "comments": 3,
-    "views_per_hour": 187.53
+    "views_per_hour": 184.62
   },
   {
     "video_id": "GTKsMCJCSI4",
@@ -135,7 +136,7 @@
     "views": 1702,
     "likes": 5,
     "comments": 1,
-    "views_per_hour": 49.56
+    "views_per_hour": 47.26
   },
   {
     "video_id": "B6Jvz0mY93Y",
@@ -146,7 +147,9 @@
     "views": 988,
     "likes": 3,
     "comments": 1,
-    "views_per_hour": 27.26
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 65.5,
+    "views_per_hour": 26.06
   },
   {
     "video_id": "H8x0pPNzPPs",
@@ -157,7 +160,9 @@
     "views": 5119,
     "likes": 12,
     "comments": 1,
-    "views_per_hour": 110.68
+    "avg_view_seconds": 22.0,
+    "avg_view_pct": 126.5,
+    "views_per_hour": 106.82
   },
   {
     "video_id": "tCWNKbq_JX0",
@@ -165,10 +170,12 @@
     "title": "Ayağına saldıran kedin sana kızgın değil, seni avlıyor 🐱",
     "published_at": "2026-11-18T19:47:40Z",
     "privacy": "public",
-    "views": 999,
+    "views": 1041,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 20.82
+    "avg_view_seconds": 9.0,
+    "avg_view_pct": 56.4,
+    "views_per_hour": 20.97
   },
   {
     "video_id": "zBGEJiPg5Ps",
@@ -176,10 +183,12 @@
     "title": "Yavru kuşa dokunursan annesi terk eder sözü yanlış 🐦",
     "published_at": "2026-11-18T15:26:02Z",
     "privacy": "public",
-    "views": 2028,
+    "views": 2046,
     "likes": 14,
     "comments": 1,
-    "views_per_hour": 38.75
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 61.7,
+    "views_per_hour": 37.89
   },
   {
     "video_id": "8ONBtkP7Qxs",
@@ -187,10 +196,12 @@
     "title": "Kedi balığa bayılır ama balık onun doğal yemeği değil 🐟",
     "published_at": "2026-11-18T13:24:36Z",
     "privacy": "public",
-    "views": 4552,
+    "views": 4577,
     "likes": 23,
     "comments": 1,
-    "views_per_hour": 83.74
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 67.8,
+    "views_per_hour": 81.7
   },
   {
     "video_id": "mEjbEGz9MtY",
@@ -198,10 +209,12 @@
     "title": "Bir karasinek iki ay yaşayabilir mi? 🪰",
     "published_at": "2026-11-18T11:25:30Z",
     "privacy": "public",
-    "views": 2343,
+    "views": 2350,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 41.59
+    "avg_view_seconds": 13.0,
+    "avg_view_pct": 68.7,
+    "views_per_hour": 40.51
   },
   {
     "video_id": "rncHryYfALA",
@@ -209,10 +222,12 @@
     "title": "Yarasını yalamak köpeği iyileştirmez, huni boşuna değil 🐶",
     "published_at": "2026-11-18T09:27:23Z",
     "privacy": "public",
-    "views": 1039,
+    "views": 1044,
     "likes": 4,
     "comments": 4,
-    "views_per_hour": 17.82
+    "avg_view_seconds": 12.0,
+    "avg_view_pct": 61.4,
+    "views_per_hour": 17.41
   },
   {
     "video_id": "eU12LoP39eI",
@@ -220,12 +235,12 @@
     "title": "Çay sudan sayılmaz demek yanlış, su yerine geçer ☕",
     "published_at": "2026-11-18T07:34:34Z",
     "privacy": "public",
-    "views": 1173,
+    "views": 1176,
     "likes": 4,
     "comments": 1,
-    "avg_view_seconds": 0.0,
-    "avg_view_pct": 0.0,
-    "views_per_hour": 19.49
+    "avg_view_seconds": 15.0,
+    "avg_view_pct": 79.2,
+    "views_per_hour": 19.01
   },
   {
     "video_id": "MT8aNilsPBg",
@@ -236,9 +251,9 @@
     "views": 1569,
     "likes": 13,
     "comments": 3,
-    "avg_view_seconds": 22.0,
-    "avg_view_pct": 122.8,
-    "views_per_hour": 22.31
+    "avg_view_seconds": 20.0,
+    "avg_view_pct": 114.6,
+    "views_per_hour": 21.79
   },
   {
     "video_id": "QcC7zCVPXes",
@@ -246,12 +261,12 @@
     "title": "Televizyona yakın oturmak gözünü bozabilir mi? 📺",
     "published_at": "2026-11-17T19:25:51Z",
     "privacy": "public",
-    "views": 1046,
+    "views": 1049,
     "likes": 3,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 65.3,
-    "views_per_hour": 14.46
+    "avg_view_pct": 66.4,
+    "views_per_hour": 14.17
   },
   {
     "video_id": "mWsBjOD5xy8",
@@ -263,8 +278,8 @@
     "likes": 5,
     "comments": 1,
     "avg_view_seconds": 10.0,
-    "avg_view_pct": 59.2,
-    "views_per_hour": 16.61
+    "avg_view_pct": 60.8,
+    "views_per_hour": 16.25
   },
   {
     "video_id": "-bGe7I88vj4",
@@ -276,8 +291,8 @@
     "likes": 5,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 62.6,
-    "views_per_hour": 14.16
+    "avg_view_pct": 63.0,
+    "views_per_hour": 13.86
   },
   {
     "video_id": "T37wug6oCZk",
@@ -285,12 +300,12 @@
     "title": "Kurbağaya dokunmak siğil yapmaz, siğili insan bulaştırır 🐸",
     "published_at": "2026-11-17T13:25:11Z",
     "privacy": "public",
-    "views": 2215,
+    "views": 2223,
     "likes": 8,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 61.8,
-    "views_per_hour": 28.27
+    "avg_view_pct": 62.1,
+    "views_per_hour": 27.78
   },
   {
     "video_id": "PCaqqGStfmc",
@@ -298,12 +313,12 @@
     "title": "Akrep kendini sokup öldürebilir mi? 🦂",
     "published_at": "2026-11-17T11:25:28Z",
     "privacy": "public",
-    "views": 2038,
+    "views": 2041,
     "likes": 3,
     "comments": 1,
-    "avg_view_seconds": 15.0,
-    "avg_view_pct": 75.6,
-    "views_per_hour": 25.37
+    "avg_view_seconds": 14.0,
+    "avg_view_pct": 74.4,
+    "views_per_hour": 24.89
   },
   {
     "video_id": "yVpdwFI5odg",
@@ -311,12 +326,12 @@
     "title": "Seni yalayan kedin seni ailesinden sayıyor 🐱",
     "published_at": "2026-11-17T09:25:04Z",
     "privacy": "public",
-    "views": 2029,
+    "views": 2035,
     "likes": 35,
     "comments": 1,
-    "avg_view_seconds": 22.0,
-    "avg_view_pct": 118.0,
-    "views_per_hour": 24.64
+    "avg_view_seconds": 20.0,
+    "avg_view_pct": 106.1,
+    "views_per_hour": 24.22
   },
   {
     "video_id": "782kkRLJ7ss",
@@ -324,12 +339,12 @@
     "title": "Fil fareden korkmaz, asıl korktuğu şey arı 🐘",
     "published_at": "2026-11-17T07:25:30Z",
     "privacy": "public",
-    "views": 6215,
+    "views": 6247,
     "likes": 18,
     "comments": 1,
     "avg_view_seconds": 16.0,
-    "avg_view_pct": 85.9,
-    "views_per_hour": 73.69
+    "avg_view_pct": 87.2,
+    "views_per_hour": 72.63
   },
   {
     "video_id": "9n3HE8oW8go",
@@ -341,8 +356,8 @@
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 59.0,
-    "views_per_hour": 10.09
+    "avg_view_pct": 59.1,
+    "views_per_hour": 9.92
   },
   {
     "video_id": "DsWiyR8r_Qc",
@@ -354,8 +369,8 @@
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 21.0,
-    "avg_view_pct": 105.3,
-    "views_per_hour": 11.1
+    "avg_view_pct": 105.1,
+    "views_per_hour": 10.91
   },
   {
     "video_id": "Ox8Alp2WJW4",
@@ -363,12 +378,12 @@
     "title": "Karnını gösteren kedi 'sev beni' demiyor 🐱",
     "published_at": "2026-11-16T15:26:21Z",
     "privacy": "public",
-    "views": 5576,
-    "likes": 48,
+    "views": 5584,
+    "likes": 49,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 73.3,
-    "views_per_hour": 55.58
+    "avg_view_pct": 74.5,
+    "views_per_hour": 54.75
   },
   {
     "video_id": "g9grbN5SXXQ",
@@ -381,7 +396,7 @@
     "comments": 7,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 85.9,
-    "views_per_hour": 34.45
+    "views_per_hour": 33.9
   },
   {
     "video_id": "rLgj4PkjR7o",
@@ -393,8 +408,8 @@
     "likes": 14,
     "comments": 1,
     "avg_view_seconds": 15.0,
-    "avg_view_pct": 86.3,
-    "views_per_hour": 13.62
+    "avg_view_pct": 86.1,
+    "views_per_hour": 13.4
   },
   {
     "video_id": "eGfPjyxwtcM",
@@ -403,11 +418,11 @@
     "published_at": "2026-11-16T09:24:23Z",
     "privacy": "public",
     "views": 4005,
-    "likes": 36,
+    "likes": 37,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 83.2,
-    "views_per_hour": 37.66
+    "avg_view_pct": 83.7,
+    "views_per_hour": 37.07
   },
   {
     "video_id": "zcng8A73LM4",
@@ -419,8 +434,8 @@
     "likes": 13,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 84.0,
-    "views_per_hour": 56.99
+    "avg_view_pct": 83.9,
+    "views_per_hour": 56.13
   },
   {
     "video_id": "h1LPwcBcKn8",
@@ -432,8 +447,8 @@
     "likes": 19,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 85.1,
-    "views_per_hour": 17.47
+    "avg_view_pct": 84.8,
+    "views_per_hour": 17.22
   },
   {
     "video_id": "zWpoUCYUUrQ",
@@ -446,7 +461,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 67.6,
-    "views_per_hour": 12.5
+    "views_per_hour": 12.33
   },
   {
     "video_id": "5rCIpLKyyio",
@@ -459,7 +474,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 84.9,
-    "views_per_hour": 12.76
+    "views_per_hour": 12.59
   },
   {
     "video_id": "ffJmSP8jxbA",
@@ -472,7 +487,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 84.8,
-    "views_per_hour": 10.5
+    "views_per_hour": 10.36
   },
   {
     "video_id": "hce6-SPurSw",
@@ -485,7 +500,7 @@
     "comments": 3,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 102.0,
-    "views_per_hour": 125.29
+    "views_per_hour": 123.66
   },
   {
     "video_id": "_1XzptyPihg",
@@ -497,8 +512,8 @@
     "likes": 11,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 76.3,
-    "views_per_hour": 41.04
+    "avg_view_pct": 76.5,
+    "views_per_hour": 40.52
   },
   {
     "video_id": "7h0iFkXKsTQ",
@@ -510,8 +525,8 @@
     "likes": 17,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 81.8,
-    "views_per_hour": 19.12
+    "avg_view_pct": 81.7,
+    "views_per_hour": 18.88
   },
   {
     "video_id": "21tQ_VO3o9M",
@@ -524,7 +539,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.0,
-    "views_per_hour": 12.95
+    "views_per_hour": 12.79
   },
   {
     "video_id": "R1I761vyvQI",
@@ -537,7 +552,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 71.4,
-    "views_per_hour": 11.58
+    "views_per_hour": 11.44
   },
   {
     "video_id": "LZUg3OP-9aM",
@@ -550,7 +565,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 73.5,
-    "views_per_hour": 16.79
+    "views_per_hour": 16.6
   },
   {
     "video_id": "Abnsfs8nFIo",
@@ -558,12 +573,12 @@
     "title": "Kalp gerçekten kırılabilir mi? 💔",
     "published_at": "2026-11-14T17:24:31Z",
     "privacy": "public",
-    "views": 1030,
+    "views": 1031,
     "likes": 5,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 69.8,
-    "views_per_hour": 7.04
+    "avg_view_pct": 69.9,
+    "views_per_hour": 6.96
   },
   {
     "video_id": "0ZGe7ZLwk3w",
@@ -571,12 +586,12 @@
     "title": "Kedinin ciğere bakışına kanma, fazlası onu sakatlar 🐱",
     "published_at": "2026-11-14T15:25:31Z",
     "privacy": "public",
-    "views": 5960,
+    "views": 5970,
     "likes": 44,
     "comments": 11,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 83.6,
-    "views_per_hour": 40.18
+    "avg_view_pct": 83.3,
+    "views_per_hour": 39.8
   },
   {
     "video_id": "yk7e3G8BjAI",
@@ -587,9 +602,9 @@
     "views": 1734,
     "likes": 7,
     "comments": 1,
-    "avg_view_seconds": 12.0,
-    "avg_view_pct": 72.2,
-    "views_per_hour": 11.53
+    "avg_view_seconds": 13.0,
+    "avg_view_pct": 72.3,
+    "views_per_hour": 11.41
   },
   {
     "video_id": "gWEa3MkJvmk",
@@ -597,12 +612,12 @@
     "title": "Timsah gözyaşı gerçek: timsahlar yemek yerken ağlıyor 🐊",
     "published_at": "2026-11-14T11:25:37Z",
     "privacy": "public",
-    "views": 7707,
+    "views": 7712,
     "likes": 42,
     "comments": 1,
     "avg_view_seconds": 14.0,
-    "avg_view_pct": 81.0,
-    "views_per_hour": 50.59
+    "avg_view_pct": 80.9,
+    "views_per_hour": 50.08
   },
   {
     "video_id": "eFCmdx3yqjI",
@@ -615,7 +630,7 @@
     "comments": 3,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 64.0,
-    "views_per_hour": 26.97
+    "views_per_hour": 26.68
   },
   {
     "video_id": "EmF5x4gltqw",
@@ -628,7 +643,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 61.1,
-    "views_per_hour": 7.87
+    "views_per_hour": 7.79
   },
   {
     "video_id": "iJpVnQQRs1s",
@@ -641,7 +656,7 @@
     "comments": 1,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 54.5,
-    "views_per_hour": 9.8
+    "views_per_hour": 9.69
   },
   {
     "video_id": "kIfVzIrvc1I",
@@ -654,7 +669,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 97.5,
-    "views_per_hour": 8.79
+    "views_per_hour": 8.7
   },
   {
     "video_id": "YgTjDC45LnQ",
@@ -666,8 +681,8 @@
     "likes": 12,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 80.5,
-    "views_per_hour": 21.53
+    "avg_view_pct": 80.6,
+    "views_per_hour": 21.32
   },
   {
     "video_id": "PVD8kPxYwYQ",
@@ -680,7 +695,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 83.5,
-    "views_per_hour": 9.6
+    "views_per_hour": 9.5
   },
   {
     "video_id": "7UmdF_VL9M4",
@@ -692,8 +707,8 @@
     "likes": 5,
     "comments": 3,
     "avg_view_seconds": 20.0,
-    "avg_view_pct": 110.1,
-    "views_per_hour": 22.15
+    "avg_view_pct": 110.0,
+    "views_per_hour": 21.94
   },
   {
     "video_id": "dO4sQ-3EC38",
@@ -719,7 +734,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 80.5,
-    "views_per_hour": 23.09
+    "views_per_hour": 22.87
   },
   {
     "video_id": "QFmJsL5xaVQ",
@@ -745,7 +760,7 @@
     "comments": 1,
     "avg_view_seconds": 22.0,
     "avg_view_pct": 113.8,
-    "views_per_hour": 0.44
+    "views_per_hour": 0.43
   },
   {
     "video_id": "gcatVWG4Nbk",
@@ -757,8 +772,8 @@
     "likes": 16,
     "comments": 5,
     "avg_view_seconds": 18.0,
-    "avg_view_pct": 106.7,
-    "views_per_hour": 16.43
+    "avg_view_pct": 106.5,
+    "views_per_hour": 16.28
   },
   {
     "video_id": "hYGpuFlzr_M",
@@ -770,8 +785,8 @@
     "likes": 15,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 93.1,
-    "views_per_hour": 28.84
+    "avg_view_pct": 93.2,
+    "views_per_hour": 28.59
   },
   {
     "video_id": "qWBZS7R8sLs",
@@ -779,12 +794,12 @@
     "title": "Kuru burun köpeğinin hasta olduğunu göstermez 🐶",
     "published_at": "2026-11-12T20:25:38Z",
     "privacy": "public",
-    "views": 1468,
+    "views": 1469,
     "likes": 6,
     "comments": 1,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 69.9,
-    "views_per_hour": 7.67
+    "views_per_hour": 7.61
   },
   {
     "video_id": "TtpUTn9T1EY",
@@ -797,7 +812,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 80.3,
-    "views_per_hour": 9.03
+    "views_per_hour": 8.95
   },
   {
     "video_id": "oSyRiH0vkBI",
@@ -810,7 +825,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 97.1,
-    "views_per_hour": 73.73
+    "views_per_hour": 73.1
   },
   {
     "video_id": "K01ltjDN7tc",
@@ -823,7 +838,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 82.4,
-    "views_per_hour": 21.86
+    "views_per_hour": 21.67
   },
   {
     "video_id": "NjtcYi4kzXA",
@@ -836,7 +851,7 @@
     "comments": 7,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 85.9,
-    "views_per_hour": 28.41
+    "views_per_hour": 28.18
   },
   {
     "video_id": "btqmPaZw8Go",
@@ -849,7 +864,7 @@
     "comments": 1,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 59.7,
-    "views_per_hour": 4.91
+    "views_per_hour": 4.87
   },
   {
     "video_id": "kcpyoNEu7jY",
@@ -862,7 +877,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 59.9,
-    "views_per_hour": 5.05
+    "views_per_hour": 5.0
   },
   {
     "video_id": "NF0Mpt36QvA",
@@ -874,8 +889,8 @@
     "likes": 4,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 82.1,
-    "views_per_hour": 9.79
+    "avg_view_pct": 82.2,
+    "views_per_hour": 9.71
   },
   {
     "video_id": "5mRx62PPThE",
@@ -883,12 +898,12 @@
     "title": "Okşanırken ısıran kedi çoğu zaman önce uyarır 🐱",
     "published_at": "2026-11-12T05:25:36Z",
     "privacy": "public",
-    "views": 7321,
+    "views": 7322,
     "likes": 53,
     "comments": 3,
     "avg_view_seconds": 18.0,
-    "avg_view_pct": 117.6,
-    "views_per_hour": 35.48
+    "avg_view_pct": 117.3,
+    "views_per_hour": 35.2
   },
   {
     "video_id": "E7adjOWrysI",
@@ -900,8 +915,8 @@
     "likes": 13,
     "comments": 1,
     "avg_view_seconds": 15.0,
-    "avg_view_pct": 92.0,
-    "views_per_hour": 14.48
+    "avg_view_pct": 91.9,
+    "views_per_hour": 14.37
   },
   {
     "video_id": "n2PrRNMinW4",
@@ -914,7 +929,7 @@
     "comments": 1,
     "avg_view_seconds": 17.0,
     "avg_view_pct": 107.5,
-    "views_per_hour": 5.05
+    "views_per_hour": 5.01
   },
   {
     "video_id": "ThyFTMj1iK0",
@@ -927,7 +942,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 88.7,
-    "views_per_hour": 17.5
+    "views_per_hour": 17.37
   },
   {
     "video_id": "pK1ClsrRbgs",
@@ -940,7 +955,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 79.9,
-    "views_per_hour": 14.59
+    "views_per_hour": 14.48
   },
   {
     "video_id": "dYWuI0FKubo",
@@ -966,7 +981,7 @@
     "comments": 3,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 67.7,
-    "views_per_hour": 7.74
+    "views_per_hour": 7.69
   },
   {
     "video_id": "3rPkhAVH-xw",
@@ -979,7 +994,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 85.5,
-    "views_per_hour": 4.72
+    "views_per_hour": 4.69
   },
   {
     "video_id": "p5exE51h38g",
@@ -1005,7 +1020,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 83.0,
-    "views_per_hour": 6.78
+    "views_per_hour": 6.73
   },
   {
     "video_id": "Y3mzNHZ0R3g",
@@ -1017,8 +1032,8 @@
     "likes": 11,
     "comments": 1,
     "avg_view_seconds": 11.0,
-    "avg_view_pct": 67.1,
-    "views_per_hour": 4.28
+    "avg_view_pct": 66.9,
+    "views_per_hour": 4.25
   },
   {
     "video_id": "rBj0xDErOrs",
@@ -1031,7 +1046,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 97.1,
-    "views_per_hour": 14.93
+    "views_per_hour": 14.83
   },
   {
     "video_id": "F73JJ1QT3Mk",
@@ -1044,7 +1059,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 66.8,
-    "views_per_hour": 4.15
+    "views_per_hour": 4.12
   },
   {
     "video_id": "e6OPjLt8BVA",
@@ -1057,7 +1072,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 94.9,
-    "views_per_hour": 4.29
+    "views_per_hour": 4.26
   },
   {
     "video_id": "5mI1Zwd3DfM",
@@ -1069,8 +1084,8 @@
     "likes": 8,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 75.5,
-    "views_per_hour": 7.72
+    "avg_view_pct": 75.6,
+    "views_per_hour": 7.67
   },
   {
     "video_id": "pgH_zCV9lVE",
@@ -1083,7 +1098,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 74.1,
-    "views_per_hour": 4.24
+    "views_per_hour": 4.21
   },
   {
     "video_id": "Mh2uUAugu5c",
@@ -1096,7 +1111,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 73.2,
-    "views_per_hour": 7.03
+    "views_per_hour": 6.98
   },
   {
     "video_id": "1cMOZL90y_Q",
@@ -1109,7 +1124,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 99.9,
-    "views_per_hour": 52.35
+    "views_per_hour": 52.01
   },
   {
     "video_id": "7q4TC7a8Bko",
@@ -1122,7 +1137,7 @@
     "comments": 3,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 80.9,
-    "views_per_hour": 13.63
+    "views_per_hour": 13.54
   },
   {
     "video_id": "EPFPaT4rj5k",
@@ -1135,7 +1150,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 90.8,
-    "views_per_hour": 18.09
+    "views_per_hour": 17.97
   },
   {
     "video_id": "aiZaZxyNYgQ",
@@ -1148,7 +1163,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 79.9,
-    "views_per_hour": 8.73
+    "views_per_hour": 8.68
   },
   {
     "video_id": "xTpjCs4J7M4",
@@ -1174,7 +1189,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 74.0,
-    "views_per_hour": 7.98
+    "views_per_hour": 7.93
   },
   {
     "video_id": "vmbZPhXsrDM",
@@ -1187,7 +1202,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.2,
-    "views_per_hour": 7.39
+    "views_per_hour": 7.34
   },
   {
     "video_id": "gAqQxsbSQmk",
@@ -1200,7 +1215,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 72.4,
-    "views_per_hour": 2.53
+    "views_per_hour": 2.51
   },
   {
     "video_id": "NfJsGLiUd1I",
@@ -1213,7 +1228,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 87.5,
-    "views_per_hour": 9.29
+    "views_per_hour": 9.24
   },
   {
     "video_id": "HtDjAaaVu9Y",
@@ -1226,7 +1241,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 79.8,
-    "views_per_hour": 8.4
+    "views_per_hour": 8.35
   },
   {
     "video_id": "GHFMkk5gIUs",
@@ -1239,7 +1254,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 67.2,
-    "views_per_hour": 3.38
+    "views_per_hour": 3.36
   },
   {
     "video_id": "GV9PqnGc_TI",
@@ -1252,7 +1267,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 93.5,
-    "views_per_hour": 22.03
+    "views_per_hour": 21.91
   },
   {
     "video_id": "RuAXVyN79Ak",
@@ -1265,7 +1280,7 @@
     "comments": 3,
     "avg_view_seconds": 20.0,
     "avg_view_pct": 118.0,
-    "views_per_hour": 4.91
+    "views_per_hour": 4.88
   },
   {
     "video_id": "8SURN77PlTQ",
@@ -1273,12 +1288,12 @@
     "title": "Eşek inatçı değil, sadece aklını kullanıyor 🫏",
     "published_at": "2026-11-08T19:24:10Z",
     "privacy": "public",
-    "views": 3709,
+    "views": 3710,
     "likes": 15,
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 89.8,
-    "views_per_hour": 12.86
+    "views_per_hour": 12.79
   },
   {
     "video_id": "cfLPnCS1Rtg",
@@ -1291,7 +1306,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.5,
-    "views_per_hour": 6.54
+    "views_per_hour": 6.51
   },
   {
     "video_id": "UkINLCUXkRY",
@@ -1304,7 +1319,7 @@
     "comments": 1,
     "avg_view_seconds": 9.0,
     "avg_view_pct": 64.9,
-    "views_per_hour": 3.38
+    "views_per_hour": 3.36
   },
   {
     "video_id": "b3b7dxG_XYE",
@@ -1317,7 +1332,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 63.2,
-    "views_per_hour": 3.76
+    "views_per_hour": 3.74
   },
   {
     "video_id": "ffIiQH5yS6Q",
@@ -1330,7 +1345,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 68.5,
-    "views_per_hour": 13.96
+    "views_per_hour": 13.89
   },
   {
     "video_id": "a2Zc8jK28L0",
@@ -1343,7 +1358,7 @@
     "comments": 10,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 85.3,
-    "views_per_hour": 8.89
+    "views_per_hour": 8.84
   },
   {
     "video_id": "SxsjCZEuNpc",
@@ -1355,8 +1370,8 @@
     "likes": 14,
     "comments": 1,
     "avg_view_seconds": 12.0,
-    "avg_view_pct": 73.9,
-    "views_per_hour": 7.25
+    "avg_view_pct": 74.0,
+    "views_per_hour": 7.21
   },
   {
     "video_id": "mccbXMW6PR8",
@@ -1369,7 +1384,7 @@
     "comments": 3,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 93.2,
-    "views_per_hour": 13.09
+    "views_per_hour": 13.02
   },
   {
     "video_id": "T4mLChdc2WM",
@@ -1382,7 +1397,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 78.5,
-    "views_per_hour": 9.58
+    "views_per_hour": 9.53
   },
   {
     "video_id": "CAI8pXddo14",
@@ -1395,7 +1410,7 @@
     "comments": 1,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 59.6,
-    "views_per_hour": 3.2
+    "views_per_hour": 3.18
   },
   {
     "video_id": "cnUHdK51l4w",
@@ -1408,7 +1423,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 74.5,
-    "views_per_hour": 12.2
+    "views_per_hour": 12.14
   },
   {
     "video_id": "tLaxIR7unhw",
@@ -1421,7 +1436,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 80.8,
-    "views_per_hour": 6.81
+    "views_per_hour": 6.78
   },
   {
     "video_id": "hOW9hBvripE",
@@ -1433,8 +1448,8 @@
     "likes": 19,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 86.8,
-    "views_per_hour": 8.01
+    "avg_view_pct": 86.7,
+    "views_per_hour": 7.97
   },
   {
     "video_id": "vw3pPy748ls",
@@ -1447,7 +1462,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.8,
-    "views_per_hour": 11.09
+    "views_per_hour": 11.03
   },
   {
     "video_id": "5nO8kwaGoUg",
@@ -1460,7 +1475,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 84.3,
-    "views_per_hour": 6.4
+    "views_per_hour": 6.37
   },
   {
     "video_id": "RUGTcmBfS0Q",
@@ -1473,7 +1488,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 109.4,
-    "views_per_hour": 3.11
+    "views_per_hour": 3.09
   },
   {
     "video_id": "6iVJA8girRE",
@@ -1486,7 +1501,7 @@
     "comments": 6,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 100.4,
-    "views_per_hour": 22.11
+    "views_per_hour": 22.0
   },
   {
     "video_id": "C-gsguJI_VQ",
@@ -1499,7 +1514,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 85.5,
-    "views_per_hour": 12.87
+    "views_per_hour": 12.81
   },
   {
     "video_id": "mFv9dfyH-t8",
@@ -1512,7 +1527,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 75.0,
-    "views_per_hour": 5.28
+    "views_per_hour": 5.25
   },
   {
     "video_id": "YYvP0VE1rkM",
@@ -1525,7 +1540,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 89.3,
-    "views_per_hour": 26.15
+    "views_per_hour": 26.02
   },
   {
     "video_id": "kkPqwP8hyz4",
@@ -1538,7 +1553,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 88.1,
-    "views_per_hour": 12.9
+    "views_per_hour": 12.84
   },
   {
     "video_id": "G0v552Gd__U",
@@ -1551,7 +1566,7 @@
     "comments": 5,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 96.2,
-    "views_per_hour": 5.55
+    "views_per_hour": 5.53
   },
   {
     "video_id": "54hA0-qmdaM",
@@ -1564,7 +1579,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 91.3,
-    "views_per_hour": 11.05
+    "views_per_hour": 11.0
   },
   {
     "video_id": "mR4H7MKxBP8",
@@ -1577,7 +1592,7 @@
     "comments": 7,
     "avg_view_seconds": 23.0,
     "avg_view_pct": 136.0,
-    "views_per_hour": 14.01
+    "views_per_hour": 13.94
   },
   {
     "video_id": "tbm7hkhOEAc",
@@ -1590,7 +1605,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 80.9,
-    "views_per_hour": 5.45
+    "views_per_hour": 5.43
   },
   {
     "video_id": "K9JGmD_QiPg",
@@ -1603,7 +1618,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 74.4,
-    "views_per_hour": 9.64
+    "views_per_hour": 9.6
   },
   {
     "video_id": "cIZHhqGAemo",
@@ -1616,7 +1631,7 @@
     "comments": 3,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 100.6,
-    "views_per_hour": 14.42
+    "views_per_hour": 14.36
   },
   {
     "video_id": "T2t5XWT49e4",
@@ -1629,7 +1644,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 76.4,
-    "views_per_hour": 4.77
+    "views_per_hour": 4.75
   },
   {
     "video_id": "JXVj7MWWJYU",
@@ -1642,7 +1657,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 77.9,
-    "views_per_hour": 6.38
+    "views_per_hour": 6.35
   },
   {
     "video_id": "TXI3F3fNdxI",
@@ -1655,7 +1670,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 81.3,
-    "views_per_hour": 9.25
+    "views_per_hour": 9.21
   },
   {
     "video_id": "s2YsSOJ_RQs",
@@ -1668,7 +1683,7 @@
     "comments": 3,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 89.7,
-    "views_per_hour": 33.06
+    "views_per_hour": 32.92
   },
   {
     "video_id": "X9s6--q0k5U",
@@ -1681,7 +1696,7 @@
     "comments": 5,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 93.1,
-    "views_per_hour": 17.67
+    "views_per_hour": 17.59
   },
   {
     "video_id": "0yonnQV5SMA",
@@ -1694,7 +1709,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 76.6,
-    "views_per_hour": 15.16
+    "views_per_hour": 15.09
   },
   {
     "video_id": "LK9xEF2uL_o",
@@ -1707,7 +1722,7 @@
     "comments": 4,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 99.1,
-    "views_per_hour": 15.03
+    "views_per_hour": 14.96
   },
   {
     "video_id": "p0eTpBxbXkc",
@@ -1720,7 +1735,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 87.7,
-    "views_per_hour": 13.69
+    "views_per_hour": 13.63
   },
   {
     "video_id": "ulYVGl9guJk",
@@ -1733,7 +1748,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 86.1,
-    "views_per_hour": 11.34
+    "views_per_hour": 11.29
   },
   {
     "video_id": "DshtAoWYhn8",
@@ -1746,7 +1761,7 @@
     "comments": 1,
     "avg_view_seconds": 23.0,
     "avg_view_pct": 157.4,
-    "views_per_hour": 7.34
+    "views_per_hour": 7.31
   },
   {
     "video_id": "Cpws3UCGfHQ",
@@ -1759,7 +1774,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 80.7,
-    "views_per_hour": 2.69
+    "views_per_hour": 2.68
   },
   {
     "video_id": "n_kedhKaA6s",
@@ -1772,7 +1787,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 82.8,
-    "views_per_hour": 2.53
+    "views_per_hour": 2.52
   },
   {
     "video_id": "gi3P2CHWrds",
@@ -1785,7 +1800,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 79.8,
-    "views_per_hour": 3.66
+    "views_per_hour": 3.65
   },
   {
     "video_id": "t4fa_JHP99Y",
@@ -1798,7 +1813,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 66.0,
-    "views_per_hour": 2.8
+    "views_per_hour": 2.79
   },
   {
     "video_id": "ZDt501sg2cs",
@@ -1811,7 +1826,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 76.8,
-    "views_per_hour": 3.8
+    "views_per_hour": 3.79
   },
   {
     "video_id": "GJth1kOanu0",
@@ -1824,7 +1839,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 74.9,
-    "views_per_hour": 3.71
+    "views_per_hour": 3.7
   },
   {
     "video_id": "ypYAhFbUoHc",
@@ -1837,7 +1852,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 102.0,
-    "views_per_hour": 11.89
+    "views_per_hour": 11.84
   },
   {
     "video_id": "u4Ka-f0WsS8",
@@ -1850,7 +1865,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 81.6,
-    "views_per_hour": 8.31
+    "views_per_hour": 8.27
   },
   {
     "video_id": "fqd3FZcU8Xs",
@@ -1863,7 +1878,7 @@
     "comments": 1,
     "avg_view_seconds": 25.0,
     "avg_view_pct": 142.4,
-    "views_per_hour": 2.49
+    "views_per_hour": 2.48
   },
   {
     "video_id": "ovwZ_nkRTDw",
@@ -1876,7 +1891,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 73.0,
-    "views_per_hour": 2.96
+    "views_per_hour": 2.94
   },
   {
     "video_id": "YNojTQDSkck",
@@ -1889,7 +1904,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.8,
-    "views_per_hour": 2.37
+    "views_per_hour": 2.36
   },
   {
     "video_id": "1ox2U809SvM",
@@ -1902,7 +1917,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 73.4,
-    "views_per_hour": 5.26
+    "views_per_hour": 5.24
   },
   {
     "video_id": "5StHMhDTiUo",
@@ -1915,7 +1930,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 85.5,
-    "views_per_hour": 5.5
+    "views_per_hour": 5.48
   },
   {
     "video_id": "NfqiC57Pclw",
@@ -1928,7 +1943,7 @@
     "comments": 1,
     "avg_view_seconds": 18.0,
     "avg_view_pct": 104.5,
-    "views_per_hour": 5.57
+    "views_per_hour": 5.55
   },
   {
     "video_id": "gdQNqp1lSBE",
@@ -1940,8 +1955,8 @@
     "likes": 14,
     "comments": 1,
     "avg_view_seconds": 13.0,
-    "avg_view_pct": 81.7,
-    "views_per_hour": 7.73
+    "avg_view_pct": 81.6,
+    "views_per_hour": 7.7
   },
   {
     "video_id": "BBpEl1nzkPk",
@@ -1953,8 +1968,8 @@
     "likes": 5,
     "comments": 1,
     "avg_view_seconds": 21.0,
-    "avg_view_pct": 137.3,
-    "views_per_hour": 3.15
+    "avg_view_pct": 137.1,
+    "views_per_hour": 3.14
   },
   {
     "video_id": "Kpl4NAf8PXo",
@@ -1967,7 +1982,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 78.8,
-    "views_per_hour": 2.8
+    "views_per_hour": 2.79
   },
   {
     "video_id": "v9Ob1P9LBws",
@@ -1980,7 +1995,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 98.0,
-    "views_per_hour": 8.63
+    "views_per_hour": 8.6
   },
   {
     "video_id": "39mCVI-1nlU",
@@ -1993,7 +2008,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 63.6,
-    "views_per_hour": 1.83
+    "views_per_hour": 1.82
   },
   {
     "video_id": "O4CmIhkONV0",
@@ -2006,7 +2021,7 @@
     "comments": 1,
     "avg_view_seconds": 15.0,
     "avg_view_pct": 105.6,
-    "views_per_hour": 3.27
+    "views_per_hour": 3.26
   },
   {
     "video_id": "LzJyoVpzTyA",
@@ -2019,7 +2034,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 76.4,
-    "views_per_hour": 4.06
+    "views_per_hour": 4.05
   },
   {
     "video_id": "-7p9KlR5opY",
@@ -2032,7 +2047,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 70.5,
-    "views_per_hour": 3.44
+    "views_per_hour": 3.43
   },
   {
     "video_id": "7xjRSwfX83E",
@@ -2045,7 +2060,7 @@
     "comments": 7,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 71.7,
-    "views_per_hour": 4.13
+    "views_per_hour": 4.12
   },
   {
     "video_id": "MQkEdpiR0M0",
@@ -2058,7 +2073,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 80.0,
-    "views_per_hour": 4.8
+    "views_per_hour": 4.79
   },
   {
     "video_id": "3zBY2pSXkrE",
@@ -2071,7 +2086,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 75.8,
-    "views_per_hour": 4.49
+    "views_per_hour": 4.48
   },
   {
     "video_id": "zmttqXweEzg",
@@ -2084,7 +2099,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 75.3,
-    "views_per_hour": 3.04
+    "views_per_hour": 3.03
   },
   {
     "video_id": "XNKlvEZVztM",
@@ -2097,7 +2112,7 @@
     "comments": 1,
     "avg_view_seconds": 17.0,
     "avg_view_pct": 103.6,
-    "views_per_hour": 4.29
+    "views_per_hour": 4.28
   },
   {
     "video_id": "PGBCfKuO8kI",
@@ -2110,7 +2125,7 @@
     "comments": 1,
     "avg_view_seconds": 17.0,
     "avg_view_pct": 108.5,
-    "views_per_hour": 13.58
+    "views_per_hour": 13.54
   },
   {
     "video_id": "qducKltyWbs",
@@ -2123,7 +2138,7 @@
     "comments": 3,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 83.9,
-    "views_per_hour": 1.88
+    "views_per_hour": 1.87
   },
   {
     "video_id": "S5m3Uy1eUOo",
@@ -2136,7 +2151,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 81.6,
-    "views_per_hour": 5.74
+    "views_per_hour": 5.72
   },
   {
     "video_id": "fI8aO5_Nxug",
@@ -2162,7 +2177,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 68.7,
-    "views_per_hour": 2.03
+    "views_per_hour": 2.02
   },
   {
     "video_id": "rostSoqICFM",
@@ -2227,7 +2242,7 @@
     "comments": 3,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 99.0,
-    "views_per_hour": 21.72
+    "views_per_hour": 21.67
   },
   {
     "video_id": "uudSt02-Evk",
@@ -2240,7 +2255,7 @@
     "comments": 1,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 71.6,
-    "views_per_hour": 5.22
+    "views_per_hour": 5.21
   },
   {
     "video_id": "ZziBlIDkwWc",
@@ -2253,7 +2268,7 @@
     "comments": 7,
     "avg_view_seconds": 10.0,
     "avg_view_pct": 77.4,
-    "views_per_hour": 4.39
+    "views_per_hour": 4.38
   },
   {
     "video_id": "MiFpPs1bMs0",
@@ -2266,7 +2281,7 @@
     "comments": 1,
     "avg_view_seconds": 13.0,
     "avg_view_pct": 93.5,
-    "views_per_hour": 1.54
+    "views_per_hour": 1.53
   },
   {
     "video_id": "6Pr2ex3xuOU",
@@ -2274,7 +2289,7 @@
     "title": "Timsahlar dilini neden dışarı çıkaramaz? 🐊",
     "published_at": "2026-10-21T07:29:10Z",
     "privacy": "public",
-    "views": 3474,
+    "views": 3476,
     "likes": 19,
     "comments": 1,
     "avg_view_seconds": 13.0,
@@ -2292,7 +2307,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 108.3,
-    "views_per_hour": 1.54
+    "views_per_hour": 1.53
   },
   {
     "video_id": "5x6d5uUvdoI",
@@ -2318,7 +2333,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 92.0,
-    "views_per_hour": 10.99
+    "views_per_hour": 10.97
   },
   {
     "video_id": "syjCIdu7idw",
@@ -2331,7 +2346,7 @@
     "comments": 1,
     "avg_view_seconds": 11.0,
     "avg_view_pct": 77.8,
-    "views_per_hour": 2.86
+    "views_per_hour": 2.85
   },
   {
     "video_id": "srJNIFHPEPE",
@@ -2383,7 +2398,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 83.8,
-    "views_per_hour": 4.23
+    "views_per_hour": 4.22
   },
   {
     "video_id": "SWjxrxslDcI",
@@ -2422,7 +2437,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 110.2,
-    "views_per_hour": 3.65
+    "views_per_hour": 3.64
   },
   {
     "video_id": "B1WUrxV1qgU",
@@ -2461,7 +2476,7 @@
     "comments": 1,
     "avg_view_seconds": 12.0,
     "avg_view_pct": 75.2,
-    "views_per_hour": 2.12
+    "views_per_hour": 2.11
   },
   {
     "video_id": "rHjp41oK2ac",
@@ -2487,7 +2502,7 @@
     "comments": 1,
     "avg_view_seconds": 16.0,
     "avg_view_pct": 105.5,
-    "views_per_hour": 1.43
+    "views_per_hour": 1.42
   },
   {
     "video_id": "XZWBsVp_kOk",
@@ -2552,7 +2567,7 @@
     "comments": 1,
     "avg_view_seconds": 14.0,
     "avg_view_pct": 77.8,
-    "views_per_hour": 1.57
+    "views_per_hour": 1.56
   },
   {
     "video_id": "F6cvfvbDu2g",
@@ -2574,7 +2589,7 @@
     "views": 1217,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 1.52
+    "views_per_hour": 1.51
   },
   {
     "video_id": "Ps-3m0_T22s",
@@ -2717,7 +2732,7 @@
     "views": 1134,
     "likes": 5,
     "comments": 1,
-    "views_per_hour": 1.34
+    "views_per_hour": 1.33
   },
   {
     "video_id": "xH99jEtGQRg",
@@ -2728,7 +2743,7 @@
     "views": 1661,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 1.96
+    "views_per_hour": 1.95
   },
   {
     "video_id": "4gAkxCV7MaA",
@@ -2750,7 +2765,7 @@
     "views": 1989,
     "likes": 10,
     "comments": 1,
-    "views_per_hour": 2.34
+    "views_per_hour": 2.33
   },
   {
     "video_id": "vsmgJqjZ8CQ",
@@ -2783,7 +2798,7 @@
     "views": 5753,
     "likes": 20,
     "comments": 1,
-    "views_per_hour": 6.73
+    "views_per_hour": 6.72
   },
   {
     "video_id": "kdEbtK5fwQQ",
@@ -2805,7 +2820,7 @@
     "views": 3243,
     "likes": 22,
     "comments": 1,
-    "views_per_hour": 3.78
+    "views_per_hour": 3.77
   },
   {
     "video_id": "LZUWW_pFBIw",
@@ -2816,7 +2831,7 @@
     "views": 2010,
     "likes": 28,
     "comments": 1,
-    "views_per_hour": 2.34
+    "views_per_hour": 2.33
   },
   {
     "video_id": "OFWm_FYPo1s",
@@ -2827,7 +2842,7 @@
     "views": 1159,
     "likes": 13,
     "comments": 1,
-    "views_per_hour": 1.35
+    "views_per_hour": 1.34
   },
   {
     "video_id": "Q7Fdwf2i1KI",
@@ -2860,7 +2875,7 @@
     "views": 1202,
     "likes": 7,
     "comments": 1,
-    "views_per_hour": 1.38
+    "views_per_hour": 1.37
   },
   {
     "video_id": "QNDnZbnqPmI",
@@ -2893,7 +2908,7 @@
     "views": 1722,
     "likes": 13,
     "comments": 0,
-    "views_per_hour": 1.93
+    "views_per_hour": 1.92
   },
   {
     "video_id": "qu9sr0JtHHM",
