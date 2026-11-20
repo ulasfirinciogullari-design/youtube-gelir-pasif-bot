@@ -639,6 +639,12 @@
     "r",
     "Yok artık, insan vücudu o kadar kolay pes etmez ama 200 yıl kalp için bayağı yor",
     "dc937b598926"
+   ],
+   "18203662645379390": [
+    1795200659.0521817,
+    "r",
+    "Vay be, neredeyse bir mavi balina kadar hızlı yemişsin! 🐳\n— Bit 🤖",
+    "dc937b598926"
    ]
   },
   "son": [
@@ -731,6 +737,12 @@
     "kind": "yorum",
     "text": "İlk ölürdüm",
     "reply": "Yok artık, insan vücudu o kadar kolay pes etmez ama 200 yıl kalp için bayağı yorucu olurdu!\n— Bit 🤖"
+   },
+   {
+    "at": 1795200659.0521817,
+    "kind": "yorum",
+    "text": "170 tane sardalya yedim",
+    "reply": "Vay be, neredeyse bir mavi balina kadar hızlı yemişsin! 🐳\n— Bit 🤖"
    }
   ]
  },
@@ -738,10 +750,10 @@
  "nobet": {
   "basladi": "2026-11-20T18:42:58+00:00",
   "run": "44793756276",
-  "tur": 1,
-  "ig_cevap": 0,
+  "tur": 9,
+  "ig_cevap": 1,
   "yt_cevap": 0,
   "son_hata": null,
-  "son_tur": "2026-11-20T18:43:05+00:00"
+  "son_tur": "2026-11-20T18:51:02+00:00"
  }
 }
