@@ -1,76 +1,15 @@
 {
- "started": "2026-11-19T18:07:16+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-20T05:15:28+00:00",
+ "mod": "ornek",
+ "gate": "ornek",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "97"
- },
- "credits_before": [
-  106307,
-  613902
- ],
+ "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
+ "chars": 1323,
+ "duration": 98.8,
+ "deneme": "fabrika/deneme/ornek-y049.mp4",
  "warnings": [
-  "hikâye bekletildi (yedek ses açık): 20261117-1-y025.json",
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
- "kuyruk": {
-  "dosya": "20261119-3-n022.json",
-  "kalan": 1
- },
- "topic": {
-  "id": "n022",
-  "series": "Ne Kadar Büyük?",
-  "q": "Bir virüs ne kadar küçük?"
- },
- "yazar": "Claude (kuyruk)",
- "ilk_kare": true,
- "chars": 377,
- "duration": 28.1,
- "title": "Bir Virüs Gerçekte Ne Kadar Küçük?",
- "url": "https://youtube.com/shorts/m9z4HiDxDfA",
- "recent_status": {
-  "n021": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "241",
-   "reason": null
-  },
-  "y044": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "835",
-   "reason": null
-  },
-  "y047": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "19",
-   "reason": null
-  },
-  "y048": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "3",
-   "reason": null
-  },
-  "n022": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
- "log": [
-  "Kuyruktan: 20261119-3-n022.json Bir virüs ne kadar küçük? (Ne Kadar Büyük?)"
- ],
- "finished": "2026-11-19T18:08:24+00:00"
+ "log": [],
+ "finished": "2026-11-20T05:18:26+00:00"
 }
