@@ -1,5 +1,5 @@
 {
- "at": "2026-11-20T07:27:44+00:00",
+ "at": "2026-11-20T08:35:50+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -883,14 +883,7 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources": {
-    "SHORTS": 1225,
-    "YT_SEARCH": 77,
-    "YT_CHANNEL": 11,
-    "YT_OTHER_PAGE": 1,
-    "HASHTAGS": 1,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 661,
    "devam_yuzde": 50.3
   },
@@ -1857,8 +1850,8 @@
    "devam_yuzde": 30.6
   },
   "5X21vqv32gg": {
-   "views": 926,
-   "estimatedMinutesWatched": 117,
+   "views": 924,
+   "estimatedMinutesWatched": 116,
    "averageViewDuration": 17,
    "averageViewPercentage": 66.64,
    "likes": 5,
@@ -1873,7 +1866,7 @@
     "SOUND_PAGE": 1,
     "NO_LINK_OTHER": 0
    },
-   "engagedViews": 351,
+   "engagedViews": 350,
    "devam_yuzde": 37.9
   },
   "E9dsm0cEDnM": {
@@ -1999,7 +1992,7 @@
    "devam_yuzde": 51.6
   },
   "YgY6Jzda0Hk": {
-   "views": 633,
+   "views": 632,
    "estimatedMinutesWatched": 80,
    "averageViewDuration": 13,
    "averageViewPercentage": 55.83,
@@ -2015,7 +2008,7 @@
     "YT_CHANNEL": 0
    },
    "engagedViews": 319,
-   "devam_yuzde": 50.4
+   "devam_yuzde": 50.5
   },
   "0lt8q81TuOs": {
    "views": 599,
@@ -2275,7 +2268,7 @@
    "devam_yuzde": 41.9
   },
   "4MpwenNL9NY": {
-   "views": 165,
+   "views": 161,
    "estimatedMinutesWatched": 21,
    "averageViewDuration": 23,
    "averageViewPercentage": 40.62,
@@ -2291,7 +2284,7 @@
     "NO_LINK_OTHER": 0
    },
    "engagedViews": 51,
-   "devam_yuzde": 30.9
+   "devam_yuzde": 31.7
   },
   "2kMaKl9jUoc": {
    "views": 140,
