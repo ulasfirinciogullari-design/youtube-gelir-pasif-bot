@@ -1,0 +1,173 @@
+{
+  "topic_id": "mk-c0185",
+  "topic": "'Vakitsiz öten horozun başını keserler' sözü doğru mu? Horoz neden sabah öter, horoz güneşi görünce mi öter, kümeste hangi horoz önce öter?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Vakitsiz öten horoz sözü kümeste de doğru çıktı 🐓",
+  "hook_text": "HANGİ HOROZ ÖNCE ÖTER?",
+  "description": "Horoz neden sabah öter, 'vakitsiz öten horozun başını keserler' sözü kümeste de geçerli mi?\n\nNagoya Üniversitesi'nden Tsuyoshi Shimmura ve Takashi Yoshimura'nın 2013'te Current Biology'de yayımlanan çalışmasına göre horozun sabah ötüşünü bir iç saat yönetir: gece gündüz loş ışıkta tutulan horozlar bile her sabah ötmeye devam etti. Aynı ekibin 2015'te Scientific Reports'ta yayımlanan deneyinde dört horozluk gruplarda her sabah önce en üst sıradaki horoz öttü, alttakiler rütbe sırasıyla onu takip etti. En üstteki horoz gruptan çıkarılınca ilk ötme sırası ikinci sıradakine geçti; araştırmacılara göre alttaki horozlar ötebildiği halde patronu bekliyor.\n\nSence hangisi daha şaşırtıcı: horozun iç saati mi, patronu bekleyen horozlar mı?\n\n#horoz #tavuk #deyimler #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-c0185",
+  "tags": [
+    "horoz",
+    "horoz neden öter",
+    "horoz neden sabah öter",
+    "horoz ne zaman öter",
+    "vakitsiz öten horoz",
+    "vakitsiz öten horozun başı",
+    "horoz ötüşü",
+    "horozlar sırayla mı öter",
+    "horoz güneşi görünce mi öter",
+    "horoz iç saati",
+    "biyolojik saat",
+    "tavuk",
+    "kümes hayvanları",
+    "deyimler",
+    "atasözleri",
+    "atasözlerinin anlamı",
+    "yanlış bilinen gerçekler",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "rooster crowing",
+    "why roosters crow",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "horoz neden oter"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Roosters don't crow at random: the top rooster always goes first 🐓",
+      "description": "Roosters don't just react to sunrise: kept in constant dim light, they still crowed every morning, driven by an internal clock. In groups of four, the highest-ranking rooster crowed first each day and the others followed in order of rank. Remove the boss, and the number two took over.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "es": {
+      "title": "Los gallos no cantan a lo loco: el jefe siempre canta primero 🐓",
+      "description": "El gallo no canta solo porque sale el sol: con luz tenue constante siguió cantando cada mañana, guiado por un reloj interno. En grupos de cuatro, el gallo de mayor rango cantaba primero y los demás lo seguían por orden de jerarquía. Al retirar al jefe, el segundo ocupó su lugar.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "pt": {
+      "title": "Galo não canta fora de hora: o chefe sempre canta primeiro 🐓",
+      "description": "O galo não canta só porque o sol nasce: mantido sob luz fraca constante, continuou cantando toda manhã, guiado por um relógio interno. Em grupos de quatro, o galo de maior posição cantava primeiro e os outros seguiam pela hierarquia. Sem o chefe, o segundo assumiu a vez.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "de": {
+      "title": "Hähne krähen nicht wild durcheinander: Der Chef ist immer zuerst dran 🐓",
+      "description": "Hähne krähen nicht nur, weil die Sonne aufgeht: Selbst bei dauerhaft gedämpftem Licht krähten sie jeden Morgen – gesteuert von einer inneren Uhr. In Vierergruppen krähte stets der ranghöchste Hahn zuerst, die anderen folgten nach Rang. Fehlte der Chef, übernahm die Nummer zwei.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "fr": {
+      "title": "Le coq ne chante pas n'importe quand : le chef chante toujours en premier 🐓",
+      "description": "Le coq ne chante pas seulement parce que le soleil se lève : sous une lumière tamisée permanente, il chantait encore chaque matin, réglé par une horloge interne. Dans des groupes de quatre, le coq dominant chantait toujours le premier, les autres suivant leur rang. Sans le chef, le numéro deux prenait sa place.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "it": {
+      "title": "Il gallo non canta a caso: il capo canta sempre per primo 🐓",
+      "description": "Il gallo non canta solo perché sorge il sole: tenuto sempre in luce fioca, continuava a cantare ogni mattina, guidato da un orologio interno. In gruppi di quattro, il gallo di rango più alto cantava sempre per primo e gli altri lo seguivano in ordine gerarchico. Tolto il capo, toccava al numero due.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "ru": {
+      "title": "Петухи кукарекают не как попало: первым всегда поёт главный 🐓",
+      "description": "Петух поёт не просто потому, что встаёт солнце: даже при постоянном тусклом свете петухи кукарекали каждое утро — их ведут внутренние часы. В группах из четырёх первым всегда пел самый высокий по рангу петух, остальные — по очереди. Когда главного убирали, первым начинал второй.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "ar": {
+      "title": "الديك لا يصيح في غير وقته: الزعيم يصيح أولًا دائمًا 🐓",
+      "description": "لا يصيح الديك لمجرد شروق الشمس؛ فحتى تحت ضوء خافت دائم واصلت الديوك الصياح كل صباح بفضل ساعة داخلية. وفي مجموعات من أربعة ديوك كان الديك الأعلى مرتبة يصيح أولًا كل صباح ثم يتبعه الآخرون حسب مراتبهم، وحين أُبعد الزعيم صار الثاني يصيح أولًا.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "hi": {
+      "title": "मुर्गे कभी भी बांग नहीं देते: सबसे पहले मुखिया बोलता है 🐓",
+      "description": "मुर्गा सिर्फ़ सूरज निकलने पर बांग नहीं देता: लगातार धीमी रोशनी में रखे मुर्गे भी हर सुबह बांग देते रहे, क्योंकि उनके अंदर एक घड़ी चलती है। चार-चार मुर्गों के समूहों में हर सुबह सबसे ऊँचे दर्जे वाला मुर्गा पहले बोला और बाकी दर्जे के क्रम में। मुखिया को हटाने पर दूसरे नंबर वाले ने उसकी जगह ले ली।\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "id": {
+      "title": "Ayam jantan tak berkokok sembarangan: si bos selalu duluan 🐓",
+      "description": "Ayam jantan tidak berkokok hanya karena matahari terbit: dalam cahaya redup terus-menerus pun mereka tetap berkokok tiap pagi, diatur jam biologis. Dalam kelompok berisi empat ekor, jantan berpangkat tertinggi selalu berkokok duluan dan yang lain menyusul sesuai urutan. Saat si bos dikeluarkan, peringkat kedua mengambil alih.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "ja": {
+      "title": "オンドリは好き勝手に鳴かない:最初に鳴くのはいつもボス 🐓",
+      "description": "オンドリは朝日を見て鳴くだけではありません。ずっと薄暗い光の中で飼っても、体内時計によって毎朝鳴き続けました。4羽のグループでは、毎朝いちばん順位の高いオンドリが最初に鳴き、ほかは順位どおりに続きました。ボスを外すと、2番目が最初に鳴くようになりました。\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "ko": {
+      "title": "수탉은 아무 때나 울지 않는다: 언제나 우두머리가 먼저 운다 🐓",
+      "description": "수탉은 해가 떠서 우는 것만이 아닙니다. 계속 어두침침한 빛 아래 둬도 체내 시계에 따라 매일 아침 울었습니다. 네 마리씩 묶은 무리에서는 매일 아침 서열이 가장 높은 수탉이 먼저 울고 나머지는 서열 순서대로 따라 울었습니다. 우두머리를 빼자 2인자가 그 자리를 이어받았습니다.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "pl": {
+      "title": "Koguty nie pieją byle kiedy: szef zawsze pieje pierwszy 🐓",
+      "description": "Kogut nie pieje tylko dlatego, że wschodzi słońce: nawet przy stałym przyćmionym świetle piał co rano, bo kieruje nim wewnętrzny zegar. W grupach po cztery najwyżej postawiony kogut zawsze piał pierwszy, a pozostałe po kolei według rangi. Gdy zabrano szefa, jego miejsce zajął numer dwa.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "nl": {
+      "title": "Hanen kraaien niet zomaar: de baas kraait altijd eerst 🐓",
+      "description": "Een haan kraait niet alleen omdat de zon opkomt: zelfs bij voortdurend gedempt licht bleven hanen elke ochtend kraaien, gestuurd door een interne klok. In groepjes van vier kraaide de hoogste in rang elke ochtend als eerste en volgden de anderen op volgorde. Haalde je de baas weg, dan nam nummer twee het over.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "uk": {
+      "title": "Півні кукурікають не будь-коли: першим завжди співає головний 🐓",
+      "description": "Півень співає не лише тому, що сходить сонце: навіть за постійного тьмяного світла півні кукурікали щоранку — їх веде внутрішній годинник. У групах по четверо першим щоранку співав найвищий за рангом, інші — по черзі. Коли головного забирали, першим починав другий.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "vi": {
+      "title": "Gà trống không gáy bừa: con đầu đàn luôn gáy trước 🐓",
+      "description": "Gà trống không chỉ gáy vì mặt trời mọc: dù bị nuôi trong ánh sáng mờ liên tục, chúng vẫn gáy mỗi sáng nhờ đồng hồ sinh học bên trong. Trong các nhóm bốn con, con có thứ bậc cao nhất luôn gáy đầu tiên, những con khác gáy theo thứ bậc. Khi bỏ con đầu đàn ra, con thứ hai lên thay.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "az": {
+      "title": "Vaxtsız banlayan xoruz sözü hində də doğru çıxdı 🐓",
+      "description": "Xoruz təkcə günəş doğanda banlamır: daim zəif işıqda saxlanan xoruzlar da daxili saat sayəsində hər səhər banlamağa davam etdi. Dörd xoruzluq qruplarda hər səhər əvvəlcə ən yüksək rütbəli xoruz banladı, digərləri rütbə sırası ilə onu izlədi. Başçı çıxarılanda növbə ikinciyə keçdi.\n\n#shorts\n\nSeri: mk-c0185"
+    },
+    "ro": {
+      "title": "Cocoșii nu cântă când vor: șeful cântă mereu primul 🐓",
+      "description": "Cocoșul nu cântă doar pentru că răsare soarele: ținut mereu în lumină slabă, a continuat să cânte în fiecare dimineață, condus de un ceas intern. În grupuri de câte patru, cocoșul cu rangul cel mai mare cânta mereu primul, iar ceilalți urmau în ordinea rangului. Când șeful era scos, îi lua locul numărul doi.\n\n#shorts\n\nSeri: mk-c0185"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: horozun iç saati mi, patronu bekleyen horozlar mı?",
+  "scenes": [
+    {
+      "text": "Vakitsiz öten horoz sözü bu kümeste de doğru.",
+      "visual": "close-up of a rooster crowing, red comb and open beak filling the frame",
+      "stock_query": "rooster crowing",
+      "source": "stock",
+      "callout": "VAKİTSİZ ÖTMEZ"
+    },
+    {
+      "text": "Horozun güneşi görünce öttüğünü sanırız.",
+      "visual": "a rooster standing on a fence at sunrise",
+      "stock_query": "rooster sunrise",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa sürekli loş ışıkta tutulan horozlar da her sabah öttü; içlerinde bir saat var.",
+      "visual": "close-up of a rooster's head and eye in dim light",
+      "stock_query": "rooster head",
+      "source": "stock",
+      "callout": "İÇ SAAT"
+    },
+    {
+      "text": "Dört horozluk gruplarda her sabah önce en güçlüsü öttü; ötekiler sırayla bekledi.",
+      "visual": "several roosters standing together in a farmyard",
+      "stock_query": "rooster farm",
+      "source": "stock",
+      "callout": "ÖNCE PATRON"
+    },
+    {
+      "text": "Patron çıkarılınca ilk ötme sırası bir alttakine geçti.",
+      "visual": "a rooster walking proudly through a chicken yard",
+      "stock_query": "rooster walking",
+      "source": "stock",
+      "callout": "SIRA ALTTAKİNE"
+    },
+    {
+      "text": "Sabah ilk duyduğun horoz kümesin patronu; çünkü:",
+      "visual": "close-up of a rooster crowing at dawn",
+      "stock_query": "rooster close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.87,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #236",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0185_1795159315_ig.mp4"
+}
