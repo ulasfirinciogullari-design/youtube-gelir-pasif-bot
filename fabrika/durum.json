@@ -2369,7 +2369,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "120",
+    "views": "121",
     "reason": null
    }
   },
@@ -2400,7 +2400,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "929",
+    "views": "928",
     "reason": null
    }
   },
@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1011",
+    "views": "1013",
     "reason": null
    }
   },
@@ -2462,7 +2462,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1022",
+    "views": "1026",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "170",
+    "views": "175",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1055",
+    "views": "1075",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "864",
+    "views": "865",
     "reason": null
    }
   },
@@ -2647,7 +2647,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "423",
+    "views": "425",
     "reason": null
    }
   },
@@ -2678,7 +2678,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "315",
+    "views": "313",
     "reason": null
    }
   },
@@ -2740,7 +2740,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "897",
+    "views": "931",
     "reason": null
    }
   },
@@ -2772,7 +2772,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "965",
+    "views": "972",
     "reason": null
    }
   },
@@ -2804,7 +2804,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "241",
+    "views": "242",
     "reason": null
    }
   },
@@ -2836,7 +2836,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "835",
+    "views": "898",
     "reason": null
    }
   },
@@ -2868,7 +2868,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "19",
+    "views": "47",
     "reason": null
    }
   },
@@ -2900,7 +2900,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "3",
+    "views": "45",
     "reason": null
    }
   },
@@ -2928,6 +2928,39 @@
    "at": 1795111703.0767634,
    "chars": 377,
    "ilk": true,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "115",
+    "reason": null
+   }
+  },
+  {
+   "id": "y025",
+   "video_id": "Jf7-TGNBR4Y",
+   "url": "https://youtube.com/shorts/Jf7-TGNBR4Y",
+   "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If Earth's Axis Had No Tilt? (Bread Is in Danger!)",
+    "es": "¿Y si el eje de la Tierra no estuviera inclinado? (¡Adiós al pan!)",
+    "pt": "E se o eixo da Terra não fosse inclinado? (Adeus, pão!)",
+    "ar": "ماذا لو لم يكن محور الأرض مائلًا؟ (وداعًا للخبز!)",
+    "hi": "अगर धरती की धुरी झुकी न होती तो क्या होता? (रोटी भी गई!)",
+    "id": "Bagaimana Jika Sumbu Bumi Tidak Miring? (Roti Pun Lenyap!)",
+    "fr": "Et si l'axe de la Terre n'était pas incliné ? (Adieu le pain !)",
+    "de": "Was wäre, wenn die Erdachse nicht geneigt wäre? (Tschüss, Brot!)",
+    "ru": "Что если бы ось Земли не была наклонена? (Прощай, хлеб!)",
+    "az": "Yerin Oxu Maili Olmasaydı Nə Olardı? (Çörək də Gedir!)"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795169403.4005728,
+   "chars": 1272,
+   "ilk": null,
+   "hikaye": true,
    "yedek_ses": true,
    "status": {
     "upload": "uploaded",
@@ -3034,7 +3067,8 @@
   "y044",
   "y047",
   "y048",
-  "n022"
+  "n022",
+  "y025"
  ],
  "extra": [
   {
@@ -3100,14 +3134,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-11T18:08:54+00:00",
-   "mod": "saatlik",
-   "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
-   "url": "https://youtube.com/shorts/agyOZTY5PCE",
-   "duration": 24.2,
-   "chars": 367
-  },
   {
    "finished": "2026-11-11T20:08:10+00:00",
    "mod": "saatlik",
@@ -3516,6 +3542,14 @@
    "mod": "igbolum",
    "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
    "chars": 364
+  },
+  {
+   "finished": "2026-11-20T10:10:05+00:00",
+   "mod": "saatlik",
+   "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
+   "url": "https://youtube.com/shorts/Jf7-TGNBR4Y",
+   "duration": 98.1,
+   "chars": 1272
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3932,5 +3966,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795165782.1641796
+ "yedek_ses": 1795169405.2486262
 }
