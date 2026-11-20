@@ -3169,14 +3169,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-12T10:08:35+00:00",
-   "mod": "saatlik",
-   "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
-   "url": "https://youtube.com/shorts/WR_w6VSOY-s",
-   "duration": 26.8,
-   "chars": 405
-  },
-  {
    "finished": "2026-11-12T12:11:27+00:00",
    "mod": "saatlik",
    "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
@@ -3584,6 +3576,12 @@
    "url": "https://youtube.com/shorts/_ZGLGg08Flc",
    "duration": 98.8,
    "chars": 1323
+  },
+  {
+   "finished": "2026-11-20T17:23:50+00:00",
+   "mod": "igbolum",
+   "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+   "chars": 405
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3983,6 +3981,11 @@
     "media_id": "18128498761903118",
     "url": "https://www.instagram.com/reel/Df9uoDsjKJk/",
     "at": 1795180178.139868
+   },
+   "g015": {
+    "media_id": "18108814382348904",
+    "url": "https://www.instagram.com/reel/Df-LthXiSSk/",
+    "at": 1795195430.051449
    }
   },
   "eski": [
@@ -4005,5 +4008,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795183919.1655648
+ "yedek_ses": 1795195430.05152
 }

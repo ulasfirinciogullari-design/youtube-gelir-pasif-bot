@@ -1,74 +1,21 @@
 {
- "started": "2026-11-20T14:09:04+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-20T17:21:14+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: g015",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "99"
+ "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
+ "chars": 405,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18108814382348904",
+  "url": "https://www.instagram.com/reel/Df-LthXiSSk/",
+  "at": 1795195430.051449
  },
- "credits_before": [
-  106307,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261120-1-y049.json",
-  "kalan": 2
- },
- "topic": {
-  "id": "y049",
-  "series": "Ya Olsaydı?",
-  "q": "Gece hiç olmasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 1323,
- "duration": 98.8,
- "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
- "url": "https://youtube.com/shorts/_ZGLGg08Flc",
- "recent_status": {
-  "y047": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "53",
-   "reason": null
-  },
-  "y048": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "55",
-   "reason": null
-  },
-  "n022": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "168",
-   "reason": null
-  },
-  "y025": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "3",
-   "reason": null
-  },
-  "y049": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
  "log": [
-  "Kuyruktan: 20261120-1-y049.json Gece hiç olmasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df-LthXiSSk/"
  ],
- "finished": "2026-11-20T14:11:59+00:00"
+ "finished": "2026-11-20T17:23:50+00:00"
 }
