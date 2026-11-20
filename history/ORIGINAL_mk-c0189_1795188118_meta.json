@@ -1,0 +1,176 @@
+{
+  "topic_id": "mk-c0189",
+  "topic": "'Atın ölümü arpadan olsun' sözü doğru mu? Ata fazla arpa vermek zararlı mı, at fazla arpa yerse ne olur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Atın ölümü arpadan olsun sözü şaka değil, gerçek 🐴",
+  "hook_text": "AT FAZLA ARPA YERSE NE OLUR?",
+  "description": "'Atın ölümü arpadan olsun' sözü doğru mu, at fazla arpa yerse ne olur?\n\nSöz, hoşa giden bir şey uğruna zarar görmeyi göze almayı anlatır; at için ise neredeyse gerçek. Merck Veteriner El Kitabı'na göre at aşırı miktarda tahıl yediğinde sindirilmeyen nişasta kalın bağırsağa geçer ve orada hızla mayalanıp laktik asit üretir; asit bağırsaktaki bakterilerin bir kısmını öldürür, açığa çıkan zehirler kana karışır ve laminite, yani toynak içindeki katmanların iltihaplanmasına yol açabilir. Amerikan At Veteriner Hekimleri Derneği'ne (AAEP) göre bu katmanlar toynak kemiğini toynak duvarına bağlar; ağır vakalarda kemik döner ya da aşağı çöker ve bazı atlar o kadar ağır hasar görür ki insani nedenlerle uyutulur.\n\nSence hangisi daha şaşırtıcı: arpanın atı öldürebilmesi mi, zararın toynakta çıkması mı?\n\n#at #atlar #deyimler #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-c0189",
+  "tags": [
+    "atın ölümü arpadan olsun",
+    "atın ölümü arpadan",
+    "deyimin anlamı",
+    "ata arpa verilir mi",
+    "at fazla arpa yerse",
+    "at arpa",
+    "at beslenmesi",
+    "at laminit",
+    "laminit nedir",
+    "at toynağı",
+    "at hastalıkları",
+    "at bakımı",
+    "atlar",
+    "at",
+    "deyimler",
+    "atasözleri ve deyimler",
+    "yanlış bilinen gerçekler",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "horse grain overload",
+    "laminitis",
+    "ata arpa",
+    "atasözleri",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "atin olumu arpadan olsun",
+    "atin olumu arpadan"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Too much barley really can kill a horse 🐴",
+      "description": "A Turkish saying jokes that a horse may as well die of barley, and it's closer to fact than it sounds. When a horse gorges on grain, undigested starch ferments in the hindgut, killing bacteria and releasing toxins that can trigger laminitis. In severe cases the bone inside the hoof rotates, and some horses can't be saved.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "es": {
+      "title": "Demasiada cebada de verdad puede matar a un caballo 🐴",
+      "description": "Cuando un caballo se atiborra de grano, el almidón sin digerir fermenta en el intestino grueso, mata bacterias y libera toxinas que pueden causar laminitis. Las láminas que sujetan el hueso dentro del casco se dañan; en los casos graves el hueso rota y algunos caballos no se salvan.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "pt": {
+      "title": "Cevada demais pode mesmo matar um cavalo 🐴",
+      "description": "Quando um cavalo come grão demais, o amido não digerido fermenta no intestino grosso, mata bactérias e libera toxinas que podem causar laminite. As lâminas que prendem o osso dentro do casco são lesionadas; nos casos graves o osso gira e alguns cavalos não podem ser salvos.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "de": {
+      "title": "Zu viel Gerste kann ein Pferd wirklich umbringen 🐴",
+      "description": "Frisst ein Pferd zu viel Getreide, gärt unverdaute Stärke im Dickdarm, tötet Bakterien ab und setzt Giftstoffe frei, die eine Hufrehe auslösen können. Die Lamellen, die das Hufbein in der Hufkapsel halten, werden geschädigt; im schlimmsten Fall rotiert der Knochen, und manche Pferde sind nicht zu retten.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "fr": {
+      "title": "Trop d'orge peut vraiment tuer un cheval 🐴",
+      "description": "Quand un cheval se gave de céréales, l'amidon non digéré fermente dans le gros intestin, tue des bactéries et libère des toxines qui peuvent provoquer une fourbure. Les lamelles qui retiennent l'os dans le sabot sont abîmées ; dans les cas graves, l'os bascule et certains chevaux ne peuvent pas être sauvés.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "it": {
+      "title": "Troppo orzo può davvero uccidere un cavallo 🐴",
+      "description": "Quando un cavallo si abbuffa di cereali, l'amido non digerito fermenta nell'intestino crasso, uccide batteri e libera tossine che possono causare la laminite. Le lamine che tengono l'osso dentro lo zoccolo si danneggiano; nei casi gravi l'osso ruota e alcuni cavalli non si possono salvare.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "ru": {
+      "title": "Слишком много ячменя действительно может убить лошадь 🐴",
+      "description": "Если лошадь объестся зерна, непереваренный крахмал бродит в толстой кишке, убивает бактерии и высвобождает токсины, которые могут вызвать ламинит. Пластинки, удерживающие кость внутри копыта, повреждаются; в тяжёлых случаях кость поворачивается, и некоторых лошадей спасти не удаётся.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "ar": {
+      "title": "الإفراط في الشعير قد يقتل الحصان فعلًا 🐴",
+      "description": "عندما يُفرط الحصان في أكل الحبوب، يتخمّر النشا غير المهضوم في الأمعاء الغليظة فيقتل جزءًا من البكتيريا وتنطلق سموم قد تسبب التهاب الصفائح الحافرية. وتتضرر الصفائح التي تثبّت العظم داخل الحافر، وفي الحالات الشديدة يدور العظم ولا يمكن إنقاذ بعض الخيول.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "hi": {
+      "title": "ज़्यादा जौ सच में घोड़े की जान ले सकता है 🐴",
+      "description": "जब घोड़ा बहुत ज़्यादा अनाज खा लेता है, तो बिना पचा स्टार्च बड़ी आंत में सड़ने लगता है, बैक्टीरिया मरते हैं और ज़हरीले पदार्थ निकलते हैं, जिनसे लैमिनाइटिस हो सकता है। खुर के अंदर हड्डी को थामने वाली परतें खराब हो जाती हैं; गंभीर मामलों में हड्डी घूम जाती है और कुछ घोड़ों को बचाया नहीं जा सकता।\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "id": {
+      "title": "Terlalu banyak jelai benar-benar bisa membunuh kuda 🐴",
+      "description": "Saat kuda makan biji-bijian terlalu banyak, pati yang tak tercerna berfermentasi di usus besar, membunuh bakteri, dan melepaskan racun yang bisa memicu laminitis. Lapisan yang menahan tulang di dalam kuku rusak; pada kasus berat tulangnya berputar dan sebagian kuda tak bisa diselamatkan.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "ja": {
+      "title": "大麦の食べすぎは本当に馬の命取りになる 🐴",
+      "description": "馬が穀物を食べすぎると、消化されなかったデンプンが大腸で急速に発酵し、細菌の一部を死なせて毒素を放出します。これが蹄葉炎を引き起こすことがあります。蹄の中で骨を支える層が傷つき、重い場合は骨が回転して、助からない馬もいます。\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "ko": {
+      "title": "보리를 너무 많이 먹으면 말이 정말 죽을 수 있다 🐴",
+      "description": "말이 곡물을 너무 많이 먹으면 소화되지 않은 녹말이 대장에서 빠르게 발효되어 세균 일부를 죽이고 독소를 내놓습니다. 이 독소가 제엽염을 일으킬 수 있습니다. 발굽 안에서 뼈를 붙잡아 주는 층이 손상되고, 심하면 뼈가 회전해 끝내 살리지 못하는 말도 있습니다.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "pl": {
+      "title": "Za dużo jęczmienia naprawdę może zabić konia 🐴",
+      "description": "Gdy koń naje się za dużo zboża, niestrawiona skrobia fermentuje w jelicie grubym, zabija bakterie i uwalnia toksyny, które mogą wywołać ochwat. Blaszki utrzymujące kość wewnątrz kopyta ulegają uszkodzeniu; w ciężkich przypadkach kość się obraca i niektórych koni nie da się uratować.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "nl": {
+      "title": "Te veel gerst kan een paard echt fataal worden 🐴",
+      "description": "Als een paard zich volpropt met graan, gist het onverteerde zetmeel in de dikke darm, sterven bacteriën af en komen gifstoffen vrij die hoefbevangenheid kunnen veroorzaken. De lamellen die het hoefbeen in de hoef vasthouden raken beschadigd; in ernstige gevallen kantelt het bot en zijn sommige paarden niet te redden.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "uk": {
+      "title": "Забагато ячменю справді може вбити коня 🐴",
+      "description": "Коли кінь об'їдається зерном, неперетравлений крохмаль бродить у товстій кишці, вбиває бактерії й вивільняє токсини, що можуть спричинити ламініт. Пластинки, які тримають кістку всередині копита, пошкоджуються; у тяжких випадках кістка повертається, і деяких коней не вдається врятувати.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "vi": {
+      "title": "Ăn quá nhiều lúa mạch thật sự có thể giết chết ngựa 🐴",
+      "description": "Khi ngựa ăn quá nhiều ngũ cốc, tinh bột chưa tiêu hóa lên men trong ruột già, giết chết vi khuẩn và giải phóng độc tố có thể gây viêm lá móng. Các lớp giữ xương bên trong móng bị tổn thương; trường hợp nặng xương bị xoay và một số con ngựa không thể cứu được.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "az": {
+      "title": "Atın ölümü arpadan olsun sözü zarafat deyil, həqiqətdir 🐴",
+      "description": "At həddindən artıq dən yeyəndə həzm olunmayan nişasta yoğun bağırsaqda qıcqırır, bakteriyaların bir hissəsini öldürür və laminitə səbəb ola bilən zəhərlər ayrılır. Dırnağın içində sümüyü saxlayan təbəqələr zədələnir; ağır hallarda sümük fırlanır və bəzi atları xilas etmək olmur.\n\n#shorts\n\nSeri: mk-c0189"
+    },
+    "ro": {
+      "title": "Prea mult orz chiar poate ucide un cal 🐴",
+      "description": "Când un cal se îndoapă cu cereale, amidonul nedigerat fermentează în intestinul gros, omoară bacterii și eliberează toxine care pot declanșa laminita. Lamelele care țin osul în interiorul copitei se deteriorează; în cazurile grave osul se rotește, iar unii cai nu mai pot fi salvați.\n\n#shorts\n\nSeri: mk-c0189"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: arpanın atı öldürebilmesi mi, zararın toynakta çıkması mı?",
+  "scenes": [
+    {
+      "text": "Bu atın ölümü gerçekten arpadan olabilir.",
+      "visual": "close-up of a horse's muzzle eating grain from a bucket, its eye toward the camera",
+      "stock_query": "horse eating",
+      "source": "stock",
+      "callout": "ŞAKA DEĞİL"
+    },
+    {
+      "text": "Biz bu sözü keyfimiz için söyleriz.",
+      "visual": "close-up of a horse's face",
+      "stock_query": "horse face",
+      "source": "stock"
+    },
+    {
+      "text": "Üstelik tehlike midede değil, toynakta ortaya çıkar.",
+      "visual": "close-up of a horse's hooves on the ground",
+      "stock_query": "horse hooves",
+      "source": "stock",
+      "callout": "TOYNAKTA ÇIKAR"
+    },
+    {
+      "text": "Çünkü fazla tahıl kalın bağırsakta mayalanır; asit bakterileri öldürür, açığa çıkan zehirler kana karışır.",
+      "visual": "a horse grazing in a paddock",
+      "stock_query": "horse grazing",
+      "source": "stock",
+      "callout": "BAĞIRSAKTA ZEHİR"
+    },
+    {
+      "text": "Zehir, toynak içindeki kemiği tutan katmanları gevşetir; ağır vakada kemik döner, at kurtarılamayabilir.",
+      "visual": "a veterinarian examining a horse's hoof",
+      "stock_query": "horse veterinarian",
+      "source": "stock",
+      "callout": "KEMİK DÖNER"
+    },
+    {
+      "text": "Atına fazladan arpa vermeden önce hatırla:",
+      "visual": "close-up of a horse's eye",
+      "stock_query": "horse eye",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 20.23,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #240",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0189_1795188118_ig.mp4"
+}
