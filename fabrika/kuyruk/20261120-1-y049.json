@@ -1,0 +1,447 @@
+{
+ "id": "y049",
+ "series": "Ya Olsaydı?",
+ "q": "Gece hiç olmasaydı ne olurdu?",
+ "uzun": true,
+ "hikaye": true,
+ "karakter": {
+  "ad": "Gece",
+  "e": "🌃",
+  "ses": "ince"
+ },
+ "emoji": "🌃",
+ "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
+ "bar": {
+  "hi": "GECE",
+  "rest": "HİÇ OLMASAYDI?"
+ },
+ "summary": "\"Yeter! Her akşam İstanbul'u ben karartıyorum, grevdeyim!\" Gece greve çıkıp hep gündüz olsaydı kalbine, uyku hormonuna, baykuşlara, çiçeklere ve Dalyan'daki caretta yavrularına ne olurdu? Sen gece kuşu musun, sabahçı mı? Yorumlara yaz 👇",
+ "lines": [
+  {
+   "who": "nesne",
+   "text": "Yeter! Her akşam İstanbul'u ben karartıyorum, teşekkür eden yok. Grevdeyim, artık hep gündüz!",
+   "v": {
+    "t": "karakter",
+    "bg": "night",
+    "mood": "kizgin",
+    "e": "🪧",
+    "label": "Grevdeyim!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dur Gece! Işıkta uyunan tek bir gece bile kalbi hızlandırıp kan şekeri dengesini bozuyor.",
+   "v": {
+    "t": "icon",
+    "bg": "body",
+    "e": "🫀",
+    "do": "pulse",
+    "key": "kalbi",
+    "label": "Kalp Hızlanır"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Ama annem artık 'Hava kararmadan eve gel!' diyemez!",
+   "v": {
+    "t": "split",
+    "bg": "city",
+    "left": {
+     "e": "🌆",
+     "label": "Hava Kararır"
+    },
+    "right": {
+     "e": "☀️",
+     "label": "Hep Gündüz"
+    },
+    "key": "kararmadan"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Bit beni anlıyor! Ben de Kadıköy'de çay içip martı seyredeceğim.",
+   "v": {
+    "t": "karakter",
+    "bg": "sunset",
+    "mood": "mutlu",
+    "e": "☕",
+    "label": "Tatildeyim!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Uyku hormonu melatonin karanlığı bekler. Akşam oda ışığı bile insanların %99'unda onu geciktiriyor.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "💡",
+    "value": "%99",
+    "unit": "insanda",
+    "label": "Melatonin Gecikir",
+    "key": "%99'unda"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Beni bu kadar özlüyor muydunuz? Hiç söylemediniz ama!",
+   "v": {
+    "t": "karakter",
+    "bg": "night",
+    "mood": "saskin",
+    "e": "💌",
+    "label": "Özlediniz mi?"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Hayvanlar da: omurgalıların yaklaşık %30'u, omurgasızların %60'ından fazlası gece yaşar.",
+   "v": {
+    "t": "compare",
+    "bg": "forest",
+    "a": {
+     "e": "🦉",
+     "label": "Omurgalılar",
+     "value": 30
+    },
+    "b": {
+     "e": "🦗",
+     "label": "Omurgasızlar",
+     "value": 60
+    },
+    "mode": "bar",
+    "key": "omurgasızların"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Baykuşlar işsiz mi kalacak? İŞKUR'a mı gidecekler?!",
+   "v": {
+    "t": "icon",
+    "bg": "forest",
+    "e": "🦉",
+    "do": "shake",
+    "key": "işsiz",
+    "label": "Baykuş İşsiz"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Çiçekler de: ışıklı çayırlarda gece böceklerinin çiçek ziyareti %62 düştü.",
+   "v": {
+    "t": "number",
+    "bg": "forest",
+    "e": "🌼",
+    "value": "%62",
+    "unit": "düşüş",
+    "label": "Çiçek Ziyareti",
+    "key": "%62"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Böceklere gece mesaisi mi veriyormuşum? Haberim yoktu!",
+   "v": {
+    "t": "karakter",
+    "bg": "night",
+    "mood": "saskin",
+    "e": "🦗",
+    "label": "Gece Mesaisi"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Dalyan'da caretta yavruları denizi ufkun en parlak yerinden bulur. Işıkta şaşırıp karaya yürür.",
+   "v": {
+    "t": "icon",
+    "bg": "ocean",
+    "e": "🐢",
+    "do": "float",
+    "key": "caretta",
+    "label": "Caretta Yavruları"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Yavrular denize dolmuşla mı gidecek?!",
+   "v": {
+    "t": "question",
+    "bg": "ocean",
+    "e": "🚐",
+    "label": "Dolmuşla mı?!"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Minik kaplumbağalarım! Tamam, belki biraz önemliyim.",
+   "v": {
+    "t": "karakter",
+    "bg": "ocean",
+    "mood": "uzgun",
+    "e": "🐢",
+    "label": "Minik Yavrular"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Asıl şok: seni zaten ışıkla kovduk. İnsanlığın üçte biri Samanyolu'nu göremiyor.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "galaxy",
+      "size": "xl",
+      "at": "c"
+     }
+    ],
+    "do": "vanish",
+    "target": 0,
+    "key": "Samanyolu'nu",
+    "label": "Samanyolu Kayıp"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "Grevde değilken bile beni görmüyor musunuz? Çok ayıp!",
+   "v": {
+    "t": "karakter",
+    "bg": "city",
+    "mood": "kizgin",
+    "e": "💡",
+    "label": "Çok Ayıp!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Zaten grev yapamazsın: sen Dünya'nın gölgesisin. Gölgen uzaya 1,4 milyon kilometre uzanıyor!",
+   "v": {
+    "t": "number",
+    "bg": "space",
+    "e": "🌍",
+    "value": "1,4",
+    "unit": "milyon km",
+    "label": "Gölgenin Boyu",
+    "key": "1,4"
+   }
+  },
+  {
+   "who": "nesne",
+   "text": "1,4 milyon kilometre mi? Bu kadar uzun muyum?! Grev bitti, akşama Kadıköy'deyim!",
+   "v": {
+    "t": "karakter",
+    "bg": "night",
+    "mood": "havali",
+    "e": "📏",
+    "label": "Grev Bitti!"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen gece kuşu musun, yoksa sabahçı mı? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "night",
+    "e": "🦉"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "Northwestern Üniversitesi'nin PNAS'ta yayımlanan çalışmasına göre orta düzeyde ışıklı (100 lüks) bir odada uyunan tek bir gece kalp atışını hızlandırdı ve ertesi sabah insülin direncini artırdı.",
+   "source": "Northwestern University",
+   "url": "https://news.northwestern.edu/stories/2022/03/close-the-blinds-during-sleep-to-protect-your-health"
+  },
+  {
+   "text": "NIH'te yayımlanan bir çalışmaya göre yatmadan önceki oda ışığı insanların %99'unda melatonin salgısının başlamasını geciktirdi ve süresini yaklaşık 90 dakika kısalttı.",
+   "source": "NIH PubMed Central (J Clin Endocrinol Metab)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3047226"
+  },
+  {
+   "text": "Exeter Üniversitesi'nden Kevin Gaston'un aktardığı tahmine göre omurgalıların yaklaşık %30'u, omurgasızların %60'ından fazlası gece aktiftir.",
+   "source": "University of Exeter",
+   "url": "https://ore.exeter.ac.uk/repository/bitstream/10871/34963/2/Nighttime%20ecology%20revised%20ms.pdf"
+  },
+  {
+   "text": "Bern Üniversitesi'nin deneyinde geceleri sokak lambasıyla aydınlatılan çayırlarda gece tozlaşan böceklerin çiçek ziyareti %62 azaldı, bir devedikeni türünün meyvesi yaklaşık %13 düştü.",
+   "source": "University of Bern",
+   "url": "https://mediarelations.unibe.ch/media_releases/2017_e/media_releases_2017/light_pollution_as_a_new_threat_to_pollination/index_eng.html"
+  },
+  {
+   "text": "NOAA'ya göre caretta yavruları denizi ufkun en parlak yerine yürüyerek bulur; yapay ışıklı kumsallarda yönünü şaşırıp çoğu zaman karaya doğru yürür.",
+   "source": "NOAA Fisheries",
+   "url": "https://www.fisheries.noaa.gov/species/loggerhead-turtle"
+  },
+  {
+   "text": "Colorado Üniversitesi'nin aktardığı dünya ışık kirliliği atlasına göre Samanyolu insanlığın üçte birinden gizleniyor.",
+   "source": "University of Colorado Boulder",
+   "url": "https://www.colorado.edu/today/2016/06/10/milky-way-now-hidden-one-third-humanity-0"
+  },
+  {
+   "text": "NASA'ya göre her gece Dünya'nın gölgesine gireriz; Live Science'a göre Dünya'nın tam gölgesi (umbra) uzaya yaklaşık 1,4 milyon km uzanır.",
+   "source": "NASA / Live Science",
+   "url": "https://www.livescience.com/space/can-you-see-earths-shadow"
+  }
+ ],
+ "tags": [
+  "gece olmasaydı",
+  "gece hiç olmasaydı",
+  "hep gündüz olsaydı",
+  "melatonin",
+  "ışık kirliliği",
+  "caretta caretta",
+  "samanyolu",
+  "dünyanın gölgesi",
+  "gece hayvanları",
+  "what if there was no night",
+  "light pollution",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#gece",
+  "#ışıkkirliliği",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://news.northwestern.edu/stories/2022/03/close-the-blinds-during-sleep-to-protect-your-health",
+  "https://mediarelations.unibe.ch/media_releases/2017_e/media_releases_2017/light_pollution_as_a_new_threat_to_pollination/index_eng.html",
+  "https://www.fisheries.noaa.gov/species/loggerhead-turtle",
+  "https://www.livescience.com/space/can-you-see-earths-shadow"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If There Were No Night? (Night Went on Strike!)",
+   "summary": "\"Enough! Every evening I darken Istanbul and nobody even says thanks. I'm on strike!\" If Night quit and it was always day, what would happen to your heart, your sleep hormone, owls, flowers and Dalyan's baby sea turtles? Are you a night owl or an early bird? Tell us in the comments 👇",
+   "facts": [
+    "According to a Northwestern University study in PNAS, sleeping just one night in moderate light (100 lux) raised heart rate and increased insulin resistance the next morning.",
+    "According to a study published by the NIH, room light before bedtime delayed the onset of melatonin in 99% of people and shortened its duration by about 90 minutes.",
+    "According to an estimate cited by Kevin Gaston of the University of Exeter, about 30% of vertebrates and more than 60% of invertebrates are nocturnal.",
+    "In a University of Bern experiment, nocturnal pollinator visits to flowers were 62% lower in meadows lit by street lamps at night, and a thistle species produced about 13% fewer fruits.",
+    "According to NOAA, loggerhead hatchlings find the sea by crawling toward the brightest horizon; on artificially lit beaches they get disoriented and often crawl inland.",
+    "According to the world light pollution atlas reported by the University of Colorado, the Milky Way is hidden from one third of humanity.",
+    "According to NASA, every night we are covered by Earth's shadow; according to Live Science, Earth's full shadow (umbra) extends about 1.4 million km into space."
+   ]
+  },
+  "es": {
+   "title": "¿Y si no existiera la noche? (¡La Noche se puso en huelga!)",
+   "summary": "\"¡Basta! Cada tarde oscurezco Estambul y nadie me da las gracias. ¡Estoy en huelga!\" Si la Noche renunciara y siempre fuera de día, ¿qué les pasaría a tu corazón, a tu hormona del sueño, a los búhos, a las flores y a las crías de tortuga de Dalyan? ¿Eres noctámbulo o madrugador? Cuéntanos en los comentarios 👇",
+   "facts": [
+    "Según un estudio de la Universidad Northwestern publicado en PNAS, dormir una sola noche con luz moderada (100 lux) aceleró el ritmo cardíaco y aumentó la resistencia a la insulina a la mañana siguiente.",
+    "Según un estudio publicado por los NIH, la luz de la habitación antes de dormir retrasó el inicio de la melatonina en el 99% de las personas y acortó su duración unos 90 minutos.",
+    "Según una estimación citada por Kevin Gaston, de la Universidad de Exeter, alrededor del 30% de los vertebrados y más del 60% de los invertebrados son nocturnos.",
+    "En un experimento de la Universidad de Berna, las visitas de polinizadores nocturnos a las flores fueron un 62% menores en prados iluminados con farolas por la noche, y una especie de cardo dio cerca de un 13% menos frutos.",
+    "Según la NOAA, las crías de tortuga boba encuentran el mar avanzando hacia el horizonte más brillante; en playas con luz artificial se desorientan y a menudo se van tierra adentro.",
+    "Según el atlas mundial de contaminación lumínica difundido por la Universidad de Colorado, la Vía Láctea está oculta para un tercio de la humanidad.",
+    "Según la NASA, cada noche nos cubre la sombra de la Tierra; según Live Science, la sombra completa de la Tierra (umbra) se extiende unos 1,4 millones de km en el espacio."
+   ]
+  },
+  "pt": {
+   "title": "E se a noite não existisse? (A Noite entrou em greve!)",
+   "summary": "\"Chega! Todo fim de tarde eu escureço Istambul e ninguém agradece. Estou em greve!\" Se a Noite se demitisse e fosse sempre dia, o que aconteceria com seu coração, seu hormônio do sono, as corujas, as flores e os filhotes de tartaruga de Dalyan? Você é notívago ou madrugador? Conta nos comentários 👇",
+   "facts": [
+    "Segundo um estudo da Universidade Northwestern publicado na PNAS, dormir uma única noite com luz moderada (100 lux) acelerou os batimentos cardíacos e aumentou a resistência à insulina na manhã seguinte.",
+    "Segundo um estudo publicado pelos NIH, a luz do quarto antes de dormir atrasou o início da melatonina em 99% das pessoas e encurtou sua duração em cerca de 90 minutos.",
+    "Segundo uma estimativa citada por Kevin Gaston, da Universidade de Exeter, cerca de 30% dos vertebrados e mais de 60% dos invertebrados são noturnos.",
+    "Num experimento da Universidade de Berna, as visitas de polinizadores noturnos às flores foram 62% menores em prados iluminados por postes à noite, e uma espécie de cardo deu cerca de 13% menos frutos.",
+    "Segundo a NOAA, os filhotes de tartaruga-cabeçuda encontram o mar indo em direção ao horizonte mais claro; em praias com luz artificial, ficam desorientados e muitas vezes seguem para a terra.",
+    "Segundo o atlas mundial da poluição luminosa divulgado pela Universidade do Colorado, a Via Láctea está escondida para um terço da humanidade.",
+    "Segundo a NASA, toda noite somos cobertos pela sombra da Terra; segundo a Live Science, a sombra completa da Terra (umbra) se estende por cerca de 1,4 milhão de km no espaço."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم يكن هناك ليل؟ (الليل أعلن الإضراب!)",
+   "summary": "\"كفى! كل مساء أُظلم إسطنبول ولا أحد يشكرني. أنا في إضراب!\" لو استقال الليل وصار النهار دائمًا، ماذا سيحدث لقلبك ولهرمون نومك وللبوم وللأزهار ولصغار السلاحف في داليان؟ هل تحب السهر أم الاستيقاظ باكرًا؟ اكتب لنا في التعليقات 👇",
+   "facts": [
+    "وفق دراسة لجامعة نورثويسترن نُشرت في مجلة PNAS، أدى النوم ليلة واحدة فقط في ضوء متوسط (100 لوكس) إلى تسارع نبض القلب وزيادة مقاومة الإنسولين في صباح اليوم التالي.",
+    "وفق دراسة نشرتها المعاهد الوطنية للصحة الأمريكية (NIH)، أخّر ضوء الغرفة قبل النوم بدء إفراز الميلاتونين لدى 99% من الناس وقصّر مدته بنحو 90 دقيقة.",
+    "وفق تقدير نقله كيفن غاستون من جامعة إكستر، فإن نحو 30% من الفقاريات وأكثر من 60% من اللافقاريات كائنات ليلية.",
+    "في تجربة لجامعة برن، انخفضت زيارات الملقحات الليلية للأزهار بنسبة 62% في المروج المضاءة بمصابيح الشوارع ليلًا، وقلّت ثمار أحد أنواع الشوك بنحو 13%.",
+    "وفق الإدارة الوطنية للمحيطات والغلاف الجوي (NOAA)، تجد صغار السلاحف ضخمة الرأس البحر بالزحف نحو الأفق الأكثر سطوعًا، وعلى الشواطئ المضاءة صناعيًا تضل طريقها وتزحف غالبًا نحو اليابسة.",
+    "وفق الأطلس العالمي للتلوث الضوئي الذي نشرت عنه جامعة كولورادو، فإن مجرة درب التبانة محجوبة عن ثلث البشرية.",
+    "وفق ناسا، يغطينا ظل الأرض كل ليلة؛ ووفق موقع Live Science، يمتد ظل الأرض الكامل (الظل التام) في الفضاء نحو 1.4 مليون كم."
+   ]
+  },
+  "hi": {
+   "title": "अगर रात होती ही नहीं तो क्या होता? (रात हड़ताल पर चली गई!)",
+   "summary": "\"बस! हर शाम मैं इस्तांबुल को अंधेरा करती हूँ और कोई शुक्रिया तक नहीं कहता। मैं हड़ताल पर हूँ!\" अगर रात काम छोड़ दे और हमेशा दिन रहे, तो तुम्हारे दिल, नींद के हार्मोन, उल्लुओं, फूलों और दालयान के नन्हे समुद्री कछुओं का क्या होगा? तुम देर रात तक जागने वाले हो या सुबह जल्दी उठने वाले? कमेंट में बताओ 👇",
+   "facts": [
+    "PNAS में छपे नॉर्थवेस्टर्न यूनिवर्सिटी के अध्ययन के अनुसार, मध्यम रोशनी (100 लक्स) में सिर्फ एक रात सोने से दिल की धड़कन तेज़ हुई और अगली सुबह इंसुलिन प्रतिरोध बढ़ गया।",
+    "NIH द्वारा प्रकाशित एक अध्ययन के अनुसार, सोने से पहले कमरे की रोशनी ने 99% लोगों में मेलाटोनिन की शुरुआत को टाल दिया और इसकी अवधि लगभग 90 मिनट घटा दी।",
+    "एक्सेटर यूनिवर्सिटी के केविन गैस्टन द्वारा उद्धृत अनुमान के अनुसार, लगभग 30% कशेरुकी और 60% से अधिक अकशेरुकी जीव रात में सक्रिय होते हैं।",
+    "बर्न यूनिवर्सिटी के एक प्रयोग में, रात को स्ट्रीट लाइट से रोशन घास के मैदानों में रात के परागणकर्ताओं का फूलों पर आना 62% कम हुआ और एक थिसल प्रजाति के फल लगभग 13% घट गए।",
+    "NOAA के अनुसार, लॉगरहेड कछुए के बच्चे सबसे चमकीले क्षितिज की ओर रेंगकर समुद्र ढूंढते हैं; कृत्रिम रोशनी वाले तटों पर वे भटक जाते हैं और अक्सर ज़मीन की ओर चले जाते हैं।",
+    "कोलोराडो यूनिवर्सिटी द्वारा बताए गए विश्व प्रकाश प्रदूषण एटलस के अनुसार, मिल्की वे (आकाशगंगा) एक-तिहाई मानवता से छिपी हुई है।",
+    "NASA के अनुसार, हर रात हम पृथ्वी की छाया से ढक जाते हैं; Live Science के अनुसार, पृथ्वी की पूरी छाया (अम्ब्रा) अंतरिक्ष में लगभग 14 लाख किमी तक फैली है।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Malam Tidak Pernah Ada? (Malam Mogok Kerja!)",
+   "summary": "\"Cukup! Tiap sore aku menggelapkan Istanbul dan tak ada yang berterima kasih. Aku mogok!\" Kalau Malam berhenti dan selalu siang, apa yang terjadi pada jantungmu, hormon tidurmu, burung hantu, bunga, dan tukik penyu di Dalyan? Kamu suka begadang atau bangun pagi? Tulis di komentar 👇",
+   "facts": [
+    "Menurut studi Northwestern University di PNAS, tidur satu malam saja dalam cahaya sedang (100 lux) mempercepat detak jantung dan meningkatkan resistensi insulin keesokan paginya.",
+    "Menurut studi yang diterbitkan NIH, cahaya kamar sebelum tidur menunda mulainya melatonin pada 99% orang dan memperpendek durasinya sekitar 90 menit.",
+    "Menurut perkiraan yang dikutip Kevin Gaston dari University of Exeter, sekitar 30% vertebrata dan lebih dari 60% invertebrata aktif di malam hari.",
+    "Dalam eksperimen University of Bern, kunjungan penyerbuk malam ke bunga 62% lebih sedikit di padang rumput yang diterangi lampu jalan pada malam hari, dan buah satu spesies tanaman thistle berkurang sekitar 13%.",
+    "Menurut NOAA, tukik penyu tempayan menemukan laut dengan merayap ke arah cakrawala paling terang; di pantai berlampu buatan mereka kehilangan arah dan sering merayap ke daratan.",
+    "Menurut atlas polusi cahaya dunia yang diberitakan University of Colorado, Bima Sakti tersembunyi dari sepertiga umat manusia.",
+    "Menurut NASA, setiap malam kita tertutup bayangan Bumi; menurut Live Science, bayangan penuh Bumi (umbra) membentang sekitar 1,4 juta km ke luar angkasa."
+   ]
+  },
+  "fr": {
+   "title": "Et si la nuit n'existait pas ? (La Nuit fait grève !)",
+   "summary": "« Ça suffit ! Chaque soir j'assombris Istanbul et personne ne dit merci. Je suis en grève ! » Si la Nuit démissionnait et qu'il faisait toujours jour, qu'arriverait-il à ton cœur, à ton hormone du sommeil, aux hiboux, aux fleurs et aux bébés tortues de Dalyan ? Tu es plutôt couche-tard ou lève-tôt ? Dis-le en commentaire 👇",
+   "facts": [
+    "Selon une étude de l'université Northwestern publiée dans PNAS, dormir une seule nuit sous une lumière modérée (100 lux) a accéléré le rythme cardiaque et augmenté la résistance à l'insuline le lendemain matin.",
+    "Selon une étude publiée par les NIH, la lumière de la chambre avant le coucher a retardé le début de la sécrétion de mélatonine chez 99 % des personnes et réduit sa durée d'environ 90 minutes.",
+    "Selon une estimation citée par Kevin Gaston, de l'université d'Exeter, environ 30 % des vertébrés et plus de 60 % des invertébrés sont nocturnes.",
+    "Dans une expérience de l'université de Berne, les visites des pollinisateurs nocturnes aux fleurs ont été 62 % moins nombreuses dans des prairies éclairées la nuit par des lampadaires, et une espèce de chardon a produit environ 13 % de fruits en moins.",
+    "Selon la NOAA, les bébés tortues caouannes trouvent la mer en rampant vers l'horizon le plus lumineux ; sur les plages éclairées artificiellement, ils se désorientent et partent souvent vers l'intérieur des terres.",
+    "Selon l'atlas mondial de la pollution lumineuse relayé par l'université du Colorado, la Voie lactée est cachée à un tiers de l'humanité.",
+    "Selon la NASA, chaque nuit nous sommes recouverts par l'ombre de la Terre ; selon Live Science, le cône d'ombre de la Terre s'étend sur environ 1,4 million de km dans l'espace."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn es keine Nacht gäbe? (Die Nacht streikt!)",
+   "summary": "„Schluss! Jeden Abend mache ich Istanbul dunkel, und keiner sagt danke. Ich streike!“ Wenn die Nacht kündigen würde und immer Tag wäre: Was passiert mit deinem Herzen, deinem Schlafhormon, Eulen, Blumen und den Babyschildkröten von Dalyan? Bist du Nachteule oder Frühaufsteher? Schreib es in die Kommentare 👇",
+   "facts": [
+    "Laut einer Studie der Northwestern University in PNAS ließ schon eine einzige Nacht Schlaf bei mäßigem Licht (100 Lux) den Puls steigen und erhöhte am nächsten Morgen die Insulinresistenz.",
+    "Laut einer von den NIH veröffentlichten Studie verzögerte Zimmerlicht vor dem Schlafengehen bei 99 % der Menschen den Beginn der Melatoninausschüttung und verkürzte ihre Dauer um etwa 90 Minuten.",
+    "Laut einer von Kevin Gaston (University of Exeter) zitierten Schätzung sind etwa 30 % der Wirbeltiere und mehr als 60 % der Wirbellosen nachtaktiv.",
+    "In einem Experiment der Universität Bern besuchten nachtaktive Bestäuber auf nachts von Straßenlampen beleuchteten Wiesen 62 % weniger Blüten, und die Kohldistel bildete rund 13 % weniger Früchte.",
+    "Laut NOAA finden frisch geschlüpfte Unechte Karettschildkröten das Meer, indem sie zum hellsten Horizont krabbeln; an künstlich beleuchteten Stränden verlieren sie die Orientierung und krabbeln oft landeinwärts.",
+    "Laut dem Weltatlas der Lichtverschmutzung, über den die University of Colorado berichtete, ist die Milchstraße für ein Drittel der Menschheit nicht mehr sichtbar.",
+    "Laut NASA bedeckt uns jede Nacht der Erdschatten; laut Live Science reicht der Kernschatten der Erde etwa 1,4 Millionen km weit ins All."
+   ]
+  },
+  "ru": {
+   "title": "Что если бы ночи не было? (Ночь объявила забастовку!)",
+   "summary": "«Хватит! Каждый вечер я погружаю Стамбул во тьму, и никто даже спасибо не скажет. Я бастую!» Если бы Ночь уволилась и всегда был день, что стало бы с твоим сердцем, гормоном сна, совами, цветами и черепашатами в Дальяне? Ты сова или жаворонок? Пиши в комментариях 👇",
+   "facts": [
+    "Согласно исследованию Северо-Западного университета в PNAS, всего одна ночь сна при умеренном свете (100 люкс) учащала пульс и повышала инсулинорезистентность на следующее утро.",
+    "Согласно исследованию, опубликованному NIH, комнатный свет перед сном задерживал начало выработки мелатонина у 99% людей и сокращал её продолжительность примерно на 90 минут.",
+    "По оценке, которую приводит Кевин Гастон из Эксетерского университета, около 30% позвоночных и более 60% беспозвоночных ведут ночной образ жизни.",
+    "В эксперименте Бернского университета ночные опылители посещали цветы на 62% реже на лугах, освещённых ночью уличными фонарями, а у бодяка овощного плодов стало примерно на 13% меньше.",
+    "По данным NOAA, детёныши черепахи логгерхед находят море, ползя к самому светлому горизонту; на искусственно освещённых пляжах они теряют ориентацию и часто ползут вглубь суши.",
+    "Согласно мировому атласу светового загрязнения, о котором сообщил Колорадский университет, Млечный Путь скрыт от трети человечества.",
+    "По данным NASA, каждую ночь нас накрывает тень Земли; по данным Live Science, полная тень Земли (умбра) тянется в космос примерно на 1,4 млн км."
+   ]
+  },
+  "az": {
+   "title": "Gecə heç olmasaydı nə olardı? (Gecə tətilə çıxdı!)",
+   "summary": "\"Bəsdir! Hər axşam İstanbulu mən qaraldıram, heç kim təşəkkür etmir. Tətildəyəm!\" Gecə işi atsa və həmişə gündüz olsa, ürəyinə, yuxu hormonuna, bayquşlara, çiçəklərə və Dalyandakı tısbağa balalarına nə olardı? Sən gecə quşusan, yoxsa səhər tezdən duranlardan? Şərhlərdə yaz 👇",
+   "facts": [
+    "Northwestern Universitetinin PNAS-da dərc olunan araşdırmasına görə, orta işıqda (100 lüks) cəmi bir gecə yatmaq ürək döyüntüsünü sürətləndirdi və səhəri gün insulin müqavimətini artırdı.",
+    "NIH-in dərc etdiyi araşdırmaya görə, yatmazdan əvvəl otaq işığı insanların 99%-ində melatonin ifrazının başlamasını gecikdirdi və onun müddətini təxminən 90 dəqiqə qısaltdı.",
+    "Exeter Universitetindən Kevin Qastonun istinad etdiyi təxminə görə, onurğalıların təxminən 30%-i, onurğasızların isə 60%-dən çoxu gecə fəaldır.",
+    "Bern Universitetinin təcrübəsində gecələr küçə lampaları ilə işıqlandırılan çəmənliklərdə gecə tozlandırıcılarının çiçəklərə gəlişi 62% az oldu, bir qanqal növünün meyvəsi isə təxminən 13% azaldı.",
+    "NOAA-ya görə, karetta balaları dənizi üfüqün ən parlaq tərəfinə doğru sürünərək tapır; süni işıqlı çimərliklərdə istiqaməti itirib çox vaxt quruya doğru sürünürlər.",
+    "Kolorado Universitetinin xəbər verdiyi dünya işıq çirklənməsi atlasına görə, Süd Yolu bəşəriyyətin üçdə birindən gizlənib.",
+    "NASA-ya görə, hər gecə Yerin kölgəsi bizi örtür; Live Science-ə görə, Yerin tam kölgəsi (umbra) kosmosa təxminən 1,4 milyon km uzanır."
+   ]
+  }
+ }
+}

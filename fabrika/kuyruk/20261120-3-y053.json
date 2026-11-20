@@ -1,0 +1,268 @@
+{
+ "id": "y053",
+ "series": "Ya Olsaydı?",
+ "q": "Hiç yağmur yağmasaydı ne olurdu?",
+ "title": "Bir Daha Hiç Yağmur Yağmasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "HİÇ YAĞMUR",
+  "rest": "YAĞMASAYDI?"
+ },
+ "summary": "Bir daha hiç yağmur yağmasaydı önce barajlar çatlar, musluğun kururdu! Her gün kaybettiğin 2,5 litre su, yağmurla yetişen dünyadaki yiyeceğin %60'ı ve NASA'nın Mars'a benzettiği Atacama Çölü'ne dönen karalar.",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Barajlar çatlar, musluğun kurur: onları dolduran yağmurdur.",
+   "v": {
+    "t": "split",
+    "bg": "desert",
+    "left": {
+     "e": "🌧️",
+     "label": "Dolu Baraj"
+    },
+    "right": {
+     "e": "🏜️",
+     "label": "Çatlak Baraj"
+    },
+    "key": "kurur"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Vücudun her gün 2,5 litre su kaybeder. Susuz birkaç günde böbreklerin pes eder.",
+   "v": {
+    "t": "number",
+    "bg": "body",
+    "e": "💧",
+    "value": "2,5",
+    "unit": "litre",
+    "label": "Günlük Su Kaybı",
+    "key": "2,5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Çaylık su da mı yok?!",
+   "v": {
+    "t": "question",
+    "bg": "city",
+    "e": "🫖",
+    "label": "Çay Yok mu?!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Ekmek de biter: dünyadaki yiyeceğin %60'ı yağmurla sulanan tarlalardan gelir.",
+   "v": {
+    "t": "meter",
+    "bg": "forest",
+    "label": "Yağmurla Yetişir",
+    "from": 0,
+    "to": 60,
+    "unit": "%",
+    "e": "🌾",
+    "key": "%60'ı"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonunda karalar, NASA'nın Mars'a benzettiği Atacama Çölü'ne döner.",
+   "v": {
+    "t": "space",
+    "bg": "space",
+    "bodies": [
+     {
+      "b": "earth",
+      "size": "l",
+      "at": "l"
+     },
+     {
+      "b": "mars",
+      "size": "m",
+      "at": "r"
+     }
+    ],
+    "do": "heat",
+    "target": 0,
+    "key": "Atacama",
+    "label": "Mars Gibi"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen son bardak suyu kime verirdin? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "desert",
+    "e": "💧"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "USGS'ye göre yağmur gölleri ve nehirleri doldurur, yeraltındaki akiferleri besler.",
+   "source": "USGS",
+   "url": "https://www.usgs.gov/water-science-school/science/rain-and-precipitation"
+  },
+  {
+   "text": "Hawaii Üniversitesi'nin beslenme kitabına göre bir yetişkin günde ortalama 2,5 litre su kaybeder: yaklaşık 1.500 ml idrarla, 500 ml deriden, 400 ml nefesle.",
+   "source": "University of Hawaiʻi",
+   "url": "https://pressbooks.oer.hawaii.edu/humannutrition/chapter/regulation-of-water-balance/"
+  },
+  {
+   "text": "Live Science'a göre insan sıvısız yaklaşık 2 gün ile 1 hafta arası dayanabilir; susuzlukta genellikle ilk böbrekler iflas eder.",
+   "source": "Live Science",
+   "url": "https://www.livescience.com/32320-how-long-can-a-person-survive-without-water.html"
+  },
+  {
+   "text": "FAO'ya göre yalnızca yağmurla sulanan tarım, ekili alanların %80'inde dünyadaki yiyeceğin %60'ını üretir.",
+   "source": "FAO",
+   "url": "https://www.fao.org/land-water/solaw2021/facts/en"
+  },
+  {
+   "text": "NASA'ya göre Şili'deki Atacama Çölü Dünya'nın en kurak yerlerinden ve en Mars benzeri ortamlarından biridir; NASA orada Mars'ta yaşam arayabilecek bir gezgin tasarımını denedi.",
+   "source": "NASA",
+   "url": "https://www.nasa.gov/image-article/evidence-of-rare-desert-rain-atacama-rover-astrobiology-drilling-studies"
+  }
+ ],
+ "tags": [
+  "hiç yağmur yağmasaydı",
+  "yağmur yağmasaydı ne olurdu",
+  "kuraklık",
+  "susuzluk",
+  "barajlar",
+  "su döngüsü",
+  "atacama çölü",
+  "what if it never rained",
+  "drought",
+  "water cycle",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#yağmur",
+  "#kuraklık",
+  "#bilim"
+ ],
+ "cover": 4,
+ "sources": [
+  "https://www.usgs.gov/water-science-school/science/rain-and-precipitation",
+  "https://www.fao.org/land-water/solaw2021/facts/en",
+  "https://www.livescience.com/32320-how-long-can-a-person-survive-without-water.html",
+  "https://www.nasa.gov/image-article/evidence-of-rare-desert-rain-atacama-rover-astrobiology-drilling-studies"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If It Never Rained Again?",
+   "summary": "If it never rained again, the dams would crack and your tap would run dry first! The 2.5 liters of water you lose every day, the 60% of the world's food grown on rain alone, and land turning into the Atacama Desert, which NASA calls one of the most Mars-like places on Earth.",
+   "facts": [
+    "According to the USGS, rain fills our lakes and rivers and recharges underground aquifers.",
+    "According to a University of Hawaiʻi nutrition textbook, an adult loses about 2.5 liters of water a day on average: about 1,500 ml in urine, 500 ml through the skin and 400 ml by breathing.",
+    "According to Live Science, a person can last roughly 2 days to a week without liquids; with dehydration, the kidneys usually fail first.",
+    "According to the FAO, rainfed farming produces 60% of the world's food on 80% of the cultivated land.",
+    "According to NASA, Chile's Atacama Desert is one of the driest places on Earth and one of its most Mars-like environments; NASA tested a rover design there that could search for life on Mars."
+   ]
+  },
+  "es": {
+   "title": "¿Qué pasaría si nunca más volviera a llover?",
+   "summary": "Si nunca más lloviera, primero se agrietarían las presas y tu grifo se secaría. Los 2,5 litros de agua que pierdes cada día, el 60% de la comida del mundo que crece solo con lluvia y una tierra convertida en el desierto de Atacama, uno de los lugares más parecidos a Marte según la NASA.",
+   "facts": [
+    "Según el USGS, la lluvia llena nuestros lagos y ríos y recarga los acuíferos subterráneos.",
+    "Según un libro de nutrición de la Universidad de Hawái, un adulto pierde en promedio unos 2,5 litros de agua al día: unos 1.500 ml por la orina, 500 ml por la piel y 400 ml al respirar.",
+    "Según Live Science, una persona puede aguantar entre 2 días y una semana sin líquidos; con la deshidratación, los riñones suelen fallar primero.",
+    "Según la FAO, la agricultura de secano produce el 60% de los alimentos del mundo en el 80% de la tierra cultivada.",
+    "Según la NASA, el desierto de Atacama, en Chile, es uno de los lugares más secos de la Tierra y uno de sus entornos más parecidos a Marte; allí la NASA probó un diseño de róver que podría buscar vida en Marte."
+   ]
+  },
+  "pt": {
+   "title": "E se nunca mais chovesse?",
+   "summary": "Se nunca mais chovesse, primeiro as represas rachariam e a sua torneira secaria! Os 2,5 litros de água que você perde todo dia, os 60% da comida do mundo que crescem só com a chuva e a terra virando o Deserto do Atacama, um dos lugares mais parecidos com Marte segundo a NASA.",
+   "facts": [
+    "Segundo o USGS, a chuva enche nossos lagos e rios e recarrega os aquíferos subterrâneos.",
+    "Segundo um livro de nutrição da Universidade do Havaí, um adulto perde em média cerca de 2,5 litros de água por dia: cerca de 1.500 ml pela urina, 500 ml pela pele e 400 ml pela respiração.",
+    "Segundo a Live Science, uma pessoa aguenta mais ou menos de 2 dias a uma semana sem líquidos; na desidratação, geralmente os rins falham primeiro.",
+    "Segundo a FAO, a agricultura de sequeiro produz 60% dos alimentos do mundo em 80% da área cultivada.",
+    "Segundo a NASA, o Deserto do Atacama, no Chile, é um dos lugares mais secos da Terra e um dos ambientes mais parecidos com Marte; ali a NASA testou um projeto de rover que poderia procurar vida em Marte."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو لم يهطل المطر أبدًا مرة أخرى؟",
+   "summary": "لو لم يهطل المطر مرة أخرى، لتشققت السدود أولًا وجفّ صنبورك! لترات الماء الـ2.5 التي تفقدها كل يوم، و60% من غذاء العالم الذي ينمو بالمطر وحده، ويابسة تتحول إلى صحراء أتاكاما التي تعدّها ناسا من أشبه الأماكن بالمريخ.",
+   "facts": [
+    "وفق هيئة المسح الجيولوجي الأمريكية (USGS)، يملأ المطر بحيراتنا وأنهارنا ويغذي طبقات المياه الجوفية.",
+    "وفق كتاب التغذية في جامعة هاواي، يفقد البالغ في المتوسط نحو 2.5 لتر من الماء يوميًا: نحو 1500 مل في البول و500 مل عبر الجلد و400 مل مع التنفس.",
+    "وفق موقع Live Science، يمكن للإنسان أن يصمد بلا سوائل ما بين يومين وأسبوع تقريبًا؛ ومع الجفاف تكون الكليتان عادة أول ما يتوقف.",
+    "وفق منظمة الأغذية والزراعة (الفاو)، تنتج الزراعة المطرية 60% من غذاء العالم على 80% من الأراضي المزروعة.",
+    "وفق ناسا، صحراء أتاكاما في تشيلي من أكثر الأماكن جفافًا على الأرض ومن أشبه بيئاتها بالمريخ؛ وقد جرّبت ناسا هناك تصميم مركبة جوالة قد تبحث عن حياة على المريخ."
+   ]
+  },
+  "hi": {
+   "title": "अगर फिर कभी बारिश न हो तो क्या होगा?",
+   "summary": "अगर फिर कभी बारिश न हो, तो सबसे पहले बांधों में दरारें पड़ेंगी और तुम्हारा नल सूख जाएगा! हर दिन तुम्हारे शरीर से निकलने वाला 2.5 लीटर पानी, सिर्फ बारिश से उगने वाला दुनिया का 60% भोजन, और ज़मीन का अटाकामा रेगिस्तान बन जाना, जिसे NASA पृथ्वी पर मंगल जैसी सबसे करीबी जगहों में गिनता है।",
+   "facts": [
+    "USGS के अनुसार, बारिश हमारी झीलों और नदियों को भरती है और ज़मीन के नीचे के जलभृतों को फिर से भरती है।",
+    "हवाई यूनिवर्सिटी की पोषण पाठ्यपुस्तक के अनुसार, एक वयस्क रोज़ औसतन लगभग 2.5 लीटर पानी खोता है: लगभग 1,500 मिली पेशाब से, 500 मिली त्वचा से और 400 मिली सांस से।",
+    "Live Science के अनुसार, इंसान बिना तरल के लगभग 2 दिन से एक हफ्ते तक टिक सकता है; पानी की कमी में आमतौर पर सबसे पहले गुर्दे जवाब देते हैं।",
+    "FAO के अनुसार, सिर्फ बारिश पर निर्भर खेती 80% खेती योग्य ज़मीन पर दुनिया का 60% भोजन पैदा करती है।",
+    "NASA के अनुसार, चिली का अटाकामा रेगिस्तान पृथ्वी की सबसे सूखी जगहों में से एक है और मंगल जैसे सबसे करीबी वातावरणों में गिना जाता है; NASA ने वहाँ एक रोवर डिज़ाइन का परीक्षण किया जो मंगल पर जीवन खोज सकता है।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika Hujan Tak Pernah Turun Lagi?",
+   "summary": "Kalau hujan tak pernah turun lagi, bendungan retak dan keranmu kering duluan! 2,5 liter air yang hilang dari tubuhmu setiap hari, 60% pangan dunia yang tumbuh hanya dengan hujan, dan daratan yang berubah jadi Gurun Atacama, salah satu tempat paling mirip Mars menurut NASA.",
+   "facts": [
+    "Menurut USGS, hujan mengisi danau dan sungai kita serta mengisi kembali akuifer bawah tanah.",
+    "Menurut buku nutrisi University of Hawaiʻi, orang dewasa kehilangan rata-rata sekitar 2,5 liter air per hari: sekitar 1.500 ml lewat urine, 500 ml lewat kulit, dan 400 ml lewat napas.",
+    "Menurut Live Science, manusia bisa bertahan sekitar 2 hari hingga seminggu tanpa cairan; saat dehidrasi, ginjal biasanya yang pertama gagal.",
+    "Menurut FAO, pertanian tadah hujan menghasilkan 60% pangan dunia di 80% lahan budi daya.",
+    "Menurut NASA, Gurun Atacama di Chili adalah salah satu tempat terkering di Bumi dan salah satu lingkungan paling mirip Mars; NASA menguji desain rover di sana yang kelak bisa mencari kehidupan di Mars."
+   ]
+  },
+  "fr": {
+   "title": "Et s'il ne pleuvait plus jamais ?",
+   "summary": "S'il ne pleuvait plus jamais, les barrages se fissureraient et ton robinet s'assécherait en premier ! Les 2,5 litres d'eau que tu perds chaque jour, les 60 % de la nourriture mondiale qui poussent grâce à la seule pluie, et des terres transformées en désert d'Atacama, l'un des endroits les plus martiens de la Terre selon la NASA.",
+   "facts": [
+    "Selon l'USGS, la pluie remplit nos lacs et nos rivières et recharge les nappes souterraines.",
+    "Selon un manuel de nutrition de l'université d'Hawaï, un adulte perd en moyenne environ 2,5 litres d'eau par jour : environ 1 500 ml par l'urine, 500 ml par la peau et 400 ml par la respiration.",
+    "Selon Live Science, une personne peut tenir environ 2 jours à une semaine sans boire ; en cas de déshydratation, les reins lâchent généralement en premier.",
+    "Selon la FAO, l'agriculture pluviale produit 60 % de la nourriture mondiale sur 80 % des terres cultivées.",
+    "Selon la NASA, le désert d'Atacama, au Chili, est l'un des endroits les plus secs de la Terre et l'un de ses environnements les plus proches de Mars ; la NASA y a testé un modèle de rover capable de chercher la vie sur Mars."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn es nie wieder regnen würde?",
+   "summary": "Wenn es nie wieder regnen würde, reißen zuerst die Staudämme auf und dein Wasserhahn bleibt trocken! Die 2,5 Liter Wasser, die du jeden Tag verlierst, die 60 % der Nahrung der Welt, die allein mit Regen wachsen, und Land, das zur Atacama-Wüste wird – laut NASA einer der marsähnlichsten Orte der Erde.",
+   "facts": [
+    "Laut USGS füllt Regen unsere Seen und Flüsse und füllt die Grundwasserleiter im Boden wieder auf.",
+    "Laut einem Ernährungslehrbuch der University of Hawaiʻi verliert ein Erwachsener im Schnitt etwa 2,5 Liter Wasser pro Tag: rund 1.500 ml über den Urin, 500 ml über die Haut und 400 ml über die Atmung.",
+    "Laut Live Science hält ein Mensch etwa 2 Tage bis eine Woche ohne Flüssigkeit durch; bei Austrocknung versagen meist zuerst die Nieren.",
+    "Laut FAO erzeugt Regenfeldbau auf 80 % der Ackerfläche 60 % der Nahrung der Welt.",
+    "Laut NASA ist die Atacama-Wüste in Chile einer der trockensten Orte der Erde und eine ihrer marsähnlichsten Umgebungen; die NASA testete dort ein Rover-Konzept, das einmal auf dem Mars nach Leben suchen könnte."
+   ]
+  },
+  "ru": {
+   "title": "Что если бы дождь больше никогда не пошёл?",
+   "summary": "Если бы дождь больше никогда не пошёл, сначала потрескались бы водохранилища и пересох твой кран! 2,5 литра воды, которые ты теряешь каждый день, 60% мировой еды, растущей только на дождевой воде, и суша, превращающаяся в пустыню Атакама — по мнению NASA, одно из самых похожих на Марс мест на Земле.",
+   "facts": [
+    "По данным Геологической службы США (USGS), дождь наполняет наши озёра и реки и пополняет подземные водоносные горизонты.",
+    "Согласно учебнику по питанию Гавайского университета, взрослый человек теряет в среднем около 2,5 литра воды в день: около 1500 мл с мочой, 500 мл через кожу и 400 мл с дыханием.",
+    "По данным Live Science, человек может продержаться без жидкости примерно от 2 дней до недели; при обезвоживании обычно первыми отказывают почки.",
+    "По данным ФАО, богарное (дождевое) земледелие даёт 60% мировой еды на 80% обрабатываемых земель.",
+    "По данным NASA, пустыня Атакама в Чили — одно из самых сухих мест на Земле и одна из самых похожих на Марс сред; NASA испытывало там проект марсохода, который мог бы искать жизнь на Марсе."
+   ]
+  },
+  "az": {
+   "title": "Bir daha heç yağış yağmasaydı nə olardı?",
+   "summary": "Bir daha heç yağış yağmasaydı, əvvəlcə su anbarları çatlayar, kranın quruyardı! Hər gün itirdiyin 2,5 litr su, dünyadakı qidanın yalnız yağışla yetişən 60%-i və NASA-nın Marsa bənzətdiyi Atakama səhrasına dönən quru ərazilər.",
+   "facts": [
+    "USGS-ə görə, yağış göllərimizi və çaylarımızı doldurur, yeraltı su laylarını qidalandırır.",
+    "Havay Universitetinin qidalanma dərsliyinə görə, yetkin insan gündə orta hesabla təxminən 2,5 litr su itirir: təxminən 1500 ml sidiklə, 500 ml dəri ilə və 400 ml nəfəslə.",
+    "Live Science-ə görə, insan mayesiz təxminən 2 gündən 1 həftəyə qədər dözə bilər; susuzluqda adətən ilk böyrəklər sıradan çıxır.",
+    "FAO-ya görə, yalnız yağışla suvarılan əkinçilik becərilən torpaqların 80%-ində dünyadakı qidanın 60%-ini istehsal edir.",
+    "NASA-ya görə, Çilidəki Atakama səhrası Yerin ən quraq yerlərindən və Marsa ən çox bənzəyən mühitlərindən biridir; NASA orada Marsda həyat axtara biləcək bir rover layihəsini sınaqdan keçirib."
+   ]
+  }
+ }
+}

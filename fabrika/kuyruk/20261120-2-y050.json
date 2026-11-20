@@ -1,0 +1,237 @@
+{
+ "id": "y050",
+ "series": "Ya Olsaydı?",
+ "q": "Bütün insanlar aynı anda zıplasaydı ne olurdu?",
+ "title": "8 Milyar İnsan Aynı Yerde Zıplasaydı Ne Olurdu?",
+ "bar": {
+  "hi": "8 MİLYAR KİŞİ",
+  "rest": "ZIPLASAYDI?"
+ },
+ "summary": "Omuz omuza 8 milyar insan aynı yerde toplanıp zıplasaydı metrekareye 5 kişi düşer, ezilme tehlikesi başlardı! 72 bin kişilik bir konser bile yeri 2,3'lük deprem gibi sarstıysa bizi ne beklerdi, eve dönmek neden en az 1,7 yıl sürerdi?",
+ "lines": [
+  {
+   "who": "pi",
+   "text": "Omuz omuza 8 milyar insan: metrekareye 5 kişi! Uzmanlara göre ezilme tehlikesi burada başlar.",
+   "v": {
+    "t": "number",
+    "bg": "city",
+    "e": "👥",
+    "value": "5",
+    "unit": "kişi/m²",
+    "label": "Omuz Omuza",
+    "key": "5"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Daha zıplamadık bile!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "😱",
+    "do": "shake",
+    "key": "zıplamadık",
+    "label": "Daha Zıplamadık!"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Zıplayınca yer sarsılır: 72 bin kişilik bir konser bile yeri 2,3'lük deprem gibi sarstı.",
+   "v": {
+    "t": "meter",
+    "bg": "city",
+    "label": "Deprem Gibi",
+    "from": 0,
+    "to": 2.3,
+    "unit": "",
+    "e": "🎤",
+    "key": "2,3'lük"
+   }
+  },
+  {
+   "who": "pi",
+   "text": "Sonra eve dönüş: dünyadaki bütün uçaklarla bile en az 1,7 yıl sürer!",
+   "v": {
+    "t": "number",
+    "bg": "sky",
+    "e": "✈️",
+    "value": "1,7",
+    "unit": "yıl",
+    "label": "Eve Dönüş",
+    "key": "1,7"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Bayram otogarı bunun yanında boş kalır!",
+   "v": {
+    "t": "icon",
+    "bg": "city",
+    "e": "🚌",
+    "do": "shake",
+    "key": "otogarı",
+    "label": "Bayram Otogarı"
+   }
+  },
+  {
+   "who": "bit",
+   "text": "Sen kalabalıkta ilk kimi arardın? Yorumlara yaz!",
+   "v": {
+    "t": "outro",
+    "bg": "city",
+    "e": "👥"
+   }
+  }
+ ],
+ "facts": [
+  {
+   "text": "National Geographic'e göre omuz omuza duran 7 milyar insan Los Angeles'ın yaklaşık 1.300 km²'lik alanına sığar; bu, metrekareye 5'ten fazla kişi demektir.",
+   "source": "National Geographic",
+   "url": "https://www.nationalgeographic.com/news/2011/10/111031-population-7-billion-earth-world-un-seven/"
+  },
+  {
+   "text": "Scientific American'a konuşan York Üniversitesi'nden Ali Asgary'ye göre kalabalıkta sorunlar metrekareye 5-6 kişide başlar; ezilmelerde ölümlerin çoğu ciğerlere binen baskıyla nefessiz kalmaktan olur.",
+   "source": "Scientific American",
+   "url": "https://www.scientificamerican.com/article/what-to-do-if-youre-trapped-in-a-surging-crowd/"
+  },
+  {
+   "text": "Western Washington Üniversitesi sismoloğu Jackie Caplan-Auerbach'a göre Seattle'daki Taylor Swift konserinde kalabalığın yarattığı sarsıntı 2,3 büyüklüğünde bir depreme eşdeğerdi; konserde her gece yaklaşık 72.000 kişi vardı.",
+   "source": "Western Washington University",
+   "url": "https://news.wwu.edu/inthemedia/wwu-seismologist-says-taylor-swift-fans-set-off-23-magnitude-swift-quake-during-seattle"
+  },
+  {
+   "text": "BM'ye bağlı Uluslararası Sivil Havacılık Örgütü'ne (ICAO) göre 2024'te tarifeli uçuşlarla 4,7 milyar yolcu taşındı; bu hızla 8 milyar kişiyi taşımak en az 1,7 yıl sürer.",
+   "source": "ICAO",
+   "url": "https://www.icao.int/about-icao/AnnualReport2024/world-air-transport-2024"
+  }
+ ],
+ "tags": [
+  "8 milyar insan zıplasaydı",
+  "herkes aynı anda zıplasaydı",
+  "bütün insanlar zıplasa",
+  "kalabalık ezilmesi",
+  "swift quake",
+  "dünya nüfusu",
+  "what if everyone jumped",
+  "crowd crush",
+  "ya olsaydı",
+  "bilim",
+  "animasyon",
+  "what if",
+  "science"
+ ],
+ "hashtags": [
+  "#zıplama",
+  "#kalabalık",
+  "#bilim"
+ ],
+ "cover": 0,
+ "sources": [
+  "https://www.nationalgeographic.com/news/2011/10/111031-population-7-billion-earth-world-un-seven/",
+  "https://www.scientificamerican.com/article/what-to-do-if-youre-trapped-in-a-surging-crowd/",
+  "https://news.wwu.edu/inthemedia/wwu-seismologist-says-taylor-swift-fans-set-off-23-magnitude-swift-quake-during-seattle",
+  "https://www.icao.int/about-icao/AnnualReport2024/world-air-transport-2024"
+ ],
+ "i18n": {
+  "en": {
+   "title": "What If All 8 Billion People Jumped in One Place?",
+   "summary": "If all 8 billion people gathered shoulder to shoulder in one place to jump, there would be 5 people per square meter and the crush danger would begin! A 72,000-person concert alone shook the ground like a magnitude 2.3 quake, so what would happen to us, and why would getting home take at least 1.7 years?",
+   "facts": [
+    "According to National Geographic, 7 billion people standing shoulder to shoulder could fit into the roughly 1,300 km² of Los Angeles, which means more than 5 people per square meter.",
+    "According to Ali Asgary of York University, speaking to Scientific American, crowd problems start at 5 to 6 people per square meter, and most crowd-crush deaths are caused by asphyxiation from pressure on the lungs.",
+    "According to Western Washington University seismologist Jackie Caplan-Auerbach, the crowd at Taylor Swift's Seattle concert shook the ground like a magnitude 2.3 earthquake; about 72,000 people attended each night.",
+    "According to the UN's International Civil Aviation Organization (ICAO), scheduled flights carried 4.7 billion passengers in 2024; at that rate, carrying 8 billion people would take at least 1.7 years."
+   ]
+  },
+  "es": {
+   "title": "¿Y si 8.000 millones de personas saltaran en el mismo lugar?",
+   "summary": "Si 8.000 millones de personas se juntaran hombro con hombro en un solo lugar para saltar, habría 5 personas por metro cuadrado y empezaría el peligro de aplastamiento. Si un concierto de 72.000 personas ya sacudió el suelo como un sismo de magnitud 2,3, ¿qué nos pasaría y por qué volver a casa tardaría al menos 1,7 años?",
+   "facts": [
+    "Según National Geographic, 7.000 millones de personas de pie hombro con hombro cabrían en los cerca de 1.300 km² de Los Ángeles, es decir, más de 5 personas por metro cuadrado.",
+    "Según Ali Asgary, de la Universidad de York, en declaraciones a Scientific American, los problemas en una multitud empiezan con 5 o 6 personas por metro cuadrado, y la mayoría de las muertes por aplastamiento se deben a la asfixia por la presión sobre los pulmones.",
+    "Según la sismóloga Jackie Caplan-Auerbach, de la Universidad de Western Washington, el público del concierto de Taylor Swift en Seattle sacudió el suelo como un sismo de magnitud 2,3; cada noche asistieron unas 72.000 personas.",
+    "Según la Organización de Aviación Civil Internacional (OACI), de la ONU, los vuelos regulares transportaron 4.700 millones de pasajeros en 2024; a ese ritmo, llevar a 8.000 millones de personas tardaría al menos 1,7 años."
+   ]
+  },
+  "pt": {
+   "title": "E se 8 bilhões de pessoas pulassem no mesmo lugar?",
+   "summary": "Se 8 bilhões de pessoas se juntassem ombro a ombro num só lugar para pular, haveria 5 pessoas por metro quadrado e o perigo de esmagamento começaria! Se um show de 72 mil pessoas já sacudiu o chão como um terremoto de magnitude 2,3, o que aconteceria com a gente e por que voltar para casa levaria pelo menos 1,7 ano?",
+   "facts": [
+    "Segundo a National Geographic, 7 bilhões de pessoas em pé, ombro a ombro, caberiam nos cerca de 1.300 km² de Los Angeles, o que significa mais de 5 pessoas por metro quadrado.",
+    "Segundo Ali Asgary, da Universidade York, em entrevista à Scientific American, os problemas numa multidão começam com 5 a 6 pessoas por metro quadrado, e a maioria das mortes por esmagamento vem da asfixia causada pela pressão sobre os pulmões.",
+    "Segundo a sismóloga Jackie Caplan-Auerbach, da Universidade Western Washington, o público do show de Taylor Swift em Seattle sacudiu o chão como um terremoto de magnitude 2,3; cerca de 72 mil pessoas foram a cada noite.",
+    "Segundo a Organização da Aviação Civil Internacional (OACI), da ONU, os voos regulares transportaram 4,7 bilhões de passageiros em 2024; nesse ritmo, levar 8 bilhões de pessoas levaria pelo menos 1,7 ano."
+   ]
+  },
+  "ar": {
+   "title": "ماذا لو قفز 8 مليارات إنسان في مكان واحد؟",
+   "summary": "لو اجتمع 8 مليارات إنسان كتفًا بكتف في مكان واحد ليقفزوا، لكان في كل متر مربع 5 أشخاص ولبدأ خطر التدافع والسحق! وإذا كانت حفلة من 72 ألف شخص هزّت الأرض كزلزال بقوة 2.3، فماذا سيحدث لنا، ولماذا ستستغرق العودة إلى البيوت 1.7 سنة على الأقل؟",
+   "facts": [
+    "وفق ناشيونال جيوغرافيك، يمكن لـ7 مليارات إنسان يقفون كتفًا بكتف أن يتسعوا في مساحة لوس أنجلوس البالغة نحو 1300 كم²، أي أكثر من 5 أشخاص في المتر المربع.",
+    "وفق علي أسغري من جامعة يورك في حديثه لمجلة ساينتفك أمريكان، تبدأ المشاكل في الحشود عند 5 إلى 6 أشخاص في المتر المربع، ومعظم الوفيات في حوادث السحق سببها الاختناق من الضغط على الرئتين.",
+    "وفق عالمة الزلازل جاكي كابلان-أورباخ من جامعة ويسترن واشنطن، هزّ جمهور حفلة تايلور سويفت في سياتل الأرض بما يعادل زلزالًا بقوة 2.3؛ وحضر الحفلة نحو 72 ألف شخص كل ليلة.",
+    "وفق منظمة الطيران المدني الدولي (إيكاو) التابعة للأمم المتحدة، نقلت الرحلات المنتظمة 4.7 مليار مسافر في 2024؛ وبهذا المعدل يستغرق نقل 8 مليارات إنسان 1.7 سنة على الأقل."
+   ]
+  },
+  "hi": {
+   "title": "अगर 8 अरब लोग एक ही जगह कूदें तो क्या होगा?",
+   "summary": "अगर 8 अरब लोग कंधे से कंधा मिलाकर एक ही जगह कूदने के लिए इकट्ठा हों, तो हर वर्ग मीटर में 5 लोग होंगे और कुचले जाने का खतरा शुरू हो जाएगा! जब 72 हज़ार लोगों का एक कॉन्सर्ट ही ज़मीन को 2.3 तीव्रता के भूकंप जैसा हिला चुका है, तो हमारा क्या होगा और घर लौटने में कम से कम 1.7 साल क्यों लगेंगे?",
+   "facts": [
+    "नेशनल ज्योग्राफिक के अनुसार, कंधे से कंधा मिलाकर खड़े 7 अरब लोग लॉस एंजिल्स के लगभग 1,300 वर्ग किमी में समा सकते हैं, यानी हर वर्ग मीटर में 5 से ज़्यादा लोग।",
+    "साइंटिफिक अमेरिकन से बात करते हुए यॉर्क यूनिवर्सिटी के अली असगरी के अनुसार, भीड़ में समस्याएँ 5 से 6 लोग प्रति वर्ग मीटर पर शुरू होती हैं, और भीड़ में कुचलने से होने वाली ज़्यादातर मौतें फेफड़ों पर दबाव से दम घुटने के कारण होती हैं।",
+    "वेस्टर्न वॉशिंगटन यूनिवर्सिटी की भूकंपविज्ञानी जैकी कैपलन-ऑरबाख के अनुसार, सिएटल में टेलर स्विफ्ट के कॉन्सर्ट की भीड़ ने ज़मीन को 2.3 तीव्रता के भूकंप जितना हिलाया; हर रात लगभग 72,000 लोग आए थे।",
+    "संयुक्त राष्ट्र की अंतरराष्ट्रीय नागरिक उड्डयन संगठन (ICAO) के अनुसार, 2024 में नियमित उड़ानों ने 4.7 अरब यात्रियों को ढोया; इस रफ्तार से 8 अरब लोगों को ले जाने में कम से कम 1.7 साल लगेंगे।"
+   ]
+  },
+  "id": {
+   "title": "Bagaimana Jika 8 Miliar Orang Melompat di Satu Tempat?",
+   "summary": "Kalau 8 miliar orang berkumpul bahu-membahu di satu tempat untuk melompat, ada 5 orang per meter persegi dan bahaya terhimpit pun dimulai! Kalau satu konser 72 ribu orang saja mengguncang tanah seperti gempa bermagnitudo 2,3, apa yang terjadi pada kita, dan kenapa pulang ke rumah butuh setidaknya 1,7 tahun?",
+   "facts": [
+    "Menurut National Geographic, 7 miliar orang yang berdiri bahu-membahu bisa muat di sekitar 1.300 km² wilayah Los Angeles, artinya lebih dari 5 orang per meter persegi.",
+    "Menurut Ali Asgary dari York University kepada Scientific American, masalah dalam kerumunan mulai muncul pada 5 sampai 6 orang per meter persegi, dan sebagian besar kematian akibat terhimpit disebabkan sesak napas karena tekanan pada paru-paru.",
+    "Menurut seismolog Western Washington University Jackie Caplan-Auerbach, penonton konser Taylor Swift di Seattle mengguncang tanah setara gempa bermagnitudo 2,3; sekitar 72.000 orang hadir setiap malam.",
+    "Menurut Organisasi Penerbangan Sipil Internasional (ICAO) milik PBB, penerbangan berjadwal mengangkut 4,7 miliar penumpang pada 2024; dengan laju itu, mengangkut 8 miliar orang butuh setidaknya 1,7 tahun."
+   ]
+  },
+  "fr": {
+   "title": "Et si 8 milliards d'humains sautaient au même endroit ?",
+   "summary": "Si les 8 milliards d'humains se serraient épaule contre épaule au même endroit pour sauter, il y aurait 5 personnes par mètre carré et le risque d'écrasement commencerait ! Si un concert de 72 000 personnes a déjà secoué le sol comme un séisme de magnitude 2,3, que nous arriverait-il, et pourquoi rentrer chez soi prendrait-il au moins 1,7 an ?",
+   "facts": [
+    "Selon National Geographic, 7 milliards de personnes debout épaule contre épaule tiendraient dans les quelque 1 300 km² de Los Angeles, soit plus de 5 personnes par mètre carré.",
+    "Selon Ali Asgary, de l'université York, interrogé par Scientific American, les problèmes commencent dans une foule à 5 ou 6 personnes par mètre carré, et la plupart des décès lors des écrasements de foule viennent de l'asphyxie due à la pression sur les poumons.",
+    "Selon la sismologue Jackie Caplan-Auerbach, de l'université Western Washington, le public du concert de Taylor Swift à Seattle a secoué le sol comme un séisme de magnitude 2,3 ; environ 72 000 personnes étaient présentes chaque soir.",
+    "Selon l'Organisation de l'aviation civile internationale (OACI), agence de l'ONU, les vols réguliers ont transporté 4,7 milliards de passagers en 2024 ; à ce rythme, transporter 8 milliards de personnes prendrait au moins 1,7 an."
+   ]
+  },
+  "de": {
+   "title": "Was wäre, wenn 8 Milliarden Menschen an einem Ort springen?",
+   "summary": "Wenn sich alle 8 Milliarden Menschen Schulter an Schulter an einem Ort zum Springen versammeln, stehen 5 Menschen auf jedem Quadratmeter, und die Gefahr des Erdrückens beginnt! Wenn schon ein Konzert mit 72.000 Menschen den Boden wie ein Erdbeben der Stärke 2,3 erschütterte: Was passiert mit uns, und warum dauert die Heimreise mindestens 1,7 Jahre?",
+   "facts": [
+    "Laut National Geographic würden 7 Milliarden Menschen Schulter an Schulter auf die rund 1.300 km² von Los Angeles passen, das sind mehr als 5 Menschen pro Quadratmeter.",
+    "Laut Ali Asgary von der York University gegenüber Scientific American beginnen die Probleme in einer Menge bei 5 bis 6 Menschen pro Quadratmeter; die meisten Todesfälle bei Massengedränge entstehen durch Ersticken, weil Druck auf die Lunge wirkt.",
+    "Laut der Seismologin Jackie Caplan-Auerbach von der Western Washington University erschütterte das Publikum beim Taylor-Swift-Konzert in Seattle den Boden wie ein Erdbeben der Stärke 2,3; jeden Abend waren etwa 72.000 Menschen da.",
+    "Laut der UN-Organisation für internationale Zivilluftfahrt (ICAO) beförderten Linienflüge 2024 4,7 Milliarden Passagiere; in diesem Tempo würde der Transport von 8 Milliarden Menschen mindestens 1,7 Jahre dauern."
+   ]
+  },
+  "ru": {
+   "title": "Что если 8 миллиардов человек прыгнут в одном месте?",
+   "summary": "Если все 8 миллиардов человек соберутся плечом к плечу в одном месте, чтобы прыгнуть, на каждом квадратном метре окажется по 5 человек, и начнётся опасность давки! Если концерт на 72 тысячи человек уже тряс землю как землетрясение магнитудой 2,3, что будет с нами и почему дорога домой займёт не меньше 1,7 года?",
+   "facts": [
+    "По данным National Geographic, 7 миллиардов человек, стоящих плечом к плечу, уместились бы на площади Лос-Анджелеса около 1300 км², то есть больше 5 человек на квадратный метр.",
+    "По словам Али Асгари из Йоркского университета в интервью Scientific American, проблемы в толпе начинаются при 5–6 людях на квадратный метр, а большинство смертей в давке вызвано удушьем из-за давления на лёгкие.",
+    "По словам сейсмолога Университета Западного Вашингтона Джеки Каплан-Ауэрбах, публика на концерте Тейлор Свифт в Сиэтле трясла землю как землетрясение магнитудой 2,3; каждый вечер приходило около 72 000 человек.",
+    "По данным Международной организации гражданской авиации ООН (ИКАО), регулярные рейсы перевезли в 2024 году 4,7 млрд пассажиров; с такой скоростью перевозка 8 млрд человек заняла бы не меньше 1,7 года."
+   ]
+  },
+  "az": {
+   "title": "8 milyard insan eyni yerdə tullansaydı nə olardı?",
+   "summary": "8 milyard insan çiyin-çiyinə eyni yerə toplaşıb tullansaydı, hər kvadratmetrə 5 nəfər düşər və əzilmə təhlükəsi başlayardı! 72 min nəfərlik bir konsert belə yeri 2,3 bal gücündə zəlzələ kimi silkələyibsə, bizi nə gözləyərdi və evə qayıtmaq niyə ən azı 1,7 il çəkərdi?",
+   "facts": [
+    "National Geographic-ə görə, çiyin-çiyinə dayanan 7 milyard insan Los-Ancelesin təxminən 1300 km²-lik ərazisinə sığar, bu da hər kvadratmetrə 5-dən çox adam deməkdir.",
+    "Scientific American-a danışan York Universitetindən Əli Əsqəriyə görə, izdihamda problemlər hər kvadratmetrdə 5-6 nəfərdə başlayır, əzilmələrdə ölümlərin çoxu ağciyərlərə düşən təzyiqdən nəfəs ala bilməməkdən olur.",
+    "Western Washington Universitetinin seysmoloqu Cekki Keplan-Auerbaxa görə, Taylor Sviftin Sietldəki konsertində izdihamın yaratdığı silkələnmə 2,3 bal gücündə zəlzələyə bərabər idi; hər gecə təxminən 72 000 nəfər gəlmişdi.",
+    "BMT-nin Beynəlxalq Mülki Aviasiya Təşkilatına (ICAO) görə, 2024-cü ildə müntəzəm reyslərlə 4,7 milyard sərnişin daşınıb; bu sürətlə 8 milyard insanı daşımaq ən azı 1,7 il çəkər."
+   ]
+  }
+ }
+}
