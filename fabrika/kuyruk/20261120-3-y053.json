@@ -7,11 +7,11 @@
   "hi": "HİÇ YAĞMUR",
   "rest": "YAĞMASAYDI?"
  },
- "summary": "Bir daha hiç yağmur yağmasaydı önce barajlar çatlar, musluğun kururdu! Her gün kaybettiğin 2,5 litre su, yağmurla yetişen dünyadaki yiyeceğin %60'ı ve NASA'nın Mars'a benzettiği Atacama Çölü'ne dönen karalar.",
+ "summary": "Bir daha hiç yağmur yağmasaydı önce baraj gölleri çatlar, musluğun kururdu! Her gün kaybettiğin 2,5 litre su, yağmurla yetişen dünyadaki yiyeceğin %60'ı ve NASA'nın Mars'a benzettiği Atacama Çölü'ne dönen karalar.",
  "lines": [
   {
    "who": "pi",
-   "text": "Barajlar çatlar, musluğun kurur: onları dolduran yağmurdur.",
+   "text": "Baraj gölleri çatlar, musluğun kurur: onları dolduran yağmurdur.",
    "v": {
     "t": "split",
     "bg": "desert",
@@ -21,7 +21,7 @@
     },
     "right": {
      "e": "🏜️",
-     "label": "Çatlak Baraj"
+     "label": "Kuru Baraj"
     },
     "key": "kurur"
    }
@@ -156,7 +156,7 @@
  "i18n": {
   "en": {
    "title": "What If It Never Rained Again?",
-   "summary": "If it never rained again, the dams would crack and your tap would run dry first! The 2.5 liters of water you lose every day, the 60% of the world's food grown on rain alone, and land turning into the Atacama Desert, which NASA calls one of the most Mars-like places on Earth.",
+   "summary": "If it never rained again, reservoirs would crack dry and your tap would run dry first! The 2.5 liters of water you lose every day, the 60% of the world's food grown on rain alone, and land turning into the Atacama Desert, which NASA calls one of the most Mars-like places on Earth.",
    "facts": [
     "According to the USGS, rain fills our lakes and rivers and recharges underground aquifers.",
     "According to a University of Hawaiʻi nutrition textbook, an adult loses about 2.5 liters of water a day on average: about 1,500 ml in urine, 500 ml through the skin and 400 ml by breathing.",
@@ -167,7 +167,7 @@
   },
   "es": {
    "title": "¿Qué pasaría si nunca más volviera a llover?",
-   "summary": "Si nunca más lloviera, primero se agrietarían las presas y tu grifo se secaría. Los 2,5 litros de agua que pierdes cada día, el 60% de la comida del mundo que crece solo con lluvia y una tierra convertida en el desierto de Atacama, uno de los lugares más parecidos a Marte según la NASA.",
+   "summary": "Si nunca más lloviera, primero se agrietarían los embalses y tu grifo se secaría. Los 2,5 litros de agua que pierdes cada día, el 60% de la comida del mundo que crece solo con lluvia y una tierra convertida en el desierto de Atacama, uno de los lugares más parecidos a Marte según la NASA.",
    "facts": [
     "Según el USGS, la lluvia llena nuestros lagos y ríos y recarga los acuíferos subterráneos.",
     "Según un libro de nutrición de la Universidad de Hawái, un adulto pierde en promedio unos 2,5 litros de agua al día: unos 1.500 ml por la orina, 500 ml por la piel y 400 ml al respirar.",
@@ -178,7 +178,7 @@
   },
   "pt": {
    "title": "E se nunca mais chovesse?",
-   "summary": "Se nunca mais chovesse, primeiro as represas rachariam e a sua torneira secaria! Os 2,5 litros de água que você perde todo dia, os 60% da comida do mundo que crescem só com a chuva e a terra virando o Deserto do Atacama, um dos lugares mais parecidos com Marte segundo a NASA.",
+   "summary": "Se nunca mais chovesse, primeiro os reservatórios rachariam e a sua torneira secaria! Os 2,5 litros de água que você perde todo dia, os 60% da comida do mundo que crescem só com a chuva e a terra virando o Deserto do Atacama, um dos lugares mais parecidos com Marte segundo a NASA.",
    "facts": [
     "Segundo o USGS, a chuva enche nossos lagos e rios e recarrega os aquíferos subterrâneos.",
     "Segundo um livro de nutrição da Universidade do Havaí, um adulto perde em média cerca de 2,5 litros de água por dia: cerca de 1.500 ml pela urina, 500 ml pela pele e 400 ml pela respiração.",
@@ -189,7 +189,7 @@
   },
   "ar": {
    "title": "ماذا لو لم يهطل المطر أبدًا مرة أخرى؟",
-   "summary": "لو لم يهطل المطر مرة أخرى، لتشققت السدود أولًا وجفّ صنبورك! لترات الماء الـ2.5 التي تفقدها كل يوم، و60% من غذاء العالم الذي ينمو بالمطر وحده، ويابسة تتحول إلى صحراء أتاكاما التي تعدّها ناسا من أشبه الأماكن بالمريخ.",
+   "summary": "لو لم يهطل المطر مرة أخرى، لتشققت بحيرات السدود أولًا وجفّ صنبورك! لترات الماء الـ2.5 التي تفقدها كل يوم، و60% من غذاء العالم الذي ينمو بالمطر وحده، ويابسة تتحول إلى صحراء أتاكاما التي تعدّها ناسا من أشبه الأماكن بالمريخ.",
    "facts": [
     "وفق هيئة المسح الجيولوجي الأمريكية (USGS)، يملأ المطر بحيراتنا وأنهارنا ويغذي طبقات المياه الجوفية.",
     "وفق كتاب التغذية في جامعة هاواي، يفقد البالغ في المتوسط نحو 2.5 لتر من الماء يوميًا: نحو 1500 مل في البول و500 مل عبر الجلد و400 مل مع التنفس.",
@@ -200,7 +200,7 @@
   },
   "hi": {
    "title": "अगर फिर कभी बारिश न हो तो क्या होगा?",
-   "summary": "अगर फिर कभी बारिश न हो, तो सबसे पहले बांधों में दरारें पड़ेंगी और तुम्हारा नल सूख जाएगा! हर दिन तुम्हारे शरीर से निकलने वाला 2.5 लीटर पानी, सिर्फ बारिश से उगने वाला दुनिया का 60% भोजन, और ज़मीन का अटाकामा रेगिस्तान बन जाना, जिसे NASA पृथ्वी पर मंगल जैसी सबसे करीबी जगहों में गिनता है।",
+   "summary": "अगर फिर कभी बारिश न हो, तो सबसे पहले बांधों की झीलें सूखकर फट जाएंगी और तुम्हारा नल सूख जाएगा! हर दिन तुम्हारे शरीर से निकलने वाला 2.5 लीटर पानी, सिर्फ बारिश से उगने वाला दुनिया का 60% भोजन, और ज़मीन का अटाकामा रेगिस्तान बन जाना, जिसे NASA पृथ्वी पर मंगल जैसी सबसे करीबी जगहों में गिनता है।",
    "facts": [
     "USGS के अनुसार, बारिश हमारी झीलों और नदियों को भरती है और ज़मीन के नीचे के जलभृतों को फिर से भरती है।",
     "हवाई यूनिवर्सिटी की पोषण पाठ्यपुस्तक के अनुसार, एक वयस्क रोज़ औसतन लगभग 2.5 लीटर पानी खोता है: लगभग 1,500 मिली पेशाब से, 500 मिली त्वचा से और 400 मिली सांस से।",
@@ -211,7 +211,7 @@
   },
   "id": {
    "title": "Bagaimana Jika Hujan Tak Pernah Turun Lagi?",
-   "summary": "Kalau hujan tak pernah turun lagi, bendungan retak dan keranmu kering duluan! 2,5 liter air yang hilang dari tubuhmu setiap hari, 60% pangan dunia yang tumbuh hanya dengan hujan, dan daratan yang berubah jadi Gurun Atacama, salah satu tempat paling mirip Mars menurut NASA.",
+   "summary": "Kalau hujan tak pernah turun lagi, waduk retak mengering dan keranmu kering duluan! 2,5 liter air yang hilang dari tubuhmu setiap hari, 60% pangan dunia yang tumbuh hanya dengan hujan, dan daratan yang berubah jadi Gurun Atacama, salah satu tempat paling mirip Mars menurut NASA.",
    "facts": [
     "Menurut USGS, hujan mengisi danau dan sungai kita serta mengisi kembali akuifer bawah tanah.",
     "Menurut buku nutrisi University of Hawaiʻi, orang dewasa kehilangan rata-rata sekitar 2,5 liter air per hari: sekitar 1.500 ml lewat urine, 500 ml lewat kulit, dan 400 ml lewat napas.",
@@ -222,7 +222,7 @@
   },
   "fr": {
    "title": "Et s'il ne pleuvait plus jamais ?",
-   "summary": "S'il ne pleuvait plus jamais, les barrages se fissureraient et ton robinet s'assécherait en premier ! Les 2,5 litres d'eau que tu perds chaque jour, les 60 % de la nourriture mondiale qui poussent grâce à la seule pluie, et des terres transformées en désert d'Atacama, l'un des endroits les plus martiens de la Terre selon la NASA.",
+   "summary": "S'il ne pleuvait plus jamais, les lacs de barrage se fissureraient et ton robinet s'assécherait en premier ! Les 2,5 litres d'eau que tu perds chaque jour, les 60 % de la nourriture mondiale qui poussent grâce à la seule pluie, et des terres transformées en désert d'Atacama, l'un des endroits les plus martiens de la Terre selon la NASA.",
    "facts": [
     "Selon l'USGS, la pluie remplit nos lacs et nos rivières et recharge les nappes souterraines.",
     "Selon un manuel de nutrition de l'université d'Hawaï, un adulte perd en moyenne environ 2,5 litres d'eau par jour : environ 1 500 ml par l'urine, 500 ml par la peau et 400 ml par la respiration.",
@@ -233,7 +233,7 @@
   },
   "de": {
    "title": "Was wäre, wenn es nie wieder regnen würde?",
-   "summary": "Wenn es nie wieder regnen würde, reißen zuerst die Staudämme auf und dein Wasserhahn bleibt trocken! Die 2,5 Liter Wasser, die du jeden Tag verlierst, die 60 % der Nahrung der Welt, die allein mit Regen wachsen, und Land, das zur Atacama-Wüste wird – laut NASA einer der marsähnlichsten Orte der Erde.",
+   "summary": "Wenn es nie wieder regnen würde, reißen zuerst die Stauseen auf und dein Wasserhahn bleibt trocken! Die 2,5 Liter Wasser, die du jeden Tag verlierst, die 60 % der Nahrung der Welt, die allein mit Regen wachsen, und Land, das zur Atacama-Wüste wird – laut NASA einer der marsähnlichsten Orte der Erde.",
    "facts": [
     "Laut USGS füllt Regen unsere Seen und Flüsse und füllt die Grundwasserleiter im Boden wieder auf.",
     "Laut einem Ernährungslehrbuch der University of Hawaiʻi verliert ein Erwachsener im Schnitt etwa 2,5 Liter Wasser pro Tag: rund 1.500 ml über den Urin, 500 ml über die Haut und 400 ml über die Atmung.",
