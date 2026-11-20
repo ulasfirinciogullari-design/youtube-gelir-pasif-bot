@@ -28,7 +28,6 @@
   ]
  },
  "slots": {
-  "2026-11-06T18": "X9s6--q0k5U https://www.instagram.com/reel/DfaM0r0FuFF/",
   "2026-11-07T10": "p0eTpBxbXkc https://www.instagram.com/reel/Dfb6xCBiDJp/",
   "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
   "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/",
@@ -67,16 +66,17 @@
   "2026-11-18T18": "eGfPjyxwtcM https://www.instagram.com/reel/Df5GcYwD787/",
   "2026-11-19T10": "7UmdF_VL9M4 https://www.instagram.com/reel/Df60QuEjJrl/",
   "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/",
-  "2026-11-19T18": "g9grbN5SXXQ https://www.instagram.com/reel/Df7rSgAFZmx/"
+  "2026-11-19T18": "g9grbN5SXXQ https://www.instagram.com/reel/Df7rSgAFZmx/",
+  "2026-11-20T10": "H8x0pPNzPPs https://www.instagram.com/reel/Df9ZKGrDwx9/"
  },
  "nobet": {
   "basladi": "2026-11-20T07:23:23+00:00",
   "run": "44693335886",
-  "tur": 153,
+  "tur": 158,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-20T09:55:25+00:00"
+  "son_tur": "2026-11-20T10:01:55+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -568,6 +568,13 @@
    "at": 1795111315,
    "title": "Kulaklarını oynatmak mümkün mü? 👂",
    "topic_id": "mk-c0158"
+  },
+  "H8x0pPNzPPs": {
+   "media_id": "18389952466235222",
+   "url": "https://www.instagram.com/reel/Df9ZKGrDwx9/",
+   "at": 1795168916,
+   "title": "Ağlarken gözyaşın burnundan akabilir mi? 😢",
+   "topic_id": "mk-c0176"
   }
  }
 }
