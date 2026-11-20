@@ -1,0 +1,172 @@
+{
+  "topic_id": "mk-c0187",
+  "topic": "Solucanlar yağmurdan sonra neden toprağın üstüne çıkar? Solucan yağmurda boğulmamak için mi çıkar, solucan suda boğulur mu?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Yağmurda çıkan solucan boğulmaktan kaçmıyor 🪱",
+  "hook_text": "SOLUCAN YAĞMURDA NEDEN ÇIKAR?",
+  "description": "Solucanlar yağmurdan sonra neden toprağın üstüne çıkar, solucan yağmurda boğulmamak için mi çıkar?\n\nBüyük ihtimalle hayır. Solucanların akciğeri yoktur, derileriyle nefes alırlar ve bunun için toprağın nemli olması gerekir. Scientific American'a konuşan Central Lancashire Üniversitesi'nden Chris Lowe'a göre solucanlar tamamen suya batmış halde birkaç gün yaşayabilir; The Nature Conservancy de çoğu türün iki hafta ya da daha uzun süre suyun altında kalabildiğini aktarıyor. Uzmanlar asıl sebebin göç olduğunu düşünüyor: ıslak zeminde solucan, toprağın içinde gidebileceğinden çok daha uzun mesafeler kat edebilir; kuru havada ise yüzeyde kuruma riski yüzünden bunu yapamaz. Yağmur damlalarının titreşiminin köstebeğe benzediği de öne sürülüyor, ancak bu deneylerle gösterilmedi.\n\nSen de solucanların boğulmamak için çıktığını sanıyor muydun: evet mi, hayır mı?\n\n#solucan #hayvanlar #doğa #ilginçbilgiler #shorts #bilim #merak #keşfet\n\nSeri: mk-c0187",
+  "tags": [
+    "solucan",
+    "solucanlar neden yüzeye çıkar",
+    "yağmurdan sonra solucan",
+    "yağmurda solucan neden çıkar",
+    "solucan boğulur mu",
+    "solucan suda yaşar mı",
+    "solucan nasıl nefes alır",
+    "toprak solucanı",
+    "solucan göçü",
+    "yağmur",
+    "toprak",
+    "bahçe",
+    "yanlış bilinen gerçekler",
+    "efsane mi gerçek mi",
+    "hayvanlar",
+    "doğa",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "biyoloji",
+    "earthworms after rain",
+    "why worms come out",
+    "solucan neden çıkar",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "solucanlar neden yuzeye cikar"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Worms don't surface after rain to avoid drowning 🪱",
+      "description": "Earthworms have no lungs and breathe through their skin, and most can survive days underwater. Soil experts now think worms come up after rain to travel: on wet ground they can cover far more distance than by burrowing, something they can't risk when it's dry.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "es": {
+      "title": "Las lombrices no salen con la lluvia para no ahogarse 🪱",
+      "description": "Las lombrices no tienen pulmones, respiran por la piel y la mayoría aguanta días bajo el agua. Los expertos creen que salen tras la lluvia para desplazarse: sobre el suelo mojado recorren mucha más distancia que excavando, algo que no pueden arriesgar cuando está seco.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "pt": {
+      "title": "Minhoca não sai na chuva para fugir do afogamento 🪱",
+      "description": "Minhocas não têm pulmões, respiram pela pele e a maioria aguenta dias debaixo d'água. Especialistas acham que elas sobem depois da chuva para viajar: no chão molhado percorrem distâncias muito maiores do que cavando, algo arriscado demais com o tempo seco.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "de": {
+      "title": "Regenwürmer kommen bei Regen nicht hoch, weil sie ertrinken 🪱",
+      "description": "Regenwürmer haben keine Lunge, sie atmen über die Haut, und die meisten überleben tagelang unter Wasser. Bodenkundler vermuten, dass sie bei Regen wandern: Auf nassem Boden kommen sie viel weiter als beim Graben – bei Trockenheit wäre das zu gefährlich.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "fr": {
+      "title": "Les vers de terre ne sortent pas sous la pluie pour éviter la noyade 🪱",
+      "description": "Les vers de terre n'ont pas de poumons, ils respirent par la peau, et la plupart survivent des jours sous l'eau. Les spécialistes pensent qu'ils sortent après la pluie pour voyager : sur un sol mouillé, ils vont bien plus loin qu'en creusant, ce qu'ils ne peuvent pas risquer par temps sec.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "it": {
+      "title": "I lombrichi non escono con la pioggia per non annegare 🪱",
+      "description": "I lombrichi non hanno polmoni, respirano attraverso la pelle e quasi tutti resistono giorni sott'acqua. Gli esperti pensano che escano dopo la pioggia per spostarsi: sul terreno bagnato percorrono distanze molto maggiori che scavando, cosa troppo rischiosa con il secco.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "ru": {
+      "title": "Дождевые черви выползают после дождя не потому, что тонут 🪱",
+      "description": "У червей нет лёгких, они дышат кожей, и большинство может днями жить под водой. Почвоведы считают, что после дождя черви выползают, чтобы переселиться: по мокрой земле они проходят куда больше, чем под землёй, а в сухую погоду так рисковать не могут.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "ar": {
+      "title": "ديدان الأرض لا تخرج بعد المطر هربًا من الغرق 🪱",
+      "description": "ليس لديدان الأرض رئتان، فهي تتنفس عبر جلدها، ويستطيع معظمها العيش أيامًا تحت الماء. ويرى خبراء التربة أنها تخرج بعد المطر لتنتقل: فعلى الأرض المبللة تقطع مسافات أطول بكثير مما تقطعه داخل التربة، وهو ما لا تجازف به في الجو الجاف.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "hi": {
+      "title": "बारिश के बाद केंचुए डूबने के डर से बाहर नहीं आते 🪱",
+      "description": "केंचुओं के फेफड़े नहीं होते, वे त्वचा से साँस लेते हैं और ज़्यादातर कई दिन पानी में डूबे रहकर भी ज़िंदा रह सकते हैं। विशेषज्ञ मानते हैं कि बारिश के बाद वे सफ़र के लिए बाहर आते हैं: गीली ज़मीन पर वे मिट्टी के अंदर की तुलना में कहीं ज़्यादा दूर जा सकते हैं, जबकि सूखे में ऐसा करना खतरनाक है।\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "id": {
+      "title": "Cacing keluar saat hujan bukan karena takut tenggelam 🪱",
+      "description": "Cacing tanah tidak punya paru-paru, bernapas lewat kulit, dan kebanyakan bisa bertahan berhari-hari di dalam air. Para ahli menduga cacing keluar setelah hujan untuk berpindah: di tanah basah mereka bisa menempuh jarak jauh lebih panjang daripada di dalam tanah, hal yang terlalu berisiko saat kering.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "ja": {
+      "title": "雨のあとミミズが出てくるのは、おぼれるからではない 🪱",
+      "description": "ミミズには肺がなく皮膚で呼吸しており、多くの種は何日も水中で生きられます。専門家は、雨のあとに地上へ出るのは移動のためだと考えています。湿った地面なら土の中よりずっと遠くまで行けますが、乾いた日には干からびる危険が大きすぎるのです。\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "ko": {
+      "title": "비 온 뒤 지렁이가 나오는 건 익사할까 봐서가 아니다 🪱",
+      "description": "지렁이는 폐가 없고 피부로 숨을 쉬며, 대부분의 종은 물속에서도 며칠을 버팁니다. 전문가들은 지렁이가 비가 온 뒤 이동하려고 밖으로 나온다고 봅니다. 젖은 땅 위에서는 흙 속보다 훨씬 멀리 갈 수 있지만, 마른 날에는 말라 죽을 위험이 너무 크기 때문입니다.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "pl": {
+      "title": "Dżdżownice nie wychodzą po deszczu, bo się topią 🪱",
+      "description": "Dżdżownice nie mają płuc, oddychają skórą, a większość przeżyje pod wodą wiele dni. Specjaliści uważają, że po deszczu wychodzą, by wędrować: po mokrej ziemi pokonają znacznie dłuższą drogę niż pod nią, a przy suchej pogodzie takie ryzyko byłoby zbyt duże.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "nl": {
+      "title": "Regenwormen komen na regen niet boven om niet te verdrinken 🪱",
+      "description": "Regenwormen hebben geen longen, ze ademen via hun huid en de meeste overleven dagenlang onder water. Bodemexperts denken dat ze na regen bovenkomen om te reizen: over natte grond komen ze veel verder dan onder de grond, iets wat bij droogte te riskant is.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "uk": {
+      "title": "Дощові черв'яки виповзають після дощу не через те, що тонуть 🪱",
+      "description": "У черв'яків немає легень, вони дихають шкірою, і більшість може днями жити під водою. Ґрунтознавці вважають, що після дощу черв'яки виповзають, щоб переселитися: мокрою землею вони долають значно більшу відстань, ніж під землею, а в суху погоду так ризикувати не можуть.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "vi": {
+      "title": "Giun đất bò lên sau mưa không phải vì sợ chết đuối 🪱",
+      "description": "Giun đất không có phổi, chúng thở qua da và phần lớn có thể sống nhiều ngày dưới nước. Các chuyên gia cho rằng chúng bò lên sau mưa để di chuyển: trên mặt đất ướt, chúng đi được xa hơn nhiều so với đào trong đất, điều quá mạo hiểm khi trời khô.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "az": {
+      "title": "Yağışdan sonra çıxan soxulcan boğulmaqdan qaçmır 🪱",
+      "description": "Soxulcanların ağciyəri yoxdur, dəriləri ilə nəfəs alırlar və növlərin çoxu suyun altında günlərlə yaşaya bilir. Mütəxəssislərə görə onlar yağışdan sonra köç etmək üçün çıxırlar: yaş torpaqda torpağın içində gedə biləcəklərindən xeyli uzağa gedirlər, quru havada isə bu çox risklidir.\n\n#shorts\n\nSeri: mk-c0187"
+    },
+    "ro": {
+      "title": "Râmele nu ies după ploaie ca să nu se înece 🪱",
+      "description": "Râmele nu au plămâni, respiră prin piele, iar cele mai multe pot supraviețui zile întregi sub apă. Specialiștii cred că ies după ploaie ca să călătorească: pe pământul ud ajung mult mai departe decât săpând, lucru prea riscant pe vreme uscată.\n\n#shorts\n\nSeri: mk-c0187"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sen de solucanların boğulmamak için çıktığını sanıyor muydun: evet mi, hayır mı?",
+  "scenes": [
+    {
+      "text": "Yağmurdan sonra çıkan bu solucan boğulmaktan kaçmıyor.",
+      "visual": "macro close-up of an earthworm on wet pavement after rain",
+      "stock_query": "earthworm close up",
+      "source": "stock",
+      "callout": "BOĞULMAKTAN DEĞİL"
+    },
+    {
+      "text": "Toprağı su basınca boğulacağı için çıktığını sanırız.",
+      "visual": "an earthworm emerging from wet soil",
+      "stock_query": "earthworm soil",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa akciğeri yok, derisinden nefes alır; çoğu tür suyun altında günlerce yaşar.",
+      "visual": "macro shot of an earthworm's moist skin",
+      "stock_query": "earthworm macro",
+      "source": "stock",
+      "callout": "SU ALTINDA GÜNLERCE"
+    },
+    {
+      "text": "Bir görüşe göre asıl sebep yolculuk: ıslak zeminde, toprağın altında gidebileceğinden çok daha uzağa sürünür.",
+      "visual": "an earthworm crawling across wet ground",
+      "stock_query": "earthworm crawling",
+      "source": "stock",
+      "callout": "YENİ YERE GÖÇ"
+    },
+    {
+      "text": "Kuru günde yüzeye çıksa derisi kurur.",
+      "visual": "an earthworm on dry soil in the sun",
+      "stock_query": "earthworm garden",
+      "source": "stock"
+    },
+    {
+      "text": "Kaldırımda bir dahaki solucanı görünce hatırla:",
+      "visual": "close-up of an earthworm in a puddle",
+      "stock_query": "earthworm rain",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 20.0,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 14,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #238",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0187_1795173699_ig.mp4"
+}
