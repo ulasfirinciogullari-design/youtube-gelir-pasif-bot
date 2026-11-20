@@ -1,5 +1,5 @@
 {
- "at": "2026-11-20T08:35:50+00:00",
+ "at": "2026-11-20T09:06:32+00:00",
  "anahtar": {
   "parmak_izi": "3a5b7dc2",
   "bitis": "Google süre bildirmedi"
@@ -45,7 +45,7 @@
    "baslik": "Kalbin 1 Günde Kaç Kez Atar?"
   },
   "f6WyXXJWASs": {
-   "view": 342,
+   "view": 343,
    "like": 4,
    "comment": 4,
    "baslik": "Güneş Kara Delik Olsaydı Ne Olurdu?"
@@ -531,7 +531,7 @@
    "baslik": "Uzayda Ses Yayılsaydı Kulaklarına Ne Olurdu? 😳"
   },
   "JViBEWB18kw": {
-   "view": 1069,
+   "view": 1075,
    "like": 5,
    "comment": 0,
    "baslik": "Mars Gerçekte Ne Kadar Uzak? 🤯"
@@ -585,8 +585,8 @@
    "baslik": "Ay'da 1 Ay Yaşasaydın Ne Olurdu? 😳"
   },
   "xAIVnlGvOAk": {
-   "view": 45,
-   "like": 1,
+   "view": 47,
+   "like": 0,
    "comment": 0,
    "baslik": "Güneş'in Yerine Sirius Geçseydi Ne Olurdu? 😳"
   },
@@ -597,8 +597,8 @@
    "baslik": "Uzay Asansörüne Binseydin Ne Olurdu? 😳"
   },
   "m9z4HiDxDfA": {
-   "view": 61,
-   "like": 3,
+   "view": 84,
+   "like": 2,
    "comment": 0,
    "baslik": "Bir Virüs Gerçekte Ne Kadar Küçük? 🤯"
   }
@@ -883,7 +883,14 @@
    "comments": 0,
    "subscribersGained": 2,
    "title": "Güneş 10 Saniyeliğine Yok Olsaydı Ne Olurdu?",
-   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
+   "sources": {
+    "SHORTS": 1225,
+    "YT_SEARCH": 77,
+    "YT_CHANNEL": 11,
+    "YT_OTHER_PAGE": 1,
+    "HASHTAGS": 1,
+    "NO_LINK_OTHER": 0
+   },
    "engagedViews": 661,
    "devam_yuzde": 50.3
   },
@@ -1942,12 +1949,7 @@
    "comments": 1,
    "subscribersGained": 0,
    "title": "Dünya'yı Delip Atlasaydın Sağ Çıkar Mıydın?",
-   "sources": {
-    "SHORTS": 740,
-    "YT_SEARCH": 14,
-    "YT_CHANNEL": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 196,
    "devam_yuzde": 25.9
   },
@@ -1981,13 +1983,7 @@
    "comments": 1,
    "subscribersGained": 1,
    "title": "Hiç Rüya Görmeseydin Beynine Ne Olurdu?",
-   "sources": {
-    "SHORTS": 627,
-    "YT_SEARCH": 41,
-    "YT_CHANNEL": 3,
-    "YT_OTHER_PAGE": 2,
-    "NO_LINK_OTHER": 0
-   },
+   "sources_error": "500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"errors\": [\n      {\n        \"message\": \"Internal error encountered.\",\n        \"domain\": \"global\",\n        \"reason",
    "engagedViews": 347,
    "devam_yuzde": 51.6
   },

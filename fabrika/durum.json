@@ -3101,12 +3101,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-11T17:10:54+00:00",
-   "mod": "igbolum",
-   "title": "Kara Delik Güneş Sistemi'ne Girseydi Sana Ne Olurdu?",
-   "chars": 358
-  },
-  {
    "finished": "2026-11-11T18:08:54+00:00",
    "mod": "saatlik",
    "title": "Bir Nötron Yıldızı Gerçekte Ne Kadar Yoğun?",
@@ -3516,6 +3510,12 @@
    "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
    "duration": 98.8,
    "chars": 1323
+  },
+  {
+   "finished": "2026-11-20T09:09:42+00:00",
+   "mod": "igbolum",
+   "title": "Bir Yıldırım Gerçekte Ne Kadar Sıcak?",
+   "chars": 364
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3905,6 +3905,11 @@
     "media_id": "18154614376551167",
     "url": "https://www.instagram.com/reel/Df7l3QhoZHf/",
     "at": 1795108493.445474
+   },
+   "n017": {
+    "media_id": "18007366107033606",
+    "url": "https://www.instagram.com/reel/Df9TKdFAnKr/",
+    "at": 1795165782.1641157
    }
   },
   "eski": [
@@ -3927,5 +3932,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795151906.283652
+ "yedek_ses": 1795165782.1641796
 }
