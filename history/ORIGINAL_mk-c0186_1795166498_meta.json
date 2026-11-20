@@ -1,0 +1,171 @@
+{
+  "topic_id": "mk-c0186",
+  "topic": "Kedi koltuğu neden tırmalar? Kedim koltuğu bana inat mı tırmalıyor, kedi neden tırmalar, tırmalama tahtası nereye konur?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Koltuğu tırmalayan kedin sana inat yapmıyor 🐱",
+  "hook_text": "KEDİN KOLTUĞU NEDEN TIRMALIYOR?",
+  "description": "Kedi koltuğu neden tırmalar, kedim koltuğu bana inat mı tırmalıyor?\n\nHayır. Cornell Üniversitesi Kedi Sağlığı Merkezi'ne göre tırmalama büyük ölçüde bir işaretleme davranışı: kedi tırmalarken patilerindeki özel bezlerden gelen kokuyu bölgesine bırakır, bu sırada tırnaklarının şeffaf dış kılıfı da söker. İngiliz kedi yardım kuruluşu Cats Protection da yerde kalan tırnak kabuklarının ve tırmık izlerinin kediler için bir işaret olduğunu, tırmalamanın normal ve içgüdüsel bir davranış olduğunu belirtiyor. Cornell, tahtayı kedinin tırmaladığı yerin hemen yanına koymayı ve kedi arka ayakları üstünde ön ayaklarını uzattığında en az o boyda, devrilmeyecek kadar sağlam bir tahta seçmeyi öneriyor.\n\nSenin kedin neyi tırmalıyor: koltuğu mu, halıyı mı?\n\n#kedi #kediler #kedidavranışları #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0186",
+  "tags": [
+    "kedi koltuk tırmalıyor",
+    "kedi neden tırmalar",
+    "kedi koltuğu neden tırmalar",
+    "kedi tırmalama",
+    "kedi tırmalamasını önleme",
+    "kedi tırmalama tahtası",
+    "tırmalama tahtası nereye konur",
+    "kedi tırnağı",
+    "kedi tırnak kılıfı",
+    "kedi inat mı yapıyor",
+    "kedi davranışları",
+    "kedi eğitimi",
+    "kedi sahibi",
+    "kedi bakımı",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "cat scratching",
+    "cat scratching post",
+    "tırmalama tahtası",
+    "shorts",
+    "bilim"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat isn't scratching the sofa to spite you 🐱",
+      "description": "Scratching is mostly a marking behavior: glands in your cat's paws leave its scent on the spot, and the old outer sheaths of the claws peel off, which is why you find empty claw husks on the floor. Put a sturdy post right next to the sofa, tall enough for your cat to stretch out fully.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "es": {
+      "title": "Tu gato no araña el sofá para fastidiarte 🐱",
+      "description": "Arañar es sobre todo una forma de marcar: las glándulas de sus patas dejan su olor y se desprenden las fundas viejas de las uñas, por eso encuentras uñas huecas en el suelo. Pon un rascador firme justo al lado del sofá, lo bastante alto para que se estire del todo.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "pt": {
+      "title": "Seu gato não arranha o sofá para te provocar 🐱",
+      "description": "Arranhar é, acima de tudo, uma forma de marcar território: glândulas nas patas deixam o cheiro do gato no lugar, e as capas velhas das unhas se soltam — por isso você acha unhas ocas no chão. Coloque um arranhador firme bem ao lado do sofá, alto o bastante para ele se esticar todo.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "de": {
+      "title": "Deine Katze zerkratzt das Sofa nicht aus Trotz 🐱",
+      "description": "Kratzen ist vor allem Markieren: Drüsen an den Pfoten hinterlassen Duft, und die alten Krallenhüllen lösen sich – deshalb findest du leere Krallenhülsen auf dem Boden. Stell einen stabilen Kratzbaum direkt neben das Sofa, so hoch, dass sich deine Katze ganz ausstrecken kann.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "fr": {
+      "title": "Ton chat ne griffe pas le canapé pour t'embêter 🐱",
+      "description": "Griffer sert surtout à marquer : des glandes sous les pattes déposent son odeur et les vieux étuis des griffes se détachent, d'où ces griffes vides trouvées par terre. Place un griffoir stable juste à côté du canapé, assez haut pour qu'il puisse s'étirer de tout son long.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "it": {
+      "title": "Il tuo gatto non graffia il divano per dispetto 🐱",
+      "description": "Graffiare serve soprattutto a marcare: le ghiandole delle zampe lasciano il suo odore e si staccano le vecchie guaine delle unghie, ecco perché trovi unghie vuote sul pavimento. Metti un tiragraffi stabile proprio accanto al divano, alto quanto basta perché si allunghi del tutto.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "ru": {
+      "title": "Кошка дерёт диван не назло тебе 🐱",
+      "description": "Царапая, кошка прежде всего оставляет метки: железы на лапах оставляют её запах, а со старых когтей слезают внешние чехлы — поэтому ты находишь на полу пустые «коготки». Поставь устойчивую когтеточку прямо у дивана, такой высоты, чтобы кошка могла вытянуться во весь рост.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "ar": {
+      "title": "قطتك لا تخدش الأريكة لتغيظك 🐱",
+      "description": "الخدش في الأساس وسيلة لترك علامة: غدد في كفوف القطة تترك رائحتها على المكان، وتنسلخ الأغلفة القديمة لمخالبها، ولهذا تجد قشور مخالب فارغة على الأرض. ضع عمود خدش متينًا بجوار الأريكة مباشرة، طويلًا بما يكفي لتتمدد عليه القطة بالكامل.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "hi": {
+      "title": "आपकी बिल्ली सोफ़ा आपको चिढ़ाने के लिए नहीं खरोंचती 🐱",
+      "description": "खरोंचना ज़्यादातर निशान छोड़ने का तरीका है: पंजों की ग्रंथियाँ वहाँ बिल्ली की गंध छोड़ती हैं और नाखूनों की पुरानी बाहरी परत उतर जाती है—इसीलिए फ़र्श पर खाली नाखून के खोल मिलते हैं। सोफ़े के ठीक बगल में एक मज़बूत स्क्रैचिंग पोस्ट रखें, इतनी ऊँची कि बिल्ली पूरी तरह तनकर खरोंच सके।\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "id": {
+      "title": "Kucingmu mencakar sofa bukan karena dendam 🐱",
+      "description": "Mencakar terutama cara menandai wilayah: kelenjar di telapak kaki meninggalkan bau kucing, dan selubung luar kuku yang lama terlepas, makanya kamu menemukan kulit kuku kosong di lantai. Taruh tiang garukan yang kokoh tepat di samping sofa, cukup tinggi agar kucing bisa meregang penuh.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "ja": {
+      "title": "猫がソファで爪とぎするのは、あなたへの嫌がらせではない 🐱",
+      "description": "爪とぎは主にマーキングです。肉球の分泌腺からにおいを残し、古い爪の外側の層もはがれます。床に落ちている爪の抜け殻はそのため。ソファのすぐ横に、猫が後ろ足で立って思い切り伸びられる高さの、倒れない爪とぎを置きましょう。\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "ko": {
+      "title": "고양이가 소파를 긁는 건 너를 골탕 먹이려는 게 아니다 🐱",
+      "description": "스크래칭은 주로 표시 행동입니다. 발바닥의 분비샘이 그 자리에 냄새를 남기고, 발톱의 낡은 바깥 껍질도 벗겨집니다. 바닥에서 빈 발톱 껍질이 발견되는 이유죠. 소파 바로 옆에 고양이가 뒷다리로 서서 쭉 뻗을 수 있을 만큼 높고 튼튼한 스크래처를 두세요.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "pl": {
+      "title": "Twój kot nie drapie kanapy na złość 🐱",
+      "description": "Drapanie to przede wszystkim znakowanie: gruczoły na łapach zostawiają zapach, a ze starych pazurów schodzą zewnętrzne osłonki – dlatego znajdujesz na podłodze puste pazurki. Postaw stabilny drapak tuż obok kanapy, na tyle wysoki, by kot mógł się na nim w pełni wyciągnąć.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "nl": {
+      "title": "Je kat krabt niet aan de bank om je te pesten 🐱",
+      "description": "Krabben is vooral markeren: klieren aan de poten laten geur achter en de oude buitenhulzen van de nagels laten los – daarom vind je lege nagelhulsjes op de vloer. Zet een stevige krabpaal vlak naast de bank, hoog genoeg zodat je kat zich helemaal kan uitrekken.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "uk": {
+      "title": "Кіт дере диван не на зло тобі 🐱",
+      "description": "Дряпання — передусім спосіб залишити мітку: залози на лапах залишають запах, а зі старих кігтів злазять зовнішні чохли, тож ти й знаходиш на підлозі порожні «кігтики». Постав стійку дряпку просто біля дивана, таку високу, щоб кіт міг витягнутися на повний зріст.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "vi": {
+      "title": "Mèo cào sofa không phải để chọc tức bạn 🐱",
+      "description": "Cào chủ yếu là để đánh dấu: tuyến ở bàn chân để lại mùi của mèo, và lớp vỏ ngoài cũ của móng bong ra — vì thế bạn thấy vỏ móng rỗng trên sàn. Hãy đặt một trụ cào chắc chắn ngay cạnh sofa, đủ cao để mèo vươn hết người.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "az": {
+      "title": "Divanı cırmaqlayan pişiyin sənə acıq vermir 🐱",
+      "description": "Cırmaqlamaq əsasən nişan qoymaqdır: pəncələrdəki vəzilər oraya pişiyin qoxusunu buraxır, caynaqların köhnə xarici qılafı da qopur — yerdə tapdığın boş caynaqlar bundandır. Divanın düz yanına, pişiyin arxa ayaqları üstə tam uzana biləcəyi hündürlükdə möhkəm bir cırmaqlama dirəyi qoy.\n\n#shorts\n\nSeri: mk-c0186"
+    },
+    "ro": {
+      "title": "Pisica ta nu zgârie canapeaua ca să te enerveze 🐱",
+      "description": "Zgâriatul e în primul rând marcare: glandele din lăbuțe lasă mirosul pisicii, iar tecile vechi ale ghearelor se desprind — de aceea găsești pe jos gheare goale. Pune un stâlp de zgâriat stabil chiar lângă canapea, destul de înalt cât să se poată întinde complet.\n\n#shorts\n\nSeri: mk-c0186"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Senin kedin neyi tırmalıyor: koltuğu mu, halıyı mı?",
+  "scenes": [
+    {
+      "text": "Koltuğunu tırmalayan bu kedi sana inat yapmıyor.",
+      "visual": "close-up of a cat digging its claws into a sofa, looking at the camera",
+      "stock_query": "cat scratching",
+      "source": "stock",
+      "callout": "İNAT DEĞİL"
+    },
+    {
+      "text": "Çoğumuz bağırır, hatta cezalandırırız.",
+      "visual": "a cat with flattened ears sitting on a sofa",
+      "stock_query": "cat sofa",
+      "source": "stock"
+    },
+    {
+      "text": "Yerde bulduğun o boş tırnaklar da kopmuş değil; tırmalarken dökülen eski kılıflar.",
+      "visual": "macro close-up of a cat's extended claws",
+      "stock_query": "cat claws",
+      "source": "stock",
+      "callout": "ESKİ TIRNAK KILIFI"
+    },
+    {
+      "text": "Çünkü patilerinde koku bezleri var; tırmalamak, oraya hem iz hem koku bırakmak demek.",
+      "visual": "close-up of a cat's paw pads",
+      "stock_query": "cat paw",
+      "source": "stock",
+      "callout": "PATİDE KOKU BEZİ"
+    },
+    {
+      "text": "Tahtayı tam o koltuğun yanına koy; boyu, arka ayaklarına kalkan kedinden uzun olsun.",
+      "visual": "a cat stretching up a tall scratching post",
+      "stock_query": "cat scratching post",
+      "source": "stock",
+      "callout": "KOLTUĞUN YANINA"
+    },
+    {
+      "text": "Bağırmadan önce hatırla:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 19.44,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 10,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #237",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0186_1795166498_ig.mp4"
+}
