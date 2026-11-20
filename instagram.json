@@ -28,7 +28,6 @@
   ]
  },
  "slots": {
-  "2026-11-07T14": "YYvP0VE1rkM https://www.instagram.com/reel/DfcWSxUjVcv/",
   "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/",
   "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR",
   "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/",
@@ -67,16 +66,17 @@
   "2026-11-19T14": "YgTjDC45LnQ https://www.instagram.com/reel/Df7Pu8qD4Q9/",
   "2026-11-19T18": "g9grbN5SXXQ https://www.instagram.com/reel/Df7rSgAFZmx/",
   "2026-11-20T10": "H8x0pPNzPPs https://www.instagram.com/reel/Df9ZKGrDwx9/",
-  "2026-11-20T14": "Ok770sV6zhk https://www.instagram.com/reel/Df90oRzCEvR/"
+  "2026-11-20T14": "Ok770sV6zhk https://www.instagram.com/reel/Df90oRzCEvR/",
+  "2026-11-20T18": "-Z4IYlJwEVA https://www.instagram.com/reel/Df-P9EpDpIv/"
  },
  "nobet": {
   "basladi": "2026-11-20T13:03:45+00:00",
   "run": "44739818352",
-  "tur": 273,
+  "tur": 297,
   "cevap": 0,
-  "reel": 1,
+  "reel": 2,
   "son_hata": null,
-  "son_tur": "2026-11-20T17:36:06+00:00"
+  "son_tur": "2026-11-20T18:00:52+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -582,6 +582,13 @@
    "at": 1795183324,
    "title": "Havlayan köpek ısırmaz sözü yanlış, havlamak bir uyarı 🐶",
    "topic_id": "mk-c0179"
+  },
+  "-Z4IYlJwEVA": {
+   "media_id": "18120691931014290",
+   "url": "https://www.instagram.com/reel/Df-P9EpDpIv/",
+   "at": 1795197653,
+   "title": "Beyaz saçı koparırsan yerine iki tane çıkmaz 💇",
+   "topic_id": "mk-c0182"
   }
  }
 }
