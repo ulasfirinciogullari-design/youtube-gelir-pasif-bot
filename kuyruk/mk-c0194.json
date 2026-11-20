@@ -13,10 +13,14 @@
   "scenes": [
    {
     "text": "Kalbin göğsünün solunda değil, ortasında.",
-    "visual": "close-up 3D anatomical model of a human heart in the chest, centered behind the breastbone",
-    "stock_query": "heart anatomy",
+    "visual": "close-up of a chest X-ray where the heart's shadow sits in the middle behind the breastbone, only slightly to the left",
+    "stock_query": "chest x ray",
     "source": "stock",
-    "callout": "SOLDA DEĞİL"
+    "callout": "SOLDA DEĞİL",
+    "subject": [
+     "chest",
+     "radiology"
+    ]
    },
    {
     "text": "Atışını solda hissettiğin için orada sanırsın.",

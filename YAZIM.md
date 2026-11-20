@@ -53,6 +53,14 @@ Kullanılan dosyalar silinmez; bir kez yüklenen id bir daha seçilmez.
   (dil, göz, ağız, ayak, yüz), hayvan kameraya baksın ya da tuhaflık karede görünsün. `stock_query` o uzvu
   adlandırsın ("bull close up", "bee macro", "cracking knuckles"). İlk sahnede manzara, uzaktan yürüyen hayvan,
   trafik, masa üstü nesne gibi genel çekim yok.
+- 20 Kasım verisi (mk-c0120..c0169, 47 Short): engaged oranı en düşük 10 Short'un 7'sinde ilk `stock_query` gündelik
+  bir eylemin ya da sahnenin orta planıydı: "bird eating seed" 0,22, "stressed student" 0,28, "child watching tv"
+  0,28, "winter face cold" 0,31, "dog chewing bone" 0,33, "hands drawing pencil" 0,34, "woman sneezing" 0,35;
+  üç boyutlu model de düşük kaldı ("heart anatomy" 0,24). En yükseklerde tek bir uzuv ya da yüz yakındaydı:
+  "crocodile eye" 0,55, "cat tail up" 0,53, "human ear close up" 0,53, "elephant eye" 0,51, "dog nose" 0,52.
+  Yani `stock_query` bir eylem ("... eating", "... watching", "... sneezing") değil, bir uzuv ya da yüz +
+  "close up" olsun; konu bir eylemse o eylemin tuhaf ayrıntısını (dil, pençe, gaga) yakından iste. Sorgu dosyanın
+  `subject` kelimelerini içermiyorsa sahneye kendi `subject`'ini ekle, yoksa klipler elenir.
 
 ## Görüntü öznesi (fabrika her klibi buna göre süzer)
 

@@ -14,10 +14,13 @@
   "scenes": [
    {
     "text": "Bu kadın dün ıslak saçla çıktı, bugün hapşırıyor.",
-    "visual": "close-up of a young woman sneezing into a tissue",
-    "stock_query": "woman sneezing",
+    "visual": "extreme close-up of a young woman's face with dripping wet hair, looking into the camera",
+    "stock_query": "wet hair close up",
     "source": "stock",
-    "callout": "ISLAK SAÇ, NEZLE?"
+    "callout": "ISLAK SAÇ, NEZLE?",
+    "subject": [
+     "hair"
+    ]
    },
    {
     "text": "Peki ıslak saç seni gerçekten hasta edebilir mi?",
