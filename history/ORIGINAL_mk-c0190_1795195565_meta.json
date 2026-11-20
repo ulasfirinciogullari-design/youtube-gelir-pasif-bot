@@ -1,0 +1,175 @@
+{
+  "topic_id": "mk-c0190",
+  "topic": "Kedi su içerken dilini nasıl kullanır? Kediler suyu diliyle kepçeleyerek mi içer, kedi nasıl su içer?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Su içen kedin dilini kaşık gibi kullanmıyor 🐱",
+  "hook_text": "KEDİ SUYU NASIL İÇER?",
+  "description": "Kedi su içerken dilini nasıl kullanır, kediler suyu kepçeleyerek mi içer?\n\nHayır. MIT'den Pedro Reis ve Roman Stocker'ın ekibinin 2010'da Science dergisinde yayımlanan çalışmasına göre kedi dilinin ucunu geriye kıvırır ve suya yalnızca dilinin üst yüzeyini değdirir. Dilini saniyede bir metreye yaklaşan hızla geri çektiğinde su dile yapışıp bir sütun halinde yükselir; kedi, yer çekimi sütunu geri indirmeden hemen önce ağzını kapatıp suyu yakalar. Ev kedileri bunu saniyede ortalama dört kez yapar ve çeneleri kuru kalır; aslan ve kaplan gibi büyük kediler aynı yöntemi daha yavaş kullanır.\n\nSence hangisi daha şaşırtıcı: dilin suya hiç batmaması mı, saniyede dört yudum mu?\n\n#kedi #kediler #kedidavranışları #evcilhayvan #shorts #bilim #merak #keşfet\n\nSeri: mk-c0190",
+  "tags": [
+    "kedi su içmesi",
+    "kedi nasıl su içer",
+    "kedi su içerken",
+    "kediler suyu nasıl içer",
+    "kedi dili",
+    "kedi dili nasıl çalışır",
+    "kedi yavaş çekim",
+    "kedi su kabı",
+    "kedi su içme şekli",
+    "kedi davranışları",
+    "kedi sahibi",
+    "kedi bakımı",
+    "yanlış bilinen gerçekler",
+    "kedi",
+    "kediler",
+    "evcil hayvan",
+    "hayvanlar",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "fizik",
+    "cat drinking water",
+    "how cats drink",
+    "yavaş çekim",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "kedi su icmesi",
+    "kedi nasil su icer"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Your cat doesn't scoop water with its tongue 🐱",
+      "description": "MIT engineers filmed cats with high-speed cameras and found the tongue barely touches the water. The cat curls the tip backward, brushes the surface, then pulls up so fast that a column of water rises with it, and snaps its mouth shut before the column falls, about four times a second. Its chin stays dry.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "es": {
+      "title": "Tu gato no bebe agua usando la lengua como cuchara 🐱",
+      "description": "Ingenieros del MIT filmaron gatos a alta velocidad: la lengua apenas toca el agua. El gato curva la punta hacia atrás, roza la superficie y la levanta tan rápido que arrastra una columna de agua; cierra la boca antes de que caiga, unas cuatro veces por segundo. Y el mentón se queda seco.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "pt": {
+      "title": "Seu gato não usa a língua como colher para beber água 🐱",
+      "description": "Engenheiros do MIT filmaram gatos em alta velocidade: a língua mal toca a água. O gato dobra a ponta para trás, encosta na superfície e puxa tão rápido que uma coluna de água sobe junto; ele fecha a boca antes que ela caia, cerca de quatro vezes por segundo. O queixo fica seco.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "de": {
+      "title": "Deine Katze schöpft Wasser nicht mit der Zunge 🐱",
+      "description": "MIT-Forscher haben Katzen mit Hochgeschwindigkeitskameras gefilmt: Die Zunge berührt das Wasser kaum. Die Katze biegt die Zungenspitze nach hinten, tippt die Oberfläche an und zieht so schnell zurück, dass eine Wassersäule mitkommt. Bevor sie zurückfällt, schnappt das Maul zu – etwa viermal pro Sekunde. Das Kinn bleibt trocken.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "fr": {
+      "title": "Ton chat ne boit pas en faisant une cuillère avec sa langue 🐱",
+      "description": "Des ingénieurs du MIT ont filmé des chats au ralenti : la langue effleure à peine l'eau. Le chat recourbe le bout vers l'arrière, touche la surface puis remonte si vite qu'une colonne d'eau suit ; il referme la gueule avant qu'elle ne retombe, environ quatre fois par seconde. Son menton reste sec.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "it": {
+      "title": "Il tuo gatto non usa la lingua come un cucchiaio per bere 🐱",
+      "description": "Gli ingegneri del MIT hanno filmato i gatti ad alta velocità: la lingua sfiora appena l'acqua. Il gatto piega la punta all'indietro, tocca la superficie e la ritira così in fretta che si solleva una colonna d'acqua; chiude la bocca prima che ricada, circa quattro volte al secondo. Il mento resta asciutto.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "ru": {
+      "title": "Кошка не черпает воду языком, как ложкой 🐱",
+      "description": "Инженеры MIT сняли кошек на скоростную камеру: язык едва касается воды. Кошка загибает кончик назад, касается поверхности и так быстро тянет язык вверх, что за ним поднимается столбик воды; она захлопывает пасть, пока он не упал, — примерно четыре раза в секунду. Подбородок остаётся сухим.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "ar": {
+      "title": "قطتك لا تغرف الماء بلسانها كالملعقة 🐱",
+      "description": "صوّر مهندسون من معهد MIT القطط بكاميرا فائقة السرعة، فتبيّن أن اللسان بالكاد يلمس الماء. تثني القطة طرف لسانها إلى الخلف وتلمس السطح ثم تسحبه بسرعة كبيرة فيرتفع معه عمود من الماء، وتغلق فمها قبل أن يسقط، نحو أربع مرات في الثانية، ويبقى ذقنها جافًا.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "hi": {
+      "title": "आपकी बिल्ली जीभ को चम्मच की तरह इस्तेमाल करके पानी नहीं पीती 🐱",
+      "description": "MIT के इंजीनियरों ने हाई-स्पीड कैमरे से बिल्लियों को फ़िल्माया: जीभ पानी को मुश्किल से छूती है। बिल्ली जीभ की नोक पीछे मोड़कर सतह को छूती है और इतनी तेज़ी से ऊपर खींचती है कि पानी का एक स्तंभ साथ उठता है; गिरने से पहले वह मुँह बंद कर लेती है, सेकंड में लगभग चार बार। उसकी ठुड्डी सूखी रहती है।\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "id": {
+      "title": "Kucingmu tidak menyendok air dengan lidahnya 🐱",
+      "description": "Insinyur MIT merekam kucing dengan kamera berkecepatan tinggi: lidahnya nyaris tidak menyentuh air. Kucing menekuk ujung lidah ke belakang, menyentuh permukaan, lalu menariknya begitu cepat hingga kolom air ikut naik; mulutnya menutup sebelum kolom itu jatuh, sekitar empat kali per detik. Dagunya tetap kering.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "ja": {
+      "title": "猫は舌をスプーンのようにして水を飲んでいない 🐱",
+      "description": "MITの研究者がハイスピードカメラで撮影したところ、猫の舌は水面にほとんど触れていませんでした。舌先を後ろに丸めて水面に軽く触れ、素早く引き上げると水の柱ができ、それが落ちる前に口を閉じて捕まえます。1秒に約4回。あごは濡れません。\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "ko": {
+      "title": "고양이는 혀를 숟가락처럼 써서 물을 마시지 않는다 🐱",
+      "description": "MIT 연구진이 고속 카메라로 촬영해 보니 고양이 혀는 물에 거의 닿지 않았습니다. 혀끝을 뒤로 말아 수면에 살짝 댄 뒤 아주 빠르게 끌어올리면 물기둥이 따라 올라오고, 고양이는 그것이 떨어지기 전에 입을 닫습니다. 1초에 약 네 번. 턱은 젖지 않습니다.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "pl": {
+      "title": "Twój kot nie nabiera wody językiem jak łyżką 🐱",
+      "description": "Inżynierowie z MIT nagrali koty szybką kamerą: język ledwo dotyka wody. Kot zagina czubek do tyłu, muska powierzchnię i cofa go tak szybko, że za nim unosi się słup wody; zamyka pyszczek, zanim słup opadnie – około cztery razy na sekundę. Podbródek zostaje suchy.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "nl": {
+      "title": "Je kat schept geen water met zijn tong 🐱",
+      "description": "Ingenieurs van MIT filmden katten met een hogesnelheidscamera: de tong raakt het water nauwelijks. De kat buigt het puntje naar achteren, tikt het oppervlak aan en trekt zo snel terug dat er een waterzuil meekomt; vóór die valt, klapt de bek dicht, ongeveer vier keer per seconde. De kin blijft droog.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "uk": {
+      "title": "Кіт не черпає воду язиком, як ложкою 🐱",
+      "description": "Інженери MIT зняли котів на швидкісну камеру: язик ледь торкається води. Кіт загинає кінчик назад, торкається поверхні й так швидко тягне язик угору, що за ним піднімається стовпчик води; кіт закриває пащу, поки той не впав, — приблизно чотири рази на секунду. Підборіддя лишається сухим.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "vi": {
+      "title": "Mèo nhà bạn không múc nước bằng lưỡi như cái thìa 🐱",
+      "description": "Các kỹ sư MIT quay mèo bằng camera tốc độ cao và thấy lưỡi gần như không chạm vào nước. Mèo cong đầu lưỡi ra sau, chạm nhẹ mặt nước rồi rút lên thật nhanh khiến một cột nước dâng theo; nó ngậm miệng lại trước khi cột nước rơi xuống, khoảng bốn lần mỗi giây. Cằm mèo vẫn khô.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "az": {
+      "title": "Su içən pişiyin dilini qaşıq kimi işlətmir 🐱",
+      "description": "MIT mühəndisləri pişikləri sürətli kamera ilə çəkiblər: dil suya demək olar ki, toxunmur. Pişik dilinin ucunu geriyə əyib səthə yalnız toxundurur və elə sürətlə yuxarı çəkir ki, arxasınca su sütunu qalxır; sütun düşməmiş ağzını bağlayır, saniyədə təxminən dörd dəfə. Çənəsi quru qalır.\n\n#shorts\n\nSeri: mk-c0190"
+    },
+    "ro": {
+      "title": "Pisica ta nu bea apă folosind limba ca pe o lingură 🐱",
+      "description": "Ingineri de la MIT au filmat pisici cu o cameră ultrarapidă: limba abia atinge apa. Pisica îndoaie vârful limbii spre spate, atinge suprafața și o trage în sus atât de repede încât se ridică o coloană de apă; închide gura înainte ca ea să cadă, cam de patru ori pe secundă. Bărbia rămâne uscată.\n\n#shorts\n\nSeri: mk-c0190"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: dilin suya hiç batmaması mı, saniyede dört yudum mu?",
+  "scenes": [
+    {
+      "text": "Bu kedi dilini kaşık gibi kullanmıyor.",
+      "visual": "extreme close-up of a cat lapping water from a bowl, its pink tongue touching the surface",
+      "stock_query": "cat drinking water",
+      "source": "stock",
+      "callout": "KAŞIK DEĞİL"
+    },
+    {
+      "text": "Hepimiz suyu diliyle kepçeleyip içtiğini sanırız.",
+      "visual": "a cat drinking from a water bowl on a kitchen floor",
+      "stock_query": "cat water bowl",
+      "source": "stock"
+    },
+    {
+      "text": "Oysa dilini suya daldırmaz; ucunu geriye kıvırıp yüzeye sadece değdirir.",
+      "visual": "macro shot of a cat's curled tongue tip barely touching the water surface",
+      "stock_query": "cat tongue",
+      "source": "stock",
+      "callout": "SADECE DEĞDİRİR"
+    },
+    {
+      "text": "Dilini saniyede bir metreye yakın hızla çekince peşinden bir su sütunu yükselir.",
+      "visual": "slow-motion close-up of a thin column of water rising behind a cat's tongue",
+      "stock_query": "cat drinking",
+      "source": "stock",
+      "callout": "SU SÜTUNU"
+    },
+    {
+      "text": "Sütun düşmeden ağzını kapatıp tepesini yakalar; saniyede dört kez.",
+      "visual": "close-up of a cat closing its mouth while drinking water",
+      "stock_query": "cat water",
+      "source": "stock",
+      "callout": "SANİYEDE 4 KEZ"
+    },
+    {
+      "text": "Kedin su içerken telefonla yavaş çekim yap:",
+      "visual": "close-up of a cat's face looking at the camera",
+      "stock_query": "cat face close up",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 18.3,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_2.mp3",
+  "music_mood": "eglenceli",
+  "ai_images": 0,
+  "stock_videos": 12,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #241",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0190_1795195565_ig.mp4"
+}
