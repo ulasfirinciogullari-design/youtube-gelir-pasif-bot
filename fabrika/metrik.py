@@ -71,12 +71,19 @@ def live(access, ids):
     """Public views, likes and comments of these videos right now (the Data API, no analytics delay)."""
     out = {}
     for i in range(0, len(ids), 50):
-        r = requests.get(f"{Y.API}/videos", params={"part": "statistics,snippet", "id": ",".join(ids[i:i + 50])},
+        r = requests.get(f"{Y.API}/videos", params={"part": "statistics,snippet,status,contentDetails",
+                                                     "id": ",".join(ids[i:i + 50])},
                          timeout=30, headers={"Authorization": f"Bearer {access}"})
         for v in r.json().get("items", []) if r.ok else []:
             st = v.get("statistics", {})
             out[v["id"]] = {k: int(st.get(k + "Count", 0)) for k in ("view", "like", "comment")}
             out[v["id"]]["baslik"] = v.get("snippet", {}).get("title")  # the title as YouTube shows it (with emoji)
+            # On 2026-11-19 all three new Shorts stayed under 70 views while Instagram showed the same videos 1,300
+            # times: record anything YouTube itself set on a video that could hold back its reach.
+            s, cd = v.get("status", {}), v.get("contentDetails", {})
+            flags = {"kids": s.get("madeForKids"), "yas": (cd.get("contentRating") or {}).get("ytRating"),
+                     "bolge": cd.get("regionRestriction"), "lisans": cd.get("licensedContent")}
+            out[v["id"]].update({k: x for k, x in flags.items() if x})
     return out
 
 
