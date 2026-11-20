@@ -1,22 +1,22 @@
 {
- "started": "2026-11-20T11:45:13+00:00",
+ "started": "2026-11-20T14:45:21+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 0,
+ "sent_last_24h": 1,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgyGaSt5LpQLu9YKvkl4AaABAg",
+   "id": "Ugw-X5Xih2UPJE7Lnsl4AaABAg",
    "kind": "comment",
-   "video": "CXH97LY2T-4",
-   "comment": "Yatak",
-   "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir.",
+   "video": "Ok770sV6zhk",
+   "comment": "Wegh Rumi:Havlayan köpek ısırmaz hepsi olur petim",
+   "reply": "Evet, havlama çoğu zaman bir uyarı işareti. Köpekler nadiren doğrudan saldırır, önce sinyal verirler. 🐶",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-20T11:45:18+00:00"
+ "finished": "2026-11-20T14:45:27+00:00"
 }

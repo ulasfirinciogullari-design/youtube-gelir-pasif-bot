@@ -376,14 +376,15 @@
    "r",
    "UgyGaSt5LpQLu9YKvkl4AaABAg.AdR1AF9L3OmAdR4uqrxbBU",
    "UChnIynkXBBJwbxL1DnBLUeQ"
+  ],
+  "Ugw-X5Xih2UPJE7Lnsl4AaABAg": [
+   1795185921,
+   "r",
+   "Ugw-X5Xih2UPJE7Lnsl4AaABAg.AdRKBj8MsZ0AdRPXNSuuwS",
+   "UCNQbWL6-kS9uHfgc4x_rnyw"
   ]
  },
  "tracked": {
-  "UgyVqbk71p3XArY3gKR4AaABAg": {
-   "at": 1793976311,
-   "n": 1,
-   "reply": "R'yi çok mu seviyorsun? Belki de adında vardır! 😉"
-  },
   "Ugxr9ypSeSDNXt6uHh14AaABAg": {
    "at": 1794041112,
    "n": 1,
@@ -516,6 +517,11 @@
    "at": 1795175113,
    "n": 1,
    "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir."
+  },
+  "Ugw-X5Xih2UPJE7Lnsl4AaABAg": {
+   "at": 1795185921,
+   "n": 1,
+   "reply": "Evet, havlama çoğu zaman bir uyarı işareti. Köpekler nadiren doğrudan saldırır, önce sinyal verirler. 🐶"
   }
  },
  "channel": {
@@ -523,12 +529,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1793803514,
-   "video": "LK9xEF2uL_o",
-   "comment": "*İkiside*",
-   "reply": "İkisi de akılda kalır tabii ki, hele anılar güzelse! 😊"
-  },
   {
    "at": 1793900712,
    "video": "X9s6--q0k5U",
@@ -762,6 +762,12 @@
    "video": "CXH97LY2T-4",
    "comment": "Yatak",
    "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir."
+  },
+  {
+   "at": 1795185921,
+   "video": "Ok770sV6zhk",
+   "comment": "Wegh Rumi:Havlayan köpek ısırmaz hepsi olur petim",
+   "reply": "Evet, havlama çoğu zaman bir uyarı işareti. Köpekler nadiren doğrudan saldırır, önce sinyal verirler. 🐶"
   }
  ]
 }
