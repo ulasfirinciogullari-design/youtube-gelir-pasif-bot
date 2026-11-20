@@ -1,0 +1,183 @@
+{
+ "id": "mk-c0199",
+ "topic": "Kediler rüya görür mü? Kedim uyurken patileri seğiriyor, kediler uykuda rüya görebilir mi?",
+ "kategori": "hayvan",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat sleeping close up",
+ "script": {
+  "title": "Uyurken patisi seğiren kedin rüya görebilir mi? 🐱",
+  "hook_text": "KEDİN RÜYA GÖRÜR MÜ?",
+  "scenes": [
+   {
+    "text": "Bu kedi uyurken patilerini seğirtiyor.",
+    "visual": "close-up of a sleeping cat whose paws and whiskers twitch",
+    "stock_query": "cat sleeping",
+    "source": "stock",
+    "callout": "UYKUDA SEĞİRİYOR"
+   },
+   {
+    "text": "Peki kedin gerçekten rüya görebilir mi?",
+    "visual": "a cat curled up asleep on a soft blanket",
+    "stock_query": "cat sleeping blanket",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Üşüdüğünü sanma; bu evrede beyni uyanık gibi çalışır, kasları ise kilitlenir.",
+    "visual": "close-up of a sleeping cat's face, eyelids flickering",
+    "stock_query": "cat face sleeping",
+    "source": "stock",
+    "callout": "BEYİN UYANIK GİBİ"
+   },
+   {
+    "text": "Bir deneyde bu kilit bozulunca kediler uyurken kalkıp görünmeyen bir şeye saldırdı.",
+    "visual": "a cat crouching low and pouncing at something",
+    "stock_query": "cat pouncing",
+    "source": "stock",
+    "callout": "HAYALİ AVA SALDIRI"
+   },
+   {
+    "text": "Cevap büyük ihtimalle evet: rüyalarını yaşıyorlardı.",
+    "visual": "a cat stalking low through the grass",
+    "stock_query": "cat hunting",
+    "source": "stock",
+    "callout": "BÜYÜK İHTİMALLE EVET"
+   },
+   {
+    "text": "Bir dahaki seğirişte uyandırma; belki av hâlâ kaçıyor:",
+    "visual": "close-up of a sleeping cat's paw",
+    "stock_query": "cat paw",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Uyurken patileri seğiren kedi büyük ihtimalle rüya görüyor. REM uykusunda kedinin beyni neredeyse uyanıkken gibi çalışır, kasları ise gevşeyip kilitlenir. Bu kas kilidini sağlayan beyin sapı bölgesi bozulan kediler uykuda kalkıp görünmeyen nesnelere saldırdı, adeta rüyalarını yaşadı.",
+  "tags": [
+   "kedi",
+   "kediler rüya görür mü",
+   "kedi uyurken seğiriyor",
+   "kedi uykusu",
+   "REM uykusu",
+   "kedi davranışları",
+   "evcil hayvan",
+   "mümkün mü",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin uykusunda seğiriyor mu: evet mi, hayır mı?",
+  "en_title": "Can your cat dream when its paws twitch in its sleep? 🐱",
+  "en_description": "Most likely yes. In REM sleep a cat's brain works almost as if awake while its muscles are switched off, which is when paws and whiskers twitch. When that muscle 'lock' in the brainstem was disabled in experiments, sleeping cats got up and attacked things that weren't there, as if acting out their dreams.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kediler rüya görür mü, uyurken patileri seğiren kedi rüya mı görüyor?\n\nBüyük ihtimalle evet. Kediler de insanlar gibi REM (hızlı göz hareketli) uykuya girer. Fransız uyku araştırmacısı Michel Jouvet bu evreye 'paradoksal uyku' adını verdi, çünkü beyin dalgaları uyanıklığa benzer ama hayvan uyumaya devam eder ve kasları gevşeyip kilitlenir; patilerdeki ve bıyıklardaki küçük seğirmeler bu sırada görülür. UCLA'dan uyku araştırmacısı Jerome Siegel'in aktardığına göre beyin sapında bu kilidi sağlayan küçük bir bölge bozulan kediler, REM uykusunda görünmeyen nesnelere saldırıp adeta rüyalarını oynuyor. Kedinin rüyasında ne gördüğünü kesin bilemeyiz, ama bu deneyler kedilerin rüya görmesinin çok olası olduğunu gösteriyor.\n\nSenin kedin uykusunda seğiriyor mu: evet mi, hayır mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#mümkünmü",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi",
+   "kediler",
+   "kediler rüya görür mü",
+   "kedi rüya görür mü",
+   "kedi uyurken seğiriyor",
+   "kedi uykuda titriyor",
+   "kedi uyurken pati oynatıyor",
+   "kedi uykusu",
+   "kediler nasıl uyur",
+   "REM uykusu",
+   "paradoksal uyku",
+   "hayvanlar rüya görür mü",
+   "kedi davranışları",
+   "kedi sahibi",
+   "evcil hayvan",
+   "mümkün mü",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "do cats dream",
+   "cat twitching sleep"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can your cat dream when its paws twitch in its sleep? 🐱",
+    "description": "Most likely yes. In REM sleep a cat's brain works almost as if awake while its muscles are switched off, which is when paws and whiskers twitch. When that muscle 'lock' in the brainstem was disabled in experiments, sleeping cats got up and attacked things that weren't there, as if acting out their dreams."
+   },
+   "es": {
+    "title": "¿Puede soñar tu gato cuando mueve las patas dormido? 🐱",
+    "description": "Muy probablemente sí. En el sueño REM, el cerebro del gato funciona casi como despierto mientras sus músculos quedan bloqueados; por eso le tiemblan las patas y los bigotes. Cuando en experimentos se anuló ese bloqueo en el tronco encefálico, los gatos dormidos se levantaban y atacaban cosas invisibles, como si representaran sus sueños."
+   },
+   "pt": {
+    "title": "Seu gato sonha quando mexe as patinhas dormindo? 🐱",
+    "description": "Muito provavelmente sim. No sono REM, o cérebro do gato funciona quase como acordado enquanto os músculos ficam travados; é aí que as patas e os bigodes tremem. Quando experimentos desativaram essa trava no tronco cerebral, gatos adormecidos se levantavam e atacavam coisas invisíveis, como se encenassem os sonhos."
+   },
+   "de": {
+    "title": "Kann deine Katze träumen, wenn ihre Pfoten im Schlaf zucken? 🐱",
+    "description": "Sehr wahrscheinlich ja. Im REM-Schlaf arbeitet das Katzengehirn fast wie im Wachzustand, während die Muskeln blockiert sind – dann zucken Pfoten und Schnurrhaare. Als Forscher diese Sperre im Hirnstamm ausschalteten, standen schlafende Katzen auf und griffen Unsichtbares an, als würden sie ihre Träume ausleben."
+   },
+   "fr": {
+    "title": "Ton chat peut-il rêver quand ses pattes tressaillent ? 🐱",
+    "description": "Très probablement. En sommeil paradoxal, le cerveau du chat fonctionne presque comme éveillé tandis que ses muscles sont bloqués : c'est là que ses pattes et ses moustaches tressaillent. Quand des expériences ont supprimé ce verrou dans le tronc cérébral, des chats endormis se levaient et attaquaient des choses invisibles, comme s'ils vivaient leurs rêves."
+   },
+   "it": {
+    "title": "Il tuo gatto può sognare quando muove le zampe nel sonno? 🐱",
+    "description": "Molto probabilmente sì. Nel sonno REM il cervello del gatto lavora quasi come da sveglio, mentre i muscoli restano bloccati: è allora che zampe e baffi si contraggono. Quando negli esperimenti è stato disattivato questo blocco nel tronco encefalico, i gatti addormentati si alzavano e attaccavano cose invisibili, come se recitassero i loro sogni."
+   },
+   "ru": {
+    "title": "Может ли кошка видеть сны, когда дёргает лапками во сне? 🐱",
+    "description": "Скорее всего, да. В быстром сне мозг кошки работает почти как наяву, а мышцы при этом заблокированы — именно тогда подёргиваются лапы и усы. Когда в экспериментах этот «замок» в стволе мозга отключали, спящие кошки вставали и нападали на невидимые предметы, будто разыгрывали свои сны."
+   },
+   "ar": {
+    "title": "هل يمكن أن يحلم قطك عندما ترتعش قوائمه أثناء النوم؟ 🐱",
+    "description": "على الأرجح نعم. في نوم حركة العين السريعة يعمل دماغ القط كأنه مستيقظ تقريبًا بينما تكون عضلاته مقيّدة، وعندها ترتعش قوائمه وشواربه. وعندما عُطّل هذا القيد في جذع الدماغ في التجارب، كانت القطط النائمة تنهض وتهاجم أشياء غير مرئية كأنها تمثّل أحلامها."
+   },
+   "hi": {
+    "title": "नींद में पंजे फड़काने वाली बिल्ली क्या सपना देख सकती है? 🐱",
+    "description": "शायद हाँ। REM नींद में बिल्ली का दिमाग लगभग जागते हुए जैसा काम करता है, जबकि मांसपेशियाँ जकड़ी रहती हैं; इसी समय उसके पंजे और मूँछें फड़कती हैं। प्रयोगों में जब ब्रेनस्टेम का यह 'ताला' हटाया गया, तो सोती बिल्लियाँ उठकर ऐसी चीज़ों पर झपटीं जो वहाँ थीं ही नहीं, मानो अपने सपने जी रही हों।"
+   },
+   "id": {
+    "title": "Bisakah kucingmu bermimpi saat kakinya berkedut ketika tidur? 🐱",
+    "description": "Kemungkinan besar bisa. Saat tidur REM, otak kucing bekerja hampir seperti saat terjaga, sementara ototnya terkunci; saat itulah kaki dan kumisnya berkedut. Ketika kunci di batang otak itu dinonaktifkan dalam percobaan, kucing yang tidur bangkit dan menyerang benda yang tak terlihat, seolah memerankan mimpinya."
+   },
+   "ja": {
+    "title": "寝ながら足をピクピクさせる猫は夢を見ているの? 🐱",
+    "description": "その可能性は高いです。レム睡眠中、猫の脳はほぼ起きているときのように働き、筋肉はロックされています。足やヒゲがピクピク動くのはこのときです。実験で脳幹にあるこのロックを外すと、眠ったままの猫が立ち上がり、見えない何かに飛びかかりました。まるで夢を演じているようでした。"
+   },
+   "ko": {
+    "title": "자면서 발을 움찔거리는 고양이는 꿈을 꿀까? 🐱",
+    "description": "아마 그렇습니다. 렘수면 중 고양이의 뇌는 거의 깨어 있을 때처럼 움직이고 근육은 잠겨 있는데, 바로 이때 발과 수염이 움찔거립니다. 실험에서 뇌간의 이 잠금 장치를 없애자 잠든 고양이들이 일어나 보이지 않는 무언가를 덮쳤습니다. 마치 꿈을 그대로 행동으로 옮기는 것 같았습니다."
+   },
+   "pl": {
+    "title": "Czy kot może śnić, gdy przez sen drgają mu łapki? 🐱",
+    "description": "Najprawdopodobniej tak. W fazie REM mózg kota pracuje niemal jak na jawie, a mięśnie są zablokowane – wtedy właśnie drgają łapy i wąsy. Gdy w eksperymentach wyłączono tę blokadę w pniu mózgu, śpiące koty wstawały i atakowały niewidzialne rzeczy, jakby odgrywały swoje sny."
+   },
+   "nl": {
+    "title": "Kan je kat dromen als zijn pootjes in zijn slaap trillen? 🐱",
+    "description": "Hoogstwaarschijnlijk wel. In de REM-slaap werken de hersenen van een kat bijna als in wakkere toestand, terwijl de spieren op slot zitten; dan trillen pootjes en snorharen. Toen onderzoekers dat slot in de hersenstam uitschakelden, stonden slapende katten op en vielen ze onzichtbare dingen aan, alsof ze hun dromen naspeelden."
+   },
+   "uk": {
+    "title": "Чи може кіт бачити сни, коли смикає лапками уві сні? 🐱",
+    "description": "Найімовірніше, так. У фазі швидкого сну мозок кота працює майже як під час неспання, а м'язи заблоковані — саме тоді смикаються лапи й вуса. Коли в експериментах цей «замок» у стовбурі мозку вимикали, сплячі коти вставали й нападали на невидимі речі, ніби розігрували свої сни."
+   },
+   "vi": {
+    "title": "Mèo co giật chân khi ngủ có thể đang nằm mơ không? 🐱",
+    "description": "Rất có thể là có. Trong giấc ngủ REM, não mèo hoạt động gần như lúc thức, còn cơ bắp thì bị khóa lại; đó là lúc chân và ria mèo co giật. Khi các thí nghiệm vô hiệu hóa 'ổ khóa' này ở thân não, những con mèo đang ngủ đứng dậy và vồ vào những thứ vô hình, như thể đang diễn lại giấc mơ."
+   },
+   "az": {
+    "title": "Yuxuda pəncələri titrəyən pişiyin yuxu görə bilərmi? 🐱",
+    "description": "Çox güman ki, bəli. REM yuxusunda pişiyin beyni demək olar ki, oyaq vaxtındakı kimi işləyir, əzələləri isə kilidlənir; pəncələr və bığlar məhz bu zaman titrəyir. Təcrübələrdə beyin kötüyündəki bu kilid sıradan çıxarılanda yatmış pişiklər ayağa qalxıb görünməyən şeylərə hücum etdi, sanki yuxularını yaşayırdılar."
+   },
+   "ro": {
+    "title": "Poate pisica ta să viseze când îi tresar lăbuțele în somn? 🐱",
+    "description": "Foarte probabil da. În somnul REM, creierul pisicii funcționează aproape ca în stare de veghe, iar mușchii sunt blocați; atunci îi tresar lăbuțele și mustățile. Când experimentele au dezactivat acest blocaj din trunchiul cerebral, pisicile adormite se ridicau și atacau lucruri invizibile, de parcă își trăiau visele."
+   }
+  }
+ }
+}

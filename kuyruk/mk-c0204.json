@@ -1,0 +1,174 @@
+{
+ "id": "mk-c0204",
+ "topic": "Kedi neden mama kabının yanındaki suyu içmez? Kedinin su kabı mamanın yanına konur mu, kedi az su içiyorsa ne yapmalı?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat water bowl",
+ "script": {
+  "title": "Kedinin suyunu mamasının yanına koymak yanlış 🐱",
+  "hook_text": "KEDİN SUYU NEDEN İÇMİYOR?",
+  "scenes": [
+   {
+    "text": "Bu kedi mamasının yanındaki suyu içmek istemiyor.",
+    "visual": "close-up of a cat's face sniffing a water bowl placed next to its food bowl, then turning away",
+    "stock_query": "cat water bowl",
+    "source": "stock",
+    "callout": "YANINDAKİ SUYU İÇMEZ"
+   },
+   {
+    "text": "Çoğumuz su ve mama kabını yan yana koyarız.",
+    "visual": "a cat's food bowl and water bowl side by side on a kitchen floor",
+    "stock_query": "cat food bowl",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Bıyıkları kabın kenarına değsin de istemez; geniş ve sığ kap sever.",
+    "visual": "extreme close-up of a cat's whiskers",
+    "stock_query": "cat whiskers",
+    "source": "stock",
+    "callout": "GENİŞ VE SIĞ KAP"
+   },
+   {
+    "text": "Sebep atası Afrika yaban kedisi: avının bağırsakları suyunu kirletmesin diye ikisini ayrı tutardı.",
+    "visual": "a tabby cat stalking prey in dry grass",
+    "stock_query": "cat hunting grass",
+    "source": "stock",
+    "callout": "SUYU KİRLETMESİN"
+   },
+   {
+    "text": "Kedin az su içiyorsa kabını mamadan uzağa taşı, çünkü...",
+    "visual": "a cat drinking from a wide bowl in a quiet corner",
+    "stock_query": "cat drinking water",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Birçok kedi suyunu mamasının hemen yanındaki kaptan içmek istemez. Bu, atası Afrika yaban kedisinden kalma bir davranış: yaban kedisi avının bağırsak içeriği suyunu kirletmesin diye yemek yediği yerle su içtiği yeri ayırır. Kediler bıyıkları kenara değmeyen geniş ve sığ kapları da sever.",
+  "tags": [
+   "kedi",
+   "kedi su içmiyor",
+   "kedi su kabı",
+   "kedi su kabı nereye konur",
+   "kedi mama kabı",
+   "kedi bıyığı",
+   "kedi bakımı",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedinin su kabı nerede: mamanın yanında mı, ayrı bir yerde mi?",
+  "en_title": "Putting your cat's water next to its food is a mistake 🐱",
+  "en_description": "Many cats prefer to drink away from where they eat, so a water bowl right beside the food often goes untouched. The habit comes from their ancestor, the African wildcat, which kept water apart so its prey's gut contents wouldn't foul it. Cats also like wide, shallow bowls that don't brush their whiskers.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden mama kabının yanındaki suyu içmez, kedinin su kabı nereye konmalı?\n\nİngiltere'nin kedi yardım kuruluşu Cats Protection'a göre su kabı mama kabından ve kum kabından uzak tutulmalı: sahipler kapları çoğu zaman yan yana koyar, ama kediler suyunu başka bir yerden içmeyi tercih eder. Kuruluşa göre bu davranış ev kedilerinin atası Afrika yaban kedisine dayanıyor; yaban kedisi avının bağırsak içeriğinin su kaynağını kirletmesini önlemek için yemek yediği yerle su içtiği yeri ayırır. Kediler bıyıkları kabın kenarına değmesin diye genellikle geniş ve sığ kapları sever; bazıları plastik yerine seramik kaptan, bazıları da klorlu musluk suyu yerine filtrelenmiş sudan içmeyi tercih eder.\n\nSenin kedinin su kabı nerede: mamanın yanında mı, ayrı bir yerde mi?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedibakımı",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi",
+   "kediler",
+   "kedi su içmiyor",
+   "kedi neden su içmez",
+   "kedi az su içiyor",
+   "kedi su kabı",
+   "kedi su kabı nereye konur",
+   "kedi mama kabı",
+   "kedi su ve mama kabı",
+   "kedilere su içirmek",
+   "kedi bıyığı",
+   "afrika yaban kedisi",
+   "kedi davranışları",
+   "kedi bakımı",
+   "kedi sahibi",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat water bowl"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Putting your cat's water next to its food is a mistake 🐱",
+    "description": "Many cats prefer to drink away from where they eat, so a water bowl right beside the food often goes untouched. The habit comes from their ancestor, the African wildcat, which kept water apart so its prey's gut contents wouldn't foul it. Cats also like wide, shallow bowls that don't brush their whiskers."
+   },
+   "es": {
+    "title": "Poner el agua de tu gato junto a su comida es un error 🐱",
+    "description": "Muchos gatos prefieren beber lejos de donde comen, así que el bebedero pegado al comedero a menudo ni lo tocan. La costumbre viene de su antepasado, el gato montés africano, que separaba el agua para que las vísceras de su presa no la ensuciaran. Además, prefieren cuencos anchos y poco profundos que no les rocen los bigotes."
+   },
+   "pt": {
+    "title": "Colocar a água do gato ao lado da comida é um erro 🐱",
+    "description": "Muitos gatos preferem beber longe de onde comem, então a tigela de água grudada na de comida muitas vezes fica intocada. O hábito vem do ancestral deles, o gato-selvagem-africano, que mantinha a água longe para que as vísceras da presa não a sujassem. Eles também preferem tigelas largas e rasas que não encostem nos bigodes."
+   },
+   "de": {
+    "title": "Das Wasser deiner Katze gehört nicht neben den Futternapf 🐱",
+    "description": "Viele Katzen trinken lieber abseits ihres Fressplatzes, deshalb bleibt der Wassernapf direkt neben dem Futter oft unberührt. Das stammt von ihrem Vorfahren, der Afrikanischen Wildkatze, die Wasser und Beute trennte, damit der Darminhalt der Beute das Wasser nicht verschmutzte. Außerdem mögen Katzen breite, flache Näpfe, an denen ihre Schnurrhaare nicht anstoßen."
+   },
+   "fr": {
+    "title": "Mettre l'eau de ton chat à côté de sa gamelle est une erreur 🐱",
+    "description": "Beaucoup de chats préfèrent boire loin de l'endroit où ils mangent : une gamelle d'eau collée à la nourriture reste souvent intacte. Cette habitude vient de leur ancêtre, le chat sauvage d'Afrique, qui gardait l'eau à l'écart pour que les viscères de ses proies ne la souillent pas. Les chats aiment aussi les bols larges et peu profonds qui ne frottent pas leurs moustaches."
+   },
+   "it": {
+    "title": "Mettere l'acqua del gatto accanto alla pappa è un errore 🐱",
+    "description": "Molti gatti preferiscono bere lontano da dove mangiano, quindi la ciotola dell'acqua accanto al cibo spesso resta intatta. L'abitudine viene dal loro antenato, il gatto selvatico africano, che teneva l'acqua lontana perché le interiora delle prede non la sporcassero. Amano anche le ciotole larghe e basse, che non toccano i baffi."
+   },
+   "ru": {
+    "title": "Ставить миску с водой рядом с кормом кошки — ошибка 🐱",
+    "description": "Многие кошки предпочитают пить подальше от места, где едят, поэтому миска с водой рядом с кормом часто остаётся нетронутой. Привычка досталась им от предка — африканской дикой кошки, которая держала воду отдельно, чтобы содержимое кишечника добычи её не загрязняло. А ещё кошки любят широкие неглубокие миски, которые не задевают усы."
+   },
+   "ar": {
+    "title": "وضع ماء قطك بجانب طعامه خطأ 🐱",
+    "description": "يفضّل كثير من القطط الشرب بعيدًا عن مكان الأكل، لذلك يبقى وعاء الماء الملاصق للطعام غالبًا دون أن يُمسّ. وتعود هذه العادة إلى سلفها القط البري الأفريقي، الذي كان يُبعد الماء عن فريسته حتى لا تلوّثه أحشاؤها. كما تفضّل القطط الأوعية الواسعة الضحلة التي لا تلامس شواربها."
+   },
+   "hi": {
+    "title": "बिल्ली का पानी उसके खाने के पास रखना गलती है 🐱",
+    "description": "कई बिल्लियाँ खाने की जगह से दूर पानी पीना पसंद करती हैं, इसलिए खाने के ठीक बगल में रखा पानी अक्सर अनछुआ रह जाता है। यह आदत उनके पूर्वज अफ़्रीकी जंगली बिल्ली से आई है, जो पानी को शिकार से अलग रखती थी ताकि शिकार की अंतड़ियाँ उसे गंदा न करें। बिल्लियों को चौड़े और उथले कटोरे भी पसंद हैं, जिनसे उनकी मूँछें न टकराएँ।"
+   },
+   "id": {
+    "title": "Menaruh air minum kucing di samping makanannya itu keliru 🐱",
+    "description": "Banyak kucing lebih suka minum jauh dari tempat makannya, jadi mangkuk air yang menempel pada mangkuk makanan sering tak disentuh. Kebiasaan ini berasal dari leluhurnya, kucing liar Afrika, yang memisahkan air dari mangsanya agar isi perut mangsa tidak mencemarinya. Kucing juga menyukai mangkuk lebar dan dangkal yang tidak menyentuh kumisnya."
+   },
+   "ja": {
+    "title": "猫の水をごはんの隣に置くのは間違い 🐱",
+    "description": "多くの猫は食べる場所から離れたところで水を飲むのを好むため、ごはんのすぐ隣の水はあまり飲まれないことがあります。これは祖先のリビアヤマネコの習性で、獲物の内臓で水が汚れないよう、水場と食事の場所を分けていたためです。ヒゲが縁に当たらない、広くて浅い器も好みます。"
+   },
+   "ko": {
+    "title": "고양이 물그릇을 밥그릇 옆에 두는 건 실수 🐱",
+    "description": "많은 고양이는 밥 먹는 곳에서 떨어진 곳에서 물 마시기를 좋아해서, 밥그릇 바로 옆의 물은 잘 마시지 않기도 합니다. 이 습성은 조상인 아프리카들고양이에게서 왔는데, 사냥감의 내장이 물을 더럽히지 않도록 물과 먹이를 떨어뜨려 두었기 때문입니다. 고양이는 수염이 닿지 않는 넓고 얕은 그릇도 좋아합니다."
+   },
+   "pl": {
+    "title": "Stawianie wody kota obok jego jedzenia to błąd 🐱",
+    "description": "Wiele kotów woli pić z dala od miejsca, w którym je, dlatego miska z wodą tuż przy jedzeniu często zostaje nietknięta. To nawyk odziedziczony po przodku, afrykańskim kocie nubijskim, który trzymał wodę z dala od upolowanej zdobyczy, by jej wnętrzności nie zanieczyściły wody. Koty lubią też szerokie, płytkie miski, o które nie ocierają się wąsy."
+   },
+   "nl": {
+    "title": "Het water van je kat naast het voer zetten is een fout 🐱",
+    "description": "Veel katten drinken liever op afstand van hun eetplek, dus een waterbak vlak naast het voer blijft vaak onaangeroerd. Die gewoonte komt van hun voorouder, de Afrikaanse wilde kat, die water apart hield zodat de darminhoud van de prooi het niet bevuilde. Katten houden ook van brede, ondiepe bakken waar hun snorharen niet tegenaan komen."
+   },
+   "uk": {
+    "title": "Ставити миску з водою поруч із кормом кота — помилка 🐱",
+    "description": "Багато котів воліють пити подалі від місця, де їдять, тому миска з водою поруч із кормом часто лишається недоторканою. Ця звичка дісталася їм від предка — африканського дикого кота, який тримав воду окремо, щоб вміст кишківника здобичі її не забруднював. Також коти люблять широкі неглибокі миски, що не зачіпають вуса."
+   },
+   "vi": {
+    "title": "Đặt nước của mèo ngay cạnh đồ ăn là sai lầm 🐱",
+    "description": "Nhiều con mèo thích uống nước ở xa chỗ ăn, nên bát nước đặt sát bát thức ăn thường bị bỏ qua. Thói quen này đến từ tổ tiên của chúng là mèo rừng châu Phi, loài giữ nguồn nước tách xa con mồi để nội tạng con mồi không làm bẩn nước. Mèo cũng thích bát rộng và nông để ria không chạm vào thành bát."
+   },
+   "az": {
+    "title": "Pişiyin suyunu yeməyinin yanına qoymaq səhvdir 🐱",
+    "description": "Bir çox pişik yemək yediyi yerdən uzaqda su içməyi üstün tutur, ona görə yeməyin düz yanındakı su qabına çox vaxt toxunulmur. Bu vərdiş onların əcdadı olan Afrika çöl pişiyindən gəlir: o, ovunun bağırsaqları suyu çirkləndirməsin deyə suyu ovdan ayrı saxlayırdı. Pişiklər bığları kənara dəyməyən enli və dayaz qabları da sevir."
+   },
+   "ro": {
+    "title": "Să pui apa pisicii lângă mâncare e o greșeală 🐱",
+    "description": "Multe pisici preferă să bea departe de locul unde mănâncă, așa că bolul cu apă lipit de cel cu mâncare rămâne adesea neatins. Obiceiul vine de la strămoșul lor, pisica sălbatică africană, care ținea apa departe de pradă, ca intestinele acesteia să nu o murdărească. Pisicile preferă și boluri late și puțin adânci, care nu le ating mustățile."
+   }
+  }
+ }
+}

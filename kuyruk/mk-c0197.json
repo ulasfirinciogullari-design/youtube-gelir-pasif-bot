@@ -1,0 +1,199 @@
+{
+ "id": "mk-c0197",
+ "topic": "Uyurgezeri uyandırmak tehlikeli mi? Uyurgezer uyandırılırsa ölür mü, şoktan kalp krizi geçirir mi?",
+ "kategori": "vücut",
+ "subject": [
+  "sleeping",
+  "sleep"
+ ],
+ "stock_hint": "man eye close up",
+ "script": {
+  "title": "Uyurgezeri uyandırmak ölümcül değil, sadece şaşırtır 😴",
+  "hook_text": "UYURGEZER UYANDIRILIR MI?",
+  "scenes": [
+   {
+    "text": "Gözü açık uyuyan bu adamı uyandırmak tehlikeli değil.",
+    "visual": "extreme close-up of a man's wide open, glassy eyes staring blankly in a dim room at night",
+    "stock_query": "man eye close up",
+    "source": "stock",
+    "callout": "GÖZÜ AÇIK UYUYOR",
+    "subject": [
+     "eye"
+    ]
+   },
+   {
+    "text": "Uyandırılan uyurgezerin şoktan öleceğine inanırız.",
+    "visual": "a man walking slowly through a dark hallway at night, arms hanging loose",
+    "stock_query": "man walking night",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "walking"
+    ]
+   },
+   {
+    "text": "Üstelik çocukların yüzde on yedisine kadarı en az bir kez uykusunda yürür.",
+    "visual": "close-up of a child's face sleeping peacefully",
+    "stock_query": "child sleeping",
+    "source": "stock",
+    "callout": "ÇOCUKLARIN %17'Sİ",
+    "subject": [
+     "child"
+    ]
+   },
+   {
+    "text": "Uyurgezerlik rüyada değil, en derin uykuda olur; beynin bir kısmı uyanıktır.",
+    "visual": "glowing 3D model of a human brain slowly rotating",
+    "stock_query": "brain model",
+    "source": "stock",
+    "callout": "EN DERİN UYKU",
+    "subject": [
+     "brain"
+    ]
+   },
+   {
+    "text": "Uyandırılınca ölmez; sadece şaşırır, bir süre nerede olduğunu anlamaz.",
+    "visual": "a man waking up in the dark, confused, rubbing his eyes",
+    "stock_query": "man sleeping",
+    "source": "stock",
+    "callout": "SADECE ŞAŞIRIR"
+   },
+   {
+    "text": "Merdivenin başındaysa nazikçe uyandır:",
+    "visual": "a dark staircase at night seen from the top step",
+    "stock_query": "stairs night",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "stairs"
+    ]
+   }
+  ],
+  "description": "Uyurgezeri uyandırmanın onu şoktan öldüreceği inancı bir efsane: uyku uzmanlarına göre uyandırılan uyurgezer yalnızca irkilir ve bir süre şaşkın kalır. Uyurgezerlik rüya evresinde değil, en derin uykuda olur ve çocukların yüzde 17'sine kadarı en az bir kez uykusunda yürür.",
+  "tags": [
+   "uyurgezer",
+   "uyurgezerlik",
+   "uyurgezer uyandırılır mı",
+   "uykuda yürümek",
+   "derin uyku",
+   "uyku",
+   "beyin",
+   "insan vücudu",
+   "efsane mi gerçek mi",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sen ya da bir yakının hiç uykusunda yürüdü mü: evet mi, hayır mı?",
+  "en_title": "Waking a sleepwalker won't kill them, it just confuses them 😴",
+  "en_description": "It's a myth that a sleepwalker can die from the shock of being woken; sleep experts say they're only startled and confused for a while. Sleepwalking happens in the deepest stage of non-dream sleep, when part of the brain is awake, and up to 17% of children do it at least once. If they're near stairs or a door, wake them gently.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Uyurgezeri uyandırmak tehlikeli mi, uyurgezer uyandırılırsa şoktan ölür mü?\n\nHayır. Kaliforniya Uyku Bozuklukları Merkezi'nden Michael Salemi, Scientific American'a birinin uyandırıldığı için şoktan öleceği iddiasının kesinlikle yanlış olduğunu söylüyor; uyandırılan uyurgezer irkilir ve bir süre şaşkın kalabilir. Mayo Clinic'e göre uyurgezerlik rüya evresinde değil, derin uykunun en derin evresinde (N3) olur; uyurgezerin bakışı donuk ve camsıdır, uyandırılması zordur. Stanford'dan uyku uzmanı Mark Mahowald'a göre uyku her zaman bütün beyni kapsamaz, beynin bir kısmı uyanık kalabilir. Scientific American'a göre çocukların yüzde 17'sine kadarı en az bir kez uykusunda yürür. Sleep Foundation, kişiyi sakin bir sesle yatağına yönlendirmeyi, merdiven ya da kapı gibi bir tehlikenin yanındaysa nazikçe uyandırmayı öneriyor.\n\nSen ya da bir yakının hiç uykusunda yürüdü mü: evet mi, hayır mı?",
+  "hashtags": [
+   "#uyurgezer",
+   "#uyku",
+   "#insanvücudu",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "uyurgezer",
+   "uyurgezerlik",
+   "uyurgezer uyandırılır mı",
+   "uyurgezeri uyandırmak",
+   "uyurgezer uyanınca ölür mü",
+   "uykuda yürümek",
+   "uykusunda yürüyen",
+   "uyurgezerlik nedenleri",
+   "çocuklarda uyurgezerlik",
+   "gözü açık uyumak",
+   "derin uyku",
+   "uyku evreleri",
+   "uyku",
+   "beyin",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "efsane mi gerçek mi",
+   "yanlış bilinen gerçekler",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "sağlık",
+   "bilim",
+   "sleepwalking",
+   "sleepwalker myth"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Waking a sleepwalker won't kill them, it just confuses them 😴",
+    "description": "It's a myth that a sleepwalker can die from the shock of being woken; sleep experts say they're only startled and confused for a while. Sleepwalking happens in the deepest stage of non-dream sleep, when part of the brain is awake, and up to 17% of children do it at least once. If they're near stairs or a door, wake them gently."
+   },
+   "es": {
+    "title": "Despertar a un sonámbulo no lo mata, solo lo confunde 😴",
+    "description": "Es un mito que un sonámbulo pueda morir del susto al despertarlo: los expertos en sueño dicen que solo se sobresalta y queda confundido un rato. El sonambulismo ocurre en la fase más profunda del sueño sin sueños, con parte del cerebro despierta, y hasta un 17 % de los niños lo vive al menos una vez. Si está cerca de una escalera o una puerta, despiértalo con suavidad."
+   },
+   "pt": {
+    "title": "Acordar um sonâmbulo não o mata, só o deixa confuso 😴",
+    "description": "É mito que um sonâmbulo possa morrer de susto ao ser acordado: especialistas em sono dizem que ele só se assusta e fica confuso por um tempo. O sonambulismo acontece na fase mais profunda do sono sem sonhos, com parte do cérebro acordada, e até 17% das crianças passam por isso pelo menos uma vez. Se ele estiver perto de uma escada ou porta, acorde-o com delicadeza."
+   },
+   "de": {
+    "title": "Einen Schlafwandler zu wecken, ist nicht tödlich 😴",
+    "description": "Dass ein Schlafwandler vor Schreck sterben kann, wenn man ihn weckt, ist ein Mythos: Laut Schlafexperten erschrickt er nur und ist eine Weile verwirrt. Schlafwandeln passiert im tiefsten, traumlosen Schlafstadium, während ein Teil des Gehirns wach ist, und bis zu 17 % der Kinder erleben es mindestens einmal. Steht er an einer Treppe oder Tür, weck ihn sanft."
+   },
+   "fr": {
+    "title": "Réveiller un somnambule ne le tue pas, ça le déroute 😴",
+    "description": "C'est un mythe qu'un somnambule puisse mourir du choc si on le réveille : selon les spécialistes du sommeil, il est seulement surpris et confus un moment. Le somnambulisme survient dans le sommeil le plus profond, sans rêve, quand une partie du cerveau reste éveillée, et jusqu'à 17 % des enfants le vivent au moins une fois. S'il est près d'un escalier ou d'une porte, réveille-le doucement."
+   },
+   "it": {
+    "title": "Svegliare un sonnambulo non lo uccide, lo confonde soltanto 😴",
+    "description": "È un mito che un sonnambulo possa morire per lo spavento se lo svegli: secondo gli esperti del sonno si spaventa e resta confuso per un po'. Il sonnambulismo avviene nel sonno più profondo, senza sogni, con una parte del cervello sveglia, e fino al 17% dei bambini lo vive almeno una volta. Se è vicino a una scala o a una porta, sveglialo con delicatezza."
+   },
+   "ru": {
+    "title": "Разбудить лунатика не смертельно — он просто растеряется 😴",
+    "description": "То, что лунатик может умереть от шока, если его разбудить, — миф: по словам сомнологов, он лишь пугается и какое-то время не понимает, где находится. Лунатизм случается в самой глубокой фазе сна без сновидений, когда часть мозга бодрствует, и до 17% детей сталкиваются с ним хотя бы раз. Если он у лестницы или двери, разбудите его мягко."
+   },
+   "ar": {
+    "title": "إيقاظ السائر أثناء النوم لا يقتله، بل يربكه فقط 😴",
+    "description": "من الخرافات أن السائر أثناء نومه قد يموت من الصدمة إذا أيقظته؛ يقول خبراء النوم إنه يُفزع ويرتبك لبعض الوقت فقط. يحدث المشي أثناء النوم في أعمق مراحل النوم الخالي من الأحلام، حين يكون جزء من الدماغ مستيقظًا، ويمرّ به ما يصل إلى 17% من الأطفال مرة واحدة على الأقل. وإذا كان قرب درج أو باب فأيقظه بلطف."
+   },
+   "hi": {
+    "title": "नींद में चलने वाले को जगाना जानलेवा नहीं, बस वह उलझ जाता है 😴",
+    "description": "यह मिथक है कि नींद में चलने वाले को जगाने से वह सदमे से मर सकता है; नींद विशेषज्ञों के मुताबिक वह बस चौंकता है और कुछ देर उलझन में रहता है। नींद में चलना बिना सपनों वाली सबसे गहरी नींद में होता है, जब दिमाग का एक हिस्सा जागा रहता है, और 17% तक बच्चे कम से कम एक बार ऐसा करते हैं। अगर वह सीढ़ियों या दरवाज़े के पास हो, तो उसे धीरे से जगाएँ।"
+   },
+   "id": {
+    "title": "Membangunkan orang yang tidur berjalan tidak membuatnya mati 😴",
+    "description": "Anggapan bahwa orang yang tidur berjalan bisa mati karena kaget saat dibangunkan hanyalah mitos; menurut pakar tidur, ia hanya terkejut dan bingung sebentar. Tidur berjalan terjadi pada tahap tidur paling dalam yang tanpa mimpi, saat sebagian otak terjaga, dan hingga 17% anak mengalaminya setidaknya sekali. Jika ia berada di dekat tangga atau pintu, bangunkan dengan lembut."
+   },
+   "ja": {
+    "title": "夢遊病の人を起こしても死なない、混乱するだけ 😴",
+    "description": "夢遊病の人を起こすとショックで死ぬというのは俗説です。睡眠の専門家によれば、驚いてしばらく混乱するだけです。夢遊病は夢を見ない最も深い睡眠中に、脳の一部だけが目覚めた状態で起こり、子どもの最大17%が少なくとも一度は経験します。階段やドアの近くにいるときは、そっと起こしましょう。"
+   },
+   "ko": {
+    "title": "몽유병 환자를 깨워도 죽지 않는다, 잠시 혼란스러울 뿐 😴",
+    "description": "몽유병 환자를 깨우면 충격으로 죽을 수 있다는 말은 속설입니다. 수면 전문가들에 따르면 깜짝 놀라 잠시 혼란스러워할 뿐입니다. 몽유병은 꿈을 꾸지 않는 가장 깊은 잠에서 뇌의 일부만 깨어 있을 때 일어나며, 어린이의 최대 17%가 적어도 한 번은 겪습니다. 계단이나 문 근처에 있다면 부드럽게 깨우세요."
+   },
+   "pl": {
+    "title": "Obudzenie lunatyka go nie zabije, tylko zdezorientuje 😴",
+    "description": "To mit, że lunatyk może umrzeć z szoku, gdy się go obudzi: według specjalistów od snu jest tylko przestraszony i przez chwilę zdezorientowany. Lunatykowanie zdarza się w najgłębszej fazie snu bez marzeń sennych, gdy część mózgu czuwa, i nawet 17% dzieci przeżywa je przynajmniej raz. Jeśli stoi przy schodach albo drzwiach, obudź go delikatnie."
+   },
+   "nl": {
+    "title": "Een slaapwandelaar wakker maken is niet dodelijk 😴",
+    "description": "Dat een slaapwandelaar van de schrik kan sterven als je hem wekt, is een fabel: volgens slaapexperts schrikt hij alleen en is hij even in de war. Slaapwandelen gebeurt in de diepste, droomloze slaap, terwijl een deel van de hersenen wakker is, en tot 17% van de kinderen doet het minstens één keer. Staat hij bij een trap of deur, maak hem dan voorzichtig wakker."
+   },
+   "uk": {
+    "title": "Розбудити лунатика не смертельно — він лише розгубиться 😴",
+    "description": "Те, що лунатик може померти від шоку, якщо його розбудити, — міф: за словами сомнологів, він лише лякається й деякий час не розуміє, де він. Лунатизм трапляється в найглибшій фазі сну без сновидінь, коли частина мозку не спить, і до 17% дітей стикаються з ним хоча б раз. Якщо він біля сходів чи дверей, розбудіть його обережно."
+   },
+   "vi": {
+    "title": "Đánh thức người mộng du không làm họ chết, chỉ khiến họ bối rối 😴",
+    "description": "Chuyện người mộng du có thể chết vì sốc khi bị đánh thức chỉ là lời đồn; theo các chuyên gia giấc ngủ, họ chỉ giật mình và bối rối một lúc. Mộng du xảy ra trong giai đoạn ngủ sâu nhất, không có giấc mơ, khi một phần não vẫn thức, và có tới 17% trẻ em từng mộng du ít nhất một lần. Nếu họ đang ở gần cầu thang hay cửa ra vào, hãy đánh thức họ thật nhẹ nhàng."
+   },
+   "az": {
+    "title": "Yuxugəzəri oyatmaq onu öldürmür, sadəcə çaşdırır 😴",
+    "description": "Yuxugəzərin oyadılanda şokdan ölə biləcəyi bir mifdir: yuxu mütəxəssislərinə görə o, sadəcə diksinir və bir müddət çaşqın qalır. Yuxugəzərlik yuxu görülməyən ən dərin yuxu mərhələsində, beynin bir hissəsi oyaq ikən baş verir və uşaqların 17%-ə qədəri bunu ən azı bir dəfə yaşayır. Pilləkənin və ya qapının yanındadırsa, onu ehmalca oyadın."
+   },
+   "ro": {
+    "title": "Să trezești un somnambul nu-l omoară, doar îl derutează 😴",
+    "description": "E un mit că un somnambul poate muri de șoc dacă îl trezești: potrivit specialiștilor în somn, doar se sperie și rămâne confuz o vreme. Somnambulismul apare în cea mai profundă fază a somnului fără vise, când o parte a creierului e trează, iar până la 17% dintre copii îl trăiesc măcar o dată. Dacă e lângă scări sau lângă o ușă, trezește-l cu blândețe."
+   }
+  }
+ }
+}

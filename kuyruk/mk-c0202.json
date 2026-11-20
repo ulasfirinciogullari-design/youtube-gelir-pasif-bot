@@ -1,0 +1,181 @@
+{
+ "id": "mk-c0202",
+ "topic": "Kedi neden laptopun klavyesine yatar? Kedim bilgisayarın üstüne yatıyor, kediler neden sıcak yerleri sever?",
+ "kategori": "hayvan",
+ "subject": [
+  "cat"
+ ],
+ "stock_hint": "cat laptop",
+ "script": {
+  "title": "Laptopuna yatan kedin seni kızdırmak için yatmıyor 🐱",
+  "hook_text": "KEDİN LAPTOPA NEDEN YATAR?",
+  "scenes": [
+   {
+    "text": "Klavyeye yatan bu kedi seni kızdırmaya çalışmıyor.",
+    "visual": "close-up of a cat lying across a laptop keyboard, looking into the camera",
+    "stock_query": "cat laptop",
+    "source": "stock",
+    "callout": "KIZDIRMIYOR"
+   },
+   {
+    "text": "Tam çalışırken gelip yattığı için sana inat ettiğini sanırsın.",
+    "visual": "a cat stepping onto a laptop keyboard while someone types",
+    "stock_query": "cat keyboard",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa kediler otuz ile otuz sekiz derece arasında en rahat eder; senin odan ona serin.",
+    "visual": "a cat curled up in a warm patch of sunlight",
+    "stock_query": "cat sun",
+    "source": "stock",
+    "callout": "30-38°C"
+   },
+   {
+    "text": "Çalışan dizüstü bilgisayar ılık bir yataktır ve üstünde senin kokun var.",
+    "visual": "a cat sleeping on top of an open laptop",
+    "stock_query": "cat sleeping laptop",
+    "source": "stock",
+    "callout": "ILIK VE SENİN KOKUN"
+   },
+   {
+    "text": "Üstelik bütün ilgini oraya verdiğini de fark etmiştir.",
+    "visual": "a cat on a desk staring at its owner",
+    "stock_query": "cat desk",
+    "source": "stock",
+    "callout": "İLGİN ORADA"
+   },
+   {
+    "text": "Onu kaldırmadan önce hatırla:",
+    "visual": "close-up of a cat's face resting on a keyboard",
+    "stock_query": "cat face close up",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Laptopun klavyesine yatan kedi seni kızdırmaya çalışmıyor. Kediler yaklaşık otuz ile otuz sekiz derece arasında en rahat eder, bu yüzden insanların rahat ettiği oda onlara serin gelir. Çalışan laptop ılık bir yataktır, senin kokunu taşır ve üstelik bütün ilgin oradadır.",
+  "tags": [
+   "kedi",
+   "kedi laptopa yatıyor",
+   "kedi klavyeye yatıyor",
+   "kedi neden bilgisayara yatar",
+   "kedi davranışları",
+   "kediler sıcağı sever",
+   "kedi sahibi",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Senin kedin en çok nereye yatıyor: laptopa mı, kucağına mı?",
+  "en_title": "Your cat isn't lying on your laptop to annoy you 🐱",
+  "en_description": "A cat's comfort zone is about 30 to 38 °C, so a room that feels pleasant to you is cool to it. A running laptop is a warm bed that smells of you, and lying on it also gets your attention. That's why it picks the keyboard right when you start working.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Kedi neden laptopun klavyesine yatar, kedim neden bilgisayarın üstüne yatıyor?\n\nBüyük ihtimalle seni kızdırmak için değil. Veterinary Ireland Journal'da aktarılan ABD Ulusal Araştırma Konseyi (NRC) verisine göre kedilerin termonötr bölgesi, yani ısınmak ya da serinlemek için ek enerji harcamadıkları sıcaklık aralığı 30 ile 38 derece arası; insanların rahat ettiği oda sıcaklığı kediye serin gelir. İngiliz kedi yardım kuruluşu Cats Protection'a göre kediler laptop, ev aletleri ve yeni kalkılmış sandalye gibi ısı yayan yerleri sever; senin kokun da onlara güven verir ve laptopun üstüne yatmak ilgini çekmenin kolay bir yoludur.\n\nSenin kedin en çok nereye yatıyor: laptopa mı, kucağına mı?",
+  "hashtags": [
+   "#kedi",
+   "#kediler",
+   "#kedidavranışları",
+   "#evcilhayvan",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kedi",
+   "kediler",
+   "kedi laptopa yatıyor",
+   "kedi klavyeye yatıyor",
+   "kedi bilgisayara yatıyor",
+   "kedi neden laptopa yatar",
+   "kedi neden klavyeye yatar",
+   "kediler sıcağı sever",
+   "kedi vücut ısısı",
+   "kedi kaç derecede üşür",
+   "kedi davranışları",
+   "kedi psikolojisi",
+   "kedi sahibi",
+   "kedi bakımı",
+   "evcil hayvan",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "cat on laptop",
+   "cat keyboard"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Your cat isn't lying on your laptop to annoy you 🐱",
+    "description": "A cat's comfort zone is about 30 to 38 °C, so a room that feels pleasant to you is cool to it. A running laptop is a warm bed that smells of you, and lying on it also gets your attention. That's why it picks the keyboard right when you start working."
+   },
+   "es": {
+    "title": "Tu gato no se tumba en tu portátil para fastidiarte 🐱",
+    "description": "La zona de confort térmico de un gato está entre unos 30 y 38 °C, así que una habitación agradable para ti a él le resulta fresca. Un portátil encendido es una cama tibia que huele a ti, y además así consigue tu atención. Por eso elige el teclado justo cuando te pones a trabajar."
+   },
+   "pt": {
+    "title": "Seu gato não deita no notebook para te irritar 🐱",
+    "description": "A zona de conforto térmico de um gato fica entre 30 e 38 °C, então um cômodo agradável para você é fresco para ele. Um notebook ligado é uma cama morna com o seu cheiro, e deitar nele ainda chama a sua atenção. Por isso ele escolhe o teclado bem na hora em que você começa a trabalhar."
+   },
+   "de": {
+    "title": "Deine Katze legt sich nicht auf den Laptop, um dich zu ärgern 🐱",
+    "description": "Die Wohlfühltemperatur von Katzen liegt bei etwa 30 bis 38 °C – ein Raum, der dir angenehm ist, ist für sie kühl. Ein laufender Laptop ist ein warmes Bett, das nach dir riecht, und obendrein bekommt sie dort deine Aufmerksamkeit. Darum wählt sie die Tastatur genau dann, wenn du anfängst zu arbeiten."
+   },
+   "fr": {
+    "title": "Ton chat ne se couche pas sur ton ordi pour t'embêter 🐱",
+    "description": "La zone de confort thermique du chat se situe entre 30 et 38 °C environ : une pièce agréable pour toi est fraîche pour lui. Un ordinateur portable allumé est un lit tiède qui sent ton odeur, et s'y coucher attire en plus ton attention. Voilà pourquoi il choisit le clavier pile quand tu te mets au travail."
+   },
+   "it": {
+    "title": "Il tuo gatto non si sdraia sul portatile per darti fastidio 🐱",
+    "description": "La zona di comfort termico del gatto è tra circa 30 e 38 °C, quindi una stanza piacevole per te per lui è fresca. Un portatile acceso è un letto tiepido che profuma di te, e sdraiarsi lì attira anche la tua attenzione. Ecco perché sceglie la tastiera proprio quando inizi a lavorare."
+   },
+   "ru": {
+    "title": "Кошка ложится на ноутбук не для того, чтобы вас позлить 🐱",
+    "description": "Кошкам комфортнее всего примерно при 30–38 °C, поэтому приятная для вас комната для них прохладная. Работающий ноутбук — тёплая лежанка, которая пахнет вами, а ещё так легче всего получить ваше внимание. Вот почему кошка выбирает клавиатуру именно тогда, когда вы садитесь работать."
+   },
+   "ar": {
+    "title": "قطك لا ينام على حاسوبك المحمول ليغيظك 🐱",
+    "description": "منطقة الراحة الحرارية للقط تقع تقريبًا بين 30 و38 درجة مئوية، لذا فالغرفة التي تراها مريحة تبدو له باردة. الحاسوب المحمول وهو يعمل سرير دافئ يحمل رائحتك، كما أن الاستلقاء عليه يجذب انتباهك. لهذا يختار لوحة المفاتيح بالضبط حين تبدأ العمل."
+   },
+   "hi": {
+    "title": "आपकी बिल्ली आपको चिढ़ाने के लिए लैपटॉप पर नहीं लेटती 🐱",
+    "description": "बिल्लियों को लगभग 30 से 38 डिग्री सेल्सियस में सबसे ज़्यादा आराम मिलता है, इसलिए जो कमरा आपको ठीक लगता है वह उन्हें ठंडा लगता है। चलता हुआ लैपटॉप एक गुनगुना बिस्तर है जिसमें आपकी गंध है, और उस पर लेटने से आपका ध्यान भी मिलता है। इसीलिए वह ठीक तभी कीबोर्ड पर आती है जब आप काम शुरू करते हैं।"
+   },
+   "id": {
+    "title": "Kucingmu tidur di laptop bukan untuk membuatmu kesal 🐱",
+    "description": "Zona nyaman suhu kucing sekitar 30 sampai 38 °C, jadi ruangan yang nyaman bagimu terasa sejuk baginya. Laptop yang menyala adalah kasur hangat yang beraroma dirimu, dan berbaring di sana juga menarik perhatianmu. Itu sebabnya ia memilih keyboard tepat saat kamu mulai bekerja."
+   },
+   "ja": {
+    "title": "猫がノートパソコンに乗るのはあなたへの嫌がらせじゃない 🐱",
+    "description": "猫が快適に過ごせる温度はおよそ30〜38℃なので、人にとって心地よい部屋も猫には涼しいのです。動いているノートパソコンは、あなたのにおいがする温かいベッド。しかもそこに乗れば、あなたの注意も引けます。だから仕事を始めたとたん、キーボードの上にやって来るのです。"
+   },
+   "ko": {
+    "title": "고양이가 노트북 위에 눕는 건 당신을 괴롭히려는 게 아니다 🐱",
+    "description": "고양이가 가장 편안하게 느끼는 온도는 약 30~38도라서, 사람에게 쾌적한 방도 고양이에게는 서늘합니다. 켜져 있는 노트북은 당신의 냄새가 밴 따뜻한 침대이고, 그 위에 누우면 당신의 관심까지 끌 수 있습니다. 그래서 일을 시작하자마자 키보드 위로 올라오는 것입니다."
+   },
+   "pl": {
+    "title": "Kot nie kładzie się na laptopie, żeby cię zdenerwować 🐱",
+    "description": "Strefa komfortu cieplnego kota to mniej więcej 30–38 °C, więc pokój przyjemny dla ciebie jest dla niego chłodny. Włączony laptop to ciepłe posłanie, które pachnie tobą, a do tego leżąc na nim, kot zdobywa twoją uwagę. Dlatego wybiera klawiaturę akurat wtedy, gdy zaczynasz pracę."
+   },
+   "nl": {
+    "title": "Je kat ligt niet op je laptop om je te pesten 🐱",
+    "description": "De comfortzone van een kat ligt rond 30 tot 38 °C, dus een kamer die jij prettig vindt, is voor hem koel. Een draaiende laptop is een warm bed dat naar jou ruikt, en wie erop ligt, krijgt ook nog je aandacht. Daarom kiest hij het toetsenbord precies wanneer jij aan het werk gaat."
+   },
+   "uk": {
+    "title": "Кіт лягає на ноутбук не для того, щоб вас дратувати 🐱",
+    "description": "Котам найкомфортніше приблизно за 30–38 °C, тож приємна для вас кімната для них прохолодна. Увімкнений ноутбук — тепла лежанка, що пахне вами, а ще так найлегше отримати вашу увагу. Ось чому кіт обирає клавіатуру саме тоді, коли ви сідаєте працювати."
+   },
+   "vi": {
+    "title": "Mèo nằm lên laptop không phải để chọc tức bạn 🐱",
+    "description": "Vùng nhiệt độ dễ chịu của mèo vào khoảng 30 đến 38 °C, nên căn phòng bạn thấy dễ chịu lại hơi lạnh với nó. Chiếc laptop đang chạy là chiếc giường ấm mang mùi của bạn, và nằm lên đó còn khiến bạn chú ý đến nó. Vì vậy nó chọn đúng bàn phím vào lúc bạn bắt đầu làm việc."
+   },
+   "az": {
+    "title": "Pişiyin noutbukun üstünə səni əsəbiləşdirmək üçün uzanmır 🐱",
+    "description": "Pişiklər özünü təxminən 30–38 °C-də ən rahat hiss edir, ona görə sənə xoş gələn otaq pişiyə sərin gəlir. İşləyən noutbuk sənin qoxunu daşıyan isti bir yataqdır, üstünə uzananda isə diqqətini də çəkir. Buna görə o, sən işə başlayan kimi klaviaturanı seçir."
+   },
+   "ro": {
+    "title": "Pisica nu se întinde pe laptop ca să te enerveze 🐱",
+    "description": "Zona de confort termic a pisicii este de aproximativ 30–38 °C, așa că o cameră plăcută pentru tine e răcoroasă pentru ea. Un laptop pornit e un pat călduț care miroase a tine, iar dacă stă pe el îți atrage și atenția. De aceea alege tastatura exact când te apuci de lucru."
+   }
+  }
+ }
+}

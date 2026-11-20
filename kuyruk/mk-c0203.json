@@ -1,0 +1,198 @@
+{
+ "id": "mk-c0203",
+ "topic": "Islak saçla dışarı çıkınca hasta olunur mu? Üşümek nezle yapar mı, soğuk algınlığı soğuktan mı olur?",
+ "kategori": "vücut",
+ "bicim": "mumkun-mu",
+ "subject": [
+  "sneezing",
+  "sneeze"
+ ],
+ "stock_hint": "woman sneezing",
+ "script": {
+  "title": "Islak saçla dışarı çıkmak seni hasta edebilir mi? 🤧",
+  "hook_text": "ISLAK SAÇ HASTA EDER Mİ?",
+  "scenes": [
+   {
+    "text": "Bu kadın dün ıslak saçla çıktı, bugün hapşırıyor.",
+    "visual": "close-up of a young woman sneezing into a tissue",
+    "stock_query": "woman sneezing",
+    "source": "stock",
+    "callout": "ISLAK SAÇ, NEZLE?"
+   },
+   {
+    "text": "Peki ıslak saç seni gerçekten hasta edebilir mi?",
+    "visual": "a woman with wet hair walking outside in cold rain",
+    "stock_query": "woman rain",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "rain"
+    ]
+   },
+   {
+    "text": "Bir deneyde ayaklarını yirmi dakika buzlu suda tutanlar, ötekilerin üç katı nezle oldu.",
+    "visual": "close-up of bare feet in a bowl of icy water",
+    "stock_query": "feet water",
+    "source": "stock",
+    "callout": "3 KAT FAZLA NEZLE",
+    "subject": [
+     "feet"
+    ]
+   },
+   {
+    "text": "Cevap: tek başına hayır; nezleyi soğuk değil, virüs yapar.",
+    "visual": "3D animation of cold viruses floating",
+    "stock_query": "virus",
+    "source": "stock",
+    "callout": "SUÇLU VİRÜS",
+    "subject": [
+     "virus"
+    ]
+   },
+   {
+    "text": "Ama üşüyünce burnundaki damarlar daralır, savunma zayıflar.",
+    "visual": "extreme close-up of a human nose in cold air",
+    "stock_query": "nose close up",
+    "source": "stock",
+    "callout": "SAVUNMA ZAYIFLAR",
+    "subject": [
+     "nose"
+    ]
+   },
+   {
+    "text": "Burnunda bekleyen bir virüs varsa fırsatı o an yakalar:",
+    "visual": "a woman blowing her nose into a tissue",
+    "stock_query": "woman sneezing tissue",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Islak saç tek başına seni hasta etmez: nezleyi soğuk değil, virüs yapar. Ama bir deneyde ayaklarını yirmi dakika buzlu suda tutanlar sonraki günlerde ötekilerin üç katı nezle oldu. Araştırmacılara göre üşüyünce burundaki damarlar daralıyor, savunma zayıflıyor ve burunda zaten bekleyen virüs fırsat buluyor.",
+  "tags": [
+   "ıslak saç",
+   "ıslak saçla dışarı çıkmak",
+   "üşütmek",
+   "nezle",
+   "soğuk algınlığı",
+   "üşüyünce hasta olunur mu",
+   "virüs",
+   "insan vücudu",
+   "mümkün mü",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence annen haklı mıydı: ıslak saç hasta eder mi, etmez mi?",
+  "en_title": "Can going out with wet hair make you sick? 🤧",
+  "en_description": "On its own, no: colds are caused by viruses, not by cold. But in a Cardiff study, people who chilled their feet in icy water for 20 minutes were about three times as likely to develop cold symptoms over the next days. Chilling may narrow blood vessels in the nose and weaken its defenses, giving a virus that's already there its chance.",
+  "mood": "sakin"
+ },
+ "seo": {
+  "description": "Islak saçla dışarı çıkınca hasta olunur mu, üşümek nezle yapar mı?\n\nTek başına hayır: soğuk algınlığına soğuğun kendisi değil, çoğu zaman rinovirüs gibi virüsler yol açar. Ama soğuk tamamen masum da değil. Cardiff Üniversitesi Soğuk Algınlığı Merkezi'nin 2005'teki deneyinde 180 gönüllünün yarısı ayaklarını 20 dakika buzlu suda tuttu; sonraki 4-5 günde bunların yüzde 29'unda, ayaklarını boş bir kapta tutanların ise yüzde 9'unda soğuk algınlığı belirtileri görüldü. Araştırmacılara göre üşüme burundaki kan damarlarını daraltıp savunmayı zayıflatıyor ve burunda zaten sessizce bekleyen virüse fırsat veriyor. Yale Üniversitesi'nin 2015'teki çalışması da fare hava yolu hücrelerinde, soğuk algınlığı virüsünün burun sıcaklığına yakın 33 derecede, vücut içindeki 37 dereceden daha rahat çoğaldığını gösterdi, çünkü serinde bağışıklık tepkisi zayıflıyor.\n\nSence annen haklı mıydı: ıslak saç hasta eder mi, etmez mi?",
+  "hashtags": [
+   "#nezle",
+   "#soğukalgınlığı",
+   "#insanvücudu",
+   "#mümkünmü",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "ıslak saç",
+   "ıslak saçla dışarı çıkmak",
+   "ıslak saçla hasta olunur mu",
+   "üşütmek",
+   "üşüyünce hasta olunur mu",
+   "soğuktan hasta olunur mu",
+   "soğuk algınlığı",
+   "soğuk algınlığı nedenleri",
+   "nezle",
+   "nezle neden olur",
+   "grip ve nezle",
+   "rinovirüs",
+   "virüs",
+   "bağışıklık",
+   "burun",
+   "insan vücudu",
+   "vücut gerçekleri",
+   "efsane mi gerçek mi",
+   "mümkün mü",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "sağlık",
+   "bilim",
+   "wet hair cold myth"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Can going out with wet hair make you sick? 🤧",
+    "description": "On its own, no: colds are caused by viruses, not by cold. But in a Cardiff study, people who chilled their feet in icy water for 20 minutes were about three times as likely to develop cold symptoms over the next days. Chilling may narrow blood vessels in the nose and weaken its defenses, giving a virus that's already there its chance."
+   },
+   "es": {
+    "title": "¿Salir con el pelo mojado puede enfermarte? 🤧",
+    "description": "Por sí solo, no: el resfriado lo causan los virus, no el frío. Pero en un estudio de Cardiff, quienes metieron los pies en agua helada 20 minutos tuvieron unas tres veces más síntomas de resfriado en los días siguientes. El frío puede estrechar los vasos de la nariz y debilitar sus defensas, dando su oportunidad a un virus que ya estaba ahí."
+   },
+   "pt": {
+    "title": "Sair com o cabelo molhado pode te deixar doente? 🤧",
+    "description": "Sozinho, não: resfriado é causado por vírus, não pelo frio. Mas num estudo de Cardiff, quem deixou os pés em água gelada por 20 minutos teve cerca de três vezes mais sintomas de resfriado nos dias seguintes. O frio pode estreitar os vasos do nariz e enfraquecer suas defesas, dando chance a um vírus que já estava lá."
+   },
+   "de": {
+    "title": "Kann man von nassen Haaren draußen krank werden? 🤧",
+    "description": "Allein nicht: Erkältungen lösen Viren aus, nicht die Kälte. Doch in einer Studie aus Cardiff bekamen Menschen, die ihre Füße 20 Minuten in eiskaltes Wasser hielten, in den folgenden Tagen etwa dreimal so oft Erkältungssymptome. Kälte kann die Blutgefäße in der Nase verengen und ihre Abwehr schwächen – ein Virus, das schon da ist, bekommt so seine Chance."
+   },
+   "fr": {
+    "title": "Sortir les cheveux mouillés peut-il rendre malade ? 🤧",
+    "description": "À lui seul, non : le rhume est causé par des virus, pas par le froid. Mais dans une étude menée à Cardiff, les personnes qui avaient gardé les pieds 20 minutes dans l'eau glacée ont eu environ trois fois plus de symptômes de rhume les jours suivants. Le froid peut resserrer les vaisseaux du nez et affaiblir ses défenses, ce qui laisse sa chance à un virus déjà présent."
+   },
+   "it": {
+    "title": "Uscire con i capelli bagnati può farti ammalare? 🤧",
+    "description": "Da solo no: il raffreddore lo causano i virus, non il freddo. Ma in uno studio di Cardiff chi aveva tenuto i piedi in acqua gelata per 20 minuti ha avuto circa tre volte più sintomi di raffreddore nei giorni successivi. Il freddo può restringere i vasi del naso e indebolirne le difese, dando una chance a un virus già presente."
+   },
+   "ru": {
+    "title": "Можно ли заболеть, выйдя на улицу с мокрыми волосами? 🤧",
+    "description": "Само по себе — нет: простуду вызывают вирусы, а не холод. Но в исследовании в Кардиффе у тех, кто 20 минут держал ноги в ледяной воде, симптомы простуды в следующие дни появлялись примерно в три раза чаще. Холод может сужать сосуды в носу и ослаблять его защиту, и вирус, который уже там, получает шанс."
+   },
+   "ar": {
+    "title": "هل يمكن أن يمرضك الخروج بشعر مبلل؟ 🤧",
+    "description": "وحده لا: نزلات البرد تسببها الفيروسات لا البرد. لكن في دراسة بكارديف، ظهرت أعراض الزكام على من وضعوا أقدامهم في ماء مثلج 20 دقيقة بنحو ثلاثة أضعاف غيرهم خلال الأيام التالية. فالبرد قد يضيّق أوعية الأنف ويُضعف دفاعاته، فيمنح الفيروس الموجود أصلًا فرصته."
+   },
+   "hi": {
+    "title": "क्या गीले बालों के साथ बाहर जाने से आप बीमार हो सकते हैं? 🤧",
+    "description": "अकेले इससे नहीं: ज़ुकाम ठंड से नहीं, वायरस से होता है। लेकिन कार्डिफ़ के एक अध्ययन में जिन लोगों ने 20 मिनट तक पैर बर्फ़ीले पानी में रखे, उनमें अगले दिनों में ज़ुकाम के लक्षण लगभग तीन गुना ज़्यादा दिखे। ठंड नाक की रक्त नलिकाओं को सिकोड़कर उसकी सुरक्षा कमज़ोर कर सकती है, जिससे पहले से मौजूद वायरस को मौका मिल जाता है।"
+   },
+   "id": {
+    "title": "Bisakah keluar rumah dengan rambut basah membuatmu sakit? 🤧",
+    "description": "Kalau hanya itu, tidak: pilek disebabkan virus, bukan udara dingin. Namun dalam sebuah studi di Cardiff, orang yang merendam kaki di air es selama 20 menit sekitar tiga kali lebih sering mengalami gejala pilek pada hari-hari berikutnya. Dingin dapat menyempitkan pembuluh darah di hidung dan melemahkan pertahanannya, sehingga virus yang sudah ada mendapat kesempatan."
+   },
+   "ja": {
+    "title": "濡れた髪で外に出ると風邪をひくって本当? 🤧",
+    "description": "それだけでは風邪はひきません。風邪の原因は寒さではなくウイルスです。ただ、英カーディフの研究では、足を20分間氷水につけた人は、その後数日で風邪の症状が出た割合がおよそ3倍でした。体が冷えると鼻の血管が縮んで防御が弱まり、すでに鼻にいるウイルスにチャンスを与えるのかもしれません。"
+   },
+   "ko": {
+    "title": "젖은 머리로 밖에 나가면 감기에 걸릴까? 🤧",
+    "description": "그것만으로는 아닙니다. 감기는 추위가 아니라 바이러스가 일으킵니다. 하지만 영국 카디프의 한 연구에서 발을 20분간 얼음물에 담근 사람들은 이후 며칠 동안 감기 증상이 나타난 비율이 약 3배였습니다. 추위는 코의 혈관을 좁혀 방어력을 떨어뜨리고, 이미 코에 있던 바이러스에게 기회를 줄 수 있습니다."
+   },
+   "pl": {
+    "title": "Czy wyjście z mokrymi włosami może cię rozchorować? 🤧",
+    "description": "Samo w sobie nie: przeziębienie wywołują wirusy, a nie zimno. Ale w badaniu z Cardiff osoby, które przez 20 minut trzymały stopy w lodowatej wodzie, w kolejnych dniach miały objawy przeziębienia mniej więcej trzy razy częściej. Chłód może zwężać naczynia krwionośne w nosie i osłabiać jego obronę, dając szansę wirusowi, który już tam jest."
+   },
+   "nl": {
+    "title": "Kun je ziek worden van met nat haar naar buiten gaan? 🤧",
+    "description": "Op zichzelf niet: verkoudheid komt door virussen, niet door kou. Maar in een onderzoek in Cardiff kregen mensen die hun voeten 20 minuten in ijswater hielden de dagen erna ongeveer drie keer zo vaak verkoudheidsklachten. Kou kan de bloedvaten in je neus vernauwen en de afweer daar verzwakken, waardoor een virus dat er al zit zijn kans krijgt."
+   },
+   "uk": {
+    "title": "Чи можна захворіти, вийшовши надвір із мокрим волоссям? 🤧",
+    "description": "Саме по собі — ні: застуду спричиняють віруси, а не холод. Але в дослідженні в Кардіффі в тих, хто 20 хвилин тримав ноги в крижаній воді, симптоми застуди в наступні дні з'являлися приблизно втричі частіше. Холод може звужувати судини в носі й послаблювати його захист, і вірус, що вже там, отримує шанс."
+   },
+   "vi": {
+    "title": "Ra ngoài khi tóc còn ướt có thể khiến bạn bị ốm không? 🤧",
+    "description": "Chỉ riêng điều đó thì không: cảm lạnh do virus gây ra chứ không phải do lạnh. Nhưng trong một nghiên cứu ở Cardiff, những người ngâm chân vào nước đá 20 phút có triệu chứng cảm lạnh trong những ngày sau nhiều gấp khoảng ba lần. Cái lạnh có thể làm co mạch máu trong mũi và làm suy yếu hàng rào bảo vệ, tạo cơ hội cho virus vốn đã có sẵn ở đó."
+   },
+   "az": {
+    "title": "Yaş saçla bayıra çıxmaq səni xəstələndirə bilərmi? 🤧",
+    "description": "Tək başına yox: soyuqdəyməyə soyuq yox, viruslar səbəb olur. Amma Kardiffdə aparılan bir araşdırmada ayaqlarını 20 dəqiqə buzlu suda saxlayanlarda sonrakı günlərdə soyuqdəymə əlamətləri təxminən üç dəfə çox görüldü. Soyuq burundakı damarları daraldıb müdafiəni zəiflədə bilər və orada artıq olan virusa fürsət verər."
+   },
+   "ro": {
+    "title": "Poți răci dacă ieși afară cu părul ud? 🤧",
+    "description": "Doar din atât, nu: răceala e provocată de virusuri, nu de frig. Dar într-un studiu din Cardiff, cei care și-au ținut picioarele 20 de minute în apă cu gheață au avut în zilele următoare simptome de răceală de aproximativ trei ori mai des. Frigul poate îngusta vasele de sânge din nas și îi poate slăbi apărarea, dând o șansă unui virus care era deja acolo."
+   }
+  }
+ }
+}

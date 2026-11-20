@@ -1,0 +1,184 @@
+{
+ "id": "mk-c0201",
+ "topic": "Bukalemun neden renk değiştirir? Bukalemun saklanmak için mi renk değiştirir, 'bukalemun gibi renk değiştirmek' sözü doğru mu?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "chameleon"
+ ],
+ "stock_hint": "chameleon close up",
+ "script": {
+  "title": "Bukalemun renk değiştirir ama saklanmak için değil 🦎",
+  "hook_text": "BUKALEMUN NEDEN RENK DEĞİŞTİRİR?",
+  "scenes": [
+   {
+    "text": "Bu bukalemun 'bukalemun gibi' renk değiştirmiyor.",
+    "visual": "extreme close-up of a chameleon's face and swiveling eye, its skin shifting color",
+    "stock_query": "chameleon close up",
+    "source": "stock",
+    "callout": "SAKLANMIYOR"
+   },
+   {
+    "text": "Biz bu sözle, ortama göre renk değiştirip gizlendiğini kastederiz.",
+    "visual": "a green chameleon walking slowly along a leafy branch",
+    "stock_query": "chameleon branch",
+    "source": "stock",
+    "callout": ""
+   },
+   {
+    "text": "Oysa her zemine uyamaz; soğuk sabahlarda güneşi emmek için koyulaşır.",
+    "visual": "a dark chameleon basking in the morning sun",
+    "stock_query": "chameleon sun",
+    "source": "stock",
+    "callout": "SOĞUKTA KOYULAŞIR"
+   },
+   {
+    "text": "Asıl renk şovu rakibe: iki erkek karşılaşınca sarıya, kırmızıya bürünür.",
+    "visual": "a brightly colored panther chameleon displaying on a branch",
+    "stock_query": "panther chameleon",
+    "source": "stock",
+    "callout": "RAKİBE MEYDAN OKUR"
+   },
+   {
+    "text": "Önce soluklaşan erkek genellikle pes eder.",
+    "visual": "a chameleon on a twig, its colors fading to a dull tone",
+    "stock_query": "chameleon color",
+    "source": "stock",
+    "callout": "SOLAN PES EDER"
+   },
+   {
+    "text": "Birine bukalemun demeden önce hatırla:",
+    "visual": "close-up of a chameleon's rotating eye",
+    "stock_query": "chameleon eye",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Bukalemun gibi renk değiştirmek' sözü, bukalemunun ortama uyup gizlendiğini anlatır; oysa bukalemun her zemine uyamaz. En çarpıcı renk değişimleri mesajdır: karşılaşan erkekler sarıya, kırmızıya bürünür ve önce soluklaşan genellikle pes eder. Soğuk sabahlarda ise güneşi daha çok emmek için koyulaşır.",
+  "tags": [
+   "bukalemun",
+   "bukalemun neden renk değişir",
+   "bukalemun gibi",
+   "renk değiştirmek",
+   "sürüngenler",
+   "kertenkele",
+   "deyimler",
+   "hayvanlar",
+   "yanlış bilinen gerçekler",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence hangisi daha şaşırtıcı: bukalemunun rakibine renk göstermesi mi, soğukta koyulaşması mı?",
+  "en_title": "Chameleons change color, but not to hide 🦎",
+  "en_description": "We say someone 'changes color like a chameleon' to blend in, but chameleons can't match any background. Their most dramatic color shows are messages: rival males flash yellow and red, and the one that fades first usually backs down. On cold mornings they also darken to soak up more sun.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Bukalemun neden renk değiştirir, saklanmak için mi renk değiştirir?\n\nÇoğunlukla hayır. National Geographic'in aktardığına göre bukalemunlar derilerinin rengini her zemine uyduramaz; açıklık ve koyuluk ayarıyla sınırlı ölçüde gizlenebilseler de en çarpıcı renk değişimleri iletişim içindir. İki erkek karşılaştığında sarı, kırmızı ve beyaza bürünür; genellikle önce rengi solan erkek pes eder. Dişiler de renkleriyle çiftleşmeye hazır olup olmadıklarını gösterir. Hava soğuk ve güneşliyse bukalemun daha çok ısı emmek için derisini koyulaştırır. Türkçedeki 'bukalemun gibi renk değiştirmek' deyimi, yani ortama göre kılık değiştirme fikri, hayvanın asıl derdini anlatmıyor.\n\nSence hangisi daha şaşırtıcı: bukalemunun rakibine renk göstermesi mi, soğukta koyulaşması mı?",
+  "hashtags": [
+   "#bukalemun",
+   "#deyimler",
+   "#sürüngenler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "bukalemun",
+   "bukalemunlar",
+   "bukalemun neden renk değişir",
+   "bukalemun renk değiştirir mi",
+   "bukalemun nasıl renk değişir",
+   "bukalemun renk değişimi",
+   "bukalemun gibi",
+   "renk değiştirmek deyimi",
+   "renk değiştiren hayvanlar",
+   "kamuflaj",
+   "panter bukalemun",
+   "sürüngenler",
+   "kertenkele",
+   "deyimler",
+   "deyimlerin anlamı",
+   "yanlış bilinen gerçekler",
+   "efsane mi gerçek mi",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "chameleon color change"
+  ],
+  "localizations": {
+   "en": {
+    "title": "Chameleons change color, but not to hide 🦎",
+    "description": "We say someone 'changes color like a chameleon' to blend in, but chameleons can't match any background. Their most dramatic color shows are messages: rival males flash yellow and red, and the one that fades first usually backs down. On cold mornings they also darken to soak up more sun."
+   },
+   "es": {
+    "title": "El camaleón cambia de color, pero no para esconderse 🦎",
+    "description": "Decimos que alguien «cambia de color como un camaleón» para adaptarse, pero el camaleón no puede igualar cualquier fondo. Sus cambios más llamativos son mensajes: los machos rivales se tiñen de amarillo y rojo, y el que se apaga primero suele rendirse. En las mañanas frías, además, se oscurece para absorber más sol."
+   },
+   "pt": {
+    "title": "O camaleão muda de cor, mas não para se esconder 🦎",
+    "description": "Dizemos que alguém 'muda de cor como um camaleão' para se adaptar, mas o camaleão não consegue imitar qualquer fundo. Suas mudanças mais vistosas são mensagens: machos rivais ficam amarelos e vermelhos, e o que desbota primeiro costuma desistir. Nas manhãs frias, ele também escurece para absorver mais sol."
+   },
+   "de": {
+    "title": "Chamäleons wechseln die Farbe – aber nicht, um sich zu tarnen 🦎",
+    "description": "Wir sagen, jemand wechselt die Farbe wie ein Chamäleon, um sich anzupassen – doch Chamäleons können sich nicht jedem Hintergrund angleichen. Ihre auffälligsten Farbwechsel sind Botschaften: Rivalisierende Männchen leuchten gelb und rot, und wer zuerst verblasst, gibt meist auf. An kalten Morgen werden sie außerdem dunkler, um mehr Sonne aufzunehmen."
+   },
+   "fr": {
+    "title": "Le caméléon change de couleur, mais pas pour se cacher 🦎",
+    "description": "On dit de quelqu'un qu'il « change de couleur comme un caméléon » pour se fondre dans le décor, mais le caméléon ne peut pas imiter n'importe quel fond. Ses changements les plus spectaculaires sont des messages : les mâles rivaux virent au jaune et au rouge, et celui qui pâlit le premier abandonne en général. Par les matins froids, il fonce aussi pour absorber plus de soleil."
+   },
+   "it": {
+    "title": "Il camaleonte cambia colore, ma non per nascondersi 🦎",
+    "description": "Diciamo che qualcuno «cambia colore come un camaleonte» per adattarsi, ma il camaleonte non sa imitare qualsiasi sfondo. I suoi cambi più vistosi sono messaggi: i maschi rivali si accendono di giallo e rosso, e chi sbiadisce per primo di solito si arrende. Nelle mattine fredde, poi, si scurisce per assorbire più sole."
+   },
+   "ru": {
+    "title": "Хамелеон меняет цвет, но не для того, чтобы спрятаться 🦎",
+    "description": "Мы говорим «меняет цвет, как хамелеон» о том, кто подстраивается под обстановку, но хамелеон не умеет сливаться с любым фоном. Его самые яркие перемены цвета — это сигналы: соперничающие самцы вспыхивают жёлтым и красным, и тот, кто тускнеет первым, обычно отступает. А холодным утром он темнеет, чтобы впитать больше солнца."
+   },
+   "ar": {
+    "title": "الحرباء تغيّر لونها، لكن ليس لتختبئ 🦎",
+    "description": "نقول عن الشخص المتقلّب إنه «يتلوّن كالحرباء»، لكن الحرباء لا تستطيع مطابقة أي خلفية. أكثر تغيّراتها لفتًا للنظر رسائل: الذكور المتنافسة تتوهّج بالأصفر والأحمر، والذي يبهت لونه أولًا ينسحب عادةً. وفي الصباحات الباردة تُغمِق لونها لتمتص مزيدًا من أشعة الشمس."
+   },
+   "hi": {
+    "title": "गिरगिट रंग बदलता है, पर छिपने के लिए नहीं 🦎",
+    "description": "हम कहते हैं 'गिरगिट की तरह रंग बदलना', मानो वह आसपास के रंग में घुल जाता हो, पर गिरगिट हर पृष्ठभूमि की नकल नहीं कर सकता। उसके सबसे चटकीले रंग संदेश होते हैं: आमने-सामने आए नर पीले और लाल हो जाते हैं, और जिसका रंग पहले फीका पड़ता है वह अक्सर पीछे हट जाता है। ठंडी सुबह में वह ज़्यादा धूप सोखने के लिए गहरा भी हो जाता है।"
+   },
+   "id": {
+    "title": "Bunglon berubah warna, tapi bukan untuk bersembunyi 🦎",
+    "description": "Kita menyebut orang yang plin-plan 'seperti bunglon', seolah bunglon menyamakan warnanya dengan lingkungan, padahal ia tak bisa meniru sembarang latar. Perubahan warnanya yang paling mencolok adalah pesan: jantan yang bersaing menyala kuning dan merah, dan yang memudar lebih dulu biasanya mundur. Pada pagi yang dingin, bunglon juga menggelap agar menyerap lebih banyak sinar matahari."
+   },
+   "ja": {
+    "title": "カメレオンが色を変えるのは隠れるためではない 🦎",
+    "description": "周りに合わせて態度を変える人を「カメレオンのよう」と言いますが、カメレオンはどんな背景にでも色を合わせられるわけではありません。いちばん派手な色の変化はメッセージです。ライバルのオス同士は黄色や赤に輝き、先に色があせた方がたいてい引き下がります。寒い朝には、日光を多く吸収するために体を暗くします。"
+   },
+   "ko": {
+    "title": "카멜레온은 색을 바꾸지만 숨으려는 게 아니다 🦎",
+    "description": "주변에 맞춰 태도를 바꾸는 사람을 '카멜레온 같다'고 하지만, 카멜레온은 아무 배경에나 색을 맞추지 못합니다. 가장 화려한 색 변화는 메시지입니다. 경쟁하는 수컷끼리는 노랗고 빨갛게 빛나고, 먼저 색이 바래는 쪽이 대개 물러납니다. 추운 아침에는 햇빛을 더 흡수하려고 몸을 어둡게 바꿉니다."
+   },
+   "pl": {
+    "title": "Kameleon zmienia kolor, ale nie po to, żeby się ukryć 🦎",
+    "description": "Mówimy, że ktoś „zmienia barwy jak kameleon”, dopasowując się do otoczenia, ale kameleon nie potrafi upodobnić się do każdego tła. Jego najbardziej efektowne zmiany barw to komunikaty: rywalizujące samce rozbłyskują żółcią i czerwienią, a ten, który pierwszy blednie, zwykle się wycofuje. W chłodne poranki ciemnieje też, by chłonąć więcej słońca."
+   },
+   "nl": {
+    "title": "Een kameleon verandert van kleur, maar niet om zich te verstoppen 🦎",
+    "description": "We zeggen dat iemand 'als een kameleon van kleur verandert' om zich aan te passen, maar een kameleon kan niet elke achtergrond nabootsen. Zijn opvallendste kleurwissels zijn boodschappen: rivaliserende mannetjes kleuren geel en rood, en wie als eerste verbleekt, geeft meestal op. Op koude ochtenden wordt hij ook donkerder om meer zon op te vangen."
+   },
+   "uk": {
+    "title": "Хамелеон змінює колір, але не для того, щоб сховатися 🦎",
+    "description": "Ми кажемо «змінює колір, як хамелеон» про того, хто підлаштовується під обставини, але хамелеон не вміє зливатися з будь-яким тлом. Його найяскравіші зміни кольору — це сигнали: суперники-самці спалахують жовтим і червоним, і той, хто тьмяніє першим, зазвичай відступає. А холодного ранку він темніє, щоб увібрати більше сонця."
+   },
+   "vi": {
+    "title": "Tắc kè hoa đổi màu, nhưng không phải để ẩn nấp 🦎",
+    "description": "Ta hay nói ai đó 'đổi màu như tắc kè hoa' để hòa vào hoàn cảnh, nhưng tắc kè hoa không thể bắt chước mọi nền. Những lần đổi màu rực rỡ nhất của nó là tín hiệu: con đực đối đầu chuyển sang vàng và đỏ, và con nào nhạt màu trước thường sẽ rút lui. Vào buổi sáng lạnh, nó còn sẫm màu lại để hấp thụ nhiều nắng hơn."
+   },
+   "az": {
+    "title": "Buqələmun rəngini dəyişir, amma gizlənmək üçün yox 🦎",
+    "description": "Şəraitə uyğunlaşan adama 'buqələmun kimi rəng dəyişir' deyirik, amma buqələmun hər fona uyğunlaşa bilmir. Onun ən parlaq rəng dəyişiklikləri mesajdır: rəqib erkəklər sarı və qırmızıya boyanır, rəngi ilk solan isə adətən geri çəkilir. Soyuq səhərlərdə isə daha çox günəş udmaq üçün tündləşir."
+   },
+   "ro": {
+    "title": "Cameleonul își schimbă culoarea, dar nu ca să se ascundă 🦎",
+    "description": "Spunem despre cineva că „își schimbă culoarea ca un cameleon” ca să se adapteze, dar cameleonul nu poate imita orice fundal. Cele mai spectaculoase schimbări de culoare sunt mesaje: masculii rivali se aprind în galben și roșu, iar cel care pălește primul de obicei cedează. În diminețile reci se închide la culoare ca să absoarbă mai mult soare."
+   }
+  }
+ }
+}

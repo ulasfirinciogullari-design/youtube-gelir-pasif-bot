@@ -1,0 +1,190 @@
+{
+ "id": "mk-c0198",
+ "topic": "Fareler peynir sever mi? 'Bedava peynir sadece fare kapanında olur' sözü doğru mu, fare kapanına ne konur?",
+ "kategori": "hayvan",
+ "deyim": true,
+ "subject": [
+  "rodent"
+ ],
+ "stock_hint": "rodent close up",
+ "script": {
+  "title": "Fare kapanındaki bedava peynir farenin gözdesi değil 🐭",
+  "hook_text": "FARE PEYNİR SEVER Mİ?",
+  "scenes": [
+   {
+    "text": "Fare kapanındaki bedava peynir bu farenin gözdesi değil.",
+    "visual": "extreme close-up of a small brown house mouse sniffing the air with twitching whiskers",
+    "stock_query": "rodent close up",
+    "source": "stock",
+    "callout": "PEYNİR GÖZDE DEĞİL"
+   },
+   {
+    "text": "Farelerin peynire bayıldığına hepimiz inanırız.",
+    "visual": "a block of yellow cheese with holes on a wooden board",
+    "stock_query": "cheese",
+    "source": "stock",
+    "callout": "",
+    "subject": [
+     "cheese"
+    ]
+   },
+   {
+    "text": "Bu inanç iki bin yıllık: Romalı düşünür Seneca bile 'fare peynir yer' diye yazmış.",
+    "visual": "a small mouse nibbling food in a dim pantry",
+    "stock_query": "rodent eating",
+    "source": "stock",
+    "callout": "2.000 YILLIK İNANÇ"
+   },
+   {
+    "text": "Oysa fareler peynirsiz evrimleşti; doğada tohum, tahıl ve böcek yerler.",
+    "visual": "a field mouse eating seeds among grass stems",
+    "stock_query": "rodent grass",
+    "source": "stock",
+    "callout": "TOHUM VE TAHIL"
+   },
+   {
+    "text": "Haşere uzmanları bu yüzden kapana çoğu zaman fıstık ezmesi koyuyor.",
+    "visual": "close-up of a spoon of peanut butter",
+    "stock_query": "peanut butter",
+    "source": "stock",
+    "callout": "FISTIK EZMESİ",
+    "subject": [
+     "peanut"
+    ]
+   },
+   {
+    "text": "Kapanına peynir koymadan önce hatırla:",
+    "visual": "a curious mouse looking straight at the camera",
+    "stock_query": "rodent face",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "'Bedava peynir sadece fare kapanında olur' deriz, ama peynir farelerin en sevdiği yiyecek değil. Fareler peynirsiz evrimleşti; doğada tohum, tahıl ve böcek yerler ve haşere uzmanları kapana çoğu zaman fıstık ezmesi koyar. Farenin peynir sevdiği inancı en az iki bin yıllık: Romalı düşünür Seneca bile bundan söz etmiş.",
+  "tags": [
+   "fare",
+   "fareler peynir sever mi",
+   "bedava peynir",
+   "fare kapanı",
+   "fare kapanına ne konur",
+   "fıstık ezmesi",
+   "deyimler",
+   "hayvanlar",
+   "yanlış bilinen gerçekler",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sence fare kapanına hangisi daha iyi yem: peynir mi, fıstık ezmesi mi?",
+  "en_title": "The cheese in a mousetrap isn't a mouse's favorite food 🐭",
+  "en_description": "We say free cheese is only found in a mousetrap, but cheese isn't a mouse's favorite food. Mice evolved eating seeds, grains and insects, and pest controllers usually bait traps with peanut butter instead. The cheese myth is at least 2,000 years old: the Roman writer Seneca already wrote that 'a mouse eats cheese'.",
+  "mood": "eğlenceli"
+ },
+ "seo": {
+  "description": "Fareler gerçekten peynir sever mi, fare kapanına peynir mi konur?\n\nPeynir farelerin gözdesi değil. Drexel Üniversitesi'nden ev faresi uzmanı evrim biyoloğu Megan Phifer-Rixey, Live Science'a farelerin önlerine ne çıkarsa yediğini ama peynirin favori yiyecekleri olmadığını anlatıyor; ev fareleri tahıl, böcek ve çöp yer, en çok da güçlü kokulu, yağlı ve proteinli fıstık ezmesine gelir. Haşere uzmanlarının çoğu kapana bu yüzden fıstık ezmesi koymayı öneriyor. Manchester Metropolitan Üniversitesi'nden hayvan davranışı uzmanı David Holmes'a göre fareler neredeyse tamamen peynirsiz ya da ona benzer bir şey olmadan evrimleşti. İnanç ise eski: MS birinci yüzyılda Romalı düşünür Seneca bir mektubunda 'fare peynir yer' diye yazmıştı. 'Bedava peynir sadece fare kapanında olur' sözü de bu inançtan besleniyor.\n\nSence fare kapanına hangisi daha iyi yem: peynir mi, fıstık ezmesi mi?",
+  "hashtags": [
+   "#fare",
+   "#deyimler",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "fare",
+   "fareler",
+   "fareler peynir sever mi",
+   "fare peynir",
+   "bedava peynir",
+   "bedava peynir fare kapanı",
+   "fare kapanı",
+   "fare kapanına ne konur",
+   "fare yemi",
+   "fare neyi sever",
+   "fareler ne yer",
+   "fıstık ezmesi",
+   "ev faresi",
+   "kemirgenler",
+   "deyimler",
+   "deyimlerin anlamı",
+   "atasözleri",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "do mice like cheese",
+   "mousetrap bait"
+  ],
+  "localizations": {
+   "en": {
+    "title": "The cheese in a mousetrap isn't a mouse's favorite food 🐭",
+    "description": "We say free cheese is only found in a mousetrap, but cheese isn't a mouse's favorite food. Mice evolved eating seeds, grains and insects, and pest controllers usually bait traps with peanut butter instead. The cheese myth is at least 2,000 years old: the Roman writer Seneca already wrote that 'a mouse eats cheese'."
+   },
+   "es": {
+    "title": "El queso de la ratonera no es la comida favorita del ratón 🐭",
+    "description": "Decimos que el queso gratis solo está en la ratonera, pero el queso no es lo que más le gusta a un ratón. Los ratones evolucionaron comiendo semillas, granos e insectos, y los exterminadores suelen usar mantequilla de cacahuete como cebo. El mito tiene al menos 2000 años: el filósofo romano Séneca ya escribió que «el ratón come queso»."
+   },
+   "pt": {
+    "title": "O queijo da ratoeira não é a comida favorita do rato 🐭",
+    "description": "Dizem que queijo de graça só existe na ratoeira, mas queijo não é o alimento preferido dos ratos. Eles evoluíram comendo sementes, grãos e insetos, e os dedetizadores costumam usar pasta de amendoim como isca. O mito tem pelo menos 2.000 anos: o filósofo romano Sêneca já escreveu que 'o rato come queijo'."
+   },
+   "de": {
+    "title": "Käse in der Mausefalle ist nicht das Lieblingsessen der Maus 🐭",
+    "description": "Wir sagen, Käse gibt es nur in der Mausefalle umsonst – doch Käse ist gar nicht das Lieblingsfutter von Mäusen. Sie haben sich mit Samen, Getreide und Insekten entwickelt, und Schädlingsbekämpfer ködern Fallen meist mit Erdnussbutter. Der Mythos ist mindestens 2.000 Jahre alt: Schon der römische Philosoph Seneca schrieb, dass eine Maus Käse frisst."
+   },
+   "fr": {
+    "title": "Le fromage du piège n'est pas le plat préféré de la souris 🐭",
+    "description": "On dit que le fromage gratuit ne se trouve que dans la tapette, mais le fromage n'est pas l'aliment préféré des souris. Elles ont évolué en mangeant des graines, des céréales et des insectes, et les dératiseurs appâtent plutôt avec du beurre de cacahuète. Le mythe a au moins 2 000 ans : le philosophe romain Sénèque écrivait déjà qu'« une souris mange du fromage »."
+   },
+   "it": {
+    "title": "Il formaggio nella trappola non è il cibo preferito del topo 🐭",
+    "description": "Diciamo che il formaggio gratis si trova solo nella trappola per topi, ma il formaggio non è il cibo preferito dei topi. Si sono evoluti mangiando semi, cereali e insetti, e i disinfestatori usano di solito il burro di arachidi come esca. Il mito ha almeno 2.000 anni: già il filosofo romano Seneca scriveva che «il topo mangia il formaggio»."
+   },
+   "ru": {
+    "title": "Сыр в мышеловке — вовсе не любимая еда мыши 🐭",
+    "description": "Мы говорим, что бесплатный сыр бывает только в мышеловке, но сыр — не любимая еда мышей. Они эволюционировали, питаясь семенами, зерном и насекомыми, а специалисты по борьбе с грызунами чаще кладут в ловушку арахисовую пасту. Мифу не меньше 2000 лет: ещё римский философ Сенека писал, что «мышь ест сыр»."
+   },
+   "ar": {
+    "title": "الجبن في مصيدة الفئران ليس طعام الفأر المفضل 🐭",
+    "description": "يُقال إن الجبن المجاني لا يوجد إلا في مصيدة الفئران، لكن الجبن ليس الطعام المفضل للفئران. فقد تطورت وهي تأكل البذور والحبوب والحشرات، ويفضّل خبراء مكافحة الآفات وضع زبدة الفول السوداني طُعمًا. وعمر هذه الخرافة ألفا عام على الأقل: فقد كتب الفيلسوف الروماني سينيكا أن «الفأر يأكل الجبن»."
+   },
+   "hi": {
+    "title": "चूहेदानी में रखा चीज़ चूहे का पसंदीदा खाना नहीं 🐭",
+    "description": "कहा जाता है कि मुफ़्त चीज़ सिर्फ़ चूहेदानी में मिलता है, लेकिन चीज़ चूहों का पसंदीदा खाना नहीं है। चूहे बीज, अनाज और कीड़े खाते हुए विकसित हुए, और कीट नियंत्रण विशेषज्ञ आमतौर पर पीनट बटर को चारा बनाते हैं। यह मिथक कम से कम 2,000 साल पुराना है: रोमन दार्शनिक सेनेका ने लिखा था कि 'चूहा चीज़ खाता है'।"
+   },
+   "id": {
+    "title": "Keju di perangkap tikus bukan makanan favorit tikus 🐭",
+    "description": "Ada pepatah bahwa keju gratis hanya ada di perangkap tikus, padahal keju bukan makanan favorit tikus. Tikus berevolusi dengan memakan biji-bijian, serealia, dan serangga, dan pembasmi hama biasanya memakai selai kacang sebagai umpan. Mitos ini setidaknya berusia 2.000 tahun: filsuf Romawi Seneca sudah menulis bahwa 'tikus makan keju'."
+   },
+   "ja": {
+    "title": "ネズミ捕りのチーズはネズミの大好物ではない 🐭",
+    "description": "「タダのチーズはネズミ捕りの中にしかない」と言われますが、チーズはネズミの好物ではありません。ネズミは種や穀物、昆虫を食べて進化してきたため、駆除業者はたいていピーナッツバターをエサに使います。この俗説は少なくとも2000年前からあり、ローマの哲学者セネカも「ネズミはチーズを食べる」と書いています。"
+   },
+   "ko": {
+    "title": "쥐덫 속 치즈는 쥐가 가장 좋아하는 먹이가 아니다 🐭",
+    "description": "공짜 치즈는 쥐덫에만 있다는 말이 있지만, 치즈는 쥐가 가장 좋아하는 먹이가 아닙니다. 쥐는 씨앗과 곡물, 곤충을 먹으며 진화했고, 방역 전문가들은 보통 땅콩버터를 미끼로 씁니다. 이 속설은 적어도 2,000년이 되었는데, 로마 철학자 세네카도 '쥐는 치즈를 먹는다'고 썼습니다."
+   },
+   "pl": {
+    "title": "Ser w pułapce to wcale nie ulubiony przysmak myszy 🐭",
+    "description": "Mówimy, że darmowy ser jest tylko w pułapce na myszy, ale ser nie jest ulubionym jedzeniem myszy. Ewoluowały, jedząc nasiona, zboże i owady, a specjaliści od deratyzacji zwykle używają masła orzechowego jako przynęty. Mit ma co najmniej 2000 lat: już rzymski filozof Seneka pisał, że „mysz je ser”."
+   },
+   "nl": {
+    "title": "De kaas in de muizenval is niet het lievelingseten van een muis 🐭",
+    "description": "We zeggen dat gratis kaas alleen in de muizenval ligt, maar kaas is niet het favoriete voedsel van muizen. Ze zijn geëvolueerd op zaden, granen en insecten, en ongediertebestrijders gebruiken meestal pindakaas als lokaas. De mythe is minstens 2000 jaar oud: de Romeinse filosoof Seneca schreef al dat een muis kaas eet."
+   },
+   "uk": {
+    "title": "Сир у мишоловці — зовсім не улюблена їжа миші 🐭",
+    "description": "Кажуть, що безкоштовний сир буває лише в мишоловці, але сир — не улюблена їжа мишей. Вони еволюціонували, харчуючись насінням, зерном і комахами, а фахівці з дератизації зазвичай кладуть у пастку арахісову пасту. Цьому міфу щонайменше 2000 років: ще римський філософ Сенека писав, що «миша їсть сир»."
+   },
+   "vi": {
+    "title": "Miếng phô mai trong bẫy chuột không phải món khoái khẩu của chuột 🐭",
+    "description": "Người ta nói phô mai miễn phí chỉ có trong bẫy chuột, nhưng phô mai không phải món chuột thích nhất. Chuột tiến hóa nhờ ăn hạt, ngũ cốc và côn trùng, và thợ diệt chuột thường dùng bơ đậu phộng làm mồi. Lầm tưởng này đã có ít nhất 2.000 năm: triết gia La Mã Seneca từng viết rằng 'chuột ăn phô mai'."
+   },
+   "az": {
+    "title": "Siçan tələsindəki pendir siçanın sevimli yeməyi deyil 🐭",
+    "description": "Pulsuz pendir yalnız siçan tələsində olur deyirik, amma pendir siçanların ən sevdiyi yemək deyil. Siçanlar toxum, taxıl və həşərat yeyərək təkamül keçiriblər, zərərvericilərlə mübarizə mütəxəssisləri isə tələyə adətən fıstıq yağı qoyurlar. Bu mif ən azı 2000 il yaşındadır: Roma filosofu Seneka hələ o vaxt 'siçan pendir yeyir' deyə yazmışdı."
+   },
+   "ro": {
+    "title": "Brânza din capcană nu e mâncarea preferată a șoarecelui 🐭",
+    "description": "Spunem că brânza gratis se găsește doar în capcana de șoareci, dar brânza nu e hrana preferată a șoarecilor. Au evoluat mâncând semințe, cereale și insecte, iar specialiștii în deratizare folosesc de obicei unt de arahide ca momeală. Mitul are cel puțin 2.000 de ani: filozoful roman Seneca scria deja că „șoarecele mănâncă brânză”."
+   }
+  }
+ }
+}

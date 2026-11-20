@@ -1,0 +1,182 @@
+{
+ "id": "mk-c0200",
+ "topic": "Kartal 40 yaşında gagasını kırıp yenilenir mi? Kartalın yeniden doğuşu hikâyesi gerçek mi, kartal kaç yıl yaşar?",
+ "kategori": "hayvan",
+ "subject": [
+  "eagle"
+ ],
+ "stock_hint": "eagle close up",
+ "script": {
+  "title": "Kırk yaşında gagasını kıran kartal hikâyesi gerçek değil 🦅",
+  "hook_text": "KARTAL GAGASINI KIRAR MI?",
+  "scenes": [
+   {
+    "text": "Bu kartal kırk yaşında gagasını kırıp yenilenmez.",
+    "visual": "extreme close-up of an eagle's head and hooked beak, looking into the camera",
+    "stock_query": "eagle close up",
+    "source": "stock",
+    "callout": "GAGASINI KIRMAZ"
+   },
+   {
+    "text": "Hikâyeyi bilirsin: yetmiş yıl yaşamak için gagasını kayaya vurup koparır.",
+    "visual": "an eagle perched on a rocky mountain cliff",
+    "stock_query": "eagle rock",
+    "source": "stock",
+    "callout": "70 YIL?"
+   },
+   {
+    "text": "Oysa bilinen en yaşlı yabani ak başlı kartal otuz sekiz yaşındaydı.",
+    "visual": "a bald eagle perched on a branch, turning its head",
+    "stock_query": "bald eagle",
+    "source": "stock",
+    "callout": "EN YAŞLISI 38"
+   },
+   {
+    "text": "Çünkü gagası tırnağın gibi keratindir; hep uzar, kartal onu yerken aşındırır.",
+    "visual": "close-up of an eagle's beak tearing food",
+    "stock_query": "eagle beak",
+    "source": "stock",
+    "callout": "TIRNAK GİBİ UZAR"
+   },
+   {
+    "text": "Gagasını koparan kartal avını parçalayamaz, açlıktan ölür.",
+    "visual": "an eagle feeding on prey on the ground",
+    "stock_query": "eagle eating",
+    "source": "stock",
+    "callout": "GAGASIZ YAŞAYAMAZ"
+   },
+   {
+    "text": "Bu hikâyeyi bir daha paylaşmadan önce hatırla:",
+    "visual": "an eagle's face slowly turning toward the camera",
+    "stock_query": "eagle head",
+    "source": "stock",
+    "callout": ""
+   }
+  ],
+  "description": "Kartalın kırk yaşında gagasını kayaya vurup kırdığı ve yenilenip yetmiş yıl yaşadığı hikâyesi bir efsane. Bilinen en yaşlı yabani ak başlı kartal otuz sekiz yaşındaydı. Kartalın gagası tırnak gibi keratindir, ömür boyu uzar ve yemek yerken aşınır; gagasını kaybeden yırtıcı kuş avını parçalayamaz ve açlıktan ölür.",
+  "tags": [
+   "kartal",
+   "kartalın yeniden doğuşu",
+   "kartal gagasını kırar mı",
+   "kartal kaç yıl yaşar",
+   "kartal hikayesi",
+   "gaga",
+   "kuşlar",
+   "hayvanlar",
+   "yanlış bilinen gerçekler",
+   "ilginç bilgiler"
+  ],
+  "pinned_comment": "Sen bu kartal hikâyesini daha önce duymuş muydun: evet mi, hayır mı?",
+  "en_title": "The eagle that breaks its beak at 40 to be reborn is a myth 🦅",
+  "en_description": "The viral story says eagles live 70 years by smashing their beaks on rocks at 40. In reality, the oldest known wild bald eagle was 38. An eagle's beak is keratin like your fingernails: it keeps growing and wears down as the bird eats, and an eagle without a beak couldn't tear its prey and would starve.",
+  "mood": "belgesel"
+ },
+ "seo": {
+  "description": "Kartal 40 yaşında gagasını kırıp yenilenir mi, kartalın yeniden doğuşu hikâyesi gerçek mi?\n\nHayır, sosyal medyada dolaşan bu motivasyon hikâyesi bir efsane. Cornell Üniversitesi Ornitoloji Laboratuvarı'nın All About Birds rehberine göre bilinen en yaşlı yabani ak başlı kartal en az 38 yaşındaydı ve 2015'te New York'ta bir arabanın çarpmasıyla öldü; yabani kartallar genellikle 30 yıl civarında yaşar. Kartalın gagası tırnaklarımız gibi keratinden yapılır; Lafeber'in yırtıcı kuş anatomisi rehberine göre bu kılıf sürekli uzar ve doğada kuş beslenirken kendiliğinden aşınır. Gagasını kaybeden yırtıcı bir kuş avını parçalayamaz; doğada bu kesin ölüm demektir. Kartal tüylerini de yolmaz: yılda bir tüy değiştirir ve uçabilmek için kanat tüylerini teker teker döker.\n\nSen bu kartal hikâyesini daha önce duymuş muydun: evet mi, hayır mı?",
+  "hashtags": [
+   "#kartal",
+   "#kuşlar",
+   "#hayvanlar",
+   "#ilginçbilgiler"
+  ],
+  "tags": [
+   "kartal",
+   "kartalın yeniden doğuşu",
+   "kartal hikayesi",
+   "kartal 40 yaşında",
+   "kartal gagasını kırar mı",
+   "kartal gagasını kırıyor",
+   "kartal kaç yıl yaşar",
+   "kartal ömrü",
+   "ak başlı kartal",
+   "kartal gagası",
+   "gaga",
+   "yırtıcı kuşlar",
+   "kuşlar",
+   "motivasyon hikayesi",
+   "efsane mi gerçek mi",
+   "yanlış bilinen gerçekler",
+   "hayvanlar",
+   "doğa",
+   "ilginç bilgiler",
+   "bilmediğin gerçekler",
+   "bilim",
+   "eagle rebirth myth",
+   "eagle beak"
+  ],
+  "localizations": {
+   "en": {
+    "title": "The eagle that breaks its beak at 40 to be reborn is a myth 🦅",
+    "description": "The viral story says eagles live 70 years by smashing their beaks on rocks at 40. In reality, the oldest known wild bald eagle was 38. An eagle's beak is keratin like your fingernails: it keeps growing and wears down as the bird eats, and an eagle without a beak couldn't tear its prey and would starve."
+   },
+   "es": {
+    "title": "El águila que se rompe el pico a los 40 para renacer es un mito 🦅",
+    "description": "La historia viral dice que el águila vive 70 años porque a los 40 se golpea el pico contra las rocas. En realidad, el águila calva salvaje más longeva conocida tenía 38 años. Su pico es de queratina, como tus uñas: crece sin parar y se desgasta al comer, y un águila sin pico no podría despedazar su presa y moriría de hambre."
+   },
+   "pt": {
+    "title": "A águia que quebra o bico aos 40 para renascer é um mito 🦅",
+    "description": "A história viral diz que a águia vive 70 anos porque aos 40 bate o bico nas rochas. Na verdade, a águia-de-cabeça-branca selvagem mais velha conhecida tinha 38 anos. O bico é de queratina, como as suas unhas: cresce sem parar e se desgasta quando ela come, e uma águia sem bico não conseguiria rasgar a presa e morreria de fome."
+   },
+   "de": {
+    "title": "Der Adler, der sich mit 40 den Schnabel bricht, ist ein Mythos 🦅",
+    "description": "Die virale Geschichte erzählt, Adler würden 70 Jahre alt, weil sie sich mit 40 den Schnabel am Felsen abschlagen. Tatsächlich war der älteste bekannte wilde Weißkopfseeadler 38. Der Schnabel besteht aus Keratin wie deine Fingernägel, wächst ständig nach und nutzt sich beim Fressen ab – ohne Schnabel könnte ein Adler seine Beute nicht zerreißen und würde verhungern."
+   },
+   "fr": {
+    "title": "L'aigle qui se brise le bec à 40 ans pour renaître est un mythe 🦅",
+    "description": "L'histoire virale raconte que l'aigle vit 70 ans en se brisant le bec sur un rocher à 40 ans. En réalité, le plus vieux pygargue à tête blanche sauvage connu avait 38 ans. Son bec est en kératine, comme tes ongles : il pousse sans arrêt et s'use quand il mange, et un aigle sans bec ne pourrait plus déchiqueter ses proies et mourrait de faim."
+   },
+   "it": {
+    "title": "L'aquila che si rompe il becco a 40 anni per rinascere è un mito 🦅",
+    "description": "La storia virale dice che l'aquila vive 70 anni perché a 40 si spezza il becco contro le rocce. In realtà l'aquila di mare testabianca selvatica più vecchia conosciuta aveva 38 anni. Il becco è di cheratina come le tue unghie: cresce di continuo e si consuma mentre mangia, e un'aquila senza becco non potrebbe sbranare la preda e morirebbe di fame."
+   },
+   "ru": {
+    "title": "Орёл, который в 40 лет ломает клюв ради новой жизни, — миф 🦅",
+    "description": "Вирусная притча гласит, что орёл живёт 70 лет, потому что в 40 разбивает клюв о скалу. На деле самому старому известному дикому белоголовому орлану было 38 лет. Клюв состоит из кератина, как ваши ногти: он растёт всю жизнь и стачивается, когда птица ест, а без клюва орёл не смог бы разрывать добычу и умер бы от голода."
+   },
+   "ar": {
+    "title": "النسر الذي يكسر منقاره في الأربعين ليولد من جديد مجرد خرافة 🦅",
+    "description": "تقول القصة المنتشرة إن النسر يعيش 70 عامًا لأنه يضرب منقاره بالصخر في سن الأربعين. لكن أكبر عُقاب أصلع بري معروف كان عمره 38 عامًا. منقار النسر مصنوع من الكيراتين مثل أظافرك، ينمو باستمرار ويتآكل وهو يأكل، والنسر بلا منقار لا يستطيع تمزيق فريسته وسيموت جوعًا."
+   },
+   "hi": {
+    "title": "40 की उम्र में चोंच तोड़कर नया जन्म लेने वाले बाज़ की कहानी झूठी है 🦅",
+    "description": "वायरल कहानी कहती है कि बाज़ 70 साल जीता है, क्योंकि 40 की उम्र में वह अपनी चोंच चट्टान पर मारकर तोड़ देता है। असल में सबसे बुज़ुर्ग ज्ञात जंगली बाल्ड ईगल 38 साल का था। उसकी चोंच आपके नाखूनों की तरह केराटिन की बनी होती है, जो लगातार बढ़ती और खाते समय घिसती रहती है; चोंच के बिना वह शिकार नहीं फाड़ सकता और भूख से मर जाता।"
+   },
+   "id": {
+    "title": "Kisah elang yang mematahkan paruhnya di usia 40 hanyalah mitos 🦅",
+    "description": "Kisah viral menyebut elang hidup 70 tahun karena di usia 40 ia mematahkan paruhnya ke batu. Faktanya, elang botak liar tertua yang diketahui berusia 38 tahun. Paruh elang terbuat dari keratin seperti kukumu: terus tumbuh dan terkikis saat makan, dan elang tanpa paruh tak bisa mencabik mangsanya sehingga akan mati kelaparan."
+   },
+   "ja": {
+    "title": "40歳でくちばしを折って生まれ変わるワシの話は作り話 🦅",
+    "description": "ワシは40歳でくちばしを岩に打ちつけて折り、70年生きるという話がネットで広まっています。実際には、知られている中で最も長生きした野生のハクトウワシは38歳でした。くちばしは爪と同じケラチンでできていて一生伸び続け、食事のたびにすり減ります。くちばしを失ったワシは獲物を裂けず、飢え死にしてしまいます。"
+   },
+   "ko": {
+    "title": "40살에 부리를 깨고 다시 태어나는 독수리 이야기는 거짓 🦅",
+    "description": "독수리가 40살에 바위에 부리를 쳐서 깨뜨리고 70년을 산다는 이야기가 퍼져 있습니다. 실제로 알려진 가장 나이 많은 야생 흰머리수리는 38살이었습니다. 부리는 손톱처럼 케라틴으로 되어 있어 평생 자라고 먹이를 먹으며 닳습니다. 부리가 없는 독수리는 먹이를 찢지 못해 굶어 죽습니다."
+   },
+   "pl": {
+    "title": "Orzeł, który w wieku 40 lat łamie dziób, by się odrodzić, to mit 🦅",
+    "description": "Popularna historia mówi, że orzeł żyje 70 lat, bo w wieku 40 lat rozbija dziób o skałę. W rzeczywistości najstarszy znany dziki bielik amerykański miał 38 lat. Dziób jest z keratyny jak twoje paznokcie: rośnie przez całe życie i ściera się podczas jedzenia, a orzeł bez dzioba nie rozszarpałby zdobyczy i umarłby z głodu."
+   },
+   "nl": {
+    "title": "De adelaar die op zijn 40e zijn snavel breekt, is een fabel 🦅",
+    "description": "Het virale verhaal zegt dat een adelaar 70 wordt omdat hij op zijn 40e zijn snavel op een rots kapotslaat. In werkelijkheid was de oudst bekende wilde Amerikaanse zeearend 38 jaar. Een snavel is van keratine, net als je nagels: hij groeit altijd door en slijt tijdens het eten, en zonder snavel kan een adelaar zijn prooi niet verscheuren en verhongert hij."
+   },
+   "uk": {
+    "title": "Орел, що в 40 років ламає дзьоб, щоб відродитися, — міф 🦅",
+    "description": "Вірусна притча каже, що орел живе 70 років, бо в 40 розбиває дзьоб об скелю. Насправді найстаршому відомому дикому білоголовому орлану було 38 років. Дзьоб складається з кератину, як ваші нігті: він росте все життя і стирається, коли птах їсть, а без дзьоба орел не зміг би роздирати здобич і помер би з голоду."
+   },
+   "vi": {
+    "title": "Chuyện đại bàng tự bẻ mỏ ở tuổi 40 để tái sinh là chuyện bịa 🦅",
+    "description": "Câu chuyện lan truyền nói đại bàng sống 70 năm vì đến tuổi 40 nó tự đập mỏ vào đá. Thực tế, con đại bàng đầu trắng hoang dã già nhất từng được biết chỉ 38 tuổi. Mỏ đại bàng làm bằng keratin giống móng tay bạn, mọc suốt đời và mòn dần khi ăn; mất mỏ, đại bàng không thể xé mồi và sẽ chết đói."
+   },
+   "az": {
+    "title": "40 yaşında dimdiyini qırıb yenidən doğulan qartal hekayəsi mifdir 🦅",
+    "description": "Yayılan hekayəyə görə qartal 40 yaşında dimdiyini qayaya çırpıb qırır və 70 il yaşayır. Əslində məlum olan ən yaşlı vəhşi ağbaş dəniz qartalı 38 yaşında idi. Qartalın dimdiyi dırnaqların kimi keratindən ibarətdir: daim uzanır və yemək yeyərkən yeyilir; dimdiksiz qartal ovunu parçalaya bilməz və aclıqdan ölər."
+   },
+   "ro": {
+    "title": "Vulturul care își rupe ciocul la 40 de ani ca să renască e un mit 🦅",
+    "description": "Povestea virală spune că vulturul trăiește 70 de ani pentru că la 40 își izbește ciocul de stâncă. În realitate, cel mai bătrân vultur cu cap alb sălbatic cunoscut avea 38 de ani. Ciocul e din cheratină, ca unghiile tale: crește continuu și se tocește când mănâncă, iar fără cioc un vultur nu și-ar putea sfâșia prada și ar muri de foame."
+   }
+  }
+ }
+}
