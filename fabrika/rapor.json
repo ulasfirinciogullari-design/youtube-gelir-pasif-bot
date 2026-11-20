@@ -1,74 +1,21 @@
 {
- "started": "2026-11-20T10:07:08+00:00",
- "mod": "saatlik",
- "gate": "saat boş",
+ "started": "2026-11-20T13:07:49+00:00",
+ "mod": "igbolum",
+ "gate": "instagram: n012",
  "tarayici": "playwright ubuntu24.04-x64",
- "channel": {
-  "id": "UCFGTEF-fXFWNOJnunGWyYEg",
-  "title": "Ya Olsaydı?",
-  "handle": "@yaolsaydibilim",
-  "subscribers": "71",
-  "videos": "98"
+ "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+ "chars": 414,
+ "instagram": {
+  "anahtar_bitis": "2027-01-15T09:07+00:00",
+  "media_id": "18128498761903118",
+  "url": "https://www.instagram.com/reel/Df9uoDsjKJk/",
+  "at": 1795180178.139868
  },
- "credits_before": [
-  106307,
-  613902
- ],
- "kuyruk": {
-  "dosya": "20261117-1-y025.json",
-  "kalan": 3
- },
- "topic": {
-  "id": "y025",
-  "series": "Ya Olsaydı?",
-  "q": "Dünya'nın ekseni hiç eğik olmasaydı ne olurdu?"
- },
- "yazar": "Claude (kuyruk)",
- "chars": 1272,
- "duration": 98.1,
- "title": "Dünya'nın Ekseni Eğik Olmasaydı Ne Olurdu? (Simit de Gidiyor!)",
- "url": "https://youtube.com/shorts/Jf7-TGNBR4Y",
- "recent_status": {
-  "y044": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "898",
-   "reason": null
-  },
-  "y047": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "47",
-   "reason": null
-  },
-  "y048": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "45",
-   "reason": null
-  },
-  "n022": {
-   "upload": "processed",
-   "privacy": "public",
-   "views": "115",
-   "reason": null
-  },
-  "y025": {
-   "upload": "uploaded",
-   "privacy": "public",
-   "views": "0",
-   "reason": null
-  }
- },
- "credits_after": [
-  106307,
-  613902
- ],
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
  "log": [
-  "Kuyruktan: 20261117-1-y025.json Dünya'nın ekseni hiç eğik olmasaydı ne olurdu? (Ya Olsaydı?)"
+  "Instagram: https://www.instagram.com/reel/Df9uoDsjKJk/"
  ],
- "finished": "2026-11-20T10:10:05+00:00"
+ "finished": "2026-11-20T13:09:38+00:00"
 }

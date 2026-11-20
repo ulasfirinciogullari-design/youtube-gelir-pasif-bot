@@ -3135,14 +3135,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-11T20:08:10+00:00",
-   "mod": "saatlik",
-   "title": "Uyurken Ağzına Örümcek Girseydi Ne Olurdu?",
-   "url": "https://youtube.com/shorts/xLGCGQYwSmE",
-   "duration": 24.6,
-   "chars": 376
-  },
-  {
    "finished": "2026-11-12T09:09:42+00:00",
    "mod": "igbolum",
    "title": "Hapşırığını Tutsaydın Ne Olurdu?",
@@ -3550,6 +3542,12 @@
    "url": "https://youtube.com/shorts/Jf7-TGNBR4Y",
    "duration": 98.1,
    "chars": 1272
+  },
+  {
+   "finished": "2026-11-20T13:09:38+00:00",
+   "mod": "igbolum",
+   "title": "DNA'n Gerçekte Ne Kadar Uzun?",
+   "chars": 414
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3944,6 +3942,11 @@
     "media_id": "18007366107033606",
     "url": "https://www.instagram.com/reel/Df9TKdFAnKr/",
     "at": 1795165782.1641157
+   },
+   "n012": {
+    "media_id": "18128498761903118",
+    "url": "https://www.instagram.com/reel/Df9uoDsjKJk/",
+    "at": 1795180178.139868
    }
   },
   "eski": [
@@ -3966,5 +3969,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795169405.2486262
+ "yedek_ses": 1795180178.1399262
 }
