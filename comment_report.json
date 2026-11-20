@@ -1,22 +1,22 @@
 {
- "started": "2026-11-18T20:45:19+00:00",
+ "started": "2026-11-20T11:45:13+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 2,
+ "sent_last_24h": 0,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "UgxfWD5RbtbtM80Yp1F4AaABAg",
+   "id": "UgyGaSt5LpQLu9YKvkl4AaABAg",
    "kind": "comment",
-   "video": "2_VEAO-Gz0E",
-   "comment": "❤❤❤❤❤❤❤❤❤❤❤",
-   "reply": "Çok teşekkürler! ❤️",
+   "video": "CXH97LY2T-4",
+   "comment": "Yatak",
+   "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir.",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-18T20:45:23+00:00"
+ "finished": "2026-11-20T11:45:18+00:00"
 }

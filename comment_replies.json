@@ -370,6 +370,12 @@
    "r",
    "UgxfWD5RbtbtM80Yp1F4AaABAg.AdMqzU-mTN3AdMu7qAlN4A",
    "UC510COS09OHI_XhK6syq_eQ"
+  ],
+  "UgyGaSt5LpQLu9YKvkl4AaABAg": [
+   1795175113,
+   "r",
+   "UgyGaSt5LpQLu9YKvkl4AaABAg.AdR1AF9L3OmAdR4uqrxbBU",
+   "UChnIynkXBBJwbxL1DnBLUeQ"
   ]
  },
  "tracked": {
@@ -510,6 +516,11 @@
    "at": 1795034719,
    "n": 1,
    "reply": "Çok teşekkürler! ❤️"
+  },
+  "UgyGaSt5LpQLu9YKvkl4AaABAg": {
+   "at": 1795175113,
+   "n": 1,
+   "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir."
   }
  },
  "channel": {
@@ -517,12 +528,6 @@
   "handle": "zirveninkanunu"
  },
  "recent": [
-  {
-   "at": 1793634319,
-   "video": "7xjRSwfX83E",
-   "comment": "ne demek❤",
-   "reply": "@SerapYorğun-n6d Rica ederiz, asıl biz teşekkür ederiz! 😊"
-  },
   {
    "at": 1793803514,
    "video": "LK9xEF2uL_o",
@@ -756,6 +761,12 @@
    "video": "2_VEAO-Gz0E",
    "comment": "❤❤❤❤❤❤❤❤❤❤❤",
    "reply": "Çok teşekkürler! ❤️"
+  },
+  {
+   "at": 1795175113,
+   "video": "CXH97LY2T-4",
+   "comment": "Yatak",
+   "reply": "Yatak mı? 🤔 Kediler tırnaklarını törpülerken aynı zamanda patilerindeki koku bezleriyle bölgelerini işaretlerler, o yüzden yatağı seçmiş olabilir."
   }
  ]
 }
