@@ -2431,7 +2431,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1013",
+    "views": "1015",
     "reason": null
    }
   },
@@ -2555,7 +2555,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "175",
+    "views": "178",
     "reason": null
    }
   },
@@ -2586,7 +2586,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "1075",
+    "views": "1076",
     "reason": null
    }
   },
@@ -2616,7 +2616,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "865",
+    "views": "868",
     "reason": null
    }
   },
@@ -2772,7 +2772,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "972",
+    "views": "981",
     "reason": null
    }
   },
@@ -2804,7 +2804,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "242",
+    "views": "243",
     "reason": null
    }
   },
@@ -2836,7 +2836,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "898",
+    "views": "900",
     "reason": null
    }
   },
@@ -2868,7 +2868,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "47",
+    "views": "53",
     "reason": null
    }
   },
@@ -2900,7 +2900,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "45",
+    "views": "55",
     "reason": null
    }
   },
@@ -2932,7 +2932,7 @@
    "status": {
     "upload": "processed",
     "privacy": "public",
-    "views": "115",
+    "views": "168",
     "reason": null
    }
   },
@@ -2959,6 +2959,39 @@
    "thumbnail": true,
    "at": 1795169403.4005728,
    "chars": 1272,
+   "ilk": null,
+   "hikaye": true,
+   "yedek_ses": true,
+   "status": {
+    "upload": "processed",
+    "privacy": "public",
+    "views": "3",
+    "reason": null
+   }
+  },
+  {
+   "id": "y049",
+   "video_id": "_ZGLGg08Flc",
+   "url": "https://youtube.com/shorts/_ZGLGg08Flc",
+   "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
+   "series": "Ya Olsaydı?",
+   "privacy": "public",
+   "i18n": {
+    "en": "What If There Were No Night? (Night Went on Strike!)",
+    "es": "¿Y si no existiera la noche? (¡La Noche se puso en huelga!)",
+    "pt": "E se a noite não existisse? (A Noite entrou em greve!)",
+    "ar": "ماذا لو لم يكن هناك ليل؟ (الليل أعلن الإضراب!)",
+    "hi": "अगर रात होती ही नहीं तो क्या होता? (रात हड़ताल पर चली गई!)",
+    "id": "Bagaimana Jika Malam Tidak Pernah Ada? (Malam Mogok Kerja!)",
+    "fr": "Et si la nuit n'existait pas ? (La Nuit fait grève !)",
+    "de": "Was wäre, wenn es keine Nacht gäbe? (Die Nacht streikt!)",
+    "ru": "Что если бы ночи не было? (Ночь объявила забастовку!)",
+    "az": "Gecə heç olmasaydı nə olardı? (Gecə tətilə çıxdı!)"
+   },
+   "playlist": true,
+   "thumbnail": true,
+   "at": 1795183917.3826847,
+   "chars": 1323,
    "ilk": null,
    "hikaye": true,
    "yedek_ses": true,
@@ -3068,7 +3101,8 @@
   "y047",
   "y048",
   "n022",
-  "y025"
+  "y025",
+  "y049"
  ],
  "extra": [
   {
@@ -3134,12 +3168,6 @@
  ],
  "fail_streak": 0,
  "runs": [
-  {
-   "finished": "2026-11-12T09:09:42+00:00",
-   "mod": "igbolum",
-   "title": "Hapşırığını Tutsaydın Ne Olurdu?",
-   "chars": 370
-  },
   {
    "finished": "2026-11-12T10:08:35+00:00",
    "mod": "saatlik",
@@ -3548,6 +3576,14 @@
    "mod": "igbolum",
    "title": "DNA'n Gerçekte Ne Kadar Uzun?",
    "chars": 414
+  },
+  {
+   "finished": "2026-11-20T14:11:59+00:00",
+   "mod": "saatlik",
+   "title": "Gece Hiç Olmasaydı Ne Olurdu? (Gece Greve Çıktı!)",
+   "url": "https://youtube.com/shorts/_ZGLGg08Flc",
+   "duration": 98.8,
+   "chars": 1323
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3969,5 +4005,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795180178.1399262
+ "yedek_ses": 1795183919.1655648
 }
