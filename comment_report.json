@@ -1,22 +1,22 @@
 {
- "started": "2026-11-20T14:45:21+00:00",
+ "started": "2026-11-20T19:45:18+00:00",
  "deneme": false,
  "threads": 200,
  "reply_threads_read": 0,
  "new": 1,
  "quiet": 0,
- "sent_last_24h": 1,
+ "sent_last_24h": 2,
  "room": 10,
  "model": "gemini-2.5-flash",
  "items": [
   {
-   "id": "Ugw-X5Xih2UPJE7Lnsl4AaABAg",
+   "id": "Ugwjp5y087_Uz8v2Iwt4AaABAg",
    "kind": "comment",
-   "video": "Ok770sV6zhk",
-   "comment": "Wegh Rumi:Havlayan köpek ısırmaz hepsi olur petim",
-   "reply": "Evet, havlama çoğu zaman bir uyarı işareti. Köpekler nadiren doğrudan saldırır, önce sinyal verirler. 🐶",
+   "video": "MT8aNilsPBg",
+   "comment": "Benimde o huyum var 😂😂😂",
+   "reply": "Sen de mi flehmen tepkisi veriyorsun yani? 😂 Bazı kokular gerçekten insanı da şaşırtabiliyor!",
    "result": "gönderildi"
   }
  ],
- "finished": "2026-11-20T14:45:27+00:00"
+ "finished": "2026-11-20T19:45:24+00:00"
 }
