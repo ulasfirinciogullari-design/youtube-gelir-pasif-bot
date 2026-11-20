@@ -1,0 +1,177 @@
+{
+  "topic_id": "mk-c0188",
+  "topic": "Martı deniz suyu içebilir mi? Martılar tuzlu suyu nasıl içer, martının gagasından damlayan sıvı ne?",
+  "series": "merak",
+  "script_provider": "claude (kuyruk)",
+  "voice_engine": "edge-tts x6",
+  "voice": {
+    "voice_id": "tr-TR-AhmetNeural",
+    "model": "edge-tts"
+  },
+  "title": "Bir martı deniz suyu içip yaşayabilir mi? 🐦",
+  "hook_text": "MARTI DENİZ SUYU İÇEBİLİR Mİ?",
+  "description": "Martı deniz suyu içebilir mi, martılar tuzlu suyu nasıl içer?\n\nEvet, içebilir. Audubon'a göre deniz kuşlarının iki gözünün hemen üstünde bir çift tuz bezi bulunur; bu bezler kandaki fazla tuzu süzer ve çok tuzlu bir sıvı olarak burun deliklerinden dışarı atar. Sıvı gaganın oluklarından akıp ucundan damlar, kuş da başını sallayarak onu denize geri savurur. Cornell Kuşbilim Laboratuvarı'nın aktardığına göre fizyolog Knut Schmidt-Nielsen'in deneyinde bir büyük karasırtlı martı vücut ağırlığının onda biri kadar deniz suyu içti ve üç saat içinde bu tuzu büyük ölçüde tuz bezleriyle attı. NOAA'ya göre insan böbrekleri ise deniz suyundan daha az tuzlu idrar yapabildiği için deniz suyu içen insan içtiğinden fazla su kaybeder ve susuz kalır.\n\nSence hangisi daha tuhaf: deniz suyu içen martı mı, burnundan tuz akıtan martı mı?\n\n#martı #kuşlar #mümkünmü #hayvanlar #shorts #bilim #merak #keşfet\n\nSeri: mk-c0188",
+  "tags": [
+    "martı",
+    "martı deniz suyu içer mi",
+    "martılar tuzlu su içer mi",
+    "martı nasıl su içer",
+    "deniz kuşları tuzlu su",
+    "tuz bezi",
+    "martı gagasından su damlıyor",
+    "deniz suyu içilir mi",
+    "deniz suyu neden içilmez",
+    "tuzlu su",
+    "martılar",
+    "deniz kuşları",
+    "kuşlar",
+    "mümkün mü",
+    "yanlış bilinen gerçekler",
+    "hayvanlar",
+    "deniz",
+    "ilginç bilgiler",
+    "bilmediğin gerçekler",
+    "bilim",
+    "seagull salt water",
+    "salt gland",
+    "deniz suyu",
+    "shorts",
+    "merak",
+    "bilgi",
+    "zirvenin kanunu",
+    "marti",
+    "marti deniz suyu icer mi"
+  ],
+  "localizations": {
+    "en": {
+      "title": "Can a seagull drink seawater and survive? 🐦",
+      "description": "Yes. Gulls have a pair of salt glands just above their eyes that filter extra salt from the blood. The salty fluid runs out of the nostrils and drips off the tip of the bill, and the bird shakes it away. Your kidneys can't do that, so seawater would only leave you more dehydrated.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "es": {
+      "title": "¿Puede una gaviota beber agua de mar y sobrevivir? 🐦",
+      "description": "Sí. Las gaviotas tienen un par de glándulas de sal justo encima de los ojos que filtran el exceso de sal de la sangre. El líquido salado sale por las fosas nasales, gotea por la punta del pico y el ave lo sacude. Tus riñones no pueden hacerlo: el agua de mar te deshidrataría más.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "pt": {
+      "title": "Uma gaivota consegue beber água do mar e sobreviver? 🐦",
+      "description": "Sim. As gaivotas têm um par de glândulas de sal logo acima dos olhos que filtram o excesso de sal do sangue. O líquido salgado sai pelas narinas, pinga da ponta do bico e a ave o sacode fora. Seus rins não conseguem isso: água do mar só te deixaria mais desidratado.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "de": {
+      "title": "Kann eine Möwe Meerwasser trinken und überleben? 🐦",
+      "description": "Ja. Möwen haben direkt über den Augen ein Paar Salzdrüsen, die überschüssiges Salz aus dem Blut filtern. Die salzige Flüssigkeit läuft aus den Nasenlöchern, tropft von der Schnabelspitze, und der Vogel schüttelt sie ab. Deine Nieren können das nicht – Meerwasser würde dich nur noch durstiger machen.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "fr": {
+      "title": "Une mouette peut-elle boire de l'eau de mer et survivre ? 🐦",
+      "description": "Oui. Les goélands et les mouettes ont deux glandes à sel juste au-dessus des yeux, qui filtrent l'excès de sel du sang. Le liquide salé sort par les narines, goutte au bout du bec, et l'oiseau s'en débarrasse d'un mouvement de tête. Tes reins en sont incapables : l'eau de mer te déshydraterait davantage.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "it": {
+      "title": "Un gabbiano può bere acqua di mare e sopravvivere? 🐦",
+      "description": "Sì. I gabbiani hanno due ghiandole del sale proprio sopra gli occhi che filtrano il sale in eccesso dal sangue. Il liquido salato esce dalle narici, gocciola dalla punta del becco e l'uccello lo scrolla via. I tuoi reni non ci riescono: l'acqua di mare ti disidraterebbe ancora di più.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "ru": {
+      "title": "Может ли чайка пить морскую воду и выжить? 🐦",
+      "description": "Да. Прямо над глазами у чаек есть пара солевых желёз, которые отфильтровывают из крови лишнюю соль. Солёная жидкость вытекает из ноздрей, капает с кончика клюва, и птица стряхивает её. Твои почки так не умеют: от морской воды тебя бы только сильнее обезвоживало.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "ar": {
+      "title": "هل يستطيع النورس شرب ماء البحر والبقاء حيًا؟ 🐦",
+      "description": "نعم. فللنوارس غدتان ملحيتان فوق العينين مباشرة تُرشّحان الملح الزائد من الدم. يخرج السائل المالح من فتحتي الأنف ويتقطر من طرف المنقار، ثم يهزّ الطائر رأسه ليتخلص منه. أما كليتاك فلا تستطيعان ذلك، لذا سيزيدك ماء البحر عطشًا.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "hi": {
+      "title": "क्या सीगल समुद्र का पानी पीकर ज़िंदा रह सकती है? 🐦",
+      "description": "हाँ। सीगल की आँखों के ठीक ऊपर नमक की दो ग्रंथियाँ होती हैं, जो खून से अतिरिक्त नमक छान लेती हैं। यह नमकीन तरल नथुनों से निकलकर चोंच की नोक से टपकता है और पक्षी सिर झटककर उसे गिरा देता है। आपकी किडनी ऐसा नहीं कर सकती, इसलिए समुद्र का पानी आपको और प्यासा कर देगा।\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "id": {
+      "title": "Bisakah burung camar minum air laut dan tetap hidup? 🐦",
+      "description": "Bisa. Camar punya sepasang kelenjar garam tepat di atas matanya yang menyaring kelebihan garam dari darah. Cairan asin itu keluar dari lubang hidung, menetes dari ujung paruh, lalu dikibaskan si burung. Ginjalmu tidak bisa begitu, jadi air laut justru membuatmu makin kekurangan cairan.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "ja": {
+      "title": "カモメは海水を飲んでも生きられる? 🐦",
+      "description": "生きられます。カモメの両目のすぐ上には、血液中の余分な塩分をこし取る1対の塩類腺があります。濃い塩水は鼻の穴から出てくちばしの先から垂れ、カモメは頭を振ってそれを払い落とします。人の腎臓にはそれができないため、海水を飲むとかえって脱水が進みます。\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "ko": {
+      "title": "갈매기는 바닷물을 마시고도 살 수 있을까? 🐦",
+      "description": "네. 갈매기 눈 바로 위에는 핏속의 남는 소금을 걸러 내는 소금샘 한 쌍이 있습니다. 짠 액체는 콧구멍으로 나와 부리 끝에서 떨어지고, 갈매기는 머리를 흔들어 털어 냅니다. 사람의 콩팥은 그렇게 못 하기 때문에 바닷물을 마시면 오히려 탈수가 심해집니다.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "pl": {
+      "title": "Czy mewa może pić morską wodę i przeżyć? 🐦",
+      "description": "Tak. Mewy mają tuż nad oczami parę gruczołów solnych, które odfiltrowują z krwi nadmiar soli. Słony płyn wypływa przez nozdrza, skapuje z czubka dzioba, a ptak go strząsa. Twoje nerki tego nie potrafią – po morskiej wodzie byłbyś jeszcze bardziej odwodniony.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "nl": {
+      "title": "Kan een meeuw zeewater drinken en overleven? 🐦",
+      "description": "Ja. Meeuwen hebben vlak boven hun ogen een paar zoutklieren die het overtollige zout uit het bloed filteren. Het zoute vocht komt uit de neusgaten, druppelt van de snavelpunt en de vogel schudt het weg. Jouw nieren kunnen dat niet, dus van zeewater zou je alleen maar meer uitdrogen.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "uk": {
+      "title": "Чи може чайка пити морську воду й вижити? 🐦",
+      "description": "Так. Просто над очима в чайок є пара сольових залоз, які відфільтровують із крові зайву сіль. Солона рідина витікає з ніздрів, капає з кінчика дзьоба, і птах її струшує. Твої нирки так не вміють: від морської води тебе б лише сильніше зневоднювало.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "vi": {
+      "title": "Mòng biển có thể uống nước biển mà vẫn sống không? 🐦",
+      "description": "Có. Ngay phía trên mắt mòng biển có một cặp tuyến muối lọc lượng muối dư thừa khỏi máu. Chất lỏng mặn chảy ra từ lỗ mũi, nhỏ giọt ở đầu mỏ và chim lắc đầu để hất đi. Thận của bạn không làm được vậy, nên uống nước biển chỉ khiến bạn mất nước thêm.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "az": {
+      "title": "Qağayı dəniz suyu içib yaşaya bilərmi? 🐦",
+      "description": "Bəli. Qağayıların gözlərinin düz üstündə qandakı artıq duzu süzən bir cüt duz vəzisi var. Duzlu maye burun dəliklərindən çıxır, dimdiyin ucundan damır, quş da başını silkələyib onu atır. Sənin böyrəklərin bunu bacarmır, ona görə dəniz suyu səni daha da susuz qoyar.\n\n#shorts\n\nSeri: mk-c0188"
+    },
+    "ro": {
+      "title": "Poate un pescăruș să bea apă de mare și să supraviețuiască? 🐦",
+      "description": "Da. Pescărușii au chiar deasupra ochilor o pereche de glande de sare care filtrează sarea în exces din sânge. Lichidul sărat iese prin nări, picură din vârful ciocului, iar pasărea îl scutură. Rinichii tăi nu pot face asta, așa că apa de mare te-ar deshidrata și mai tare.\n\n#shorts\n\nSeri: mk-c0188"
+    }
+  },
+  "seo_engine": "claude",
+  "pinned_comment": "Sence hangisi daha tuhaf: deniz suyu içen martı mı, burnundan tuz akıtan martı mı?",
+  "scenes": [
+    {
+      "text": "Bu martı, seni susuz bırakacak suyu içiyor.",
+      "visual": "close-up of a seagull's head and beak with a drop of water on the tip, looking at the camera",
+      "stock_query": "seagull close up",
+      "source": "stock",
+      "callout": "DENİZ SUYU"
+    },
+    {
+      "text": "Peki deniz suyu içip yaşayabilir mi?",
+      "visual": "a seagull floating on the sea",
+      "stock_query": "seagull sea",
+      "source": "stock"
+    },
+    {
+      "text": "Sen içsen, böbreklerin tuzu atarken içtiğinden fazla su harcar; susuz kalırsın.",
+      "visual": "a person drinking a glass of water",
+      "stock_query": "drinking water",
+      "source": "stock",
+      "subject": [
+        "water"
+      ],
+      "callout": "İÇTİKÇE SUSARSIN"
+    },
+    {
+      "text": "Cevap evet: gözlerinin üstünde iki tuz bezi var; kandaki fazla tuzu süzer.",
+      "visual": "close-up of a seagull's head showing the area above its eyes",
+      "stock_query": "seagull head",
+      "source": "stock",
+      "callout": "GÖZ ÜSTÜNDE TUZ BEZİ"
+    },
+    {
+      "text": "Tuzlu sıvı burnundan çıkar, gagasının ucundan damlar; martı başını sallayıp atar.",
+      "visual": "a seagull shaking its head on the beach",
+      "stock_query": "seagull beach",
+      "source": "stock",
+      "callout": "GAGADAN DAMLAR"
+    },
+    {
+      "text": "Başını silken bir martı görürsen bak:",
+      "visual": "close-up of a seagull looking at the camera",
+      "stock_query": "seagull face",
+      "source": "stock"
+    }
+  ],
+  "duration_seconds": 19.61,
+  "image_model": "fal-ai/flux/schnell",
+  "music": "merak_3.mp3",
+  "music_mood": "belgesel",
+  "ai_images": 0,
+  "stock_videos": 13,
+  "clip_match": "gemini",
+  "contains_synthetic_media": false,
+  "series_label": "KANUN #239",
+  "share_cta": false,
+  "instagram_video": "ORIGINAL_mk-c0188_1795180982_ig.mp4"
+}
