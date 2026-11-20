@@ -1,7 +1,7 @@
 {
- "ara": {
-  "y050": ["marathon start crowd runners", "stadium crowd fans", "crowded beach"],
-  "y053": ["cracked earth drought", "Lake Mead drought", "dried lake bed"]
- },
- "al": {}
+ "ara": {},
+ "al": {
+  "y050": {"n": 3, "x": 0.4, "y": 0.6},
+  "y053": {"n": 2, "x": 0.5, "y": 0.5}
+ }
 }
