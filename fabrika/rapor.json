@@ -1,21 +1,21 @@
 {
- "started": "2026-11-20T17:21:14+00:00",
+ "started": "2026-11-21T13:05:02+00:00",
  "mod": "igbolum",
- "gate": "instagram: g015",
+ "gate": "instagram: y018",
  "tarayici": "playwright ubuntu24.04-x64",
- "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
- "chars": 405,
+ "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+ "chars": 375,
  "instagram": {
   "anahtar_bitis": "2027-01-15T09:07+00:00",
-  "media_id": "18108814382348904",
-  "url": "https://www.instagram.com/reel/Df-LthXiSSk/",
-  "at": 1795195430.051449
+  "media_id": "18147829228598012",
+  "url": "https://www.instagram.com/reel/DgATGATD2x6/",
+  "at": 1795266404.590031
  },
  "warnings": [
   "ElevenLabs ses vermedi, yedek ses (edge-tts) kullanıldı"
  ],
  "log": [
-  "Instagram: https://www.instagram.com/reel/Df-LthXiSSk/"
+  "Instagram: https://www.instagram.com/reel/DgATGATD2x6/"
  ],
- "finished": "2026-11-20T17:23:50+00:00"
+ "finished": "2026-11-21T13:06:44+00:00"
 }

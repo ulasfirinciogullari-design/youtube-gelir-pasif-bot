@@ -3169,14 +3169,6 @@
  "fail_streak": 0,
  "runs": [
   {
-   "finished": "2026-11-12T12:11:27+00:00",
-   "mod": "saatlik",
-   "title": "Uzayda Kaskının İçinde Ağlasaydın Ne Olurdu?",
-   "url": "https://youtube.com/shorts/Pxik5vC4NHU",
-   "duration": 56.1,
-   "chars": 845
-  },
-  {
    "finished": "2026-11-12T13:10:30+00:00",
    "mod": "igbolum",
    "title": "Dünya'ya 1 Günde Kaç Yıldırım Düşer?",
@@ -3582,6 +3574,12 @@
    "mod": "igbolum",
    "title": "Mavi Balina 1 Günde Kaç Ton Yer?",
    "chars": 405
+  },
+  {
+   "finished": "2026-11-21T13:06:44+00:00",
+   "mod": "igbolum",
+   "title": "Jüpiter Yıldız Olsaydı Üstünde Kaç Ton Gelirdin?",
+   "chars": 375
   }
  ],
  "last_fail": 1795108049.8274572,
@@ -3986,6 +3984,11 @@
     "media_id": "18108814382348904",
     "url": "https://www.instagram.com/reel/Df-LthXiSSk/",
     "at": 1795195430.051449
+   },
+   "y018": {
+    "media_id": "18147829228598012",
+    "url": "https://www.instagram.com/reel/DgATGATD2x6/",
+    "at": 1795266404.590031
    }
   },
   "eski": [
@@ -4008,5 +4011,5 @@
   "y008",
   "y013"
  ],
- "yedek_ses": 1795195430.05152
+ "yedek_ses": 1795266404.5900934
 }
