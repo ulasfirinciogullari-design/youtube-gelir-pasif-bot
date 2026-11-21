@@ -28,7 +28,6 @@
   ]
  },
  "slots": {
-  "2026-11-07T18": "cIZHhqGAemo https://www.instagram.com/reel/DfcxtuPDiqV/",
   "2026-11-08T10": "hata: 6iVJA8girRE: IGError: Instagram videoyu işleyemedi: ERROR",
   "2026-11-08T14": "mR4H7MKxBP8 https://www.instagram.com/reel/Dfe7C9oAqFO/",
   "2026-11-08T18": "kkPqwP8hyz4 https://www.instagram.com/reel/DffWa5FAjpw/",
@@ -67,16 +66,17 @@
   "2026-11-19T18": "g9grbN5SXXQ https://www.instagram.com/reel/Df7rSgAFZmx/",
   "2026-11-20T10": "H8x0pPNzPPs https://www.instagram.com/reel/Df9ZKGrDwx9/",
   "2026-11-20T14": "Ok770sV6zhk https://www.instagram.com/reel/Df90oRzCEvR/",
-  "2026-11-20T18": "-Z4IYlJwEVA https://www.instagram.com/reel/Df-P9EpDpIv/"
+  "2026-11-20T18": "-Z4IYlJwEVA https://www.instagram.com/reel/Df-P9EpDpIv/",
+  "2026-11-21T10": "8ONBtkP7Qxs https://www.instagram.com/reel/Df_95fHjKHl/"
  },
  "nobet": {
   "basladi": "2026-11-21T06:04:45+00:00",
   "run": "44873033213",
-  "tur": 215,
+  "tur": 237,
   "cevap": 0,
-  "reel": 0,
+  "reel": 1,
   "son_hata": null,
-  "son_tur": "2026-11-21T09:38:46+00:00"
+  "son_tur": "2026-11-21T10:01:34+00:00"
  },
  "posted": {
   "CGjHVJfvL3A": {
@@ -589,6 +589,13 @@
    "at": 1795197653,
    "title": "Beyaz saçı koparırsan yerine iki tane çıkmaz 💇",
    "topic_id": "mk-c0182"
+  },
+  "8ONBtkP7Qxs": {
+   "media_id": "18128814439898820",
+   "url": "https://www.instagram.com/reel/Df_95fHjKHl/",
+   "at": 1795255294,
+   "title": "Kedi balığa bayılır ama balık onun doğal yemeği değil 🐟",
+   "topic_id": "mk-c0173"
   }
  }
 }
